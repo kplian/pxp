@@ -15,7 +15,8 @@ TO USE IT BY FIRST TIME:
     * sis_generador
     * sis_parametros
     * sis_organigrama
-  All these folders and files are inside pxp.
+
+   All these folders and files are inside pxp.
 5. Create a folder named "reportes_generados" inside your project root folder with write access for Apache user.
 6. Create a file named "config_util.txt" inside your project root folder wich contains the name of database in the first line.
 7. Create a file named "DatosGenerales.php" inside pxp/lib. This file could be a copy of DatosGenerales.sample.php wich already exists in the same folder.
@@ -29,11 +30,11 @@ TO CREATE A NEW SYSTEM:
     * vista
     * control
     * modelo
-    * base  -  funciones
-            -  schema.sql
-            -  patch000001.sql
-            -  patch000002.sql
-            -  patch00xxxx.sql
+    * base  *  funciones
+            *  schema.sql
+            *  patch000001.sql
+            *  patch000002.sql
+            *  patch00xxxx.sql
 
   The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
   for the system. All the patch files contains the scripts to generate the database objects for the system.
