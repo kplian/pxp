@@ -30,11 +30,11 @@ TO CREATE A NEW SYSTEM:
     * vista
     * control
     * modelo
-    * base ->  funciones
-           ->  schema.sql
-           ->  patch000001.sql
-           ->  patch000002.sql
-           ->  patch00xxxx.sql
+    * base ->  funciones.
+           ->  schema.sql.
+           ->  patch000001.sql.
+           ->  patch000002.sql.
+           ->  patch00xxxx.sql.
 
   The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
   for the system. All the patch files contains the scripts to generate the database objects for the system.
