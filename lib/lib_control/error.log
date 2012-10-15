@@ -1,0 +1,371 @@
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying) does not exist#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying) does not exist#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying) does not exist#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#23502#**#null value in column &amp;quot;id_log&amp;quot; violates not-null constraint,query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=298#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#23502#**#null value in column &amp;quot;id_log&amp;quot; violates not-null constraint,query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=692#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#23502#**#null value in column &amp;quot;id_log&amp;quot; violates not-null constraint,query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=879#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  null value in column &amp;quot;id_log&amp;quot; violates not-null constraint
+CONTEXT:  SQL statement &amp;quot;insert into segu.tlog( id_log,id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg, estado_reg,procedimientos,transaccion,consulta ) values(  $1 , $2 , $3 , $4 , $5 , $6 ,now(),'activo',  $7 , $8 , $9  ) returning id_log&amp;quot;
+PL/pgSQL function &amp;quot;f_registrar_log&amp;quot; line 33 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 261 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#permisos -&amp;gt;  f,t,t#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#permisos -&amp;gt;  f,t,t#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_SUBSIS_SEL
+/var/www/html/web/lib/fpdf16/fpdf.php  1202   getimagesize(../../../lib/images/logo_reporte.jpg) [&lt;a href='function.getimagesize'&gt;function.getimagesize&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/fpdf16/fpdf.php  1202   getimagesize(../../../lib/images/logo_reporte.jpg) [&lt;a href='function.getimagesize'&gt;function.getimagesize&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt; 0 = 0  AND to_tsvector(transaccion) @@ plainto_tsquery('spanish','PERSON')&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt; 0 = 0  AND to_tsvector(transaccion) @@ plainto_tsquery('spanish','PERSON')&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt; 0 = 0  AND to_tsvector(transaccion) @@ plainto_tsquery('spanish','PERSON')&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt; 0 = 0  AND to_tsvector(transaccion) @@ plainto_tsquery('spanish','PERSON')&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt;logg.fecha_reg&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt;DESC&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;NULL&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;NULL&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;NULL&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;NULL&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;NULL&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt;0&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;P0001&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.f_t_log_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_LOG_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_MENU_SEL#**#public.f_intermediario_sel#**#SEG_MENU_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#LLEGA,query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=128#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#LLEGA,query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=385#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#ES  SEL ,query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=998#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_wq&amp;quot;
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  ES  IME 
+CONTEXT:  PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 274 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  ES  IME 
+CONTEXT:  PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 274 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  ES  IME 
+CONTEXT:  PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 274 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  714   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  ES  IME 
+CONTEXT:  PL/pgSQL function &amp;quot;f_intermediario_ime&amp;quot; line 274 at assignment
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_wq&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_we&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qwe&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qwe&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qwe&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qwe&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qwe&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qwe&amp;quot;
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  password authentication failed for user &amp;quot;bdweb_qw&amp;quot;
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_PROCECMB_SEL#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  permission denied for relation variable_global
+CONTEXT:  SQL statement &amp;quot;select valor from public.variable_global vg where vg.variable='separador_inicial'&amp;quot;
+PL/pgSQL function &amp;quot;f_get_mensaje_err&amp;quot; line 9 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_sel&amp;quot; line 136 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  permission denied for relation variable_global
+CONTEXT:  SQL statement &amp;quot;select valor from public.variable_global vg where vg.variable='separador_inicial'&amp;quot;
+PL/pgSQL function &amp;quot;f_get_mensaje_err&amp;quot; line 9 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_sel&amp;quot; line 136 at assignment
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for schema segu#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for schema segu#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for relation tusuario_rol#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for sequence parametro#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying, character varying) does not exist#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier ')'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier '^'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier '*'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier '*'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   preg_match() [&lt;a href='function.preg-match'&gt;function.preg-match&lt;/a&gt;]: Unknown modifier '*'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   preg_match() [&lt;a href='function.preg-match'&gt;function.preg-match&lt;/a&gt;]: Unknown modifier ']'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  314   preg_match() [&lt;a href='function.preg-match'&gt;function.preg-match&lt;/a&gt;]: Unknown modifier ']'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  315   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier '\'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  315   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier '\'
+/var/www/html/web/lib/lib_modelo/MODValidacion.php  315   filter_var() [&lt;a href='function.filter-var'&gt;function.filter-var&lt;/a&gt;]: Unknown modifier '|'
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUI_SEL
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_control/CTIntermediario.php  128   include_once(../../../../../../sis_seguridad/control/ACTFuncion.php) [&lt;a href='function.include-once'&gt;function.include-once&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42804#**#structure of query does not match function result type,query: SELECT 
+                             funcio.id_funcion,
+                             funcio.nombre,
+                             funcio.descripcion,
+                             funcio.fecha_reg,
+                             funcio.estado_reg,
+                             funcio.id_subsistema
+                             FROM segu.tfuncion funcio 
+                             INNER JOIN  segu.tsubsistema subsis 
+                               on subsis.id_subsistema=funcio.id_subsistema 
+                             WHERE funcio.estado_reg='activo' and  0 = 0  order by nombre ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  639   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42601#**#syntax error at or near &amp;quot;SELET&amp;quot;,query: SELET count(funcio.id_funcion) 
+                            FROM segu.tfuncion funcio 
+                            INNER JOIN  segu.tsubsistema subsis 
+                               on subsis.id_subsistema=funcio.id_subsistema 
+                            FUNCION funcio.estado_reg='activo' and   0 = 0 #**#public.f_intermediario_sel#**#SEG_FUNCIO_CONT
+/var/www/html/web/lib/lib_modelo/driver.php  639   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42601#**#syntax error at or near &amp;quot;FUNCION&amp;quot;,query: SELECT count(funcio.id_funcion)
+                            FROM segu.tfuncion funcio 
+                            INNER JOIN  segu.tsubsistema subsis 
+                               on subsis.id_subsistema=funcio.id_subsistema 
+                            FUNCION funcio.estado_reg='activo' and   0 = 0 #**#public.f_intermediario_sel#**#SEG_FUNCIO_CONT
+/var/www/html/web/lib/lib_control/CTincludes.php  24   include_once(/var/www/html/web/lib/lib_control/../../sis_generador/modelo/FuncionesGenerador.php) [&lt;a href='function.include-once'&gt;function.include-once&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_control/CTincludes.php  24   include_once(/var/www/html/web/lib/lib_control/../../sis_generador/modelo/FuncionesGenerador.php) [&lt;a href='function.include-once'&gt;function.include-once&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_control/CTincludes.php  24   include_once(/var/www/html/web/lib/lib_control/../../sis_generador/modelo/FuncionesGenerador.php) [&lt;a href='function.include-once'&gt;function.include-once&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_control/CTincludes.php  24   include_once(/var/www/html/web/lib/lib_control/../../sis_generador/modelo/FuncionesGenerador.php) [&lt;a href='function.include-once'&gt;function.include-once&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_control/CTincludes.php  24   include_once(/var/www/html/web/lib/lib_control/../../sis_generador/modelo/FuncionesGenerador.php) [&lt;a href='function.include-once'&gt;function.include-once&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  permission denied for relation variable_global
+CONTEXT:  SQL statement &amp;quot;select valor from public.variable_global vg where vg.variable='separador_inicial'&amp;quot;
+PL/pgSQL function &amp;quot;f_get_mensaje_err&amp;quot; line 9 at SQL statement
+PL/pgSQL function &amp;quot;f_intermediario_sel&amp;quot; line 136 at assignment
+/var/www/html/web/lib/lib_modelo/conexion.php  59   pg_connect() [&lt;a href='function.pg-connect'&gt;function.pg-connect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  59   pg_connect() [&lt;a href='function.pg-connect'&gt;function.pg-connect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  38   pg_pconnect() [&lt;a href='function.pg-pconnect'&gt;function.pg-pconnect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  59   pg_connect() [&lt;a href='function.pg-connect'&gt;function.pg-connect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  59   pg_connect() [&lt;a href='function.pg-connect'&gt;function.pg-connect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  59   pg_connect() [&lt;a href='function.pg-connect'&gt;function.pg-connect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/conexion.php  59   pg_connect() [&lt;a href='function.pg-connect'&gt;function.pg-connect&lt;/a&gt;]: Unable to connect to PostgreSQL server: FATAL:  connection limit exceeded for non-superusers
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for sequence parametro#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for schema segu#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for relation tsesion,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 12  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42501#**#permission denied for relation tgui,query: SELECT
+                                        g.id_gui,
+                                        g.nombre,
+                                        g.descripcion,
+                                        g.nivel,
+                                        g.orden_logico,
+                                        g.ruta_archivo,
+                                        g.clase_vista,
+                                        case
+                                        when (g.ruta_archivo is null or g.ruta_archivo='')then
+                                             'carpeta'::varchar
+                                        ELSE
+                                            'hoja'::varchar
+                                        END
+                                  FROM segu.tgui g
+                                       INNER JOIN segu.testructura_gui eg
+                                       ON g.id_gui=eg.id_gui
+                                  WHERE g.visible='si'
+                                  AND eg.fk_id_gui::text like '%'
+                                  AND g.nivel::text like '1'
+                                  ORDER BY g.orden_logico,eg.fk_id_gui#**#public.f_intermediario_sel#**#SEG_MENU_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  788   array_shift() [&lt;a href='function.array-shift'&gt;function.array-shift&lt;/a&gt;]: The argument should be an array
+/var/www/html/web/lib/lib_modelo/driver.php  739   explode() [&lt;a href='function.explode'&gt;function.explode&lt;/a&gt;]: Empty delimiter
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;nombre&amp;quot; is ambiguous,query: select
+            			id_tabla, esquema, nombre, descripcion,
+            			id_subsistema, id_usuario_reg, id_usuario_mod, fecha_reg,
+            			fecha_mod, estado_reg, subsis.nombre
+            			from gen.ttabla tabla
+            			inner join segu.tsubsistema subsis
+            			on subsis.id_subsistema = tabla.id_subsistema
+                        where   0 = 0  order by id_tabla ASC limit 50 offset 0#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42804#**#structure of query does not match function result type,query: select
+            			tabla.id_tabla, tabla.esquema, tabla.nombre, tabla.descripcion,
+            			tabla.id_subsistema, tabla.id_usuario_reg, tabla.id_usuario_mod,
+            			tabla.fecha_reg,tabla.fecha_mod, tabla.estado_reg, subsis.nombre
+            			from gen.ttabla tabla
+            			inner join segu.tsubsistema subsis
+            			on subsis.id_subsistema = tabla.id_subsistema
+                        where   0 = 0  order by id_tabla ASC limit 50 offset 0#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42804#**#structure of query does not match function result type,query: select
+            			tabla.id_tabla, tabla.esquema, tabla.nombre, tabla.descripcion,
+            			tabla.id_subsistema, tabla.id_usuario_reg, tabla.id_usuario_mod,
+            			tabla.fecha_reg,tabla.fecha_mod, tabla.estado_reg, subsis.nombre
+            			from gen.ttabla tabla
+            			inner join segu.tsubsistema subsis
+            			on subsis.id_subsistema = tabla.id_subsistema
+                        where   0 = 0  order by id_tabla ASC limit 50 offset 0#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/fpdf16/fpdf.php  1202   getimagesize(../../../lib/images/logo_reporte.jpg) [&lt;a href='function.getimagesize'&gt;function.getimagesize&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/fpdf16/fpdf.php  1202   getimagesize(../lib/images/logo_reporte.jpg) [&lt;a href='function.getimagesize'&gt;function.getimagesize&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/fpdf16/fpdf.php  1202   getimagesize(/var/www/html/web/lib/lib_reporte/../lib/images/logo_reporte.jpg) [&lt;a href='function.getimagesize'&gt;function.getimagesize&lt;/a&gt;]: failed to open stream: No such file or directory
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  229   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  229   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt;record v_parametros has no field id_funcion&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;42703&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.ft_procedimiento_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#&amp;lt;mensaje&amp;gt;record v_parametros has no field id_funcion&amp;lt;/mensaje&amp;gt;&amp;lt;codigo_error&amp;gt;42703&amp;lt;/codigo_error&amp;gt;&amp;lt;procedimientos&amp;gt;segu.ft_procedimiento_sel&amp;lt;/procedimientos&amp;gt;#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  231   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_reporte/ReportePDF.php  232   Invalid argument supplied for foreach()
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_TIPDOC_SEL
+/var/www/html/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /var/www/html/web/lib/lib_reporte/MostrarReporte.php:8)
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#SEG_GUIROL_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/var/www/html/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  467   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/ReporteXLS.php:42)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  467   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/ReporteXLS.php:42)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)

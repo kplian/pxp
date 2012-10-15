@@ -1,0 +1,48 @@
+.awesomecombo-item {
+	height: 16px;
+	padding: 2px 2px 2px 20px;
+	color: #333;
+	border: 1px solid #fff;
+	white-space: nowrap;
+}
+
+.unchecked {
+	font-weight: normal;
+}
+
+.checked {
+	font-weight: bold;
+	width: 100%;
+	background: url(../img/tick.png) no-repeat scroll 1px center transparent;
+}
+
+/**
+ * Icons
+ */
+.icon-tick {
+	background: url(../img/tick.png) center left no-repeat !important;
+}
+
+.icon-tick-red {
+	background: url(../img/tick-red.png) center left no-repeat !important;
+}
+
+.icon-arrow-stop-180 {
+     background: url(../img/arrow-stop-180.png) center left no-repeat !important;
+}
+
+.icon-arrow-180 {
+     background: url(../img/arrow-180.png) center left no-repeat !important;
+}
+
+.icon-arrow {
+     background: url(../img/arrow.png) center left no-repeat !important;
+}
+
+.icon-arrow-stop {
+     background: url(../img/arrow-stop.png) center left no-repeat !important;
+}
+
+.icon-arrow-circle-double-135 {
+     background: url(../img/arrow-circle-double-135.png) center left no-repeat !important;
+}

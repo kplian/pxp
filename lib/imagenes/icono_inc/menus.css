@@ -1,0 +1,110 @@
+/*!
+ * Ext JS Library 3.3.0
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+
+.blist {
+	background-image:url(inc_ven.png) !important;  
+}
+
+.bsave {
+	background-image:url(inc_save.png) !important;
+  
+}
+.bnew {
+	background-image:url(inc_new.png) !important;   
+}
+.bdel {
+	background-image:url(inc_eli.png) !important;  
+}
+.bact {
+	background-image:url(inc_act.png) !important;
+}
+.bprint {
+	background-image:url(inc_printer.png) !important; 
+}
+.bedit {
+	background-image:url(inc_edit.png) !important;
+}
+
+.badelante {
+	background-image:url(inc_adelante.png) !important;
+}
+.batras {
+	background-image:url(inc_atras.png) !important;
+}
+.bbajar {
+	background-image:url(inc_bajar.png) !important;
+}
+.bsubir {
+	background-image:url(inc_subir.png) !important;
+}
+.bfolder {
+	background-image:url(inc_folder.png) !important;
+}
+.bok {
+	background-image:url(inc_ok.png) !important;
+}
+
+.bpagar {
+	background-image:url(../iconos_generales/pagar.png) !important;
+}
+.bedit {
+	background-image:url(../icono_dibu/byn_edit.png)!important;
+}
+.bundo {
+	background-image:url(inc_undo.png) !important;
+}
+.bupload {
+	background-image:url(inc_upload.png) !important;
+}
+.bedit {
+	background-image:url(inc_edit.png) !important;
+}
+.bexport {
+	background-image:url(inc_export.png) !important;
+}
+.bsee {
+	background-image:url(inc_see.png) !important;
+}
+.bassign {
+	background-image:url(inc_assign.png) !important;
+}
+.bend {
+	background-image:url(inc_end.png) !important;
+}
+.brenew {
+	background-image:url(inc_renew.png) !important;
+}
+.bcharge {
+	background-image:url(inc_charge.png) !important;
+}
+.bupload1 {
+	background-image:url(inc_upload1.png) !important;
+}
+.bven1 {
+	background-image:url(inc_ven1.png) !important;  
+}
+.bactfil {
+	background-image:url(inc_actfil.png) !important;
+}
+.bselect {
+	background-image:url(inc_select.png) !important;
+}
+.blist {
+	background-image:url(inc_list.png) !important;
+}
+.bexcel {
+	background-image:url(inc_excel.png) !important;
+}
+.bpdf {
+	background-image:url(inc_pdf.png) !important;
+}
+
+
+
+
+
+

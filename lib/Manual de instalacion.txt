@@ -1,0 +1,98 @@
+//////////
+// LINUX CRONTAB
+/////////////////////
+#RAC 07/02/2012
+#para ejecutar el llenado automatico de alarmas 
+#se configura un crontab para que puedaejecutar actiones de llenado en el servidor
+
+#revisar cron tab y si tiene contenido lo salva en un archivo
+crontab -l > cron.txt 
+
+#editar el arcivo ../web/lib_general/cronAlarma.txt
+
+#para que corrar todo los dias a la media noche
+vim cronAlarma.txt
+0 0 * * *  wget -q -O /dev/null http://10.172.0.11/web/sis_parametros/control/ActionDisparaAlarmas.php
+
+#aplicar el cron con nuestra configuración
+crontab cronAlarma.txt
+
+
+
+/////////////////////////////
+//     POSTGRESQL
+///////////////////////////
+
+
+#configuracion de diccionarios para filtros
+
+default_text_search_config = 'pg_catalog.spanish'
+
+
+#para manejo de imagenes condiguracion de postgress.conf
+
+bytea_output = 'escape'
+
+#Para la instalac ion de postgis
+
+yum install postgis
+
+# createlang plpgsql test
+ psql -d dbweb -f lwpostgis.sql
+ psql -d dbweb -f spatial_ref_sys.sql
+  
+
+
+///////////////////////////
+//  PHP
+/////////////////////////
+
+
+#para la instalacion de autentificacion LDAP 
+
+ yum install  php-common
+ 
+ yum install php53-ldap
+
+
+#Para nstalar la librerias GD para graficso como el
+#diagrama gant
+
+yum install php53-gd
+ 
+ 
+ #para manejo de imagenes en php.ini
+ 
+ max_execution_time = 120
+ 
+ memory_limit = 256M
+ post_max_size = 256M
+ upload_max_filesize = 200M
+
+
+#veshabilitar errores por defecto
+
+display_errors = Off
+
+
+# configurarciond e persistnecia en php postgres
+
+pgsql.allow_persistent = On
+
+pgsql.auto_reset_persistent = on
+
+
+
+#TODO
+
+
+1) 31/01/2012
+
+modificación en la conexión con dblink:
+
+public.f_ejecutar_dblink
+
+se debe aumentar la contraseña al realizar la conexión con dblink
+ 
+A raiz de ese error se ve que el manejador de errores no esta enviando el mensaje de error, sino null; de igual forma hay que corregir ese problema. 
+ 

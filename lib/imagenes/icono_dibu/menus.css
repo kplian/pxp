@@ -1,0 +1,143 @@
+/*!
+ * Ext JS Library 3.3.0
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+
+.bven1 {
+	background-image:url(dibu_ven.png) !important;  
+}
+.blist {
+	background-image:url(dibu_list.png) !important;  
+}
+.bsave {
+	background-image:url(dibu_save.png) !important;
+  
+}
+.bnew {
+	background-image:url(dibu_new.png) !important;   
+}
+.bdel {
+	background-image:url(dibu_eli.png) !important;  
+}
+.bact {
+	background-image:url(dibu_act.png) !important;
+}
+.bactfil {
+	background-image:url(dibu_actfil.png) !important;
+}
+.bprint {
+	background-image:url(dibu_printer.png) !important; 
+}
+.bedit {
+	background-image:url(dibu_edit.png) !important;
+}
+
+.badelante {
+	background-image:url(dibu_adelante.png) !important;
+}
+.batras {
+	background-image:url(dibu_atras.png) !important;
+}
+.bbajar {
+	background-image:url(dibu_bajar.png) !important;
+}
+.bsubir {
+	background-image:url(dibu_subir.png) !important;
+}
+.bupload {
+	background-image:url(dibu_upload.png) !important;
+}
+.bfolder {
+	background-image:url(dibu_folder.png) !important;
+}
+.bok {
+	background-image:url(dibu_ok.png) !important;
+}
+
+/*.bexcel {
+	background-image:url(../iconos_generales/excel.png) !important;
+}
+.bpdf {
+	background-image:url(../iconos_generales/pdf.png) !important;
+}*/
+.bpagar {
+	background-image:url(../iconos_generales/pagar.png) !important;
+}
+.breload {
+	background-image:url(dibu_reload1.png) !important;
+}
+.breload1 {
+	background-image:url(dibu_reload2.png) !important;
+}
+.breload2 {
+	background-image:url(dibu_reload3.png) !important;
+}
+
+.bundo {
+	background-image:url(dibu_undo.png) !important;
+}
+
+.bredo {
+	background-image:url(dibu_redo.png) !important;
+}
+
+.balert {
+	background-image:url(dibu_alert.png) !important;
+}
+
+.binfo{
+	background-image:url(dibu_info.png) !important;
+}
+.bassign{
+	background-image:url(dibu_assign.png) !important;
+}
+.bexport{
+	background-image:url(dibu_export.png) !important;
+}
+.brenew{
+	background-image:url(dibu_renew.png) !important;
+}
+.bballot {
+	background-image:url(dibu_ballot.png) !important;
+}
+.bupload1 {
+	background-image:url(dibu_upload1.png) !important;
+}
+.bend {
+	background-image:url(dibu_end.png) !important;
+}
+.bsee {
+	background-image:url(dibu_see.png) !important;
+}
+.bgood {
+	background-image:url(dibu_good.png) !important;
+}
+.bwrong {
+	background-image:url(dibu_wrong.png) !important;
+}
+.bcharge {
+	background-image:url(dibu_charge.png) !important;
+}
+.bselect {
+	background-image:url(dibu_select.png) !important;
+}
+
+.bexcel {
+	background-image:url(dibu_excel.png) !important;
+}
+.bpdf {
+	background-image:url(dibu_pdf.png) !important;
+}
+.block {
+	background-image:url(dibu_lock.png) !important;
+}
+.bunlock {
+	background-image:url(dibu_unlock.png) !important;
+}
+
+
+
+
+

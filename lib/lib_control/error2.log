@@ -1,0 +1,386 @@
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  606   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.ft_sesion_sel(1,7,'tt_parametros_99890','SEG_SESION_SEL'),query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 7  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#22004#**#query string argument of EXECUTE is null#**#public.f_intermediario_sel#**#GEN_TABLA_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.ft_sesion_sel(1,7,'tt_parametros_99912','SEG_SESION_SEL'),query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 7  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.f_t_primo_sel(0,0,'tt_parametros_99913','SEG_OBTEPRI_SEL'),query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=528#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.f_t_primo_sel(0,0,'tt_parametros_99914','SEG_OBTEPRI_SEL'),query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=409#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.f_t_primo_sel(0,0,'tt_parametros_99915','SEG_OBTEPRI_SEL'),query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=145#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.ft_sesion_sel(1,7,'tt_parametros_99916','SEG_SESION_SEL'),query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 7  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.f_t_primo_sel(0,0,'tt_parametros_99917','SEG_OBTEPRI_SEL'),query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=589#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.f_t_primo_sel(0,0,'tt_parametros_99918','SEG_OBTEPRI_SEL'),query: SELECT numero 
+                            from segu.primo u 
+                            where id_primo=376#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select segu.ft_sesion_sel(1,8,'tt_parametros_99950','SEG_SESION_SEL'),query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 8  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#aaaaaa: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0,query: select 
+                            id_usuario,
+                            variable,
+                            ip
+                        from segu.tsesion 
+                        where estado_reg='activo' 
+                        and id_usuario= 2  order by  id_sesion desc LIMIT 1 OFFSET 0#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;id_funcion&amp;quot; is ambiguous,query: SELECT 
+                                   pro.id_procedimiento,
+                                   pro.id_funcion,
+                                   sub.id_subsistema,
+                                   sub.codigo as codigo_sub,
+                                   fun.nombre as nombre_fun,
+                                   pro.codigo,
+                                   pro.descripcion,
+                                   pro.habilita_log
+                            FROM segu.tprocedimiento pro
+                                 INNER JOIN segu.tfuncion fun on fun.id_funcion = pro.id_funcion
+                                 INNER JOIN segu.tsubsistema sub on sub.id_subsistema = fun.id_subsistema
+
+                            WHERE pro.estado_reg = 'activo' and  0 = 0  AND (id_funcion = 488)  order by codigo ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;id_funcion&amp;quot; is ambiguous,query: SELECT 
+                                   pro.id_procedimiento,
+                                   pro.id_funcion,
+                                   sub.id_subsistema,
+                                   sub.codigo as codigo_sub,
+                                   fun.nombre as nombre_fun,
+                                   pro.codigo,
+                                   pro.descripcion,
+                                   pro.habilita_log
+                            FROM segu.tprocedimiento pro
+                                 INNER JOIN segu.tfuncion fun on fun.id_funcion = pro.id_funcion
+                                 INNER JOIN segu.tsubsistema sub on sub.id_subsistema = fun.id_subsistema
+
+                            WHERE pro.estado_reg = 'activo' and  0 = 0  AND (id_funcion = 489)  order by codigo ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;id_funcion&amp;quot; is ambiguous,query: SELECT 
+                                   pro.id_procedimiento,
+                                   pro.id_funcion,
+                                   sub.id_subsistema,
+                                   sub.codigo as codigo_sub,
+                                   fun.nombre as nombre_fun,
+                                   pro.codigo,
+                                   pro.descripcion,
+                                   pro.habilita_log
+                            FROM segu.tprocedimiento pro
+                                 INNER JOIN segu.tfuncion fun on fun.id_funcion = pro.id_funcion
+                                 INNER JOIN segu.tsubsistema sub on sub.id_subsistema = fun.id_subsistema
+
+                            WHERE pro.estado_reg = 'activo' and  0 = 0  AND (id_funcion = 524)  order by codigo ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;id_funcion&amp;quot; is ambiguous,query: SELECT 
+                                   pro.id_procedimiento,
+                                   pro.id_funcion,
+                                   sub.id_subsistema,
+                                   sub.codigo as codigo_sub,
+                                   fun.nombre as nombre_fun,
+                                   pro.codigo,
+                                   pro.descripcion,
+                                   pro.habilita_log
+                            FROM segu.tprocedimiento pro
+                                 INNER JOIN segu.tfuncion fun on fun.id_funcion = pro.id_funcion
+                                 INNER JOIN segu.tsubsistema sub on sub.id_subsistema = fun.id_subsistema
+
+                            WHERE pro.estado_reg = 'activo' and  0 = 0  AND (id_funcion = 524)  order by codigo ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;id_funcion&amp;quot; is ambiguous,query: SELECT 
+                                   pro.id_procedimiento,
+                                   pro.id_funcion,
+                                   sub.id_subsistema,
+                                   sub.codigo as codigo_sub,
+                                   fun.nombre as nombre_fun,
+                                   pro.codigo,
+                                   pro.descripcion,
+                                   pro.habilita_log
+                            FROM segu.tprocedimiento pro
+                                 INNER JOIN segu.tfuncion fun on fun.id_funcion = pro.id_funcion
+                                 INNER JOIN segu.tsubsistema sub on sub.id_subsistema = fun.id_subsistema
+
+                            WHERE pro.estado_reg = 'activo' and  0 = 0  AND (id_funcion = 488)  order by codigo ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  607   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42702#**#column reference &amp;quot;id_funcion&amp;quot; is ambiguous,query: SELECT 
+                                   pro.id_procedimiento,
+                                   pro.id_funcion,
+                                   sub.id_subsistema,
+                                   sub.codigo as codigo_sub,
+                                   fun.nombre as nombre_fun,
+                                   pro.codigo,
+                                   pro.descripcion,
+                                   pro.habilita_log
+                            FROM segu.tprocedimiento pro
+                                 INNER JOIN segu.tfuncion fun on fun.id_funcion = pro.id_funcion
+                                 INNER JOIN segu.tsubsistema sub on sub.id_subsistema = fun.id_subsistema
+
+                            WHERE pro.estado_reg = 'activo' and  0 = 0  AND (id_funcion = 524)  order by codigo ASC limit 50 OFFSET 0#**#public.f_intermediario_sel#**#SEG_PROCECMB_SEL
+/opt/lampp/htdocs/web/lib/lib_reporte/ReportePDF.php  3   require_once(/opt/lampp/htdocs/web/lib/lib_reporte../tcpdf/config/lang/spa.php) [&lt;a href='function.require-once'&gt;function.require-once&lt;/a&gt;]: failed to open stream: No existe el fichero o el directorio
+/opt/lampp/htdocs/web/lib/lib_reporte/ReportePDF.php  4   require_once(/opt/lampp/htdocs/web/lib/lib_reporte../tcpdf/tcpdf.php) [&lt;a href='function.require-once'&gt;function.require-once&lt;/a&gt;]: failed to open stream: No existe el fichero o el directorio
+/opt/lampp/htdocs/web/lib/tcpdf/tcpdf.php  7160   getimagesize(/opt/lampp/htdocs/web/lib/tcpdf/images/../images/logo_reporte.jpg) [&lt;a href='function.getimagesize'&gt;function.getimagesize&lt;/a&gt;]: failed to open stream: No existe el fichero o el directorio
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying, character varying[]) does not exist#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying, character varying[]) does not exist#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying, character varying[]) does not exist#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying, character varying[]) does not exist#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#function f_verifica_permisos(integer, character varying, character varying, character varying[]) does not exist#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#operator does not exist: character varying &amp;lt;@ character varying[]#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#furula 192.168.2.101#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#furula 192.168.2.101#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#furula 192.168.2.101  {192.168.2.103,192.168.2.4}#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#furula 192.168.2.101  {192.168.2.100,192.168.2.4}#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.101#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#operator does not exist: ! boolean#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#42883#**#operator does not exist: ! boolean#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#furula 192.168.2.101  {192.168.2.100,192.168.2.101,192.168.2.4}#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.101#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.101#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.101#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_SESION_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#El usuario no tiene autorizaci&Atilde;&sup3;n para conectarse  desde 192.168.2.33#**#public.f_intermediario_sel#**#SEG_OBTEPRI_SEL
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_modelo/driver.php  661   pg_query() [&lt;a href='function.pg-query'&gt;function.pg-query&lt;/a&gt;]: Query failed: ERROR:  $**$f#**#P0001#**#Permiso denegado para acceder a la transaccion = SEG_FUNCIO_SEL#**#public.f_intermediario_sel#**#SEG_FUNCIO_SEL
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/sis_seguridad/modelo/MODSesion.php  11   Missing argument 4 for MODSesion::insertarSesion(), called in /opt/lampp/htdocs/web/sis_seguridad/modelo/FuncionesSeguridad.php on line 599 and defined
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/tcpdf/tcpdf.php  19980   Division by zero
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  467   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/ReportePDF.php:211)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  467   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/ReportePDF.php:211)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)
+/opt/lampp/htdocs/web/lib/lib_general/Mensaje.php  463   Cannot modify header information - headers already sent by (output started at /opt/lampp/htdocs/web/lib/lib_reporte/MostrarReporte.php:8)

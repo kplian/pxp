@@ -1,0 +1,117 @@
+/*!
+ * Ext JS Library 3.3.0
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+.bven1 {
+	background-image:url(byn_ven.png)!important;  
+}
+.blist {
+	background-image:url(byn_list.png)!important;  
+}
+.bsave {
+	background-image:url(byn_save.png)!important;
+}
+.bnew {
+	background-image:url(byn_new.png)!important;   
+}
+.bdel {
+	background-image:url(byn_eli.png)!important;  
+}
+.bact {
+	background-image:url(byn_act.png)!important;
+}
+.bactfil {
+	background-image:url(byn_actfil.png) !important;
+}
+
+.bprint {
+	background-image:url(byn_printer.png)!important; 
+}
+
+.bedit {
+	background-image:url(byn_edit.png)!important;
+}
+
+.bundo {
+	background-image:url(byn_undo.png) !important;
+}
+
+.bredo {
+	background-image:url(dibu_redo.png) !important;
+}
+
+.bpagar {
+	background-image:url(../iconos_generales/pagar.png) !important;
+}
+
+.badelante {
+	background-image:url(byn_adelante.png) !important;
+}
+.batras {
+	background-image:url(byn_atras.png) !important;
+}
+.bbajar {
+	background-image:url(byn_bajar.png) !important;
+}
+.bsubir {
+	background-image:url(byn_subir.png) !important;
+}
+.bupload {
+	background-image:url(byn_upload.png) !important;
+}
+.bassign {
+	background-image:url(byn_assign.png) !important;
+}
+.batras {
+	background-image:url(byn_atras.png) !important;
+}
+.bok {
+	background-image:url(byn_ok.png) !important;
+}
+.brenew {
+	background-image:url(byn_renew.png) !important;
+}
+.bballot {
+	background-image:url(byn_ballot.png) !important;
+}
+.bexport {
+	background-image:url(byn_export.png) !important;
+}
+.bsee {
+	background-image:url(byn_see.png) !important;
+}
+.bend {
+	background-image:url(byn_end.png) !important;
+}
+.bgood {
+	background-image:url(byn_good.png) !important;
+}
+.bwrong {
+	background-image:url(byn_wrong.png) !important;
+}
+.bcharge {
+	background-image:url(byn_charge.png) !important;
+}
+.bupload1 {
+	background-image:url(byn_upload1.png) !important;
+}
+.bselect {
+	background-image:url(byn_select.png) !important;
+}
+
+.bexcel {
+	background-image:url(byn_excel.png) !important;
+}
+.bpdf {
+	background-image:url(byn_pdf.png) !important;
+}
+.block {
+	background-image:url(byn_lock.png) !important;
+}
+.bunlock {
+	background-image:url(byn_unlock.png) !important;
+}
+
+

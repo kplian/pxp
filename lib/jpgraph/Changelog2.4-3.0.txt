@@ -1,0 +1,72 @@
+JpGraph summary changelog from 2.4 to 3.0.0
+===========================================
+
+Feature enhancements:
+---------------------------------------------------------------------------------------------
+ * CR#543 - Add contour plot graph type 
+ * CR#541 - Make it possible to write errors to system logger
+ * CR#540 - Add option to add icons to Odometer plots
+ * CR#539 - Add matrix visualization graph type
+ * CR#538 - Add matrix data file reader
+ * CR#537 - Add named indigo colors
+ * CR#536 - Add linear regression utility class
+ * CR#535 - Move automatic timing of graph to right footer
+ * CR#534 - Updated default location for MBTTF fonts on Unix to the standard
+ * CR#533 - Add layout engines to Windrose graphs
+ * CR#532 - Assume that FF_CHINESE is in UTF-8 and FF_BIG5 in BIG5
+ * CR#528 - Add image error handling to Datamatrix
+ * CR#525 - Add command line utility to create linear barcodes
+ * CR#524 - Make it possible to illustrate breaks in Gantt bars
+ * CR#523 - Add user Zoom factor adjustment for Gantt graphs
+ * CR#522 - Remove BRAND_TIMING configuration
+ * CR#520 - Make it possible to add texts to Gantt charts
+ * CR#518 - Add CSIM capability for radar graphs
+ * CR#517 - Make it possible to adjust radar graph position with absolute coord
+ * CR#516 - Make it possible to add texts and icons to Radar plots
+ * CR#514 - Added degree mark to class SymChar
+ * CR#513 - Change access to link lines for scatter plots
+ * CR#512 - Change encoding of LED47 Cyrillic characters to utf8
+ * CR#510 - Make it possible to create automatic colored area graphs
+ * CR#509 - Add automatic coloring for line plots
+ * CR#505 - Add Better support to handle multiple CSIM images in a HTML page
+ * CR#504 - Make it possible to use multiple TTF file name for the same font and
+ * CR#502 - Add possibility to both save graph to file and stream back to client
+ * CR#498 - Move PlotLine class out of main jpgraph.php
+ * CR#497 - Add main title to MGraph (Multiple graph container). Major refactoring
+ * CR#493 - Change the way null values in Radargraphs are handled
+ * CR#488 - Add support for image caching for MGraphs (Multiple graph container)
+ * CR#495 - Added two more example of 90 degree combined graphs
+ * CR#494 - Add background gradient to Radar Plots
+
+Bug fixes:
+---------------------------------------------------------------------------------------------
+ * PR#542 - JpGraph::Add() corrected handling of multiple additions of arrays
+ * PR#530 - ISO-8859-1 encoded degree character in Windrose plot module where it
+ * PR#529 - Scalefactor in GTextTable::SetCellCountryFlag() is not applied
+ * PR#527 - Image::SetMargin() is not using localized error handling
+ * PR#526 - Linear barcode should not return postscript when file specified
+ * PR#521 - Wrong handling of Gantt margin with GanttVLine
+ * PR#519 - CSIM img tag is stroked twice in HTML
+ * PR#515 - Degree mark for PolarPlot is not proper UTF8 encoded
+ * PR#511 - NULL values are not handled correctly in Stock charts
+ * PR#508 - Boxed text does not restore previous graphic context completely.
+ * PR#507 - Off by one error for VERT and HOR gradient rectangles
+ * PR#506 - Setting background fillstyle titles with no bevel gives undefined
+ * PR#503 - Datamatrix BackendMatrix_ASCII::Stroke(): Undefined local variable.
+ * PR#373 - RadarGraph grid drawing bug
+ * PR#491 - Background gradient for PiePlots without Antialias is not enabled
+ * PR#489 - Rounding problem with FilledArc() affecting Odometer plots in some
+ * PR#487 - Position of markers in legends is wrong for large markers
+ * PR#368 - Bar patterns in legend do not rotate when bar rotates
+
+Additional changes:
+---------------------------------------------------------------------------------------------
+ * Completely rewritten documentation. The A4 PDF version is now 700+ pages
+ * Added case study with critical chain buffer penetration charts
+ * Rewritten error handling sub system to use PHP5 exceptions exclusively
+ * Updated German translation of error messages
+ * Full compatibility with PHP 5.3
+ * All previously deprecated methods from 2.4 has been removed
+ * Some minor memory efficiency clean ups
+ * Various code cleanups
+ 
