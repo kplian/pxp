@@ -9,12 +9,12 @@ TO USE IT BY FIRST TIME:
 2. Inside the folder of your project clone this repository
 3. Create a empty database for your project (This will create the pxp folder)
 4. You must create soft-links inside your project root folder to: 
-    * lib
-    * index.php
-    * sis_seguridad
-    * sis_generador
-    * sis_parametros
-    * sis_organigrama
+    * lib                     ln -s pxp/lib lib  (execute inside your project root folder) 
+    * index.php               ln -s pxp/index.php index.php  (execute inside your project root folder)
+    * sis_seguridad           ln -s pxp/sis_seguridad sis_seguridad  (execute inside your project root folder)
+    * sis_generador           ln -s pxp/sis_generador sis_generador  (execute inside your project root folder)
+    * sis_parametros          ln -s pxp/sis_parametros sis_parametros  (execute inside your project root folder)
+    * sis_organigrama         ln -s pxp/sis_organigrama sis_organigrama  (execute inside your project root folder)
 
    All these folders and files are inside pxp.
 5. Create a folder named "reportes_generados" inside your project root folder with write access for Apache user.
