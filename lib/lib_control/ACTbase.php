@@ -14,8 +14,7 @@ abstract class ACTbase
 
 	function __construct(CTParametro $pParam){
 		
-		$this->objParam=  $pParam;
-		
+		$this->objParam=  $pParam;		
 	}
 	
 }

@@ -12,10 +12,6 @@ include_once(dirname(__FILE__)."/../cifrado/rsa.class.php");
 include_once(dirname(__FILE__)."/../cifrado/feistel.php");
 include_once(dirname(__FILE__).'/ACTbase.php');
 include_once(dirname(__FILE__).'/../lib_modelo/MODbase.php');
-include_once(dirname(__FILE__).'/../../sis_seguridad/modelo/FuncionesSeguridad.php');
-include_once(dirname(__FILE__).'/../../sis_parametros/modelo/FuncionesParametros.php');
-include_once(dirname(__FILE__).'/../../sis_organigrama/modelo/FuncionesOrganigrama.php');
-
 include_once(dirname(__FILE__).'/../../sis_seguridad/control/ACTbaseSeguridad.php');
 include_once(dirname(__FILE__).'/../../sis_seguridad/modelo/MODbaseSeguridad.php');
 
@@ -23,10 +19,11 @@ include_once(dirname(__FILE__).'/../lib_reporte/Reporte.php');
 include_once(dirname(__FILE__).'/../lib_reporte/ReportePDF.php');
 include_once(dirname(__FILE__).'/../lib_reporte/ReporteXLS.php');
 include_once(dirname(__FILE__).'/../lib_reporte/MostrarReporte.php');
-include_once(dirname(__FILE__).'/../../sis_generador/modelo/FuncionesGenerador.php');
+//include_once(dirname(__FILE__).'/../../sis_generador/modelo/FuncionesGenerador.php');
 include_once(dirname(__FILE__).'/../FirePHPCore-0.3.2/lib/FirePHPCore/FirePHP.class.php');
 
+foreach (glob(dirname(__FILE__).'/../../sis_*/modelo/Funciones*.php') as $archivo){
+	include_once($archivo);
+}
 
-
-include_once(dirname(__FILE__).'/../../../sis_mantenimiento/modelo/FuncionesMantenimiento.php');
 ?>
