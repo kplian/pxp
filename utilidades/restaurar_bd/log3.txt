@@ -1,0 +1,4020 @@
+ lee archivo     ............. 
+ dbweb_mantenimiento   ............. 
+DROP SCHEMA
+CREATE SCHEMA
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE EXTENSION
+SET
+CREATE TYPE
+CREATE TYPE
+CREATE AGGREGATE
+CREATE AGGREGATE
+CREATE AGGREGATE
+CREATE TABLE
+CREATE SEQUENCE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE AGGREGATE
+CREATE AGGREGATE
+ALTER TABLE
+ALTER TABLE
+ f_crear_rol_sistema 
+---------------------
+ exito
+(1 fila)
+
+INSERT 632821 1
+INSERT 632822 1
+INSERT 632823 1
+INSERT 632824 1
+INSERT 632825 1
+INSERT 632826 1
+ setval 
+--------
+      7
+(1 fila)
+
+DROP SCHEMA
+CREATE SCHEMA
+DROP SCHEMA
+CREATE SCHEMA
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE DOMAIN
+CREATE DOMAIN
+CREATE TYPE
+CREATE DOMAIN
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE TRIGGER
+CREATE TRIGGER
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ setval 
+--------
+   1230
+(1 fila)
+
+DROP SCHEMA
+CREATE SCHEMA
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+INSERT 0 1
+INSERT 633929 1
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+DROP SCHEMA
+CREATE SCHEMA
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE INDEX
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+INSERT 0 1
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+DROP SCHEMA
+CREATE SCHEMA
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+INSERT 0 1
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tfuncion 
+-------------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_tgui 
+---------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_testructura_gui 
+--------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+
+ f_insert_tprocedimiento 
+-------------------------
+ exito
+(1 fila)
+

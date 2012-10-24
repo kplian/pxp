@@ -1,5 +1,5 @@
 <?php
-class FuncionesRecursosHumanos
+class FuncionesOrganigrama
 {
 	function __construct()
 	{

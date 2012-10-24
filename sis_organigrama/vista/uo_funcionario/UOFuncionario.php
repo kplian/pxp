@@ -72,6 +72,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    			config:{
        		    name:'id_funcionario',
    				origen:'FUNCIONARIO',
+   				gwidth: 300,
    				fieldLabel:'Funcionario',
    				allowBlank:false,
    				  				
@@ -89,51 +90,6 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    			form:true
    	      },
 
-       	/*{
-       			config:{
-       				name:'id_funcionario',
-       				fieldLabel:'Funcionario',
-       				allowBlank:false,
-       				emptyText:'Funcionario...',
-       				store: new Ext.data.JsonStore({
-    					url: '../../sis_organigrama/control/Funcionario/listarFuncionario',
-    					id: 'id_funcionario',
-    					root: 'datos',
-    					sortInfo:{
-    						field: 'desc_person',
-    						direction: 'ASC'
-    					},
-    					totalProperty: 'total',
-    					fields: ['id_funcionario','codigo','desc_person','ci','documento','telefono','celular','correo'],
-      					// turn on remote sorting
-    					remoteSort: true,
-    					baseParams:{par_filtro:'funcio.codigo#desc_person'}
-    				}),
-    				tpl:'<tpl for="."><div class="x-combo-list-item"><p>{codigo} - Sis: {codigo_sub} </p><p>{desc_person}</p><p>CI:{ci}</p> </div></tpl>',
-	       			
-       				valueField: 'id_funcionario',
-       				displayField: 'desc_person',
-       				gdisplayField: 'desc_funcionario1',
-       				hiddenName: 'id_funcionario',
-       				//forceSelection:false,
-       				typeAhead: true,
-           			triggerAction: 'all',
-           			lazyRender:true,
-       				mode:'remote',
-       				pageSize:10,
-       				queryDelay:1000,
-       				width:180,
-       				minChars:2,
-       				minListWidth:300,
-       				renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
-
-       			},
-       			type:'ComboBox',
-       			id_grupo:0,
-       			
-       			grid:true,
-       			form:true
-       	},*/
        	{
 			config:{
 				fieldLabel: "CI",
@@ -167,6 +123,27 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+		
+		
+		
+		{
+		config:{
+			fieldLabel: "Fecha Finalizacion",
+			gwidth: 130,
+			renderer:function (value,p,record){return value},
+   		    name: 'fecha_finalizacion',
+   		       format:'d/m/Y',
+   		    width:115
+			//?value.dateFormat('d/m/Y h:i:s'):''
+		},
+		type:'DateField',
+		filters:{pfiltro:'UOFUNC.fecha_finalizacion',
+				type:'date'
+				},
+		grid:true,
+		
+		form:true
+	},
 	
 		
 		{
@@ -194,27 +171,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			id_grupo:1,
 			form:true
-		},
-		
-		
-		
-		{
-		config:{
-			fieldLabel: "Fecha Finalizacion",
-			gwidth: 130,
-			renderer:function (value,p,record){return value},
-   		    name: 'fecha_finalizacion',
-   		    width:115
-			//?value.dateFormat('d/m/Y h:i:s'):''
-		},
-		type:'DateField',
-		filters:{pfiltro:'UOFUNC.fecha_finalizacion',
-				type:'date'
-				},
-		grid:true,
-		
-		form:true
-	}
+		}
 		],
 
 
@@ -222,9 +179,9 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	title:'Funcionarios',
 	fheight:'50%',
 	fwidth:'300',
-	ActSave:'../../sis_organigrama/control/UoFuncionario/GuardarUoFuncionario',
-	ActDel:'../../sis_organigrama/control/UoFuncionario/EliminarUoFuncionario',
-	ActList:'../../sis_organigrama/control/UoFuncionario/ListarUoFuncionario',
+	ActSave:'../../sis_recursos_humanos/control/UoFuncionario/GuardarUoFuncionario',
+	ActDel:'../../sis_recursos_humanos/control/UoFuncionario/EliminarUoFuncionario',
+	ActList:'../../sis_recursos_humanos/control/UoFuncionario/ListarUoFuncionario',
 	id_store:'id_uo_funcionario',
 	fields: ['id_uo_funcionario',
              'id_uo',

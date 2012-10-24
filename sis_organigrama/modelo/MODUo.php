@@ -1,7 +1,7 @@
 <?php
 /***
  Nombre: 	MODUo.php
- Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas a la tabla tuo del esquema ORGA
+ Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas a la tabla tuo del esquema RHUM
  Autor:		Kplian
  Fecha:		04/06/2011
  */
@@ -14,8 +14,8 @@ class MODUo extends MODbase{
 	
 	function listarUo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_uo_sel';// nombre procedimiento almacenado
-		$this->transaccion='OR_UO_SEL';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_uo_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_UO_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
 		$this->setParametro('id_uo','id_uo','integer');
@@ -56,8 +56,8 @@ class MODUo extends MODbase{
 
 function listarUoFiltro(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.f_uo_arb_inicia';// nombre procedimiento almacenado
-		$this->transaccion='OR_INIUOARB_SEL';//nombre de la transaccion
+		$this->procedimiento='rhum.f_uo_arb_inicia';// nombre procedimiento almacenado
+		$this->transaccion='RH_INIUOARB_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setCount(false);
 		

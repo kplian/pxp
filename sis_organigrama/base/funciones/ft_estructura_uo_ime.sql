@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		orga.ft_estructura_uo_ime
@@ -15,7 +14,6 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
-
  DESCRIPCION:	
  AUTOR:		
  FECHA:		23-05-2011
@@ -69,12 +67,12 @@ BEGIN
                values(v_id_uo, v_parametros.id_uo_padre,'activo',    par_id_usuario, now()::date);
               
                
-               --10-04-2012: sincronizacion de UO entre BD
+              /* --10-04-2012: sincronizacion de UO entre BD
                v_respuesta_sinc:=orga.f_sincroniza_uo_entre_bd(v_id_uo,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'INSERT');
       
                if(v_respuesta_sinc!='si')  then
                      raise exception 'Sincronizacion de UO en BD externa no realizada%',v_respuesta_sinc;
-               end if;  
+               end if;  */
                
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','estructura uo '||v_parametros.nombre_unidad ||' insertado con exito a ' || v_parametros.id_uo_padre);
                v_resp = pxp.f_agrega_clave(v_resp,'id_uo',v_id_uo::varchar);
@@ -106,12 +104,12 @@ BEGIN
                    gerencia=v_parametros.gerencia
                 where id_uo=v_parametros.id_uo;
                 
-                --10-04-2012: sincronizacion de UO entre BD
+               /* --10-04-2012: sincronizacion de UO entre BD
                 v_respuesta_sinc:=orga.f_sincroniza_uo_entre_bd(v_parametros.id_uo,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'UPDATE');
       
                 if(v_respuesta_sinc!='si')  then
                      raise exception 'Sincronizacion de UO en BD externa no realizada%',v_respuesta_sinc;
-                end if; 
+                end if; */
                 
                 v_resp = pxp.f_agrega_clave(v_resp,'mensaje','estructura uo modificado con exito '||v_parametros.id_uo);
                 v_resp = pxp.f_agrega_clave(v_resp,'id_uo',v_parametros.id_uo::varchar);
@@ -170,11 +168,11 @@ BEGIN
                where id_uo_hijo=v_parametros.id_uo;
               
                --10-04-2012: sincronizacion de UO entre BD
-                v_respuesta_sinc:=orga.f_sincroniza_uo_entre_bd(v_parametros.id_uo,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'DELETE');
+               /* v_respuesta_sinc:=orga.f_sincroniza_uo_entre_bd(v_parametros.id_uo,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'DELETE');
       
                 if(v_respuesta_sinc!='si')  then
                      raise exception 'Sincronizacion de UO en BD externa no realizada%',v_respuesta_sinc;
-                end if;
+                end if;*/
                
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','estructura uo eliminada con exito '||v_parametros.id_uo);
                v_resp = pxp.f_agrega_clave(v_resp,'id_uo',v_parametros.id_uo::varchar);
@@ -201,7 +199,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_estructura_uo_sel (OID = 304949) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

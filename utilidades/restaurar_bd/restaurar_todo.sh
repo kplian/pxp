@@ -1,12 +1,28 @@
-#!/bin/bash
+#! /bin/bash
 i=0
 #cargar configuracion de utilidades
 #por ahora solo se carga la base de datos, mas adelante se cargaran otros datos
 while read line         
     do
         #cargar una variable
-        config[$i] = $line
+        # echo "'al inicio'"
+         echo "...   $line"
+         config[$i]=$line
     done < ../../../config_util.txt
+    
+
+
+echo " lee archivo  ${config[0]}   ............. "
+
+
+config[0]='dbweb_auxiliar'
+
+
+echo " ${config[0]}   ............. "
+
+
+
+
 
 #url pxp
 url[0]=../../

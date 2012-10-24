@@ -1,21 +1,22 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
-  par_sid_web character varying,
+  par_sid_web varchar,
   par_pid_web integer,
-  par_ip character varying,
+  par_ip varchar,
   par_mac macaddr,
-  par_procedimiento character varying,
-  par_transaccion character varying,
+  par_procedimiento varchar,
+  par_transaccion varchar,
   par_id_categoria integer,
-  ip_admin character varying[],
-  variables character varying[],
-  valores character varying[],
-  tipos character varying[],
-  tipo_retorno character varying = 'varchar'::character varying,
-  datos_retorno character varying = NULL::character varying
+  ip_admin varchar [],
+  variables varchar [],
+  valores varchar [],
+  tipos varchar [],
+  tipo_retorno varchar = 'varchar'::character varying,
+  datos_retorno varchar = NULL::character varying
 )
-RETURNS SETOF record
-AS 
+RETURNS SETOF record AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_sel
@@ -110,7 +111,7 @@ BEGIN
        
     v_secuencia:=(nextval('pxp.parametro'));
     
-    v_consulta:='CREATE temporary table tt_parametros_'||v_secuencia||'(';
+    v_consulta:='create temporary table tt_parametros_'||v_secuencia||'(';
     v_tamano:=array_upper(variables,1);
     for i in 1..(v_tamano-1) loop
         v_consulta:=v_consulta || variables[i] || ' ' || tipos[i] || ',';
@@ -124,7 +125,7 @@ BEGIN
     v_consulta:='insert into tt_parametros_'||v_secuencia||' values(';
     
     for i in 1..(v_tamano-1) loop
-        if(tipos[i]='numeric' or tipos[i]='integer')then
+        if(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4')then
             if(valores[i]='')then
                 v_consulta:=v_consulta || 'null' || ',';
             else
@@ -136,7 +137,7 @@ BEGIN
 
     end loop;
 
-    if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer')then
+    if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4')then
         if(valores[v_tamano]='')then
             v_consulta:=v_consulta || 'null'|| ')';
         else
@@ -145,7 +146,7 @@ BEGIN
     ELSE
           v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') || ''')';
     end if;
-    --raise exception 'prueba:%',v_consulta;
+   
     execute v_consulta;
     
   
@@ -159,8 +160,9 @@ BEGIN
     -- raise exception 'ES  SEL ';
      
      v_id_log=0;
-     
-  	 v_mensaje:=pxp.f_get_mensaje_exi('Exito en la consulta',v_nombre_funcion,par_transaccion);
+    -- raise notice 'XXXXXXXXXXXXXXX  :%',v_consulta;
+  	
+     v_mensaje:=pxp.f_get_mensaje_exi('Exito en la consulta',v_nombre_funcion,par_transaccion);
     
    /*
    RAC 19032012
@@ -173,14 +175,15 @@ BEGIN
    
      v_consulta:='select ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''')';
     
-   
+   -- raise notice 'prueba:%',v_consulta;
     execute v_consulta into v_retorno;
     
-    return query execute (v_retorno);
+ 
+    
+     raise notice 'XXXXXXXXXXXXXXX  :%',v_consulta;
     
     --RAC  >>>> OJO me parece que este registro de LOG nunca se EJECUTA
     v_hora_fin=clock_timestamp();
-    --raise exception 'llega';
     --raise exception 'gfdsgfsd: %',v_habilitar_log;
         v_id_log:=pxp.f_registrar_log(par_id_usuario,
     							par_ip,
@@ -200,6 +203,8 @@ BEGIN
                                 v_habilitar_log);
                                 
                                 
+     return query execute (v_retorno);                          
+                                
      ELSE
      
      --en caso que el tipo de retorno sea un record
@@ -208,7 +213,7 @@ BEGIN
    
      v_consulta:='select * from ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''') '||datos_retorno;
     
-    raise notice 'CONSULTA %  ',v_consulta;
+      raise notice 'CONSULTA %  ',v_consulta;
      
       for v_retorno_record in execute (v_consulta) LOOP
           RETURN NEXT v_retorno_record;
@@ -276,7 +281,8 @@ BEGIN
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_llenar_ceros (OID = 304240) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100 ROWS 1000;

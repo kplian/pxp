@@ -2,7 +2,7 @@
 /***
  Nombre: 	MODFuncionario.php
  Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas 
- a la tabla tfuncionario del esquema ORGA
+ a la tabla tfuncionario del esquema RHUM
  Autor:		Kplian
  Fecha:		04/06/2011
  */
@@ -15,8 +15,8 @@ class MODFuncionario extends MODbase{
 	
 	function listarFuncionario(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado
-		$this->transaccion='OR_FUNCIO_SEL';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_FUNCIO_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
 		//Definicion de la lista del resultado del query
@@ -54,8 +54,8 @@ class MODFuncionario extends MODbase{
 	
 	function listarFuncionarioCargo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado
-		$this->transaccion='OR_FUNCIOCAR_SEL';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_FUNCIOCAR_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
 		//ENVIA ESTAS VARIALBES PARA EL FILTRO
@@ -89,8 +89,8 @@ class MODFuncionario extends MODbase{
 	function insertarFuncionario(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_funcionario_ime';// nombre procedimiento almacenado
-		$this->transaccion='OR_FUNCIO_INS';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_funcionario_ime';// nombre procedimiento almacenado
+		$this->transaccion='RH_FUNCIO_INS';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
@@ -125,8 +125,8 @@ class MODFuncionario extends MODbase{
 	function modificarFuncionario(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_funcionario_ime';// nombre procedimiento almacenado
-		$this->transaccion='OR_FUNCIO_MOD';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_funcionario_ime';// nombre procedimiento almacenado
+		$this->transaccion='RH_FUNCIO_MOD';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
@@ -154,8 +154,8 @@ class MODFuncionario extends MODbase{
 	
 	function eliminarFuncionario(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='orga.ft_funcionario_ime';
-		$this->transaccion='OR_FUNCIO_ELI';
+		$this->procedimiento='rhum.ft_funcionario_ime';
+		$this->transaccion='RH_FUNCIO_ELI';
 		$this->tipo_procedimiento='IME';
 			
 		//Define los parametros para la funcion

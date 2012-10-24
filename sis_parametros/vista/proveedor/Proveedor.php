@@ -215,6 +215,61 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:false
+		},
+		{
+			config:{
+				name: 'pais',
+				fieldLabel: 'País',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 100,
+				maxLength:50
+			},
+			type:'TextField',
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'id_lugar',
+				fieldLabel: 'Lugar',
+				allowBlank: false,
+				emptyText:'Lugar...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_parametros/control/Lugar/listarLugar',
+					id: 'id_lugar',
+					root: 'datos',
+					sortInfo:{
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams:{par_filtro:'nombre'}
+				}),
+				valueField: 'id_lugar',
+				displayField: 'nombre',
+				gdisplayField:'lugar',
+				hiddenName: 'id_lugar',
+    			triggerAction: 'all',
+    			lazyRender:true,
+				mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				width:210,
+				gwidth:220,
+				minChars:2,
+				renderer:function (value, p, record){return String.format('{0}', record.data['lugar']);}
+			},
+			type:'ComboBox',
+			filters:{pfiltro:'lugar',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		}
 	],
 	title:'Proveedores',
@@ -237,9 +292,19 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'nombre_completo1', type: 'string'},
-		{name:'nombre', type: 'string'},'nit'
-		
+		{name:'nombre', type: 'string'},
+		'nit',
+		{name:'id_lugar', type: 'string'},
+		{name:'lugar', type: 'string'},
+		{name:'pais', type: 'string'}
 	],
+    east:{
+		  url:'../../../sis_parametros/vista/proveedor_item_servicio/ProveedorItemServicio.php',
+		  title:'Items/Servicios ofertados', 
+		 // height:'50%',	//altura de la ventana hijo
+		  width:'50%',		//ancho de la ventana hjo
+		  cls:'ProveedorItemServicio'
+	},	
 	sortInfo:{
 		field: 'id_proveedor',
 		direction: 'ASC'

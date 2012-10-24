@@ -1,14 +1,5 @@
-CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
-)
-RETURNS varchar
-AS 
-$body$
 /**************************************************************************
- FUNCION: 		ORGA.ft_uo_funcionario_sel
+ FUNCION: 		RHUM.ft_uo_funcionario_sel
  DESCRIPCIÓN:  listado de uo
  AUTOR: 	    KPLIAN (mzm)	
  FECHA:	        
@@ -68,8 +59,8 @@ BEGIN
                                   PERMOD.nombre_completo2 AS USUMOD
                                   
                             FROM orga.tuo_funcionario UOFUNC
-                            INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
-                            INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
+                            INNER JOIN RHUM.tuo UO ON UO.id_uo=UOFUNC.id_uo
+                            INNER JOIN RHUM.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
@@ -104,8 +95,8 @@ BEGIN
                v_consulta:='SELECT
                                   count(UOFUNC.id_uo_funcionario)
                             FROM orga.tuo_funcionario UOFUNC
-                            INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
-                            INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
+                            INNER JOIN RHUM.tuo UO ON UO.id_uo=UOFUNC.id_uo
+                            INNER JOIN RHUM.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
@@ -130,8 +121,3 @@ EXCEPTION
 
 
 END;
-$body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_uo_ime (OID = 304962) : 
---

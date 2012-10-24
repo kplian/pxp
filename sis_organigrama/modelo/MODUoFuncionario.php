@@ -1,7 +1,7 @@
 <?php
 /***
  Nombre: 	MODUoFuncionario.php
- Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas a la tabla tuo_funcionario del esquema ORGA
+ Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas a la tabla tuo_funcionario del esquema RHUM
  Autor:		Kplian
  Fecha:		04/06/2011
  */
@@ -14,8 +14,8 @@ class MODUoFuncionario extends MODbase{
 	
 	function listarUoFuncionario(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_uo_funcionario_sel';// nombre procedimiento almacenado
-		$this->transaccion='OR_UOFUNC_SEL';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_uo_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_UOFUNC_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setParametro('id_uo','id_uo','integer');
 		//Definicion de la lista del resultado del query
@@ -51,8 +51,8 @@ class MODUoFuncionario extends MODbase{
 	function insertarUoFuncionario(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_uo_funcionario_ime';// nombre procedimiento almacenado
-		$this->transaccion='OR_UOFUNC_INS';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_uo_funcionario_ime';// nombre procedimiento almacenado
+		$this->transaccion='RH_UOFUNC_INS';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
@@ -70,8 +70,8 @@ class MODUoFuncionario extends MODbase{
 	function modificarUoFuncionario(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_uo_funcionario_ime';// nombre procedimiento almacenado
-		$this->transaccion='OR_UOFUNC_MOD';//nombre de la transaccion
+		$this->procedimiento='rhum.ft_uo_funcionario_ime';// nombre procedimiento almacenado
+		$this->transaccion='RH_UOFUNC_MOD';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
@@ -92,8 +92,8 @@ class MODUoFuncionario extends MODbase{
 	
 	function eliminarUoFuncionario(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='orga.ft_uo_funcionario_ime';
-		$this->transaccion='OR_UOFUNC_ELI';
+		$this->procedimiento='rhum.ft_uo_funcionario_ime';
+		$this->transaccion='RH_UOFUNC_ELI';
 		$this->tipo_procedimiento='IME';
 			
 		//Define los parametros para la funcion
