@@ -30,7 +30,7 @@ class MODLogError{
 	}
 	function guardarLogError(){
 		$array=Array();
-		$consulta='select * from f_registrar_log ('.	$this->id_usuario.",'".
+		$consulta='select * from pxp.f_registrar_log ('.	$this->id_usuario.",'".
 												$this->ip."',
 												'99:99:99:99:99:99','".
 												$this->categoria."','".
