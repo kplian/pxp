@@ -1,23 +1,24 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
-  par_sid_web character varying,
+  par_sid_web varchar,
   par_pid_web integer,
-  par_ip character varying,
+  par_ip varchar,
   par_mac macaddr,
-  par_procedimiento character varying,
-  par_transaccion character varying,
+  par_procedimiento varchar,
+  par_transaccion varchar,
   par_id_categoria integer,
-  es_matriz character varying,
-  ip_admin character varying[],
-  variables character varying[],
-  valores character varying[],
-  tipos character varying[],
-  par_consulta character varying,
+  es_matriz varchar,
+  ip_admin varchar [],
+  variables varchar [],
+  valores varchar [],
+  tipos varchar [],
+  par_consulta varchar,
   par_files bytea,
-  variable_files character varying
+  variable_files varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_ime
@@ -93,6 +94,8 @@ DECLARE
 
 BEGIN
 
+
+
  --raise exception 'aaa  ';
     
     v_nombre_funcion:='pxp.f_intermediario_ime';
@@ -108,8 +111,12 @@ BEGIN
             ,'sesion');
        
     if(par_transaccion='SEG_VALUSU_SEG')then
+    
+  
        
-        v_id_usuario:= segu.f_get_id_usuario(valores[6]);
+        v_id_usuario:= segu.f_get_id_usuario(valores[6]::varchar);
+        
+       
 
     else
            
@@ -138,7 +145,7 @@ BEGIN
     -- 	  que seran direcciionado al procedimiento almacenado 
     --    concatena con el numero de secuencia para generar nombre de tabla unicos
 
-    v_consulta:='CREATE temporary table tt_parametros_'||v_secuencia||'(';
+    v_consulta:='create temporary table tt_parametros_'||v_secuencia||'(';
     v_tamano:=array_upper(tipos,1);
              --   raise exception 'aa%',variable_files;          
 
@@ -158,7 +165,7 @@ BEGIN
        RAISE NOTICE 'LLEGAAAAAAAA  2222';
     execute(v_consulta);
     
-        RAISE NOTICE 'LLEGAAAAAAAA 333333333';
+      
          
     
 	-- 3) IF verifica si los resultados a ser enviados deben estar en formato de matriz o no
@@ -223,7 +230,7 @@ BEGIN
                     v_consulta:=v_consulta || valores[v_tamano] || ')';
                 end if;
             END IF;
-          
+           RAISE NOTICE 'LLEGAAAAAAAA 333333333'; 
         else
            --RAC 12/09/2011 validacion para campo date vacio 
            if(v_upload_file)THEN
@@ -245,7 +252,7 @@ BEGIN
         end if;
       -- 3.4  Ejecuta la cadena de insercion  en la tabla temporal con los datos recibidos del servidor
       -- raise exception 'aa%', v_consulta;
-         raise notice '%', v_consulta;       
+         raise notice '>> %', v_consulta;       
         execute v_consulta;
         
        --3.5) Arma en una cadena  la llamada al  procedimiento almacenado destino, le envia
@@ -253,7 +260,7 @@ BEGIN
        --     y la transaccion que se quiere ejecutar   
 
         v_consulta:='select ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''')';
-        raise notice '%',v_consulta;
+       
    
         -- 3.6)ejecuta la cadena de llamada al procedimiento almacenado el valor de respuesta lo introduce
         --     en la variable tipo varchar v_retorno en formato JSON (o XML)
@@ -369,7 +376,7 @@ BEGIN
     v_id_log=0;
  -- v_habilitar_log = TRUE;
     
-  RAISE NOTICE 'LLEGAAAAAAAA 444444444';
+ 
           
         
       v_hora_fin=clock_timestamp();
@@ -442,7 +449,8 @@ EXCEPTION
   		return pxp.f_resp_to_json(v_resp);
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_intermediario_sel (OID = 304238) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

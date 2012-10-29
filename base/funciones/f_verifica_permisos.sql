@@ -1,16 +1,17 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_verifica_permisos (
   par_id_usuario integer,
-  par_transaccion character varying,
-  par_cod_gui character varying,
-  par_ip_admin character varying[],
-  par_ip character varying,
+  par_transaccion varchar,
+  par_cod_gui varchar,
+  par_ip_admin varchar [],
+  par_ip varchar,
   out po_administrador boolean,
   out po_habilitar_log integer,
   out po_tiene_permisos boolean,
   out po_id_subsistema integer
 )
-RETURNS SETOF record
-AS 
+RETURNS SETOF record AS
 $body$
 /***************************************************************************
  DESCRIPCION:	Valida si el usuario tiene permiso para ejecutar la transaccion
@@ -69,8 +70,17 @@ begin
     
     --  4) si no es administrador verificamos si no es una trasaccion basica
          -- (todos tienen permisos para ejecutar las basicas)
-         IF ((not po_tiene_permisos) and  (par_transaccion in  ('SEG_SESION_INS','SEG_SESION_SEL','SEG_SESION_CONT','SEG_VALUSU_SEG','SEG_OBTEPRI_SEL','SEG_OBTEPRI_CONT','SEG_MENU_SEL','PM_GENALA_INS'))) THEN
-         
+         IF ((not po_tiene_permisos) and  (par_transaccion in  (
+            'SEG_SESION_INS',
+             'SEG_SESION_SEL',
+             'SEG_SESION_CONT',
+             'SEG_VALUSU_SEG',
+             'SEG_OBTEPRI_SEL',
+             'SEG_OBTEPRI_CONT',
+             'SEG_MENU_SEL',
+             'PM_ALARMCOR_SEL',
+             'PM_DESCCOR_MOD',
+             'PM_GENALA_INS'))) THEN
             po_tiene_permisos = true;
          
          END IF; 
@@ -118,7 +128,8 @@ begin
    
 end;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
---
--- Definition for function monitor_phx (OID = 304418) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100 ROWS 1000;

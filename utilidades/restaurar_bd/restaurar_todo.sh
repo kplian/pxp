@@ -15,7 +15,7 @@ while read line
 echo " lee archivo  ${config[0]}   ............. "
 
 
-config[0]='dbweb_auxiliar'
+config[0]='dbweb_prueba'
 
 
 echo " ${config[0]}   ............. "

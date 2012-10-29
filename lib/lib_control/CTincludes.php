@@ -22,7 +22,7 @@ include_once(dirname(__FILE__).'/../lib_reporte/MostrarReporte.php');
 //include_once(dirname(__FILE__).'/../../sis_generador/modelo/FuncionesGenerador.php');
 include_once(dirname(__FILE__).'/../FirePHPCore-0.3.2/lib/FirePHPCore/FirePHP.class.php');
 
-foreach (glob(dirname(__FILE__).'/../../sis_*/modelo/Funciones*.php') as $archivo){
+foreach (glob(dirname(__FILE__).'/../../../sis_*/modelo/Funciones*.php') as $archivo){
 	include_once($archivo);
 }
 

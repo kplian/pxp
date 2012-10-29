@@ -8,7 +8,7 @@
  */
 include_once(dirname(__FILE__)."/CTSesion.php");
 session_start();
-include(dirname(__FILE__).'/../../lib/DatosGenerales.php');
+include(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 include_once('../lib_general/Errores.php');
 //estable aprametros ce la cookie de sesion
 $_SESSION["_CANTIDAD_ERRORES"]=0;//inicia control cantidad de error anidados

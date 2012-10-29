@@ -138,7 +138,7 @@ class CTIntermediario{
 	private function incluirArchivo(){
 		//Forma la cadena del include y el nombre de la clase
 		$this->nombreClase=self::$prefijo.$this->nombreClase;
-		$this->rutaInclude=$this->rutaArchivo.$this->nombreClase.'.php';
+		$this->rutaInclude='../'.$this->rutaArchivo.$this->nombreClase.'.php';
 		//echo __FILE__;exit;
 		//echo 'dd:'.$this->rutaInclude;exit;
 		/*ob_start();

@@ -1,5 +1,6 @@
- lee archivo     ............. 
- dbweb_auxiliar   ............. 
+...   dbweb_prueba
+ lee archivo  dbweb_prueba   ............. 
+ dbweb_prueba   ............. 
 DROP SCHEMA
 CREATE SCHEMA
 CREATE FUNCTION
@@ -71,12 +72,12 @@ ALTER TABLE
  exito
 (1 fila)
 
-INSERT 668252 1
-INSERT 668253 1
-INSERT 668254 1
-INSERT 668255 1
-INSERT 668256 1
-INSERT 668257 1
+INSERT 674540 1
+INSERT 674541 1
+INSERT 674542 1
+INSERT 674543 1
+INSERT 674544 1
+INSERT 674545 1
  setval 
 --------
       7
@@ -3249,7 +3250,7 @@ COMMENT
 COMMENT
 COMMENT
 INSERT 0 1
-INSERT 669362 1
+INSERT 675650 1
  f_insert_tfuncion 
 -------------------
  exito
