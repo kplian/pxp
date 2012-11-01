@@ -19,10 +19,10 @@ class ACTUoFuncionario extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarUoFuncionario');
+			$this->res=$this->objReporte->generarReporteListado('FuncionesOrganigrama','listarUoFuncionario');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesRecursosHumanos();
+			$this->objFunSeguridad=new FuncionesOrganigrama();
 			
 			//obtiene el parametro nodo enviado por la vista
 			$id_uo=$this->objParam->getParametro('id_uo');
@@ -51,7 +51,7 @@ class ACTUoFuncionario extends ACTbase{
 	function guardarUoFuncionario(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesRecursosHumanos();
+		$this->objFunSeguridad=new FuncionesOrganigrama();
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_uo_funcionario')){
@@ -74,7 +74,7 @@ class ACTUoFuncionario extends ACTbase{
 	function eliminarUoFuncionario(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesRecursosHumanos();	
+		$this->objFunSeguridad=new FuncionesOrganigrama();	
 		$this->res=$this->objFunSeguridad->eliminarUoFuncionario($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

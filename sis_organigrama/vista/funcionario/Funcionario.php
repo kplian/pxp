@@ -299,9 +299,9 @@ Phx.vista.funcionario=function(config){
 
 Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	title:'Funcionarios',
-	ActSave:'../../sis_recursos_humanos/control/Funcionario/guardarFuncionario',
-	ActDel:'../../sis_recursos_humanos/control/Funcionario/eliminarFuncionario',
-	ActList:'../../sis_recursos_humanos/control/Funcionario/listarFuncionario',
+	ActSave:'../../sis_organigrama/control/Funcionario/guardarFuncionario',
+	ActDel:'../../sis_organigrama/control/Funcionario/eliminarFuncionario',
+	ActList:'../../sis_organigrama/control/Funcionario/listarFuncionario',
 	id_store:'id_funcionario',
 	fields: [
 	{name:'id_funcionario'},
@@ -329,7 +329,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 		
 	],
 	tabsouth:[{
-		  url:'../../../sis_recursos_humanos/vista/funcionario_especialidad/FuncionarioEspecialidad.php',
+		  url:'../../../sis_organigrama/vista/funcionario_especialidad/FuncionarioEspecialidad.php',
 		  title:'Especialidades Funcionarios', 
 		  height:'50%',	//altura de la ventana hijo
 		  //width:'50%',		//ancho de la ventana hjo

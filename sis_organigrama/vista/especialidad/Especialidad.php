@@ -70,7 +70,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 				emptyText:'Elija un valor...',
 				store:new Ext.data.JsonStore(
 				{
-					url: '../../sis_recursos_humanos/control/EspecialidadNivel/listarEspecialidadNivel',
+					url: '../../sis_organigrama/control/EspecialidadNivel/listarEspecialidadNivel',
 					id: 'id_especialidad_nivel',
 					root:'datos',
 					sortInfo:{
@@ -182,9 +182,9 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	title:'Especialidad',
-	ActSave:'../../sis_recursos_humanos/control/Especialidad/insertarEspecialidad',
-	ActDel:'../../sis_recursos_humanos/control/Especialidad/eliminarEspecialidad',
-	ActList:'../../sis_recursos_humanos/control/Especialidad/listarEspecialidad',
+	ActSave:'../../sis_organigrama/control/Especialidad/insertarEspecialidad',
+	ActDel:'../../sis_organigrama/control/Especialidad/eliminarEspecialidad',
+	ActList:'../../sis_organigrama/control/Especialidad/listarEspecialidad',
 	id_store:'id_especialidad',
 	fields: [
 		{name:'id_especialidad', type: 'numeric'},

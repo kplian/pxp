@@ -138,9 +138,9 @@ Phx.vista.EspecialidadNivel=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	title:'Niveles Especialidad',
-	ActSave:'../../sis_recursos_humanos/control/EspecialidadNivel/insertarEspecialidadNivel',
-	ActDel:'../../sis_recursos_humanos/control/EspecialidadNivel/eliminarEspecialidadNivel',
-	ActList:'../../sis_recursos_humanos/control/EspecialidadNivel/listarEspecialidadNivel',
+	ActSave:'../../sis_organigrama/control/EspecialidadNivel/insertarEspecialidadNivel',
+	ActDel:'../../sis_organigrama/control/EspecialidadNivel/eliminarEspecialidadNivel',
+	ActList:'../../sis_organigrama/control/EspecialidadNivel/listarEspecialidadNivel',
 	id_store:'id_especialidad_nivel',
 	fields: [
 		{name:'id_especialidad_nivel', type: 'numeric'},

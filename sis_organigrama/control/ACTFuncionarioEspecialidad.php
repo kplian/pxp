@@ -19,16 +19,16 @@ class ACTFuncionarioEspecialidad extends ACTbase{
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarFuncionarioEspecialidad');
+			$this->res = $this->objReporte->generarReporteListado('FuncionesOrganigrama','listarFuncionarioEspecialidad');
 		} else{
-			$this->objFunc=new FuncionesRecursosHumanos();	
+			$this->objFunc=new FuncionesOrganigrama();	
 			$this->res=$this->objFunc->listarFuncionarioEspecialidad($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarFuncionarioEspecialidad(){
-		$this->objFunc=new FuncionesRecursosHumanos();	
+		$this->objFunc=new FuncionesOrganigrama();	
 		if($this->objParam->insertar('id_funcionario_especialidad')){
 			$this->res=$this->objFunc->insertarFuncionarioEspecialidad($this->objParam);			
 		} else{			
@@ -38,7 +38,7 @@ class ACTFuncionarioEspecialidad extends ACTbase{
 	}
 						
 	function eliminarFuncionarioEspecialidad(){
-		$this->objFunc=new FuncionesRecursosHumanos();	
+		$this->objFunc=new FuncionesOrganigrama();	
 		$this->res=$this->objFunc->eliminarFuncionarioEspecialidad($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

@@ -3,7 +3,7 @@ class FuncionesOrganigrama
 {
 	function __construct()
 	{
-		foreach (glob('../../sis_recursos_humanos/modelo/MOD*.php') as $archivo){
+		foreach (glob('../../sis_organigrama/modelo/MOD*.php') as $archivo){
 			include_once($archivo);
 		}	
 		

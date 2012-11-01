@@ -1,12 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_procedimiento_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
-$body$
+RETURNS varchar AS'
 /**************************************************************************
  FUNCION: 		segu.ft_procedimiento_ime
  DESCRIPCION:   modificaciones de procedimiento
@@ -32,7 +32,7 @@ v_id_procedimiento      integer;
 
 BEGIN
 
-     v_nombre_funcion:='segu.ft_procedimiento_ime';
+     v_nombre_funcion:=''segu.ft_procedimiento_ime'';
      v_parametros:=pxp.f_get_record(par_tabla);
 /*******************************
  #TRANSACCION:  SEG_PROCED_INS
@@ -40,7 +40,7 @@ BEGIN
  #AUTOR:		KPLIAN(jrr)		
  #FECHA:		08/01/11	
 ***********************************/
-     if(par_transaccion='SEG_PROCED_INS')then
+     if(par_transaccion=''SEG_PROCED_INS'')then
 
         
           BEGIN
@@ -51,8 +51,8 @@ BEGIN
                 v_parametros.id_funcion,v_parametros.codigo,v_parametros.descripcion,
                 v_parametros.habilita_log) RETURNING id_procedimiento into v_id_procedimiento;
 
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Procedimiento insertado con exito '||v_id_procedimiento);
-               v_resp = pxp.f_agrega_clave(v_resp,'id_procedimiento',v_id_procedimiento::varchar);
+               v_resp = pxp.f_agrega_clave(v_resp,''mensaje'',''Procedimiento insertado con exito ''||v_id_procedimiento);
+               v_resp = pxp.f_agrega_clave(v_resp,''id_procedimiento'',v_id_procedimiento::varchar);
 
 
          END;
@@ -62,7 +62,7 @@ BEGIN
  #AUTOR:		KPLIAN(jrr)		
  #FECHA:		08/01/11	
 ***********************************/
-     elsif(par_transaccion='SEG_PROCED_MOD')then
+     elsif(par_transaccion=''SEG_PROCED_MOD'')then
 
           
           BEGIN
@@ -75,8 +75,8 @@ BEGIN
                      
 
                where id_procedimiento=v_parametros.id_procedimiento;
-                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Procedimiento modificado con exito '||v_parametros.id_procedimiento);
-                v_resp = pxp.f_agrega_clave(v_resp,'id_procedimiento',v_parametros.id_procedimiento::varchar);
+                v_resp = pxp.f_agrega_clave(v_resp,''mensaje'',''Procedimiento modificado con exito ''||v_parametros.id_procedimiento);
+                v_resp = pxp.f_agrega_clave(v_resp,''id_procedimiento'',v_parametros.id_procedimiento::varchar);
 
           END;
 /*******************************
@@ -85,36 +85,42 @@ BEGIN
  #AUTOR:		KPLIAN(jrr)		
  #FECHA:		08/01/11	
 ***********************************/
-    elsif(par_transaccion='SEG_PROCED_ELI')then
+    elsif(par_transaccion=''SEG_PROCED_ELI'')then
 
          
           BEGIN
-               update segu.tprocedimiento set estado_reg='inactivo'
-               where id_procedimiento=v_parametros.id_procedimiento;
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Procedimiento eliminado con exito '||v_parametros.id_procedimiento);
-                v_resp = pxp.f_agrega_clave(v_resp,'id_procedimiento',v_parametros.id_procedimiento::varchar);
+              
+              delete from segu.tprocedimiento
+              where id_procedimiento=v_parametros.id_procedimiento;
+          
+          
+                v_resp = pxp.f_agrega_clave(v_resp,''mensaje'',''Procedimiento eliminado con exito ''||v_parametros.id_procedimiento);
+                v_resp = pxp.f_agrega_clave(v_resp,''id_procedimiento'',v_parametros.id_procedimiento::varchar);
 
-         END;
+        
+    
+    
+     END;
 
      else
 
-         raise exception 'No existe la transaccion: %',par_transaccion;
+         raise exception ''No existe la transaccion: %'',par_transaccion;
      end if;
      return v_resp;
 
 EXCEPTION
 
        WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
+    	v_resp='''';
+		v_resp = pxp.f_agrega_clave(v_resp,''mensaje'',SQLERRM);
+    	v_resp = pxp.f_agrega_clave(v_resp,''codigo_error'',SQLSTATE);
+  		v_resp = pxp.f_agrega_clave(v_resp,''procedimientos'',v_nombre_funcion);
+		raise exception ''%'',v_resp;
 
 
 END;
-$body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_procedimiento_sel (OID = 305082) : 
---
+'LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -34,22 +34,22 @@ class ACTProcedimiento extends ACTbase{
 		
 	}
 	
-	function guardarSubsistema(){
+	function guardarProcedimiento(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=new FuncionesSeguridad();
 		
 		//preguntamos si se debe insertar o modificar 
-		if($this->objParam->insertar('id_subsistema')){
+		if($this->objParam->insertar('id_procedimiento')){
 
 			//ejecuta el metodo de insertar de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->insertarSubsistema($this->objParam);			
+			$this->res=$this->objFunSeguridad->insertarProcedimiento($this->objParam);			
 		}
 		else{	
 			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarSubsistema($this->objParam);
+			$this->res=$this->objFunSeguridad->modificarProcedimiento($this->objParam);
 		}
 		
 		//imprime respuesta en formato JSON
@@ -57,11 +57,11 @@ class ACTProcedimiento extends ACTbase{
 
 	}
 			
-	function eliminarSubsistema(){
+	function eliminarProcedimiento(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=new FuncionesSeguridad();	
-		$this->res=$this->objFunSeguridad->eliminarSubsistema($this->objParam);
+		$this->res=$this->objFunSeguridad->eliminarProcedimiento($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}

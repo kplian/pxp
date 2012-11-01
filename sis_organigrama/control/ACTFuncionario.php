@@ -19,10 +19,10 @@ class ACTFuncionario extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarFuncionario');
+			$this->res=$this->objReporte->generarReporteListado('FuncionesOrganigrama','listarFuncionario');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesRecursosHumanos();
+			$this->objFunSeguridad=new FuncionesOrganigrama();
 			//ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarFuncionario($this->objParam);
 			
@@ -46,10 +46,10 @@ class ACTFuncionario extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarFuncionarioCargo');
+			$this->res=$this->objReporte->generarReporteListado('FuncionesOrganigrama','listarFuncionarioCargo');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesRecursosHumanos();
+			$this->objFunSeguridad=new FuncionesOrganigrama();
 			//ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarFuncionarioCargo($this->objParam);
 			
@@ -66,7 +66,7 @@ class ACTFuncionario extends ACTbase{
 	function guardarFuncionario(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesRecursosHumanos();
+		$this->objFunSeguridad=new FuncionesOrganigrama();
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_funcionario')){
@@ -89,7 +89,7 @@ class ACTFuncionario extends ACTbase{
 	function eliminarFuncionario(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesRecursosHumanos();	
+		$this->objFunSeguridad=new FuncionesOrganigrama();	
 		$this->res=$this->objFunSeguridad->eliminarFuncionario($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

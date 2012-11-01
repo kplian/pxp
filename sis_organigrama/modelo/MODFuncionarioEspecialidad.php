@@ -15,7 +15,7 @@ class MODFuncionarioEspecialidad extends MODbase{
 			
 	function listarFuncionarioEspecialidad(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='rhum.f_funcionario_especialidad_sel';
+		$this->procedimiento='orga.f_funcionario_especialidad_sel';
 		$this->transaccion='RH_RHESFU_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
@@ -42,7 +42,7 @@ class MODFuncionarioEspecialidad extends MODbase{
 			
 	function insertarFuncionarioEspecialidad(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_funcionario_especialidad_ime';
+		$this->procedimiento='orga.f_funcionario_especialidad_ime';
 		$this->transaccion='RH_RHESFU_INS';
 		$this->tipo_procedimiento='IME';
 				
@@ -61,7 +61,7 @@ class MODFuncionarioEspecialidad extends MODbase{
 			
 	function modificarFuncionarioEspecialidad(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_funcionario_especialidad_ime';
+		$this->procedimiento='orga.f_funcionario_especialidad_ime';
 		$this->transaccion='RH_RHESFU_MOD';
 		$this->tipo_procedimiento='IME';
 				
@@ -81,7 +81,7 @@ class MODFuncionarioEspecialidad extends MODbase{
 			
 	function eliminarFuncionarioEspecialidad(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_funcionario_especialidad_ime';
+		$this->procedimiento='orga.f_funcionario_especialidad_ime';
 		$this->transaccion='RH_RHESFU_ELI';
 		$this->tipo_procedimiento='IME';
 				

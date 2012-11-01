@@ -466,26 +466,26 @@ class FuncionesSeguridad
 	}
 	
 	function insertarProcedimiento(CTParametro $parametro){
-		$procedimiento=new MODProcedimiento();
-		$res=$procedimiento->insertarProcedimiento($parametro);
+		$procedimiento=new MODProcedimiento($parametro);
+		$res=$procedimiento->insertarProcedimiento();
 		return $res;
 	}
 	
 	function modificarProcedimiento(CTParametro $parametro){
-		$procedimiento=new MODProcedimiento();
-		$res=$procedimiento->modificarProcedimiento($parametro);
+		$procedimiento=new MODProcedimiento($parametro);
+		$res=$procedimiento->modificarProcedimiento();
 		return $res;
 	}
 	
 	function eliminarProcedimiento(CTParametro $parametro){
-		$procedimiento=new MODProcedimiento();
-		$res=$procedimiento->eliminarProcedimiento($parametro);
+		$procedimiento=new MODProcedimiento($parametro);
+		$res=$procedimiento->eliminarProcedimiento();
 		return $res;
 	}
 	
 	function listarProced(CTParametro $parametro){
-		$procedimiento=new MODProcedimiento();
-		$res=$procedimiento->listarProced($parametro);
+		$procedimiento=new MODProcedimiento($parametro);
+		$res=$procedimiento->listarProced();
 		return $res;
 	}
 	/*FinClase: MODProcedimiento*/

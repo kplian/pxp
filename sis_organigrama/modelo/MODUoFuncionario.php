@@ -14,7 +14,7 @@ class MODUoFuncionario extends MODbase{
 	
 	function listarUoFuncionario(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_uo_funcionario_sel';// nombre procedimiento almacenado
+		$this->procedimiento='orga.ft_uo_funcionario_sel';// nombre procedimiento almacenado
 		$this->transaccion='RH_UOFUNC_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setParametro('id_uo','id_uo','integer');
@@ -51,7 +51,7 @@ class MODUoFuncionario extends MODbase{
 	function insertarUoFuncionario(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_uo_funcionario_ime';// nombre procedimiento almacenado
+		$this->procedimiento='orga.ft_uo_funcionario_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_UOFUNC_INS';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
@@ -70,7 +70,7 @@ class MODUoFuncionario extends MODbase{
 	function modificarUoFuncionario(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_uo_funcionario_ime';// nombre procedimiento almacenado
+		$this->procedimiento='orga.ft_uo_funcionario_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_UOFUNC_MOD';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
@@ -92,7 +92,7 @@ class MODUoFuncionario extends MODbase{
 	
 	function eliminarUoFuncionario(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='rhum.ft_uo_funcionario_ime';
+		$this->procedimiento='orga.ft_uo_funcionario_ime';
 		$this->transaccion='RH_UOFUNC_ELI';
 		$this->tipo_procedimiento='IME';
 			

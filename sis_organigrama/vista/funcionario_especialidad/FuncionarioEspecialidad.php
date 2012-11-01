@@ -50,7 +50,7 @@ Phx.vista.FuncionarioEspecialidad=Ext.extend(Phx.gridInterfaz,{
 				emptyText:'Elija una opción...',
 				store:new Ext.data.JsonStore(
 				{
-					url: '../../sis_recursos_humanos/control/Especialidad/listarEspecialidad',
+					url: '../../sis_organigrama/control/Especialidad/listarEspecialidad',
 					id: 'id_especialidad',
 					root:'datos',
 					sortInfo:{
@@ -162,9 +162,9 @@ Phx.vista.FuncionarioEspecialidad=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	title:'Especialidades Funcionarios',
-	ActSave:'../../sis_recursos_humanos/control/FuncionarioEspecialidad/insertarFuncionarioEspecialidad',
-	ActDel:'../../sis_recursos_humanos/control/FuncionarioEspecialidad/eliminarFuncionarioEspecialidad',
-	ActList:'../../sis_recursos_humanos/control/FuncionarioEspecialidad/listarFuncionarioEspecialidad',
+	ActSave:'../../sis_organigrama/control/FuncionarioEspecialidad/insertarFuncionarioEspecialidad',
+	ActDel:'../../sis_organigrama/control/FuncionarioEspecialidad/eliminarFuncionarioEspecialidad',
+	ActList:'../../sis_organigrama/control/FuncionarioEspecialidad/listarFuncionarioEspecialidad',
 	id_store:'id_funcionario_especialidad',
 	loadValoresIniciales:function()
 	{

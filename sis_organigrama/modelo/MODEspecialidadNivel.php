@@ -15,7 +15,7 @@ class MODEspecialidadNivel extends MODbase{
 			
 	function listarEspecialidadNivel(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='rhum.ft_especialidad_nivel_sel';
+		$this->procedimiento='orga.ft_especialidad_nivel_sel';
 		$this->transaccion='RH_RHNIES_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
@@ -41,7 +41,7 @@ class MODEspecialidadNivel extends MODbase{
 			
 	function insertarEspecialidadNivel(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_especialidad_nivel_ime';
+		$this->procedimiento='orga.ft_especialidad_nivel_ime';
 		$this->transaccion='RH_RHNIES_INS';
 		$this->tipo_procedimiento='IME';
 				
@@ -60,7 +60,7 @@ class MODEspecialidadNivel extends MODbase{
 			
 	function modificarEspecialidadNivel(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_especialidad_nivel_ime';
+		$this->procedimiento='orga.ft_especialidad_nivel_ime';
 		$this->transaccion='RH_RHNIES_MOD';
 		$this->tipo_procedimiento='IME';
 				
@@ -80,7 +80,7 @@ class MODEspecialidadNivel extends MODbase{
 			
 	function eliminarEspecialidadNivel(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_especialidad_nivel_ime';
+		$this->procedimiento='orga.ft_especialidad_nivel_ime';
 		$this->transaccion='RH_RHNIES_ELI';
 		$this->tipo_procedimiento='IME';
 				

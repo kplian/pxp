@@ -15,7 +15,7 @@ class MODEstructuraUo extends MODbase {
 	
 
 	function listarEstructuraUo(){
-		$this->procedimiento='rhum.ft_estructura_uo_sel';
+		$this->procedimiento='orga.ft_estructura_uo_sel';
 		$this->transaccion='RH_ESTRUO_SEL';
 		$this->tipo_procedimiento='SEL';
 		
@@ -56,12 +56,12 @@ class MODEstructuraUo extends MODbase {
      function insertarEstructuraUo(){
          	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_estructura_uo_ime';// nombre procedimiento almacenado
+		$this->procedimiento='orga.ft_estructura_uo_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_ESTRUO_INS';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		//Define los parametros para la funcion	
 		$this->setParametro('id_uo','id_uo','integer');
-		$this->setParametro('id_uo_padre','id_uo_padre','integer');
+		$this->setParametro('id_uo_padre','id_uo_padre','varchar');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre_unidad','nombre_unidad','varchar');
 		$this->setParametro('descripcion','descripcion','text');
@@ -83,14 +83,14 @@ class MODEstructuraUo extends MODbase {
 	function modificarEstructuraUo(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_estructura_uo_ime';// nombre procedimiento almacenado
+		$this->procedimiento='orga.ft_estructura_uo_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_ESTRUO_MOD';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_estructura_uo','id_estructura_uo','integer');
 		$this->setParametro('id_uo','id_uo','integer');
-		$this->setParametro('id_uo_padre','id_uo_padre','integer');
+		$this->setParametro('id_uo_padre','id_uo_padre','varchar');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre_unidad','nombre_unidad','varchar');
 		$this->setParametro('descripcion','descripcion','text');
@@ -110,7 +110,7 @@ class MODEstructuraUo extends MODbase {
 	
 	function eliminarEstructuraUo(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='rhum.ft_estructura_uo_ime';
+		$this->procedimiento='orga.ft_estructura_uo_ime';
 		$this->transaccion='RH_ESTRUO_ELI';
 		$this->tipo_procedimiento='IME';
 			

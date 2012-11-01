@@ -15,7 +15,7 @@ class MODEspecialidad extends MODbase{
 			
 	function listarEspecialidad(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='rhum.f_especialidad_sel';
+		$this->procedimiento='orga.f_especialidad_sel';
 		$this->transaccion='RH_ESPCIA_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
@@ -43,7 +43,7 @@ class MODEspecialidad extends MODbase{
 			
 	function insertarEspecialidad(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_especialidad_ime';
+		$this->procedimiento='orga.f_especialidad_ime';
 		$this->transaccion='RH_ESPCIA_INS';
 		$this->tipo_procedimiento='IME';
 				
@@ -63,7 +63,7 @@ class MODEspecialidad extends MODbase{
 			
 	function modificarEspecialidad(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_especialidad_ime';
+		$this->procedimiento='orga.f_especialidad_ime';
 		$this->transaccion='RH_ESPCIA_MOD';
 		$this->tipo_procedimiento='IME';
 				
@@ -84,7 +84,7 @@ class MODEspecialidad extends MODbase{
 			
 	function eliminarEspecialidad(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_especialidad_ime';
+		$this->procedimiento='orga.f_especialidad_ime';
 		$this->transaccion='RH_ESPCIA_ELI';
 		$this->tipo_procedimiento='IME';
 				

@@ -14,7 +14,7 @@ class MODUo extends MODbase{
 	
 	function listarUo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.ft_uo_sel';// nombre procedimiento almacenado
+		$this->procedimiento='orga.ft_uo_sel';// nombre procedimiento almacenado
 		$this->transaccion='RH_UO_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
@@ -56,7 +56,7 @@ class MODUo extends MODbase{
 
 function listarUoFiltro(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='rhum.f_uo_arb_inicia';// nombre procedimiento almacenado
+		$this->procedimiento='orga.f_uo_arb_inicia';// nombre procedimiento almacenado
 		$this->transaccion='RH_INIUOARB_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setCount(false);
