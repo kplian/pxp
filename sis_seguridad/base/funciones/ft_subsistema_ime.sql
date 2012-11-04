@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_subsistema_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_subsistema
@@ -89,6 +88,8 @@ BEGIN
                            v_id,
                            upper(v_parametros.nombre),
                            1) returning  id_gui into v_id_gui;
+                           
+                  select pxp.f_insert_testructura_gui(codigo_gui,'SISTEMA');
                end if;
 
                --return 'Subsistema insertado con exito';
@@ -163,7 +164,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_subsistema_sel (OID = 305096) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
