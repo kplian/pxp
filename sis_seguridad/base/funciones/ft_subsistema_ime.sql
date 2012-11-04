@@ -89,7 +89,7 @@ BEGIN
                            upper(v_parametros.nombre),
                            1) returning  id_gui into v_id_gui;
                            
-                  select pxp.f_insert_testructura_gui(v_parametros.codigo,'SISTEMA');
+                  v_resp = (select pxp.f_insert_testructura_gui(v_parametros.codigo,'SISTEMA'));
                end if;
 
                --return 'Subsistema insertado con exito';
