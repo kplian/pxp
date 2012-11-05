@@ -763,15 +763,18 @@ Phx.CP=function(){
 	     */
 	     
 		callbackWindows:function(r,a,o){
-			var cls = o.argument.params.cls;
-		    if(Phx.vista[cls].requireclase){
+			console.log(o.argument.params)
+			//si existe la variable mycls la utiliza
+			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
+			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
+		    if(Phx.vista[mycls].requireclase){
   				     //trae la clase padre
   				     //en el callback ejecuta la rerencia 
   				     //e instanca la clase hijo
   				     var owid='4rn'
   				     var el = Ext.get(owid); // este div esta quemado en el codigo html
                      var u = el.getUpdater();
-                     var inter = Phx.vista[cls];
+                     var inter = Phx.vista[mycls];
   				       u.update(
   				      	 {url:inter.require, 
   				      	 params:o.argument.params,
@@ -780,9 +783,9 @@ Phx.CP=function(){
   				      	  showLoadIndicator: "Cargando...2",
   				      	  callback: function(r,a,o){
   				      	 	//genera herencia 
-  				      	 	eval('Phx.vista.'+cls+'= Ext.extend('+inter.requireclase+',inter)')
+  				      	 	eval('Phx.vista.'+mycls+'= Ext.extend('+inter.requireclase+',inter)')
   				      	 	//ejecuta la clase hijo
-  				      	 	eval('Phx.CP.setPagina(new Phx.vista.'+cls+'(o.argument.params))')
+  				      	 	eval('Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
   				      	 
   				      	 }
   				      	 })
@@ -791,12 +794,12 @@ Phx.CP=function(){
 		    	 // Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
-		    	Phx.CP.setPagina(new Phx.vista[cls](o.argument.params))
+		    	Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 		    }  
 		},
 		// para cargar ventanas hijo
 
-		loadWindows:function(url,title,config,params,pid,cls){
+		loadWindows:function(url,title,config,params,pid,mycls){
 			// url: donde se encuentra el js de la ventana que se quiere abrir
 			// title: titulo de la ventanan que se abrira
 			// config: configuracion de la venta
@@ -852,7 +855,7 @@ Phx.CP=function(){
 				   // width:'100%',
 					// autoShow:true,
 					autoLoad:{url: url,
-					          params:Ext.apply({_tipo:'direc',idContenedor:wid,idContenedorPadre:pid,cls:cls},params),
+					          params:Ext.apply({_tipo:'direc',idContenedor:wid,idContenedorPadre:pid,mycls:mycls},params),
 					          text: "Cargando...", 
 					          showLoadIndicator: "Cargando...",
 					          scripts :true,

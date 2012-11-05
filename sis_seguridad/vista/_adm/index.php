@@ -47,6 +47,8 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/statusbar/css/statusbar.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/AwesomeCombo/static/css/Ext.ux.AwesomeCombo.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/fileuploadfield/css/fileuploadfield.css" />
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/ColumnHeaderGroup.css" />
+
     
    <link rel="stylesheet" type="text/css" href="resources/docs.css"></link>
    <link rel="stylesheet" type="text/css" href="resources/style.css"></link>
@@ -126,6 +128,9 @@ if(!isset($_SESSION["_SESION"])){
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/arbInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/frmInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gmapInterfaz.js'></script>
+     
+     
+     <script type="text/javascript" src="../../../lib/ux/ColumnHeaderGroup.js"></script>
      
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
     <div id="header">
