@@ -54,18 +54,17 @@ done
 # En el orden en el que estan en el archivo sistemas.txt
 if [ -r ../../../sistemas.txt ]
 then
-
-    $i=0
     while read line         
     do 
         #restaurar subsistema
+		
         funciones=$line"base/funciones/*.sql"
         #solo si no es actualizar
         psql ${config[0]} < $line"base/schema.sql"
 
         for f in $funciones
             do
-              psql ${config[0]} < $f
+                psql ${config[0]} < $f
             done
 
         #solo si no es actualizar
