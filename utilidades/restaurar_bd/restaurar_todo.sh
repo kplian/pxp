@@ -52,9 +52,9 @@ do
     
     if [ "$ENTRADA" == "s" ] 
     then
-	if [ -r $item"base/data.sql" ]
+	if [ -r $item"base/datos.sql" ]
      	then
-            psql ${config[0]} < $item"base/data.sql"
+            psql ${config[0]} < $item"base/datos.sql"
 	fi
     fi	
 done
@@ -80,9 +80,14 @@ then
         psql ${config[0]} < $line"base/patch000001.sql"
 
 	if [ "$ENTRADA" == "s" ] 
-        then if [ -r $line"base/data.sql" ]
-             then psql ${config[0]} < $line"base/data.sql"
-             fi
+        then 
+	    echo "Recuperando datos.sql para:"$line
+	    if [ -r $line"base/datos.sql" ]
+            then 
+                psql ${config[0]} < $line"base/datos.sql"
+            else
+                echo -"No existe el archivo: "$line"base/datos.sql"
+            fi
         fi          
     done < ../../../sistemas.txt
 else
