@@ -510,6 +510,7 @@ select pxp.f_insert_testructura_gui ('LUG', 'PARAM');
 select pxp.f_insert_testructura_gui ('MONPAR', 'PARAM');
 select pxp.f_insert_testructura_gui ('PERIOD', 'PARAM');
 select pxp.f_insert_testructura_gui ('GESTIO', 'PARAM');
+select pxp.f_insert_testructura_gui ('UME', 'PARAM');
 select pxp.f_insert_tprocedimiento ('PM_INSTIT_SEL', '	Consulta de datos
  	', 'si', '', '', 'ft_institucion_sel');
 select pxp.f_insert_tprocedimiento ('PM_INSTIT_CONT', '	Conteo de registros

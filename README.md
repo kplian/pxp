@@ -21,7 +21,8 @@ TO USE IT BY FIRST TIME:
 6. Create a file named "config_util.txt" inside your project root folder wich contains the name of database in the first line.
 7. Create a file named "DatosGenerales.php" inside pxp/lib. This file could be a copy of DatosGenerales.sample.php wich already exists in the same folder.
   It's necesary to do some configurations in that file according to the database.
-8. As postgres user execute "pxp/utilidades/restaurar_bd/restaurar_todo.sh" (This will generate the databse).
+8. As postgres user execute "pxp/utilidades/restaurar_bd/restaurar_todo.sh" (This will generate the databse). Postgres user needs execution access
+   to restaurar_todo.sh
 9. You can use the framework now!!! (user:admin, password:admin)
 
 TO CREATE A NEW SYSTEM:
