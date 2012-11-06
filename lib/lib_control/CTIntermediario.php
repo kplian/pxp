@@ -325,7 +325,7 @@ $fb->log($this->nombreClase,"clase");*/
 						
 					//si la sesion esta inactiva el unico metodo que puede ejecutar es getPublicKey
 					//o si la sesion esta prepara el unico unico metodo que puede ejecutar es verificarCredenciales
-
+					
 					if($_SESSION["_SESION"]->getEstado()=='inactiva' or $_SESSION["_SESION"]->getEstado()=='preparada'){
 
 						if(!(($this->metodoEjecutar=='getPublicKey' AND $this->nombreClase=='Auten')or ($this->metodoEjecutar=='verificarCredenciales' AND $this->nombreClase=='Auten'))){

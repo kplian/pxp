@@ -2,6 +2,8 @@
 i=0
 #cargar configuracion de utilidades
 #por ahora solo se carga la base de datos, mas adelante se cargaran otros datos
+echo -n "Desea cargar los datos de prueba? (s/n)"
+read ENTRADA
 while read line         
     do
         #cargar una variable
@@ -48,6 +50,13 @@ do
 	#solo si no es actualizar
     psql ${config[0]} < $item"base/patch000001.sql" 
     
+    if [ "$ENTRADA" == "s" ] 
+    then
+	if [ -r $item"base/data.sql" ]
+     	then
+            psql ${config[0]} < $item"base/data.sql"
+	fi
+    fi	
 done
 
 # Finalmente se restaura los sistemas secundarios
@@ -68,7 +77,13 @@ then
             done
 
         #solo si no es actualizar
-        psql ${config[0]} < $line"base/patch000001.sql"        
+        psql ${config[0]} < $line"base/patch000001.sql"
+
+	if [ "$ENTRADA" == "s" ] 
+        then if [ -r $line"base/data.sql" ]
+             then psql ${config[0]} < $line"base/data.sql"
+             fi
+        fi          
     done < ../../../sistemas.txt
 else
     echo NO SE HA RESTAURADO NINGUN SISTEMAS ADEMAS DE LOS BASICOS SI NECESITA RESTAURAR ALGUNO DEBE EXISTIR EL ARCHIVO sistemas.txt CON PERMISOS DE LECTURA
