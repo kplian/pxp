@@ -24,7 +24,6 @@ if(!isset($_SESSION["_SESION"])){
 }else{
 	 $estado_sesion=$_SESSION["_SESION"]->getEstado();
 	 $nueva_sesion=false;
-	
 }
 ?>
 <html lang="es">

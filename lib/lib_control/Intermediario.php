@@ -21,9 +21,12 @@ else{
 register_shutdown_function('fatalErrorShutdownHandler');
 set_exception_handler('exception_handler');
 set_error_handler('error_handler');
-include_once('../DatosGenerales.php');
+//include_once('../DatosGenerales.php');
 include_once('CTincludes.php');
+
 //Instancia la Clase Intermediario y se direcciona la solicitud realizada
+
 $a=new CTIntermediario();
 $a->direccionarAccion();
+
 ?>

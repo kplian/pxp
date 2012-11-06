@@ -38,6 +38,7 @@ class CTIntermediario{
      	//Obtencion de los datos enviados por la vista
 		$this->objPostData=new CTPostData();
 		$this->aPostData=$this->objPostData->getData();
+		//var_dump($this->aPostData);exit;
 		//rac 22/09/2011 
 		$this->aPostFiles=$this->objPostData->getFiles();
 		
@@ -152,9 +153,10 @@ $fb->log($this->nombreClase,"clase");*/
 	function direccionarAccion(){
 		//Instancia la clase dinamica para ejecutar la accion requerida
 		eval('$cad = new $this->nombreClase($this->objParametro);');
-
 		//Ejecuta el metodo solicitado
+		//var_dump($this->objParametro);exit;
 		eval('$cad->'.$this->metodoEjecutar.'();');
+		
 	}
 
 	 //Verifica si la conexion es HTTPS
