@@ -1,789 +1,1692 @@
-CREATE FUNCTION gen.f_obtener_datos_tabla_sel (
-  p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
-)
-RETURNS SETOF record
-AS 
-$body$
-/*
-Autor: RCM
-Fecha: 19/11/201
-Descripción: Función que devuelve los datos de las columnas y de la tabla para el generador
-*/
-
-DECLARE
-
-	v_consulta    		varchar;
-	v_rec  				record;
-	v_nombre_funcion   	text;
-    v_resp				varchar;
-    v_sql				varchar;
-
-BEGIN
-
-    v_nombre_funcion:='gen.f_obtener_datos_tabla_sel';
-
-    if p_transaccion = 'GEN_COLUMN_SEL' then
-
-    	begin
-        	--1. Creación de la tabla temporal para almacenar todos los datos de la columna
-            v_sql = 'create temp table tt_tabla_metadatos(id integer,
-             												columna varchar,
-                                                            descripcion varchar,
-                                                            tipo_dato varchar,
-                                                            longitud text,
-                                                            nulo varchar,
-                                                            checks varchar,
-                                                            valor_defecto varchar,
-                                                            grid_ancho integer,
-                                                            grid_mostrar varchar,
-                                                            form_ancho_porcen integer,
-                                                            orden smallint,
-                                                            grupo smallint
-
-            ) on commit drop;';
-            
-            execute(v_sql);
-            
-            v_sql = 'create temp table tt_constraints(id integer,
-            											nombre varchar
-            ) on commit drop';
-            execute(v_sql);
-                        
-            --2. Obtención de las columnas y sus metadatos
-            v_sql = 'insert into tt_tabla_metadatos(
-            		columna, descripcion, tipo_dato, checks, nulo, longitud,
-                    valor_defecto, grid_ancho, grid_mostrar, form_ancho_porcen,
-                    orden, grupo
-            		)
-                    SELECT DISTINCT
-                    a.attname as column_name,
-                    pg_catalog.obj_description(c.oid) as descripcion,
-                    t.typname as tipo_dato,
-                    CASE
-                    WHEN cc.contype=''p'' THEN ''PK''
-                    WHEN cc.contype=''u'' THEN ''UQ''
-                    WHEN cc.contype=''f'' THEN ''FK''
-                    ELSE '''' END AS cheks,
-                    CASE WHEN a.attnotnull=false THEN ''si'' ELSE ''no'' END AS  nulo,
-                    CASE WHEN a.attlen=''-1'' THEN (a.atttypmod - 4) ELSE a.attlen END as  longitud,
-                    d.adsrc as valor_defecto,
-                    100, ''si'', 80, null::smallint, 1::smallint
-                    FROM pg_catalog.pg_attribute a
-                    LEFT JOIN pg_catalog.pg_type t ON t.oid = a.atttypid
-                    LEFT JOIN pg_catalog.pg_class c ON c.oid = a.attrelid
-                    LEFT JOIN pg_catalog.pg_constraint cc ON cc.conrelid = c.oid AND cc.conkey[1] = a.attnum
-                    LEFT JOIN pg_catalog.pg_attrdef d ON d.adrelid = c.oid AND a.attnum = d.adnum
-                    WHERE c.relname = ''' || p_tabla || '''
-                    AND a.attnum > 0
-                    AND t.oid = a.atttypid
-                    AND NOT a.attisdropped';
-
-            --raise exception '%',v_sql;
-            execute(v_sql);
-            
-            --5. Consulta de la tabla resultado
-            for v_rec in execute('select distinct columna, descripcion, tipo_dato,
-            					longitud, nulo, checks, valor_defecto,
-                                grid_ancho, grid_mostrar, form_ancho_porcen,
-                                orden, grupo
-                                from tt_tabla_metadatos') loop
-            	return next v_rec;
-            end loop;
-            
-            --6. Respuesta
-            return;
- 
-		end;
-
-     else
-     
-         raise exception 'Transaccion inexistente';
-         
-     end if;
-
-EXCEPTION
-
-	WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-END;
-$body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_columna_ime (OID = 303919) : 
---
-CREATE FUNCTION gen.ft_columna_ime (
+CREATE FUNCTION alm.ft_almacen_ime (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla character varying,
   p_transaccion character varying
 )
 RETURNS varchar
-AS 
-$body$
-DECLARE
-
-    v_nro_requerimiento    	integer;
-    v_parametros           	record;
-    v_id_requerimiento     	integer;
-    v_resp		            varchar;
-    v_nombre_funcion        text;
-    v_mensaje_error         text;
-    v_id_columna			integer;
-
-
-/*
-
- id_proyecto
- denominacion 
- descripcion
- estado_reg 
-
-*/
-
-BEGIN
-
-     v_nombre_funcion:='gen.ft_columna_ime';
-     v_parametros:=pxp.f_get_record(p_tabla);
-
-     if(p_transaccion='GEN_COLUMN_INS')then
-
-          BEGIN
-               
-               insert into gen.tcolumna(
-		 		nombre,
-                 descripcion,
-                 id_tabla,
-                 id_usuario_reg,
-                 id_usuario_mod,
-                 fecha_reg,
-                 fecha_mod,
-                 estado_reg,
-                 etiqueta,
-                 guardar
-               ) values(
-                v_parametros.nombre,
-                v_parametros.descripcion,
-                v_parametros.id_tabla,
-                v_parametros.id_usuario_reg,
-                NULL,
-                now(),
-                NULL,
-                'activo',
-                v_parametros.etiqueta,
-                v_parametros.guardar
-               )RETURNING id_columna into v_id_columna;
-               
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Columna almacenada con exito (id_columna'||v_id_columna||')'); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_columna',v_id_columna::varchar);
-
-               return v_resp;
-
-         END;
-
-     elsif(p_transaccion='GEN_COLUMN_MOD')then
-
-          BEGIN
-
-               update gen.tcolumna set
-               nombre=v_parametros.nombre,
-               descripcion=v_parametros.descripcion,
-               id_tabla=v_parametros.id_tabla,
-               id_usuario_mod=v_parametros.id_usuario_mod,
-               fecha_mod=now(),
-               etiqueta=v_parametros.etiqueta,
-               guardar=v_parametros.guardar,
-               longitud=v_parametros.longitud,
-               grid_ancho=v_parametros.grid_ancho,
-               grid_mostrar=v_parametros.grid_mostrar,
-               form_ancho_porcen=v_parametros.form_ancho_porcen,
-               orden=v_parametros.orden,
-               grupo=v_parametros.grupo
-               where id_columna=v_parametros.id_columna;
-               
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Columna modificada'); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_columna',v_parametros.id_columna::varchar);
-               
-               return v_resp;
-          END;
-
-    elsif(p_transaccion='GEN_COLUMN_ELI')then
-
-          BEGIN
-
-               delete from gen.tcolumna
-               where id_columna=v_parametros.id_columna;
-               
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Columna eliminada'); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_columna',v_parametros.id_columna::varchar);
-              
-               return v_resp;
-         END;
-         
-     else
-     
-         raise exception 'Transacción inexistente: %',p_transaccion;
-
-     end if;
-
-EXCEPTION
-
-	WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-        
-END;
-$body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_columna_sel (OID = 303920) : 
---
-CREATE FUNCTION gen.ft_columna_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
-)
-RETURNS varchar
-AS 
-$body$
-/*
-Autor: RCM
-Fecha: 30/11/2010
-Descripción: Función que devuelve conjuntos de datos
-*/
-
-DECLARE
-
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-    v_resp				varchar;
-
-BEGIN
-
-    v_parametros:=pxp.f_get_record(p_tabla);
-    v_nombre_funcion:='gen.ft_columna_sel';
-
-    if p_transaccion = 'GEN_COLUMN_SEL' then
-
-    	begin
-        	v_consulta:='select
-            			id_columna, nombre, descripcion,
-            			id_tabla, id_usuario_reg, id_usuario_mod, fecha_reg,
-            			fecha_mod, estado_reg, etiqueta,guardar,
-                        tipo_dato, longitud, nulo, checks, valor_defecto,
-                        grid_ancho, grid_mostrar, form_ancho_porcen, orden,
-                        grupo
-            			from gen.tcolumna
-                        where ';
-            v_consulta:=v_consulta||v_parametros.filtro;
-            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-            raise notice '%',v_consulta;
-            return v_consulta;
-		end;
-
-    elsif p_transaccion = 'GEN_COLUMN_CONT' then
-
-        begin
-        	v_consulta:='select count(id_columna)
-            			from gen.tcolumna
-                        where ';
-            v_consulta:=v_consulta||v_parametros.filtro;
-            return v_consulta;
-        end;
-
-     elsif p_transaccion = 'GEN_DATCOL_SEL' then
-
-    	begin
-        	v_consulta:='
-SELECT (col.table_schema)::character varying AS esquema,
-    (col.table_name)::character varying AS tabla, (col.column_name)::character
-    varying AS columna, (col.ordinal_position)::integer AS posicion,
-    (col.column_default)::character varying AS defecto,
-    (col.is_nullable)::character varying AS blanco, (col.data_type)::character
-    varying AS tipo, CASE WHEN ((col.data_type)::text =
-    ''character varying''::text) THEN (col.character_maximum_length)::integer
-    WHEN ((col.data_type)::text = ''numeric''::text) THEN
-    (col.numeric_precision)::integer ELSE 0 END AS length, CASE WHEN
-    ((col.data_type)::text = ''numeric''::text) THEN (col.numeric_scale)::integer
-    ELSE 0 END AS "precision", (cons.conname)::character varying AS
-    nombre_constraint, (cons.consrc)::character varying AS definicion_constraint,
-    col1.guardar,col1.etiqueta
-FROM information_schema.columns col
-INNER JOIN gen.tcolumna col1
-    on(col1.nombre=col.column_name)
-LEFT JOIN information_schema.constraint_column_usage colcon ON
-    col.table_schema::text = colcon.table_schema::text AND
-    col.table_name::text = colcon.table_name::text AND
-    col.column_name::text = colcon.column_name::text
-LEFT JOIN pg_constraint cons ON
-    cons.conname = colcon.constraint_name::name AND
-    cons.contype = ''c''::"char"
-LEFT JOIN pg_class c ON
-cons.conrelid =c.oid AND c.relname = col.table_name::name
-WHERE '; --col.table_schema::text = 'rhum'::text AND
-    --col.table_name::text = 'tcolumna'::text AND id_tabla=21;
-      
-            v_consulta:=v_consulta||v_parametros.filtro;
-            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-            return v_consulta;
-		end;
-
-     elsif p_transaccion = 'GEN_DATCOL_CONT' then
-
-        begin
-        	v_consulta:='select count(col1.relname)
-            		from gen.vcolumna col1
-			left join gen.tcolumna col2
-			on col2.nombre = col1.relname
-                        where ';
-            v_consulta:=v_consulta||v_parametros.filtro;
-            return v_consulta;
-        end;
-
-     else
-     
-         raise exception 'Transaccion inexistente';
-         
-     end if;
-
-EXCEPTION
-
-	WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-END;
-$body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_esquema_sel (OID = 303921) : 
---
-CREATE FUNCTION gen.ft_esquema_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
-)
-RETURNS varchar
-AS 
+AS
 $body$
 /**************************************************************************
- FUNCION: 		segu.ft_esquema_sel
- DESCRIPCION:   lista las interfaces en el generador
- AUTOR: 	jrr	
- FECHA:	        25/01/2011
- COMENTARIOS:	
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_almacen_ime
+ DESCRIPCION:    Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'alm.talmacen'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:          21-09-2012
+ COMENTARIOS:  
 ***************************************************************************
- HISTORIA DE MODIFICACIONES:
+ HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:  
+ AUTOR:          
+ FECHA:      
 ***************************************************************************/
 
-
 DECLARE
 
-
-v_consulta   		varchar;
-v_parametros  		record;
-v_nombre_funcion  	text;
-v_mensaje_error    	text;
-v_resp              varchar;
-
-
-/*
-
-'filtro'
-'ordenacion'
-'dir_ordenacion'
-'puntero'
-'cantidad'
-
-*/
-
-BEGIN
-
-     v_parametros:=pxp.f_get_record(par_tabla);
-     v_nombre_funcion:='segu.ft_esquema_sel';
-     
-/*******************************    
- #TRANSACCION:  GEN_ESQUEM_SEL
- #DESCRIPCION:	Listado de esquemas en los metadatos para el combo del generador
- #AUTOR:		Jaime Rivera Rojas	
- #FECHA:		25/01/11	
-***********************************/
-
-     if(par_transaccion='GEN_ESQUEM_SEL')then
-
-          --consulta:=';
-          BEGIN
-
-               v_consulta:='SELECT n.oid::integer,
-                                n.nspname::varchar AS name,
-                                u.usename::varchar
-                            FROM pg_namespace n
-                            LEFT OUTER JOIN pg_user u ON n.nspowner = u.usesysid
-                            LEFT OUTER JOIN pg_description ds ON n.oid = ds.objoid
-                            where n.nspname not like ''pg_%'' and
-                                n.nspname not like ''information_schema'' and ';
-               
-               v_consulta:=v_consulta||v_parametros.filtro;
-               v_consulta:=v_consulta||' order by n.nspname limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-
-               return v_consulta;
-
-
-         END;
-
-/*******************************
- #TRANSACCION:  GEN_ESQUEM_CONT
- #DESCRIPCION:	Listado de esquemas en los metadatos para el combo del generador
- #AUTOR:		Jaime Rivera Rojas	
- #FECHA:		25/01/11	
-***********************************/
-     elsif(par_transaccion='GEN_ESQUEM_CONT')then
-
-          --consulta:=';
-          BEGIN
-
-               v_consulta:='SELECT count(n.oid)
-                            FROM pg_namespace n
-                            LEFT OUTER JOIN pg_user u ON n.nspowner = u.usesysid
-                            LEFT OUTER JOIN pg_description ds ON n.oid = ds.objoid
-                            where n.nspname not like ''pg_%'' and
-                                n.nspname not like ''information_schema'' and ';
-               v_consulta:=v_consulta||v_parametros.filtro;
-               return v_consulta;
-         END;
-     else
-         raise exception 'No existe la opcion';
-
-     end if;
-
-EXCEPTION
-
-      WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;      
-END;
-$body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_tabla_ime (OID = 303922) : 
---
-CREATE FUNCTION gen.ft_tabla_ime (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
-)
-RETURNS varchar
-AS 
-$body$
-DECLARE
-
-    v_nro_requerimiento    	integer;
-    v_parametros           	record;
-    v_id_requerimiento     	integer;
-    v_resp		            varchar;
+    v_nro_requerimiento        integer;
+    v_parametros               record;
+    v_id_requerimiento         integer;
+    v_resp                    varchar;
     v_nombre_funcion        text;
     v_mensaje_error         text;
-    v_id_tabla			integer;
-    v_registros         record;
-    v_tabla_antigua     varchar;
-    v_esquema           varchar;
-
-
-/*
-
- id_proyecto
- denominacion 
- descripcion
- estado_reg 
-
-*/
-
+    v_id_almacen    integer;
+              
 BEGIN
 
-     v_nombre_funcion:='gen.ft_tabla_ime';
-     v_parametros:=pxp.f_get_record(p_tabla);
+    v_nombre_funcion = 'alm.ft_almacen_ime';
+    v_parametros = f_get_record(p_tabla);
 
-     if(p_transaccion='GEN_TABLA_INS')then
+    /*********************************  
+     #TRANSACCION:  'SAL_ALM_INS'
+     #DESCRIPCION:  Insercion de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
 
-          BEGIN
-                select lower(s.codigo)
-                into v_esquema
-                from segu.tsubsistema s
-                where id_subsistema=v_parametros.id_subsistema;
-                
-               insert into gen.ttabla(
-		          esquema,
-		          nombre,
-                 titulo,
-                 id_subsistema,
-                 id_usuario_reg,
-                 id_usuario_mod,
-                 fecha_reg,
-                 fecha_mod,
-                 estado_reg,
-                 alias,
-                 --reemplazar,
-                 --menu,
-                 direccion,
-                 cant_grupos
-               ) values(
-                v_esquema,
-                v_parametros.nombre,
-                v_parametros.titulo,
-                v_parametros.id_subsistema,
-                p_id_usuario,
-                NULL,
-                now(),
-                NULL,
-                'activo',
-                v_parametros.alias,
-                --v_parametros.reemplazar,
-                --v_parametros.menu,
-                v_parametros.direccion,
-                v_parametros.cant_grupos
-               )RETURNING id_tabla into v_id_tabla;
-                --raise exception 'llega%',v_parametros.nombre;
-              
-          		--Registro de las colummas de la tabla
-                insert into gen.tcolumna(
-                id_usuario_reg,
-                 estado_reg, 
-                 nombre, 
-                 descripcion,  
-                 tipo_dato, 
-                 longitud, 
-                 nulo,
-                id_tabla, 
-                etiqueta, 
-                guardar, checks, valor_defecto, grid_ancho, grid_mostrar,
-                form_ancho_porcen, orden, grupo
-                )
-                select
-                p_id_usuario, 'activo', columna, descripcion, tipo_dato, longitud, nulo,
-                v_id_tabla, columna, 'si', checks, valor_defecto,grid_ancho, grid_mostrar,
-                form_ancho_porcen, orden, grupo
-                from gen.f_obtener_datos_tabla_sel(p_id_usuario,v_parametros.nombre,'GEN_COLUMN_SEL') as (
-                columna varchar,descripcion varchar,tipo_dato varchar,longitud text,
-                nulo varchar,checks varchar, valor_defecto varchar, grid_ancho INTEGER,
-                grid_mostrar varchar, form_ancho_porcen integer, orden smallint, grupo smallint);
-                --
-               
-				v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla almacenada con exito (id_tabla'||v_id_tabla||')'); 
-          		v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_id_tabla::varchar);
+    if(p_transaccion='SAL_ALM_INS')then
+                  
+        begin
+            --Sentencia de la insercion--
+            insert into alm.talmacen(
+            estado_reg,
+            fecha_mod,
+            fecha_reg,
+            id_usuario_mod,
+            id_usuario_reg,
+            codigo,
+            nombre,
+            localizacion)
+            values(
+            'activo',
+            NULL,
+            now(),
+            NULL,
+            p_id_usuario, 
+            v_parametros.codigo,
+            v_parametros.nombre,
+            v_parametros.localizacion
+            )RETURNING id_almacen into v_id_almacen;
+             
+            --Definicion de la respuesta--
+            v_resp = f_agrega_clave(v_resp,'mensaje','Almacen almacenado(a) con exito (id_almacen'||v_id_almacen||')');
+            v_resp = f_agrega_clave(v_resp,'id_almacen',v_id_almacen::varchar);
 
-               return v_resp;
+            --Devuelve la respuesta--
+            return v_resp;
 
-         END;
+        end;
 
-     elsif(p_transaccion='GEN_TABLA_MOD')then
+    /*********************************  
+     #TRANSACCION:  'SAL_ALM_MOD'
+     #DESCRIPCION:  Modificacion de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
 
-          BEGIN
+    elsif(p_transaccion='SAL_ALM_MOD')then
 
-              select nombre
-              into v_tabla_antigua
-              from gen.ttabla
-              where id_tabla=v_parametros.id_tabla;
-              select lower(s.codigo)
-                into v_esquema
-                from segu.tsubsistema s
-                where id_subsistema=v_parametros.id_subsistema;
-              if(v_tabla_antigua!=v_parametros.nombre)then
-                delete from gen.tcolumna
-                where id_tabla=v_parametros.id_tabla;
-                
-                --Registro de las colummas de la tabla
-                insert into gen.tcolumna(
-                id_usuario_reg, estado_reg, nombre, descripcion,  tipo_dato, longitud, nulo,
-                id_tabla, etiqueta, guardar
-                )
-                select
-                p_id_usuario, 'activo', columna, descripcion, tipo_dato, longitud, nulo,
-                v_parametros.id_tabla, columna, 'si'
-                from gen.f_obtener_datos_tabla_sel(p_id_usuario,v_parametros.nombre,'GEN_COLUMN_SEL') as (
-                id integer,columna varchar,descripcion varchar,tipo_dato varchar,longitud integer,nulo varchar,checks varchar);
-                --
-              
-              end if;
-              
+        begin
+            --Sentencia de la modificacion--
+            update alm.talmacen set
+            fecha_mod = now(),
+            id_usuario_mod = p_id_usuario,
+            codigo = v_parametros.codigo,
+            nombre = v_parametros.nombre,
+            localizacion = v_parametros.localizacion
+            where id_almacen=v_parametros.id_almacen;
+             
+            --Definicion de la respuesta--
+            v_resp = f_agrega_clave(v_resp,'mensaje','Almacen modificado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_almacen',v_parametros.id_almacen::VARCHAR);
+             
+            --Devuelve la respuesta--
+            return v_resp;
+          
+        end;
 
-               update gen.ttabla set
-               esquema=v_esquema,
-               nombre=v_parametros.nombre,
-               titulo=v_parametros.titulo,
-               id_subsistema=v_parametros.id_subsistema,
-               id_usuario_mod=p_id_usuario,
-               fecha_mod=now(),
-               alias = v_parametros.alias,
-              -- reemplazar = v_parametros.reemplazar,
-              -- menu = v_parametros.menu,
-               direccion=v_parametros.direccion,
-               cant_grupos=v_parametros.cant_grupos
-               where id_tabla=v_parametros.id_tabla;
-               
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla modificada'); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
-               
-               return v_resp;
-          END;
+    /*********************************  
+     #TRANSACCION:  'SAL_ALM_ELI'
+     #DESCRIPCION:  Eliminacion de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
 
-    elsif(p_transaccion='GEN_TABLA_ELI')then
+    elsif(p_transaccion='SAL_ALM_ELI')then
 
-          BEGIN
-                delete from gen.tcolumna
-               where id_tabla=v_parametros.id_tabla;
-               
-               delete from gen.ttabla
-               where id_tabla=v_parametros.id_tabla;
+        begin
+            --Sentencia de la eliminacion--
+            delete from alm.talmacen
+            where id_almacen=v_parametros.id_almacen;
+             
+            --Definicion de la respuesta--
+            v_resp = f_agrega_clave(v_resp,'mensaje','Almacen eliminado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_almacen',v_parametros.id_almacen::varchar);
+            
+            --Devuelve la respuesta--
+            return v_resp;
 
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla eliminada'); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
-              
-               return v_resp;
-         END;
-         
-     else
-     
-         raise exception 'Transacción inexistente: %',p_transaccion;
+        end;
+       
+    else
+   
+        raise exception 'Transaccion inexistente: %',p_transaccion;
 
-     end if;
+    end if;
 
 EXCEPTION
-
-	WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-        
+              
+    WHEN OTHERS THEN
+        v_resp='';
+        v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
+                      
 END;
 $body$
     LANGUAGE plpgsql;
 --
--- Definition for function ft_tabla_sel (OID = 303923) : 
+-- Definition for function ft_almacen_sel (OID = 688764) :
 --
-CREATE FUNCTION gen.ft_tabla_sel (
+CREATE FUNCTION alm.ft_almacen_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla character varying,
   p_transaccion character varying
 )
 RETURNS varchar
-AS 
+AS
 $body$
-/*
-Autor: RCM
-Fecha: 30/11/2010
-Descripción: Función que devuelve conjuntos de datos
-*/
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_almacen_sel
+ DESCRIPCION:    Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'alm.talmacen'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:          21-09-2012
+ COMENTARIOS:  
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:  
+ AUTOR:          
+ FECHA:      
+***************************************************************************/
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-    v_resp				varchar;
-
+    v_consulta            varchar;
+    v_parametros          record;
+    v_nombre_funcion       text;
+    v_resp                varchar;
+              
 BEGIN
 
-    v_parametros:=pxp.f_get_record(p_tabla);
-    v_nombre_funcion:='gen.ft_tabla_sel';
+    v_nombre_funcion = 'alm.ft_almacen_sel';
+    v_parametros = f_get_record(p_tabla);
 
-    if p_transaccion = 'GEN_TABLA_SEL' then
+    /*********************************  
+     #TRANSACCION:  'SAL_ALM_SEL'
+     #DESCRIPCION:  Consulta de datos
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
 
-    	begin
-        	v_consulta:='select
-            			tabla.id_tabla, tabla.esquema, tabla.nombre, tabla.titulo,
-            			tabla.id_subsistema, tabla.id_usuario_reg, tabla.id_usuario_mod,
-            			tabla.fecha_reg,tabla.fecha_mod, tabla.estado_reg,
-            			subsis.nombre as desc_subsistema, subsis.prefijo, tabla.alias,
-            			tabla.reemplazar, tabla.menu,tabla.direccion,subsis.nombre_carpeta,
-                        (select nombre from gen.tcolumna where id_tabla = tabla.id_tabla and checks = ''PK'' LIMIT 1) as llave_primaria,
-                        cant_grupos
-            			from gen.ttabla tabla
-            			inner join segu.tsubsistema subsis
-            			on subsis.id_subsistema = tabla.id_subsistema
-                        where  ';
+    if(p_transaccion='SAL_ALM_SEL')then
+                   
+        begin
+            --Sentencia de la consulta
+            v_consulta:='select
+                        al.id_almacen,
+                        al.codigo,
+                        al.nombre,
+                        al.localizacion                      
+                        from alm.talmacen al
+                        where ';
+          
+            --Definicion de la respuesta--
             v_consulta:=v_consulta||v_parametros.filtro;
             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+           
+            --Devuelve la respuesta--
             return v_consulta;
-		end;
+           
+                      
+        end;
 
-    elsif p_transaccion = 'GEN_TABLA_CONT' then
+    /*********************************  
+     #TRANSACCION:  'SAL_ALM_CONT'
+     #DESCRIPCION:  Conteo de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ALM_CONT')then
 
         begin
-        	v_consulta:='select count(id_tabla)
-            			from gen.ttabla tabla
-            			inner join segu.tsubsistema subsis
-            			on subsis.id_subsistema = tabla.id_subsistema
+            --Sentencia de la consulta de conteo de registros--
+            v_consulta:='select count(al.id_almacen)
+                        from alm.talmacen al
                         where ';
+          
+            --Definicion de la respuesta--          
             v_consulta:=v_consulta||v_parametros.filtro;
+
+            --Devuelve la respuesta
             return v_consulta;
+
+        end;
+                  
+    else
+                       
+        raise exception 'Transaccion inexistente';
+                           
+    end if;
+                  
+EXCEPTION
+                  
+    WHEN OTHERS THEN
+            v_resp='';
+            v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            raise exception '%',v_resp;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_clasificacion_ime (OID = 688784) :
+--
+CREATE FUNCTION alm.ft_clasificacion_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:         alm.ft_clasificacion_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'alm.tclasificacion'
+ AUTOR:         Gonzalo Sarmiento
+ FECHA:            25-09-2012
+ COMENTARIOS:   
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:   
+ AUTOR:           
+ FECHA:       
+***************************************************************************/
+
+DECLARE
+
+    v_nro_requerimiento        integer;
+    v_parametros               record;
+    v_id_requerimiento         integer;
+    v_resp                    varchar;
+    v_nombre_funcion        text;
+    v_mensaje_error         text;
+    v_id_clasificacion    integer;
+    v_codigo_largo varchar;
+               
+BEGIN
+
+    v_nombre_funcion = 'alm.ft_clasificacion_ime';
+    v_parametros = f_get_record(p_tabla);
+
+    /*********************************   
+     #TRANSACCION:  'SAL_CLA_INS'
+     #DESCRIPCION:    Insercion de registros
+     #AUTOR:            Gonzalo Sarmiento    
+     #FECHA:            25-09-2012
+    ***********************************/
+
+    if(p_transaccion='SAL_CLA_INS')then
+                   
+        begin
+       
+           --obtiene codigo recursivamente
+            IF v_parametros.id_clasificacion_fk is null THEN
+               v_codigo_largo = v_parametros.codigo;
+            ELSE
+           
+             WITH RECURSIVE t(id,id_fk,cod,n) AS (
+               SELECT cla.id_clasificacion,cla.id_clasificacion_fk, cla.codigo,1
+               FROM alm.tclasificacion cla
+               WHERE cla.id_clasificacion = v_parametros.id_clasificacion_fk
+              UNION ALL
+               SELECT cla.id_clasificacion,cla.id_clasificacion_fk, cla.codigo , n+1
+               FROM alm.tclasificacion cla, t
+               WHERE cla.id_clasificacion = t.id_fk
+            )
+            SELECT textcat_all(a.cod||'.')
+             into 
+             v_codigo_largo
+            FROM (SELECT  cod
+                  FROM t
+                 order by n desc)  a;
+                
+                
+               v_codigo_largo = v_codigo_largo||v_parametros.codigo;
+            END IF;
+           
+           
+            --Sentencia de la insercion
+            insert into alm.tclasificacion(
+            estado_reg,
+            fecha_reg,
+            id_usuario_reg,
+            codigo,
+            id_clasificacion_fk,
+            nombre,
+            descripcion,
+            codigo_largo
+              ) values(
+            'activo',
+            now(),
+            p_id_usuario,
+            v_parametros.codigo,
+            v_parametros.id_clasificacion_fk,
+            v_parametros.nombre,
+            v_parametros.descripcion,
+            v_codigo_largo
+            )RETURNING id_clasificacion into v_id_clasificacion;
+              
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Clasificacion almacenado(a) con exito (id_clasificacion'||v_id_clasificacion||')');
+            v_resp = f_agrega_clave(v_resp,'id_clasificacion',v_id_clasificacion::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
         end;
 
-     elsif p_transaccion = 'GEN_TABLACOM_SEL' then
+    /*********************************   
+     #TRANSACCION:  'SAL_CLA_MOD'
+     #DESCRIPCION:    Modificacion de registros
+     #AUTOR:            Gonzalo Sarmiento
+     #FECHA:            25-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_CLA_MOD')then
 
         begin
-        	v_consulta:='SELECT n.oid::integer as oid_esquema,
-                                n.nspname::varchar AS nombre_esquema,
-                                c.oid::integer as oid_tabla ,
-                                c.relname::varchar as nombre
-
-                        FROM pg_namespace n
-                        INNER JOIN pg_class c ON c.relnamespace = n.oid
-                        where n.nspname not like ''pg_%'' and
-                            n.nspname not like ''information_schema'' and c.relkind=''r'' and ';
-            v_consulta:=v_consulta||v_parametros.filtro;
-            v_consulta:=v_consulta||' order by c.relname limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-            return v_consulta;
+            --obtiene codigo recursivamente
+            IF v_parametros.id_clasificacion_fk is null THEN
+               v_codigo_largo = v_parametros.codigo;
+            ELSE
+           
+             WITH RECURSIVE t(id,id_fk,cod,n) AS (
+               SELECT cla.id_clasificacion,cla.id_clasificacion_fk, cla.codigo,1
+               FROM alm.tclasificacion cla
+               WHERE cla.id_clasificacion = v_parametros.id_clasificacion_fk
+              UNION ALL
+               SELECT cla.id_clasificacion,cla.id_clasificacion_fk, cla.codigo , n+1
+               FROM alm.tclasificacion cla, t
+               WHERE cla.id_clasificacion = t.id_fk
+            )
+            SELECT textcat_all(a.cod||'.')
+             into 
+             v_codigo_largo
+            FROM (SELECT  cod
+                  FROM t
+                 order by n desc)  a;
+                
+                
+               v_codigo_largo = v_codigo_largo||v_parametros.codigo;
+            END IF;
+       
+            --Sentencia de la modificacion
+            update alm.tclasificacion set
+            fecha_mod = now(),
+            id_usuario_mod = p_id_usuario,
+            codigo = v_parametros.codigo,
+            id_clasificacion_fk = v_parametros.id_clasificacion_fk,
+            nombre = v_parametros.nombre,
+              descripcion = v_parametros.descripcion,
+            codigo_largo=v_codigo_largo
+            where id_clasificacion=v_parametros.id_clasificacion;
+              
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Clasificacion modificado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_clasificacion',v_parametros.id_clasificacion::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+           
         end;
-     elsif p_transaccion = 'GEN_TABLACOM_CONT' then
+
+    /*********************************   
+     #TRANSACCION:  'SAL_CLA_ELI'
+     #DESCRIPCION:    Eliminacion de registros
+     #AUTOR:            Gonzalo Sarmiento   
+     #FECHA:            25-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_CLA_ELI')then
 
         begin
-        	v_consulta:='select count(c.oid)
-            			FROM pg_namespace n
-                        INNER JOIN pg_class c ON c.relnamespace = n.oid
-                        where n.nspname not like ''pg_%'' and
-                            n.nspname not like ''information_schema'' and c.relkind=''r'' and ';
-            v_consulta:=v_consulta||v_parametros.filtro;
-            return v_consulta;
-        end;
+            --Sentencia de la eliminacion
+            delete from alm.tclasificacion
+            where id_clasificacion=v_parametros.id_clasificacion;
+              
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Clasificacion eliminado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_clasificacion',v_parametros.id_clasificacion::varchar);
+             
+            --Devuelve la respuesta
+            return v_resp;
 
-     else
-     
-         raise exception 'Transaccion inexistente';
-         
-     end if;
+        end;
+        
+    else
+    
+        raise exception 'Transaccion inexistente: %',p_transaccion;
+
+    end if;
 
 EXCEPTION
+               
+    WHEN OTHERS THEN
+        v_resp='';
+        v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
+                       
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_clasificacion_sel (OID = 688797) :
+--
+CREATE FUNCTION alm.ft_clasificacion_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:         alm.ft_clasificacion_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'alm.tclasificacion'
+ AUTOR:         Gonzalo Sarmiento
+ FECHA:            24-09-2012
+ COMENTARIOS:   
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
 
-	WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
+ DESCRIPCION:   
+ AUTOR:           
+ FECHA:       
+***************************************************************************/
+
+DECLARE
+
+    v_consulta            varchar;
+    v_parametros          record;
+    v_nombre_funcion       text;
+    v_resp                varchar;
+    v_where varchar;
+    v_join varchar;
+               
+BEGIN
+
+    v_nombre_funcion = 'alm.ft_clasificacion_sel';
+    v_parametros = f_get_record(p_tabla);
+
+    /*********************************   
+     #TRANSACCION:  'ALM_CLA_SEL'
+     #DESCRIPCION:    Consulta de datos
+     #AUTOR:            Gonzalo Sarmiento
+     #FECHA:            24-09-2012
+    ***********************************/
+
+    if(p_transaccion='ALM_CLA_SEL')then
+                    
+        begin
+            --Sentencia de la consulta
+            v_consulta:='select
+                        cla.id_clasificacion,
+                        cla.nombre,
+                        cla.codigo_largo
+                        from alm.tclasificacion cla
+                        where  ';
+           
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+            --Devuelve la respuesta
+            return v_consulta;
+                       
+        end;
+       
+     /*********************************   
+     #TRANSACCION:  'ALM_CLA_ARB_SEL'
+     #DESCRIPCION:    Consulta de datos
+     #AUTOR:            Gonzalo Sarmiento
+     #FECHA:            24-09-2012
+    ***********************************/
+
+    elseif(p_transaccion='ALM_CLA_ARB_SEL')then
+                    
+        begin
+       
+              if(v_parametros.id_padre = '%') then
+                v_where := ' cla.id_clasificacion_fk is NULL';   
+                     
+              else
+                v_where := ' cla.id_clasificacion_fk = '||v_parametros.id_padre;
+              end if;
+       
+       
+            --Sentencia de la consulta
+            v_consulta:='select
+                        cla.id_clasificacion,
+                        cla.id_clasificacion_fk,
+                        cla.codigo,
+                        cla.nombre,
+                        cla.descripcion,
+                         case
+                          when (cla.id_clasificacion_fk is null )then
+                               ''raiz''::varchar
+                          ELSE
+                              ''hijo''::varchar
+                          END as tipo_nodo
+                        from alm.tclasificacion cla
+                        where  '||v_where|| ' 
+                        ORDER BY cla.id_clasificacion';
+            raise notice '%',v_consulta;
+           
+            --Devuelve la respuesta
+            return v_consulta;
+                       
+        end;  
+
+    /*********************************   
+     #TRANSACCION:  'ALM_CLA_CONT'
+     #DESCRIPCION:    Conteo de registros
+     #AUTOR:            Gonzalo Sarmiento
+     #FECHA:            24-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='ALM_CLA_CONT')then
+
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='select count(id_clasificacion)
+                        from alm.tclasificacion cla
+                        where ';
+           
+            --Definicion de la respuesta           
+            v_consulta:=v_consulta||v_parametros.filtro;
+
+            --Devuelve la respuesta
+            return v_consulta;
+
+        end;
+                   
+    else
+                        
+        raise exception 'Transaccion inexistente';
+                            
+    end if;
+                   
+EXCEPTION
+                   
+    WHEN OTHERS THEN
+            v_resp='';
+            v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            raise exception '%',v_resp;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_item_ime (OID = 688806) :
+--
+CREATE FUNCTION alm.ft_item_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_item_ime
+ DESCRIPCION:    Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones) de la tabla 'alm.titem'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:          21-09-2012
+ COMENTARIOS:  
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:  
+ AUTOR:          
+ FECHA:      
+***************************************************************************/
+
+DECLARE
+
+    v_nro_requerimiento        integer;
+    v_parametros               record;
+    v_id_requerimiento         integer;
+    v_resp                    varchar;
+    v_nombre_funcion        text;
+    v_mensaje_error         text;
+    v_id_item    integer;
+              
+BEGIN
+
+    v_nombre_funcion = 'alm.ft_item_ime';
+    v_parametros = f_get_record(p_tabla);
+
+    /*********************************  
+     #TRANSACCION:  'SAL_ITEM_INS'
+     #DESCRIPCION:  Insercion de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
+
+    if(p_transaccion='SAL_ITEM_INS')then
+                  
+        begin
+            --Sentencia de la insercion
+            insert into alm.titem(
+            id_usuario_reg,
+            fecha_reg,
+            estado_reg,
+            id_clasificacion,
+            codigo,
+            nombre,
+            descripcion,
+            palabras_clave,
+            codigo_fabrica,
+             observaciones,
+            numero_serie
+              ) values(
+            p_id_usuario,
+            now(),
+            'activo',
+            v_parametros.id_clasificacion,
+            v_parametros.codigo_largo,
+            v_parametros.nombre,
+            v_parametros.descripcion,
+            v_parametros.palabras_clave,
+            v_parametros.codigo_fabrica,
+            v_parametros.observaciones,
+            v_parametros.numero_serie
+            )RETURNING id_item into v_id_item;
+             
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Item almacenado(a) con exito (id_item'||v_id_item||')');
+            v_resp = f_agrega_clave(v_resp,'id_item',v_id_item::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
+        end;
+
+    /*********************************  
+     #TRANSACCION:  'SAL_ITEM_MOD'
+     #DESCRIPCION:  Modificacion de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ITEM_MOD')then
+
+        begin
+            --Sentencia de la modificacion
+            update alm.titem set
+            id_usuario_mod = p_id_usuario,
+            fecha_mod = now(),
+            id_clasificacion = v_parametros.id_clasificacion,
+            codigo = v_parametros.codigo_largo,
+            nombre = v_parametros.nombre,
+            descripcion = v_parametros.descripcion,
+            palabras_clave = v_parametros.palabras_clave,
+            codigo_fabrica = v_parametros.codigo_fabrica,
+            observaciones = v_parametros.observaciones,           
+            numero_serie = v_parametros.numero_serie
+            where id_item=v_parametros.id_item;
+             
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Item modificado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_item',v_parametros.id_item::VARCHAR);
+             
+            --Devuelve la respuesta
+            return v_resp;
+          
+        end;
+
+    /*********************************  
+     #TRANSACCION:  'SAL_ITEM_ELI'
+     #DESCRIPCION:  Eliminacion de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        21-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ITEM_ELI')then
+
+        begin
+            --Sentencia de la eliminacion
+            delete from alm.titem
+            where id_item=v_parametros.id_item;
+             
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Item eliminado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_item',v_parametros.id_item::varchar);
+            
+            --Devuelve la respuesta
+            return v_resp;
+
+        end;
+       
+    else
+   
+        raise exception 'Transaccion inexistente: %',p_transaccion;
+
+    end if;
+
+EXCEPTION
+              
+    WHEN OTHERS THEN
+        v_resp='';
+        v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
+                      
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_item_sel (OID = 688807) :
+--
+CREATE FUNCTION alm.ft_item_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_item_sel
+ DESCRIPCION:    Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'alm.titem'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:            20-09-2012
+ COMENTARIOS:  
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:  
+ AUTOR:          
+ FECHA:      
+***************************************************************************/
+
+DECLARE
+
+    v_consulta            varchar;
+    v_parametros          record;
+    v_nombre_funcion       text;
+    v_resp                varchar;
+              
+BEGIN
+
+    v_nombre_funcion = 'alm.ft_item_sel';
+    v_parametros = f_get_record(p_tabla);
+
+    /*********************************  
+     #TRANSACCION:  'SAL_ITEM_SEL'
+     #DESCRIPCION:    Consulta de datos
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        20-09-2012
+    ***********************************/
+
+    if(p_transaccion='SAL_ITEM_SEL')then
+                   
+        begin
+            --Sentencia de la consulta
+            v_consulta:='select
+                        item.id_item,
+                        item.id_clasificacion,
+                        cla.nombre as desc_clasificacion,
+                        cla.codigo_largo,
+                        item.nombre,
+                        item.descripcion,
+                        item.palabras_clave,
+                        item.codigo_fabrica,
+                        item.observaciones,
+                        item.numero_serie                      
+                        from alm.titem item, alm.tclasificacion cla
+                        where item.id_clasificacion = cla.id_clasificacion and ';
+          
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+           
+            --Devuelve la respuesta
+            return v_consulta;
+           
+                      
+        end;
+
+    /*********************************  
+     #TRANSACCION:  'SAL_ITEM_CONT'
+     #DESCRIPCION:  Conteo de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        20-09-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ITEM_CONT')then
+
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='select count(item.id_item)
+                        from alm.titem item
+                        where ';
+          
+            --Definicion de la respuesta          
+            v_consulta:=v_consulta||v_parametros.filtro;
+
+            --Devuelve la respuesta
+            return v_consulta;
+
+        end;
+                  
+    else
+                       
+        raise exception 'Transaccion inexistente';
+                           
+    end if;
+                  
+EXCEPTION
+                  
+    WHEN OTHERS THEN
+            v_resp='';
+            v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            raise exception '%',v_resp;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_almacen_stock_sel (OID = 711099) :
+--
+CREATE FUNCTION alm.ft_almacen_stock_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:         alm.ft_almacen_stock_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tdepto_usuario'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:            01-10-2012
+ COMENTARIOS:   
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:   
+ AUTOR:           
+ FECHA:       
+***************************************************************************/
+
+DECLARE
+
+    v_consulta            varchar;
+    v_parametros          record;
+    v_nombre_funcion       text;
+    v_resp                varchar;
+               
+BEGIN
+
+    v_nombre_funcion = 'alm.ft_almacen_item_sel';
+    v_parametros = f_get_record(p_tabla);
+
+    /*********************************   
+     #TRANSACCION:  'SAL_ALMITEM_SEL'
+     #DESCRIPCION:    Consulta de datos
+     #AUTOR:        Gonzalo Sarmiento   
+     #FECHA:        01-10-2012
+    ***********************************/
+
+    if(p_transaccion='SAL_ALMITEM_SEL')then
+                    
+        begin
+            --Sentencia de la consulta
+            v_consulta:='select
+                        almitem.id_almacen_stock,
+                        almitem.estado_reg,
+                        almitem.id_almacen,
+                        almitem.id_item,
+                        item.nombre as desc_item,
+                        almitem.cantidad_min,
+                        almitem.cantidad_alerta_amarilla,
+                        almitem.cantidad_alerta_roja,
+                        almitem.id_usuario_reg,
+                        almitem.fecha_reg,
+                        almitem.id_usuario_mod,
+                        almitem.fecha_mod
+                        from alm.talmacen_stock almitem, alm.titem item
+                        where almitem.id_item = item.id_item and ';
+           
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
+           
+            if (public.f_existe_parametro(p_tabla,'id_almacen')) then        
+                v_consulta:= v_consulta || ' and almitem.id_almacen='||v_parametros.id_almacen;
+            end if;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+            --Devuelve la respuesta
+            return v_consulta;
+                       
+        end;
+
+    /*********************************   
+     #TRANSACCION:  'SAL_ALMITEM_CONT'
+     #DESCRIPCION:    Conteo de registros
+     #AUTOR:        Gonzalo Sarmiento
+     #FECHA:        01-10-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ALMITEM_CONT')then
+
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='select count(almitem.id_almacen_stock)
+                        from alm.talmacen_stock almitem, alm.titem item
+                        where almitem.id_item = item.id_item and  ';
+           
+            --Definicion de la respuesta           
+            v_consulta:=v_consulta||v_parametros.filtro;
+            if (public.f_existe_parametro(p_tabla,'id_almacen')) then        
+                v_consulta:= v_consulta || ' and almitem.id_almacen='||v_parametros.id_almacen;
+            end if;
+            --Devuelve la respuesta
+            return v_consulta;
+
+        end;
+                   
+    else
+                        
+        raise exception 'Transaccion inexistente';
+                            
+    end if;
+                   
+EXCEPTION
+                   
+    WHEN OTHERS THEN
+            v_resp='';
+            v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            raise exception '%',v_resp;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_almacen_stock_ime (OID = 712319) :
+--
+CREATE FUNCTION alm.ft_almacen_stock_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:         alm.ft_almacen_stock_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'alm.talmacen_stock'
+ AUTOR:         Gonzalo Sarmiento
+ FECHA:            01-10-2012
+ COMENTARIOS:   
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:   
+ AUTOR:           
+ FECHA:       
+***************************************************************************/
+
+DECLARE
+
+    v_nro_requerimiento        integer;
+    v_parametros               record;
+    v_id_requerimiento         integer;
+    v_resp                    varchar;
+    v_nombre_funcion        text;
+    v_mensaje_error         text;
+    v_id_almacen_stock    integer;
+               
+BEGIN
+
+    v_nombre_funcion = 'alm.ft_almacen_stock_ime';
+    v_parametros = f_get_record(p_tabla);
+
+    /*********************************   
+     #TRANSACCION:  'SAL_ALMITEM_INS'
+     #DESCRIPCION:    Insercion de registros
+     #AUTOR:        Gonzalo Sarmiento 
+     #FECHA:        01-10-2012
+    ***********************************/
+
+    if(p_transaccion='SAL_ALMITEM_INS')then
+                   
+        begin
+            --Sentencia de la insercion
+            insert into alm.talmacen_stock(
+            estado_reg,
+            id_almacen,
+            id_item,
+            id_usuario_reg,
+            fecha_reg,
+            id_usuario_mod,
+            fecha_mod    ,
+            cantidad_min,
+            cantidad_alerta_amarilla,
+            cantidad_alerta_roja
+              ) values(
+            'activo',
+            v_parametros.id_almacen,
+            v_parametros.id_item,
+            p_id_usuario,
+            now(),
+            null,
+            null ,
+            v_parametros.cantidad_min,
+            v_parametros.cantidad_alerta_amarilla,
+            v_parametros.cantidad_alerta_roja
+            )RETURNING id_almacen_stock into v_id_almacen_stock;
+              
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Item por Almacen almacenado(a) con exito (id_almacen_stock'||v_id_almacen_stock||')');
+            v_resp = f_agrega_clave(v_resp,'id_almacen_stock',v_id_almacen_stock::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
+        end;
+
+    /*********************************   
+     #TRANSACCION:  'SAL_ALMITEM_MOD'
+     #DESCRIPCION:    Modificacion de registros
+     #AUTOR:        Gonzalo Sarmiento
+     #FECHA:        01-10-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ALMITEM_MOD')then
+
+        begin
+            --Sentencia de la modificacion
+            update alm.talmacen_stock set
+            id_almacen = v_parametros.id_almacen,
+            id_item = v_parametros.id_item,
+            id_usuario_mod = p_id_usuario,
+            fecha_mod = now() ,
+            cantidad_min=v_parametros.cantidad_min,
+            cantidad_alerta_amarilla=v_parametros.cantidad_alerta_amarilla,
+            cantidad_alerta_roja=v_parametros.cantidad_alerta_roja
+            where id_almacen_stock=v_parametros.id_almacen_stock;
+              
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Item por Almacen modificado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_almacen_stock',v_parametros.id_almacen_stock::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+           
+        end;
+
+    /*********************************   
+     #TRANSACCION:  'SAL_ALMITEM_ELI'
+     #DESCRIPCION:    Eliminacion de registros
+     #AUTOR:        Gonzalo Sarmiento
+     #FECHA:        01-10-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_ALMITEM_ELI')then
+
+        begin
+            --Sentencia de la eliminacion
+            delete from alm.talmacen_stock
+            where id_almacen_stock=v_parametros.id_almacen_stock;
+              
+            --Definicion de la respuesta
+            v_resp = f_agrega_clave(v_resp,'mensaje','Item por Almacen eliminado(a)');
+            v_resp = f_agrega_clave(v_resp,'id_almacen_stock',v_parametros.id_almacen_stock::varchar);
+             
+            --Devuelve la respuesta
+            return v_resp;
+
+        end;
+        
+    else
+    
+        raise exception 'Transaccion inexistente: %',p_transaccion;
+
+    end if;
+
+EXCEPTION
+               
+    WHEN OTHERS THEN
+        v_resp='';
+        v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
+                       
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_movimiento_det_sel (OID = 722844) :
+--
+CREATE FUNCTION alm.ft_movimiento_det_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_movimiento_det_sel
+ DESCRIPCION:    Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tdepto_usuario'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:          02-10-2012
+ COMENTARIOS:   
+***************************************************************************/
+
+DECLARE
+  v_nombre_funcion    text;
+  v_parametros         record;
+  v_consulta         varchar;
+  v_respuesta         varchar;
+BEGIN
+  v_nombre_funcion = 'alm.ft_movimiento_det_sel';
+  v_parametros = f_get_record(p_tabla);
+ 
+  /*********************************   
+     #TRANSACCION:  'SAL_MOV_DET_SEL'
+     #DESCRIPCION:  Consulta de datos
+     #AUTOR:        Gonzalo Sarmiento   
+     #FECHA:        02-10-2012
+    ***********************************/
+   
+  if(p_transaccion='SAL_MOV_DET_SEL') then
+      begin
+    ---sentencia de la consulta----
+     v_consulta:='select
+                     movdet.id_movimiento_det,
+                    movdet.id_movimiento,
+                    movdet.id_item,                   
+                    item.nombre as desc_item,
+                    movdet.cantidad,
+                    movdet.costo_unitario,
+                    movdet.fecha_caducidad,
+                    movdet.id_usuario_reg,
+                    movdet.fecha_reg,
+                    movdet.id_usuario_mod,
+                    movdet.fecha_mod
+                    from alm.tmovimiento_det movdet,alm.titem item
+                    where movdet.id_item = item.id_item and ';         
+    -----DEFINICION DE LA RESPUESTA-----
+     v_consulta:=v_consulta||v_parametros.filtro;
+           
+            if (public.f_existe_parametro(p_tabla,'id_movimiento')) then        
+                v_consulta:= v_consulta || ' and movdet.id_movimiento='||v_parametros.id_movimiento;
+            end if;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+       
+            raise notice '%',v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
+    end;
+      /*********************************   
+     #TRANSACCION:  'SAL_MOV_DET_CONT'
+     #DESCRIPCION:   Conteo de registros
+     #AUTOR:        Gonzalo Sarmiento
+     #FECHA:        02-10-2012
+    ***********************************/
+
+    elsif(p_transaccion='SAL_MOV_DET_CONT')then
+
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='select count(movdet.id_movimiento_det)
+                        from alm.tmovimiento_det movdet, alm.tmovimiento mov
+                        where movdet.id_movimiento = mov.id_movimiento and  ';
+           
+            --Definicion de la respuesta           
+            v_consulta:=v_consulta||v_parametros.filtro;
+            if (public.f_existe_parametro(p_tabla,'id_movimiento')) then        
+                v_consulta:= v_consulta || ' and movdet.id_movimiento='||v_parametros.id_movimiento;
+            end if;
+            --Devuelve la respuesta
+            return v_consulta;
+
+        end;
+                   
+    else
+                        
+        raise exception 'Transaccion inexistente';
+                            
+    end if;
+ 
+EXCEPTION
+    WHEN OTHERS THEN
+            v_respuesta='';
+            v_respuesta = f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_respuesta = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_respuesta = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            raise exception '%',v_respuesta;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_movimiento_det_ime (OID = 725600) :
+--
+CREATE FUNCTION alm.ft_movimiento_det_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:         alm.ft_movimiento_det_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'alm.tmovimiento_det'
+ AUTOR:         Gonzalo Sarmiento
+ FECHA:            02-10-2012
+ COMENTARIOS:   
+***************************************************************************/
+
+DECLARE
+  v_nombre_funcion         varchar;
+  v_consulta            varchar;
+  v_parametros          record;
+  v_respuesta             varchar;
+  v_id_movimiento_det    integer;
+BEGIN
+  v_nombre_funcion='alm.ft_movimiento_det_ime';
+  v_parametros=f_get_record(p_tabla);
+  /*********************************   
+     #TRANSACCION:  'SAL_MOV_DET_INS'
+     #DESCRIPCION:  Insercion de registros
+     #AUTOR:        Gonzalo Sarmiento 
+     #FECHA:        02-10-2012
+    ***********************************/
+    if(p_transaccion='SAL_MOV_DET_INS') then
+        begin
+            insert into alm.tmovimiento_det(
+                id_usuario_reg,
+                fecha_reg,
+                estado_reg,               
+                id_movimiento,
+                id_item,
+                cantidad,
+                costo_unitario,
+                fecha_caducidad)
+                VALUES(
+                p_id_usuario,
+                now(),
+                'activo',
+                v_parametros.id_movimiento,
+                v_parametros.id_item,
+                v_parametros.cant,
+                v_parametros.costo_unitario,
+                v_parametros.fecha_caducidad)
+                RETURNING id_movimiento_det into v_id_movimiento_det;
+                 
+                v_respuesta=f_agrega_clave(v_respuesta,'mensaje','Detalle de movimiento almacenado(a) con exito (id_movimiento_det'||v_id_movimiento_det||')');
+                v_respuesta=f_agrega_clave(v_respuesta,'id_movimiento_det',v_id_movimiento_det::varchar);
+
+                return v_respuesta;
+        end;
+    /*********************************   
+     #TRANSACCION:  'SAL_MOV_DET_MOD'
+     #DESCRIPCION:  Modificacion de registros
+     #AUTOR:        Gonzalo Sarmiento
+     #FECHA:        02-10-2012
+    ***********************************/
+    elseif(p_transaccion='SAL_MOV_DET_MOD')then
+        begin
+            update alm.tmovimiento_det set
+            id_usuario_mod=p_id_usuario,
+            fecha_mod=now(),
+            id_movimiento=v_parametros.id_movimiento,
+            id_item=v_parametros.id_item,
+            cantidad=v_parametros.cant,
+            costo_unitario=v_parametros.costo_unitario,
+            fecha_caducidad=v_parametros.fecha_caducidad
+            where id_movimiento_det=v_parametros.id_movimiento_det;
+           
+            v_respuesta = f_agrega_clave(v_respuesta,'mensaje','Detalle de movimiento modificado con exito');
+            v_respuesta = f_agrega_clave(v_respuesta,'id_movimiento_det',v_parametros.id_movimiento_det::varchar);
+           
+            return v_respuesta;
+        end;
+    /*********************************   
+     #TRANSACCION:  'SAL_MOV_DET_ELI'
+     #DESCRIPCION:  Eliminacion de registros
+     #AUTOR:        Gonzalo Sarmiento
+     #FECHA:        02-10-2012
+    ***********************************/
+    elseif(p_transaccion='SAL_MOV_DET_ELI')then
+        begin
+            RAISE NOTICE 'llega gonzalo';
+            delete from alm.tmovimiento_det
+            where id_movimiento_det=v_parametros.id_movimiento_det;
+           
+            v_respuesta=f_agrega_clave(v_respuesta,'mensaje','Detalle de movimiento eliminado correctamente');
+            v_respuesta=f_agrega_clave(v_respuesta,'id_movimiento_det',v_parametros.id_movimiento_det::varchar);
+          
+            return v_respuesta;
+        end;
+    else
+        raise exception 'Transaccion inexistente';
+    end if;
+EXCEPTION
+
+    WHEN OTHERS THEN
+        v_respuesta='';
+        v_respuesta=f_agrega_clave(v_respuesta,'mensaje',SQLERRM);
+        v_respuesta=f_agrega_clave(v_respuesta,'codigo_error',SQLSTATE);
+        v_respuesta=f_agrega_clave(v_respuesta,'procedimiento',v_nombre_funcion);
+        raise exception '%',v_respuesta;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_movimiento_sel (OID = 728848) :
+--
+CREATE FUNCTION alm.ft_movimiento_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_movimiento_sel
+ DESCRIPCION:    Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'alm.tmovimiento'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:          02-10-2012
+ COMENTARIOS:  
+***************************************************************************/
+
+DECLARE
+  v_nombre_funcion    varchar;
+  v_consulta         varchar;
+  v_parametros         record;
+  v_respuesta        varchar;
+BEGIN
+  v_nombre_funcion='alm.ft_movimiento_sel';
+  v_parametros=f_get_record(p_tabla);
+ 
+  /*********************************  
+     #TRANSACCION:  'SAL_MOV_SEL'
+     #DESCRIPCION:  Consulta de datos
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        02-12-2012
+    ***********************************/
+ 
+  if(p_transaccion='SAL_MOV_SEL')then
+      begin
+        v_consulta:='select
+            mov.id_movimiento,
+            mov.id_movimiento_tipo,
+            mov.id_almacen,
+            almo.nombre as nombre_origen,
+            mov.id_funcionario,
+            mov.id_proveedor,
+            mov.id_almacen_dest,
+            almd.nombre as nombre_destino,
+            mov.fecha_mov,
+            mov.numero_mov,
+            mov.descripcion,
+            mov.observaciones,
+            mov.id_usuario_reg,
+            mov.fecha_reg,
+            mov.id_usuario_mod,
+            mov.fecha_mod,
+            mov.estado_mov
+            from alm.tmovimiento_tipo movtipo
+            INNER JOIN alm.tmovimiento mov on mov.id_movimiento_tipo = movtipo.id_movimiento_tipo
+            INNER JOIN alm.talmacen almo on almo.id_almacen= mov.id_almacen
+            LEFT JOIN alm.talmacen almd on almd.id_almacen= mov.id_almacen_dest
+            where movtipo.codigo='''||v_parametros.codigo||''' and ';
+        v_consulta:=v_consulta||v_parametros.filtro;
+        v_consulta:=v_consulta||' order by '||v_parametros.ordenacion||' '||v_parametros.dir_ordenacion||' limit '||v_parametros.cantidad||' offset '||v_parametros.puntero;           
+        return v_consulta;
+    end;
+  /*********************************  
+     #TRANSACCION:  'SAL_MOV_CONT'
+     #DESCRIPCION:  Conteo de registros
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        24-09-2012
+    ***********************************/
+  elsif(p_transaccion='SAL_MOV_CONT')then
+    begin
+        v_consulta:='select count(mov.id_movimiento)
+                    from alm.tmovimiento mov,alm.tmovimiento_tipo movtipo
+                    where movtipo.codigo= ''||v_parametros.codigo||'' and
+                          movtipo.id_movimiento_tipo=mov.id_movimiento_tipo and ';
+        v_consulta:= v_consulta||v_parametros.filtro;
+        return v_consulta;
+     end;
+  end if;
+EXCEPTION
+  WHEN OTHERS THEN
+    v_respuesta='';
+    v_respuesta=f_agrega_clave(v_respuesta,'mensaje',SQLERRM);
+    v_respuesta=f_agrega_clave(v_respuesta,'codigo_error',SQLSTATE);
+    v_respuesta=f_agrega_clave(v_respuesta,'procedimiento',v_nombre_funcion);
+    raise exception '%',v_respuesta;
+END;
+$body$
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_movimiento_ime (OID = 738894) :
+--
+CREATE FUNCTION alm.ft_movimiento_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
+)
+RETURNS varchar
+AS
+$body$
+/**************************************************************************
+ SISTEMA:        Almacenes
+ FUNCION:        alm.ft_movimiento_ime
+ DESCRIPCION:    Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones) de la tabla 'alm.tmovimiento'
+ AUTOR:          Gonzalo Sarmiento
+ FECHA:          03-10-2012
+ COMENTARIOS:  
+************************************************************************/
+DECLARE
+  v_nombre_funcion                 varchar; 
+  v_parametros                    record;
+  v_id_movimiento_tipo            integer;
+  v_id_movimiento                integer;
+  v_id_movimiento_tipo_ingreso    integer;
+  v_id_movimiento_tipo_salida    integer;
+  v_respuesta                    varchar;
+  v_id_movimiento_ingreso        integer;
+  v_id_movimiento_salida        integer;
+  v_transferencia                record;
+  v_consulta                    varchar;
+  v_detalle                        record;
+
+BEGIN
+  v_nombre_funcion='alm.ft_movimiento_ime';
+  v_parametros=f_get_record(p_tabla);
+ 
+ 
+  /*********************************  
+     #TRANSACCION:  'SAL_MOV_INS'
+     #DESCRIPCION:  Insercion de datos
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        03-10-2012
+    ***********************************/
+  if(p_transaccion='SAL_MOV_INS')then
+      begin       
+        v_id_movimiento_tipo=(select id_movimiento_tipo from alm.tmovimiento_tipo
+                          where codigo=v_parametros.codigo);       
+
+        insert into alm.tmovimiento
+                      (id_movimiento_tipo, id_almacen,
+                     id_funcionario, id_proveedor,
+                     id_almacen_dest, fecha_mov,
+                     numero_mov, descripcion,
+                     observaciones, id_usuario_reg,
+                     fecha_reg, estado_reg, estado_mov)
+                     values(v_id_movimiento_tipo,v_parametros.id_almacen,
+                     v_parametros.id_funcionario, v_parametros.id_proveedor,
+                     v_parametros.id_almacen_dest,v_parametros.fecha_mov,
+                     v_parametros.numero_mov, v_parametros.descripcion,
+                     v_parametros.observaciones, p_id_usuario,
+                     now(),'activo', 'borrador')
+                     RETURNING id_movimiento into v_id_movimiento;
+
+        v_respuesta =f_agrega_clave(v_respuesta,'mensaje','Movimiento almacenado correctamente');
+        v_respuesta =f_agrega_clave(v_respuesta,'id_movimiento',v_id_movimiento::varchar);
+
+        return v_respuesta;
+    end;
+  /*********************************  
+     #TRANSACCION:  'SAL_MOV_MOD'
+     #DESCRIPCION:  Modificacion de datos
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        03-10-2012
+    ***********************************/         
+               
+  elseif(p_transaccion='SAL_MOV_MOD')then
+      begin
+        update alm.tmovimiento set                    
+                     id_almacen=v_parametros.id_almacen,
+                     id_funcionario=v_parametros.id_funcionario,
+                     id_proveedor=v_parametros.id_proveedor,
+                     id_almacen_dest=v_parametros.id_almacen_dest,
+                     fecha_mov=v_parametros.fecha_mov,
+                     numero_mov=v_parametros.numero_mov,
+                     descripcion=v_parametros.descripcion,
+                     observaciones=v_parametros.observaciones,
+                     id_usuario_mod=p_id_usuario,
+                     fecha_mod=now()
+        where id_movimiento = v_parametros.id_movimiento;
+       
+        v_respuesta=f_agrega_clave(v_respuesta,'mensaje','Movimiento modificado con exito');
+        v_respuesta=f_agrega_clave(v_respuesta,'id_movimiento',v_parametros.id_movimiento::varchar);
+        return v_respuesta;
+    end;
+  /*********************************  
+     #TRANSACCION:  'SAL_MOV_ELI'
+     #DESCRIPCION:  Eliminacion de datos
+     #AUTOR:        Gonzalo Sarmiento  
+     #FECHA:        03-10-2012
+    ***********************************/
+  elseif(p_transaccion='SAL_MOV_ELI')then
+      begin
+        delete from alm.tmovimiento
+        where id_movimiento=v_parametros.id_movimiento;
+
+        v_respuesta=f_agrega_clave(v_respuesta,'mensaje','Movimiento eliminado');
+        v_respuesta=f_agrega_clave(v_respuesta,'id_movimiento',v_parametros.id_movimiento::varchar);
+
+        return v_respuesta;
+    end;
+  elseif(p_transaccion='SAL_MOV_FIN')then
+      begin
+
+        update alm.tmovimiento set
+        estado_mov='finalizado'
+        where id_movimiento=v_parametros.id_movimiento;
+       
+        if(v_parametros.operacion='finalizarTransferencia')then
+            begin
+                select * into v_transferencia from alm.tmovimiento where id_movimiento=v_parametros.id_movimiento;
+                v_id_movimiento_tipo_ingreso=(select id_movimiento_tipo from alm.tmovimiento_tipo
+                          where codigo='ING');                       
+               
+                v_id_movimiento_tipo_salida=(select id_movimiento_tipo from alm.tmovimiento_tipo
+                          where codigo='SAL');
+               
+                insert into alm.tmovimiento(
+                id_movimiento_tipo,
+                id_almacen,
+                id_funcionario,
+                fecha_mov,
+                numero_mov,
+                descripcion,
+                observaciones,
+                id_usuario_reg,
+                fecha_reg,
+                estado_mov)values(
+                v_id_movimiento_tipo_ingreso,
+                v_transferencia.id_almacen_dest,
+                v_transferencia.id_funcionario,
+                v_transferencia.fecha_mov,
+                v_transferencia.numero_mov,
+                v_transferencia.descripcion,
+                v_transferencia.observaciones,
+                v_transferencia.id_usuario_reg,
+                now(),
+                'finalizado')RETURNING id_movimiento into v_id_movimiento_ingreso;
+               
+                insert into alm.tmovimiento(
+                id_movimiento_tipo,
+                id_almacen,
+                id_funcionario,
+                fecha_mov,
+                numero_mov,
+                descripcion,
+                observaciones,
+                id_usuario_reg,
+                fecha_reg,
+                estado_mov)values(
+                v_id_movimiento_tipo_salida,
+                v_transferencia.id_almacen,
+                v_transferencia.id_funcionario,
+                v_transferencia.fecha_mov,
+                v_transferencia.numero_mov,
+                v_transferencia.descripcion,
+                v_transferencia.observaciones,
+                v_transferencia.id_usuario_reg,
+                now(),
+                'finalizado')RETURNING id_movimiento into v_id_movimiento_salida;
+               
+                v_consulta='select * from alm.tmovimiento_det where id_movimiento='||v_parametros.id_movimiento||'';
+                FOR v_detalle IN EXECUTE(v_consulta)
+                LOOP    
+                    insert into alm.tmovimiento_det(
+                    id_movimiento,id_item,cantidad, costo_unitario,fecha_caducidad,
+                    id_usuario_reg,fecha_reg,estado_reg)values
+                    (v_id_movimiento_ingreso, v_detalle.id_item,v_detalle.cantidad,
+                    v_detalle.costo_unitario, v_detalle.fecha_caducidad,
+                    v_detalle.id_usuario_reg,now(),'activo');
+                   
+                    insert into alm.tmovimiento_det(
+                    id_movimiento,id_item, cantidad, costo_unitario,
+                    fecha_caducidad, id_usuario_reg, fecha_reg, estado_reg)
+                    values(
+                    v_id_movimiento_salida, v_detalle.id_item, v_detalle.cantidad,
+                    v_detalle.costo_unitario,v_detalle.fecha_caducidad,
+                    v_detalle.id_usuario_reg, now(),'activo');                             
+                   END LOOP;
+            end;
+        end if;
+        v_respuesta=f_agrega_clave(v_respuesta,'mensaje','Movimiento finalizado');
+        v_respuesta=f_agrega_clave(v_respuesta,'id_movimiento',v_parametros.id_movimiento::varchar);
+        return v_respuesta;   
+    end;
+  else
+       raise exception 'Transaccion inexistente: %',p_transaccion;
+  end if;
+EXCEPTION
+  WHEN OTHERS THEN
+        v_respuesta='';
+        v_respuesta = f_agrega_clave(v_respuesta,'mensaje',SQLERRM);
+        v_respuesta = f_agrega_clave(v_respuesta,'codigo_error',SQLSTATE);
+        v_respuesta = f_agrega_clave(v_respuesta,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_respuesta;
 END;
 $body$
     LANGUAGE plpgsql;
