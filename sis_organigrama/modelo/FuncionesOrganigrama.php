@@ -274,6 +274,34 @@ class FuncionesOrganigrama
 	}
 	/*FinClase: MODDeptoUsuario*/
 	
+	/*Clase: MODTipoHorario
+	* Fecha: 17-08-2012 16:28:19
+	* Autor: admin*/
+	function listarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->listarTipoHorario();
+		return $res;
+	}
+			
+	function insertarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->insertarTipoHorario();
+		return $res;
+	}
+			
+	function modificarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->modificarTipoHorario();
+		return $res;
+	}
+			
+	function eliminarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->eliminarTipoHorario();
+		return $res;
+	}
+	/*FinClase: MODTipoHorario*/
+	
 	
 
 }
