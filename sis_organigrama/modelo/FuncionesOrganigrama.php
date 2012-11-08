@@ -274,7 +274,32 @@ class FuncionesOrganigrama
 	}
 	/*FinClase: MODDeptoUsuario*/
 	
-	
+	/*Clase: MODEspecialidad
+    * Fecha: 07-11-2012 18:26:47
+    * Autor: Gonzalo Sarmiento Sejas*/
+	function listarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->listarEspecialidad();
+        return $res;
+    }
+            
+    function insertarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->insertarEspecialidad();
+        return $res;
+    }
+            
+    function modificarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->modificarEspecialidad();
+        return $res;
+    }
+            
+    function eliminarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->eliminarEspecialidad();
+        return $res;
+    }
 
 }
 
