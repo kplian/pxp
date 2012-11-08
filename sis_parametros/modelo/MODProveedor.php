@@ -23,19 +23,21 @@ class MODProveedor extends MODbase{
 		$this->captura('id_proveedor','int4');
 		$this->captura('id_persona','int4');
 		$this->captura('codigo','varchar');
-		
 		$this->captura('numero_sigma','varchar');
 		$this->captura('tipo','varchar');
+		
 		$this->captura('estado_reg','varchar');
 		$this->captura('id_institucion','int4');
 		$this->captura('id_usuario_reg','int4');
-		$this->captura('fecha_reg','TIMESTAMP');
+		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_mod','int4');
-		$this->captura('fecha_mod','TIMESTAMP');
+		
+		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_completo1','text');
 		$this->captura('nombre','varchar');
+	
 		$this->captura('nit','varchar');
 		$this->captura('id_lugar','int4');
 		$this->captura('lugar','varchar');
@@ -43,6 +45,7 @@ class MODProveedor extends MODbase{
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+		//echo $this->consulta;exit;
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta

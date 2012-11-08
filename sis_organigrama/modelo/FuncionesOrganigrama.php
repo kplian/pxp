@@ -274,7 +274,116 @@ class FuncionesOrganigrama
 	}
 	/*FinClase: MODDeptoUsuario*/
 	
+	/*Clase: MODTipoHorario
+	* Fecha: 17-08-2012 16:28:19
+	* Autor: admin*/
+	function listarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->listarTipoHorario();
+		return $res;
+	}
+			
+	function insertarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->insertarTipoHorario();
+		return $res;
+	}
+			
+	function modificarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->modificarTipoHorario();
+		return $res;
+	}
+			
+	function eliminarTipoHorario(CTParametro $parametro){
+		$obj=new MODTipoHorario($parametro);
+		$res=$obj->eliminarTipoHorario();
+		return $res;
+	}
+	/*FinClase: MODTipoHorario*/
 	
+	/*Clase: MODEspecialidad
+    * Fecha: 07-11-2012 18:26:47
+    * Autor: Gonzalo Sarmiento Sejas*/
+	function listarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->listarEspecialidad();
+        return $res;
+    }
+            
+    function insertarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->insertarEspecialidad();
+        return $res;
+    }
+            
+    function modificarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->modificarEspecialidad();
+        return $res;
+    }
+            
+    function eliminarEspecialidad(CTParametro $parametro){
+        $obj=new MODEspecialidad($parametro);
+        $res=$obj->eliminarEspecialidad();
+        return $res;
+    }
+	
+	/*Clase: MODEspecialidadNivel
+	* Fecha: 26-08-2012 00:05:28
+	* Autor: admin*/
+	function listarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->listarEspecialidadNivel();
+		return $res;
+	}
+			
+	function insertarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->insertarEspecialidadNivel();
+		return $res;
+	}
+			
+	function modificarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->modificarEspecialidadNivel();
+		return $res;
+	}
+			
+	function eliminarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->eliminarEspecialidadNivel();
+		return $res;
+	}
+	/*FinClase: MODEspecialidadNivel*/
+	
+	/*Clase: MODFuncionarioEspecialidad
+	* Fecha: 17-08-2012 17:48:38
+	* Autor: admin*/
+	function listarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->listarFuncionarioEspecialidad();
+		return $res;
+	}
+			
+	function insertarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->insertarFuncionarioEspecialidad();
+		return $res;
+	}
+			
+	function modificarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->modificarFuncionarioEspecialidad();
+		return $res;
+	}
+			
+	function eliminarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->eliminarFuncionarioEspecialidad();
+		return $res;
+	}
+	/*FinClase: MODFuncionarioEspecialidad*/
 
 }
 

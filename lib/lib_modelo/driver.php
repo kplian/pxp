@@ -689,7 +689,7 @@ class driver
 		
 		if($this->consulta_armada){
 			if($this->tipo_procedimiento=='SEL'){
-				//echo 'b';exit;
+				//echo 'b:'.$res;exit;
 				$this->ejecutarConsultaSel($res);
 			}
 			elseif ($this->tipo_procedimiento=='IME'){
@@ -779,12 +779,15 @@ class driver
 		$cone=new conexion();
 		
 		if($this->tipo_conexion=='persistente'){
+			//echo 'fff';exit;
 			$link=$cone->conectarp();
 		}
 	    elseif($this->tipo_conexion=='seguridad'){
+	    	//echo 'aaa';exit;
 			$link=$cone->conectarSegu();
 		}
 		else{
+			//echo 'sss';exit;
 			$link=$cone->conectarnp();
 		}
 		

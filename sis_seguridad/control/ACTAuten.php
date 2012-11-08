@@ -31,9 +31,8 @@ class ACTAuten extends ACTbaseSeguridad {
 	//Genera las llaves publicas
 	function getPublicKey(){
 		//Se obtiene el primer primo
-		
 		$this->res=$this->funciones->ObtenerPrimo($this->objParam);
-		//var_dump($this->res);exit;
+		//echo 'resp:'.$this->res;exit;
 		if($this->res->getTipo()=='ERROR'){
 			
 			$this->res->imprimirRespuesta($this->res->generarJson());
