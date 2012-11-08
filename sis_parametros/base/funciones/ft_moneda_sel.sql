@@ -54,7 +54,7 @@ BEGIN
                             MONEDA.id_usuario_mod,
                             PERSON.nombre_completo1 AS desc_usuario_reg,
                             PERMOD.nombre_completo1 AS desc_usuario_mod,
-                            f_iif(MONEDA.tipo_moneda=''base'',''true'',''false'') as tipo_moneda
+                            pxp.f_iif(MONEDA.tipo_moneda=''base'',''true'',''false'') as tipo_moneda
                             FROM PARAM.tmoneda MONEDA
                             INNER JOIN SEGU.tusuario USUARI
                             ON USUARI.id_usuario=MONEDA.id_usuario_reg

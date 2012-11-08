@@ -356,6 +356,34 @@ class FuncionesOrganigrama
 		return $res;
 	}
 	/*FinClase: MODEspecialidadNivel*/
+	
+	/*Clase: MODFuncionarioEspecialidad
+	* Fecha: 17-08-2012 17:48:38
+	* Autor: admin*/
+	function listarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->listarFuncionarioEspecialidad();
+		return $res;
+	}
+			
+	function insertarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->insertarFuncionarioEspecialidad();
+		return $res;
+	}
+			
+	function modificarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->modificarFuncionarioEspecialidad();
+		return $res;
+	}
+			
+	function eliminarFuncionarioEspecialidad(CTParametro $parametro){
+		$obj=new MODFuncionarioEspecialidad($parametro);
+		$res=$obj->eliminarFuncionarioEspecialidad();
+		return $res;
+	}
+	/*FinClase: MODFuncionarioEspecialidad*/
 
 }
 
