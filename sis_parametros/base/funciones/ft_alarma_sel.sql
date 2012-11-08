@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -198,7 +199,8 @@ EXCEPTION
 			raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_config_alarma_ime (OID = 304026) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

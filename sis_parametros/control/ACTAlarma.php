@@ -16,7 +16,7 @@ class ACTAlarma extends ACTbase{
 		if($this->objParam->getParametro('id_usuario')!='')
 		{
 			$this->objParam->addFiltro("alarm.id_funcionario in (Select fun.id_funcionario
-            													 from rhum.tfuncionario fun
+            													 from orga.tfuncionario fun
             													 inner join segu.tusuario usu on usu.id_persona=fun.id_persona
                                                                  where usu.id_usuario=".$this->objParam->getParametro('id_usuario').")");	
 		}

@@ -43,49 +43,52 @@ class MODAlarma extends MODbase{
 		 
 		return $this->respuesta;
 	}
-			
-	function listarAlarma(){
-		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='param.ft_alarma_sel';
-		$this->transaccion='PM_ALARM_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+	
+	function modificarEnvioCorreo(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_alarma_ime';
+		$this->transaccion='PM_DESCCOR_MOD';
+		$this->tipo_procedimiento='IME';
 		
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		
+		
+		$this->count=false;
 				
-		//Definicion de la lista del resultado del query
-		$this->captura('id_alarma','int4');
-		$this->captura('acceso_directo','varchar');
-		$this->captura('id_funcionario','int4');
-		$this->captura('fecha','date');
-		$this->captura('estado_reg','varchar');
-		$this->captura('descripcion','varchar');
-		$this->captura('id_usuario_reg','int4');
-		$this->captura('fecha_reg','date');
-		$this->captura('id_usuario_mod','int4');
-		$this->captura('fecha_mod','date');
-		$this->captura('usr_reg','varchar');
-		$this->captura('usr_mod','varchar');
-		$this->captura('nombre_completo1','text');
-		$this->captura('clase','varchar');
-		$this->captura('titulo','varchar');
-		$this->captura('parametros','varchar');
-		$this->captura('obs','varchar');
-		$this->captura('tipo','varchar');
-		$this->captura('dias','integer');
+		//$this->count=false;	
+		$this->arreglo=array("id_usuario" =>1,
+							 "tipo"=>'TODOS');
 		
+		$this->setParametro('id_usuario','id_usuario','integer');
+		$this->setParametro('tipo','tipo','varchar');
+				
+		//Define los parametros para la funcion
+		//$this->setParametro('id_alarma','id_alarma','int4');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		
+
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-
+	
 	function listarAlarmaCorrespondeciaPendiente(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='param.ft_alarma_sel';
 		$this->transaccion='PM_ALARMCOR_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setCount(false);
+		
+		
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		
+		//$this->count=false;	
+		$this->arreglo=array("id_usuario" =>1,
+							 "tipo"=>'TODOS');
+							 
+		$this->setParametro('id_usuario','id_usuario','integer');				 
 		//Definicion de la lista del resultado del query
 		$this->captura('id_alarma','int4');
 		$this->captura('email_empresa','varchar');
@@ -104,6 +107,48 @@ class MODAlarma extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+
+			
+	function listarAlarma(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_alarma_sel';
+		$this->transaccion='PM_ALARM_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('id_alarma','int4');
+		$this->captura('acceso_directo','varchar');
+		$this->captura('id_funcionario','int4');
+		$this->captura('fecha','date');
+		$this->captura('estado_reg','varchar');
+		$this->captura('descripcion','varchar');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('nombre_completo1','text');
+		$this->captura('clase','varchar');
+		$this->captura('titulo','varchar');
+		$this->captura('parametros','varchar');
+		$this->captura('obs','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('dias','integer');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	
+
+
 
 	function alarmaPendiente(){
 		//Definicion de variables para ejecucion del procedimientp
@@ -165,21 +210,7 @@ class MODAlarma extends MODbase{
 		return $this->respuesta;
 	}
 	
-	function modificarEnvioCorreo(){
-		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='param.ft_alarma_ime';
-		$this->transaccion='PM_DESCCOR_MOD';
-		$this->tipo_procedimiento='IME';
-				
-		//Define los parametros para la funcion
-		$this->setParametro('id_alarma','id_alarma','int4');
-		//Ejecuta la instruccion
-		$this->armarConsulta();
-		$this->ejecutarConsulta();
 
-		//Devuelve la respuesta
-		return $this->respuesta;
-	}
 			
 	function eliminarAlarma(){
 		//Definicion de variables para ejecucion del procedimiento
