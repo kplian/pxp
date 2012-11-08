@@ -328,6 +328,34 @@ class FuncionesOrganigrama
         $res=$obj->eliminarEspecialidad();
         return $res;
     }
+	
+	/*Clase: MODEspecialidadNivel
+	* Fecha: 26-08-2012 00:05:28
+	* Autor: admin*/
+	function listarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->listarEspecialidadNivel();
+		return $res;
+	}
+			
+	function insertarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->insertarEspecialidadNivel();
+		return $res;
+	}
+			
+	function modificarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->modificarEspecialidadNivel();
+		return $res;
+	}
+			
+	function eliminarEspecialidadNivel(CTParametro $parametro){
+		$obj=new MODEspecialidadNivel($parametro);
+		$res=$obj->eliminarEspecialidadNivel();
+		return $res;
+	}
+	/*FinClase: MODEspecialidadNivel*/
 
 }
 
