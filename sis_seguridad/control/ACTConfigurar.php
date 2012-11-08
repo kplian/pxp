@@ -13,7 +13,7 @@ class ACTConfigurar extends ACTbase
 {			
 	function configurar()
 	{					
-		if($this->objParam->getParametro('autentificacion') == 'Contraseña WINDOWS')
+		if($this->objParam->getParametro('autentificacion') == 'Contraseña LDAP')
 		{
 			$autentificacion = 'ldap';
 		}

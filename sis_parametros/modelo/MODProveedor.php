@@ -29,9 +29,15 @@ class MODProveedor extends MODbase{
 		$this->captura('estado_reg','varchar');
 		$this->captura('id_institucion','int4');
 		$this->captura('id_usuario_reg','int4');
+<<<<<<< HEAD
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
+=======
+		$this->captura('fecha_reg','TIMESTAMP');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','TIMESTAMP');
+>>>>>>> d14b2bcc8daeae6fee31f2b304ca8d5eb1a793c7
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_completo1','text');

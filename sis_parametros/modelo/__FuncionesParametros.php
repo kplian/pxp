@@ -285,39 +285,6 @@ class FuncionesParametros
 	
 	/*FinClase: MODAlarma*/
 
-	/*Clase: MODDepto
-	* Fecha: 2011
-	* Autor: mzm*/
-	function ValidaDepto(CTParametro $parametro){
-		$depto=new MODDepto($parametro);
-		$res=$depto->ValidaDepto();
-		return $res;
-	}
-	
-	function listarDepto(CTParametro $parametro){
-		$depto=new  MODDepto($parametro);
-		$res=$depto->listarDepto();
-		return $res;
-	}
-	
-	function insertarDepto(CTParametro $parametro){
-		$depto=new  MODDepto($parametro);
-		$res=$depto->insertarDepto();
-		return $res;
-	}
-	
-	function modificarDepto(CTParametro $parametro){
-		$depto=new  MODDepto($parametro);
-		$res=$depto->modificarDepto();
-		return $res;
-	}
-	
-	function eliminarDepto(CTParametro $parametro){
-		$depto=new  MODDepto($parametro);
-		$res=$depto->eliminarDepto();
-		return $res;
-	}
-	/*FinClase: MODDepto*/
 	
 	/*Clase: MODDocumento
 	* Fecha: 2011
@@ -353,60 +320,7 @@ class FuncionesParametros
 	}
 	/*FinClase: MODDocumento*/
 
-	/*Clase: MODDeptoUo
-	* Fecha: 19-10-2011 12:59:45
-	* Autor: mzm*/
-	function listarDeptoUo(CTParametro $parametro){
-		$obj=new MODDeptoUo($parametro);
-		$res=$obj->listarDeptoUo();
-		return $res;
-	}
-			
-	function insertarDeptoUo(CTParametro $parametro){
-		$obj=new MODDeptoUo($parametro);
-		$res=$obj->insertarDeptoUo();
-		return $res;
-	}
-			
-	function modificarDeptoUo(CTParametro $parametro){
-		$obj=new MODDeptoUo($parametro);
-		$res=$obj->modificarDeptoUo();
-		return $res;
-	}
-			
-	function eliminarDeptoUo(CTParametro $parametro){
-		$obj=new MODDeptoUo($parametro);
-		$res=$obj->eliminarDeptoUo();
-		return $res;
-	}
 	
-	/*Clase: MODDeptoUsuario
-	* Fecha: 24-11-2011 18:26:47
-	* Autor: mzm*/
-	function listarDeptoUsuario(CTParametro $parametro){
-		$obj=new MODDeptoUsuario($parametro);
-		$res=$obj->listarDeptoUsuario();
-		return $res;
-	}
-			
-	function insertarDeptoUsuario(CTParametro $parametro){
-		$obj=new MODDeptoUsuario($parametro);
-		$res=$obj->insertarDeptoUsuario();
-		return $res;
-	}
-			
-	function modificarDeptoUsuario(CTParametro $parametro){
-		$obj=new MODDeptoUsuario($parametro);
-		$res=$obj->modificarDeptoUsuario();
-		return $res;
-	}
-			
-	function eliminarDeptoUsuario(CTParametro $parametro){
-		$obj=new MODDeptoUsuario($parametro);
-		$res=$obj->eliminarDeptoUsuario();
-		return $res;
-	}
-	/*FinClase: MODDeptoUsuario*/
 		
     	/*Clase: MODConfigAlarma
 	* Fecha: 18-11-2011 11:59:10
@@ -469,64 +383,6 @@ class FuncionesParametros
 		return $res;
 	}
 	/*FinClase: MODUnidadMedida*/
-
-
-	/*Clase: MODProveedorItemServicio
-	* Fecha: 15-08-2012 18:56:19
-	* Autor: admin*/
-	function listarProveedorItemServicio(CTParametro $parametro){
-		$obj=new MODProveedorItemServicio($parametro);
-		$res=$obj->listarProveedorItemServicio();
-		return $res;
-	}
-			
-	function insertarProveedorItemServicio(CTParametro $parametro){
-		$obj=new MODProveedorItemServicio($parametro);
-		$res=$obj->insertarProveedorItemServicio();
-		return $res;
-	}
-			
-	function modificarProveedorItemServicio(CTParametro $parametro){
-		$obj=new MODProveedorItemServicio($parametro);
-		$res=$obj->modificarProveedorItemServicio();
-		return $res;
-	}
-			
-	function eliminarProveedorItemServicio(CTParametro $parametro){
-		$obj=new MODProveedorItemServicio($parametro);
-		$res=$obj->eliminarProveedorItemServicio();
-		return $res;
-	}
-	/*FinClase: MODProveedorItemServicio*/
-
-
-	/*Clase: MODServicio
-	* Fecha: 16-08-2012 23:48:42
-	* Autor: admin*/
-	function listarServicio(CTParametro $parametro){
-		$obj=new MODServicio($parametro);
-		$res=$obj->listarServicio();
-		return $res;
-	}
-			
-	function insertarServicio(CTParametro $parametro){
-		$obj=new MODServicio($parametro);
-		$res=$obj->insertarServicio();
-		return $res;
-	}
-			
-	function modificarServicio(CTParametro $parametro){
-		$obj=new MODServicio($parametro);
-		$res=$obj->modificarServicio();
-		return $res;
-	}
-			
-	function eliminarServicio(CTParametro $parametro){
-		$obj=new MODServicio($parametro);
-		$res=$obj->eliminarServicio();
-		return $res;
-	}
-	/*FinClase: MODServicio*/
 
 
 }//marca_generador
