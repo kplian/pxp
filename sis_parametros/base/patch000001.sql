@@ -208,6 +208,26 @@ CREATE TABLE param.tunidad_medida (
     descripcion varchar
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
+
+-- Table: param.tservicio
+
+-- DROP TABLE param.tservicio;
+
+CREATE TABLE param.tservicio(
+  id_servicio serial NOT NULL,
+  codigo character varying(20) NOT NULL,
+  nombre character varying(100) NOT NULL,
+  descripcion character varying(1000),
+  CONSTRAINT tservicio_pkey PRIMARY KEY (id_servicio)
+)
+INHERITS (pxp.tbase)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE param.tservicio OWNER TO postgres;
+
+
+
 --
 -- Definition for index tinstitucion_idx (OID = 308254) : 
 --
