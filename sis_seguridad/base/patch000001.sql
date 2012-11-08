@@ -5529,5 +5529,11 @@ VALUES (1230, 961797407);
 -- Data for sequence segu.primo_id_primo_seq (OID = 307053)
 --
 SELECT pg_catalog.setval('segu.tprimo_id_primo_seq', 1230, true);
+
+--RAC  5 de noviembre 2012
+select pxp.f_insert_tgui ('Alertas', 'Alertas', 'ALERTA', 'si', 9, 'sis_parametros/vista/alarma/AlarmaFuncionario.php', 1, '', 'AlarmaFuncionario', 'PXP');
+select pxp.f_insert_tgui ('Configurar', 'Configurar', 'CONFIG', 'si', 13, 'sis_seguridad/vista/configurar/Configurar.php', 1, '', 'Configurar', 'PXP');
+select pxp.f_insert_testructura_gui ('ALERTA', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('CONFIG', 'SISTEMA');
  
 

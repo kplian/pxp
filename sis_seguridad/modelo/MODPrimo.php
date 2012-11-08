@@ -17,7 +17,7 @@ class MODPrimo extends MODbase
 		$this->procedimiento='segu.ft_primo_sel';
 		$this->transaccion='SEG_OBTEPRI_SEL';
 		$this->tipo_procedimiento='SEL';
-		
+
 		//definicion de variables
 		$this->tipo_conexion='seguridad';
 		$this->count=false;
@@ -25,12 +25,12 @@ class MODPrimo extends MODbase
 		//obtiene el random del id_primo
 		$numer_ran=rand(1,1000);
 		$this->arreglo=array("numero" =>$numer_ran);
-
 		//defino parametros de envio a la funci�n
 		$this->setParametro('id_primo','numero','integer');
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('primo','integer');
 		$this->armarConsulta();
+		
 		//echo $this->consulta;exit;
 		$this->ejecutarConsulta();
 		//var_dump($this->respuesta);exit;
