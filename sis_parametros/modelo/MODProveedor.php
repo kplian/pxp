@@ -29,14 +29,17 @@ class MODProveedor extends MODbase{
 		$this->captura('estado_reg','varchar');
 		$this->captura('id_institucion','int4');
 		$this->captura('id_usuario_reg','int4');
-		$this->captura('fecha_reg','date');
+		$this->captura('fecha_reg','TIMESTAMP');
 		$this->captura('id_usuario_mod','int4');
-		$this->captura('fecha_mod','date');
+		$this->captura('fecha_mod','TIMESTAMP');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_completo1','text');
 		$this->captura('nombre','varchar');
 		$this->captura('nit','varchar');
+		$this->captura('id_lugar','int4');
+		$this->captura('lugar','varchar');
+		$this->captura('pais','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -62,6 +65,9 @@ class MODProveedor extends MODbase{
 		$this->captura('id_institucion','INTEGER');
 		$this->captura('desc_proveedor','VARCHAR');
 		$this->captura('nit','VARCHAR');
+		$this->captura('id_lugar','int4');
+		$this->captura('lugar','varchar');
+		$this->captura('pais','varchar');
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -86,6 +92,7 @@ class MODProveedor extends MODbase{
 		//$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_institucion','id_institucion','int4');
 		$this->setParametro('nit','nit','varchar');
+		$this->setParametro('id_lugar','id_lugar','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -110,6 +117,7 @@ class MODProveedor extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_institucion','id_institucion','int4');
 		$this->setParametro('nit','nit','varchar');
+		$this->setParametro('id_lugar','id_lugar','int4');
 		
 
 		//Ejecuta la instruccion

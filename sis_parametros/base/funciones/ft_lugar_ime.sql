@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_lugar_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -63,7 +64,7 @@ BEGIN
                FROM param.tlugar l, t
                WHERE l.id_lugar = t.id_fk
             )
-            SELECT textcat_all(a.cod||'.')
+            SELECT pxp.textcat_all(a.cod||'.')
              into  
              v_codigo_largo
             FROM (SELECT  cod
@@ -137,7 +138,7 @@ BEGIN
                FROM param.tlugar l, t
                WHERE l.id_lugar = t.id_fk
             )
-            SELECT textcat_all(a.cod||'.')
+            SELECT pxp.textcat_all(a.cod||'.')
              into  
              v_codigo_largo
             FROM (SELECT  cod
@@ -210,7 +211,8 @@ EXCEPTION
 				        
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_lugar_sel (OID = 304040) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
