@@ -1,3 +1,6 @@
+-- Function: param.f_proveedor_item_servicio_ime(integer, integer, character varying, character varying)
+
+-- DROP FUNCTION param.f_proveedor_item_servicio_ime(integer, integer, character varying, character varying);
 
 CREATE OR REPLACE FUNCTION param.f_proveedor_item_servicio_ime(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
   RETURNS character varying AS
@@ -31,7 +34,7 @@ DECLARE
 BEGIN
 
     v_nombre_funcion = 'param.f_proveedor_item_servicio_ime';
-    v_parametros = f_get_record(p_tabla);
+    v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
  	#TRANSACCION:  'PM_PRITSE_INS'
@@ -73,8 +76,8 @@ BEGIN
 			)RETURNING id_proveedor_item into v_id_proveedor_item;
                
 			--Definicion de la respuesta
-			v_resp = f_agrega_clave(v_resp,'mensaje','Proveedor Item/Servicio almacenado(a) con exito (id_proveedor_item'||v_id_proveedor_item||')'); 
-            v_resp = f_agrega_clave(v_resp,'id_proveedor_item',v_id_proveedor_item::varchar);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Proveedor Item/Servicio almacenado(a) con exito (id_proveedor_item'||v_id_proveedor_item||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_proveedor_item',v_id_proveedor_item::varchar);
 
             --Devuelve la respuesta
             return v_resp;
@@ -108,8 +111,8 @@ BEGIN
 			where id_proveedor_item=v_parametros.id_proveedor_item;
                
 			--Definicion de la respuesta
-            v_resp = f_agrega_clave(v_resp,'mensaje','Proveedor Item/Servicio modificado(a)'); 
-            v_resp = f_agrega_clave(v_resp,'id_proveedor_item',v_parametros.id_proveedor_item::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Proveedor Item/Servicio modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_proveedor_item',v_parametros.id_proveedor_item::varchar);
                
             --Devuelve la respuesta
             return v_resp;
@@ -131,8 +134,8 @@ BEGIN
             where id_proveedor_item=v_parametros.id_proveedor_item;
                
             --Definicion de la respuesta
-            v_resp = f_agrega_clave(v_resp,'mensaje','Proveedor Item/Servicio eliminado(a)'); 
-            v_resp = f_agrega_clave(v_resp,'id_proveedor_item',v_parametros.id_proveedor_item::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Proveedor Item/Servicio eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_proveedor_item',v_parametros.id_proveedor_item::varchar);
               
             --Devuelve la respuesta
             return v_resp;
@@ -149,9 +152,9 @@ EXCEPTION
 				
 	WHEN OTHERS THEN
 		v_resp='';
-		v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
 				        
 END;

@@ -38,6 +38,7 @@ class CTIntermediario{
      	//Obtencion de los datos enviados por la vista
 		$this->objPostData=new CTPostData();
 		$this->aPostData=$this->objPostData->getData();
+		//var_dump($this->aPostData);exit;
 		//rac 22/09/2011 
 		$this->aPostFiles=$this->objPostData->getFiles();
 		
@@ -152,9 +153,10 @@ $fb->log($this->nombreClase,"clase");*/
 	function direccionarAccion(){
 		//Instancia la clase dinamica para ejecutar la accion requerida
 		eval('$cad = new $this->nombreClase($this->objParametro);');
-
 		//Ejecuta el metodo solicitado
+		//var_dump($this->objParametro);exit;
 		eval('$cad->'.$this->metodoEjecutar.'();');
+		
 	}
 
 	 //Verifica si la conexion es HTTPS
@@ -325,7 +327,7 @@ $fb->log($this->nombreClase,"clase");*/
 						
 					//si la sesion esta inactiva el unico metodo que puede ejecutar es getPublicKey
 					//o si la sesion esta prepara el unico unico metodo que puede ejecutar es verificarCredenciales
-
+					
 					if($_SESSION["_SESION"]->getEstado()=='inactiva' or $_SESSION["_SESION"]->getEstado()=='preparada'){
 
 						if(!(($this->metodoEjecutar=='getPublicKey' AND $this->nombreClase=='Auten')or ($this->metodoEjecutar=='verificarCredenciales' AND $this->nombreClase=='Auten'))){

@@ -39,7 +39,7 @@ Phx.vista.Configurar = Ext.extend(Phx.frmInterfaz,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
 	       		    mode: 'local',
-	       		    store:['Contraseña ENDESIS','Contraseña WINDOWS']	       		    
+	       		    store:['Contraseña PXP-KPLIAN','Contraseña LDAP']	       		    
        		},
        		type:'ComboBox',
        		id_grupo:0,
@@ -515,7 +515,7 @@ Phx.vista.Configurar = Ext.extend(Phx.frmInterfaz,
 		Phx.vista.Configurar.superclass.successSave.call(this,r);	
 		
 		var auten = '';
-		if(this.getComponente('autentificacion').getValue() == 'Contraseña WINDOWS')
+		if(this.getComponente('autentificacion').getValue() == 'Contraseña LDAP')
 		{
 			auten = 'ldap';
 		} 
@@ -528,11 +528,11 @@ Phx.vista.Configurar = Ext.extend(Phx.frmInterfaz,
 		
 		if(Phx.CP.config_ini.autentificacion == 'ldap')
 		{
-			this.getComponente('autentificacion').setValue("Contraseña WINDOWS");
+			this.getComponente('autentificacion').setValue("Contraseña LDAP");
 		}
 		else
 		{
-			this.getComponente('autentificacion').setValue("Contraseña ENDESIS");
+			this.getComponente('autentificacion').setValue("Contraseña PXP-KPLIAN");
 		}
 		
 		this.getComponente('clave_nueva').disable();
@@ -569,12 +569,12 @@ Phx.vista.Configurar = Ext.extend(Phx.frmInterfaz,
 								
 		if(Phx.CP.config_ini.autentificacion == 'local')
 		{
-			this.getComponente('autentificacion').setValue('Contraseña ENDESIS');
+			this.getComponente('autentificacion').setValue('Contraseña PXP-KPLIAN');
 			tab2.enable();
 		}
 		else
 		{
-			this.getComponente('autentificacion').setValue('Contraseña WINDOWS');
+			this.getComponente('autentificacion').setValue('Contraseña LDAP');
 			tab2.disable();
 		}					
 		
