@@ -290,11 +290,11 @@ select pxp.f_insert_tfuncion ('ft_uo_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('ft_uo_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('ft_uo_funcionario_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('ft_uo_funcionario_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tgui ('Parametros de RRHH', 'Parametros de RRHH', 'PARRHH', 'si', 1, 'sis_recursos_humanos/vista/parametro_rhum/parametro_rhum.js', 3, '', 'parametro_rhum', 'ORGA');
+select pxp.f_insert_tgui ('Parametros de RRHH', 'Parametros de RRHH', 'PARRHH', 'si', 1, 'sis_organigrama/vista/parametro_rhum/parametro_rhum.js', 3, '', 'parametro_rhum', 'ORGA');
 select pxp.f_insert_tgui ('Definicion de Planillas', 'Definicion de Planillas', 'DEFPLAN', 'si', 1, '', 3, '', '', 'ORGA');
-select pxp.f_insert_tgui ('Tipo Columna', 'Tipo Columna', 'TIPCOL', 'si', 1, 'sis_recursos_humanos/vista/tipo_columna/tipo_columna.js', 4, '', 'tipo_columna', 'ORGA');
-select pxp.f_insert_tgui ('Estructura Organizacional', 'Estructura Organizacional', 'ESTORG', 'si', 2, 'sis_recursos_humanos/vista/estructura_uo/EstructuraUo.php', 3, '', 'EstructuraUo', 'ORGA');
-select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'FUNCIO', 'si', 1, 'sis_recursos_humanos/vista/funcionario/Funcionario.php', 3, '', 'funcionario', 'ORGA');
+select pxp.f_insert_tgui ('Tipo Columna', 'Tipo Columna', 'TIPCOL', 'si', 1, 'sis_organigrama/vista/tipo_columna/tipo_columna.js', 4, '', 'tipo_columna', 'ORGA');
+select pxp.f_insert_tgui ('Estructura Organizacional', 'Estructura Organizacional', 'ESTORG', 'si', 2, 'sis_organigrama/vista/estructura_uo/EstructuraUo.php', 3, '', 'EstructuraUo', 'ORGA');
+select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'FUNCIO', 'si', 1, 'sis_organigrama/vista/funcionario/Funcionario.php', 3, '', 'funcionario', 'ORGA');
 select pxp.f_insert_tgui ('Parametros', 'Parametros', 'PARAMRH', 'si', 1, '', 2, '', '', 'ORGA');
 select pxp.f_insert_tgui ('Procesos', 'Procesos', 'PROCRH', 'si', 2, '', 2, '', '', 'ORGA');
 select pxp.f_insert_tgui ('Reportes', 'Reportes', 'REPRH', 'si', 3, '', 2, '', '', 'ORGA');
@@ -310,8 +310,7 @@ select pxp.f_insert_testructura_gui ('REPRH', 'ORGA');
 select pxp.f_insert_testructura_gui ('ORGA', 'SISTEMA');
 select pxp.f_insert_tprocedimiento ('RH_FUNCIOCAR_CONT', '	Conteo de funcionarios con cargos historicos
 ', 'si', '', '', 'ft_funcionario_sel');
-select pxp.f_insert_tprocedimiento ('RH_FUNCIO_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', '__24nov11_ft_funcionario_sel');
-select pxp.f_insert_tprocedimiento ('RH_FUNCIO_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', '__24nov11_ft_funcionario_sel');
+
 select pxp.f_insert_tprocedimiento ('RH_ESTRUO_SEL', '	Listado de uos
 ', 'si', '', '', '__24nov11_ft_estructura_uo_sel');
 select pxp.f_insert_tprocedimiento ('RH_ESTRUO_CONT', '	Conteo de estructura uos

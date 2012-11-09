@@ -3,8 +3,8 @@
 *@package pXP
 *@file gen-FuncionesMantenimiento.php
 *@author  (admin)
-*@date 02-11-2012 15:11:40
-*@description Clase que centraliza todos los metodos de todas las clases del Sistema de SISTEMA DE GESTION DE MANTENIMIENTO
+*@date 08-11-2012 21:12:55
+*@description Clase que centraliza todos los metodos de todas las clases del Sistema de Mantenimiento Industrial - Plantas y Estaciones
 */
 
 class FuncionesMantenimiento{
@@ -15,33 +15,33 @@ class FuncionesMantenimiento{
 		}
 	}
 
-	/*Clase: MODCalendarioPlanificado
-	* Fecha: 02-11-2012 15:11:40
+	/*Clase: MODUniConsDet
+	* Fecha: 08-11-2012 21:12:55
 	* Autor: admin*/
-	function listarCalendarioPlanificado(CTParametro $parametro){
-		$obj=new MODCalendarioPlanificado($parametro);
-		$res=$obj->listarCalendarioPlanificado();
+	function listarUniConsDet(CTParametro $parametro){
+		$obj=new MODUniConsDet($parametro);
+		$res=$obj->listarUniConsDet();
 		return $res;
 	}
 			
-	function insertarCalendarioPlanificado(CTParametro $parametro){
-		$obj=new MODCalendarioPlanificado($parametro);
-		$res=$obj->insertarCalendarioPlanificado();
+	function insertarUniConsDet(CTParametro $parametro){
+		$obj=new MODUniConsDet($parametro);
+		$res=$obj->insertarUniConsDet();
 		return $res;
 	}
 			
-	function modificarCalendarioPlanificado(CTParametro $parametro){
-		$obj=new MODCalendarioPlanificado($parametro);
-		$res=$obj->modificarCalendarioPlanificado();
+	function modificarUniConsDet(CTParametro $parametro){
+		$obj=new MODUniConsDet($parametro);
+		$res=$obj->modificarUniConsDet();
 		return $res;
 	}
 			
-	function eliminarCalendarioPlanificado(CTParametro $parametro){
-		$obj=new MODCalendarioPlanificado($parametro);
-		$res=$obj->eliminarCalendarioPlanificado();
+	function eliminarUniConsDet(CTParametro $parametro){
+		$obj=new MODUniConsDet($parametro);
+		$res=$obj->eliminarUniConsDet();
 		return $res;
 	}
-	/*FinClase: MODCalendarioPlanificado*/
+	/*FinClase: MODUniConsDet*/
 
 			
 }//marca_generador
