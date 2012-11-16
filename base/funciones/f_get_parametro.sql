@@ -1,9 +1,10 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_get_parametro (
-  p_tabla character varying,
-  p_parametro character varying
+  p_tabla varchar,
+  p_parametro varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_get_parametro
@@ -43,8 +44,9 @@ $body$
       END LOOP;
 
    
+  raise notice '>>>>>  REGESO %',v_respuesta;
     
-    return coalesce(v_respuesta,'NULL');
+    return coalesce(v_respuesta,NULL);
     
     
  EXCEPTION
@@ -57,7 +59,8 @@ $body$
 		raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_get_parametro_by_id (OID = 304231) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
