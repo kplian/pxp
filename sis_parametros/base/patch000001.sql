@@ -573,7 +573,8 @@ select pxp.f_insert_tprocedimiento ('PM_DOCUME_INS', '	Inserta Documentos
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_MOD', '	Modifica la documento seleccionada
 ', 'si', '', '', 'ft_documento_ime');
 
-
+--tabla de catalogos genericos
+ 
 ﻿CREATE TABLE param.tcatalogo (
   id_catalogo serial NOT NULL,
   id_subsistema integer,
