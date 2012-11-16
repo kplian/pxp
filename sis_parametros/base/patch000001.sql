@@ -572,3 +572,22 @@ select pxp.f_insert_tprocedimiento ('PM_DOCUME_INS', '	Inserta Documentos
 ', 'si', '', '', 'ft_documento_ime');
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_MOD', '	Modifica la documento seleccionada
 ', 'si', '', '', 'ft_documento_ime');
+
+
+﻿CREATE TABLE param.tcatalogo (
+  id_catalogo serial NOT NULL,
+  id_subsistema integer,
+  codigo character varying(20),
+  descripcion character varying(200),
+  tipo varchar(15),
+  CONSTRAINT tcatalogo__id_catalogo PRIMARY KEY (id_catalogo),
+  CONSTRAINT chk_tcatalogo__tipo CHECK (tipo IN ('estado_ot','prioridad_ot','tipo_ot','prioridad_uc')),
+  CONSTRAINT fk_tcatalogo__id_subsistema FOREIGN KEY (id_subsistema)
+  REFERENCES segu.tsubsistema (id_subsistema) MATCH SIMPLE
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+) INHERITS (pxp.tbase)
+WITH (
+OIDS=TRUE
+);
+ALTER TABLE param.tcatalogo OWNER TO postgres
