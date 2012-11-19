@@ -528,6 +528,33 @@ class FuncionesParametros
 	}
 	/*FinClase: MODServicio*/
 
-
+    /*Clase: MODCatalogo
+    * Fecha: 16-11-2012 17:01:40
+    * Autor: admin*/
+    function listarCatalogo(CTParametro $parametro){
+        $obj=new MODCatalogo($parametro);
+        $res=$obj->listarCatalogo();
+        return $res;
+    }
+            
+    function insertarCatalogo(CTParametro $parametro){
+        $obj=new MODCatalogo($parametro);
+        $res=$obj->insertarCatalogo();
+        return $res;
+    }
+            
+    function modificarCatalogo(CTParametro $parametro){
+        $obj=new MODCatalogo($parametro);
+        $res=$obj->modificarCatalogo();
+        return $res;
+    }
+            
+    function eliminarCatalogo(CTParametro $parametro){
+        $obj=new MODCatalogo($parametro);
+        $res=$obj->eliminarCatalogo();
+        return $res;
+    }
+    /*FinClase: MODCatalogo*/
+    
 }//marca_generador
 ?>
