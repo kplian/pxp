@@ -18,12 +18,11 @@ TO USE IT BY FIRST TIME:
 
    All these folders and files are inside pxp.
 5. Create a folder named "reportes_generados" inside your project root folder with write access for Apache user.
-6. Create a file named "config_util.txt" inside your project root folder wich contains the name of database in the first line.
-7. Create a file named "DatosGenerales.php" inside pxp/lib. This file could be a copy of DatosGenerales.sample.php wich already exists in the same folder.
+6. Create a file named "DatosGenerales.php" inside pxp/lib. This file could be a copy of DatosGenerales.sample.php wich already exists in the same folder.
   It's necesary to do some configurations in that file according to the database.
-8. As postgres user execute "pxp/utilidades/restaurar_bd/restaurar_todo.sh" (This will generate the databse). Postgres user needs execution access
-   to restaurar_todo.sh
-9. You can use the framework now!!! (user:admin, password:admin)
+7. As postgres user execute "pxp/utilidades/restaurar_bd/restaurar_todo.py" (This will generate the database). Postgres user needs execution access
+   to restaurar_todo.py (./restaurar_todo.py)
+8. You can use the framework now!!! (user:admin, password:admin)
 
 TO CREATE A NEW SYSTEM:
 
@@ -49,7 +48,7 @@ TO UPDATE THE DATABASE ON PULL OR MERGE:
 
 * After pull the code is updated, the database changes are  not updated yet, but it's possible update executing:
 
-  pxp/utilidades/restaurar_db/actualizar_todo.sh
+  pxp/utilidades/restaurar_db/restaurar_todo.py
 
 
 
