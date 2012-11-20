@@ -516,6 +516,7 @@ select pxp.f_insert_tgui ('Documentos', 'Documentos por Sistema', 'DOCUME', 'si'
 select pxp.f_insert_tgui ('Configuracion Alarmas', 'Para configurar las alarmas', 'CONALA', 'si', 1, 'sis_parametros/vista/config_alarma/ConfigAlarma.php', 2, '', 'ConfigAlarma', 'PARAM');
 select pxp.f_insert_tgui ('Unidades de Medida', 'Registro de Unidades de Medida', 'UME', 'si', 10, 'sis_parametros/vista/unidad_medida/UnidadMedida.php', 2, '', 'UnidadMedida', 'PARAM');
 select pxp.f_insert_tgui ('Gestion', 'Manejo de gestiones', 'GESTIO', 'si', 1, 'sis_parametros/vista/gestion/gestion.js', 2, '', 'gestion', 'PARAM');
+select pxp.f_insert_tgui ('Catalogo', 'Catalogo', 'CATA', 'si', 4, 'sis_parametros/vista/catalogo/Catalogo.php', 2, '', 'Catalogo', 'PARAM');
 select pxp.f_insert_tgui ('Periodo', 'Periodo', 'PERIOD', 'si', 2, 'sis_parametros/vista/periodo/periodo.js', 2, '', 'periodo', 'PARAM');
 select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR', 'si', 3, 'sis_parametros/vista/moneda/moneda.js', 2, '', 'moneda', 'PARAM');
 select pxp.f_insert_testructura_gui ('PARAM', 'SISTEMA');
@@ -529,6 +530,7 @@ select pxp.f_insert_testructura_gui ('INSTIT', 'PARAM');
 select pxp.f_insert_testructura_gui ('LUG', 'PARAM');
 select pxp.f_insert_testructura_gui ('MONPAR', 'PARAM');
 select pxp.f_insert_testructura_gui ('PERIOD', 'PARAM');
+select pxp.f_insert_testructura_gui ('CATA', 'PARAM');
 select pxp.f_insert_testructura_gui ('GESTIO', 'PARAM');
 select pxp.f_insert_testructura_gui ('UME', 'PARAM');
 select pxp.f_insert_tprocedimiento ('PM_INSTIT_SEL', '	Consulta de datos
@@ -573,6 +575,7 @@ select pxp.f_insert_tprocedimiento ('PM_DOCUME_INS', '	Inserta Documentos
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_MOD', '	Modifica la documento seleccionada
 ', 'si', '', '', 'ft_documento_ime');
 
+
 CREATE TABLE param.tcatalogo (
 	id_catalogo serial NOT NULL,
     id_subsistema integer,
@@ -590,3 +593,4 @@ INHERITS (pxp.tbase) WITH ( OIDS=TRUE );
 ALTER TABLE param.tcatalogo OWNER TO postgres;
 
 /***********************************F-SCP-JRR-PARAM-1-19/11/2012****************************************/
+
