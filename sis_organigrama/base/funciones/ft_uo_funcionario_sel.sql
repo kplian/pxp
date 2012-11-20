@@ -1,10 +1,3 @@
-CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar)
-  RETURNS varchar AS
-$body$
 /**************************************************************************
  FUNCION: 		RHUM.ft_uo_funcionario_sel
  DESCRIPCIÓN:  listado de uo
@@ -128,9 +121,3 @@ EXCEPTION
 
 
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
