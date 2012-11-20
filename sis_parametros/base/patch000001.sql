@@ -199,6 +199,20 @@ FROM ((param.tproveedor provee LEFT JOIN segu.vpersona person ON
     ((person.id_persona = provee.id_persona))) LEFT JOIN param.tinstitucion
     instit ON ((instit.id_institucion = provee.id_institucion)))
 WHERE ((provee.estado_reg)::text = 'activo'::text);
+
+CREATE OR REPLACE VIEW param.vproveedor AS 
+ SELECT provee.id_proveedor, provee.id_persona, provee.codigo, provee.numero_sigma,
+ provee.tipo, provee.id_institucion, 
+ pxp.f_iif(provee.id_persona IS NOT NULL, person.nombre_completo1::character varying,
+ ((instit.codigo::text || '-'::text) || instit.nombre::text)::character varying) AS desc_proveedor,
+ provee.nit, provee.id_lugar, lug.nombre as lugar, param.f_obtener_padre_lugar(provee.id_lugar,'pais') as pais
+   FROM param.tproveedor provee
+   LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
+   LEFT JOIN param.tinstitucion instit ON instit.id_institucion = provee.id_institucion
+   LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
+  WHERE provee.estado_reg::text = 'activo'::text;
+
+ALTER TABLE param.vproveedor OWNER TO postgres;
 --
 -- Structure for table tunidad_medida (OID = 309525) : 
 --
@@ -226,7 +240,16 @@ WITH (
 );
 ALTER TABLE param.tservicio OWNER TO postgres;
 
-
+CREATE TABLE param.tproveedor_item_servicio (  
+  id_proveedor_item serial NOT NULL,
+  id_proveedor integer NOT NULL,
+  id_item integer,
+  id_servicio integer,
+  CONSTRAINT tproveedor_item_servicio_pkey PRIMARY KEY (id_proveedor_item),
+  CONSTRAINT chk_tproveedor_item_servivio__id_item__id_servicio CHECK (id_item IS NULL AND id_servicio IS NOT NULL OR id_servicio IS NULL AND id_item IS NOT NULL)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ALTER TABLE param.tproveedor_item_servicio OWNER TO postgres;
 
 --
 -- Definition for index tinstitucion_idx (OID = 308254) : 
@@ -437,6 +460,14 @@ ALTER TABLE ONLY param.tperiodo
 ALTER TABLE ONLY param.tunidad_medida
     ADD CONSTRAINT tunidad_medida_pkey
     PRIMARY KEY (id_unidad_medida);
+    
+--Adding new column to table param.tproveedor
+alter table param.tproveedor
+add column id_lugar integer;
+
+alter table param.tproveedor
+add constraint fk_tproveedor__id_lugar
+foreign key(id_lugar) references param.tlugar(id_lugar);    
 --
 -- Comments
 --
@@ -575,7 +606,7 @@ select pxp.f_insert_tprocedimiento ('PM_DOCUME_INS', '	Inserta Documentos
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_MOD', '	Modifica la documento seleccionada
 ', 'si', '', '', 'ft_documento_ime');
 
-
+--tabla de catalogos genericos
 CREATE TABLE param.tcatalogo (
 	id_catalogo serial NOT NULL,
     id_subsistema integer,
@@ -587,10 +618,9 @@ CREATE TABLE param.tcatalogo (
     CONSTRAINT fk_tcatalogo__id_subsistema FOREIGN KEY (id_subsistema)
     	REFERENCES segu.tsubsistema (id_subsistema) MATCH SIMPLE
     	ON UPDATE NO ACTION
-        ON DELETE NO ACTION) 
-INHERITS (pxp.tbase) WITH ( OIDS=TRUE );
-
+        ON DELETE NO ACTION
+) INHERITS (pxp.tbase)
+WITH ( OIDS=TRUE );
 ALTER TABLE param.tcatalogo OWNER TO postgres;
 
 /***********************************F-SCP-JRR-PARAM-1-19/11/2012****************************************/
-

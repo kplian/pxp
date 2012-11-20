@@ -1,4 +1,4 @@
-/********************************************I-SCP-JRR-ORGA-1-19/11/2012********************************************/
+-------------------------STRUCTURE-------------------------------------------------------------------------
 --
 -- Structure for table tdepto (OID = 306303) : 
 --
@@ -120,6 +120,56 @@ CREATE TABLE orga.tdepto_usuario (
     cargo varchar(300)
 )
 INHERITS (pxp.tbase) WITH OIDS;
+
+--rcm
+CREATE TABLE orga.ttipo_horario (
+  id_tipo_horario SERIAL, 
+  codigo VARCHAR(255), 
+  nombre VARCHAR(255), 
+  estado_reg VARCHAR(10), 
+  id_usuario_reg INTEGER, 
+  fecha_reg DATE DEFAULT now() NOT NULL, 
+  id_usuario_mod INTEGER, 
+  fecha_mod DATE DEFAULT now(), 
+  CONSTRAINT ttipo_horario_pkey PRIMARY KEY(id_tipo_horario)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ 
+CREATE TABLE orga.tespecialidad_nivel (
+  id_especialidad_nivel SERIAL, 
+  codigo VARCHAR(20) NOT NULL, 
+  nombre VARCHAR(100) NOT NULL, 
+  CONSTRAINT tespecialidad_nivel_pkey PRIMARY KEY(id_especialidad_nivel)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+
+CREATE TABLE orga.tespecialidad (
+  id_especialidad serial NOT NULL,
+  codigo character varying(20) NOT NULL,
+  nombre character varying(150) NOT NULL,
+  id_especialidad_nivel integer,
+  CONSTRAINT tespecialidad_pkey PRIMARY KEY (id_especialidad),
+  CONSTRAINT fk_tespecialidad__id_especialidad_nivel FOREIGN KEY (id_especialidad_nivel)
+      REFERENCES orga.tespecialidad_nivel (id_especialidad_nivel) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ALTER TABLE orga.tespecialidad OWNER TO postgres;
+ 
+CREATE TABLE orga.tfuncionario_especialidad(
+  id_funcionario_especialidad serial NOT NULL,
+  id_funcionario integer NOT NULL,
+  id_especialidad integer NOT NULL,
+  CONSTRAINT tfuncionario_especialidad_pkey PRIMARY KEY (id_funcionario_especialidad),
+  CONSTRAINT uq__id_funcionario_especialidad UNIQUE (id_funcionario, id_especialidad)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ALTER TABLE orga.tfuncionario_especialidad OWNER TO postgres;
+--fin rcm
+
+
+
+
 --
 -- Definition for index tdepto_pkey (OID = 307992) : 
 --
@@ -321,6 +371,4 @@ select pxp.f_insert_tprocedimiento ('RH_UO_CONT', '	Conteo de uos
 ', 'si', '', '', 'ft_uo_sel');
 select pxp.f_insert_tprocedimiento ('RH_FUNCIOCAR_SEL', '	Listado de funcionarios con cargos historicos
 ', 'si', '', '', 'ft_funcionario_sel');
-
-/********************************************F-SCP-JRR-ORGA-1-19/11/2012********************************************/
 

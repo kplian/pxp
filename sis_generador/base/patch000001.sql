@@ -1,4 +1,7 @@
-/***********************************I-SCP-JRR-GEN-1-19/11/2012****************************************/
+
+
+-------------------------STRUCTURE-------------------------------------------------------------------------
+
 --
 -- Structure for table tcolumna (OID = 305578) : 
 --
@@ -116,5 +119,3 @@ select pxp.f_insert_testructura_gui ('GEN', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('PROCGEN', 'GEN');
 select pxp.f_insert_testructura_gui ('TABLA', 'PROCGEN');
 select pxp.f_insert_testructura_gui ('COL', 'TABLA');
-
-/***********************************F-SCP-JRR-GEN-1-19/11/2012****************************************/

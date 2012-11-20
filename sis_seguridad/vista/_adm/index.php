@@ -75,11 +75,8 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-all-debug.js"></script>
     
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-     <!--   
-     	
-     	
-     	<script type="text/javascript" src="resources/TaskBar.js"></script> -->
+     
+     <!--   <script type="text/javascript" src="resources/TaskBar.js"></script> -->
      <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
 	 <script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
 	   <script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
