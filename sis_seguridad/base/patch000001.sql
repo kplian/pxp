@@ -1,4 +1,4 @@
--------------------------STRUCTURE-------------------------------------------------------------------------
+/***********************************I-SCP-JRR-SEGU-1-19/11/2012****************************************/
 
 CREATE DOMAIN segu.activo_inactivo AS varchar(10) NOT NULL DEFAULT 'activo'::character varying;
 --
@@ -574,6 +574,35 @@ CREATE TABLE segu.tep_persona (
 )
 INHERITS (pxp.tbase) WITH OIDS;
 
+ 
+CREATE VIEW segu.vep (
+    id_usuario_reg,
+    id_usuario_mod,
+    fecha_reg,
+    fecha_mod,
+    estado_reg,
+    id_ep,
+    id_programa,
+    id_proyecto,
+    id_actividad,
+    codigo_programa,
+    codigo_proyecto,
+    codigo_actividad,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    desc_ep)
+AS
+SELECT ep.id_usuario_reg, ep.id_usuario_mod, ep.fecha_reg, ep.fecha_mod,
+    ep.estado_reg, ep.id_ep, ep.id_programa, ep.id_proyecto, ep.id_actividad,
+    prog.codigo AS codigo_programa, proy.codigo AS codigo_proyecto, act.codigo
+    AS codigo_actividad, prog.nombre AS nombre_programa, proy.nombre AS
+    nombre_proyecto, act.nombre AS nombre_actividad, (((prog.codigo::text ||
+    '-'::text) || proy.codigo::text) || '-'::text) || act.codigo::text AS desc_ep
+FROM segu.tep ep
+   JOIN segu.tprograma prog ON prog.id_programa = ep.id_programa
+   JOIN segu.tproyecto proy ON proy.id_proyecto = ep.id_proyecto
+   JOIN segu.tactividad act ON act.id_actividad = ep.id_actividad;
 
 --
 -- Definition for index clasificador_pk (OID = 308296) : 
@@ -1311,9 +1340,10 @@ FROM segu.tep ep
    JOIN segu.tactividad act ON act.id_actividad = ep.id_actividad;
 
 
+/***********************************F-SCP-JRR-SEGU-1-19/11/2012****************************************/
 -------------------------DATA-------------------------------------------------------------------------
 
-
+/***********************************I-SCP-JRR-SEGU-2-19/11/2012****************************************/
 --
 -- Data for table segu.tclasificador (OID = 307111) (LIMIT 0,4)
 --
@@ -5542,4 +5572,4 @@ select pxp.f_insert_tgui ('Configurar', 'Configurar', 'CONFIG', 'si', 13, 'sis_s
 select pxp.f_insert_testructura_gui ('ALERTA', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('CONFIG', 'SISTEMA');
  
-
+/***********************************F-SCP-JRR-SEGU-2-19/11/2012****************************************/
