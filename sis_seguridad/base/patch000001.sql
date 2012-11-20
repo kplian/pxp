@@ -16,6 +16,10 @@ CREATE TYPE segu.estado AS ENUM
 CREATE DOMAIN segu.si_no AS varchar(10) DEFAULT 'si'::character varying;
 
 
+CREATE TYPE pxp.estado_reg AS ENUM
+  ( 'activo', 'inactivo','eliminado');
+
+
 --
 -- Structure for table tusuario (OID = 305814) : 
 --
@@ -82,50 +86,6 @@ CREATE TABLE segu.tpersona (
     direccion varchar
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
---
--- Definition for view vpersona (OID = 306450) : 
---
-CREATE VIEW segu.vpersona AS
-SELECT p.id_persona, p.apellido_materno AS ap_materno, p.apellido_paterno
-    AS ap_paterno, p.nombre, (((((COALESCE(p.nombre, ''::character
-    varying))::text || ' '::text) || (COALESCE(p.apellido_paterno,
-    ''::character varying))::text) || ' '::text) ||
-    (COALESCE(p.apellido_materno, ''::character varying))::text) AS
-    nombre_completo1, (((((COALESCE(p.apellido_paterno, ''::character
-    varying))::text || ' '::text) || (COALESCE(p.apellido_materno,
-    ''::character varying))::text) || ' '::text) || (COALESCE(p.nombre,
-    ''::character varying))::text) AS nombre_completo2, p.ci, p.correo,
-    p.celular1, p.num_documento, p.telefono1, p.telefono2, p.celular2
-FROM segu.tpersona p;
-
-CREATE VIEW segu.vep (
-    id_usuario_reg,
-    id_usuario_mod,
-    fecha_reg,
-    fecha_mod,
-    estado_reg,
-    id_ep,
-    id_programa,
-    id_proyecto,
-    id_actividad,
-    codigo_programa,
-    codigo_proyecto,
-    codigo_actividad,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    desc_ep)
-AS
-SELECT ep.id_usuario_reg, ep.id_usuario_mod, ep.fecha_reg, ep.fecha_mod,
-    ep.estado_reg, ep.id_ep, ep.id_programa, ep.id_proyecto, ep.id_actividad,
-    prog.codigo AS codigo_programa, proy.codigo AS codigo_proyecto, act.codigo
-    AS codigo_actividad, prog.nombre AS nombre_programa, proy.nombre AS
-    nombre_proyecto, act.nombre AS nombre_actividad, (((prog.codigo::text ||
-    '-'::text) || proy.codigo::text) || '-'::text) || act.codigo::text AS desc_ep
-FROM segu.tep ep
-   JOIN segu.tprograma prog ON prog.id_programa = ep.id_programa
-   JOIN segu.tproyecto proy ON proy.id_proyecto = ep.id_proyecto
-   JOIN segu.tactividad act ON act.id_actividad = ep.id_actividad;
 
 --
 -- Structure for table tactividad (OID = 306979) : 
@@ -1304,6 +1264,52 @@ CREATE TRIGGER trigger_usuario
     AFTER INSERT OR DELETE OR UPDATE ON segu.tusuario
     FOR EACH ROW
     EXECUTE PROCEDURE pxp.trigger_usuario ();
+    
+--
+-- Definition for view vpersona (OID = 306450) : 
+--
+CREATE VIEW segu.vpersona AS
+SELECT p.id_persona, p.apellido_materno AS ap_materno, p.apellido_paterno
+    AS ap_paterno, p.nombre, (((((COALESCE(p.nombre, ''::character
+    varying))::text || ' '::text) || (COALESCE(p.apellido_paterno,
+    ''::character varying))::text) || ' '::text) ||
+    (COALESCE(p.apellido_materno, ''::character varying))::text) AS
+    nombre_completo1, (((((COALESCE(p.apellido_paterno, ''::character
+    varying))::text || ' '::text) || (COALESCE(p.apellido_materno,
+    ''::character varying))::text) || ' '::text) || (COALESCE(p.nombre,
+    ''::character varying))::text) AS nombre_completo2, p.ci, p.correo,
+    p.celular1, p.num_documento, p.telefono1, p.telefono2, p.celular2
+FROM segu.tpersona p;
+
+CREATE VIEW segu.vep (
+    id_usuario_reg,
+    id_usuario_mod,
+    fecha_reg,
+    fecha_mod,
+    estado_reg,
+    id_ep,
+    id_programa,
+    id_proyecto,
+    id_actividad,
+    codigo_programa,
+    codigo_proyecto,
+    codigo_actividad,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    desc_ep)
+AS
+SELECT ep.id_usuario_reg, ep.id_usuario_mod, ep.fecha_reg, ep.fecha_mod,
+    ep.estado_reg, ep.id_ep, ep.id_programa, ep.id_proyecto, ep.id_actividad,
+    prog.codigo AS codigo_programa, proy.codigo AS codigo_proyecto, act.codigo
+    AS codigo_actividad, prog.nombre AS nombre_programa, proy.nombre AS
+    nombre_proyecto, act.nombre AS nombre_actividad, (((prog.codigo::text ||
+    '-'::text) || proy.codigo::text) || '-'::text) || act.codigo::text AS desc_ep
+FROM segu.tep ep
+   JOIN segu.tprograma prog ON prog.id_programa = ep.id_programa
+   JOIN segu.tproyecto proy ON proy.id_proyecto = ep.id_proyecto
+   JOIN segu.tactividad act ON act.id_actividad = ep.id_actividad;
+
 
 -------------------------DATA-------------------------------------------------------------------------
 
