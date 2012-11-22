@@ -516,19 +516,34 @@ class Mensaje
 	function ofuscarIdentificadores(){
 		//existen datos para mandar a la vista
 		if(isset($this->datos[0])){
-
-
-			//se obtienen los nombre de las variables
-			$tmp=array();
-
-			$tmp=array_keys($this->datos[0]);
+                
+                
+                //se obtienen los nombre de las variables
+				//para el caso de grillar los nosmbre de las variables no varian para todaas las filas
+				if ($this->tipo_respuesta!='arbol')
+				{	$tmp=array();
+		            $tmp=array_keys($this->datos[0]);
+		            
+					$tam = sizeof($tmp);
+		        }
+				
 
 			$j=0;
-			$tam = sizeof($tmp);
 
 			foreach($this->datos as $f){
 				//recorremos las variables en busca de identificadores
 				//sizeof($tmp);
+				
+				if ($this->tipo_respuesta=='arbol')
+				{
+					//var_dump($f);
+					$tmp=array();
+		            $tmp=array_keys($f);
+		            
+					$tam = sizeof($tmp);
+		        }
+				
+				
 
 				for( $i=0; $i<= $tam; $i++){
 					//RCM 23/09/2011: se aumenta variable temporal con los 3 primeros caracteres para la comparación con la cadena 'id_'

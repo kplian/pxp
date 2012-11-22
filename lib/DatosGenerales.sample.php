@@ -79,7 +79,7 @@
 	$_SESSION["encriptar_data"]='no'; 
 	
 	//Variable que determina si los identificadores de registro seran ofuscados o no
-	$_SESSION["_OFUSCAR_ID"]='no'; 
+	$_SESSION["_OFUSCAR_ID"]='si'; 
 	
 	//Variable para definir el tipo de conexion
 	//persistente  ,  no_persistente

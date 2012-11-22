@@ -139,7 +139,12 @@
 .bstatistics {
 	background-image:url(dibu_statistics.png) !important;
 }
-
+.bgear {
+	background-image:url(dibu_gear.png) !important;
+} 
+.bcalendar {
+	background-image:url(dibu_calendar.png) !important;
+} 
 
 
 
