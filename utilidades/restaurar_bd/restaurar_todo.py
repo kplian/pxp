@@ -128,7 +128,7 @@ for item in url:
 	
 	for script in sql_scripts:
 		
-		command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d dbgem'
+		command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
 		
 		for line in run_command(command):
 			
