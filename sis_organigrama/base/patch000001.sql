@@ -1,4 +1,4 @@
--------------------------STRUCTURE-------------------------------------------------------------------------
+/********************************************I-SCP-JRR-ORGA-1-19/11/2012********************************************/
 --
 -- Structure for table tdepto (OID = 306303) : 
 --
@@ -321,4 +321,6 @@ select pxp.f_insert_tprocedimiento ('RH_UO_CONT', '	Conteo de uos
 ', 'si', '', '', 'ft_uo_sel');
 select pxp.f_insert_tprocedimiento ('RH_FUNCIOCAR_SEL', '	Listado de funcionarios con cargos historicos
 ', 'si', '', '', 'ft_funcionario_sel');
+
+/********************************************F-SCP-JRR-ORGA-1-19/11/2012********************************************/
 
