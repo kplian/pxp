@@ -672,24 +672,28 @@ Phx.CP=function(){
 
 			});
 		},
-		loadMask: new Ext.LoadMask(Ext.getBody(), {msg:"Espere por favor ...",modal:true}),
+		//loadMask: new Ext.LoadMask(Ext.getBody(), {msg:"Espere por favor ...",modal:true,removeMask :true}),
 		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),
 		
 		
       
-		loadingShow:function(){
+		loadingShow:function(contenedor){
 		
-		
-			 Ext.MessageBox.show({ title: 'Espere Por Favor...', 
+		var cont = contenedor?contenedor:Ext.getBody();
+			 Ext.MessageBox.show({ 
+			 	title: 'Espere Por Favor...', 
 			   msg:"<div><img src='../../../lib/ext3/resources/images/default/grid/loading.gif'/> Cargando ...</div>", 
 			  // msg:"<div><img src='../../../lib/imagenes/gti_3.gif'/>
 				// Cargando ...</div>",
+			  animEl:cont,
 			  width:200,
 			  minHeight:100,
 			  closable:false });
+			  
+			  
+		  //this.loadMask =  new Ext.LoadMask(Ext.getBody(), {msg:"Espere por favor ...",modal:true,removeMask :true});
 		
-								 
-			// Phx.CP.loadMask.show()
+		  // Phx.CP.loadMask.show()
 		},
 		
 		loadingHide:function(){
