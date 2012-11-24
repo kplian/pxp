@@ -293,7 +293,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'nombre_completo1', type: 'string'},
 		{name:'nombre', type: 'string'},
-		'nit',
+		{name:'nit', type: 'string'},
 		{name:'id_lugar', type: 'string'},
 		{name:'lugar', type: 'string'},
 		{name:'pais', type: 'string'}

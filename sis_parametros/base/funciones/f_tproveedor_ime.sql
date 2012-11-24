@@ -89,7 +89,8 @@ BEGIN
               fecha_reg,
               id_usuario_mod,
               fecha_mod,
-              nit
+              nit,
+              id_lugar
               ) values(
               v_parametros.id_persona,
               --v_codigo,
@@ -102,7 +103,8 @@ BEGIN
               now(),
               null,
               null,
-              v_parametros.nit
+              v_parametros.nit,
+              v_parametros.id_lugar
             )RETURNING id_proveedor into v_id_proveedor;
             
             v_codigo:=('PROV'||pxp.f_llenar_ceros(v_id_proveedor::numeric,4))::varchar;      
@@ -150,16 +152,17 @@ BEGIN
             tipo = v_parametros.tipo,
             id_institucion = v_parametros.id_institucion,
             id_usuario_mod = p_id_usuario,
-            fecha_mod = now()
+            fecha_mod = now(),
+            id_lugar = v_parametros.id_lugar
             where id_proveedor=v_parametros.id_proveedor;
            
         
             --10-04-2012: sincronizacion de UO entre BD
-            v_respuesta_sinc:=param.f_sincroniza_proveedor_entre_bd(v_parametros.id_proveedor,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'UPDATE');
+            /*v_respuesta_sinc:=param.f_sincroniza_proveedor_entre_bd(v_parametros.id_proveedor,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'UPDATE');
                      
             if(v_respuesta_sinc!='si')  then
                raise exception 'Sincronizacion de proveedor en BD externa no realizada%',v_respuesta_sinc;
-            end if;
+            end if;*/
             
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Proveedores modificado(a)'); 
