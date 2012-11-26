@@ -594,3 +594,8 @@ ALTER TABLE param.tcatalogo OWNER TO postgres;
 
 /***********************************F-SCP-JRR-PARAM-1-19/11/2012****************************************/
 
+/***********************************I-SCP-RCM-PARAM-0-23/11/2012****************************************/
+--Adding new column to table param.tproveedor
+alter table param.tproveedor
+add column id_lugar integer;
+/***********************************F-SCP-JRR-PARAM-0-23/11/2012****************************************/
