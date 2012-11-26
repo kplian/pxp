@@ -14,30 +14,30 @@ class ACTDeptoUo extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 					
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODDeptoUo');	
 		$id_depto=$this->objParam->getParametro('id_depto');
 		
 		if($id_depto!= null && $id_depto!=undefined && $id_depto!='' && strlen($id_depto)>0){
 		   $this->objParam->addParametro('id_depto',$id_depto);
 		}
 		
-		$this->res=$this->objFunc->listarDeptoUo($this->objParam);
+		$this->res=$this->objFunc->listarDeptoUo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarDeptoUo(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODDeptoUo');	
 		if($this->objParam->insertar('id_depto_uo')){
-			$this->res=$this->objFunc->insertarDeptoUo($this->objParam);			
+			$this->res=$this->objFunc->insertarDeptoUo();			
 		} else{			
-			$this->res=$this->objFunc->modificarDeptoUo($this->objParam);
+			$this->res=$this->objFunc->modificarDeptoUo();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarDeptoUo(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarDeptoUo($this->objParam);
+		$this->objFunc=$this->create('MODDeptoUo');
+		$this->res=$this->objFunc->eliminarDeptoUo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

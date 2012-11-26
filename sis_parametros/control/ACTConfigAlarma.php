@@ -15,11 +15,11 @@ class ACTConfigAlarma extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarConfigAlarma');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODConfigAlarma','listarConfigAlarma');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarConfigAlarma($this->objParam);
+			$this->objFunc=$this->create('MODConfigAlarma');
+			$this->res=$this->objFunc->listarConfigAlarma();
 			
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
@@ -32,24 +32,24 @@ class ACTConfigAlarma extends ACTbase{
 		{
 			$this->objParam->addFiltro("table_schema = lower(''".$this->objParam->getParametro('esquema')."'')");	
 		}
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarAlarmaTabla($this->objParam);
+			$this->objFunc=$this->create('MODConfigAlarma');	
+			$this->res=$this->objFunc->listarAlarmaTabla();
 			$this->res->imprimirRespuesta($this->res->generarJson());
 		
 	}		
 	function insertarConfigAlarma(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODConfigAlarma');	
 		if($this->objParam->insertar('id_config_alarma')){
-			$this->res=$this->objFunc->insertarConfigAlarma($this->objParam);			
+			$this->res=$this->objFunc->insertarConfigAlarma();			
 		} else{			
-			$this->res=$this->objFunc->modificarConfigAlarma($this->objParam);
+			$this->res=$this->objFunc->modificarConfigAlarma();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarConfigAlarma(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarConfigAlarma($this->objParam);
+		$this->objFunc=$this->create('MODConfigAlarma');	
+		$this->res=$this->objFunc->eliminarConfigAlarma();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

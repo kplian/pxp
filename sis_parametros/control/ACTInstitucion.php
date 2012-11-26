@@ -14,11 +14,11 @@ class ACTInstitucion extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarInstitucion');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODInstitucion','listarInstitucion');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarInstitucion($this->objParam);
+			$this->objFunc=$this->create('MODInstitucion');
+			$this->res=$this->objFunc->listarInstitucion();
 		}
 			$this->res->imprimirRespuesta($this->res->generarJson());
 		
@@ -26,18 +26,18 @@ class ACTInstitucion extends ACTbase{
 	}
 				
 	function insertarInstitucion(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODInstitucion');
 		if($this->objParam->insertar('id_institucion')){
-			$this->res=$this->objFunc->insertarInstitucion($this->objParam);			
+			$this->res=$this->objFunc->insertarInstitucion();			
 		} else{			
-			$this->res=$this->objFunc->modificarInstitucion($this->objParam);
+			$this->res=$this->objFunc->modificarInstitucion();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarInstitucion(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarInstitucion($this->objParam);
+		$this->objFunc=$this->create('MODInstitucion');
+		$this->res=$this->objFunc->eliminarInstitucion();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

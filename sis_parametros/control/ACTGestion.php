@@ -8,13 +8,13 @@ class ACTGestion extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesParametros','listarGestion');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODGestion','listarGestion');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesParametros();
+			$this->objFunSeguridad=$this->create('MODGestion');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarGestion($this->objParam);
+			$this->res=$this->objFunSeguridad->listarGestion();
 			
 		}
 		
@@ -26,19 +26,19 @@ class ACTGestion extends ACTbase{
 	function guardarGestion(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesParametros();
+		$this->objFunSeguridad=$this->create('MODGestion');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_gestion')){
 
 			//ejecuta el metodo de insertar de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->insertarGestion($this->objParam);			
+			$this->res=$this->objFunSeguridad->insertarGestion();			
 		}
 		else{	
 			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarGestion($this->objParam);
+			$this->res=$this->objFunSeguridad->modificarGestion();
 		}
 		
 		//imprime respuesta en formato JSON
@@ -49,8 +49,8 @@ class ACTGestion extends ACTbase{
 	function eliminarGestion(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesParametros();	
-		$this->res=$this->objFunSeguridad->eliminarGestion($this->objParam);
+		$this->objFunSeguridad=$this->create('MODGestion');	
+		$this->res=$this->objFunSeguridad->eliminarGestion();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}

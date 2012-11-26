@@ -14,28 +14,28 @@ class ACTCatalogo extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarCatalogo');
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODCatalogo','listarCatalogo');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarCatalogo($this->objParam);
+			$this->objFunc=$this->create('MODCatalogo');	
+			$this->res=$this->objFunc->listarCatalogo();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarCatalogo(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODCatalogo');	
 		if($this->objParam->insertar('id_catalogo')){
-			$this->res=$this->objFunc->insertarCatalogo($this->objParam);			
+			$this->res=$this->objFunc->insertarCatalogo();			
 		} else{			
-			$this->res=$this->objFunc->modificarCatalogo($this->objParam);
+			$this->res=$this->objFunc->modificarCatalogo();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarCatalogo(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarCatalogo($this->objParam);
+		$this->objFunc=$this->create('MODCatalogo');	
+		$this->res=$this->objFunc->eliminarCatalogo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

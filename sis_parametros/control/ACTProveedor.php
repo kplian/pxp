@@ -14,11 +14,11 @@ class ACTProveedor extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarProveedor');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODProveedor','listarProveedor');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarProveedor($this->objParam);
+			$this->objFunc=$this->create('MODProveedor');	
+			$this->res=$this->objFunc->listarProveedor();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
@@ -28,29 +28,29 @@ class ACTProveedor extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarProveedorCombos');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODProveedor','listarProveedorCombos');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarProveedorCombos($this->objParam);
+			$this->objFunc=$this->create('MODProveedor');
+			$this->res=$this->objFunc->listarProveedorCombos();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarProveedor(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODProveedor');
 		//print_r($this->objParam); exit;
 		if($this->objParam->insertar('id_proveedor')){
-			$this->res=$this->objFunc->insertarProveedor($this->objParam);			
+			$this->res=$this->objFunc->insertarProveedor();			
 		} else{			
-			$this->res=$this->objFunc->modificarProveedor($this->objParam);
+			$this->res=$this->objFunc->modificarProveedor();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarProveedor(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarProveedor($this->objParam);
+		$this->objFunc=$this->create('MODProveedor');
+		$this->res=$this->objFunc->eliminarProveedor();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

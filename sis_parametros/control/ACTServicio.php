@@ -14,28 +14,28 @@ class ACTServicio extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarServicio');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODServicio','listarServicio');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarServicio($this->objParam);
+			$this->objFunc=$this->create('MODServicio');
+			$this->res=$this->objFunc->listarServicio();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarServicio(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODServicio');	
 		if($this->objParam->insertar('id_servicio')){
-			$this->res=$this->objFunc->insertarServicio($this->objParam);			
+			$this->res=$this->objFunc->insertarServicio();			
 		} else{			
-			$this->res=$this->objFunc->modificarServicio($this->objParam);
+			$this->res=$this->objFunc->modificarServicio();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarServicio(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarServicio($this->objParam);
+		$this->objFunc=$this->create('MODServicio');	
+		$this->res=$this->objFunc->eliminarServicio();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			
