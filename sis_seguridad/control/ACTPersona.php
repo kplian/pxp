@@ -19,13 +19,13 @@ class ACTPersona extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarPersona');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODPersona','listarPersona');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad = $this->create('MODPersona');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarPersona($this->objParam);
+			$this->res=$this->objFunSeguridad->listarPersona();
 			
 		}
 		
@@ -46,13 +46,13 @@ class ACTPersona extends ACTbase{
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarPersonaFoto');
+			$this->objReporte=new Reporte($this->objParam,$this);
+			$this->res=$this->objReporte->generarReporteListado('MODPersona','listarPersonaFoto');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad = $this->create('MODPersona');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarPersonaFoto($this->objParam);
+			$this->res=$this->objFunSeguridad->listarPersonaFoto();
 			
 		}
 		
@@ -64,21 +64,20 @@ class ACTPersona extends ACTbase{
 	}
 	
 	function guardarPersona(){
-	
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
-		
+			
+		$this->objFunSeguridad = $this->create('MODPersona');
+			
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_persona')){
 
 			//ejecuta el metodo de insertar de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->insertarPersona($this->objParam);			
+			$this->res=$this->objFunSeguridad->insertarPersona();			
 		}
 		else{	
 			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarPersona($this->objParam);
+			$this->res=$this->objFunSeguridad->modificarPersona();
 		}
 		
 		//imprime respuesta en formato JSON
@@ -89,8 +88,8 @@ class ACTPersona extends ACTbase{
 	function eliminarPersona(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
-		$this->res=$this->objFunSeguridad->eliminarPersona($this->objParam);
+		$this->objFunSeguridad = $this->create('MODPersona');	
+		$this->res=$this->objFunSeguridad->eliminarPersona();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
@@ -98,8 +97,8 @@ class ACTPersona extends ACTbase{
 	function subirFotoPersona(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
-		$this->res=$this->objFunSeguridad->subirFotoPersona($this->objParam);
+		$this->objFunSeguridad = $this->create('MODPersona');
+		$this->res=$this->objFunSeguridad->subirFotoPersona();
 		//imprime respuesta en formato JSON
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

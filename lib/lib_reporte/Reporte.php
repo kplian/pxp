@@ -9,6 +9,7 @@ class Reporte
 	protected $tamano_hoja;
 	protected $orientacion_hoja;
 	protected $titulo='sin_titulo'; //Variable que contendrá el título del reporte
+	protected $control;
 
 	/**
 	 * Nombre funcion:	__construct
@@ -18,8 +19,9 @@ class Reporte
 	 * @param CTParametro $pParam -> objeto parametro con todas las propiedades para la generación del reporte
 	 * 
 	 */
-	function __construct(CTParametro $pParam){
+	function __construct(CTParametro $pParam, $control){
 		$this->objParam=$pParam;
+		$this->control = $control;
 		if($this->objParam->getParametro('titulo')!=''){
 			$this->titulo=$this->objParam->getParametro('titulo');
 		}
@@ -89,8 +91,8 @@ class Reporte
 		
 		if($this->objParam->getParametro('tipoReporte')=='pdf_grid')
 			$this->objReporteFormato->SetFont('helvetica', '', 8);
-		
-		eval('$cad = new $nombre_clase();');
+		$cad = $this->create($nombre_clase);
+		//eval('$cad = new $nombre_clase();');
 		eval('$this->res=$cad->'.$metodo_ejecutar.'($this->objParam);');
 		
 		if($this->res->getTipo()=='ERROR'){
@@ -155,5 +157,27 @@ class Reporte
 		return $this->mensajeExito;
 	}
 	
+	function create($className) {
+		$myArray = explode("/", $className);
+		$reflector = new ReflectionClass(get_class($this->control));
+		//si el tamano del array es dos se debe incluir un modelo en otro subsistema
+		//si el tamano del array es uno se incluye un modelo del mismo subsistema
+		// sino se de lanzar una excepcion
+		if (sizeof($myArray) == 1) {			
+			$includeDir = dirname($reflector->getFileName()) . "/../modelo/";
+			$fileName = $myArray [0] . '.php';			
+			
+		} else if (sizeof($myArray) == 2) {			
+			$includeDir = dirname($reflector->getFileName()) . "/../../" . $myArray[0] . "modelo/";
+			$fileName = $myArray [1] . '.php';			
+			
+		} else {
+			throw new Exception(__METHOD__.': No se pudo incluir el modelo '.$className);
+		}
+		
+		include_once $includeDir . $fileName;
+		eval('$modelObj = new $myArray[0]($this->objParam);');
+		return $modelObj;		
+	}	
 }
 ?>
