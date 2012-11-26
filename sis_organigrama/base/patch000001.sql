@@ -298,7 +298,7 @@ select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'FUNCIO', 'si', 1, 'si
 select pxp.f_insert_tgui ('Parametros', 'Parametros', 'PARAMRH', 'si', 1, '', 2, '', '', 'ORGA');
 select pxp.f_insert_tgui ('Procesos', 'Procesos', 'PROCRH', 'si', 2, '', 2, '', '', 'ORGA');
 select pxp.f_insert_tgui ('Reportes', 'Reportes', 'REPRH', 'si', 3, '', 2, '', '', 'ORGA');
-select pxp.f_insert_tgui ('ORGANIGRAMA', 'Organigrama Institucional', 'ORGA', 'si', 5, '', 1, '', '', 'ORGA');
+select pxp.f_insert_tgui ('ORGANIGRAMA', 'Organigrama Institucional', 'ORGA', 'si', 5, '', 1, '../../../lib/imagenes/orga32x32.png', '', 'ORGA');
 select pxp.f_insert_testructura_gui ('PARRHH', 'PARAMRH');
 select pxp.f_insert_testructura_gui ('DEFPLAN', 'PARAMRH');
 select pxp.f_insert_testructura_gui ('TIPCOL', 'DEFPLAN');

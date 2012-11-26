@@ -110,7 +110,7 @@ select pxp.f_insert_tfuncion ('ft_columna_sel', 'Funcion para tabla', 'GEN');
 select pxp.f_insert_tfuncion ('ft_esquema_sel', 'Funcion para tabla', 'GEN');
 select pxp.f_insert_tgui ('Columnas', 'Registro de las Columnas de las tablas', 'COL', 'no', 1, 'sis_generador/vista/columna/columna.js', 4, '', 'columna', 'GEN');
 select pxp.f_insert_tgui ('Procesos', '', 'PROCGEN', 'si', 2, '', 2, '', '', 'GEN');
-select pxp.f_insert_tgui ('GEN', 'Generador de Código', 'GEN', 'si', 3, '', 1, '', '', 'GEN');
+select pxp.f_insert_tgui ('GEN', 'Generador de Código', 'GEN', 'si', 3, '', 1, '../../../lib/imagenes/gen32x32.png', '', 'GEN');
 select pxp.f_insert_tgui ('Generador', 'Registro de las tablas', 'TABLA', 'si', 1, 'sis_generador/vista/tabla/tabla.js', 3, '', 'tabla', 'GEN');
 select pxp.f_insert_testructura_gui ('GEN', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('PROCGEN', 'GEN');

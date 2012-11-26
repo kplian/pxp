@@ -1444,7 +1444,7 @@ select pxp.f_insert_tgui ('Rol', 'rol', 'RROOLL', 'si', 3, 'sis_seguridad/vista/
 select pxp.f_insert_tgui ('Clasificador', 'clasificador', 'CLASIF', 'si', 3, 'sis_seguridad/vista/clasificador/Clasificador.php', 3, '', 'clasificador', 'SEGU');
 select pxp.f_insert_tgui ('Sistema', 'subsistema', 'SISTEM', 'si', 5, 'sis_seguridad/vista/subsistema/Subsistema.php', 3, '', 'Subsistema', 'SEGU');
 select pxp.f_insert_tgui ('Libreta', 'Libreta', 'LIB', 'si', 100, 'sis_seguridad/vista/libreta_her/LibretaHer.php', 3, '', 'LibretaHer', 'SEGU');
-select pxp.f_insert_tgui ('SEGU', 'Seguridad', 'SEGU', 'si', 1, '', 1, '', 'Seguridad', 'SEGU');
+select pxp.f_insert_tgui ('SEGU', 'Seguridad', 'SEGU', 'si', 1, '', 1, '../../../lib/imagenes/segu32x32.png', 'Seguridad', 'SEGU');
 select pxp.f_insert_tgui ('Procesos', '', 'PROCSEGU', 'si', 2, '', 2, '', '', 'SEGU');
 select pxp.f_insert_tgui ('Parametros', '', 'o', 'si', 1, '', 2, '', '', 'SEGU');
 select pxp.f_insert_tgui ('Interfaces por sistema', 'gui', '', 'no', 1, 'sis_seguridad/vista/gui/gui.js', 3, '', 'gui', 'SEGU');
