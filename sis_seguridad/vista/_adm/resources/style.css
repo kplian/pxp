@@ -358,3 +358,28 @@ div.hr {
 .expanded .mdesc .long {
     line-height:18px;
 }
+
+.xnd-icon {
+	width: auto!important;
+	height: auto!important;
+	 vertical-align: middle;
+	
+}
+.xnd-text {
+    font-weight:bold!important;
+    font-size: 14px; 
+	vertical-align: middle;
+	padding-bottom: 5;
+    padding-top: 5;
+	}
+
+.xnd-text  a span{
+         vertical-align: middle;
+	}
+
+
+
+.xnd-no-icon {
+  display: none;
+  background-image:url(a_form.png);
+}

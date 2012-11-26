@@ -79,6 +79,7 @@ Menu=function(config){
 		loader:new  Ext.tree.TreeLoader({url:'../../sis_seguridad/control/Menu/listarPermisoArb',
 		// baseParams :{_tipo:'direc'},
 		// preloadChildren:true,
+		
 		clearOnLoad:false
 
 		}),
@@ -86,7 +87,9 @@ Menu=function(config){
 			text:'Menú de navegación',
 			draggable:false,
 			expanded:true,
-
+			iconCls:"xnd-icon",
+			singleClickExpand :true,
+            //children: [{iconCls:"xnd-icon"}],
 			id:'id'
 		}),
 		collapseFirst:false
@@ -94,6 +97,7 @@ Menu=function(config){
 };
 // la clase menu hereda de TreePanel
 Ext.extend(Menu,Ext.tree.TreePanel,{
+	
 	selectClass : function(cls){
 		if(cls){
 			this.getSelectionModel().select(this.getNodeById(cls))
@@ -155,8 +159,10 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	     }else{
 	    	 var iconCls='icon-folder';
 				if(icono){
-					Ext.util.CSS.createStyleSheet('.cls-'+cls+'{background-image: url('+icono+')!important;}');
+					Ext.util.CSS.createStyleSheet('.cls-'+cls+'{background: url('+icono+') no-repeat top left ;background-size:25px 25px!important;}');
 					iconCls='cls-'+cls;
+					
+		
 				}
 	    	 
 			 var p = this.add(new Ext.Panel({
@@ -239,6 +245,7 @@ Phx.CP=function(){
 			// menu contextual
 			var ctxMenu = new Ext.menu.Menu({
 				id:'copyCtx',
+				
 				items: [{
 					id:'expand',
 					handler:expandAll,
