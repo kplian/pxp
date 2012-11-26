@@ -38,6 +38,7 @@
 		$this->captura('clase_vista','varchar'); 
 		$this->captura('tipo_dato','varchar');
 		$this->captura('icono','varchar');
+		//$this->captura('texto','varchar');
 					
 		
 		$this->armarConsulta();
