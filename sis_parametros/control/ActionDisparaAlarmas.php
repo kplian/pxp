@@ -53,10 +53,10 @@ include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
 		////////////////
         $objParam->defecto('ordenacion','id_lugar');
         $objParam->defecto('dir_ordenacion','asc');
-		$objFunc=new FuncionesParametros();	
-		$res=$objFunc->GeneraAlarma($objParam);
+		$objFunc=$this->create('MODDAlarma');	
+		$res=$objFunc->GeneraAlarma();
 		
-		$res2=$objFunc->listarAlarmaCorrespondeciaPendiente($objParam);
+		$res2=$objFunc->listarAlarmaCorrespondeciaPendiente();
 		
 		
 		foreach ($res2->datos as $d){
@@ -70,7 +70,7 @@ include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
 			}
 		}
 		
-		$res2=$objFunc->modificarEnvioCorreo($objParam);
+		$res2=$objFunc->modificarEnvioCorreo();
 		
 		
 		$res->imprimirRespuesta($res->generarJson());

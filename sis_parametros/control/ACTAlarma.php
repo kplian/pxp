@@ -21,11 +21,11 @@ class ACTAlarma extends ACTbase{
                                                                  where usu.id_usuario=".$this->objParam->getParametro('id_usuario').")");	
 		}
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarAlarma');
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODAlarma','listarAlarma');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarAlarma($this->objParam);
+			$this->objFunc=$this->create('MODAlarma');	
+			$this->res=$this->objFunc->listarAlarma();
 		}	
 		$this->res->imprimirRespuesta($this->res->generarJson());
 		
@@ -35,24 +35,24 @@ class ACTAlarma extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->alarmaPendiente($this->objParam);
+			$this->objFunc=$this->create('MODAlarma');		
+			$this->res=$this->objFunc->alarmaPendiente();
 			$this->res->imprimirRespuesta($this->res->generarJson());
 		
 	}			
 	function insertarAlarma(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODAlarma');		
 		if($this->objParam->insertar('id_alarma')){
-			$this->res=$this->objFunc->insertarAlarma($this->objParam);			
+			$this->res=$this->objFunc->insertarAlarma();			
 		} else{			
-			$this->res=$this->objFunc->modificarAlarma($this->objParam);
+			$this->res=$this->objFunc->modificarAlarma();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarAlarma(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarAlarma($this->objParam);
+		$this->objFunc=$this->create('MODAlarma');		
+		$this->res=$this->objFunc->eliminarAlarma();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

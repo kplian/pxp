@@ -14,28 +14,28 @@ class ACTDeptoUsuario extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarDeptoUsuario');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODDeptoUsuario','listarDeptoUsuario');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
-			$this->res=$this->objFunc->listarDeptoUsuario($this->objParam);
+			$this->objFunc=$this->create('MODDeptoUsuario');
+			$this->res=$this->objFunc->listarDeptoUsuario();
 			$this->res->imprimirRespuesta($this->res->generarJson());
 		}
 	}
 				
 	function insertarDeptoUsuario(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODDeptoUsuario');	
 		if($this->objParam->insertar('id_depto_usuario')){
-			$this->res=$this->objFunc->insertarDeptoUsuario($this->objParam);			
+			$this->res=$this->objFunc->insertarDeptoUsuario();			
 		} else{			
-			$this->res=$this->objFunc->modificarDeptoUsuario($this->objParam);
+			$this->res=$this->objFunc->modificarDeptoUsuario();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarDeptoUsuario(){
-		$this->objFunc=new FuncionesParametros();	
-		$this->res=$this->objFunc->eliminarDeptoUsuario($this->objParam);
+		$this->objFunc=$this->create('MODDeptoUsuario');	
+		$this->res=$this->objFunc->eliminarDeptoUsuario();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

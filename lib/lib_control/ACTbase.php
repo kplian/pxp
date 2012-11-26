@@ -17,5 +17,29 @@ abstract class ACTbase
 		$this->objParam=  $pParam;		
 	}
 	
+	function create($className) {
+		$myArray = explode("/", $className);
+		$reflector = new ReflectionClass(get_class($this));
+		//si el tamano del array es dos se debe incluir un modelo en otro subsistema
+		//si el tamano del array es uno se incluye un modelo del mismo subsistema
+		// sino se de lanzar una excepcion
+		if (sizeof($myArray) == 1) {			
+			$includeDir = dirname($reflector->getFileName()) . "/../modelo/";
+			$fileName = $myArray [0] . '.php';			
+			
+		} else if (sizeof($myArray) == 2) {			
+			$includeDir = dirname($reflector->getFileName()) . "/../../" . $myArray[0] . "modelo/";
+			$fileName = $myArray [1] . '.php';			
+			
+		} else {
+			throw new Exception(__METHOD__.': No se pudo incluir el modelo '.$className);
+		}
+		
+		include_once $includeDir . $fileName;
+		eval('$modelObj = new $myArray[0]($this->objParam);');
+		return $modelObj;
+		
+	}
+	
 }
 ?>

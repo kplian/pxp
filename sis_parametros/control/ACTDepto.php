@@ -15,13 +15,13 @@ class ACTDepto extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesParametros','listarDepto');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODDepto','listarDepto');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesParametros();
+			$this->objFunSeguridad=$this->create('MODDepto');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarDepto($this->objParam);
+			$this->res=$this->objFunSeguridad->listarDepto();
 			
 		}
 		
@@ -33,19 +33,19 @@ class ACTDepto extends ACTbase{
 	function insertarDepto(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesParametros();
+		$this->objFunSeguridad=$this->create('MODDepto');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_depto')){
 
 			//ejecuta el metodo de insertar de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->insertarDepto($this->objParam);			
+			$this->res=$this->objFunSeguridad->insertarDepto();			
 		}
 		else{	
 			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarDepto($this->objParam);
+			$this->res=$this->objFunSeguridad->modificarDepto();
 		}
 		
 		//imprime respuesta en formato JSON
@@ -56,8 +56,8 @@ class ACTDepto extends ACTbase{
 	function eliminarDepto(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesParametros();	
-		$this->res=$this->objFunSeguridad->eliminarDepto($this->objParam);
+		$this->objFunSeguridad=$this->create('MODDepto');
+		$this->res=$this->objFunSeguridad->eliminarDepto();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
