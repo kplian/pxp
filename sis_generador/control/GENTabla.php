@@ -85,8 +85,8 @@ class GENTabla {
 		$this->aNombresArchivos['control']='ACT'.$this->getSujetoTablaJava().$this->fecha_hora.".php";
 		$this->aNombresArchivos['vista']=$this->getSujetoTablaJava().$this->fecha_hora.".php";*/
 		
-		$this->aNombresArchivos['bd_ime']=$this->getNombreFuncionBDesquema()."_ime".".sql";
-		$this->aNombresArchivos['bd_sel']=$this->getNombreFuncionBDesquema()."_sel".".sql";
+		$this->aNombresArchivos['bd_ime']=$this->nomArchPref.$this->getNombreFuncionBDesquema()."_ime".".sql";
+		$this->aNombresArchivos['bd_sel']=$this->nomArchPref.$this->getNombreFuncionBDesquema()."_sel".".sql";
 		$this->aNombresArchivos['modelo']=$this->nomArchPref.'MOD'.$this->getSujetoTablaJava().".php";
 		$this->aNombresArchivos['custom']=$this->nomArchPref.'Funciones'.$this->getCarpetaSistemaJava().".php";
 		$this->aNombresArchivos['custom_anx']='Funciones'.$this->getCarpetaSistemaJava().".php";
@@ -127,7 +127,8 @@ class GENTabla {
 	
 	function getSujetoTabla(){
 		//return ucfirst($this->_substr(substr($this->getNombreTabla(),1),0));
-		return $this->_substr(substr($this->getNombreTabla(),1),0);
+		//return $this->_substr(substr($this->getNombreTabla(),1),0);
+		return $this->_substr(substr($this->getNombreTabla(),0),0);
 	}
 	
 	

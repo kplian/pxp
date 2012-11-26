@@ -4,7 +4,7 @@ class ACTGenerador extends ACTbase{
 	private $objCol;
 	//variable que guarda los datos de las columnas de forma serializada
 	private $gCol=array(); //arrays sin la llave primaria
-	private $gLlave=array(); //array con la(s) colummna(s) llave primaria
+	private $gLlave=array(); //array con la(s) colummna(s) llave primaria 
 	private $gCamposBasicosInsert=array();//array que contiene los campos basicos (id_usuario_reg, fecha_reg)
 	private $gCamposBasicosUpdate=array();//array que contiene los campos basicos (id_usuario_mod, fecha_mod)
 	//variable que guarda los datos de la tabla de forma serializada
@@ -96,7 +96,7 @@ class ACTGenerador extends ACTbase{
 			$this->crearVISTA1();
 			
 			//Mueve los archivos si corresponde
-			$this->moverArchivosGenerados();
+			//$this->moverArchivosGenerados();
 			
 			//Respuesta
 			echo "{success:true,resp:'Archivos generados'}";
@@ -132,7 +132,7 @@ DECLARE
 BEGIN
 
     v_nombre_funcion = '".$this->gTabla->getNombreFuncionBDesquema()."_ime';
-    v_parametros = f_get_record(p_tabla);\n\n";
+    v_parametros = pxp.f_get_record(p_tabla);\n\n";
 					
 		//Agrega los comentarios por la transaccion
 		$this->strTexto .= $this->Comentarios('BD',$this->gTabla->getNombreFuncionBDesquema().'_ime',$this->gTabla->getComentariosDefectoTrans('ins'),"'".$this->gTabla->getNombreTransaccion()."INS'")."
@@ -194,8 +194,8 @@ BEGIN
 			)RETURNING ".$this->gLlave[0]->getColumna('nombre')." into v_".$this->gLlave[0]->getColumna('nombre').";
                
 			--Definicion de la respuesta
-			v_resp = f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." almacenado(a) con exito (".$this->gTabla->getId()."'||v_".$this->gTabla->getId()."||')'); 
-            v_resp = f_agrega_clave(v_resp,'".$this->gLlave[0]->getColumna('nombre')."',v_".$this->gLlave[0]->getColumna('nombre')."::varchar);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." almacenado(a) con exito (".$this->gTabla->getId()."'||v_".$this->gTabla->getId()."||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'".$this->gLlave[0]->getColumna('nombre')."',v_".$this->gLlave[0]->getColumna('nombre')."::varchar);
 
             --Devuelve la respuesta
             return v_resp;
@@ -231,8 +231,8 @@ BEGIN
 			where ".$this->gLlave[0]->getColumna('nombre')."=v_parametros.".$this->gLlave[0]->getColumna('nombre').";
                
 			--Definicion de la respuesta
-            v_resp = f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." modificado(a)'); 
-            v_resp = f_agrega_clave(v_resp,'".$this->gTabla->getId()."',v_parametros.".$this->gTabla->getId()."::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'".$this->gTabla->getId()."',v_parametros.".$this->gTabla->getId()."::varchar);
                
             --Devuelve la respuesta
             return v_resp;
@@ -249,8 +249,8 @@ BEGIN
             where ".$this->gTabla->getId()."=v_parametros.".$this->gLlave[0]->getColumna('nombre').";
                
             --Definicion de la respuesta
-            v_resp = f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." eliminado(a)'); 
-            v_resp = f_agrega_clave(v_resp,'".$this->gTabla->getId()."',v_parametros.".$this->gTabla->getId()."::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'".$this->gTabla->getId()."',v_parametros.".$this->gTabla->getId()."::varchar);
               
             --Devuelve la respuesta
             return v_resp;
@@ -267,9 +267,9 @@ EXCEPTION
 				
 	WHEN OTHERS THEN
 		v_resp='';
-		v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
 				        
 END;
@@ -280,7 +280,7 @@ ALTER FUNCTION ".$this->gTabla->getNombreFuncionBDesquemaComillasIME()."(integer
 ";
 
 		//Almacenamiento de los datos en el archivo
-		$this->guardarArchivo($this->ruta.'/base/'.$this->gTabla->getNombreArchivo('bd_ime'),$this->strTexto);
+		$this->guardarArchivo($this->ruta.'/base/funciones/'.$this->gTabla->getNombreArchivo('bd_ime'),$this->strTexto);
 
 		
 	}
@@ -304,7 +304,7 @@ DECLARE
 BEGIN
 
 	v_nombre_funcion = '".$this->gTabla->getNombreFuncionBDesquema()."_sel';
-    v_parametros = f_get_record(p_tabla);\n\n".
+    v_parametros = pxp.f_get_record(p_tabla);\n\n".
 		
 		//Agrega los comentarios por la transaccion
 		$this->Comentarios('BD',$this->gTabla->getNombreFuncionBDesquema().'_sel',$this->gTabla->getComentariosDefectoTrans('sel'),"'".$this->gTabla->getNombreTransaccion()."SEL'")."
@@ -375,9 +375,9 @@ EXCEPTION
 					
 	WHEN OTHERS THEN
 			v_resp='';
-			v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
 \$BODY$
@@ -388,7 +388,7 @@ ALTER FUNCTION ".$this->gTabla->getNombreFuncionBDesquemaComillasSEL()."(integer
 				            
 				            
 		//Almacenamiento de los datos en el archivo
-		$this->guardarArchivo($this->ruta.'/base/'.$this->gTabla->getNombreArchivo('bd_sel'),$this->strTexto);
+		$this->guardarArchivo($this->ruta.'/base/funciones/'.$this->gTabla->getNombreArchivo('bd_sel'),$this->strTexto);
 
 		
 	}
@@ -892,12 +892,17 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		$fb=FirePHP::getInstance(true);
 		$fb->log($this->gTabla->getSujetoTabla(),"direccion");*/
 		
-		$this->ruta=dirname(__FILE__)."/../archivos/sis_".$this->objParam->getParametro('nombre_carpeta');
+		//$this->ruta=dirname(__FILE__)."/../archivos/sis_".$this->objParam->getParametro('nombre_carpeta');
+		$this->ruta=dirname(__FILE__).'/../../../sis_'.$this->gTabla->getCarpetaSistema();
+
 		if(!file_exists($this->ruta)){
 			mkdir($this->ruta);
 		}
 		if(!file_exists("$this->ruta/base")){
 			mkdir("$this->ruta/base");
+		}
+		if(!file_exists("$this->ruta/base/funciones")){
+			mkdir("$this->ruta/base/funciones");
 		}
 		if(!file_exists("$this->ruta/modelo")){
 			mkdir("$this->ruta/modelo");
@@ -922,7 +927,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 	private function moverArchivosGenerados(){
 	//echo 'fuck:'.$this->gTabla->getReemplazar();exit;
 		//if($this->gTabla->getReemplazar()=='si'){
-			$aux=dirname(__FILE__).'/../../sis_'.$this->gTabla->getCarpetaSistema();
+			$this->ruta=dirname(__FILE__).'/../../sis_'.$this->gTabla->getCarpetaSistema();
 			//modelo: $this->ruta.'/modelo/MOD'.$this->gTabla->getNombreTablaJava().".php"
 			
 			//Verifica si la carpeta del sistema existe, caso contrario lo crea
