@@ -51,6 +51,7 @@ if(!isset($_SESSION["_SESION"])){
     
    <link rel="stylesheet" type="text/css" href="resources/docs.css"></link>
    <link rel="stylesheet" type="text/css" href="resources/style.css"></link>
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/Portal.css" />
 
    <link rel="stylesheet" type="text/css" href="../../../lib/ext3/resources/css/ext-all.css"/>
    <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/<?php echo $_SESSION['_ESTILO_MENU'];?>/menus.css"/>
@@ -101,6 +102,9 @@ if(!isset($_SESSION["_SESION"])){
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/NumericFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/BooleanFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/RowEditor.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/Portal.js"></script>
+    <script type="text/javascript" src="../../../lib/ux/PortalColumn.js"></script>
+    <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>
 	<!--
 	<script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridSorter.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumnResizer.js"></script>
@@ -137,8 +141,9 @@ if(!isset($_SESSION["_SESION"])){
      
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
     <div id="header">
-	<img src="../../../lib/images/extjs.gif" style="float:right;margin-right:0px;margin-top:0px;"/>
-   <img src="../../../lib/images/postgres.gif"  style="margin-left:0px;margin-top:2px;"/>	
+	<a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg" style="float:right;margin-right:0px;margin-top:0px;"/></a>
+  	
+   <img src="../../../lib/images/postgres.gif"  style="margin-left:5px;margin-top:2px;"/>	
    </div>
 
    

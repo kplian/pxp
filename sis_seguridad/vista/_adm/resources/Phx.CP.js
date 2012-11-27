@@ -370,10 +370,11 @@ Phx.CP=function(){
 			// params: parametros que se le pasaran al js
 			// pid: identificador de la ventana padre
 			// cls: nombre de la clase que se va ejecutar
-				
-				
 			}
 			
+			//abrir un tab de vienbenida
+			
+			this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
 			
 		},
 		//para capturar variables enviadas por get
@@ -560,7 +561,7 @@ Phx.CP=function(){
 			        		   Phx.CP.init();
 							   sw_auten=true;
 			        	   }
-			        	    form_login.setTitle("ENDESIS");
+			        	    form_login.setTitle("LOGIN");
 							Phx.CP.loadingHide();
 			        	  
 			      		}
@@ -598,7 +599,7 @@ Phx.CP=function(){
             		Phx.CP.loadingShow();
 					
             		Ext.Ajax.defaultHeaders={
-					  'Powered-By': 'Phx'
+					  'Powered-By': 'Pxp'
 					};
 					// Envia crendenciales al servidor
 
@@ -686,13 +687,13 @@ Phx.CP=function(){
       
 		loadingShow:function(contenedor){
 		
-		var cont = contenedor?contenedor:Ext.getBody();
+		//var cont = contenedor?contenedor:Ext.getBody();
 			 Ext.MessageBox.show({ 
 			 	title: 'Espere Por Favor...', 
 			   msg:"<div><img src='../../../lib/ext3/resources/images/default/grid/loading.gif'/> Cargando ...</div>", 
 			  // msg:"<div><img src='../../../lib/imagenes/gti_3.gif'/>
 				// Cargando ...</div>",
-			  animEl:cont,
+			  animEl:Ext.getBody(),
 			  width:200,
 			  minHeight:100,
 			  closable:false });
