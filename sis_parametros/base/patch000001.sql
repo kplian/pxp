@@ -582,13 +582,9 @@ CREATE TABLE param.tcatalogo (
     codigo character varying(20),
     descripcion character varying(200),
     tipo varchar(15),
-    CONSTRAINT tcatalogo__id_catalogo PRIMARY KEY (id_catalogo),
-    CONSTRAINT chk_tcatalogo__tipo CHECK (tipo IN ('estado_ot','prioridad_ot','tipo_ot','prioridad_uc')),
-    CONSTRAINT fk_tcatalogo__id_subsistema FOREIGN KEY (id_subsistema)
-    	REFERENCES segu.tsubsistema (id_subsistema) MATCH SIMPLE
-    	ON UPDATE NO ACTION
-        ON DELETE NO ACTION) 
-INHERITS (pxp.tbase) WITH ( OIDS=TRUE );
+    CONSTRAINT pk_tcatalogo__id_catalogo PRIMARY KEY (id_catalogo)
+) INHERITS (pxp.tbase)
+WITH ( OIDS=TRUE );
 
 ALTER TABLE param.tcatalogo OWNER TO postgres;
 
@@ -623,5 +619,4 @@ alter table param.tcatalogo
   references param.tcatalogo_tipo(id_catalogo_tipo);
 alter table param.tcatalogo drop column tipo;
 alter table param.tcatalogo drop column id_subsistema;
-alter table param.tcatalogo drop constraint fk_tcatalogo__id_subsistema;
 /***********************************F-SCP-RCM-PARAM-12-26/11/2012****************************************/
