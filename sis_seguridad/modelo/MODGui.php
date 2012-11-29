@@ -8,17 +8,23 @@
  */            
  class MODGui extends MODbase {
 	
-	function __construct(CTParametro $pParam){
+	function __construct(CTParametro &$pParam){
 		parent::__construct($pParam);
 	}
-	
+	public function __call($method, $args)
+    {
+        echo "Called method $method";
+		exit;
+    }
 	
 	//--------- LISTAR MENU----------//
 	 /* Utilizada para la creacion del menu pricipal 
 	 * que se encuentra a la izquierda en la pantalla*/
 	 
 	function listarMenu(){
+	
 		//echo $parametro->getOrdenacion;
+		//var_dump('aaa',$this->objParam);
 		
 		$this->procedimiento='segu.ft_menu_sel';
 		$this->transaccion='SEG_MENU_SEL';

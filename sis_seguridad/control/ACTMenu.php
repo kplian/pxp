@@ -8,14 +8,12 @@
  */
 
  
-class ACTMenu extends ACTbaseSeguridad {
+class ACTMenu extends ACTbase {
 	/////////////
 	//Constructor
 	////////////
 	function __construct(CTParametro $pParam){
-		parent::__construct($pParam);  
-		
-		
+		parent::__construct($pParam); 		
 	}
 
 	/////////
@@ -24,6 +22,7 @@ class ACTMenu extends ACTbaseSeguridad {
 	
 	//Genera las llaves publicas
 	function listarPermisoArb(){
+		
 		$node=$this->objParam->getParametro('node');
 		
 		if($node=='id')
@@ -31,11 +30,12 @@ class ACTMenu extends ACTbaseSeguridad {
 		else 
 			$this->objParam->addParametro('id_padre',$node);
 		
+		//var_dump($this->objParam);
 		/*
 		echo $node;
 		exit;	*/
-			
-		$this->res=$this->funciones->ListarMenu($this->objParam);
+		$this->funciones = $this->create('MODGui');
+		$this->res=$this->funciones->ListarMenu();
 		$this->res->setTipoRespuestaArbol();
 		
 		$arreglo=array();

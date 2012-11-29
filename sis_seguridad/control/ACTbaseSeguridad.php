@@ -17,7 +17,7 @@ abstract class ACTbaseSeguridad extends ACTbase{
 		
 		parent::__construct($pParam);
 		
-		$this->funciones=$this->create('MODbaseSeguridad');	
+		//$this->funciones=$this->create('MODPrimo');	
 		
 	}
 	

@@ -89,7 +89,7 @@ class CTSesion {
 	}
 
 	function setEstado($est) {
-		$this->funSeguridad = new FuncionesSeguridad();
+		$this->funSeguridad = new MODSesion();
 		if ($est == 'activa') {
 
 			$this->rotarSid ();
@@ -150,7 +150,7 @@ class CTSesion {
 	private function recuparaSidBase() {
 
 
-		$this->funSeguridad = new FuncionesSeguridad();
+		$this->funSeguridad = new MODSesion();
 
 		$res = $this->funSeguridad->recuparaSidBase($this->id_usuario);
 

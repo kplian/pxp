@@ -14,23 +14,22 @@ class MODbase extends driver
 
 
 	//Constructor que obtiene los datos de parametros e inicializa el driver
-	function __construct($pParam){
+	function __construct(&$pParam){
 		
-		$this->objParam=$pParam;
+		$this->objParam=&$pParam;
 		$this->nombre_archivo='MODbase.php';
 		parent::__construct();
-		
 		//Guarda los parametros en variable local
 		$this->validacion=new MODValidacion();
 		
-		
-		if($pParam==null){
+
+		if($this->objParam==null){
 			$this->esMatriz=false;
 				
 		}
 		else{
 				
-			$this->aParam=$pParam;
+			$this->aParam=&$this->objParam;
 			//recibe los parametros pasados desde la vista
 			$this->arreglo=$this->aParam->getArregloParametros();
 			
@@ -73,10 +72,10 @@ class MODbase extends driver
 
 		}
 
-
 	}
 
 	function armarConsulta(){
+		
 
 		if(count($this->validacion->getRes())==0){
 			parent::armarConsulta();

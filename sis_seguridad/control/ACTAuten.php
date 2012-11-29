@@ -5,7 +5,7 @@
  Autor:	Kplian (RAC)
  Fecha:	14/7/2010
  */
-class ACTAuten extends ACTbaseSeguridad {
+class ACTAuten extends ACTbase {
 
 	//Variables
 	private $datos=array();
@@ -14,13 +14,19 @@ class ACTAuten extends ACTbaseSeguridad {
 	private $clase;
 	private $fei;
 	private $llaves;
+	private $cls_primo1;
+	private $cls_primo2;
+	
 
 	/////////////
 	//Constructor
 	////////////
-	function __construct(CTParametro $pParam){
+	function __construct(CTParametro &$pParam){
 		
-		parent::__construct($pParam);
+		
+		parent::__construct($pParam);	
+		
+			
 		
 	}
 
@@ -31,7 +37,10 @@ class ACTAuten extends ACTbaseSeguridad {
 	//Genera las llaves publicas
 	function getPublicKey(){
 		//Se obtiene el primer primo
-		$this->res=$this->funciones->ObtenerPrimo($this->objParam);
+		$this->funciones= $this->create('MODPrimo');
+		$this->res=$this->funciones->ObtenerPrimo();
+		
+		
 		//echo 'resp:'.$this->res;exit;
 		if($this->res->getTipo()=='ERROR'){
 			
@@ -42,9 +51,9 @@ class ACTAuten extends ACTbaseSeguridad {
 		$this->datos=array();
 		$this->datos=$this->res->getDatos();
 		$this->primo1=$this->datos[0]['primo'];
-
+   
 		//Se obtiene el segundo primo
-		$this->res=$this->funciones->ObtenerPrimo($this->objParam);
+		$this->res=$this->funciones->ObtenerPrimo();
 
 		if($this->res->getTipo()=='ERROR'){
 			$this->res->imprimirRespuesta($this->res->generarJson());
@@ -108,8 +117,8 @@ class ACTAuten extends ACTbaseSeguridad {
 	
 	function verificarCredenciales(){
 		
-
-		$this->res=$this->funciones->ValidaUsuario($this->objParam);
+		$this->funciones= $this->create('MODUsuario');
+		$this->res=$this->funciones->ValidaUsuario();
 		$this->datos=$this->res->getDatos();
 
 

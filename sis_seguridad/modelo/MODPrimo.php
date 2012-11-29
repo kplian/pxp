@@ -13,6 +13,8 @@ class MODPrimo extends MODbase
 		parent::__construct($pParam);
 	}
 	function ObtenerPrimo(){
+		$this->resetParametros();
+		$this->resetCaptura();
 		//definicion de datos
 		$this->procedimiento='segu.ft_primo_sel';
 		$this->transaccion='SEG_OBTEPRI_SEL';

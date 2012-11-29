@@ -229,6 +229,17 @@ class driver
 		//rac
 		$this->nombres_booleanos=array();
 	}
+	/**
+	 * Nombre funcion:	resetCaptura
+	 * Proposito:		Elimina los valores de los arreglos de captura
+	 * Fecha creacion:	20/11/2009
+	 * 
+	 */
+	function resetParametros(){
+		$this->variables=array();
+		$this->tipos=array();
+		$this->valores=array();		
+	}
 	
 	/**
 	 * Nombre funcion:	setTipoRetorno
