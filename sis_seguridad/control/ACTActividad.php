@@ -22,8 +22,10 @@ class ACTActividad extends ACTbase{
 	function insertarActividad(){
 		$this->objFunc=$this->create('MODActividad');	
 		if($this->objParam->insertar('id_actividad')){
+				
 			$this->res=$this->objFunc->insertarActividad();			
-		} else{			
+		} else{
+							
 			$this->res=$this->objFunc->modificarActividad();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());

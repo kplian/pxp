@@ -14,8 +14,6 @@ class ACTProcedimiento extends ACTbase{
 		$this->objParam->defecto('ordenacion','codigo');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		//echo $this->objParam->getParametro('id_funcion'); exit;
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODProcedimiento');	
 		   
 		$id_funcion=$this->objParam->getParametro('id_funcion');
 		
@@ -25,7 +23,9 @@ class ACTProcedimiento extends ACTbase{
 		
 		}
 		
-		   
+		 //crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODProcedimiento');	
+		  
 		//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
 		$this->res=$this->objFunSeguridad->listarProcedimientoCmb($this->objParam);
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)

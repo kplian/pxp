@@ -12,8 +12,6 @@ class ACTGui extends ACTbase{
     * 
     * */
 	function listarGui(){
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODGui');
 		
 		//obtiene el parametro nodo enviado por la vista
 		$node=$this->objParam->getParametro('node');
@@ -28,6 +26,9 @@ class ACTGui extends ACTbase{
 		}	
 	
 		$this->objParam->addParametro('id_subsistema',$id_subsistema);
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODGui');
+		
 		$this->res=$this->objFunSeguridad->listarGui($this->objParam);
 		
 		$this->res->setTipoRespuestaArbol();

@@ -22,7 +22,7 @@ class ACTEstructuraDato extends ACTbase{
 		}
 		else {
 			$this->objFunSeguridad=$this->create('MODEstructuraDato');
-			$this->res=$this->objFunSeguridad->listarEstructuraDato($this->objParam);
+			$this->res=$this->objFunSeguridad->listarEstructuraDato();
 		}
 		
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
@@ -46,7 +46,7 @@ class ACTEstructuraDato extends ACTbase{
 		else{	
 			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarEstructuraDato($this->objParam);
+			$this->res=$this->objFunSeguridad->modificarEstructuraDato();
 		}
 		
 		//imprime respuesta en formato JSON
@@ -58,7 +58,7 @@ class ACTEstructuraDato extends ACTbase{
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=$this->create('MODEstructuraDato');	
-		$this->res=$this->objFunSeguridad->eliminarEstructuraDato($this->objParam);
+		$this->res=$this->objFunSeguridad->eliminarEstructuraDato();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}

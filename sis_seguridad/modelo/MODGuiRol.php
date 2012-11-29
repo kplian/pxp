@@ -16,7 +16,7 @@ class MODGuiRol extends MODbase {
 	
 	function listarGuiRol(){
 		
-		
+		//var_dump($this->objParam);
 		$this->procedimiento='segu.ft_gui_rol_sel';
 		$this->transaccion='SEG_GUIROL_SEL';
 		$this->tipo_procedimiento='SEL';

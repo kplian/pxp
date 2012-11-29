@@ -10,9 +10,7 @@ class ACTGuiRol extends ACTbase{
 function listarGuiRol(){
 	
 	
-	//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-	$this->objFunSeguridad=$this->create('MODGuiRol');
-
+	
 	//obtiene el parametro nodo enviado por la vista
 		$node=$this->objParam->getParametro('node');
 		$id_gui_proc=$this->objParam->getParametro('id_gui_proc');
@@ -30,8 +28,10 @@ function listarGuiRol(){
 	
 	//$this->objParam->addParametro('id_subsistema',$id_subsistema);
 	$this->objParam->addParametro('id_rol',$id_rol);
+	//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+	$this->objFunSeguridad=$this->create('MODGuiRol');
 	
-	$this->res=$this->objFunSeguridad->listarGuiRol($this->objParam);
+	$this->res=$this->objFunSeguridad->listarGuiRol();
 	
 	
 		
@@ -139,9 +139,6 @@ function listarGuiRol(){
 		
 	
 		
-		//crea un objeto del tipo seguridad
-		$this->objFunSeguridad=$this->create('MODGuiRol');
-		
 		
 		
 		if($tipo_dato != 'procedimiento'){
@@ -151,8 +148,9 @@ function listarGuiRol(){
 				//adiciona parametros
 				$this->objParam->addParametro('id_gui',$id_gui);
 				$this->objParam->addParametro('id_gui_padre',$id_gui_padre);
-				
-				$this->res=$this->objFunSeguridad->eliminarGui($this->objParam);
+				//crea un objeto del tipo seguridad
+		        $this->objFunSeguridad=$this->create('MODGuiRol');
+		        $this->res=$this->objFunSeguridad->eliminarGui();
 				$this->res->imprimirRespuesta($this->res->generarJson());
 	
 		}
@@ -175,8 +173,6 @@ function listarGuiRol(){
 
 	function guardarGui(){
 	
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODGuiRol');
 		
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 		$id_gui=$this->objParam->getParametro('id');
@@ -186,6 +182,9 @@ function listarGuiRol(){
 		//adiciona parametros
 		$this->objParam->addParametro('id_gui',$id_gui);
 		$this->objParam->addParametro('id_gui_padre',$id_gui_padre);
+		
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODGuiRol');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id')){
@@ -207,9 +206,6 @@ function listarGuiRol(){
 	
 function checkGuiRol(){
 	
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODGuiRol');
-		
 		//echo 'check';
 		//exit;
 		
@@ -227,7 +223,11 @@ function checkGuiRol(){
 		}
 		$this->objParam->addParametro('tipo_nodo',$tipo_meta);
 		
-	 $this->res=$this->objFunSeguridad->insertarGuiRol($this->objParam);			
+	    //crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODGuiRol');
+		
+		
+	    $this->res=$this->objFunSeguridad->insertarGuiRol();			
 	
 	
 		//imprime respuesta en formato JSON
