@@ -14,28 +14,28 @@ class ACTLibretaHer extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesSeguridad','listarLibretaHer');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODLibretaHer','listarLibretaHer');
 		} else{
-			$this->objFunc=new FuncionesSeguridad();	
-			$this->res=$this->objFunc->listarLibretaHer($this->objParam);
+			$this->objFunc=$this->create('MODLibretaHer');	
+			$this->res=$this->objFunc->listarLibretaHer();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarLibretaHer(){
-		$this->objFunc=new FuncionesSeguridad();	
+		$this->objFunc=$this->create('MODLibretaHer');	
 		if($this->objParam->insertar('id_libreta_her')){
-			$this->res=$this->objFunc->insertarLibretaHer($this->objParam);			
+			$this->res=$this->objFunc->insertarLibretaHer();			
 		} else{			
-			$this->res=$this->objFunc->modificarLibretaHer($this->objParam);
+			$this->res=$this->objFunc->modificarLibretaHer();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarLibretaHer(){
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->eliminarLibretaHer($this->objParam);
+		$this->objFunc=$this->create('MODLibretaHer');	
+		$this->res=$this->objFunc->eliminarLibretaHer();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

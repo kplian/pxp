@@ -17,11 +17,11 @@ class ACTPatronEvento extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarPatronEvento');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODPatronEvento','listarPatronEvento');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODPatronEvento');
 			$this->res=$this->objFunSeguridad->listarPatronEvento($this->objParam);
 		}
 		
@@ -37,7 +37,7 @@ class ACTPatronEvento extends ACTbase{
 	function guardarPatronEvento(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODPatronEvento');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_patron_evento')){
@@ -62,7 +62,7 @@ class ACTPatronEvento extends ACTbase{
 	function eliminarPatronEvento(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODPatronEvento');	
 		$this->res=$this->objFunSeguridad->eliminarPatronEvento($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

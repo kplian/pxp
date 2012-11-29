@@ -14,28 +14,28 @@ class ACTEspecialidad extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesOrganigrama','listarEspecialidad');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODEspecialidad','listarEspecialidad');
 		} else{
-			$this->objFunc=new FuncionesOrganigrama();	
-			$this->res=$this->objFunc->listarEspecialidad($this->objParam);
+			$this->objFunc=$this->create('MODEspecialidad');	
+			$this->res=$this->objFunc->listarEspecialidad();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarEspecialidad(){
-		$this->objFunc=new FuncionesOrganigrama();	
+		$this->objFunc=$this->create('MODEspecialidad');	
 		if($this->objParam->insertar('id_especialidad')){
-			$this->res=$this->objFunc->insertarEspecialidad($this->objParam);			
+			$this->res=$this->objFunc->insertarEspecialidad();			
 		} else{			
-			$this->res=$this->objFunc->modificarEspecialidad($this->objParam);
+			$this->res=$this->objFunc->modificarEspecialidad();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarEspecialidad(){
-		$this->objFunc=new FuncionesOrganigrama();	
-		$this->res=$this->objFunc->eliminarEspecialidad($this->objParam);
+		$this->objFunc=$this->create('MODEspecialidad');	
+		$this->res=$this->objFunc->eliminarEspecialidad();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

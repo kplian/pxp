@@ -11,7 +11,7 @@ function listarGuiRol(){
 	
 	
 	//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-	$this->objFunSeguridad=new FuncionesSeguridad();
+	$this->objFunSeguridad=$this->create('MODGuiRol');
 
 	//obtiene el parametro nodo enviado por la vista
 		$node=$this->objParam->getParametro('node');
@@ -140,7 +140,7 @@ function listarGuiRol(){
 	
 		
 		//crea un objeto del tipo seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGuiRol');
 		
 		
 		
@@ -176,7 +176,7 @@ function listarGuiRol(){
 	function guardarGui(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGuiRol');
 		
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 		$id_gui=$this->objParam->getParametro('id');
@@ -208,7 +208,7 @@ function listarGuiRol(){
 function checkGuiRol(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGuiRol');
 		
 		//echo 'check';
 		//exit;

@@ -18,28 +18,28 @@ class ACTFuncionarioEspecialidad extends ACTbase{
 		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesOrganigrama','listarFuncionarioEspecialidad');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODFuncionarioEspecialidad','listarFuncionarioEspecialidad');
 		} else{
-			$this->objFunc=new FuncionesOrganigrama();	
-			$this->res=$this->objFunc->listarFuncionarioEspecialidad($this->objParam);
+			$this->objFunc=$this->create('MODFuncionarioEspecialidad');	
+			$this->res=$this->objFunc->listarFuncionarioEspecialidad();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarFuncionarioEspecialidad(){
-		$this->objFunc=new FuncionesOrganigrama();	
+		$this->objFunc=$this->create('MODFuncionarioEspecialidad');	
 		if($this->objParam->insertar('id_funcionario_especialidad')){
-			$this->res=$this->objFunc->insertarFuncionarioEspecialidad($this->objParam);			
+			$this->res=$this->objFunc->insertarFuncionarioEspecialidad();			
 		} else{			
-			$this->res=$this->objFunc->modificarFuncionarioEspecialidad($this->objParam);
+			$this->res=$this->objFunc->modificarFuncionarioEspecialidad();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarFuncionarioEspecialidad(){
-		$this->objFunc=new FuncionesOrganigrama();	
-		$this->res=$this->objFunc->eliminarFuncionarioEspecialidad($this->objParam);
+		$this->objFunc=$this->create('MODFuncionarioEspecialidad');	
+		$this->res=$this->objFunc->eliminarFuncionarioEspecialidad();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

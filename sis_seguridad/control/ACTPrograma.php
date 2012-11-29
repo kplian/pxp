@@ -14,24 +14,24 @@ class ACTPrograma extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 					
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->listarPrograma($this->objParam);
+		$this->objFunc=$this->create('MODPrograma');	
+		$this->res=$this->objFunc->listarPrograma();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarPrograma(){
-		$this->objFunc=new FuncionesSeguridad();	
+		$this->objFunc=$this->create('MODPrograma');	
 		if($this->objParam->insertar('id_programa')){
-			$this->res=$this->objFunc->insertarPrograma($this->objParam);			
+			$this->res=$this->objFunc->insertarPrograma();			
 		} else{			
-			$this->res=$this->objFunc->modificarPrograma($this->objParam);
+			$this->res=$this->objFunc->modificarPrograma();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarPrograma(){
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->eliminarPrograma($this->objParam);
+		$this->objFunc=$this->create('MODPrograma');	
+		$this->res=$this->objFunc->eliminarPrograma();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

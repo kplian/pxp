@@ -14,11 +14,11 @@ class ACTBloqueoNotificacion extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','desc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarNotificacion');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODBloqueoNotificacion','listarNotificacion');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODBloqueoNotificacion');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarNotificacion($this->objParam);
 			
@@ -36,11 +36,11 @@ class ACTBloqueoNotificacion extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','desc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarBloqueo');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODBloqueoNotificacion','listarBloqueo');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODBloqueoNotificacion');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarBloqueo($this->objParam);
 			
@@ -53,7 +53,7 @@ class ACTBloqueoNotificacion extends ACTbase{
 	function CambiarEstadoBloqueoNotificacion(){
 		
         //crea un objeto del tipo seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODBloqueoNotificacion');
 		$this->res=$this->objFunSeguridad->cambiarEstadoBloqueoNotificacion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 			

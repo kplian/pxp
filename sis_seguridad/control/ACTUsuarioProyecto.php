@@ -17,11 +17,11 @@ class ACTUsuarioProyecto extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 	
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarUsuarioProyecto');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODUsuarioProyecto','listarUsuarioProyecto');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODUsuarioProyecto');
 			$this->res=$this->objFunSeguridad->listarUsuarioProyecto($this->objParam);
 		}
 		
@@ -34,7 +34,7 @@ class ACTUsuarioProyecto extends ACTbase{
 	function guardarUsuarioProyecto(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODUsuarioProyecto');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_usuario_proyecto')){
@@ -57,7 +57,7 @@ class ACTUsuarioProyecto extends ACTbase{
 	function eliminarUsuarioProyecto(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODUsuarioProyecto');	
 		$this->res=$this->objFunSeguridad->eliminarUsuarioProyecto($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

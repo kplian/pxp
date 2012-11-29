@@ -14,28 +14,28 @@ class ACTLibreta extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesSeguridad','listarLibreta');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODLibreta','listarLibreta');
 		} else{
-			$this->objFunc=new FuncionesSeguridad();	
-			$this->res=$this->objFunc->listarLibreta($this->objParam);
+			$this->objFunc=$this->create('MODLibreta');	
+			$this->res=$this->objFunc->listarLibreta();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarLibreta(){
-		$this->objFunc=new FuncionesSeguridad();	
+		$this->objFunc=$this->create('MODLibreta');	
 		if($this->objParam->insertar('id_libreta')){
-			$this->res=$this->objFunc->insertarLibreta($this->objParam);			
+			$this->res=$this->objFunc->insertarLibreta();			
 		} else{			
-			$this->res=$this->objFunc->modificarLibreta($this->objParam);
+			$this->res=$this->objFunc->modificarLibreta();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarLibreta(){
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->eliminarLibreta($this->objParam);
+		$this->objFunc=$this->create('MODLibreta');	
+		$this->res=$this->objFunc->eliminarLibreta();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

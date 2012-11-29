@@ -14,24 +14,24 @@ class ACTActividad extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 					
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->listarActividad($this->objParam);
+		$this->objFunc=$this->create('MODActividad');	
+		$this->res=$this->objFunc->listarActividad();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarActividad(){
-		$this->objFunc=new FuncionesSeguridad();	
+		$this->objFunc=$this->create('MODActividad');	
 		if($this->objParam->insertar('id_actividad')){
-			$this->res=$this->objFunc->insertarActividad($this->objParam);			
+			$this->res=$this->objFunc->insertarActividad();			
 		} else{			
-			$this->res=$this->objFunc->modificarActividad($this->objParam);
+			$this->res=$this->objFunc->modificarActividad();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarActividad(){
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->eliminarActividad($this->objParam);
+		$this->objFunc=$this->create('MODActividad');	
+		$this->res=$this->objFunc->eliminarActividad();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

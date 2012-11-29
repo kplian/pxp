@@ -14,24 +14,24 @@ class ACTProyecto extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 					
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->listarProyecto($this->objParam);
+		$this->objFunc=$this->create('MODProyecto');	
+		$this->res=$this->objFunc->listarProyecto();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarProyecto(){
-		$this->objFunc=new FuncionesSeguridad();	
+		$this->objFunc=$this->create('MODProyecto');	
 		if($this->objParam->insertar('id_proyecto')){
-			$this->res=$this->objFunc->insertarProyecto($this->objParam);			
+			$this->res=$this->objFunc->insertarProyecto();			
 		} else{			
-			$this->res=$this->objFunc->modificarProyecto($this->objParam);
+			$this->res=$this->objFunc->modificarProyecto();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarProyecto(){
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->eliminarProyecto($this->objParam);
+		$this->objFunc=$this->create('MODProyecto');	
+		$this->res=$this->objFunc->eliminarProyecto();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

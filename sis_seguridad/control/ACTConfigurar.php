@@ -113,8 +113,8 @@ class ACTConfigurar extends ACTbase
 			}
 		}								
 			
-		$this->objFunc = new FuncionesSeguridad();
-		$this->res=$this->objFunc->configurar($this->objParam);
+		$this->objFunc = $this->create('MODConfigurar');
+		$this->res=$this->objFunc->configurar();
 		$this->datos=$this->res->getDatos();
 		
 		if($this->datos['autentificacion'] == 'local')

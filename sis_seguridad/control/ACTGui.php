@@ -13,7 +13,7 @@ class ACTGui extends ACTbase{
     * */
 	function listarGui(){
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGui');
 		
 		//obtiene el parametro nodo enviado por la vista
 		$node=$this->objParam->getParametro('node');
@@ -88,7 +88,7 @@ class ACTGui extends ACTbase{
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 	    $tipo_dato=$this->objParam->getParametro('tipo_dato');
         //crea un objeto del tipo seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGui');
 		
 		if($tipo_dato != 'procedimiento'){
 					
@@ -117,7 +117,7 @@ class ACTGui extends ACTbase{
 
 	function guardarGui(){
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGui');
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 		$id_gui=$this->objParam->getParametro('id_gui');
 	    //preguntamos si se debe insertar o modificar 
@@ -146,7 +146,7 @@ class ACTGui extends ACTbase{
 	function guardarGuiDragDrop(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODGui');
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 		//ejecuta el metodo de insertar de la clase MODPersona a travez 
 		//de la intefaz objetoFunSeguridad

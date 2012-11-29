@@ -16,7 +16,7 @@ class ACTEstructuraUo extends ACTbase{
 		
 
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesOrganigrama();
+		$this->objFunSeguridad=$this->create('MODEstructuraUo');
 		
 		//obtiene el parametro nodo enviado por la vista
 		$node=$this->objParam->getParametro('node');
@@ -247,7 +247,7 @@ class ACTEstructuraUo extends ACTbase{
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 	    $tipo_dato=$this->objParam->getParametro('tipo_dato');
         //crea un objeto del tipo seguridad
-		$this->objFunSeguridad=new FuncionesOrganigrama();
+		$this->objFunSeguridad=$this->create('MODEstructuraUo');
 		
 		if($tipo_dato != 'procedimiento'){
 					
@@ -276,7 +276,7 @@ class ACTEstructuraUo extends ACTbase{
 
 	function guardarEstructuraUo(){
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesOrganigrama();
+		$this->objFunSeguridad=$this->create('MODEstructuraUo');
 		//recupera lso datos recibidos desde la vista y los pone en  variables
 		$id_gui=$this->objParam->getParametro('id_uo');
 		

@@ -17,11 +17,11 @@ class ACTLog extends ACTbase{
 		}
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarLog');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarLog');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarLog($this->objParam);
 		}
 	
@@ -36,11 +36,11 @@ class ACTLog extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','desc');
 				
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarLogHorario');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarLogHorario');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarLogHorario($this->objParam);
 		}
 	
@@ -58,11 +58,11 @@ class ACTLog extends ACTbase{
 		}
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarLogMonitor');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarLogMonitor');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarLogMonitor($this->objParam);
 		}
 	
@@ -79,11 +79,11 @@ class ACTLog extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 				
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarMonitorEsquema');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarMonitorEsquema');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarMonitorEsquema($this->objParam);
 		}
 	
@@ -101,11 +101,11 @@ class ACTLog extends ACTbase{
 		}
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarMonitorTabla');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarMonitorTabla');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarMonitorTabla($this->objParam);
 		}
 	
@@ -123,11 +123,11 @@ class ACTLog extends ACTbase{
 		}
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarMonitorFuncion');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarMonitorFuncion');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarMonitorFuncion($this->objParam);
 		}
 	
@@ -145,11 +145,11 @@ class ACTLog extends ACTbase{
 		}
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarMonitorIndice');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarMonitorIndice');
 		}
 		else{
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODLog');
 			$this->res=$this->objFunSeguridad->listarMonitorIndice($this->objParam);
 		}
 	
@@ -165,7 +165,7 @@ class ACTLog extends ACTbase{
 		
 			
 		
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODLog');
 		$this->res=$this->objFunSeguridad->listarMonitorRecursos($this->objParam);
 		$this->res->settotal(count($this->res->getDatos()));
 	

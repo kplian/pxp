@@ -17,11 +17,11 @@ class ACTUsuario extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarUsuario');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODUsuario','listarUsuario');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODUsuario');
 			$this->res=$this->objFunSeguridad->listarUsuario($this->objParam);
 		}
 		
@@ -37,7 +37,7 @@ class ACTUsuario extends ACTbase{
 	function guardarUsuario(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODUsuario');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_usuario')){
@@ -62,7 +62,7 @@ class ACTUsuario extends ACTbase{
 	function eliminarUsuario(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODUsuario');	
 		$this->res=$this->objFunSeguridad->eliminarUsuario($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

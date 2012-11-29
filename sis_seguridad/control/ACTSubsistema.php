@@ -15,11 +15,11 @@ class ACTSubsistema extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 				
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarSubsistema');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODSubsistema','listarSubsistema');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODSubsistema');
 			$this->res=$this->objFunSeguridad->listarSubsistema($this->objParam);
 		}
 		
@@ -32,7 +32,7 @@ class ACTSubsistema extends ACTbase{
 	function guardarSubsistema(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODSubsistema');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_subsistema')){
@@ -55,7 +55,7 @@ class ACTSubsistema extends ACTbase{
 	function eliminarSubsistema(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODSubsistema');	
 		$this->res=$this->objFunSeguridad->eliminarSubsistema($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
@@ -64,7 +64,7 @@ class ACTSubsistema extends ACTbase{
 	function exportarDatosSeguridad(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();		
+		$this->objFunSeguridad=$this->create('MODSubsistema');		
 		
 		$this->res = $this->objFunSeguridad->exportarDatosSeguridad($this->objParam);
 		

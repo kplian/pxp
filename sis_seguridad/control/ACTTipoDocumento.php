@@ -17,11 +17,11 @@ class ACTTipoDocumento extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 				
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarTipoDocumento');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODTipoDocumento','listarTipoDocumento');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODTipoDocumento');
 			$this->res=$this->objFunSeguridad->listarTipoDocumento($this->objParam);
 		}
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
@@ -33,7 +33,7 @@ class ACTTipoDocumento extends ACTbase{
 	function guardarTipoDocumento(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODTipoDocumento');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_tipo_documento')){
@@ -56,7 +56,7 @@ class ACTTipoDocumento extends ACTbase{
 	function eliminarTipoDocumento(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODTipoDocumento');	
 		$this->res=$this->objFunSeguridad->eliminarTipoDocumento($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

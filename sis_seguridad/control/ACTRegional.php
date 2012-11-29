@@ -13,11 +13,11 @@ class ACTRegional extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarRegional');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODRegional','listarRegional');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODRegional');
 			$this->res=$this->objFunSeguridad->listarRegional($this->objParam);
 		}
 		
@@ -25,7 +25,7 @@ class ACTRegional extends ACTbase{
 	}
 	
 	function guardarRegional(){
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODRegional');
 		if($this->objParam->insertar('id_regional')){
 			$this->res=$this->objFunSeguridad->insertarRegional($this->objParam);			
 		}
@@ -36,7 +36,7 @@ class ACTRegional extends ACTbase{
 	}
 			
 	function eliminarRegional(){
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODRegional');	
 		$this->res=$this->objFunSeguridad->eliminarRegional($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

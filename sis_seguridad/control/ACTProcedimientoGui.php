@@ -15,11 +15,11 @@ class ACTProcedimientoGui extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarProcedimientoGui');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODProcedimientoGui','listarProcedimientoGui');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODProcedimientoGui');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarProcedimientoGui($this->objParam);
 			
@@ -33,7 +33,7 @@ class ACTProcedimientoGui extends ACTbase{
 	function guardarProcedimientoGui(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODProcedimientoGui');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_procedimiento_gui')){
@@ -56,7 +56,7 @@ class ACTProcedimientoGui extends ACTbase{
 	function eliminarProcedimientoGui(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODProcedimientoGui');	
 		$this->res=$this->objFunSeguridad->eliminarProcedimientoGui($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

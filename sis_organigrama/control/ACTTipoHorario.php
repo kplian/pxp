@@ -14,28 +14,28 @@ class ACTTipoHorario extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
+			$this->objReporte = new Reporte($this->objParam, $this);
 			$this->res = $this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarTipoHorario');
 		} else{
-			$this->objFunc=new FuncionesOrganigrama();	
-			$this->res=$this->objFunc->listarTipoHorario($this->objParam);
+			$this->objFunc=$this->create('MODTipoHorario');	
+			$this->res=$this->objFunc->listarTipoHorario();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarTipoHorario(){
-		$this->objFunc=new FuncionesOrganigrama();	
+		$this->objFunc=$this->create('MODTipoHorario');	
 		if($this->objParam->insertar('id_tipo_horario')){
-			$this->res=$this->objFunc->insertarTipoHorario($this->objParam);			
+			$this->res=$this->objFunc->insertarTipoHorario();			
 		} else{			
-			$this->res=$this->objFunc->modificarTipoHorario($this->objParam);
+			$this->res=$this->objFunc->modificarTipoHorario();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarTipoHorario(){
-		$this->objFunc=new FuncionesOrganigrama();	
-		$this->res=$this->objFunc->eliminarTipoHorario($this->objParam);
+		$this->objFunc=$this->create('MODTipoHorario');	
+		$this->res=$this->objFunc->eliminarTipoHorario();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

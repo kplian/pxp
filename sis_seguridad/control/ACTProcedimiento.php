@@ -15,7 +15,7 @@ class ACTProcedimiento extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		//echo $this->objParam->getParametro('id_funcion'); exit;
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODProcedimiento');	
 		   
 		$id_funcion=$this->objParam->getParametro('id_funcion');
 		
@@ -37,7 +37,7 @@ class ACTProcedimiento extends ACTbase{
 	function guardarProcedimiento(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODProcedimiento');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_procedimiento')){
@@ -60,7 +60,7 @@ class ACTProcedimiento extends ACTbase{
 	function eliminarProcedimiento(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODProcedimiento');	
 		$this->res=$this->objFunSeguridad->eliminarProcedimiento($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

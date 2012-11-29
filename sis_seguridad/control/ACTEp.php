@@ -14,24 +14,24 @@ class ACTEp extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 					
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->listarEp($this->objParam);
+		$this->objFunc=$this->create('MODEp');	
+		$this->res=$this->objFunc->listarEp();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarEp(){
-		$this->objFunc=new FuncionesSeguridad();	
+		$this->objFunc=$this->create('MODEp');	
 		if($this->objParam->insertar('id_ep')){
-			$this->res=$this->objFunc->insertarEp($this->objParam);			
+			$this->res=$this->objFunc->insertarEp();			
 		} else{			
-			$this->res=$this->objFunc->modificarEp($this->objParam);
+			$this->res=$this->objFunc->modificarEp();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarEp(){
-		$this->objFunc=new FuncionesSeguridad();	
-		$this->res=$this->objFunc->eliminarEp($this->objParam);
+		$this->objFunc=$this->create('MODEp');	
+		$this->res=$this->objFunc->eliminarEp();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

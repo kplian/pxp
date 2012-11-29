@@ -16,11 +16,11 @@ class ACTHorarioTrabajo extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarHorarioTrabajo');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODHorarioTrabajo','listarHorarioTrabajo');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODHorarioTrabajo');
 			$this->res=$this->objFunSeguridad->listarHorarioTrabajo($this->objParam);
 		}
 		
@@ -36,7 +36,7 @@ class ACTHorarioTrabajo extends ACTbase{
 	function guardarHorarioTrabajo(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODHorarioTrabajo');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_horario_trabajo')){
@@ -61,7 +61,7 @@ class ACTHorarioTrabajo extends ACTbase{
 	function eliminarHorarioTrabajo(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODHorarioTrabajo');	
 		$this->res=$this->objFunSeguridad->eliminarHorarioTrabajo($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

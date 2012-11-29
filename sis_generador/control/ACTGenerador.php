@@ -17,7 +17,7 @@ class ACTGenerador extends ACTbase{
 	function __construct($pParam){
 		include('GENTabla.php');
 		include('GENColumna.php');
-		$this->objFunc=new FuncionesGenerador();
+		$this->objFunc=$this->create('MODGenerador');
 		parent::__construct($pParam);
 		
 		/*ob_start();

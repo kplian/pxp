@@ -18,7 +18,7 @@ class ACTUo extends ACTbase{
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
+			$this->objReporte=new Reporte($this->objParam, $this);
 			$this->res=$this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarUo');
 		}
 		else {

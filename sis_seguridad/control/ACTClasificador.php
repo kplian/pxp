@@ -14,11 +14,11 @@ class ACTClasificador extends ACTbase{
 		$this->objParam->defecto('ordenacion','prioridad');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarClasificador');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODClasificador','listarClasificador');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODClasificador');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarClasificador($this->objParam);
 			
@@ -31,7 +31,7 @@ class ACTClasificador extends ACTbase{
 	function guardarClasificador(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODClasificador');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_clasificador')){
@@ -54,7 +54,7 @@ class ACTClasificador extends ACTbase{
 	function eliminarClasificador(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODClasificador');	
 		$this->res=$this->objFunSeguridad->eliminarClasificador($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

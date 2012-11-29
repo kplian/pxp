@@ -17,11 +17,11 @@ class ACTUsuarioRol extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 	
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesSeguridad','listarUsuarioRol');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODUsuarioRol','listarUsuarioRol');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesSeguridad();
+			$this->objFunSeguridad=$this->create('MODUsuarioRol');
 			$this->res=$this->objFunSeguridad->listarUsuarioRol($this->objParam);
 		}
 		
@@ -34,7 +34,7 @@ class ACTUsuarioRol extends ACTbase{
 	function guardarUsuarioRol(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();
+		$this->objFunSeguridad=$this->create('MODUsuarioRol');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_usuario_rol')){
@@ -57,7 +57,7 @@ class ACTUsuarioRol extends ACTbase{
 	function eliminarUsuarioRol(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesSeguridad();	
+		$this->objFunSeguridad=$this->create('MODUsuarioRol');	
 		$this->res=$this->objFunSeguridad->eliminarUsuarioRol($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

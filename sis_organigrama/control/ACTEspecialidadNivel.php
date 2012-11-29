@@ -14,28 +14,28 @@ class ACTEspecialidadNivel extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte = new Reporte($this->objParam);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesOrganigrama','listarEspecialidadNivel');
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODEspecialidadNivel','listarEspecialidadNivel');
 		} else{
-			$this->objFunc=new FuncionesOrganigrama();	
-			$this->res=$this->objFunc->listarEspecialidadNivel($this->objParam);
+			$this->objFunc=$this->create('MODEspecialidadNivel');	
+			$this->res=$this->objFunc->listarEspecialidadNivel();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarEspecialidadNivel(){
-		$this->objFunc=new FuncionesOrganigrama();	
+		$this->objFunc=$this->create('MODEspecialidadNivel');	
 		if($this->objParam->insertar('id_especialidad_nivel')){
-			$this->res=$this->objFunc->insertarEspecialidadNivel($this->objParam);			
+			$this->res=$this->objFunc->insertarEspecialidadNivel();			
 		} else{			
-			$this->res=$this->objFunc->modificarEspecialidadNivel($this->objParam);
+			$this->res=$this->objFunc->modificarEspecialidadNivel();
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarEspecialidadNivel(){
-		$this->objFunc=new FuncionesOrganigrama();	
-		$this->res=$this->objFunc->eliminarEspecialidadNivel($this->objParam);
+		$this->objFunc=$this->create('MODEspecialidadNivel');	
+		$this->res=$this->objFunc->eliminarEspecialidadNivel();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			
