@@ -5538,3 +5538,15 @@ select pxp.f_insert_testructura_gui ('ALERTA', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('CONFIG', 'SISTEMA');
  
 /***********************************F-SCP-JRR-SEGU-2-19/11/2012****************************************/
+
+/***********************************I-SCP-RCM-SEGU-0-29/11/2012****************************************/
+--Creación de vista de usuario
+CREATE OR REPLACE VIEW segu.vusuario AS 
+ SELECT usu.id_usuario, usu.id_clasificador, usu.cuenta, usu.contrasena, usu.fecha_caducidad, usu.fecha_reg,
+ usu.estilo, usu.contrasena_anterior, usu.id_persona, usu.estado_reg, usu.autentificacion,
+ (((per.nombre::text || ' '::text) || per.apellido_paterno::text) || ' '::text) || per.apellido_materno::text AS desc_persona, per.ci, per.correo
+   FROM segu.tusuario usu
+   JOIN segu.tpersona per ON per.id_persona = usu.id_persona;
+
+ALTER TABLE segu.vusuario OWNER TO postgres;
+/***********************************F-SCP-JRR-SEGU-0-29/11/2012****************************************/

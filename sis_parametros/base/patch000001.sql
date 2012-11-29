@@ -598,4 +598,30 @@ ALTER TABLE param.tcatalogo OWNER TO postgres;
 --Adding new column to table param.tproveedor
 alter table param.tproveedor
 add column id_lugar integer;
-/***********************************F-SCP-JRR-PARAM-0-23/11/2012****************************************/
+/***********************************F-SCP-RCM-PARAM-0-23/11/2012****************************************/
+
+/***********************************I-SCP-RCM-PARAM-12-26/11/2012****************************************/
+CREATE TABLE param.tcatalogo_tipo(
+	id_catalogo_tipo SERIAL NOT NULL,
+	id_subsistema integer, 
+	nombre varchar(100),
+	tabla varchar(100), 
+	PRIMARY KEY (id_catalogo_tipo),
+	CONSTRAINT fk_tcatalogo_tipo__id_subsistema FOREIGN KEY (id_subsistema)
+    	REFERENCES segu.tsubsistema (id_subsistema) MATCH SIMPLE
+    	ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT uq_tcatalogo_tipo__id_subsistema__nombre UNIQUE (id_subsistema, nombre)
+)INHERITS (pxp.tbase)
+WITH (
+  OIDS=TRUE
+);
+
+alter table param.tcatalogo add column id_catalogo_tipo integer;
+alter table param.tcatalogo 
+  add constraint fk_tcatalogo__id_catalogo_tipo foreign key (id_catalogo_tipo)
+  references param.tcatalogo_tipo(id_catalogo_tipo);
+alter table param.tcatalogo drop column tipo;
+alter table param.tcatalogo drop column id_subsistema;
+alter table param.tcatalogo drop constraint fk_tcatalogo__id_subsistema;
+/***********************************F-SCP-RCM-PARAM-12-26/11/2012****************************************/

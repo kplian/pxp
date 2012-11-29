@@ -49,24 +49,22 @@ BEGIN
         	--Sentencia de la insercion
         	insert into param.tcatalogo(
 			estado_reg,
-			tipo,
-			id_subsistema,
 			descripcion,
 			codigo,
 			id_usuario_reg,
 			fecha_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+			id_catalogo_tipo
           	) values(
 			'activo',
-			v_parametros.tipo,
-			v_parametros.id_subsistema,
 			v_parametros.descripcion,
 			v_parametros.codigo,
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+			v_parametros.id_catalogo_tipo
 			)RETURNING id_catalogo into v_id_catalogo;
                
 			--Definicion de la respuesta
@@ -90,12 +88,11 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update param.tcatalogo set
-			tipo = v_parametros.tipo,
-			id_subsistema = v_parametros.id_subsistema,
 			descripcion = v_parametros.descripcion,
 			codigo = v_parametros.codigo,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+			id_catalogo_tipo = v_parametros.id_catalogo_tipo
 			where id_catalogo=v_parametros.id_catalogo;
                
 			--Definicion de la respuesta

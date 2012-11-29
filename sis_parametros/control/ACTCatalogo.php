@@ -11,8 +11,8 @@ class ACTCatalogo extends ACTbase{
 			
 	function listarCatalogo(){
 		$this->objParam->defecto('ordenacion','id_catalogo');
-
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODCatalogo','listarCatalogo');
@@ -36,6 +36,30 @@ class ACTCatalogo extends ACTbase{
 	function eliminarCatalogo(){
 		$this->objFunc=$this->create('MODCatalogo');	
 		$this->res=$this->objFunc->eliminarCatalogo();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function listarCatalogoCombo(){
+		$this->objParam->defecto('ordenacion','id_catalogo');
+		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		//Verifica los filtros enviados de la vista
+		if($this->objParam->getParametro('catalogo_tipo')!=''){
+			$cond=$this->objParam->getParametro('catalogo_tipo');
+			$this->objParam->addFiltro("cattip.nombre = ''$cond''");
+		}
+		if($this->objParam->getParametro('cod_subsistema')!=''){
+			$cond=$this->objParam->getParametro('cod_subsistema');
+			$this->objParam->addFiltro("subsis.codigo = ''$cond''");
+		}
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODCatalogo','listarCatalogoCombo');
+		} else{
+			$this->objFunc=$this->create('MODCatalogo');	
+			$this->res=$this->objFunc->listarCatalogoCombo();
+		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

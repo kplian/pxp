@@ -556,5 +556,43 @@ class FuncionesParametros
     }
     /*FinClase: MODCatalogo*/
     
+    /*Clase: MODCatalogoTipo
+	* Fecha: 27-11-2012 23:32:44
+	* Autor: admin*/
+	function listarCatalogoTipo(CTParametro $parametro){
+		$obj=new MODCatalogoTipo($parametro);
+		$res=$obj->listarCatalogoTipo();
+		return $res;
+	}
+			
+	function insertarCatalogoTipo(CTParametro $parametro){
+		$obj=new MODCatalogoTipo($parametro);
+		$res=$obj->insertarCatalogoTipo();
+		return $res;
+	}
+			
+	function modificarCatalogoTipo(CTParametro $parametro){
+		$obj=new MODCatalogoTipo($parametro);
+		$res=$obj->modificarCatalogoTipo();
+		return $res;
+	}
+			
+	function eliminarCatalogoTipo(CTParametro $parametro){
+		$obj=new MODCatalogoTipo($parametro);
+		$res=$obj->eliminarCatalogoTipo();
+		return $res;
+	}
+	/*FinClase: MODCatalogoTipo*/
+	
+	/*Clase: MODCatalogo_01
+	* Fecha: 27-11-2012 23:32:44
+	* Autor: admin*/
+	function listarCatalogoCombo(CTParametro $parametro){
+		$obj=new MODCatalogo($parametro);
+		$res=$obj->listarCatalogoCombo();
+		return $res;
+	}
+	/*FinClase: MODCatalogoTipo_01*/
+    
 }//marca_generador
 ?>
