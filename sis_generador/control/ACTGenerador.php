@@ -894,6 +894,8 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		
 		//$this->ruta=dirname(__FILE__)."/../archivos/sis_".$this->objParam->getParametro('nombre_carpeta');
 		$this->ruta=dirname(__FILE__).'/../../../sis_'.$this->gTabla->getCarpetaSistema();
+		
+		
 
 		if(!file_exists($this->ruta)){
 			mkdir($this->ruta);
@@ -913,6 +915,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		if(!file_exists("$this->ruta/vista")){
 			mkdir("$this->ruta/vista");
 		}
+		//echo 'ruta2:'."$this->ruta/vista/".$this->gTabla->getSujetoTabla(); exit;
 		if(!file_exists("$this->ruta/vista/".$this->gTabla->getSujetoTabla())){
 			mkdir("$this->ruta/vista/".$this->gTabla->getSujetoTabla());
 		}

@@ -268,7 +268,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 	
 	function successSinc(){
 		Phx.CP.loadingHide();
-		//this.reload();
+		Ext.MessageBox.alert('Estado','Archivos generados!');
 	}
 	
 	function f_generar_codigo(){
