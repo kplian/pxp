@@ -4,8 +4,8 @@ import os
 import subprocess
 import re
 #Define vars
-controles_dir = os.path.dirname(__file__) + '/../../../sis_organigrama/control/'
-var_funciones = 'FuncionesOrganigrama'
+controles_dir = os.path.dirname(__file__) + '/../../../sis_mantenimiento/control/'
+var_funciones = 'FuncionesMantenimiento'
 
 controles = os.listdir( controles_dir )
 #for all controls

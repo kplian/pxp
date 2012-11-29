@@ -64,10 +64,10 @@ Menu=function(config){
 		minSize: 175,
 		maxSize: 500,
 		collapsible: true,
-		collapseMode:'mini',
+		//collapseMode:'mini',
 		// floatable:true,
-		animCollapse:false,
-        // animate: false,
+		animCollapse:true,
+        animate: true,
         lines:false,
         header: true,		
 		rootVisible:false,
@@ -680,15 +680,14 @@ Phx.CP=function(){
 
 			});
 		},
-		//loadMask: new Ext.LoadMask(Ext.getBody(), {msg:"Espere por favor ...",modal:true,removeMask :true}),
+		//loadMask: new Ext.LoadMask(Ext.get('3rn'), {msg:"Espere por favor ...",modal:true,removeMask :true}),
 		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),
-		
-		
+		loadMask:new Ext.LoadMask(Ext.getBody(), { msg: "Espere por favor ..." }),
+		///loadMask:Ext.getBody().mask(),
       
-		loadingShow:function(contenedor){
+		loadingShow:function(){
 		
-		//var cont = contenedor?contenedor:Ext.getBody();
-			 Ext.MessageBox.show({ 
+			/* Ext.MessageBox.show({ 
 			 	title: 'Espere Por Favor...', 
 			   msg:"<div><img src='../../../lib/ext3/resources/images/default/grid/loading.gif'/> Cargando ...</div>", 
 			  // msg:"<div><img src='../../../lib/imagenes/gti_3.gif'/>
@@ -696,18 +695,17 @@ Phx.CP=function(){
 			  animEl:Ext.getBody(),
 			  width:200,
 			  minHeight:100,
-			  closable:false });
-			  
-			  
-		  //this.loadMask =  new Ext.LoadMask(Ext.getBody(), {msg:"Espere por favor ...",modal:true,removeMask :true});
-		
-		  // Phx.CP.loadMask.show()
+			  closable:false });*/
+			 
+              Ext.getBody().mask('Loading...', 'x-mask-loading').dom.style.zIndex = '9999';
+            
 		},
 		
 		loadingHide:function(){
 			
-			Ext.MessageBox.hide();
-		    // Phx.CP.loadMask.hide();
+			//Ext.MessageBox.hide();
+			//Phx.CP.loadMask.hide();
+		     Ext.getBody().unmask();
 		},
 
 		// Para cambiar el estilo de la vista
