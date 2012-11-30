@@ -21,12 +21,10 @@ class ACTTabla extends ACTbase{
 	}
 	
 	function listarTablaCombo(){		
-				
-		$this->objFunc=$this->create('MODTabla');	
 		if($this->objParam->getParametro('esquema')!=''){
 			$this->objParam->addFiltro("n.nspname=''".strtolower($this->objParam->getParametro('esquema'))."''");
 		}
-		
+		$this->objFunc=$this->create('MODTabla');		
 		$this->res=$this->objFunc->listarTablaCombo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
