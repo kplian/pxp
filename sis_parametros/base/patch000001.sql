@@ -597,6 +597,7 @@ add column id_lugar integer;
 /***********************************F-SCP-RCM-PARAM-0-23/11/2012****************************************/
 
 /***********************************I-SCP-RCM-PARAM-12-26/11/2012****************************************/
+
 CREATE TABLE param.tcatalogo_tipo(
 	id_catalogo_tipo SERIAL NOT NULL,
 	id_subsistema integer, 
@@ -619,4 +620,17 @@ alter table param.tcatalogo
   references param.tcatalogo_tipo(id_catalogo_tipo);
 alter table param.tcatalogo drop column tipo;
 alter table param.tcatalogo drop column id_subsistema;
+
+--Funciones
+select pxp.f_insert_tfuncion ('ft_catalogo_tipo_sel', 'Funcion para tabla', 'PARAM');
+select pxp.f_insert_tfuncion ('ft_catalogo_tipo_ime', 'Funcion para tabla', 'PARAM');
+
+--Menú
+select pxp.f_insert_tgui ('Tipos de Catálogos', 'Tipos de Catálogos', 'PACATI', 'si', 11, 'sis_parametros/vista/catalogo_tipo/CatalogoTipo.php', 2, '', 'CatalogoTipo', 'PARAM');
+select pxp.f_insert_testructura_gui ('PACATI', 'PARAM');
+
+--Para roles
+select pxp.f_insert_tprocedimiento ('PM_PACATI_INS', '	Inserta Funciones ', 'si', '', '', 'ft_moneda_ime');
+select pxp.f_insert_tprocedimiento ('PM_PACATI_MOD', '	Modifica la moneda seleccionada', 'si', '', '', 'ft_moneda_ime');
+select pxp.f_insert_tprocedimiento ('PM_PACATI__ELI', '	Inactiva la moneda selecionada', 'si', '', '', 'ft_moneda_ime');
 /***********************************F-SCP-RCM-PARAM-12-26/11/2012****************************************/

@@ -21,14 +21,14 @@ class ACTCatalogoTipo extends ACTbase{
 			$this->objReporte = new Reporte($this->objParam);
 			$this->res = $this->objReporte->generarReporteListado('FuncionesParametros','listarCatalogoTipo');
 		} else{
-			$this->objFunc=new FuncionesParametros();	
+			$this->objFunc=$this->create('MODCatalogoTipo');	
 			$this->res=$this->objFunc->listarCatalogoTipo($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarCatalogoTipo(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODCatalogoTipo');	
 		if($this->objParam->insertar('id_catalogo_tipo')){
 			$this->res=$this->objFunc->insertarCatalogoTipo($this->objParam);			
 		} else{			
@@ -38,7 +38,7 @@ class ACTCatalogoTipo extends ACTbase{
 	}
 						
 	function eliminarCatalogoTipo(){
-		$this->objFunc=new FuncionesParametros();	
+		$this->objFunc=$this->create('MODCatalogoTipo');	
 		$this->res=$this->objFunc->eliminarCatalogoTipo($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
