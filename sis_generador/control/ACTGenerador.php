@@ -17,7 +17,7 @@ class ACTGenerador extends ACTbase{
 	function __construct($pParam){
 		include('GENTabla.php');
 		include('GENColumna.php');
-		$this->objFunc=$this->create('MODGenerador');
+		//$this->objFunc=$this->create('MODGenerador');
 		parent::__construct($pParam);
 		
 		/*ob_start();
@@ -32,6 +32,8 @@ class ACTGenerador extends ACTbase{
 		$this->objParam->addParametroConsulta('puntero','0');
 		$this->objParam->addParametroConsulta('cantidad','30');
 		$this->objParam->addFiltro("id_tabla=".$this->objParam->getParametro('id_tabla'));
+
+		$this->objFunc=$this->create('MODGenerador');
 		$res=$this->objFunc->listarTabla($this->objParam);
 		$arreglo=$res->getDatos();
 		$this->gTabla=new GENTabla($arreglo[0]);
@@ -47,6 +49,7 @@ class ACTGenerador extends ACTbase{
 		$this->objParam->addParametroConsulta('cantidad','100');
 	
 		//Obtiene los datos de la columna
+		$this->objFunc=$this->create('MODGenerador');
 		$res=$this->objFunc->listarColumna($this->objParam);
 		
 		$arreglo=$res->getDatos();
