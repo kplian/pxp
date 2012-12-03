@@ -148,6 +148,13 @@ for item in url:
     	    		command = 'psql '+ db + ' < ' + item + 'base/datos.sql'
        			for line in run_command(command):
                 		f_log.write(line)
+                        
+                        
+    #RCM (03-12-2012) Actualización de las secuencias
+        command = 'psql '+ db + ' -c  \'select pxp.f_update_sequences()\''
+        for line in run_command(command):
+            f_log.write(line)
+
 
 print 'Se ha generado un log de la restauracion (/tmp/log_restauracion_bd.log)' 	
 f_log.close()
