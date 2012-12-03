@@ -143,10 +143,11 @@ for item in url:
 				for line in run_command(command):
         				f_log.write(line)
 	#insertar datos del esquema
-	if os.access(item + 'base/datos.sql', os.R_OK):
-		command = 'psql '+ db + ' < ' + item + 'base/datos.sql'
-                for line in run_command(command):
-                	f_log.write(line)
+	if opcion == 1:
+		if os.access(item + 'base/datos.sql', os.R_OK):
+			command = 'psql '+ db + ' < ' + item + 'base/datos.sql'
+                	for line in run_command(command):
+                		f_log.write(line)
     	if (datos  == 's'):
 		if os.access(item + 'base/datos_prueba.sql', os.R_OK):
     	    		command = 'psql '+ db + ' < ' + item + 'base/datos_prueba.sql'
