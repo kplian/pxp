@@ -62,4 +62,4 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION pxp.f_add_catalog(character varying, character varying, character varying) OWNER TO rcm;
+ALTER FUNCTION pxp.f_add_catalog(character varying, character varying, character varying) OWNER TO postgres;

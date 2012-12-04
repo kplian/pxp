@@ -875,6 +875,11 @@ Phx.CP=function(){
 				}));
 				Win.show();
 			}
+		},
+		log: function(){
+		    if( typeof window.console != 'undefined' ){
+		        console.log.apply( null, arguments ); 
+		    }
 		}
 	}
 }();
