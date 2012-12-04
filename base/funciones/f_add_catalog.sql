@@ -39,7 +39,14 @@ BEGIN
         ) values(
         1,'activo',v_id_subsistema,p_catalogo_tipo,p_catalogo_tipo
         ) RETURNING id_catalogo_tipo into v_id_catalogo_tipo;
-
+    else
+	--1.4 Recupera el id del tipo de catálogo
+	select cattip.id_catalogo_tipo
+	into v_id_catalogo_tipo
+	from param.tcatalogo_tipo cattip
+	inner join segu.tsubsistema subsis on subsis.id_subsistema = cattip.id_subsistema
+	where subsis.codigo = p_codigo_subsistema
+	and cattip.nombre = p_catalogo_tipo;
     end if;
     
     --2. Registro del catálogo
@@ -55,4 +62,4 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION pxp.f_add_catalog(character varying, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION pxp.f_add_catalog(character varying, character varying, character varying) OWNER TO rcm;
