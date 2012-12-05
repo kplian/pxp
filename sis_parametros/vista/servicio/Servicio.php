@@ -33,23 +33,8 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'estado_reg',
-				fieldLabel: 'Estado Reg.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
-			},
-			type:'TextField',
-			filters:{pfiltro:'servic.estado_reg',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:false
-		},
-		{
-			config:{
 				name: 'codigo',
-				fieldLabel: 'codigo',
+				fieldLabel: 'Código',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
@@ -64,7 +49,7 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre',
-				fieldLabel: 'nombre',
+				fieldLabel: 'Nombre',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
@@ -79,7 +64,7 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion',
-				fieldLabel: 'descripcion',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -91,6 +76,22 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+		{
+			config:{
+				name: 'estado_reg',
+				fieldLabel: 'Estado Reg.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:10
+			},
+			type:'TextField',
+			filters:{pfiltro:'servic.estado_reg',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		
 		{
 			config:{
 				name: 'usr_reg',
