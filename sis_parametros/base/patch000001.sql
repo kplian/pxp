@@ -634,3 +634,15 @@ select pxp.f_insert_tprocedimiento ('PM_PACATI_INS', '	Inserta Funciones ', 'si'
 select pxp.f_insert_tprocedimiento ('PM_PACATI_MOD', '	Modifica la moneda seleccionada', 'si', '', '', 'ft_moneda_ime');
 select pxp.f_insert_tprocedimiento ('PM_PACATI__ELI', '	Inactiva la moneda selecionada', 'si', '', '', 'ft_moneda_ime');
 /***********************************F-SCP-RCM-PARAM-12-26/11/2012****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-26/11/2012****************************************/
+select pxp.f_insert_tfuncion ('ft_servicio_ime', 'Función para el registro de servicios', 'PARAM');
+select pxp.f_insert_tfuncion ('ft_servicio_sel', 'Función para consultas de servicios', 'PARAM');
+select pxp.f_insert_tgui ('Servicios', 'Para registro de los servicios', 'SERVIC', 'si', 1, 'sis_parametros/vista/servicio/Servicio.php', 2, '', 'Servicio', 'PARAM');
+select pxp.f_insert_testructura_gui ('SERVIC','PARAM');
+select pxp.f_insert_tprocedimiento ('PM_SERVIC_SEL', 'Selección de registros', 'si', '', '', 'ft_servicio_sel');
+select pxp.f_insert_tprocedimiento ('PM_SERVIC_CONT', 'Conteo de registros', 'si', '', '', 'ft_servicio_sel');
+select pxp.f_insert_tprocedimiento ('PM_SERVIC_INS', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
+select pxp.f_insert_tprocedimiento ('PM_SERVIC_MOD', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
+select pxp.f_insert_tprocedimiento ('PM_SERVIC_ELI', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
+/***********************************F-SCP-RCM-PARAM-12-26/11/2012****************************************/
