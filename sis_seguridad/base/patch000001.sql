@@ -5550,3 +5550,16 @@ CREATE OR REPLACE VIEW segu.vusuario AS
 
 ALTER TABLE segu.vusuario OWNER TO postgres;
 /***********************************F-SCP-JRR-SEGU-0-29/11/2012****************************************/
+
+
+/***********************************I-SCP-RCM-SEGU-0-07/12/2012****************************************/
+--Correción de campo nulo de vista de usuario
+CREATE OR REPLACE VIEW segu.vusuario AS 
+ SELECT usu.id_usuario, usu.id_clasificador, usu.cuenta, usu.contrasena, usu.fecha_caducidad, usu.fecha_reg,
+ usu.estilo, usu.contrasena_anterior, usu.id_persona, usu.estado_reg, usu.autentificacion,
+ (((coalesce(per.nombre,'')::text || ' '::text) || coalesce(per.apellido_paterno,'')::text) || ' '::text) || coalesce(per.apellido_materno,'')::text AS desc_persona, per.ci, per.correo
+   FROM segu.tusuario usu
+   JOIN segu.tpersona per ON per.id_persona = usu.id_persona;
+
+ALTER TABLE segu.vusuario OWNER TO postgres;
+/***********************************F-SCP-JRR-SEGU-0-07/12/2012****************************************/
