@@ -646,3 +646,8 @@ select pxp.f_insert_tprocedimiento ('PM_SERVIC_INS', 'Inserción de registros', 
 select pxp.f_insert_tprocedimiento ('PM_SERVIC_MOD', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
 select pxp.f_insert_tprocedimiento ('PM_SERVIC_ELI', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
 /***********************************F-SCP-RCM-PARAM-0-05/12/2012****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-06/12/2012****************************************/
+alter table param.tunidad_medida
+add column tipo varchar(50);
+/***********************************F-SCP-RCM-PARAM-0-06/12/2012****************************************/

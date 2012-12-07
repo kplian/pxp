@@ -56,7 +56,8 @@ BEGIN
 						ume.id_usuario_mod,
 						ume.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						ume.tipo	
 						from param.tunidad_medida ume
 						inner join segu.tusuario usu1 on usu1.id_usuario = ume.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ume.id_usuario_mod

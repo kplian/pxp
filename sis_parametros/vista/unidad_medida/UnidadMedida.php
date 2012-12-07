@@ -34,7 +34,7 @@ Phx.vista.UnidadMedida=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'codigo',
+				fieldLabel: 'Código',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -49,7 +49,7 @@ Phx.vista.UnidadMedida=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion',
-				fieldLabel: 'descripcion',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -60,6 +60,27 @@ Phx.vista.UnidadMedida=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:true
+		},
+		{
+			config: {
+				name: 'tipo',
+				fieldLabel: 'Magnitud',
+				anchor: '90%',
+				tinit: false,
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'descripcion',
+				gwidth: 200,
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tunidad_medida'
+					}
+			},
+			type: 'ComboRec',
+			id_grupo: 0,
+			filters:{pfiltro:'ume.tipo',type:'string'},
+			grid: true,
+			form: true
 		},
 		{
 			config:{
@@ -154,6 +175,7 @@ Phx.vista.UnidadMedida=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d H:i:s'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'tipo', type: 'string'}
 		
 	],
 	sortInfo:{

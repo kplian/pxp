@@ -56,7 +56,8 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+			tipo
           	) values(
 			'activo',
 			v_parametros.codigo,
@@ -64,7 +65,8 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+			v_parametros.tipo
 			)RETURNING id_unidad_medida into v_id_unidad_medida;
                
 			--Definicion de la respuesta
@@ -91,7 +93,8 @@ BEGIN
 			codigo = v_parametros.codigo,
 			descripcion = v_parametros.descripcion,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+			tipo = v_parametros.tipo
 			where id_unidad_medida=v_parametros.id_unidad_medida;
                
 			--Definicion de la respuesta
