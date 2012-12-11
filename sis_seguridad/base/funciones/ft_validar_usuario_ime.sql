@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_validar_usuario_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.fvalidar_usuario
@@ -120,12 +121,16 @@ BEGIN
               
               SELECT count(id_alarma) ,ala.id_funcionario
               into v_cont_alertas,v_id_funcionario
-              FROM orga.tfuncionario fun
-              INNER JOIN param.talarma ala 
-              on fun.id_funcionario = ala.id_funcionario 
+              FROM  param.talarma ala
+              LEFT JOIN orga.tfuncionario fun 
+                on fun.id_funcionario = ala.id_funcionario 
               and ala.estado_reg = 'activo'
-              WHERE fun.id_persona = v_id_persona
+              WHERE (    fun.id_persona = v_id_persona 
+                      or ala.id_usuario = v_id_usuario)
               GROUP BY ala.id_funcionario, id_alarma;
+              
+              
+              
               
               --obtenemos el funcionario para el usuario
               --asumimos que una persona solo puede tener un funcionario
@@ -177,7 +182,8 @@ EXCEPTION
 	    raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
---
--- Definition for function ftrig_log (OID = 305111) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100;

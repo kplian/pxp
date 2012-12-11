@@ -1,1 +1,1 @@
-18,20,25,30 * * * *  wget -q -O /dev/null http://localhost/web/sis_parametros/control/ActionDisparaAlarmas.php  
+5 * * * *  wget -q -O /dev/null http://localhost/web_mantenimiento/sis_parametros/control/ActionDisparaAlarmas.php  

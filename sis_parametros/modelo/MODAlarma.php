@@ -99,6 +99,8 @@ class MODAlarma extends MODbase{
 		$this->captura('obs','varchar');
 		$this->captura('tipo','varchar');
 		$this->captura('dias','integer');
+		$this->captura('titulo_correo','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -118,6 +120,8 @@ class MODAlarma extends MODbase{
 		
 				
 		//Definicion de la lista del resultado del query
+		$this->setParametro('id_usuario','id_usuario','integer');
+		$this->setParametro('id_funcionario','id_usuario','integer');
 		$this->captura('id_alarma','int4');
 		$this->captura('acceso_directo','varchar');
 		$this->captura('id_funcionario','int4');
@@ -130,13 +134,13 @@ class MODAlarma extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		$this->captura('nombre_completo1','text');
 		$this->captura('clase','varchar');
 		$this->captura('titulo','varchar');
 		$this->captura('parametros','varchar');
 		$this->captura('obs','varchar');
 		$this->captura('tipo','varchar');
 		$this->captura('dias','integer');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -13,6 +13,7 @@ class ACTAlarma extends ACTbase{
 		//$this->objParam->defecto('ordenacion','id_alarma');
 
 		$this->objParam->defecto('alarm.fecha','desc');
+		/*
 		if($this->objParam->getParametro('id_usuario')!='')
 		{
 			$this->objParam->addFiltro("alarm.id_funcionario in (Select fun.id_funcionario
@@ -20,6 +21,8 @@ class ACTAlarma extends ACTbase{
             													 inner join segu.tusuario usu on usu.id_persona=fun.id_persona
                                                                  where usu.id_usuario=".$this->objParam->getParametro('id_usuario').")");	
 		}
+		
+		*/
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODAlarma','listarAlarma');

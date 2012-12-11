@@ -30,7 +30,7 @@ constructor: function(config){}
     <td colspan="2"><div align="center"><img src="../../../sis_seguridad/vista/inicio/logos/image001.gif" width="347" height="200" /></div></td>
   </tr>
   <tr height="100%">
-    <td colspan="2"><div align="center"><a href="http://www.kplian.com/" TARGET="_new">Power by KPLIAN LTDA</a></div></td>
+    <td colspan="2"><div align="center"><a href="http://www.kplian.com/" TARGET="_new">Powered by KPLIAN LTDA</a></div></td>
   </tr>
 </table>
 </body>

@@ -17,6 +17,9 @@ include_once(dirname(__FILE__).'/../../lib/lib_general/Errores.php');
 include_once(dirname(__FILE__).'/../../lib/lib_general/Correo.php');
 
 
+//include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
+
+
 include_once(dirname(__FILE__).'/../../lib/FirePHPCore-0.3.2/lib/FirePHPCore/FirePHP.class.php');
 
 ob_start();
@@ -34,9 +37,12 @@ else{
 //echo dirname(__FILE__).'LLEGA';
 register_shutdown_function('fatalErrorShutdownHandler');
 set_exception_handler('exception_handler');
-set_error_handler('error_handler');
-include_once(dirname(__FILE__).'/../../lib/DatosGenerales.php');
+set_error_handler('error_handler');;
 include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
+
+
+
+include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 
 /////////////////////////////////////////
         $objPostData=new CTPostData();
@@ -45,31 +51,39 @@ include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
         
 	    $aPostData=$objPostData->getData();
 		//rac 22/09/2011 
-		$aPostFiles=$objPostData->getFiles();
-		//var_dump($this->aPostFiles);
-		//exit;
+		//$aPostFiles=$objPostData->getFiles();
+		
 		$_SESSION["_PETICION"]=serialize($aPostData);
 		$objParam = new CTParametro($aPostData['p'],null,$aPostFiles);
 		////////////////
         $objParam->defecto('ordenacion','id_lugar');
         $objParam->defecto('dir_ordenacion','asc');
-		$objFunc=$this->create('MODDAlarma');	
+		//$bas = new ACTbase($objParam);
+		
+		//$objFunc=$bas->create('MODDAlarma');	
+	    $objFunc=new MODAlarma($objParam);	
 		$res=$objFunc->GeneraAlarma();
 		
+		$objFunc=new MODAlarma($objParam);	
 		$res2=$objFunc->listarAlarmaCorrespondeciaPendiente();
 		
+		//var_dump($res2);
 		
 		foreach ($res2->datos as $d){
-			if(isset($d['email_empresa'])){
-		     $correo->EnviarCorreo('endesis@ende.bo',
-			                      $d['email_empresa'],
-			                      $d['tipo'].' '.$d['obs'],
+		   if(isset($d['email_empresa'])){
+		   	
+			
+			//var_dump($_SESSION["_CUANTE_MAIL"]);
+			//$origen,$destino,$tema,$mensaje,$titulo,$mensaje_cab)
+		     $correo->EnviarCorreo($_SESSION["_CUENTA_MAIL"],
+			                     $d['email_empresa'],
+			                       $d['tipo'].' '.$d['titulo_correo'],
 			                      $d['descripcion'],
-			                      $d['tipo'].' '.$d['obs'],
-			                      $d['tipo'].' '.$d['obs']);
+			                      $d['titulo_correo'].' '.$d['obs'],
+			                      $d['titulo_correo'].' '.$d['obs']);
 			}
 		}
-		
+		$objFunc=new MODAlarma($objParam);
 		$res2=$objFunc->modificarEnvioCorreo();
 		
 		

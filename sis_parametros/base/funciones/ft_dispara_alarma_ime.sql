@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_dispara_alarma_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -56,14 +57,14 @@ BEGIN
 	if(p_transaccion='PM_GENALA_INS')then
 					
         begin    
-        	
-            /*IF(v_parametros.tipo='TODOS' or v_parametros.tipo='SAJ')THEN 
+        	/*
+            IF(v_parametros.tipo='TODOS' or v_parametros.tipo='SAJ')THEN 
                v_mensaje:= saj.f_verifica_alarma(v_parametros.id_usuario);
             END IF;*/
             
             --ir introducion if que diparen la funcion segun sistema X
-            IF(v_parametros.tipo='TODOS' or v_parametros.tipo='X')THEN 
-            --   v_mensaje:= x.f_verifica_alarma(v_parametros.id_usuario);
+            IF(v_parametros.tipo='TODOS' or v_parametros.tipo='GEM')THEN 
+                v_mensaje:= gem.f_verifica_alarma_gem(v_parametros.id_usuario);
             END IF;
  
            --Definicion de la respuesta
@@ -92,7 +93,8 @@ EXCEPTION
 				        
 END;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
---
--- Definition for function ft_dispara_alarma_sel (OID = 304031) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100;

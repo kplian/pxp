@@ -1,17 +1,18 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_config_alarma_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_config_alarma_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tconfig_alarma'
- AUTOR: 		 (fprudencio)
+ AUTOR: 		 RAC/KPLIAN
  FECHA:	        18-11-2011 11:59:10
  COMENTARIOS:	
 ***************************************************************************
@@ -33,7 +34,7 @@ DECLARE
 	v_id_config_alarma	integer;  
    
 			    
-BEGIN       raise exception 'param.ft_config_alarma_ime';
+BEGIN     
 
     v_nombre_funcion = 'param.ft_config_alarma_ime';
     v_parametros = pxp.f_get_record(p_tabla);
@@ -48,6 +49,8 @@ BEGIN       raise exception 'param.ft_config_alarma_ime';
 	if(p_transaccion='PM_CONALA_INS')then
 					
         begin
+        
+       
         	--Sentencia de la insercion
         	insert into param.tconfig_alarma(
 			codigo,
@@ -148,7 +151,8 @@ EXCEPTION
 				        
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_config_alarma_sel (OID = 304027) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

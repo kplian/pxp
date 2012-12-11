@@ -647,7 +647,26 @@ select pxp.f_insert_tprocedimiento ('PM_SERVIC_MOD', 'Inserción de registros', 
 select pxp.f_insert_tprocedimiento ('PM_SERVIC_ELI', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
 /***********************************F-SCP-RCM-PARAM-0-05/12/2012****************************************/
 
+
 /***********************************I-SCP-RCM-PARAM-0-06/12/2012****************************************/
 alter table param.tunidad_medida
 add column tipo varchar(50);
 /***********************************F-SCP-RCM-PARAM-0-06/12/2012****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-06/12/2012****************************************/
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_usuario INTEGER;
+  
+/***********************************F-SCP-RAC-PARAM-0-06/12/2012****************************************/
+  
+/***********************************I-SCP-RAC-PARAM-21.1-10/12/2012*****************************************/
+    
+  ALTER TABLE param.talarma
+  ADD COLUMN titulo_correo VARCHAR(500);
+  
+  
+/***********************************F-SCP-RAC-PARAM-21.1-10/12/2012*****************************************/
+
+

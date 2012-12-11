@@ -1,17 +1,20 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_id_funcionario integer,
-  par_descripcion character varying,
-  par_acceso_directo character varying,
+  par_descripcion varchar,
+  par_acceso_directo varchar,
   par_fecha date,
-  par_tipo character varying,
-  par_obs character varying,
+  par_tipo varchar,
+  par_obs varchar,
   par_id_usuario integer,
-  par_clase character varying,
-  par_titulo character varying,
-  par_parametros character varying
+  par_clase varchar,
+  par_titulo varchar,
+  par_parametros varchar,
+  par_id_usuario_alarma integer,
+  par_titulo_correo varchar
 )
-RETURNS integer
-AS 
+RETURNS integer AS
 $body$
 /************************************
 FUNCION: f_inserta_alarma
@@ -22,7 +25,8 @@ PARAMETROS: par_id_funcionario : indica el funcionario para el que se genera la 
             par_fecha: Indica la fecha de vencimiento de la alarma
             par_tipo: indica el tipo de alarma, puede ser alarma o notificacion
             par_obs: son las observaciones de la alarma
-
+ 			par_id_usuario_alarma: indica el usuario para que se cre la alarma (solo si funcionario es NULL)
+          
 ************************************/
 DECLARE
     
@@ -49,7 +53,9 @@ v_nombre_funcion:='param.f_inserta_alarma';
             obs,
             clase,
             titulo,
-            parametros
+            parametros,
+            id_usuario,
+            titulo_correo
           	) values(
 			par_acceso_directo,
 			par_id_funcionario,
@@ -64,7 +70,9 @@ v_nombre_funcion:='param.f_inserta_alarma';
             par_obs,
             par_clase,
             par_titulo,
-            par_parametros
+            par_parametros,
+            par_id_usuario_alarma,
+            par_titulo_correo
 			)RETURNING id_alarma into v_id_alarma;
     
     return v_id_alarma;
@@ -83,7 +91,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_obtener_correlativo (OID = 304013) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

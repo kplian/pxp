@@ -50,20 +50,32 @@ BEGIN
      				
     	begin
             
+        --raise exception 'XXXXxxxx';
+        
             --Sentencia de la consulta
 			v_consulta:='
                         select
 						alarm.id_alarma,
-                        funcio.email_empresa,
+                        Case COALESCE( funcio.id_funcionario,0)  
+                          when  0  THEN
+                          
+                            per.correo   
+                        	
+                          ELSE 
+                            funcio.email_empresa
+                          end as email_empresa,
 						alarm.fecha,
 						alarm.descripcion,
 					    alarm.clase,
                         alarm.titulo,
                         alarm.obs,
                         alarm.tipo,
-                        (alarm.fecha-now()::date)::integer as dias
+                        (alarm.fecha-now()::date)::integer as dias,
+                         alarm.titulo_correo
 						from param.talarma alarm
-						inner join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
+						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
+                        left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
+                        left join segu.tpersona per on per.id_persona = usu.id_persona
                         where alarm.sw_correo = 0';
                         
              --modificar correpondencia
@@ -79,8 +91,8 @@ BEGIN
 	/*********************************    
  	#TRANSACCION:  'PM_ALARM_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		fprudencio	
- 	#FECHA:		18-11-2011 11:59:10
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-11-2012 11:59:10
 	***********************************/
 
 	elseif(p_transaccion='PM_ALARM_SEL')then
@@ -90,8 +102,8 @@ BEGIN
          
          
     		--Sentencia de la consulta
-			v_consulta:='select
-						alarm.id_alarma,
+			v_consulta:='SELECT
+                     	alarm.id_alarma,
 						alarm.acceso_directo,
 						alarm.id_funcionario,
 						alarm.fecha,
@@ -103,7 +115,6 @@ BEGIN
 						alarm.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        person.nombre_completo1,
                         alarm.clase,
                         alarm.titulo,
                         alarm.parametros,
@@ -113,9 +124,9 @@ BEGIN
 						from param.talarma alarm
 						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-                        inner join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
-                        inner join segu.vpersona person on person.id_persona=funcio.id_persona
-				        where  ';
+                        left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
+                        left join segu.tusuario usua  on  usua.id_usuario = alarm.id_usuario
+				        where  (usua.id_usuario =  '||v_parametros.id_usuario||' or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and'  ;
 				       
 			
 			--Definicion de la respuesta

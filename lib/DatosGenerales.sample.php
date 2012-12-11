@@ -123,4 +123,8 @@
 	$_SESSION["_PREFIJO_TABLA"]='f_';
 	
 	
+	//datos de correo elecronico
+    $_SESSION["_CUENTA_MAIL"]='user@tudomiino.com';
+	
+	
 ?>

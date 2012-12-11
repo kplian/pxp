@@ -21,7 +21,10 @@ Phx.vista.AlarmaFuncionario=Ext.extend(Phx.gridInterfaz,{
 		
 		
 		this.init();
-		this.load({params:{start:0, limit:50,id_usuario:Phx.CP.config_ini.id_usuario}})
+		this.load({params:{start:0, 
+			               limit:50,
+			               id_usuario:Phx.CP.config_ini.id_usuario,
+			               id_funcionario:Phx.CP.config_ini.id_funcionario }})
 	},
 	accesoDirect:function(){
 		
@@ -31,9 +34,10 @@ Phx.vista.AlarmaFuncionario=Ext.extend(Phx.gridInterfaz,{
 		
 		var par = Ext.util.JSON.decode(Ext.util.Format.trim(rec.data.parametros))
 		
+		console.log(par,rec.data)
 		//Phx.CP.loadWindows('../../../sis_legal/vista/proceso_contrato/subirContrato.php',
 			Phx.CP.loadWindows(rec.data.acceso_directo,
-			rec.data.titulo+'-'+par.tipoFiltro,
+			rec.data.titulo,
 			{modal:true,
 			 width:'90%',
 			 height:'90%'
@@ -150,51 +154,7 @@ Phx.vista.AlarmaFuncionario=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-		{
-			config:{
-				name:'id_funcionario',
-   				fieldLabel:'Funcionario',
-   				allowBlank:false,
-   				emptyText:'Funcionario...',
-   				store: new Ext.data.JsonStore({
-
-					url: '../../sis_recursos_humanos/control/Funcionario/listarFuncionario',
-					id: 'id_funcionario',
-					root: 'datos',
-					sortInfo:{
-						field: 'desc_person',
-						direction:'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_funcionario','desc_person','ci'],
-					// turn on remote sorting
-					remoteSort: true,
-					baseParams:{par_filtro:'PERSON.nombre_completo1#PERSON.ci'}
-				}),
-   				valueField:'id_funcionario',
-   				displayField: 'desc_person',
-   				gdisplayField:'nombre_completo1',//dibuja el campo extra de la consulta al hacer un inner join con orra tabla
-   				tpl:'<tpl for="."><div class="x-combo-list-item"><p>{desc_person}</p><p>CI:{ci}</p> </div></tpl>',
-   				hiddenName: 'id_funcionario',
-   				forceSelection:true,
-   				typeAhead: true,
-       			triggerAction: 'all',
-       			lazyRender:true,
-   				mode:'remote',
-   				pageSize:10,
-   				queryDelay:1000,
-   				width:150,
-   				gwidth:280,
-   				minChars:2,
-   				disabled:true,   				
-   				renderer:function (value, p, record){return String.format('{0}', record.data['nombre_completo1']);}
-			},
-			type:'ComboBox',
-			filters:{pfiltro:'nombre_completo1',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
+		
 		{
 			config:{
 				name: 'estado_reg',
