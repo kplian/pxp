@@ -132,9 +132,9 @@ Phx.vista.funcionario=function(config){
 	       	},
 	       		{
 	       		config:{
-	       			fieldLabel: "Teléfono",
+	       			fieldLabel: "Teléfono Domicilio",
 	       			gwidth: 120,
-	       			name: 'telefon1',
+	       			name: 'telefono1',
 	       			allowBlank:true,	
 	       			maxLength:100,
 	       			minLength:1,

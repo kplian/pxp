@@ -15,6 +15,7 @@ class ACTFuncionario extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
+		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
