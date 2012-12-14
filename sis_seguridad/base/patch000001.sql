@@ -5563,3 +5563,15 @@ CREATE OR REPLACE VIEW segu.vusuario AS
 
 ALTER TABLE segu.vusuario OWNER TO postgres;
 /***********************************F-SCP-JRR-SEGU-0-07/12/2012****************************************/
+
+/***********************************I-SCP-RAC-SEGU-0-14/12/2012****************************************/
+
+ALTER TABLE segu.tfuncion
+  DROP CONSTRAINT tfuncion_nombre_key RESTRICT;
+  
+  CREATE UNIQUE INDEX tfuncion_idx ON segu.tfuncion
+  USING btree (nombre, id_subsistema, estado_reg);
+  
+  
+/***********************************F-SCP-RAC-SEGU-0-14/12/2012****************************************/
+  

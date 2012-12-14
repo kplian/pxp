@@ -1,7 +1,10 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.f_sinc_funciones_subsistema (
   par_id_subsistema integer
 )
-RETURNS varchar AS'
+RETURNS varchar AS
+$body$
 /**************************************************************************
  FUNCION: 		segu.f_sinc_funciones_subsistema
  DESCRIPCIÓN:   sincronizacion de la funciones de un subsistema a partir de los metadatos der SGBD
@@ -19,7 +22,7 @@ RETURNS varchar AS'
  AUTOR:		KPLIAN(RAC)	
  FECHA:		27/11/10
  ***************************************************************************
- DESCRIPCION:	- arreglo para omitir funciones bakup con barra baja por delante ''_''
+ DESCRIPCION:	- arreglo para omitir funciones bakup con barra baja por delante '_'
                 - se hicieron unicos los nombre de funcion, los codigos de procedimientos y de gui
                    
  AUTOR:		KPLIAN(RAC)	
@@ -50,20 +53,20 @@ BEGIN
 
 
 
-v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
+v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
 
-     --  raise exception ''LLEGA'';
+     --  raise exception 'LLEGA';
      select lower(codigo), lower(prefijo)
      into v_esquema, v_prefijo
      from segu.tsubsistema
      where id_subsistema=par_id_subsistema;
      
      
-    -- raise exception ''LLEGA %'',v_esquema;
+    -- raise exception 'LLEGA %',v_esquema;
      
     
      --RAC 15032012  se incremente el NOT LIKE para que no se considere las copias de las funciones
-     --estas se distinguen por que comienzan con una ''_'' por delante
+     --estas se distinguen por que comienzan con una '_' por delante
      --si existe una funcion backup sin esta caracteristica podemos obtener un error
      --de codigos duplicados
      
@@ -71,19 +74,21 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                            FROM pg_proc p
                               INNER JOIN pg_namespace n ON p.pronamespace = n.oid
                            WHERE n.nspname = v_esquema 
-                             and  p.proname not like ''\_%'')
+                             and  p.proname not like '\_%')
                          loop
-                       v_nombre_function=v_registros.v_funcion; 
                        
-                       raise notice '' listado funcion -> %'',v_nombre_function;
                        
-                       if(v_nombre_function != ''f_sinc_funciones_subsistema'')THEN
+                       v_nombre_function = v_esquema||'.'||v_registros.v_funcion; 
+                       
+                       raise notice ' listado funcion -> %',v_nombre_function;
+                       
+                       if(v_nombre_function != 'f_sinc_funciones_subsistema')THEN
                          --
                          
                          -- verifica la existencia de la funcion tipo sel con prefijo ft
                          
                                    
-                                   --raise exception ''%'',substr(v_nombre_tabla, 2);
+                                   --raise exception '%',substr(v_nombre_tabla, 2);
 
                                    v_cant:=2;
                                    v_bandera:=true;
@@ -91,13 +96,13 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                    if not exists(select 1
                                                   from segu.tfuncion
                                                   where nombre = v_nombre_function
-                                                  and id_subsistema=par_id_subsistema and estado_reg=''activo'') then
+                                                  and id_subsistema=par_id_subsistema and estado_reg='activo') then
 
                                          -- si no existe inserta una funcion 
 
                                           insert into segu.tfuncion(nombre,descripcion,id_subsistema,estado_reg)
                                           values(v_nombre_function,
-                                          ''Funcion para tabla     '',par_id_subsistema,''activo'')
+                                          'Funcion para tabla     ',par_id_subsistema,'activo')
                                           returning id_funcion into v_id_funcion ;
 
                                    else
@@ -107,7 +112,7 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                                      from segu.tfuncion
                                                      where nombre = v_nombre_function
                                                      and id_subsistema=par_id_subsistema
-                                                     and estado_reg=''activo'');
+                                                     and estado_reg='activo');
                                    end if;
                                    
                                    --recupera el cuerpo de la funcion
@@ -118,7 +123,7 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                    where proname = v_nombre_function;
 
                                  
-                                    raise notice ''%   %'',v_nombre_function,v_esquema; 
+                                    raise notice '%   %',v_nombre_function,v_esquema; 
                                     
                                     
                                    while((v_bandera) or (v_cant<20)) loop
@@ -127,7 +132,7 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                         
                                            
                                      --busca las transacciones en el cuerpo de la funcion       
-                                    if(strpos(split_part(TRIM(v_contenido),''_transaccion='''''',v_cant),'''''')'')<1) then
+                                    if(strpos(split_part(TRIM(v_contenido),'_transaccion=''',v_cant),''')')<1) then
                                                 v_bandera:=false;
                                            else
                                            
@@ -135,9 +140,9 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                             
                                                --Verifica si la trasanccion tiene descripcion    
                                                v_bandera_desc:=true;  
-                                               v_desc_transaccion= ''CODIGO NO DOCUMENTADO'';
+                                               v_desc_transaccion= 'CODIGO NO DOCUMENTADO';
                                             
-                                              if(strpos(split_part(v_contenido,''#DESCRIPCION:'',v_cant),''#AUTOR:'')<1) then
+                                              if(strpos(split_part(v_contenido,'#DESCRIPCION:',v_cant),'#AUTOR:')<1) then
                                                  
                                                    
                                                  v_bandera_desc:=false;
@@ -145,25 +150,25 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                               else 
                                               
                                                  
-                                                  v_desc_transaccion:=TRIM((select substr(split_part(v_contenido,''#DESCRIPCION:'',v_cant),1,strpos(split_part(v_contenido,''#DESCRIPCION:'',v_cant),''#AUTOR:'')-1))::varchar);
+                                                  v_desc_transaccion:=TRIM((select substr(split_part(v_contenido,'#DESCRIPCION:',v_cant),1,strpos(split_part(v_contenido,'#DESCRIPCION:',v_cant),'#AUTOR:')-1))::varchar);
                                               
                                               end IF;
                                             
-                                            v_codigo:=(select substr(split_part(TRIM(v_contenido),''_transaccion='''''',v_cant),1,strpos(split_part(TRIM(v_contenido),''_transaccion='''''',v_cant),'''''')'')-1))::varchar;
+                                            v_codigo:=(select substr(split_part(TRIM(v_contenido),'_transaccion=''',v_cant),1,strpos(split_part(TRIM(v_contenido),'_transaccion=''',v_cant),''')')-1))::varchar;
 
                                                      
-                                            raise notice ''% ---  %'',v_codigo, v_desc_transaccion;   
+                                            raise notice '% ---  %',v_codigo, v_desc_transaccion;   
                                             
-                                             if(v_codigo is null or v_codigo='''') then
+                                             if(v_codigo is null or v_codigo='') then
                                                      v_bandera:=false;
                                                 end if;
 
 
                                                 if not exists(select 1 
                                                               from segu.tprocedimiento
-                                                              where codigo =v_codigo --)then
---                                                              and id_funcion=v_id_funcion and estado_reg=''activo'') then
-                                                               and id_funcion=v_id_funcion) then
+                                                              where codigo =v_codigo 
+                                                              and id_funcion=v_id_funcion and estado_reg='activo') then
+                                                              -- and id_funcion=v_id_funcion) then
                                                                
                                                                
                                                            
@@ -178,7 +183,7 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
                                                                 where p.codigo =v_codigo ;
                                                                 --OFFSET  START 0 LIMIT 1;
                                                               
-                                                                raise exception ''El codigo % se duplica para la funcion  % y minimamente en %'',v_codigo,v_nombre_function,v_nombre_fun;
+                                                                raise exception 'El codigo % se duplica para la funcion  % y minimamente en %',v_codigo,v_nombre_function,v_nombre_fun;
                                                            
                                                            
                                                            END IF;   
@@ -187,7 +192,7 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
 
                                                 
                                                    insert into segu.tprocedimiento(codigo,descripcion,id_funcion,estado_reg)
-                                                   values(v_codigo,v_desc_transaccion, v_id_funcion,''activo'');
+                                                   values(v_codigo,v_desc_transaccion, v_id_funcion,'activo');
                                                 
                                                 else
                                                         
@@ -217,10 +222,11 @@ v_nombre_funcion:=''segu.f_sinc_funciones_subsistema'';
 
      end loop;
 
-    return ''exito'';
+    return 'exito';
 
 END;
-'LANGUAGE 'plpgsql'
+$body$
+LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER

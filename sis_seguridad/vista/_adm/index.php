@@ -66,7 +66,6 @@ if(!isset($_SESSION["_SESION"])){
     <div class="loading-indicator"><img src="../../../lib/images/bigrotation2.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>Cargando...</div>
   </div>
 
-  
     <!-- include everything after the loading indicator -->
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/adapter/ext/ext-base-debug.js"></script>
     <!--
@@ -138,6 +137,7 @@ if(!isset($_SESSION["_SESION"])){
      
      
      <script type="text/javascript" src="../../../lib/ux/ColumnHeaderGroup.js"></script>
+      
      
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
     <div id="header">
