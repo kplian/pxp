@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_dispara_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -39,13 +40,13 @@ BEGIN
    -- v_filtro = '';
 
 	/*********************************    
- 	#TRANSACCION:  'PM_ALARM_SEL'
+ 	#TRANSACCION:  'PM_DISALARM_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		fprudencio	
  	#FECHA:		18-11-2011 11:59:10
 	***********************************/
 
-	if(p_transaccion='PM_ALARM_SEL')then
+	if(p_transaccion='PM_DISALARM_SEL')then
      				
     	begin
         --Sentencia de la consulta
@@ -87,13 +88,13 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_ALARM_CONT'
+ 	#TRANSACCION:  'PM_DISALARM_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		fprudencio	
  	#FECHA:		18-11-2011 11:59:10
 	***********************************/
 
-	elsif(p_transaccion='PM_ALARM_CONT')then
+	elsif(p_transaccion='PM_DISALARM_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
@@ -129,7 +130,8 @@ EXCEPTION
 			raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_documento_ime (OID = 304032) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -82,7 +82,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                        
                        raise notice ' listado funcion -> %',v_nombre_function;
                        
-                       if(v_nombre_function != 'f_sinc_funciones_subsistema')THEN
+                       if(v_nombre_function not in ('segu.f_sinc_funciones_subsistema'))THEN
                          --
                          
                          -- verifica la existencia de la funcion tipo sel con prefijo ft
@@ -120,7 +120,11 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                    select prosrc
                                    into v_contenido
                                    from pg_proc 
-                                   where proname = v_nombre_function;
+                                   INNER JOIN pg_catalog.pg_namespace ON pronamespace = pg_catalog.pg_namespace.oid 
+                                   where  lower(pg_catalog.pg_namespace.nspname) =  lower(v_esquema)
+                                   and proname =v_registros.v_funcion;
+
+                                
 
                                  
                                     raise notice '%   %',v_nombre_function,v_esquema; 

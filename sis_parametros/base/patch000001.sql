@@ -466,115 +466,6 @@ COMMENT ON COLUMN param.tpm_regional.nombre_regional IS 'label=Nombre Regional&d
 COMMENT ON COLUMN param.tpm_regional.descripcion_regional IS 'label=Descripción Regional&disable=no';
 COMMENT ON COLUMN param.tpm_regional.id_regional_actif IS 'para actualización de activos fijos';
 
------------------------------------------------------DATA-----------------------------------------------------------------
-INSERT INTO segu.tsubsistema ( codigo, nombre, fecha_reg, prefijo, estado_reg, nombre_carpeta, id_subsis_orig)
-VALUES ('PARAM', 'Parametros Generales', '2009-11-02', 'PM', 'activo', 'parametros', NULL);
-
-INSERT INTO param.tgestion (gestion, id_usuario_reg) VALUES (2012, 1);
-
-select pxp.f_insert_tfuncion ('ft_moneda_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_gestion_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_gestion_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_moneda_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_periodo_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_periodo_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_lugar_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_lugar_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_documento_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_convertir_moneda', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_get_moneda_base', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_obtener_correlativo', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_depto_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_depto_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_documento_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_institucion_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_institucion_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_tpm_proyecto_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_tpm_proyecto_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_tproveedor_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_tproveedor_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_alarma_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_alarma_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('___f_obtener_correlativo', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_tdepto_usuario_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_tdepto_usuario_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_config_alarma_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_config_alarma_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_usuario_uo_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_usuario_uo_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('f_inserta_alarma', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_dispara_alarma_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_dispara_alarma_ime', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tgui ('Alarmas', 'Para programar las alarmas', 'ALARM', 'si', 1, 'sis_parametros/vista/alarma/Alarma.php', 2, '', 'Alarma', 'PARAM');
-select pxp.f_insert_tgui ('Departamentos', 'Departamentos', 'DEPTO', 'si', 3, 'sis_parametros/vista/depto/Depto.php', 2, '', 'Depto', 'PARAM');
-select pxp.f_insert_tgui ('PARAM', 'Parametros Generales', 'PARAM', 'si', 2, '', 1, '../../../lib/imagenes/param32x32.png', 'Sistema de Parametros', 'PARAM');
-select pxp.f_insert_tgui ('Lugar', 'Lugar', 'LUG', 'si', 4, 'sis_parametros/vista/lugar/Lugar.php', 2, '', 'Lugar', 'PARAM');
-select pxp.f_insert_tgui ('Institucion', 'Detalle de instituciones', 'INSTIT', 'si', 5, 'sis_parametros/vista/institucion/Institucion.php', 2, '', 'Institucion', 'PARAM');
-select pxp.f_insert_tgui ('Proyecto EP', 'Proyecto EP proviene de ENDESIS', 'PRO', 'si', 5, 'sis_parametros/vista/proyecto/Proyecto.php', 2, '', 'Proyecto', 'PARAM');
-select pxp.f_insert_tgui ('Proveedores', 'Registro de Proveedores', 'PROVEE', 'si', 5, 'sis_parametros/vista/proveedor/Proveedor.php', 2, '', 'proveedor', 'PARAM');
-select pxp.f_insert_tgui ('Documentos', 'Documentos por Sistema', 'DOCUME', 'si', 4, 'sis_parametros/vista/documento/Documento.php', 2, '', 'Documento', 'PARAM');
-select pxp.f_insert_tgui ('Configuracion Alarmas', 'Para configurar las alarmas', 'CONALA', 'si', 1, 'sis_parametros/vista/config_alarma/ConfigAlarma.php', 2, '', 'ConfigAlarma', 'PARAM');
-select pxp.f_insert_tgui ('Unidades de Medida', 'Registro de Unidades de Medida', 'UME', 'si', 10, 'sis_parametros/vista/unidad_medida/UnidadMedida.php', 2, '', 'UnidadMedida', 'PARAM');
-select pxp.f_insert_tgui ('Gestion', 'Manejo de gestiones', 'GESTIO', 'si', 1, 'sis_parametros/vista/gestion/gestion.js', 2, '', 'gestion', 'PARAM');
-select pxp.f_insert_tgui ('Catalogo', 'Catalogo', 'CATA', 'si', 4, 'sis_parametros/vista/catalogo/Catalogo.php', 2, '', 'Catalogo', 'PARAM');
-select pxp.f_insert_tgui ('Periodo', 'Periodo', 'PERIOD', 'si', 2, 'sis_parametros/vista/periodo/periodo.js', 2, '', 'periodo', 'PARAM');
-select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR', 'si', 3, 'sis_parametros/vista/moneda/moneda.js', 2, '', 'moneda', 'PARAM');
-select pxp.f_insert_testructura_gui ('PARAM', 'SISTEMA');
-select pxp.f_insert_testructura_gui ('CONALA', 'PARAM');
-select pxp.f_insert_testructura_gui ('DOCUME', 'PARAM');
-select pxp.f_insert_testructura_gui ('DEPTO', 'PARAM');
-select pxp.f_insert_testructura_gui ('ALARM', 'PARAM');
-select pxp.f_insert_testructura_gui ('PROVEE', 'PARAM');
-select pxp.f_insert_testructura_gui ('PRO', 'PARAM');
-select pxp.f_insert_testructura_gui ('INSTIT', 'PARAM');
-select pxp.f_insert_testructura_gui ('LUG', 'PARAM');
-select pxp.f_insert_testructura_gui ('MONPAR', 'PARAM');
-select pxp.f_insert_testructura_gui ('PERIOD', 'PARAM');
-select pxp.f_insert_testructura_gui ('CATA', 'PARAM');
-select pxp.f_insert_testructura_gui ('GESTIO', 'PARAM');
-select pxp.f_insert_testructura_gui ('UME', 'PARAM');
-select pxp.f_insert_tprocedimiento ('PM_INSTIT_SEL', '	Consulta de datos
- 	', 'si', '', '', 'ft_institucion_sel');
-select pxp.f_insert_tprocedimiento ('PM_INSTIT_CONT', '	Conteo de registros
- 	', 'si', '', '', 'ft_institucion_sel');
-select pxp.f_insert_tprocedimiento ('PM_PROVEEV_SEL', '	Consulta de datos de proveedores a partir de una vista de base
-                    de datos
- 	', 'si', '', '', 'f_tproveedor_sel');
-select pxp.f_insert_tprocedimiento ('PM_PROVEEV_CONT', '	Conteo de registros de proveedores en la vista vproveedor
- 	', 'si', '', '', 'f_tproveedor_sel');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'ft_moneda_sel');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'ft_moneda_sel');
-select pxp.f_insert_tprocedimiento ('PM_GESTIO_INS', '	Inserta Funciones
-', 'si', '', '', 'ft_gestion_ime');
-select pxp.f_insert_tprocedimiento ('PM_GESTIO_MOD', '	Modifica la gestion seleccionada
-', 'si', '', '', 'ft_gestion_ime');
-select pxp.f_insert_tprocedimiento ('PM_GESTIO_ELI', '	Inactiva la gestion selecionada
-', 'si', '', '', 'ft_gestion_ime');
-select pxp.f_insert_tprocedimiento ('PM_GESTIO_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'ft_gestion_sel');
-select pxp.f_insert_tprocedimiento ('PM_GESTIO_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'ft_gestion_sel');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_INS', '	Inserta Funciones
-', 'si', '', '', 'ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_MOD', '	Modifica la moneda seleccionada
-', 'si', '', '', 'ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_ELI', '	Inactiva la moneda selecionada
-', 'si', '', '', 'ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_PERIOD_MOD', '	Modifica la periodo seleccionada
-', 'si', '', '', 'ft_periodo_ime');
-select pxp.f_insert_tprocedimiento ('PM_PERIOD_ELI', '	Inactiva la periodo selecionada
-', 'si', '', '', 'ft_periodo_ime');
-select pxp.f_insert_tprocedimiento ('PM_PERIOD_INS', '	Inserta Funciones
-', 'si', '', '', 'ft_periodo_ime');
-select pxp.f_insert_tprocedimiento ('PM_PERIOD_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'ft_periodo_sel');
-select pxp.f_insert_tprocedimiento ('PM_PERIOD_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'ft_periodo_sel');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_SEL', '	Listado de departamento
-', 'si', '', '', 'ft_depto_sel');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_CONT', '	cuenta la cantidad de departamentos
-', 'si', '', '', 'ft_depto_sel');
-select pxp.f_insert_tprocedimiento ('PM_DOCUME_INS', '	Inserta Documentos
-', 'si', '', '', 'ft_documento_ime');
-select pxp.f_insert_tprocedimiento ('PM_DOCUME_MOD', '	Modifica la documento seleccionada
-', 'si', '', '', 'ft_documento_ime');
-
 
 CREATE TABLE param.tcatalogo (
 	id_catalogo serial NOT NULL,
@@ -621,31 +512,7 @@ alter table param.tcatalogo
 alter table param.tcatalogo drop column tipo;
 alter table param.tcatalogo drop column id_subsistema;
 
---Funciones
-select pxp.f_insert_tfuncion ('ft_catalogo_tipo_sel', 'Funcion para tabla', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_catalogo_tipo_ime', 'Funcion para tabla', 'PARAM');
-
---Menú
-select pxp.f_insert_tgui ('Tipos de Catálogos', 'Tipos de Catálogos', 'PACATI', 'si', 11, 'sis_parametros/vista/catalogo_tipo/CatalogoTipo.php', 2, '', 'CatalogoTipo', 'PARAM');
-select pxp.f_insert_testructura_gui ('PACATI', 'PARAM');
-
---Para roles
-select pxp.f_insert_tprocedimiento ('PM_PACATI_INS', '	Inserta Funciones ', 'si', '', '', 'ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_PACATI_MOD', '	Modifica la moneda seleccionada', 'si', '', '', 'ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_PACATI__ELI', '	Inactiva la moneda selecionada', 'si', '', '', 'ft_moneda_ime');
 /***********************************F-SCP-RCM-PARAM-12-26/11/2012****************************************/
-
-/***********************************I-SCP-RCM-PARAM-0-05/12/2012****************************************/
-select pxp.f_insert_tfuncion ('ft_servicio_ime', 'Función para el registro de servicios', 'PARAM');
-select pxp.f_insert_tfuncion ('ft_servicio_sel', 'Función para consultas de servicios', 'PARAM');
-select pxp.f_insert_tgui ('Servicios', 'Para registro de los servicios', 'SERVIC', 'si', 1, 'sis_parametros/vista/servicio/Servicio.php', 2, '', 'Servicio', 'PARAM');
-select pxp.f_insert_testructura_gui ('SERVIC','PARAM');
-select pxp.f_insert_tprocedimiento ('PM_SERVIC_SEL', 'Selección de registros', 'si', '', '', 'ft_servicio_sel');
-select pxp.f_insert_tprocedimiento ('PM_SERVIC_CONT', 'Conteo de registros', 'si', '', '', 'ft_servicio_sel');
-select pxp.f_insert_tprocedimiento ('PM_SERVIC_INS', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
-select pxp.f_insert_tprocedimiento ('PM_SERVIC_MOD', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
-select pxp.f_insert_tprocedimiento ('PM_SERVIC_ELI', 'Inserción de registros', 'si', '', '', 'ft_servicio_ime');
-/***********************************F-SCP-RCM-PARAM-0-05/12/2012****************************************/
 
 
 /***********************************I-SCP-RCM-PARAM-0-06/12/2012****************************************/

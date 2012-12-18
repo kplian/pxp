@@ -265,63 +265,6 @@ eliminado: relacion eliminada no se tiene que considerar
 finalizada: el funcionario se le cambiio el cargo, se tiene que considerar como historico 
 finalizado:';
 
------------------------------------------------------------------DATA--------------------------------------------------
-
-INSERT INTO segu.tsubsistema ( codigo, nombre, fecha_reg, prefijo, estado_reg, nombre_carpeta, id_subsis_orig)
-VALUES ('ORGA', 'Organigrama', '2009-11-02', 'OR', 'activo', 'organigrama', NULL);
-
-select pxp.f_insert_tfuncion ('ft_parametro_rhum_sel', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_parametro_rhum_ime', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_tipo_planilla_ime', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_tipo_planilla_sel', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_funcionario_sel', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_funcionario_ime', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_tipo_columna_ime', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_tipo_columna_sel', 'Funcion para tabla', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_tipo_obligacion_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_tipo_obligacion_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('f_obtener_uo_x_funcionario', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_estructura_uo_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_estructura_uo_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('__24nov11_ft_estructura_uo_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('__24nov11_ft_funcionario_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('__24nov11_ft_estructura_uo_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_uo_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_uo_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_uo_funcionario_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('ft_uo_funcionario_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tgui ('Parametros de RRHH', 'Parametros de RRHH', 'PARRHH', 'si', 1, 'sis_organigrama/vista/parametro_rhum/parametro_rhum.js', 3, '', 'parametro_rhum', 'ORGA');
-select pxp.f_insert_tgui ('Definicion de Planillas', 'Definicion de Planillas', 'DEFPLAN', 'si', 1, '', 3, '', '', 'ORGA');
-select pxp.f_insert_tgui ('Tipo Columna', 'Tipo Columna', 'TIPCOL', 'si', 1, 'sis_organigrama/vista/tipo_columna/tipo_columna.js', 4, '', 'tipo_columna', 'ORGA');
-select pxp.f_insert_tgui ('Estructura Organizacional', 'Estructura Organizacional', 'ESTORG', 'si', 2, 'sis_organigrama/vista/estructura_uo/EstructuraUo.php', 3, '', 'EstructuraUo', 'ORGA');
-select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'FUNCIO', 'si', 1, 'sis_organigrama/vista/funcionario/Funcionario.php', 3, '', 'funcionario', 'ORGA');
-select pxp.f_insert_tgui ('Parametros', 'Parametros', 'PARAMRH', 'si', 1, '', 2, '', '', 'ORGA');
-select pxp.f_insert_tgui ('Procesos', 'Procesos', 'PROCRH', 'si', 2, '', 2, '', '', 'ORGA');
-select pxp.f_insert_tgui ('Reportes', 'Reportes', 'REPRH', 'si', 3, '', 2, '', '', 'ORGA');
-select pxp.f_insert_tgui ('ORGANIGRAMA', 'Organigrama Institucional', 'ORGA', 'si', 5, '', 1, '../../../lib/imagenes/orga32x32.png', '', 'ORGA');
-select pxp.f_insert_testructura_gui ('PARRHH', 'PARAMRH');
-select pxp.f_insert_testructura_gui ('DEFPLAN', 'PARAMRH');
-select pxp.f_insert_testructura_gui ('TIPCOL', 'DEFPLAN');
-select pxp.f_insert_testructura_gui ('ESTORG', 'PARAMRH');
-select pxp.f_insert_testructura_gui ('FUNCIO', 'PROCRH');
-select pxp.f_insert_testructura_gui ('PARAMRH', 'ORGA');
-select pxp.f_insert_testructura_gui ('PROCRH', 'ORGA');
-select pxp.f_insert_testructura_gui ('REPRH', 'ORGA');
-select pxp.f_insert_testructura_gui ('ORGA', 'SISTEMA');
-select pxp.f_insert_tprocedimiento ('RH_FUNCIOCAR_CONT', '	Conteo de funcionarios con cargos historicos
-', 'si', '', '', 'ft_funcionario_sel');
-
-select pxp.f_insert_tprocedimiento ('RH_ESTRUO_SEL', '	Listado de uos
-', 'si', '', '', '__24nov11_ft_estructura_uo_sel');
-select pxp.f_insert_tprocedimiento ('RH_ESTRUO_CONT', '	Conteo de estructura uos
-', 'si', '', '', '__24nov11_ft_estructura_uo_sel');
-select pxp.f_insert_tprocedimiento ('RH_UO_SEL', '	Listado de uos
-', 'si', '', '', 'ft_uo_sel');
-select pxp.f_insert_tprocedimiento ('RH_UO_CONT', '	Conteo de uos
-', 'si', '', '', 'ft_uo_sel');
-select pxp.f_insert_tprocedimiento ('RH_FUNCIOCAR_SEL', '	Listado de funcionarios con cargos historicos
-', 'si', '', '', 'ft_funcionario_sel');
-
 CREATE TABLE orga.ttipo_horario (
   id_tipo_horario SERIAL, 
   codigo VARCHAR(255), 
