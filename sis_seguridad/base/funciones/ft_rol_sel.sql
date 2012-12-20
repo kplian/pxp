@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_rol_sel (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_rol_sel
@@ -65,7 +66,7 @@ BEGIN
          END;
 
 
-     elsif(p_transaccion='SEG_ROL_CONT')then
+        elsif(p_transaccion='SEG_ROL_CONT')then
 
           --consulta:=';
           BEGIN
@@ -76,6 +77,35 @@ BEGIN
                         on subsis.id_subsistema=roll.id_subsistema where roll.estado_reg = ''activo'' AND ';
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
+         END;
+
+       /*******************************    
+       #TRANSACCION:  SEG_EXPROL_SEL
+       #DESCRIPCION:	Listado de gui_rol de un subsistema para exportar
+       #AUTOR:		Jaime Rivera Rojas	
+       #FECHA:		20/12/2012	
+      ***********************************/
+
+
+       elseif(p_transaccion='SEG_EXPROL_SEL')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='SELECT 
+                            ''rol''::varchar,
+                            roll.descripcion,
+                            roll.rol,
+                            coalesce(subsis.codigo,'' '') as desc_codigo
+                        FROM segu.trol roll
+                        INNER join segu.tsubsistema subsis
+                        on subsis.id_subsistema=roll.id_subsistema 
+                       
+                        WHERE roll.estado_reg=''activo'' and roll.id_subsistema = '|| v_parametros.id_subsistema;  
+               
+               return v_consulta;
+
+
          END;
 
      else
@@ -95,7 +125,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_sesion_ime (OID = 305093) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

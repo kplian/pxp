@@ -148,6 +148,14 @@ class ACTSubsistema extends ACTbase{
 							$row['codigo_gui']."');\r\n");
 				
 			}
+          elseif ($row['tipo'] == 'rol' ) {
+				fwrite ($file, 
+					"select pxp.f_insert_trol ('".
+							$row['descripcion']."', '" . 
+							$row['rol']."', '" . 
+							$row['desc_codigo']."');\r\n");
+				
+			}
 		}
 		return $fileName;
 	}

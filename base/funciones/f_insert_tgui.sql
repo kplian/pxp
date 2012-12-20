@@ -1,17 +1,18 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_insert_tgui (
-  par_nombre character varying,
+  par_nombre varchar,
   par_descripcion text,
-  par_codigo_gui character varying,
-  par_visible character varying,
+  par_codigo_gui varchar,
+  par_visible varchar,
   par_orden_logico integer,
   par_ruta_archivo text,
   par_nivel integer,
-  par_icono character varying,
-  par_clase_vista character varying,
-  par_subsistema character varying
+  par_icono varchar,
+  par_clase_vista varchar,
+  par_subsistema varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 DECLARE
 	v_id_subsistema integer;
@@ -28,7 +29,8 @@ BEGIN
     return 'exito';
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_insert_testructura_gui (OID = 429317) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

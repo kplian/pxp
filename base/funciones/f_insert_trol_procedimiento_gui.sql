@@ -1,16 +1,18 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_insert_trol_procedimiento_gui (
-  par_procedimiento character varying,
-  par_gui character varying,
-  par_rol character varying
+  par_rol varchar,
+  par_procedimiento varchar,
+  par_gui varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 DECLARE
 	v_id_procedimiento_gui 	integer;
     v_id_rol				integer;
 BEGIN
-	select id_procedimiento_gui into v_id_procedimiento_gui
+	
+    select id_procedimiento_gui into v_id_procedimiento_gui
     from segu.tprocedimiento_gui pg
     inner join segu.tprocedimiento p 
     	on p.id_procedimiento = pg.id_procedimiento
@@ -27,7 +29,8 @@ BEGIN
     return 'exito';
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_crear_rol_sistema (OID = 603915) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

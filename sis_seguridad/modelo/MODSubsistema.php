@@ -135,26 +135,7 @@ class MODSubsistema extends MODbase{
 			$this->ejecutarConsulta($this->respuesta);
 		}
 
-		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
-		}
-		else {
-		    $this->procedimiento='segu.ft_gui_rol_sel';
-			$this->transaccion='SEG_EXPGUIROL_SEL';
-			$this->tipo_procedimiento='SEL';
-			$this->setCount(false);
-			$this->resetCaptura();
-			$this->addConsulta();
-			$this->captura('tipo','varchar');
-			$this->captura('codigo_gui','varchar');
-			$this->captura('rol','varchar');
-			
-			$this->armarConsulta();
-			$consulta=$this->getConsulta();
-			
-	  
-			$this->ejecutarConsulta($this->respuesta);
-		}
+		
 
 		if($this->respuesta->getTipo()=='ERROR'){
 			return $this->respuesta;
@@ -220,6 +201,52 @@ class MODSubsistema extends MODbase{
 	  
 			$this->ejecutarConsulta($this->respuesta);
 		}
+		
+		if($this->respuesta->getTipo()=='ERROR'){
+			return $this->respuesta;
+		}
+		else {
+		    $this->procedimiento='segu.ft_rol_sel';
+			$this->transaccion='SEG_EXPROL_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			$this->resetCaptura();
+			$this->addConsulta();
+			
+			$this->captura('tipo','varchar');		
+			$this->captura('descripcion','text');
+			$this->captura('rol','varchar');
+			$this->captura('desc_codigo','varchar');
+			
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();
+			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
+		
+		
+		if($this->respuesta->getTipo()=='ERROR'){
+			return $this->respuesta;
+		}
+		else {
+		    $this->procedimiento='segu.ft_gui_rol_sel';
+			$this->transaccion='SEG_EXPGUIROL_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			$this->resetCaptura();
+			$this->addConsulta();
+			$this->captura('tipo','varchar');
+			$this->captura('codigo_gui','varchar');
+			$this->captura('rol','varchar');
+			
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();
+			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
+		
 
 		if($this->respuesta->getTipo()=='ERROR'){
 			return $this->respuesta;
