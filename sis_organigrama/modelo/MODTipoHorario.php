@@ -24,9 +24,9 @@ class MODTipoHorario extends MODbase{
 		$this->captura('estado_reg','varchar');
 		$this->captura('nombre','varchar');
 		$this->captura('codigo','varchar');
-		$this->captura('fecha_reg','date');
+		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_reg','int4');
-		$this->captura('fecha_mod','date');
+		$this->captura('fecha_mod','timestamp');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');

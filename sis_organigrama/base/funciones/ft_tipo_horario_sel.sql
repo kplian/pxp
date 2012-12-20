@@ -29,7 +29,7 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'orga.f_tipo_horario_sel';
+	v_nombre_funcion = 'orga.ft_tipo_horario_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
