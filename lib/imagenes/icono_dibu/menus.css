@@ -144,4 +144,10 @@
 } 
 .bcalendar {
 	background-image:url(dibu_calendar.png) !important;
-} 
+}
+.bpdf32 {
+	background-image:url(dibu_pdf32.png) !important;
+}
+.bchecklist {
+	background-image:url(dibu_checklist.png) !important;
+}
