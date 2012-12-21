@@ -89,33 +89,12 @@ class MODSubsistema extends MODbase{
 	
 	function exportarDatosSeguridad() {
 		
-		$this->procedimiento='segu.ft_funcion_sel';
-		$this->transaccion='SEG_EXPFUN_SEL';
-		$this->tipo_procedimiento='SEL';
-		$this->setCount(false);		
-			    
-		$this->setParametro('id_subsistema','id_subsistema','integer');		
-		
-		//defino varialbes que se captran como retornod e la funcion
-		$this->captura('tipo','varchar');
-		$this->captura('nombre','varchar');
-		$this->captura('descripcion','text');
-		$this->captura('subsistema','varchar');		
-		
-		$this->armarConsulta();	
-		
-        $this->ejecutarConsulta();         
-		
-		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
-		}
-		else {
-		    $this->procedimiento='segu.ft_gui_sel';
+		$this->procedimiento='segu.ft_gui_sel';
 			$this->transaccion='SEG_EXPGUI_SEL';
 			$this->tipo_procedimiento='SEL';
 			$this->setCount(false);
-			$this->resetCaptura();
-			$this->addConsulta();
+			
+			$this->setParametro('id_subsistema','id_subsistema','integer');		
 			$this->captura('tipo','varchar');
 			$this->captura('nombre','varchar');
 			$this->captura('descripcion','text');
@@ -127,14 +106,18 @@ class MODSubsistema extends MODbase{
 			$this->captura('icono','varchar');
 			$this->captura('clase_vista','varchar');
 			$this->captura('subsistema','varchar');
-			
-			$this->armarConsulta();
-			$consulta=$this->getConsulta();
-			
-	  
-			$this->ejecutarConsulta($this->respuesta);
-		}
-
+		
+		
+		
+		
+		
+		$this->armarConsulta();	
+		
+        $this->ejecutarConsulta();  
+		
+		////////////////////////////
+		
+		
 		
 
 		if($this->respuesta->getTipo()=='ERROR'){
@@ -156,6 +139,40 @@ class MODSubsistema extends MODbase{
 	  
 			$this->ejecutarConsulta($this->respuesta);
 		}
+		
+		////////////////////////
+		
+		
+		if($this->respuesta->getTipo()=='ERROR'){
+			return $this->respuesta;
+		}
+		else {
+			$this->procedimiento='segu.ft_funcion_sel';
+			$this->transaccion='SEG_EXPFUN_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);	
+			$this->resetCaptura();
+			$this->addConsulta();	
+				    
+			
+			//defino varialbes que se captran como retornod e la funcion
+			$this->captura('tipo','varchar');
+			$this->captura('nombre','varchar');
+			$this->captura('descripcion','text');
+			$this->captura('subsistema','varchar');		
+			
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();
+			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
+		
+		
+		////////////////////////////
+		
+		
+		
 
 		if($this->respuesta->getTipo()=='ERROR'){
 			return $this->respuesta;
