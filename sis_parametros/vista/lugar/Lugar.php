@@ -98,7 +98,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 			config:{
 				name: 'nombre',
 				fieldLabel: 'Nombre',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:100
@@ -113,7 +113,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 	       		config:{
 	       			name:'sw_municipio',
 	       		    fieldLabel: 'Es municipio',
-				    allowBlank: false,
+				    allowBlank: true,
 					typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
@@ -129,7 +129,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 	       		config:{
 	       			name:'sw_impuesto',
 	       		      fieldLabel: 'Paga impuestos',
-				    allowBlank: false,
+				    allowBlank: true,
 					typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
@@ -144,7 +144,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 		{
 	     config:{
 	       			name:'tipo',
-	       		      fieldLabel: 'Tipo de lugar',
+	       		    fieldLabel: 'Tipo de lugar',
 				    allowBlank: false,
 					typeAhead: true,
 	       		    triggerAction: 'all',
