@@ -58,6 +58,7 @@ Menu=function(config){
 	Menu.superclass.constructor.call(this,Ext.apply({},config,{
 		region:'west',
 		layout: 'accordion',
+		varLog:false,
 	
 		split:true,
 		width: 300,
@@ -670,15 +671,24 @@ Phx.CP=function(){
 				mensaje = "respuesta indefinida, error en la transmision <br> respuesta obtenida:<br>"+ resp.responseText;
 			}
 
-
-			Ext.Msg.show({
-				title: 'ERROR',
-				msg:mensaje,
-				buttons: Ext.Msg.OK,
-				minWidth:500,
-				minHeight:100
-
-			});
+           if(Phx.CP.varLog){
+           	
+           	window.open('../../../lib/lib_vista/log.php?log='+mensaje+'&titulo='+Phx.CP.varLogTitle,'LOG')
+           	
+           }
+           else{
+				Ext.Msg.show({
+					title: 'ERROR',
+					msg:mensaje,
+					buttons: Ext.Msg.OK,
+					minWidth:500,
+					minHeight:100
+	
+				});
+				
+				
+				
+			}
 		},
 		//loadMask: new Ext.LoadMask(Ext.get('3rn'), {msg:"Espere por favor ...",modal:true,removeMask :true}),
 		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),

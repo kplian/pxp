@@ -263,7 +263,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});
 		this.load({params:{start:0, limit:50}})
 		//agregamos boton para mostrar ventana hijo
-		this.addButton('aSubirFoto',{text:'Subir archivo',iconCls: 'blist',disabled:true,handler:SubirFoto,tooltip: '<b>Subir archivo</b><br/>Permite actualizar la foto de la persona'});
+		this.addButton('aSubirFoto',{name:'subirFoto',text:'Subir archivo',iconCls: 'blist',disabled:true,handler:SubirFoto,tooltip: '<b>Subir archivo</b><br/>Permite actualizar la foto de la persona'});
 		
 		function SubirFoto()
 		{					

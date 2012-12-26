@@ -10,9 +10,7 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-
 Phx.vista.usuario=Ext.extend(Phx.gridInterfaz,{
-
 	constructor:function(config){
 	this.maestro=config.maestro;
 	
