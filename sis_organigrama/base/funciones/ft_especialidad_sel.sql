@@ -5,7 +5,7 @@ $BODY$
  SISTEMA:		Recursos Humanos
  FUNCION: 		orga.f_especialidad_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.tespecialidad'
- AUTOR: 		 (admin)
+ AUTOR: 		(admin)
  FECHA:	        17-08-2012 17:29:14
  COMENTARIOS:	
 ***************************************************************************

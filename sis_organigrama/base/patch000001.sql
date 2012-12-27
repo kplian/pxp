@@ -311,3 +311,7 @@ ALTER TABLE orga.tfuncionario_especialidad OWNER TO postgres;
 
 /********************************************F-SCP-JRR-ORGA-1-19/11/2012********************************************/
 
+/********************************************I-SCP-RCM-ORGA-92-27/12/2012********************************************/
+alter table orga.tfuncionario
+drop constraint tfuncionario_id_persona_key;
+/********************************************F-SCP-RCM-ORGA-92-27/12/2012********************************************/
