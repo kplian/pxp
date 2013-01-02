@@ -81,6 +81,7 @@ class ACTGenerador extends ACTbase{
 		//Genera los archivos si los datos de las columnas existen
 		if(count($arreglo)>0){
 			//Crea el archivo de BD IME
+			
 			$this->crearBDIme();
 
 			//Crea el archivo de BD SEL
@@ -90,7 +91,7 @@ class ACTGenerador extends ACTbase{
 			$this->crearMOD();
 
 			//Crea el archivo Modelo Funciones
-			$this->crearMODFun();
+			//$this->crearMODFun();
 
 			//Crea el archivo Control ACT
 			$this->crearACT();
@@ -156,10 +157,12 @@ BEGIN
 							}
 							//Columnas basicas de insercion
 							for($i=0;$i<count($this->gCamposBasicosInsert); $i++){
+								
 								$this->strTexto.= "\n\t\t\t".$this->gCamposBasicosInsert[$i]->getColumna('nombre').",";
 							}
 							//Columnas basicas de update (para asegurarse de que estara en nulo)
 							for($i=0;$i<count($this->gCamposBasicosUpdate); $i++){
+								
 								$this->strTexto.= "\n\t\t\t".$this->gCamposBasicosUpdate[$i]->getColumna('nombre').",";
 							}
 							
@@ -169,6 +172,7 @@ BEGIN
 							
 							//Valores de las Columnas
 							for($i=0;$i<count($this->gCol); $i++){
+								
 							//foreach($this->oCols as $col){
 								if($this->gCol[$i]->getColumna('nombre')!=$this->gTabla->getId() 
 									&&	$this->gCol[$i]->getColumna('guardar')=='si'){
@@ -182,6 +186,7 @@ BEGIN
 							
 							//Valores de las columnas basicas insert
 							for($i=0;$i<count($this->gCamposBasicosInsert); $i++){
+								
 								if($this->gCamposBasicosInsert[$i]->getColumna('nombre')=='id_usuario_reg'){
 									$this->strTexto.= "\n\t\t\tp_id_usuario,";
 								} else{
@@ -190,12 +195,14 @@ BEGIN
 							}
 							//Valores de las columnas basicas update
 							for($i=0;$i<count($this->gCamposBasicosUpdate); $i++){
+								
 								$this->strTexto.= "\n\t\t\tnull,";	
 							}
 							
 							$this->strTexto= substr($this->strTexto,0,strlen($this->strTexto)-1)."
+							
 			)RETURNING ".$this->gLlave[0]->getColumna('nombre')." into v_".$this->gLlave[0]->getColumna('nombre').";
-               
+			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','".$this->gTabla->getTitulo()." almacenado(a) con exito (".$this->gTabla->getId()."'||v_".$this->gTabla->getId()."||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'".$this->gLlave[0]->getColumna('nombre')."',v_".$this->gLlave[0]->getColumna('nombre')."::varchar);
@@ -204,7 +211,7 @@ BEGIN
             return v_resp;
 
 		end;\n\n".
-							
+				
 		//Agrega los comentarios por la transaccion
 		$this->Comentarios('BD',$this->gTabla->getNombreFuncionBDesquema().'_ime',$this->gTabla->getComentariosDefectoTrans('mod'),"'".$this->gTabla->getNombreTransaccion()."MOD'")."
 	elsif(p_transaccion='".$this->gTabla->getNombreTransaccion()."MOD')then
@@ -562,14 +569,17 @@ class ".$this->gTabla->getNombreFuncion('control')." extends ACTbase{
 			\$this->objReporte = new Reporte(\$this->objParam);
 			\$this->res = \$this->objReporte->generarReporteListado('".$this->gTabla->getNombreFuncion('custom')."','listar".$this->gTabla->getSujetoTablaJava()."');
 		} else{
-		\t\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();	
+		//\t\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();
+		\t\$this->objFunc=\$this->create('".$this->gTabla->getNombreFuncion('modelo')."');
+			
 		\t\$this->res=\$this->objFunc->listar".$this->gTabla->getSujetoTablaJava()."(\$this->objParam);
 		}
 		\$this->res->imprimirRespuesta(\$this->res->generarJson());
 	}
 				
 	function insertar".$this->gTabla->getSujetoTablaJava()."(){
-		\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();	
+		//\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();
+		\$this->objFunc=\$this->create('".$this->gTabla->getNombreFuncion('modelo')."');	
 		if(\$this->objParam->insertar('".$this->gLlave[0]->getColumna('nombre')."')){
 			\$this->res=\$this->objFunc->insertar".$this->gTabla->getSujetoTablaJava()."(\$this->objParam);			
 		} else{			
@@ -579,7 +589,8 @@ class ".$this->gTabla->getNombreFuncion('control')." extends ACTbase{
 	}
 						
 	function eliminar".$this->gTabla->getSujetoTablaJava()."(){
-		\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();	
+		\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();
+		\t\$this->objFunc=\$this->create('".$this->gTabla->getNombreFuncion('modelo')."');	
 		\$this->res=\$this->objFunc->eliminar".$this->gTabla->getSujetoTablaJava()."(\$this->objParam);
 		\$this->res->imprimirRespuesta(\$this->res->generarJson());
 	}
