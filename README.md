@@ -22,6 +22,14 @@ TO USE IT BY FIRST TIME:
   It's necesary to do some configurations in that file according to the database.
 7. As postgres user execute "pxp/utilidades/restaurar_bd/restaurar_todo.py" (This will generate the database). Postgres user needs execution access
    to restaurar_todo.py (./restaurar_todo.py)
+    - ejm 
+        create user conexion in your database
+        
+        $_SESSION["_USUARIO_CONEXION"] = "conexion" ;
+	    $_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
+        ...   
+
+
 8. You can use the framework now!!! (user:admin, password:admin)
 
 TO CREATE A NEW SYSTEM:
