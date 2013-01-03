@@ -152,16 +152,12 @@
 	  
 	$_SESSION['_DIR_LOGO']='../../images/logo.jpg'; 
 	
-	$_SESSION['_DIR_IMAGEN_INI']='../../../lib/imagenes/logistica.jpg';
+	$_SESSION['_DIR_IMAGEN_INI']='../../../lib/imagenes/fondo_ini.jpg';
 	
 	$_SESSION['_DIR_FABICON']='../../images/logo_reporte.jpg';
 	
-	$_SESSION['_DIR_BACKGROUND_LOGIN']='../../../recursos/imagenes/Logo.png'
+	$_SESSION['_DIR_BACKGROUND_LOGIN']='../../../recursos/imagenes/Logo.png';
 	
-	
-	
-	
-	
-	
+
 	
 ?>

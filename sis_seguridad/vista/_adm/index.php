@@ -28,13 +28,13 @@ if(!isset($_SESSION["_SESION"])){
 ?>
 <html lang="es">
 <head>
- <title>KPLIAN - GEMAN</title>
+ <title><?php echo $_SESSION['_NOMBRE_SIS']; ?></title>
 	<meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />	
 	<meta name="language" content="es"/>
 	<meta name="author" content="Rensi Arteaga Copari" />
 	<meta name="subject" content="rensi4rn@gmail.com" />
 <meta name="application-name" content="TI Capacitación - Diplomado: Fundamentos de HTML5"/>
-<meta name="msapplication-window" content="width=1024;height=768"/>
+<meta name="msapplication-window" content="width=1024; height=768"/>
 <link rel="icon" type="image/x-icon" href="<?php echo $_SESSION['_DIR_FAV_ICON'] ?>" />
 
 	  <!-- overrides to base library  -->
