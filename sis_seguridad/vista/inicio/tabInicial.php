@@ -6,6 +6,9 @@
 *@date 14-02-2011
 *@description  Vista para mostrar el listado de bloqueos de usuario, IP, MAC, etc.
 */
+include_once(dirname(__FILE__)."/CTSesion.php");
+session_start();
+include(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -18,17 +21,15 @@ constructor: function(config){}
 </script>
 </head>
 <body  bgcolor="#FFFFFF">
-<table width="100%" border="0" bgcolor="#FFFFFF"  height="100%" background="../../../sis_seguridad/vista/inicio/logos/logistica.jpg">  
-  
+<table width="100%" border="0" bgcolor="#FFFFFF"  height="100%" background="<?php  echo $_SESSION['_DIR_IMAGEN_INI']?>">  
+  <!--
   <tr height="70%">
     <td colspan="2"><div align="center"><img src="../../../sis_seguridad/vista/inicio/logos/image001.gif" width="347" height="200" /></div></td>
   </tr>
-  <tr>
-   
-    <td width="100%"><p align="center" class="{color:#FFFFFF!important;font-weight: bold}"><font color="white" size="16px">Sistema Para la Gestión de Mantenimiento
-    	<br/>Plantas y Estaciones </font></p>
-      <div align="center"><strong>GEMPE</strong></div></td>
-  </tr>
+  -->
+  
+    	<?php echo $_SESSION['_PLANTIILA'];?>
+      
   <tr height="100%">
     <td colspan="2"><div align="center"><font color="white"><a  href="http://www.kplian.com/"   TARGET="_new" >Powered by KPLIAN LTDA</a></font></div></td>
   </tr>

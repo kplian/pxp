@@ -35,7 +35,7 @@ if(!isset($_SESSION["_SESION"])){
 	<meta name="subject" content="rensi4rn@gmail.com" />
 <meta name="application-name" content="TI Capacitación - Diplomado: Fundamentos de HTML5"/>
 <meta name="msapplication-window" content="width=1024;height=768"/>
-<link rel="icon" type="image/x-icon" href="../../../lib/images/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="<?php echo $_SESSION['_DIR_FAV_ICON'] ?>" />
 
 	  <!-- overrides to base library  -->
  <link rel="stylesheet" type="text/css" href="../../../lib/ux/statusbar/css/statusbar.css" />
@@ -59,7 +59,7 @@ if(!isset($_SESSION["_SESION"])){
 
 	<!-- GC -->
 </head>
-<body scroll="no" id="docs">
+<body  style="{background:#ffffff url(<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>) no-repeat center center;}"  scroll="no" id="docs">
  
 <div id="loading-mask" style=""></div>
   <div id="loading">

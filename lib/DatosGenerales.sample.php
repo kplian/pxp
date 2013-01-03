@@ -88,8 +88,7 @@
 	$_SESSION['cantidad_reportes']=200;
 	$_SESSION['fecha_pie']=false;
 	
-	//Tiene que ser una imagen que pueda ser bien vista a un tamaño de 35*15
-	$_SESSION['dir_logo']='../../images/logo_reporte.jpg'; 
+	
 	
 	//tiempo de espera para la interfaces javascript en el cliente
 	$_SESSION["_TIMEOUT"]=200000;
@@ -124,6 +123,45 @@
 	
 	//datos de correo elecronico
     $_SESSION["_CUENTA_MAIL"]='user@tudomiino.com';
+	
+	//--------------- TITULOS ----------------------------------//
+	
+	$_SESSION['_TITULO_SIS_LARGO']="FRAMEWORK PARA DESARROLLO DE SOFTWARE";
+	$_SESSION['_TITULO_SIS_CORTO']=" DESARROLLO ÁGIL";
+	$_SESSION['_NOMBRE_SIS']="PXP";
+ 	
+	
+	  $_SESSION['_PLANTIILA']= "<tr height=\"20%\">
+        <td width=\"100%\">
+          <p align=\"center\">
+           <font color=\"black\" SIZE=6>".$_SESSION['_TITULO_SIS_LARGO']."</font>
+          </p>
+	      <br/>
+	      <p align=\"center\"><font color=\"black\" SIZE=4>".$_SESSION['_TITULO_SIS_CORTO']."</font></p>
+          <div align=\"center\"><strong><h1><font color=\"black\" SIZE=8>".$_SESSION['_NOMBRE_SIS']."</font></strong></h1></div>
+        </td>
+       </tr>";
+	
+	
+	//-------------------  LOGOTIPOS--------------------------//
+	
+	//Tiene que ser una imagen que pueda ser bien vista a un tamaño de 35*15
+	//$_SESSION['dir_logo']='../../images/logo_reporte.jpg'; 
+	
+	$_SESSION['_DIR_FAV_ICON']='../../../lib/images/favicon.ico';
+	  
+	$_SESSION['_DIR_LOGO']='../../images/logo.jpg'; 
+	
+	$_SESSION['_DIR_IMAGEN_INI']='../../../lib/imagenes/logistica.jpg';
+	
+	$_SESSION['_DIR_FABICON']='../../images/logo_reporte.jpg';
+	
+	$_SESSION['_DIR_BACKGROUND_LOGIN']='../../../recursos/imagenes/Logo.png'
+	
+	
+	
+	
+	
 	
 	
 ?>
