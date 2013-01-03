@@ -32,12 +32,11 @@
 
 		// Esta es la variable que indica el usuario del servidor Postgres
 	$_SESSION["_USUARIO_CONEXION"] = "conexion" ;
-	//$USUARIO = "endesis" ;
 	// Esta es la variable que indica la contrasena del usuario de Postgres
 	$_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
 	
 	//DOMINIO PARA AUTENTIFICACION LDAP
-		$_SESSION["_DOMINIO"] = 'ende.bo';
+		$_SESSION["_DOMINIO"] = 'kplian.com';
 	//servidor de autenticacion ldap en el dominio especificado 
 	$_SESSION["_SERVER_LDAP"] = '10.10.0.32';
 	//puerto de autenticacion ldap
