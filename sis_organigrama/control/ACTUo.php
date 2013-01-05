@@ -9,9 +9,6 @@
 class ACTUo extends ACTbase{    
 
 	function listarUo(){
-
-		//el objeto objParam contiene todas la variables recibidad desde la interfaz
-		
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario1');
 		$this->objParam->defecto('dir_ordenacion','asc');
@@ -22,21 +19,14 @@ class ACTUo extends ACTbase{
 			$this->res=$this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarUo');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesRecursosHumanos();
-			
-			//obtiene el parametro nodo enviado por la vista
-			
-			
+			$this->objFunc=$this->create('MODUo');
 			//ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarUo($this->objParam);
+			$this->res=$this->objFunc->listarUo();
 			
 		}
 		
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());
-		
-		
-		
 	}
 	
 	

@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
   RETURNS varchar AS
 $body$
 /**************************************************************************
- FUNCION: 		RHUM.ft_uo_funcionario_sel
+ FUNCION: 		ORGA.ft_uo_funcionario_sel
  DESCRIPCIÓN:  listado de uo
  AUTOR: 	    KPLIAN (mzm)	
  FECHA:	        
@@ -66,8 +66,8 @@ BEGIN
                                   PERMOD.nombre_completo2 AS USUMOD
                                   
                             FROM orga.tuo_funcionario UOFUNC
-                            INNER JOIN RHUM.tuo UO ON UO.id_uo=UOFUNC.id_uo
-                            INNER JOIN RHUM.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
+                            INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
+                            INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
@@ -102,8 +102,8 @@ BEGIN
                v_consulta:='SELECT
                                   count(UOFUNC.id_uo_funcionario)
                             FROM orga.tuo_funcionario UOFUNC
-                            INNER JOIN RHUM.tuo UO ON UO.id_uo=UOFUNC.id_uo
-                            INNER JOIN RHUM.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
+                            INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
+                            INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
