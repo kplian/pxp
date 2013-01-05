@@ -789,6 +789,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		
 		$this->strTexto.="
 	],
+	
 	title:'".$this->gTabla->getTitulo()."',
 	ActSave:'../../sis_".$this->gTabla->getCarpetaSistema()."/control/".$this->gTabla->getSujetoTablaJava()."/insertar".$this->gTabla->getSujetoTablaJava()."',
 	ActDel:'../../sis_".$this->gTabla->getCarpetaSistema()."/control/".$this->gTabla->getSujetoTablaJava()."/eliminar".$this->gTabla->getSujetoTablaJava()."',
@@ -1221,6 +1222,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 			//Verifica si es campo fecha para aumentar el renderer
 			if($tipodato=='date'){
 				$cadena.="
+				format: 'd/m/Y', 
 				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y h:i:s'):''},";
 			}
 			
@@ -1374,7 +1376,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		
 		//Verifica si es campo Date para aumentar el formato de fecha
 		if($this->tipoDato($p_Columnas->getColumna('tipo_dato'))=='date'){
-			$col.="', dateFormat:'Y-m-d H:i:s'},\n";
+			$col.="',dateFormat:'Y-m-d H:i:s'},\n";
 		} else{
 			$col.="'},\n";
 		}
