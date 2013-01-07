@@ -566,10 +566,9 @@ class ".$this->gTabla->getNombreFuncion('control')." extends ACTbase{
 		\$this->objParam->defecto('dir_ordenacion','asc');\n";
 		
 		$this->strTexto.= "\t\tif(\$this->objParam->getParametro('tipoReporte')=='excel_grid' || \$this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			\$this->objReporte = new Reporte(\$this->objParam);
-			\$this->res = \$this->objReporte->generarReporteListado('".$this->gTabla->getNombreFuncion('custom')."','listar".$this->gTabla->getSujetoTablaJava()."');
+			\$this->objReporte = new Reporte(\$this->objParam,\$this);
+			\$this->res = \$this->objReporte->generarReporteListado('".$this->gTabla->getNombreFuncion('modelo')."','listar".$this->gTabla->getSujetoTablaJava()."');
 		} else{
-		//\t\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();
 		\t\$this->objFunc=\$this->create('".$this->gTabla->getNombreFuncion('modelo')."');
 			
 		\t\$this->res=\$this->objFunc->listar".$this->gTabla->getSujetoTablaJava()."(\$this->objParam);
@@ -578,7 +577,6 @@ class ".$this->gTabla->getNombreFuncion('control')." extends ACTbase{
 	}
 				
 	function insertar".$this->gTabla->getSujetoTablaJava()."(){
-		//\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();
 		\$this->objFunc=\$this->create('".$this->gTabla->getNombreFuncion('modelo')."');	
 		if(\$this->objParam->insertar('".$this->gLlave[0]->getColumna('nombre')."')){
 			\$this->res=\$this->objFunc->insertar".$this->gTabla->getSujetoTablaJava()."(\$this->objParam);			
@@ -589,7 +587,6 @@ class ".$this->gTabla->getNombreFuncion('control')." extends ACTbase{
 	}
 						
 	function eliminar".$this->gTabla->getSujetoTablaJava()."(){
-		\$this->objFunc=new ".$this->gTabla->getNombreFuncion('custom')."();
 		\t\$this->objFunc=\$this->create('".$this->gTabla->getNombreFuncion('modelo')."');	
 		\$this->res=\$this->objFunc->eliminar".$this->gTabla->getSujetoTablaJava()."(\$this->objParam);
 		\$this->res->imprimirRespuesta(\$this->res->generarJson());
