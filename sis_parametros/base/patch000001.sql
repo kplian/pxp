@@ -419,5 +419,8 @@ sw_presto int4,
 PRIMARY KEY(id_ep)) INHERITS (pxp.tbase);
 
 
+ALTER TABLE param.tcatalogo
+  ADD COLUMN orden NUMERIC(3,2);
+
 /***********************************F-SCP-RAC-PARAM-0-04/01/2013*****************************************/
 
