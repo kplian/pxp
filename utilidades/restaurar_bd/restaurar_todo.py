@@ -157,16 +157,18 @@ execute_script(url, 'patch')
 #insertar datos de cada esquema
 execute_script(url,'data')
 
-#crear dependencias de cada esquema
-execute_script(url, 'dependencies')
-
 #insertar datos de prueba de cada esquema
 if (datos  == 's'):
     for item in url:
-        if os.access(item + 'base/datos_prueba.sql', os.R_OK):
-            command = 'psql '+ db + ' < ' + item + 'base/datos_prueba.sql'
+        if os.access(item + 'base/test_data.sql', os.R_OK):
+            command = 'psql '+ db + ' < ' + item + 'base/test_data.sql'
             for line in run_command(command):
                 f_log.write(line)
+
+#crear dependencias de cada esquema
+execute_script(url, 'dependencies')
+
+
     
 
 #Actualización de las secuencias
