@@ -35,10 +35,34 @@ def generate_scripts (file_str):
     
     return scripts
 
+def execute_script (systems , kind):
+    for item in systems:
+    patches = os.listdir( item + 'base/' )
+    for f in patches:
+        if f.startswith(kind):
+            sql_scripts = generate_scripts(item + 'base/' + f)
+    
+            for script in sql_scripts:
+        
+                command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
+        
+                for line in run_command(command):
+            
+                    if (line.strip() == '0'):
+                        f_command = open('/tmp/file_command.txt','w')
+                        f_command.write('BEGIN;')
+                        f_command.write(script['query'])
+                        f_command.write("INSERT INTO pxp.tscript_version VALUES('" + script['codigo']  + "');")
+                        f_command.write('COMMIT;')
+                        f_command.close()
+                        command = 'psql -t -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
+                        for line in run_command(command):
+                            f_log.write(line)
+
 def run_command(command):
     p = subprocess.Popen(command,
                          stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
-    
+     
     line = p.stdout.readline()
     while line:
         yield line
@@ -105,58 +129,47 @@ except:
 
 archivo_log = '/tmp/log_restaurar_bd.log'
 f_log = open('/tmp/log_restaurar_bd.log', 'w')
-# Primero se restaura los esquemas basicos
-for item in url:
-	for line in run_command('echo "/********************' + item + '*******************/"'):
-        	f_log.write(line)
-	#restaurar subsistema
-    	funciones_dir = item + 'base/funciones/'
-	if opcion == '1':
-		#crear esquema
-		command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql' 
-	
-		for line in run_command(command):
-    			f_log.write(line)
-	#crear funciones
-	funciones = os.listdir( funciones_dir )
-	for f in funciones:
-		if f.endswith('.sql'):
-        		command = 'psql -q -d ' + db + ' < ' + funciones_dir + f
-			for line in run_command(command):
-                                f_log.write(line)
-	
-        #crear tablas y objetos de estructura
-	sql_scripts = generate_scripts(item + 'base/patch000001.sql')
-	
-	for script in sql_scripts:
-		
-		command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
-		
-		for line in run_command(command):
-			
-                        if (line.strip() == '0'):
-				f_command = open('/tmp/file_command.txt','w')
-				f_command.write('BEGIN;')
-				f_command.write(script['query'])
-				f_command.write("INSERT INTO pxp.tscript_version VALUES('" + script['codigo']  + "');")
-				f_command.write('COMMIT;')
-				f_command.close()
-				command = 'psql -t -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
-				for line in run_command(command):
-        				f_log.write(line)
-	#insertar datos del esquema
-	if opcion == '1':
-		if os.access(item + 'base/datos.sql', os.R_OK):
-			command = 'psql '+ db + ' < ' + item + 'base/datos.sql'
-                	for line in run_command(command):
-                		f_log.write(line)
-    	if (datos  == 's'):
-		if os.access(item + 'base/datos_prueba.sql', os.R_OK):
-    	    		command = 'psql '+ db + ' < ' + item + 'base/datos_prueba.sql'
-       			for line in run_command(command):
-                		f_log.write(line)
 
-#RCM (03-12-2012) Actualización de las secuencias
+if opcion == '1':
+    # Primero se restaura los esquemas y las funciones
+    for item in url:
+    	for line in run_command('echo "/********************' + item + '*******************/"'):
+            	f_log.write(line)
+    	#restaurar subsistema
+        	funciones_dir = item + 'base/funciones/'
+    	
+    	#crear esquema
+    	command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql' 
+    	
+    	for line in run_command(command):
+        	f_log.write(line)
+    	#crear funciones
+    	funciones = os.listdir( funciones_dir )
+    	for f in funciones:
+    		if f.endswith('.sql'):
+            		command = 'psql -q -d ' + db + ' < ' + funciones_dir + f
+    			for line in run_command(command):
+                                    f_log.write(line)
+
+#crear objetos de cada esquema
+execute_script(url, 'patch')
+
+#insertar datos de cada esquema
+execute_script(url,'data')
+
+#crear dependencias de cada esquema
+execute_script(url, 'dependencies')
+
+#insertar datos de prueba de cada esquema
+if (datos  == 's'):
+    for item in url:
+        if os.access(item + 'base/datos_prueba.sql', os.R_OK):
+            command = 'psql '+ db + ' < ' + item + 'base/datos_prueba.sql'
+            for line in run_command(command):
+                f_log.write(line)
+    
+
+#Actualización de las secuencias
 command = 'psql '+ db + ' -c  \'select pxp.f_update_sequences()\''
 for line in run_command(command):
 	f_log.write(line)
