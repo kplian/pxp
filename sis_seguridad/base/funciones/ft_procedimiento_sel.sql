@@ -107,7 +107,7 @@ BEGIN
                                 on f.id_funcion = p.id_funcion
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = f.id_subsistema
-                            where p.estado_reg=''activo'' and f.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  p.migrado is null and p.estado_reg=''activo'' and f.id_subsistema = '|| v_parametros.id_subsistema;
                                                          
                return v_consulta;
 

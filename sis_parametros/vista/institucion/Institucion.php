@@ -30,7 +30,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'codigo',
 				fieldLabel: 'Código',
 				allowBlank: false,
-				anchor: '80%',
+				width: '100%',
 				gwidth: 100,
 				maxLength:100
 			},
@@ -45,7 +45,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'nombre',
 				fieldLabel: 'nombre',
 				allowBlank: false,
-				anchor: '80%',
+				width: '100%',
 				gwidth: 250,
 				maxLength:100
 			},
@@ -60,7 +60,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'doc_id',
 				fieldLabel: 'NIT',
 				allowBlank: false,
-				anchor: '80%',
+				width: '100%',
 				gwidth: 100,
 				maxLength:50
 			},
@@ -75,7 +75,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'direccion',
 				fieldLabel: 'Dirección Empresa',
 				allowBlank: true,
-				anchor: '80%',
+				width: '100%',
 				gwidth: 200,
 				maxLength:200
 			},
@@ -93,12 +93,13 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 	   				allowBlank:true,
 	   				origen:'PERSONA',
 	   				gdisplayField:'desc_persona',//mapea al store del grid
+	   				anchor: "99%",
 	   			    gwidth:200,
 	      			renderer:function (value, p, record){return String.format('{0}', record.data['desc_persona']);}
    			},
    			type:'ComboRec',
    			id_grupo:0,
-   			filters:{pfiltro:'nombre_completo1#nombre_completo2',type:'string'},
+   			filters:{pfiltro:'per.nombre_completo2',type:'string'},
    		    grid:true,
    			form:true
 	   	},
@@ -107,7 +108,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'cargo_representante',
 				fieldLabel: 'Cargo Representante',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 250
 			},
 			type:'TextField',
@@ -141,7 +142,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'codigo_banco',
 				fieldLabel: 'codigo_banco',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:100
 			},
@@ -156,7 +157,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'observaciones',
 				fieldLabel: 'observaciones',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				heith: 250,
 				gwidth: 100,
 				maxLength:500
@@ -173,7 +174,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'casilla',
 				fieldLabel: 'casilla',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:50
 			},
@@ -188,7 +189,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'telefono1',
 				fieldLabel: 'telefono1',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:50
 			},
@@ -204,7 +205,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'telefono2',
 				fieldLabel: 'telefono2',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:50
 			},
@@ -219,7 +220,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'fax',
 				fieldLabel: 'fax',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:50
 			},
@@ -234,7 +235,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'email1',
 				fieldLabel: 'email1',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:100
 			},
@@ -249,7 +250,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'email2',
 				fieldLabel: 'email2',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:100
 			},
@@ -264,7 +265,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'celular1',
 				fieldLabel: 'celular1',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:50
 			},
@@ -279,7 +280,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'celular2',
 				fieldLabel: 'celular2',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:50
 			},
@@ -294,7 +295,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'pag_web',
 				fieldLabel: 'pag_web',
 				allowBlank: true,
-				width: 250,
+				width: "100%",
 				gwidth: 100,
 				maxLength:100
 			},
@@ -309,7 +310,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
-				anchor: '80%',
+				anchor: "100%",
 				gwidth: 100,
 				maxLength:10
 			},
@@ -418,28 +419,26 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		
 		
 	],
-	Grupos: [
-            {
+	Grupos: [{
                 layout: 'column',
-                autowidth: true,
-                border: false,
+                //autowidth: true,
+                // border: false,
                 defaults: {
                    border: false
                 },            
-                items: [
-                
-                 { 
-                autowidth: true,
-                border: false,
-                defaults: {
-                   border: false
-                },            
+                // items: [
+//                 
+                 // { 
+                // //autowidth: true,
+                // border: false,
+                // defaults: {
+                   // border: false
+                // },            
                 items: [
                 
                          {
-					        bodyStyle: 'padding-right:5px;padding-left:5px;',
-					        bodyStyle: 'padding-left:5px;padding-left:5px;',
-					        autowidth: true,
+					        bodyStyle: 'margin-right: 5px; padding-right:5px;padding-left:5px;',
+					        columnWidth: 1,
 					        items: [{
 					            xtype: 'fieldset',
 					            title: 'Datos Basicos',
@@ -448,22 +447,19 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 						        id_grupo:0
 					        }]
 					    }, {
-					        bodyStyle: 'padding-right:5px;padding-left:5px;',
-					        bodyStyle: 'padding-left:5px;padding-left:5px;',
-					        autowidth: true,
-					         items: [{
+					        bodyStyle: 'margin-right: 5px; padding-right:5px;padding-left:5px;',
+					        columnWidth: 1,
+					        items: [{
 					            xtype: 'fieldset',
 					            title: 'Datos Banco',
 					            autoHeight: true,
 					            items: [],
 						        id_grupo:1
 					        }]
-					    }]},
-					   
+					    },
 					    {
-					        bodyStyle: 'padding-right:5px;padding-left:5px;',
-					        bodyStyle: 'padding-left:5px;padding-left:5px;',
-					        autowidth: true,
+					    	bodyStyle: 'margin-right: 5px; padding-right:5px;padding-left:5px;',
+					        columnWidth: 1,
 					        items: [{
 					            xtype: 'fieldset',
 					            title: 'Datos Contacto',
@@ -472,9 +468,8 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 						        id_grupo:2
 					        }]
 					    }
-					    ]
-            }
-        ],
+				]
+          }],
         
      constructor:function(config){ 
 		this.maestro=config.maestro;
@@ -500,11 +495,9 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true,
-	
-
-	
-	
+	bsave:false,
+	fheight: 350,
+	fwidth: 400
 	}
 )
 </script>

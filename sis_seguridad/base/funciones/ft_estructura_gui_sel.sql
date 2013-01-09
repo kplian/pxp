@@ -95,7 +95,7 @@ BEGIN
                             inner join segu.tgui g on g.id_gui = eg.id_gui
                             inner join segu.tsubsistema s on g.id_subsistema = s.id_subsistema
                             inner join segu.tgui gfk on gfk.id_gui = eg.fk_id_gui
-                            where eg.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  eg.migrado is null and eg.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
                                                          
                return v_consulta;
 

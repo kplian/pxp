@@ -17,9 +17,9 @@ BEGIN
     where f.nombre = par_funcion;
     
     insert into segu.tprocedimiento (	codigo, descripcion, habilita_log, 
-    									autor, fecha_creacion, id_funcion)
+    									autor, fecha_creacion, id_funcion, migrado)
     values (par_codigo, par_descripcion, par_habilita_log,
-    		par_autor, par_fecha_creacion, v_id_funcion);
+    		par_autor, par_fecha_creacion, v_id_funcion, 1);
     return 'exito';
 END;
 $body$

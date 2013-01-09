@@ -115,7 +115,7 @@ BEGIN
                                 on g.id_gui = pg.id_gui
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where pg.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  pg.migrado is null and pg.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
                                                          
                return v_consulta;
 

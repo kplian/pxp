@@ -66,7 +66,7 @@ class ACTSubsistema extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=$this->create('MODSubsistema');		
 		
-		$this->res = $this->objFunSeguridad->exportarDatosSeguridad($this->objParam);
+		$this->res = $this->objFunSeguridad->exportarDatosSeguridad();
 		
 		if($this->res->getTipo()=='ERROR'){
 			$this->res->imprimirRespuesta($this->res->generarJson());
@@ -95,20 +95,13 @@ class ACTSubsistema extends ACTbase{
 		$sw_procedimiento=0;
 		$sw_rol=0; 
 		$sw_rol_pro=0;
-		
+		fwrite ($file,"----------------------------------\r\n".
+						  "--COPY LINES TO data.sql FILE  \r\n".
+						  "---------------------------------\r\n".
+						  "\r\n" );
 		foreach ($data as $row) {
 			 if ($row['tipo'] == 'gui' ) {
-			 	
-				if($sw_gui==0){
-					
-					fwrite ($file,"----------------------------------\r\n".
-								  "--DEF DE INTERFACES\r\n".
-								  "---------------------------------\r\n".
-								  "\r\n" );
-					$sw_gui=1; 
-				}
-				
-				
+			 									
 				fwrite ($file, 
 					"select pxp.f_insert_tgui ('". 
 							$row['nombre']."', '" . 
@@ -122,25 +115,9 @@ class ACTSubsistema extends ACTbase{
 							$row['clase_vista']."', '" . 
 							$row['subsistema']."');\r\n");
 				
-			}elseif ($row['tipo'] == 'estructura_gui' ) {
-				
-				fwrite ($file, 
-					"select pxp.f_insert_testructura_gui ('".
-							$row['codigo_gui']."', '" . 
-							$row['fk_codigo_gui']."');\r\n");
-				
-			} 
-			
+			}			
 			elseif ($row['tipo'] =='funcion' ) {
-				if($sw_funciones==0){
-					
-					fwrite ($file,"----------------------------------\r\n".
-								  "--DEF DE FUNCIONES\r\n".
-								  "---------------------------------\r\n" .
-								  "\r\n" );
-					$sw_funciones=1; 
-				}
-				
+								
 				fwrite ($file, 
 					"select pxp.f_insert_tfuncion ('".
 							$row['nombre']."', '" . 
@@ -148,16 +125,7 @@ class ACTSubsistema extends ACTbase{
 							$row['subsistema']."');\r\n");
 				
 			}  elseif ($row['tipo'] == 'procedimiento' ) {
-				
-				if($sw_procedimiento==0){
-					
-					fwrite ($file,"----------------------------------\r\n".
-								  "--DEF DE PRODEDIMIETOS\r\n".
-								  "---------------------------------\r\n" .
-								  "\r\n" );
-					$sw_procedimiento=1; 
-				}
-				
+											
 				fwrite ($file, 
 					"select pxp.f_insert_tprocedimiento ('".
 							$row['codigo']."', '" . 
@@ -167,36 +135,8 @@ class ACTSubsistema extends ACTbase{
 							$row['fecha_creacion']."', '" . 
 							$row['funcion']."');\r\n");
 				
-			}elseif ($row['tipo'] == 'procedimiento_gui' ) {
-						
-				if($sw_rol_pro==0){			
-				    fwrite ($file,"----------------------------------\r\n".
-								  "--DEF DE PROCEDIMIENTOS PRO INTERFACE\r\n".
-								  "---------------------------------\r\n" .
-								  "\r\n" );
-					$sw_rol_pro=1; 
-				}
-						
-					
-				
-				fwrite ($file, 
-					"select pxp.f_insert_tprocedimiento_gui ('".
-							$row['codigo']."', '" . 
-							$row['codigo_gui']."', '" . 
-							$row['boton']."');\r\n");
-				
-			} 
-             elseif ($row['tipo'] == 'rol' ) {
-             	
-				if($sw_rol==0){
-					
-					fwrite ($file,"----------------------------------\r\n".
-								  "--DEF DE ROLES\r\n".
-								  "---------------------------------\r\n" .
-								  "\r\n" );
-					$sw_rol=1; 
-				}
-				
+			} elseif ($row['tipo'] == 'rol' ) {
+             									
 				fwrite ($file, 
 					"select pxp.f_insert_trol ('".
 							$row['descripcion']."', '" . 
@@ -204,8 +144,30 @@ class ACTSubsistema extends ACTbase{
 							$row['desc_codigo']."');\r\n");
 				
 			}
-			
-			  elseif ($row['tipo'] == 'gui_rol' ) {
+		}
+		
+		fwrite ($file,"----------------------------------\r\n".
+						  "--COPY LINES TO dependencies.sql FILE \r\n".
+						  "---------------------------------\r\n".
+						  "\r\n" );
+		foreach ($data as $row) {
+			if ($row['tipo'] == 'estructura_gui' ) {
+				
+				fwrite ($file, 
+					"select pxp.f_insert_testructura_gui ('".
+							$row['codigo_gui']."', '" . 
+							$row['fk_codigo_gui']."');\r\n");
+				
+			} elseif ($row['tipo'] == 'procedimiento_gui' ) {
+						
+				
+				fwrite ($file, 
+					"select pxp.f_insert_tprocedimiento_gui ('".
+							$row['codigo']."', '" . 
+							$row['codigo_gui']."', '" . 
+							$row['boton']."');\r\n");
+				
+			} elseif ($row['tipo'] == 'gui_rol' ) {
 				fwrite ($file, 
 					"select pxp.f_insert_tgui_rol ('".
 							$row['codigo_gui']."', '" . 

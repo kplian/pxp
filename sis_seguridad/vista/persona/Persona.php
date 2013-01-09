@@ -92,7 +92,13 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 					
 						
 						//return  String.format('{0}',"<div style='text-align:center'><img src = ../../control/foto_persona/"+ record.data['foto']+"?"+record.data['nombre_foto']+hora_actual+" align='center' width='70' height='70'/></div>");
-						return  String.format('{0}',"<div style='text-align:center'><img src = '../../control/foto_persona/ActionArmafoto.php?nombre="+ record.data['foto']+"&asd="+hora_actual+"' align='center' width='70' height='70'/></div>");
+						var splittedArray = record.data['foto'].split('.');
+						if (splittedArray[splittedArray.length - 1] != "") {
+							return  String.format('{0}',"<div style='text-align:center'><img src = '../../control/foto_persona/ActionArmafoto.php?nombre="+ record.data['foto']+"&asd="+hora_actual+"' align='center' width='70' height='70'/></div>");
+						} else {
+							return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/NoPerfilImage.jpg' align='center' width='70' height='70'/></div>");
+						}
+						
 					},	
 			buttonCfg: {
                 iconCls: 'upload-icon'
@@ -232,7 +238,8 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,// boton para eliminar
 	bsave:true,// boton para eliminar
-
+	fheight: 350,
+	fwidth: 400,
 
 	// sobre carga de funcion
 	preparaMenu:function(tb){
@@ -263,7 +270,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});
 		this.load({params:{start:0, limit:50}})
 		//agregamos boton para mostrar ventana hijo
-		this.addButton('aSubirFoto',{name:'subirFoto',text:'Subir archivo',iconCls: 'blist',disabled:true,handler:SubirFoto,tooltip: '<b>Subir archivo</b><br/>Permite actualizar la foto de la persona'});
+		this.addButton('aSubirFoto',{name:'subirFoto',text:'Subir Foto',iconCls: 'baddphoto',disabled:true,handler:SubirFoto,tooltip: '<b>Subir Foto</b><br/>Permite actualizar la foto de la persona'});
 		
 		function SubirFoto()
 		{					

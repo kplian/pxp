@@ -27,7 +27,8 @@ BEGIN
       fecha_reg,
       estado_reg,
       rol,
-      id_subsistema
+      id_subsistema, 
+      migrado
     ) 
     VALUES (
      
@@ -35,7 +36,8 @@ BEGIN
       now(),
       'activo',
       par_rol,
-      v_id_subsistema
+      v_id_subsistema,
+      1
     );
     
     return 'exito';

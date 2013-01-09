@@ -36,7 +36,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 				name: 'codigo',
 				fieldLabel: 'Código',
 				allowBlank: false,
-				anchor: '80%',
+				width: '100%',
 				gwidth: 100,
 				maxLength:20
 			},
@@ -52,7 +52,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 				name: 'nombre',
 				fieldLabel: 'Nombre especialidad',
 				allowBlank: false,
-				anchor: '80%',
+				width: '100%',
 				gwidth: 300,
 				maxLength:150
 			},
@@ -94,7 +94,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 				mode:'remote',
 				pageSize:20,
 				queryDelay:500,
-				width:210,
+				anchor: '100%',
 				gwidth:220,
 				minChars:2,
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_especialidad_nivel']);}
@@ -206,7 +206,9 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:false,
+	fwidth: 450,
+	fheight: 250
 	}
 )
 </script>

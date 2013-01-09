@@ -96,10 +96,12 @@ BEGIN
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_proveedor)
 					    from param.tproveedor provee
-					    inner join segu.tusuario usu1 on usu1.id_usuario = provee.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = provee.id_usuario_mod
-						left join param.tlugar lug on lug.id_lugar = provee.id_lugar
-					    where ';
+						inner join segu.tusuario usu1 on usu1.id_usuario = provee.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = provee.id_usuario_mod   
+                        left join segu.vpersona person on person.id_persona=provee.id_persona
+                        left join param.tinstitucion instit on instit.id_institucion=provee.id_institucion
+                        left join param.tlugar lug on lug.id_lugar = provee.id_lugar
+				        where  ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

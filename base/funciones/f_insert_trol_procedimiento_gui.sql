@@ -11,7 +11,7 @@ DECLARE
 	v_id_procedimiento_gui 	integer;
     v_id_rol				integer;
 BEGIN
-	
+	 
     select id_procedimiento_gui into v_id_procedimiento_gui
     from segu.tprocedimiento_gui pg
     inner join segu.tprocedimiento p 
@@ -24,8 +24,8 @@ BEGIN
     from segu.trol r
     where r.rol = par_rol;
     
-    insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui)
-    values (v_id_rol, v_id_procedimiento_gui);
+    insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui, migrado)
+    values (v_id_rol, v_id_procedimiento_gui, 1);
     return 'exito';
 END;
 $body$

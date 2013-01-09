@@ -18,8 +18,8 @@ BEGIN
     from segu.tprocedimiento p
     where p.codigo = par_procedimiento;
     
-    insert into segu.tprocedimiento_gui (id_procedimiento, id_gui, boton)
-    values (v_id_procedimiento, v_id_gui, par_boton);
+    insert into segu.tprocedimiento_gui (id_procedimiento, id_gui, boton, migrado)
+    values (v_id_procedimiento, v_id_gui, par_boton, 1);
     return 'exito';
 END;
 $body$

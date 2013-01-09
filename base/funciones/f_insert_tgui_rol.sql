@@ -26,8 +26,8 @@ BEGIN
 raise notice  'v_id_gui  % v_id_rol   % ', v_id_gui, v_id_rol;
     
     insert 
-    	into segu.tgui_rol (id_rol, id_gui, estado_reg)
-    				values (v_id_rol, v_id_gui, 'activo');
+    	into segu.tgui_rol (id_rol, id_gui, estado_reg, migrado)
+    				values (v_id_rol, v_id_gui, 'activo', 1);
     return 'exito';
 END;
 $body$
