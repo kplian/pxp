@@ -343,12 +343,13 @@ CREATE TABLE param.taprobador(
     id_aprobador SERIAL NOT NULL,
     id_funcionario int4 NOT NULL,
     id_subsistema int4 NOT NULL,
+    id_centro_costo int4,
     monto_min numeric(19, 0),
     monto_max numeric(19, 0),
     fecha_ini date,
     fecha_fin date,
     id_uo int4,
-    id_centro_costo int4,
+    
     obs varchar(255),
     PRIMARY KEY (id_aprobador)) INHERITS (pxp.tbase);
     

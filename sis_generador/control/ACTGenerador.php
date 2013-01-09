@@ -881,10 +881,14 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		} elseif ($p_tipoDato=='integer'||$p_tipoDato=='int4'||$p_tipoDato=='numeric') {
 			$tipoDato='numeric';
 			$tipoComp='NumberField';
-		} elseif($p_tipoDato=='timestamp'||$p_tipoDato=='date'){
+		} elseif($p_tipoDato=='timestamp'){
+			$tipoDato='timestamp';
+			$tipoComp='DateField';
+		} 
+		elseif($p_tipoDato=='date'){
 			$tipoDato='date';
 			$tipoComp='DateField';
-		} elseif($p_tipoDato=='bool'){
+		}elseif($p_tipoDato=='bool'){
 			$tipoDato='boolean';
 			$tipoComp='Checkbox';
 		}
@@ -1219,9 +1223,17 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 			//Verifica si es campo fecha para aumentar el renderer
 			if($tipodato=='date'){
 				$cadena.="
-				format: 'd/m/Y', 
-				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y h:i:s'):''},";
-			}
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''},";
+			 }
+			
+		      if($tipodato=='timestamp'){
+						$cadena.="
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''},";
+					}
+			
+			
 			
 			//Verifica si es necesario definir limite maximo en funcion del componente
 			$sw=0;
@@ -1232,6 +1244,10 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 			
 			//Quita la ultima coma
 			$cadena= substr($cadena,0,strlen($cadena)-1);
+			
+			if($tipodato=='timestamp'){
+				$tipodato = 'date';
+			}
 			
 			$cadena.="\n\t\t\t},
 			type:'".$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'),'tipo_comp')."',
@@ -1369,11 +1385,26 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 	//Funcion que devuelve por columna el mapeo para el data store
 	function mapeoColumnas($p_Columnas){
 		//Define la cadena del mapeo
-		$col="\t\t{name:'".$p_Columnas->getColumna('nombre')."', type: '".$this->tipoDato($p_Columnas->getColumna('tipo_dato'));
+		$tip = $this->tipoDato($p_Columnas->getColumna('tipo_dato'));
+		
+		if($tip=='timestamp'){
+			$tip='date';
+			
+		}
+		
+		$col="\t\t{name:'".$p_Columnas->getColumna('nombre')."', type: '".$tip;
 		
 		//Verifica si es campo Date para aumentar el formato de fecha
-		if($this->tipoDato($p_Columnas->getColumna('tipo_dato'))=='date'){
-			$col.="',dateFormat:'Y-m-d H:i:s'},\n";
+		
+		if($this->tipoDato($p_Columnas->getColumna('tipo_dato'))=='timestamp'){
+			$col.="',dateFormat:'Y-m-d H:i:s.u'},\n";
+			
+		}
+		elseif($this->tipoDato($p_Columnas->getColumna('tipo_dato'))=='date'){
+			
+			
+			var_dump($p_Columnas);
+			$col.="',dateFormat:'Y-m-d'},\n";
 		} else{
 			$col.="'},\n";
 		}
