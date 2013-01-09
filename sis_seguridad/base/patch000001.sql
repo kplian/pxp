@@ -1345,4 +1345,31 @@ ALTER TABLE segu.tfuncion
   
   
 /***********************************F-SCP-RAC-SEGU-0-14/12/2012****************************************/
+
+/****************************I-SCP-JRR-SEGU-0-09/01/2012*************/
+ALTER TABLE segu.testructura_gui
+  ADD COLUMN modificado INTEGER;
+
+ALTER TABLE segu.tfuncion
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE segu.tgui_rol
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE segu.tgui
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE segu.tprocedimiento_gui
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE segu.tprocedimiento
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE segu.trol_procedimiento
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE segu.trol
+  ADD COLUMN modificado INTEGER;
+
+/****************************F-SCP-JRR-SEGU-0-09/01/2012*************/
   

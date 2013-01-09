@@ -150,7 +150,7 @@ BEGIN
                                 on gr.id_rol = r.id_rol
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where gr.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  gr.migrado is null and gr.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
                                                          
                return v_consulta;
 

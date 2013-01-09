@@ -17,8 +17,8 @@ BEGIN
     from segu.tgui g
     where g.codigo_gui = par_codigo_gui_fk;
     
-    insert into segu.testructura_gui (id_gui, fk_id_gui)
-    values (v_id_gui, v_id_gui_fk);
+    insert into segu.testructura_gui (id_gui, fk_id_gui, migrado)
+    values (v_id_gui, v_id_gui_fk, 1);
     return 'exito';
 END;
 $body$

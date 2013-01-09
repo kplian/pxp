@@ -101,7 +101,7 @@ BEGIN
                         INNER join segu.tsubsistema subsis
                         on subsis.id_subsistema=roll.id_subsistema 
                        
-                        WHERE roll.estado_reg=''activo'' and roll.id_subsistema = '|| v_parametros.id_subsistema;  
+                        WHERE  roll.migrado is null and roll.estado_reg=''activo'' and roll.id_subsistema = '|| v_parametros.id_subsistema;  
                
                return v_consulta;
 
