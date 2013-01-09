@@ -1,3 +1,6 @@
+
+/***********************************I-DATA-RAC-PARAM-0-31/12/2012*****************************************/
+
 /*
 *	Author: RAC
 *	Date: 21/12/2012
@@ -340,3 +343,7 @@ INSERT INTO param.tunidad_medida ("id_usuario_reg", "id_usuario_mod", "fecha_reg
 VALUES (1, 1, E'2012-11-02 13:30:42', E'2012-12-19 19:05:56.585', E'activo', 5, E'año', 'Año', E'Tiempo');
 INSERT INTO param.tunidad_medida ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_unidad_medida", "codigo", "descripcion", "tipo")
 VALUES (1, NULL, E'2012-11-02 13:31:27', E'2012-11-02 13:31:27', E'activo', 9, E'Km', 'Kilómetros', E'Longitud');
+
+
+/***********************************F-DATA-RAC-PARAM-0-31/12/2012*****************************************/
+
