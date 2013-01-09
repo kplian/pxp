@@ -348,7 +348,7 @@ CREATE TABLE param.taprobador(
     fecha_ini date,
     fecha_fin date,
     id_uo int4,
-    id_presupuesto int4,
+    id_centro_costo int4,
     obs varchar(255),
     PRIMARY KEY (id_aprobador)) INHERITS (pxp.tbase);
     
@@ -421,6 +421,45 @@ PRIMARY KEY(id_ep)) INHERITS (pxp.tbase);
 
 ALTER TABLE param.tcatalogo
   ADD COLUMN orden NUMERIC(3,2);
+ 
+ ALTER TABLE param.tcatalogo_tipo
+  ADD COLUMN tabla_estado VARCHAR(100); 
+ 
+ 
+ ALTER TABLE param.tcatalogo_tipo
+  ADD COLUMN columna_estado VARCHAR(100); 
+  
+  CREATE TABLE param.tcentro_costo(
+	id_centro_costo SERIAL NOT NULL,
+	codigo varchar(20), 
+	descripcion varchar(200),
+	id_ep int4 NOT NULL, 
+	id_uo int4,
+	id_fuente_financiammiento int4, 
+	id_parametro int4, 
+	id_gestion int4,
+	id_concepto_colectivo int4, 
+	id_categoria_prog int4, 
+	nombre_agrupador varchar(150), 
+	tipo_pres varchar(30), 
+	estado varchar(30),   -- estado_pre en endesis
+	cod_fin varchar(10), 
+	cod_prg varchar(10), 
+	cod_pry varchar(10), 
+	cod_act varchar(10), 
+	PRIMARY KEY(id_centro_costo))INHERITS (pxp.tbase);
+	
+	
+CREATE TABLE param.testado_funcionario(
+    id_estado_funcionario SERIAL NOT NULL,
+    id_funcionario int4 NOT NULL,
+    id_catalogo int4 NOT NULL,
+    tipo varchar(15),
+    tipo_funcionario varchar(25),
+    condicion varchar(255),
+    tiempo_estimado int4,
+    id_unidad_medida int4,
+    PRIMARY KEY (id_estado_funcionario)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-RAC-PARAM-0-04/01/2013*****************************************/
 
