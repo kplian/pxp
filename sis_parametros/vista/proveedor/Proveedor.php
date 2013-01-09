@@ -41,7 +41,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				name: 'tipo',
 				fieldLabel: 'Tipo',
 				allowBlank: false,
-				anchor: '90%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:25,
 				typeAhead:true,
@@ -61,7 +61,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	   		config:{
 	   				name:'id_persona',
 	   				fieldLabel: 'Persona',
-	   				anchor: '90%',
+	   				anchor: '100%',
 	   				tinit:true,
 	   				allowBlank:false,
 	   				origen:'PERSONA',
@@ -72,14 +72,14 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	   			  },
    			type:'ComboRec',
    			id_grupo:0,
-   			filters:{pfiltro:'nombre_completo1#nombre_completo2',type:'string'},
+   			filters:{pfiltro:'person.nombre_completo1',type:'string'},
    		    grid:true,
    			form:true
 	   	},{
 	   		config:{
 	   				name:'id_institucion',
 	   				fieldLabel: 'Institucion',
-	   				anchor: '90%',
+	   				anchor: '100%',
 	   				tinit:true,
 	   				allowBlank:false,
 	   				origen:'INSTITUCION',
@@ -90,7 +90,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	   			  },
    			type:'ComboRec',
    			id_grupo:0,
-   			filters:{pfiltro:'nombre',type:'string'},
+   			filters:{pfiltro:'instit.nombre',type:'string'},
    			grid:true,
    			form:true
 	   	},	
@@ -100,7 +100,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				name: 'codigo',
 				fieldLabel: 'codigo',
 				allowBlank: true,
-				anchor: '90%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:50
 			},
@@ -115,7 +115,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				name: 'nit',
 				fieldLabel: 'NIT',
 				allowBlank: false,
-				anchor: '90%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:50
 			},
@@ -130,7 +130,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				name: 'numero_sigma',
 				fieldLabel: 'Num.Sigma',
 				allowBlank: true,
-				anchor: '90%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:50
 			},
@@ -146,7 +146,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: false,
-				anchor: '90%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:10
 			},
@@ -260,13 +260,13 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				mode:'remote',
 				pageSize:50,
 				queryDelay:500,
-				width:210,
+				anchor:"100%",
 				gwidth:220,
 				minChars:2,
 				renderer:function (value, p, record){return String.format('{0}', record.data['lugar']);}
 			},
 			type:'ComboBox',
-			filters:{pfiltro:'lugar',type:'string'},
+			filters:{pfiltro:'lug.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -310,7 +310,8 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true,
+	bsave:false,
+	fwidth:400,
 	
 	iniciarEventos:function()
 	{		

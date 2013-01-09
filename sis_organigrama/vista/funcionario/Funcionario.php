@@ -33,6 +33,7 @@ Phx.vista.funcionario=function(config){
 	   				tinit:true,
 	   				fieldLabel:'Persona',
 	   				gdisplayField:'desc_person',//mapea al store del grid
+	   				anchor: '100%',
 	   			    gwidth:200,
 		   			 renderer:function (value, p, record){return String.format('{0}', record.data['desc_person']);}
 	       	     },
@@ -175,7 +176,10 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'TextField',
-	       		filters:{type:'string'},
+	       		filters:{
+	       			pfiltro: 'person.correo',
+	       			type:'string'
+	       			},
 	       		id_grupo:0,
 	       		grid:true,
 	       		form:false
@@ -210,7 +214,7 @@ Phx.vista.funcionario=function(config){
        				mode:'remote',
        				pageSize:10,
        				queryDelay:1000,
-       				width:250,
+       				anchor: '100%',
        				minChars:2,
 	       			enableMultiSelect:true,
        				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
@@ -250,7 +254,7 @@ Phx.vista.funcionario=function(config){
        				mode:'remote',
        				pageSize:10,
        				queryDelay:1000,
-       				width:250,
+       				anchor: '100%',
        				minChars:2,
 	       			enableMultiSelect:true,
        				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
@@ -439,9 +443,10 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	 * title:'Regional', width:150
 	 *  },
 	 */	
-	bdel:true,// boton para eliminar
-	bsave:true// boton para eliminar
-	
+	bdel:true,
+	bsave:false,
+	fwidth: 450,
+	fheight: 430
 		  
 		 
 })

@@ -35,8 +35,8 @@ Phx.vista.TipoHorario=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'codigo',
 				fieldLabel: 'Código',
-				allowBlank: true,
-				anchor: '80%',
+				allowBlank: false,
+				width: '100%',
 				gwidth: 80,
 				maxLength:255
 			},
@@ -50,8 +50,8 @@ Phx.vista.TipoHorario=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'nombre',
 				fieldLabel: 'Horario',
-				allowBlank: true,
-				anchor: '80%',
+				allowBlank: false,
+				width: '100%',
 				gwidth: 200,
 				maxLength:255
 			},
@@ -147,9 +147,9 @@ Phx.vista.TipoHorario=Ext.extend(Phx.gridInterfaz,{
 		{name:'estado_reg', type: 'string'},
 		{name:'nombre', type: 'string'},
 		{name:'codigo', type: 'string'},
-		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d H:i:s'},
+		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_reg', type: 'numeric'},
-		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d H:i:s'},
+		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
@@ -160,7 +160,9 @@ Phx.vista.TipoHorario=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:false,
+	fwidth: 450,
+	fheight: 190
 	}
 )
 </script>

@@ -74,13 +74,13 @@ Phx.vista.FuncionarioEspecialidad=Ext.extend(Phx.gridInterfaz,{
 				mode:'remote',
 				pageSize:20,
 				queryDelay:500,
-				width:210,
+				anchor: '100%',
 				gwidth:220,
 				minChars:2,
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_especialidad']);}
 			},
 			type:'ComboBox',
-			filters:{pfiltro:'esp.nombre',type:'string'},
+			filters:{pfiltro:'especi.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -197,7 +197,9 @@ Phx.vista.FuncionarioEspecialidad=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:false,
+	fwidth: 450,
+	fheight: 150
 	}
 )
 </script>

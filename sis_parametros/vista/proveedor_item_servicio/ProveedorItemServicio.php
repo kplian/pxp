@@ -45,7 +45,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'item_servicio',
 				fieldLabel: 'Item/Servicio',
-				anchor: '80%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:10,
 				items: [
@@ -70,7 +70,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
-				anchor: '80%',
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:10
 			},
@@ -99,7 +99,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 					fields: ['id_item','codigo','nombre','descripcion'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
+					baseParams:{par_filtro:'item.nombre'}
 				}),
 				valueField: 'id_item',
 				displayField: 'nombre',
@@ -112,7 +112,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 				mode:'remote',
 				pageSize:20,
 				queryDelay:500,
-				width:210,
+				anchor:'100%',
 				gwidth:220,
 				minChars:2,
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_item']);}
@@ -155,7 +155,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 				mode:'remote',
 				pageSize:20,
 				queryDelay:500,
-				width:210,
+				anchor:'100%',
 				gwidth:220,
 				minChars:2,
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_servicio']);},
@@ -267,7 +267,9 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true,
+	bsave:false,
+	fwidth: 400,
+	fheight: 300,
 	//function tha enable/disable combobox of items or services
 	enableDisable: function(val){
 		var cmbIt = this.getComponente('id_item');
