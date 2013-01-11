@@ -11,7 +11,7 @@ def generate_scripts (file_str):
 	dic = dict(codigo='',query='', is_loaded='')
 	
         for line in file:
-                if line.find('***I-SCP-') != -1 :
+                if line.find('***I-SCP-') != -1  or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 :
                         dic['codigo'] = line.replace('*','')
 			dic['codigo'] = dic['codigo'].replace('/','')
 			dic['codigo'] = dic['codigo'].replace(' ','')
@@ -19,7 +19,7 @@ def generate_scripts (file_str):
 			dic['codigo'] = dic['codigo'].replace('\n','')
 			dic['codigo'] = dic['codigo'][2:]
 
-		elif line.find('***F-SCP-') != -1:
+		elif line.find('***F-SCP-') != -1 or line.find('***F-DEP-') !=-1 or line.find('***F-DAT-') != -1:
 			if dic['codigo'] != '':
 				scripts.append(dic)
                                 dic = dict(codigo = '', query = '', is_loaded='')			
@@ -37,27 +37,26 @@ def generate_scripts (file_str):
 
 def execute_script (systems , kind):
     for item in systems:
-    patches = os.listdir( item + 'base/' )
-    for f in patches:
-        if f.startswith(kind):
-            sql_scripts = generate_scripts(item + 'base/' + f)
-    
-            for script in sql_scripts:
+    	patches = os.listdir( item + 'base/' )
+    	for f in patches:
+            if f.startswith(kind):
+            	sql_scripts = generate_scripts(item + 'base/' + f)
+   		for script in sql_scripts:
         
-                command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
+                	command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
         
-                for line in run_command(command):
+                	for line in run_command(command):
             
-                    if (line.strip() == '0'):
-                        f_command = open('/tmp/file_command.txt','w')
-                        f_command.write('BEGIN;')
-                        f_command.write(script['query'])
-                        f_command.write("INSERT INTO pxp.tscript_version VALUES('" + script['codigo']  + "');")
-                        f_command.write('COMMIT;')
-                        f_command.close()
-                        command = 'psql -t -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
-                        for line in run_command(command):
-                            f_log.write(line)
+                    	    if (line.strip() == '0'):
+                        	f_command = open('/tmp/file_command.txt','w')
+                        	f_command.write('BEGIN;')
+                        	f_command.write(script['query'])
+                        	f_command.write("INSERT INTO pxp.tscript_version VALUES('" + script['codigo']  + "');")
+                        	f_command.write('COMMIT;')
+                        	f_command.close()
+                        	command = 'psql -t -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
+                        	for line in run_command(command):
+                            	    f_log.write(line)
 
 def run_command(command):
     p = subprocess.Popen(command,
@@ -115,7 +114,7 @@ url.append(os.path.dirname(__file__) + '/../../sis_parametros/')
 # url gen
 url.append(os.path.dirname(__file__) + '/../../sis_generador/')
 #url orga
-url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
+#url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
 
 ####RECUPERAR SISTEMAS ADICIONALES
 try:

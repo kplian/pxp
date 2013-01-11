@@ -1127,7 +1127,7 @@ ALTER TABLE segu.tprocedimiento_gui
 ALTER TABLE segu.tprocedimiento
   ADD COLUMN modificado INTEGER;
   
-ALTER TABLE segu.trol_procedimiento
+ALTER TABLE segu.trol_procedimiento_gui
   ADD COLUMN modificado INTEGER;
   
 ALTER TABLE segu.trol
