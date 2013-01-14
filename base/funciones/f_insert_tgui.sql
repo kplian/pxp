@@ -22,7 +22,7 @@ BEGIN
     where s.codigo = par_subsistema;
     
     insert into segu.tgui (	nombre, descripcion, codigo_gui, visible, orden_logico, ruta_archivo, 
-    							nivel, icono, clase_vista, id_subsistema, migrado)
+    							nivel, icono, clase_vista, id_subsistema, modificado)
     values (	par_nombre, par_descripcion, par_codigo_gui, par_visible, par_orden_logico, par_ruta_archivo, 
     			par_nivel, par_icono, par_clase_vista, v_id_subsistema, 1);
                 

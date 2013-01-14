@@ -24,7 +24,7 @@ BEGIN
     from segu.trol r
     where r.rol = par_rol;
     
-    insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui, migrado)
+    insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui, modificado)
     values (v_id_rol, v_id_procedimiento_gui, 1);
     return 'exito';
 END;

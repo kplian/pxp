@@ -28,7 +28,7 @@ BEGIN
       estado_reg,
       rol,
       id_subsistema, 
-      migrado
+      modificado
     ) 
     VALUES (
      
