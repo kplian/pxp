@@ -11,7 +11,7 @@ def generate_scripts (file_str):
 	dic = dict(codigo='',query='', is_loaded='')
 	
         for line in file:
-                if line.find('***I-SCP-') != -1  or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 :
+                if line.find('***I-SCP-') != -1: #  or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 :
                         dic['codigo'] = line.replace('*','')
 			dic['codigo'] = dic['codigo'].replace('/','')
 			dic['codigo'] = dic['codigo'].replace(' ','')
@@ -32,7 +32,7 @@ def generate_scripts (file_str):
     except:
         print 'El archivo ' + file_str + ' no existe o no tiene permisos de lectura!!!',sys.exc_info()[1]
 	sys.exit('Se ha finalizado la ejecucion')
-    
+
     return scripts
 
 def execute_script (systems , kind, file_log):
@@ -115,7 +115,7 @@ url.append(os.path.dirname(__file__) + '/../../sis_parametros/')
 # url gen
 url.append(os.path.dirname(__file__) + '/../../sis_generador/')
 #url orga
-#url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
+url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
 
 ####RECUPERAR SISTEMAS ADICIONALES
 try:
