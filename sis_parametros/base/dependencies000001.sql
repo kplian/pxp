@@ -267,6 +267,21 @@ ALTER TABLE param.tgestion
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
+    
+--
+-- Definition for view vproveedor (OID = 306454) : 
+--
+CREATE VIEW param.vproveedor AS
+SELECT provee.id_proveedor, provee.id_persona, provee.codigo,
+    provee.numero_sigma, provee.tipo, provee.id_institucion,
+    pxp.f_iif((provee.id_persona IS NOT NULL),
+    (person.nombre_completo1)::character varying, ((((instit.codigo)::text
+    || '-'::text) || (instit.nombre)::text))::character varying) AS
+    desc_proveedor, provee.nit
+FROM ((param.tproveedor provee LEFT JOIN segu.vpersona person ON
+    ((person.id_persona = provee.id_persona))) LEFT JOIN param.tinstitucion
+    instit ON ((instit.id_institucion = provee.id_institucion)))
+WHERE ((provee.estado_reg)::text = 'activo'::text);
 
 
 /***********************************F-DEP-RAC-PARAM-0-04/01/2013*****************************************/

@@ -84,30 +84,6 @@ CREATE TABLE orga.tuo_funcionario (
 INHERITS (pxp.tbase) WITH OIDS;
 ALTER TABLE ONLY orga.tuo_funcionario ALTER COLUMN id_uo SET STATISTICS 0;
 
---
--- Definition for view vfuncionario (OID = 306686) : 
---
-CREATE VIEW orga.vfuncionario AS
-SELECT funcio.id_funcionario, person.nombre_completo1 AS desc_funcionario1,
-    person.nombre_completo2 AS desc_funcionario2, person.num_documento AS
-    num_doc, person.ci, funcio.codigo, funcio.estado_reg
-FROM (orga.tfuncionario funcio JOIN segu.vpersona person ON ((funcio.id_persona
-    = person.id_persona)));
-
---
--- Definition for view vfuncionario_cargo (OID = 306690) : 
---
-CREATE VIEW orga.vfuncionario_cargo AS
-SELECT uof.id_uo_funcionario, funcio.id_funcionario,
-    person.nombre_completo1 AS desc_funcionario1, person.nombre_completo2
-    AS desc_funcionario2, uo.id_uo, uo.nombre_cargo, uof.fecha_asignacion,
-    uof.fecha_finalizacion, person.num_documento AS num_doc, person.ci,
-    funcio.codigo, funcio.email_empresa, funcio.estado_reg AS
-    estado_reg_fun, uof.estado_reg AS estado_reg_asi
-FROM (((orga.tfuncionario funcio JOIN segu.vpersona person ON
-    ((funcio.id_persona = person.id_persona))) JOIN orga.tuo_funcionario uof ON
-    ((uof.id_funcionario = funcio.id_funcionario))) JOIN orga.tuo uo ON
-    ((uo.id_uo = uof.id_funcionario)));
 
 
 --

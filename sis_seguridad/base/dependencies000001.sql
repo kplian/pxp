@@ -239,7 +239,139 @@ ALTER TABLE ONLY pxp.tbase
     ADD CONSTRAINT fk_tbase__id_usuario_reg
     FOREIGN KEY (id_usuario_reg) REFERENCES segu.tusuario(id_usuario);    
 
+--
+-- Definition for view vpersona (OID = 306450) : 
+--
+CREATE VIEW segu.vpersona AS
+SELECT p.id_persona, p.apellido_materno AS ap_materno, p.apellido_paterno
+    AS ap_paterno, p.nombre, (((((COALESCE(p.nombre, ''::character
+    varying))::text || ' '::text) || (COALESCE(p.apellido_paterno,
+    ''::character varying))::text) || ' '::text) ||
+    (COALESCE(p.apellido_materno, ''::character varying))::text) AS
+    nombre_completo1, (((((COALESCE(p.apellido_paterno, ''::character
+    varying))::text || ' '::text) || (COALESCE(p.apellido_materno,
+    ''::character varying))::text) || ' '::text) || (COALESCE(p.nombre,
+    ''::character varying))::text) AS nombre_completo2, p.ci, p.correo,
+    p.celular1, p.num_documento, p.telefono1, p.telefono2, p.celular2
+FROM segu.tpersona p;
 
+--
+-- Definition for view vlog (OID = 307283) : 
+--
+CREATE VIEW segu.vlog AS
+SELECT tlog.id_log, tlog.id_usuario, tlog.id_subsistema, tlog.mac_maquina,
+    tlog.ip_maquina, tlog.tipo_log, tlog.descripcion, tlog.fecha_reg,
+    tlog.estado_reg, tlog.procedimientos, tlog.transaccion, tlog.consulta,
+    tlog.tiempo_ejecucion, tlog.usuario_base, tlog.codigo_error,
+    tlog.dia_semana, tlog.pid_db, tlog.pid_web, tlog.sid_web,
+    tlog.cuenta_usuario, tlog.descripcion_transaccion, tlog.codigo_subsistema
+FROM segu.tlog
+WHERE ((tlog.fecha_reg >= (now() - '24:00:00'::interval)) AND
+    (tlog.fecha_reg <= now()));
+
+--
+-- Definition for view vmonitor_bd_esquema (OID = 307288) : 
+--
+CREATE VIEW segu.vmonitor_bd_esquema AS
+SELECT (n.oid)::integer AS nspoid, (ut.schemaname)::character varying AS
+    schemaname, (u.usename)::character varying AS usename, (
+    SELECT count(pg_class.oid) AS count
+    FROM pg_class
+    WHERE ((pg_class.relnamespace = n.oid) AND (pg_class.relkind = 'r'::"char"))
+    ) AS cantidad_tablas, count(i.indexrelid) AS cantidad_indices,
+        sum(ut.seq_scan) AS scaneos_secuenciales, sum(ut.seq_tup_read) AS
+        tuplas_seq_leidas, sum(ut.idx_scan) AS indices_scaneados,
+        sum(ut.idx_tup_fetch) AS tuplas_idx_leidas, sum(ut.n_tup_ins) AS
+        tuplas_insertadas, sum(ut.n_tup_upd) AS tuplas_actualizadas,
+        sum(ut.n_tup_del) AS tuplas_borradas, sum(ut.n_tup_hot_upd) AS
+        tuplas_actualizadas_hot, sum(ut.n_live_tup) AS tuplas_vivas,
+        sum(ut.n_dead_tup) AS tuplas_muertas, sum(uiot.heap_blks_read) AS
+        bloques_leidos_disco_tabla, sum(uiot.heap_blks_hit) AS
+        bloques_leidos_buffer_tabla, sum(uiot.idx_blks_read) AS
+        bloques_leidos_disco_indice, sum(uiot.idx_blks_hit) AS
+        bloques_leidos_buffer_indice, sum(uiot.toast_blks_read) AS
+        bloques_leidos_disco_toast, sum(uiot.toast_blks_hit) AS
+        bloques_leidos_buffer_toast, sum(uiot.tidx_blks_read) AS
+        bloques_leidos_disco_toast_indice, sum(uiot.tidx_blks_hit) AS
+        bloques_leidos_buffer_toast_indice, sum((c.relpages * 8)) AS
+        kb_tablas, sum((ci.relpages * 8)) AS kb_indices
+FROM ((((((pg_stat_user_tables ut JOIN pg_statio_user_tables uiot ON
+    ((ut.relid = uiot.relid))) JOIN pg_class c ON ((c.oid = ut.relid)))
+    JOIN pg_namespace n ON ((n.oid = c.relnamespace))) JOIN pg_user u ON
+    ((n.nspowner = u.usesysid))) LEFT JOIN pg_index i ON ((i.indrelid =
+    c.oid))) LEFT JOIN pg_class ci ON ((ci.oid = i.indexrelid)))
+WHERE (ut.schemaname !~~ 'pg_temp%'::text)
+GROUP BY n.oid, ut.schemaname, u.usename;
+
+--
+-- Definition for view vmonitor_bd_funcion (OID = 307293) : 
+--
+CREATE VIEW segu.vmonitor_bd_funcion AS
+SELECT (pro.oid)::integer AS oid, (pro.pronamespace)::integer AS
+    pronamespace, (pro.proname)::character varying AS proname, (CASE WHEN
+    pro.prosecdef THEN 'si'::text ELSE 'no'::text END)::character varying
+    AS setuid, (u.usename)::character varying AS usename
+FROM (pg_proc pro JOIN pg_user u ON ((pro.proowner = u.usesysid)));
+
+--
+-- Definition for view vmonitor_bd_indice (OID = 307298) : 
+--
+CREATE VIEW segu.vmonitor_bd_indice AS
+SELECT (ui.relid)::integer AS relid, (ui.indexrelid)::integer AS
+    indexrelid, (ui.indexrelname)::character varying AS indexrelname,
+    ui.idx_scan AS numero_index_scan, ui.idx_tup_read AS
+    numero_indices_devueltos, ui.idx_tup_fetch AS numero_tuplas_vivas,
+    ioi.idx_blks_read AS bloques_disco_leidos, ioi.idx_blks_hit AS
+    bloques_buffer_leidos
+FROM (pg_stat_user_indexes ui JOIN pg_statio_user_indexes ioi ON
+    ((ui.indexrelid = ioi.indexrelid)));
+
+--
+-- Definition for view vmonitor_bd_tabla (OID = 307302) : 
+--
+CREATE VIEW segu.vmonitor_bd_tabla AS
+SELECT (c.oid)::integer AS oid, (c.relnamespace)::integer AS relnamespace,
+    (c.relname)::character varying AS relname, (u.usename)::character
+    varying AS usename, to_char(ut.last_vacuum, 'DD/MM/YYYY HH24:MI'::text)
+    AS last_vacuum, to_char(ut.last_autovacuum, 'DD/MM/YYYY HH24:MI'::text)
+    AS last_autovacuum, to_char(ut.last_analyze,
+    'DD/MM/YYYY HH24:MI'::text) AS last_analyze,
+    to_char(ut.last_autoanalyze, 'DD/MM/YYYY HH24:MI'::text) AS
+    last_autoanalyze, count(i.indexrelid) AS cantidad_indices, (
+    SELECT count(*) AS count
+    FROM pg_trigger
+    WHERE ((pg_trigger.tgrelid = c.oid) AND (pg_trigger.tgisinternal = false))
+    ) AS cantidad_triggers, (ut.seq_scan)::numeric AS scaneos_secuenciales,
+        (ut.seq_tup_read)::numeric AS tuplas_seq_leidas,
+        (ut.idx_scan)::numeric AS indices_scaneados,
+        (ut.idx_tup_fetch)::numeric AS tuplas_idx_leidas,
+        (ut.n_tup_ins)::numeric AS tuplas_insertadas,
+        (ut.n_tup_upd)::numeric AS tuplas_actualizadas,
+        (ut.n_tup_del)::numeric AS tuplas_borradas,
+        (ut.n_tup_hot_upd)::numeric AS tuplas_actualizadas_hot,
+        (ut.n_live_tup)::numeric AS tuplas_vivas, (ut.n_dead_tup)::numeric
+        AS tuplas_muertas, (uiot.heap_blks_read)::numeric AS
+        bloques_leidos_disco_tabla, (uiot.heap_blks_hit)::numeric AS
+        bloques_leidos_buffer_tabla, (uiot.idx_blks_read)::numeric AS
+        bloques_leidos_disco_indice, (uiot.idx_blks_hit)::numeric AS
+        bloques_leidos_buffer_indice, (uiot.toast_blks_read)::numeric AS
+        bloques_leidos_disco_toast, (uiot.toast_blks_hit)::numeric AS
+        bloques_leidos_buffer_toast, (uiot.tidx_blks_read)::numeric AS
+        bloques_leidos_disco_toast_indice, (uiot.tidx_blks_hit)::numeric AS
+        bloques_leidos_buffer_toast_indice, ((c.relpages * 8))::numeric AS
+        kb_tabla, (sum((ci.relpages * 8)))::numeric AS kb_indices
+FROM (((((pg_stat_user_tables ut JOIN pg_statio_user_tables uiot ON
+    ((ut.relid = uiot.relid))) JOIN pg_class c ON ((c.oid = ut.relid)))
+    JOIN pg_user u ON ((c.relowner = u.usesysid))) LEFT JOIN pg_index i ON
+    ((i.indrelid = c.oid))) LEFT JOIN pg_class ci ON ((ci.oid = i.indexrelid)))
+GROUP BY c.oid, c.relnamespace, c.relname, u.usename, c.relhastriggers,
+    ut.last_vacuum, ut.last_autovacuum, ut.last_analyze,
+    ut.last_autoanalyze, ut.seq_scan, ut.seq_tup_read, ut.idx_scan,
+    ut.idx_tup_fetch, ut.n_tup_ins, ut.n_tup_upd, ut.n_tup_del,
+    ut.n_tup_hot_upd, ut.n_live_tup, ut.n_dead_tup, uiot.heap_blks_read,
+    uiot.heap_blks_hit, uiot.idx_blks_read, uiot.idx_blks_hit,
+    uiot.toast_blks_read, uiot.toast_blks_hit, uiot.tidx_blks_read,
+    uiot.tidx_blks_hit, (c.relpages * 8);
 
 
 /***********************************F-DEP-RAC-SEGU-0-31/12/2012*****************************************/
