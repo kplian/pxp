@@ -206,7 +206,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 			fieldLabel:"Direccion",
 			gwidth: 130,
 			name: 'direccion',
-			allowBlank:false,	
+			allowBlank:true,	
 			maxLength:200,
 			minLength:1,
 			anchor:'100%'
@@ -240,12 +240,13 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 			gwidth: 130,
 			name: 'cant_grupos',
 			allowBlank:false,	
-			minValue:1,
+			minValue:0,
 			anchor:'30%'
 			
 		},
 		type:'NumberField',
 		filters:{type:'numeric'},
+		valorInicial:0,
 		id_grupo:0,
 		grid:true,
 		egrid:true,
