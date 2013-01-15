@@ -35,11 +35,12 @@ def generate_scripts (file_str):
     
     return scripts
 
-def execute_script (systems , kind):
+def execute_script (systems , kind, file_log):
     for item in systems:
     	patches = os.listdir( item + 'base/' )
     	for f in patches:
             if f.startswith(kind):
+		file_log.write("*************"+ kind + " : " + item)
             	sql_scripts = generate_scripts(item + 'base/' + f)
    		for script in sql_scripts:
         
@@ -132,10 +133,10 @@ f_log = open('/tmp/log_restaurar_bd.log', 'w')
 if opcion == '1':
     # Primero se restaura los esquemas y las funciones
     for item in url:
-    	for line in run_command('echo "/********************' + item + '*******************/"'):
-            	f_log.write(line)
-    	#restaurar subsistema
-        	funciones_dir = item + 'base/funciones/'
+    	for line in run_command('echo "/********************FUNCIONES y ESQUEMAS: ' + item + '*******************/"'):
+    		f_log.write(line)
+	#restaurar subsistema
+        funciones_dir = item + 'base/funciones/'
     	
     	#crear esquema
     	command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql' 
@@ -151,24 +152,23 @@ if opcion == '1':
                                     f_log.write(line)
 
 #crear objetos de cada esquema
-execute_script(url, 'patch')
+execute_script(url, 'patch', f_log)
 
 #insertar datos de cada esquema
-execute_script(url,'data')
+execute_script(url,'data', f_log)
 
 #insertar datos de prueba de cada esquema
 if (datos  == 's'):
     for item in url:
         if os.access(item + 'base/test_data.sql', os.R_OK):
+	    f_log.write("**************TEST DATA : " + item)
             command = 'psql '+ db + ' < ' + item + 'base/test_data.sql'
             for line in run_command(command):
                 f_log.write(line)
 
 #crear dependencias de cada esquema
-execute_script(url, 'dependencies')
-
-
-    
+execute_script(url, 'dependencies',f_log)
+  
 
 #Actualización de las secuencias
 command = 'psql '+ db + ' -c  \'select pxp.f_update_sequences()\''
