@@ -1,4 +1,5 @@
-/***********************************I-SCP-RCM-GEN-0-14/01/2013****************************************/
+/***********************************I-DAT-RCM-GEN-0-14/01/2013****************************************/
+
 INSERT INTO segu.tsubsistema ( codigo, nombre, fecha_reg, prefijo, estado_reg, nombre_carpeta, id_subsis_orig)
 VALUES ('GEN', 'Sistema Generador de Codigo', '2009-11-02', 'GEN', 'activo', 'generador', NULL);
 
@@ -17,4 +18,4 @@ select pxp.f_insert_testructura_gui ('GEN', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('PROCGEN', 'GEN');
 select pxp.f_insert_testructura_gui ('TABLA', 'PROCGEN');
 select pxp.f_insert_testructura_gui ('COL', 'TABLA');
-/***********************************F-SCP-RCM-GEN-0-14/01/2013****************************************/
+/***********************************F-DAT-RCM-GEN-0-14/01/2013****************************************/
