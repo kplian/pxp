@@ -13,7 +13,7 @@ BEGIN
     from segu.tsubsistema s
     where s.codigo = par_subsistema;
     
-    insert into segu.tfuncion (nombre, descripcion, id_subsistema, migrado)
+    insert into segu.tfuncion (nombre, descripcion, id_subsistema, modificado)
     values (par_nombre, par_descripcion, v_id_subsistema, 1);
     return 'exito';
 END;
