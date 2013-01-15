@@ -11,7 +11,7 @@ def generate_scripts (file_str):
 	dic = dict(codigo='',query='', is_loaded='')
 	
         for line in file:
-                if line.find('***I-SCP-') != -1: #  or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 :
+                if line.find('***I-SCP-') != -1 or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 :
                         dic['codigo'] = line.replace('*','')
 			dic['codigo'] = dic['codigo'].replace('/','')
 			dic['codigo'] = dic['codigo'].replace(' ','')

@@ -31,3 +31,4 @@ VALUES (1, 'sincronizar', 'false', 'habilita la sincronización entre base de da
 SELECT pg_catalog.setval('pxp.variable_global_id_variable_global_seq', 7, true);
 
 /****************************F-DAT-JRR-PXP-2-19/11/2012*************/ 
+

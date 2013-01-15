@@ -1,5 +1,3 @@
-
-   
 /***********************************I-DEP-RAC-PARAM-0-31/12/2012*****************************************/
 
 --
@@ -13,25 +11,25 @@ CREATE UNIQUE INDEX tperiodo__gestion_per_estado__idx ON param.tperiodo USING bt
 --
 -- Definition for index pk_pm_id_financiador (OID = 307978) : 
 --
-ALTER TABLE ONLY param.tpm_financiador
+ALTER TABLE ONLY param.tfinanciador
     ADD CONSTRAINT pk_pm_id_financiador
     PRIMARY KEY (id_financiador);
 --
 -- Definition for index pk_pm_id_programa (OID = 307980) : 
 --
-ALTER TABLE ONLY param.tpm_programa
+ALTER TABLE ONLY param.tprograma
     ADD CONSTRAINT pk_pm_id_programa
     PRIMARY KEY (id_programa);
 --
 -- Definition for index pk_pm_id_proyecto (OID = 307982) : 
 --
-ALTER TABLE ONLY param.tpm_proyecto
+ALTER TABLE ONLY param.tproyecto
     ADD CONSTRAINT pk_pm_id_proyecto
     PRIMARY KEY (id_proyecto);
 --
 -- Definition for index pk_pm_id_regional (OID = 307984) : 
 --
-ALTER TABLE ONLY param.tpm_regional
+ALTER TABLE ONLY param.tregional
     ADD CONSTRAINT pk_pm_id_regional
     PRIMARY KEY (id_regional);
 --
@@ -91,25 +89,25 @@ ALTER TABLE ONLY param.tperiodo
 --
 -- Definition for index tpm_financiador_codigo_financiador_key (OID = 308010) : 
 --
-ALTER TABLE ONLY param.tpm_financiador
+ALTER TABLE ONLY param.tfinanciador
     ADD CONSTRAINT tpm_financiador_codigo_financiador_key
     UNIQUE (codigo_financiador);
 --
 -- Definition for index tpm_programa_codigo_programa_key (OID = 308012) : 
 --
-ALTER TABLE ONLY param.tpm_programa
+ALTER TABLE ONLY param.tprograma
     ADD CONSTRAINT tpm_programa_codigo_programa_key
     UNIQUE (codigo_programa);
 --
 -- Definition for index tpm_proyecto_codigo_proyecto_key (OID = 308014) : 
 --
-ALTER TABLE ONLY param.tpm_proyecto
+ALTER TABLE ONLY param.tproyecto
     ADD CONSTRAINT tpm_proyecto_codigo_proyecto_key
     UNIQUE (codigo_proyecto);
 --
 -- Definition for index tpm_regional_codigo_regional_key (OID = 308016) : 
 --
-ALTER TABLE ONLY param.tpm_regional
+ALTER TABLE ONLY param.tregional
     ADD CONSTRAINT tpm_regional_codigo_regional_key
     UNIQUE (codigo_regional);
 --
@@ -223,7 +221,7 @@ ALTER TABLE ONLY param.tunidad_medida
   
   ALTER TABLE param.tcatalogo_tipo
   ADD CONSTRAINT fk_tcatalogo_tipo__id_subsistema FOREIGN KEY (id_subsistema)
-    RREFERENCES segu.tsubsistema (id_subsistema) MATCH SIMPLE
+    REFERENCES segu.tsubsistema (id_subsistema) MATCH SIMPLE
     	ON UPDATE NO ACTION
         ON DELETE NO ACTION
     NOT DEFERRABLE; 

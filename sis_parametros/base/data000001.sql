@@ -104,8 +104,7 @@ select pxp.f_insert_tprocedimiento ('PM_DISALARM_SEL', 'Consulta de datos', 'si'
 select pxp.f_insert_tprocedimiento ('PM_DISALARM_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_dispara_alarma_sel');
 select pxp.f_insert_tprocedimiento ('PM_PROVEE_SEL', 'Consulta de datos', 'si', '', '', 'param.f_tproveedor_sel');
 select pxp.f_insert_tprocedimiento ('PM_PROVEE_CONT', 'Conteo de registros', 'si', '', '', 'param.f_tproveedor_sel');
-select pxp.f_insert_tprocedimiento ('PM_PROVEEV_SEL', 'Consulta de datos de proveedores a partir de una vista de base
-                    de datos', 'si', '', '', 'param.f_tproveedor_sel');
+select pxp.f_insert_tprocedimiento ('PM_PROVEEV_SEL', 'Consulta de datos de proveedores a partir de una vista de base de datos', 'si', '', '', 'param.f_tproveedor_sel');
 select pxp.f_insert_tprocedimiento ('PM_PROVEEV_CONT', 'Conteo de registros de proveedores en la vista vproveedor', 'si', '', '', 'param.f_tproveedor_sel');
 select pxp.f_insert_tprocedimiento ('PM_SERVIC_SEL', 'Consulta de datos', 'si', '', '', 'param.f_servicio_sel');
 select pxp.f_insert_tprocedimiento ('PM_SERVIC_CONT', 'Conteo de registros', 'si', '', '', 'param.f_servicio_sel');
