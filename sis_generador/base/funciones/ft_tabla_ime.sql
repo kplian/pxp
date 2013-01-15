@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION gen.ft_tabla_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 DECLARE
 
@@ -56,7 +57,7 @@ BEGIN
                  alias,
                  --reemplazar,
                  --menu,
-                 direccion,
+                 --direccion,
                  cant_grupos
                ) values(
                 v_esquema,
@@ -71,7 +72,7 @@ BEGIN
                 v_parametros.alias,
                 --v_parametros.reemplazar,
                 --v_parametros.menu,
-                v_parametros.direccion,
+                --v_parametros.direccion,
                 v_parametros.cant_grupos
                )RETURNING id_tabla into v_id_tabla;
                 --raise exception 'llega%',v_parametros.nombre;
@@ -148,7 +149,7 @@ BEGIN
                alias = v_parametros.alias,
               -- reemplazar = v_parametros.reemplazar,
               -- menu = v_parametros.menu,
-               direccion=v_parametros.direccion,
+              -- direccion=v_parametros.direccion,
                cant_grupos=v_parametros.cant_grupos
                where id_tabla=v_parametros.id_tabla;
                
@@ -190,7 +191,8 @@ EXCEPTION
         
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_tabla_sel (OID = 303923) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -517,7 +517,7 @@ class driver
 		
 
 		if(count($this->variables)==0){
-			$this->consulta.='NULL,NULL,NULL)';
+			$this->consulta.='NULL,NULL,NULL,';
 		}
 		else
 		{
@@ -543,8 +543,18 @@ class driver
 					$this->consulta.=",'".$this->tipos[$i]."'";
 				}
 			}
-			$this->consulta.='])';
+			$this->consulta.=']';
 
+		}
+		
+		
+		 //rac 19032012 aumenta tipo de retorno 
+       if($this->tipo_retorno=='varchar')
+	   {
+        $this->consulta.=',\'varchar\',NULL)';
+	   }
+	   else{
+	   	$this->consulta.=",'record','as (total bigint)')";
 		}
 
 		$this->consulta.=' as (total bigint)';

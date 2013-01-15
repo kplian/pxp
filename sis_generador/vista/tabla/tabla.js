@@ -216,7 +216,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 		filters:{type:'string'},
 		id_grupo:0,
 		grid:true,
-		form:true
+		form:false
 	},
 	 {
 		config:{
