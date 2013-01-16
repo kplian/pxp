@@ -154,12 +154,30 @@
 .baddphoto {
 	background-image:url(dibu_add_photo.png) !important;
 }
-.bitems {
-	background-image:url(dibu_items.png) !important;
+.bmenuitems {
+	background-image:url(dibu_menu_items.png) !important;
 }
 .bgraph {
 	background-image:url(dibu_graph.png) !important;
 }
 .bstats {
 	background-image:url(dibu_stats.png) !important;
+}
+.bengine {
+	background-image:url(dibu_engine.png) !important;
+}
+.bdocuments {
+	background-image:url(dibu_documents.png) !important;
+}
+.bengineadd {
+	background-image:url(dibu_engine_add.png) !important;
+}
+.bengineremove {
+	background-image:url(dibu_engine_remove.png) !important;
+}
+.bcalendaradd {
+	background-image:url(dibu_calendar_add.png) !important;
+}
+.bcalendarremove {
+	background-image:url(dibu_calendar_remove.png) !important;
 }
