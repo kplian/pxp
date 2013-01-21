@@ -181,3 +181,12 @@
 .bcalendarremove {
 	background-image:url(dibu_calendar_remove.png) !important;
 }
+.bpause {
+	background-image:url(dibu_pause.png) !important;
+}
+.bplay {
+	background-image:url(dibu_play.png) !important;
+}
+.bcancelfile {
+	background-image:url(dibu_cancel_file.png) !important;
+}
