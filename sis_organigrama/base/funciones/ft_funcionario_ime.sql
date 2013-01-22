@@ -79,34 +79,6 @@ BEGIN
                       v_parametros.fecha_ingreso)
                RETURNING id_funcionario into v_id_funcionario;
                       
-			--RCM (27/12/2012): se aumenta inserción de especialdades y horarios desde la interfaz de funcionario
-			--Especialidades
-            v_ids= string_to_array(v_parametros.id_especialidades,',');
-            v_tamano = coalesce(array_length(v_ids, 1),0);
-                        
-            FOR v_i IN 1..v_tamano LOOP
-            	--insertamos  registro si no esta presente como activo
-                insert into orga.tfuncionario_especialidad(
-                id_funcionario, id_especialidad, estado_reg, id_usuario_reg
-                ) values(
-                v_id_funcionario, v_ids[v_i]::integer, 'activo',par_id_usuario
-                );
-             END LOOP;
-             
-            --Horarios
-            v_ids= string_to_array(v_parametros.id_especialidades,',');
-            v_tamano = coalesce(array_length(v_ids, 1),0);
-                        
-            FOR v_i IN 1..v_tamano LOOP
-            	--insertamos  registro si no esta presente como activo
-                insert into gem.tfuncionario_honorario(
-                id_funcionario, id_tipo_horario, id_moneda, costo_hora, estado_reg, id_usuario_reg
-                ) values(
-                v_id_funcionario, v_ids[v_i]::integer, 1, 20, 'activo',par_id_usuario
-                );
-            END LOOP;
-              
-
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','funcionario '||v_parametros.codigo ||' insertado con exito ');
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_id_funcion::varchar);
          END;
@@ -146,77 +118,6 @@ BEGIN
                     fecha_mod=now()::date
                 where id_funcionario=v_parametros.id_funcionario;
                 
-                --RCM (27/12/2012): se aumenta inserción de especialdades y horarios desde la interfaz de funcionario
-                --Especialidades
-	            v_ids= string_to_array(v_parametros.id_especialidades,',');
-	            v_tamano = coalesce(array_length(v_ids, 1),0);
-	            
-	            --Se inactiva todas las especialidades de la persona
-	            update orga.tfuncionario_especialidad set
-	            estado_reg = 'inactivo',
-	            id_usuario_mod = par_id_usuario,
-	            fecha_mod = now()
-	            where id_funcionario = v_parametros.id_funcionario;
-	                        
-	            FOR v_i IN 1..v_tamano LOOP
-	            	if exists(select 1 from orga.tfuncionario_especialidad 
-		                        where id_funcionario = v_parametros.id_funcionario
-		                        and id_especialidad = v_ids[v_i]::integer) then
-		            	--update
-		            	update orga.tfuncionario_especialidad set
-			            estado_reg = 'activo',
-			            id_usuario_mod = par_id_usuario,
-	            		fecha_mod = now()
-			            where id_funcionario = v_parametros.id_funcionario
-			            and id_especialidad = v_ids[v_i]::integer;
-		            	
-		            else
-		            	--insert
-		            	insert into orga.tfuncionario_especialidad(
-		                id_funcionario, id_especialidad, estado_reg, id_usuario_reg
-		                ) values(
-		                v_id_funcionario, v_ids[v_i]::integer, 'activo', par_id_usuario
-		                );
-		            
-		            end if;		                      
-
-	             END LOOP;
-	             
-	            --Horarios
-	            v_ids= string_to_array(v_parametros.id_especialidades,',');
-	            v_tamano = coalesce(array_length(v_ids, 1),0);
-	            
-	            --Se inactiva todos los horarios de la persona
-	            update gem.tfuncionario_honorario set
-	            estado_reg = 'inactivo',
-	            id_usuario_mod = par_id_usuario,
-	            fecha_mod = now()
-	            where id_funcionario = v_parametros.id_funcionario;
-	                        
-	            FOR v_i IN 1..v_tamano LOOP
-	            	if exists(select 1 from orga.tfuncionario_especialidad 
-		                        where id_funcionario = v_parametros.id_funcionario
-		                        and id_especialidad = v_ids[v_i]::integer) then
-		            	update gem.tfuncionario_honorario set
-			            estado_reg = 'activo',
-			            id_usuario_mod = par_id_usuario,
-	            		fecha_mod = now()
-			            where id_funcionario = v_parametros.id_funcionario
-			            and id_tipo_horario = v_ids[v_i]::integer;
-		            else
-		            	--insertamos  registro si no esta presente como activo
-		                insert into gem.tfuncionario_honorario(
-		                id_funcionario, id_tipo_horario, id_moneda, costo_hora, estado, id_usuario_reg
-		                ) values(
-		                v_id_funcionario, v_ids[v_i]::integer, 1, 20, 'activo', par_id_usuario
-		                );
-		            
-		            end if;
-	            	
-	            END LOOP;
-                
-                
-                
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario modificado con exito '||v_parametros.id_funcionario);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);
                
@@ -238,15 +139,6 @@ BEGIN
                set estado_reg='inactivo'
                where id_funcionario=v_parametros.id_funcionario;
                return 'Funcionario eliminado con exito';
-               
-               --rcm (27/12/2012)
-               update orga.tfuncionario_especialidad set
-               estado_teg = 'inactivo'
-               where id_funcionario = v_parametros.id_funcionario;
-               
-               update gem.tfuncionario_honorario set
-               estado_teg = 'inactivo'
-               where id_funcionario = v_parametros.id_funcionario;
                
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario eliminado con exito '||v_parametros.id_funcionario);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);

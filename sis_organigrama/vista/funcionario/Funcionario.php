@@ -185,89 +185,6 @@ Phx.vista.funcionario=function(config){
 	       		form:false
 	       	},
 	       	{
-       			config:{
-       				name:'id_especialidades',
-       				fieldLabel:'Especialidades Técnicas',
-       				allowBlank:true,
-       				emptyText:'Especialidades...',
-       				store: new Ext.data.JsonStore({
-              			url: '../../sis_organigrama/control/Especialidad/listarEspecialidad',
-       					id: 'id_especialidad',
-       					root: 'datos',
-       					sortInfo:{
-       						field: 'nombre',
-       						direction: 'ASC'
-       					},
-       					totalProperty: 'total',
-       					fields: ['id_especialidad','codigo','nombre','desc_especialidad_nivel'],
-       					// turn on remote sorting
-       					remoteSort: true,
-       					baseParams:{par_filtro:'espcia.nombre#espcia.codigo#espniv.nombre'}
-       					
-       				}),
-       				valueField: 'id_especialidad',
-       				displayField: 'nombre',
-       				forceSelection:true,
-       				typeAhead: true,
-           			triggerAction: 'all',
-           			lazyRender:true,
-       				mode:'remote',
-       				pageSize:10,
-       				queryDelay:1000,
-       				anchor: '100%',
-       				minChars:2,
-	       			enableMultiSelect:true,
-       				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
-       			},
-       			type:'AwesomeCombo',
-       			id_grupo:0,
-       			grid:false,
-       			form:true
-       	},
-       	{
-       			config:{
-       				name:'id_horarios',
-       				fieldLabel:'Horarios',
-       				allowBlank:true,
-       				emptyText:'Horarios...',
-       				store: new Ext.data.JsonStore({
-              			url: '../../sis_organigrama/control/TipoHorario/listarTipoHorario',
-       					id: 'id_tipo_horario',
-       					root: 'datos',
-       					sortInfo:{
-       						field: 'nombre',
-       						direction: 'ASC'
-       					},
-       					totalProperty: 'total',
-       					fields: ['id_tipo_horario','codigo','nombre'],
-       					// turn on remote sorting
-       					remoteSort: true,
-       					baseParams:{par_filtro:'nombre#codigo'}
-       					
-       				}),
-       				valueField: 'id_tipo_horario',
-       				displayField: 'nombre',
-       				forceSelection:true,
-       				typeAhead: true,
-           			triggerAction: 'all',
-           			lazyRender:true,
-       				mode:'remote',
-       				pageSize:10,
-       				queryDelay:1000,
-       				anchor: '100%',
-       				minChars:2,
-	       			enableMultiSelect:true,
-       				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
-       			},
-       			type:'AwesomeCombo',
-       			id_grupo:0,
-       			grid:false,
-       			form:true
-       	},
-	     
-	       
-	       	
-	       	{
 				config:{
 					name: 'fecha_reg',
 					fieldLabel: 'Fecha creación',
@@ -409,25 +326,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d'},
 	{name:'id_usuario_mod', type: 'numeric'},
 	{name:'usr_reg', type: 'string'},
-	{name:'usr_mod', type: 'string'},
-	'id_especialidades',
-	'id_horarios'
+	{name:'usr_mod', type: 'string'}
 		
-	],
-	tabsouth:[{
-		  url:'../../../sis_organigrama/vista/funcionario_especialidad/FuncionarioEspecialidad.php',
-		  title:'Especialidades Funcionarios', 
-		  height:'50%',	//altura de la ventana hijo
-		  //width:'50%',		//ancho de la ventana hjo
-		  cls:'FuncionarioEspecialidad'
-		},
-		{
-		  url:'../../../sis_mantenimiento/vista/funcionario_honorario/FuncionarioHonorario.php',
-		  title:'Honorarios', 
-		  height:'50%',	//altura de la ventana hijo
-		  //width:'50%',		//ancho de la ventana hjo
-		  cls:'FuncionarioHonorario'
-		}
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',

@@ -68,16 +68,12 @@ BEGIN
                             PERSON.num_documento,
                             PERSON.telefono1, 
                             PERSON.celular1, 
-                            PERSON.correo,
-                            pxp.text_concat(funesp.id_especialidad::text) as id_especialidades,
-                            pxp.text_concat(funhon.id_tipo_horario::text) as id_horarios
+                            PERSON.correo
                             
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
-						    left join orga.tfuncionario_especialidad funesp on funesp.id_funcionario = FUNCIO.id_funcionario
-						    left join gem.tfuncionario_honorario funhon on funhon.id_funcionario = FUNCIO.id_funcionario
                             
                             WHERE ';
                
@@ -129,8 +125,6 @@ BEGIN
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
-						    left join orga.tfuncionario_especialidad funesp on funesp.id_funcionario = FUNCIO.id_funcionario
-						    left join gem.tfuncionario_honorario funhon on funhon.id_funcionario = FUNCIO.id_funcionario
                             WHERE ';
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
