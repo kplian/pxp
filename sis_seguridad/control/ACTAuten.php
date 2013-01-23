@@ -132,7 +132,7 @@ class ACTAuten extends ACTbase {
 			$_SESSION["ss_paterno_empleado"] = "";
 			$_SESSION["ss_materno_empleado"] = "";
 			$_SESSION["ss_nombre_usuario"] = "";
-			$_SESSION["ss_id_empleado"] = "";
+			$_SESSION["ss_id_funcionario"] = "";
 			$_SESSION["ss_nombre_basedatos"] = "";
 			$_SESSION["ss_ip"] = "";
 			$_SESSION["ss_mac"] = "";
@@ -182,7 +182,7 @@ class ACTAuten extends ACTbase {
 				$_SESSION["ss_paterno_empleado"] = "";
 				$_SESSION["ss_materno_empleado"] = "";
 				$_SESSION["ss_nombre_usuario"] = "";
-				$_SESSION["ss_id_empleado"] = "";
+				$_SESSION["ss_id_funcionario"] = "";
 				$_SESSION["ss_nombre_basedatos"] = "";
 				$_SESSION["ss_ip"] = "";
 				$_SESSION["ss_mac"] = "";
