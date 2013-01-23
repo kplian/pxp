@@ -210,3 +210,13 @@ select pxp.f_insert_testructura_gui ('APROC', 'CCOM');
 
 /***********************************F-DAT-RAC-PARAM-0-31/12/2012*****************************************/
 
+/***********************************I-DAT-RCM-PARAM-0-23/01/2013*****************************************/
+--Catálogos
+select pxp.f_add_catalog('PARAM','tunidad_medida','Longitud');
+select pxp.f_add_catalog('PARAM','tunidad_medida','Masa');
+select pxp.f_add_catalog('PARAM','tunidad_medida','Tiempo');
+select pxp.f_add_catalog('PARAM','tunidad_medida','Intensidad eléctrica');
+select pxp.f_add_catalog('PARAM','tunidad_medida','Temperatura');
+select pxp.f_add_catalog('PARAM','tunidad_medida','Intensidad luminosa');
+select pxp.f_add_catalog('PARAM','tunidad_medida','Cantidad de sustancia');
+/***********************************F-DAT-RCM-PARAM-0-23/01/2013*****************************************/
