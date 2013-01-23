@@ -35,7 +35,9 @@ class ACTGenerador extends ACTbase{
 
 		$this->objFunc=$this->create('MODTabla');
 		$res=$this->objFunc->listarTabla($this->objParam);
+		
 		$arreglo=$res->getDatos();
+		
 		$this->gTabla=new GENTabla($arreglo[0]);
 		
 		/*echo '<pre>';
