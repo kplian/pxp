@@ -70,7 +70,7 @@ BEGIN
                       where p.id_persona =  v_parametros.id_persona
                       and p.estado_reg ='activo'))) THEN
                       
-               raise exception 'ya esxiste un proveedor para esta persona';
+               raise exception 'esta persona ya esta asignado como proveedor';
            END IF;
            
            

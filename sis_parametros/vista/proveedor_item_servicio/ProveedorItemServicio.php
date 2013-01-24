@@ -228,7 +228,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 			form:false
 		}
 	],
-	title:'Proveedor Item/Servicio',
+	title:'Proveedor Item-Servicio',
 	ActSave:'../../sis_parametros/control/ProveedorItemServicio/insertarProveedorItemServicio',
 	ActDel:'../../sis_parametros/control/ProveedorItemServicio/eliminarProveedorItemServicio',
 	ActList:'../../sis_parametros/control/ProveedorItemServicio/listarProveedorItemServicio',

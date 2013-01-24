@@ -62,9 +62,9 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				width: '100%',
 				gwidth: 100,
-				maxLength:50
+				maxLength:10
 			},
-			type:'TextField',
+			type:'NumberField',
 			filters:{pfiltro:'instit.doc_id',type:'string'},
 			id_grupo:0,
 			grid:true,
@@ -191,9 +191,9 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
-				maxLength:50
+				maxLength:8
 			},
-			type:'TextField',
+			type:'NumberField',
 			filters:{pfiltro:'instit.telefono1',type:'string'},
 			id_grupo:2,
 			grid:true,
@@ -207,9 +207,9 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
-				maxLength:50
+				maxLength:8
 			},
-			type:'TextField',
+			type:'NumberField',
 			filters:{pfiltro:'instit.telefono2',type:'string'},
 			id_grupo:2,
 			grid:true,
@@ -235,6 +235,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'email1',
 				fieldLabel: 'email1',
 				allowBlank: true,
+				vtype:'email',
 				width: "100%",
 				gwidth: 100,
 				maxLength:100
@@ -250,6 +251,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'email2',
 				fieldLabel: 'email2',
 				allowBlank: true,
+				vtype:'email',
 				width: "100%",
 				gwidth: 100,
 				maxLength:100
@@ -267,9 +269,9 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
-				maxLength:50
+				maxLength:8
 			},
-			type:'TextField',
+			type:'NumberField',
 			filters:{pfiltro:'instit.celular1',type:'string'},
 			id_grupo:2,
 			grid:true,
@@ -282,9 +284,9 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
-				maxLength:50
+				maxLength:8
 			},
-			type:'TextField',
+			type:'NumberField',
 			filters:{pfiltro:'instit.celular2',type:'string'},
 			id_grupo:2,
 			grid:true,
@@ -295,6 +297,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'pag_web',
 				fieldLabel: 'pag_web',
 				allowBlank: true,
+				vtype:'url',
 				width: "100%",
 				gwidth: 100,
 				maxLength:100
