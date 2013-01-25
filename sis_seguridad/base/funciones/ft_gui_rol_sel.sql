@@ -142,7 +142,7 @@ BEGIN
           --consulta:=';
           BEGIN
 
-               v_consulta:='select ''gui_rol''::varchar, g.codigo_gui, r.rol
+               v_consulta:='select ''gui_rol''::varchar, g.codigo_gui, r.rol,r.estado_reg
                             from segu.tgui_rol gr
                             inner join segu.tgui g
                                 on gr.id_gui = g.id_gui
@@ -150,7 +150,8 @@ BEGIN
                                 on gr.id_rol = r.id_rol
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where  gr.migrado is null and gr.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  gr.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by gr.id_gui_rol ASC';
                                                          
                return v_consulta;
 

@@ -107,7 +107,7 @@ BEGIN
           --consulta:=';
           BEGIN
 
-               v_consulta:='select ''procedimiento_gui''::varchar, p.codigo, g.codigo_gui, pg.boton
+               v_consulta:='select ''procedimiento_gui''::varchar, p.codigo, g.codigo_gui, pg.boton, pg.estado_reg
                             from segu.tprocedimiento_gui pg
                             inner join segu.tprocedimiento p
                                 on p.id_procedimiento = pg.id_procedimiento
@@ -115,7 +115,8 @@ BEGIN
                                 on g.id_gui = pg.id_gui
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where  pg.migrado is null and pg.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  pg.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by pg.id_procedimiento_gui';
                                                          
                return v_consulta;
 

@@ -117,7 +117,7 @@ BEGIN
           --consulta:=';
           BEGIN
 
-               v_consulta:='select ''rol_procedimiento_gui''::varchar, r.rol, p.codigo, g.codigo_gui
+               v_consulta:='select ''rol_procedimiento_gui''::varchar, r.rol, p.codigo, g.codigo_gui, rpg.estado_reg
                             from segu.trol_procedimiento_gui rpg
                             inner join segu.tprocedimiento_gui pg
                                 on pg.id_procedimiento_gui = rpg.id_procedimiento_gui
@@ -129,7 +129,8 @@ BEGIN
                                 on rpg.id_rol = r.id_rol
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where  rpg.migrado is null and rpg.estado_reg=''activo'' and s.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  rpg.modificado is null and s.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by rpg.id_rol_procedimiento ASC';
                                                          
                return v_consulta;
 

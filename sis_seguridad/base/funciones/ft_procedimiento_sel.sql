@@ -101,13 +101,14 @@ BEGIN
           --consulta:=';
           BEGIN
 
-               v_consulta:='select ''procedimiento''::varchar, p.codigo, p.descripcion, p.habilita_log, p.autor, p.fecha_creacion, f.nombre
+               v_consulta:='select ''procedimiento''::varchar, p.codigo, p.descripcion, p.habilita_log, p.autor, p.fecha_creacion, f.nombre,p.estado_reg
                             from segu.tprocedimiento p
                             inner join segu.tfuncion f
                                 on f.id_funcion = p.id_funcion
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = f.id_subsistema
-                            where  p.migrado is null and p.estado_reg=''activo'' and f.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  p.modificado is null and f.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by p.id_procedimiento ASC';
                                                          
                return v_consulta;
 

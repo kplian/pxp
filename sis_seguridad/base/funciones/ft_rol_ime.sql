@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_rol_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
 
@@ -31,6 +30,7 @@ v_resp                  varchar;
 v_nombre_funcion            text;
 v_mensaje_error             text;
 v_id_rol 					integer;
+v_id_subsistema				integer;
 
 BEGIN
 
@@ -66,17 +66,19 @@ BEGIN
 
           
           BEGIN
-               
-               update segu.trol set
-                      
-                      descripcion=v_parametros.descripcion,
-                     
-                      rol=v_parametros.rol,
-                      id_subsistema=v_parametros.id_subsistema
+               select id_subsistema
+               into v_id_subsistema
+               from segu.trol
                where id_rol=v_parametros.id_rol;
-
-
-           
+               
+               if (v_id_subsistema != v_parametros.id_subsistema)then
+               	raise exception 'No es posible cambiar el subsistema de un rol';
+               end if;
+               
+               update segu.trol set              
+                      descripcion=v_parametros.descripcion,                     
+                      rol=v_parametros.rol
+               where id_rol=v_parametros.id_rol;           
                
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Rol modificado con exito '||v_parametros.id_rol); 
                v_resp = pxp.f_agrega_clave(v_resp,'id_rol',v_parametros.id_rol::varchar);
@@ -119,7 +121,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_rol_procedimiento_gui_sel (OID = 305090) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

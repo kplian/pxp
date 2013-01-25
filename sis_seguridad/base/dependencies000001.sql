@@ -376,6 +376,40 @@ GROUP BY c.oid, c.relnamespace, c.relname, u.usename, c.relhastriggers,
 
 /***********************************F-DEP-RAC-SEGU-0-31/12/2012*****************************************/
 
+/***********************************I-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 
 
+CREATE TRIGGER trig_tprocedimiento BEFORE UPDATE 
+ON segu.tprocedimiento FOR EACH ROW 
+EXECUTE PROCEDURE segu.ftrig_tprocedimiento();
+
+CREATE TRIGGER trig_tgui BEFORE UPDATE 
+ON segu.tgui FOR EACH ROW
+EXECUTE PROCEDURE segu.ftrig_tgui();
+
+CREATE TRIGGER trig_testructura_gui BEFORE UPDATE 
+ON segu.testructura_gui FOR EACH ROW 
+EXECUTE PROCEDURE segu.ftrig_testructura_gui();
+
+CREATE TRIGGER trig_tfuncion BEFORE UPDATE 
+ON segu.tfuncion FOR EACH ROW
+EXECUTE PROCEDURE segu.ftrig_tfuncion();
+
+CREATE TRIGGER trig_tprocedimiento_gui BEFORE UPDATE 
+ON segu.tprocedimiento_gui FOR EACH ROW
+EXECUTE PROCEDURE segu.ftrig_tprocedimiento_gui();
+
+CREATE TRIGGER trig_trol BEFORE UPDATE 
+ON segu.trol FOR EACH ROW
+EXECUTE PROCEDURE segu.ftrig_trol();
+
+CREATE TRIGGER trig_tgui_rol BEFORE UPDATE 
+ON segu.tgui_rol FOR EACH ROW 
+EXECUTE PROCEDURE segu.ftrig_tgui_rol();
+
+CREATE TRIGGER trig_trol_procedimiento_gui BEFORE UPDATE 
+ON segu.trol_procedimiento_gui FOR EACH ROW 
+EXECUTE PROCEDURE segu.ftrig_trol_procedimiento_gui();
+
+/***********************************F-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 

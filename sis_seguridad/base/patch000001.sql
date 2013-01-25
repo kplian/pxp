@@ -1004,3 +1004,54 @@ ALTER TABLE segu.trol
 
 /****************************F-SCP-JRR-SEGU-0-09/01/2012*************/
   
+/*****************************I-SCP-JRR-SEGU-0-21/01/2013*************/
+ -- object recreation
+DROP INDEX segu.tfuncion_idx;
+
+CREATE UNIQUE INDEX tfuncion_idx ON segu.tfuncion
+  USING btree (nombre, id_subsistema)
+  WHERE estado_reg = 'activo';
+
+ -- object recreation
+ALTER TABLE segu.tsubsistema
+  DROP CONSTRAINT subsistema_codigo_key RESTRICT;
+
+CREATE UNIQUE INDEX subsistema_codigo_key ON segu.tsubsistema
+  USING btree (codigo)
+  WHERE estado_reg = 'activo';
+  
+ -- object recreation
+ALTER TABLE segu.trol
+  DROP CONSTRAINT trol_rol_key RESTRICT;
+
+CREATE UNIQUE INDEX trol_rol_key ON segu.trol
+  USING btree (rol)
+  WHERE estado_reg = 'activo';
+  
+ -- object recreation
+ALTER TABLE segu.tgui
+  DROP CONSTRAINT gui_codigo_gui_key RESTRICT;
+
+CREATE UNIQUE INDEX gui_codigo_gui_key ON segu.tgui
+  USING btree (codigo_gui)
+  WHERE estado_reg = 'activo';
+  
+ -- object recreation
+ALTER TABLE segu.tprocedimiento
+  DROP CONSTRAINT tprocedimiento_codigo_key RESTRICT;
+
+CREATE UNIQUE INDEX tprocedimiento_codigo_key ON segu.tprocedimiento
+  USING btree (codigo)
+  WHERE estado_reg = 'activo';
+  
+ -- object recreation
+DROP INDEX segu.tprocedimiento_gui_idx;
+
+CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui
+  USING btree (id_gui, id_procedimiento)
+  WHERE estado_reg = 'activo';
+  
+
+/*****************************F-SCP-JRR-SEGU-0-21/01/2013*************/
+
+

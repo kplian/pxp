@@ -1,4 +1,4 @@
-CREATE FUNCTION "param"."f_obtener_padre_lugar" (
+CREATE OR REPLACE FUNCTION "param"."f_obtener_padre_lugar" (
   "p_id_lugar" integer,
   "p_tipo" varchar
 )

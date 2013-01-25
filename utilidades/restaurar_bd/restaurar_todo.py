@@ -130,19 +130,18 @@ except:
 archivo_log = '/tmp/log_restaurar_bd.log'
 f_log = open('/tmp/log_restaurar_bd.log', 'w')
 
-if opcion == '1':
-    # Primero se restaura los esquemas y las funciones
-    for item in url:
-    	for line in run_command('echo "/********************FUNCIONES y ESQUEMAS: ' + item + '*******************/"'):
+# Primero se restaura los esquemas y las funciones
+for item in url:
+	for line in run_command('echo "/********************FUNCIONES y ESQUEMAS: ' + item + '*******************/"'):
     		f_log.write(line)
 	#restaurar subsistema
         funciones_dir = item + 'base/funciones/'
+    	if opcion == '1':
+    		#crear esquema
+    		command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql' 
     	
-    	#crear esquema
-    	command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql' 
-    	
-    	for line in run_command(command):
-        	f_log.write(line)
+    		for line in run_command(command):
+        		f_log.write(line)
     	#crear funciones
     	funciones = os.listdir( funciones_dir )
     	for f in funciones:

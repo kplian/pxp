@@ -67,9 +67,10 @@ BEGIN
         
         --raise exception '% % %',v_parametros.id_target,v_parametros.id_nodo,v_parametros.id_olp_parent;
         --  1.1) eliminamos la relacion de dependecias con el anterior padre
-               DELETE FROM segu.testructura_gui
+               UPDATE segu.testructura_gui
+               SET estado_reg = 'inactivo'
                       WHERE id_gui=v_parametros.id_nodo  
-                      AND  fk_id_gui=v_parametros.id_olp_parent;
+                      AND  fk_id_gui=v_parametros.id_olp_parent and estado_reg = 'activo';
             --  1.2) verificamos orden_logico mayor de los hijos den nodo target
                     select orden_logico 
                     into v_orden_logico
@@ -319,9 +320,10 @@ BEGIN
                 IF (v_cont_prodecimiento_hijo = 0 AND v_cont_hijo = 0) THEN 
                     
                     -- 2.2.2.1 eliminamos su relacion con el padre en estructura_gui
-                    DELETE FROM segu.testructura_gui
+                    UPDATE segu.testructura_gui
+                    set estado_reg = 'inactivo'
                     WHERE     id_gui=v_parametros.id_gui  
-                         AND  fk_id_gui=v_parametros.id_gui_padre;
+                         AND  fk_id_gui=v_parametros.id_gui_padre and estado_reg = 'activo';
                 
                      -- 2.2.2.2) eliminamos el gui
                     

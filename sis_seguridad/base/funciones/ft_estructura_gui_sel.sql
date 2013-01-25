@@ -90,12 +90,13 @@ BEGIN
           --consulta:=';
           BEGIN
 
-               v_consulta:='select 	''estructura_gui''::varchar, g.codigo_gui , gfk.codigo_gui 
+               v_consulta:='select 	''estructura_gui''::varchar, g.codigo_gui , gfk.codigo_gui ,eg.estado_reg
                             from segu.testructura_gui eg
                             inner join segu.tgui g on g.id_gui = eg.id_gui
                             inner join segu.tsubsistema s on g.id_subsistema = s.id_subsistema
                             inner join segu.tgui gfk on gfk.id_gui = eg.fk_id_gui
-                            where  eg.migrado is null and eg.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                            where  eg.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema || 
+                            ' order by eg.id_estructura_gui ASC';
                                                          
                return v_consulta;
 

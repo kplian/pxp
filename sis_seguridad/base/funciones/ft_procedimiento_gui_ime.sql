@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_procedimiento_gui_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_procedimiento_gui
@@ -30,6 +29,7 @@ v_nombre_funcion            text;
 v_mensaje_error             text;
 v_id_procedimiento_gui      integer;
 v_resp varchar;
+v_id_procedimiento      integer;
 
 BEGIN
 
@@ -71,19 +71,36 @@ BEGIN
 
           
           BEGIN
-               
-               update segu.tprocedimiento_gui set
-                      id_procedimiento=v_parametros.id_procedimiento,
-                      id_gui=v_parametros.id_gui,
-                      boton=v_parametros.boton
-                     
-
-               where id_procedimiento_gui=v_parametros.id_procedimiento_gui;
-
-
+            select id_procedimiento
+            into v_id_procedimiento
+            from segu.tprocedimiento_gui
+            where id_procedimiento_gui = v_parametros.id_procedimiento_gui;
+            
+            if (v_id_procedimiento = v_parametros.id_procedimiento)then
+            	update segu.tprocedimiento_gui set
+                        id_gui=v_parametros.id_gui,
+                        boton=v_parametros.boton
+                where id_procedimiento_gui=v_parametros.id_procedimiento_gui;
+                v_id_procedimiento_gui = v_parametros.id_procedimiento_gui;
+			else
+            	update segu.tprocedimiento_gui set
+                        estado_reg = 'inactivo'
+                where id_procedimiento_gui=v_parametros.id_procedimiento_gui;
+				INSERT INTO segu.tprocedimiento_gui(
+                     id_procedimiento, 
+                     id_gui,
+                     boton)
+                VALUES (
+                       v_parametros.id_procedimiento, 
+                       v_parametros.id_gui,
+               		   v_parametros.boton)
+                RETURNING id_procedimiento_gui into v_id_procedimiento_gui;
+            
+            end if;   
+                 
              
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Procedimiento GUI modificado con exito '||v_parametros.id_procedimiento_gui::varchar); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_procedimiento_gui',v_parametros.id_procedimiento_gui::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'id_procedimiento_gui',v_id_procedimiento_gui::varchar);
           
      
       END;
@@ -98,7 +115,8 @@ BEGIN
          
           BEGIN
             
-          DELETE FROM segu.tprocedimiento_gui
+          UPDATE segu.tprocedimiento_gui
+          set estado_reg = 'inactivo'
           WHERE id_procedimiento_gui=v_parametros.id_procedimiento_gui;
               
               
@@ -128,7 +146,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_procedimiento_gui_sel (OID = 305080) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

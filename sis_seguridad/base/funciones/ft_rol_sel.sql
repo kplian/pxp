@@ -96,12 +96,14 @@ BEGIN
                             ''rol''::varchar,
                             roll.descripcion,
                             roll.rol,
-                            coalesce(subsis.codigo,'' '') as desc_codigo
+                            coalesce(subsis.codigo,'' '') as desc_codigo,
+                            roll.estado_reg
                         FROM segu.trol roll
                         INNER join segu.tsubsistema subsis
                         on subsis.id_subsistema=roll.id_subsistema 
                        
-                        WHERE  roll.migrado is null and roll.estado_reg=''activo'' and roll.id_subsistema = '|| v_parametros.id_subsistema;  
+                        WHERE  roll.modificado is null and roll.id_subsistema = '|| v_parametros.id_subsistema || 
+                        	' order by roll.id_rol';  
                
                return v_consulta;
 

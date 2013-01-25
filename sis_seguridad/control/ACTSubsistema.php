@@ -101,8 +101,14 @@ class ACTSubsistema extends ACTbase{
 						  "\r\n" );
 		foreach ($data as $row) {
 			 if ($row['tipo'] == 'gui' ) {
-			 									
-				fwrite ($file, 
+			 	
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+					"select pxp.f_delete_tgui ('". 
+							$row['codigo_gui']."');\r\n");
+					
+				} else {
+					fwrite ($file, 
 					"select pxp.f_insert_tgui ('". 
 							$row['nombre']."', '" . 
 							$row['descripcion']."', '" . 
@@ -114,34 +120,56 @@ class ACTSubsistema extends ACTbase{
 							$row['icono']."', '" . 
 							$row['clase_vista']."', '" . 
 							$row['subsistema']."');\r\n");
+					
+				}				
 				
 			}			
 			elseif ($row['tipo'] =='funcion' ) {
-								
-				fwrite ($file, 
-					"select pxp.f_insert_tfuncion ('".
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_tfuncion ('". 
 							$row['nombre']."', '" . 
-							$row['descripcion']."', '" . 
 							$row['subsistema']."');\r\n");
+					
+				} else {								
+					fwrite ($file, 
+						"select pxp.f_insert_tfuncion ('".
+								$row['nombre']."', '" . 
+								$row['descripcion']."', '" . 
+								$row['subsistema']."');\r\n");
+				}
 				
 			}  elseif ($row['tipo'] == 'procedimiento' ) {
-											
-				fwrite ($file, 
-					"select pxp.f_insert_tprocedimiento ('".
-							$row['codigo']."', '" . 
-							trim($row['descripcion'])."', '" . 
-							$row['habilita_log']."', '" . 
-							$row['autor']."', '" . 
-							$row['fecha_creacion']."', '" . 
-							$row['funcion']."');\r\n");
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_tprocedimiento ('".					 
+							$row['codigo']."');\r\n");
+					
+				} else {							
+					fwrite ($file, 
+						"select pxp.f_insert_tprocedimiento ('".
+								$row['codigo']."', '" . 
+								trim($row['descripcion'])."', '" . 
+								$row['habilita_log']."', '" . 
+								$row['autor']."', '" . 
+								$row['fecha_creacion']."', '" . 
+								$row['funcion']."');\r\n");
+				}
 				
 			} elseif ($row['tipo'] == 'rol' ) {
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_trol ('". 
+							$row['rol']."');\r\n");
+					
+				} else {
              									
-				fwrite ($file, 
-					"select pxp.f_insert_trol ('".
-							$row['descripcion']."', '" . 
-							$row['rol']."', '" . 
-							$row['desc_codigo']."');\r\n");
+					fwrite ($file, 
+						"select pxp.f_insert_trol ('".
+								$row['descripcion']."', '" . 
+								$row['rol']."', '" . 
+								$row['desc_codigo']."');\r\n");
+				}
 				
 			}
 		}
@@ -152,33 +180,64 @@ class ACTSubsistema extends ACTbase{
 						  "\r\n" );
 		foreach ($data as $row) {
 			if ($row['tipo'] == 'estructura_gui' ) {
-				
-				fwrite ($file, 
-					"select pxp.f_insert_testructura_gui ('".
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_testructura_gui ('". 
 							$row['codigo_gui']."', '" . 
 							$row['fk_codigo_gui']."');\r\n");
+					
+				} else {
+					fwrite ($file, 
+						"select pxp.f_insert_testructura_gui ('".
+								$row['codigo_gui']."', '" . 
+								$row['fk_codigo_gui']."');\r\n");
+				}
 				
 			} elseif ($row['tipo'] == 'procedimiento_gui' ) {
-						
-				
-				fwrite ($file, 
-					"select pxp.f_insert_tprocedimiento_gui ('".
-							$row['codigo']."', '" . 
-							$row['codigo_gui']."', '" . 
-							$row['boton']."');\r\n");
-				
-			} elseif ($row['tipo'] == 'gui_rol' ) {
-				fwrite ($file, 
-					"select pxp.f_insert_tgui_rol ('".
-							$row['codigo_gui']."', '" . 
-							$row['rol']."');\r\n");
-				
-			} elseif ($row['tipo'] == 'rol_procedimiento_gui' ) {
-				fwrite ($file, 
-					"select pxp.f_insert_trol_procedimiento_gui ('".
-							$row['rol']."', '" . 
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_tprocedimiento_gui ('". 
 							$row['codigo']."', '" . 
 							$row['codigo_gui']."');\r\n");
+					
+				} else {		
+				
+					fwrite ($file, 
+						"select pxp.f_insert_tprocedimiento_gui ('".
+								$row['codigo']."', '" . 
+								$row['codigo_gui']."', '" . 
+								$row['boton']."');\r\n");
+				}
+				
+			} elseif ($row['tipo'] == 'gui_rol' ) {
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_tgui_rol ('". 
+							$row['codigo_gui']."', '" . 
+							$row['rol']."');\r\n");
+					
+				} else {
+					fwrite ($file, 
+						"select pxp.f_insert_tgui_rol ('".
+								$row['codigo_gui']."', '" . 
+								$row['rol']."');\r\n");
+				}
+				
+			} elseif ($row['tipo'] == 'rol_procedimiento_gui' ) {
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+						"select pxp.f_delete_trol_procedimiento_gui ('". 
+							$row['rol']."', '" . 
+							$row['codigo']."', '" .
+							$row['codigo_gui']."');\r\n");
+					
+				} else {
+					fwrite ($file, 
+						"select pxp.f_insert_trol_procedimiento_gui ('".
+								$row['rol']."', '" . 
+								$row['codigo']."', '" . 
+								$row['codigo_gui']."');\r\n");
+				}
 				
 			}
 		}

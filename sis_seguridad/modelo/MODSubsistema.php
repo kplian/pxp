@@ -106,6 +106,8 @@ class MODSubsistema extends MODbase{
 			$this->captura('icono','varchar');
 			$this->captura('clase_vista','varchar');
 			$this->captura('subsistema','varchar');
+			$this->captura('estado_reg','pxp.estado_reg');
+			
 		
 		
 		
@@ -133,6 +135,7 @@ class MODSubsistema extends MODbase{
 			$this->captura('tipo','varchar');
 			$this->captura('codigo_gui','varchar');
 			$this->captura('fk_codigo_gui','varchar');
+			$this->captura('estado_reg','segu.activo_inactivo');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
@@ -159,7 +162,8 @@ class MODSubsistema extends MODbase{
 			$this->captura('tipo','varchar');
 			$this->captura('nombre','varchar');
 			$this->captura('descripcion','text');
-			$this->captura('subsistema','varchar');		
+			$this->captura('subsistema','varchar');
+			$this->captura('estado_reg','segu.activo_inactivo');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();
@@ -191,6 +195,7 @@ class MODSubsistema extends MODbase{
 			$this->captura('autor','varchar');
 			$this->captura('fecha_creacion','varchar');
 			$this->captura('funcion','varchar');
+			$this->captura('estado_reg','pxp.estado_reg');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
@@ -211,7 +216,8 @@ class MODSubsistema extends MODbase{
 			$this->captura('tipo','varchar');
 			$this->captura('codigo','varchar');
 			$this->captura('codigo_gui','varchar');
-			$this->captura('boton','segu.si_no');	
+			$this->captura('boton','segu.si_no');
+			$this->captura('estado_reg','pxp.estado_reg');	
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
@@ -234,6 +240,7 @@ class MODSubsistema extends MODbase{
 			$this->captura('descripcion','text');
 			$this->captura('rol','varchar');
 			$this->captura('desc_codigo','varchar');
+			$this->captura('estado_reg','segu.activo_inactivo');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();
@@ -256,6 +263,7 @@ class MODSubsistema extends MODbase{
 			$this->captura('tipo','varchar');
 			$this->captura('codigo_gui','varchar');
 			$this->captura('rol','varchar');
+			$this->captura('estado_reg','segu.activo_inactivo');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();
@@ -279,6 +287,7 @@ class MODSubsistema extends MODbase{
 			$this->captura('rol','varchar');
 			$this->captura('codigo','varchar');
 			$this->captura('codigo_gui','varchar');
+			$this->captura('estado_reg','segu.activo_inactivo');
 						
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			

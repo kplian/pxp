@@ -133,11 +133,13 @@ BEGIN
                                     g.nivel,
                                     g.icono,
                                     g.clase_vista,
-                                    s.codigo
+                                    s.codigo,
+                                    g.estado_reg
                                   from segu.tgui g
                                   inner join segu.tsubsistema s
                                       on s.id_subsistema = g.id_subsistema
-                                  where g.migrado is null and g.estado_reg=''activo'' and g.id_subsistema = '|| v_parametros.id_subsistema;
+                                  where g.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by g.id_gui ASC';
                                                          
                return v_consulta;
 

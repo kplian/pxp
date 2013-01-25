@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_estructura_gui_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_estructura_gui_ime
@@ -70,12 +69,14 @@ BEGIN
                
                update segu.testructura_gui set
 
-                     id_gui=v_parametros.id_gui,
-                     fk_id_gui=v_parametros.fk_id_gui
+                     estado_reg = 'inactivo'
 
                where id_estructura_gui=v_parametros.id_estructura_gui;
+               insert into segu.testructura_gui(id_gui, fk_id_gui)
+               values(v_parametros.id_gui,v_parametros.fk_id_gui
+               )RETURNING id_estructura_gui into v_id_estructura_gui;
                 v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Estructura Gui modificado con exito: '||v_parametros.id_estructura_gui);
-                v_resp = pxp.f_agrega_clave(v_resp,'id_estructura_gui',v_parametros.id_estructura_gui::varchar);
+                v_resp = pxp.f_agrega_clave(v_resp,'id_estructura_gui',v_id_estructura_gui::varchar);
 
 
 
@@ -118,7 +119,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_estructura_gui_sel (OID = 305055) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

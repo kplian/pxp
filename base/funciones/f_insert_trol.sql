@@ -12,33 +12,40 @@ DECLARE
    
 BEGIN
 
-	
-    select id_subsistema into v_id_subsistema
-    from segu.tsubsistema s
-    where s.codigo = par_subsistema;
-
-
-        
-        INSERT INTO 
-      segu.trol
-    (
-     
-      descripcion,
-      fecha_reg,
-      estado_reg,
-      rol,
-      id_subsistema, 
-      modificado
-    ) 
-    VALUES (
-     
-      par_desc,
-      now(),
-      'activo',
-      par_rol,
-      v_id_subsistema,
-      1
-    );
+	if (exists (select 1 from segu.trol where rol = par_rol and estado_reg = 'activo')) then
+    
+    	update segu.trol set
+    		rol = par_rol, 
+    		descripcion = par_descripcion,
+    		modificado = 1
+    	where rol = par_rol and estado_reg = 'activo';
+    	    
+    else
+	    select id_subsistema into v_id_subsistema
+	    from segu.tsubsistema s
+	    where s.codigo = par_subsistema;
+	        
+	        INSERT INTO 
+	      segu.trol
+	    (
+	     
+	      descripcion,
+	      fecha_reg,
+	      estado_reg,
+	      rol,
+	      id_subsistema, 
+	      modificado
+	    ) 
+	    VALUES (
+	     
+	      par_desc,
+	      now(),
+	      'activo',
+	      par_rol,
+	      v_id_subsistema,
+	      1
+	    );
+	end if;
     
     return 'exito';
 END;

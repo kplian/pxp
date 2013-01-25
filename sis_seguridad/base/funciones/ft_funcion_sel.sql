@@ -96,11 +96,13 @@ BEGIN
                              ''funcion''::varchar,
                              funcio.nombre,
                              funcio.descripcion,
-                             subsis.codigo
+                             subsis.codigo,
+                             funcio.estado_reg
                              FROM segu.tfuncion funcio 
                              INNER JOIN  segu.tsubsistema subsis 
                              on subsis.id_subsistema=funcio.id_subsistema
-                             WHERE  funcio.migrado is null and funcio.estado_reg=''activo'' and funcio.id_subsistema = '|| v_parametros.id_subsistema;
+                             WHERE  funcio.modificado is null and funcio.id_subsistema = '|| v_parametros.id_subsistema || 
+                            ' order by funcio.id_funcion ASC';
                              
                return v_consulta;
 
