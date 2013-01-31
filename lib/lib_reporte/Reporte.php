@@ -114,8 +114,8 @@ class Reporte
 		while($cantidad_registros > $puntero){
 			
 			$this->objParam->addParametroConsulta('puntero',$puntero);
-			eval('$cad = new $nombre_clase();');
-			eval('$this->res=$cad->'.$metodo_ejecutar.'($this->objParam);');
+			eval('$cad = new $nombre_clase($this->objParam);');
+			eval('$this->res=$cad->'.$metodo_ejecutar.'();');
 			if($this->res->getTipo()=='ERROR'){
 				return $this->res;
 			}
