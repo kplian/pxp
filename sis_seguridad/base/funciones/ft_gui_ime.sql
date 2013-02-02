@@ -385,7 +385,7 @@ BEGIN
                       INTO
                          v_cont_hijo
                       FROM segu.testructura_gui eg
-                      WHERE fk_id_gui=v_parametros.id_gui;
+                      WHERE fk_id_gui=v_parametros.id_gui and eg.estado_reg = 'activo';
                       
               -- 2.2.1) Contamos cuantos procedimientos hijo tiene  el nodo que se quiere eliminar
                       
@@ -395,7 +395,7 @@ BEGIN
                       INTO
                          v_cont_prodecimiento_hijo
                       FROM segu.tprocedimiento_gui pg
-                      WHERE pg.id_gui=v_parametros.id_gui;
+                      WHERE pg.id_gui=v_parametros.id_gui and pg.estado_reg = 'activo';
                       
                
               -- 2.2.2) IF si no tienen hijos

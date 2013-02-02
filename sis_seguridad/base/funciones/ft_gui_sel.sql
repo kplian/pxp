@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.fgui_wel
@@ -102,8 +101,8 @@ BEGIN
                                          as id_nodo
                                   FROM segu.tgui g
                                        '||v_join||' JOIN segu.testructura_gui eg
-                                       ON g.id_gui=eg.id_gui
-                                   WHERE '|| v_where ||' 
+                                       ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
+                                   WHERE g.estado_reg=''activo'' and '|| v_where ||' 
                        
                                   ORDER BY g.orden_logico, eg.fk_id_gui';
                
@@ -216,7 +215,8 @@ EXCEPTION
 		raise exception '%',v_resp;      
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_horario_trabajo_ime (OID = 305065) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

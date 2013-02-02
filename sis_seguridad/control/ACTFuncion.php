@@ -242,8 +242,10 @@ class ACTFuncion extends ACTbase{
 	}
 	
 	function getModelosFunciones($archivo, $funcion) {
+		
 		$funcionesModelo = array();
 		if (file_exists($archivo) && is_readable ($archivo)) {
+				
 			$lines = file($archivo);
 			$comentado = 0;
 			$llaves = 0;
@@ -296,7 +298,6 @@ class ACTFuncion extends ACTbase{
 						}
 					}
 					if ($llaves == 0) {
-						//echo $codigoFuncion;
 						$codigoFuncion = '';
 					}
 			    }
@@ -308,6 +309,7 @@ class ACTFuncion extends ACTbase{
 				
 			}
 		}
+		
 		return $funcionesModelo;
 	}
 
