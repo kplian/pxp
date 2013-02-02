@@ -87,6 +87,29 @@
 		$this->ejecutarConsulta();
 		return $this->respuesta;	
 	}
+
+	function listarGuiSincronizacion(){
+		  	
+		$this->procedimiento='segu.ft_gui_sel';
+		$this->transaccion='SEG_GUISINC_SEL';
+		$this->tipo_procedimiento='SEL';
+		
+		$this->setCount(false);						
+		$this->setParametro('id_subsistema','id_subsistema','integer');			
+		//defino varialbes que se captran como retornod e la funcion
+		$this->captura('id_gui','integer');
+		$this->captura('nombre','varchar');		
+		$this->captura('descripcion','text'); 
+		$this->captura('ruta_archivo','text');
+		$this->captura('clase_vista','varchar');
+		
+		$this->armarConsulta();
+		
+		
+		$this->ejecutarConsulta();
+		return $this->respuesta;	
+	}
+
 	
 	
      function insertarGui(){
@@ -184,6 +207,30 @@
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+				
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
+
+	function guardarGuiSincronizacion(){
+		
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_gui_ime';
+		$this->transaccion='SEG_GUISINC_IME';
+		$this->tipo_procedimiento='IME';
+		
+	//Define los parametros para la funcion
+		
+		$this->setParametro('nombre','nombre','varchar');		
+		$this->setParametro('descripcion','descripcion','text');
+		$this->setParametro('ruta_archivo','ruta_archivo','text');
+		$this->setParametro('clase_vista','clase_vista','varchar');	
+		$this->setParametro('id_gui_padre','id_gui_padre','integer');
+	
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		
 				
 		$this->ejecutarConsulta();
 		return $this->respuesta;

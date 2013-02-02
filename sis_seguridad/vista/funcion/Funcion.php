@@ -1,6 +1,6 @@
 <?php
 /**
-*@package pXP
+*@package pXP 
 *@file Funcion.php
 *@author KPLIAN (admin)
 *@date 14-02-2011
@@ -159,7 +159,7 @@ Phx.vista.funcion=Ext.extend(Phx.gridInterfaz,{
 		//this.load({params:{start:0, limit:50}})
 	},
 	
-/*	south:{	
+/*south:{	
 	url:'../../../sis_seguridad/vista/procedimiento/procedimiento.js',	
 	title:'Procedimientos de BD',
 	height:200	,

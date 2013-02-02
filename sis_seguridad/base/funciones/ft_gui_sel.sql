@@ -145,6 +145,33 @@ BEGIN
 
 
          END;
+/*******************************    
+ #TRANSACCION:  SEG_GUISINC_SEL
+ #DESCRIPCION:	Listado de guis para sincronizar
+ #AUTOR:		Jaime Rivera Rojas	
+ #FECHA:		28/01/2013	
+***********************************/
+
+     elsif(par_transaccion='SEG_GUISINC_SEL')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='select	g.id_gui,
+                					g.nombre,
+                                    g.descripcion,
+                                    g.ruta_archivo,
+                                    g.clase_vista
+                                  from segu.tgui g
+                                  where estado_reg = ''activo'' and ruta_archivo is not null and visible = ''si'' 
+                                  	and clase_vista is not null and nivel > 1 and trim(both '' '' from ruta_archivo) != '''' and  trim(both '' '' from clase_vista) !=''''
+                                  	and g.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by g.id_gui ASC';
+                                                         
+               return v_consulta;
+
+
+         END;
 
 /*******************************    
  #TRANSACCION:  SEG_GUI_CONT
