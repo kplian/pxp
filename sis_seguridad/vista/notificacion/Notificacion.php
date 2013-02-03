@@ -101,7 +101,7 @@ Phx.vista.notificacion=Ext.extend(Phx.gridInterfaz,{
 
 
 	title:'Notificaciones',
-	ActList:'../../sis_seguridad/control/BloqueoNotificacion/ListarNotificacion',
+	ActList:'../../sis_seguridad/control/BloqueoNotificacion/listarNotificacion',
 	id_store:'id_bloqueo_notificacion',
 	fields: [
 	{name:'id_bloqueo_notificacion'},
