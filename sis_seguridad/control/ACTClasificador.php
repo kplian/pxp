@@ -23,9 +23,7 @@ class ACTClasificador extends ACTbase{
 			$this->res=$this->objFunSeguridad->listarClasificador($this->objParam);
 			
 		}
-		$this->res->imprimirRespuesta($this->res->generarJson());
-		
-		
+		$this->res->imprimirRespuesta($this->res->generarJson());		
 	}
 	
 	function guardarClasificador(){

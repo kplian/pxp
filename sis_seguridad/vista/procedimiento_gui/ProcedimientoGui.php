@@ -168,9 +168,9 @@ Phx.vista.procedimiento_gui=Ext.extend(Phx.gridInterfaz,{
 	title:'Procedimientos',
 	fheight:'50%',
 	fwidth:'300',
-	ActSave:'../../sis_seguridad/control/ProcedimientoGui/GuardarProcedimientoGui',
-	ActDel:'../../sis_seguridad/control/ProcedimientoGui/EliminarProcedimientoGui',
-	ActList:'../../sis_seguridad/control/ProcedimientoGui/ListarProcedimientoGui',
+	ActSave:'../../sis_seguridad/control/ProcedimientoGui/guardarProcedimientoGui',
+	ActDel:'../../sis_seguridad/control/ProcedimientoGui/eliminarProcedimientoGui',
+	ActList:'../../sis_seguridad/control/ProcedimientoGui/listarProcedimientoGui',
 	id_store:'id_procedimiento_gui',
 	fields: [
 	         'id_procedimiento_gui',

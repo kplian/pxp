@@ -28,7 +28,7 @@ abstract class ACTbase
 			$fileName = $myArray [0] . '.php';			
 			
 		} else if (sizeof($myArray) == 2) {			
-			$includeDir = dirname($reflector->getFileName()) . "/../../" . $myArray[0] . "modelo/";
+			$includeDir = dirname($reflector->getFileName()) . "/../../" . $myArray[0] . "/modelo/";
 			$fileName = $myArray [1] . '.php';			
 			
 		} else {

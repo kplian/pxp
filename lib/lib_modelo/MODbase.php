@@ -14,9 +14,9 @@ class MODbase extends driver
 
 
 	//Constructor que obtiene los datos de parametros e inicializa el driver
-	function __construct(&$pParam){
+	function __construct($pParam){
 		
-		$this->objParam=&$pParam;
+		$this->objParam=$pParam;
 		$this->nombre_archivo='MODbase.php';
 		parent::__construct();
 		//Guarda los parametros en variable local
@@ -29,7 +29,7 @@ class MODbase extends driver
 		}
 		else{
 				
-			$this->aParam=&$this->objParam;
+			$this->aParam=$this->objParam;
 			//recibe los parametros pasados desde la vista
 			$this->arreglo=$this->aParam->getArregloParametros();
 			

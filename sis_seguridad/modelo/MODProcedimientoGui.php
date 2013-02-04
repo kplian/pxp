@@ -89,6 +89,26 @@ class MODProcedimientoGui extends MODbase{
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}
+
+	function guardarProcedimientoGuiSincronizacion(){
+		
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='segu.ft_procedimiento_gui_ime';// nombre procedimiento almacenado
+		$this->transaccion='SEG_PROGUISINC_MOD';//nombre de la transaccion
+		$this->tipo_procedimiento='IME';//tipo de transaccion
+		
+		//Define los parametros para la funcion	
+		$this->setParametro('transaccion','transaccion','varchar');
+		$this->setParametro('procedimiento','procedimiento','varchar');
+		$this->setParametro('id_gui','id_gui','integer');
+				
+		//Ejecuta la instruccion
+		$this->armarConsulta();	
+		
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
+
 	
 }
 ?>

@@ -366,7 +366,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 	 * south:{ url:'../../sis_legal/vista/representante/representante.php',
 	 * title:'Representante', height:200 },
 	 */	
-		
+		 
 		east:{
 		  url:'../../../sis_seguridad/vista/procedimiento_gui/ProcedimientoGui.php',
 		  title:'Procedimientos', 

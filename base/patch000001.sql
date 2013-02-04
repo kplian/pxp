@@ -134,3 +134,17 @@ FROM pg_class c
    JOIN llaves k ON ((k.esquema::text || '.'::text) || k.tabla::text) = t.tabla
     WHERE d.deptype = 'a'::"char";
 /****************************F-SCP-RCM-PXP-0-30/11/2012*************/
+
+
+/****************************I-SCP-RAC-PXP-0-23/01/2013*************/
+--------------- SQL ---------------
+CREATE TABLE pxp.tforenkey (
+  id_forenkey INTEGER DEFAULT nextval('pxp.t_forenkeys_id_forenkey_seq'::regclass) NOT NULL, 
+  tabla VARCHAR(50) NOT NULL, 
+  llave VARCHAR(80) NOT NULL, 
+  obs TEXT, 
+  CONSTRAINT t_forenkeys_pkey PRIMARY KEY(id_forenkey), 
+  CONSTRAINT tforenkey_idx UNIQUE(tabla, llave)
+) WITHOUT OIDS;
+
+/****************************F-SCP-RAC-PXP-0-23/01/2013*************/

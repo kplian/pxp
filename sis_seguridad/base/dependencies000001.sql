@@ -413,3 +413,11 @@ EXECUTE PROCEDURE segu.ftrig_trol_procedimiento_gui();
 
 /***********************************F-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 
+/********************************************I-DEP-JRR-SEGU-0-02/02/2013**********************************************/
+select pxp.f_delete_tgui ('GUISUB');
+select pxp.f_delete_tgui ('PROGUI');
+select pxp.f_delete_tgui ('funciones');
+select pxp.f_delete_tgui ('');
+select pxp.f_delete_tgui ('LOG');
+/********************************************F-DEP-JRR-SEGU-0-02/02/2013**********************************************/
+
