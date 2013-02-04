@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.fgui_wel
@@ -102,8 +101,8 @@ BEGIN
                                          as id_nodo
                                   FROM segu.tgui g
                                        '||v_join||' JOIN segu.testructura_gui eg
-                                       ON g.id_gui=eg.id_gui
-                                   WHERE '|| v_where ||' 
+                                       ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
+                                   WHERE g.estado_reg=''activo'' and '|| v_where ||' 
                        
                                   ORDER BY g.orden_logico, eg.fk_id_gui';
                
@@ -139,6 +138,33 @@ BEGIN
                                   inner join segu.tsubsistema s
                                       on s.id_subsistema = g.id_subsistema
                                   where g.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
+                            ' order by g.id_gui ASC';
+                                                         
+               return v_consulta;
+
+
+         END;
+/*******************************    
+ #TRANSACCION:  SEG_GUISINC_SEL
+ #DESCRIPCION:	Listado de guis para sincronizar
+ #AUTOR:		Jaime Rivera Rojas	
+ #FECHA:		28/01/2013	
+***********************************/
+
+     elsif(par_transaccion='SEG_GUISINC_SEL')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='select	g.id_gui,
+                					g.nombre,
+                                    g.descripcion,
+                                    g.ruta_archivo,
+                                    g.clase_vista
+                                  from segu.tgui g
+                                  where estado_reg = ''activo'' and ruta_archivo is not null and visible = ''si'' 
+                                  	and clase_vista is not null and nivel > 1 and trim(both '' '' from ruta_archivo) != '''' and  trim(both '' '' from clase_vista) !=''''
+                                  	and g.id_subsistema = '|| v_parametros.id_subsistema ||
                             ' order by g.id_gui ASC';
                                                          
                return v_consulta;
@@ -189,7 +215,8 @@ EXCEPTION
 		raise exception '%',v_resp;      
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_horario_trabajo_ime (OID = 305065) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

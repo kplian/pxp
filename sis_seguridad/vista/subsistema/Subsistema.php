@@ -104,11 +104,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_subsistema',
 		direction: 'ASC'
 	},
-	/*
-	 * south:{ url:'../../../sis_seguridad/vista/funcion/funcion.php',
-	 * title:'Procedimientos de BD', height:200 },
-	 */
-	
+		
 	bdel:true,// boton para eliminar
 	bsave:false,// boton para eliminar
 

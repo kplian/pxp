@@ -104,7 +104,7 @@ class MODFuncion extends MODbase{
 		
 		$this->armarConsulta();
 		$consulta=$this->getConsulta();
-		
+				
 		$this->ejecutarConsulta();
 		return $this->respuesta;	
 	}

@@ -127,6 +127,46 @@ BEGIN
     
       END;
 
+/*******************************
+ #TRANSACCION:  SEG_PROGUISINC_MOD
+ #DESCRIPCION:	Sincroniza la relacion de las transacciones con las interfaces
+ #AUTOR:		KPLIAN(jrr)	
+ #FECHA:		30/01/12	
+***********************************/
+    elsif(par_transaccion='SEG_PROGUISINC_MOD')then
+
+         
+          BEGIN
+            
+          --verificar si existe la transaccion y obtener el id
+          select id_procedimiento
+          into v_id_procedimiento
+          from segu.tprocedimiento
+          where estado_reg = 'activo' and codigo = v_parametros.transaccion;
+          
+          if (v_id_procedimiento is not null) then
+          	-- si no existe la relacion procedimiento_gui se inserta y sino se obtiene y se devuelve el id
+          	select id_procedimiento_gui 
+            into v_id_procedimiento_gui
+            from segu.tprocedimiento_gui
+            where estado_reg = 'activo' and id_gui = v_parametros.id_gui and id_procedimiento = v_id_procedimiento;
+            
+            if (v_id_procedimiento_gui is null) then
+            	INSERT INTO segu.tprocedimiento_gui(
+                     id_procedimiento, 
+                     id_gui,
+                     boton)
+                VALUES (
+                       v_id_procedimiento, 
+                       v_parametros.id_gui,
+               		   'no');
+            end if;
+          
+          end if;             
+              
+          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Procedimiento GUI sincronizado con exito '); 
+           
+      END;
      else
 
          raise exception 'No existe la transaccion: %',par_transaccion;

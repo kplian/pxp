@@ -67,8 +67,355 @@ class ACTFuncion extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=$this->create('MODFuncion');	
 		$this->res=$this->objFunSeguridad->sincFunciones($this->objParam);
+		
+		$this->objParam->setTipoTran('SEL');
+		//despues de sincronizar las funciones obtiene un listado de los metaprocesos que se muestran en el arbol
+		$this->objFunSeguridad=$this->create('MODGui');
+		
+		$this->res=$this->objFunSeguridad->listarGuiSincronizacion();
+		//se llama a lafuncion relacionaGui el cual relacionara la vistas con sus vistas dependientes y con los proce
+		//dimientos respectivos 
+		$guis = $this->res->getDatos();
+		foreach($guis as $gui) {
+			$this->relacionaGui($gui);
+		}
+				
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
+	}
+	
+	function relacionaGui ($data) {
+		//si no hay datos en data quiere decir que todos los metaprocesos estan relacionados	
+		$gui = $data;
+		$relaciones = $this -> insertaRelaciones($gui);
+		$this->insertaProcedimientos($gui);
+		foreach($relaciones as $rel) {
+			$this->relacionaGui($rel);
+		}		
+	}
+	
+	function insertaRelaciones ($gui) {
+		$relaciones = array();	
+		$filename = '../../' . $gui['ruta_archivo'];
+		//se abre el archivo
+		if (file_exists($filename) && is_readable ($filename)) {
+			$lines = file($filename);
+			$cadenaLoad = '';
+			$cadenaMD = ''; //para maestro detalle
+			$comentado = 0;
+			foreach ($lines as $line_num => $line) {
+				if (strpos($line, "/*")!== FALSE) {
+					$comentado = 1;
+				}												
+				//Para el caso de Phx.CP.loadWindows
+			    if (strpos($line, 'Phx.CP.loadWindows')!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+			    	$cadenaLoad = $line;
+			    } else if (strpos($line, ')')!== FALSE && $cadenaLoad != '') {
+			    	$cadenaLoad .= $line; 
+					$newGui = $this->getRelacion($cadenaLoad);
+					//guardar datos de newgui y actualizar el id de newgui
+					$newGui = $this->saveGui($newGui, $gui['id_gui']);
+					//poner newgui en el arreglo de relaciones
+					$cadenaLoad = '';
+					array_push($relaciones, $newGui);
+					
+			    } else if ($cadenaLoad != '') {
+			    	$cadenaLoad .= $line; 
+			    }
+				
+				//Para el caso de maestro detalle east,west,south
+			    if ((strpos($line, 'east')!== FALSE || strpos($line, 'west')!== FALSE || strpos($line, 'south')!== FALSE) 
+			    	&& (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+			    	$cadenaMD = $line;
+			    } else if (strpos($line, '}')!== FALSE && $cadenaMD != '') {
+			    	$cadenaMD .= $line;
+					$newGui = $this->getRelacion($cadenaMD);
+					
+					//guardar datos de newgui y actualizar el id de newgui
+					$newGui = $this->saveGui($newGui, $gui['id_gui']);
+					//poner newgui en el arreglo de relaciones
+					$cadenaMD = '';
+					array_push($relaciones, $newGui);
+					
+			    } else if ($cadenaMD != '') {
+			    	$cadenaMD .= $line; 
+			    }
+				
+				if (strpos($line, "*/")!== FALSE) {
+					$comentado = 0;
+				}
+			}
+		}
+		return $relaciones;		
+	}
+	function getRelacion ($str) {
+		$m = array();
+		//echo $str;
+		if (preg_match_all('/"([^"]+)"/', $str, $m)) {
+    		 
+		} else if (preg_match_all('/\'([^\']+)\'/', $str, $m) ) {
+			
+		}
+		if(count($m) > 0) {
+			return array('ruta_archivo'=>str_replace('../', '', $m[1][0]) , 'nombre'=> $m[1][1], 'descripcion'=>$m[1][1],'clase_vista'=>$m[1][2]);
+		} else {
+			return array();
+		}
+		
+	}
+	
+	function saveGui($gui, $fk) {
+		$retorna = $gui;
+		$this->objParam->setTipoTran('IME');
+		$this->objParam->iniciaParametro();
+		$this->objParam->addParametro('ruta_archivo', $gui['ruta_archivo']);
+		$this->objParam->addParametro('nombre', $gui['nombre']);
+		$this->objParam->addParametro('descripcion', $gui['descripcion']);
+		$this->objParam->addParametro('clase_vista', $gui['clase_vista']);
+		//el id del padre
+		$this->objParam->addParametro('id_gui_padre', $fk);
+		
+		$this->objFunSeguridad=$this->create('MODGui');
+		
+		$this->res=$this->objFunSeguridad->guardarGuiSincronizacion();
+		$datos = $this->res->getDatos();
+		$retorna['id_gui'] = $datos ['id_gui'];
+		return $retorna;
+				
+	}
+	
+	function insertaProcedimientos($gui) {
+		$filename = '../../' . $gui['ruta_archivo'];
+		
+		//se abre el archivo
+		if (file_exists($filename) && is_readable ($filename)) {
+			
+			$lines = file($filename);
+			$comentado = 0;
+			$procedimientos = array();
+			foreach ($lines as $line_num => $line) {
+				if (strpos($line, "/*")!== FALSE) {
+					$comentado = 1;
+				}
+				if (strpos($line, '/control/')!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+					
+					if (preg_match_all('/\'([^\']+)\'/', $line, $m)) {
+						$procedimientos = $this->getProcedimientos($m[1], $gui['id_gui']);
+						if (count($procedimientos) > 0) {
+							$this->saveProcedimientos($procedimientos, $gui['id_gui']);
+						}
+					}
+					if (preg_match_all('/"([^"]+)"/', $line, $m)) {
+						$procedimientos = $this->getProcedimientos($m[1], $gui['id_gui']);
+						if (count($procedimientos) > 0) {
+							$this->saveProcedimientos($procedimientos, $gui['id_gui']);
+						}
+					}
+					
+				}
+				if (strpos($line, "*/")!== FALSE) {
+					$comentado = 0;
+				}
+			}
+		}
+	}
+	function getProcedimientos($cadenas, $id_gui) {
+		$procedimientos = array();
+		//primero buscamos la cadena que tiene la palabra control
+		foreach($cadenas as $cadena) {
+			if (strpos($cadena, '/control/')!== FALSE) {
+				//se arma el nombre del archivo
+				$arrayUrl = explode('/', $cadena);
+				$arrayUrl[4] = 'ACT' . $arrayUrl[4];
+				$controlFile = $arrayUrl[0] . '/' . $arrayUrl[1] . '/' . $arrayUrl[2] . '/' . $arrayUrl[3] . '/' . $arrayUrl[4] . '.php';
+				$controlFunction = $arrayUrl[5];
+				
+				$arrayModelos = $this->getModelosFunciones($controlFile, $controlFunction);
+				
+				foreach ($arrayModelos as $modelo) {
+					array_push ($procedimientos, $this->getFuncionProcedimiento ($modelo, $arrayUrl[2]));
+				}
+			}
+		}
+		
+		return $procedimientos;
+	}
+	
+	function getModelosFunciones($archivo, $funcion) {
+		
+		$funcionesModelo = array();
+		if (file_exists($archivo) && is_readable ($archivo)) {
+				
+			$lines = file($archivo);
+			$comentado = 0;
+			$llaves = 0;
+			$codigoFuncion = '';
+			$modelos = array();
+			
+			foreach ($lines as $line_num => $line) {
+				if (strpos(trim($line), "/*")=== 0) {
+					$comentado = 1;
+				}
+				
+				//Para el caso de Phx.CP.loadWindows
+			    if (strpos($line, 'function ' . $funcion)!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0 && $codigoFuncion == '') {
+			    	$codigoFuncion = $line;	
+			    	if (strpos($line, '{') !== FALSE) {
+						$llaves++;
+					}
+			    } else if ($codigoFuncion != '' && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+			    	$codigoFuncion .= $line;
+			    	if (strpos($line, '{') !== FALSE) {
+						$llaves++;
+					}
+					
+					if (strpos($line, '}') !== FALSE) {
+						$llaves--;
+					}
+					if (strpos(str_replace(' ','',$line), '$this->create(') !== FALSE) {
+						$arrtemp = explode('=', $line);
+						$varName = trim($arrtemp[0]);
+						//si el modelo esta envuelto por comillas simples
+						if(strpos($line, "'") !== FALSE)
+							$arrtemp = explode("'", $arrtemp[1]);
+						else if(strpos($line, "'") !== FALSE)
+							$arrtemp = explode('"', $arrtemp[1]);
+						$modelo = $arrtemp[1];
+												
+					} else if (strpos(str_replace(' ','',$line), $varName.'->') !== FALSE && $varName != '') {
+						$tempArray = explode('->', $line);
+						$tempArray = explode('(', $tempArray[3]);
+						$funcionModelo = trim($tempArray[0]);
+						array_push($funcionesModelo, array('modelo' => $modelo, 'funcion' => $funcionModelo));
+					} else if(preg_match('/\$this ?-> ?[a-zA-Z0-9_-]*\(.*\);/', $line)) {
+						$funcionControl = trim($this->get_string_between($line, '->', '('));
+						
+						if ($funcionControl != $funcion) {
+							$tempArray = $this->getModelosFunciones($archivo, $funcionControl);
+							foreach($tempArray as $temp) {
+								array_push($funcionesModelo, $temp);
+							}
+						}
+					}
+					if ($llaves == 0) {
+						$codigoFuncion = '';
+					}
+			    }
+								
+				if (strpos($line, "*/")!== FALSE) {
+					$comentado = 0;
+				}
+				
+				
+			}
+		}
+		
+		return $funcionesModelo;
+	}
+
+	
+	function getFuncionProcedimiento($modelo, $subsistema) {
+		$myArray = explode("/", $modelo['modelo']);
+		$transacciones = array();
+		
+		if (sizeof($myArray) == 1) {			
+			$archivo = "../../" . $subsistema . "/modelo/" . $myArray [0] . '.php';			
+			
+		} else if (sizeof($myArray) == 2) {			
+			$archivo = "../../" . $myArray [0] . "/modelo/" . $myArray [1] . '.php';				
+			
+		}
+		if (file_exists($archivo) && is_readable ($archivo)) {
+			
+			$lines = file($archivo);
+			$comentado = 0;
+			$llaves = 0;
+			$procedimiento = '';
+			$transaccion = '';
+			$codigoFuncion = '';
+			foreach ($lines as $line_num => $line) {
+				if (strpos($line, "/*")!== FALSE) {
+					$comentado = 1;
+				}
+				
+				//Para el caso de Phx.CP.loadWindows
+			    if (strpos($line, $modelo['funcion'])!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0  && $codigoFuncion == '') {
+			    	$codigoFuncion = $line;	
+			    	if (strpos($line, '{') !== FALSE) {
+						$llaves++;
+					}
+			    } else if ($codigoFuncion != '' && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+			    	$codigoFuncion .= $line;
+			    	if (strpos($line, '{') !== FALSE) {
+						$llaves++;
+					}
+					
+					if (strpos($line, '}') !== FALSE) {
+						$llaves--;
+					}
+					if (strpos($line, '$this->procedimiento') !== FALSE) {
+						$arrtemp = explode('=', $line);
+						if (strpos($line, '"'))
+							$arrtemp = explode('"', $arrtemp[1]);
+						else if (strpos($line, "'"))
+							$arrtemp = explode("'", $arrtemp[1]);
+						$procedimiento = $arrtemp[1];						
+					}
+					
+					if (strpos($line, '$this->transaccion') !== FALSE) {
+						$arrtemp = explode('=', $line);
+						if (strpos($line, '"'))
+							$arrtemp = explode('"', $arrtemp[1]);
+						else if (strpos($line, "'"))
+							$arrtemp = explode("'", $arrtemp[1]);
+						$transaccion = $arrtemp[1];
+						$arrtemp = array('procedimiento'=>$procedimiento, 'transaccion'=>$transaccion);
+						array_push($transacciones, $arrtemp);
+											
+					}
+					
+					if ($llaves == 0) {
+						$codigoFuncion = '';
+					}
+			    }
+								
+				if (strpos($line, "*/")!== FALSE) {
+					$comentado = 0;
+				}
+			}
+			
+				
+		}
+	return $transacciones;
+		
+	}
+
+	function saveProcedimientos($procedimientos, $id_gui) {
+		foreach($procedimientos as $procedimiento) {
+			foreach($procedimiento as $transaccion) {				
+				$this->objParam->setTipoTran('IME');
+				$this->objParam->iniciaParametro();
+				$this->objParam->addParametro('transaccion', $transaccion['transaccion']);
+				$this->objParam->addParametro('procedimiento', $transaccion['procedimiento']);
+				
+				//el id del padre
+				$this->objParam->addParametro('id_gui', $id_gui);
+				
+				$this->objFunSeguridad=$this->create('MODProcedimientoGui');
+				
+				$this->res=$this->objFunSeguridad->guardarProcedimientoGuiSincronizacion();
+			}	
+		}
+						
+	}
+
+	function get_string_between($string, $start, $end){
+	    $string = " ".$string;
+	    $ini = strpos($string,$start);
+	    if ($ini == 0) return "";
+	    $ini += strlen($start);
+	    $len = strpos($string,$end,$ini) - $ini;
+	    return substr($string,$ini,$len);
 	}
 
 }

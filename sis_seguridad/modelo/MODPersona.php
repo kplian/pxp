@@ -18,11 +18,6 @@ class MODPersona extends MODbase{
 		$this->procedimiento='segu.ft_persona_sel';// nombre procedimiento almacenado
 		$this->transaccion='SEG_PERSON_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-		
-	
-		//Definicion de la lista del resultado del query
-		
-	;
 	
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('id_persona','integer');
