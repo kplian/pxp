@@ -6,18 +6,28 @@
 *@date 24-11-2011 18:26:47
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
-
+	autoLoad :false,
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.DeptoUsuario.superclass.constructor.call(this,config);
+		this.bloquearMenus();
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		 if(Phx.CP.getPagina(this.idContenedorPadre)){
+      	 var dataMaestro=Phx.CP.getPagina(this.idContenedorPadre).getSelectedData();
+	 	 if(dataMaestro){ 
+	 	 	this.onEnablePanel(this,dataMaestro)
+	 	 }
+	  }
+	  
+	  this.iniciarEventos();
+	  
+	 // this.store.baseParams.id_depto=this.maestro.id_depto;
+  	 // this.load({params:{start:0, limit:50}})
 	},
 			
 	Atributos:[
@@ -62,7 +72,7 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
 					fields: ['id_usuario','desc_person','cuenta'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'desc_person#cuenta'}
+					baseParams:{par_filtro:'PERSON.nombre_completo2#cuenta'}
 				}),
    				valueField: 'id_usuario',
    				displayField: 'desc_person',
@@ -189,6 +199,7 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
 			form:false
 		}
 	],
+	
 	title:'Usuario por Depto',
 	ActSave:'../../sis_parametros/control/DeptoUsuario/insertarDeptoUsuario',
 	ActDel:'../../sis_parametros/control/DeptoUsuario/eliminarDeptoUsuario',
@@ -227,12 +238,12 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
        if(m.id != 'id'){
     	//   this.grid.getTopToolbar().enable();
      	//	 this.grid.getBottomToolbar().enable();  
-
+//alert("entra aqui"+ console.log(this.maestro.id_depto));
 		this.store.baseParams={id_depto:this.maestro.id_depto};
 		this.load({params:{start:0, limit:50}})
        
        }
-       else{
+       else{//alert("else");
     	 this.grid.getTopToolbar().disable();
    		 this.grid.getBottomToolbar().disable(); 
    		 this.store.removeAll(); 
