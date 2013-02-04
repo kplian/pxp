@@ -153,7 +153,8 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'monto_max',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100
+				gwidth: 100,
+				renderer:bolFormatter
 			},
 			type:'MoneyField',
 			filters:{pfiltro:'apro.monto_max',type:'numeric'},

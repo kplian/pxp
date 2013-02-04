@@ -220,3 +220,14 @@ select pxp.f_add_catalog('PARAM','tunidad_medida','Temperatura');
 select pxp.f_add_catalog('PARAM','tunidad_medida','Intensidad luminosa');
 select pxp.f_add_catalog('PARAM','tunidad_medida','Cantidad de sustancia');
 /***********************************F-DAT-RCM-PARAM-0-23/01/2013*****************************************/
+
+
+/***********************************I-DAT-RAC-PARAM-0-04/02/2013*****************************************/
+select pxp.f_insert_tgui ('Aprobadores', 'Aprobadores de Compras', 'APROC', 'si', 1, 'sis_parametros/vista/aprobador/Aprobador.php', 4, '', 'Aprobador', 'PARAM');
+select pxp.f_insert_tgui ('Empresa', 'Empresa', 'EMP', 'si', 1, 'sis_parametros/vista/empresa/Empresa.php', 2, '', 'Empresa', 'PARAM');
+select pxp.f_insert_testructura_gui ('EMP', 'PARAM');
+
+/***********************************F-DAT-RAC-PARAM-0-04/02/2013*****************************************/
+
+
+
