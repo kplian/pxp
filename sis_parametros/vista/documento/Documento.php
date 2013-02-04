@@ -146,8 +146,8 @@ Phx.vista.Documento=function(config){
 				store:new Ext.data.ArrayStore({
 	        	fields: ['ID', 'valor'],
 	        	data :	[['interna','Interna'],	
-	        			['externa_recibida','Externa Recibida'],
-	        			['externa_emitida','Externa Emitida']]
+	        			['entrante','Entrante'],
+	        			['saliente','Saliente']]
 	        				
 	    		}),
 				valueField:'ID',
@@ -189,7 +189,7 @@ Phx.vista.Documento=function(config){
 				name:'formato',
 				fieldLabel:'Formato Numeracion',
 				typeAhead: true,
-				allowBlank:false,
+				allowBlank:true,
 	    		
 	    		emptyText:'Seleccione Opcion...',
 	    		selectOnFocus:true,

@@ -72,7 +72,7 @@ VALUES (1, NULL, E'2012-12-29 15:18:12.431', E'2012-12-29 15:18:12.431', E'activ
 INSERT INTO orga.tfuncionario_especialidad ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_funcionario_especialidad", "id_funcionario", "id_especialidad")
 VALUES (1, NULL, E'2012-12-29 15:19:50.693', E'2012-12-29 15:19:50.693', E'activo', 4, 4, 3);
 
--- FRH
+------------I FRH ------------
 
 
 --INSERT INTO orga.tdepto ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_depto", "nombre", "nombre_corto", "id_subsistema", "codigo")
@@ -132,4 +132,4 @@ VALUES (1, NULL, '2011-12-29 00:00:00', '2011-12-29 15:23:40', 'activo', 7, 7, 8
 INSERT INTO orga.testructura_uo (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_estructura_uo, id_uo_padre, id_uo_hijo)
 VALUES (1, NULL, '2011-12-29 00:00:00', '2011-12-29 15:27:04', 'activo', 8, 2, 9);
 
-
+------------F FRH ------------

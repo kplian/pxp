@@ -10,17 +10,23 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.depto_uo=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.DeptoUo=Ext.extend(Phx.gridInterfaz,{
 
 
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.depto_uo.superclass.constructor.call(this,config);
+		Phx.vista.DeptoUo.superclass.constructor.call(this,config);
 
 		this.init();
 		this.bloquearMenus();
+		if(Phx.CP.getPagina(this.idContenedorPadre)){
+      	 var dataMaestro=Phx.CP.getPagina(this.idContenedorPadre).getSelectedData();
+	 	 if(dataMaestro){ 
+	 	 	this.onEnablePanel(this,dataMaestro)
+	 	 }
+	  }
 		
 	},
 			
@@ -234,10 +240,10 @@ Phx.vista.depto_uo=Ext.extend(Phx.gridInterfaz,{
        }
 	},
 	
-	preparaMenu:function(tb){
+	/*preparaMenu:function(tb){
 		// llamada funcion clace padre
-		Phx.vista.depto_uo.superclass.preparaMenu.call(this,tb)
-	},
+		Phx.vista.DeptoUo.superclass.preparaMenu.call(this,tb)
+	},*/
 	bdel:true,
 	bsave:true
 	}
