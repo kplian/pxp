@@ -283,3 +283,29 @@ WHERE ((provee.estado_reg)::text = 'activo'::text);
 
 
 /***********************************F-DEP-RAC-PARAM-0-04/01/2013*****************************************/
+
+/***********************************I-DEP-FRH-PARAM-0-04/02/2013*****************************************/
+
+-- Definition for index fk_tdepto__id_subsistema 
+
+ALTER TABLE ONLY param.tdepto
+    ADD CONSTRAINT fk_tdepto__id_subsistema
+    FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) MATCH FULL;
+    
+    
+-- Definition for index fk_param.tdepto_uo__id_depto  
+
+ALTER TABLE ONLY param.tdepto_uo
+    ADD CONSTRAINT fk_tdepto_uo__id_depto
+    FOREIGN KEY (id_depto) REFERENCES param.tdepto(id_depto);
+    
+    
+-- Definition for index fk_param.tdepto_uo__id_uo 
+
+ALTER TABLE ONLY param.tdepto_uo
+    ADD CONSTRAINT fk_tdepto_uo__id_uo
+    FOREIGN KEY (id_uo) REFERENCES orga.tuo(id_uo);
+    
+
+
+/***********************************F-DEP-FRH-PARAM-0-04/02/2013*****************************************/
