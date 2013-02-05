@@ -1,5 +1,17 @@
+<?php
+/**
+*@package pXP
+*@file Moneda.php
+*@author  FRH
+*@date 05-02-2013 15:52:20
+*@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+*/
+
+header("content-type: text/javascript; charset=UTF-8");
+?>
 <script>
-Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
+	
 	Atributos:[
 	{
    	  config:{
@@ -13,10 +25,21 @@ Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
 		
 	},
 	{
+	  config:{
+			labelSeparator:'',
+			inputType:'hidden',
+			name: 'origen'
+
+		},
+		type:'Field',
+		form:true 
+		
+	},
+	{
 		config:{
-			fieldLabel: "Codigo",
+			fieldLabel: "Simbolo",
 			gwidth: 130,
-			name: 'codigo',
+			name: 'simbolo',
 			allowBlank:false,	
 			maxLength:4,
 			minLength:2,
@@ -31,16 +54,16 @@ Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
 	},
 	 {
 		config:{
-			fieldLabel: "Moneda",
+			fieldLabel: "Nombre",
 			gwidth: 130,
-			name: 'moneda',
+			name: 'nombre',
 			allowBlank:false,	
 			maxLength:20,
 			minLength:4,
 			anchor:'100%'
 		},
 		type:'TextField',
-		filters:{type:'string'},
+		filters:{pfiltro: 'moneda.nombre', type:'string'},
 		id_grupo:0,
 		grid:true,
 		form:true,
@@ -57,27 +80,25 @@ Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
 			anchor:'100%'
 		},
 		type:'TextField',
-		filters:{type:'string'},
+		filters:{pfiltro:'moneda.estado_reg', type:'string'},
 		id_grupo:0,
 		grid:true,
 		form:false
 	},{
-	     config:{
-	       	fieldLabel: "Fecha Registro",
-	       	gwidth: 110,
-	       	allowBlank:true,
-	       	name:'fecha_reg',
-	       	renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''},
-	       	anchor:'70%',
-	       	format:'d/m/Y'
-	      },
-	      type:'DateField',
-	      filters:{type:'date'},
-	      grid:true,
-	      form:false,
-	      dateFormat:'m-d-Y',
-	      egrid:true
-	   }
+			config:{
+				name: 'fecha_reg',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+			},
+			type:'DateField',
+			filters:{pfiltro:'depto.fecha_reg',type:'date'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		}
 	],
 
 	title:'Moneda',
@@ -86,12 +107,14 @@ Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
 	ActList:'../../sis_parametros/control/Moneda/listarMoneda',
 	id_store:'id_moneda',
 	fields: [
-	{name:'id_moneda'},
-	{name:'codigo', type: 'string'},
-	{name:'moneda', type: 'string'},
-	{name:'estado_reg', type: 'string'}
+		{name:'id_moneda'},
+		{name:'origen'},
+		{name:'simbolo', type: 'string'},
+		{name:'nombre', type: 'string'},
+		{name:'estado_reg', type: 'string'},
+		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d H:i:s'}
 	
-		],
+	],
 	sortInfo:{
 		field: 'id_moneda',
 		direction: 'ASC'
@@ -103,7 +126,7 @@ Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
 	// sobre carga de funcion
 	preparaMenu:function(tb){
 		// llamada funcion clace padre
-		Phx.vista.moneda.superclass.preparaMenu.call(this,tb)
+		Phx.vista.Moneda.superclass.preparaMenu.call(this,tb)
 	},
 
 	/*
@@ -116,7 +139,7 @@ Phx.vista.moneda=Ext.extend(Phx.gridInterfaz,{
 	constructor: function(config){
 		// configuracion del data store
 		
-		Phx.vista.moneda.superclass.constructor.call(this,config);
+		Phx.vista.Moneda.superclass.constructor.call(this,config);
 		this.init();
 		// this.addButton('my-boton',{disabled:false,handler:myBoton,tooltip:
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});

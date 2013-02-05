@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION param.ft_moneda_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  moneda: 		param.ft_moneda_sel
@@ -45,8 +44,8 @@ BEGIN
 
                v_consulta:='SELECT 
                             MONEDA.id_moneda,
-                            MONEDA.codigo ,
-                            MONEDA.moneda,
+                            MONEDA.simbolo ,
+                            MONEDA.nombre,
                             MONEDA.estado_reg ,
                             MONEDA.fecha_reg ,
                             MONEDA.id_usuario_reg,
@@ -54,7 +53,7 @@ BEGIN
                             MONEDA.id_usuario_mod,
                             PERSON.nombre_completo1 AS desc_usuario_reg,
                             PERMOD.nombre_completo1 AS desc_usuario_mod,
-                            pxp.f_iif(MONEDA.tipo_moneda=''base'',''true'',''false'') as tipo_moneda
+                            pxp.f_iif(MONEDA.origen=''base'',''true'',''false'') as tipo_moneda
                             FROM PARAM.tmoneda MONEDA
                             INNER JOIN SEGU.tusuario USUARI
                             ON USUARI.id_usuario=MONEDA.id_usuario_reg
@@ -107,7 +106,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_periodo_ime (OID = 304043) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

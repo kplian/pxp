@@ -233,5 +233,11 @@ select pxp.f_insert_testructura_gui ('GES', 'PARAM');
 
 /***********************************F-DAT-RAC-PARAM-0-04/02/2013*****************************************/
 
+/***********************************I-DAT-FRH-PARAM-0-05/02/2013*****************************************/
 
+select pxp.f_delete_tgui('MONPAR');
+select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR2', 'si', 3, 'sis_parametros/vista/moneda/Moneda.php', 2, '', 'Moneda', 'PARAM');
+select pxp.f_insert_testructura_gui ('MONPAR2', 'PARAM');
+
+/***********************************F-DAT-FRH-PARAM-0-05/02/2013*****************************************/
 

@@ -43,11 +43,12 @@ VALUES (1, NULL, E'2012-12-29 12:56:05.859', NULL, E'activo', 6, E'SERV-04', E'S
 
 
 /*MONEDAS*/
-INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_moneda", "moneda", "codigo", "tipo_moneda")
-VALUES (1, NULL, E'2012-11-08 00:00:00', E'2012-11-08 12:06:55.690', E'activo', 1, E'Bolivianos', E'Bs', NULL);
 
-INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_moneda", "moneda", "codigo", "tipo_moneda")
-VALUES (1, NULL, E'2012-11-08 00:00:00', E'2012-11-08 12:07:11.620', E'activo', 2, E'Dólares Americanos', E'USD', NULL);
+INSERT INTO param.tmoneda (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_moneda, nombre, simbolo, origen, prioridad, tipo_actualizacion)
+VALUES (1, NULL, '2012-11-08 00:00:00', '2012-11-08 12:06:55.69', 'activo', 1, 'Bolivianos', 'Bs', NULL, NULL, NULL);
+
+INSERT INTO param.tmoneda (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_moneda, nombre, simbolo, origen, prioridad, tipo_actualizacion)
+VALUES (1, NULL, '2012-11-08 00:00:00', '2012-11-08 12:07:11.62', 'activo', 2, 'Dólares Americanos', 'USD', NULL, NULL, NULL);
 
 
 ----------------------------
