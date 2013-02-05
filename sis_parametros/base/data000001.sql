@@ -42,9 +42,11 @@ select pxp.f_insert_tgui ('Proveedores', 'Registro de Proveedores', 'PROVEE', 's
 select pxp.f_insert_tgui ('Documentos', 'Documentos por Sistema', 'DOCUME', 'si', 4, 'sis_parametros/vista/documento/Documento.php', 2, '', 'Documento', 'PARAM');
 select pxp.f_insert_tgui ('Configuracion Alarmas', 'Para configurar las alarmas', 'CONALA', 'si', 1, 'sis_parametros/vista/config_alarma/ConfigAlarma.php', 2, '', 'ConfigAlarma', 'PARAM');
 select pxp.f_insert_tgui ('Unidades de Medida', 'Registro de Unidades de Medida', 'UME', 'si', 10, 'sis_parametros/vista/unidad_medida/UnidadMedida.php', 2, '', 'UnidadMedida', 'PARAM');
+select pxp.f_insert_tgui ('Gestion', 'Manejo de gestiones', 'GESTIO', 'si', 1, 'sis_parametros/vista/gestion/Gestion.php', 2, '', 'Gestion', 'PARAM');
+
 select pxp.f_insert_tgui ('Catalogo', 'Catalogo', 'CATA', 'si', 4, 'sis_parametros/vista/catalogo/Catalogo.php', 2, '', 'Catalogo', 'PARAM');
 select pxp.f_insert_tgui ('Periodo', 'Periodo', 'PERIOD', 'si', 2, 'sis_parametros/vista/periodo/periodo.js', 2, '', 'periodo', 'PARAM');
-select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR', 'si', 3, 'sis_parametros/vista/moneda/moneda.js', 2, '', 'moneda', 'PARAM');
+select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR', 'si', 3, 'sis_parametros/vista/moneda/Moneda.php', 2, '', 'Moneda', 'PARAM');
 select pxp.f_insert_tgui ('Tipos de Catálogos', 'Tipos de Catálogos', 'PACATI', 'si', 11, 'sis_parametros/vista/catalogo_tipo/CatalogoTipo.php', 2, '', 'CatalogoTipo', 'PARAM');
 select pxp.f_insert_tgui ('Servicios', 'Para registro de los servicios', 'SERVIC', 'si', 1, 'sis_parametros/vista/servicio/Servicio.php', 2, '', 'Servicio', 'PARAM');
 select pxp.f_insert_tgui ('EP', 'Elementos de la Estructura Programatica', 'CEP', 'si', 1, '', 2, '', '', 'PARAM');
@@ -223,21 +225,13 @@ select pxp.f_add_catalog('PARAM','tunidad_medida','Cantidad de sustancia');
 
 /***********************************I-DAT-RAC-PARAM-0-04/02/2013*****************************************/
 
-select pxp.f_insert_tgui ('Empresa', 'Empresa', 'EMP', 'si', 1, 'sis_parametros/vista/empresa/Empresa.php', 2, '', 'Empresa', 'PARAM');
-select pxp.f_insert_tgui ('Gestión', 'Gestión', 'GES', 'si', 2, 'sis_parametros/vista/gestion/Gestion.php', 2, '', 'Gestion', 'PARAM');
 
+select pxp.f_insert_tgui ('Empresa', 'Empresa', 'EMP', 'si', 1, 'sis_parametros/vista/empresa/Empresa.php', 2, '', 'Empresa', 'PARAM');
 
 select pxp.f_insert_testructura_gui ('EMP', 'PARAM');
-select pxp.f_insert_testructura_gui ('GES', 'PARAM');
+
 
 
 /***********************************F-DAT-RAC-PARAM-0-04/02/2013*****************************************/
 
-/***********************************I-DAT-FRH-PARAM-0-05/02/2013*****************************************/
-
-select pxp.f_delete_tgui('MONPAR');
-select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR2', 'si', 3, 'sis_parametros/vista/moneda/Moneda.php', 2, '', 'Moneda', 'PARAM');
-select pxp.f_insert_testructura_gui ('MONPAR2', 'PARAM');
-
-/***********************************F-DAT-FRH-PARAM-0-05/02/2013*****************************************/
 

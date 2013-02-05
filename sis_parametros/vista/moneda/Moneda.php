@@ -1,9 +1,9 @@
 <?php
 /**
 *@package pXP
-*@file Moneda.php
-*@author  FRH
-*@date 05-02-2013 15:52:20
+*@file gen-Moneda.php
+*@author  (admin)
+*@date 05-02-2013 18:17:03
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
 
@@ -11,141 +11,225 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
-	
-	Atributos:[
-	{
-   	  config:{
-			labelSeparator:'',
-			inputType:'hidden',
-			name: 'id_moneda'
 
-		},
-		type:'Field',
-		form:true 
-		
+	constructor:function(config){
+		this.maestro=config.maestro;
+    	//llama al constructor de la clase padre
+		Phx.vista.Moneda.superclass.constructor.call(this,config);
+		this.init();
+		this.load({params:{start:0, limit:50}})
 	},
-	{
-	  config:{
-			labelSeparator:'',
-			inputType:'hidden',
-			name: 'origen'
-
-		},
-		type:'Field',
-		form:true 
-		
-	},
-	{
-		config:{
-			fieldLabel: "Simbolo",
-			gwidth: 130,
-			name: 'simbolo',
-			allowBlank:false,	
-			maxLength:4,
-			minLength:2,
-			anchor:'100%'
-		},
-		type:'TextField',
-		filters:{type:'string'},
-		id_grupo:0,
-		grid:true,
-		form:true,
-		egrid:true
-	},
-	 {
-		config:{
-			fieldLabel: "Nombre",
-			gwidth: 130,
-			name: 'nombre',
-			allowBlank:false,	
-			maxLength:20,
-			minLength:4,
-			anchor:'100%'
-		},
-		type:'TextField',
-		filters:{pfiltro: 'moneda.nombre', type:'string'},
-		id_grupo:0,
-		grid:true,
-		form:true,
-		egrid:true
-	},
-	 {
-		config:{
-			fieldLabel: "Estado",
-			gwidth: 130,
-			name: 'estado_reg',
-			allowBlank:false,	
-			maxLength:15,
 			
-			anchor:'100%'
+	Atributos:[
+		{
+			//configuracion del componente
+			config:{
+					labelSeparator:'',
+					inputType:'hidden',
+					name: 'id_moneda'
+			},
+			type:'Field',
+			form:true 
 		},
-		type:'TextField',
-		filters:{pfiltro:'moneda.estado_reg', type:'string'},
-		id_grupo:0,
-		grid:true,
-		form:false
-	},{
+		{
+			config:{
+				name: 'prioridad',
+				fieldLabel: 'prioridad',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+			type:'NumberField',
+			filters:{pfiltro:'moneda.prioridad',type:'numeric'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'codigo',
+				fieldLabel: 'codigo',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:5
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.codigo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'moneda',
+				fieldLabel: 'moneda',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:250
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.moneda',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'origen',
+				fieldLabel: 'origen',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:30
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.origen',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'tipo_actualizacion',
+				fieldLabel: 'tipo_actualizacion',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:30
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.tipo_actualizacion',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'tipo_moneda',
+				fieldLabel: 'tipo_moneda',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:25
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.tipo_moneda',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'estado_reg',
+				fieldLabel: 'Estado Reg.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:10
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.estado_reg',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'usr_reg',
+				fieldLabel: 'Creado por',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+			type:'NumberField',
+			filters:{pfiltro:'usu1.cuenta',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
 			config:{
 				name: 'fecha_reg',
 				fieldLabel: 'Fecha creación',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 			type:'DateField',
-			filters:{pfiltro:'depto.fecha_reg',type:'date'},
+			filters:{pfiltro:'moneda.fecha_reg',type:'date'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'usr_mod',
+				fieldLabel: 'Modificado por',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+			type:'NumberField',
+			filters:{pfiltro:'usu2.cuenta',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'fecha_mod',
+				fieldLabel: 'Fecha Modif.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+			type:'DateField',
+			filters:{pfiltro:'moneda.fecha_mod',type:'date'},
 			id_grupo:1,
 			grid:true,
 			form:false
 		}
 	],
-
+	
 	title:'Moneda',
-	ActSave:'../../sis_parametros/control/Moneda/guardarMoneda',
+	ActSave:'../../sis_parametros/control/Moneda/insertarMoneda',
 	ActDel:'../../sis_parametros/control/Moneda/eliminarMoneda',
 	ActList:'../../sis_parametros/control/Moneda/listarMoneda',
 	id_store:'id_moneda',
 	fields: [
-		{name:'id_moneda'},
-		{name:'origen'},
-		{name:'simbolo', type: 'string'},
-		{name:'nombre', type: 'string'},
+		{name:'id_moneda', type: 'numeric'},
+		{name:'prioridad', type: 'numeric'},
+		{name:'origen', type: 'string'},
+		{name:'tipo_actualizacion', type: 'string'},
 		{name:'estado_reg', type: 'string'},
-		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d H:i:s'}
-	
+		{name:'codigo', type: 'string'},
+		{name:'moneda', type: 'string'},
+		{name:'tipo_moneda', type: 'string'},
+		{name:'id_usuario_reg', type: 'numeric'},
+		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'id_usuario_mod', type: 'numeric'},
+		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'usr_reg', type: 'string'},
+		{name:'usr_mod', type: 'string'},
+		
 	],
 	sortInfo:{
 		field: 'id_moneda',
 		direction: 'ASC'
 	},
-	bdel:true,// boton para eliminar
-	bsave:true,// boton para eliminar
-
-
-	// sobre carga de funcion
-	preparaMenu:function(tb){
-		// llamada funcion clace padre
-		Phx.vista.Moneda.superclass.preparaMenu.call(this,tb)
-	},
-
-	/*
-	 * Grupos:[{
-	 * 
-	 * xtype:'fieldset', border: false, //title: 'Checkbox Groups', autoHeight:
-	 * true, layout: 'form', items:[], id_grupo:0 }],
-	 */
-
-	constructor: function(config){
-		// configuracion del data store
-		
-		Phx.vista.Moneda.superclass.constructor.call(this,config);
-		this.init();
-		// this.addButton('my-boton',{disabled:false,handler:myBoton,tooltip:
-		// '<b>My Boton</b><br/>Icon only button with tooltip'});
-		this.load({params:{start:0, limit:50}})
+	bdel:true,
+	bsave:true
 	}
-
-}
 )
 </script>
+		
+		

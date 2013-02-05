@@ -51,7 +51,7 @@ BEGIN
         	--Sentencia de la insercion
         	insert into param.tempresa(
 			estado_reg,
-			logo,
+			
 			nombre,
 			nit,
 			id_usuario_reg,
@@ -61,7 +61,7 @@ BEGIN
             codigo
           	) values(
 			'activo',
-			v_parametros.logo,
+		
 			v_parametros.nombre,
 			v_parametros.nit,
 			p_id_usuario,
@@ -93,7 +93,7 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update param.tempresa set
-			logo = v_parametros.logo,
+			
 			nombre = v_parametros.nombre,
 			nit = v_parametros.nit,
 			id_usuario_mod = p_id_usuario,
