@@ -51,6 +51,13 @@ select pxp.f_insert_tgui ('Servicios', 'Para registro de los servicios', 'SERVIC
 select pxp.f_insert_tgui ('EP', 'Elementos de la Estructura Programatica', 'CEP', 'si', 1, '', 2, '', '', 'PARAM');
 select pxp.f_insert_tgui ('Compras', 'Parametrizaciones re lacionadas con compras', 'CCOM', 'si', 2, '', 3, '', '', 'PARAM');
 select pxp.f_insert_tgui ('Aprobadores', 'Aprobadores de Compras', 'APROC', 'si', 1, 'sis_adquisiciones/vista/aprobador/Aprobador.php', 4, '', 'Aprobador', 'PARAM');
+select pxp.f_insert_tgui ('Financiador', 'Financiadores de Compras', 'FIN', 'si', 1, 'sis_parametros/vista/financiador/Financiador.php', 3, '', 'Financiador', 'PARAM');
+select pxp.f_insert_tgui ('Regional', 'Regionales de Compras', 'REGIO', 'si', 2, 'sis_parametros/vista/regional/Regional.php', 3, '', 'Regional', 'PARAM');
+select pxp.f_insert_tgui ('Programa', 'Programas de Compras', 'PROG', 'si', 3, 'sis_parametros/vista/programa/Programa.php', 3, '', 'Programa', 'PARAM');
+select pxp.f_insert_tgui ('Actividad', 'Actividad', 'ACT', 'si', 5, 'sis_parametros/vista/actividad/Actividad.php', 3, '', 'Actividad', 'PARAM');
+select pxp.f_insert_tgui ('Programa-Proyecto-Actividad', 'programa proyecto actividad', 'PPA', 'si', 6, 'sis_parametros/vista/programa_proyecto_acttividad/ProgramaProyectoActtividad.php', 3, '', 'ProgramaProyectoActtividad', 'PARAM');
+select pxp.f_insert_tgui ('Proyecto', 'Proyecto EP proviene de ENDESIS', 'PRO', 'si', 5, 'sis_parametros/vista/proyecto/Proyecto.php', 2, '', 'Proyecto', 'PARAM');
+select pxp.f_insert_tgui ('Financiador-Regional-Programa-Proyecto', 'financiadores Regionales Programas Proyectos', 'FRPP', 'si', 7, 'sis_parametros/vista/ep/Ep.php', 3, '', 'Ep', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_get_moneda_base', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_tdepto_usuario_ime', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_proveedor_item_servicio_ime', 'Funcion para tabla     ', 'PARAM');
@@ -90,6 +97,20 @@ select pxp.f_insert_tfuncion ('param.ft_lugar_sel', 'Funcion para tabla     ', '
 select pxp.f_insert_tfuncion ('param.f_obtener_padre_lugar', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.ft_moneda_ime', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_tdepto_usuario_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_financiador_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_financiador_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_regional_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_regional_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_programa_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_programa_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_actividad_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_actividad_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_programa_proyecto_acttividad_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_programa_proyecto_acttividad_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_proyecto_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_proyecto_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_ep_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_ep_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tprocedimiento ('PM_INSTIT_INS', 'Insercion de registros', 'si', '', '', 'param.ft_institucion_ime');
 select pxp.f_insert_tprocedimiento ('PM_INSTIT_MOD', 'Modificacion de registros', 'si', '', '', 'param.ft_institucion_ime');
 select pxp.f_insert_tprocedimiento ('PM_INSTIT_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_institucion_ime');
@@ -183,7 +204,42 @@ select pxp.f_insert_tprocedimiento ('PM_LUG_ELI', 'Eliminacion de registros', 's
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_INS', 'Inserta Documentos', 'si', '', '', 'param.ft_documento_ime');
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_MOD', 'Modifica la documento seleccionada', 'si', '', '', 'param.ft_documento_ime');
 select pxp.f_insert_tprocedimiento ('PM_DOCUME_ELI', 'Inactiva el documento selecionado', 'si', '', '', 'param.ft_documento_ime');
-----------------------------------
+select pxp.f_insert_tprocedimiento ('PM_fin_SEL', 'Consulta de datos', 'si', '', '', 'param.f_financiador_sel');
+select pxp.f_insert_tprocedimiento ('PM_fin_CONT', 'Conteo de registros', 'si', '', '', 'param.f_financiador_sel');
+select pxp.f_insert_tprocedimiento ('PM_fin_INS', 'Insercion de registros', 'si', '', '', 'param.f_financiador_ime');
+select pxp.f_insert_tprocedimiento ('PM_fin_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_financiador_ime');
+select pxp.f_insert_tprocedimiento ('PM_fin_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_financiador_ime');
+select pxp.f_insert_tprocedimiento ('PM_REGIO_SEL', 'Consulta de datos', 'si', '', '', 'param.f_regional_sel');
+select pxp.f_insert_tprocedimiento ('PM_REGIO_CONT', 'Conteo de registros', 'si', '', '', 'param.f_regional_sel');
+select pxp.f_insert_tprocedimiento ('PM_REGIO_INS', 'Insercion de registros', 'si', '', '', 'param.f_regional_ime');
+select pxp.f_insert_tprocedimiento ('PM_REGIO_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_regional_ime');
+select pxp.f_insert_tprocedimiento ('PM_REGIO_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_regional_ime');
+select pxp.f_insert_tprocedimiento ('PM_PROG_INS', 'Insercion de registros', 'si', '', '', 'param.f_programa_ime');
+select pxp.f_insert_tprocedimiento ('PM_PROG_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_programa_ime');
+select pxp.f_insert_tprocedimiento ('PM_PROG_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_programa_ime');
+select pxp.f_insert_tprocedimiento ('PM_PROG_SEL', 'Consulta de datos', 'si', '', '', 'param.f_programa_sel');
+select pxp.f_insert_tprocedimiento ('PM_PROG_CONT', 'Conteo de registros', 'si', '', '', 'param.f_programa_sel');
+select pxp.f_insert_tprocedimiento ('PM_ACT_INS', 'Insercion de registros', 'si', '', '', 'param.f_actividad_ime');
+select pxp.f_insert_tprocedimiento ('PM_ACT_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_actividad_ime');
+select pxp.f_insert_tprocedimiento ('PM_ACT_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_actividad_ime');
+select pxp.f_insert_tprocedimiento ('PM_ACT_SEL', 'Consulta de datos', 'si', '', '', 'param.f_actividad_sel');
+select pxp.f_insert_tprocedimiento ('PM_ACT_CONT', 'Conteo de registros', 'si', '', '', 'param.f_actividad_sel');
+select pxp.f_insert_tprocedimiento ('PM_PPA_INS', 'Insercion de registros', 'si', '', '', 'param.f_programa_proyecto_acttividad_ime');
+select pxp.f_insert_tprocedimiento ('PM_PPA_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_programa_proyecto_acttividad_ime');
+select pxp.f_insert_tprocedimiento ('PM_PPA_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_programa_proyecto_acttividad_ime');
+select pxp.f_insert_tprocedimiento ('PM_PPA_SEL', 'Consulta de datos', 'si', '', '', 'param.f_programa_proyecto_acttividad_sel');
+select pxp.f_insert_tprocedimiento ('PM_PPA_CONT', 'Conteo de registros', 'si', '', '', 'param.f_programa_proyecto_acttividad_sel');
+select pxp.f_insert_tprocedimiento ('PM_PROY_SEL', 'Consulta de datos', 'si', '', '', 'param.f_proyecto_sel');
+select pxp.f_insert_tprocedimiento ('PM_PROY_CONT', 'Conteo de registros', 'si', '', '', 'param.f_proyecto_sel');
+select pxp.f_insert_tprocedimiento ('PM_PROY_INS', 'Insercion de registros', 'si', '', '', 'param.f_proyecto_ime');
+select pxp.f_insert_tprocedimiento ('PM_PROY_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_proyecto_ime');
+select pxp.f_insert_tprocedimiento ('PM_PROY_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_proyecto_ime');
+select pxp.f_insert_tprocedimiento ('PM_FRPP_INS', 'Insercion de registros', 'si', '', '', 'param.f_ep_ime');
+select pxp.f_insert_tprocedimiento ('PM_FRPP_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_ep_ime');
+select pxp.f_insert_tprocedimiento ('PM_FRPP_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_ep_ime');
+select pxp.f_insert_tprocedimiento ('PM_FRPP_SEL', 'Consulta de datos', 'si', '', '', 'param.f_ep_sel');
+select pxp.f_insert_tprocedimiento ('PM_FRPP_CONT', 'Conteo de registros', 'si', '', '', 'param.f_ep_sel');
+---------------------------------
 --COPY LINES TO dependencies.sql FILE 
 ---------------------------------
 
@@ -195,7 +251,6 @@ select pxp.f_insert_testructura_gui ('DOCUME', 'PARAM');
 select pxp.f_insert_testructura_gui ('DEPTO', 'PARAM');
 select pxp.f_insert_testructura_gui ('ALARM', 'PARAM');
 select pxp.f_insert_testructura_gui ('PROVEE', 'PARAM');
-select pxp.f_insert_testructura_gui ('PRO', 'PARAM');
 select pxp.f_insert_testructura_gui ('INSTIT', 'PARAM');
 select pxp.f_insert_testructura_gui ('LUG', 'PARAM');
 select pxp.f_insert_testructura_gui ('MONPAR', 'PARAM');
@@ -206,8 +261,13 @@ select pxp.f_insert_testructura_gui ('UME', 'PARAM');
 select pxp.f_insert_testructura_gui ('PACATI', 'PARAM');
 select pxp.f_insert_testructura_gui ('SERVIC', 'PARAM');
 select pxp.f_insert_testructura_gui ('APROC', 'CCOM');
-
-
+select pxp.f_insert_testructura_gui ('PRO', 'CEP');
+select pxp.f_insert_testructura_gui ('FIN', 'CEP');
+select pxp.f_insert_testructura_gui ('REGIO', 'CEP');
+select pxp.f_insert_testructura_gui ('PROG', 'CEP');
+select pxp.f_insert_testructura_gui ('ACT', 'CEP');
+select pxp.f_insert_testructura_gui ('PPA', 'CEP');
+select pxp.f_insert_testructura_gui ('FRPP', 'CEP');
 /***********************************F-DAT-RAC-PARAM-0-31/12/2012*****************************************/
 
 /***********************************I-DAT-RCM-PARAM-0-23/01/2013*****************************************/

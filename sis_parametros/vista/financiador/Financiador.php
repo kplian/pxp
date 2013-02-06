@@ -1,21 +1,21 @@
 <?php
 /**
 *@package pXP
-*@file Proyecto.php
+*@file Financiador.php
 *@author  Gonzalo Sarmiento Sejas
-*@date 06-02-2013 17:04:17
+*@date 05-02-2013 22:30:22
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.Proyecto.superclass.constructor.call(this,config);
+		Phx.vista.Financiador.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:50}})
 	},
@@ -26,127 +26,67 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_proyecto'
+					name: 'id_financiador'
 			},
 			type:'Field',
 			form:true 
 		},
 		{
 			config:{
-				name: 'hidro',
-				fieldLabel: 'Hidro',
-				allowBlank: false,
+				name: 'nombre_financiador',
+				fieldLabel: 'Nombre Financiador',
+				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:2
+				maxLength:100
 			},
 			type:'TextField',
-			filters:{pfiltro:'proy.hidro',type:'string'},
+			filters:{pfiltro:'fin.nombre_financiador',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
 		},
 		{
 			config:{
-				name: 'id_proyecto_cat_prog',
-				fieldLabel: 'Id Proyecto Cat Prog',
+				name: 'id_financiador_actif',
+				fieldLabel: 'Financiador Actif',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:4
 			},
 			type:'NumberField',
-			filters:{pfiltro:'proy.id_proyecto_cat_prog',type:'numeric'},
+			filters:{pfiltro:'fin.id_financiador_actif',type:'numeric'},
 			id_grupo:1,
 			grid:true,
 			form:true
 		},
 		{
 			config:{
-				name: 'codigo_proyecto',
-				fieldLabel: 'Codigo Proyecto',
+				name: 'descripcion_financiador',
+				fieldLabel: 'Descripcion Financiador',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:120
+			},
+			type:'TextField',
+			filters:{pfiltro:'fin.descripcion_financiador',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'codigo_financiador',
+				fieldLabel: 'Codigo Financiador',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:10
 			},
 			type:'TextField',
-			filters:{pfiltro:'proy.codigo_proyecto',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'descripcion_proyecto',
-				fieldLabel: 'Descripcion Proyecto',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:-5
-			},
-			type:'TextField',
-			filters:{pfiltro:'proy.descripcion_proyecto',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'nombre_proyecto',
-				fieldLabel: 'Nombre Proyecto',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:100
-			},
-			type:'TextField',
-			filters:{pfiltro:'proy.nombre_proyecto',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'nombre_corto',
-				fieldLabel: 'Nombre Corto',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:100
-			},
-			type:'TextField',
-			filters:{pfiltro:'proy.nombre_corto',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'id_proyecto_actif',
-				fieldLabel: 'Id Proyecto Actif',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-			type:'NumberField',
-			filters:{pfiltro:'proy.id_proyecto_actif',type:'numeric'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'codigo_sisin',
-				fieldLabel: 'Codigo Sisin',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:8
-			},
-			type:'TextField',
-			filters:{pfiltro:'proy.codigo_sisin',type:'string'},
+			filters:{pfiltro:'fin.codigo_financiador',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -161,7 +101,7 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:10
 			},
 			type:'TextField',
-			filters:{pfiltro:'proy.estado_reg',type:'string'},
+			filters:{pfiltro:'fin.estado_reg',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -177,7 +117,7 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 			type:'DateField',
-			filters:{pfiltro:'proy.fecha_reg',type:'date'},
+			filters:{pfiltro:'fin.fecha_reg',type:'date'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -208,7 +148,7 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 			type:'DateField',
-			filters:{pfiltro:'proy.fecha_mod',type:'date'},
+			filters:{pfiltro:'fin.fecha_mod',type:'date'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -230,22 +170,18 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	
-	title:'Proyecto',
-	ActSave:'../../sis_parametros/control/Proyecto/insertarProyecto',
-	ActDel:'../../sis_parametros/control/Proyecto/eliminarProyecto',
-	ActList:'../../sis_parametros/control/Proyecto/listarProyecto',
-	id_store:'id_proyecto',
+	title:'Financiador',
+	ActSave:'../../sis_parametros/control/Financiador/insertarFinanciador',
+	ActDel:'../../sis_parametros/control/Financiador/eliminarFinanciador',
+	ActList:'../../sis_parametros/control/Financiador/listarFinanciador',
+	id_store:'id_financiador',
 	fields: [
-		{name:'id_proyecto', type: 'numeric'},
+		{name:'id_financiador', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
-		{name:'hidro', type: 'string'},
-		{name:'id_proyecto_cat_prog', type: 'numeric'},
-		{name:'codigo_proyecto', type: 'string'},
-		{name:'descripcion_proyecto', type: 'string'},
-		{name:'nombre_proyecto', type: 'string'},
-		{name:'nombre_corto', type: 'string'},
-		{name:'id_proyecto_actif', type: 'numeric'},
-		{name:'codigo_sisin', type: 'string'},
+		{name:'nombre_financiador', type: 'string'},
+		{name:'id_financiador_actif', type: 'numeric'},
+		{name:'descripcion_financiador', type: 'string'},
+		{name:'codigo_financiador', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s'},
@@ -255,7 +191,7 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_proyecto',
+		field: 'id_financiador',
 		direction: 'ASC'
 	},
 	bdel:true,
