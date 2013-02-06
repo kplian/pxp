@@ -212,3 +212,8 @@ ALTER TABLE orga.tfuncionario_especialidad OWNER TO postgres;
 alter table orga.tfuncionario
 drop constraint tfuncionario_id_persona_key;
 /********************************************F-SCP-RCM-ORGA-92-27/12/2012********************************************/
+
+/********************************************I-SCP-RCM-ORGA-112-06/02/2013********************************************/
+alter table orga.tfuncionario
+add column telefono_ofi varchar(50);
+/********************************************F-SCP-RCM-ORGA-112-27/12/2013********************************************/

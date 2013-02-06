@@ -68,7 +68,8 @@ BEGIN
 		               id_usuario_reg,
 		               email_empresa,
 		               interno,
-		               fecha_ingreso )
+		               fecha_ingreso,
+		               telefono_ofi)
                values(
                       v_parametros.codigo,
                       v_parametros.id_persona, 
@@ -76,7 +77,8 @@ BEGIN
                       par_id_usuario,
                       v_parametros.id_persona,
                       v_parametros.interno,
-                      v_parametros.fecha_ingreso)
+                      v_parametros.fecha_ingreso,
+                      v_parametros.telefono_ofi)
                RETURNING id_funcionario into v_id_funcionario;
                       
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','funcionario '||v_parametros.codigo ||' insertado con exito ');
@@ -115,7 +117,8 @@ BEGIN
                     email_empresa=v_parametros.email_empresa,
                     interno=v_parametros.interno,
                     fecha_ingreso=v_parametros.fecha_ingreso,
-                    fecha_mod=now()::date
+                    fecha_mod=now()::date,
+                    telefono_ofi= v_parametros.telefono_ofi
                 where id_funcionario=v_parametros.id_funcionario;
                 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario modificado con exito '||v_parametros.id_funcionario);

@@ -42,7 +42,7 @@ class MODFuncionario extends MODbase{
 		$this->captura('telefono1','varchar');
 		$this->captura('celular1','varchar');
 		$this->captura('correo','varchar');
-
+		$this->captura('telefono_ofi','varchar');
 		
 		//Ejecuta la funcion
 		$this->armarConsulta();		
@@ -61,7 +61,6 @@ class MODFuncionario extends MODbase{
 		//ENVIA ESTAS VARIALBES PARA EL FILTRO
 		$this->setParametro('estado_reg_fun','estado_reg_fun','varchar');
 		$this->setParametro('estado_reg_asi','estado_reg_asi','varchar');
-	 
 	
 		$this->captura('id_uo_funcionario','integer');
 		$this->captura('id_funcionario','integer');
@@ -82,12 +81,10 @@ class MODFuncionario extends MODbase{
 		
 		$this->ejecutarConsulta();
 		return $this->respuesta;
-
 	}
 	
 	
 	function insertarFuncionario(){
-		
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_funcionario_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_FUNCIO_INS';//nombre de la transaccion
@@ -107,14 +104,8 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('fecha_ingreso','fecha_ingreso','date');
 		$this->setParametro('email_empresa','email_empresa','varchar');
 		$this->setParametro('interno','interno','varchar');
-		
-		
-		
-		
-	
-		
-	
-		
+		$this->setParametro('telefono_ofi','telefono_ofi','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -141,9 +132,8 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('fecha_ingreso','fecha_ingreso','date');
 		$this->setParametro('email_empresa','email_empresa','varchar');
 		$this->setParametro('interno','interno','varchar');
-	
-	
-	
+		$this->setParametro('telefono_ofi','telefono_ofi','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				

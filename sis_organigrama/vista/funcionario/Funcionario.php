@@ -19,7 +19,6 @@ Phx.vista.funcionario=function(config){
 	       			labelSeparator:'',
 	       			inputType:'hidden',
 	       			name: 'id_funcionario'
-
 	       		}, 
 	       		type:'Field',
 	       		form:true  
@@ -114,13 +113,29 @@ Phx.vista.funcionario=function(config){
 	       		grid:true,
 	       		form:true
 	       	},
+	       	{
+	       		config:{
+	       			name: 'telefono_ofi',
+	       			fieldLabel: "Telf. Oficina",
+	       			gwidth: 120,
+	       			allowBlank:true,	
+	       			maxLength:50,
+	       			minLength:1,
+	       			anchor:'100%'
+	       		},
+	       		type:'TextField',
+	       		filters:{type:'string'},
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
 
 	       	{
 	       		config:{
 	       			fieldLabel: "Interno",
 	       			gwidth: 120,
 	       			name: 'interno',
-	       			allowBlank:false,	
+	       			allowBlank:true,	
 	       			maxLength:100,
 	       			minLength:1,
 	       			anchor:'100%'
@@ -326,7 +341,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d'},
 	{name:'id_usuario_mod', type: 'numeric'},
 	{name:'usr_reg', type: 'string'},
-	{name:'usr_mod', type: 'string'}
+	{name:'usr_mod', type: 'string'},
+	'telefono_ofi'
 		
 	],
 	sortInfo:{
