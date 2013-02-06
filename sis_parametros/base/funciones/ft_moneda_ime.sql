@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION param.ft_moneda_ime (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		param.ft_moneda_ime
@@ -48,11 +47,11 @@ BEGIN
           BEGIN
           
           --insercion de nueva funcion
-               INSERT INTO param.tmoneda(codigo,moneda, estado_reg,fecha_reg, id_usuario_reg)
-               values(v_parametros.codigo,v_parametros.moneda,'activo',now()::date, par_id_usuario);
+               INSERT INTO param.tmoneda(simbolo,nombre, estado_reg,fecha_reg, id_usuario_reg)
+               values(v_parametros.simbolo,v_parametros.nombre,'activo',now()::date, par_id_usuario);
               
 
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','moneda insertada con exito '||v_parametros.moneda);
+               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','moneda insertada con exito '||v_parametros.nombre);
                v_resp = pxp.f_agrega_clave(v_resp,'id_moneda',v_id_funcion::varchar);
 
 
@@ -69,16 +68,16 @@ BEGIN
           BEGIN
 
           
-               if exists (select 1 from param.tmoneda where estado_reg='activo' and tipo_moneda='base' and id_moneda!=v_parametros.id_moneda and v_parametros.tipo_moneda='on') then
+               if exists (select 1 from param.tmoneda where estado_reg='activo' and origen='base' and id_moneda!=v_parametros.id_moneda and v_parametros.origen='on') then
                   raise exception 'Modificacion no realizada. Ya existe una moneda base';
                end if;
                --modificacion de moneda
                update param.tmoneda set
-               codigo=v_parametros.codigo,
-               moneda=v_parametros.moneda,
+               simbolo=v_parametros.simbolo,
+               nombre=v_parametros.nombre,
                fecha_mod=now()::date,
                id_usuario_mod=par_id_usuario,
-               tipo_moneda=pxp.f_iif(v_parametros.tipo_moneda='on','base', null)
+               origen=pxp.f_iif(v_parametros.origen='on','base', null)
                
                where id_moneda=v_parametros.id_moneda;
 
@@ -126,7 +125,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_moneda_sel (OID = 304042) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

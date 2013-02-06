@@ -132,13 +132,15 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'monto_min',
+				currencyChar:'Bs',
 				fieldLabel: 'monto_min',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:1245184
+				renderer:bolFormatter
+		      		
 			},
-			type:'NumberField',
+			type:'MoneyField',
 			filters:{pfiltro:'apro.monto_min',type:'numeric'},
 			id_grupo:1,
 			grid:true,
@@ -147,13 +149,14 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'monto_max',
+				currencyChar:'Bs',
 				fieldLabel: 'monto_max',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:1245184
+				renderer:bolFormatter
 			},
-			type:'NumberField',
+			type:'MoneyField',
 			filters:{pfiltro:'apro.monto_max',type:'numeric'},
 			id_grupo:1,
 			grid:true,

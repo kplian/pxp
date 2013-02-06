@@ -36,7 +36,7 @@ class ACTDeptoUo extends ACTbase{
 	}
 						
 	function eliminarDeptoUo(){
-		$this->objFunc=$this->create('MODDeptoUo');
+		$this->objFunc=$this->create('MODDeptoUo');	
 		$this->res=$this->objFunc->eliminarDeptoUo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

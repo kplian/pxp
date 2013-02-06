@@ -38,6 +38,8 @@ v_cont_rol				  	integer;
 v_nivel                 	integer;	
 v_tipo_dato              	varchar;
 v_orden_logico integer;
+v_codigo					varchar;
+v_numero					integer;
 
 BEGIN
 
@@ -232,6 +234,86 @@ BEGIN
                
                return 'GUI '||v_parametros.id_gui||' modificado con exito';
           END;
+ 
+ /*******************************    
+ #TRANSACCION:  SEG_GUISINC_IME
+ #DESCRIPCION:	Inserta una interfaz desde la utilidad de soncronizacion 
+ #AUTOR:		KPLIAN(jrr)		
+ #FECHA:		28-01-2013
+***********************************/
+     elsif(par_transaccion='SEG_GUISINC_IME')then        
+          
+          BEGIN
+          select h.id_gui
+          into v_id_gui
+          from segu.tgui p
+          inner join segu.testructura_gui eg
+          	on p.id_gui = eg.fk_id_gui and eg.estado_reg = 'activo'
+          inner join segu.tgui h
+          	on h.id_gui = eg.id_gui and h.estado_reg = 'activo' and h.ruta_archivo = v_parametros.ruta_archivo
+          where p.id_gui = v_parametros.id_gui_padre;
+          
+          if (v_id_gui is null) then
+          	select p.codigo_gui, p.nivel, p.id_subsistema
+          	into v_codigo, v_nivel, v_id_subsistema
+          	from segu.tgui p
+          	where p.id_gui = v_parametros.id_gui_padre;
+          
+          	v_numero = 1;
+          	--para obtener el codigo correspondiente
+          	LOOP
+    			if (exists (select 1 from segu.tgui where codigo_gui = v_codigo || '.' || v_numero::varchar 
+    				and estado_reg = 'activo'))then
+    				v_numero = v_numero + 1;
+    			else
+    				exit;
+    			end if;
+    				
+			END LOOP;
+			
+          	insert into  segu.tgui(
+                                
+                                codigo_gui,
+                                nombre, 
+                                descripcion, 
+                                visible,
+                                orden_logico,
+                                ruta_archivo,
+                                nivel,
+                                icono,
+                                id_subsistema,
+                                clase_vista)
+                         values(
+                              
+                                v_codigo || '.' || v_numero::varchar,
+                                v_parametros.nombre,
+                                v_parametros.descripcion,
+                                'no',
+                                0,
+                                v_parametros.ruta_archivo,
+                                v_nivel+1, 
+                                NULL,
+                                v_id_subsistema,
+                                v_parametros.clase_vista)
+                         RETURNING id_gui into v_id_gui;
+              --introduce la relacion con el padre
+              insert into segu.testructura_gui(
+                           id_gui,
+                           fk_id_gui
+                           )
+                    values(
+                           v_id_gui,
+                           v_parametros.id_gui_padre);
+                    	
+          end if;
+                         
+          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','GUI sincronizada con exito '||v_id_gui);
+          v_resp = pxp.f_agrega_clave(v_resp,'id_gui',v_id_gui::varchar);
+               
+          return v_resp;
+          END;
+          
+          
           
  /*******************************    
  #TRANSACCION:  SEG_GUI_ELI
@@ -303,7 +385,7 @@ BEGIN
                       INTO
                          v_cont_hijo
                       FROM segu.testructura_gui eg
-                      WHERE fk_id_gui=v_parametros.id_gui;
+                      WHERE fk_id_gui=v_parametros.id_gui and eg.estado_reg = 'activo';
                       
               -- 2.2.1) Contamos cuantos procedimientos hijo tiene  el nodo que se quiere eliminar
                       
@@ -313,7 +395,7 @@ BEGIN
                       INTO
                          v_cont_prodecimiento_hijo
                       FROM segu.tprocedimiento_gui pg
-                      WHERE pg.id_gui=v_parametros.id_gui;
+                      WHERE pg.id_gui=v_parametros.id_gui and pg.estado_reg = 'activo';
                       
                
               -- 2.2.2) IF si no tienen hijos

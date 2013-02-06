@@ -139,7 +139,7 @@ FROM pg_class c
 /****************************I-SCP-RAC-PXP-0-23/01/2013*************/
 --------------- SQL ---------------
 CREATE TABLE pxp.tforenkey (
-  id_forenkey INTEGER DEFAULT nextval('pxp.t_forenkeys_id_forenkey_seq'::regclass) NOT NULL, 
+  id_forenkey SERIAL NOT NULL, 
   tabla VARCHAR(50) NOT NULL, 
   llave VARCHAR(80) NOT NULL, 
   obs TEXT, 

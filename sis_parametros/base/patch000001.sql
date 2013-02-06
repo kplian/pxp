@@ -109,7 +109,7 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 --
 CREATE TABLE param.tmoneda (
     id_moneda serial NOT NULL,
-    moneda varchar(30),
+    moneda varchar(300),
     codigo varchar(5),    
     tipo_moneda varchar(25)
 )
@@ -450,4 +450,57 @@ CREATE TABLE param.testado_funcionario(
     PRIMARY KEY (id_estado_funcionario)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-RAC-PARAM-0-04/01/2013*****************************************/
+
+
+/***********************************I-SCP-FRH-PARAM-0-04/02/2013****************************************/
+-- Tabla tdepto_uo 
+
+CREATE TABLE param.tdepto_uo (
+    id_depto_uo serial NOT NULL,
+    id_depto integer,
+    id_uo integer,
+    CONSTRAINT pk_tdepto_uo__id_depto_uo PRIMARY KEY (id_depto_uo)
+)
+INHERITS (pxp.tbase) WITH OIDS;
+
+
+-- Tabla tdepto_usuario 
+
+CREATE TABLE param.tdepto_usuario (
+    id_depto_usuario serial NOT NULL,
+    id_depto integer,
+    id_usuario integer,
+    funcion varchar(300),
+    cargo varchar(80),
+    CONSTRAINT pk_tdepto_usuario__id_depto_usuario PRIMARY KEY (id_depto_usuario)
+)
+INHERITS (pxp.tbase) WITH OIDS;
+
+
+-- Tabla tdepto 
+
+CREATE TABLE param.tdepto (
+    id_depto serial NOT NULL,
+    id_subsistema integer,
+    codigo varchar(15),
+    nombre varchar(100),
+    nombre_corto varchar(100),
+    CONSTRAINT pk_tdepto__id_depto PRIMARY KEY (id_depto)
+)
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+/***********************************F-SCP-FRH-PARAM-0-04/02/2013*****************************************/
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
+
+ALTER TABLE param.tmoneda
+  ALTER COLUMN moneda TYPE VARCHAR(300) COLLATE pg_catalog."default";
+  
+  ALTER TABLE param.tempresa
+  ADD COLUMN codigo TYPE VARCHAR(100) COLLATE pg_catalog."default";
+
+
+/***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 

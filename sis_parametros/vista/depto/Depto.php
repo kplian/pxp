@@ -2,7 +2,7 @@
 /**
 *@package pXP
 *@file gen-Depto.php
-*@author  (rortiz)
+*@author  )
 *@date 24-11-2011 15:52:20
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
@@ -16,18 +16,39 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.Depto.superclass.constructor.call(this,config);
+		
+		
 		this.init();
 		
-		
+		//this.store.baseParams.id_depto=this.getComponente('id_depto').getValue();
 		
 		this.load({params:{start:0, limit:50}})
 	},
-		 east:{
+		 /*east:{
 		  url:'../../../sis_parametros/vista/depto_usuario/DeptoUsuario.php',
 		  title:'Usuarios por Departamento', 
 		  width:400,
 		  cls:'DeptoUsuario'
-		 },	
+		 },	*/
+		 
+		                   
+		 
+		 tabsouth:[
+	     {
+		  url:'../../../sis_parametros/vista/depto_usuario/DeptoUsuario.php',
+		  title:'Usuarios por Departamento',
+		  //width:'50%',
+		  height:'50%',
+		  cls:'DeptoUsuario'
+		
+		 },
+	
+	    {
+		  url:'../../../sis_parametros/vista/depto_uo/DeptoUo.php',
+		  title:'Depto - UO', 
+		  height:'50%',
+		  cls:'DeptoUo'
+		 }]	,
 	Atributos:[
 		{
 			//configuracion del componente
@@ -225,6 +246,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d'},
 		{name:'usureg', type: 'string'},
 		{name:'usumod', type: 'string'},
+		{name:'id_subsistema', type: 'numeric'},
 		{name:'desc_subsistema', type: 'string'},
 		{name:'codigo', type: 'string'},
 		{name:'nombre_corto', type: 'string'}

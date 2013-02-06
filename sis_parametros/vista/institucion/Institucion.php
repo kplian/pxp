@@ -297,7 +297,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				name: 'pag_web',
 				fieldLabel: 'pag_web',
 				allowBlank: true,
-				vtype:'url',
+				//vtype:'url',
 				width: "100%",
 				gwidth: 100,
 				maxLength:100

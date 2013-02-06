@@ -117,6 +117,10 @@ if(!isset($_SESSION["_SESION"])){
     <!-- componentes extendidos  -->	  
     <script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.PagingMemoryProxy.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.AwesomeCombo.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/Ext.util.Format.CurrencyFactory.js"></script>
+	
+	
+	<script type="text/javascript" src="../../../lib/ux/MoneyField.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/fileuploadfield/FileUploadField.js"></script>
 	 <!-- componentes extendidos propios -->	  
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>    

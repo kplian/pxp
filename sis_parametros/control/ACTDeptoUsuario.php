@@ -17,7 +17,7 @@ class ACTDeptoUsuario extends ACTbase{
 			$this->objReporte = new Reporte($this->objParam, $this);
 			$this->res = $this->objReporte->generarReporteListado('MODDeptoUsuario','listarDeptoUsuario');
 		} else{
-			$this->objFunc=$this->create('MODDeptoUsuario');
+			$this->objFunc=$this->create('MODDeptoUsuario');	
 			$this->res=$this->objFunc->listarDeptoUsuario();
 			$this->res->imprimirRespuesta($this->res->generarJson());
 		}

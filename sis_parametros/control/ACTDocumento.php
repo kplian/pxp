@@ -15,11 +15,11 @@ class ACTDocumento extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam);
-			$this->res=$this->objReporte->generarReporteListado('FuncionesParametros','listarDocumento');
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODDocumento','listarDocumento');
 		}
 		else {
-			$this->objFunSeguridad=new FuncionesParametros();
+			$this->objFunSeguridad=$this->create('MODDocumento');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunSeguridad->listarDocumento($this->objParam);
 			
@@ -33,7 +33,7 @@ class ACTDocumento extends ACTbase{
 	function guardarDocumento(){
 	
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesParametros();
+		$this->objFunSeguridad=$this->create('MODDocumento');
 		
 		//preguntamos si se debe insertar o modificar 
 		if($this->objParam->insertar('id_documento')){
@@ -56,7 +56,7 @@ class ACTDocumento extends ACTbase{
 	function eliminarDocumento(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=new FuncionesParametros();	
+		$this->objFunSeguridad=$this->create('MODDocumento');	
 		$this->res=$this->objFunSeguridad->eliminarDocumento($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 

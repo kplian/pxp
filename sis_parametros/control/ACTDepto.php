@@ -21,7 +21,7 @@ class ACTDepto extends ACTbase{
 		else {
 			$this->objFunSeguridad=$this->create('MODDepto');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarDepto();
+			$this->res=$this->objFunSeguridad->listarDepto($this->objParam);
 			
 		}
 		
@@ -40,12 +40,12 @@ class ACTDepto extends ACTbase{
 
 			//ejecuta el metodo de insertar de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->insertarDepto();			
+			$this->res=$this->objFunSeguridad->insertarDepto($this->objParam);			
 		}
 		else{	
 			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
 			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarDepto();
+			$this->res=$this->objFunSeguridad->modificarDepto($this->objParam);
 		}
 		
 		//imprime respuesta en formato JSON
@@ -56,8 +56,8 @@ class ACTDepto extends ACTbase{
 	function eliminarDepto(){
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODDepto');
-		$this->res=$this->objFunSeguridad->eliminarDepto();
+		$this->objFunSeguridad=$this->create('MODDepto');	
+		$this->res=$this->objFunSeguridad->eliminarDepto($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
