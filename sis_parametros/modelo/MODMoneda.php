@@ -17,8 +17,8 @@ class MODMoneda extends MODbase{
 	
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('id_moneda','integer');
-		$this->captura('codigo','varchar');
-		$this->captura('moneda','varchar');
+		$this->captura('simbolo','varchar');
+		$this->captura('nombre','varchar');
         $this->captura('estado_reg','varchar');
         $this->captura('fecha_reg','timestamp');
         $this->captura('id_usuario_reg','integer');
@@ -26,7 +26,7 @@ class MODMoneda extends MODbase{
         $this->captura('id_usuario_mod','integer');
         $this->captura('desc_usuario_reg','text'); 
         $this->captura('desc_usuario_mod','text'); 
-        $this->captura('tipo_moneda','varchar'); 
+        $this->captura('origen','varchar'); 
 		
 		//Ejecuta la funcion
 		$this->armarConsulta();
@@ -44,9 +44,9 @@ class MODMoneda extends MODbase{
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
-		$this->setParametro('codigo','codigo','varchar');
-		$this->setParametro('moneda','moneda','varchar');
-		$this->setParametro('tipo_moneda','tipo_moneda','varchar');
+		$this->setParametro('simbolo','simbolo','varchar');
+		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('origen','origen','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -65,8 +65,9 @@ class MODMoneda extends MODbase{
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_moneda','id_moneda','integer');	
-		$this->setParametro('codigo','codigo','varchar');
-		$this->setParametro('moneda','moneda','varchar');
+		$this->setParametro('simbolo','simbolo','varchar');
+		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('origen','origen','varchar');
 		//$this->setParametro('estado_reg','estado_reg','varchar');
 		//$this->setParametro('fecha_reg','fecha_reg','date');
 		

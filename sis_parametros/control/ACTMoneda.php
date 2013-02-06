@@ -4,7 +4,7 @@ class ACTMoneda extends ACTbase{
 	function listarMoneda(){
 
 		// parametros de ordenacion por defecto
-		$this->objParam->defecto('ordenacion','moneda');
+		$this->objParam->defecto('ordenacion','nombre');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

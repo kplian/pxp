@@ -491,3 +491,22 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 /***********************************F-SCP-FRH-PARAM-0-04/02/2013*****************************************/
 
+/***********************************I-SCP-FRH-PARAM-0-05/02/2013****************************************/
+drop table param.tmoneda cascade;
+
+-- Structure for table tmoneda (OID = 3377175) : 
+
+CREATE TABLE param.tmoneda (
+    id_moneda serial NOT NULL,
+    nombre varchar(50),
+    simbolo varchar(5),
+    origen  varchar(20),
+    prioridad integer,
+    tipo_actualizacion varchar(30)    
+    
+)
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+--CONSTRAINT pk_tmoneda__id_moneda PRIMARY KEY (id_moneda) --esta linea no se puede agregar debido al problema con el archivo dependencias
+
+/***********************************F-SCP-FRH-PARAM-0-05/02/2013*****************************************/
