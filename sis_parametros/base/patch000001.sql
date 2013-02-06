@@ -109,7 +109,7 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 --
 CREATE TABLE param.tmoneda (
     id_moneda serial NOT NULL,
-    moneda varchar(30),
+    moneda varchar(300),
     codigo varchar(5),    
     tipo_moneda varchar(25)
 )
@@ -490,4 +490,17 @@ CREATE TABLE param.tdepto (
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
 /***********************************F-SCP-FRH-PARAM-0-04/02/2013*****************************************/
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
+
+ALTER TABLE param.tmoneda
+  ALTER COLUMN moneda TYPE VARCHAR(300) COLLATE pg_catalog."default";
+  
+  ALTER TABLE param.tempresa
+  ADD COLUMN codigo TYPE VARCHAR(100) COLLATE pg_catalog."default";
+
+
+/***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 

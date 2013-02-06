@@ -1,62 +1,45 @@
 <?php
+/**
+*@package pXP
+*@file gen-ACTGestion.php
+*@author  (admin)
+*@date 05-02-2013 09:56:59
+*@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+*/
+
 class ACTGestion extends ACTbase{    
-
+			
 	function listarGestion(){
+		$this->objParam->defecto('ordenacion','id_gestion');
 
-		// parametros de ordenacion por defecto
-		$this->objParam->defecto('ordenacion','gestion');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		
-		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
-			$this->objReporte=new Reporte($this->objParam, $this);
-			$this->res=$this->objReporte->generarReporteListado('MODGestion','listarGestion');
-		}
-		else {
-			$this->objFunSeguridad=$this->create('MODGestion');
-			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarGestion();
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODGestion','listarGestion');
+		} else{
+			$this->objFunc=$this->create('MODGestion');
 			
+			$this->res=$this->objFunc->listarGestion($this->objParam);
 		}
-		
 		$this->res->imprimirRespuesta($this->res->generarJson());
-		
-		
 	}
-	
-	function guardarGestion(){
-	
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODGestion');
-		
-		//preguntamos si se debe insertar o modificar 
+				
+	function insertarGestion(){
+		$this->objFunc=$this->create('MODGestion');	
 		if($this->objParam->insertar('id_gestion')){
-
-			//ejecuta el metodo de insertar de la clase MODPersona a travez 
-			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->insertarGestion();			
+			$this->res=$this->objFunc->insertarGestion($this->objParam);			
+		} else{			
+			$this->res=$this->objFunc->modificarGestion($this->objParam);
 		}
-		else{	
-			//ejecuta el metodo de modificar persona de la clase MODPersona a travez 
-			//de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->modificarGestion();
-		}
-		
-		//imprime respuesta en formato JSON
 		$this->res->imprimirRespuesta($this->res->generarJson());
-
+	}
+						
+	function eliminarGestion(){
+			$this->objFunc=$this->create('MODGestion');	
+		$this->res=$this->objFunc->eliminarGestion($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			
-	function eliminarGestion(){
-		
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad=$this->create('MODGestion');	
-		$this->res=$this->objFunSeguridad->eliminarGestion();
-		$this->res->imprimirRespuesta($this->res->generarJson());
-
-	}
-	
-	
-
 }
 
 ?>
