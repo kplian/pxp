@@ -28,14 +28,14 @@ if(!isset($_SESSION["_SESION"])){
 ?>
 <html lang="es">
 <head>
- <title>KPLIAN - WEB</title>
+ <title>KPLIAN - GEMAN</title>
 	<meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />	
 	<meta name="language" content="es"/>
 	<meta name="author" content="Rensi Arteaga Copari" />
 	<meta name="subject" content="rensi4rn@gmail.com" />
 <meta name="application-name" content="TI Capacitación - Diplomado: Fundamentos de HTML5"/>
 <meta name="msapplication-window" content="width=1024;height=768"/>
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="../../../lib/images/favicon.ico" />
 
 	  <!-- overrides to base library  -->
  <link rel="stylesheet" type="text/css" href="../../../lib/ux/statusbar/css/statusbar.css" />

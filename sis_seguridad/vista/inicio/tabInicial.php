@@ -21,8 +21,7 @@ constructor: function(config){}
 <table width="100%" border="0" bgcolor="#FFFFFF"  height="100%" background="../../../sis_seguridad/vista/inicio/logos/logistica.jpg">  
   
   <tr height="70%">
-    <!--<td colspan="2"><div align="center"><img src="../../../sis_seguridad/vista/inicio/logos/image001.gif" width="347" height="200" /></div></td>
-  -->
+    <td colspan="2"><div align="center"><img src="../../../sis_seguridad/vista/inicio/logos/image001.gif" width="347" height="200" /></div></td>
   </tr>
   <tr>
    
