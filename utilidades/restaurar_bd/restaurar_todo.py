@@ -116,6 +116,8 @@ url.append(os.path.dirname(__file__) + '/../../sis_parametros/')
 url.append(os.path.dirname(__file__) + '/../../sis_generador/')
 #url orga
 url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
+#url WF
+url.append(os.path.dirname(__file__) + '/../../sis_workflow/')
 
 ####RECUPERAR SISTEMAS ADICIONALES
 try:
