@@ -190,3 +190,9 @@
 .bcancelfile {
 	background-image:url(dibu_cancel_file.png) !important;
 }
+.btag_deny {
+	background-image:url(dibu_tag_deny.png) !important;
+}
+.btag_accept {
+	background-image:url(dibu_tag_accept.png) !important;
+}

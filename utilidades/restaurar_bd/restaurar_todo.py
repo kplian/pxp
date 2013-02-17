@@ -116,6 +116,8 @@ url.append(os.path.dirname(__file__) + '/../../sis_parametros/')
 url.append(os.path.dirname(__file__) + '/../../sis_generador/')
 #url orga
 url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
+#url WF
+url.append(os.path.dirname(__file__) + '/../../sis_workflow/')
 
 ####RECUPERAR SISTEMAS ADICIONALES
 try:
@@ -173,6 +175,6 @@ execute_script(url, 'dependencies',f_log)
 command = 'psql '+ db + ' -c  \'select pxp.f_update_sequences()\''
 for line in run_command(command):
 	f_log.write(line)
-print 'Se ha generado un log de la restauracion (/tmp/log_restauracion_bd.log)' 	
+print 'Se ha generado un log de la restauracion (/tmp/log_restaurar_bd.log)' 	
 f_log.close()
 

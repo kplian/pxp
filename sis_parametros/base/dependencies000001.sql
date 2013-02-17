@@ -309,3 +309,12 @@ ALTER TABLE ONLY param.tdepto_uo
 
 
 /***********************************F-DEP-FRH-PARAM-0-04/02/2013*****************************************/
+
+/***********************************I-DEP-GSS-PARAM-0-14/02/2013*****************************************/
+
+DROP INDEX param.tinstitucion_idx;
+
+CREATE INDEX tinstitucion_idx ON param.tinstitucion
+  USING btree (doc_id, estado_reg);
+
+/***********************************F-DEP-GSS-PARAM-0-14/02/2013*****************************************/

@@ -24,6 +24,8 @@ VALUES (7, 'sincroniza_puerto', '5432', 'puesto de sincronizacion de base de dat
 INSERT INTO pxp.variable_global (id_variable_global, variable, valor, descripcion)
 VALUES (1, 'sincronizar', 'false', 'habilita la sincronización entre base de datos');
 
+INSERT INTO pxp.variable_global (id_variable_global, variable, valor, descripcion)
+VALUES (3, 'habilitar_ime', 'false', 'habilita o deshabilita la insercion, edicion en tablas migradas');
 
 --
 -- Data for sequence pxp.variable_global_id_variable_global_seq (OID = 306546)
