@@ -15,6 +15,7 @@ TO USE IT BY FIRST TIME:
     * sis_generador           ln -s pxp/sis_generador sis_generador  (execute inside your project root folder)
     * sis_parametros          ln -s pxp/sis_parametros sis_parametros  (execute inside your project root folder)
     * sis_organigrama         ln -s pxp/sis_organigrama sis_organigrama  (execute inside your project root folder)
+    * sis_workflow	      ln -s pxp/sis_workflow sis_workflow (execute inside your project root folder)
 
    All these folders and files are inside pxp.
 5. Create a folder named "reportes_generados" inside your project root folder with write access for Apache user.
