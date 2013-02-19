@@ -500,7 +500,7 @@ ALTER TABLE param.tmoneda
   
   ALTER TABLE param.tempresa
   ADD COLUMN codigo TYPE VARCHAR(100) COLLATE pg_catalog."default";
-
-
+  
+ 
 /***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
