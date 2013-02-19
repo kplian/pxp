@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION wf.f_proceso_macro_sel (
+CREATE OR REPLACE FUNCTION wf.ft_num_tramite_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -8,10 +8,10 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Work Flow
- FUNCION: 		wf.f_proceso_macro_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.proceso_macro'
- AUTOR: 		 (admin)
- FECHA:	        19-02-2013 13:51:29
+ FUNCION: 		wf.f_num_tramite_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.tnum_tramite'
+ AUTOR: 		 (FRH)
+ FECHA:	        19-02-2013 13:51:54
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -30,39 +30,40 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'wf.f_proceso_macro_sel';
+	v_nombre_funcion = 'wf.ft_num_tramite_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'WF_PROMAC_SEL'
+ 	#TRANSACCION:  'WF_NUMTRAM_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		19-02-2013 13:51:29
+ 	#FECHA:		19-02-2013 13:51:54
 	***********************************/
 
-	if(p_transaccion='WF_PROMAC_SEL')then
+	if(p_transaccion='WF_NUMTRAM_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						promac.id_proceso_macro,
-						promac.id_subsistema,
-						promac.nombre,
-						promac.codigo,
-						promac.inicio,
-						promac.estado_reg,
-						promac.id_usuario_reg,
-						promac.fecha_reg,
-						promac.id_usuario_mod,
-						promac.fecha_mod,
+						numtram.id_num_tramite,
+						numtram.id_proceso_macro,
+						numtram.estado_reg,
+						numtram.id_gestion,
+						numtram.num_siguiente,
+						numtram.fecha_reg,
+						numtram.id_usuario_reg,
+						numtram.id_usuario_mod,
+						numtram.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        subs.nombre AS desc_subsistema	
-						from wf.tproceso_macro promac
-						inner join segu.tusuario usu1 on usu1.id_usuario = promac.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = promac.id_usuario_mod
-                        INNER JOIN segu.tsubsistema subs on subs.id_subsistema = promac.id_subsistema
-				        where  ';
+                        ges.gestion::varchar AS desc_gestion,
+                        (prom.codigo||lpad(COALESCE(numtram.num_siguiente, 0)::varchar,6,''0'')||ges.gestion)::varchar AS codificacion_siguiente                      
+						from wf.tnum_tramite numtram
+						inner join segu.tusuario usu1 on usu1.id_usuario = numtram.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = numtram.id_usuario_mod
+                        INNER JOIN param.tgestion ges on ges.id_gestion = numtram.id_gestion
+                        INNER JOIN wf.tproceso_macro prom on prom.id_proceso_macro =  numtram.id_proceso_macro
+				        WHERE  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -74,21 +75,22 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'WF_PROMAC_CONT'
+ 	#TRANSACCION:  'WF_NUMTRAM_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		19-02-2013 13:51:29
+ 	#FECHA:		19-02-2013 13:51:54
 	***********************************/
 
-	elsif(p_transaccion='WF_PROMAC_CONT')then
+	elsif(p_transaccion='WF_NUMTRAM_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_proceso_macro)
-					    from wf.tproceso_macro promac
-					    inner join segu.tusuario usu1 on usu1.id_usuario = promac.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = promac.id_usuario_mod
-                        INNER JOIN segu.tsubsistema subs on subs.id_subsistema = promac.id_subsistema
+			v_consulta:='select count(id_num_tramite)
+					    from wf.tnum_tramite numtram
+					    inner join segu.tusuario usu1 on usu1.id_usuario = numtram.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = numtram.id_usuario_mod
+                        INNER JOIN param.tgestion ges on ges.id_gestion = numtram.id_gestion
+                        INNER JOIN wf.tproceso_macro prom on prom.id_proceso_macro =  numtram.id_proceso_macro
 					    where ';
 			
 			--Definicion de la respuesta		    

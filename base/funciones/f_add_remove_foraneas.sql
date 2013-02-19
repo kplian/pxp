@@ -22,6 +22,14 @@ BEGIN
    v_tabla=lower(p_tabla);
    IF p_operacion = 'eliminar' THEN
    
+	 --si tiene datos para la tabla los elimina  
+     --para realizar un BK 
+      DELETE FROM 
+      pxp.tforenkey 
+      WHERE 
+      tabla = v_esquema||'.'||v_tabla;
+   
+   
         FOR g_registros in (Select 
                             n.nspname,
                             c.relname,
@@ -33,17 +41,9 @@ BEGIN
                                 where  pxp.f_campo_constraint(pg_catalog.pg_get_constraintdef(t.oid),0) in
                                 (select rel.relname from pg_namespace esq
                                 inner join pg_class rel on(rel.relnamespace=esq.oid)
-                                where esq.nspname=v_esquema and c.relname=v_tabla) and t.contype like 'f' 
+                                where n.nspname=v_esquema and c.relname=v_tabla) and t.contype like 'f' 
                                 order by c.relname) LOOP
-                                
-                     --si tiene datos para la tabla los elimina  
-                     --para realizar un BK 
-                      DELETE FROM 
-                      pxp.tforenkey 
-                      WHERE 
-                      tabla = v_esquema||'.'||v_tabla;
                      
-               
                       INSERT INTO 
                         pxp.tforenkey
                       (

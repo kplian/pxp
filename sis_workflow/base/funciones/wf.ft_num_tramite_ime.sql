@@ -1,13 +1,16 @@
-CREATE OR REPLACE FUNCTION "wf"."f_num_tramite_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION wf.ft_num_tramite_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.f_num_tramite_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'wf.tnum_tramite'
- AUTOR: 		 (admin)
+ AUTOR: 		 (FRH)
  FECHA:	        19-02-2013 13:51:54
  COMENTARIOS:	
 ***************************************************************************
@@ -27,10 +30,13 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_num_tramite	integer;
+    v_codigo_siguiente varchar;
+    v_cont_gestion integer;
+    v_num_siguiente integer;
 			    
 BEGIN
 
-    v_nombre_funcion = 'wf.f_num_tramite_ime';
+    v_nombre_funcion = 'wf.ft_num_tramite_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
@@ -43,6 +49,15 @@ BEGIN
 	if(p_transaccion='WF_NUMTRAM_INS')then
 					
         begin
+        	SELECT count(id_gestion)
+            INTO v_cont_gestion
+            FROM wf.tnum_tramite
+            WHERE id_gestion = v_parametros.id_gestion and estado_reg ilike 'activo';
+            
+            IF v_cont_gestion >= 1 THEN
+        		RAISE EXCEPTION 'La gestión que intenta registrar ya existe.';
+        	END IF; 
+        	
         	--Sentencia de la insercion
         	insert into wf.tnum_tramite(
 			id_proceso_macro,
@@ -57,7 +72,7 @@ BEGIN
 			v_parametros.id_proceso_macro,
 			'activo',
 			v_parametros.id_gestion,
-			v_parametros.num_siguiente,
+			COALESCE(v_parametros.num_siguiente,null),
 			now(),
 			p_id_usuario,
 			null,
@@ -65,6 +80,8 @@ BEGIN
 							
 			)RETURNING id_num_tramite into v_id_num_tramite;
 			
+            v_codigo_siguiente = wf.f_get_numero_siguiente(v_id_num_tramite);
+            
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numero de Tramite almacenado(a) con exito (id_num_tramite'||v_id_num_tramite||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_num_tramite',v_id_num_tramite::varchar);
@@ -141,7 +158,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."f_num_tramite_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

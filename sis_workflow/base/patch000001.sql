@@ -8,7 +8,9 @@ CREATE TABLE wf.ttipo_proceso (
   nombre           varchar(200), 
   tabla            varchar(100), 
   columna_llave    varchar(150), 
-  codigo           varchar(5), 
+  codigo           varchar(5),
+  CONSTRAINT uk_codigo UNIQUE(codigo),
+  CONSTRAINT uk_tipo_proceso_tipo_estado UNIQUE(id_tipo_proceso,id_tipo_estado),
   PRIMARY KEY (id_tipo_proceso)) INHERITS (pxp.tbase);
   
   
@@ -17,8 +19,10 @@ CREATE TABLE wf.ttipo_estado (
   id_tipo_proceso int4, 
   inicio          varchar(2), 
   disparador      varchar(2), 
-  nombre_estado   varchar(150), 
-  PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase);
+  nombre_estado   varchar(150),
+  tipo_asignacion varchar(255),
+  nombre_func_list varchar(255),
+  PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase); 
   
   
 CREATE TABLE wf.testructura_estado (
@@ -30,14 +34,14 @@ CREATE TABLE wf.testructura_estado (
   PRIMARY KEY (id_estructura_empresa)) INHERITS (pxp.tbase);
   
   
-CREATE TABLE wf.testado (
-  id_estado           SERIAL NOT NULL, 
+CREATE TABLE wf.testado_wf (
+  id_estado_wf           SERIAL NOT NULL, 
   id_estado_anterior int4 NOT NULL, 
   id_tipo_estado     int4 NOT NULL, 
-  id_proceso         int4 NOT NULL, 
+  id_proceso_wf         int4 NOT NULL, 
   id_funcionario     int4 NOT NULL, 
   fecha              timestamp, 
-  PRIMARY KEY (id_estado)) INHERITS (pxp.tbase);
+  PRIMARY KEY (id_estado_wf)) INHERITS (pxp.tbase);
   
   
 CREATE TABLE wf.tnum_tramite (
@@ -60,19 +64,19 @@ CREATE TABLE wf.tcolumna (
 CREATE TABLE wf.tcolumna_valor (
   id_columna_valor  SERIAL NOT NULL, 
   id_columna       int4 NOT NULL, 
-  id_proceso       int4 NOT NULL, 
+  id_proceso_wf       int4 NOT NULL, 
   valor            varchar(300), 
   PRIMARY KEY (id_columna_valor)) INHERITS (pxp.tbase);
     
   
-CREATE TABLE wf.tproceso (
-  id_proceso       SERIAL NOT NULL, 
+CREATE TABLE wf.tproceso_wf (
+  id_proceso_wf       SERIAL NOT NULL, 
   id_tipo_proceso int4 NOT NULL, 
   nro_tramite     int4, 
   tabla           varchar(100), 
   columna_llave   varchar(100), 
   valor_cl        int8, 
-  PRIMARY KEY (id_proceso)) INHERITS (pxp.tbase);
+  PRIMARY KEY (id_proceso_wf)) INHERITS (pxp.tbase);
   
   
 CREATE TABLE wf.tproceso_macro (
