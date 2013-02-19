@@ -34,7 +34,7 @@ class ReporteXLS
 		$this->docexcel->getActiveSheet()->setTitle($titulo);
 		$this->nombre_archivo=$nom_archivo;
 		$this->titulo=$titulo;
-		$this->fila=0;
+		$this->fila=1;
 		$this->equivalencias=array(0=>'A',1=>'B',2=>'C',3=>'D',4=>'E',5=>'F',6=>'G',7=>'H',8=>'I',
 								9=>'J',10=>'K',11=>'L',12=>'M',13=>'N',14=>'O',15=>'P',16=>'Q',17=>'R',
 								18=>'S',19=>'T',20=>'U',21=>'V',22=>'W',23=>'X',24=>'Y',25=>'Z',
@@ -49,33 +49,8 @@ class ReporteXLS
 		
 									
 	}
-	
-	//RCM 15-11-2011: funci�n que aumenta las etiquetas de las columnas en el array de los datos
-	function addEncabezado($tabla){
-		//Verifica si el encabezado ya fue impreso
-		if(!$this->swEncabezado){
-			//Forma el array solo de las etiquetas
-			$et=array();
-			foreach($this->columnas as $data){
-				//echo $data['label'];exit;
-				$et[0][$data['name']]=$data['label'];
-			}
 			
-			//Agrega las etiquetas al comienzo del array de datos
-			array_splice($tabla,0,0,$et);
-			
-			//Enciende la bandera notificando que ya imprimio el encabezado
-			$this->swEncabezado=1;
-		}
-		
-		//Devuelve el array
-		return $tabla;	
-	}
-	
 	function addTabla($tabla){
-		//RCM 15-11-2011: se a�ade como primera fila las etiquetas de las columnas para los encabezados en el excel
-		$tabla=$this->addEncabezado($tabla);
-		//FIN RCM
 		foreach ($tabla as $data){
 			$this->addFila($data);
 		}
