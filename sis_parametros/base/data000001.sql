@@ -294,4 +294,11 @@ select pxp.f_insert_testructura_gui ('EMP', 'PARAM');
 
 /***********************************F-DAT-RAC-PARAM-0-04/02/2013*****************************************/
 
+/***********************************I-DAT-GSS-PARAM-38-18/02/2013*****************************************/
+
+select pxp.f_insert_tgui ('Centro de Costo', 'Centro de costo', 'CCOST', 'si', 1, 'sis_parametros/vista/centro_costo/CentroCosto.php', 2, '', 'CentroCosto', 'PARAM');
+
+select pxp.f_insert_testructura_gui ('CCOST', 'PARAM');
+
+/***********************************F-DAT-GSS-PARAM-38-18/02/2013*****************************************/
 
