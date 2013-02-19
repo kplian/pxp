@@ -30,7 +30,7 @@ constructor: function(config){}
   
     	<?php echo $_SESSION['_PLANTIILA'];?>
       
-  <tr height="100%">
+  <tr height="20%">
     <td colspan="2"><div align="center"><font color="white"><a  href="http://www.kplian.com/"   TARGET="_new" >Powered by KPLIAN LTDA</a></font></div></td>
   </tr>
 </table>
