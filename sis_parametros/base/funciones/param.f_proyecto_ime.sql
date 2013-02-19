@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_proyecto_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_proyecto_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_proyecto_ime
@@ -46,13 +51,13 @@ BEGIN
         	--Sentencia de la insercion
         	insert into param.tproyecto(
 			estado_reg,
-			hidro,
+			
 			id_proyecto_cat_prog,
 			codigo_proyecto,
 			descripcion_proyecto,
 			nombre_proyecto,
 			nombre_corto,
-			id_proyecto_actif,
+		
 			codigo_sisin,
 			fecha_reg,
 			id_usuario_reg,
@@ -60,13 +65,13 @@ BEGIN
 			id_usuario_mod
           	) values(
 			'activo',
-			v_parametros.hidro,
+			
 			v_parametros.id_proyecto_cat_prog,
 			v_parametros.codigo_proyecto,
 			v_parametros.descripcion_proyecto,
 			v_parametros.nombre_proyecto,
 			v_parametros.nombre_corto,
-			v_parametros.id_proyecto_actif,
+			
 			v_parametros.codigo_sisin,
 			now(),
 			p_id_usuario,
@@ -102,7 +107,7 @@ BEGIN
 			descripcion_proyecto = v_parametros.descripcion_proyecto,
 			nombre_proyecto = v_parametros.nombre_proyecto,
 			nombre_corto = v_parametros.nombre_corto,
-			id_proyecto_actif = v_parametros.id_proyecto_actif,
+			
 			codigo_sisin = v_parametros.codigo_sisin,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario
@@ -156,7 +161,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_proyecto_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

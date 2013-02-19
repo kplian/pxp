@@ -17,7 +17,8 @@ class MODValidacion
 								'otro' => 'varchar',
 								'filtro_sql'=>'varchar',
 								'smallint'=>'smallint',
-								'int4'=>'int4');
+								'int4'=>'int4',
+								'int8'=>'int8');
 	
 	function getTipo($tipo){
 		//RAC 1/09/2011
@@ -32,7 +33,7 @@ class MODValidacion
 	}
 	
 	function validar($nombre,$valor,$tipo,$blank,$tamano,$opciones,$tipo_archivo){
-		if($tipo=='integer' || $tipo=='smallint' || $tipo=='int4'){
+		if($tipo=='integer' || $tipo=='smallint' || $tipo=='int4'|| $tipo=='int8'){
 			
 			$this->validarEntero($nombre,$valor,$blank,$tamano);
 			

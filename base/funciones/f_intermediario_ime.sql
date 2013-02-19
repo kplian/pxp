@@ -179,7 +179,7 @@ BEGIN
         
         for i in 1..(v_tamano-1) loop
             -- 3.2.1)IF si los valores son del tipo numeric o integer los espacios se insertan con valores nulos
-            IF(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4')then
+            IF(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4' or tipos[i]='int8')then
                 if(valores[i]='')THEN
                     v_consulta:=v_consulta || 'null' || ',';
                 else
@@ -204,7 +204,7 @@ BEGIN
  --        raise exception '11111  %',par_files;
         
          --encode(par_files,'escape')
-        if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4')then
+        if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8')then
             
              if(v_upload_file)THEN
                  if(valores[v_tamano]='')THEN
@@ -297,7 +297,7 @@ BEGIN
                 
                -- 4.2.2.2)IF si los valores son del tipo numeric o integer los espacios se insertan con valores nulos
                  
-                if(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4')then
+                if(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4' or tipos[i]='int8')then
                     if(valores[j][i]='')THEN
                         v_consulta:=v_consulta || 'null' || ',';
                     else
@@ -320,7 +320,7 @@ BEGIN
             
             --4.2.3) inserta el ultimo valor en la cadena de insercion para la tabla temporal
 
-            if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4')then
+            if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8')then
                 if(valores[j][v_tamano]='')THEN
                     v_consulta:=v_consulta || 'null' || ')';
                 else

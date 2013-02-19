@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_financiador_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_financiador_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_financiador_ime
@@ -47,7 +52,7 @@ BEGIN
         	insert into param.tfinanciador(
 			estado_reg,
 			nombre_financiador,
-			id_financiador_actif,
+			--id_financiador_actif,
 			descripcion_financiador,
 			codigo_financiador,
 			fecha_reg,
@@ -57,7 +62,7 @@ BEGIN
           	) values(
 			'activo',
 			v_parametros.nombre_financiador,
-			v_parametros.id_financiador_actif,
+		--	v_parametros.id_financiador_actif,
 			v_parametros.descripcion_financiador,
 			v_parametros.codigo_financiador,
 			now(),
@@ -89,7 +94,7 @@ BEGIN
 			--Sentencia de la modificacion
 			update param.tfinanciador set
 			nombre_financiador = v_parametros.nombre_financiador,
-			id_financiador_actif = v_parametros.id_financiador_actif,
+			--id_financiador_actif = v_parametros.id_financiador_actif,
 			descripcion_financiador = v_parametros.descripcion_financiador,
 			codigo_financiador = v_parametros.codigo_financiador,
 			fecha_mod = now(),
@@ -144,7 +149,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_financiador_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

@@ -97,7 +97,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		   		    grid:true,
 		   			form:true
 		 },
-				{
+			{
 			config:{
 				name: 'id_centro_costo',
 				fieldLabel: 'Centro de Costos',
@@ -126,6 +126,22 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
    			type:'ComboRec',
    			id_grupo:0,
    			filters:{pfiltro:'nombre_unidad',type:'string'},
+   		    grid:true,
+   			form:true
+	    },
+	    {
+	   		config:{
+	   				name:'id_ep',
+	   				origen:'EP',
+	   				fieldLabel:'EP',
+	   				allowBlank:true,
+	   				gdisplayField:'desc_ep',//mapea al store del grid
+	   			    gwidth:200,
+	   			    renderer:function (value, p, record){return String.format('{0}', record.data['desc_ep']);}
+	      		},
+   			type:'ComboRec',
+   			id_grupo:0,
+   			filters:{pfiltro:'ep',type:'string'},
    		    grid:true,
    			form:true
 	    },

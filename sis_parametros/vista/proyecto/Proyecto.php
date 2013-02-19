@@ -33,36 +33,6 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'hidro',
-				fieldLabel: 'Hidro',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:2
-			},
-			type:'TextField',
-			filters:{pfiltro:'proy.hidro',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'id_proyecto_cat_prog',
-				fieldLabel: 'Id Proyecto Cat Prog',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-			type:'NumberField',
-			filters:{pfiltro:'proy.id_proyecto_cat_prog',type:'numeric'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
 				name: 'codigo_proyecto',
 				fieldLabel: 'Codigo Proyecto',
 				allowBlank: false,
@@ -72,21 +42,6 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'proy.codigo_proyecto',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'descripcion_proyecto',
-				fieldLabel: 'Descripcion Proyecto',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:-5
-			},
-			type:'TextField',
-			filters:{pfiltro:'proy.descripcion_proyecto',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -123,15 +78,30 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'id_proyecto_actif',
-				fieldLabel: 'Id Proyecto Actif',
+				name: 'descripcion_proyecto',
+				fieldLabel: 'Descripcion Proyecto',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:300
+			},
+			type:'TextArea',
+			filters:{pfiltro:'proy.descripcion_proyecto',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'id_proyecto_cat_prog',
+				fieldLabel: 'Id Proyecto Cat Prog',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:4
 			},
 			type:'NumberField',
-			filters:{pfiltro:'proy.id_proyecto_actif',type:'numeric'},
+			filters:{pfiltro:'proy.id_proyecto_cat_prog',type:'numeric'},
 			id_grupo:1,
 			grid:true,
 			form:true

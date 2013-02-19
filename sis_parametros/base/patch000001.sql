@@ -496,11 +496,90 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 /***********************************I-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
 ALTER TABLE param.tmoneda
-  ALTER COLUMN moneda TYPE VARCHAR(300) COLLATE pg_catalog."default";
+  ALTER COLUMN moneda  VARCHAR(300) COLLATE pg_catalog."default";
   
   ALTER TABLE param.tempresa
-  ADD COLUMN codigo TYPE VARCHAR(100) COLLATE pg_catalog."default";
+  ADD COLUMN codigo  VARCHAR(100) COLLATE pg_catalog."default";
   
  
 /***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-21/02/2013*****************************************/
+
+CREATE VIEW param.vep(
+    id_ep,
+    estado_reg,
+    id_financiador,
+    id_prog_pory_acti,
+    id_regional,
+    sw_presto,
+    fecha_reg,
+    id_usuario_reg,
+    fecha_mod,
+    id_usuario_mod,
+    usr_reg,
+    usr_mod,
+    codigo_programa,
+    codigo_proyecto,
+    codigo_actividad,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    codigo_financiador,
+    codigo_regional,
+    nombre_financiador,
+    nombre_regional,
+    ep,
+    desc_ppa)
+AS
+  SELECT frpp.id_ep,
+         frpp.estado_reg,
+         frpp.id_financiador,
+         frpp.id_prog_pory_acti,
+         frpp.id_regional,
+         frpp.sw_presto,
+         frpp.fecha_reg,
+         frpp.id_usuario_reg,
+         frpp.fecha_mod,
+         frpp.id_usuario_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         prog.codigo_programa,
+         proy.codigo_proyecto,
+         act.codigo_actividad,
+         prog.nombre_programa,
+         proy.nombre_proyecto,
+         act.nombre_actividad,
+         fin.codigo_financiador,
+         reg.codigo_regional,
+         fin.nombre_financiador,
+         reg.nombre_regional,
+         (((((((fin.codigo_financiador::text || '-' ::text) ||
+          reg.codigo_regional::text) || '-' ::text) ||
+           prog.codigo_programa::text) || '-' ::text) ||
+            proy.codigo_proyecto::text) || '-' ::text) ||
+             act.codigo_actividad::text AS ep,
+          prog.codigo_programa||'-'||	proy.codigo_proyecto||'-'||act.codigo_actividad as desc_ppa
+  FROM param.tep frpp
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = frpp.id_usuario_reg
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = frpp.id_usuario_mod
+       JOIN param.tprograma_proyecto_acttividad ppa ON ppa.id_prog_pory_acti =
+        frpp.id_prog_pory_acti
+       JOIN param.tprograma prog ON prog.id_programa = ppa.id_programa
+       JOIN param.tproyecto proy ON proy.id_proyecto = ppa.id_proyecto
+       JOIN param.tactividad act ON act.id_actividad = ppa.id_actividad
+       JOIN param.tregional reg ON reg.id_regional = frpp.id_regional
+       JOIN param.tfinanciador fin ON fin.id_financiador = frpp.id_financiador;
+ 
+ 
+--------------- SQL ---------------
+
+ALTER TABLE param.taprobador
+  ADD COLUMN id_ep INTEGER;
+  
+       
+/***********************************F-SCP-RAC-PARAM-0-21/02/2013*****************************************/
+
+
 

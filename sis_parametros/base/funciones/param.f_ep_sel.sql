@@ -1,7 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_ep_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION param.f_ep_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_ep_sel
@@ -41,22 +47,32 @@ BEGIN
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						frpp.id_ep,
-						frpp.estado_reg,
-						frpp.id_financiador,
-						frpp.id_prog_pory_acti,
-						frpp.id_regional,
-						frpp.sw_presto,
-						frpp.fecha_reg,
-						frpp.id_usuario_reg,
-						frpp.fecha_mod,
-						frpp.id_usuario_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
-						from param.tep frpp
-						inner join segu.tusuario usu1 on usu1.id_usuario = frpp.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = frpp.id_usuario_mod
-				        where  ';
+						id_ep,
+                        estado_reg,
+                        id_financiador,
+                        id_prog_pory_acti,
+                        id_regional,
+                        sw_presto,
+                        fecha_reg,
+                        id_usuario_reg,
+                        fecha_mod,
+                        id_usuario_mod,
+                        usr_reg,
+                        usr_mod,
+                        codigo_programa,
+                        codigo_proyecto,
+                        codigo_actividad,
+                        nombre_programa,
+                        nombre_proyecto,
+                        nombre_actividad,
+                        codigo_financiador,
+                        codigo_regional,
+                        nombre_financiador,
+                        nombre_regional,
+                        ep,
+                        desc_ppa
+                        from param.vep ep
+						where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -79,10 +95,8 @@ BEGIN
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_ep)
-					    from param.tep frpp
-					    inner join segu.tusuario usu1 on usu1.id_usuario = frpp.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = frpp.id_usuario_mod
-					    where ';
+					     from param.vep ep
+                         where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -107,7 +121,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_ep_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
