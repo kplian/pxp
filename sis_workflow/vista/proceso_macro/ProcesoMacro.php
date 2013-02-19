@@ -34,14 +34,17 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'id_subsistema',
-				fieldLabel: 'id_subsistema',
+				origen:'SUBSISTEMA',
+	   			tinit:true,
+				fieldLabel: 'Sistema',
+				gdisplayField:'desc_subsistema',//mapea al store del grid
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 150,
-				maxLength:4
+				gwidth: 200,
+				renderer:function (value, p, record){return String.format('{0}', record.data['desc_subsistema']);}
 			},
-			type:'NumberField',
-			filters:{pfiltro:'promac.id_subsistema',type:'numeric'},
+			type:'ComboRec',
+			filters:{pfiltro:'subsis.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -51,8 +54,8 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 				name: 'nombre',
 				fieldLabel: 'Nombre',
 				allowBlank: true,
-				anchor: '80%',
-				gwidth: 150,
+				anchor: '60%',
+				gwidth: 200,
 				maxLength:200
 			},
 			type:'TextField',
@@ -79,15 +82,28 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'inicio',
-				fieldLabel: 'Inicio',
+				fieldLabel: 'Inicio del proceso (Nodo inicial)',
 				allowBlank: true,
 				anchor: '20%',
-				gwidth: 100,
-				maxLength:2
+				gwidth: 50,
+				maxLength:2,
+				emptyText:'...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio',       		    
+       		   // displayField: 'descestilo',
+       		    store:['SI','NO']
 			},
-			type:'TextField',
-			filters:{pfiltro:'promac.inicio',type:'string'},
+			type:'ComboBox',
+			//filters:{pfiltro:'promac.inicio',type:'string'},
 			id_grupo:1,
+			filters:{	
+	       		         type: 'list',
+	       				 dataIndex: 'size',
+	       				 options: ['SI','NO'],	
+	       		 	},
 			grid:true,
 			form:true
 		},
@@ -118,7 +134,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'usu1.cuenta',type:'string'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
@@ -134,7 +150,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			type:'DateField',
 			filters:{pfiltro:'promac.fecha_reg',type:'date'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
@@ -149,7 +165,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'usu2.cuenta',type:'string'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
@@ -165,7 +181,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			type:'DateField',
 			filters:{pfiltro:'promac.fecha_mod',type:'date'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		}
 	],
@@ -188,6 +204,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'desc_subsistema', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -195,7 +212,15 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:true,
+	tabsouth:[{
+		  url:'../../../sis_workflow/vista/num_tramite/NumTramite.php',
+		  title:'Numero de tramite', 
+		  height:'35%',	//altura de la ventana hijo
+		  //width:'50%',		//ancho de la ventana hjo
+		  cls:'NumTramite'
+		}		
+	]
 	}
 )
 </script>

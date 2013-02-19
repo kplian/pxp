@@ -16,8 +16,10 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.NumTramite.superclass.constructor.call(this,config);
+		this.grid.getTopToolbar().disable();
+		this.grid.getBottomToolbar().disable();
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		//this.load({params:{start:0, limit:50}})
 	},
 			
 	Atributos:[
@@ -33,18 +35,12 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				labelSeparator:'',
 				name: 'id_proceso_macro',
-				fieldLabel: 'id_proceso_macro',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
+				inputType:'hidden'
 			},
-			type:'NumberField',
-			filters:{pfiltro:'numtram.id_proceso_macro',type:'numeric'},
-			id_grupo:1,
-			grid:true,
-			form:true
+			type:'Field',
+			form:true 
 		},
 		{
 			config:{
@@ -58,20 +54,23 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'numtram.estado_reg',type:'string'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
 			config:{
 				name: 'id_gestion',
-				fieldLabel: 'id_gestion',
+				origen:'GESTION',
+	   			tinit:true,
+				fieldLabel: 'Gestion',
+				gdisplayField:'desc_gestion',//mapea al store del grid
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
-				maxLength:8
+				gwidth: 200,
+				renderer:function (value, p, record){return String.format('{0}', record.data['desc_gestion']);}
 			},
-			type:'TextField',
-			filters:{pfiltro:'numtram.id_gestion',type:'string'},
+			type:'ComboRec',
+			filters:{pfiltro:'ges.gestion',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -79,7 +78,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'num_siguiente',
-				fieldLabel: 'num_siguiente',
+				fieldLabel: 'Número Siguiente',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -89,7 +88,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'numtram.num_siguiente',type:'string'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:false
 		},
 		{
 			config:{
@@ -104,7 +103,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 			type:'DateField',
 			filters:{pfiltro:'numtram.fecha_reg',type:'date'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
@@ -119,7 +118,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'usu1.cuenta',type:'string'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
@@ -134,7 +133,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'usu2.cuenta',type:'string'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		},
 		{
@@ -150,7 +149,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 			type:'DateField',
 			filters:{pfiltro:'numtram.fecha_mod',type:'date'},
 			id_grupo:1,
-			grid:true,
+			grid:false,
 			form:false
 		}
 	],
@@ -160,11 +159,23 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 	ActDel:'../../sis_workflow/control/NumTramite/eliminarNumTramite',
 	ActList:'../../sis_workflow/control/NumTramite/listarNumTramite',
 	id_store:'id_num_tramite',
+	loadValoresIniciales:function()
+	{
+		Phx.vista.NumTramite.superclass.loadValoresIniciales.call(this);
+		this.getComponente('id_proceso_macro').setValue(this.maestro.id_proceso_macro);		
+	},
+	
+	onReloadPage:function(m)
+	{
+		this.maestro=m;						
+		this.store.baseParams={id_proceso_macro:this.maestro.id_proceso_macro};
+		this.load({params:{start:0, limit:50}});			
+	},
 	fields: [
 		{name:'id_num_tramite', type: 'numeric'},
 		{name:'id_proceso_macro', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
-		{name:'id_gestion', type: 'string'},
+		{name:'id_gestion', type: 'integer'},
 		{name:'num_siguiente', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_reg', type: 'numeric'},
@@ -172,6 +183,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'desc_gestion', type: 'string'},
 		
 	],
 	sortInfo:{

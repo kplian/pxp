@@ -43,8 +43,8 @@ CREATE TABLE wf.testado (
 CREATE TABLE wf.tnum_tramite (
   id_num_tramite    SERIAL NOT NULL, 
   id_proceso_macro int4 NOT NULL, 
-  id_gestion       int8, 
-  num_siguiente    int8, 
+  id_gestion       int4 NOT NULL, 
+  num_siguiente    int4, 
   PRIMARY KEY (id_num_tramite)) INHERITS (pxp.tbase);
      
   
@@ -75,7 +75,7 @@ CREATE TABLE wf.tproceso (
   PRIMARY KEY (id_proceso)) INHERITS (pxp.tbase);
   
   
-CREATE TABLE wf.proceso_macro (
+CREATE TABLE wf.tproceso_macro (
   id_proceso_macro  SERIAL NOT NULL, 
   id_subsistema    int4, 
   codigo           varchar(10), 

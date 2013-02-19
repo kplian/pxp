@@ -44,7 +44,7 @@ BEGIN
 					
         begin
         	--Sentencia de la insercion
-        	insert into wf.proceso_macro(
+        	insert into wf.tproceso_macro(
 			id_subsistema,
 			nombre,
 			codigo,
@@ -87,7 +87,7 @@ BEGIN
 
 		begin
 			--Sentencia de la modificacion
-			update wf.proceso_macro set
+			update wf.tproceso_macro set
 			id_subsistema = v_parametros.id_subsistema,
 			nombre = v_parametros.nombre,
 			codigo = v_parametros.codigo,
@@ -116,7 +116,7 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from wf.proceso_macro
+			delete from wf.tproceso_macro
             where id_proceso_macro=v_parametros.id_proceso_macro;
                
             --Definicion de la respuesta

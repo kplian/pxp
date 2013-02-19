@@ -11,8 +11,12 @@ class ACTNumTramite extends ACTbase{
 			
 	function listarNumTramite(){
 		$this->objParam->defecto('ordenacion','id_num_tramite');
-
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		if($this->objParam->getParametro('id_proceso_macro')!=''){
+			$this->objParam->addFiltro("prom.id_proceso_macro = ".$this->objParam->getParametro('id_proceso_macro'));	
+		}
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODNumTramite','listarNumTramite');
