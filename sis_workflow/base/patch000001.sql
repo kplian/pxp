@@ -83,6 +83,16 @@ CREATE TABLE wf.proceso_macro (
   inicio           varchar(2), 
   PRIMARY KEY (id_proceso_macro)) INHERITS (pxp.tbase);
   
-/*****************************F-SCP-FRH-WF-0-15/02/2013*************/
+/*****************************F-SCP-FRH-WF-0-15/02/2013**********************************************/
 
 
+/***********************************I-SCP-FRH-WF-0-18/02/2013****************************************/
+
+CREATE TABLE wf.tfuncionario_tipo_estado (
+  id_funcionario_tipo_estado  SERIAL NOT NULL, 
+  id_tipo_estado             int4 NOT NULL,
+  id_funcionario             int4,   
+  id_depto                   int4, 
+  PRIMARY KEY (id_funcionario_tipo_estado)); 
+
+/***********************************F-SCP-FRH-WF-0-18/02/2013****************************************/

@@ -32,13 +32,20 @@ VALUES ('WF', 'Work Flow', '2013-02-15', 'WF', 'activo', 'workflow', NULL);
 
 select pxp.f_insert_tgui ('Work Flow', '', 'WF', 'si', 1, '', 1, '', '', 'WF');
 
+select pxp.f_insert_tgui ('Proceso Macro', 'Proceso Macro', 'WF.1', 'si', 1, 'sis_workflow/vista/proceso_macro/ProcesoMacro.php', 2, '', 'ProcesoMacro', 'WF');
+
 -------------------------------------
 select pxp.f_insert_testructura_gui ('WF', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('WF.1', 'WF');
 
 
 ----------------------------------------------
 --  DEF DE FUNCIONES
 ----------------------------------------------
+select pxp.f_insert_tfuncion ('wf.f_num_tramite_ime', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_num_tramite_sel', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_proceso_macro_ime', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_proceso_macro_sel', 'Funcion      ', 'WF');
 
 
 /********************************************F-DAT-FRH-WF-0-15/02/2013**********************************************/
