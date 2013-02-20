@@ -26,12 +26,12 @@ CREATE TABLE wf.ttipo_estado (
   
   
 CREATE TABLE wf.testructura_estado (
-  id_estructura_empresa  SERIAL NOT NULL, 
+  id_estructura_estado  SERIAL NOT NULL, 
   id_tipo_estado_padre  int4 NOT NULL, 
   id_tipo_estado_hijo   int4 NOT NULL, 
   prioridad             int4, 
   regla                 varchar(1000), 
-  PRIMARY KEY (id_estructura_empresa)) INHERITS (pxp.tbase);
+  PRIMARY KEY (id_estructura_estado)) INHERITS (pxp.tbase);
   
   
 CREATE TABLE wf.testado_wf (
