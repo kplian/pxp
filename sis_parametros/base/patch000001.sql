@@ -493,7 +493,7 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 
 
-/***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
+/***********************************I-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
 ALTER TABLE param.tmoneda
   ALTER COLUMN moneda TYPE VARCHAR(300) COLLATE pg_catalog."default";

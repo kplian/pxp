@@ -102,7 +102,7 @@ Phx.vista.Empresa=Ext.extend(Phx.gridInterfaz,{
 				renderer:function (value, p, record){	
 						var splittedArray = record.data['logo'].split('.');
 						if (splittedArray[splittedArray.length - 1] != "") {
-							return  String.format('{0}',"<div style='text-align:center'><img src = '../../../control/_archivos/"+ record.data['logo']+"' align='center' /></div>");
+							return  String.format('{0}',"<div style='text-align:center'><img src = '../../../control/_archivos/"+ record.data['logo']+"?date ="+Date('H:i:s')+"  ' align='center' /></div>");
 						} else {
 							return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/NoPerfilImage.jpg' align='center' width='70' height='70'/></div>");
 						}
