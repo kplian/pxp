@@ -144,7 +144,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				renderer: function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_estado']);
 				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Inicio: <strong>{inicio}</strong> </div></tpl>'
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p>Inicio: <strong>{inicio}</strong> </div></tpl>'
 			},
 			type: 'ComboBox',
 			id_grupo: 0,

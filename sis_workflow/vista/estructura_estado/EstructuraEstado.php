@@ -48,7 +48,7 @@ Phx.vista.EstructuraEstado=Ext.extend(Phx.gridInterfaz,{
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_tipo_estado', 'nombre_estado', 'inicio'],
+					fields: ['id_tipo_estado', 'nombre_estado', 'inicio', 'disparador'],
 					// turn on remote sorting
 					remoteSort: true,
 					baseParams: {par_filtro: 'tipes.nombre_estado'}
@@ -67,7 +67,7 @@ Phx.vista.EstructuraEstado=Ext.extend(Phx.gridInterfaz,{
 				renderer: function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_estado_padre']);
 				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p>Inicio: <strong>{inicio}</strong> </div></tpl>'
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p><em>Inicio: <strong>{inicio}</strong>  Disparador: <strong>{disparador}</strong></em></div></tpl>'
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
@@ -114,7 +114,7 @@ Phx.vista.EstructuraEstado=Ext.extend(Phx.gridInterfaz,{
 				renderer: function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_estado_hijo']);
 				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p>Inicio: <strong>{inicio}</strong> </div></tpl>'
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p><em>Inicio: <strong>{inicio}</strong></em></div></tpl>'
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
