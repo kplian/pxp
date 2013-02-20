@@ -498,9 +498,8 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 ALTER TABLE param.tmoneda
   ALTER COLUMN moneda TYPE VARCHAR(300) COLLATE pg_catalog."default";
   
-  ALTER TABLE param.tempresa
-  ADD COLUMN codigo TYPE VARCHAR(100) COLLATE pg_catalog."default";
+ALTER TABLE param.tempresa
+  ADD COLUMN codigo VARCHAR(100) COLLATE pg_catalog."default";
   
- 
 /***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
