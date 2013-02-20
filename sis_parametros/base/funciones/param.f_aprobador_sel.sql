@@ -1,7 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_aprobador_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION param.f_aprobador_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_aprobador_sel
@@ -57,11 +63,22 @@ BEGIN
 						apro.fecha_mod,
 						apro.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
-						from param.taprobador apro
+						usu2.cuenta as usr_mod,
+                        cc.codigo_cc as desc_cc,
+                        uo.codigo ||''-''||  uo.nombre_unidad as desc_uo,
+                        apro.id_ep,
+                        ep.ep as desc_ep,
+                        fun.desc_funcionario1 as desc_funcionario,
+                        sub.nombre as desc_subsistema
+                       	from param.taprobador apro
 						inner join segu.tusuario usu1 on usu1.id_usuario = apro.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = apro.id_usuario_mod
-				        where  ';
+						inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
+                         inner join segu.tsubsistema sub on sub.id_subsistema = apro.id_subsistema
+                        left join orga.tuo uo on uo.id_uo = apro.id_uo
+                        left join param.vep ep on ep.id_ep = apro.id_ep
+                        left join param.vcentro_costo cc on cc.id_centro_costo = apro.id_centro_costo
+                        left join segu.tusuario usu2 on usu2.id_usuario = apro.id_usuario_mod
+                        where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -85,9 +102,14 @@ BEGIN
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_aprobador)
 					    from param.taprobador apro
-					    inner join segu.tusuario usu1 on usu1.id_usuario = apro.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = apro.id_usuario_mod
-					    where ';
+						inner join segu.tusuario usu1 on usu1.id_usuario = apro.id_usuario_reg
+						inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
+                         inner join segu.tsubsistema sub on sub.id_subsistema = apro.id_subsistema
+                        left join orga.tuo uo on uo.id_uo = apro.id_uo
+                        left join param.vep ep on ep.id_ep = apro.id_ep
+                        left join param.vcentro_costo cc on cc.id_centro_costo = apro.id_centro_costo
+                        left join segu.tusuario usu2 on usu2.id_usuario = apro.id_usuario_mod
+                         where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -112,7 +134,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_aprobador_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

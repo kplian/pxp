@@ -282,6 +282,27 @@ FROM ((param.tproveedor provee LEFT JOIN segu.vpersona person ON
 WHERE ((provee.estado_reg)::text = 'activo'::text);
 
 
+
+--
+-- Definition for index fk_tcorrelativo__id_depto (OID = 308838) : 
+--
+ALTER TABLE ONLY param.tcorrelativo
+    ADD CONSTRAINT fk_tcorrelativo__id_depto
+    FOREIGN KEY (id_depto) REFERENCES param.tdepto(id_depto);
+
+--
+-- Definition for index fk_tcorrelativo__id_uo (OID = 308858) : 
+--
+ALTER TABLE ONLY param.tcorrelativo
+    ADD CONSTRAINT fk_tcorrelativo__id_uo
+    FOREIGN KEY (id_uo) REFERENCES orga.tuo(id_uo);
+--
+-- Definition for index tdepto_usuario_tdepto_usuairo_pkey (OID = 429272) : 
+--
+
+
+
+
 /***********************************F-DEP-RAC-PARAM-0-04/01/2013*****************************************/
 
 /***********************************I-DEP-FRH-PARAM-0-04/02/2013*****************************************/

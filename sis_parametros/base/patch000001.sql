@@ -595,6 +595,8 @@ CREATE TABLE param.tcentro_costo(
     
 --------------- SQL ---------------
 
+--------------- SQL ---------------
+
 CREATE OR REPLACE VIEW param.vcentro_costo(
     id_centro_costo,
     estado_reg,
@@ -610,7 +612,8 @@ CREATE OR REPLACE VIEW param.vcentro_costo(
     codigo_uo,
     nombre_uo,
     ep,
-    gestion)
+    gestion,
+    codigo_cc)
 AS
   SELECT cec.id_centro_costo,
          cec.estado_reg,
@@ -626,13 +629,15 @@ AS
          uo.codigo AS codigo_uo,
          uo.nombre_unidad AS nombre_uo,
          ep.ep,
-         ges.gestion
+         ges.gestion,
+         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
+          ::text) || ges.gestion) || ')' ::text AS codigo_cc
   FROM param.tcentro_costo cec
        JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
        LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
        JOIN param.vep ep ON ep.id_ep = cec.id_ep
        JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;    
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;  
   
   
        

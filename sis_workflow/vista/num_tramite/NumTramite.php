@@ -206,8 +206,9 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bedit: false,
-	bdel:true,
-	bsave:true
+	bdel:false,
+	bnew:false,
+	bsave:false
 	}
 )
 </script>

@@ -1,19 +1,13 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION param.f_centro_costo_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+CREATE OR REPLACE FUNCTION "param"."f_periodo_sel"(	
+				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
+RETURNS character varying AS
+$BODY$
 /**************************************************************************
  SISTEMA:		Parametros Generales
- FUNCION: 		param.f_centro_costo_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tcentro_costo'
+ FUNCION: 		param.f_periodo_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tperiodo'
  AUTOR: 		 (admin)
- FECHA:	        19-02-2013 22:53:59
+ FECHA:	        20-02-2013 04:11:23
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -32,39 +26,37 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'param.f_centro_costo_sel';
+	v_nombre_funcion = 'param.f_periodo_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CEC_SEL'
+ 	#TRANSACCION:  'PM_PER_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		19-02-2013 22:53:59
+ 	#FECHA:		20-02-2013 04:11:23
 	***********************************/
 
-	if(p_transaccion='PM_CEC_SEL')then
+	if(p_transaccion='PM_PER_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						 id_centro_costo,
-                          estado_reg,
-                          id_ep,
-                          id_gestion,
-                          id_uo,
-                          id_usuario_reg,
-                          fecha_reg,
-                          id_usuario_mod,
-                          fecha_mod,
-                          usr_reg,
-                          usr_mod,
-                          codigo_uo,
-                          nombre_uo,
-                          ep,
-                          gestion,
-                          codigo_cc	
-						from param.vcentro_costo cec
-						 where  ';
+						per.id_periodo,
+						per.id_gestion,
+						per.fecha_ini,
+						per.periodo,
+						per.estado_reg,
+						per.fecha_fin,
+						per.fecha_reg,
+						per.id_usuario_reg,
+						per.fecha_mod,
+						per.id_usuario_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod	
+						from param.tperiodo per
+						inner join segu.tusuario usu1 on usu1.id_usuario = per.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = per.id_usuario_mod
+				        where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -76,19 +68,21 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CEC_CONT'
+ 	#TRANSACCION:  'PM_PER_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		19-02-2013 22:53:59
+ 	#FECHA:		20-02-2013 04:11:23
 	***********************************/
 
-	elsif(p_transaccion='PM_CEC_CONT')then
+	elsif(p_transaccion='PM_PER_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_centro_costo)
-					    from param.vcentro_costo cec
-                        where ';
+			v_consulta:='select count(id_periodo)
+					    from param.tperiodo per
+					    inner join segu.tusuario usu1 on usu1.id_usuario = per.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = per.id_usuario_mod
+					    where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -113,9 +107,7 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE
 COST 100;
+ALTER FUNCTION "param"."f_periodo_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

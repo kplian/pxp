@@ -35,7 +35,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'id_subsistema',
 				origen:'SUBSISTEMA',
-	   			tinit:true,
+	   			tinit:false,
 				fieldLabel: 'Sistema',
 				gdisplayField:'desc_subsistema',//mapea al store del grid
 				allowBlank: true,

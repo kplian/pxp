@@ -232,6 +232,13 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_gestion',
 		direction: 'ASC'
 	},
+	
+	east:{
+		  url:'../../../sis_parametros/vista/periodo/Periodo.php',
+		  title:'Periodos', 
+		  width:400,
+		  cls:'Periodo'
+		},
 	bdel:true,
 	bsave:true
 	}

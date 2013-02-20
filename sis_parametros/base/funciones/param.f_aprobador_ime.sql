@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_aprobador_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_aprobador_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_aprobador_ime
@@ -43,6 +48,29 @@ BEGIN
 	if(p_transaccion='PM_APRO_INS')then
 					
         begin
+        
+           
+          IF v_parametros.fecha_fin is not null THEN
+          
+             IF v_parametros.fecha_fin < v_parametros.fecha_ini THEN
+             
+               raise exception 'La fecha de finalización no puede ser anterior a la fecha de inicio';
+               
+             END IF;
+          
+          END IF;
+          
+          
+           IF v_parametros.monto_max is not null THEN
+          
+             IF v_parametros.monto_max < v_parametros.monto_min THEN
+             
+               raise exception 'El monto maximo no puede ser menor al monto mínimo';
+               
+             END IF;
+          
+          END IF;
+        
         	--Sentencia de la insercion
         	insert into param.taprobador(
 			estado_reg,
@@ -58,7 +86,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            id_ep
           	) values(
 			'activo',
 			v_parametros.id_centro_costo,
@@ -73,7 +102,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.id_ep
 							
 			)RETURNING id_aprobador into v_id_aprobador;
 			
@@ -96,6 +126,27 @@ BEGIN
 	elsif(p_transaccion='PM_APRO_MOD')then
 
 		begin
+          IF v_parametros.fecha_fin is not null THEN
+          
+             IF v_parametros.fecha_fin < v_parametros.fecha_ini THEN
+             
+               raise exception 'La fecha de finalizacion no puede ser anterior a la fecha de inicio';
+               
+             END IF;
+          
+          END IF;
+          
+           IF v_parametros.monto_max is not null THEN
+          
+             IF v_parametros.monto_max < v_parametros.monto_min THEN
+             
+               raise exception 'El monto maximo no puede ser menor al monto mínimo';
+               
+             END IF;
+          
+          END IF;
+        
+        
 			--Sentencia de la modificacion
 			update param.taprobador set
 			id_centro_costo = v_parametros.id_centro_costo,
@@ -108,7 +159,8 @@ BEGIN
 			fecha_fin = v_parametros.fecha_fin,
 			id_subsistema = v_parametros.id_subsistema,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            id_ep = v_parametros.id_ep
 			where id_aprobador=v_parametros.id_aprobador;
                
 			--Definicion de la respuesta
@@ -159,7 +211,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_aprobador_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

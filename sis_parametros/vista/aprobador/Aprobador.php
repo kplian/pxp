@@ -33,54 +33,22 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name:'id_subsistema',
-				fieldLabel:'Subsistema',
-				allowBlank:false,
-				emptyText:'Subsistema...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_seguridad/control/Subsistema/listarSubsistema',
-					id: 'id_subsistema',
-					root: 'datos',
-					sortInfo:{
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_subsistema','nombre','codigo'],
-					// turn on remote sorting
-					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
-				}),
-				valueField: 'id_subsistema',
-				displayField: 'codigo',
-				gdisplayField:'desc_subsistema',
-				hiddenName: 'id_subsistema',
-				forceSelection:true,
-				typeAhead: true,
-    			triggerAction: 'all',
-    			lazyRender:true,
-				mode:'remote',
-				pageSize:50,
-				queryDelay:500,
-				width:210,
-				gwidth:220,
-				minChars:2,
-				minListWidth:'100%',
-				renderer: function (value, p, record){
-					return String.format('{0}', record.data['desc_subsistema']
-					)}
+				name: 'id_subsistema',
+				origen:'SUBSISTEMA',
+	   			tinit:false,
+				fieldLabel: 'Sistema',
+				gdisplayField:'desc_subsistema',//mapea al store del grid
+				allowBlank: true,
+				gwidth: 200,
+				renderer:function (value, p, record){return String.format('{0}', record.data['desc_subsistema']);}
 			},
-			type:'ComboBox',
+			type:'ComboRec',
+			filters:{pfiltro:'sub.nombre',type:'string'},
 			id_grupo:0,
-			filters:{	
-		        pfiltro:'subsis.nombre',
-				type:'string'
-			},
-			
 			grid:true,
 			form:true
 		},
-		 {
+		{
 		   			config:{
 		       		    name:'id_funcionario',
 		   				origen:'FUNCIONARIO',
@@ -93,22 +61,41 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		       	     },
 		   			type:'ComboRec',//ComboRec
 		   			id_grupo:0,
-		   			filters:{pfiltro:'funcio.desc_funcionario1',type:'string'},
+		   			filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
 		   		    grid:true,
 		   			form:true
 		 },
+	    {
+	   		config:{
+	   				name:'id_ep',
+	   				origen:'EP',
+	   				fieldLabel:'EP',
+	   				allowBlank:true,
+	   				valueField: 'id_ep',
+	   				gdisplayField:'desc_ep',//mapea al store del grid
+	   			    gwidth:200,
+	   			    renderer:function (value, p, record){return String.format('{0}', record.data['desc_ep']);}
+	      		},
+   			type:'ComboRec',
+   			id_grupo:0,
+   			filters:{pfiltro:'ep.ep',type:'string'},
+   		    grid:true,
+   			form:true
+	    },
 			{
 			config:{
 				name: 'id_centro_costo',
+				origen:'CENTROCOSTO',
+	   			tinit:false,
 				fieldLabel: 'Centro de Costos',
+				gdisplayField:'desc_cc',//mapea al store del grid
 				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
+				gwidth: 200,
+				renderer:function (value, p, record){return String.format('{0}', record.data['desc_cc']);}
 			},
-			type:'NumberField',
-			filters:{pfiltro:'apro.id_centro_costo',type:'numeric'},
-			id_grupo:1,
+			type:'ComboRec',
+			filters:{pfiltro:'cc.codigo_cc',type:'string'},
+			id_grupo:0,
 			grid:true,
 			form:true
 		},
@@ -117,7 +104,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 	   				name:'id_uo',
 	   				origen:'UO',
 	   				fieldLabel:'Unidad',
-	   				allowBlank:false,
+	   				allowBlank:true,
 	   				gdisplayField:'desc_uo',//mapea al store del grid
 	   			    gwidth:200,
 	   			    baseParams:{gerencia:'si'},
@@ -128,37 +115,20 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
    			filters:{pfiltro:'nombre_unidad',type:'string'},
    		    grid:true,
    			form:true
-	    },
-	    {
-	   		config:{
-	   				name:'id_ep',
-	   				origen:'EP',
-	   				fieldLabel:'EP',
-	   				allowBlank:true,
-	   				gdisplayField:'desc_ep',//mapea al store del grid
-	   			    gwidth:200,
-	   			    renderer:function (value, p, record){return String.format('{0}', record.data['desc_ep']);}
-	      		},
-   			type:'ComboRec',
-   			id_grupo:0,
-   			filters:{pfiltro:'ep',type:'string'},
-   		    grid:true,
-   			form:true
-	    },
+	   },
 		{
 			config:{
 				name: 'monto_min',
 				currencyChar:'Bs',
-				fieldLabel: 'monto_min',
+				fieldLabel: 'Monto Min.',
 				allowBlank: true,
-				anchor: '80%',
 				gwidth: 100,
 				renderer:bolFormatter
 		      		
 			},
 			type:'MoneyField',
 			filters:{pfiltro:'apro.monto_min',type:'numeric'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:true
 		},
@@ -166,47 +136,44 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'monto_max',
 				currencyChar:'Bs',
-				fieldLabel: 'monto_max',
+				fieldLabel: 'Monto Max.',
 				allowBlank: true,
-				anchor: '80%',
 				gwidth: 100,
 				renderer:bolFormatter
 			},
 			type:'MoneyField',
 			filters:{pfiltro:'apro.monto_max',type:'numeric'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:true
 		},
 		{
 			config:{
 				name: 'fecha_ini',
-				fieldLabel: 'fecha_ini',
-				allowBlank: true,
-				anchor: '80%',
+				fieldLabel: 'Fecha Inicio',
+				allowBlank: false,
 				gwidth: 100,
 						format: 'd/m/Y', 
 						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 			type:'DateField',
 			filters:{pfiltro:'apro.fecha_ini',type:'date'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:true
 		},
 		{
 			config:{
 				name: 'fecha_fin',
-				fieldLabel: 'fecha_fin',
+				fieldLabel: 'Fecha Fin',
 				allowBlank: true,
-				anchor: '80%',
 				gwidth: 100,
 						format: 'd/m/Y', 
 						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 			type:'DateField',
 			filters:{pfiltro:'apro.fecha_fin',type:'date'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:true
 		},
@@ -216,12 +183,12 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'obs',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:255
 			},
-			type:'TextField',
+			type:'TextArea',
 			filters:{pfiltro:'apro.obs',type:'string'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:true
 		},
@@ -236,7 +203,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'apro.estado_reg',type:'string'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:false
 		}
@@ -253,7 +220,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'DateField',
 			filters:{pfiltro:'apro.fecha_reg',type:'date'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:false
 		},
@@ -268,7 +235,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'NumberField',
 			filters:{pfiltro:'usu1.cuenta',type:'string'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:false
 		},
@@ -284,7 +251,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'DateField',
 			filters:{pfiltro:'apro.fecha_mod',type:'date'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:false
 		},
@@ -299,7 +266,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'NumberField',
 			filters:{pfiltro:'usu2.cuenta',type:'string'},
-			id_grupo:1,
+			id_grupo:0,
 			grid:true,
 			form:false
 		}
@@ -326,8 +293,9 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
+		{name:'id_ep', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'desc_uo','desc_ep','desc_funcionario','desc_cc','desc_subsistema'
 		
 	],
 	sortInfo:{

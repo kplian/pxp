@@ -36,6 +36,7 @@ class MODCentroCosto extends MODbase{
 		$this->captura('nombre_uo','varchar');
 		$this->captura('ep','text');
 		$this->captura('gestion','integer');
+		$this->captura('codigo_cc','text');
 		
 		
 		
