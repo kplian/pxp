@@ -42,10 +42,11 @@ select pxp.f_insert_testructura_gui ('WF.1', 'WF');
 ----------------------------------------------
 --  DEF DE FUNCIONES
 ----------------------------------------------
-select pxp.f_insert_tfuncion ('wf.f_num_tramite_ime', 'Funcion      ', 'WF');
-select pxp.f_insert_tfuncion ('wf.f_num_tramite_sel', 'Funcion      ', 'WF');
-select pxp.f_insert_tfuncion ('wf.f_proceso_macro_ime', 'Funcion      ', 'WF');
-select pxp.f_insert_tfuncion ('wf.f_proceso_macro_sel', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_num_tramite_ime', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_num_tramite_sel', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_proceso_macro_ime', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_proceso_macro_sel', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_get_numero_siguiente', 'Funcion      ', 'WF');
 
 
 /********************************************F-DAT-FRH-WF-0-15/02/2013**********************************************/

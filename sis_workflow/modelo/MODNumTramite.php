@@ -15,7 +15,7 @@ class MODNumTramite extends MODbase{
 			
 	function listarNumTramite(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='wf.f_num_tramite_sel';
+		$this->procedimiento='wf.ft_num_tramite_sel';
 		$this->transaccion='WF_NUMTRAM_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
@@ -23,15 +23,16 @@ class MODNumTramite extends MODbase{
 		$this->captura('id_num_tramite','int4');
 		$this->captura('id_proceso_macro','int4');
 		$this->captura('estado_reg','varchar');
-		$this->captura('id_gestion','int8');
-		$this->captura('num_siguiente','int8');
+		$this->captura('id_gestion','int4');
+		$this->captura('num_siguiente','int4');
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		$this->captura('desc_gestion','integer');
+		$this->captura('desc_gestion','varchar');
+		$this->captura('codificacion_siguiente','varchar');
 		
 		
 		
@@ -45,15 +46,15 @@ class MODNumTramite extends MODbase{
 			
 	function insertarNumTramite(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='wf.f_num_tramite_ime';
+		$this->procedimiento='wf.ft_num_tramite_ime';
 		$this->transaccion='WF_NUMTRAM_INS';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_proceso_macro','id_proceso_macro','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('id_gestion','id_gestion','int8');
-		$this->setParametro('num_siguiente','num_siguiente','int8');
+		$this->setParametro('id_gestion','id_gestion','int4');
+		$this->setParametro('num_siguiente','num_siguiente','int4');		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -65,7 +66,7 @@ class MODNumTramite extends MODbase{
 			
 	function modificarNumTramite(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='wf.f_num_tramite_ime';
+		$this->procedimiento='wf.ft_num_tramite_ime';
 		$this->transaccion='WF_NUMTRAM_MOD';
 		$this->tipo_procedimiento='IME';
 				
@@ -73,8 +74,8 @@ class MODNumTramite extends MODbase{
 		$this->setParametro('id_num_tramite','id_num_tramite','int4');
 		$this->setParametro('id_proceso_macro','id_proceso_macro','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('id_gestion','id_gestion','int8');
-		$this->setParametro('num_siguiente','num_siguiente','int8');
+		$this->setParametro('id_gestion','id_gestion','int4');
+		$this->setParametro('num_siguiente','num_siguiente','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -86,7 +87,7 @@ class MODNumTramite extends MODbase{
 			
 	function eliminarNumTramite(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='wf.f_num_tramite_ime';
+		$this->procedimiento='wf.ft_num_tramite_ime';
 		$this->transaccion='WF_NUMTRAM_ELI';
 		$this->tipo_procedimiento='IME';
 				

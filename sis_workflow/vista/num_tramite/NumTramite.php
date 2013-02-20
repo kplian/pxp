@@ -10,8 +10,7 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
-
+Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{	
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
@@ -20,8 +19,7 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		this.grid.getBottomToolbar().disable();
 		this.init();
 		//this.load({params:{start:0, limit:50}})
-	},
-			
+	},			
 	Atributos:[
 		{
 			//configuracion del componente
@@ -81,11 +79,28 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Número Siguiente',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
-				maxLength:8
+				gwidth: 150,
+				maxLength:8,
+				disabled:true			
 			},
 			type:'TextField',
-			filters:{pfiltro:'numtram.num_siguiente',type:'string'},
+			filters:{pfiltro:'numtram.num_siguiente',type:'numeric'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'codificacion_siguiente',
+				fieldLabel: 'Codificación Siguiente',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 200,
+				maxLength:10,
+				disabled:true
+			},
+			type:'TextField',
+			filters:{pfiltro:'prom.codigo',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -168,15 +183,15 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 	onReloadPage:function(m)
 	{
 		this.maestro=m;						
-		this.store.baseParams={id_proceso_macro:this.maestro.id_proceso_macro};
+		this.store.baseParams={id_proceso_macro:this.maestro.id_proceso_macro, num_siguiente:null};
 		this.load({params:{start:0, limit:50}});			
 	},
 	fields: [
 		{name:'id_num_tramite', type: 'numeric'},
 		{name:'id_proceso_macro', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
-		{name:'id_gestion', type: 'integer'},
-		{name:'num_siguiente', type: 'string'},
+		{name:'id_gestion', type: 'numeric'},
+		{name:'num_siguiente', type: 'numeric'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'id_usuario_mod', type: 'numeric'},
@@ -184,12 +199,13 @@ Phx.vista.NumTramite=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_gestion', type: 'string'},
-		
+		{name:'codificacion_siguiente', type: 'string'}
 	],
 	sortInfo:{
 		field: 'id_num_tramite',
 		direction: 'ASC'
 	},
+	bedit: false,
 	bdel:true,
 	bsave:true
 	}

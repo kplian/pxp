@@ -35,7 +35,7 @@ DECLARE
 			    
 BEGIN
 
-    v_nombre_funcion = 'wf.f_num_tramite_ime';
+    v_nombre_funcion = 'wf.ft_num_tramite_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
@@ -80,7 +80,10 @@ BEGIN
 			)RETURNING id_num_tramite into v_id_num_tramite;
 			
             v_num_siguiente = wf.f_get_numero_siguiente(v_id_num_tramite);
-                       
+            UPDATE wf.tnum_tramite set			
+            num_siguiente = v_num_siguiente			
+            where id_num_tramite=v_id_num_tramite;
+            
             
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numero de Tramite almacenado(a) con exito (id_num_tramite'||v_id_num_tramite||')'); 

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION "wf"."f_proceso_macro_ime" (	
+CREATE OR REPLACE FUNCTION "wf"."ft_proceso_macro_ime" (	
 				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
@@ -30,7 +30,7 @@ DECLARE
 			    
 BEGIN
 
-    v_nombre_funcion = 'wf.f_proceso_macro_ime';
+    v_nombre_funcion = 'wf.ft_proceso_macro_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
@@ -147,4 +147,4 @@ END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE
 COST 100;
-ALTER FUNCTION "wf"."f_proceso_macro_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION "wf"."ft_proceso_macro_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

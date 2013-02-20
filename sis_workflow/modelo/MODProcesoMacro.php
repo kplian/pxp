@@ -15,7 +15,7 @@ class MODProcesoMacro extends MODbase{
 			
 	function listarProcesoMacro(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='wf.f_proceso_macro_sel';
+		$this->procedimiento='wf.ft_proceso_macro_sel';
 		$this->transaccion='WF_PROMAC_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
@@ -44,7 +44,7 @@ class MODProcesoMacro extends MODbase{
 			
 	function insertarProcesoMacro(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='wf.f_proceso_macro_ime';
+		$this->procedimiento='wf.ft_proceso_macro_ime';
 		$this->transaccion='WF_PROMAC_INS';
 		$this->tipo_procedimiento='IME';
 				
@@ -65,7 +65,7 @@ class MODProcesoMacro extends MODbase{
 			
 	function modificarProcesoMacro(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='wf.f_proceso_macro_ime';
+		$this->procedimiento='wf.ft_proceso_macro_ime';
 		$this->transaccion='WF_PROMAC_MOD';
 		$this->tipo_procedimiento='IME';
 				
@@ -87,7 +87,7 @@ class MODProcesoMacro extends MODbase{
 			
 	function eliminarProcesoMacro(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='wf.f_proceso_macro_ime';
+		$this->procedimiento='wf.ft_proceso_macro_ime';
 		$this->transaccion='WF_PROMAC_ELI';
 		$this->tipo_procedimiento='IME';
 				
