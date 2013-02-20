@@ -7,8 +7,8 @@ $BODY$
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_centro_costo_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tcentro_costo'
- AUTOR: 		Gonzalo Sarmiento Sejas
- FECHA:	        18-02-2013 14:08:14
+ AUTOR: 		 (admin)
+ FECHA:	        19-02-2013 22:53:59
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -34,65 +34,39 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CCOST_INS'
+ 	#TRANSACCION:  'PM_CEC_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		Gonzalo Sarmiento Sejas
- 	#FECHA:		18-02-2013 14:08:14
+ 	#AUTOR:		admin	
+ 	#FECHA:		19-02-2013 22:53:59
 	***********************************/
 
-	if(p_transaccion='PM_CCOST_INS')then
+	if(p_transaccion='PM_CEC_INS')then
 					
         begin
         	--Sentencia de la insercion
         	insert into param.tcentro_costo(
 			estado_reg,
-			tipo_pres,
-			id_fuente_financiammiento,
-			id_parametro,
-			id_uo,
-			estado,
-			cod_prg,
-			descripcion,
-			id_concepto_colectivo,
-			cod_fin,
-			codigo,
 			id_ep,
-			id_categoria_prog,
-			nombre_agrupador,
-			cod_pry,
-			cod_act,
 			id_gestion,
-			fecha_reg,
+			id_uo,
 			id_usuario_reg,
-			fecha_mod,
-			id_usuario_mod
+			fecha_reg,
+			id_usuario_mod,
+			fecha_mod
           	) values(
 			'activo',
-			v_parametros.tipo_pres,
-			v_parametros.id_fuente_financiammiento,
-			v_parametros.id_parametro,
-			v_parametros.id_uo,
-			v_parametros.estado,
-			v_parametros.cod_prg,
-			v_parametros.descripcion,
-			v_parametros.id_concepto_colectivo,
-			v_parametros.cod_fin,
-			v_parametros.codigo,
 			v_parametros.id_ep,
-			v_parametros.id_categoria_prog,
-			v_parametros.nombre_agrupador,
-			v_parametros.cod_pry,
-			v_parametros.cod_act,
 			v_parametros.id_gestion,
-			now(),
+			v_parametros.id_uo,
 			p_id_usuario,
+			now(),
 			null,
 			null
 							
 			)RETURNING id_centro_costo into v_id_centro_costo;
 			
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costo almacenado(a) con exito (id_centro_costo'||v_id_centro_costo||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costos almacenado(a) con exito (id_centro_costo'||v_id_centro_costo||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_centro_costo',v_id_centro_costo::varchar);
 
             --Devuelve la respuesta
@@ -101,39 +75,26 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CCOST_MOD'
+ 	#TRANSACCION:  'PM_CEC_MOD'
  	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		Gonzalo Sarmiento Sejas
- 	#FECHA:		18-02-2013 14:08:14
+ 	#AUTOR:		admin	
+ 	#FECHA:		19-02-2013 22:53:59
 	***********************************/
 
-	elsif(p_transaccion='PM_CCOST_MOD')then
+	elsif(p_transaccion='PM_CEC_MOD')then
 
 		begin
 			--Sentencia de la modificacion
 			update param.tcentro_costo set
-			tipo_pres = v_parametros.tipo_pres,
-			id_fuente_financiammiento = v_parametros.id_fuente_financiammiento,
-			id_parametro = v_parametros.id_parametro,
-			id_uo = v_parametros.id_uo,
-			estado = v_parametros.estado,
-			cod_prg = v_parametros.cod_prg,
-			descripcion = v_parametros.descripcion,
-			id_concepto_colectivo = v_parametros.id_concepto_colectivo,
-			cod_fin = v_parametros.cod_fin,
-			codigo = v_parametros.codigo,
 			id_ep = v_parametros.id_ep,
-			id_categoria_prog = v_parametros.id_categoria_prog,
-			nombre_agrupador = v_parametros.nombre_agrupador,
-			cod_pry = v_parametros.cod_pry,
-			cod_act = v_parametros.cod_act,
 			id_gestion = v_parametros.id_gestion,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_uo = v_parametros.id_uo,
+			id_usuario_mod = p_id_usuario,
+			fecha_mod = now()
 			where id_centro_costo=v_parametros.id_centro_costo;
                
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costo modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costos modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_centro_costo',v_parametros.id_centro_costo::varchar);
                
             --Devuelve la respuesta
@@ -142,13 +103,13 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CCOST_ELI'
+ 	#TRANSACCION:  'PM_CEC_ELI'
  	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		Gonzalo Sarmiento Sejas
- 	#FECHA:		18-02-2013 14:08:14
+ 	#AUTOR:		admin	
+ 	#FECHA:		19-02-2013 22:53:59
 	***********************************/
 
-	elsif(p_transaccion='PM_CCOST_ELI')then
+	elsif(p_transaccion='PM_CEC_ELI')then
 
 		begin
 			--Sentencia de la eliminacion
@@ -156,7 +117,7 @@ BEGIN
             where id_centro_costo=v_parametros.id_centro_costo;
                
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costo eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costos eliminado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_centro_costo',v_parametros.id_centro_costo::varchar);
               
             --Devuelve la respuesta

@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_uo_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		orga.ft_uo_sel
@@ -58,6 +59,10 @@ BEGIN
             --29mar12: para SAJ
             IF (pxp.f_existe_parametro(par_tabla,'gerencia')) THEN
                v_filadd = ' (UO.gerencia = '''||v_parametros.gerencia||''') and ';
+            END IF;
+            
+            IF (pxp.f_existe_parametro(par_tabla,'presupuesta')) THEN
+               v_filadd = ' (UO.presupuesta = '''||v_parametros.presupuesta||''') and ';
             END IF;
             
             
@@ -141,4 +146,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

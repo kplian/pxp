@@ -65,7 +65,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 				width:210,
 				gwidth:220,
 				minChars:2,
-				minListWidth:'100%',	
+				listWidth:280,	
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_empresa']);}
 	       			
 			},
@@ -101,9 +101,8 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 	   				origen:'MONEDA',
 	   				fieldLabel:'Moneda',
 	   				gdisplayField:'moneda',//mapea al store del grid
-	   				anchor: '100%',
-	   			    gwidth:200,
-		   			 renderer:function (value, p, record){return String.format('{0} - {1}', record.data['codigo_moneda'], record.data['moneda']);}
+	   				gwidth:200,
+		   			renderer:function (value, p, record){return String.format('{0} - {1}', record.data['codigo_moneda'], record.data['moneda']);}
 	       	     },
 	   			type:'ComboRec',
 	   			id_grupo:0,
