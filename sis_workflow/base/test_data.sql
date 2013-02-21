@@ -21,8 +21,8 @@ VALUES (1, NULL, '2013-02-21 16:23:50.535', '2012-02-26 03:48:14', 'activo', 104
 
 -- Data for table param.tempresa (OID = 4013755) (LIMIT 0,1)
 
-INSERT INTO param.tempresa (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, nombre, logo, nit, codigo)
-VALUES (1, NULL, '2013-02-21 16:19:33', '2013-02-21 16:19:33', 'activo', 'Kplian Ltda', NULL, '196560027', NULL);
+INSERT INTO param.tempresa (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, nombre, logo, nit)
+VALUES (1, NULL, '2013-02-21 16:19:33', '2013-02-21 16:19:33', 'activo', 'Kplian Ltda', NULL, '196560027');
 
 -- Data for table wf.tproceso_macro (OID = 4014129) (LIMIT 0,1)
 
