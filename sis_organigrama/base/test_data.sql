@@ -1,6 +1,6 @@
 
 -- Funcionario
-/*
+
 INSERT INTO orga.tfuncionario (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_funcionario, id_persona, codigo, email_empresa, interno, fecha_ingreso)
 VALUES (1, NULL, '2012-11-10 12:56:13', '2012-11-10 12:56:13', 'activo', 1, 2, '1001', 'jperez@empresa.bo', '123', '2012-11-10');
 
@@ -16,6 +16,7 @@ VALUES (1, NULL, E'2012-12-29 00:00:00', E'2012-12-29 15:19:50.693', E'activo', 
 INSERT INTO orga.tfuncionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_funcionario", "id_persona", "codigo", "email_empresa", "interno", "fecha_ingreso")
 VALUES (1, NULL, E'2013-01-24 00:00:00', E'2012-12-29 15:19:50', E'activo', 5, 1, E'frojas1', E'enzo@kplian.com', E'103', E'2013-01-01');
 
+/*
 INSERT INTO orga.tfuncionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_funcionario", "id_persona", "codigo", "email_empresa", "interno", "fecha_ingreso")
 VALUES (1, NULL, E'2013-01-24 00:00:00', E'2012-12-29 15:19:50', E'activo', 6, 1, E'frojas1', E'enzo@kplian.com', E'103', E'2013-01-01');
 
