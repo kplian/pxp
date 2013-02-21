@@ -57,7 +57,7 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         ges.gestion::varchar AS desc_gestion,
-                        (prom.codigo||COALESCE(numtram.num_siguiente, 0)||ges.gestion)::varchar AS codificacion_siguiente                      
+                        (prom.codigo||lpad(COALESCE(numtram.num_siguiente, 0)::varchar,6,''0'')||ges.gestion)::varchar AS codificacion_siguiente                      
 						from wf.tnum_tramite numtram
 						inner join segu.tusuario usu1 on usu1.id_usuario = numtram.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = numtram.id_usuario_mod

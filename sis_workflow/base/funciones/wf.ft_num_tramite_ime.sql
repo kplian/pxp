@@ -30,8 +30,9 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_num_tramite	integer;
-    v_num_siguiente integer;
+    v_codigo_siguiente varchar;
     v_cont_gestion integer;
+    v_num_siguiente integer;
 			    
 BEGIN
 
@@ -79,11 +80,7 @@ BEGIN
 							
 			)RETURNING id_num_tramite into v_id_num_tramite;
 			
-            v_num_siguiente = wf.f_get_numero_siguiente(v_id_num_tramite);
-            UPDATE wf.tnum_tramite set			
-            num_siguiente = v_num_siguiente			
-            where id_num_tramite=v_id_num_tramite;
-            
+            v_codigo_siguiente = wf.f_get_numero_siguiente(v_id_num_tramite);
             
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Numero de Tramite almacenado(a) con exito (id_num_tramite'||v_id_num_tramite||')'); 
