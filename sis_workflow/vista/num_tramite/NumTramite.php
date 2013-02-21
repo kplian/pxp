@@ -2,7 +2,7 @@
 /**
 *@package pXP
 *@file gen-NumTramite.php
-*@author  (admin)
+*@author  (FRH)
 *@date 19-02-2013 13:51:54
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */

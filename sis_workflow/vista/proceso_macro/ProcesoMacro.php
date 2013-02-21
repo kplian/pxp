@@ -2,7 +2,7 @@
 /**
 *@package pXP
 *@file gen-ProcesoMacro.php
-*@author  (admin)
+*@author  (FRH)
 *@date 19-02-2013 13:51:29
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
@@ -87,7 +87,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 				anchor: '20%',
 				gwidth: 50,
 				maxLength:2,
-				emptyText:'...',       			
+				emptyText:'si/no...',       			
        			typeAhead: true,
        		    triggerAction: 'all',
        		    lazyRender:true,
