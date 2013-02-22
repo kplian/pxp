@@ -33,21 +33,6 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'nombre',
-				fieldLabel: 'Nombre',
-				allowBlank: true,
-				anchor: '60%',
-				gwidth: 150,
-				maxLength:200
-			},
-			type:'TextField',
-			filters:{pfiltro:'tipproc.nombre',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
 				name: 'codigo',
 				fieldLabel: 'Código',
 				allowBlank: true,
@@ -57,6 +42,21 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipproc.codigo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'nombre',
+				fieldLabel: 'Nombre',
+				allowBlank: true,
+				anchor: '60%',
+				gwidth: 150,
+				maxLength:200
+			},
+			type:'TextField',
+			filters:{pfiltro:'tipproc.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -187,6 +187,33 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'inicio',
+				fieldLabel: 'Inicio (raiz)?',
+				allowBlank: true,
+				anchor: '40%',
+				gwidth: 50,
+				maxLength:2,
+				emptyText:'si/no...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio',       		    
+       		   // displayField: 'descestilo',
+       		    store:['si','no']
+			},
+			type:'ComboBox',
+			id_grupo:1,
+			filters:{	pfiltro:'tipproc.inicio',
+	       		         type: 'list',
+	       				 dataIndex: 'size',
+	       				 options: ['si','no'],	
+	       		 	},
+			grid:true,
+			form:true
+		},
+		{
+			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
@@ -285,13 +312,19 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_proceso_macro', type: 'string'},
-		{name:'desc_tipo_estado', type: 'string'},
+		{name:'desc_tipo_estado', type: 'string'},'inicio'
 		
 	],
 	sortInfo:{
 		field: 'id_tipo_proceso',
 		direction: 'ASC'
 	},
+	east:{
+		  url:'../../../sis_workflow/vista/tipo_estado/TipoEstado.php',
+		  title:'Estados', 
+		  width:400,
+		  cls:'TipoEstado'
+		},
 	bdel:true,
 	bsave:true
 	}

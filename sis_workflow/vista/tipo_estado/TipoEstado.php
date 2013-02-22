@@ -17,7 +17,8 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.TipoEstado.superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		this.bloquearMenus();
+		
 	},
 			
 	Atributos:[
@@ -30,6 +31,14 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
+		},
+		{
+			config: {
+				name: 'id_tipo_proceso',
+				inputType:'hidden',
+				},
+			type: 'Field',
+			form: true
 		},
 		{
 			config:{
@@ -47,53 +56,6 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			form:true
 		},
 		{
-			config: {
-				name: 'id_tipo_proceso',
-				fieldLabel: 'Proceso',
-				typeAhead: false,
-				forceSelection: false,
-				allowBlank: false,
-				emptyText: 'Lista de Procesos...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_workflow/control/TipoProceso/listarTipoProceso',
-					id: 'id_tipo_proceso',
-					root: 'datos',
-					sortInfo: {
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_tipo_proceso', 'nombre', 'codigo'],
-					// turn on remote sorting
-					remoteSort: true,
-					baseParams: {par_filtro: 'tipproc.nombre#tipproc.codigo'}
-				}),
-				valueField: 'id_tipo_proceso',
-				displayField: 'nombre',
-				gdisplayField: 'desc_tipo_proceso',
-				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 20,
-				queryDelay: 200,
-				anchor: '80%',
-				minChars: 2,
-				gwidth: 200,
-				renderer: function(value, p, record) {
-					return String.format('{0}', record.data['desc_tipo_proceso']);
-				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
-			},
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {
-				pfiltro: 'tp.nombre',
-				type: 'string'
-			},
-			grid: true,
-			form: true
-		},
-		{
 			config:{
 				name: 'inicio',
 				fieldLabel: 'Inicio (raiz)?',
@@ -108,15 +70,15 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
        		    mode: 'local',
        		    valueField: 'inicio',       		    
        		   // displayField: 'descestilo',
-       		    store:['SI','NO']
+       		    store:['si','no']
 			},
 			type:'ComboBox',
 			//filters:{pfiltro:'promac.inicio',type:'string'},
 			id_grupo:1,
 			filters:{	
 	       		         type: 'list',
-	       				 dataIndex: 'size',
-	       				 options: ['SI','NO'],	
+	       				 pfiltro:'tipes.inicio',
+	       				 options: ['si','no'],	
 	       		 	},
 			grid:true,
 			form:true
@@ -136,15 +98,15 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
        		    mode: 'local',
        		    valueField: 'disparador',       		    
        		   // displayField: 'descestilo',
-       		    store:['SI','NO']
+       		    store:['si','no']
 			},
 			type:'ComboBox',
 			//filters:{pfiltro:'promac.inicio',type:'string'},
 			id_grupo:1,
 			filters:{	
 	       		         type: 'list',
-	       				 dataIndex: 'size',
-	       				 options: ['SI','NO'],	
+	       				 pfiltro:'tipes.disparador',
+	       				 options: ['si','no'],	
 	       		 	},
 			grid:true,
 			form:true
@@ -171,27 +133,12 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			filters:{	
 	       		         type: 'list',
-	       				 dataIndex: 'size',
+	       				 pfiltro:'tipes.tipo_asignacion',
 	       				 options: ['listado','todos','funcion_listado'],	
 	       		 	},
 			grid:true,
 			form:true
-		}/*
-		{
-			config:{
-				name: 'tipo_asignacion',
-				fieldLabel: 'Tipo Asignación',
-				allowBlank: true,
-				anchor: '70%',
-				gwidth: 100,
-				maxLength:255
-			},
-			type:'TextField',
-			filters:{pfiltro:'tipes.tipo_asignacion',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		}*/,
+		},
 		{
 			config:{
 				name: 'nombre_func_list',
@@ -313,6 +260,33 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_tipo_estado',
 		direction: 'ASC'
 	},
+	onReloadPage:function(m){
+		this.maestro=m;
+		this.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
+		this.load({params:{start:0, limit:50}})
+	},
+	loadValoresIniciales:function()
+	{
+		Phx.vista.TipoEstado.superclass.loadValoresIniciales.call(this);
+		this.getComponente('id_tipo_proceso').setValue(this.maestro.id_tipo_proceso);		
+	},
+	tabsouth:[
+	      {
+		   url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoPadre.php',
+		   title:'Padres', 
+		   //width:'50%',
+		   height:'50%',
+		   cls:'EstructuraEstadoPadre'
+		 },
+	     {
+		  url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php',
+		  title:'Hijos', 
+		  height:'50%',
+		  cls:'EstructuraEstadoHijo'
+		 },
+	
+	   ],
+	
 	bdel:true,
 	bsave:true
 	}

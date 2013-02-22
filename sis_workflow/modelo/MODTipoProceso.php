@@ -36,6 +36,7 @@ class MODTipoProceso extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_proceso_macro','varchar');
 		$this->captura('desc_tipo_estado','varchar');
+		$this->captura('inicio','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -59,6 +60,8 @@ class MODTipoProceso extends MODbase{
 		$this->setParametro('columna_llave','columna_llave','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+		$this->setParametro('inicio','inicio','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -83,6 +86,7 @@ class MODTipoProceso extends MODbase{
 		$this->setParametro('columna_llave','columna_llave','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+		$this->setParametro('inicio','inicio','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

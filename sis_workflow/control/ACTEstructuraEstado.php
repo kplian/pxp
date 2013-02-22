@@ -12,6 +12,14 @@ class ACTEstructuraEstado extends ACTbase{
 	function listarEstructuraEstado(){
 		$this->objParam->defecto('ordenacion','id_estructura_estado');
 
+        if($this->objParam->getParametro('id_tipo_estado_padre')!=''){
+	    	$this->objParam->addFiltro("estes.id_tipo_estado_padre = ".$this->objParam->getParametro('id_tipo_estado_padre'));	
+		}
+		
+		 if($this->objParam->getParametro('id_tipo_estado_hijo')!=''){
+	    	$this->objParam->addFiltro("estes.id_tipo_estado_hijo = ".$this->objParam->getParametro('id_tipo_estado_hijo'));	
+		}
+
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

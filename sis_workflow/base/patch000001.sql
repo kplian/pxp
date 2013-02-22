@@ -9,6 +9,7 @@ CREATE TABLE wf.ttipo_proceso (
   tabla            varchar(100), 
   columna_llave    varchar(150), 
   codigo           varchar(5),
+  inicio VARCHAR(2) DEFAULT 'no'::character varying NOT NULL, 
   CONSTRAINT uk_codigo UNIQUE(codigo),
   CONSTRAINT uk_tipo_proceso_tipo_estado UNIQUE(id_tipo_proceso,id_tipo_estado),
   PRIMARY KEY (id_tipo_proceso)) INHERITS (pxp.tbase);
