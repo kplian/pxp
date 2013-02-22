@@ -60,8 +60,8 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         prog.codigo_programa||''-''||prog.nombre_programa as desc_programa,	
                         proy.codigo_proyecto||''-''||proy.nombre_proyecto as desc_proyecto,	
-                        act.codigo_actividad||''-''||act.nombre_actividad as desc_actividad	
-						
+                        act.codigo_actividad||''-''||act.nombre_actividad as desc_actividad	,
+						prog.codigo_programa||''-''|| proy.codigo_proyecto||''-''|| act.codigo_actividad as desc_ppa
                         
                         from param.tprograma_proyecto_acttividad ppa
 						inner join segu.tusuario usu1 on usu1.id_usuario = ppa.id_usuario_reg

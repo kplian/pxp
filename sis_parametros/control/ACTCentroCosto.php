@@ -1,9 +1,9 @@
 <?php
 /**
 *@package pXP
-*@file ACTCentroCosto.php
-*@author  Gonzalo Sarmiento Sejas
-*@date 18-02-2013 14:08:14
+*@file gen-ACTCentroCosto.php
+*@author  (admin)
+*@date 19-02-2013 22:53:59
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 

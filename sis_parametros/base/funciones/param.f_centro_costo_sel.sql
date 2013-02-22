@@ -1,13 +1,19 @@
-CREATE OR REPLACE FUNCTION "param"."f_centro_costo_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION param.f_centro_costo_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_centro_costo_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tcentro_costo'
- AUTOR: 		Gonzalo Sarmiento Sejas
- FECHA:	        18-02-2013 14:08:14
+ AUTOR: 		 (admin)
+ FECHA:	        19-02-2013 22:53:59
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -30,45 +36,34 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CCOST_SEL'
+ 	#TRANSACCION:  'PM_CEC_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		Gonzalo Sarmiento Sejas
- 	#FECHA:		18-02-2013 14:08:14
+ 	#AUTOR:		admin	
+ 	#FECHA:		19-02-2013 22:53:59
 	***********************************/
 
-	if(p_transaccion='PM_CCOST_SEL')then
+	if(p_transaccion='PM_CEC_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						ccost.id_centro_costo,
-						ccost.estado_reg,
-						ccost.tipo_pres,
-						ccost.id_fuente_financiammiento,
-						ccost.id_parametro,
-						ccost.id_uo,
-						ccost.estado,
-						ccost.cod_prg,
-						ccost.descripcion,
-						ccost.id_concepto_colectivo,
-						ccost.cod_fin,
-						ccost.codigo,
-						ccost.id_ep,
-						ccost.id_categoria_prog,
-						ccost.nombre_agrupador,
-						ccost.cod_pry,
-						ccost.cod_act,
-						ccost.id_gestion,
-						ccost.fecha_reg,
-						ccost.id_usuario_reg,
-						ccost.fecha_mod,
-						ccost.id_usuario_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
-						from param.tcentro_costo ccost
-						inner join segu.tusuario usu1 on usu1.id_usuario = ccost.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = ccost.id_usuario_mod
-				        where  ';
+						 id_centro_costo,
+                          estado_reg,
+                          id_ep,
+                          id_gestion,
+                          id_uo,
+                          id_usuario_reg,
+                          fecha_reg,
+                          id_usuario_mod,
+                          fecha_mod,
+                          usr_reg,
+                          usr_mod,
+                          codigo_uo,
+                          nombre_uo,
+                          ep,
+                          gestion	
+						from param.vcentro_costo cec
+						 where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -80,21 +75,19 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CCOST_CONT'
+ 	#TRANSACCION:  'PM_CEC_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		Gonzalo Sarmiento Sejas
- 	#FECHA:		18-02-2013 14:08:14
+ 	#AUTOR:		admin	
+ 	#FECHA:		19-02-2013 22:53:59
 	***********************************/
 
-	elsif(p_transaccion='PM_CCOST_CONT')then
+	elsif(p_transaccion='PM_CEC_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_centro_costo)
-					    from param.tcentro_costo ccost
-					    inner join segu.tusuario usu1 on usu1.id_usuario = ccost.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = ccost.id_usuario_mod
-					    where ';
+					    from param.vcentro_costo cec
+                        where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -119,7 +112,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_centro_costo_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
