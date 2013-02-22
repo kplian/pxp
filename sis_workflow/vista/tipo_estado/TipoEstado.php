@@ -155,6 +155,34 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Tipo Asignación',
 				allowBlank: true,
 				anchor: '70%',
+				gwidth: 150,
+				maxLength:50,
+				emptyText:'Tipo...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'tipo_asignacion',       		    
+       		   // displayField: 'descestilo',
+       		    store:['listado','todos','funcion_listado']
+			},
+			type:'ComboBox',
+			//filters:{pfiltro:'promac.inicio',type:'string'},
+			id_grupo:1,
+			filters:{	
+	       		         type: 'list',
+	       				 dataIndex: 'size',
+	       				 options: ['listado','todos','funcion_listado'],	
+	       		 	},
+			grid:true,
+			form:true
+		}/*
+		{
+			config:{
+				name: 'tipo_asignacion',
+				fieldLabel: 'Tipo Asignación',
+				allowBlank: true,
+				anchor: '70%',
 				gwidth: 100,
 				maxLength:255
 			},
@@ -163,7 +191,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:true
-		},
+		}*/,
 		{
 			config:{
 				name: 'nombre_func_list',

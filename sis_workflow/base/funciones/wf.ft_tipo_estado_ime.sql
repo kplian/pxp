@@ -104,16 +104,7 @@ BEGIN
 	elsif(p_transaccion='WF_TIPES_MOD')then
 
 		begin
-        	--Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '
-        	SELECT count(id_tipo_estado)
-            INTO v_cont_estados_ini
-            FROM wf.ttipo_estado te
-            WHERE (te.inicio ilike 'si' and te.id_tipo_proceso = v_parametros.id_tipo_proceso and v_parametros.inicio ilike 'si') and estado_reg ilike 'activo';   
-                             
-            IF v_cont_estados_ini >= 1 THEN
-                RAISE EXCEPTION 'Ya esta resgistrado un Tipo Estado ''inicio''.Solo puede haber un estado (nodo) inicio.';
-            END IF;
-            
+        	            
 			--Sentencia de la modificacion
 			update wf.ttipo_estado set
 			nombre_estado = v_parametros.nombre_estado,
@@ -125,6 +116,16 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario
 			where id_tipo_estado=v_parametros.id_tipo_estado;
+            
+            --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '
+        	SELECT count(id_tipo_estado)
+            INTO v_cont_estados_ini
+            FROM wf.ttipo_estado te
+            WHERE (te.inicio ilike 'si' and te.id_tipo_proceso = v_parametros.id_tipo_proceso and v_parametros.inicio ilike 'si') and estado_reg ilike 'activo';   
+                             
+            IF v_cont_estados_ini > 1 THEN
+                RAISE EXCEPTION 'Ya esta resgistrado un Tipo Estado ''inicio''.Solo puede haber un estado (nodo) inicio.';
+            END IF;
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado modificado(a)'); 
