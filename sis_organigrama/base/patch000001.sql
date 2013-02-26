@@ -60,7 +60,7 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 CREATE TABLE orga.tuo (
     id_uo serial NOT NULL,
     nombre_unidad varchar(100),
-    nombre_cargo varchar(50),
+    nombre_cargo varchar(150),
     cargo_individual varchar(2),
     descripcion varchar(100),
     presupuesta varchar(2),
