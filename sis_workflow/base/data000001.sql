@@ -53,13 +53,14 @@ select pxp.f_insert_tfuncion ('wf.ft_num_tramite_ime', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_num_tramite_sel', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_proceso_macro_ime', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_proceso_macro_sel', 'Funcion      ', 'WF');
-select pxp.f_insert_tfuncion ('wf.f_get_numero_siguiente', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_get_numero_tramite.sql', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_estructura_estado_ime', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_estructura_estado_sel', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_tipo_estado_ime', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_tipo_estado_sel', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_tipo_proceso_ime', 'Funcion      ', 'WF');
 select pxp.f_insert_tfuncion ('wf.ft_tipo_proceso_sel', 'Funcion      ', 'WF');
-
+select pxp.f_insert_tfuncion ('wf.f_obtener_estado_tipo_proceso.sql', 'Funcion      ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_disparador_predecesor_proceso.sql', 'Funcion      ', 'WF');
 
 /********************************************F-DAT-FRH-WF-0-15/02/2013**********************************************/
