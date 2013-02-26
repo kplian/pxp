@@ -28,8 +28,6 @@ DECLARE
   v_cont_gestion integer;
   v_codigo_siguiente VARCHAR(30);
   
-  
-  v_codigo_proceso_macro varchar;
   v_id_proceso_macro integer;
   
 BEGIN
@@ -53,12 +51,12 @@ BEGIN
     
    --recupera la gestion
    
-    select nt.gestion
+    select g.gestion
         into v_gestion
-        from wf.tnum_tramite nt
-        where nt.id_num_tramite=v_id_num_tramite; 
+        from param.tgestion g
+        where g.id_gestion =p_id_gestion; 
   
-  IF gestion is null THEN
+  IF v_gestion is null THEN
    
    raise exception 'No se encontro la gestion solicitada' ;
   
@@ -68,7 +66,7 @@ BEGIN
   -- verifica si existe numeracion para la gestion solicitada
 
         select nt.num_siguiente
-        into v_num_siguiente
+           into v_num_siguiente
         from wf.tnum_tramite nt
         where nt.id_gestion = p_id_gestion
              and nt.id_proceso_macro = v_id_proceso_macro;
@@ -79,7 +77,6 @@ BEGIN
             wf.tnum_tramite
           (
             id_usuario_reg,
-            id_usuario_mod,
             fecha_reg,
             fecha_mod,
             estado_reg,
@@ -90,7 +87,7 @@ BEGIN
           ) 
           VALUES (
             p_id_usuario,
-            NULL,
+            now(),
             NULL,
             'activo',
            
@@ -110,13 +107,18 @@ BEGIN
         
         UPDATE wf.tnum_tramite set			
             num_siguiente = v_num_siguiente	+1		
-        WHERE nt.id_gestion = p_id_gestion
-           and nt.id_proceso_macro = v_id_proceso_macro;
+        WHERE id_gestion = p_id_gestion
+           and id_proceso_macro = v_id_proceso_macro;
         
         
-        v_codigo_siguiente := (v_codigo_proceso_macro||'-'||lpad(COALESCE(v_num_siguiente, 0)::varchar,6,'0')||'-'||v_id_gestion::varchar);
+        raise notice 'codigo_proceso = %',p_codigo_proceso;
+        raise notice 'numero = %',v_num_siguiente;
+        raise notice 'gestion = %',v_gestion;
+        
+        v_codigo_siguiente := (p_codigo_proceso||'-'||lpad(COALESCE(v_num_siguiente, 0)::varchar,6,'0')||'-'||v_gestion::varchar);
        
-        
+    raise notice 'tramite = %',v_codigo_siguiente;     
+   
    RETURN v_codigo_siguiente;
 
 

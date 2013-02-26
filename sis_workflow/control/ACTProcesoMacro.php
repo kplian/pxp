@@ -13,6 +13,11 @@ class ACTProcesoMacro extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_proceso_macro');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		if($this->objParam->getParametro('codigo_subsistema')!=''){
+	    	$this->objParam->addFiltro("subs.codigo = ''".$this->objParam->getParametro('codigo_subsistema')."''");	
+		}
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODProcesoMacro','listarProcesoMacro');

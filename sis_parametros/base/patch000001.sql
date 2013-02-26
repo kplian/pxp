@@ -531,7 +531,22 @@ CREATE TABLE param.tcentro_costo(
     
 --------------- SQL ---------------
 
+--------------- SQL ---------------
 
+ALTER TABLE param.tdocumento
+  ADD CONSTRAINT tdocumento_idx 
+    UNIQUE (codigo);
+
+
+CREATE TABLE param.tconcepto_ingas(
+    id_concepto_ingas SERIAL NOT NULL,
+    tipo varchar(255),
+    desc_ingas varchar(150),
+    movimiento varchar(255),
+    sw_tes varchar(2),
+    id_oec int4,
+    PRIMARY KEY (id_concepto_ingas))
+    INHERITS (pxp.tbase);
   
   
        

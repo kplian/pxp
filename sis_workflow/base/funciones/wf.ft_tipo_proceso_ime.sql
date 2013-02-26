@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tipo_proceso_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION wf.ft_tipo_proceso_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_tipo_proceso_ime
@@ -43,6 +48,20 @@ BEGIN
 	if(p_transaccion='WF_TIPPROC_INS')then
 					
         begin
+        
+         IF v_parametros.inicio = 'si' THEN
+         --verificamos que sea el unico proceso marcado para inicio
+            IF exists (select 1 from wf.ttipo_proceso tp where tp.inicio ='si' and tp.id_proceso_macro = v_parametros.id_proceso_macro ) THEN
+                
+                raise exception 'Solo un proceso puede marcarce como inicial dentro de un mismo macro proceso';
+            
+            END IF;
+         
+         END IF; 
+            
+        
+        
+        
         	--Sentencia de la insercion
         	insert into wf.ttipo_proceso(
 			nombre,
@@ -55,7 +74,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            inicio
           	) values(
 			v_parametros.nombre,
 			v_parametros.codigo,
@@ -67,7 +87,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.inicio
 							
 			)RETURNING id_tipo_proceso into v_id_tipo_proceso;
 			
@@ -90,6 +111,20 @@ BEGIN
 	elsif(p_transaccion='WF_TIPPROC_MOD')then
 
 		begin
+        
+           IF v_parametros.inicio = 'si' THEN
+         --verificamos que sea el unico proceso marcado para inicio
+            IF exists (select 1 from wf.ttipo_proceso tp 
+                       where tp.inicio ='si' and 
+                            tp.id_proceso_macro = v_parametros.id_proceso_macro and 
+                            tp.id_tipo_proceso != v_parametros.id_tipo_proceso) THEN
+                            
+                raise exception 'Solo un proceso puede marcarce como inicial dentor de un mismo macro proceso';
+            
+            END IF;
+         
+         END IF; 
+        
 			--Sentencia de la modificacion
 			update wf.ttipo_proceso set
 			nombre = v_parametros.nombre,
@@ -99,7 +134,8 @@ BEGIN
 			columna_llave = v_parametros.columna_llave,
 			id_tipo_estado = v_parametros.id_tipo_estado,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            inicio=v_parametros.inicio
 			where id_tipo_proceso=v_parametros.id_tipo_proceso;
                
 			--Definicion de la respuesta
@@ -150,7 +186,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_tipo_proceso_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

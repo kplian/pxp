@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
