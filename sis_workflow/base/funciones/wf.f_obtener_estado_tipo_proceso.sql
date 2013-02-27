@@ -78,6 +78,11 @@ BEGIN
     LEFT JOIN wf.ttipo_estado te on te.id_tipo_proceso = tp.id_tipo_proceso        
     WHERE te.nombre_estado ilike p_estado_actual and tp.codigo ilike p_codigo_tipo_proceso;    
     
+    --Validar si existe el estado actual enviado como parametro
+    if(v_id_tipo_estado is null)then 
+    	return;
+    end if;
+    
     SELECT id_tipo_proceso FROM wf.ttipo_proceso tp
     INTO v_id_tipo_proceso
     WHERE codigo ilike p_codigo_tipo_proceso;
