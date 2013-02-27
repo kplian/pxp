@@ -8,7 +8,10 @@ CREATE TABLE wf.ttipo_proceso (
   nombre           varchar(200), 
   tabla            varchar(100), 
   columna_llave    varchar(150), 
-  codigo           varchar(5), 
+  codigo           varchar(5),
+  inicio VARCHAR(2) DEFAULT 'no'::character varying NOT NULL, 
+  CONSTRAINT uk_codigo UNIQUE(codigo),
+  CONSTRAINT uk_tipo_proceso_tipo_estado UNIQUE(id_tipo_proceso,id_tipo_estado),
   PRIMARY KEY (id_tipo_proceso)) INHERITS (pxp.tbase);
   
   
@@ -17,34 +20,36 @@ CREATE TABLE wf.ttipo_estado (
   id_tipo_proceso int4, 
   inicio          varchar(2), 
   disparador      varchar(2), 
-  nombre_estado   varchar(150), 
-  PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase);
+  nombre_estado   varchar(150),
+  tipo_asignacion varchar(255),
+  nombre_func_list varchar(255),
+  PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase); 
   
   
 CREATE TABLE wf.testructura_estado (
-  id_estructura_empresa  SERIAL NOT NULL, 
+  id_estructura_estado  SERIAL NOT NULL, 
   id_tipo_estado_padre  int4 NOT NULL, 
   id_tipo_estado_hijo   int4 NOT NULL, 
   prioridad             int4, 
   regla                 varchar(1000), 
-  PRIMARY KEY (id_estructura_empresa)) INHERITS (pxp.tbase);
+  PRIMARY KEY (id_estructura_estado)) INHERITS (pxp.tbase);
   
   
-CREATE TABLE wf.testado (
-  id_estado           SERIAL NOT NULL, 
-  id_estado_anterior int4 NOT NULL, 
+CREATE TABLE wf.testado_wf (
+  id_estado_wf           SERIAL NOT NULL, 
+  id_estado_anterior int4, 
   id_tipo_estado     int4 NOT NULL, 
-  id_proceso         int4 NOT NULL, 
+  id_proceso_wf         int4 NOT NULL, 
   id_funcionario     int4 NOT NULL, 
   fecha              timestamp, 
-  PRIMARY KEY (id_estado)) INHERITS (pxp.tbase);
+  PRIMARY KEY (id_estado_wf)) INHERITS (pxp.tbase);
   
   
 CREATE TABLE wf.tnum_tramite (
   id_num_tramite    SERIAL NOT NULL, 
   id_proceso_macro int4 NOT NULL, 
-  id_gestion       int8, 
-  num_siguiente    int8, 
+  id_gestion       int4 NOT NULL, 
+  num_siguiente    int4, 
   PRIMARY KEY (id_num_tramite)) INHERITS (pxp.tbase);
      
   
@@ -60,22 +65,20 @@ CREATE TABLE wf.tcolumna (
 CREATE TABLE wf.tcolumna_valor (
   id_columna_valor  SERIAL NOT NULL, 
   id_columna       int4 NOT NULL, 
-  id_proceso       int4 NOT NULL, 
+  id_proceso_wf       int4 NOT NULL, 
   valor            varchar(300), 
   PRIMARY KEY (id_columna_valor)) INHERITS (pxp.tbase);
     
   
-CREATE TABLE wf.tproceso (
-  id_proceso       SERIAL NOT NULL, 
+CREATE TABLE wf.tproceso_wf (
+  id_proceso_wf       SERIAL NOT NULL, 
   id_tipo_proceso int4 NOT NULL, 
-  nro_tramite     int4, 
-  tabla           varchar(100), 
-  columna_llave   varchar(100), 
+  nro_tramite     varchar, 
   valor_cl        int8, 
-  PRIMARY KEY (id_proceso)) INHERITS (pxp.tbase);
+  PRIMARY KEY (id_proceso_wf)) INHERITS (pxp.tbase);
   
   
-CREATE TABLE wf.proceso_macro (
+CREATE TABLE wf.tproceso_macro (
   id_proceso_macro  SERIAL NOT NULL, 
   id_subsistema    int4, 
   codigo           varchar(10), 
@@ -83,6 +86,16 @@ CREATE TABLE wf.proceso_macro (
   inicio           varchar(2), 
   PRIMARY KEY (id_proceso_macro)) INHERITS (pxp.tbase);
   
-/*****************************F-SCP-FRH-WF-0-15/02/2013*************/
+/*****************************F-SCP-FRH-WF-0-15/02/2013**********************************************/
 
 
+/***********************************I-SCP-FRH-WF-0-18/02/2013****************************************/
+
+CREATE TABLE wf.tfuncionario_tipo_estado (
+  id_funcionario_tipo_estado  SERIAL NOT NULL, 
+  id_tipo_estado             int4 NOT NULL,
+  id_funcionario             int4,   
+  id_depto                   int4, 
+  PRIMARY KEY (id_funcionario_tipo_estado)); 
+
+/***********************************F-SCP-FRH-WF-0-18/02/2013****************************************/

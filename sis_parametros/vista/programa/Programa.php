@@ -33,36 +33,6 @@ Phx.vista.Programa=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'nombre_programa',
-				fieldLabel: 'Nombre Programa',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:100
-			},
-			type:'TextField',
-			filters:{pfiltro:'prog.nombre_programa',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'id_programa_actif',
-				fieldLabel: 'Id Programa Actif',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-			type:'NumberField',
-			filters:{pfiltro:'prog.id_programa_actif',type:'numeric'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
 				name: 'codigo_programa',
 				fieldLabel: 'Codigo Programa',
 				allowBlank: false,
@@ -78,6 +48,21 @@ Phx.vista.Programa=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'nombre_programa',
+				fieldLabel: 'Nombre Programa',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:100
+			},
+			type:'TextField',
+			filters:{pfiltro:'prog.nombre_programa',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
 				name: 'descripcion_programa',
 				fieldLabel: 'Descripcion Programa',
 				allowBlank: true,
@@ -85,7 +70,7 @@ Phx.vista.Programa=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 100,
 				maxLength:15
 			},
-			type:'TextField',
+			type:'TextArea',
 			filters:{pfiltro:'prog.descripcion_programa',type:'string'},
 			id_grupo:1,
 			grid:true,

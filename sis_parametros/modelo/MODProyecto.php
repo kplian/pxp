@@ -60,7 +60,7 @@ class MODProyecto extends MODbase{
 		$this->setParametro('nombre_proyecto','nombre_proyecto','varchar');
 		$this->setParametro('nombre_corto','nombre_corto','varchar');
 		$this->setParametro('id_proyecto_actif','id_proyecto_actif','int4');
-		$this->setParametro('codigo_sisin','codigo_sisin','int8');
+		$this->setParametro('codigo_sisin','codigo_sisin','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

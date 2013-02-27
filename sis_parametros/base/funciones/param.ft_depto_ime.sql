@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_depto_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -32,7 +34,7 @@ v_id_funcion  				integer;
 BEGIN
 
      v_nombre_funcion:='param.ft_depto_ime';
-     v_parametros:=f_get_record(par_tabla);
+     v_parametros:=pxp.f_get_record(par_tabla);
 
 
  /*******************************

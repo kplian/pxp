@@ -14,11 +14,21 @@ DECLARE
 
    g_registros record;
    v_consulta varchar;
-
+   v_esquema varchar;
+   v_tabla varchar;
 BEGIN
 
-
+   v_esquema=lower(p_esquema);
+   v_tabla=lower(p_tabla);
    IF p_operacion = 'eliminar' THEN
+   
+	 --si tiene datos para la tabla los elimina  
+     --para realizar un BK 
+      DELETE FROM 
+      pxp.tforenkey 
+      WHERE 
+      tabla = v_esquema||'.'||v_tabla;
+   
    
         FOR g_registros in (Select 
                             n.nspname,
@@ -31,17 +41,9 @@ BEGIN
                                 where  pxp.f_campo_constraint(pg_catalog.pg_get_constraintdef(t.oid),0) in
                                 (select rel.relname from pg_namespace esq
                                 inner join pg_class rel on(rel.relnamespace=esq.oid)
-                                where esq.nspname=p_esquema and c.relname=p_tabla) and t.contype like 'f' 
+                                where n.nspname=v_esquema and c.relname=v_tabla) and t.contype like 'f' 
                                 order by c.relname) LOOP
-                                
-                     --si tiene datos para la tabla los elimina  
-                     --para realizar un BK 
-                      DELETE FROM 
-                      pxp.tforenkey 
-                      WHERE 
-                      tabla = p_esquema||'.'||p_tabla;
                      
-               
                       INSERT INTO 
                         pxp.tforenkey
                       (
@@ -50,14 +52,14 @@ BEGIN
                         llave
                       ) 
                       VALUES (
-                        p_esquema||'.'||p_tabla,
+                        v_esquema||'.'||v_tabla,
                         g_registros.definicion,
                         g_registros.conname
                       );
                       
                   --elimina las llaves foraneas de la tabla
                   
-             v_consulta='ALTER TABLE '||p_esquema||'.'||p_tabla||'    
+             v_consulta='ALTER TABLE '||v_esquema||'.'||v_tabla||'    
   		                DROP CONSTRAINT "'||g_registros.conname||'" RESTRICT';  
                         
              execute (v_consulta);  
@@ -70,11 +72,11 @@ BEGIN
    
        FOR g_registros in (select * 
                             from pxp.tforenkey f 
-                            where f.tabla = p_esquema||'.'||p_tabla )   LOOP
+                            where f.tabla = v_esquema||'.'||v_tabla )   LOOP
         
        
         
-          v_consulta='ALTER TABLE '||p_esquema||'.'||p_tabla ||' ADD CONSTRAINT '||g_registros.llave||' '||g_registros.obs;
+          v_consulta='ALTER TABLE '||v_esquema||'.'||v_tabla ||' ADD CONSTRAINT '||g_registros.llave||' '||g_registros.obs;
 		
           execute (v_consulta);
         

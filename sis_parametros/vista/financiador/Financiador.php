@@ -33,6 +33,21 @@ Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'codigo_financiador',
+				fieldLabel: 'Codigo Financiador',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 80,
+				maxLength:10
+			},
+			type:'TextField',
+			filters:{pfiltro:'fin.codigo_financiador',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
 				name: 'nombre_financiador',
 				fieldLabel: 'Nombre Financiador',
 				allowBlank: true,
@@ -48,21 +63,6 @@ Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'id_financiador_actif',
-				fieldLabel: 'Financiador Actif',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-			type:'NumberField',
-			filters:{pfiltro:'fin.id_financiador_actif',type:'numeric'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
 				name: 'descripcion_financiador',
 				fieldLabel: 'Descripcion Financiador',
 				allowBlank: true,
@@ -72,21 +72,6 @@ Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'fin.descripcion_financiador',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'codigo_financiador',
-				fieldLabel: 'Codigo Financiador',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
-			},
-			type:'TextField',
-			filters:{pfiltro:'fin.codigo_financiador',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true

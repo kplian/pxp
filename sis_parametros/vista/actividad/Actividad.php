@@ -48,21 +48,6 @@ Phx.vista.Actividad=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'descripcion_actividad',
-				fieldLabel: 'Descripcion Actividad',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:255
-			},
-			type:'TextField',
-			filters:{pfiltro:'act.descripcion_actividad',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
 				name: 'nombre_actividad',
 				fieldLabel: 'Nombre Actividad',
 				allowBlank: true,
@@ -72,6 +57,21 @@ Phx.vista.Actividad=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'act.nombre_actividad',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'descripcion_actividad',
+				fieldLabel: 'Descripcion Actividad',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:255
+			},
+			type:'TextField',
+			filters:{pfiltro:'act.descripcion_actividad',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true

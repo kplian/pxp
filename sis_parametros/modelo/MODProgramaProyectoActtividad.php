@@ -31,6 +31,11 @@ class MODProgramaProyectoActtividad extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('desc_programa','text');
+		$this->captura('desc_proyecto','text');
+		$this->captura('desc_actividad','text');
+		$this->captura('codigo_ppa','text');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

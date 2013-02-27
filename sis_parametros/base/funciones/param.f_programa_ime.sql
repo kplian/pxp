@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_programa_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_programa_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_programa_ime
@@ -47,7 +52,7 @@ BEGIN
         	insert into param.tprograma(
 			estado_reg,
 			nombre_programa,
-			id_programa_actif,
+			
 			codigo_programa,
 			descripcion_programa,
 			fecha_reg,
@@ -57,7 +62,7 @@ BEGIN
           	) values(
 			'activo',
 			v_parametros.nombre_programa,
-			v_parametros.id_programa_actif,
+			
 			v_parametros.codigo_programa,
 			v_parametros.descripcion_programa,
 			now(),
@@ -89,7 +94,7 @@ BEGIN
 			--Sentencia de la modificacion
 			update param.tprograma set
 			nombre_programa = v_parametros.nombre_programa,
-			id_programa_actif = v_parametros.id_programa_actif,
+			
 			codigo_programa = v_parametros.codigo_programa,
 			descripcion_programa = v_parametros.descripcion_programa,
 			fecha_mod = now(),
@@ -144,7 +149,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_programa_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

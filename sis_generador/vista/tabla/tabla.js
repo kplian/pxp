@@ -1,20 +1,6 @@
 <script>
 Phx.vista.tabla=function(config){
-var ds_subsistema =new Ext.data.JsonStore({
 
-				url: '../../sis_seguridad/control/Subsistema/listarSubsistema',
-				id: 'id_subsistema',
-				root: 'datos',
-				sortInfo:{
-					field: 'nombre',
-					direction: 'ASC'
-				},
-				totalProperty: 'total',
-				fields: ['id_subsistema','nombre','codigo'],
-				// turn on remote sorting
-				remoteSort: true,
-				baseParams:{par_filtro:'nombre'}
-			});
 var ds_tabla =new Ext.data.JsonStore({
 
 				url: '../../sis_generador/control/Tabla/listarTablaCombo',
@@ -32,7 +18,6 @@ var ds_tabla =new Ext.data.JsonStore({
 			});
 
 
-function render_id_subsistema(value, p, record){return String.format('{0}', record.data['desc_subsistema']);}
 var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 
 	this.Atributos=[
@@ -49,38 +34,21 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 	},
 	{
 			config:{
-				name:'id_subsistema',
-				fieldLabel:'Subsistema',
-				allowBlank:false,
-				emptyText:'Subsistema...',
-				store:ds_subsistema,
-				valueField: 'id_subsistema',
-				displayField: 'codigo',
-				gdisplayField:'desc_subsistema',
-				hiddenName: 'id_subsistema',
-				forceSelection:true,
-				typeAhead: true,
-    			triggerAction: 'all',
-    			lazyRender:true,
-				mode:'remote',
-				pageSize:50,
-				queryDelay:500,
-				width:210,
-				gwidth:220,
-				minChars:2,
-				minListWidth:'100%',
-				renderer:render_id_subsistema
+				name: 'id_subsistema',
+				origen:'SUBSISTEMA',
+	   			tinit:false,
+				fieldLabel: 'Sistema',
+				gdisplayField:'desc_subsistema',//mapea al store del grid
+				allowBlank: true,
+				gwidth: 200,
+				renderer:function (value, p, record){return String.format('{0}', record.data['desc_subsistema']);}
 			},
-			type:'ComboBox',
-			id_grupo:0,
-			filters:{	
-		        pfiltro:'subsis.nombre',
-				type:'string'
-			},
-			
+			type:'ComboRec',
+			filters:{pfiltro:'subsis.nombre',type:'string'},
+			id_grupo:1,
 			grid:true,
 			form:true
-	},
+		},
 	 
 	{
 			config:{
@@ -103,7 +71,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 				width:210,
 				gwidth:220,
 				minChars:2,
-				minListWidth:'100%'
+				listWidth:280
 			},
 			type:'ComboBox',
 			id_grupo:0,

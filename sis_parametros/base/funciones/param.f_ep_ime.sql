@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_ep_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_ep_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_ep_ime
@@ -49,7 +54,7 @@ BEGIN
 			id_financiador,
 			id_prog_pory_acti,
 			id_regional,
-			sw_presto,
+			--sw_presto,
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
@@ -59,7 +64,7 @@ BEGIN
 			v_parametros.id_financiador,
 			v_parametros.id_prog_pory_acti,
 			v_parametros.id_regional,
-			v_parametros.sw_presto,
+			--v_parametros.sw_presto,
 			now(),
 			p_id_usuario,
 			null,
@@ -91,7 +96,7 @@ BEGIN
 			id_financiador = v_parametros.id_financiador,
 			id_prog_pory_acti = v_parametros.id_prog_pory_acti,
 			id_regional = v_parametros.id_regional,
-			sw_presto = v_parametros.sw_presto,
+			--sw_presto = v_parametros.sw_presto,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario
 			where id_ep=v_parametros.id_ep;
@@ -144,7 +149,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_ep_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

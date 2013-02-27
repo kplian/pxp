@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_gestion_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_gestion_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_gestion_ime
@@ -27,6 +32,10 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_gestion	integer;
+    
+    v_fecha_ini date;
+    v_fecha_fin date;
+    v_cont integer;
 			    
 BEGIN
 
@@ -41,8 +50,17 @@ BEGIN
 	***********************************/
 
 	if(p_transaccion='PM_GES_INS')then
-					
-        begin
+    
+           begin
+            --vallida que la gestion dea unica
+            
+            IF exists(select 1 from param.tgestion where gestion = v_parametros.gestion) THEN
+            
+              raise exception 'La gestion ya existe';
+              
+            END IF;
+           
+           
         	--Sentencia de la insercion
         	insert into param.tgestion(
 			id_moneda_base,
@@ -66,7 +84,51 @@ BEGIN
 			null
 							
 			)RETURNING id_gestion into v_id_gestion;
-			
+            
+            --inserta en la tabla periodo
+            
+            v_cont =1;
+            
+            WHILE v_cont <= 12 LOOP
+            
+             -- obtiene primer del mes correspondiente a la fecha_ini
+                        
+             v_fecha_ini= ('01-'||v_cont||'-'||v_parametros.gestion)::date;
+             -- obtiene el ultimo dia del mes correspondiente a la fecha_fin
+           
+             v_fecha_fin=(date_trunc('MONTH', v_fecha_ini) + INTERVAL '1 MONTH - 1 day')::date;
+             
+             INSERT INTO 
+                          param.tperiodo
+                        (
+                          id_usuario_reg,
+                          id_usuario_mod,
+                          fecha_reg,
+                          fecha_mod,
+                          estado_reg,
+                        
+                          periodo,
+                          id_gestion,
+                          fecha_ini,
+                          fecha_fin
+                        ) 
+                        VALUES (
+                          p_id_usuario,
+                          NULL,
+                          now(),
+                          NULL,
+                          'activo',
+                          v_cont,
+                          v_id_gestion,
+                          v_fecha_ini,
+                          v_fecha_fin
+                        );
+            
+               v_cont=v_cont+1;
+            
+            END LOOP;
+            
+            
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Gestion almacenado(a) con exito (id_gestion'||v_id_gestion||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_id_gestion::varchar);
@@ -144,7 +206,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_gestion_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

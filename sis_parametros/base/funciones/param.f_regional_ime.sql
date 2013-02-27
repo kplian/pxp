@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_regional_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_regional_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_regional_ime
@@ -46,7 +51,7 @@ BEGIN
         	--Sentencia de la insercion
         	insert into param.tregional(
 			estado_reg,
-			id_regional_actif,
+			--id_regional_actif,
 			nombre_regional,
 			codigo_regional,
 			descripcion_regional,
@@ -56,7 +61,7 @@ BEGIN
 			id_usuario_mod
           	) values(
 			'activo',
-			v_parametros.id_regional_actif,
+			--v_parametros.id_regional_actif,
 			v_parametros.nombre_regional,
 			v_parametros.codigo_regional,
 			v_parametros.descripcion_regional,
@@ -88,7 +93,7 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update param.tregional set
-			id_regional_actif = v_parametros.id_regional_actif,
+			--id_regional_actif = v_parametros.id_regional_actif,
 			nombre_regional = v_parametros.nombre_regional,
 			codigo_regional = v_parametros.codigo_regional,
 			descripcion_regional = v_parametros.descripcion_regional,
@@ -144,7 +149,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_regional_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

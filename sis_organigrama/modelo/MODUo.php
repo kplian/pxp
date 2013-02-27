@@ -20,9 +20,8 @@ class MODUo extends MODbase{
 		
 		$this->setParametro('id_uo','id_uo','integer');
 		$this->setParametro('correspondencia','correspondencia','varchar');
-		
-		/*29mar12: para SAJ*/
 		$this->setParametro('gerencia','gerencia','varchar');
+		$this->setParametro('presupuesta','presupuesta','varchar');
 		
 		//Definicion de la lista del resultado del query
 		$this->captura('id_uo','integer');

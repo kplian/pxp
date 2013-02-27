@@ -38,6 +38,14 @@ class MODAprobador extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		
+		$this->captura('desc_cc','text');
+		$this->captura('desc_uo','text');
+		$this->captura('id_ep','integer');
+		$this->captura('desc_ep','text');
+		$this->captura('desc_funcionario','text');
+		$this->captura('desc_subsistema','varchar');
+		
+				
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -63,6 +71,7 @@ class MODAprobador extends MODbase{
 		$this->setParametro('monto_max','monto_max','numeric');
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('id_subsistema','id_subsistema','int4');
+		$this->setParametro('id_ep','id_ep','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -90,6 +99,7 @@ class MODAprobador extends MODbase{
 		$this->setParametro('monto_max','monto_max','numeric');
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('id_subsistema','id_subsistema','int4');
+		$this->setParametro('id_ep','id_ep','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

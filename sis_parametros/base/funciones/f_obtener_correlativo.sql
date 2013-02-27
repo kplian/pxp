@@ -1,14 +1,15 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
-  par_codigo_documento character varying,
+  par_codigo_documento varchar,
   par_id integer,
   par_id_uo integer,
   par_id_depto integer,
   par_id_usuario integer,
-  par_codigo_subsistema character varying,
-  par_formato character varying
+  par_codigo_subsistema varchar,
+  par_formato varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		param.f_obtener_correlativo
@@ -63,6 +64,73 @@ DECLARE
     v_consulta varchar;
     v_where varchar;
 BEGIN
+
+
+    /*
+    EJEMPLO
+    
+    
+              SELECT * FROM param.f_obtener_correlativo(
+                        'SOLB', --codigo documento
+                         NULL,-- par_id, 
+                        NULL, --id_uo 
+                        1, --depto
+                        1, --usuario
+                        'ADQ', --codigo depto
+                        NULL,--formato
+                        1); --id_empresa
+             
+    
+          --obtiene numero sin formato  
+                   
+             SELECT * FROM param.f_obtener_correlativo(
+                        'SOLB', 
+                         NULL,-- par_id, 
+                        NULL, --id_uo 
+                        1, 
+                        1, 
+                        'ADQ', 
+                        'sin')--formato
+                                
+             
+           
+            SELECT * FROM param.f_obtener_correlativo(
+                        'SOLB', 
+                         NULL,-- par_id, 
+                        NULL, --id_uo 
+                        1, 
+                        1, 
+                        'ADQ', 
+                        '{depto}-{periodo}/{correlativo}-{gestion})--formato
+                                
+                        
+            SELECT * FROM param.f_obtener_correlativo(
+                        'SOLB', 
+                         NULL,-- par_id, 
+                        NULL, --id_uo 
+                        1, 
+                        1, 
+                        'ADQ', 
+                         'depto-docdoc-periodo/correlativo')--formato
+                                
+                         
+            SELECT * FROM param.f_obtener_correlativo(
+                        'SOLB', 
+                         NULL,-- par_id, 
+                        NULL, --id_uo 
+                        1, 
+                        1, 
+                        'ADQ', 
+                         'depto-coddoc-periodo/correlativo')--formato
+                                
+              
+    
+    
+    
+    
+    */
+
+
     
     v_nombre_funcion:='param.f_obtener_correlativo';
     
@@ -125,7 +193,11 @@ BEGIN
             select p.id_periodo, p.periodo,ges.gestion
             into v_id, v_num_periodo ,v_num_gestion
             from param.tperiodo p
-            inner join param.tgestion ges on ges.id_gestion = p.id_gestion and ges.estado_reg ='activo'
+            inner join param.tgestion ges 
+              on ges.id_gestion = p.id_gestion 
+              and ges.estado_reg ='activo'
+             
+              
             where p.estado_reg='activo' and  now()::date between fecha_ini and fecha_fin ;
             
             if(v_id is null) then
@@ -136,7 +208,10 @@ BEGIN
             select p.id_periodo, p.periodo, ges.gestion
             into v_id, v_num_periodo,v_num_gestion
             from param.tperiodo p
-            inner join param.tgestion ges on ges.id_gestion = p.id_gestion and ges.estado_reg ='activo'
+            inner join param.tgestion ges 
+                on ges.id_gestion = p.id_gestion 
+                and ges.estado_reg ='activo'
+              
             where  p.estado_reg='activo' and p.id_periodo = par_id;  
     
          END IF; 
@@ -154,7 +229,9 @@ BEGIN
                select g.id_gestion , g.gestion
                into v_id, v_num_gestion
                from param.tgestion g
-               where g.estado_reg='activo' and g.gestion=to_char(now()::date,'YYYY')::integer;
+               where g.estado_reg='activo' 
+                 and g.gestion=to_char(now()::date,'YYYY')::integer
+                   and g.id_empresa = par_id_empresa;
                
               if(v_id is null) then
                  raise exception 'Gestion % no existente', to_char(now()::date,'YYYY');
@@ -164,10 +241,12 @@ BEGIN
                select g.id_gestion , g.gestion
                into v_id, v_num_gestion
                from param.tgestion g
-               where g.id_gestion = par_id; 
+               where g.id_gestion = par_id;
          END IF;
 
-         if exists (select 1 from param.tgestion where id_gestion=v_id and estado_reg!='activo') then
+         if exists (select 1 from param.tgestion 
+                   where id_gestion=v_id 
+                   and estado_reg!='activo') then
                raise exception 'La gestion no esta activa';
          end if;
       
@@ -273,19 +352,14 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
  --9) verifica si es necesario retorna el numero con formato   
                         --raise exception 'aa%',par_formato;
   IF(par_formato = 'sin')THEN
-                raise exception 'sinnn%',par_formato;
+              
     return v_correlativo::varchar;
     
   ELSEIF par_formato is  not null THEN
-                    raise exception 'not null%',par_formato;
+                  
      
-       --validar q el valor enviado sea uno de los siguientes
-       if(par_formato not in ('depto','uo','codsub','coddoc','periodo','gestion','correlativo')) then
-             raise exception 'Formato no conocido para generacion de numeracion';
-       end if;
-      --'depto-docdoc-periodo/correlativo'
-    
-      v_formula = replace(par_formato,'depto', COALESCE(v_codigo_depto,'')::varchar);  
+      
+      v_formula = replace(par_formato,'depto', COALESCE(v_codigo_depto,'')::varchar); 
       v_formula = replace(v_formula,'uo', COALESCE(v_codigo_uo,'')::varchar);  
       v_formula = replace(v_formula,'codsub', COALESCE(par_codigo_subsistema,'')::varchar);
       v_formula = replace(v_formula,'coddoc', COALESCE(par_codigo_documento,'')::varchar);
@@ -293,11 +367,12 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
       v_formula = replace(v_formula,'gestion', COALESCE(v_num_gestion::varchar,'')::varchar);
       v_formula = replace(v_formula,'correlativo', COALESCE(v_correlativo::varchar,'')::varchar);
   
+     
      return  v_formula;
   ELSE
-        ---raise exception 'llega aqui%',par_formato ;
+      
      IF(v_formato_doc is not null) THEN
-                        raise exception 'iiiiffff%',par_formato;
+                       
           v_formula = replace(v_formato_doc,'depto', COALESCE(v_codigo_depto,'')::varchar);  
           v_formula = replace(v_formula,'uo', COALESCE(v_codigo_uo,'')::varchar);  
           v_formula = replace(v_formula,'codsub', COALESCE(par_codigo_subsistema,'')::varchar);
@@ -308,7 +383,7 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
       
          return  v_formula;
 
-     ELSE      --raise exception 'elseeeee%',par_formato;
+     ELSE    
              v_formula='';
               IF v_tipo_numeracion = 'uo' THEN
               
@@ -332,9 +407,9 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
              return  v_formula; 
                
       END IF;
-        --raise exception 'finoooooo%',par_formato;
+      
   END IF;
-        --raise exception 'fin%',par_formato;
+        
 EXCEPTION
 
       WHEN OTHERS THEN
@@ -345,7 +420,8 @@ EXCEPTION
 		raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_tdepto_usuario_ime (OID = 304016) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

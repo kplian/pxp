@@ -33,15 +33,15 @@ Phx.vista.Regional=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'id_regional_actif',
-				fieldLabel: 'Regional Actif',
-				allowBlank: true,
+				name: 'codigo_regional',
+				fieldLabel: 'Codigo Regional',
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:4
+				maxLength:10
 			},
-			type:'NumberField',
-			filters:{pfiltro:'regio.id_regional_actif',type:'numeric'},
+			type:'TextField',
+			filters:{pfiltro:'regio.codigo_regional',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -63,29 +63,14 @@ Phx.vista.Regional=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'codigo_regional',
-				fieldLabel: 'Codigo Regional',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
-			},
-			type:'TextField',
-			filters:{pfiltro:'regio.codigo_regional',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
 				name: 'descripcion_regional',
 				fieldLabel: 'Descripcion Regional',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:-5
+				maxLength:300
 			},
-			type:'TextField',
+			type:'TextArea',
 			filters:{pfiltro:'regio.descripcion_regional',type:'string'},
 			id_grupo:1,
 			grid:true,

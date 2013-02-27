@@ -1,6 +1,6 @@
 /***********************************I-SCP-JRR-PARAM-1-19/11/2012****************************************/
 
---
+--  
 -- Structure for table talarma (OID = 306277) : 
 --
 CREATE TABLE param.talarma (
@@ -493,14 +493,64 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 
 
-/***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
+/***********************************I-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
-ALTER TABLE param.tmoneda
-  ALTER COLUMN moneda TYPE VARCHAR(300) COLLATE pg_catalog."default";
+ALTER TABLE param.tmoneda 
+  ALTER COLUMN moneda  type VARCHAR(300) COLLATE pg_catalog."default";
   
+
   ALTER TABLE param.tempresa
-  ADD COLUMN codigo TYPE VARCHAR(100) COLLATE pg_catalog."default";
+  ADD COLUMN codigo  VARCHAR(100) COLLATE pg_catalog."default";
 
-
+  
 /***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-21/02/2013*****************************************/
+
+
+ 
+--------------- SQL ---------------
+
+ALTER TABLE param.taprobador
+  ADD COLUMN id_ep INTEGER;
+  
+  
+--------------- SQL ---------------
+
+DROP TABLE param.tcentro_costo;  
+ 
+CREATE TABLE param.tcentro_costo(
+    id_centro_costo SERIAL NOT NULL,
+    id_ep int4 NOT NULL,
+    id_uo int4,
+    id_gestion int4,
+    PRIMARY KEY (id_centro_costo))
+    INHERITS (pxp.tbase); 
+    
+    
+--------------- SQL ---------------
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tdocumento
+  ADD CONSTRAINT tdocumento_idx 
+    UNIQUE (codigo);
+
+
+CREATE TABLE param.tconcepto_ingas(
+    id_concepto_ingas SERIAL NOT NULL,
+    tipo varchar(255),
+    desc_ingas varchar(150),
+    movimiento varchar(255),
+    sw_tes varchar(2),
+    id_oec int4,
+    PRIMARY KEY (id_concepto_ingas))
+    INHERITS (pxp.tbase);
+  
+  
+       
+/***********************************F-SCP-RAC-PARAM-0-21/02/2013*****************************************/
+
+
 

@@ -61,22 +61,8 @@ ALTER TABLE ONLY orga.tuo_funcionario
     ADD CONSTRAINT fk_tuo_functionario__id_funcionario
     FOREIGN KEY (id_funcionario) REFERENCES orga.tfuncionario(id_funcionario) ON UPDATE CASCADE;
 
---
--- Definition for index fk_tcorrelativo__id_depto (OID = 308838) : 
---
-ALTER TABLE ONLY param.tcorrelativo
-    ADD CONSTRAINT fk_tcorrelativo__id_depto
-    FOREIGN KEY (id_depto) REFERENCES orga.tdepto(id_depto);
 
---
--- Definition for index fk_tcorrelativo__id_uo (OID = 308858) : 
---
-ALTER TABLE ONLY param.tcorrelativo
-    ADD CONSTRAINT fk_tcorrelativo__id_uo
-    FOREIGN KEY (id_uo) REFERENCES orga.tuo(id_uo);
---
--- Definition for index tdepto_usuario_tdepto_usuairo_pkey (OID = 429272) : 
---
+
 ALTER TABLE ONLY  orga.tespecialidad
  ADD  CONSTRAINT fk_tespecialidad__id_especialidad_nivel 
       FOREIGN KEY (id_especialidad_nivel)

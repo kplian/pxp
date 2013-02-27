@@ -33,6 +33,24 @@ class MODEp extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		
+		$this->captura('codigo_programa','varchar');
+		$this->captura('codigo_proyecto','varchar');
+		$this->captura('codigo_actividad','varchar');
+		
+		$this->captura('nombre_programa','varchar');
+		$this->captura('nombre_proyecto','varchar');
+		$this->captura('nombre_actividad','varchar');
+		$this->captura('codigo_financiador','varchar');
+		$this->captura('codigo_regional','varchar');
+		$this->captura('nombre_financiador','varchar');
+		$this->captura('nombre_regional','varchar');
+		$this->captura('ep','text');
+		$this->captura('desc_ppa','text');
+		
+	
+		
+		
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

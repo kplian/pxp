@@ -290,8 +290,19 @@ select pxp.f_insert_tgui ('Empresa', 'Empresa', 'EMP', 'si', 1, 'sis_parametros/
 
 select pxp.f_insert_testructura_gui ('EMP', 'PARAM');
 
+select pxp.f_insert_tgui ('Concepto de Ingreso/Gasto', 'Parametrizaciond e concepto de gasto o ingreso', 'CONIG', 'si', 2, 'sis_parametros/vista/concepto_ingas/ConceptoIngas.php', 4, '', 'ConceptoIngas', 'PARAM');
 
+select pxp.f_insert_testructura_gui ('CONIG', 'CCOM');
 
 /***********************************F-DAT-RAC-PARAM-0-04/02/2013*****************************************/
+
+/***********************************I-DAT-GSS-PARAM-38-18/02/2013*****************************************/
+
+select pxp.f_insert_tgui ('Centro de Costo', 'Centro de costo', 'CCOST', 'si', 1, 'sis_parametros/vista/centro_costo/CentroCosto.php', 2, '', 'CentroCosto', 'PARAM');
+
+select pxp.f_insert_testructura_gui ('CCOST', 'PARAM');
+
+/***********************************F-DAT-GSS-PARAM-38-18/02/2013*****************************************/
+
 
 

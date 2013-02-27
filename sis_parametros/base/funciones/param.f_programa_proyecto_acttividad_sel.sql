@@ -1,7 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_programa_proyecto_acttividad_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION param.f_programa_proyecto_acttividad_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_programa_proyecto_acttividad_sel
@@ -51,10 +57,19 @@ BEGIN
 						ppa.fecha_mod,
 						ppa.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
-						from param.tprograma_proyecto_acttividad ppa
+						usu2.cuenta as usr_mod,
+                        prog.codigo_programa||''-''||prog.nombre_programa as desc_programa,	
+                        proy.codigo_proyecto||''-''||proy.nombre_proyecto as desc_proyecto,	
+                        act.codigo_actividad||''-''||act.nombre_actividad as desc_actividad	,
+						prog.codigo_programa||''-''|| proy.codigo_proyecto||''-''|| act.codigo_actividad as desc_ppa
+                        
+                        from param.tprograma_proyecto_acttividad ppa
 						inner join segu.tusuario usu1 on usu1.id_usuario = ppa.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ppa.id_usuario_mod
+                        inner join param.tprograma prog on prog.id_programa = ppa.id_programa
+                        inner join param.tproyecto proy on proy.id_proyecto = ppa.id_proyecto
+                        inner join param.tactividad act on act.id_actividad = ppa.id_actividad
+                        
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -81,6 +96,9 @@ BEGIN
 					    from param.tprograma_proyecto_acttividad ppa
 					    inner join segu.tusuario usu1 on usu1.id_usuario = ppa.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ppa.id_usuario_mod
+                        inner join param.tprograma prog on prog.id_programa = ppa.id_programa
+                        inner join param.tproyecto proy on proy.id_proyecto = ppa.id_proyecto
+                        inner join param.tactividad act on act.id_actividad = ppa.id_actividad
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -106,7 +124,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_programa_proyecto_acttividad_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
