@@ -13,7 +13,7 @@ class ACTUnidadMedida extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_unidad_medida');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-		if($this->objParam->getParametro('tipo')!=''){
+		if($this->objParam->getParametro('tipo') != '' && $this->objParam->getParametro('tipo') != 'All'){
 			$this->objParam->addFiltro("ume.tipo = ''".$this->objParam->getParametro('tipo')."''");	
 		}
 		
