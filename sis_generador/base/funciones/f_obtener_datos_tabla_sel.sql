@@ -148,5 +148,5 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100
   ROWS 1000;
-ALTER FUNCTION gen.f_obtener_datos_tabla_sel(integer, character varying, character varying) OWNER TO rchumacero;
+ALTER FUNCTION gen.f_obtener_datos_tabla_sel(integer, character varying, character varying) OWNER TO postgres;
 

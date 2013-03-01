@@ -89,6 +89,10 @@ VALUES (1, 1, '2013-02-22 12:11:23.172477', '2013-02-22 12:13:50.635216', 'activ
 INSERT INTO wf.testructura_estado (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_estructura_estado, id_tipo_estado_padre, id_tipo_estado_hijo, prioridad, regla)
 VALUES (1, 1, '2013-02-22 10:26:44.211457', '2013-02-22 12:25:24.8933', 'activo', 3, 4, 5, 5, 'ff3');
 
+INSERT INTO wf.tproceso_wf ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_tipo_proceso", "nro_tramite", "valor_cl")
+VALUES (NULL, NULL, E'2013-02-27 18:51:04', E'2013-02-27 18:51:04', E'activo', 1, E'1', NULL);
 
+INSERT INTO wf.testado_wf ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_estado_anterior", "id_tipo_estado", "id_proceso_wf", "id_funcionario", "fecha")
+VALUES (NULL, NULL, E'2013-02-27 18:56:32', E'2013-02-27 18:56:32', E'activo', NULL, 1, 1, 1, E'2013-02-27 19:17:20.219');
 
 
