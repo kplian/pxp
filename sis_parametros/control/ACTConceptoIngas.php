@@ -11,8 +11,21 @@ class ACTConceptoIngas extends ACTbase{
 			
 	function listarConceptoIngas(){
 		$this->objParam->defecto('ordenacion','id_concepto_ingas');
-
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		
+        if($this->objParam->getParametro('tipo')!=''){
+                    
+                 if($this->objParam->getParametro('tipo')=='Bien'){
+                   $this->objParam->addFiltro("conig.tipo =''Bien''");    
+                 }
+                 if($this->objParam->getParametro('tipo')=='Servicio'){
+                   $this->objParam->addFiltro("conig.tipo =''Servicio''");    
+                 }
+        }
+        
+		
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODConceptoIngas','listarConceptoIngas');

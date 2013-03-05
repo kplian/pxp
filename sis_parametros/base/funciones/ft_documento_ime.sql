@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_documento_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		param.ft_documento_ime
@@ -61,6 +62,7 @@ BEGIN
               v_formato = NULL;
               IF(v_parametros.formato is not NULL and trim(v_parametros.formato) <>'' )THEN
                 v_formato =  v_parametros.formato;
+             
               END IF;
                
                INSERT INTO param.tdocumento(
@@ -128,7 +130,7 @@ BEGIN
                periodo_gestion=v_parametros.periodo_gestion,
                tipo=v_parametros.tipo,
                tipo_numeracion=v_parametros.tipo_numeracion  ,
-               formato=v_parametros.formato
+               formato=v_formato
                where id_documento=v_parametros.id_documento;
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','documento modificado con exito '||v_parametros.codigo);
@@ -177,7 +179,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_documento_sel (OID = 304034) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
