@@ -38,7 +38,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 	   			tinit:false,
 				fieldLabel: 'Sistema',
 				gdisplayField:'desc_subsistema',//mapea al store del grid
-				allowBlank: true,
+				allowBlank: false,
 				gwidth: 200,
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_subsistema']);}
 			},
@@ -65,6 +65,23 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		   		    grid:true,
 		   			form:true
 		 },
+         {
+            config:{
+                    name:'id_uo',
+                    origen:'UO',
+                    fieldLabel:'Unidad',
+                    allowBlank:true,
+                    gdisplayField:'desc_uo',//mapea al store del grid
+                    gwidth:200,
+                    baseParams:{presupuesta:'si'},
+                    renderer:function (value, p, record){return String.format('{0}', record.data['desc_uo']);}
+                },
+            type:'ComboRec',
+            id_grupo:0,
+            filters:{pfiltro:'nombre_unidad',type:'string'},
+            grid:true,
+            form:true
+       },
 	    {
 	   		config:{
 	   				name:'id_ep',
@@ -99,29 +116,12 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-		 {
-	   		config:{
-	   				name:'id_uo',
-	   				origen:'UO',
-	   				fieldLabel:'Unidad',
-	   				allowBlank:true,
-	   				gdisplayField:'desc_uo',//mapea al store del grid
-	   			    gwidth:200,
-	   			    baseParams:{gerencia:'si'},
-	      			renderer:function (value, p, record){return String.format('{0}', record.data['desc_uo']);}
-	      		},
-   			type:'ComboRec',
-   			id_grupo:0,
-   			filters:{pfiltro:'nombre_unidad',type:'string'},
-   		    grid:true,
-   			form:true
-	   },
 		{
 			config:{
 				name: 'monto_min',
 				currencyChar:'Bs',
 				fieldLabel: 'Monto Min.',
-				allowBlank: true,
+				allowBlank: false,
 				gwidth: 100,
 				renderer:bolFormatter
 		      		
