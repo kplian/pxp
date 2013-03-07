@@ -44,6 +44,16 @@ class ACTFuncionario extends ACTbase{
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
+		if($this->objParam->getParametro('id_uo')!=''){
+            $this->objParam->addFiltro("FUNCAR.id_uo = ".$this->objParam->getParametro('id_uo'));    
+        }
+        
+        if($this->objParam->getParametro('fecha')!=''){
+            $this->objParam->addFiltro(" ( (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  >= ''".$this->objParam->getParametro('fecha')."'') or (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  is NULL))");    
+        }
+        
+		
+		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);

@@ -817,6 +817,9 @@ Phx.CP=function(){
 		    	Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 		    }  
 		},
+		
+		
+		
 		// para cargar ventanas hijo
 
 		loadWindows:function(url,title,config,params,pid,mycls){

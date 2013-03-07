@@ -39,6 +39,14 @@ class ACTGestion extends ACTbase{
 		$this->res=$this->objFunc->eliminarGestion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function obtenerGestionByFecha(){
+            $this->objFunc=$this->create('MODGestion'); 
+        $this->res=$this->objFunc->obtenerGestionByFecha($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+	
+	
 			
 }
 
