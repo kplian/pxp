@@ -87,9 +87,9 @@ BEGIN
  
         --Creación de tabla temporal
 		v_consulta = 'create temp table tt_aprobador_'||p_id_usuario||'(
-                 apro.id_aprobador,
-			     id_funcionario int,
-			     desc_funcionario varchar,
+                 id_aprobador integer,
+			     id_funcionario integer,
+			     desc_funcionario text,
                  fecha_ini date,
                  fecha_fin date,
                  prioridad int,
@@ -103,14 +103,18 @@ BEGIN
  
  IF(p_id_centro_costo is not NULL) THEN
  
-      FOR v_registros in(SELECT
+      FOR v_registros in(
+          SELECT
            apro.id_aprobador,
            apro.id_funcionario,
            apro.fecha_ini,
            apro.fecha_fin,
            fun.desc_funcionario1 as desc_funcionario,
            apro.monto_min,
-           apro.monto_max
+           apro.monto_max,
+           apro.id_ep,
+           apro.id_uo,
+           apro.id_centro_costo
                    
          FROM param.taprobador apro
          inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
@@ -143,7 +147,7 @@ BEGIN
                               '||v_registros.id_funcionario::varchar||',
                               '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
                               '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
-                              '||v_registros.desc_funcionario||',
+                              '''||COALESCE(v_registros.desc_funcionario,'---')||''',
                               '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
                               '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
                               1
@@ -192,7 +196,10 @@ IF v_sw_aprobador =false THEN
              apro.fecha_fin,
              fun.desc_funcionario1 as desc_funcionario,
              apro.monto_min,
-             apro.monto_max
+             apro.monto_max,
+             apro.id_ep,
+             apro.id_uo,
+             apro.id_centro_costo
                      
            FROM param.taprobador apro
            inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
@@ -219,7 +226,7 @@ IF v_sw_aprobador =false THEN
                    
                        v_prioridad = 2;  
                  
-                 ELSEIF  id_ep is null and id_uo = v_registros.id_uo  THEN
+                 ELSEIF  v_id_ep is null and v_id_uo = v_registros.id_uo  THEN
                     
                        v_prioridad = 3; 
                  
@@ -232,7 +239,7 @@ IF v_sw_aprobador =false THEN
            v_sw_aprobador = TRUE; 
               
            
-           v_consulta=  'INSERT INTO table tt_aprobador_'||p_id_usuario||'(
+           v_consulta=  'INSERT INTO  tt_aprobador_'||p_id_usuario||'(
                               id_aprobador,
                               id_funcionario,
                               fecha_ini,
@@ -248,7 +255,7 @@ IF v_sw_aprobador =false THEN
                               '||v_registros.id_funcionario::varchar||',
                               '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
                               '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
-                              '||v_registros.desc_funcionario||',
+                               '''||COALESCE(v_registros.desc_funcionario,'---')||''',
                               '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
                               '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
                               '||v_prioridad::varchar||'
