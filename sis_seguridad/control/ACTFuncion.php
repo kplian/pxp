@@ -81,6 +81,7 @@ class ACTFuncion extends ACTbase{
 		$guis = $this->res->getDatos();
 		
 		foreach($guis as $gui) {
+			$this->relaciones = array();
 			$this->relacionaGui($gui);
 		}
 				
@@ -125,7 +126,16 @@ class ACTFuncion extends ACTbase{
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
 				}
-				if ((strpos(str_replace(' ', '', $line),'turl:') !== FALSE || strpos(str_replace(' ', '', $line),'tcls:') !== FALSE || strpos(str_replace(' ', '', $line),'ttitle:')!==FALSE) && strpos($line, '//') === FALSE) {
+				
+				if (strpos(str_replace(' ', '', $line),'require:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0) {
+					$tempString = str_replace('"', "'", $line);
+					$tempArr = explode("'",$tempString);
+					$linesParent = file($tempArr[1]);
+					foreach ($linesParent as $lineParent) {
+						array_push($lines, $lineParent);
+					}
+				}
+				if ((strpos(str_replace(' ', '', $line),'turl:') !== FALSE || strpos(str_replace(' ', '', $line),'tcls:') !== FALSE || strpos(str_replace(' ', '', $line),'ttitle:')!==FALSE) && strpos($line, '//') === FALSE && $comentado == 0) {
 					$tempString = str_replace('"', "'", $line);
 					$tempArr = explode("'",$tempString);
 					
@@ -138,10 +148,12 @@ class ACTFuncion extends ACTbase{
 				}
 				
 				if ($turl != '' && $ttitle != '' && $tclass != '') {					
-					$newGui = array('ruta_archivo' => str_replace('../', '', $turl) , 'nombre'=> $ttitle, 'descripcion'=>$ttitle,'clase_vista'=>$tclass);
+					$newGui = array('ruta_archivo' => str_replace('../', '', $turl) , 'nombre'=> $ttitle, 'descripcion'=>$ttitle,'clase_vista'=>$tclass, 'combo_trigger'=>'si');
 					
-					$newGui = $this->saveGui($newGui, $gui['id_gui']);
-					if (!$this->existe($gui['id_gui'], $newGui['id_gui'])) {
+					
+					if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
+						var_dump($gui);
+						$newGui = $this->saveGui($newGui, $gui['id_gui']);
 						array_push($relaciones, $newGui);
 					}				
 					
@@ -156,10 +168,11 @@ class ACTFuncion extends ACTbase{
 			    	$cadenaLoad .= $line; 
 					$newGui = $this->getRelacion($cadenaLoad);
 					//guardar datos de newgui y actualizar el id de newgui
-					$newGui = $this->saveGui($newGui, $gui['id_gui']);
+					
 					//poner newgui en el arreglo de relaciones
 					$cadenaLoad = '';
-					if (!$this->existe($gui['id_gui'], $newGui['id_gui'])) {
+					if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
+						$newGui = $this->saveGui($newGui, $gui['id_gui']);
 						array_push($relaciones, $newGui);
 					}
 					
@@ -175,11 +188,10 @@ class ACTFuncion extends ACTbase{
 			    	$cadenaMD .= $line;
 					$newGui = $this->getRelacion($cadenaMD);
 					
-					//guardar datos de newgui y actualizar el id de newgui
-					$newGui = $this->saveGui($newGui, $gui['id_gui']);
-					//poner newgui en el arreglo de relaciones
 					$cadenaMD = '';
-					if (!$this->existe($gui['id_gui'], $newGui['id_gui'])) {
+					if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
+						//guardar datos de newgui y actualizar el id de newgui
+						$newGui = $this->saveGui($newGui, $gui['id_gui']);
 						array_push($relaciones, $newGui);
 					}
 					
@@ -197,16 +209,18 @@ class ACTFuncion extends ACTbase{
 		return $relaciones;		
 	}
 
-	function existe($id_gui_padre, $id_gui_hijo) {
+	function existe($ruta_padre, $ruta_hijo) {
 		$existe = false;
 		foreach ($this->relaciones as $data) {
-			if ($data['id_gui_padre'] == $id_gui_padre && $data['id_gui_hijo'] == $id_gui_hijo) {
+			if ($data['ruta_padre'] == $ruta_padre && $data['ruta_hijo'] == $ruta_hijo) {
+				
 				$existe = true;
 			}
 		}
 		if (!$existe) {
+							
+			array_push($this->relaciones,array('ruta_padre'=>$ruta_padre,'ruta_hijo'=>$ruta_hijo));
 			
-			array_push($this->relaciones,array('id_gui_padre'=>$id_gui_padre,'id_gui_hijo'=>$id_gui_hijo));
 		}
 		return $existe;
 	}
@@ -235,8 +249,14 @@ class ACTFuncion extends ACTbase{
 		$this->objParam->addParametro('nombre', $gui['nombre']);
 		$this->objParam->addParametro('descripcion', $gui['descripcion']);
 		$this->objParam->addParametro('clase_vista', $gui['clase_vista']);
+		if ($gui['combo_trigger'] == 'si')
+			$this->objParam->addParametro('combo_trigger', $gui['combo_trigger']);
+		else 
+			$this->objParam->addParametro('combo_trigger', 'no');	
+		
 		//el id del padre
 		$this->objParam->addParametro('id_gui_padre', $fk);
+		
 		
 		$this->objFunSeguridad=$this->create('MODGui');
 		

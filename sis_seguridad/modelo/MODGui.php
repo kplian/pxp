@@ -226,6 +226,7 @@
 		$this->setParametro('ruta_archivo','ruta_archivo','text');
 		$this->setParametro('clase_vista','clase_vista','varchar');	
 		$this->setParametro('id_gui_padre','id_gui_padre','integer');
+		$this->setParametro('combo_trigger','combo_trigger','varchar');
 	
 		
 		//Ejecuta la instruccion
@@ -233,6 +234,7 @@
 		
 				
 		$this->ejecutarConsulta();
+		
 		return $this->respuesta;
 	}
 	
