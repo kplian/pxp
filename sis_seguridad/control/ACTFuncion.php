@@ -7,7 +7,8 @@
  Fecha:	01/07/2010
  */
 class ACTFuncion extends ACTbase{
-	var $notas = '';    
+	var $notas = ''; 
+	var $relaciones = array();   
 
 	function listarFuncion(){
 
@@ -140,7 +141,9 @@ class ACTFuncion extends ACTbase{
 					$newGui = array('ruta_archivo' => str_replace('../', '', $turl) , 'nombre'=> $ttitle, 'descripcion'=>$ttitle,'clase_vista'=>$tclass);
 					
 					$newGui = $this->saveGui($newGui, $gui['id_gui']);
-					array_push($relaciones, $newGui);
+					if (!$this->existe($gui['id_gui'], $newGui['id_gui'])) {
+						array_push($relaciones, $newGui);
+					}				
 					
 					$turl = '';
 					$ttitle = '';
@@ -156,7 +159,9 @@ class ACTFuncion extends ACTbase{
 					$newGui = $this->saveGui($newGui, $gui['id_gui']);
 					//poner newgui en el arreglo de relaciones
 					$cadenaLoad = '';
-					array_push($relaciones, $newGui);
+					if (!$this->existe($gui['id_gui'], $newGui['id_gui'])) {
+						array_push($relaciones, $newGui);
+					}
 					
 			    } else if ($cadenaLoad != '') {
 			    	$cadenaLoad .= $line; 
@@ -174,7 +179,9 @@ class ACTFuncion extends ACTbase{
 					$newGui = $this->saveGui($newGui, $gui['id_gui']);
 					//poner newgui en el arreglo de relaciones
 					$cadenaMD = '';
-					array_push($relaciones, $newGui);
+					if (!$this->existe($gui['id_gui'], $newGui['id_gui'])) {
+						array_push($relaciones, $newGui);
+					}
 					
 			    } else if ($cadenaMD != '') {
 			    	$cadenaMD .= $line; 
@@ -188,6 +195,20 @@ class ACTFuncion extends ACTbase{
 			$this->notas .= 'No se encontro el archivo de vista'. $filename . "<BR>";
 		}
 		return $relaciones;		
+	}
+
+	function existe($id_gui_padre, $id_gui_hijo) {
+		$existe = false;
+		foreach ($this->relaciones as $data) {
+			if ($data['id_gui_padre'] == $id_gui_padre && $data['id_gui_hijo'] == $id_gui_hijo) {
+				$existe = true;
+			}
+		}
+		if (!$existe) {
+			
+			array_push($this->relaciones,array('id_gui_padre'=>$id_gui_padre,'id_gui_hijo'=>$id_gui_hijo));
+		}
+		return $existe;
 	}
 	function getRelacion ($str) {
 		$m = array();
@@ -206,6 +227,7 @@ class ACTFuncion extends ACTbase{
 	}
 	
 	function saveGui($gui, $fk) {
+		
 		$retorna = $gui;
 		$this->objParam->setTipoTran('IME');
 		$this->objParam->iniciaParametro();
