@@ -152,7 +152,6 @@ class ACTFuncion extends ACTbase{
 					
 					
 					if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
-						var_dump($gui);
 						$newGui = $this->saveGui($newGui, $gui['id_gui']);
 						array_push($relaciones, $newGui);
 					}				
