@@ -6,7 +6,8 @@
  Autor:	Kplian
  Fecha:	01/07/2010
  */
-class ACTFuncion extends ACTbase{    
+class ACTFuncion extends ACTbase{
+	var $notas = '';    
 
 	function listarFuncion(){
 
@@ -73,15 +74,26 @@ class ACTFuncion extends ACTbase{
 		$this->objFunSeguridad=$this->create('MODGui');
 		
 		$this->res=$this->objFunSeguridad->listarGuiSincronizacion();
+		
 		//se llama a lafuncion relacionaGui el cual relacionara la vistas con sus vistas dependientes y con los proce
 		//dimientos respectivos 
 		$guis = $this->res->getDatos();
+		
 		foreach($guis as $gui) {
 			$this->relacionaGui($gui);
 		}
 				
-		$this->res->imprimirRespuesta($this->res->generarJson());
-
+		$this->mensajeExito=new Mensaje();
+		if ($this-> notas != '') {
+			$this->mensajeExito->setMensaje('ERROR','Funcion.php','Se tuvieron los siguientes problemas al hacer la sincronizacion: '. $this->notas,
+										'Se tuvieron los siguientes problemas al hacer la sincronizacion: '. $this->notas,'control');
+		} else {
+			$this->mensajeExito->setMensaje('EXITO','Funcion.php','Se genero con exito la sincronizacion de los objetos de seguridad',
+										'Se genero con exito la sincronizacion de los objetos de seguridad','control');
+		}
+		$this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+		
+		
 	}
 	
 	function relacionaGui ($data) {
@@ -95,18 +107,45 @@ class ACTFuncion extends ACTbase{
 	}
 	
 	function insertaRelaciones ($gui) {
+		
 		$relaciones = array();	
-		$filename = '../../' . $gui['ruta_archivo'];
+		$filename = '../../../' . trim(str_replace(array("\n", "\r"), '', $gui['ruta_archivo']));
 		//se abre el archivo
 		if (file_exists($filename) && is_readable ($filename)) {
+			
 			$lines = file($filename);
 			$cadenaLoad = '';
 			$cadenaMD = ''; //para maestro detalle
 			$comentado = 0;
+			$turl = '';
+			$ttitle = '';
+			$tclass = '';
 			foreach ($lines as $line_num => $line) {
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
-				}												
+				}
+				if ((strpos(str_replace(' ', '', $line),'turl:') !== FALSE || strpos(str_replace(' ', '', $line),'tcls:') !== FALSE || strpos(str_replace(' ', '', $line),'ttitle:')!==FALSE) && strpos($line, '//') === FALSE) {
+					$tempString = str_replace('"', "'", $line);
+					$tempArr = explode("'",$tempString);
+					
+					if (strpos($line,'turl') !== FALSE) 
+						$turl = $tempArr[1];
+					elseif (strpos($line,'tcls') !== FALSE) 
+						$tclass = $tempArr[1];
+					else
+						$ttitle = $tempArr[1];
+				}
+				
+				if ($turl != '' && $ttitle != '' && $tclass != '') {					
+					$newGui = array('ruta_archivo' => str_replace('../', '', $turl) , 'nombre'=> $ttitle, 'descripcion'=>$ttitle,'clase_vista'=>$tclass);
+					
+					$newGui = $this->saveGui($newGui, $gui['id_gui']);
+					array_push($relaciones, $newGui);
+					
+					$turl = '';
+					$ttitle = '';
+					$tclass = '';					
+				}										
 				//Para el caso de Phx.CP.loadWindows
 			    if (strpos($line, 'Phx.CP.loadWindows')!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
 			    	$cadenaLoad = $line;
@@ -145,6 +184,8 @@ class ACTFuncion extends ACTbase{
 					$comentado = 0;
 				}
 			}
+		} else {
+			$this->notas .= 'No se encontro el archivo de vista'. $filename . "<BR>";
 		}
 		return $relaciones;		
 	}
@@ -185,7 +226,7 @@ class ACTFuncion extends ACTbase{
 	}
 	
 	function insertaProcedimientos($gui) {
-		$filename = '../../' . $gui['ruta_archivo'];
+		$filename = '../../../' . $gui['ruta_archivo'];
 		
 		//se abre el archivo
 		if (file_exists($filename) && is_readable ($filename)) {
@@ -200,7 +241,9 @@ class ACTFuncion extends ACTbase{
 				if (strpos($line, '/control/')!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
 					
 					if (preg_match_all('/\'([^\']+)\'/', $line, $m)) {
+						
 						$procedimientos = $this->getProcedimientos($m[1], $gui['id_gui']);
+						
 						if (count($procedimientos) > 0) {
 							$this->saveProcedimientos($procedimientos, $gui['id_gui']);
 						}
@@ -217,6 +260,8 @@ class ACTFuncion extends ACTbase{
 					$comentado = 0;
 				}
 			}
+		} else {
+			$this->notas .= "No existe el arhcivo de vista : ".$filename . "<BR>";;
 		}
 	}
 	function getProcedimientos($cadenas, $id_gui) {
@@ -227,7 +272,7 @@ class ACTFuncion extends ACTbase{
 				//se arma el nombre del archivo
 				$arrayUrl = explode('/', $cadena);
 				$arrayUrl[4] = 'ACT' . $arrayUrl[4];
-				$controlFile = $arrayUrl[0] . '/' . $arrayUrl[1] . '/' . $arrayUrl[2] . '/' . $arrayUrl[3] . '/' . $arrayUrl[4] . '.php';
+				$controlFile = '../' . $arrayUrl[0] . '/' . $arrayUrl[1] . '/' . $arrayUrl[2] . '/' . $arrayUrl[3] . '/' . $arrayUrl[4] . '.php';
 				$controlFunction = $arrayUrl[5];
 				
 				$arrayModelos = $this->getModelosFunciones($controlFile, $controlFunction);
@@ -308,6 +353,8 @@ class ACTFuncion extends ACTbase{
 				
 				
 			}
+		} else {
+			$this->notas = "No existe el archivo de control: ". htmlentities($archivo) . "<BR>";;
 		}
 		
 		return $funcionesModelo;
@@ -319,10 +366,10 @@ class ACTFuncion extends ACTbase{
 		$transacciones = array();
 		
 		if (sizeof($myArray) == 1) {			
-			$archivo = "../../" . $subsistema . "/modelo/" . $myArray [0] . '.php';			
+			$archivo = "../../../" . $subsistema . "/modelo/" . $myArray [0] . '.php';			
 			
 		} else if (sizeof($myArray) == 2) {			
-			$archivo = "../../" . $myArray [0] . "/modelo/" . $myArray [1] . '.php';				
+			$archivo = "../../../" . $myArray [0] . "/modelo/" . $myArray [1] . '.php';				
 			
 		}
 		if (file_exists($archivo) && is_readable ($archivo)) {
@@ -385,12 +432,15 @@ class ACTFuncion extends ACTbase{
 			}
 			
 				
+		} else {
+			$this->notas = "No existe el archivo de modelo: " . htmlentities($archivo) . "<BR>";
 		}
 	return $transacciones;
 		
 	}
 
 	function saveProcedimientos($procedimientos, $id_gui) {
+		
 		foreach($procedimientos as $procedimiento) {
 			foreach($procedimiento as $transaccion) {				
 				$this->objParam->setTipoTran('IME');
@@ -404,6 +454,7 @@ class ACTFuncion extends ACTbase{
 				$this->objFunSeguridad=$this->create('MODProcedimientoGui');
 				
 				$this->res=$this->objFunSeguridad->guardarProcedimientoGuiSincronizacion();
+				
 			}	
 		}
 						

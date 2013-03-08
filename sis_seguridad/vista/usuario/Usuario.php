@@ -46,7 +46,7 @@ tabEnter:true,
 	       				emptyText:'Persona...',
 	       				store: new Ext.data.JsonStore({
 
-	    					url: '../../sis_seguridad/control/Persona/ListarPersona',
+	    					url: '../../sis_seguridad/control/Persona/listarPersona',
 	    					id: 'id_persona',
 	    					root: 'datos',
 	    					sortInfo:{
