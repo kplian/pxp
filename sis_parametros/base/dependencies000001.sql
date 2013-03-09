@@ -454,4 +454,44 @@ AS
        JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;  
        
  /***********************************F-DEP-RAC-PARAM-0-22/02/2013*****************************************/
-       
+
+/***********************************I-DEP-AAO-PARAM-0-07/03/2013*****************************************/
+DROP VIEW param.vproveedor;
+
+CREATE VIEW param.vproveedor(
+    id_proveedor,
+    id_persona,
+    codigo,
+    numero_sigma,
+    tipo,
+    id_institucion,
+    desc_proveedor,
+    nit,
+    id_lugar,
+    lugar,
+    pais)
+AS
+  SELECT provee.id_proveedor,
+         provee.id_persona,
+         provee.codigo,
+         provee.numero_sigma,
+         provee.tipo,
+         provee.id_institucion,
+         pxp.f_iif(provee.id_persona IS NOT NULL,
+          person.nombre_completo1::character varying, ((instit.codigo::text ||
+           '-' ::text) || instit.nombre::text) ::character varying) AS
+            desc_proveedor,
+         provee.nit,
+         provee.id_lugar,
+         lug.nombre as lugar,
+         param.f_obtener_padre_lugar(provee.id_lugar,'pais') as pais
+  FROM param.tproveedor provee
+       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
+       LEFT JOIN param.tinstitucion instit ON instit.id_institucion = provee.id_institucion
+       LEFT JOIN param.tlugar lug on lug.id_lugar = provee.id_lugar
+  WHERE provee.estado_reg::text = 'activo' ::text;
+
+ALTER TABLE param.vproveedor
+  OWNER TO postgres;
+
+/***********************************F-DEP-AAO-PARAM-0-07/03/2013*****************************************/
