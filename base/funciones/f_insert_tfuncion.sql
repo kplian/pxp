@@ -1,22 +1,21 @@
 CREATE OR REPLACE FUNCTION pxp.f_insert_tfuncion (
-  par_nombre character varying,
-  par_descripcion character varying,
-  par_subsistema character varying
+  par_nombre varchar,
+  par_descripcion varchar,
+  par_subsistema varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 DECLARE
 	v_id_subsistema integer;
 BEGIN
 	if (exists (select 1 from segu.tfuncion where nombre = par_nombre and estado_reg = 'activo')) then
-    
+    	ALTER TABLE segu.tfuncion DISABLE TRIGGER USER;
     	update segu.tfuncion set
     		nombre = par_nombre, 
     		descripcion = par_descripcion, 
     		modificado = 1
     	where nombre = par_nombre and estado_reg = 'activo';
-    	    
+    	ALTER TABLE segu.tfuncion ENABLE TRIGGER USER;
     else
 		select id_subsistema into v_id_subsistema
 	    from segu.tsubsistema s
@@ -29,7 +28,8 @@ BEGIN
     return 'exito';
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_insert_tgui (OID = 429316) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

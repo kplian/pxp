@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_insert_tgui (
   par_nombre varchar,
   par_descripcion text,
@@ -19,7 +17,7 @@ DECLARE
 BEGIN
 	    
     if (exists (select 1 from segu.tgui where codigo_gui = par_codigo_gui and estado_reg = 'activo')) then
-    
+    	ALTER TABLE segu.tgui DISABLE TRIGGER USER;
     	update segu.tgui set
     		nombre = par_nombre, 
     		descripcion = par_descripcion, 
@@ -32,7 +30,7 @@ BEGIN
     		clase_vista = par_clase_vista, 
     		modificado = 1
     	where codigo_gui = par_codigo_gui and estado_reg = 'activo';
-    	    
+    	ALTER TABLE segu.tgui ENABLE TRIGGER USER;    
     else
     	select id_subsistema into v_id_subsistema
 	    from segu.tsubsistema s

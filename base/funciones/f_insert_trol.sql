@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_insert_trol (
   par_desc text,
   par_rol varchar,
@@ -13,13 +11,13 @@ DECLARE
 BEGIN
 
 	if (exists (select 1 from segu.trol where rol = par_rol and estado_reg = 'activo')) then
-    
+    	ALTER TABLE segu.trol DISABLE TRIGGER USER;
     	update segu.trol set
     		rol = par_rol, 
     		descripcion = par_descripcion,
     		modificado = 1
     	where rol = par_rol and estado_reg = 'activo';
-    	    
+    	ALTER TABLE segu.trol ENABLE TRIGGER USER;    
     else
 	    select id_subsistema into v_id_subsistema
 	    from segu.tsubsistema s
