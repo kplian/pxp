@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_verifica_permisos (
   par_id_usuario integer,
   par_transaccion varchar,
@@ -104,7 +106,7 @@ begin
                      ON    p.id_procedimiento  = pg.id_procedimiento   and p.estado_reg = 'activo'
                     WHERE ur.id_usuario=par_id_usuario 
                        and  ur.estado_reg='activo' and
-                       (p.codigo = par_transaccion or p.codigo = replace(par_transaccion,'CONT', '_SEL'))
+                       (p.codigo = par_transaccion or p.codigo = replace(par_transaccion,'_CONT', '_SEL'))
                        limit 1) THEN
                     
               
