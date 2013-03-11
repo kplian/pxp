@@ -1,20 +1,19 @@
 CREATE OR REPLACE FUNCTION pxp.f_insert_tprocedimiento (
-  par_codigo character varying,
+  par_codigo varchar,
   par_descripcion text,
-  par_habilita_log character varying,
-  par_autor character varying,
-  par_fecha_creacion character varying,
-  par_funcion character varying
+  par_habilita_log varchar,
+  par_autor varchar,
+  par_fecha_creacion varchar,
+  par_funcion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 DECLARE
 	v_id_funcion integer;
 BEGIN
 
 	if (exists (select 1 from segu.tprocedimiento where codigo = par_codigo and estado_reg = 'activo')) then
-    
+    	ALTER TABLE segu.tprocedimiento DISABLE TRIGGER USER;
     	update segu.tprocedimiento set
     		codigo = par_codigo, 
     		descripcion = par_descripcion,
@@ -23,7 +22,7 @@ BEGIN
     		fecha_creacion = par_fecha_creacion, 
     		modificado = 1
     	where codigo = par_codigo and estado_reg = 'activo';
-    	    
+    	ALTER TABLE segu.tprocedimiento ENABLE TRIGGER USER;
     else
 		select id_funcion into v_id_funcion
 	    from segu.tfuncion f
@@ -37,7 +36,8 @@ BEGIN
     return 'exito';
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_insert_tprocedimiento_gui (OID = 429323) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

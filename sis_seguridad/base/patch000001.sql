@@ -1054,4 +1054,9 @@ CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui
 
 /*****************************F-SCP-JRR-SEGU-0-21/01/2013*************/
 
+/*****************************I-SCP-JRR-SEGU-0-08/03/2013*************/
 
+ALTER TABLE segu.tgui
+  ADD COLUMN combo_trigger VARCHAR(2);
+  
+/*****************************F-SCP-JRR-SEGU-0-08/03/2013*************/
