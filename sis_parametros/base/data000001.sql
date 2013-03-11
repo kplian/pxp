@@ -304,5 +304,12 @@ select pxp.f_insert_testructura_gui ('CCOST', 'PARAM');
 
 /***********************************F-DAT-GSS-PARAM-38-18/02/2013*****************************************/
 
+/***********************************I-DAT-GSS-PARAM-72-08/03/2013*****************************************/
+
+select pxp.f_insert_tgui ('Tipo de Cambio', 'tipo de cambio', 'TCB', 'si', 10, 'sis_parametros/vista/tipo_cambio/TipoCambio.php', 2, '', 'TipoCambio', 'PARAM');
+
+select pxp.f_insert_testructura_gui ('TCB', 'PARAM');
+
+/***********************************F-DAT-GSS-PARAM-72-08/03/2013*****************************************/
 
 

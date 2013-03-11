@@ -93,7 +93,7 @@ SELECT uof.id_uo_funcionario, funcio.id_funcionario,
 FROM (((orga.tfuncionario funcio JOIN segu.vpersona person ON
     ((funcio.id_persona = person.id_persona))) JOIN orga.tuo_funcionario uof ON
     ((uof.id_funcionario = funcio.id_funcionario))) JOIN orga.tuo uo ON
-    ((uo.id_uo = uof.id_funcionario)));
+    ((uo.id_uo = uof.id_uo)));
 
 
 

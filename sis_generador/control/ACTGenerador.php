@@ -766,8 +766,9 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
     	//llama al constructor de la clase padre
 		Phx.vista.".$this->gTabla->getNombreFuncion('vista').".superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		this.load({params:{start:0, limit:this.tam_pag}})
 	},
+	tam_pag:50,
 			
 	Atributos:[
 		{

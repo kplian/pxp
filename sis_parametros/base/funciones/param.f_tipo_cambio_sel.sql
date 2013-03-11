@@ -1,19 +1,13 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+CREATE OR REPLACE FUNCTION "param"."f_tipo_cambio_sel"(	
+				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
+RETURNS character varying AS
+$BODY$
 /**************************************************************************
  SISTEMA:		Parametros Generales
- FUNCION: 		param.f_concepto_ingas_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tconcepto_ingas'
- AUTOR: 		 (admin)
- FECHA:	        25-02-2013 19:49:23
+ FUNCION: 		param.f_tipo_cambio_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.ttipo_cambio'
+ AUTOR: 		Gonzalo Sarmiento Sejas
+ FECHA:	        08-03-2013 15:30:14
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -32,37 +26,40 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'param.f_concepto_ingas_sel';
+	v_nombre_funcion = 'param.f_tipo_cambio_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CONIG_SEL'
+ 	#TRANSACCION:  'PM_TCB_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
- 	#FECHA:		25-02-2013 19:49:23
+ 	#AUTOR:		Gonzalo Sarmiento Sejas	
+ 	#FECHA:		08-03-2013 15:30:14
 	***********************************/
 
-	if(p_transaccion='PM_CONIG_SEL')then
+	if(p_transaccion='PM_TCB_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						conig.id_concepto_ingas,
-						conig.desc_ingas,
-						conig.tipo,
-						conig.movimiento,
-						conig.sw_tes,
-						conig.id_oec,
-						conig.estado_reg,
-						conig.id_usuario_reg,
-						conig.fecha_reg,
-						conig.fecha_mod,
-						conig.id_usuario_mod,
+						tcb.id_tipo_cambio,
+						tcb.estado_reg,
+						tcb.fecha,
+						tcb.observaciones,
+						tcb.compra,
+						tcb.venta,
+						tcb.oficial,
+						tcb.id_moneda,
+						mon.moneda,
+						tcb.fecha_reg,
+						tcb.id_usuario_reg,
+						tcb.fecha_mod,
+						tcb.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod	
-						from param.tconcepto_ingas conig
-						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+						from param.ttipo_cambio tcb
+						inner join segu.tusuario usu1 on usu1.id_usuario = tcb.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = tcb.id_usuario_mod
+				        inner join param.tmoneda mon on mon.id_moneda = tcb.id_moneda 
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -75,20 +72,20 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_CONIG_CONT'
+ 	#TRANSACCION:  'PM_TCB_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
- 	#FECHA:		25-02-2013 19:49:23
+ 	#AUTOR:		Gonzalo Sarmiento Sejas	
+ 	#FECHA:		08-03-2013 15:30:14
 	***********************************/
 
-	elsif(p_transaccion='PM_CONIG_CONT')then
+	elsif(p_transaccion='PM_TCB_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_concepto_ingas)
-					    from param.tconcepto_ingas conig
-					    inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+			v_consulta:='select count(id_tipo_cambio)
+					    from param.ttipo_cambio tcb
+					    inner join segu.tusuario usu1 on usu1.id_usuario = tcb.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = tcb.id_usuario_mod
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -114,9 +111,7 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE
 COST 100;
+ALTER FUNCTION "param"."f_tipo_cambio_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

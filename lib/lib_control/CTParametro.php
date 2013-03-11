@@ -389,9 +389,28 @@ class CTParametro{
 					//case 'string' : $qs .= " AND ".$filter[$i]['field']." ILIKE ''%".$filter[$i]['value']."%''"; Break;
 					//case 'string' : $qs .= " AND to_tsvector(".$filter[$i]['field'].") @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')"; Break;
 					case 'string' : 
-					         $qs .= " AND ((".$filter[$i]['field']." ILIKE ''%".$filter[$i]['value']."%'')"; 
-					         $qs .= " OR( to_tsvector(".$filter[$i]['field'].") @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')))";
+					         
+					         $paramfiltro = explode('#',$filter[$i]['field']);
+					         
+					         $qs='';
+                            $filteraux=trim($filter[$i]['field']);
+                            $contador = count($paramfiltro);
+                            $qs .= " AND ( 1=0 ";
+                            
+                            if($filteraux!=''){
+                                for($k=0;$k<$contador;$k++){
+					         
+    					         $qs .= " OR ((".$paramfiltro[$k]."::varchar ILIKE ''%".$filter[$i]['value']."%'')"; 
+    					         $qs .= " OR( to_tsvector(".$paramfiltro[$k]."::varchar) @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')))";
+             		          
+                                }
+                            }
+                             $qs .= " )";
+         		          
          		          Break;
+					
+					
+					
 					case 'list' :
 						
 						if (count($filter[$i]['value'])>1){
@@ -436,10 +455,10 @@ class CTParametro{
 			if($filter!=''){
 				for($i=0;$i<$contador;$i++){
 					if($i==0){
-						$qs.=" AND ( (lower($paramfiltro[$i]) LIKE lower(''%$filter%'')) ";	
+						$qs.=" AND ( (lower($paramfiltro[$i]::varchar) LIKE lower(''%$filter%'')) ";	
 					}
 					else{
-						$qs.=" OR  (lower($paramfiltro[$i]) LIKE lower(''%$filter%'')) ";	
+						$qs.=" OR  (lower($paramfiltro[$i]::varchar) LIKE lower(''%$filter%'')) ";	
 					}
 					if($i==$contador-1){
 						$qs.=')';

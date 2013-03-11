@@ -1,10 +1,10 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION orga.f_obtener_funcionarios_x_uo (
+CREATE OR REPLACE FUNCTION orga.f_obtener_funcionarios_x_uo_array (
   kp_id_uo integer,
   p_fecha date = now()
 )
-RETURNS varchar AS
+RETURNS integer [] AS
 $body$
 /**************************************************************************
  SISTEMA ENDESIS - SISTEMA DE KARD
@@ -23,31 +23,36 @@ $body$
 
 */
 DECLARE
-v_respuesta varchar;
+
 v_registros record;
 v_id_uo     integer;
+
+v_resp INTEGER[];
+v_cont integer;
 
 
 BEGIN
 
 
+
+v_cont = 1;
+
     for v_registros in (
-                      select e.desc_funcionario1 as nombre_completo
-                         from orga.vfuncionario e
-                         inner join orga.tuo_funcionario ha on ha.id_funcionario=e.id_funcionario
+                      select ha.id_funcionario
+                         from orga.tuo_funcionario ha 
                          where ha.estado_reg='activo' and ha.id_uo=kp_id_uo
                                and ((ha.fecha_asignacion <= p_fecha and ha.fecha_finalizacion >=p_fecha) 
                                    or (ha.fecha_asignacion <= p_fecha and ha.fecha_finalizacion is NULL))
                          ) loop
 
                if(v_respuesta!='') then
-                  v_respuesta:= COALESCE(v_respuesta,'')||'<br>-'||v_registros.nombre_completo;
-               else
-                  v_respuesta:=v_registros.nombre_completo;
+                  v_resp[v_cont]=v_registros.id_funcionario;
+                  v_cont= v_cont +1;
+                  
                end if;
 
      end loop;
-return v_respuesta;
+return v_resp;
 END;
 $body$
 LANGUAGE 'plpgsql'

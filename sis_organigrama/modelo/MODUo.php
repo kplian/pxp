@@ -84,6 +84,8 @@ function listarUoFiltro(){
 		//$this->captura('id_estructura_uo','integer');
 		//Ejecuta la funcion
 		$this->armarConsulta();
+		
+		//echo $this->getConsulta();
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 

@@ -13,6 +13,14 @@ class ACTCentroCosto extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_centro_costo');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		
+		if($this->objParam->getParametro('id_gestion')!=''){
+            $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
+        }
+        
+		
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODCentroCosto','listarCentroCosto');

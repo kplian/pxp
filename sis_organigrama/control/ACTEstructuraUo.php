@@ -39,7 +39,7 @@ class ACTEstructuraUo extends ACTbase {
 				$this -> objParam -> addParametro('id_padre', $id_uo);
 			}
 			
-			$this->objFunSeguridad=$this->create('MODEstructuraUo');
+			$this->objFunSeguridad=$this->create('MODUo');
 			$this -> res = $this -> objFunSeguridad -> listarUoFiltro($this -> objParam);
 
 			if ($this -> res) {

@@ -282,7 +282,8 @@ BEGIN
                                 nivel,
                                 icono,
                                 id_subsistema,
-                                clase_vista)
+                                clase_vista,
+                                combo_trigger)
                          values(
                               
                                 v_codigo || '.' || v_numero::varchar,
@@ -294,7 +295,8 @@ BEGIN
                                 v_nivel+1, 
                                 NULL,
                                 v_id_subsistema,
-                                v_parametros.clase_vista)
+                                v_parametros.clase_vista,
+                                v_parametros.combo_trigger)
                          RETURNING id_gui into v_id_gui;
               --introduce la relacion con el padre
               insert into segu.testructura_gui(

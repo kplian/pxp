@@ -549,6 +549,18 @@ CREATE TABLE param.tconcepto_ingas(
     INHERITS (pxp.tbase);
   
   
+CREATE TABLE param.ttipo_cambio (
+  id_tipo_cambio SERIAL, 
+  id_moneda INTEGER NOT NULL, 
+  fecha DATE DEFAULT now() NOT NULL, 
+ 
+  oficial NUMERIC(18,6) NOT NULL, 
+  compra NUMERIC(18,6) NOT NULL, 
+  venta NUMERIC(18,6) NOT NULL, 
+  observaciones VARCHAR(200),
+ PRIMARY KEY(id_tipo_cambio)
+)  INHERITS (pxp.tbase); 
+  
        
 /***********************************F-SCP-RAC-PARAM-0-21/02/2013*****************************************/
 

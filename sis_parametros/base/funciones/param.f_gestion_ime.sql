@@ -36,6 +36,7 @@ DECLARE
     v_fecha_ini date;
     v_fecha_fin date;
     v_cont integer;
+    v_anho integer;
 			    
 BEGIN
 
@@ -189,6 +190,46 @@ BEGIN
             return v_resp;
 
 		end;
+        
+        
+        
+        /*********************************    
+ 	#TRANSACCION:  'PM_GETGES_ELI'
+ 	#DESCRIPCION:	Recuepra el id_gestion segun la fecha
+ 	#AUTOR:		admin	
+ 	#FECHA:		05-02-2013 09:56:59
+	***********************************/
+
+	elsif(p_transaccion='PM_GETGES_ELI')then
+
+		begin
+            --todavia no se considera la existencia de multiples empresas
+        
+            v_anho = (date_part('year', v_parametros.fecha))::integer;
+			
+            select 
+             ges.id_gestion
+             into v_id_gestion
+            from param.tgestion ges
+            where ges.gestion = v_anho
+            limit 1 offset 0;
+            
+            IF v_id_gestion is null THEN
+            
+              raise exception 'No se tiene una gestion configurada para la fecha %',v_parametros.fecha; 
+            
+            END IF;
+       
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','id_gestion recuperado'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_id_gestion::varchar);
+           
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+        
          
 	else
      
