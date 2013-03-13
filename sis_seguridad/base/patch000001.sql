@@ -1060,3 +1060,7 @@ ALTER TABLE segu.tgui
   ADD COLUMN combo_trigger VARCHAR(2);
   
 /*****************************F-SCP-JRR-SEGU-0-08/03/2013*************/
+
+
+
+

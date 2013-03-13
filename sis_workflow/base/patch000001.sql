@@ -18,6 +18,7 @@ CREATE TABLE wf.ttipo_proceso (
 CREATE TABLE wf.ttipo_estado (
   id_tipo_estado   SERIAL NOT NULL, 
   id_tipo_proceso int4, 
+  codigo		  varchar(100),
   inicio          varchar(2), 
   disparador      varchar(2), 
   nombre_estado   varchar(150),
