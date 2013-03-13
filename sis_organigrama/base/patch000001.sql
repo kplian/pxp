@@ -212,3 +212,14 @@ ALTER TABLE orga.tfuncionario_especialidad OWNER TO postgres;
 alter table orga.tfuncionario
 drop constraint tfuncionario_id_persona_key;
 /********************************************F-SCP-RCM-ORGA-92-27/12/2012********************************************/
+
+/*****************************I-SCP-RAC-ORGA-0-11/03/2013*************/
+--cada persona puede tener un solo funcionario
+
+ALTER TABLE orga.tfuncionario 
+  ADD UNIQUE (id_persona);
+  
+  
+/*****************************F-SCP-RAC-ORGA-0-11/03/2013*************/
+
+

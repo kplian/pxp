@@ -55,7 +55,7 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 					id: 'id_tipo_estado',
 					root: 'datos',
 					sortInfo: {
-						field: 'codigo',
+						field: 'tipes.codigo',
 						direction: 'ASC'
 					},
 					totalProperty: 'total',

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_proceso_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -60,7 +62,8 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         pm.nombre AS desc_proceso_macro,
-                        te.nombre_estado AS desc_tipo_estado	
+                        te.nombre_estado AS desc_tipo_estado,
+                        tipproc.inicio 		
 						from wf.ttipo_proceso tipproc
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipproc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod

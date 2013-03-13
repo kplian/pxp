@@ -1062,13 +1062,5 @@ ALTER TABLE segu.tgui
 /*****************************F-SCP-JRR-SEGU-0-08/03/2013*************/
 
 
-/*****************************I-SCP-RAC-SEGU-0-11/03/2013*************/
---cada persona puede tener un solo funcionario
-
-ALTER TABLE orga.tfuncionario 
-  ADD UNIQUE (id_persona);
-  
-  
-/*****************************F-SCP-RAC-SEGU-0-11/03/2013*************/
 
 
