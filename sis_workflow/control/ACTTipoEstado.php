@@ -16,6 +16,11 @@ class ACTTipoEstado extends ACTbase{
 	    	$this->objParam->addFiltro("tipes.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));	
 		}
 		
+		 if($this->objParam->getParametro('estados')!=''){
+            $this->objParam->addFiltro("tipes.id_tipo_estado in (".$this->objParam->getParametro('estados').")");    
+        }
+        
+		
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -28,6 +33,22 @@ class ACTTipoEstado extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	
+	function listarFuncionarioWf(){
+        $this->objParam->defecto('ordenacion','id_funcionario');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODTipoEstado','listarFuncionarioWf');
+        } else{
+            $this->objFunc=$this->create('MODTipoEstado');
+            
+            $this->res=$this->objFunc->listarFuncionarioWf($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    
 				
 	function insertarTipoEstado(){
 		$this->objFunc=$this->create('MODTipoEstado');	

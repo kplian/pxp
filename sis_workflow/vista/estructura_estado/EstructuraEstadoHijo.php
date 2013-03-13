@@ -55,11 +55,11 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 					id: 'id_tipo_estado',
 					root: 'datos',
 					sortInfo: {
-						field: 'nombre_estado',
+						field: 'codigo',
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_tipo_estado', 'nombre_estado', 'inicio'],
+					fields: ['id_tipo_estado','codigo', 'nombre_estado', 'inicio'],
 					// turn on remote sorting
 					remoteSort: true,
 					baseParams: {par_filtro: 'tipes.nombre_estado'}

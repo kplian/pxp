@@ -1,8 +1,10 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
-  p_estado_proceso	varchar,
+  p_id_tipo_estado_siguiente integer,
   p_id_funcionario integer,
   p_id_estado_wf_anterior integer,
-  p_id_proceso_wf integer  
+  p_id_proceso_wf integer
 )
 RETURNS integer AS
 $body$
@@ -20,11 +22,11 @@ $body$
  FECHA:			26/02/2013
  COMENTARIOS:	
 ***************************************************************************
- HISTORIA DE MODIFICACIONES:
+ HISTORIA DE MODIFICACIONES:  
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:			
+ DESCRIPCION:   Se solucionaron varios errores de logica	
+ AUTOR:			RAC
+ FECHA:			11/03/2013
 
 ***************************************************************************/
 DECLARE	
@@ -39,28 +41,31 @@ BEGIN
 	BEGIN   
     v_id_estado_actual = -1;
       
-    if((p_estado_proceso is null OR p_id_funcionario is null OR p_id_estado_wf_anterior is null OR p_id_proceso_wf is null)
-        OR rtrim(p_estado_proceso,' ') = '' )then
-    	raise notice 'Faltan parametros, existen parametros nulos o en blanco.';
-        return v_id_estado_actual;
+    if( p_id_tipo_estado_siguiente is null 
+        OR p_id_funcionario is null 
+        OR p_id_estado_wf_anterior is null 
+        OR p_id_proceso_wf is null
+        )then
+    	raise exception 'Faltan parametros, existen parametros nulos o en blanco.';
+      
     end if;
     
-    /*SELECT array_to_string(p_estado,',', '*') 
-    INTO v_estado_siguiente
-    FROM wf.f_obtener_estado_tipo_proceso('','SOLCO','borrador4544'	,'siguiente');
-    
-    if(v_estado_siguiente is null)then 
-    	return v_id_estado_actual;
-    end if;
-    */   
-         
-    SELECT te.id_tipo_estado FROM wf.ttipo_estado te
-    INTO v_id_tipo_estado
-    WHERE te.nombre_estado ilike p_estado_proceso;
+     
    
-   
-    INSERT INTO wf.testado_wf(id_estado_anterior, id_tipo_estado, id_proceso_wf, id_funcionario, fecha) 
-    values(p_id_estado_wf_anterior, v_id_tipo_estado, p_id_proceso_wf, p_id_funcionario, now()) 
+    INSERT INTO wf.testado_wf(
+     id_estado_anterior, 
+     id_tipo_estado, 
+     id_proceso_wf, 
+     id_funcionario, 
+     fecha,
+     estado_reg) 
+    values(
+       p_id_estado_wf_anterior, 
+       p_id_tipo_estado_siguiente, 
+       p_id_proceso_wf, 
+       p_id_funcionario, 
+       now(),
+       'activo') 
     RETURNING id_estado_wf INTO v_id_estado_actual;  
             
     UPDATE wf.testado_wf 
@@ -76,4 +81,5 @@ $body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
-SECURITY INVOKER;
+SECURITY INVOKER
+COST 100;

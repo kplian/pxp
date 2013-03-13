@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_estructura_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -57,8 +59,8 @@ BEGIN
 						estes.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        tep.nombre_estado AS desc_tipo_estado_padre,
-                        teh.nombre_estado AS desc_tipo_estado_hijo                 	
+                        ''(''||tep.codigo||'') ''|| tep.nombre_estado AS desc_tipo_estado_padre,
+                        ''(''||teh.codigo||'') ''|| teh.nombre_estado AS desc_tipo_estado_hijo                	
 						from wf.testructura_estado estes
 						inner join segu.tusuario usu1 on usu1.id_usuario = estes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = estes.id_usuario_mod

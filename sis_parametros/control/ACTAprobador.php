@@ -23,6 +23,14 @@ class ACTAprobador extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	 function listarAprobadorFiltrado(){
+        $this->objParam->defecto('ordenacion','prioridad');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        $this->objFunc=$this->create('MODAprobador');
+        $this->res=$this->objFunc->listarAprobadorFiltrado($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 				
 	function insertarAprobador(){
 		$this->objFunc=$this->create('MODAprobador');	

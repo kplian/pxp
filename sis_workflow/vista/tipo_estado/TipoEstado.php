@@ -40,6 +40,21 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			type: 'Field',
 			form: true
 		},
+        {
+            config:{
+                name: 'codigo',
+                fieldLabel: 'Código Estado',
+                allowBlank: false,
+                anchor: '70%',
+                gwidth: 100,
+                maxLength:150
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.codigo',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'nombre_estado',
@@ -253,7 +268,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_tipo_proceso', type: 'string'},
+		{name:'desc_tipo_proceso', type: 'string'},'codigo'
 		
 	],
 	sortInfo:{

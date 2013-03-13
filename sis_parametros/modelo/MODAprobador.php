@@ -80,6 +80,42 @@ class MODAprobador extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	/*
+	DESC:  Permite obtener lso aprobadores segun la configuracion 
+	       de los uo, ep , CC , monto y fecha
+	
+	
+	*/
+	
+    function listarAprobadorFiltrado(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.f_aprobadores_sel';
+        $this->transaccion='PM_OBTARPOBA_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        $this->setTipoRetorno('record');
+        
+        $this->setParametro('id_uo','id_uo','int4');
+        $this->setParametro('id_ep','id_ep','int4');
+        $this->setParametro('id_centro_costo','id_centro_costo','int4');
+        $this->setParametro('fecha','fecha','date');
+        $this->setParametro('codigo_subsistema','codigo_subsistema','varchar');
+        $this->setParametro('monto','monto','numeric');
+        
+        $this->captura('id_funcionario','int4');
+        $this->captura('desc_funcionario','text');
+        $this->captura('prioridad','int4');
+        
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+     
+    
+    }
 			
 	function modificarAprobador(){
 		//Definicion de variables para ejecucion del procedimiento
