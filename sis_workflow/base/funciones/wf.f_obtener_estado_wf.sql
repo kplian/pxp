@@ -3,6 +3,7 @@
 CREATE OR REPLACE FUNCTION wf.f_obtener_estado_wf (
   p_id_proceso_wf integer,
   p_id_estado_wf integer,
+  p_id_tipo_estado integer,
   p_operacion varchar,
   out ps_id_tipo_estado integer [],
   out ps_codigo_estado varchar [],
@@ -26,6 +27,12 @@ $body$
  DESCRIPCION:	
  AUTOR:			
  FECHA:			
+ ********************************
+  p_id_proceso_wf integer,   ->   identificador del proceso WF obligatorio
+  p_id_estado_wf integer,    ->   identificador del estado del WF, se utiliza si id_tipo_estado es NULL
+  p_id_tipo_estado integer,  ->   OPCIONAL
+  p_operacion varchar,       ->   siguiente o anterior
+ 
 
 ***************************************************************************/
 DECLARE
@@ -46,13 +53,20 @@ BEGIN
 
   --establece el tipo estado actual
     
-    select 
-      ew.id_tipo_estado 
-     into 
-      v_id_tipo_estado
-    from wf.testado_wf ew
-    where ew.id_estado_wf = p_id_estado_wf;
+  if p_id_tipo_estado is null then
   
+      select 
+        ew.id_tipo_estado 
+       into 
+        v_id_tipo_estado
+      from wf.testado_wf ew
+      where ew.id_estado_wf = p_id_estado_wf;
+      
+  else
+  
+ 	 v_id_tipo_estado=p_id_tipo_estado;
+  
+  end if;
 
  -- raise exception '% %  %',v_id_tipo_estado, p_id_proceso_wf,p_id_estado_wf;
 

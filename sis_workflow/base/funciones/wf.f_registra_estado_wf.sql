@@ -4,7 +4,8 @@ CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
   p_id_tipo_estado_siguiente integer,
   p_id_funcionario integer,
   p_id_estado_wf_anterior integer,
-  p_id_proceso_wf integer
+  p_id_proceso_wf integer,
+  p_id_usuario integer
 )
 RETURNS integer AS
 $body$
@@ -58,14 +59,16 @@ BEGIN
      id_proceso_wf, 
      id_funcionario, 
      fecha,
-     estado_reg) 
+     estado_reg,
+     id_usuario_reg) 
     values(
        p_id_estado_wf_anterior, 
        p_id_tipo_estado_siguiente, 
        p_id_proceso_wf, 
        p_id_funcionario, 
        now(),
-       'activo') 
+       'activo',
+       p_id_usuario) 
     RETURNING id_estado_wf INTO v_id_estado_actual;  
             
     UPDATE wf.testado_wf 

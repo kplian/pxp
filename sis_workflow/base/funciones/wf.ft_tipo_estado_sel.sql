@@ -29,9 +29,17 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
+    
+    v_tipo_asignacion  varchar;
+    v_nombre_func_list varchar;
+    
+    
 			    
 BEGIN
 
+
+   
+ 
 	v_nombre_funcion = 'wf.ft_tipo_estado_sel';
     v_parametros = pxp.f_get_record(p_tabla);
    
@@ -46,45 +54,71 @@ BEGIN
      				
     	begin
         
-            --llamada a la funcion del tipo estado
-            
-            
-            
-            
-        
-    		--Sentencia de la consulta
-			v_consulta:='select
-						tipes.id_tipo_estado,
-						tipes.nombre_estado,
-						tipes.id_tipo_proceso,
-						tipes.inicio,
-						tipes.disparador,
-						tipes.tipo_asignacion,
-						tipes.nombre_func_list,
-						tipes.estado_reg,
-						tipes.fecha_reg,
-						tipes.id_usuario_reg,
-						tipes.fecha_mod,
-						tipes.id_usuario_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-                        tp.nombre AS desc_tipo_proceso,
-                        tipes.codigo as codigo_estado	
-						from wf.ttipo_estado tipes
-						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
-                        INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
-				        where  ';
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+    
+     
+             v_consulta:=' 
+                   SELECT 
+                   id_funcionario,
+                   desc_funcionario,
+                   desc_funcionario_cargo,
+                   prioridad
+                   FROM wf.f_funcionario_wf_sel(
+                     '||p_id_usuario::varchar||', 
+                     '||v_parametros.id_tipo_estado::varchar||', 
+                      '''||v_parametros.fecha::varchar||''',
+                      '|| v_parametros.id_estado_wf::varchar||',
+                      FALSE,
+                      '||v_parametros.cantidad||',
+                      '||v_parametros.puntero||',
+                      '||quote_literal(v_parametros.filtro)||'
+                      
+                     ) AS (id_funcionario integer,
+                           desc_funcionario text,
+                           desc_funcionario_cargo text,
+                           prioridad integer)';
+                      
+         
+                
+                     
 			--Devuelve la respuesta
 			return v_consulta;
 						
 		end;
+ /*********************************    
+ 	#TRANSACCION:  'WF_FUNTIPES_CONT'
+ 	#DESCRIPCION:	Consulta los funcionarios correpondientes con el tipo de estado
+ 	#AUTOR:		admin	
+ 	#FECHA:		21-02-2013 15:36:11
+	***********************************/
 
+	elseif(p_transaccion='WF_FUNTIPES_CONT')then
+     				
+    	begin
+       
+        
+    
+             v_consulta:=' 
+                   SELECT 
+                   total
+                   FROM wf.f_funcionario_wf_sel(
+                     '||p_id_usuario::varchar||', 
+                     '||v_parametros.id_tipo_estado::varchar||', 
+                      '''||v_parametros.fecha::varchar||''',
+                      '|| v_parametros.id_estado_wf::varchar||',
+                      TRUE,
+                      '||v_parametros.cantidad||',
+                      '||v_parametros.puntero||',
+                      '||quote_literal(v_parametros.filtro)||'
+                      
+                     ) AS (total bigint)';
+                      
+                  
+                
+                     
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
 
 	/*********************************    
  	#TRANSACCION:  'WF_TIPES_SEL'
@@ -113,7 +147,8 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         tp.nombre AS desc_tipo_proceso,
-                        tipes.codigo as codigo_estado	
+                        tipes.codigo as codigo_estado,
+                        tipes.obs	
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod

@@ -24,6 +24,7 @@ CREATE TABLE wf.ttipo_estado (
   nombre_estado   varchar(150),
   tipo_asignacion varchar(255),
   nombre_func_list varchar(255),
+  obs             text,
   PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase); 
   
   

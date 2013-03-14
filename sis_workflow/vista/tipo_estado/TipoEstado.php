@@ -59,7 +59,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'nombre_estado',
 				fieldLabel: 'Nombre Estado',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '70%',
 				gwidth: 200,
 				maxLength:150
@@ -74,7 +74,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'inicio',
 				fieldLabel: 'Inicio (raiz)?',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '40%',
 				gwidth: 50,
 				maxLength:2,
@@ -102,7 +102,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'disparador',
 				fieldLabel: 'Disparador (bifurcación)?',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '40%',
 				gwidth: 50,
 				maxLength:2,
@@ -130,7 +130,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'tipo_asignacion',
 				fieldLabel: 'Tipo Asignación',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '70%',
 				gwidth: 150,
 				maxLength:50,
@@ -149,7 +149,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			filters:{	
 	       		         type: 'list',
 	       				 pfiltro:'tipes.tipo_asignacion',
-	       				 options: ['listado','todos','funcion_listado'],	
+	       				 options: ['listado','todos','funcion_listado','depto_listado','depto_funList'],	
 	       		 	},
 			grid:true,
 			form:true
@@ -169,6 +169,21 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'obs',
+                fieldLabel: 'Obs(config adicional)',
+                allowBlank: true,
+                anchor: '70%',
+                gwidth: 200,
+                maxLength:150
+            },
+            type:'TextArea',
+            filters:{pfiltro:'tipes.obs',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -268,7 +283,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_tipo_proceso', type: 'string'},'codigo'
+		{name:'desc_tipo_proceso', type: 'string'},'codigo','obs'
 		
 	],
 	sortInfo:{

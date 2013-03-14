@@ -36,6 +36,7 @@ class MODTipoEstado extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_tipo_proceso','varchar');
 		$this->captura('codigo','varchar');
+		$this->captura('obs','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -49,14 +50,20 @@ class MODTipoEstado extends MODbase{
 	function listarFuncionarioWf(){
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='wf.ft_tipo_estado_sel';
-        $this->transaccion='WF_TIPES_SEL';
+        $this->transaccion='WF_FUNTIPES_SEL';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
         
+        //$this->setCount(false);
+        
+        
         $this->setParametro('id_tipo_estado','id_tipo_estado','integer');
-                
+        $this->setParametro('fecha','fecha','date');
+        $this->setParametro('id_estado_wf','id_estado_wf','integer');
+        
         //Definicion de la lista del resultado del query
         $this->captura('id_funcionario','int4');
         $this->captura('desc_funcionario','text');
+        $this->captura('desc_funcionario_cargo','text');
         $this->captura('prioridad','int4');
         
         //Ejecuta la instruccion
@@ -82,6 +89,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('nombre_func_list','nombre_func_list','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('codigo','codigo','varchar');
+		$this->setParametro('obs','obs','text');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -107,6 +115,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('nombre_func_list','nombre_func_list','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('codigo','codigo','varchar');
+		$this->setParametro('obs','obs','text');
 		
 
 		//Ejecuta la instruccion
