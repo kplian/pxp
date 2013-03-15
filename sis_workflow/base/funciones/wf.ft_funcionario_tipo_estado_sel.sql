@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_funcionario_tipo_estado_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION wf.ft_funcionario_tipo_estado_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_funcionario_tipo_estado_sel
@@ -40,7 +44,8 @@ BEGIN
      				
     	begin
     		--Sentencia de la consulta
-			v_consulta:='select
+			v_consulta:='
+select
 						functest.id_funcionario_tipo_estado,
 						functest.id_labores_tipo_proceso,
 						functest.id_tipo_estado,
@@ -52,10 +57,16 @@ BEGIN
 						functest.id_usuario_mod,
 						functest.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+                        FUNCAR.desc_funcionario1::varchar AS desc_funcionario1,
+                        depto.nombre AS desc_depto,
+                        te.nombre_estado AS desc_tipo_estado	
 						from wf.tfuncionario_tipo_estado functest
 						inner join segu.tusuario usu1 on usu1.id_usuario = functest.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = functest.id_usuario_mod
+                        LEFT JOIN orga.vfuncionario_cargo FUNCAR ON FUNCAR.id_funcionario = functest.id_funcionario
+                        LEFT JOIN param.tdepto depto ON depto.id_depto = functest.id_depto
+                        INNER join WF.ttipo_estado TE on TE.id_tipo_estado = functest.id_tipo_estado                           
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -82,6 +93,9 @@ BEGIN
 					    from wf.tfuncionario_tipo_estado functest
 					    inner join segu.tusuario usu1 on usu1.id_usuario = functest.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = functest.id_usuario_mod
+                        LEFT JOIN orga.vfuncionario_cargo FUNCAR ON FUNCAR.id_funcionario = functest.id_funcionario
+                        LEFT JOIN param.tdepto depto ON depto.id_depto = functest.id_depto
+                        INNER join WF.ttipo_estado TE on TE.id_tipo_estado = functest.id_tipo_estado
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -107,7 +121,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_funcionario_tipo_estado_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
