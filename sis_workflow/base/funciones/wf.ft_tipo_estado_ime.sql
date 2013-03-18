@@ -71,7 +71,12 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            codigo,
+            obs,
+            depto_asignacion,
+            nombre_depto_func_list,
+            fin
           	) values(
 			v_parametros.nombre_estado,
 			v_parametros.id_tipo_proceso,
@@ -83,7 +88,12 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.codigo,
+            v_parametros.obs,
+            v_parametros.depto_asignacion,
+            v_parametros.nombre_depto_func_list,
+            v_parametros.fin
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -116,7 +126,12 @@ BEGIN
 			tipo_asignacion = v_parametros.tipo_asignacion,
 			nombre_func_list = v_parametros.nombre_func_list,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            codigo=v_parametros.codigo,
+            obs=v_parametros.obs,
+            depto_asignacion=v_parametros.depto_asignacion,
+            nombre_depto_func_list=v_parametros.nombre_depto_func_list,
+            fin=v_parametros.fin
 			where id_tipo_estado=v_parametros.id_tipo_estado;
             
             --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '

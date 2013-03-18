@@ -217,3 +217,9 @@ drop constraint tfuncionario_id_persona_key;
 alter table orga.tfuncionario
 add column telefono_ofi varchar(50);
 /********************************************F-SCP-RCM-ORGA-112-27/12/2013********************************************/
+
+/*****************************I-SCP-RAC-ORGA-0-11/03/2013*************/
+--cada persona puede tener un solo funcionario
+ALTER TABLE orga.tfuncionario 
+  ADD UNIQUE (id_persona);
+/*****************************F-SCP-RAC-ORGA-0-11/03/2013*************/

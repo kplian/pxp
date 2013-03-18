@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_gui_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -67,12 +69,12 @@ BEGIN
         --  1) si point es igual append
         IF(v_parametros.punto='append')then 
         
-        --raise exception '% % %',v_parametros.id_target,v_parametros.id_nodo,v_parametros.id_olp_parent;
+        --raise exception '% % %',v_parametros.id_target,v_parametros.id_nodo,v_parametros.id_old_parent;
         --  1.1) eliminamos la relacion de dependecias con el anterior padre
                UPDATE segu.testructura_gui
                SET estado_reg = 'inactivo'
                       WHERE id_gui=v_parametros.id_nodo  
-                      AND  fk_id_gui=v_parametros.id_olp_parent and estado_reg = 'activo';
+                      AND  fk_id_gui=v_parametros.id_old_parent and estado_reg = 'activo';
             --  1.2) verificamos orden_logico mayor de los hijos den nodo target
                     select orden_logico 
                     into v_orden_logico
@@ -106,7 +108,7 @@ BEGIN
           
         
                
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','DRANG AND DROP exitoso id_gui='||v_parametros.id_nodo||' id_target= '|| v_parametros.id_target||'  id_old_gui='|| v_parametros.id_olp_parent); 
+               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','DRANG AND DROP exitoso id_gui='||v_parametros.id_nodo||' id_target= '|| v_parametros.id_target||'  id_old_gui='|| v_parametros.id_old_parent); 
                --datos obligados a regresar para configurar el 
                --traslado del nodo si regargar el padre
                --v_resp = f_agrega_clave(v_resp,'id_gui',v_parametros.id_nodo::varchar);--nuevo ide del nodo

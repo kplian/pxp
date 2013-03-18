@@ -1,6 +1,4 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION wf.ft_tipo_proceso_sel (
+CREATE OR REPLACE FUNCTION wf.ft_labores_tipo_proceso_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -10,10 +8,10 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Work Flow
- FUNCION: 		wf.ft_tipo_proceso_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttipo_proceso'
- AUTOR: 		 (FRH)
- FECHA:	        21-02-2013 15:52:52
+ FUNCION: 		wf.ft_labores_tipo_proceso_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.tlabores_tipo_proceso'
+ AUTOR: 		 (admin)
+ FECHA:	        15-03-2013 16:08:41
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -32,43 +30,38 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'wf.ft_tipo_proceso_sel';
+	v_nombre_funcion = 'wf.ft_labores_tipo_proceso_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'WF_TIPPROC_SEL'
+ 	#TRANSACCION:  'WF_LABTPROC_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		21-02-2013 15:52:52
+ 	#FECHA:		15-03-2013 16:08:41
 	***********************************/
 
-	if(p_transaccion='WF_TIPPROC_SEL')then
+	if(p_transaccion='WF_LABTPROC_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						tipproc.id_tipo_proceso,
-						tipproc.nombre,
-						tipproc.codigo,
-						tipproc.id_proceso_macro,
-						tipproc.tabla,
-						tipproc.columna_llave,
-						tipproc.estado_reg,
-						tipproc.id_tipo_estado,
-						tipproc.fecha_reg,
-						tipproc.id_usuario_reg,
-						tipproc.fecha_mod,
-						tipproc.id_usuario_mod,
+						labtproc.id_labores_tipo_proceso,
+						labtproc.id_tipo_proceso,
+						labtproc.codigo,
+						labtproc.nombre,
+						labtproc.descripcion,
+						labtproc.estado_reg,
+						labtproc.id_usuario_reg,
+						labtproc.fecha_reg,
+						labtproc.fecha_mod,
+						labtproc.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        pm.nombre AS desc_proceso_macro,
-                        te.nombre_estado AS desc_tipo_estado,
-                        tipproc.inicio 		
-						from wf.ttipo_proceso tipproc
-						inner join segu.tusuario usu1 on usu1.id_usuario = tipproc.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod
-                        INNER JOIN wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
-                        LEFT JOIN wf.ttipo_estado te on te.id_tipo_estado = tipproc.id_tipo_estado
+                        tp.nombre AS desc_tipo_proceso	
+						from wf.tlabores_tipo_proceso labtproc
+						inner join segu.tusuario usu1 on usu1.id_usuario = labtproc.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = labtproc.id_usuario_mod
+                        INNER JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = labtproc.id_tipo_proceso
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -81,22 +74,21 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'WF_TIPPROC_CONT'
+ 	#TRANSACCION:  'WF_LABTPROC_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		21-02-2013 15:52:52
+ 	#FECHA:		15-03-2013 16:08:41
 	***********************************/
 
-	elsif(p_transaccion='WF_TIPPROC_CONT')then
+	elsif(p_transaccion='WF_LABTPROC_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(tipproc.id_tipo_proceso)
-					    from wf.ttipo_proceso tipproc
-					    inner join segu.tusuario usu1 on usu1.id_usuario = tipproc.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod
-                        INNER JOIN wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
-                        LEFT JOIN wf.ttipo_estado te on te.id_tipo_estado = tipproc.id_tipo_estado
+			v_consulta:='select count(id_labores_tipo_proceso)
+					    from wf.tlabores_tipo_proceso labtproc
+					    inner join segu.tusuario usu1 on usu1.id_usuario = labtproc.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = labtproc.id_usuario_mod
+                        INNER JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = labtproc.id_tipo_proceso
 					    where ';
 			
 			--Definicion de la respuesta		    

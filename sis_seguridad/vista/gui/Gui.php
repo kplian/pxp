@@ -231,6 +231,8 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 		ActDel:'../../sis_seguridad/control/Gui/eliminarGui',	
 		ActList:'../../sis_seguridad/control/Gui/listarGui',
 	    enableDD:true,
+	    idNodoDD: 'id_gui',
+	    idOldParentDD: 'id_gui_padre',
 		expanded:false,
 		useArrows: true,
 		rootVisible: true,
@@ -239,7 +241,6 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 		textRoot:'Menú de navegación',
 		id_nodo:'id_gui',
 		id_nodo_p:'id_gui_padre',
-	
 		fields: [
 		'id', //identificador unico del nodo (concatena identificador de tabla con el tipo de nodo)
 		      //porque en distintas tablas pueden exitir idetificadores iguales

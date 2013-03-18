@@ -200,7 +200,7 @@
 	//Define los parametros para la funcion
 		$this->setParametro('punto','point','varchar');
 		$this->setParametro('id_nodo','id_nodo','integer');		
-		$this->setParametro('id_olp_parent','id_olp_parent','integer');
+		$this->setParametro('id_old_parent','id_old_parent','integer');
 		$this->setParametro('id_target','id_target','integer');
 		
 	
