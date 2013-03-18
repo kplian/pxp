@@ -70,9 +70,45 @@ BEGIN
     
     end if;
     
-    
-
-  if v_tipo_asignacion = 'todos' then
+  
+  if v_tipo_asignacion = 'ninguno' then
+  
+       raise exception 'no se admiten funcionarios en este estado';  
+       
+  elseif  v_tipo_asignacion = 'anterior' then
+  
+           IF p_count=FALSE then
+           
+            v_consulta= 'select 
+                         fun.id_funcionario,
+                         fun.desc_funcionario1 as  desc_funcionario,
+                         ''---''::text  as desc_funcionario_cargo,
+                         1 as prioridad
+                         FROM
+                         wf.testado_wf ew
+                         inner join orga.vfuncionario fun on fun.id_funcionario = ew.id_funcionario
+                         WHERE ew.id_estado_wf='||p_id_estado_wf;
+                         
+                       FOR g_registros in execute(v_consulta) LOOP     
+                           RETURN NEXT g_registros;
+                       END LOOP;    
+           
+           
+           ELSE
+                v_consulta= 'select 
+                          COUNT(DISTINCT(fun.id_funcionario))
+                         FROM
+                         wf.testado_wf ew
+                         inner join orga.vfuncionario fun on fun.id_funcionario = ew.id_funcionario
+                         WHERE ew.id_estado_wf='||p_id_estado_wf;
+                         
+                       FOR g_registros in execute(v_consulta) LOOP     
+                           RETURN NEXT g_registros;
+                       END LOOP; 
+            
+           END IF;    
+  
+         elseif v_tipo_asignacion = 'todos' then
   
   
            IF p_count=FALSE then

@@ -37,6 +37,9 @@ class MODTipoEstado extends MODbase{
 		$this->captura('desc_tipo_proceso','varchar');
 		$this->captura('codigo','varchar');
 		$this->captura('obs','text');
+		$this->captura('depto_asignacion','varchar');
+		$this->captura('nombre_depto_func_list','varchar');
+		$this->captura('fin','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -90,6 +93,9 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('obs','obs','text');
+		$this->setParametro('depto_asignacion','depto_asignacion','varchar');
+		$this->setParametro('nombre_depto_func_list','nombre_depto_func_list','varchar');
+		$this->setParametro('fin','fin','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -116,6 +122,9 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('obs','obs','text');
+		$this->setParametro('depto_asignacion','depto_asignacion','varchar');
+        $this->setParametro('nombre_depto_func_list','nombre_depto_func_list','varchar');
+        $this->setParametro('fin','fin','varchar');
 		
 
 		//Ejecuta la instruccion

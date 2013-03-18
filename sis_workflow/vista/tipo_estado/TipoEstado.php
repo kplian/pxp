@@ -98,6 +98,34 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'fin',
+                fieldLabel: 'Fin ?',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                emptyText:'si/no...',                   
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'inicio',                   
+               // displayField: 'descestilo',
+                store:['si','no']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'promac.inicio',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipes.fin',
+                         options: ['si','no'],  
+                    },
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'disparador',
@@ -141,7 +169,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
        		    mode: 'local',
        		    valueField: 'tipo_asignacion',       		    
        		   // displayField: 'descestilo',
-       		    store:['listado','todos','funcion_listado']
+       		    store:['ninguno','anterior','listado','todos','funcion_listado']
 			},
 			type:'ComboBox',
 			//filters:{pfiltro:'promac.inicio',type:'string'},
@@ -149,7 +177,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			filters:{	
 	       		         type: 'list',
 	       				 pfiltro:'tipes.tipo_asignacion',
-	       				 options: ['listado','todos','funcion_listado','depto_listado','depto_funList'],	
+	       				 options: ['ninguno','anterior','listado','todos','funcion_listado'],	
 	       		 	},
 			grid:true,
 			form:true
@@ -169,6 +197,49 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'depto_asignacion',
+                fieldLabel: 'Depto Asignación',
+                allowBlank: false,
+                anchor: '70%',
+                gwidth: 150,
+                maxLength:50,
+                emptyText:'Tipo...',                
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'depto_asignacion',                  
+               // displayField: 'descestilo',
+                store:['ninguno','anterior','depto_listado','depto_func_list']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'promac.inicio',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipes.depto_asignacion',
+                         options: ['ninguno','anterior','depto_listado','depto_func_list'],   
+                    },
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'nombre_depto_func_list',
+                fieldLabel: 'Nombre Función de Listado',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.nombre_depto_func_list',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
         {
             config:{
                 name: 'obs',
@@ -283,7 +354,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_tipo_proceso', type: 'string'},'codigo','obs'
+		{name:'desc_tipo_proceso', type: 'string'},'codigo','obs','depto_asignacion','fin','nombre_depto_func_list'
 		
 	],
 	sortInfo:{

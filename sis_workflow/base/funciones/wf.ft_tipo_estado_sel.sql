@@ -148,7 +148,11 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         tp.nombre AS desc_tipo_proceso,
                         tipes.codigo as codigo_estado,
-                        tipes.obs	
+                        tipes.obs,
+                        tipes.depto_asignacion,
+						tipes.nombre_depto_func_list,
+                        tipes.fin
+                        	
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod

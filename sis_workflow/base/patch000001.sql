@@ -19,11 +19,14 @@ CREATE TABLE wf.ttipo_estado (
   id_tipo_estado   SERIAL NOT NULL, 
   id_tipo_proceso int4, 
   codigo		  varchar(100),
+  nombre_estado   varchar(150),
   inicio          varchar(2), 
   disparador      varchar(2), 
-  nombre_estado   varchar(150),
-  tipo_asignacion varchar(255),
+  fin          varchar(2), 
+  tipo_asignacion varchar(50),
   nombre_func_list varchar(255),
+  depto_asignacion varchar(50) DEFAULT 'ninguno'::character varying NOT NULL,
+  nombre_depto_func_list varchar(255),
   obs             text,
   PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase); 
   
@@ -44,6 +47,8 @@ CREATE TABLE wf.testado_wf (
   id_proceso_wf         int4 NOT NULL, 
   id_funcionario     int4 NOT NULL, 
   fecha              timestamp, 
+  id_depto           int4,
+  tipo_cambio 		 VARCHAR(20) NOT NULL DEFAULT 'siguiente'::varchar,
   PRIMARY KEY (id_estado_wf)) INHERITS (pxp.tbase);
   
   

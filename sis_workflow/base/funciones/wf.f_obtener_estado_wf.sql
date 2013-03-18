@@ -37,10 +37,15 @@ $body$
 ***************************************************************************/
 DECLARE
 
+v_nombre_funcion varchar;
+v_resp varchar;
+
 v_id_tipo_proceso integer;
 v_id_tipo_estado integer;
 	
 BEGIN
+
+v_nombre_funcion = 'wf.f_obtener_estado_wf';
 
     --estable el tipo de proceso actual
     
@@ -115,6 +120,15 @@ BEGIN
           and  ee.id_tipo_estado_hijo = v_id_tipo_estado;
    END IF;
 return;
+ EXCEPTION
+				
+	WHEN OTHERS THEN
+		v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp; 
+
 END;
 $body$
 LANGUAGE 'plpgsql'
