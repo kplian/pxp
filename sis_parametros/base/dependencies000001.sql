@@ -495,3 +495,19 @@ ALTER TABLE param.vproveedor
   OWNER TO postgres;
 
 /***********************************F-DEP-AAO-PARAM-0-07/03/2013*****************************************/
+
+/***********************************I-DEP-AAO-PARAM-62-19/03/2013*****************************************/
+ALTER TABLE param.tperiodo_subsistema
+  ADD CONSTRAINT fk_tperiodo_subsistema__id_periodo FOREIGN KEY (id_periodo)
+    REFERENCES param.tperiodo(id_periodo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+ALTER TABLE param.tperiodo_subsistema
+  ADD CONSTRAINT fk_tperiodo_subsistema__id_subsistema FOREIGN KEY (id_subsistema)
+    REFERENCES segu.tsubsistema(id_subsistema)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+/***********************************F-DEP-AAO-PARAM-62-19/03/2013*****************************************/

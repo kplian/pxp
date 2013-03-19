@@ -564,5 +564,16 @@ CREATE TABLE param.ttipo_cambio (
        
 /***********************************F-SCP-RAC-PARAM-0-21/02/2013*****************************************/
 
+/***********************************I-SCP-AAO-PARAM-62-19/03/2013*****************************************/
+CREATE TABLE param.tperiodo_subsistema (
+  id_periodo_subsistema SERIAL NOT NULL, 
+  id_periodo INTEGER, 
+  id_subsistema INTEGER, 
+  estado VARCHAR(20), 
+  PRIMARY KEY(id_periodo_subsistema)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
 
-
+ALTER TABLE param.tperiodo_subsistema
+  OWNER TO postgres;
+/***********************************F-SCP-AAO-PARAM-62-19/03/2013*****************************************/
