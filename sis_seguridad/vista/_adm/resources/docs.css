@@ -347,3 +347,10 @@ h3.home-title {
 	margin-left:10px;
 }
 a.x-tool-pdf {background-image: url('../../_adm/images/gears.png')!important;}
+
+.light-node {
+	font-weight : bold;
+}
+.light-node span {
+	color : #FF0000 !important;
+}
