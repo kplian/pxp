@@ -45,7 +45,7 @@ CREATE TABLE wf.testado_wf (
   id_estado_anterior int4, 
   id_tipo_estado     int4 NOT NULL, 
   id_proceso_wf         int4 NOT NULL, 
-  id_funcionario     int4 NOT NULL, 
+  id_funcionario     int4, 
   fecha              timestamp, 
   id_depto           int4,
   tipo_cambio 		 VARCHAR(20) NOT NULL DEFAULT 'siguiente'::varchar,
@@ -80,6 +80,7 @@ CREATE TABLE wf.tcolumna_valor (
 CREATE TABLE wf.tproceso_wf (
   id_proceso_wf       SERIAL NOT NULL, 
   id_tipo_proceso int4 NOT NULL, 
+  id_estado_wf_prev int4,
   nro_tramite     varchar, 
   valor_cl        int8, 
   PRIMARY KEY (id_proceso_wf)) INHERITS (pxp.tbase);
