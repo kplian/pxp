@@ -25,9 +25,12 @@ INSERT INTO param.tempresa (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod
 VALUES (1, NULL, '2013-02-21 16:19:33', '2013-02-21 16:19:33', 'activo', 'Kplian Ltda', NULL, '196560027');
 
 -- Data for table wf.tproceso_macro (OID = 4014129) (LIMIT 0,1)
-
+/*
 INSERT INTO wf.tproceso_macro (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_proceso_macro, id_subsistema, codigo, nombre, inicio)
 VALUES (1, NULL, '2013-02-21 16:22:01.747666', NULL, 'activo', 1, 6, 'COMINT', 'Compra internacional', 'SI');
+*/
+
+select wf.f_insert_tproceso_macro ('COMINT', 'Compra internacional', 'SI', 'activo', 'Adquisiciones');
 
 -- Data for table wf.tnum_tramite (OID = 4014085) (LIMIT 0,2)
 
@@ -41,15 +44,21 @@ VALUES (1, NULL, '2013-02-21 16:25:41.633394', NULL, 'activo', 2, 1, 104, 1);
 --
 -- Data for table wf.ttipo_proceso (OID = 4234420) (LIMIT 0,2)
 --
+/*
 INSERT INTO wf.ttipo_proceso (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_tipo_proceso, id_tipo_estado, id_proceso_macro, nombre, tabla, columna_llave, codigo)
 VALUES (1, NULL, '2013-02-21 16:40:53.050201', NULL, 'activo', 1, NULL, 1, 'Solicitud de compra', 'adq.tsolicitud', 'id_solicitud', 'SOLCO');
 
 INSERT INTO wf.ttipo_proceso (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_tipo_proceso, id_tipo_estado, id_proceso_macro, nombre, tabla, columna_llave, codigo)
 VALUES (1, NULL, '2013-02-22 10:24:16.438095', NULL, 'activo', 2, NULL, 1, 'Adjudicacion de compra', '', '', 'ADJCO');
+*/
+
+select wf.f_insert_ttipo_proceso ('Solicitud de compra', 'SOLCO', 'adq.tsolicitud', 'id_solicitud', 'activo', 'no', 'COMINT');
+select wf.f_insert_ttipo_proceso ('Adjudicacion de compra', 'ADJCO', '', '', 'activo', 'no', 'COMINT');
 
 --
 -- Data for table wf.ttipo_estado (OID = 4234435) (LIMIT 0,7)
 --
+/*
 INSERT INTO wf.ttipo_estado (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_tipo_estado, id_tipo_proceso, inicio, disparador, nombre_estado, tipo_asignacion, nombre_func_list)
 VALUES (1, 1, '2013-02-22 10:25:48.373906', '2013-02-22 10:51:17.195554', 'activo', 4, 2, 'SI', '', 'Elaboracion_Informe_Comision', '', 'f5');
 
@@ -70,10 +79,20 @@ VALUES (1, 1, '2013-02-22 10:26:18.357444', '2013-02-22 12:12:54.425059', 'activ
 
 INSERT INTO wf.ttipo_estado (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_tipo_estado, id_tipo_proceso, inicio, disparador, nombre_estado, tipo_asignacion, nombre_func_list)
 VALUES (1, 1, '2013-02-21 16:54:28.81435', '2013-02-22 12:13:20.160554', 'activo', 3, 1, 'NO', 'SI', 'Finalizado', '', 'f3');
+*/
+
+select wf.f_insert_ttipo_estado ('', 'Borrador', 'SI', 'NO', '', 'listado', 'f1', 'ninguno', '', '', 'activo', 'SOLCO');
+select wf.f_insert_ttipo_estado ('', 'En_Proceso', 'NO', 'NO', '', 'todos', 'f2', 'ninguno', '', '', 'activo', 'SOLCO');
+select wf.f_insert_ttipo_estado ('', 'Finalizado', 'NO', 'SI', '', '', 'f3', 'ninguno', '', '', 'activo', 'SOLCO');
+select wf.f_insert_ttipo_estado ('', 'Elaboracion_Informe_Comision', 'SI', '', '', '', 'f5', 'ninguno', '', '', 'activo', 'ADJCO');
+select wf.f_insert_ttipo_estado ('', 'Elaboracion_Contrato', 'NO', 'NO', '', '', 'f4', 'ninguno', '', '', 'activo', 'ADJCO');
+select wf.f_insert_ttipo_estado ('', 'Pendiente_Aprobacion', 'NO', 'NO', '', 'listado', 'fxy', 'ninguno', '', '', 'activo', 'SOLCO');
+select wf.f_insert_ttipo_estado ('', 'Firma_GG', 'NO', 'NO', '', 'listado', '', 'ninguno', '', '', 'activo', 'ADJCO');
 
 --
 -- Data for table wf.testructura_estado (OID = 4234449) (LIMIT 0,5)
 --
+/*
 INSERT INTO wf.testructura_estado (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_estructura_estado, id_tipo_estado_padre, id_tipo_estado_hijo, prioridad, regla)
 VALUES (1, 1, '2013-02-21 16:54:58.599704', '2013-02-22 10:21:30.343555', 'activo', 1, 1, 2, 1, 'ff1');
 
@@ -88,6 +107,13 @@ VALUES (1, 1, '2013-02-22 12:11:23.172477', '2013-02-22 12:13:50.635216', 'activ
 
 INSERT INTO wf.testructura_estado (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_estructura_estado, id_tipo_estado_padre, id_tipo_estado_hijo, prioridad, regla)
 VALUES (1, 1, '2013-02-22 10:26:44.211457', '2013-02-22 12:25:24.8933', 'activo', 3, 4, 5, 5, 'ff3');
+*/
+
+select wf.f_insert_testructura_estado ('Borrador', 'En_Proceso', '1', 'ff1', 'activo');
+select wf.f_insert_testructura_estado ('En_Proceso', 'Pendiente_Aprobacion', '2', 'ff2', 'activo');
+select wf.f_insert_testructura_estado ('Elaboracion_Informe_Comision', 'Elaboracion_Contrato', '5', 'ff3', 'activo');
+select wf.f_insert_testructura_estado ('Pendiente_Aprobacion', 'Finalizado', '3', '', 'activo');
+select wf.f_insert_testructura_estado ('Elaboracion_Contrato', 'Firma_GG', '1', '', 'activo');
 
 INSERT INTO wf.tproceso_wf ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_tipo_proceso", "nro_tramite", "valor_cl")
 VALUES (NULL, NULL, E'2013-02-27 18:51:04', E'2013-02-27 18:51:04', E'activo', 1, E'1', NULL);
