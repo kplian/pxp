@@ -14,6 +14,7 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
+		var mm = this.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.FuncionarioTipoEstado.superclass.constructor.call(this,config);
 		this.init();
@@ -35,7 +36,7 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'id_labores_tipo_proceso',
+				name: 'id_tipo_estado',
 				inputType:'hidden',
                 },
             type: 'Field',
@@ -43,29 +44,29 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
         },
 		{
             config: {
-                name: 'id_tipo_estado',
-                fieldLabel: 'Tipo Estado',
+                name: 'id_labores_tipo_proceso',
+                fieldLabel: 'Labores',
                 typeAhead: false,
                 forceSelection: false,
                 allowBlank: true,
-                emptyText: 'Lista de tipos estado...',
+                emptyText: 'Lista de labores...',
                 store: new Ext.data.JsonStore({
-                    url: '../../sis_workflow/control/TipoEstado/listarTipoEstado',
-                    id: 'id_tipo_estado',
+                    url: '../../sis_workflow/control/LaboresTipoProceso/listarLaboresTipoProceso',
+                    id: 'id_labores_tipo_proceso',
                     root: 'datos',
                     sortInfo: {
-                        field: 'nombre_estado',
+                        field: 'nombre',
                         direction: 'ASC'
                     },
                     totalProperty: 'total',
-                    fields: ['id_tipo_estado', 'nombre_estado', 'inicio'],
+                    fields: ['id_labores_tipo_proceso', 'nombre', 'descripcion'],
                     // turn on remote sorting
                     remoteSort: true,
-                    baseParams: {par_filtro: 'tipes.nombre_estado#tipes.inicio'}
+                    baseParams: {par_filtro: 'ltp.nombre#ltp.descripcion', funcionario_te: '1'}
                 }),
-                valueField: 'id_tipo_estado',
-                displayField: 'nombre_estado',
-                gdisplayField: 'desc_tipo_estado',
+                valueField: 'id_labores_tipo_proceso',
+                displayField: 'nombre',
+                gdisplayField: 'desc_labores',
                 triggerAction: 'all',
                 lazyRender: true,
                 mode: 'remote',
@@ -75,14 +76,14 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
                 minChars: 2,
                 gwidth: 200,
                 renderer: function(value, p, record) {
-                    return String.format('{0}', record.data['desc_tipo_estado']);
+                    return String.format('{0}', record.data['desc_labores']);
                 },
-                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p>Inicio: <strong>{inicio}</strong> </div></tpl>'
+                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Descripción: <strong>{descripcion}</strong> </div></tpl>'
             },
             type: 'ComboBox',
             id_grupo: 0,
             filters: {
-                pfiltro: 'te.nombre_estado',
+                pfiltro: 'ltp.nombre',
                 type: 'string'
             },
             grid: true,
@@ -229,7 +230,7 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_funcionario1', type: 'string'},
 		{name:'desc_depto', type: 'string'},
-		{name:'desc_tipo_estado', type: 'string'}
+		{name:'desc_labores', type: 'string'}
 	],
 	sortInfo:{
 		field: 'id_funcionario_tipo_estado',
@@ -237,13 +238,14 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
 	},
 	onReloadPage:function(m){
         this.maestro=m;
-        this.store.baseParams={id_labores_tipo_proceso:this.maestro.id_labores_tipo_proceso};
+        this.store.baseParams={id_tipo_estado:this.maestro.id_tipo_estado};        
         this.load({params:{start:0, limit:50}})
     },
     loadValoresIniciales:function()
     {
         Phx.vista.FuncionarioTipoEstado.superclass.loadValoresIniciales.call(this);
-        this.getComponente('id_labores_tipo_proceso').setValue(this.maestro.id_labores_tipo_proceso);       
+        this.getComponente('id_tipo_estado').setValue(this.maestro.id_tipo_estado);
+        this.getComponente('id_labores_tipo_proceso').store.baseParams.id_tipo_estado=this.maestro.id_tipo_estado;      
     },
 	bdel:true,
 	bsave:true

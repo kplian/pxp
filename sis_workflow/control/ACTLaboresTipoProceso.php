@@ -11,6 +11,13 @@ class ACTLaboresTipoProceso extends ACTbase{
 			
 	function listarLaboresTipoProceso(){
 		$this->objParam->defecto('ordenacion','id_labores_tipo_proceso');
+        
+        if($this->objParam->getParametro('id_tipo_proceso')!=''){
+            $this->objParam->addFiltro("labtproc.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));    
+        }
+        if($this->objParam->getParametro('funcionario_te')!=''){
+            $this->objParam->addFiltro("labtproc.id_tipo_proceso = (select te.id_tipo_proceso FROM wf.ttipo_estado te WHERE te.id_tipo_estado =".$this->objParam->getParametro('id_tipo_estado').")");    
+        }
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
