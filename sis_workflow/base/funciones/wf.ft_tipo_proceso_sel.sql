@@ -106,7 +106,31 @@ BEGIN
 			return v_consulta;
 
 		end;
-					
+            
+    /*******************************    
+	 #TRANSACCION:  WF_EXPTIPPROC_SEL
+	 #DESCRIPCION:	Listado de tipos de proceso de un proceso macro para exportar
+	 #AUTOR:		Gonzalo Sarmiento Sejas
+	 #FECHA:		19/03/2013	
+	***********************************/
+
+     elsif(p_transaccion='WF_EXPTIPPROC_SEL')then
+
+          BEGIN
+               v_consulta:= 'select ''tipo_proceso''::varchar,
+								tipproc.nombre,
+								tipproc.codigo,
+								tipproc.tabla,
+                                tipproc.columna_llave,
+                                tipproc.estado_reg,
+                                tipproc.inicio,
+                                pm.codigo AS cod_proceso_macro	                                
+                                from wf.ttipo_proceso tipproc
+                        		inner join wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
+                        		where tipproc.id_proceso_macro='|| v_parametros.id_proceso_macro ||
+                             ' order by tipproc.id_tipo_proceso ASC'; 
+               return v_consulta;
+         END;
 	else
 					     
 		raise exception 'Transaccion inexistente';

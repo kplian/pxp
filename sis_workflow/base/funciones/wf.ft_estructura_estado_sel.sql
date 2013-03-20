@@ -75,7 +75,30 @@ BEGIN
 			--Devuelve la respuesta
 			return v_consulta;
 						
-		end;  
+		end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPESTES_CONT'
+ 	#DESCRIPCION:	Listado de estructura de datos del proceso macro seleccionado para exportar
+ 	#AUTOR:		Gonzalo Sarmiento Sejas	
+ 	#FECHA:		19-03-2013
+	***********************************/
+    elsif(p_transaccion='WF_EXPESTES_SEL')then
+    	begin
+        	v_consulta:='select ''estructura_estado''::varchar,
+						tep.nombre_estado as nombre_estado_padre,
+						teh.nombre_estado as nombre_estado_hijo,
+						estes.prioridad,
+						estes.regla,
+						estes.estado_reg
+						from wf.testructura_estado estes
+						inner join wf.ttipo_estado tep on  tep.id_tipo_estado = estes.id_tipo_estado_padre
+                        inner join wf.ttipo_estado teh on  teh.id_tipo_estado = estes.id_tipo_estado_hijo
+						inner join wf.ttipo_proceso tp on tp.id_tipo_proceso=tep.id_tipo_proceso or tp.id_tipo_proceso=teh.id_tipo_proceso
+                        where tp.id_proceso_macro='||v_parametros.id_proceso_macro||
+                        ' order by estes.id_estructura_estado ASC';
+            return v_consulta;
+        end;  
 
 	/*********************************    
  	#TRANSACCION:  'WF_ESTES_CONT'

@@ -71,7 +71,29 @@ BEGIN
 			--Devuelve la respuesta
 			return v_consulta;
 						
-		end;
+		end;        
+
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPPROMAC_SEL'
+ 	#DESCRIPCION:	Listado de los datos del proceso macro seleccionado para exportar
+ 	#AUTOR:		Gonzalo Sarmiento Sejas
+ 	#FECHA:		19-03-2013
+	***********************************/
+    elsif(p_transaccion='WF_EXPPROMAC_SEL')then
+		begin
+        	--Definicion de la consulta
+            v_consulta:='select ''proceso_macro''::varchar,
+            			promac.codigo,
+                        promac.nombre,
+                        promac.inicio,
+                        promac.estado_reg,
+                        subs.nombre as subsistema
+            			from wf.tproceso_macro promac
+                        inner join segu.tsubsistema subs on subs.id_subsistema=promac.id_subsistema
+                        where promac.id_proceso_macro='||v_parametros.id_proceso_macro||
+                        ' order by promac.id_proceso_macro ASC';
+            return v_consulta;
+        end;
 
 	/*********************************    
  	#TRANSACCION:  'WF_PROMAC_CONT'
@@ -98,7 +120,7 @@ BEGIN
 			return v_consulta;
 
 		end;
-					
+				
 	else
 					     
 		raise exception 'Transaccion inexistente';
