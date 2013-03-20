@@ -12,8 +12,8 @@ class ACTFuncionarioTipoEstado extends ACTbase{
 	function listarFuncionarioTipoEstado(){
 		$this->objParam->defecto('ordenacion','id_funcionario_tipo_estado');
         
-        if($this->objParam->getParametro('id_labores_tipo_proceso')!=''){
-            $this->objParam->addFiltro("functest.id_labores_tipo_proceso = ".$this->objParam->getParametro('id_labores_tipo_proceso'));    
+        if($this->objParam->getParametro('id_tipo_estado')!=''){
+            $this->objParam->addFiltro("functest.id_tipo_estado = ".$this->objParam->getParametro('id_tipo_estado'));    
         }
         
 

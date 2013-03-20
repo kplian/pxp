@@ -36,7 +36,7 @@ select pxp.f_insert_tgui ('Proceso Macro', 'Proceso Macro', 'WF.2', 'si', 1, 'si
 select pxp.f_insert_tgui ('Tipo Estado', 'Tipo Estado', 'WF.1.1', 'no', 1, 'sis_workflow/vista/tipo_estado/TipoEstado.php', 3, '', 'TipoEstado', 'WF');
 select pxp.f_insert_tgui ('Tipo Proceso', 'Tipo Proceso', 'WF.1.2', 'si', 1, 'sis_workflow/vista/tipo_proceso/TipoProceso.php', 3, '', 'TipoProceso', 'WF');
 select pxp.f_insert_tgui ('Estructura Estado', 'Estructura Estado', 'WF.1.3', 'no', 1, 'sis_workflow/vista/estructura_estado/EstructuraEstado.php', 3, '', 'EstructuraEstado', 'WF');
-select pxp.f_insert_tgui ('Definicion Labores x Proceso', 'Definicion Labores x Proceso', 'WF.1.4', 'si', 1, 'sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php', 3, '', 'LaboresTipoProceso', 'WF');
+select pxp.f_insert_tgui ('Definicion Labores x Proceso', 'Definicion Labores x Proceso', 'WF.1.4', 'no', 1, 'sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php', 3, '', 'LaboresTipoProceso', 'WF');
 
 
 -------------------------------------

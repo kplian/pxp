@@ -362,12 +362,20 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_tipo_proceso',
 		direction: 'ASC'
 	},
-	east:{
+	tabeast:[
+		  {
 		  url:'../../../sis_workflow/vista/tipo_estado/TipoEstado.php',
 		  title:'Estados', 
 		  width:400,
 		  cls:'TipoEstado'
-		},
+		  },
+		  {
+		  url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
+          title:'Labores', 
+          width:400,
+          cls:'LaboresTipoProceso'    
+		  }
+		],
 	bdel:true,
 	bsave:false
 	}

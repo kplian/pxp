@@ -384,8 +384,13 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		   //width:'50%',
 		   height:'50%',
 		   cls:'EstructuraEstadoPadre'
-		 }
-	    
+		 },
+		 {
+          url:'../../../sis_workflow/vista/funcionario_tipo_estado/FuncionarioTipoEstado.php',
+          title:'Funcionarios', 
+          height:'50%',
+          cls:'FuncionarioTipoEstado'
+         }
 	
 	   ],
 	
