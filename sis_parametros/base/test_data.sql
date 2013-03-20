@@ -191,33 +191,83 @@ VALUES (1, NULL, E'2013-03-20 09:59:45.336', NULL, E'activo', 12, 1, E'2013-12-0
 
 /* Data for the 'param.tcentro_costo' table  (Records 1 - 9) */
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:37:51.042', NULL, E'activo', 1, 2, 106);
+/* Data for the 'param.tcentro_costo' table  (Records 1 - 16) */
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:00.335', NULL, E'activo', 2, 9, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:37:51.042', NULL, E'activo', 1, 1, 2, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:10.580', NULL, E'activo', 1, 7, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:00.335', NULL, E'activo', 2, 2, 9, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:24.455', NULL, E'activo', 6, 7, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:10.580', NULL, E'activo', 3, 1, 7, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:28.717', NULL, E'activo', 6, 9, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:24.455', NULL, E'activo', 4, 6, 7, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:32.950', NULL, E'activo', 6, 2, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:28.717', NULL, E'activo', 5, 6, 9, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:39.488', NULL, E'activo', 5, 7, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:32.950', NULL, E'activo', 6, 6, 2, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:44.083', NULL, E'activo', 5, 9, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:39.488', NULL, E'activo', 7, 5, 7, 106);
 
-INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_ep", "id_uo", "id_gestion")
-VALUES (1, NULL, E'2013-03-20 10:38:48.719', NULL, E'activo', 5, 2, 106);
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:44.083', NULL, E'activo', 8, 5, 9, 106);
 
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 10:38:48.719', NULL, E'activo', 9, 5, 2, 106);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:29:12.850', NULL, E'activo', 10, 2, 2, 1);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:29:23.955', NULL, E'activo', 11, 2, 7, 1);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:29:28.442', NULL, E'activo', 12, 2, 9, 1);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:29:34.336', NULL, E'activo', 13, 3, 9, 1);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:29:56.803', NULL, E'activo', 14, 5, 7, 1);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:30:00.928', NULL, E'activo', 15, 5, 9, 1);
+
+INSERT INTO param.tcentro_costo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_centro_costo", "id_ep", "id_uo", "id_gestion")
+VALUES (1, NULL, E'2013-03-20 13:30:04.381', NULL, E'activo', 16, 5, 2, 1);
+
+
+---------------------------
+--  CONCEPTOS DE GASTO
+--------------------------
+
+/* Data for the 'param.tconcepto_ingas' table  (Records 1 - 7) */
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:34:38.790', NULL, E'activo', E'Bien', E'Computadora', E'gasto', E'si', NULL);
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:34:50.944', NULL, E'activo', E'Bien', E'Impresora', E'gasto', E'si', NULL);
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:35:11.981', NULL, E'activo', E'Bien', E'Mesas', E'gasto', E'si', NULL);
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:35:21.479', NULL, E'activo', E'Bien', E'escritorios', E'gasto', E'si', NULL);
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:35:39.796', NULL, E'activo', E'Servicio', E'Informatico Junior', E'gasto', E'si', NULL);
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:35:46.512', NULL, E'activo', E'Servicio', E'Electricista', E'gasto', E'si', NULL);
+
+INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "tipo", "desc_ingas", "movimiento", "sw_tes", "id_oec")
+VALUES (1, NULL, E'2013-03-20 13:36:27.359', NULL, E'activo', E'Servicio', E'Desarrollo de Software', E'ingreso', E'no', NULL);
 
 
 
