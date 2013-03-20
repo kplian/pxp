@@ -100,7 +100,6 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 				name: 'inicio',
 				fieldLabel: 'Inicio del proceso (Nodo inicial)',
 				allowBlank: true,
-				anchor: '20%',
 				gwidth: 50,
 				maxLength:2,
 				emptyText:'si/no...',       			
@@ -110,7 +109,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
        		    mode: 'local',
        		    valueField: 'inicio',       		    
        		   // displayField: 'descestilo',
-       		    store:['SI','NO']
+       		    store:['si','no']
 			},
 			type:'ComboBox',
 			//filters:{pfiltro:'promac.inicio',type:'string'},
@@ -118,7 +117,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			filters:{	
 	       		         type: 'list',
 	       				 dataIndex: 'size',
-	       				 options: ['SI','NO'],	
+	       				 options: ['si','no'],	
 	       		 	},
 			grid:true,
 			form:true

@@ -14,11 +14,90 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
+		this.initButtons=[this.cmbProcesoMacro];
     	//llama al constructor de la clase padre
 		Phx.vista.TipoProceso.superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		
+		
+		this.cmbProcesoMacro.on('select', function(){
+		    
+		    if(this.validarFiltros()){
+                  this.capturaFiltros();
+           }
+		    
+		    
+		},this);
+		
+		
+		
+		//this.load({params:{start:0, limit:50}})
 	},
+	validarFiltros:function(){
+        if(this.cmbProcesoMacro.isValid()){
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    },
+    
+     capturaFiltros:function(combo, record, index){
+        this.store.baseParams.id_proceso_macro=this.cmbProcesoMacro.getValue();
+        this.store.load({params:{start:0, limit:this.tam_pag}}); 
+            
+        
+    },
+    onButtonAct:function(){
+        if(!this.validarFiltros()){
+            alert('Especifique los filtros antes')
+         }
+        else{
+            this.store.baseParams.id_proceso_macro=this.cmbProcesoMacro.getValue();
+            Phx.vista.TipoProceso.superclass.onButtonAct.call(this);
+        }
+    },
+     loadValoresIniciales:function()
+    {
+        Phx.vista.TipoProceso.superclass.loadValoresIniciales.call(this);
+        this.getComponente('id_proceso_macro').setValue(this.cmbProcesoMacro.getValue());  
+    },
+    
+    cmbProcesoMacro:new Ext.form.ComboBox({
+                name: 'id_proceso_macro',
+                fieldLabel: 'Proceso',
+                typeAhead: false,
+                forceSelection: true,
+                allowBlank: false,
+                emptyText: 'Proceso Macro...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_workflow/control/ProcesoMacro/listarProcesoMacro',
+                    id: 'id_proceso_macro',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_proceso_macro', 'nombre', 'codigo'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'promac.nombre#promac.codigo'}
+                }),
+                valueField: 'id_proceso_macro',
+                displayField: 'nombre',
+              
+                 triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 20,
+                queryDelay: 200,
+                anchor: '80%',
+                minChars: 2,
+               tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
+            }),
+	
 			
 	Atributos:[
 		{
@@ -31,6 +110,16 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+		{
+            //configuracion del componente
+            config:{
+                    labelSeparator:'',
+                    inputType:'hidden',
+                    name: 'id_proceso_macro'
+            },
+            type:'Field',
+            form:true 
+        },
 		{
 			config:{
 				name: 'codigo',
@@ -61,53 +150,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-		{
-			config: {
-				name: 'id_proceso_macro',
-				fieldLabel: 'Proceso',
-				typeAhead: false,
-				forceSelection: false,
-				allowBlank: false,
-				emptyText: 'Lista de Procesos...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_workflow/control/ProcesoMacro/listarProcesoMacro',
-					id: 'id_proceso_macro',
-					root: 'datos',
-					sortInfo: {
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_proceso_macro', 'nombre', 'codigo'],
-					// turn on remote sorting
-					remoteSort: true,
-					baseParams: {par_filtro: 'promac.nombre#promac.codigo'}
-				}),
-				valueField: 'id_proceso_macro',
-				displayField: 'nombre',
-				gdisplayField: 'desc_proceso_macro',
-				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 20,
-				queryDelay: 200,
-				anchor: '80%',
-				minChars: 2,
-				gwidth: 200,
-				renderer: function(value, p, record) {
-					return String.format('{0}', record.data['desc_proceso_macro']);
-				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
-			},
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {
-				pfiltro: 'pm.nombre',
-				type: 'string'
-			},
-			grid: true,
-			form: true
-		},
+		
 		{
 			config: {
 				name: 'id_tipo_estado',
@@ -125,10 +168,10 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_tipo_estado', 'nombre_estado', 'inicio'],
+					fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo','disparador','fin','desc_tipo_proceso'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams: {par_filtro: 'tipes.nombre_estado#tipes.inicio'}
+					baseParams: {par_filtro: 'tipes.nombre_estado#tipes.inicio',disparador:'si'}
 				}),
 				valueField: 'id_tipo_estado',
 				displayField: 'nombre_estado',
@@ -144,7 +187,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				renderer: function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_estado']);
 				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p>Inicio: <strong>{inicio}</strong> </div></tpl>'
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
@@ -326,7 +369,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		  cls:'TipoEstado'
 		},
 	bdel:true,
-	bsave:true
+	bsave:false
 	}
 )
 </script>

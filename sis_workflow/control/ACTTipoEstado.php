@@ -20,6 +20,11 @@ class ACTTipoEstado extends ACTbase{
             $this->objParam->addFiltro("tipes.id_tipo_estado in (".$this->objParam->getParametro('estados').")");    
         }
         
+         if($this->objParam->getParametro('disparador')!=''){
+            $this->objParam->addFiltro("tipes.disparador =  ''".$this->objParam->getParametro('disparador')."''");    
+        }
+        
+        
 		
 
 		$this->objParam->defecto('dir_ordenacion','asc');

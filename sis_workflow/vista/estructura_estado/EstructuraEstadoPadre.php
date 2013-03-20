@@ -68,8 +68,8 @@ Phx.vista.EstructuraEstadoPadre=Ext.extend(Phx.gridInterfaz,{
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_tipo_estado', 'codigo','nombre_estado', 'inicio', 'disparador'],
-					// turn on remote sorting
+					fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo','disparador','fin','desc_tipo_proceso'],
+                    // turn on remote sorting
 					remoteSort: true,
 					baseParams: {par_filtro: 'tipes.nombre_estado'}
 				}),
@@ -87,8 +87,8 @@ Phx.vista.EstructuraEstadoPadre=Ext.extend(Phx.gridInterfaz,{
 				renderer: function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_estado_padre']);
 				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre_estado}</p><em>Inicio: <strong>{inicio}</strong>  Disparador: <strong>{disparador}</strong></em></div></tpl>'
-			},
+			 tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
+            },
 			type: 'ComboBox',
 			id_grupo: 0,
 			filters: {
@@ -246,7 +246,7 @@ Phx.vista.EstructuraEstadoPadre=Ext.extend(Phx.gridInterfaz,{
 		this.getComponente('id_tipo_estado_hijo').setValue(this.maestro.id_tipo_estado);
 	},
 	bdel:true,
-	bsave:true
+	bsave:false
 	}
 )
 </script>
