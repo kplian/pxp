@@ -18,7 +18,16 @@ Phx.vista.LaboresTipoProceso=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.LaboresTipoProceso.superclass.constructor.call(this,config);
 		this.init();
 		//this.load({params:{start:0, limit:this.tam_pag}})
-		this.bloquearMenus();
+		//this.bloquearMenus();
+		//si la interface es pestanha este código es para iniciar 
+          var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
+          if(dataPadre){
+             this.onEnablePanel(this, dataPadre);
+          }
+          else
+          {
+             this.bloquearMenus();
+          }
 	},
 	tam_pag:50,
 			

@@ -18,8 +18,17 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.FuncionarioTipoEstado.superclass.constructor.call(this,config);
 		this.init();
-		this.bloquearMenus();
+		//this.bloquearMenus();
 		//this.load({params:{start:0, limit:this.tam_pag}})
+		//si la interface es pestanha este código es para iniciar 
+          var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
+          if(dataPadre){
+             this.onEnablePanel(this, dataPadre);
+          }
+          else
+          {
+             this.bloquearMenus();
+          }
 	},
 	tam_pag:50,
 			
@@ -62,7 +71,7 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
                     fields: ['id_labores_tipo_proceso', 'nombre', 'descripcion'],
                     // turn on remote sorting
                     remoteSort: true,
-                    baseParams: {par_filtro: 'ltp.nombre#ltp.descripcion', funcionario_te: '1'}
+                    baseParams: {par_filtro: 'labtproc.nombre#labtproc.descripcion', funcionario_te: '1'}
                 }),
                 valueField: 'id_labores_tipo_proceso',
                 displayField: 'nombre',
@@ -92,9 +101,12 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{
             config:{
                 name:'id_funcionario',
-                origen:'FUNCIONARIOCAR',
+                origen:'FUNCIONARIO',
                 tinit:true,
                 fieldLabel:'Funcionario',
+                allowBlank:false,
+                gwidth:200,
+                valueField: 'id_funcionario',
                 gdisplayField:'desc_funcionario1',//mapea al store del grid
                 anchor: '100%',
                 gwidth:200,
@@ -103,7 +115,7 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
             type:'ComboRec',
             id_grupo:0,
             filters:{   
-                pfiltro:'FUNCAR.desc_funcionario1::varchar',
+                pfiltro:'FUN.desc_funcionario1::varchar',
                 type:'string'
             },
            
