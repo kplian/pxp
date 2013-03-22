@@ -110,6 +110,7 @@ class ACTProcesoMacro extends ACTbase{
 				} else {								
 					fwrite ($file, 
 						"select wf.f_insert_ttipo_proceso ('". 
+							$row['nombre_tipo_estado']."', '" . 
 							$row['nombre']."', '" . 
 							$row['codigo']."', '" . 
 							$row['tabla']."', '" . 
