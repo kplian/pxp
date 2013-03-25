@@ -128,7 +128,7 @@ BEGIN
                                 pm.codigo AS cod_proceso_macro	                                
                                 from wf.ttipo_proceso tipproc
                         		inner join wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
-                                inner join wf.ttipo_estado te on te.id_tipo_estado=tipproc.id_tipo_estado
+                                left join wf.ttipo_estado te on te.id_tipo_estado=tipproc.id_tipo_estado
                         		where tipproc.id_proceso_macro='|| v_parametros.id_proceso_macro ||
                              ' order by tipproc.id_tipo_proceso ASC'; 
                return v_consulta;
