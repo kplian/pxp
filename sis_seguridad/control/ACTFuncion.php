@@ -369,11 +369,11 @@ class ACTFuncion extends ACTbase{
 						$modelo = $arrtemp[1];
 												
 					} else if (strpos(str_replace(' ','',$line), $varName.'->') !== FALSE && $varName != '') {
-						$tempArray = explode('->', $line);
-						$tempArray = explode('(', $tempArray[3]);
+						$tempArray = explode($varName.'->', str_replace(' ','',$line));
+      $tempArray = explode('(', $tempArray[1]);
 						$funcionModelo = trim($tempArray[0]);
 						array_push($funcionesModelo, array('modelo' => $modelo, 'funcion' => $funcionModelo));
-					} else if(preg_match('/\$this ?-> ?[a-zA-Z0-9_-]*\(.*\);/', $line)) {
+						} else if(preg_match('/\$this ?-> ?[a-zA-Z0-9_-]*\(.*\);/', $line)) {
 						$funcionControl = trim($this->get_string_between($line, '->', '('));
 						
 						if ($funcionControl != $funcion) {
