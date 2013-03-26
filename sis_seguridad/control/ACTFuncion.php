@@ -279,7 +279,7 @@ class ACTFuncion extends ACTbase{
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
 				}
-				if (strpos($line, '/control/')!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+				if (strpos($line, '/control/')!== FALSE && strpos($line, 'img src') === FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
 					
 					if (preg_match_all('/\'([^\']+)\'/', $line, $m)) {
 						
@@ -395,7 +395,7 @@ class ACTFuncion extends ACTbase{
 				
 			}
 		} else {
-			$this->notas = "No existe el archivo de control: ". htmlentities($archivo) . "<BR>";;
+			$this->notas = "No existe el archivo de control: ". htmlentities($archivo) . " <BR>";
 		}
 		
 		return $funcionesModelo;
