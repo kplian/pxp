@@ -39,6 +39,12 @@ class ACTTipoCambio extends ACTbase{
 		$this->res=$this->objFunc->eliminarTipoCambio($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function obtenerTipoCambio(){
+            $this->objFunc=$this->create('MODTipoCambio');  
+        $this->res=$this->objFunc->obtenerTipoCambio($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

@@ -107,6 +107,25 @@ class MODTipoCambio extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function obtenerTipoCambio(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.f_tipo_cambio_ime';
+        $this->transaccion='PM_OBTTCB_GET';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_moneda','id_moneda','int4');
+        $this->setParametro('fecha','fecha','date');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
 			
 }
 ?>

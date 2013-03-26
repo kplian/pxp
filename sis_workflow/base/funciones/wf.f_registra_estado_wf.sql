@@ -46,6 +46,17 @@ BEGIN
 
   --raise exception 'p_id_tipo_estado_siguiente %, p_id_funcionario %   ,p_id_estado_wf_anterior %   ,%',p_id_tipo_estado_siguiente,p_id_funcionario,p_id_estado_wf_anterior,p_id_proceso_wf;
     
+    --revisar que el estado se encuentre activo, en caso contrario puede
+    --se una orden desde una pantalla desactualizada
+    
+    if ( exists (select 1
+    from wf.testado_wf ew
+    where ew.id_estado_wf = p_id_estado_wf_anterior and ew.estado_reg ='inactivo')) THEN
+    
+    	raise exception 'El estado se encuentra inactivo, actualice sus datos' ;
+    
+    END IF;
+
 
     v_nombre_funcion ='f_registra_estado_wf';
     v_id_estado_actual = -1;
