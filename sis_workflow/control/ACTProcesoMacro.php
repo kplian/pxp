@@ -82,7 +82,7 @@ class ACTProcesoMacro extends ACTbase{
 						  "--COPY LINES TO data.sql FILE  \r\n".
 						  "---------------------------------\r\n".
 						  "\r\n" );
-		foreach ($data as $row) {
+		foreach ($data as $row) {			
 			 if ($row['tipo'] == 'proceso_macro' ) {
 			 	
 				if ($row['estado_reg'] == 'inactivo') {
@@ -140,7 +140,8 @@ class ACTProcesoMacro extends ACTbase{
 								$row['nombre_depto_func_list']."', '" .
 								$row['obs']."', '" .    
 								$row['estado_reg']."', '" .
-								$row['codigo_proceso']."');\r\n");
+								$row['codigo_proceso']."', '" .
+								$row['tipos_proceso']."');\r\n");
 				}
 				
 			} elseif ($row['tipo'] == 'estructura_estado' ) {

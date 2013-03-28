@@ -180,6 +180,7 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('obs','text');
 			$this->captura('estado_reg','varchar');
 			$this->captura('codigo_proceso','varchar');
+			$this->captura('tipos_proceso','text');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();
@@ -210,9 +211,8 @@ class MODProcesoMacro extends MODbase{
 			$consulta=$this->getConsulta();			
 	  
 			$this->ejecutarConsulta($this->respuesta);
-		}       
-  return $this->respuesta;		
-	
-	}		
+		}
+  return $this->respuesta;
+	}			
 }
 ?>

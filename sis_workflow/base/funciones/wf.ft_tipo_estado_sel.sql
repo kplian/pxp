@@ -188,13 +188,15 @@ BEGIN
 						tipes.nombre_depto_func_list,
                         tipes.obs,                        
 						tipes.estado_reg,
-						tp.codigo AS codigo_proceso                                                	
+						tp.codigo AS codigo_proceso,
+                        array_to_string(wf.f_obtener_tipos_procesos(tipes.nombre_estado),'','') as tipos_procesos
 						from wf.ttipo_estado tipes
 						inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso                        
                         inner join wf.tproceso_macro pm on pm.id_proceso_macro =tp.id_proceso_macro
                         where pm.id_proceso_macro='||v_parametros.id_proceso_macro||
                         ' order by tipes.id_tipo_estado ASC';
             return v_consulta;
+            
         end;
 
 	/*********************************    

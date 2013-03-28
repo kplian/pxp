@@ -45,7 +45,7 @@ select pxp.f_insert_tgui ('Unidades de Medida', 'Registro de Unidades de Medida'
 select pxp.f_insert_tgui ('Gestion', 'Manejo de gestiones', 'GESTIO', 'si', 1, 'sis_parametros/vista/gestion/Gestion.php', 2, '', 'Gestion', 'PARAM');
 
 select pxp.f_insert_tgui ('Catalogo', 'Catalogo', 'CATA', 'si', 4, 'sis_parametros/vista/catalogo/Catalogo.php', 2, '', 'Catalogo', 'PARAM');
-select pxp.f_insert_tgui ('Periodo', 'Periodo', 'PERIOD', 'si', 2, 'sis_parametros/vista/periodo/periodo.js', 2, '', 'periodo', 'PARAM');
+select pxp.f_insert_tgui ('Periodo', 'Periodo', 'PERIOD', 'si', 2, 'sis_parametros/vista/periodo/Periodo.php', 2, '', 'Periodo', 'PARAM');
 select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR', 'si', 3, 'sis_parametros/vista/moneda/Moneda.php', 2, '', 'Moneda', 'PARAM');
 select pxp.f_insert_tgui ('Tipos de Catálogos', 'Tipos de Catálogos', 'PACATI', 'si', 11, 'sis_parametros/vista/catalogo_tipo/CatalogoTipo.php', 2, '', 'CatalogoTipo', 'PARAM');
 select pxp.f_insert_tgui ('Servicios', 'Para registro de los servicios', 'SERVIC', 'si', 1, 'sis_parametros/vista/servicio/Servicio.php', 2, '', 'Servicio', 'PARAM');
@@ -312,4 +312,27 @@ select pxp.f_insert_testructura_gui ('TCB', 'PARAM');
 
 /***********************************F-DAT-GSS-PARAM-72-08/03/2013*****************************************/
 
+/***********************************I-DAT-GSS-PARAM-81-26/03/2013*****************************************/
 
+--funciones
+select pxp.f_insert_tfuncion ('param.f_gestion_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_depto_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_aprobadores_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_centro_costo_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_concepto_ingas_sel', 'Funcion para tabla     ', 'PARAM');
+
+--procedimientos
+
+select pxp.f_insert_tprocedimiento ('PM_GES_INS', 'Insercion de registros', 'si', '', '', 'param.f_gestion_ime');
+select pxp.f_insert_tprocedimiento ('PM_GES_MOD', 'Modificacion de registros', 'si', '', '', 'param.f_gestion_ime');
+select pxp.f_insert_tprocedimiento ('PM_GES_ELI', 'Eliminacion de registros', 'si', '', '', 'param.f_gestion_ime');
+select pxp.f_insert_tprocedimiento ('PM_GETGES_ELI', 'Recuepra el id_gestion segun la fecha', 'si', '', '', 'param.f_gestion_ime');
+select pxp.f_insert_tprocedimiento ('PM_DEPPTO_SEL', 'Listado de departamento', 'si', '', '', 'param.ft_depto_sel');
+select pxp.f_insert_tprocedimiento ('PM_DEPPTO_CONT', 'cuenta la cantidad de departamentos', 'si', '', '', 'param.ft_depto_sel');
+select pxp.f_insert_tprocedimiento ('PM_OBTARPOBA_SEL', 'Listado de aprobadores filtradao segun criterio de configuracion', 'si', '', '', 'param.f_aprobadores_sel');
+select pxp.f_insert_tprocedimiento ('PM_CEC_SEL', 'Consulta de datos', 'si', '', '', 'param.f_centro_costo_sel');
+select pxp.f_insert_tprocedimiento ('PM_CEC_CONT', 'Conteo de registros', 'si', '', '', 'param.f_centro_costo_sel');
+select pxp.f_insert_tprocedimiento ('PM_CONIG_SEL', 'Consulta de datos', 'si', '', '', 'param.f_concepto_ingas_sel');
+select pxp.f_insert_tprocedimiento ('PM_CONIG_CONT', 'Conteo de registros', 'si', '', '', 'param.f_concepto_ingas_sel');
+
+/***********************************F-DAT-GSS-PARAM-81-26/03/2013*****************************************/
