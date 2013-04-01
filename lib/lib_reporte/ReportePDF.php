@@ -781,7 +781,9 @@ class ReportePDF extends TCPDF
 		        $y = $this->GetY();
 		        $this->SetXY($x, $y);
 		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
-		        $this->Image(dirname(__FILE__).'/../../../sis_mantenimiento/reportes/logo-ypfb-logistica.png', 18, 8, 36);
+				/*$e=dirname(__FILE__).'/lib/'.$_SESSION['_DIR_LOGO'];
+				echo $e; exit;*/
+		        $this->Image(dirname(__FILE__).'/../'.$_SESSION['_DIR_LOGO'], 18, 8, 36);
 		        
 		        $x = $this->GetX();
 		        $y = $this->GetY();

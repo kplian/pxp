@@ -129,6 +129,7 @@
 	$_SESSION['_TITULO_SIS_LARGO']="FRAMEWORK PARA DESARROLLO DE SOFTWARE";
 	$_SESSION['_TITULO_SIS_CORTO']=" DESARROLLO ÁGIL";
 	$_SESSION['_NOMBRE_SIS']="PXP";
+	$_SESSION['_REP_NOMBRE_SISTEMA']='GEMA - Gestión de Mantenimiento';
  	
 	
 	  $_SESSION['_PLANTIILA']= "<tr height=\"20%\">
@@ -150,7 +151,7 @@
 	
 	$_SESSION['_DIR_FAV_ICON']='../../../lib/images/favicon.ico';
 	  
-	$_SESSION['_DIR_LOGO']='../../images/logo.jpg'; 
+	$_SESSION['_DIR_LOGO']='/images/logo.jpg'; 
 	
 	$_SESSION['_DIR_IMAGEN_INI']='../../../lib/imagenes/fondo_ini.jpg';
 	
