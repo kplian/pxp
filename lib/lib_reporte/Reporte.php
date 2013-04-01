@@ -42,13 +42,16 @@ class Reporte
 		else if($this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			//Agrega la extensión al nombre de archivo
 			$this->nombreArchivo.='.pdf';
-			$this->objParam->addParametro('orientacion','P');
+			$this->objParam->addParametro('orientacion',$this->objParam->getParametro('pdfOrientacion'));
 			$this->objParam->addParametro('tamano','Letter');
 			$this->objParam->addParametro('nombre_archivo',$this->nombreArchivo);
 			$this->objParam->addParametro('titulo_archivo',"Exportacion de ".$this->titulo);
 			$this->objParam->addParametro('tipoReporte',$this->objParam->getParametro('tipoReporte'));
+			$this->objParam->addParametro('codSistema',$this->objParam->getParametro('codSistema'));
+			$this->objParam->addParametro('codReporte',$this->objParam->getParametro('codReporte'));
 			//Instancia la clase de pdf
 			$this->objReporteFormato=new ReportePDF($this->objParam);
+			
 			//Setea propiedades para generación del reporte
 			$this->objReporteFormato->setTitulo1($this->objParam->getParametro('titulo'));
 			//Se definen las columnas que se vana mostrar

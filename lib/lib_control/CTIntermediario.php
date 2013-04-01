@@ -48,7 +48,9 @@ class CTIntermediario{
 		$_SESSION["_PETICION"]=serialize($this->aPostData);
 		//echo 'POST: '.$this->aPostData['r'];exit;
 		
-		
+				/*ob_start();
+$fb=FirePHP::getInstance(true);
+$fb->log($this->nombreClase,"clase");*/
 		if(isset($this->aPostData['r'])){
 			$objReporte=new MostrarReporte($this->aPostData['r']);
 		}

@@ -170,7 +170,7 @@ class ReportePDF extends TCPDF
 		$this->Cell($ancho, 0, 'Usuario: '.$_SESSION['_LOGIN'], '', 0, 'L');
 		$pagenumtxt = 'Página'.' '.$this->getAliasNumPage().' de '.$this->getAliasNbPages();
 		$this->Cell($ancho, 0, $pagenumtxt, '', 0, 'C');
-		$this->Cell($ancho, 0, "COBRA - Cobranza online", '', 0, 'R');
+		$this->Cell($ancho, 0, $_SESSION['_REP_NOMBRE_SISTEMA'], '', 0, 'R');
 		$this->Ln();
 		$fecha_rep = date("d-m-Y H:i:s");
 		$this->Cell($ancho, 0, "Fecha : ".$fecha_rep, '', 0, 'L');
@@ -235,53 +235,9 @@ class ReportePDF extends TCPDF
 			} else{
 				$align=170;
 			}
-			// Logo
-			//$image_file = K_PATH_IMAGES.'../../images/logo_reporte.jpg';
-			$image_file = K_PATH_IMAGES.$_SESSION['_DIR_LOGO'];
 			
+			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
 			
-			if( mime_content_type($image_file)=='image/gif'){
-				$var_tipo = 'GIF';
-				$img = imagecreatefromgif($image_file);
-
-				$x = ImageSX($img);//para el ancho
-				$y = ImageSY($img);//para el alto
-			}
-			elseif( mime_content_type($image_file)=='image/jpeg'){
-				$var_tipo = 'JPG';
-				$img = imagecreatefromjpeg($image_file);
-
-				$x = ImageSX($img);//para el ancho
-				$y = ImageSY($img);//para el alto
-				
-			}
-			elseif( mime_content_type($image_file)=='image/png'){
-				$var_tipo = 'PNG';
-				$img = imagecreatefrompng($image_file);
-
-				$x = ImageSX($img);//para el ancho
-				$y = ImageSY($img);//para el alto
-				
-			}
-			else{
-				
-				echo 'EL LOGO TIPO NO ES UNA IMAGEN';
-				exit;
-			}
-			
-		
-			
-			$this->Image($image_file, $align, 5, 35, '',$var_tipo, '', 'T', false, 300, '', false, false, 0, false, false, false);
-			
-			
-			// Set font
-			$this->SetFont('helvetica', 'B', 16);
-			// Title
-			$this->Ln(8);
-			$this->Cell(0, 12, $this->titulo1, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
-			$this->SetFont('helvetica', 'B', 12);
-			$this->Cell(0, 10, $this->titulo2, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
-			$this->Cell(0, 10, $this->titulo3, 0, 2, 'C', 0, '', 0, false, 'C', 'C');
 
 		} else if($this->orientacion=='L'){
 			if($this->alinearCabecera=='L'){
@@ -289,34 +245,8 @@ class ReportePDF extends TCPDF
 			} else{
 				$align=230;
 			}
-			// Logo
-			//$image_file = K_PATH_IMAGES.'../../images/logo_reporte.jpg';
+			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
 			
-			$image_file = K_PATH_IMAGES.$_SESSION['_DIR_LOGO'];
-			
-			
-			if( mime_content_type($image_file)=='image/gif'){
-				$var_tipo = 'GIF';
-			}
-			elseif( mime_content_type($image_file)=='image/jpeg'){
-				$var_tipo = 'JPG';
-			}
-			else{
-				
-				echo 'EL LOGO TIPO NO ES UNA IMAGEN';
-				exit;
-			}
-			
-			
-			$this->Image($image_file, $align, 5, 35, '',$var_tipo, '', 'T', false, 300, '', false, false, 0, false, false, false);
-			// Set font
-			$this->SetFont('helvetica', 'B', 16);
-			// Title
-			$this->Ln(8);
-			$this->Cell(0, 12, $this->titulo1, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
-			$this->SetFont('helvetica', 'B', 12);
-			$this->Cell(0, 10, $this->titulo2, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
-			$this->Cell(0, 10, $this->titulo3, 0, 2, 'C', 0, '', 0, false, 'C', 'C');
 		} else{
 			throw new Exception("Reporte: Orientación incorrecta, debe ser 'P' o 'L'");
 		}
@@ -835,6 +765,206 @@ class ReportePDF extends TCPDF
 	/*
 	 * FIN PROPIEDADES
 	 */
+	 
+	 private function definirCabecera($pCodSistema,$pOrientacion){
+	 	
+		/*
+		 * VERIFICA SI LA CABECERA SERA LA GENERICA O POR SISTEMA
+		 */
+		 
+		 //echo 'gggggg:'.$pCodSistema.'---'.$pOrientacion;exit;
+		 if($pOrientacion=='L'){
+		 	
+			if($pCodSistema=='GEM'){
+				$height = 20;
+		        $x = $this->GetX();
+		        $y = $this->GetY();
+		        $this->SetXY($x, $y);
+		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
+		        $this->Image(dirname(__FILE__).'/../../../sis_mantenimiento/reportes/logo-ypfb-logistica.png', 18, 8, 36);
+		        
+		        $x = $this->GetX();
+		        $y = $this->GetY();
+		        $this->SetFontSize(12);
+		        $this->SetFont('','B');        
+		        $this->Cell(170, $height/2, $this->titulo1, 1, 2, 'C', false, '', 1, false, 'T', 'C');        
+		        $this->setXY($x,$y+$height/2);
+		        $this->Cell(170, $height/2, '',1,0,'C',false,'',1,false,'T','C');
+		                
+		        $this->setXY($x+170,$y);
+		        $this->SetFont('','');
+		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFontSize(7);
+		        
+		        $width1 = 17;
+		        $width2 = 23;
+		        $this->SetXY($x+170, $y);
+		        $this->setCellPaddings(2);
+		        $this->SetFont('','B');
+		        $this->Cell($width1, $height/4, 'Código:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width2, $height/4, $this->objParam->getParametro('codReporte'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFont('','');
+		        $y += 5;
+		        $this->SetXY($x+170, $y);
+		        $this->setCellPaddings(2);
+		        $this->SetFont('','B');
+		        $this->Cell($width1, $height/4, 'Revisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width2, $height/4, '1', "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFont('','');
+		        $y += 5;
+		        $this->SetXY($x+170, $y);
+		        $this->setCellPaddings(2);
+		        $this->SetFont('','B');
+		        $this->Cell($width1, $height/4, 'Fecha de Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width2, $height/4, '29/06/2012   ', "B", 0, 'R', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFont('','');
+		        $y += 5;
+		        $this->SetXY($x+170, $y);
+		        $this->setCellPaddings(2);
+		        $this->SetFont('','B');
+		        $this->Cell($width1, $height/4, 'Pagina:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width2, $height/4,  '                  '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+        
+				
+			} else if($pCodSistema=='OTROS'){
+				//Implementar ...
+				
+			} else {
+				// Logo
+				//$image_file = K_PATH_IMAGES.'../../images/logo_reporte.jpg';
+				
+				$image_file = K_PATH_IMAGES.$_SESSION['_DIR_LOGO'];
+				
+				
+				if( mime_content_type($image_file)=='image/gif'){
+					$var_tipo = 'GIF';
+				}
+				elseif( mime_content_type($image_file)=='image/jpeg'){
+					$var_tipo = 'JPG';
+				}
+				else{
+					
+					echo 'EL LOGO TIPO NO ES UNA IMAGEN';
+					exit;
+				}
+				
+				
+				$this->Image($image_file, $align, 5, 35, '',$var_tipo, '', 'T', false, 300, '', false, false, 0, false, false, false);
+				// Set font
+				$this->SetFont('helvetica', 'B', 16);
+				// Title
+				$this->Ln(8);
+				$this->Cell(0, 12, $this->titulo1, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
+				$this->SetFont('helvetica', 'B', 12);
+				$this->Cell(0, 10, $this->titulo2, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
+				$this->Cell(0, 10, $this->titulo3, 0, 2, 'C', 0, '', 0, false, 'C', 'C');
+			}
+		 	
+		 } else{
+		 	//Por defecto 'P' Portrait
+			if($pCodSistema=='GEM'){
+				$height = 20;
+		        $x = $this->GetX();
+		        $y = $this->GetY();
+		        $this->SetXY($x, $y);
+		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
+		        $this->Image(dirname(__FILE__).'/../../../sis_mantenimiento/reportes/logo-ypfb-logistica.png', 18, 8, 36);
+		        
+		        $x = $this->GetX();
+		        $y = $this->GetY();
+		        $this->SetFontSize(14);
+		        $this->SetFont('','B');        
+		        $this->Cell(105, $height/2,$this->titulo1 , 1, 2, 'C', false, '', 0, false, 'T', 'C');        
+		        $this->Cell(105,$height/2, '',1,0,'C',false,'',0,false,'T','C');
+		        
+		        $this->setXY($x+105,$y);
+		        $this->SetFont('','');
+		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        
+		        $this->SetFontSize(7);
+		        
+		        $width1 = 17;
+		        $width2 = 23;
+		        $this->SetXY($x+105, $y);
+		        $this->setCellPaddings(2);
+		        $this->Cell($width1, $height/4, 'Codigo:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->SetFont('','B');
+		        $this->Cell($width2, $height/4, $this->objParam->getParametro('codReporte'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFont('','');
+		        $y += 5;
+		        $this->SetXY($x+105, $y);
+		        $this->setCellPaddings(2);
+		        $this->Cell($width1, $height/4, 'Revisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->SetFont('','B');
+		        $this->Cell($width2, $height/4, '1', "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFont('','');
+		        $y += 5;
+		        $this->SetXY($x+105, $y);
+		        $this->setCellPaddings(2);
+		        $this->Cell($width1, $height/4, 'Fecha Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->SetFont('','B');
+		        $this->Cell($width2, $height/4, '29/06/2012', "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        
+		        $this->SetFont('','');
+		        $y += 5;
+		        $this->SetXY($x+105, $y);
+		        $this->setCellPaddings(2);
+		        $this->Cell($width1, $height/4, 'Página:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->SetFont('','B');
+		        $this->Cell($width2, $height/4,  '                  '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+        
+			} else if($pCodSistema=='OTRO'){
+				//Implementar su propia cabecera
+				
+			} else{
+				//Cabecera por defecto
+				// Logo
+				//$image_file = K_PATH_IMAGES.'../../images/logo_reporte.jpg';
+				$image_file = K_PATH_IMAGES.$_SESSION['_DIR_LOGO'];
+				if( mime_content_type($image_file)=='image/gif'){
+					$var_tipo = 'GIF';
+					$img = imagecreatefromgif($image_file);
+					$x = ImageSX($img);//para el ancho
+					$y = ImageSY($img);//para el alto
+				}
+				elseif( mime_content_type($image_file)=='image/jpeg'){
+					$var_tipo = 'JPG';
+					$img = imagecreatefromjpeg($image_file);
+					$x = ImageSX($img);//para el ancho
+					$y = ImageSY($img);//para el alto
+				}
+				elseif( mime_content_type($image_file)=='image/png'){
+					$var_tipo = 'PNG';
+					$img = imagecreatefrompng($image_file);
+					$x = ImageSX($img);//para el ancho
+					$y = ImageSY($img);//para el alto
+				}
+				else{
+					echo 'EL LOGO TIPO NO ES UNA IMAGEN';
+					exit;
+				}
+				
+				$this->Image($image_file, $align, 5, 35, '',$var_tipo, '', 'T', false, 300, '', false, false, 0, false, false, false);
+				// Set font
+				$this->SetFont('helvetica', 'B', 16);
+				// Title
+				$this->Ln(8);
+				$this->Cell(0, 12, $this->titulo1, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
+				$this->SetFont('helvetica', 'B', 12);
+				$this->Cell(0, 10, $this->titulo2, 0, 1, 'C', 0, '', 0, false, 'M', 'M');
+				$this->Cell(0, 10, $this->titulo3, 0, 2, 'C', 0, '', 0, false, 'C', 'C');
+			}
+		 	
+		 }
+
+	 }
 
 }
 
