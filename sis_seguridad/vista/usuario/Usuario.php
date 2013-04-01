@@ -368,6 +368,7 @@ tabEnter:true,
 	},
 	
 	
+	
 	/*onButtonEdit:function(){
 		this.getComponente('conf_contrasena').disable();
 		Phx.vista.usuario.superclass.onButtonEdit.call(this);
