@@ -191,31 +191,44 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			  				      var wid='4rn'
 			  				     //console.log('IDEXTRA',wid);
 			  				     //Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
-			  				    // Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
+			  				     //Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
 			  				     
 			  				  
 			  				     var el = Ext.get(wid); // Get Ext.Element object
 		                         var u = el.getUpdater();
-		                        // var inter = Phx.vista[clase];
+		                         //var inter = Phx.vista[clase];
 			  				       u.update(
 			  				      	 {url:Phx.vista[clase].require, 
 			  				      	 params:{idContenedor:id,_tipo:'direc'},
 			  				      	 scripts :true,
 			  				      	  showLoadIndicator: "Cargando...2",
 			  				      	  callback: function(r,a,o){
-			  				      	 	//genera herencia 
-			  				      	 	eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
-			  				      	 	//ejecuta la clase hijo
-			  				      	 	Phx.CP.setPagina(new Phx.vista[clase](o.argument.params))
-			  				      	 
-			  				      	 }
-			  				      	 })
+				  				      	 	 try{
+				  				      	 		//genera herencia 
+				  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
+				  				      	 		//ejecuta la clase hijo
+				  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params))
+				  				      	 	  }
+						  				       catch(err){
+						  				       	var resp = Array();
+						  				       	resp.status=404;
+						  				       	resp.statusText=err;
+						  				       	Phx.CP.conexionFailure(resp);
+						  				       }
+							  		    }
+			  				      	 });
 			  				 }
 	  				    else{
-	  				    	Phx.CP.setPagina(new Phx.vista[clase](o.argument.params));
+	  				    	try{
+	  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params));
+	  				      	}
+	  				        catch(err){
+	  				       		var resp = Array();
+	  				       		resp.status=404;
+	  				       		resp.statusText=err;
+	  				       		Phx.CP.conexionFailure(resp);
+	  				       }
 	  				    }  
-	  				       	 		
-	  					 
 	  				 },
 	  				  scripts :true}
 	           }));
@@ -638,7 +651,14 @@ Phx.CP=function(){
 			
 			
 			var mensaje;
-			if(resp.status==401){
+			if(resp.status==777){
+				// usuario no autentificado
+				// No existe el archivo requerido
+				mensaje="<p><br/> Status: " + resp.statusText +"<br/> Error de el Navegador</p>"
+			
+				return
+			}
+			else if(resp.status==401){
 				// usuario no autentificado
 				Phx.CP.loadLogin();
 				return

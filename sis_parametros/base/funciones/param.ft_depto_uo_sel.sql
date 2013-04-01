@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_depto_uo_sel (
   p_administrador integer,
   p_id_usuario integer,

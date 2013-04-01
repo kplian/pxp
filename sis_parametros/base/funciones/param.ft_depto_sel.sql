@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_depto_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -30,6 +32,8 @@ v_nombre_funcion   text;
 v_mensaje_error    text;
 v_resp             varchar;
 v_filadd varchar;
+
+va_id_depto  integer[];
 
 
 BEGIN
@@ -66,6 +70,22 @@ BEGIN
           END IF;
           
           
+          IF   par_administrador != 1 THEN
+          
+            select  
+                   pxp.aggarray(depu.id_depto)
+                into 
+                   va_id_depto
+               from param.tdepto_usuario depu 
+               where depu.id_usuario =  par_id_usuario; 
+          
+               v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
+     
+          END IF;
+          
+          
+          
+          
           
 
                v_consulta:='SELECT 
@@ -90,10 +110,10 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             WHERE '||v_filadd;
                
-               
+              
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-
+               raise notice '%',v_consulta;
                return v_consulta;
 
 
@@ -114,7 +134,27 @@ BEGIN
           
           v_filadd = '';
           IF (pxp.f_existe_parametro(par_tabla,'id_subsistema')) THEN
-             v_filadd = ' (DEPPTO.id_subsistema = ' ||v_parametros.id_subsistema||') and ';
+          v_filadd = ' (DEPPTO.id_subsistema = ' ||v_parametros.id_subsistema||') and ';
+          
+          END IF;
+          
+          IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
+          v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          
+          END IF;
+          
+          
+          IF   par_administrador != 1 THEN
+          
+                  select  
+                     pxp.aggarray(depu.id_depto)
+                  into 
+                     va_id_depto
+                 from param.tdepto_usuario depu 
+                 where depu.id_usuario =  par_id_usuario; 
+            
+              v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
+          
           END IF;
           
           
@@ -128,6 +168,8 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             WHERE '||v_filadd;
                v_consulta:=v_consulta||v_parametros.filtro;
+               
+                raise notice '%',v_consulta;
                return v_consulta;
          END;
      else

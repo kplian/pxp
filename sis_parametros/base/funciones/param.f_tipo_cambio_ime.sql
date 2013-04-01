@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_tipo_cambio_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_tipo_cambio_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_tipo_cambio_ime
@@ -27,6 +32,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_tipo_cambio	integer;
+    
+    v_tipo_cambio numeric;
 			    
 BEGIN
 
@@ -110,6 +117,8 @@ BEGIN
             return v_resp;
             
 		end;
+        
+        
 
 	/*********************************    
  	#TRANSACCION:  'PM_TCB_ELI'
@@ -133,7 +142,34 @@ BEGIN
             return v_resp;
 
 		end;
-         
+    /*********************************    
+ 	#TRANSACCION:  'PM_OBTTCB_GET'
+ 	#DESCRIPCION:	Permite recuperar dede la interface el tipo de cambio para la moneda y fecha determinada
+    #AUTOR:	     Rensi Arteaga Copari	
+ 	#FECHA:		08-03-2013 15:30:14
+	***********************************/
+
+	elsif(p_transaccion='PM_OBTTCB_GET')then
+
+		begin
+			
+            
+        
+           select 
+            tc.oficial
+           into 
+            v_tipo_cambio
+           from param.ttipo_cambio tc
+           where tc.fecha = v_parametros.fecha and tc.id_moneda = v_parametros.id_moneda;
+            
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo de Cambio obtenido)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'tipo_cambio',v_tipo_cambio::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;    
 	else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;
@@ -150,7 +186,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_tipo_cambio_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

@@ -17,8 +17,24 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.ProcesoMacro.superclass.constructor.call(this,config);
 		this.init();
+		this.addButton('exp_proc_macro',{text:'Exportar Proceso Macro',iconCls: 'blist',disabled:true,handler:expProcMacro,tooltip: '<b>Permite exportar los datos de proceso macro</b>'});
+		
+		function expProcMacro(){			
+			var data=this.sm.getSelected().data.id_proceso_macro;
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url:'../../sis_workflow/control/ProcesoMacro/ExportarDatosProcesoMacro',
+				params:{'id_proceso_macro':data},
+				success:this.successExport,
+				failure: this.conexionFailure,
+				timeout:this.timeout,
+				scope:this
+			});			
+		}
 		this.load({params:{start:0, limit:50}})
 	},
+	
+	
 			
 	Atributos:[
 		{
@@ -84,7 +100,6 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 				name: 'inicio',
 				fieldLabel: 'Inicio del proceso (Nodo inicial)',
 				allowBlank: true,
-				anchor: '20%',
 				gwidth: 50,
 				maxLength:2,
 				emptyText:'si/no...',       			
@@ -94,7 +109,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
        		    mode: 'local',
        		    valueField: 'inicio',       		    
        		   // displayField: 'descestilo',
-       		    store:['SI','NO']
+       		    store:['si','no']
 			},
 			type:'ComboBox',
 			//filters:{pfiltro:'promac.inicio',type:'string'},
@@ -102,7 +117,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			filters:{	
 	       		         type: 'list',
 	       				 dataIndex: 'size',
-	       				 options: ['SI','NO'],	
+	       				 options: ['si','no'],	
 	       		 	},
 			grid:true,
 			form:true
@@ -220,8 +235,21 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 		  //width:'50%',		//ancho de la ventana hjo
 		  cls:'NumTramite'
 		}		
-	]
-	}
+	],
+	preparaMenu:function(tb){
+			
+			this.getBoton('exp_proc_macro').enable();
+			Phx.vista.ProcesoMacro.superclass.preparaMenu.call(this,tb)
+			return tb
+		},
+	 
+	 liberaMenu:function(tb){
+		
+			this.getBoton('exp_proc_macro').disable();
+			Phx.vista.ProcesoMacro.superclass.liberaMenu.call(this,tb)
+			return tb
+		}
+}
 )
 </script>
 		

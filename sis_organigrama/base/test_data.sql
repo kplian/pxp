@@ -77,11 +77,6 @@ VALUES (1, NULL, E'2012-12-29 15:19:50.693', E'2012-12-29 15:19:50.693', E'activ
 
 ------------I FRH ------------
 
-
---INSERT INTO orga.tdepto ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_depto", "nombre", "nombre_corto", "id_subsistema", "codigo")
---VALUES (NULL, NULL, E'2013-01-24 18:58:56', E'2013-01-24 18:58:56', E'activo', 1, E'Gerencia General', E'GG', NULL, E'GG');
-
-
 -- UO
 
 INSERT INTO orga.tuo (id_usuario_reg, id_usuario_mod, fecha_reg, fecha_mod, estado_reg, id_uo, nombre_unidad, nombre_cargo, cargo_individual, descripcion, presupuesta, codigo, nodo_base, gerencia, correspondencia)
@@ -136,3 +131,19 @@ INSERT INTO orga.testructura_uo (id_usuario_reg, id_usuario_mod, fecha_reg, fech
 VALUES (1, NULL, '2011-12-29 00:00:00', '2011-12-29 15:27:04', 'activo', 8, 2, 9);
 
 ------------F FRH ------------
+
+/* Data for the 'orga.tuo_funcionario' table  (Records 1 - 3) */
+
+INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
+VALUES (NULL, NULL, E'2013-03-20 13:44:26.245', E'2013-03-20 13:44:26.245', E'activo', 2, 3, E'2013-01-01', NULL);
+
+INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
+VALUES (NULL, NULL, E'2013-03-20 13:44:45.142', E'2013-03-20 13:44:45.142', E'activo', 5, 1, E'2012-10-01', NULL);
+
+INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
+VALUES (NULL, NULL, E'2013-03-20 13:45:04.997', E'2013-03-20 13:45:04.997', E'activo', 7, 4, E'2013-01-16', NULL);
+
+
+
+
+

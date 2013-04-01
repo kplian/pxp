@@ -5,11 +5,11 @@ CREATE OR REPLACE FUNCTION wf.f_inicia_tramite (
   p_id_gestion integer,
   p_codigo_tipo_proceso varchar,
   p_id_funcionario integer,
-  p_fecha timestamp,
+  p_id_depto integer = NULL::integer,
   out ps_num_tramite varchar,
   out ps_id_proceso_wf integer,
   out ps_id_estado_wf integer,
-  out ps_nombre_estado varchar
+  out ps_codigo_estado varchar
 )
 RETURNS record AS
 $body$
@@ -28,6 +28,10 @@ $body$
 
 ***************************************************************************/
 DECLARE
+
+   v_resp varchar;
+   v_nombre_funcion varchar;
+
   v_num_siguiente INTEGER;
   v_gestion varchar;
   v_id_gestion integer;
@@ -42,6 +46,8 @@ DECLARE
   v_inicio varchar;
   
 BEGIN
+
+     v_nombre_funcion = 'wf.f_inicia_tramite';
 
          -- si el tipo_proceso es de inicio genera numero de tramite
          
@@ -85,9 +91,9 @@ BEGIN
    -- recupera el tipo_estado_inicial 
    
     select 
-    te.id_tipo_estado, te.nombre_estado
+    te.id_tipo_estado, te.codigo
     into 
-      v_id_tipo_estado, ps_nombre_estado
+      v_id_tipo_estado, ps_codigo_estado
     from wf.ttipo_estado te
     where te.id_tipo_proceso = v_id_tipo_proceso 
     and te.inicio ='si' ;   
@@ -105,7 +111,8 @@ BEGIN
         id_tipo_estado,
         id_proceso_wf,
         id_funcionario,
-        fecha
+        id_depto
+       
       ) 
       VALUES (
         p_id_usuario_reg,
@@ -115,10 +122,18 @@ BEGIN
         v_id_tipo_estado,
         ps_id_proceso_wf,
         p_id_funcionario,
-        p_fecha
+        p_id_depto
+      
       )RETURNING id_estado_wf into ps_id_estado_wf;
- 
- 
+    
+ EXCEPTION
+				
+	WHEN OTHERS THEN
+		v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp;  
 
 
 END;

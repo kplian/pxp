@@ -372,6 +372,12 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		this.getComponente('id_tipo_proceso').setValue(this.maestro.id_tipo_proceso);		
 	},
 	tabsouth:[
+	     {
+          url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php',
+          title:'Hijos', 
+          height:'50%',
+          cls:'EstructuraEstadoHijo'
+         },
 	      {
 		   url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoPadre.php',
 		   title:'Padres', 
@@ -379,17 +385,17 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		   height:'50%',
 		   cls:'EstructuraEstadoPadre'
 		 },
-	     {
-		  url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php',
-		  title:'Hijos', 
-		  height:'50%',
-		  cls:'EstructuraEstadoHijo'
-		 },
+		 {
+          url:'../../../sis_workflow/vista/funcionario_tipo_estado/FuncionarioTipoEstado.php',
+          title:'Funcionarios', 
+          height:'50%',
+          cls:'FuncionarioTipoEstado'
+         }
 	
 	   ],
 	
 	bdel:true,
-	bsave:true
+	bsave:false
 	}
 )
 </script>

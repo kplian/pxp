@@ -71,14 +71,12 @@ select pxp.f_insert_tfuncion ('orga.f_obtener_funcionarios_x_uo', 'Funcion para 
 select pxp.f_insert_tfuncion ('orga.ft_usuario_uo_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_funcionario_especialidad_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_especialidad_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('orga.ft_depto_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_uo_arb_inicia', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_uo_arb_recursivo', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_especialidad_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_especialidad_nivel_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_tipo_horario_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_usuario_uo_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('orga.ft_depto_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_funcionario_especialidad_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_especialidad_nivel_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_funcionario_ime', 'Funcion para tabla     ', 'ORGA');
@@ -153,12 +151,6 @@ select pxp.f_insert_tprocedimiento ('RH_ESPCIA_CONT', '	Conteo de registros
  	', 'si', '', '', 'orga.f_especialidad_sel');
 select pxp.f_insert_tprocedimiento ('RH_ESPCIA_SEL', '	Consulta de datos
  	', 'si', '', '', 'orga.f_especialidad_sel');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_ELI', '	Inactiva el depto selecionado
-', 'si', '', '', 'orga.ft_depto_ime');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_MOD', '	Modifica la depto seleccionada
-', 'si', '', '', 'orga.ft_depto_ime');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_INS', '	Inserta deptos
-', 'si', '', '', 'orga.ft_depto_ime');
 select pxp.f_insert_tprocedimiento ('RH_INIUOARB_SEL', '	Filtro en organigrama
  	', 'si', '', '', 'orga.f_uo_arb_inicia');
 select pxp.f_insert_tprocedimiento ('RH_ESPCIA_ELI', '	Eliminacion de registros
@@ -179,10 +171,6 @@ select pxp.f_insert_tprocedimiento ('PM_UUO_CONT', '	Conteo de registros
  	', 'si', '', '', 'orga.ft_usuario_uo_sel');
 select pxp.f_insert_tprocedimiento ('PM_UUO_SEL', '	Consulta de datos
  	', 'si', '', '', 'orga.ft_usuario_uo_sel');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_CONT', '	cuenta la cantidad de departamentos
-', 'si', '', '', 'orga.ft_depto_sel');
-select pxp.f_insert_tprocedimiento ('PM_DEPPTO_SEL', '	Listado de departamento
-', 'si', '', '', 'orga.ft_depto_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHESFU_CONT', '	Conteo de registros
  	', 'si', '', '', 'orga.f_funcionario_especialidad_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHESFU_SEL', '	Consulta de datos
@@ -208,5 +196,4 @@ select pxp.f_insert_tprocedimiento ('RH_FUNCIO_INS', '	Inserta Funcionarios
 
 
 /********************************************F-DAT-RAC-ORGA-0-31/12/2012********************************************/
-
 

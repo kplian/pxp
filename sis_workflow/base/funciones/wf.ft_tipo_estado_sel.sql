@@ -167,6 +167,37 @@ BEGIN
 			return v_consulta;
 						
 		end;
+	elseif(p_transaccion='WF_EXPTIPES_SEL')then
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPTIPES_SEL'
+ 	#DESCRIPCION:	Listado de los datos de tipo estado segun del proceso macro seleccionado para exportar
+ 	#AUTOR:		Gonzalo Sarmiento Sejas
+ 	#FECHA:		19-03-2013 15:36:11
+	***********************************/
+
+    	begin
+        	v_consulta:='select ''tipo_estado''::varchar,
+	            		tipes.codigo,
+                        tipes.nombre_estado,
+						tipes.inicio,
+						tipes.disparador,
+                        tipes.fin,                        
+						tipes.tipo_asignacion,
+						tipes.nombre_func_list,
+                        tipes.depto_asignacion,
+						tipes.nombre_depto_func_list,
+                        tipes.obs,                        
+						tipes.estado_reg,
+						tp.codigo AS codigo_proceso,
+                        array_to_string(wf.f_obtener_tipos_procesos(tipes.nombre_estado),'','') as tipos_procesos
+						from wf.ttipo_estado tipes
+						inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso                        
+                        inner join wf.tproceso_macro pm on pm.id_proceso_macro =tp.id_proceso_macro
+                        where pm.id_proceso_macro='||v_parametros.id_proceso_macro||
+                        ' order by tipes.id_tipo_estado ASC';
+            return v_consulta;
+            
+        end;
 
 	/*********************************    
  	#TRANSACCION:  'WF_TIPES_CONT'

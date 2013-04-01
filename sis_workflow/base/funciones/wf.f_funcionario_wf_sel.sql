@@ -159,15 +159,14 @@ BEGIN
                  v_consulta='select 
                     DISTINCT(fun.id_funcionario),
                     fun.desc_funcionario1 as desc_funcionario,
-                    fun.nombre_cargo::text  as desc_funcionario_cargo,
+                    ''---''::text  as desc_funcionario_cargo,
                     1 as prioridad
                     
-                   from orga.vfuncionario_cargo fun
+                   from orga.vfuncionario fun
                    inner join wf.tfuncionario_tipo_estado fte 
                        on fte.id_funcionario = fun.id_funcionario 
                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                   where (fun.fecha_asignacion::date  < '''||p_fecha||''' and ( fun.fecha_finalizacion >= '''||p_fecha||''' or fun.fecha_finalizacion is NULL))
-                   and '||p_filtro||'
+                   where  '||p_filtro||'
                             order by fun.desc_funcionario1
                             limit '|| p_limit::varchar||' offset '||p_start::varchar;
                   
@@ -181,14 +180,14 @@ BEGIN
           
             	v_consulta='select 
                     COUNT(DISTINCT(fun.id_funcionario))
-                    from orga.vfuncionario_cargo fun
+                    from orga.vfuncionario fun
                     inner join wf.tfuncionario_tipo_estado fte 
                        on fte.id_funcionario = fun.id_funcionario 
                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                    where (fun.fecha_asignacion::date  < '''||p_fecha||''' and ( fun.fecha_finalizacion >= '''||p_fecha||''' or fun.fecha_finalizacion is NULL))
-                    and '||p_filtro;
+                    where '||p_filtro;
                   
-    
+                
+                  
                  -- listado de todos los funcionarios en la tabla 
                  FOR g_registros in execute (v_consulta)LOOP     
                    RETURN NEXT g_registros;

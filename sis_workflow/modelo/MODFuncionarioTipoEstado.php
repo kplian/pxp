@@ -34,7 +34,7 @@ class MODFuncionarioTipoEstado extends MODbase{
 		$this->captura('usr_mod','varchar');
         $this->captura('desc_funcionario1','varchar');
         $this->captura('desc_depto','varchar');
-		$this->captura('desc_tipo_estado','varchar');
+		$this->captura('desc_labores','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

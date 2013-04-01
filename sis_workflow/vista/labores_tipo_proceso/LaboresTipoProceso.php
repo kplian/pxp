@@ -17,7 +17,17 @@ Phx.vista.LaboresTipoProceso=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.LaboresTipoProceso.superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:this.tam_pag}})
+		//this.load({params:{start:0, limit:this.tam_pag}})
+		//this.bloquearMenus();
+		//si la interface es pestanha este código es para iniciar 
+          var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
+          if(dataPadre){
+             this.onEnablePanel(this, dataPadre);
+          }
+          else
+          {
+             this.bloquearMenus();
+          }
 	},
 	tam_pag:50,
 			
@@ -33,50 +43,11 @@ Phx.vista.LaboresTipoProceso=Ext.extend(Phx.gridInterfaz,{
 			form:true 
 		},
 		{
-            config: {
+            config:{
                 name: 'id_tipo_proceso',
-                fieldLabel: 'Tipo Proceso',
-                typeAhead: false,
-                forceSelection: false,
-                allowBlank: true,
-                emptyText: 'Lista de tipos proceso...',
-                store: new Ext.data.JsonStore({
-                    url: '../../sis_workflow/control/TipoProceso/listarTipoProceso',
-                    id: 'id_tipo_proceso',
-                    root: 'datos',
-                    sortInfo: {
-                        field: 'nombre',
-                        direction: 'ASC'
-                    },
-                    totalProperty: 'total',
-                    fields: ['id_tipo_proceso', 'codigo', 'nombre'],
-                    // turn on remote sorting
-                    remoteSort: true,
-                    baseParams: {par_filtro: 'tipproc.nombre#tipproc.codigo'}
-                }),
-                valueField: 'id_tipo_proceso',
-                displayField: 'nombre',
-                gdisplayField: 'desc_tipo_proceso',
-                triggerAction: 'all',
-                lazyRender: true,
-                mode: 'remote',
-                pageSize: 20,
-                queryDelay: 200,
-                anchor: '80%',
-                minChars: 2,
-                gwidth: 200,
-                renderer: function(value, p, record) {
-                    return String.format('{0}', record.data['desc_tipo_proceso']);
+                inputType:'hidden',
                 },
-                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
-            },
-            type: 'ComboBox',
-            id_grupo: 0,
-            filters: {
-                pfiltro: 'tp.nombre',
-                type: 'string'
-            },
-            grid: true,
+            type: 'Field',
             form: true
         },
 		{
@@ -228,12 +199,16 @@ Phx.vista.LaboresTipoProceso=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_labores_tipo_proceso',
 		direction: 'ASC'
 	},
-	south:{
-          url:'../../../sis_workflow/vista/funcionario_tipo_estado/FuncionarioTipoEstado.php',
-          title:'Funcionarios x Tipo Estado', 
-          height: 400,
-          cls:'FuncionarioTipoEstado'
-        },
+	onReloadPage:function(m){
+        this.maestro=m;
+        this.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
+        this.load({params:{start:0, limit:50}})
+    },
+    loadValoresIniciales:function()
+    {
+        Phx.vista.LaboresTipoProceso.superclass.loadValoresIniciales.call(this);
+        this.getComponente('id_tipo_proceso').setValue(this.maestro.id_tipo_proceso);       
+    },	
 	bdel:true,
 	bsave:true
 	}

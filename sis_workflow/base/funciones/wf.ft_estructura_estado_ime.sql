@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_estructura_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -31,6 +33,7 @@ DECLARE
 	v_mensaje_error         text;
 	v_id_estructura_estado	integer;
     v_disparador			varchar;
+    v_fin varchar;
 			    
 BEGIN
 
@@ -47,15 +50,15 @@ BEGIN
 	if(p_transaccion='WF_ESTES_INS')then
 					
         begin
-        	--Validar que un tipo_estado 'disparador' no tenga hijos
-        	SELECT te.disparador
-            INTO v_disparador 
+        	--Validar que un tipo_estado 'fin' no tenga hijos
+        	SELECT te.fin
+            INTO v_fin 
             FROM wf.ttipo_estado te
             LEFT JOIN wf.testructura_estado et ON te.id_tipo_estado = et.id_tipo_estado_padre
             WHERE te.id_tipo_estado = v_parametros.id_tipo_estado_padre;
             
-            IF v_disparador ilike 'si' THEN
-                RAISE EXCEPTION 'No puede definirse hijos para un Tipo Estado Padre seleccionado. Debido a que es un estado ''disparador''.';
+            IF v_fin ilike 'si' THEN
+                RAISE EXCEPTION 'No puede definirse hijos es un estado ''fin''.';
             END IF;
             
         	--Sentencia de la insercion
