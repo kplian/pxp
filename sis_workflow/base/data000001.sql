@@ -66,3 +66,112 @@ select pxp.f_insert_tfuncion ('wf.f_obtener_disparador_predecesor_proceso', 'Fun
 select pxp.f_insert_tfuncion ('wf.f_registra_estado_wf', 'Funcion      ', 'WF');
 
 /********************************************F-DAT-FRH-WF-0-15/02/2013**********************************************/
+
+
+/********************************************I-DAT-GSS-WF-81-26/03/2013**********************************************/
+--definicion de interfaces
+
+select pxp.f_insert_tgui ('Numero de tramite', 'Numero de tramite', 'WF.2.1', 'no', 0, 'sis_workflow/vista/num_tramite/NumTramite.php', 3, '', '35%', 'WF');
+select pxp.f_insert_tgui ('Estados', 'Estados', 'WF.1.2.1', 'no', 0, 'sis_workflow/vista/tipo_estado/TipoEstado.php', 4, '', 'TipoEstado', 'WF');
+select pxp.f_insert_tgui ('Hijos', 'Hijos', 'WF.1.2.1.1', 'no', 0, 'sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php', 5, '', '50%', 'WF');
+
+--estructura de interface
+
+select pxp.f_insert_testructura_gui ('WF.2.1', 'WF.2');
+select pxp.f_insert_testructura_gui ('WF.1.2.1', 'WF.1.2');
+select pxp.f_insert_testructura_gui ('WF.1.2.1.1', 'WF.1.2.1');
+
+--funciones--
+
+select pxp.f_insert_tfuncion ('wf.f_insert_tproceso_macro', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_depto_wf_sel', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_funcionario_wf_sel', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_get_numero_tramite', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_cadena_tipos_estados_anteriores_wf', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_insert_testructura_estado', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_registra_proceso_disparado_wf', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_diparador_predecesor_proceso', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_tipo_estado_inicial_del_tipo_proceso', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_estado_ant_log_wf', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_insert_ttipo_proceso', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_estado_wf', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_insert_ttipo_estado', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_funcionario_tipo_estado_sel', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_inicia_tramite', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_funcionario_tipo_estado_ime', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_labores_tipo_proceso_sel', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.ft_labores_tipo_proceso_ime', 'Funcion para tabla     ', 'WF');
+select pxp.f_insert_tfuncion ('wf.f_obtener_estado_segun_log_wf', 'Funcion para tabla     ', 'WF');
+
+--procedimientos--
+
+select pxp.f_insert_tprocedimiento ('WF_TIPES_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_tipo_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_TIPES_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_tipo_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_TIPES_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_tipo_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_FUNTIPES_SEL', 'Consulta los funcionarios correpondientes con el tipo de estado', 'si', '', '', 'wf.ft_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_FUNTIPES_CONT', 'Consulta los funcionarios correpondientes con el tipo de estado', 'si', '', '', 'wf.ft_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_TIPES_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_EXPTIPES_SEL', 'Listado de los datos de tipo estado segun del proceso macro seleccionado para exportar', 'si', '', '', 'wf.ft_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_TIPES_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_TIPPROC_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_tipo_proceso_ime');
+select pxp.f_insert_tprocedimiento ('WF_TIPPROC_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_tipo_proceso_ime');
+select pxp.f_insert_tprocedimiento ('WF_TIPPROC_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_tipo_proceso_ime');
+select pxp.f_insert_tprocedimiento ('WF_ESTES_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_estructura_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_EXPESTES_SEL', 'Listado de estructura de datos del proceso macro seleccionado para exportar', 'si', '', '', 'wf.ft_estructura_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_ESTES_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_estructura_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_FUNCTEST_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_funcionario_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_FUNCTEST_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_funcionario_tipo_estado_sel');
+select pxp.f_insert_tprocedimiento ('WF_PROMAC_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_proceso_macro_ime');
+select pxp.f_insert_tprocedimiento ('WF_PROMAC_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_proceso_macro_ime');
+select pxp.f_insert_tprocedimiento ('WF_PROMAC_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_proceso_macro_ime');
+select pxp.f_insert_tprocedimiento ('WF_ESTES_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_estructura_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_ESTES_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_estructura_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_ESTES_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_estructura_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_NUMTRAM_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_num_tramite_ime');
+select pxp.f_insert_tprocedimiento ('WF_NUMTRAM_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_num_tramite_ime');
+select pxp.f_insert_tprocedimiento ('WF_NUMTRAM_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_num_tramite_ime');
+select pxp.f_insert_tprocedimiento ('WF_FUNCTEST_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_funcionario_tipo_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_FUNCTEST_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_funcionario_tipo_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_FUNCTEST_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_funcionario_tipo_estado_ime');
+select pxp.f_insert_tprocedimiento ('WF_TIPPROC_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_tipo_proceso_sel');
+select pxp.f_insert_tprocedimiento ('WF_TIPPROC_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_tipo_proceso_sel');
+select pxp.f_insert_tprocedimiento ('WF_EXPTIPPROC_SEL', 'Listado de tipos de proceso de un proceso macro para exportar', 'si', '', '', 'wf.ft_tipo_proceso_sel');
+select pxp.f_insert_tprocedimiento ('WF_LABTPROC_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_labores_tipo_proceso_sel');
+select pxp.f_insert_tprocedimiento ('WF_LABTPROC_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_labores_tipo_proceso_sel');
+select pxp.f_insert_tprocedimiento ('WF_LABTPROC_INS', 'Insercion de registros', 'si', '', '', 'wf.ft_labores_tipo_proceso_ime');
+select pxp.f_insert_tprocedimiento ('WF_LABTPROC_MOD', 'Modificacion de registros', 'si', '', '', 'wf.ft_labores_tipo_proceso_ime');
+select pxp.f_insert_tprocedimiento ('WF_LABTPROC_ELI', 'Eliminacion de registros', 'si', '', '', 'wf.ft_labores_tipo_proceso_ime');
+select pxp.f_insert_tprocedimiento ('WF_NUMTRAM_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_num_tramite_sel');
+select pxp.f_insert_tprocedimiento ('WF_NUMTRAM_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_num_tramite_sel');
+select pxp.f_insert_tprocedimiento ('WF_PROMAC_SEL', 'Consulta de datos', 'si', '', '', 'wf.ft_proceso_macro_sel');
+select pxp.f_insert_tprocedimiento ('WF_EXPPROMAC_SEL', 'Listado de los datos del proceso macro seleccionado para exportar', 'si', '', '', 'wf.ft_proceso_macro_sel');
+select pxp.f_insert_tprocedimiento ('WF_PROMAC_CONT', 'Conteo de registros', 'si', '', '', 'wf.ft_proceso_macro_sel');
+
+--procedimiento_gui--
+
+select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_INS', 'WF.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_MOD', 'WF.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_ELI', 'WF.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_SEL', 'WF.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_NUMTRAM_INS', 'WF.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_NUMTRAM_MOD', 'WF.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_NUMTRAM_ELI', 'WF.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_NUMTRAM_SEL', 'WF.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_SEL', 'WF.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_SEL', 'WF.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPPROC_INS', 'WF.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPPROC_MOD', 'WF.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPPROC_ELI', 'WF.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPPROC_SEL', 'WF.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_INS', 'WF.1.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_MOD', 'WF.1.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_ELI', 'WF.1.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_SEL', 'WF.1.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_SEL', 'WF.1.2.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_ESTES_INS', 'WF.1.2.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_ESTES_MOD', 'WF.1.2.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_ESTES_ELI', 'WF.1.2.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_ESTES_SEL', 'WF.1.2.1.1', 'no');
+
+
+/********************************************F-DAT-GSS-WF-81-26/03/2013**********************************************/
