@@ -171,7 +171,7 @@ if (datos  == 's'):
 execute_script(url, 'dependencies',f_log)
   
 
-#Actualización de las secuencias
+#Actualizacion de las secuencias
 command = 'psql '+ db + ' -c  \'select pxp.f_update_sequences()\''
 for line in run_command(command):
 	f_log.write(line)
