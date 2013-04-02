@@ -775,7 +775,7 @@ class ReportePDF extends TCPDF
 		 //echo 'gggggg:'.$pCodSistema.'---'.$pOrientacion;exit;
 		 if($pOrientacion=='L'){
 		 	
-			if($pCodSistema=='GEM'){
+			if($pCodSistema=='GEM'||$pCodSistema=='PXP'){
 				$height = 20;
 		        $x = $this->GetX();
 		        $y = $this->GetY();
@@ -868,7 +868,7 @@ class ReportePDF extends TCPDF
 		 	
 		 } else{
 		 	//Por defecto 'P' Portrait
-			if($pCodSistema=='GEM'){
+			if($pCodSistema=='GEM'||$pCodSistema=='PXP'){
 				$height = 20;
 		        $x = $this->GetX();
 		        $y = $this->GetY();
