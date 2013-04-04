@@ -59,6 +59,7 @@ BEGIN
           
           BEGIN
           v_filadd = '';
+         
           IF (pxp.f_existe_parametro(par_tabla,'id_subsistema')) THEN
           v_filadd = ' (DEPPTO.id_subsistema = ' ||v_parametros.id_subsistema||') and ';
           
@@ -72,14 +73,33 @@ BEGIN
           
           IF   par_administrador != 1 THEN
           
-            select  
-                   pxp.aggarray(depu.id_depto)
-                into 
-                   va_id_depto
-               from param.tdepto_usuario depu 
-               where depu.id_usuario =  par_id_usuario; 
+                
           
-               v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
+                IF (pxp.f_existe_parametro(par_tabla,'tipo_filtro')) THEN
+                
+                  IF v_parametros.tipo_filtro='DEPTO_UO' THEN
+                    --se agrega filtro si el usuario pertenece al depto
+                     select  
+                           pxp.aggarray(depu.id_depto)
+                        into 
+                           va_id_depto
+                       from param.tdepto_usuario depu 
+                       where depu.id_usuario =  par_id_usuario; 
+                  
+                       v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
+                  END IF;
+               
+               ELSE
+                --TO DO,  filtro de departamento por EP cuando  el usuario no es administrador
+               
+               
+                  -- obtener las ep del usuario en un array 
+                  
+                  
+               
+               END IF;
+           
+     
      
           END IF;
           
@@ -146,15 +166,34 @@ BEGIN
           
           IF   par_administrador != 1 THEN
           
-                  select  
-                     pxp.aggarray(depu.id_depto)
-                  into 
-                     va_id_depto
-                 from param.tdepto_usuario depu 
-                 where depu.id_usuario =  par_id_usuario; 
-            
-              v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
+                
           
+                IF (pxp.f_existe_parametro(par_tabla,'tipo_filtro')) THEN
+                
+                  IF v_parametros.tipo_filtro='DEPTO_UO' THEN
+                    --se agrega filtro si el usuario pertenece al depto
+                     select  
+                           pxp.aggarray(depu.id_depto)
+                        into 
+                           va_id_depto
+                       from param.tdepto_usuario depu 
+                       where depu.id_usuario =  par_id_usuario; 
+                  
+                       v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
+                  END IF;
+               
+               ELSE
+                --TO DO,  filtro de departamento por EP cuando  el usuario no es administrador
+               
+               
+                  -- obtener las ep del usuario en un array 
+                  
+                  
+               
+               END IF;
+           
+     
+     
           END IF;
           
           
