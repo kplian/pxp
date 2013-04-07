@@ -597,6 +597,6 @@ CREATE TABLE param.tdocumento_fiscal (
 WITH OIDS;
 ALTER TABLE param.tdocumento_fiscal OWNER TO postgres;
 
-ALTER TABLE conta.tplantilla SET SCHEMA param;
+ALTER TABLE param.tplantilla SET SCHEMA param;
 
 /***********************************F-SCP-RCM-PARAM-85-03/04/2013*****************************************/
