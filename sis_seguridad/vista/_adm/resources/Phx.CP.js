@@ -46,7 +46,15 @@ Ext.apply(Ext.form.VTypes, {
         return true;
     },
 
-    passwordText : 'Las contraseñas no son iguales'
+    passwordText : 'Las contraseñas no son iguales',
+    
+    hex: function(val, field){
+		var v=/^[0-9A-F]+$/i .test(val);;
+    	console.log(v);
+    	return /^[0-9A-F]+$/i .test(val);;
+    },
+    hexText:'El valor no está en Hexadecimal',
+    hexMask : /[0-9A-F]/i
 });
 //FIN RCM
 

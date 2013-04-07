@@ -336,3 +336,14 @@ select pxp.f_insert_tprocedimiento ('PM_CONIG_SEL', 'Consulta de datos', 'si', '
 select pxp.f_insert_tprocedimiento ('PM_CONIG_CONT', 'Conteo de registros', 'si', '', '', 'param.f_concepto_ingas_sel');
 
 /***********************************F-DAT-GSS-PARAM-81-26/03/2013*****************************************/
+
+/***********************************I-DAT-RCM-PARAM-85-03/04/2013*****************************************/
+select pxp.f_insert_tgui ('Documentos Fiscales', 'Listado de todos los Documentos fiscales', 'DF', 'si', 11, 'sis_parametros/vista/documento_fiscal/DocumentoFiscal.php', 2, '', 'DocumentoFiscal', 'PARAM');
+select pxp.f_insert_testructura_gui ('DF', 'PARAM');
+/***********************************F-DAT-RCM-PARAM-85-03/04/2013*****************************************/
+
+/***********************************I-DAT-RCM-PARAM-85-05/04/2013*****************************************/
+select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Incompleto');
+select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Completo');
+select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Anulado');
+/***********************************F-DAT-RCM-PARAM-85-05/04/2013*****************************************/
