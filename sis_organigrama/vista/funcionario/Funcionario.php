@@ -132,6 +132,23 @@ Phx.vista.funcionario=function(config){
 
 	       	{
 	       		config:{
+	       			fieldLabel: "Teléfono Oficina",
+	       			gwidth: 120,
+	       			name: 'telefono_ofi',
+	       			allowBlank:false,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			anchor:'100%'
+	       		},
+	       		type:'TextField',
+	       		filters:{type:'string'},
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+
+	       	{
+	       		config:{
 	       			fieldLabel: "Interno",
 	       			gwidth: 120,
 	       			name: 'interno',
@@ -343,7 +360,6 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'usr_reg', type: 'string'},
 	{name:'usr_mod', type: 'string'},
 	'telefono_ofi'
-		
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',

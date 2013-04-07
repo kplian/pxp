@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		orga.ft_funcionario_sel
@@ -137,7 +138,7 @@ BEGIN
                             FUNCAR.codigo,
                             FUNCAR.email_empresa,
                             FUNCAR.estado_reg_fun,
-                            FUNCAR.estado_reg_asi,
+                            FUNCAR.estado_reg_asi
                             FROM orga.vfuncionario_cargo FUNCAR 
                             WHERE '||v_filadd;
                
@@ -196,7 +197,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_uo_funcionario_ime (OID = 304959) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

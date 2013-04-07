@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_menu_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_menu_sel
@@ -90,7 +91,8 @@ BEGIN
            BEGIN
            
               v_consulta:=
-                   'SELECT g.id_gui,
+                   'SELECT 
+                   g.id_gui,
                    g.nombre,
                    g.descripcion,
                    g.nivel,
@@ -102,7 +104,7 @@ BEGIN
                             ''carpeta''::varchar
                        ELSE
                            ''hoja''::varchar
-                   END,
+                   END ,
                    g.icono 
                    FROM segu.tgui g
                    inner join segu.testructura_gui eg
@@ -125,6 +127,18 @@ BEGIN
                    and eg.fk_id_gui::text like '''||v_parametros.id_padre||'''
                    AND g.nivel::text like '''||v_nivel||'''
                    and u.id_usuario ='|| par_id_usuario||'
+                   group by 
+                   
+                       g.id_gui,
+                       g.nombre,
+                       g.descripcion,
+                       g.nivel,
+                       g.orden_logico,
+                       g.ruta_archivo,
+                       g.clase_vista,
+                       g.ruta_archivo,
+                       g.icono,
+                       eg.fk_id_gui
                    order by g.orden_logico,eg.fk_id_gui';
                    raise notice 'pueblo: %',v_consulta;
                   
@@ -147,7 +161,8 @@ BEGIN
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_monitor_bd_sel (OID = 305072) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

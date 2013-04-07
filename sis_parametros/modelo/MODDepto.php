@@ -23,7 +23,8 @@ class MODDepto extends MODbase{
 		//Definicion de la lista del resultado del query
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('codigo_subsistema','codigo_subsistema','varchar');
-	
+	    $this->setParametro('tipo_filtro','tipo_filtro','varchar');
+    
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('id_depto','integer');
 		$this->captura('codigo','varchar');

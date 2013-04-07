@@ -190,8 +190,6 @@ Phx.vista.Documento=function(config){
 				fieldLabel:'Formato Numeracion',
 				typeAhead: true,
 				allowBlank:true,
-	    		
-	    		emptyText:'Seleccione Opcion...',
 	    		selectOnFocus:true,
 				
 				
@@ -333,9 +331,7 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 
 		this.getComponente('id_subsistema').on('select',function(combo,record,index){
 
-               console.log(record)
-			
-			if(record.data.codigo=='CORRES'){
+            if(record.data.codigo=='CORRES'){
 				
 				this.getComponente('tipo').enable();
 				this.getComponente('tipo').show();
@@ -345,13 +341,8 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 				this.getComponente('tipo').hide();
 				
 			}
-               //actualiza combos del departamento
-        		 /*var cmbDepto = this.getComponente('id_depto');
-        		 cmbDepto.store.baseParams.id_subsistema=record.data.id_subsistema;	
-        		 cmbDepto.modificado = true;
-
-        		 console.log(cmbDepto.store)*/
-        		 //cmbDepto.reset();
+               
+        		
         		
     			
 		},this);
@@ -365,48 +356,26 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 
 
 
-/*
+
 	onButtonEdit:function(){
-			var nodo= this.sm.getSelected().data;
 			
-			Phx.vista.documento.superclass.onButtonEdit.call(this);
-			if(nodo.tipo_numeracion=='depto'){
-				this.ocultarComponente(this.getComponente('id_uo'));
-				this.ocultarComponente(this.getComponente('id_depto_uo'));
-				this.mostrarComponente(this.getComponente('id_depto'));
-				//Phx.vista.documento.superclass.ocultarComponente(this.getComponente('id_uo'));
-				//Phx.vista.documento.superclass.ocultarComponente(Phx.vista.documento.superclass.getComponente('id_depto_uo'));
-			}else{
-				if(nodo.tipo_numeracion=='uo'){
-					this.ocultarComponente(this.getComponente('id_depto'));
-					this.ocultarComponente(this.getComponente('id_depto_uo'));
-					this.mostrarComponente(this.getComponente('id_uo'));
-				}else{
-					if(nodo.tipo_numeracion=='depto_uo'){
-						this.ocultarComponente(this.getComponente('id_uo'));
-						this.ocultarComponente(this.getComponente('id_depto'));
-						this.mostrarComponente(this.getComponente('id_depto_uo'));
-					}
-				}
-			}
-			//this.getComponente('codigo_partida').disable();
+			var data = this.getSelectedData();
+			Phx.vista.Documento.superclass.onButtonEdit.call(this);
 			
+			if(data.codigo=='CORRES'){
+                
+                this.getComponente('tipo').enable();
+                this.getComponente('tipo').show();
+            }
+            else{
+                this.getComponente('tipo').disable();
+                this.getComponente('tipo').hide();
+                
+            }
 			
-			//this.getComponente('nombre_partida').setValue(nodo.attributes.nombre_simple);	
-			
-			//this.mostrarComponente(this.getComponente('nodo_base'));
-		//	this.mostrarComponente(this.getComponente('id_parametro'));
 		},	
 	
-	
-	// para configurar el panel south para un hijo
-	
-	/*
-	 * south:{
-	 * url:'../../../sis_seguridad/vista/usuario_regional/usuario_regional.php',
-	 * title:'Regional', width:150
-	 *  },
-	 */	
+
 	bdel:true,// boton para eliminar
 	bsave:true,// boton para eliminar
 	bedit:true
