@@ -238,6 +238,14 @@ class ReportePDF extends TCPDF
 			
 			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
 			
+			/*if($this->objParam->getParametro('maestro')!=''){
+				$aux=$this->objParam->_json_decode($this->objParam->getParametro('maestro'));
+				for ($i=0;$i<count($aux);$i++){
+					//$this->Cell(0, 10, $this->titulo3, 0, 2, 'C', 0, '', 0, false, 'C', 'C');
+					var_dump ($aux[$i]);exit;
+				}
+			}*/
+			
 
 		} else if($this->orientacion=='L'){
 			if($this->alinearCabecera=='L'){
@@ -246,6 +254,16 @@ class ReportePDF extends TCPDF
 				$align=230;
 			}
 			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
+			
+			/*if($this->objParam->getParametro('maestro')!=''){
+				$aux=$this->objParam->_json_decode($this->objParam->getParametro('maestro'));
+				$this->Ln();
+				for ($i=0;$i<count($aux);$i++){
+					$this->Cell(0, 10, $aux[$i]['label'].': ', 0, 2, 'C', 0, '', 0, false, 'C', 'C');
+					$this->Cell(150, 10, $aux[$i]['value'], 0, 2, 'C', 0, '', 1, false, 'C', 'C');
+					//var_dump ($aux[$i]);exit;
+				}
+			}*/
 			
 		} else{
 			throw new Exception("Reporte: Orientación incorrecta, debe ser 'P' o 'L'");
@@ -345,7 +363,7 @@ class ReportePDF extends TCPDF
 		
 	}
 
-	function addTabla($datas, $border=1, $fill=1,$titulos=0) {
+	function addTabla($datas, $border=1, $fill=1,$titulos=0,$relleno=0) {
 		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1">';
 		$cont=1;
 
@@ -359,13 +377,20 @@ class ReportePDF extends TCPDF
 					$align=$this->tablealigns[$col];	
 				}
 				
-				if($cont%2==1 || $fill==0){
+				if($relleno){
 					$html.='
-							<td width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
-				}
-				else{
-					$html.='
-							<td BGCOLOR="'.$_SESSION['color_fill_reportes'].'" width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
+								<td BGCOLOR="#000080" width="'.$this->tablewidths[$col].'%" align="'.$align.'"><font color="#FFFFFF">'.$data[$col].'</font></td>';
+					//$relleno=0;
+				} else {
+				
+					//if($cont%2==1 || $fill==0){
+						$html.='
+								<td width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
+					/*}
+					else{
+						$html.='
+								<td BGCOLOR="'.$_SESSION['color_fill_reportes'].'" width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
+					}*/
 				}
 			}
 			$cont++;
@@ -756,8 +781,9 @@ class ReportePDF extends TCPDF
 	}
 	
 	public function imprimirColsGrid(){
+		//var_dump($this->tablecolumns);exit;
 		$this->SetFont('helvetica', 'B', 8);
-		$this->addTabla(array($this->tablecolumns),1,1,1);
+		$this->addTabla(array($this->tablecolumns),1,1,1,1);
 		$this->SetFont('helvetica', 'N', 8);
 	}
 	
@@ -771,8 +797,7 @@ class ReportePDF extends TCPDF
 		/*
 		 * VERIFICA SI LA CABECERA SERA LA GENERICA O POR SISTEMA
 		 */
-		 
-		 //echo 'gggggg:'.$pCodSistema.'---'.$pOrientacion;exit;
+		 //var_dump($this->objParam->getParametro('maestro'));exit;
 		 if($pOrientacion=='L'){
 		 	
 			if($pCodSistema=='GEM'||$pCodSistema=='PXP'){
