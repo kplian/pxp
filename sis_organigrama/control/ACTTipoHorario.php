@@ -15,7 +15,7 @@ class ACTTipoHorario extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam, $this);
-			$this->res = $this->objReporte->generarReporteListado('FuncionesRecursosHumanos','listarTipoHorario');
+			$this->res = $this->objReporte->generarReporteListado('MODTipoHorario','listarTipoHorario');
 		} else{
 			$this->objFunc=$this->create('MODTipoHorario');	
 			$this->res=$this->objFunc->listarTipoHorario();
