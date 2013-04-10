@@ -577,3 +577,38 @@ WITHOUT OIDS;
 ALTER TABLE param.tperiodo_subsistema
   OWNER TO postgres;
 /***********************************F-SCP-AAO-PARAM-62-19/03/2013*****************************************/
+
+/***********************************I-SCP-GSS-PARAM-84-01/04/2013****************************************/
+CREATE TABLE param.tplantilla (
+  id_plantilla SERIAL,  
+  nro_linea NUMERIC(2,0), 
+  desc_plantilla VARCHAR(255), 
+  tipo NUMERIC(1,0), 
+  sw_tesoro VARCHAR(2), 
+  sw_compro VARCHAR(2), 
+  CONSTRAINT pk_tplantilla__id_plantilla PRIMARY KEY(id_plantilla)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+ALTER TABLE param.tplantilla OWNER TO postgres;
+/***********************************F-SCP-GSS-PARAM-84-01/04/2013****************************************/
+
+/***********************************I-SCP-RCM-PARAM-85-03/04/2013****************************************/
+CREATE TABLE param.tdocumento_fiscal (  
+  id_documento_fiscal serial NOT NULL,
+  id_plantilla integer NOT NULL,
+  nro_documento integer NOT NULL,
+  fecha_doc date NOT NULL,
+  razon_social varchar(150) NOT NULL,
+  nit varchar(30) NOT NULL,
+  nro_autorizacion varchar(30),
+  codigo_control varchar(30),
+  dui varchar(30),
+  formulario varchar(30),
+  tipo_retencion varchar(20),
+  estado varchar(30) NOT NULL,
+  CONSTRAINT pk_tdocumento_fiscal___id_documento_fiscal PRIMARY KEY (id_documento_fiscal)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ALTER TABLE param.tdocumento_fiscal OWNER TO postgres;
+/***********************************F-SCP-RCM-PARAM-85-03/04/2013*****************************************/

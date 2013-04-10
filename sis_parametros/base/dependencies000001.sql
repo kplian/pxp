@@ -511,3 +511,9 @@ ALTER TABLE param.tperiodo_subsistema
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 /***********************************F-DEP-AAO-PARAM-62-19/03/2013*****************************************/
+
+/***********************************I-DEP-RCM-PARAM-85-03/04/2013*****************************************/
+alter table param.tdocumento_fiscal
+add constraint fk_tdocumento_fiscal__id_plantilla foreign key (id_plantilla)
+references param.tplantilla(id_plantilla);
+/***********************************F-DEP-RCM-PARAM-85-03/04/2013*****************************************/

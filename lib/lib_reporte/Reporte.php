@@ -46,9 +46,7 @@ class Reporte
 			$this->objParam->addParametro('tamano','Letter');
 			$this->objParam->addParametro('nombre_archivo',$this->nombreArchivo);
 			$this->objParam->addParametro('titulo_archivo',"Exportacion de ".$this->titulo);
-			$this->objParam->addParametro('tipoReporte',$this->objParam->getParametro('tipoReporte'));
-			$this->objParam->addParametro('codSistema',$this->objParam->getParametro('codSistema'));
-			$this->objParam->addParametro('codReporte',$this->objParam->getParametro('codReporte'));
+
 			//Instancia la clase de pdf
 			$this->objReporteFormato=new ReportePDF($this->objParam);
 			
