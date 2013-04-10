@@ -71,6 +71,24 @@ BEGIN
           END IF;
           
           
+            IF (pxp.f_existe_parametro(par_tabla,'tipo_filtro')) THEN
+                
+                  IF v_parametros.tipo_filtro='DEP_EP-DEP_EP' THEN
+                    
+                  --TO DO,  filtra los deptor segun el cruce de las EP del v_parametros.id_depto  
+                  --este filtro es para intercambiar deptamentos de diferentes sistemas
+                  --ejm adquisiiones - tesoreia al habilitar pagos
+                  
+                  
+
+                  
+                  
+                   
+                  END IF;
+               
+            END IF;
+          
+          
           IF   par_administrador != 1 THEN
           
                 
@@ -90,6 +108,10 @@ BEGIN
                   END IF;
                
                ELSE
+                
+                
+                
+                
                 --TO DO,  filtro de departamento por EP cuando  el usuario no es administrador
                
                
