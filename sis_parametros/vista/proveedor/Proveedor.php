@@ -15,13 +15,99 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-    	
-    	
 		Phx.vista.proveedor.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:50}});
 		
 		this.iniciarEventos();
+		
+		var cmbServ = new Ext.form.ComboBox({
+			name:'id_servicio',
+			fieldLabel:'Servicios',
+			allowBlank:true,
+			emptyText:'Elija un Servicio...',
+			store: new Ext.data.JsonStore({
+  				url : '../../sis_parametros/control/Servicio/listarServicio',
+				id: 'id_servicio',
+				root: 'datos',
+				sortInfo:{
+					field: 'nombre',
+					direction: 'ASC'
+				},
+				totalProperty: 'total',
+				fields: ['id_servicio','nombre','codigo','descripcion'],
+				// turn on remote sorting
+				remoteSort: true,
+				baseParams:{par_filtro:'nombre'}
+			}),
+			valueField: 'id_servicio',
+			displayField: 'nombre',
+			forceSelection:true,
+			typeAhead: false,
+			triggerAction: 'all',
+			lazyRender:true,
+			mode:'remote',
+			pageSize:10,
+			queryDelay:1000,
+			minChars:2,
+			width:180,
+			listWidth:300,
+			tpl: '<tpl for="."><div class="x-combo-list-item"><p>Código: {codigo}</p><p>Nombre: {nombre}</p><p>Descripción: {descripcion}</p></div></tpl>'
+		});
+		
+		var cmbItem = new Ext.form.ComboBox({
+			name:'id_item',
+			fieldLabel:'Items',
+			allowBlank:true,
+			emptyText:'Elija un Item...',
+			store: new Ext.data.JsonStore({
+  				url : '../../sis_almacenes/control/Item/listarItemNotBase',
+				id: 'id_item',
+				root: 'datos',
+				sortInfo:{
+					field: 'nombre',
+					direction: 'ASC'
+				},
+				totalProperty: 'total',
+				fields: ['id_item','nombre','codigo','desc_clasificacion'],
+				// turn on remote sorting
+				remoteSort: true,
+				baseParams:{par_filtro:'item.nombre#item.codigo#cla.nombre'}
+			}),
+			valueField: 'id_item',
+			displayField: 'nombre',
+			forceSelection:true,
+			typeAhead: false,
+			triggerAction: 'all',
+			lazyRender:true,
+			mode:'remote',
+			pageSize:10,
+			queryDelay:1000,
+			minChars:2,
+			width:180,
+			listWidth:300,
+			tpl : '<tpl for="."><div class="x-combo-list-item"><p>Nombre: {nombre}</p><p>Código: {codigo}</p><p>Clasif.: {desc_clasificacion}</p></div></tpl>'
+		});
+		
+		//Agrega el combo a la barra de herramientas
+		this.tbar.add(cmbServ);
+		this.tbar.add(cmbItem);
+		
+		//Agrega eventos a los componentes creados
+		cmbServ.on('blur',function (combo, record, index){
+			//Verifica que el campo de texto tenga algun valor
+			this.store.baseParams.id_servicio=cmbServ.getValue();
+			this.store.load({params:{start:0, limit:this.tam_pag}});
+		},this);
+		
+		cmbItem.on('blur',function (combo, record, index){
+			//Verifica que el campo de texto tenga algun valor
+			this.store.baseParams.id_item=cmbItem.getValue();
+			this.store.load({params:{start:0, limit:this.tam_pag}});
+		},this);
+		
+		cmbServ.store.on('exception', this.conexionFailure);
+		cmbItem.store.on('exception', this.conexionFailure);
 		
 	},
 			
@@ -35,6 +121,21 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
+		},
+				{
+			config:{
+				name: 'codigo',
+				fieldLabel: 'Código',
+				allowBlank: true,
+				anchor: '100%',
+				gwidth: 100,
+				maxLength:50
+			},
+			type:'TextField',
+			filters:{pfiltro:'provee.codigo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
 		},
 		{
 			config:{
@@ -94,22 +195,6 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
    			grid:true,
    			form:true
 	   	},	
-		
-		{
-			config:{
-				name: 'codigo',
-				fieldLabel: 'codigo',
-				allowBlank: true,
-				anchor: '100%',
-				gwidth: 100,
-				maxLength:50
-			},
-			type:'TextField',
-			filters:{pfiltro:'provee.codigo',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:false
-		},
 		{
 			config:{
 				name: 'nit',
@@ -140,7 +225,89 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-		
+		{
+			config:{
+				name: 'pais',
+				fieldLabel: 'País',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 100,
+				maxLength:50
+			},
+			type:'TextField',
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'id_lugar',
+				fieldLabel: 'Lugar',
+				allowBlank: false,
+				emptyText:'Lugar...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_parametros/control/Lugar/listarLugar',
+					id: 'id_lugar',
+					root: 'datos',
+					sortInfo:{
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams:{par_filtro:'nombre'}
+				}),
+				valueField: 'id_lugar',
+				displayField: 'nombre',
+				gdisplayField:'lugar',
+				hiddenName: 'id_lugar',
+    			triggerAction: 'all',
+    			lazyRender:true,
+				mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				anchor:"100%",
+				gwidth:220,
+				minChars:2,
+				renderer:function (value, p, record){return String.format('{0}', record.data['lugar']);}
+			},
+			type:'ComboBox',
+			filters:{pfiltro:'lug.nombre',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'correos',
+				fieldLabel: 'Correos',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 130,
+				maxLength:50
+			},
+			type:'Field',
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'telefonos',
+				fieldLabel: 'Teléfonos',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 130,
+				maxLength:50
+			},
+			type:'TextField',
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
 		{
 			config:{
 				name: 'estado_reg',
@@ -215,62 +382,8 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:false
-		},
-		{
-			config:{
-				name: 'pais',
-				fieldLabel: 'País',
-				allowBlank: true,
-				anchor: '90%',
-				gwidth: 100,
-				maxLength:50
-			},
-			type:'TextField',
-			id_grupo:1,
-			grid:true,
-			form:false
-		},
-		{
-			config:{
-				name: 'id_lugar',
-				fieldLabel: 'Lugar',
-				allowBlank: false,
-				emptyText:'Lugar...',
-				store:new Ext.data.JsonStore(
-				{
-					url: '../../sis_parametros/control/Lugar/listarLugar',
-					id: 'id_lugar',
-					root: 'datos',
-					sortInfo:{
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
-					// turn on remote sorting
-					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
-				}),
-				valueField: 'id_lugar',
-				displayField: 'nombre',
-				gdisplayField:'lugar',
-				hiddenName: 'id_lugar',
-    			triggerAction: 'all',
-    			lazyRender:true,
-				mode:'remote',
-				pageSize:50,
-				queryDelay:500,
-				anchor:"100%",
-				gwidth:220,
-				minChars:2,
-				renderer:function (value, p, record){return String.format('{0}', record.data['lugar']);}
-			},
-			type:'ComboBox',
-			filters:{pfiltro:'lug.nombre',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
 		}
+		
 	],
 	title:'Proveedores',
 	ActSave:'../../sis_parametros/control/Proveedor/insertarProveedor',
@@ -296,7 +409,9 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		{name:'nit', type: 'string'},
 		{name:'id_lugar', type: 'string'},
 		{name:'lugar', type: 'string'},
-		{name:'pais', type: 'string'}
+		{name:'pais', type: 'string'},
+		{name:'correos', type: 'string'},
+		{name:'telefonos', type: 'string'}
 	],
     east:{
 		  url:'../../../sis_parametros/vista/proveedor_item_servicio/ProveedorItemServicio.php',
@@ -377,9 +492,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		}
 		
 	}
-	
-	}
-)
+})
 </script>
 		
 		

@@ -60,12 +60,14 @@ BEGIN
 						provee.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod	,
-                        person.nombre_completo1,
-                        instit.nombre,
-                        provee.nit,
-                        provee.id_lugar,
-                        lug.nombre as lugar,
-                        param.f_obtener_padre_lugar(provee.id_lugar,''pais'') as pais
+            person.nombre_completo1,
+            instit.nombre,
+            provee.nit,
+            provee.id_lugar,
+            lug.nombre as lugar,
+            param.f_obtener_padre_lugar(provee.id_lugar,''pais'') as pais,
+            param.f_get_datos_proveedor(provee.id_proveedor,''correos'') as correos,
+            param.f_get_datos_proveedor(provee.id_proveedor,''telefonos'') as telefonos 
 						from param.tproveedor provee
 						inner join segu.tusuario usu1 on usu1.id_usuario = provee.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = provee.id_usuario_mod   
