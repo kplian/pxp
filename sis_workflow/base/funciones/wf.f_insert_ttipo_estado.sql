@@ -21,8 +21,12 @@ DECLARE
   v_size			integer;
   var_id_tipo_estado integer;
 BEGIN
-	if (exists (select 1 from wf.ttipo_estado where nombre_estado = par_nombre_estado and estado_reg = 'activo')) then
-    	ALTER TABLE wf.ttipo_estado DISABLE TRIGGER USER;
+	select id_tipo_proceso into v_id_tipo_proceso
+	    from wf.ttipo_proceso pm
+	    where pm.codigo=par_codigo_proceso;
+
+	if (exists (select 1 from wf.ttipo_estado where nombre_estado = par_nombre_estado and id_tipo_proceso=v_id_tipo_proceso and estado_reg = 'activo')) then
+     	ALTER TABLE wf.ttipo_estado DISABLE TRIGGER USER;
     	update wf.ttipo_estado set
             codigo = par_codigo,
     		inicio = par_inicio,
@@ -50,9 +54,6 @@ BEGIN
         
     	ALTER TABLE wf.ttipo_estado ENABLE TRIGGER USER;    
     else
-    	select id_tipo_proceso into v_id_tipo_proceso
-	    from wf.ttipo_proceso pm
-	    where pm.codigo=par_codigo_proceso;
     	insert into wf.ttipo_estado (codigo, nombre_estado, inicio, disparador, fin, tipo_asignacion, nombre_func_list,
         depto_asignacion, nombre_depto_func_list,obs, estado_reg, id_tipo_proceso, id_usuario_reg)
     	values (par_codigo, par_nombre_estado, par_inicio, par_disparador, par_fin, par_tipo_asignacion, par_nombre_func_list,

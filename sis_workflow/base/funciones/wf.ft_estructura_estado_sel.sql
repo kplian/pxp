@@ -86,16 +86,19 @@ BEGIN
     elsif(p_transaccion='WF_EXPESTES_SEL')then
     	begin
         	v_consulta:='select ''estructura_estado''::varchar,
-						tep.nombre_estado as nombre_estado_padre,
-						teh.nombre_estado as nombre_estado_hijo,
+						tep.codigo as codigo_estado_padre,
+                        tpp.codigo as codigo_proceso_estado_padre,
+						teh.codigo as codigo_estado_hijo,
+                        tph.codigo as codigo_proceso_estado_hijo,
 						estes.prioridad,
 						estes.regla,
 						estes.estado_reg
 						from wf.testructura_estado estes
 						inner join wf.ttipo_estado tep on  tep.id_tipo_estado = estes.id_tipo_estado_padre
+                        inner join wf.ttipo_proceso tpp on tpp.id_tipo_proceso = tep.id_tipo_proceso
                         inner join wf.ttipo_estado teh on  teh.id_tipo_estado = estes.id_tipo_estado_hijo
-						inner join wf.ttipo_proceso tp on tp.id_tipo_proceso=tep.id_tipo_proceso or tp.id_tipo_proceso=teh.id_tipo_proceso
-                        where tp.id_proceso_macro='||v_parametros.id_proceso_macro||
+						inner join wf.ttipo_proceso tph on tph.id_tipo_proceso = teh.id_tipo_proceso
+                        where tpp.id_proceso_macro='||v_parametros.id_proceso_macro||
                         ' order by estes.id_estructura_estado ASC';
             return v_consulta;
         end;  
