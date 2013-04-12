@@ -356,7 +356,7 @@ select pxp.f_insert_testructura_gui ('PLT', 'PARAM');
 select pxp.f_insert_tfuncion ('conta.f_plantilla_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('conta.f_plantilla_ime', 'Funcion para tabla     ', 'PARAM');
 
-select pxp.f_insert_tprocedimiento ('PM_PLTL_SEL', 'Consulta de datos', 'si', '', '', 'conta.f_plantilla_sel');
+select pxp.f_insert_tprocedimiento ('PM_PLTL_SEL', 'Consulta de datos', 'si', '', '', 'conta.f_plantilla_sel'); 
 select pxp.f_insert_tprocedimiento ('PM_PLTL_CONT', 'Conteo de registros', 'si', '', '', 'conta.f_plantilla_sel');
 select pxp.f_insert_tprocedimiento ('PM_PLTL_INS', 'Insercion de registros', 'si', '', '', 'conta.f_plantilla_ime');
 select pxp.f_insert_tprocedimiento ('PM_PLTL_MOD', 'Modificacion de registros', 'si', '', '', 'conta.f_plantilla_ime');
