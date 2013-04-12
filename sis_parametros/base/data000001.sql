@@ -347,3 +347,25 @@ select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Incompleto');
 select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Completo');
 select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Anulado');
 /***********************************F-DAT-RCM-PARAM-85-05/04/2013*****************************************/
+
+/***********************************I-DAT-GSS-PARAM-84-01/04/2013*****************************************/
+
+select pxp.f_insert_tgui ('Plantilla Documento', 'plantillas de documentos', 'PLT', 'si', 4, 'sis_parametros/vista/plantilla/Plantilla.php', 2, '', 'Plantilla', 'PARAM');
+select pxp.f_insert_testructura_gui ('PLT', 'PARAM');
+
+select pxp.f_insert_tfuncion ('conta.f_plantilla_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('conta.f_plantilla_ime', 'Funcion para tabla     ', 'PARAM');
+
+select pxp.f_insert_tprocedimiento ('PM_PLTL_SEL', 'Consulta de datos', 'si', '', '', 'conta.f_plantilla_sel');
+select pxp.f_insert_tprocedimiento ('PM_PLTL_CONT', 'Conteo de registros', 'si', '', '', 'conta.f_plantilla_sel');
+select pxp.f_insert_tprocedimiento ('PM_PLTL_INS', 'Insercion de registros', 'si', '', '', 'conta.f_plantilla_ime');
+select pxp.f_insert_tprocedimiento ('PM_PLTL_MOD', 'Modificacion de registros', 'si', '', '', 'conta.f_plantilla_ime');
+select pxp.f_insert_tprocedimiento ('PM_PLTL_ELI', 'Eliminacion de registros', 'si', '', '', 'conta.f_plantilla_ime');
+
+select pxp.f_insert_tprocedimiento_gui ('PM_PLTL_INS', 'PLT', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_PLTL_MOD', 'PLT', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_PLTL_ELI', 'PLT', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_PLTL_SEL', 'PLT', 'no');
+
+
+/***********************************F-DAT-GSS-PARAM-84-01/04/2013*****************************************/

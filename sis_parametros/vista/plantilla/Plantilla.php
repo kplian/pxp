@@ -187,9 +187,9 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 	],
 	
 	title:'Plantilla Documento',
-	ActSave:'../../sis_contabilidad/control/Plantilla/insertarPlantilla',
-	ActDel:'../../sis_contabilidad/control/Plantilla/eliminarPlantilla',
-	ActList:'../../sis_contabilidad/control/Plantilla/listarPlantilla',
+	ActSave:'../../sis_parametros/control/Plantilla/insertarPlantilla',
+	ActDel:'../../sis_parametros/control/Plantilla/eliminarPlantilla',
+	ActList:'../../sis_parametros/control/Plantilla/listarPlantilla',
 	id_store:'id_plantilla',
 	fields: [
 		{name:'id_plantilla', type: 'numeric'},
