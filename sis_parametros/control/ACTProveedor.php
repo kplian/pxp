@@ -11,8 +11,19 @@ class ACTProveedor extends ACTbase{
 			
 	function listarProveedor(){
 		$this->objParam->defecto('ordenacion','id_proveedor');
-
 		$this->objParam->defecto('dir_ordenacion','asc');
+		//echo $this->objParam->getParametro('id_servicio');exit;
+		
+		if($this->objParam->getParametro('id_servicio')!=null){
+			$aux="provee.id_proveedor in (select id_proveedor from param.tproveedor_item_servicio itserv where itserv.id_servicio = ".$this->objParam->getParametro('id_servicio').")";
+			$this->objParam->addFiltro($aux);
+		} 
+		if($this->objParam->getParametro('id_item')!=null){
+			$aux="provee.id_proveedor in (select id_proveedor from param.tproveedor_item_servicio itserv where itserv.id_item = ".$this->objParam->getParametro('id_item').")";
+			$this->objParam->addFiltro($aux);
+		}
+		
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam, $this);
 			$this->res = $this->objReporte->generarReporteListado('MODProveedor','listarProveedor');

@@ -43,6 +43,9 @@ class MODProveedor extends MODbase{
 		$this->captura('lugar','varchar');
 		$this->captura('pais','varchar');
 		
+		$this->captura('correos','varchar');
+		$this->captura('telefonos','varchar');
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		//echo $this->consulta;exit;
