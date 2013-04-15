@@ -270,5 +270,82 @@ INSERT INTO param.tconcepto_ingas ("id_usuario_reg", "id_usuario_mod", "fecha_re
 VALUES (1, NULL, E'2013-03-20 13:36:27.359', NULL, E'activo', E'Servicio', E'Desarrollo de Software', E'ingreso', E'no', NULL);
 
 
+------------------------------
+-- PLANTILLA
+------------------------------
+
+/* Data for the 'param.tplantilla' table  (Records 1 - 24) */
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 1, 3, E'Compra Con Credito Fiscal', 1, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 2, 5, E'Venta Con Debito Fiscal', 1, E'no', E'no');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 15, 3, E'Compra con Credito Fiscal Proyectos', 1, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 16, 3, E'Proforma de Factura', 3, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 3, 5, E'Venta Sin Debito Fiscal', 1, E'no', E'no');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 4, 1, E'Compra Sin Credito Fiscal (Factura Z F)', 1, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 5, 1, E'Notas de Debito Fiscal', 4, E'no', E'no');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 6, 6, E'Notas de Credito Fiscal', 4, E'no', E'no');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 7, 2, E'Boletos BSP', 1, E'si', E'no');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 8, 1, E'Recibo Sin Retenciones', 2, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 9, 4, E'Recibo con Retenciones Bienes', 2, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 10, 4, E'Recibo con Retenciones Servicios', 2, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 11, 1, E'Recibo con Retenciones Bienes - ZF', 2, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 12, 1, E'Recibo con Retenciones Servicios - ZF', 2, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 13, 1, E'Retenciones RC-IVA', 4, E'no', E'no');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 14, 1, E'Retenciones Remesas', 4, E'no', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 17, 3, E'Recibo de Alquiler', 2, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 18, 1, E'Proforma Factura Proyectos', 3, E'si', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 19, 3, E'Proforma Retención Bienes', 3, E'no', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 20, 3, E'Proforma Retención Servicios', 3, E'no', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 21, 2, E'Proforma Retención Bienes - ZF', 3, E'no', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 22, 2, E'Proforma Retención Servicios - ZF', 3, E'no', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 23, 3, E'Proforma Recibo de Alquiler', 3, E'no', E'si');
+
+INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
+VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 24, 1, E'Póliza de Importación', 1, E'si', E'si');
 
 
