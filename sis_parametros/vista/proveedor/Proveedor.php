@@ -122,21 +122,6 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-				{
-			config:{
-				name: 'codigo',
-				fieldLabel: 'Código',
-				allowBlank: true,
-				anchor: '100%',
-				gwidth: 100,
-				maxLength:50
-			},
-			type:'TextField',
-			filters:{pfiltro:'provee.codigo',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:false
-		},
 		{
 			config:{
 				name: 'tipo',
@@ -157,7 +142,6 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-				
 	   	{
 	   		config:{
 	   				name:'id_persona',
@@ -195,6 +179,21 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
    			grid:true,
    			form:true
 	   	},	
+		{
+			config:{
+				name: 'codigo',
+				fieldLabel: 'Código',
+				allowBlank: false,
+				anchor: '100%',
+				gwidth: 100,
+				maxLength:50
+			},
+			type:'TextField',
+			filters:{pfiltro:'provee.codigo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
 		{
 			config:{
 				name: 'nit',
@@ -310,6 +309,34 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'items',
+				fieldLabel: 'Items que oferta',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 130,
+				maxLength:50
+			},
+			type:'TextField',
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'servicios',
+				fieldLabel: 'Servicios que oferta',
+				allowBlank: true,
+				anchor: '90%',
+				gwidth: 130,
+				maxLength:50
+			},
+			type:'TextField',
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: false,
@@ -411,7 +438,9 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		{name:'lugar', type: 'string'},
 		{name:'pais', type: 'string'},
 		{name:'correos', type: 'string'},
-		{name:'telefonos', type: 'string'}
+		{name:'telefonos', type: 'string'},
+		{name:'items', type: 'string'},
+		{name:'servicios', type: 'string'}
 	],
     east:{
 		  url:'../../../sis_parametros/vista/proveedor_item_servicio/ProveedorItemServicio.php',
@@ -462,8 +491,16 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				
 		},this);
 		
-		this.getComponente('id_persona').on('select',function(c,r,n){this.getComponente('nit').setValue(r.data.ci)},this);
-		this.getComponente('id_institucion').on('select',function(c,r,n){this.getComponente('nit').setValue(r.data.doc_id)},this);
+		this.getComponente('id_persona').on('select',function(c,r,n){
+			this.getComponente('nit').setValue(r.data.ci);
+			this.getComponente('codigo').setValue('');
+			},this);
+		
+		this.getComponente('id_institucion').on('select',function(c,r,n){
+			this.getComponente('nit').setValue(r.data.doc_id);
+			this.getComponente('codigo').setValue(r.data.codigo);
+			},
+			this);
 	},
 	onButtonEdit:function(){
 		datos=this.sm.getSelected().data;
@@ -479,16 +516,12 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			this.ocultarComponente(this.getComponente('id_institucion'));
 			
 		}else{
-			
 			//this.getComponente('id_persona').allowBlank=true;
 			this.getComponente('id_institucion').enable();
 			this.getComponente('id_persona').reset();
 			this.getComponente('id_persona').disable();
 			this.ocultarComponente(this.getComponente('id_persona'));
 			this.mostrarComponente(this.getComponente('id_institucion'));
-			
-		
-			
 		}
 		
 	}

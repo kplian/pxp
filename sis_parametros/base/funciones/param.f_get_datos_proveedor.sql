@@ -39,6 +39,26 @@ BEGIN
         inner join param.tinstitucion inst
         on inst.id_institucion = pro.id_institucion
         where pro.id_proveedor = p_id_proveedor;
+    elsif p_tipo = 'items' then
+      select
+        pxp.list((ite.codigo ||' - ' ||ite.nombre)::text)::varchar
+        into v_resp
+        from param.tproveedor pro
+        inner join param.tproveedor_item_servicio pits
+        on pits.id_proveedor = pro.id_proveedor
+        inner join alm.titem ite
+        on ite.id_item = pits.id_item
+        where pro.id_proveedor = p_id_proveedor;
+    elsif p_tipo = 'servicios' then
+      select
+        pxp.list(serv.nombre::text)::varchar
+        into v_resp
+        from param.tproveedor pro
+        inner join param.tproveedor_item_servicio pits
+        on pits.id_proveedor = pro.id_proveedor
+        inner join param.tservicio serv
+        on serv.id_servicio = pits.id_servicio
+        where pro.id_proveedor = p_id_proveedor;
     else
       raise exception 'El tipo no contiene un dato válido';
     end if;

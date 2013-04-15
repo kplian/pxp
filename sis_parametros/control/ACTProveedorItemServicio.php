@@ -13,8 +13,7 @@ class ACTProveedorItemServicio extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_proveedor_item');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-		if($this->objParam->getParametro('id_proveedor')!='')
-		{
+		if($this->objParam->getParametro('id_proveedor')!=''){
 			$this->objParam->addFiltro("pritse.id_proveedor = ".$this->objParam->getParametro('id_proveedor'));	
 		}
 		
