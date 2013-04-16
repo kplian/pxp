@@ -612,3 +612,8 @@ CREATE TABLE param.tdocumento_fiscal (
 WITH OIDS;
 ALTER TABLE param.tdocumento_fiscal OWNER TO postgres;
 /***********************************F-SCP-RCM-PARAM-85-03/04/2013*****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-15/04/2013****************************************/
+alter table param.tproveedor
+alter column codigo set not null;
+/***********************************F-SCP-RCM-PARAM-0-15/04/2013*****************************************/

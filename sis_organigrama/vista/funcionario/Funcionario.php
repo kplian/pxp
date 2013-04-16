@@ -30,7 +30,7 @@ Phx.vista.funcionario=function(config){
 	       		    name:'id_persona',
 	   				origen:'PERSONA',
 	   				tinit:true,
-	   				fieldLabel:'Persona',
+	   				fieldLabel:'Nombre funcionario',
 	   				gdisplayField:'desc_person',//mapea al store del grid
 	   				anchor: '100%',
 	   			    gwidth:200,
@@ -97,9 +97,9 @@ Phx.vista.funcionario=function(config){
 	       		grid:true,
 	       		form:true
 	       	},
-	       	{
+	       	{	
 	       		config:{
-	       			fieldLabel: "Correo EMP",
+	       			fieldLabel: "Correo Empresarial",
 	       			gwidth: 120,
 	       			name: 'email_empresa',
 	       			allowBlank:false,	
@@ -200,7 +200,7 @@ Phx.vista.funcionario=function(config){
 	       		config:{
 	       			fieldLabel: "Correo",
 	       			gwidth: 120,
-	       			name: 'correo1',
+	       			name: 'correo',
 	       			allowBlank:true,	
 	       			vtype:'email',	
 	       			maxLength:50,
@@ -346,7 +346,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 
 	{name:'ci', type:'string'},
 	{name:'documento', type:'string'},
-	{name:'correo1', type:'string'},
+	{name:'correo', type:'string'},
 	{name:'celular1'},
 	{name:'telefono1'},
 	{name:'email_empresa'},
@@ -359,7 +359,10 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'id_usuario_mod', type: 'numeric'},
 	{name:'usr_reg', type: 'string'},
 	{name:'usr_mod', type: 'string'},
-	'telefono_ofi'
+	'telefono_ofi',
+	'horario1',
+	'horario2',
+	'horario3'
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',
