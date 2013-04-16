@@ -126,6 +126,8 @@ if(!isset($_SESSION["_SESION"])){
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>    
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboRec.js'></script>   
     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboMultiple.js'></script>  
+     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>   
+   
     <script type="text/javascript" src="../../../lib/ext3/TabCloseMenu.js"></script>
     <script type="text/javascript" charset="UTF-8" src="resources/Phx.CP.js"></script>
     <?php

@@ -11,8 +11,17 @@ class ACTPlantilla extends ACTbase{
 			
 	function listarPlantilla(){
 		$this->objParam->defecto('ordenacion','id_plantilla');
-
-		$this->objParam->defecto('dir_ordenacion','asc');
+        $this->objParam->defecto('dir_ordenacion','asc');
+		
+		 if($this->objParam->getParametro('sw_compro')!=''){
+            $this->objParam->addFiltro("sw_compro = ''".$this->objParam->getParametro('sw_compro')."''");  
+        }
+        
+         if($this->objParam->getParametro('sw_tesoro')!=''){
+            $this->objParam->addFiltro("sw_tesoro = ''".$this->objParam->getParametro('sw_tesoro')."''");  
+        }
+        
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODPlantilla','listarPlantilla');
