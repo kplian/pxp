@@ -83,7 +83,11 @@ CREATE TABLE wf.tproceso_wf (
   id_estado_wf_prev int4,
   nro_tramite     varchar, 
   valor_cl        int8, 
+  id_persona INTEGER, 
+  id_institucion INTEGER,   
   PRIMARY KEY (id_proceso_wf)) INHERITS (pxp.tbase);
+  
+  
   
   
 CREATE TABLE wf.tproceso_macro (

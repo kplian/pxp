@@ -112,6 +112,69 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
 			this.getSelectionModel().select(this.getNodeById(cls))
 		}
 	},
+	initComponent: function(){
+        this.hiddenPkgs = [];
+        Ext.apply(this, {
+            tbar:[ ' ',
+			new Ext.form.TextField({
+				width: 200,
+				emptyText:'Find a Class',
+                enableKeyEvents: true,
+				listeners:{
+					render: function(f){
+                    	this.filter = new Ext.tree.TreeFilter(this, {
+                    		clearBlank: true,
+                    		autoClear: true
+                    	});
+					},
+                    keydown: {
+                        fn: this.filterTree,
+                        buffer: 350,
+                        scope: this
+                    },
+                    scope: this
+				}
+			}), ' ', ' ',
+			{
+                iconCls: 'icon-expand-all',
+				tooltip: 'Expand All',
+                handler: function(){ this.root.expand(true); },
+                scope: this
+            }, '-', {
+                iconCls: 'icon-collapse-all',
+                tooltip: 'Collapse All',
+                handler: function(){ this.root.collapse(true); },
+                scope: this
+            }]
+        })
+        Menu.superclass.initComponent.call(this);
+    },
+	filterTree: function(t, e){
+		var text = t.getValue();
+		Ext.each(this.hiddenPkgs, function(n){
+			n.ui.show();
+		});
+		if(!text){
+			this.filter.clear();
+			return;
+		}
+		this.expandAll();
+		
+		var re = new RegExp('^' + Ext.escapeRe(text), 'i');
+		this.filter.filterBy(function(n){
+			return !n.attributes.isClass || re.test(n.text);
+		});
+		
+		// hide empty packages that weren't filtered
+		this.hiddenPkgs = [];
+                var me = this;
+		this.root.cascade(function(n){
+			if(!n.attributes.isClass && n.ui.ctNode.offsetHeight < 3){
+				n.ui.hide();
+				me.hiddenPkgs.push(n);
+			}
+		});
+	},
 	tools:[{
 		id:'refresh',
 		qtip: 'Actualizar Menú',
@@ -513,6 +576,10 @@ Phx.CP=function(){
 	
 			}
 			setTimeout(function(){
+				
+				if(Phx.CP.config_ini.nombre_usuario){
+					Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
+				}			
 				Ext.get('loading').remove();
 				Ext.get('loading-mask').fadeOut({remove:true});
 				if(Ext.get('_usu')){
@@ -574,6 +641,10 @@ Phx.CP=function(){
 			           if(regreso.success){
 			        	   // copia configuracion inicial recuperada
 							Ext.apply(Phx.CP.config_ini,regreso);
+							//muestra nombre de usuario y base de datos
+							
+							Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
+							
 							
 							//aplica el estilo de vista del usuario
 							Phx.CP.setEstiloVista(Phx.CP.config_ini.estilo_vista);
@@ -811,8 +882,7 @@ Phx.CP=function(){
 	     */
 	     
 		callbackWindows:function(r,a,o){
-			console.log(o.argument.params)
-			//si existe la variable mycls la utiliza
+			 //si existe la variable mycls la utiliza
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
 			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
 		    if(Phx.vista[mycls].requireclase){
