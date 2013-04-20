@@ -74,11 +74,20 @@ TO CREATE A NEW SYSTEM:
       * funciones
       * schema.sql
       * patch000001.sql.
-      * patch000002.sql.
-      * patch00xxxx.sql.
+      * patch000002.
+      * patch00xxxx
+      * 
+      * .sql.
 
   The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
-  for the system. All the patch files contains the scripts to generate the database objects for the system.
+  for the system. All the patch files contains the scripts to generate the database objects for the system. for example
+  
+ 	
+
+
+DROP SCHEMA IF EXISTS nut CASCADE;
+
+CREATE SCHEMA nut AUTHORIZATION postgres;
 
 2. Create or update a file named "sistemas.txt" inside your project root folder wich contains the path for every system of your project.Eg:
   "../../../sis_mantenimiento/"
