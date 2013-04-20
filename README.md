@@ -48,11 +48,11 @@ TO USE IT BY FIRST TIME:
         ...   
 
 7.1 Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
-	local	all		postgres, dbweb_conexion 		trust
+	*local	all		postgres, dbweb_conexion 		trust
 7.2 Restart postgres service
-<u>/etc/init.d/postgresql-9.1 restart</u>
+	*/etc/init.d/postgresql-9.1 restart
 or
-service postgresql-9.1 restart
+	*service postgresql-9.1 restart
 
 8. You can use the framework now!!! (user:admin, password:admin)
 
