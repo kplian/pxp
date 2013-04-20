@@ -21,9 +21,9 @@ TO USE IT BY FIRST TIME:
     ln -s pxp/sis_generador sis_generador  (execute inside your project root folder)
     * sis_parametros          
     ln -s pxp/sis_parametros sis_parametros  (execute inside your project root folder)
-    * sis_organigrama         
+    * sis_organigrama
     ln -s pxp/sis_organigrama sis_organigrama  (execute inside your project root folder)
-    * sis_workflow	      
+    * sis_workflow
     ln -s pxp/sis_workflow sis_workflow (execute inside your project root folder)
 
    All these folders and files are inside pxp.
@@ -47,12 +47,20 @@ TO USE IT BY FIRST TIME:
 	    $_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
         ...   
 
-7.1 Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
-	*local	all		postgres, dbweb_conexion 		trust
-7.2 Restart postgres service
-	*/etc/init.d/postgresql-9.1 restart
+7.1. Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
+
+
+        local	all		postgres, dbweb_conexion 		trust
+
+
+7.2. Restart postgres service
+	
+        /etc/init.d/postgresql-9.1 restart
 or
-	*service postgresql-9.1 restart
+
+
+
+        service postgresql-9.1 restart
 
 8. You can use the framework now!!! (user:admin, password:admin)
 
