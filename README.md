@@ -79,7 +79,7 @@ TO CREATE A NEW SYSTEM:
       * test_data.sql
 
   The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
-  for the system. All the patch files contains the scripts to generate the database objects for the system. for example
+  for the system. All the patch files contains the scripts to generate the database objects for the system. for example "schema.sql"
   
           DROP SCHEMA IF EXISTS nut CASCADE;
           CREATE SCHEMA nut AUTHORIZATION postgres;
