@@ -146,7 +146,22 @@ if(!isset($_SESSION["_SESION"])){
       
      
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
-  
+    <div id="header">
+	
+	
+	
+	<a href="http://www.kplian.com" target="_blank">ssss</a>
+	    
+	    
+	    <img id="0rn"  src="../../../lib/images/exit.png" style="float:right;margin-right:10px;margin-top:3px;"/>
+	
+  	
+    <!--<img src="../../../lib/images/postgres.gif"  style="margin-left:5px;margin-top:2px;"/>	-->
+    <img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:0px;margin-bottom:7px"/> 
+   
+    <div id="1rn" style="float:right;margin-right:40px;margin-top:4px;"></div>   
+   
+   </div>
 
    
   <div id="classes"></div>

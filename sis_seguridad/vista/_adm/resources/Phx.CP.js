@@ -428,11 +428,33 @@ Phx.CP=function(){
 				layout:'border',
 				items:[
              	{
-					border: false,
-					layout:'fit',
-					region:'north',
-					cls: 'docs-header',
-					height:39
+				  region: 'north',  
+				  border: true,
+				  margins: '0 0 1 0',        
+				  split:false,
+				  bbar:[  
+				  {xtype:'label',
+				  width: 500,
+				  //autoHeight:true,
+				  html:' <a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:1px;margin-bottom:0px"/> </a>',
+				  border: false
+				  },
+				  '->',{xtype:'label',
+				  autoHeight:true,
+				  iconCls:'user_suit',
+				  //text:nombre
+				  html:'<div id="1rn" align="right"><font >Usuario: </font><font ><b>'+Phx.CP.config_ini.nombre_usuario+'</b></font></div>'
+				  },'-',
+				   {
+				            text: 'Cerrar sesion',
+				            icon: '../../../lib/images/exit.png',
+				            toolTip:'Cerrar sesion',
+				        
+				                handler: function() {
+				      window.location = '../../control/auten/cerrar.php';
+				             }
+				         }
+				  ]
 				},
 				menu,
 				mainPanel]
@@ -546,7 +568,7 @@ Phx.CP=function(){
 			
 			//win_login.addKeyListener(Ext.EventObject.ENTER, Phx.CP.entrar); // Tecla enter
 
-//console.log(x,y,z);
+              //console.log(x,y,z);
 			if(x=='activa'){
 				Phx.CP.CRIPT=new Phx.Encriptacion({encryptionExponent:regreso.e,
 							modulus:regreso.m,
@@ -578,7 +600,7 @@ Phx.CP=function(){
 			setTimeout(function(){
 				
 				if(Phx.CP.config_ini.nombre_usuario){
-					Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
+					//Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
 				}			
 				Ext.get('loading').remove();
 				Ext.get('loading-mask').fadeOut({remove:true});
@@ -642,9 +664,6 @@ Phx.CP=function(){
 			        	   // copia configuracion inicial recuperada
 							Ext.apply(Phx.CP.config_ini,regreso);
 							//muestra nombre de usuario y base de datos
-							
-							Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
-							
 							
 							//aplica el estilo de vista del usuario
 							Phx.CP.setEstiloVista(Phx.CP.config_ini.estilo_vista);
