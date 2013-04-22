@@ -63,6 +63,8 @@ Ext.apply(Ext.form.VTypes, {
 // DEFINICON DE LA CLASE MANU //
 // ////////////////////////////////
 Menu=function(config){
+	
+	
 	Menu.superclass.constructor.call(this,Ext.apply({},config,{
 		region:'west',
 		layout: 'accordion',
@@ -70,7 +72,7 @@ Menu=function(config){
 	
 		split:true,
 		width: 300,
-		minSize: 175,
+		
 		maxSize: 500,
 		collapsible: true,
 		//collapseMode:'mini',
@@ -411,6 +413,14 @@ Phx.CP=function(){
 				}
 		    });
 
+
+            var detailsPanel = {
+				title: 'Details',
+		        region: 'center',
+		        bodyStyle: 'padding-bottom:15px;background:#eee;',
+				autoScroll: true,
+				item:Ext.Element.get('1rn')
+		    };
 			
 
 

@@ -144,11 +144,14 @@ if(!isset($_SESSION["_SESION"])){
      
      <script type="text/javascript" src="../../../lib/ux/ColumnHeaderGroup.js"></script>
       
-     
+      
+    <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-lang-es.js"></script>
+    
+ 
+
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
   
 
-   
   <div id="classes"></div>
   <div id="main"></div>
   <div id="x-tab">
