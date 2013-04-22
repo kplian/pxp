@@ -199,3 +199,6 @@
 .bzoom {
 	background-image:url(dibu_zoom.png) !important;
 }
+.btransfer {
+    background-image:url(dibu_transferDB.png) !important;
+}
