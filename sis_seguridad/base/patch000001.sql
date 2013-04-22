@@ -85,16 +85,7 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 --
 -- Structure for table tactividad (OID = 306979) : 
---
-CREATE TABLE segu.tactividad (
-    id_actividad serial NOT NULL,
-    nombre varchar(150) NOT NULL,
-    descripcion varchar(500),
-    codigo varchar
-) INHERITS (pxp.tbase) WITH OIDS;
---
--- Structure for table testructura_dato (OID = 306991) : 
---
+
 CREATE TABLE segu.testructura_dato (
     id_estructura_dato serial NOT NULL,
     id_subsistema integer NOT NULL,
@@ -150,20 +141,7 @@ CREATE TABLE segu.tprocedimiento_gui (
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
 ) WITHOUT OIDS;
---
--- Structure for table tproyecto (OID = 307067) : 
---
-CREATE TABLE segu.tproyecto (
-    id_proyecto serial NOT NULL,
-    nombre varchar(150) NOT NULL,
-    descripcion varchar(500),
-    fecha_reg timestamp(0) without time zone DEFAULT now(),
-    estado_reg varchar(10) DEFAULT 'activo'::character varying NOT NULL,
-    codigo varchar(20),
-    id_usuario_reg integer,
-    fecha_mod timestamp(0) without time zone DEFAULT now(),
-    id_usuario_mod integer
-) WITHOUT OIDS;
+
 
 --
 -- Structure for table trecurso (OID = 307082) : 
@@ -314,16 +292,7 @@ CREATE TABLE segu.tprocedimiento (
     autor varchar(100),
     fecha_creacion varchar(40)
 ) WITHOUT OIDS;
---
--- Structure for table tregional (OID = 307203) : 
---
-CREATE TABLE segu.tregional (
-    id_regional serial NOT NULL,
-    fecha_reg date DEFAULT now() NOT NULL,
-    nombre varchar(150) NOT NULL,
-    descripcion varchar(500),
-    estado_reg pxp.estado_reg
-) WITHOUT OIDS;
+
 --
 -- Structure for table trol (OID = 307211) : 
 --
@@ -370,16 +339,7 @@ CREATE TABLE segu.tsubsistema (
     id_subsis_orig integer
 ) WITHOUT OIDS;
 
---
--- Structure for table tusuario_actividad (OID = 307237) : 
---
-CREATE TABLE segu.tusuario_actividad (
-    id_usuario_actividad serial NOT NULL,
-    id_usuario integer NOT NULL,
-    id_actividad integer NOT NULL,
-    fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg segu.activo_inactivo NOT NULL
-) WITHOUT OIDS;
+
 --
 -- Structure for table tusuario_perfil (OID = 307244) : 
 --
@@ -390,27 +350,8 @@ CREATE TABLE segu.tusuario_perfil (
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL
 ) WITHOUT OIDS;
---
--- Structure for table tusuario_proyecto (OID = 307252) : 
---
-CREATE TABLE segu.tusuario_proyecto (
-    id_usuario_proyecto serial NOT NULL,
-    id_usuario integer NOT NULL,
-    id_proyecto integer NOT NULL,
-    fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg segu.activo_inactivo NOT NULL
-) WITHOUT OIDS;
---
--- Structure for table tusuario_regional (OID = 307259) : 
---
-CREATE TABLE segu.tusuario_regional (
-    id_usuario_regional serial NOT NULL,
-    id_regional integer NOT NULL,
-    id_usuario integer NOT NULL,
-    fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL
-) WITHOUT OIDS;
---
+
+
 -- Structure for table tusuario_rol (OID = 307268) : 
 --
 CREATE TABLE segu.tusuario_rol (
@@ -422,68 +363,8 @@ CREATE TABLE segu.tusuario_rol (
 ) WITHOUT OIDS;
 
 
---
--- Structure for table tprograma (OID = 397129) : 
---
-CREATE TABLE segu.tprograma (
-    id_programa serial NOT NULL,
-    codigo varchar(20) NOT NULL,
-    nombre varchar NOT NULL,
-    descripcion varchar(500)
-)
-INHERITS (pxp.tbase) WITH OIDS;
-
---
--- Structure for table tep (OID = 397143) : 
---
-CREATE TABLE segu.tep (
-    id_ep serial NOT NULL,
-    id_programa integer,
-    id_proyecto integer,
-    id_actividad integer
-)
-INHERITS (pxp.tbase) WITH OIDS;
-
---
--- Structure for table tep_persona (OID = 397171) : 
---
-CREATE TABLE segu.tep_persona (
-    id_ep_persona serial NOT NULL,
-    id_persona integer NOT NULL,
-    id_ep integer NOT NULL
-)
-INHERITS (pxp.tbase) WITH OIDS;
 
  
-CREATE VIEW segu.vep (
-    id_usuario_reg,
-    id_usuario_mod,
-    fecha_reg,
-    fecha_mod,
-    estado_reg,
-    id_ep,
-    id_programa,
-    id_proyecto,
-    id_actividad,
-    codigo_programa,
-    codigo_proyecto,
-    codigo_actividad,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    desc_ep)
-AS
-SELECT ep.id_usuario_reg, ep.id_usuario_mod, ep.fecha_reg, ep.fecha_mod,
-    ep.estado_reg, ep.id_ep, ep.id_programa, ep.id_proyecto, ep.id_actividad,
-    prog.codigo AS codigo_programa, proy.codigo AS codigo_proyecto, act.codigo
-    AS codigo_actividad, prog.nombre AS nombre_programa, proy.nombre AS
-    nombre_proyecto, act.nombre AS nombre_actividad, (((prog.codigo::text ||
-    '-'::text) || proy.codigo::text) || '-'::text) || act.codigo::text AS desc_ep
-FROM segu.tep ep
-   JOIN segu.tprograma prog ON prog.id_programa = ep.id_programa
-   JOIN segu.tproyecto proy ON proy.id_proyecto = ep.id_proyecto
-   JOIN segu.tactividad act ON act.id_actividad = ep.id_actividad;
-
 --
 -- Definition for index clasificador_pk (OID = 308296) : 
 --
@@ -525,22 +406,7 @@ CREATE INDEX fki_rol_procedimiento__id_proc ON segu.trol_procedimiento_gui USING
 --
 CREATE INDEX fki_rol_procedimiento__id_rol ON segu.trol_procedimiento_gui USING btree (id_rol);
 --
--- Definition for index fki_usuario_actividad__id_actividad (OID = 308307) : 
---
-CREATE INDEX fki_usuario_actividad__id_actividad ON segu.tusuario_actividad USING btree (id_actividad);
---
--- Definition for index fki_usuario_actividad__id_usuario (OID = 308308) : 
---
-CREATE INDEX fki_usuario_actividad__id_usuario ON segu.tusuario_actividad USING btree (id_usuario);
---
--- Definition for index fki_usuario_proyecto__id_proyecto (OID = 308309) : 
---
-CREATE INDEX fki_usuario_proyecto__id_proyecto ON segu.tusuario_proyecto USING btree (id_proyecto);
---
--- Definition for index fki_usuario_proyecto__id_usuario (OID = 308310) : 
---
-CREATE INDEX fki_usuario_proyecto__id_usuario ON segu.tusuario_proyecto USING btree (id_usuario);
---
+
 -- Definition for index funcion_pk (OID = 308311) : 
 --
 CREATE UNIQUE INDEX funcion_pk ON segu.tfuncion USING btree (id_funcion);
@@ -561,10 +427,6 @@ CREATE UNIQUE INDEX persona_pk ON segu.tpersona USING btree (id_persona);
 --
 CREATE INDEX persona_relationship_11_fk ON segu.tpersona USING btree (id_persona);
 --
--- Definition for index pki_actividad__id_actividad (OID = 308317) : 
---
-CREATE UNIQUE INDEX pki_actividad__id_actividad ON segu.tactividad USING btree (id_actividad);
---
 -- Definition for index pki_estructura_dato__id_estructura_dato (OID = 308318) : 
 --
 CREATE UNIQUE INDEX pki_estructura_dato__id_estructura_dato ON segu.testructura_dato USING btree (id_estructura_dato);
@@ -580,10 +442,7 @@ CREATE UNIQUE INDEX pki_gui_rol__id_gui_rol ON segu.tgui_rol USING btree (id_gui
 -- Definition for index pki_permiso__id_permiso (OID = 308321) : 
 --
 CREATE UNIQUE INDEX pki_permiso__id_permiso ON segu.tpermiso USING btree (id_permiso);
---
--- Definition for index pki_proyecto__id_proyecto (OID = 308322) : 
---
-CREATE UNIQUE INDEX pki_proyecto__id_proyecto ON segu.tproyecto USING btree (id_proyecto);
+
 --
 -- Definition for index pki_recurso__id_recurso (OID = 308323) : 
 --
@@ -596,15 +455,7 @@ CREATE UNIQUE INDEX pki_rol_procedimiento__id_rol_proc ON segu.trol_procedimient
 -- Definition for index pki_tipo_documento__id_tipo_doc (OID = 308325) : 
 --
 CREATE UNIQUE INDEX pki_tipo_documento__id_tipo_doc ON segu.ttipo_documento USING btree (id_tipo_documento);
---
--- Definition for index pki_usuario_actividad__id_usuario_actividad (OID = 308326) : 
---
-CREATE UNIQUE INDEX pki_usuario_actividad__id_usuario_actividad ON segu.tusuario_actividad USING btree (id_usuario_actividad);
---
--- Definition for index pki_usuario_proyecto__id_usuario_proyecto (OID = 308327) : 
---
-CREATE UNIQUE INDEX pki_usuario_proyecto__id_usuario_proyecto ON segu.tusuario_proyecto USING btree (id_usuario_proyecto);
---
+
 -- Definition for index primo_pk (OID = 308328) : 
 --
 CREATE UNIQUE INDEX primo_pk ON segu.tprimo USING btree (id_primo);
@@ -612,15 +463,7 @@ CREATE UNIQUE INDEX primo_pk ON segu.tprimo USING btree (id_primo);
 -- Definition for index procedimiento_pk (OID = 308330) : 
 --
 CREATE UNIQUE INDEX procedimiento_pk ON segu.tprocedimiento USING btree (id_procedimiento);
---
--- Definition for index regional_pk (OID = 308331) : 
---
-CREATE UNIQUE INDEX regional_pk ON segu.tregional USING btree (id_regional);
---
--- Definition for index regional_tiene_usuarios_fk (OID = 308332) : 
---
-CREATE INDEX regional_tiene_usuarios_fk ON segu.tusuario_regional USING btree (id_regional);
---
+
 -- Definition for index rol_pk (OID = 308333) : 
 --
 CREATE UNIQUE INDEX rol_pk ON segu.trol USING btree (id_rol);
@@ -648,18 +491,7 @@ CREATE INDEX tiene_privilegios_fk ON segu.tusuario_rol USING btree (id_usuario);
 -- Definition for index tiene_procedimientos_fk (OID = 308339) : 
 --
 CREATE INDEX tiene_procedimientos_fk ON segu.tprocedimiento USING btree (id_funcion);
---
--- Definition for index tlog_26112010_esta_fk (OID = 308340) : 
---
-CREATE INDEX tlog_26112010_esta_fk ON segu.tlog USING btree (id_subsistema);
---
--- Definition for index tlog_26112010_log_pk (OID = 308341) : 
---
-CREATE UNIQUE INDEX tlog_26112010_log_pk ON segu.tlog USING btree (id_log);
---
--- Definition for index tlog_26112010_usuario_esta_en_log_fk (OID = 308342) : 
---
-CREATE INDEX tlog_26112010_usuario_esta_en_log_fk ON segu.tlog USING btree (id_usuario);
+
 --
 -- Definition for index tprocedimiento_gui_idx (OID = 308344) : 
 --
@@ -669,29 +501,12 @@ CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui USING btre
 --
 CREATE UNIQUE INDEX usuario_perfil_pk ON segu.tusuario_perfil USING btree (id_usuario_perfil);
 --
--- Definition for index usuario_pertenece_a_regional_fk (OID = 308347) : 
---
-CREATE INDEX usuario_pertenece_a_regional_fk ON segu.tusuario_regional USING btree (id_usuario);
---
 -- Definition for index usuario_pk (OID = 308348) : 
 --
 CREATE UNIQUE INDEX usuario_pk ON segu.tusuario USING btree (id_usuario);
---
--- Definition for index usuario_regional_pk (OID = 308349) : 
---
-CREATE UNIQUE INDEX usuario_regional_pk ON segu.tusuario_regional USING btree (id_usuario_regional);
---
--- Definition for index usuario_rol_pk (OID = 308350) : 
---
+
 CREATE UNIQUE INDEX usuario_rol_pk ON segu.tusuario_rol USING btree (id_usuario_rol);
---
--- Definition for index tep_fki_tep__id_actividad (OID = 397167) : 
---
-CREATE INDEX tep_fki_tep__id_actividad ON segu.tep USING btree (id_actividad);
---
--- Definition for index tep_fki_tep__id_proyecto (OID = 397168) : 
---
-CREATE INDEX tep_fki_tep__id_proyecto ON segu.tep USING btree (id_proyecto);
+
 
 --
 -- Definition for index trol_rol_key (OID = 429319) : 
@@ -711,12 +526,8 @@ ALTER TABLE ONLY segu.tgui
 ALTER TABLE ONLY segu.tpersona
     ADD CONSTRAINT persona_pk_persona
     PRIMARY KEY (id_persona);
---
--- Definition for index pk_actividad (OID = 308140) : 
---
-ALTER TABLE ONLY segu.tactividad
-    ADD CONSTRAINT pk_actividad
-    PRIMARY KEY (id_actividad);
+
+
 --
 -- Definition for index pk_clasificador (OID = 308142) : 
 --
@@ -795,18 +606,7 @@ ALTER TABLE ONLY segu.tprocedimiento
 ALTER TABLE ONLY segu.tprocedimiento_gui
     ADD CONSTRAINT pk_procedimiento_gui
     PRIMARY KEY (id_procedimiento_gui);
---
--- Definition for index pk_proyecto (OID = 308170) : 
---
-ALTER TABLE ONLY segu.tproyecto
-    ADD CONSTRAINT pk_proyecto
-    PRIMARY KEY (id_proyecto);
---
--- Definition for index pk_regional (OID = 308172) : 
---
-ALTER TABLE ONLY segu.tregional
-    ADD CONSTRAINT pk_regional
-    PRIMARY KEY (id_regional);
+
 --
 -- Definition for index pk_rol (OID = 308174) : 
 --
@@ -831,30 +631,15 @@ ALTER TABLE ONLY segu.tsubsistema
 ALTER TABLE ONLY segu.tusuario
     ADD CONSTRAINT pk_usuario
     PRIMARY KEY (id_usuario);
---
--- Definition for index pk_usuario_actividad (OID = 308182) : 
---
-ALTER TABLE ONLY segu.tusuario_actividad
-    ADD CONSTRAINT pk_usuario_actividad
-    PRIMARY KEY (id_usuario_actividad);
+
 --
 -- Definition for index pk_usuario_perfil (OID = 308184) : 
 --
 ALTER TABLE ONLY segu.tusuario_perfil
     ADD CONSTRAINT pk_usuario_perfil
     PRIMARY KEY (id_usuario_perfil);
---
--- Definition for index pk_usuario_proyecto (OID = 308186) : 
---
-ALTER TABLE ONLY segu.tusuario_proyecto
-    ADD CONSTRAINT pk_usuario_proyecto
-    PRIMARY KEY (id_usuario_proyecto);
---
--- Definition for index pk_usuario_regional (OID = 308188) : 
---
-ALTER TABLE ONLY segu.tusuario_regional
-    ADD CONSTRAINT pk_usuario_regional
-    PRIMARY KEY (id_usuario_regional);
+
+
 --
 -- Definition for index pk_usuario_rol (OID = 308190) : 
 --
@@ -891,12 +676,7 @@ ALTER TABLE ONLY segu.tfuncion
 ALTER TABLE ONLY segu.thorario_trabajo
     ADD CONSTRAINT thorario_trabajo_pkey
     PRIMARY KEY (id_horario_trabajo);
---
--- Definition for index tlog_26112010_pk_log (OID = 308202) : 
---
-ALTER TABLE ONLY segu.tlog
-    ADD CONSTRAINT tlog_26112010_pk_log
-    PRIMARY KEY (id_log);
+
 --
 -- Definition for index tpatron_evento_pkey (OID = 308204) : 
 --
@@ -938,8 +718,6 @@ CREATE TRIGGER trigger_usuario
 
 /***********************************F-SCP-JRR-SEGU-1-19/11/2012****************************************/
 
- 
-/***********************************F-SCP-JRR-SEGU-2-19/11/2012****************************************/
 
 /***********************************I-SCP-RCM-SEGU-0-29/11/2012****************************************/
 --Creación de vista de usuario
@@ -1058,9 +836,19 @@ CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui
 
 ALTER TABLE segu.tgui
   ADD COLUMN combo_trigger VARCHAR(2);
+ 
   
 /*****************************F-SCP-JRR-SEGU-0-08/03/2013*************/
 
+/*****************************I-SCP-RAC-SEGU-0-22/04/2013*************/
 
+CREATE TABLE segu.tusuario_grupo_ep(
+id_usuario_grupo_ep SERIAL NOT NULL,
+id_usuario integer, 
+id_grupo integer,
+PRIMARY KEY(id_usuario_grupo_ep)) INHERITS (pxp.tbase);
+
+ 
+/*****************************F-SCP-RAC-SEGU-0-22/04/2013*************/
 
 

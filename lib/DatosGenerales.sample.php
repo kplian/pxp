@@ -112,13 +112,9 @@
 	$_SESSION["_PESOMAX_DOS"]=9;
 
 	//Para el generador
-	/*$_SESSION["_QUITAR_CANT_PREFIJO_TABLA"]='no'; // si|no
-	$_SESSION["_CANT_PREFIJO_TABLA"]=3;//3;
-	$_SESSION["_PREFIJO_TABLA"]='f_';
-	*/
-	$_SESSION["_QUITAR_CANT_PREFIJO_TABLA"]='si'; // si|no
-	$_SESSION["_CANT_PREFIJO_TABLA"]=1; 
-	$_SESSION["_PREFIJO_TABLA"]='f_';
+    $_SESSION["_QUITAR_CANT_PREFIJO_TABLA"]='si'; // si|no
+    $_SESSION["_CANT_PREFIJO_TABLA"]=1; 
+    $_SESSION["_PREFIJO_TABLA"]='ft_';
 	
 	
 	//datos de correo elecronico

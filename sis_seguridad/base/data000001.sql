@@ -58,15 +58,12 @@ select pxp.f_insert_tgui ('Procesos', '', 'PROCSEGU', 'si', 2, '', 2, '', '', 'S
 select pxp.f_insert_tgui ('Parametros', '', 'o', 'si', 1, '', 2, '', '', 'SEGU');
 select pxp.f_insert_tgui ('Interfaces por sistema', 'gui', '', 'no', 1, 'sis_seguridad/vista/gui/gui.js', 3, '', 'gui', 'SEGU');
 select pxp.f_insert_tgui ('Reportes', 'Reportes', 'RepSeg', 'si', 3, '', 2, '', '', 'SEGU');
-select pxp.f_insert_tgui ('Actividad', 'Actividad', 'ACTIVI', 'si', 1, 'sis_seguridad/vista/actividad/Actividad.php', 3, '', 'Actividad', 'SEGU');
+
 select pxp.f_insert_tgui ('Estructura Dato', 'Estructura Dato', 'ESTDAT', 'no', 4, 'sis_seguridad/vista/estructura_dato/EstructuraDato.php', 3, '', 'estructura_dato', 'SEGU');
-select pxp.f_insert_tgui ('Proyecto', 'proyecto', 'PROYEC', 'si', 2, 'sis_seguridad/vista/proyecto/Proyecto.php', 3, '', 'Proyecto', 'SEGU');
-select pxp.f_insert_tgui ('Regional', 'regional', 'REGION', 'si', 3, 'sis_seguridad/vista/regional/Regional.php', 3, '', 'regional', 'SEGU');
+
 select pxp.f_insert_tgui ('Tipo Documento', 'tipo_documento', 'TIPDOC', 'si', 7, 'sis_seguridad/vista/tipo_documento/TipoDocumento.php', 3, '', 'tipo_documento', 'SEGU');
 select pxp.f_insert_tgui ('Patrones de Eventos', 'Patrones de Eventos', 'PATROEVE', 'si', 8, 'sis_seguridad/vista/patron_evento/PatronEvento.php', 4, '', 'patron_evento', 'SEGU');
 select pxp.f_insert_tgui ('Log', 'log', 'LOG', 'no', 4, 'sis_seguridad/vista/log/Log.php', 3, '', 'log', 'SEGU');
-select pxp.f_insert_tgui ('EP', 'Estructura Programatica', 'EP', 'si', 4, 'sis_seguridad/vista/ep/Ep.php', 3, '', 'Ep', 'SEGU');
-select pxp.f_insert_tgui ('Programa', 'Programa', 'PROGRA', 'si', 1, 'sis_seguridad/vista/programa/Programa.php', 3, '', 'Programa', 'SEGU');
 select pxp.f_insert_tgui ('Horarios de Trabajo', 'Horarios de Trabajo', 'HORTRA', 'si', 9, 'sis_seguridad/vista/horario_trabajo/HorarioTrabajo.php', 3, '', 'horario_trabajo', 'SEGU');
 select pxp.f_insert_tgui ('Monitoreo y Análisis de Bitácoras', 'Herramienta para hacer seguimiento a eventos del sistema', 'MONANA', 'si', 6, '', 3, '', '', 'SEGU');
 select pxp.f_insert_tgui ('Monitoreo', 'Monitoreo', 'MONITOR', 'si', 1, '', 4, '', '', 'SEGU');
@@ -95,15 +92,15 @@ select pxp.f_insert_testructura_gui ('SISTEM', 'PROCSEGU');
 select pxp.f_insert_testructura_gui ('LOG', 'PROCSEGU');
 select pxp.f_insert_testructura_gui ('HORTRA', 'o');
 select pxp.f_insert_testructura_gui ('PATROEVE', 'o');
-select pxp.f_insert_testructura_gui ('EP', 'o');
-select pxp.f_insert_testructura_gui ('PROGRA', 'o');
+
+
 select pxp.f_insert_testructura_gui ('ESTDAT', 'o');
 select pxp.f_insert_testructura_gui ('CLASIF', 'o');
-select pxp.f_insert_testructura_gui ('PROYEC', 'o');
-select pxp.f_insert_testructura_gui ('ACTIVI', 'o');
+
+
 select pxp.f_insert_testructura_gui ('per', 'o');
 select pxp.f_insert_testructura_gui ('TIPDOC', 'o');
-select pxp.f_insert_testructura_gui ('REGION', 'o');
+
 select pxp.f_insert_testructura_gui ('Personas', 'RepSeg');
 select pxp.f_insert_testructura_gui ('NOTMON', 'MONANA');
 select pxp.f_insert_testructura_gui ('BLOMON', 'MONANA');
@@ -132,7 +129,7 @@ select pxp.f_insert_tfuncion ('segu.ft_procedimiento_gui_ime', 'Funcion para tab
 select pxp.f_insert_tfuncion ('segu.ft_rol_procedimiento_gui_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.f_grant_all_privileges', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_usuario_rol_sel', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_regional_sel', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_menu_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_usuario_regional_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_procedimiento_ime', 'Funcion para tabla     ', 'SEGU');
@@ -147,7 +144,7 @@ select pxp.f_insert_tfuncion ('segu.ft_validar_usuario_ime', 'Funcion para tabla
 select pxp.f_insert_tfuncion ('segu.ft_estructura_dato_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_libreta_her_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_usuario_regional_ime', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_programa_ime', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_libreta_her_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_procedimiento_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_gui_sel', 'Funcion para tabla     ', 'SEGU');
@@ -162,32 +159,30 @@ select pxp.f_insert_tfuncion ('segu.ft_funcion_sel', 'Funcion para tabla     ', 
 select pxp.f_insert_tfuncion ('segu.f_get_id_usuario', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_rol_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_usuario_actividad_sel', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_proyecto_ime', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_regional_ime', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_tipo_documento_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_estructura_dato_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_patron_evento_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.f_monitorear_recursos', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_gui_ime', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_programa_sel', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_ep_ime', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.f_actualizar_log_bd', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_actividad_sel', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_horario_trabajo_sel', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_actividad_ime', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_patron_evento_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_clasificador_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_usuario_actividad_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_primo_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_gui_rol_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.f_actualizar_sesion', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_proyecto_sel', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_rol_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_persona_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_log_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_sesion_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.f_permiso_rol', 'Funcion para tabla     ', 'SEGU');
-select pxp.f_insert_tfuncion ('segu.ft_ep_sel', 'Funcion para tabla     ', 'SEGU');
+
 select pxp.f_insert_tfuncion ('segu.ft_monitor_bd_sel', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_horario_trabajo_ime', 'Funcion para tabla     ', 'SEGU');
 select pxp.f_insert_tfuncion ('segu.ft_persona_ime', 'Funcion para tabla     ', 'SEGU');
@@ -201,10 +196,7 @@ select pxp.f_insert_tfuncion ('segu.ft_bloqueo_notificacion_ime', 'Funcion para 
 ---------------------------------
 
 
-select pxp.f_insert_tprocedimiento ('SEG_USUPRO_CONT', '	contar proyectos por usuario
-', 'si', '', '', 'segu.ft_usuario_proyecto_sel');
-select pxp.f_insert_tprocedimiento ('SEG_USUPRO_SEL', '	lista las proyectos por usuario
-', 'si', '', '', 'segu.ft_usuario_proyecto_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_SUBSIS_ELI', '	Inactiva el subsistema selecionado
 ', 'si', '', '', 'segu.ft_subsistema_ime');
 select pxp.f_insert_tprocedimiento ('SEG_SUBSIS_MOD', '	Modifica el subsistema seleccionada 
@@ -240,10 +232,8 @@ select pxp.f_insert_tprocedimiento ('SEG_USUROL_SEL', '	Lista los roles activos 
 select pxp.f_insert_tprocedimiento ('SEG_MENU_SEL', '	Arma el menu que aparece en la parte izquierda
                 de la pantalla del sistema
 ', 'si', '', '', 'segu.ft_menu_sel');
-select pxp.f_insert_tprocedimiento ('SEG_USUREG_CONT', '	cuenta las regionales del usuario
-', 'si', '', '', 'segu.ft_usuario_regional_sel');
-select pxp.f_insert_tprocedimiento ('SEG_USUREG_SEL', '	lista las regionales del usuario
-', 'si', '', '', 'segu.ft_usuario_regional_sel');
+
+
 select pxp.f_insert_tprocedimiento ('SEG_PROCED_ELI', '	Elimina Procedimiento
 ', 'si', '', '', 'segu.ft_procedimiento_ime');
 select pxp.f_insert_tprocedimiento ('SEG_PROCED_MOD', '	Modifica Procedimiento
@@ -298,18 +288,8 @@ select pxp.f_insert_tprocedimiento ('SG_LIB_CONT', '	Conteo de registros
  	', 'si', '', '', 'segu.ft_libreta_her_sel');
 select pxp.f_insert_tprocedimiento ('SG_LIB_SEL', '	Consulta de datos
  	', 'si', '', '', 'segu.ft_libreta_her_sel');
-select pxp.f_insert_tprocedimiento ('SEG_USUREG_ELI', '	Inactiva la relacion de una regional y un  usuario
-', 'si', '', '', 'segu.ft_usuario_regional_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUREG_MOD', '	Modifica la relacion una regional y un  usuario
-', 'si', '', '', 'segu.ft_usuario_regional_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUREG_INS', '	Relaciona una regional al usuario
-', 'si', '', '', 'segu.ft_usuario_regional_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROGRA_ELI', '	Eliminaci?n de registros
- 	', 'si', '', '', 'segu.ft_programa_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROGRA_MOD', '	Modificaci?n de registros
- 	', 'si', '', '', 'segu.ft_programa_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROGRA_INS', '	Inserci?n de registros
- 	', 'si', '', '', 'segu.ft_programa_ime');
+ 	
+ 	
 select pxp.f_insert_tprocedimiento ('SG_LIB_ELI', '	Eliminacion de registros
  	', 'si', '', '', 'segu.ft_libreta_her_ime');
 select pxp.f_insert_tprocedimiento ('SG_LIB_MOD', '	Modificacion de registros
@@ -319,9 +299,11 @@ select pxp.f_insert_tprocedimiento ('SG_LIB_INS', '	Insercion de registros
 select pxp.f_insert_tprocedimiento ('SEG_PROCECMB_CONT', '	Cuenta Procedimientos para el listado
                 del combo en la vista de procedimiento_gui
 ', 'si', '', '', 'segu.ft_procedimiento_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_PROCECMB_SEL', '	Selecciona Procedimientos para el listado
                 del combo en la vista de procedimiento_gui
 ', 'si', '', '', 'segu.ft_procedimiento_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_PROCE_CONT', '	Cuenta Procedimientos
 ', 'si', '', '', 'segu.ft_procedimiento_sel');
 select pxp.f_insert_tprocedimiento ('SEG_PROCE_SEL', '	Listado de Procedimientos
@@ -334,9 +316,11 @@ select pxp.f_insert_tprocedimiento ('SEG_PROCED_SEL', '	Selecciona Procedimiento
 ', 'si', '', '', 'segu.ft_procedimiento_sel');
 select pxp.f_insert_tprocedimiento ('SEG_GUI_CONT', '	Listado de guis de un subsistema para exportar
 ', 'si', '', '', 'segu.ft_gui_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_EXPGUI_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_gui_sel');
 select pxp.f_insert_tprocedimiento ('SEG_GUI_SEL', '	Listado de interfaces en formato de arbol
 ', 'si', '', '', 'segu.ft_gui_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_ESTGUI_ELI', '	Elimina Estructura gui
 ', 'si', '', '', 'segu.ft_estructura_gui_ime');
 select pxp.f_insert_tprocedimiento ('SEG_ESTGUI_MOD', '	Modifica Estructura gui
@@ -370,36 +354,19 @@ select pxp.f_insert_tprocedimiento ('SEG_FUNCIO_MOD', '	Modifica la funcion sele
 ', 'si', '', '', 'segu.ft_funcion_ime');
 select pxp.f_insert_tprocedimiento ('SEG_FUNCIO_INS', '	Inserta Funciones
 ', 'si', '', '', 'segu.ft_funcion_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUPRO_ELI', 'Inactiva la relacion de proyectos con usuario
-', 'si', '', '', 'segu.ft_usuario_proyecto_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUPRO_MOD', 'Modifica la relacion de proyectos con usuario
-', 'si', '', '', 'segu.ft_usuario_proyecto_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUPRO_INS', 'Relaciona proyectos con usuario
-', 'si', '', '', 'segu.ft_usuario_proyecto_ime');
+
+
 select pxp.f_insert_tprocedimiento ('SEG_FUNCIO_CONT', '	Contar  funciones registradas del sistema
 ', 'si', '', '', 'segu.ft_funcion_sel');
 select pxp.f_insert_tprocedimiento ('SEG_EXPFUN_SEL', '	Listado de funciones de un subsistema para exportar
 ', 'si', '', '', 'segu.ft_funcion_sel');
 select pxp.f_insert_tprocedimiento ('SEG_FUNCIO_SEL', '	Listado de funciones registradas del sistema
 ', 'si', '', '', 'segu.ft_funcion_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_ROL_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_rol_sel');
 select pxp.f_insert_tprocedimiento ('SEG_ROL_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_rol_sel');
-select pxp.f_insert_tprocedimiento ('SEG_USUACT_CONT', '	Contar  las actividades por usuario
-', 'si', '', '', 'segu.ft_usuario_actividad_sel');
-select pxp.f_insert_tprocedimiento ('SEG_USUACT_SEL', '	lista las actividades por usuario
-', 'si', '', '', 'segu.ft_usuario_actividad_sel');
-select pxp.f_insert_tprocedimiento ('SG_PROY_ELI', '	Eliminacion de registros
- 	', 'si', '', '', 'segu.ft_proyecto_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROY_MOD', '	Modificacion de registros
- 	', 'si', '', '', 'segu.ft_proyecto_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROY_INS', '	Insercion de registros
- 	', 'si', '', '', 'segu.ft_proyecto_ime');
-select pxp.f_insert_tprocedimiento ('SEG_REGION_ELI', '	Elimina Regional
-', 'si', '', '', 'segu.ft_regional_ime');
-select pxp.f_insert_tprocedimiento ('SEG_REGION_MOD', '	Modifica Regional
-', 'si', '', '', 'segu.ft_regional_ime');
-select pxp.f_insert_tprocedimiento ('SEG_REGION_INS', '	Inserta Regional
-', 'si', '', '', 'segu.ft_regional_ime');
+
+
 select pxp.f_insert_tprocedimiento ('SEG_TIPDOC_CONT', '	Contar  los procedimeintos de BD registradas del sistema
 ', 'si', '', '', 'segu.ft_tipo_documento_sel');
 select pxp.f_insert_tprocedimiento ('SEG_TIPDOC_SEL', '	Listado de los procedimientos de BD
@@ -410,6 +377,7 @@ select pxp.f_insert_tprocedimiento ('SEG_ESTDAT_MOD', '	Modifica Estructura Dato
 ', 'si', '', '', 'segu.ft_estructura_dato_ime');
 select pxp.f_insert_tprocedimiento ('SEG_ESTDAT_INS', '	Inserta Estructura Dato
 ', 'si', '', '', 'segu.ft_estructura_dato_ime');
+
 select pxp.f_insert_tprocedimiento ('SEG_PATEVE_ELI', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_patron_evento_ime');
 select pxp.f_insert_tprocedimiento ('SEG_PATEVE_MOD', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_patron_evento_ime');
 select pxp.f_insert_tprocedimiento ('SEG_PATEVE_INS', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_patron_evento_ime');
@@ -421,28 +389,10 @@ select pxp.f_insert_tprocedimiento ('SEG_GUI_INS', '	Inserta interfaces en el ar
 ', 'si', '', '', 'segu.ft_gui_ime');
 select pxp.f_insert_tprocedimiento ('SEG_GUIDD_IME', '	Inserta interfaces en el arbol
 ', 'si', '', '', 'segu.ft_gui_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROGRA_CONT', '	Conteo de registros
- 	', 'si', '', '', 'segu.ft_programa_sel');
-select pxp.f_insert_tprocedimiento ('SG_PROGRA_SEL', '	Consulta de datos
- 	', 'si', '', '', 'segu.ft_programa_sel');
-select pxp.f_insert_tprocedimiento ('SG_ESP_ELI', '	Eliminacion de registros
- 	', 'si', '', '', 'segu.ft_ep_ime');
-select pxp.f_insert_tprocedimiento ('SG_ESP_MOD', '	Modificacion de registros
- 	', 'si', '', '', 'segu.ft_ep_ime');
-select pxp.f_insert_tprocedimiento ('SG_ESP_INS', '	Insercion de registros
- 	', 'si', '', '', 'segu.ft_ep_ime');
-select pxp.f_insert_tprocedimiento ('SG_ACT_CONT', '	Conteo de registros
- 	', 'si', '', '', 'segu.ft_actividad_sel');
-select pxp.f_insert_tprocedimiento ('SG_ACT_SEL', '	Consulta de datos
- 	', 'si', '', '', 'segu.ft_actividad_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_HORTRA_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_horario_trabajo_sel');
 select pxp.f_insert_tprocedimiento ('SEG_HORTRA_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_horario_trabajo_sel');
-select pxp.f_insert_tprocedimiento ('SG_ACT_ELI', '	Eliminacion de registros
- 	', 'si', '', '', 'segu.ft_actividad_ime');
-select pxp.f_insert_tprocedimiento ('SG_ACT_MOD', '	Modificacion de registros
- 	', 'si', '', '', 'segu.ft_actividad_ime');
-select pxp.f_insert_tprocedimiento ('SG_ACT_INS', '	Insercion de registros
- 	', 'si', '', '', 'segu.ft_actividad_ime');
+
 select pxp.f_insert_tprocedimiento ('SEG_PATEVE_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_patron_evento_sel');
 select pxp.f_insert_tprocedimiento ('SEG_PATEVE_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_patron_evento_sel');
 select pxp.f_insert_tprocedimiento ('SEG_CLASIF_ELI', '	Elimina Clasificacion
@@ -451,12 +401,7 @@ select pxp.f_insert_tprocedimiento ('SEG_CLASIF_MOD', '	Modifica Clasificacion
 ', 'si', '', '', 'segu.ft_clasificador_ime');
 select pxp.f_insert_tprocedimiento ('SEG_CLASIF_INS', '	Inserta Actividades
 ', 'si', '', '', 'segu.ft_clasificador_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUACT_ELI', 'Inactivacion de la relacion de  actividades con usuario
-', 'si', '', '', 'segu.ft_usuario_actividad_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUACT_MOD', 'Modifica la relacion de  actividades con usuario
-', 'si', '', '', 'segu.ft_usuario_actividad_ime');
-select pxp.f_insert_tprocedimiento ('SEG_USUACT_INS', 'Relaciona actividades con usuario
-', 'si', '', '', 'segu.ft_usuario_actividad_ime');
+
 select pxp.f_insert_tprocedimiento ('SEG_PRIMO_CONT', '	cuenta el listado de numeros primos
 ', 'si', '', '', 'segu.ft_primo_sel');
 select pxp.f_insert_tprocedimiento ('SEG_PRIMO_SEL', '	listado de numeros primo
@@ -466,20 +411,20 @@ select pxp.f_insert_tprocedimiento ('SEG_OBTEPRI_SEL', '	Obtienen un numero prim
 ', 'si', '', '', 'segu.ft_primo_sel');
 select pxp.f_insert_tprocedimiento ('SEG_GUIROL_INS', '	Modifica los permisos del un rol ID_ROL sobre un  tipo TIPO
 ', 'si', '', '', 'segu.ft_gui_rol_ime');
-select pxp.f_insert_tprocedimiento ('SG_PROY_CONT', '	Conteo de registros
- 	', 'si', '', '', 'segu.ft_proyecto_sel');
-select pxp.f_insert_tprocedimiento ('SG_PROY_SEL', '	Consulta de datos
- 	', 'si', '', '', 'segu.ft_proyecto_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_ROL_ELI', '	Elimina Rol
 ', 'si', '', '', 'segu.ft_rol_ime');
 select pxp.f_insert_tprocedimiento ('SEG_ROL_MOD', '	Modifica Rol
 ', 'si', '', '', 'segu.ft_rol_ime');
 select pxp.f_insert_tprocedimiento ('SEG_ROL_INS', '	Inserta Rol
 ', 'si', '', '', 'segu.ft_rol_ime');
+
 select pxp.f_insert_tprocedimiento ('SEG_PERSONMIN_CONT', '	Cuenta Personas con foto
 ', 'si', '', '', 'segu.ft_persona_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_PERSONMIN_SEL', '	Selecciona Personas + fotografia
 ', 'si', '', '', 'segu.ft_persona_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_PERSON_CONT', '	Cuenta Personas
 ', 'si', '', '', 'segu.ft_persona_sel');
 select pxp.f_insert_tprocedimiento ('SEG_PERSON_SEL', '	Selecciona Personas
@@ -499,10 +444,7 @@ select pxp.f_insert_tprocedimiento ('SEG_SESION_MOD', '	Modifica la una variable
 ', 'si', '', '', 'segu.ft_sesion_ime');
 select pxp.f_insert_tprocedimiento ('SEG_SESION_INS', '	registra sesiones  de un usuario
 ', 'si', '', '', 'segu.ft_sesion_ime');
-select pxp.f_insert_tprocedimiento ('SG_ESP_CONT', '	Conteo de registros
- 	', 'si', '', '', 'segu.ft_ep_sel');
-select pxp.f_insert_tprocedimiento ('SG_ESP_SEL', '	Consulta de datos
- 	', 'si', '', '', 'segu.ft_ep_sel');
+
 select pxp.f_insert_tprocedimiento ('SEG_MONREC_SEL', '	Monitorear recursos usados por el sistema
 ', 'si', '', '', 'segu.ft_monitor_bd_sel');
 select pxp.f_insert_tprocedimiento ('SEG_MONIND_CONT', '	Contar registros del monitor de objetos de bd (indices)
@@ -4300,8 +4242,6 @@ select pxp.f_insert_tgui ('Alertas', 'Alertas', 'ALERTA', 'si', 9, 'sis_parametr
 select pxp.f_insert_tgui ('Configurar', 'Configurar', 'CONFIG', 'si', 13, 'sis_seguridad/vista/configurar/Configurar.php', 1, '', 'Configurar', 'PXP');
 select pxp.f_insert_testructura_gui ('ALERTA', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('CONFIG', 'SISTEMA');
-
-
 
 
 

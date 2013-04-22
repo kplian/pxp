@@ -72,13 +72,7 @@ ALTER TABLE ONLY segu.trol_procedimiento_gui
 ALTER TABLE ONLY segu.tusuario
     ADD CONSTRAINT fk_usuario__id_persona
     FOREIGN KEY (id_persona) REFERENCES segu.tpersona(id_persona);
---
--- Definition for index fk_usuario__regional__regional (OID = 309428) : 
---
-ALTER TABLE ONLY segu.tusuario_regional
-    ADD CONSTRAINT fk_usuario__regional__regional
-    FOREIGN KEY (id_regional) REFERENCES segu.tregional(id_regional) ON UPDATE RESTRICT ON DELETE RESTRICT;
---
+
 -- Definition for index fk_usuario__se_asigna_perfil (OID = 309433) : 
 --
 ALTER TABLE ONLY segu.tusuario_perfil
@@ -90,84 +84,16 @@ ALTER TABLE ONLY segu.tusuario_perfil
 ALTER TABLE ONLY segu.tusuario_perfil
     ADD CONSTRAINT fk_usuario__tiene_per_usuario
     FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT;
---
--- Definition for index fk_usuario__usuario_p_usuario (OID = 309448) : 
---
-ALTER TABLE ONLY segu.tusuario_regional
-    ADD CONSTRAINT fk_usuario__usuario_p_usuario
-    FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT;
---
--- Definition for index fk_usuario_actividad__id_actividad (OID = 309453) : 
---
-ALTER TABLE ONLY segu.tusuario_actividad
-    ADD CONSTRAINT fk_usuario_actividad__id_actividad
-    FOREIGN KEY (id_actividad) REFERENCES segu.tactividad(id_actividad);
---
--- Definition for index fk_usuario_actividad__id_usuario (OID = 309458) : 
---
-ALTER TABLE ONLY segu.tusuario_actividad
-    ADD CONSTRAINT fk_usuario_actividad__id_usuario
-    FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario);
---
--- Definition for index fk_usuario_proyecto__id_proyecto (OID = 309463) : 
---
-ALTER TABLE ONLY segu.tusuario_proyecto
-    ADD CONSTRAINT fk_usuario_proyecto__id_proyecto
-    FOREIGN KEY (id_proyecto) REFERENCES segu.tproyecto(id_proyecto);
---
--- Definition for index fk_usuario_proyecto__id_usuario (OID = 309468) : 
---
-ALTER TABLE ONLY segu.tusuario_proyecto
-    ADD CONSTRAINT fk_usuario_proyecto__id_usuario
-    FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario);
+
+
 --
 -- Definition for index fk_usuario_se_asigna_clasific (OID = 309473) : 
 --
 ALTER TABLE ONLY segu.tusuario
     ADD CONSTRAINT fk_usuario_se_asigna_clasific
     FOREIGN KEY (id_clasificador) REFERENCES segu.tclasificador(id_clasificador) ON UPDATE RESTRICT ON DELETE RESTRICT;
---
--- Definition for index tprograma_pkey (OID = 397139) : 
---
-ALTER TABLE ONLY segu.tprograma
-    ADD CONSTRAINT tprograma_pkey
-    PRIMARY KEY (id_programa);
---
--- Definition for index tep_pkey (OID = 397150) : 
---
-ALTER TABLE ONLY segu.tep
-    ADD CONSTRAINT tep_pkey
-    PRIMARY KEY (id_ep);
---
--- Definition for index fk_tep__id_actividad (OID = 397152) : 
---
-ALTER TABLE ONLY segu.tep
-    ADD CONSTRAINT fk_tep__id_actividad
-    FOREIGN KEY (id_actividad) REFERENCES segu.tactividad(id_actividad);
---
--- Definition for index fk_tep__id_programa (OID = 397157) : 
---
-ALTER TABLE ONLY segu.tep
-    ADD CONSTRAINT fk_tep__id_programa
-    FOREIGN KEY (id_programa) REFERENCES segu.tprograma(id_programa) ON UPDATE CASCADE;
---
--- Definition for index fk_tep__id_proyecto (OID = 397162) : 
---
-ALTER TABLE ONLY segu.tep
-    ADD CONSTRAINT fk_tep__id_proyecto
-    FOREIGN KEY (id_proyecto) REFERENCES segu.tproyecto(id_proyecto);
---
--- Definition for index tep_persona_pkey (OID = 397178) : 
---
-ALTER TABLE ONLY segu.tep_persona
-    ADD CONSTRAINT tep_persona_pkey
-    PRIMARY KEY (id_ep_persona);
---
--- Definition for index fk_tep_persona__id_persona (OID = 397180) : 
---
-ALTER TABLE ONLY segu.tep_persona
-    ADD CONSTRAINT fk_tep_persona__id_persona
-    FOREIGN KEY (id_persona) REFERENCES segu.tpersona(id_persona) DEFERRABLE;
+
+
 --
 -- Definition for index fk_estructura_gui__id_hijo (OID = 414093) : 
 --

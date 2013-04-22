@@ -617,3 +617,24 @@ ALTER TABLE param.tdocumento_fiscal OWNER TO postgres;
 alter table param.tproveedor
 alter column codigo set not null;
 /***********************************F-SCP-RCM-PARAM-0-15/04/2013*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-22/04/2013****************************************/
+
+CREATE TABLE param.tgrupo(
+id_grupo SERIAL NOT NULL, 
+nombre varchar(400), 
+obs varchar(1000) ,
+PRIMARY KEY(id_grupo)) INHERITS (pxp.tbase);
+
+
+CREATE TABLE param.tgrupo_ep(
+id_grupo_ep SERIAL NOT NULL, 
+id_grupo integer,
+id_ep integer,
+PRIMARY KEY(id_grupo_ep)) INHERITS (pxp.tbase);
+
+/***********************************F-SCP-RAC-PARAM-0-22/04/2013*****************************************/
+
+
+
