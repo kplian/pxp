@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.f_sinc_funciones_subsistema (
   par_id_subsistema integer
 )
@@ -199,12 +197,12 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                                    values(v_codigo,v_desc_transaccion, v_id_funcion,'activo');
                                                 
                                                 else
-                                                        
-                                                    UPDATE segu.tprocedimiento 
-                                                      SET descripcion= v_desc_transaccion
-                                                    WHERE codigo =v_codigo 
-                                                       and id_funcion=v_id_funcion;
-                                                       
+                                                	 
+                                                    	UPDATE segu.tprocedimiento 
+                                                      		SET descripcion= v_desc_transaccion
+                                                    	WHERE codigo =v_codigo 
+                                                       		and id_funcion=v_id_funcion and 
+                                                            trim(descripcion) != trim(v_desc_transaccion);                                                   
                                                        
                                                 end if;
                                                 
