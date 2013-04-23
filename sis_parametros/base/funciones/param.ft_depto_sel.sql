@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_depto_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -59,7 +57,6 @@ BEGIN
           
           BEGIN
           v_filadd = '';
-         
           IF (pxp.f_existe_parametro(par_tabla,'id_subsistema')) THEN
           v_filadd = ' (DEPPTO.id_subsistema = ' ||v_parametros.id_subsistema||') and ';
           
@@ -71,59 +68,18 @@ BEGIN
           END IF;
           
           
-            IF (pxp.f_existe_parametro(par_tabla,'tipo_filtro')) THEN
-                
-                  IF v_parametros.tipo_filtro='DEP_EP-DEP_EP' THEN
-                    
-                  --TO DO,  filtra los deptor segun el cruce de las EP del v_parametros.id_depto  
-                  --este filtro es para intercambiar deptamentos de diferentes sistemas
-                  --ejm adquisiiones - tesoreia al habilitar pagos
-                  
-                  
-
-                  
-                  
-                   
-                  END IF;
-               
-            END IF;
+          /*IF   par_administrador != 1 THEN
           
+            select  
+                   pxp.aggarray(depu.id_depto)
+                into 
+                   va_id_depto
+               from param.tdepto_usuario depu 
+               where depu.id_usuario =  par_id_usuario; 
           
-          IF   par_administrador != 1 THEN
-          
-                
-          
-                IF (pxp.f_existe_parametro(par_tabla,'tipo_filtro')) THEN
-                
-                  IF v_parametros.tipo_filtro='DEPTO_UO' THEN
-                    --se agrega filtro si el usuario pertenece al depto
-                     select  
-                           pxp.aggarray(depu.id_depto)
-                        into 
-                           va_id_depto
-                       from param.tdepto_usuario depu 
-                       where depu.id_usuario =  par_id_usuario; 
-                  
-                       v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
-                  END IF;
-               
-               ELSE
-                
-                
-                
-                
-                --TO DO,  filtro de departamento por EP cuando  el usuario no es administrador
-               
-               
-                  -- obtener las ep del usuario en un array 
-                  
-                  
-               
-               END IF;
-           
+               v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
      
-     
-          END IF;
+          END IF;*/
           
           
           
@@ -186,37 +142,18 @@ BEGIN
           END IF;
           
           
-          IF   par_administrador != 1 THEN
+          /*IF   par_administrador != 1 THEN
           
-                
+                  select  
+                     pxp.aggarray(depu.id_depto)
+                  into 
+                     va_id_depto
+                 from param.tdepto_usuario depu 
+                 where depu.id_usuario =  par_id_usuario; 
+            
+              v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
           
-                IF (pxp.f_existe_parametro(par_tabla,'tipo_filtro')) THEN
-                
-                  IF v_parametros.tipo_filtro='DEPTO_UO' THEN
-                    --se agrega filtro si el usuario pertenece al depto
-                     select  
-                           pxp.aggarray(depu.id_depto)
-                        into 
-                           va_id_depto
-                       from param.tdepto_usuario depu 
-                       where depu.id_usuario =  par_id_usuario; 
-                  
-                       v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
-                  END IF;
-               
-               ELSE
-                --TO DO,  filtro de departamento por EP cuando  el usuario no es administrador
-               
-               
-                  -- obtener las ep del usuario en un array 
-                  
-                  
-               
-               END IF;
-           
-     
-     
-          END IF;
+          END IF;*/
           
           
                v_consulta:='SELECT
