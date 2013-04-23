@@ -449,21 +449,28 @@ Phx.CP=function(){
 				  html:' <a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:1px;margin-bottom:0px"/> </a>',
 				  border: false
 				  },
-				  '->',{xtype:'label',
+				  '->',{
+				  	xtype:'label',
 				  autoHeight:true,
 				  iconCls:'user_suit',
-				  //text:nombre
+				 
 				  html:'<div id="1rn" align="right"><font >Usuario: </font><font ><b>'+Phx.CP.config_ini.nombre_usuario+'</b></font></div>'
 				  },'-',
+				   {
+				  	xtype:'label',
+				    autoHeight:true,
+				    html:'<div id="2rn" align="right"></div>'
+				   },'-',
 				   {
 				            text: 'Cerrar sesion',
 				            icon: '../../../lib/images/exit.png',
 				            toolTip:'Cerrar sesion',
 				        
 				                handler: function() {
-				      window.location = '../../control/auten/cerrar.php';
+				            window.location = '../../control/auten/cerrar.php';
 				             }
-				         }
+				   }
+				   
 				  ]
 				},
 				menu,
@@ -493,7 +500,19 @@ Phx.CP=function(){
 			
 			this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
 			
-				
+			Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
+						function(resp){
+							
+							setTimeout(function(){
+								var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+	                            var _im ='../../../lib/imagenes/NoPerfilImage.jpg';
+	                            if(reg.datos[0].extension){
+	                            	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].id_persona+'.'+reg.datos[0].extension;
+	                            }
+	                             Ext.Element.get('2rn').createChild('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:0px"/> ');
+								 
+								},3000);
+						});
 		   	  
 			
 		},
@@ -612,25 +631,16 @@ Phx.CP=function(){
 			}
 			setTimeout(function(){
 				
-				if(Phx.CP.config_ini.nombre_usuario){
-					
-				   /*Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
-							function(resp){
-								
-								
-			                //Ext.Element.get('1rn').appendChild('<b>XXXXXXXXXXXXXXXXX</b>');
-			
-			        	   
-                                    var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-                                   console.log(reg)
-								});*/
-				
-				}			
+							
 				Ext.get('loading').remove();
 				Ext.get('loading-mask').fadeOut({remove:true});
 				if(Ext.get('_usu')){
 				  Ext.get('_usu').focus();
 				}
+				
+				
+				
+				
 			  }, 1000);
 
 		},

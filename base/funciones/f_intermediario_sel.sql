@@ -1,288 +1,136 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
+CREATE OR REPLACE FUNCTION pxp.f_verifica_permisos (
   par_id_usuario integer,
-  par_sid_web varchar,
-  par_pid_web integer,
-  par_ip varchar,
-  par_mac macaddr,
-  par_procedimiento varchar,
   par_transaccion varchar,
-  par_id_categoria integer,
-  ip_admin varchar [],
-  variables varchar [],
-  valores varchar [],
-  tipos varchar [],
-  tipo_retorno varchar = 'varchar'::character varying,
-  datos_retorno varchar = NULL::character varying
+  par_cod_gui varchar,
+  par_ip_admin varchar [],
+  par_ip varchar,
+  out po_administrador boolean,
+  out po_habilitar_log integer,
+  out po_tiene_permisos boolean,
+  out po_id_subsistema integer
 )
 RETURNS SETOF record AS
 $body$
-/**************************************************************************
- FUNCION: 		pxp.f_intermediario_sel
- DESCRIPCIÓN: 	Recibe las peticiones del servidor web y las encamina 
-  				hacia el procedimiento almacenado correspondiente
- AUTOR: 		KPLIAN (jrr)
- FECHA:			26/07/2010
- COMENTARIOS:	
-***************************************************************************
- HISTORIA DE MODIFICACIONES:
-
- DESCRIPCION:	Revison y documentacion
- AUTOR:			 KPLIAN (rac)
- FECHA:			 26-11-10
-***************************************************************************
+/***************************************************************************
  DESCRIPCION:	Valida si el usuario tiene permiso para ejecutar la transaccion
- AUTOR:			 KPLIAN (rac)
+ AUTOR:			 KPLIAN(jrr)
  FECHA:			 29-11-10
-****************************************************************************
- DESCRIPCION:	Agregar array de direcciones IP para uso administrativo
- AUTOR:			 KPLIAN (rac)
- FECHA:			 25-12-10
- ****************************************************************************
- DESCRIPCION:	Aumenta variable tipo retorno para definir se 
- 				la funcion regresa su resultado como consulta o como record
-                los record se utilizan cuando tenemos tablas temporales
- AUTOR:			 KPLIAN (rac)
- FECHA:			 19-03-12
 ***************************************************************************/
-
-DECLARE
- 
-v_consulta    varchar;
-v_secuencia   integer;
-v_tamano      integer;
-v_retorno     varchar;
-v_mensaje    text;
-v_mensaje_log   varchar;
-v_nombre_funcion    text;
-v_administrador     integer;
-
-v_id_log integer;
-v_resp_error record;
-v_administrador_bool boolean;
-v_tiene_permisos    boolean;
-v_habilitar_log     integer;
-v_database          varchar;
-v_resp				varchar;
-v_hora_ini          timestamp;
-v_hora_fin          timestamp;
-v_nivel_error    integer;
-v_tipo_error        varchar;
-v_id_subsistema     integer;
-v_id_subsistema_cade varchar;
-v_cadena_log        varchar;
-v_retorno_record record;
+declare
+    v_descripcion   varchar;
+begin
 
 
-
-BEGIN
-    v_nombre_funcion:='pxp.f_intermediario_sel';
-    v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
-    v_nivel_error=2;
-    v_hora_ini = clock_timestamp();
-    v_retorno='';
-    v_resp_error=pxp.f_ejecutar_dblink('('||pg_backend_pid()::varchar||',
-            '''||par_sid_web||''','||par_pid_web||','''||par_transaccion||''','''||par_procedimiento||''')'
-            ,'sesion');
+  -- 1) iniciamos los parametro
     
-    
-    --1) verifica si es administrador, si tiene permisos y si habilita el log
-       
-       
-       v_administrador = 0;
-       v_nivel_error=0;
-       v_resp=pxp.f_validar_bloqueos(par_id_usuario,par_ip);
-       v_nivel_error=1;
-       SELECT po_administrador,po_habilitar_log,po_tiene_permisos,po_id_subsistema
-           into v_administrador_bool,v_habilitar_log,v_tiene_permisos,v_id_subsistema
-       FROM pxp.f_verifica_permisos( par_id_usuario, par_transaccion, ''::varchar,ip_admin,par_ip::varchar);
-       v_nivel_error=2;
-       --raise exception 'permisos ->  %,%,%',v_tiene_permisos,v_habilitar_log,v_administrador_bool;
-    
+     po_administrador =FALSE; -- no es usuario administrador
+     po_tiene_permisos = FALSE;  --los habilitado por defecto
      
-      if(v_administrador_bool) THEN
-        v_administrador = 1;
-      END IF;
+  --2) verifica si es un usuario administrador, el administrador
+  --   tiene permiso para ejecutar todas las transacciones 
+  
+   if exists(select 1 from segu.tusuario_rol ur where id_usuario=par_id_usuario and id_rol=1 and estado_reg='activo')then
+       po_administrador:=true;
+       po_tiene_permisos=true;
        
-       
-      
+       --2.1) verificamos si la direccion IP del usuario administrador esta en la lista de los que pueden loguearse
+       --si la lista de IP es nula no se plica esta verificacion 
+       IF par_ip_admin is not null THEN
+          IF  not ( ARRAY[par_ip] <@ par_ip_admin ) THEN        
+               raise exception 'El usuario no tiene autorizacion para conectarse  desde %',par_ip;
+          END IF;
+       END IF;
+    end if;
     
-       
-    v_secuencia:=(nextval('pxp.parametro'));
+   -- 3) verifica si la transaccion se almacena en log
+   
+    select CASE  
+           WHEN p.habilita_log = 'no'THEN
+              0
+           ELSE
+              1
+           END,
+           p.descripcion,
+           f.id_subsistema
+    into po_habilitar_log,v_descripcion,po_id_subsistema
+    from segu.tprocedimiento p
+    inner join segu.tfuncion f
+        on(f.id_funcion=p.id_funcion)
+    where p.codigo = par_transaccion;
     
-    v_consulta:='create temporary table tt_parametros_'||v_secuencia||'(';
-    v_tamano:=array_upper(variables,1);
-    for i in 1..(v_tamano-1) loop
-        v_consulta:=v_consulta || variables[i] || ' ' || tipos[i] || ',';
-
-    end loop;
-     
-    v_consulta:=v_consulta || variables[v_tamano] || ' ' || tipos[v_tamano] || ') on commit drop';
-    
-    execute(v_consulta);
-    
-    v_consulta:='insert into tt_parametros_'||v_secuencia||' values(';
-    
-    for i in 1..(v_tamano-1) loop
-        if(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4')then
-            if(valores[i]='')then
-                v_consulta:=v_consulta || 'null' || ',';
-            else
-                v_consulta:=v_consulta || valores[i] || ',';
-            end if;
-        ELSE
-            v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
-        end if;
-
-    end loop;
-
-    if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4')then
-        if(valores[v_tamano]='')then
-            v_consulta:=v_consulta || 'null'|| ')';
-        else
-            v_consulta:=v_consulta || valores[v_tamano] || ')';
-        end if;
-    ELSE
-          v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') || ''')';
+    if(po_habilitar_log is null)then
+        po_habilitar_log=1;
     end if;
    
-    execute v_consulta;
-    
+     -- po_habilitar_log  = true;
   
-    -- raise notice 'pasa';
     
-   
-    --raise exception '%',v_retorno;
     
-    --raise exception 'aaaaaa: %',v_consulta;
-   
-    -- raise exception 'ES  SEL ';
-     
-     v_id_log=0;
-    -- raise notice 'XXXXXXXXXXXXXXX  :%',v_consulta;
-  	
-     v_mensaje:=pxp.f_get_mensaje_exi('Exito en la consulta',v_nombre_funcion,par_transaccion);
-    
-   /*
-   RAC 19032012
-   aumentamos el tipo de dato de retorno
-   para poder ejecutar consultar que retornan un tipo record
-   */ 
-    
-   
-   if(tipo_retorno='varchar')THEN
-   
-     v_consulta:='select ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''')';
-    
-   -- raise notice 'prueba:%',v_consulta;
-    execute v_consulta into v_retorno;
-    
+    --  4) si no es administrador verificamos si no es una trasaccion basica
+         -- (todos tienen permisos para ejecutar las basicas)
+         IF ((not po_tiene_permisos) and  (par_transaccion in  (
+            'SEG_SESION_INS',
+             'SEG_SESION_SEL',
+             'SEG_SESION_CONT',
+             'SEG_VALUSU_SEG',
+             'SEG_OBTEPRI_SEL',
+             'SEG_OBTEPRI_CONT',
+             'SEG_MENU_SEL',
+             'PM_ALARMCOR_SEL',
+             'PM_DESCCOR_MOD',
+             'PM_GENALA_INS',
+             'SEG_OPERFOT_SEL'))) THEN
+            po_tiene_permisos = true;
+         
+         END IF; 
+         
  
     
-     raise notice 'XXXXXXXXXXXXXXX  :%',v_consulta;
-    
-    --RAC  >>>> OJO me parece que este registro de LOG nunca se EJECUTA
-    v_hora_fin=clock_timestamp();
-    --raise exception 'gfdsgfsd: %',v_habilitar_log;
-        v_id_log:=pxp.f_registrar_log(par_id_usuario,
-    							par_ip,
-                                par_mac::varchar,
-                                'LOG_TRANSACCION',
-                                v_mensaje,
-                                par_procedimiento,
-                                par_transaccion,
-                                v_retorno,
-                                to_char((v_hora_fin-v_hora_ini),'MS')::integer,
-                                getpgusername()::varchar,
-                                NULL,
-                                pg_backend_pid(),
-                                par_sid_web,
-                                par_pid_web,
-                                v_id_subsistema,
-                                v_habilitar_log);
-                                
-                                
-     return query execute (v_retorno);                          
-                                
-     ELSE
-     
-     --en caso que el tipo de retorno sea un record
-     
-   -- execute v_consulta into v_retorno_record;
+    --5)  verifica si el usuario tiene permiso para ejecutar la transaccion
    
-     v_consulta:='select * from ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''') '||datos_retorno;
-    
-      raise notice 'CONSULTA %  ',v_consulta;
+    if (not po_tiene_permisos) THEN
      
-      for v_retorno_record in execute (v_consulta) LOOP
-          RETURN NEXT v_retorno_record;
-      END LOOP;
      
+     --5.1) si el usuario no es administrador verificamos 
+     --     si tiene permisos para ejecutar la transaccion 
     
-     END IF;
+           IF(    
+            		SELECT 1 
+                    FROM segu.tusuario_rol ur
+                    INNER JOIN  segu.trol_procedimiento_gui  rpg
+                      ON rpg.id_rol = ur.id_rol  and rpg.estado_reg = 'activo'
+                    INNER JOIN segu.tprocedimiento_gui pg
+                     ON  rpg.id_procedimiento_gui = pg.id_procedimiento_gui and pg.estado_reg = 'activo'
+                    INNER JOIN segu.tprocedimiento p 
+                     ON    p.id_procedimiento  = pg.id_procedimiento   and p.estado_reg = 'activo'
+                    WHERE ur.id_usuario=par_id_usuario 
+                       and  ur.estado_reg='activo' and
+                       (p.codigo = par_transaccion or p.codigo = replace(par_transaccion,'_CONT', '_SEL'))
+                       limit 1) THEN
+                    
+              
+              po_tiene_permisos = true;
+              
+           ELSE   
+           --en caso contrario arojamos el error de permiso denegado
+           
+              raise exception 'Permiso denegado para la transaccion :  %',par_transaccion;
+              
+           END IF;
+           
+   END IF;
+   
+   RETURN NEXT;
+   --RETURN;
 
-
-    EXCEPTION
-
-       WHEN OTHERS THEN
-       
-        v_resp='';
-        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-        v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-        v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','ERROR'::varchar);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-
-        
-         v_retorno:=replace(v_retorno,'''','''''');
-         
-         v_tipo_error='ERROR_TRANSACCION_BD';
-         if(v_nivel_error=0)then
-            v_tipo_error='ERROR_BLOQUEO';
-         elsif(v_nivel_error=1)then
-            v_tipo_error='ERROR_PERMISOS';
-         elsif (SQLSTATE='P0001')THEN
-            v_tipo_error='ERROR_CONTROLADO_BD';
-         end if;
-         
-         if(v_id_subsistema is null)then
-            v_id_subsistema_cade='null';
-         else
-            v_id_subsistema_cade=v_id_subsistema::varchar;
-         end if;
-
-         v_cadena_log='('||
-         		coalesce(par_id_usuario,0)||',''' ||
-                par_ip::varchar||''','''||
-             	par_mac::varchar||''','''||
-             	v_tipo_error ||''','''||
-                pxp.f_obtiene_clave_valor(v_resp,'mensaje','','','valor')||''','''||
-             	pxp.f_obtiene_clave_valor(v_resp,'procedimientos','','','valor')||''','''||
-                par_transaccion||''','''||
-                coalesce (v_retorno,' ')||''',NULL,''' ||
-                getpgusername()||''','''||
-                SQLSTATE||''','||
-                pg_backend_pid()||','''||
-                par_sid_web||''','||
-                par_pid_web||','||
-                v_id_subsistema_cade||
-                ',1)';
-
-		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa función da el resultado,
-        --por lo que se modifica para que devuelva un json direcamente
-         v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log');
-                
-         v_resp = pxp.f_agrega_clave(v_resp,'id_log',v_resp_error.id_log::varchar);
-         
-
-
-         raise exception '%',pxp.f_resp_to_json(v_resp);
-
-
-END;
+   
+   
+end;
 $body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
-SECURITY INVOKER
+SECURITY DEFINER
 COST 100 ROWS 1000;
