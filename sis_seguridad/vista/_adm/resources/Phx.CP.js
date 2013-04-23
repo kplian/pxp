@@ -493,6 +493,9 @@ Phx.CP=function(){
 			
 			this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
 			
+				
+		   	  
+			
 		},
 		//para capturar variables enviadas por get
 		
@@ -610,7 +613,18 @@ Phx.CP=function(){
 			setTimeout(function(){
 				
 				if(Phx.CP.config_ini.nombre_usuario){
-					//Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
+					
+				   /*Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
+							function(resp){
+								
+								
+			                //Ext.Element.get('1rn').appendChild('<b>XXXXXXXXXXXXXXXXX</b>');
+			
+			        	   
+                                    var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+                                   console.log(reg)
+								});*/
+				
 				}			
 				Ext.get('loading').remove();
 				Ext.get('loading-mask').fadeOut({remove:true});
@@ -683,6 +697,10 @@ Phx.CP=function(){
 			        		   Phx.CP.init();
 							   sw_auten=true;
 			        	   }
+			        	    
+			        	    
+			        	    //Ext.Element.get('1rn').appendChild('<img src="../../../lib/imagenes/kplian2.jpg"  style="margin-right:5px;margin-top:1px;margin-bottom:0px"/> ');
+				   
 			        	    form_login.setTitle("LOGIN");
 							Phx.CP.loadingHide();
 			        	  
@@ -702,6 +720,10 @@ Phx.CP=function(){
 							ajax.failure();
 
 						}
+						
+						
+						
+						
 
 					},
 					failure:function(form,action,resp){
@@ -818,6 +840,19 @@ Phx.CP=function(){
 				
 			}
 		},
+		
+		obtenerFotoPersona:function(id_usu,callback){
+			Ext.Ajax.request({
+                    url:'../../sis_seguridad/control/Persona/obtenerPersonaFoto',
+                    params:{'id_usuario':id_usu},
+                    success:callback,
+                    failure: this.conexionFailure,
+                    timeout:this.timeout,
+                    scope:this
+                }); 
+		},
+		
+		
 		//loadMask: new Ext.LoadMask(Ext.get('3rn'), {msg:"Espere por favor ...",modal:true,removeMask :true}),
 		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),
 		loadMask:new Ext.LoadMask(Ext.getBody(), { msg: "Espere por favor ..." }),
