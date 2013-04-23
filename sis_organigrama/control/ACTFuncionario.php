@@ -15,8 +15,9 @@ class ACTFuncionario extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");
-		
+		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");		
+				
+			
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);
@@ -44,15 +45,22 @@ class ACTFuncionario extends ACTbase{
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-		if($this->objParam->getParametro('id_uo')!=''){
-            $this->objParam->addFiltro("FUNCAR.id_uo = ".$this->objParam->getParametro('id_uo'));    
+		if($this->objParam->getParametro('id_funcionario')!=''){
+            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "''," . $this->objParam->getParametro('id_funcionario') . ")
+            														 AS (id_funcionario INTEGER))");    
         }
         
         if($this->objParam->getParametro('fecha')!=''){
             $this->objParam->addFiltro(" ( (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  >= ''".$this->objParam->getParametro('fecha')."'') or (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  is NULL))");    
         }
-        
 		
+		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
+			$this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * 
+										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $this->objParam->getParametro('fecha') . "'', " .
+																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
+		}
+		
+		        		
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

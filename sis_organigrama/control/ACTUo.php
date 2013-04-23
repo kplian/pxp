@@ -12,6 +12,12 @@ class ACTUo extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario1');
 		$this->objParam->defecto('dir_ordenacion','asc');
+		if ($this->objParam->getParametro('correspondencia') != '') {
+			$this->objParam->addFiltro("UO.correspondencia = ''".$this->objParam->getParametro('correspondencia')."''");  
+		}
+		if ($this->objParam->getParametro('id_funcionario_uo_presupuesta') != '') {
+			$this->objParam->addFiltro("UO.id_uo = orga.f_get_uo_presupuesta(NULL, ". $this->objParam->getParametro('id_funcionario_uo_presupuesta') .",''" . $this->objParam->getParametro('fecha') . "'')"); 
+		}
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

@@ -336,3 +336,10 @@ select pxp.f_insert_tprocedimiento ('PM_CONIG_SEL', 'Consulta de datos', 'si', '
 select pxp.f_insert_tprocedimiento ('PM_CONIG_CONT', 'Conteo de registros', 'si', '', '', 'param.f_concepto_ingas_sel');
 
 /***********************************F-DAT-GSS-PARAM-81-26/03/2013*****************************************/
+
+/***********************************I-DAT-JRR-PARAM-104-05/04/2013*****************************************/
+
+select pxp.f_insert_tgui ('Asistentes', 'Asistentes', 'ASI', 'si', 4, 'sis_parametros/vista/asistente/Asistente.php', 2, '', 'Asistente', 'PARAM');
+select pxp.f_insert_testructura_gui ('ASI', 'PARAM');
+
+/***********************************F-DAT-JRR-PARAM-104-05/04/2013*****************************************/

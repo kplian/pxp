@@ -1,0 +1,58 @@
+CREATE OR REPLACE FUNCTION orga.f_get_uo_presupuesta (
+  par_id_uo integer,
+  par_id_funcionario integer,
+  par_fecha date
+)
+RETURNS integer AS
+$body$
+DECLARE
+  	v_resp		            varchar;
+	v_nombre_funcion        text;
+	v_mensaje_error         text;
+    v_consulta				text;
+    v_id_uo					integer;
+    v_presupuesta			varchar;
+BEGIN
+  	v_nombre_funcion = 'orga.f_get_uo_presupuesta';
+    if (par_id_uo is not null) then
+    	select euo.id_uo_padre, uo.presupuesta
+        into v_id_uo, v_presupuesta
+        from orga.tuo uo
+        inner join orga.testructura_uo euo
+        	on euo.id_uo_hijo = uo.id_uo
+        where euo.id_uo_hijo = par_id_uo;
+        
+        if (v_presupuesta = 'si') then
+        	return par_id_uo;
+        else
+        	return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL); 
+        end if;
+    
+    else
+    	select funuo.id_uo into v_id_uo
+        from orga.tuo_funcionario funuo
+        where funuo.estado_reg = 'activo' and funuo.id_funcionario = par_id_funcionario and
+        	funuo.fecha_asignacion <= par_fecha and (funuo.fecha_finalizacion is null or funuo.fecha_finalizacion >= par_fecha);
+            
+        return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL);
+    end if;
+    
+           
+                     
+               
+EXCEPTION
+				
+	WHEN OTHERS THEN
+		v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp;
+				        
+END;
+$body$
+LANGUAGE 'plpgsql'
+STABLE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

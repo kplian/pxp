@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		orga.ft_funcionario_sel
@@ -31,6 +30,7 @@ v_nombre_funcion   text;
 v_mensaje_error    text;
 v_resp             varchar;
 v_filadd           varchar;
+v_id_funcionario	integer;
 
 
 BEGIN
@@ -77,7 +77,9 @@ BEGIN
                             WHERE ';
                
                
-               v_consulta:=v_consulta||v_parametros.filtro;
+               
+               v_consulta := v_consulta || v_parametros.filtro;
+               
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
                return v_consulta;
@@ -137,7 +139,7 @@ BEGIN
                             FUNCAR.codigo,
                             FUNCAR.email_empresa,
                             FUNCAR.estado_reg_fun,
-                            FUNCAR.estado_reg_asi,
+                            FUNCAR.estado_reg_asi
                             FROM orga.vfuncionario_cargo FUNCAR 
                             WHERE '||v_filadd;
                
@@ -196,7 +198,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_uo_funcionario_ime (OID = 304959) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
