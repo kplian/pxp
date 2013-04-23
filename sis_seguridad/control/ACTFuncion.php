@@ -69,7 +69,10 @@ class ACTFuncion extends ACTbase{
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=$this->create('MODFuncion');	
 		$this->res=$this->objFunSeguridad->sincFunciones($this->objParam);
-		
+		if($this->res->getTipo() == "ERROR") {
+		    $this->res->imprimirRespuesta($this->res->generarJson());
+            exit();
+		}
 		$this->objParam->setTipoTran('SEL');
 		//despues de sincronizar las funciones obtiene un listado de los metaprocesos que se muestran en el arbol
 		$this->objFunSeguridad=$this->create('MODGui');
