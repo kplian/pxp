@@ -337,6 +337,14 @@ select pxp.f_insert_tprocedimiento ('PM_CONIG_CONT', 'Conteo de registros', 'si'
 
 /***********************************F-DAT-GSS-PARAM-81-26/03/2013*****************************************/
 
+
+/***********************************I-DAT-JRR-PARAM-104-05/04/2013*****************************************/
+
+select pxp.f_insert_tgui ('Asistentes', 'Asistentes', 'ASI', 'si', 4, 'sis_parametros/vista/asistente/Asistente.php', 2, '', 'Asistente', 'PARAM');
+select pxp.f_insert_testructura_gui ('ASI', 'PARAM');
+
+/***********************************F-DAT-JRR-PARAM-104-05/04/2013*****************************************/
+
 /***********************************I-DAT-RCM-PARAM-85-03/04/2013*****************************************/
 select pxp.f_insert_tgui ('Documentos Fiscales', 'Listado de todos los Documentos fiscales', 'DF', 'si', 11, 'sis_parametros/vista/documento_fiscal/DocumentoFiscal.php', 2, '', 'DocumentoFiscal', 'PARAM');
 select pxp.f_insert_testructura_gui ('DF', 'PARAM');
@@ -351,4 +359,3 @@ select pxp.f_insert_tgui ('Plantillas', 'Plantillas', 'PLANT', 'si', 1, 'sis_par
 select pxp.f_insert_testructura_gui ('PLANT', 'PARAM');
 
 /***********************************F-DAT-RCM-PARAM-85-05/04/2013*****************************************/
-

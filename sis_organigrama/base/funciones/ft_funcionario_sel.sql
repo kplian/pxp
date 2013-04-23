@@ -32,6 +32,7 @@ v_nombre_funcion   text;
 v_mensaje_error    text;
 v_resp             varchar;
 v_filadd           varchar;
+v_id_funcionario	integer;
 
 
 BEGIN
@@ -78,7 +79,9 @@ BEGIN
                             WHERE ';
                
                
-               v_consulta:=v_consulta||v_parametros.filtro;
+               
+               v_consulta := v_consulta || v_parametros.filtro;
+               
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
                return v_consulta;

@@ -512,6 +512,25 @@ ALTER TABLE param.tperiodo_subsistema
     NOT DEFERRABLE;
 /***********************************F-DEP-AAO-PARAM-62-19/03/2013*****************************************/
 
+
+/***********************************I-DEP-JRR-PARAM-104-04/04/2013****************************************/
+
+ALTER TABLE param.tasistente
+  ADD CONSTRAINT fk_tasistente__id_uo FOREIGN KEY (id_uo)
+    REFERENCES orga.tuo(id_uo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+ALTER TABLE param.tasistente
+  ADD CONSTRAINT fk_tasistente__id_funcionario FOREIGN KEY (id_funcionario)
+    REFERENCES orga.tfuncionario(id_funcionario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/***********************************F-DEP-JRR-PARAM-104-04/04/2013****************************************/
+
 /***********************************I-DEP-RCM-PARAM-85-03/04/2013*****************************************/
 alter table param.tdocumento_fiscal
 add constraint fk_tdocumento_fiscal__id_plantilla foreign key (id_plantilla)

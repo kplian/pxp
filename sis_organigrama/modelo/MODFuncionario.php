@@ -19,6 +19,7 @@ class MODFuncionario extends MODbase{
 		$this->transaccion='RH_FUNCIO_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
+			
 		//Definicion de la lista del resultado del query
 	
 		//defino varialbes que se captran como retornod e la funcion
@@ -61,6 +62,7 @@ class MODFuncionario extends MODbase{
 		//ENVIA ESTAS VARIALBES PARA EL FILTRO
 		$this->setParametro('estado_reg_fun','estado_reg_fun','varchar');
 		$this->setParametro('estado_reg_asi','estado_reg_asi','varchar');
+		
 	
 		$this->captura('id_uo_funcionario','integer');
 		$this->captura('id_funcionario','integer');

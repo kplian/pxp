@@ -578,6 +578,19 @@ ALTER TABLE param.tperiodo_subsistema
   OWNER TO postgres;
 /***********************************F-SCP-AAO-PARAM-62-19/03/2013*****************************************/
 
+
+/***********************************I-SCP-JRR-PARAM-104-04/04/2013****************************************/
+
+CREATE TABLE param.tasistente (
+  id_asistente SERIAL NOT NULL, 
+  id_uo INTEGER NOT NULL, 
+  id_funcionario INTEGER NOT NULL, 
+  PRIMARY KEY(id_asistente)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/***********************************F-SCP-JRR-PARAM-104-04/04/2013****************************************/
+
 /***********************************I-SCP-GSS-PARAM-84-01/04/2013****************************************/
 CREATE TABLE param.tplantilla (
   id_plantilla SERIAL,  
@@ -635,6 +648,4 @@ id_ep integer,
 PRIMARY KEY(id_grupo_ep)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-RAC-PARAM-0-22/04/2013*****************************************/
-
-
 
