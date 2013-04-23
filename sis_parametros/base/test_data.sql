@@ -56,13 +56,13 @@ VALUES (1, NULL, E'2012-12-29 12:56:05.859', NULL, E'activo', 6, E'SERV-04', E'S
 /*MONEDAS*/
 
 /* Data for the 'param.tmoneda' table  (Records 1 - 2) */
-
+/*
 INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "moneda", "codigo", "tipo_moneda", "prioridad", "tipo_actualizacion", "origen")
 VALUES (1, NULL, E'2012-11-08 00:00:00', E'2012-11-08 12:07:11.620', E'activo', E'Dólares Americanos', E'USD', NULL, NULL, NULL, NULL);
 
 INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "moneda", "codigo", "tipo_moneda", "prioridad", "tipo_actualizacion", "origen")
 VALUES (1, 1, E'2012-11-08 00:00:00', E'2013-03-20 10:44:33.277', E'activo', E'Bolivianos', E'Bs', E'base', NULL, E'', E'');
-
+*/
 -------------------------------------
 -- ESTRUCTURA PROGRAMATICA
 -------------------------------

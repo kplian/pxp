@@ -359,3 +359,12 @@ select pxp.f_insert_tgui ('Plantillas', 'Plantillas', 'PLANT', 'si', 1, 'sis_par
 select pxp.f_insert_testructura_gui ('PLANT', 'PARAM');
 
 /***********************************F-DAT-RCM-PARAM-85-05/04/2013*****************************************/
+
+/***********************************I-DAT-GSS-PARAM-101-22/04/2013*****************************************/
+
+select pxp.f_insert_tfuncion ('param.f_plantilla_sel', 'Funcion para tabla     ', 'PARAM');
+
+select pxp.f_insert_tprocedimiento ('PM_PLT_CONT', 'Conteo de registros', 'si', '', '', 'param.f_plantilla_sel');
+select pxp.f_insert_tprocedimiento ('PM_PLT_SEL', 'Consulta de datos', 'si', '', '', 'param.f_plantilla_sel');
+
+/***********************************F-DAT-GSS-PARAM-101-22/04/2013*****************************************/
