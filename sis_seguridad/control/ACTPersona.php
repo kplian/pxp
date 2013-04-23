@@ -63,6 +63,33 @@ class ACTPersona extends ACTbase{
 		
 	}
 	
+	function obtenerPersonaFoto(){
+
+        //el objeto objParam contiene todas la variables recibidad desde la interfaz
+        
+        // parametros de ordenacion por defecto
+        $this->objParam->defecto('ordenacion','ap_paterno');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        
+        //crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+        if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte=new Reporte($this->objParam,$this);
+            $this->res=$this->objReporte->generarReporteListado('MODPersona','obtenerPersonaFoto');
+        }
+        else {
+            $this->objFunSeguridad = $this->create('MODPersona');
+            //ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
+            $this->res=$this->objFunSeguridad->obtenerPersonaFoto();
+            
+        }
+        
+        //imprime respuesta en formato JSON para enviar lo a la interface (vista)
+        $this->res->imprimirRespuesta($this->res->generarJson());
+        
+        
+        
+    }
+	
 	function guardarPersona(){
 			
 		$this->objFunSeguridad = $this->create('MODPersona');

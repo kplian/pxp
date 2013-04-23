@@ -1,16 +1,16 @@
 <?php
 /**
 **********************************************************
-Nombre de archivo:	    ActionArmafoto.php
-Propósito:				impirme fotos a partir de un archivo temporal
-Tabla:					tad_tad_cotizacion_det
-Parámetros:				$nombre
-						
+Nombre de archivo:      ActionArmafoto.php
+PropÃ³sito:              impirme fotos a partir de un archivo temporal
+Tabla:                  tad_tad_cotizacion_det
+ParÃ¡metros:             $nombre
+                        
 
-Valores de Retorno:    	Número de registros guardados
-Fecha de Creación:		2008-05-28 17:32:13
-Versión:				1.0.0
-Autor:					Rensi Arteaga Copari
+Valores de Retorno:     NÃºmero de registros guardados
+Fecha de CreaciÃ³n:      2008-05-28 17:32:13
+VersiÃ³n:                1.0.0
+Autor:                  Rensi Arteaga Copari
 **********************************************************
 */
 session_start();

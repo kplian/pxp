@@ -3,7 +3,7 @@
  Nombre: 	MODPersona.php
  Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas 
  a la tabla tpersona del esquema SEGU
- Autor:		Kplian
+ Autor:		Kplian    
  Fecha:		04/06/2011
  */ 
 class MODPersona extends MODbase{
@@ -11,7 +11,7 @@ class MODPersona extends MODbase{
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
 		
-	}
+	} 
 	
 	function listarPersona(){
 		//Definicion de variables para ejecucion del procedimiento
@@ -70,11 +70,12 @@ class MODPersona extends MODbase{
 		$this->captura('celular2','varchar');
 		$this->captura('extension','varchar');
 		//nombre varialbe de envio, tipo dato, columna que serra el nombre foto retorno, ruta para guardar archivo, crear miniatura, almacenar en sesion, nombre variale sesion			
+		
 		$this->captura('foto','bytea','id_persona','extension','sesion','foto');
 		//$this->captura('foto','bytea','id_persona','extension','archivo','../../sis_seguridad/control/foto_persona/');
 		//$this->captura('foto','bytea','id_persona','extension','archivo','./');
 		
-		
+		 
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -82,6 +83,32 @@ class MODPersona extends MODbase{
 		return $this->respuesta;
 
 	}
+	
+	function obtenerPersonaFoto(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='segu.ft_persona_sel';// nombre procedimiento almacenado
+        $this->transaccion='SEG_OPERFOT_SEL';//nombre de la transaccion
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        
+        
+        $this->setParametro('id_usuario','id_usuario','integer');
+        //defino varialbes que se captran como retornod e la funcion
+        $this->captura('id_personaa','integer');
+        $this->captura('extension','varchar');
+        //nombre varialbe de envio, tipo dato, columna que serra el nombre foto retorno, ruta para guardar archivo, crear miniatura, almacenar en sesion, nombre variale sesion         
+       // $this->captura('foto','bytea','id_persona','extension','sesion','foto');
+        $this->captura('foto','bytea','id_persona','extension','archivo','../../sis_seguridad/control/foto_persona/');
+        //$this->captura('foto','bytea','id_persona','extension','archivo','./');
+        
+        
+        //Ejecuta la funcion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        return $this->respuesta;
+
+    }
 	
 	
 	function insertarPersona(){

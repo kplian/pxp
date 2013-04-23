@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_persona_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_persona_sel
@@ -145,7 +146,30 @@ BEGIN
 
 
          END;    
+/*******************************
+ #TRANSACCION:  SEG_OPERFOT_SEL
+ #DESCRIPCION:	Selecciona Personas + fotografia
+ #AUTOR:		KPLIAN(rac)	
+ #FECHA:		23/04/13	
+***********************************/
+     elsif(par_transaccion='SEG_OPERFOT_SEL')then
 
+          --  Se arma la consulta de personas
+          BEGIN
+          
+               v_consulta:='SELECT p.id_persona,
+                             p.extension,
+                             p.foto
+                          FROM segu.tpersona p 
+                          inner join segu.tusuario u on u.id_persona = p.id_persona    
+                          WHERE u.id_usuario='||v_parametros.id_usuario;
+             
+                raise notice '%',v_consulta;
+               
+                return v_consulta;
+
+
+         END;    
 
 /*******************************
  #TRANSACCION:  SEG_PERSONMIN_CONT
@@ -183,7 +207,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_primo_sel (OID = 305078) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
