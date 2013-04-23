@@ -62,7 +62,7 @@ BEGIN
     inner join wf.testado_wf ew  on ew.id_tipo_estado = te.id_tipo_estado
     where ew.id_estado_wf = p_id_estado_wf_dis;
     
-    
+    ---raise exception 'rrrrrrrrrrr  %',v_id_tipo_estado_prev;
         
     select
      tp.id_tipo_proceso
@@ -88,7 +88,9 @@ BEGIN
      from wf.ttipo_estado te
      where te.id_tipo_proceso = v_id_tipo_proceso_next and te.inicio ='si'; 
      
-     
+     if v_id_tipo_estado_next is NULL THEN
+           raise exception 'El WF esta mal parametrizado verifique a que tipo_proceso apunto el tipo_estado previo';
+     END IF;
      --recupera el numero de tramite
     
       select 

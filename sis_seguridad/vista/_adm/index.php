@@ -126,6 +126,8 @@ if(!isset($_SESSION["_SESION"])){
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>    
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboRec.js'></script>   
     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboMultiple.js'></script>  
+     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>   
+   
     <script type="text/javascript" src="../../../lib/ext3/TabCloseMenu.js"></script>
     <script type="text/javascript" charset="UTF-8" src="resources/Phx.CP.js"></script>
     <?php
@@ -142,15 +144,14 @@ if(!isset($_SESSION["_SESION"])){
      
      <script type="text/javascript" src="../../../lib/ux/ColumnHeaderGroup.js"></script>
       
-     
-  <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
-    <div id="header">
-	<a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg" style="float:right;margin-right:0px;margin-top:0px;"/></a>
-  	
-   <img src="../../../lib/images/postgres.gif"  style="margin-left:5px;margin-top:2px;"/>	
-   </div>
+      
+    <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-lang-es.js"></script>
+    
+ 
 
-   
+  <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
+  
+
   <div id="classes"></div>
   <div id="main"></div>
   <div id="x-tab">

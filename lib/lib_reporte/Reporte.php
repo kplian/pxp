@@ -10,6 +10,7 @@ class Reporte
 	protected $orientacion_hoja;
 	protected $titulo='sin_titulo'; //Variable que contendrá el título del reporte
 	protected $control;
+	protected $swNumeracion='si';
 
 	/**
 	 * Nombre funcion:	__construct
@@ -46,9 +47,7 @@ class Reporte
 			$this->objParam->addParametro('tamano','Letter');
 			$this->objParam->addParametro('nombre_archivo',$this->nombreArchivo);
 			$this->objParam->addParametro('titulo_archivo',"Exportacion de ".$this->titulo);
-			$this->objParam->addParametro('tipoReporte',$this->objParam->getParametro('tipoReporte'));
-			$this->objParam->addParametro('codSistema',$this->objParam->getParametro('codSistema'));
-			$this->objParam->addParametro('codReporte',$this->objParam->getParametro('codReporte'));
+
 			//Instancia la clase de pdf
 			$this->objReporteFormato=new ReportePDF($this->objParam);
 			
@@ -111,8 +110,17 @@ class Reporte
 		if($this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporteFormato->imprimirColsGrid();
 		}
-			
-		$this->objReporteFormato->addTabla($this->res->getDatos());
+		
+		$intNro=1;
+		$arrTmp=$this->res->getDatos();
+		if($this->swNumeracion=='si'){
+			for($i=0;$i<count($arrTmp);$i++){
+				$arrTmp[$i]['nro']=$intNro;
+				$intNro++;
+				//var_dump($rec);
+			}
+		}
+		$this->objReporteFormato->addTabla($arrTmp);
 
 		while($cantidad_registros > $puntero){
 			
@@ -123,7 +131,16 @@ class Reporte
 				return $this->res;
 			}
 			
-			$this->objReporteFormato->addTabla($this->res->getDatos());
+			$arrTmp=$this->res->getDatos();
+			if($this->swNumeracion=='si'){
+				for($i=0;$i<count($arrTmp);$i++){
+					$arrTmp[$i]['nro']=$intNro;
+					$intNro++;
+					//var_dump($rec);
+				}
+			}
+			
+			$this->objReporteFormato->addTabla($arrTmp);
 			
 			$puntero=$puntero+$_SESSION['cantidad_reportes'];
 		}

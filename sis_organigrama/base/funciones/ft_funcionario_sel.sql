@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,

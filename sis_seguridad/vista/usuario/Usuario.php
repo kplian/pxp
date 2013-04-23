@@ -386,12 +386,22 @@ tabEnter:true,
 	bdel:true,// boton para eliminar
 	bsave:true,// boton para eliminar
 
-	east:{
-		  url:'../../../sis_seguridad/vista/usuario_rol/UsuarioRol.php',
-		  title:'Roles', 
-		  width:400,
-		  cls:'usuario_rol'
-		 }
+	
+    tabeast:[
+         {
+          url:'../../../sis_seguridad/vista/usuario_rol/UsuarioRol.php',
+          title:'Roles', 
+          width:400,
+          cls:'usuario_rol'
+         }
+          ,
+          {
+          url:'../../../sis_seguridad/vista/usuario_grupo_ep/UsuarioGrupoEp.php',
+          title:'EP\'', 
+          width:400,
+          cls:'UsuarioGrupoEp'    
+          }
+        ],
 	
 
 		  

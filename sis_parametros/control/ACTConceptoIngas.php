@@ -24,6 +24,11 @@ class ACTConceptoIngas extends ACTbase{
                  }
         }
         
+         if($this->objParam->getParametro('movimiento')!=''){
+              $this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
+         }
+        
+        
 		
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

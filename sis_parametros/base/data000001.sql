@@ -85,7 +85,7 @@ select pxp.f_insert_tfuncion ('param.ft_documento_ime', 'Funcion para tabla     
 select pxp.f_insert_tfuncion ('param.ft_institucion_ime', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.ft_periodo_ime', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.ft_gestion_sel', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('param.ft_moneda_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_moneda_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.ft_dispara_alarma_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_inserta_alarma', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_obtener_correlativo', 'Funcion para tabla     ', 'PARAM');
@@ -96,7 +96,7 @@ select pxp.f_insert_tfuncion ('param.ft_alarma_ime', 'Funcion para tabla     ', 
 select pxp.f_insert_tfuncion ('param.ft_alarma_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.ft_lugar_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_obtener_padre_lugar', 'Funcion para tabla     ', 'PARAM');
-select pxp.f_insert_tfuncion ('param.ft_moneda_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.f_moneda_ime', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_tdepto_usuario_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_financiador_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.f_financiador_ime', 'Funcion para tabla     ', 'PARAM');
@@ -120,8 +120,8 @@ select pxp.f_insert_tprocedimiento ('PM_PERIOD_MOD', 'Modifica la periodo selecc
 select pxp.f_insert_tprocedimiento ('PM_PERIOD_ELI', 'Inactiva la periodo selecionada', 'si', '', '', 'param.ft_periodo_ime');
 select pxp.f_insert_tprocedimiento ('PM_GESTIO_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_gestion_sel');
 select pxp.f_insert_tprocedimiento ('PM_GESTIO_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_gestion_sel');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_moneda_sel');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_moneda_sel');
+select pxp.f_insert_tprocedimiento ('PM_MONEDA_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.f_moneda_sel');
+select pxp.f_insert_tprocedimiento ('PM_MONEDA_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.f_moneda_sel');
 select pxp.f_insert_tprocedimiento ('PM_DISALARM_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_dispara_alarma_sel');
 select pxp.f_insert_tprocedimiento ('PM_DISALARM_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_dispara_alarma_sel');
 select pxp.f_insert_tprocedimiento ('PM_PROVEE_SEL', 'Consulta de datos', 'si', '', '', 'param.f_tproveedor_sel');
@@ -143,9 +143,9 @@ select pxp.f_insert_tprocedimiento ('PM_ALARM_PEND', 'Cuenta cuantas alarmas tie
 select pxp.f_insert_tprocedimiento ('PM_LUG_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_lugar_sel');
 select pxp.f_insert_tprocedimiento ('PM_LUG_ARB_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_lugar_sel');
 select pxp.f_insert_tprocedimiento ('PM_LUG_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_lugar_sel');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_INS', 'Inserta Funciones', 'si', '', '', 'param.ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_MOD', 'Modifica la moneda seleccionada', 'si', '', '', 'param.ft_moneda_ime');
-select pxp.f_insert_tprocedimiento ('PM_MONEDA_ELI', 'Inactiva la moneda selecionada', 'si', '', '', 'param.ft_moneda_ime');
+select pxp.f_insert_tprocedimiento ('PM_MONEDA_INS', 'Inserta Funciones', 'si', '', '', 'param.f_moneda_ime');
+select pxp.f_insert_tprocedimiento ('PM_MONEDA_MOD', 'Modifica la moneda seleccionada', 'si', '', '', 'param.f_moneda_ime');
+select pxp.f_insert_tprocedimiento ('PM_MONEDA_ELI', 'Inactiva la moneda selecionada', 'si', '', '', 'param.f_moneda_ime');
 select pxp.f_insert_tprocedimiento ('PM_DEPUSU_SEL', 'Consulta de datos', 'si', '', '', 'param.f_tdepto_usuario_sel');
 select pxp.f_insert_tprocedimiento ('PM_DEPUSU_CONT', 'Conteo de registros', 'si', '', '', 'param.f_tdepto_usuario_sel');
 select pxp.f_insert_tprocedimiento ('PM_DEPUSU_INS', 'Insercion de registros', 'si', '', '', 'param.f_tdepto_usuario_ime');
@@ -337,9 +337,25 @@ select pxp.f_insert_tprocedimiento ('PM_CONIG_CONT', 'Conteo de registros', 'si'
 
 /***********************************F-DAT-GSS-PARAM-81-26/03/2013*****************************************/
 
+
 /***********************************I-DAT-JRR-PARAM-104-05/04/2013*****************************************/
 
 select pxp.f_insert_tgui ('Asistentes', 'Asistentes', 'ASI', 'si', 4, 'sis_parametros/vista/asistente/Asistente.php', 2, '', 'Asistente', 'PARAM');
 select pxp.f_insert_testructura_gui ('ASI', 'PARAM');
 
 /***********************************F-DAT-JRR-PARAM-104-05/04/2013*****************************************/
+
+/***********************************I-DAT-RCM-PARAM-85-03/04/2013*****************************************/
+select pxp.f_insert_tgui ('Documentos Fiscales', 'Listado de todos los Documentos fiscales', 'DF', 'si', 11, 'sis_parametros/vista/documento_fiscal/DocumentoFiscal.php', 2, '', 'DocumentoFiscal', 'PARAM');
+select pxp.f_insert_testructura_gui ('DF', 'PARAM');
+/***********************************F-DAT-RCM-PARAM-85-03/04/2013*****************************************/
+
+
+/***********************************I-DAT-RCM-PARAM-85-05/04/2013*****************************************/
+select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Incompleto');
+select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Completo');
+select pxp.f_add_catalog('PARAM','tdocumento_fiscal__estado','Anulado');
+select pxp.f_insert_tgui ('Plantillas', 'Plantillas', 'PLANT', 'si', 1, 'sis_parametros/vista/plantilla/Plantilla.php', 2, '', 'Plantilla', 'PARAM');
+select pxp.f_insert_testructura_gui ('PLANT', 'PARAM');
+
+/***********************************F-DAT-RCM-PARAM-85-05/04/2013*****************************************/

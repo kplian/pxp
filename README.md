@@ -11,13 +11,20 @@ TO USE IT BY FIRST TIME:
 
 3. Create a empty database for your project 
 4. You must create soft-links inside your project root folder to: 
-    * lib                     ln -s pxp/lib lib  (execute inside your project root folder) 
-    * index.php               ln -s pxp/index.php index.php  (execute inside your project root folder)
-    * sis_seguridad           ln -s pxp/sis_seguridad sis_seguridad  (execute inside your project root folder)
-    * sis_generador           ln -s pxp/sis_generador sis_generador  (execute inside your project root folder)
-    * sis_parametros          ln -s pxp/sis_parametros sis_parametros  (execute inside your project root folder)
-    * sis_organigrama         ln -s pxp/sis_organigrama sis_organigrama  (execute inside your project root folder)
-    * sis_workflow	      ln -s pxp/sis_workflow sis_workflow (execute inside your project root folder)
+    * lib                     
+    ln -s pxp/lib lib  (execute inside your project root folder) 
+    * index.php               
+    ln -s pxp/index.php index.php  (execute inside your project root folder)
+    * sis_seguridad           
+    ln -s pxp/sis_seguridad sis_seguridad  (execute inside your project root folder)
+    * sis_generador           
+    ln -s pxp/sis_generador sis_generador  (execute inside your project root folder)
+    * sis_parametros          
+    ln -s pxp/sis_parametros sis_parametros  (execute inside your project root folder)
+    * sis_organigrama
+    ln -s pxp/sis_organigrama sis_organigrama  (execute inside your project root folder)
+    * sis_workflow
+    ln -s pxp/sis_workflow sis_workflow (execute inside your project root folder)
 
    All these folders and files are inside pxp.
 5. Create a folder named "reportes_generados" inside your project root folder with write access for Apache user.
@@ -40,6 +47,20 @@ TO USE IT BY FIRST TIME:
 	    $_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
         ...   
 
+7.1. Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
+
+
+        local	all		postgres, dbweb_conexion 		trust
+
+
+7.2. Restart postgres service
+	
+        /etc/init.d/postgresql-9.1 restart
+or
+
+
+
+        service postgresql-9.1 restart
 
 8. You can use the framework now!!! (user:admin, password:admin)
 
@@ -52,12 +73,16 @@ TO CREATE A NEW SYSTEM:
     * base
       * funciones
       * schema.sql
-      * patch000001.sql.
-      * patch000002.sql.
-      * patch00xxxx.sql.
+      * data000001.sql
+      * dependencies000001.sql
+      * patch000001.sql
+      * test_data.sql
 
   The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
-  for the system. All the patch files contains the scripts to generate the database objects for the system.
+  for the system. All the patch files contains the scripts to generate the database objects for the system. for example "schema.sql"
+  
+          DROP SCHEMA IF EXISTS nut CASCADE;
+          CREATE SCHEMA nut AUTHORIZATION postgres;
 
 2. Create or update a file named "sistemas.txt" inside your project root folder wich contains the path for every system of your project.Eg:
   "../../../sis_mantenimiento/"
@@ -68,6 +93,17 @@ TO UPDATE THE DATABASE ON PULL OR MERGE:
 * After pull the code is updated, the database changes are  not updated yet, but it's possible update executing:
 
   pxp/utilidades/restaurar_db/restaurar_todo.py
+
+
+
+
+
+
+
+
+
+
+
 
 
 

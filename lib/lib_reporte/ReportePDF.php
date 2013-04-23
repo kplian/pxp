@@ -57,6 +57,9 @@ class ReportePDF extends TCPDF
 	
 	protected $tipoReporte;//pdf_grid, pdf
 	
+	protected $arrNumeracion=array();
+	protected $swNumeracion='si';
+	
 	/**
 	 * Nombre funcion:	ReportePDF
 	 * Proposito:		Constructor de la Función genérica de ReportePDF (Define el nombre del archivo, titulo, cabecera derecha y logo y pie)
@@ -108,6 +111,9 @@ class ReportePDF extends TCPDF
 
 		//set image scale factor
 		$this->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		
+		//Inicializa el array para numeración de columnas
+		$this->arrNumeracion=array('label' => 'Nro.', 'name' => 'nro','width'=> '65','type'=> 'Field');
 	}
 	
 		
@@ -238,6 +244,44 @@ class ReportePDF extends TCPDF
 			
 			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
 			
+			if($this->objParam->getParametro('maestro')!=''){
+				//var_dump($this->objParam->getParametro('maestro'));exit;
+//				var_dump($this->aMaestroEtiquetas);exit;
+				/*$arr=array();
+				$arrMas=array();
+				$arrMasEt=array();
+				$arr=$this->_json_decode($this->objParam->getParametro('maestro'),true);
+				foreach ($arr as $key)  {
+					array_push($arrMasEt,$key['label']);
+					array_push($arrMas,$key['value']);
+				}
+				
+				$this->setMaestroEtiquetas($arrMasEt);
+				$this->setAnchoMaestroEtiquetas(15);
+				$this->setMaestroLC(array($arrMas));
+				$this->setmaestroBloqueCant(2);
+				$this->setMaestroBloqueAncho(array(50,50));
+				$this->renderMaestro();*/
+				
+				
+
+/*				for($i=0;$i<count($arr);$i++){
+					array_push($this->aMaestroEtiquetas,$arr[$i]['label']);
+				}*/
+				//var_dump($this->aMaestro);
+				/*$aux=$this->objParam->_json_decode($this->objParam->getParametro('maestro'));
+				$this->Ln();
+				for ($i=0;$i<count($aux);$i++){
+					$this->Cell(0, 10, $aux[$i]['label'].': ', 0, 2, 'C', 0, '', 0, false, 'C', 'C');
+					$this->Cell(150, 10, $aux[$i]['value'], 0, 2, 'C', 0, '', 1, false, 'C', 'C');
+					//var_dump ($aux[$i]);exit;
+				}*/
+				/*$this->maestroTipoEtiquetas='vertical';
+				$this->aMaestroEtiquetas=$this->objParam->getParametro('maestro');
+				$this->renderMaestro();*/
+				
+			}
+			
 
 		} else if($this->orientacion=='L'){
 			if($this->alinearCabecera=='L'){
@@ -246,6 +290,16 @@ class ReportePDF extends TCPDF
 				$align=230;
 			}
 			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
+			
+			if($this->objParam->getParametro('maestro')!=''){
+				/*$aux=$this->objParam->_json_decode($this->objParam->getParametro('maestro'));
+				$this->Ln();
+				for ($i=0;$i<count($aux);$i++){
+					$this->Cell(0, 10, $aux[$i]['label'].': ', 0, 2, 'C', 0, '', 0, false, 'C', 'C');
+					$this->Cell(150, 10, $aux[$i]['value'], 0, 2, 'C', 0, '', 1, false, 'C', 'C');
+					//var_dump ($aux[$i]);exit;
+				}*/
+			}
 			
 		} else{
 			throw new Exception("Reporte: Orientación incorrecta, debe ser 'P' o 'L'");
@@ -330,11 +384,15 @@ class ReportePDF extends TCPDF
 		$columna=0;
 		$ancho_total=0;
 		
+		if($this->swNumeracion=='si'){
+			array_unshift($this->columnas,$this->arrNumeracion);
+		}
+		
 		foreach ($this->columnas as $data){
 			$ancho_total=$ancho_total+$data['width'];
 			
 		}
-		
+
 		foreach ($this->columnas as $data){
 			$this->tablewidths[$data['name']]=round(($data['width']/$ancho_total)*100,2);
 			$this->tablecolumns[$data['name']]=$data['label'];
@@ -345,7 +403,11 @@ class ReportePDF extends TCPDF
 		
 	}
 
-	function addTabla($datas, $border=1, $fill=1,$titulos=0) {
+	function addTabla($datas, $border=1, $fill=1,$titulos=0,$relleno=0) {
+		ob_start();
+		$fb=FirePHP::getInstance(true);
+		$fb->log('sssss',"count(pArrayDatos)");
+		
 		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1">';
 		$cont=1;
 
@@ -359,13 +421,20 @@ class ReportePDF extends TCPDF
 					$align=$this->tablealigns[$col];	
 				}
 				
-				if($cont%2==1 || $fill==0){
+				if($relleno){
 					$html.='
-							<td width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
-				}
-				else{
-					$html.='
-							<td BGCOLOR="'.$_SESSION['color_fill_reportes'].'" width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
+								<td BGCOLOR="#000080" width="'.$this->tablewidths[$col].'%" align="'.$align.'"><font color="#FFFFFF">'.$data[$col].'</font></td>';
+					//$relleno=0;
+				} else {
+				
+					//if($cont%2==1 || $fill==0){
+						$html.='
+								<td width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
+					/*}
+					else{
+						$html.='
+								<td BGCOLOR="'.$_SESSION['color_fill_reportes'].'" width="'.$this->tablewidths[$col].'%" align="'.$align.'">'.$data[$col].'</td>';
+					}*/
 				}
 			}
 			$cont++;
@@ -377,6 +446,11 @@ class ReportePDF extends TCPDF
 	}
 	
 	private function renderTabla($pArrayDatos,$pArrayColVisibles,$pBorder=1, $pFill=1, $pArrayColAncho='', $pArrayColAlign='',$pArrayKeys='',$pConTit=0,$pTotCols='no') {
+		ob_start();
+		$fb=FirePHP::getInstance(true);
+		$fb->log('kkkk',"rendertabla");
+		
+		//$this->AddPage();
 		//Inicializa en cero el array de totales
 		$sw_totales=0;
 		if($pTotCols=='si'){
@@ -390,9 +464,9 @@ class ReportePDF extends TCPDF
 		$cont=1;
 		$sw=1;
 		
-		ob_start();
+		/*ob_start();
 		$fb=FirePHP::getInstance(true);
-		/*$fb->log(count($pArrayDatos),"count(pArrayDatos)");
+		$fb->log(count($pArrayDatos),"count(pArrayDatos)");
 		$fb->log(count($pArrayColVisibles),"count(pArrayColVisibles)");*/
 		
 		for($i=0;$i<count($pArrayDatos);$i++){
@@ -449,6 +523,7 @@ class ReportePDF extends TCPDF
 			$html.='
 					</tr>';
 			$sw=0;
+			//echo $html;exit;
 		}
 		
 		/*$html.='</table>;';
@@ -495,6 +570,7 @@ class ReportePDF extends TCPDF
 
 		$html.='</table>';
 		$this->writeHTML($html,false,false,false,false,'');
+		
 	}
 	
 	private function renderMaestro(){
@@ -508,14 +584,13 @@ class ReportePDF extends TCPDF
 			//TODO 22/02/2012: cambiar el ancho fijo por variable en función de la cantidad de etiquetas
 			$this->renderTabla($aux,array(1,1,1),0,0,$this->aMaestroColAncho,'');
 		} else{ //Por defecto es 'horizontal'
-			
 			//1. Une los arrays (de las etiquetas y de los valores de las etiquetas) en una matriz de dos columnas y n filas
 			for($i=0;$i<count($this->aMaestroEtiquetas);$i++){
 				$aux[$i][0]='<b>'.$this->aMaestroEtiquetas[$i].':</b>';
 				$aux[$i][1]=$this->aMaestro[0][$i];
 			}
-
-			if($this->tipoReporte=='pdf'){
+//var_dump($aux);exit;
+			if($this->tipoReporte=='pdf'||$this->tipoReporte=='pdf_grid'){
 				//2. Formatea el maestro en función de las columnas definidas
 				if($this->maestroBloqueCant>1){
 					//Cuenta cuantas filas hay en el array auxiliar
@@ -589,7 +664,6 @@ class ReportePDF extends TCPDF
 			$this->renderDetalle();
 		}
 		parent::output($this->url_archivo,'F');
-		
 	}
 	
 	//RCM 22-11-2011 (funciones nuevas desde aqui)
@@ -757,7 +831,8 @@ class ReportePDF extends TCPDF
 	
 	public function imprimirColsGrid(){
 		$this->SetFont('helvetica', 'B', 8);
-		$this->addTabla(array($this->tablecolumns),1,1,1);
+		//var_dump(array($this->tablecolumns));
+		$this->addTabla(array($this->tablecolumns),1,1,1,1);
 		$this->SetFont('helvetica', 'N', 8);
 	}
 	
@@ -771,8 +846,7 @@ class ReportePDF extends TCPDF
 		/*
 		 * VERIFICA SI LA CABECERA SERA LA GENERICA O POR SISTEMA
 		 */
-		 
-		 //echo 'gggggg:'.$pCodSistema.'---'.$pOrientacion;exit;
+		 //var_dump($this->objParam->getParametro('maestro'));exit;
 		 if($pOrientacion=='L'){
 		 	
 			if($pCodSistema=='GEM'||$pCodSistema=='PXP'){
@@ -874,7 +948,7 @@ class ReportePDF extends TCPDF
 		        $y = $this->GetY();
 		        $this->SetXY($x, $y);
 		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
-		        $this->Image(dirname(__FILE__).'/../../../sis_mantenimiento/reportes/logo-ypfb-logistica.png', 18, 8, 36);
+		        $this->Image(dirname(__FILE__).'/../'.$_SESSION['_DIR_LOGO'], 18, 8, 36);
 		        
 		        $x = $this->GetX();
 		        $y = $this->GetY();
@@ -967,6 +1041,14 @@ class ReportePDF extends TCPDF
 		 }
 
 	 }
+
+	function _json_decode($string) {
+		if (get_magic_quotes_gpc()) {
+			$string = stripslashes($string);
+		}
+
+		return json_decode($string,true);
+	}
 
 }
 

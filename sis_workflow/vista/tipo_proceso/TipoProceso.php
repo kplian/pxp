@@ -45,7 +45,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
     
      capturaFiltros:function(combo, record, index){
         this.store.baseParams.id_proceso_macro=this.cmbProcesoMacro.getValue();
-        this.store.load({params:{start:0, limit:this.tam_pag}}); 
+        this.load(); 
             
         
     },

@@ -59,7 +59,7 @@ BEGIN
                       where p.id_institucion =  v_parametros.id_institucion
                       and p.estado_reg ='activo'))) THEN
                       
-               raise exception 'ya esxiste un proveedor para esta institución';
+               raise exception 'Proveedor ya registrado';
            
            
            END IF;
@@ -70,17 +70,14 @@ BEGIN
                       where p.id_persona =  v_parametros.id_persona
                       and p.estado_reg ='activo'))) THEN
                       
-               raise exception 'esta persona ya esta asignado como proveedor';
+               raise exception 'Proveedor ya registrado';
            END IF;
            
            
-        
-            
             --Sentencia de la insercion
             insert into param.tproveedor(
               id_persona,
-              --codigo,
-             
+              codigo,
               numero_sigma,
               tipo,
               estado_reg,
@@ -93,8 +90,7 @@ BEGIN
               id_lugar
               ) values(
               v_parametros.id_persona,
-              --v_codigo,
-             
+              v_parametros.codigo,
               v_parametros.numero_sigma,
               v_parametros.tipo,
               'activo',
@@ -106,14 +102,6 @@ BEGIN
               v_parametros.nit,
               v_parametros.id_lugar
             )RETURNING id_proveedor into v_id_proveedor;
-            
-            v_codigo:=('PROV'||pxp.f_llenar_ceros(v_id_proveedor::numeric,4))::varchar;      
-           
-           
-           
-            update param.tproveedor
-            set codigo=v_codigo
-            where id_proveedor=v_id_proveedor;
             
             /*--10-04-2012: sincronizacion de UO entre BD
             v_respuesta_sinc:=param.f_sincroniza_proveedor_entre_bd(v_id_proveedor,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'INSERT');
@@ -142,12 +130,18 @@ BEGIN
     elsif(p_transaccion='PM_PROVEE_MOD')then
 
         begin
+          
+            if exists(select 1 from param.tproveedor
+                    where codigo = v_parametros.codigo
+                    and id_proveedor != v_parametros.id_proveedor) then
+                raise exception 'Código de Proveedor duplicado';
+            end if;
+            
             --Sentencia de la modificacion
             update param.tproveedor set
             id_persona = v_parametros.id_persona,
-             nit=v_parametros.nit,
-            --codigo = v_parametros.codigo,
-           
+            nit=v_parametros.nit,
+            codigo = v_parametros.codigo,
             numero_sigma = v_parametros.numero_sigma,
             tipo = v_parametros.tipo,
             id_institucion = v_parametros.id_institucion,

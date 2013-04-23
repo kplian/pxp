@@ -19,7 +19,11 @@ class ACTTipoProceso extends ACTbase{
             $this->objParam->addFiltro("tipproc.id_proceso_macro = ".$this->objParam->getParametro('id_proceso_macro'));    
         }
         
-		
+         if($this->objParam->getParametro('inicio')!=''){
+            $inicio=$this->objParam->getParametro('inicio');    
+            $this->objParam->addFiltro("tipproc.inicio = ''$inicio''");    
+        }
+        		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODTipoProceso','listarTipoProceso');

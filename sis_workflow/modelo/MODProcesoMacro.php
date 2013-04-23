@@ -119,8 +119,7 @@ class MODProcesoMacro extends MODbase{
 						
 		$this->armarConsulta();	
 		
-  $this->ejecutarConsulta();  
-		
+  $this->ejecutarConsulta(); 
 		////////////////////////////
 		
 		if($this->respuesta->getTipo()=='ERROR'){
@@ -201,15 +200,16 @@ class MODProcesoMacro extends MODbase{
 			$this->resetCaptura();
 			$this->addConsulta();
 			$this->captura('tipo','varchar');
-			$this->captura('nombre_estado_padre','varchar');
-			$this->captura('nombre_estado_hijo','varchar');
+			$this->captura('codigo_estado_padre','varchar');
+			$this->captura('codigo_proceso_estado_padre','varchar');
+			$this->captura('codigo_estado_hijo','varchar');
+			$this->captura('codigo_proceso_estado_hijo','varchar');
 			$this->captura('prioridad','integer');
 			$this->captura('regla','varchar');
 			$this->captura('estado_reg','varchar');
 			
 			$this->armarConsulta();
-			$consulta=$this->getConsulta();			
-	  
+			$consulta=$this->getConsulta();
 			$this->ejecutarConsulta($this->respuesta);
 		}
   return $this->respuesta;

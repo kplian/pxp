@@ -155,8 +155,10 @@ class ACTProcesoMacro extends ACTbase{
              									
 					fwrite ($file, 
 						"select wf.f_insert_testructura_estado ('".
-								$row['nombre_estado_padre']."', '" . 
-								$row['nombre_estado_hijo']."', '" .
+								$row['codigo_estado_padre']."', '" .
+								$row['codigo_proceso_estado_padre']."', '" . 
+								$row['codigo_estado_hijo']."', '" .
+								$row['codigo_proceso_estado_hijo']."', '" .
 								$row['prioridad']."', '" .
 								$row['regla']."', '" . 
 								$row['estado_reg']."');\r\n");

@@ -46,7 +46,15 @@ Ext.apply(Ext.form.VTypes, {
         return true;
     },
 
-    passwordText : 'Las contraseñas no son iguales'
+    passwordText : 'Las contraseñas no son iguales',
+    
+    hex: function(val, field){
+		var v=/^[0-9A-F]+$/i .test(val);;
+    	console.log(v);
+    	return /^[0-9A-F]+$/i .test(val);;
+    },
+    hexText:'El valor no está en Hexadecimal',
+    hexMask : /[0-9A-F]/i
 });
 //FIN RCM
 
@@ -55,6 +63,8 @@ Ext.apply(Ext.form.VTypes, {
 // DEFINICON DE LA CLASE MANU //
 // ////////////////////////////////
 Menu=function(config){
+	
+	
 	Menu.superclass.constructor.call(this,Ext.apply({},config,{
 		region:'west',
 		layout: 'accordion',
@@ -62,7 +72,7 @@ Menu=function(config){
 	
 		split:true,
 		width: 300,
-		minSize: 175,
+		
 		maxSize: 500,
 		collapsible: true,
 		//collapseMode:'mini',
@@ -103,6 +113,69 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
 		if(cls){
 			this.getSelectionModel().select(this.getNodeById(cls))
 		}
+	},
+	initComponent: function(){
+        this.hiddenPkgs = [];
+        Ext.apply(this, {
+            tbar:[ ' ',
+			new Ext.form.TextField({
+				width: 200,
+				emptyText:'Find a Class',
+                enableKeyEvents: true,
+				listeners:{
+					render: function(f){
+                    	this.filter = new Ext.tree.TreeFilter(this, {
+                    		clearBlank: true,
+                    		autoClear: true
+                    	});
+					},
+                    keydown: {
+                        fn: this.filterTree,
+                        buffer: 350,
+                        scope: this
+                    },
+                    scope: this
+				}
+			}), ' ', ' ',
+			{
+                iconCls: 'icon-expand-all',
+				tooltip: 'Expand All',
+                handler: function(){ this.root.expand(true); },
+                scope: this
+            }, '-', {
+                iconCls: 'icon-collapse-all',
+                tooltip: 'Collapse All',
+                handler: function(){ this.root.collapse(true); },
+                scope: this
+            }]
+        })
+        Menu.superclass.initComponent.call(this);
+    },
+	filterTree: function(t, e){
+		var text = t.getValue();
+		Ext.each(this.hiddenPkgs, function(n){
+			n.ui.show();
+		});
+		if(!text){
+			this.filter.clear();
+			return;
+		}
+		this.expandAll();
+		
+		var re = new RegExp('^' + Ext.escapeRe(text), 'i');
+		this.filter.filterBy(function(n){
+			return !n.attributes.isClass || re.test(n.text);
+		});
+		
+		// hide empty packages that weren't filtered
+		this.hiddenPkgs = [];
+                var me = this;
+		this.root.cascade(function(n){
+			if(!n.attributes.isClass && n.ui.ctNode.offsetHeight < 3){
+				n.ui.hide();
+				me.hiddenPkgs.push(n);
+			}
+		});
 	},
 	tools:[{
 		id:'refresh',
@@ -340,6 +413,14 @@ Phx.CP=function(){
 				}
 		    });
 
+
+            var detailsPanel = {
+				title: 'Details',
+		        region: 'center',
+		        bodyStyle: 'padding-bottom:15px;background:#eee;',
+				autoScroll: true,
+				item:Ext.Element.get('1rn')
+		    };
 			
 
 
@@ -357,11 +438,33 @@ Phx.CP=function(){
 				layout:'border',
 				items:[
              	{
-					border: false,
-					layout:'fit',
-					region:'north',
-					cls: 'docs-header',
-					height:39
+				  region: 'north',  
+				  border: true,
+				  margins: '0 0 1 0',        
+				  split:false,
+				  bbar:[  
+				  {xtype:'label',
+				  width: 500,
+				  //autoHeight:true,
+				  html:' <a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:1px;margin-bottom:0px"/> </a>',
+				  border: false
+				  },
+				  '->',{xtype:'label',
+				  autoHeight:true,
+				  iconCls:'user_suit',
+				  //text:nombre
+				  html:'<div id="1rn" align="right"><font >Usuario: </font><font ><b>'+Phx.CP.config_ini.nombre_usuario+'</b></font></div>'
+				  },'-',
+				   {
+				            text: 'Cerrar sesion',
+				            icon: '../../../lib/images/exit.png',
+				            toolTip:'Cerrar sesion',
+				        
+				                handler: function() {
+				      window.location = '../../control/auten/cerrar.php';
+				             }
+				         }
+				  ]
 				},
 				menu,
 				mainPanel]
@@ -475,7 +578,7 @@ Phx.CP=function(){
 			
 			//win_login.addKeyListener(Ext.EventObject.ENTER, Phx.CP.entrar); // Tecla enter
 
-//console.log(x,y,z);
+              //console.log(x,y,z);
 			if(x=='activa'){
 				Phx.CP.CRIPT=new Phx.Encriptacion({encryptionExponent:regreso.e,
 							modulus:regreso.m,
@@ -505,6 +608,10 @@ Phx.CP=function(){
 	
 			}
 			setTimeout(function(){
+				
+				if(Phx.CP.config_ini.nombre_usuario){
+					//Ext.Element.get('1rn').createChild('<div><font color="white">'+Phx.CP.config_ini.nombre_usuario+'</font></div>');
+				}			
 				Ext.get('loading').remove();
 				Ext.get('loading-mask').fadeOut({remove:true});
 				if(Ext.get('_usu')){
@@ -566,6 +673,7 @@ Phx.CP=function(){
 			           if(regreso.success){
 			        	   // copia configuracion inicial recuperada
 							Ext.apply(Phx.CP.config_ini,regreso);
+							//muestra nombre de usuario y base de datos
 							
 							//aplica el estilo de vista del usuario
 							Phx.CP.setEstiloVista(Phx.CP.config_ini.estilo_vista);
@@ -803,8 +911,7 @@ Phx.CP=function(){
 	     */
 	     
 		callbackWindows:function(r,a,o){
-			console.log(o.argument.params)
-			//si existe la variable mycls la utiliza
+			 //si existe la variable mycls la utiliza
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
 			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
 		    if(Phx.vista[mycls].requireclase){
