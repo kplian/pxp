@@ -63,6 +63,18 @@ VALUES (1, NULL, E'2012-11-08 00:00:00', E'2012-11-08 12:07:11.620', E'activo', 
 INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "moneda", "codigo", "tipo_moneda", "prioridad", "tipo_actualizacion", "origen")
 VALUES (1, 1, E'2012-11-08 00:00:00', E'2013-03-20 10:44:33.277', E'activo', E'Bolivianos', E'Bs', E'base', NULL, E'', E'');
 */
+
+/* Data for the 'param.tmoneda' table  (Records 1 - 3) */
+
+INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_moneda", "moneda", "codigo", "tipo_moneda", "prioridad", "tipo_actualizacion", "origen")
+VALUES (1, NULL, E'2013-04-22 11:28:25.715', NULL, E'activo', 2, E'Dólares Americanos', E'US$', NULL, 2, E'por_saldo', E'extranjera');
+
+INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_moneda", "moneda", "codigo", "tipo_moneda", "prioridad", "tipo_actualizacion", "origen")
+VALUES (1, NULL, E'2013-04-22 11:28:25.715', NULL, E'activo', 3, E'Unidad de Fomento a la Vivienda', E'UFV', NULL, 3, E'por_transaccion', E'nacional');
+
+INSERT INTO param.tmoneda ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_moneda", "moneda", "codigo", "tipo_moneda", "prioridad", "tipo_actualizacion", "origen")
+VALUES (1, NULL, E'2013-04-22 11:28:25.715', NULL, E'activo', 1, E'Bolivianos', E'Bs', E'base', 1, E'sin_actualizacion', E'nacional');
+
 -------------------------------------
 -- ESTRUCTURA PROGRAMATICA
 -------------------------------
