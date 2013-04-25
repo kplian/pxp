@@ -18,6 +18,8 @@ class ACTProcesoWf extends ACTbase{
             $this->objParam->addFiltro("pm.id_proceso_macro = ".$this->objParam->getParametro('id_proceso_macro'));    
         }
 		
+		 $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+        
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODProcesoWf','listarProcesoWf');
@@ -30,7 +32,11 @@ class ACTProcesoWf extends ACTbase{
 	}
 				
 	function insertarProcesoWf(){
+	    $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
 		$this->objFunc=$this->create('MODProcesoWf');	
+		
+		
+		
 		if($this->objParam->insertar('id_proceso_wf')){
 			$this->res=$this->objFunc->insertarProcesoWf($this->objParam);			
 		} else{			
@@ -44,6 +50,12 @@ class ACTProcesoWf extends ACTbase{
 		$this->res=$this->objFunc->eliminarProcesoWf($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	function siguienteEstadoProcesoWf(){
+        $this->objFunc=$this->create('MODProcesoWf');  
+        $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+        $this->res=$this->objFunc->siguienteEstadoProcesoWf($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

@@ -80,7 +80,8 @@ begin
              'SEG_MENU_SEL',
              'PM_ALARMCOR_SEL',
              'PM_DESCCOR_MOD',
-             'PM_GENALA_INS'))) THEN
+             'PM_GENALA_INS',
+             'SEG_OPERFOT_SEL'))) THEN
             po_tiene_permisos = true;
          
          END IF; 

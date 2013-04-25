@@ -9,6 +9,7 @@ CREATE TABLE wf.ttipo_proceso (
   tabla            varchar(100), 
   columna_llave    varchar(150), 
   codigo           varchar(5),
+  
   inicio VARCHAR(2) DEFAULT 'no'::character varying NOT NULL,
   CONSTRAINT uk_codigo UNIQUE(codigo),
   CONSTRAINT uk_tipo_proceso_tipo_estado UNIQUE(id_tipo_proceso,id_tipo_estado),
@@ -49,6 +50,7 @@ CREATE TABLE wf.testado_wf (
   fecha              timestamp, 
   id_depto           int4,
   tipo_cambio 		 VARCHAR(20) NOT NULL DEFAULT 'siguiente'::varchar,
+  obs TEXT DEFAULT ''::text NOT NULL, 
   PRIMARY KEY (id_estado_wf)) INHERITS (pxp.tbase);
   
   
@@ -84,7 +86,9 @@ CREATE TABLE wf.tproceso_wf (
   nro_tramite     varchar, 
   valor_cl        int8, 
   id_persona INTEGER, 
-  id_institucion INTEGER,   
+  id_institucion INTEGER,
+  fecha_ini DATE DEFAULT now() NOT NULL, 
+  tipo_ini VARCHAR(30) DEFAULT 'persona'::character varying NOT NULL,    
   PRIMARY KEY (id_proceso_wf)) INHERITS (pxp.tbase);
   
   

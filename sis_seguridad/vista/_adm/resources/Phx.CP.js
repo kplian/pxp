@@ -257,51 +257,56 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  					  // el nombre de la clase viene en la variable cls que
 	  					  // se almacena originalmente en el descripcion de la
 	  						// tabla segu.gui
-	  						if(Phx.vista[clase].requireclase){
-			  				     //trae la clase padre
-			  				     //en el callback ejecuta la rerencia 
-			  				     //e instanca la clase hijo
-			  				      var wid='4rn'
-			  				     //console.log('IDEXTRA',wid);
-			  				     //Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
-			  				     //Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
-			  				     
-			  				  
-			  				     var el = Ext.get(wid); // Get Ext.Element object
-		                         var u = el.getUpdater();
-		                         //var inter = Phx.vista[clase];
-			  				       u.update(
-			  				      	 {url:Phx.vista[clase].require, 
-			  				      	 params:{idContenedor:id,_tipo:'direc'},
-			  				      	 scripts :true,
-			  				      	  showLoadIndicator: "Cargando...2",
-			  				      	  callback: function(r,a,o){
-				  				      	 	 try{
-				  				      	 		//genera herencia 
-				  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
-				  				      	 		//ejecuta la clase hijo
-				  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params))
-				  				      	 	  }
-						  				       catch(err){
-						  				       	var resp = Array();
-						  				       	resp.status=404;
-						  				       	resp.statusText=err;
-						  				       	Phx.CP.conexionFailure(resp);
-						  				       }
-							  		    }
-			  				      	 });
+	  					  if(Phx.vista[clase]){	
+		  						if(Phx.vista[clase].requireclase){
+				  				     //trae la clase padre
+				  				     //en el callback ejecuta la rerencia 
+				  				     //e instanca la clase hijo
+				  				      var wid='4rn'
+				  				     //console.log('IDEXTRA',wid);
+				  				     //Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
+				  				     //Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
+				  				     
+				  				  
+				  				     var el = Ext.get(wid); // Get Ext.Element object
+			                         var u = el.getUpdater();
+			                         //var inter = Phx.vista[clase];
+				  				       u.update(
+				  				      	 {url:Phx.vista[clase].require, 
+				  				      	 params:{idContenedor:id,_tipo:'direc'},
+				  				      	 scripts :true,
+				  				      	  showLoadIndicator: "Cargando...2",
+				  				      	  callback: function(r,a,o){
+					  				      	 	 try{
+					  				      	 		//genera herencia 
+					  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
+					  				      	 		//ejecuta la clase hijo
+					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params))
+					  				      	 	  }
+							  				       catch(err){
+							  				       	var resp = Array();
+							  				       	resp.status=404;
+							  				       	resp.statusText=err;
+							  				       	Phx.CP.conexionFailure(resp);
+							  				       }
+								  		    }
+				  				      	 });
 			  				 }
-	  				    else{
-	  				    	try{
-	  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params));
-	  				      	}
-	  				        catch(err){
-	  				       		var resp = Array();
-	  				       		resp.status=404;
-	  				       		resp.statusText=err;
-	  				       		Phx.CP.conexionFailure(resp);
-	  				       }
-	  				    }  
+	  				    	else{
+		  				    	try{
+		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params));
+		  				      	}
+		  				        catch(err){
+		  				       		var resp = Array();
+		  				       		resp.status=404;
+		  				       		resp.statusText=err;
+		  				       		Phx.CP.conexionFailure(resp);
+		  				       }
+	  				    	}  
+	  				   }
+	  				   else{
+	  				   	console.log('no existe la clase '+clase)
+	  				   }
 	  				 },
 	  				  scripts :true}
 	           }));
