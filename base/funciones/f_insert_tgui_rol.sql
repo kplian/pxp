@@ -1,6 +1,3 @@
-
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_insert_tgui_rol (
   par_gui varchar,
   par_rol varchar
@@ -24,10 +21,13 @@ BEGIN
     
     
 raise notice  'v_id_gui  % v_id_rol   % ', v_id_gui, v_id_rol;
-    
-    insert 
-    	into segu.tgui_rol (id_rol, id_gui, estado_reg, modificado)
-    				values (v_id_rol, v_id_gui, 'activo', 1);
+    if (not exists( select 1 
+    				from segu.tgui_rol 
+                    where id_gui = v_id_gui and id_rol = v_id_rol and estado_reg = 'activo'))then
+        insert 
+            into segu.tgui_rol (id_rol, id_gui, estado_reg, modificado)
+                        values (v_id_rol, v_id_gui, 'activo', 1);
+    end if;
     return 'exito';
 END;
 $body$

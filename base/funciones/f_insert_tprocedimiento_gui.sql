@@ -1,10 +1,9 @@
 CREATE OR REPLACE FUNCTION pxp.f_insert_tprocedimiento_gui (
-  par_procedimiento character varying,
-  par_gui character varying,
-  par_boton character varying
+  par_procedimiento varchar,
+  par_gui varchar,
+  par_boton varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 DECLARE
 	v_id_procedimiento integer;
@@ -17,13 +16,17 @@ BEGIN
     select id_procedimiento into v_id_procedimiento
     from segu.tprocedimiento p
     where p.codigo = par_procedimiento;
-    
-    insert into segu.tprocedimiento_gui (id_procedimiento, id_gui, boton, modificado)
-    values (v_id_procedimiento, v_id_gui, par_boton, 1);
+    if (not exists( select 1 
+    				from segu.tprocedimiento_gui 
+                    where id_gui = v_id_gui and id_procedimiento = v_id_procedimiento and estado_reg = 'activo'))then
+        insert into segu.tprocedimiento_gui (id_procedimiento, id_gui, boton, modificado)
+        values (v_id_procedimiento, v_id_gui, par_boton, 1);
+    end if;
     return 'exito';
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_insert_trol_procedimiento_gui (OID = 429324) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

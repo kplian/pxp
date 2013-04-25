@@ -125,7 +125,8 @@ class ACTFuncion extends ACTbase{
 			$turl = '';
 			$ttitle = '';
 			$tclass = '';
-			foreach ($lines as $line_num => $line) {
+			foreach ($lines as $line_num => & $line) {
+								
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
 				}
@@ -133,10 +134,13 @@ class ACTFuncion extends ACTbase{
 				if (strpos(str_replace(' ', '', $line),'require:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0) {
 					$tempString = str_replace('"', "'", $line);
 					$tempArr = explode("'",$tempString);
+					
 					$linesParent = file($tempArr[1]);
+					
 					foreach ($linesParent as $lineParent) {
 						array_push($lines, $lineParent);
 					}
+					
 				}
 				if ((strpos(str_replace(' ', '', $line),'turl:') !== FALSE || strpos(str_replace(' ', '', $line),'tcls:') !== FALSE || strpos(str_replace(' ', '', $line),'ttitle:')!==FALSE) && strpos($line, '//') === FALSE && $comentado == 0) {
 					$tempString = str_replace('"', "'", $line);
@@ -278,9 +282,25 @@ class ACTFuncion extends ACTbase{
 			$lines = file($filename);
 			$comentado = 0;
 			$procedimientos = array();
-			foreach ($lines as $line_num => $line) {
+			foreach ($lines as $line_num => & $line) {
+				
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
+				}
+				
+				
+				if (strpos(str_replace(' ', '', $line),'require:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0) {
+					$tempString = str_replace('"', "'", $line);
+					$tempArr = explode("'",$tempString);
+					
+					$linesParent = file($tempArr[1]);
+					
+					
+					foreach ($linesParent as $lineParent) {
+						array_push($lines, $lineParent);
+					}
+					
+					
 				}
 				if (strpos($line, '/control/')!== FALSE && strpos($line, 'img src') === FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
 					
