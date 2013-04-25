@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_insert_trol_procedimiento_gui (
   par_rol varchar,
   par_procedimiento varchar,
@@ -23,9 +21,12 @@ BEGIN
     select id_rol into v_id_rol
     from segu.trol r
     where r.rol = par_rol;
-    
-    insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui, modificado)
-    values (v_id_rol, v_id_procedimiento_gui, 1);
+    if (not exists( select 1 
+    				from segu.trol_procedimiento_gui 
+                    where id_rol = v_id_rol and id_procedimiento_gui = v_id_procedimiento_gui and estado_reg = 'activo'))then
+        insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui, modificado)
+        values (v_id_rol, v_id_procedimiento_gui, 1);
+    end if;
     return 'exito';
 END;
 $body$

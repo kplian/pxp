@@ -46,6 +46,7 @@ v_nombre_tabla          varchar;
 v_desc_transaccion varchar;
 v_bandera_desc boolean;
 v_nombre_fun   varchar;
+v_resp			varchar;
 
 BEGIN
 
@@ -152,7 +153,10 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                               else 
                                               
                                                  
-                                                  v_desc_transaccion:=TRIM((select substr(split_part(v_contenido,'#DESCRIPCION:',v_cant),1,strpos(split_part(v_contenido,'#DESCRIPCION:',v_cant),'#AUTOR:')-1))::varchar);
+                                                  v_desc_transaccion:=(select substr(split_part(v_contenido,'#DESCRIPCION:',v_cant),1,strpos(split_part(v_contenido,'#DESCRIPCION:',v_cant),'#AUTOR:')-1))::varchar;
+                                                  v_desc_transaccion := TRIM(regexp_replace(v_desc_transaccion, '^[ \t\n\r]*', '', 'g'));
+                                                  v_desc_transaccion := TRIM(regexp_replace(v_desc_transaccion, '[ \t\n\r]*$', '', 'g')); 
+                                                   
                                               
                                               end IF;
                                             
@@ -197,12 +201,12 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                                    values(v_codigo,v_desc_transaccion, v_id_funcion,'activo');
                                                 
                                                 else
-                                                	 
-                                                    	UPDATE segu.tprocedimiento 
+                                                	                                                	    
+                                                        UPDATE segu.tprocedimiento 
                                                       		SET descripcion= v_desc_transaccion
                                                     	WHERE codigo =v_codigo 
                                                        		and id_funcion=v_id_funcion and 
-                                                            trim(descripcion) != trim(v_desc_transaccion);                                                   
+                                                            trim(descripcion) != v_desc_transaccion;                                                   
                                                        
                                                 end if;
                                                 
@@ -225,6 +229,15 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
      end loop;
 
     return 'exito';
+EXCEPTION
+
+       WHEN OTHERS THEN
+    	v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp;
+
 
 END;
 $body$

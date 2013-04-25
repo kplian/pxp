@@ -1084,7 +1084,10 @@ class driver
 		//Limpia el json si corresponde
 		$aux=strpos($cadena,'}');
 		$cadena=substr($cadena,0,$aux+1);
-
+		
+		//jrr:removiendo saltos de linea y tabas para una buena decodificacion del json
+		$cadena = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $cadena);
+		
 		$res=json_decode($cadena,true);
 				
 		$res['datos']=$res;
