@@ -21,7 +21,6 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		//this.load({params:{start:0, limit:this.tam_pag}});
 		this.iniciarEventos();
         
-        this.addButton('sig_estado',{text:'Siguiente',iconCls: 'badelante',disabled:true,handler:this.sigEstado,tooltip: '<b>Pasar al Siguiente Estado</b>'});
         
         this.cmbProcesoMacro.on('select', function(){
             
@@ -304,7 +303,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             type:'ComboRec',
             id_grupo:1,
             filters:{   
-                //pfiltro:'mon.codigo',
+                pfiltro:'per.nombre_completo1#int.nombre',
                 type:'string'
             },
             grid:true,
@@ -344,6 +343,21 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             id_grupo:1,
             grid:true,
             form:true
+        },
+        {
+            config:{
+                name: 'obs',
+                fieldLabel: 'Intrucciones',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 200,
+                maxLength:4
+            },
+            type:'Field',
+            filters:{pfiltro:'ew.obs',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
         },
 		  {
 			config:{
@@ -442,7 +456,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
-		{name:'usr_reg', type: 'string'},
+		{name:'usr_reg', type: 'string'},'obs',
 		{name:'usr_mod', type: 'string'},'tipo_estado_disparador','tipo_estado_inicio','tipo_estado_fin','id_estado_wf',
 		'desc_tipo_proceso','desc_persona','desc_institucion','tipo_ini','codigo_estado'
 	],
@@ -503,23 +517,8 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
      
-     preparaMenu:function(n){
-      var data = this.getSelectedData();
-      var tb =this.tbar;
-      Phx.vista.ProcesoWf.superclass.preparaMenu.call(this,n);  
-         
-          this.getBoton('sig_estado').enable();
-          return tb 
-     }, 
-     liberaMenu:function(){
-        var tb = Phx.vista.ProcesoWf.superclass.liberaMenu.call(this);
-        if(tb){
-            this.getBoton('sig_estado').disable();
-           
-           
-        }
-        return tb
-    },
+     
+     
 	confSigEstado :function() {                   
             var d= this.sm.getSelected().data;
            
@@ -527,12 +526,13 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                  Phx.CP.loadingShow();
                     Ext.Ajax.request({
                         // form:this.form.getForm().getEl(),
-                        url:'../../sis_adquisiciones/control/Solicitud/siguienteEstadoSolicitud',
+                        url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
                         params:{
-                            id_solicitud:d.id_solicitud,
+                            id_proceso_wf:d.id_proceso_wf,
                             operacion:'cambiar',
                             id_tipo_estado:this.cmbTipoEstado.getValue(),
-                            id_funcionario:this.cmbFuncionarioWf.getValue()
+                            id_funcionario:this.cmbFuncionarioWf.getValue(),
+                            obs:this.cmpObs.getValue()
                             },
                         success:this.successSinc,
                         failure: this.conexionFailure,
@@ -549,12 +549,33 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             this.cmbTipoEstado.reset();
             this.cmbFuncionarioWf.reset();
             this.cmbFuncionarioWf.store.baseParams.id_estado_wf=d.id_estado_wf;
-            this.cmbFuncionarioWf.store.baseParams.fecha=d.fecha_soli;
+            this.cmbFuncionarioWf.store.baseParams.fecha=d.fecha_ini;
          
             Ext.Ajax.request({
                 // form:this.form.getForm().getEl(),
                 url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
                 params:{id_proceso_wf:d.id_proceso_wf,operacion:'verificar'},
+                success:this.successSinc,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });     
+        },
+       
+        antEstado:function(res,eve)
+        {                   
+            var d= this.sm.getSelected().data;
+           
+            Phx.CP.loadingShow();
+            var operacion = 'cambiar';
+            operacion=  res.argument.estado == 'inicio'?'inicio':operacion; 
+            
+            Ext.Ajax.request({
+                // form:this.form.getForm().getEl(),
+                url:'../../sis_workflow/control/ProcesoWf/anteriorEstadoProcesoWf',
+                params:{id_proceso_wf:d.id_proceso_wf, 
+                        id_estado_wf:d.id_estado_wf, 
+                        operacion: operacion},
                 success:this.successSinc,
                 failure: this.conexionFailure,
                 timeout:this.timeout,
@@ -568,7 +589,8 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
             if(!reg.ROOT.error){
                if (reg.ROOT.datos.operacion=='preguntar_todo'){
-                   if(reg.ROOT.datos.num_estados==1 && reg.ROOT.datos.num_funcionarios==1){
+                   //TO DO, verificar consiguracion de tipo_proceso para perdir observaciones
+                   if(reg.ROOT.datos.num_estados==1 && reg.ROOT.datos.num_funcionarios==1 && 0==1){
                        //directamente mandamos los datos
                        Phx.CP.loadingShow();
                        var d= this.sm.getSelected().data;
@@ -580,7 +602,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                             id_tipo_estado:reg.ROOT.datos.id_tipo_estado,
                             id_funcionario:reg.ROOT.datos.id_funcionario_estado,
                             id_depto:reg.ROOT.datos.id_depto_estado,
-                            id_solicitud:d.id_solicitud,
+                            id_proceso_wf:d.id_proceso_wf,
                             obs:this.cmpObs.getValue()
                             
                             },

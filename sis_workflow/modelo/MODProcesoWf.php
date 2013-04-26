@@ -47,6 +47,7 @@ class MODProcesoWf extends MODbase{
 		$this->captura('tipo_estado_inicio','varchar');
 		$this->captura('tipo_estado_fin','varchar');
 		$this->captura('tipo_estado_disparador','varchar');
+		$this->captura('obs','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -128,7 +129,7 @@ class MODProcesoWf extends MODbase{
 		return $this->respuesta;
 	}
 	
-	    function siguienteEstadoProcesoWf(){
+	function siguienteEstadoProcesoWf(){
         //Definicion de variables para ejecucion del procedimiento
         $this->procedimiento='wf.f_proceso_wf_ime';
         $this->transaccion='WF_SIGPRO_IME';
@@ -141,7 +142,30 @@ class MODProcesoWf extends MODbase{
         
         $this->setParametro('id_funcionario','id_funcionario','int4');
         $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+        $this->setParametro('obs','obs','text');
        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    
+    function anteriorEstadoProcesoWf(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.f_proceso_wf_ime';
+        $this->transaccion='WF_ANTEPRO_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+        $this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');
+        $this->setParametro('operacion','operacion','varchar');
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+        $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+        $this->setParametro('id_estado_wf','id_estado_wf','int4');
+
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
