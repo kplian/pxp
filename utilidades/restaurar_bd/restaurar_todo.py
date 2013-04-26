@@ -2,8 +2,32 @@
 import sys
 import os
 import subprocess
+import datetime
 #Function to generate scripts array
 #param String file
+
+def restaurar_db(base):
+	print 'Iniciando backup de la BD :' + db
+	file_name = '/tmp/bk_' + base + '_' +datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+	command = 'pg_dump ' + base + ' -U postgres -F c -b -f ' + file_name
+        for line in run_command(command):
+        	print line
+	print 'Se ha generado el backup de la base de datos en : ' + file_name
+	print 'Copie el archivo en otra ubicacion antes de reiniciar el equipo'
+
+
+def get_schema (url):
+	esquema = []
+	
+	try:
+        	file1 = open( url, 'r')
+		for line in file1:
+        		esquema.append(line.strip())			
+        	file1.close()
+		return esquema
+	except:
+        	print 'El archivo ' + url + ' no existe o no tiene permisos de lectura!!!',sys.exc_info()[1]
+        	sys.exit('Se ha finalizado la ejecucion')
 def generate_scripts (file_str):
     scripts = []
     try:
@@ -40,7 +64,7 @@ def execute_script (systems , kind, file_log):
     	patches = os.listdir( item + 'base/' )
     	for f in patches:
             if f.startswith(kind):
-		file_log.write("*************"+ kind + " : " + item)
+		file_log.write("*************"+ kind + " : " + item + "\n")
             	sql_scripts = generate_scripts(item + 'base/' + f)
    		for script in sql_scripts:
         
@@ -56,6 +80,7 @@ def execute_script (systems , kind, file_log):
                         	f_command.write('COMMIT;')
                         	f_command.close()
                         	command = 'psql -t -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
+				f_log.write("/***********************************" + script['codigo']  + "*****************************/\n")
                         	for line in run_command(command):
                             	    f_log.write(line)
 
@@ -84,26 +109,31 @@ try:
 except:
 	sys.exit('El archivo pxp/lib/DatosGenerales.php no existe o no tiene permisos de lectura!!!')
 
+archivo_log = '/tmp/log_restaurar_bd.log'
+f_log = open('/tmp/log_restaurar_bd.log', 'w')
 ####################MENU#############################################3
 
 print '**************UTILIDAD PARA RESTAURAR BD DEL FRAMEWORK PXP**********************'
 print 'Que desea hacer?'
 print '1. Restaurar la base de datos completamente (Esta opcion eliminara todos los objetos de la bd)'
 print '2. Actualizar los scripts faltantes en su base de datos (Solo eliminara las funciones y las volvera a crear)'
-print '3. Salir del programa'
-opcion = raw_input('Ingrese una opcion (1,2 o 3): ')
-if (opcion != '1' and opcion != '2' ) :
+print '3. Obtener un backup de la BD'
+print '4. Salir del programa'
+opcion = raw_input('Ingrese una opcion (1,2,3 o 4): ')
+if (opcion != '1' and opcion != '2' and opcion != '3') :
 	sys.exit("Ha abandonado la restauracion de la base de datos")
 
 if opcion == '1':
 	print 'Para restaurar la base de datos :' + db + ', esta debe ser eliminada.'	
-	question = raw_input("Esta segur@ de hacerlo? (s/n): ")
-	if question != 's':
-		sys.exit("Ha abandonado la restauracion de la base de datos")
+	question = raw_input("Desea obtener un backup de la BD antes de eliminarla? (SI/NO): ")
+	if question == 'SI':
+		restaurar_db(db)		
 	datos = raw_input("Desea restaurar los datos de prueba? (s/n): ")
-else:
+elif opcion == '2':
 	datos = 'n'
-
+else:
+	restaurar_db(db)
+	sys.exit("Backup generado con exito")	
 print 'Iniciando la restauracion de los esquemas basicos...' 
 url = []
 #url pxp
@@ -129,8 +159,6 @@ try:
 except:
         print 'Solo se han recuperado los esquemas basicos del framework. (No existe el archivo sistemas.txt o no es posible leerlo'
 
-archivo_log = '/tmp/log_restaurar_bd.log'
-f_log = open('/tmp/log_restaurar_bd.log', 'w')
 
 # Primero se restaura los esquemas y las funciones
 for item in url:
@@ -138,12 +166,17 @@ for item in url:
     		f_log.write(line)
 	#restaurar subsistema
         funciones_dir = item + 'base/funciones/'
-    	if opcion == '1':
-    		#crear esquema
-    		command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql' 
-    	
-    		for line in run_command(command):
-        		f_log.write(line)
+    	if item ==os.path.dirname(__file__) +  '/../../' and opcion == '1':
+		command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql'
+		for line in run_command(command):
+                	f_log.write(line)	
+	else:
+		esquemas = get_schema(item + 'base/schema.sql')
+		for esquema in esquemas:	
+			
+			command = 'psql '+ db + ' -c  "select pxp.f_manage_schema(\$\$' + esquema  + '\$\$,' + opcion + ')"'
+			for line in run_command(command):
+       				f_log.write(line)
     	#crear funciones
     	funciones = os.listdir( funciones_dir )
     	for f in funciones:
