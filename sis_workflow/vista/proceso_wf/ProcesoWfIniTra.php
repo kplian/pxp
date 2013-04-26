@@ -18,7 +18,8 @@ Phx.vista.ProcesoWfIniTra = {
 	constructor: function(config) {
     		this.initButtons=[this.cmbProcesoMacro];
     		Phx.vista.ProcesoWfIniTra.superclass.constructor.call(this,config);
-    		
+    		this.addButton('sig_estado',{text:'Siguiente',iconCls: 'badelante',disabled:true,handler:this.sigEstado,tooltip: '<b>Pasar al Siguiente Estado</b>'});
+       
     },
 	onButtonNew: function() {
         
@@ -86,6 +87,29 @@ Phx.vista.ProcesoWfIniTra = {
                         }
                     },this); 
                     
+    },
+    preparaMenu:function(n){
+      var data = this.getSelectedData();
+      var tb =this.tbar;
+      Phx.vista.ProcesoWfIniTra.superclass.preparaMenu.call(this,n);  
+         
+         if(data.tipo_estado_inicio=='si'){
+            this.getBoton('sig_estado').enable();
+          }
+          else{
+              this.getBoton('sig_estado').disable();  
+          }
+          
+          return tb 
+     }, 
+     liberaMenu:function(){
+        var tb = Phx.vista.ProcesoWf.superclass.liberaMenu.call(this);
+        if(tb){
+            this.getBoton('sig_estado').disable();
+           
+           
+        }
+        return tb
     },
     
      filtraAddEdit:function(){
