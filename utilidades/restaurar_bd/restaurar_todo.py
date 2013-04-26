@@ -170,7 +170,7 @@ for item in url:
 		command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql'
 		for line in run_command(command):
                 	f_log.write(line)	
-	else:
+	elif item !=os.path.dirname(__file__) +  '/../../':
 		esquemas = get_schema(item + 'base/schema.sql')
 		for esquema in esquemas:	
 			
