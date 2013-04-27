@@ -35,11 +35,13 @@ class MODTipoEstado extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_tipo_proceso','varchar');
-		$this->captura('codigo','varchar');
+		$this->captura('codigo_estado','varchar');
 		$this->captura('obs','text');
 		$this->captura('depto_asignacion','varchar');
 		$this->captura('nombre_depto_func_list','varchar');
 		$this->captura('fin','varchar');
+		$this->captura('alerta','varchar');
+		$this->captura('pedir_obs','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -91,11 +93,13 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('tipo_asignacion','tipo_asignacion','varchar');
 		$this->setParametro('nombre_func_list','nombre_func_list','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('codigo','codigo','varchar');
+		$this->setParametro('codigo_estado','codigo_estado','varchar');
 		$this->setParametro('obs','obs','text');
 		$this->setParametro('depto_asignacion','depto_asignacion','varchar');
 		$this->setParametro('nombre_depto_func_list','nombre_depto_func_list','varchar');
 		$this->setParametro('fin','fin','varchar');
+		$this->setParametro('alerta','alerta','varchar');
+		$this->setParametro('pedir_obs','pedir_obs','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -120,12 +124,13 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('tipo_asignacion','tipo_asignacion','varchar');
 		$this->setParametro('nombre_func_list','nombre_func_list','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('codigo','codigo','varchar');
+		$this->setParametro('codigo_estado','codigo_estado','varchar');
 		$this->setParametro('obs','obs','text');
 		$this->setParametro('depto_asignacion','depto_asignacion','varchar');
         $this->setParametro('nombre_depto_func_list','nombre_depto_func_list','varchar');
         $this->setParametro('fin','fin','varchar');
-		
+		$this->setParametro('alerta','alerta','varchar');
+        $this->setParametro('pedir_obs','pedir_obs','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

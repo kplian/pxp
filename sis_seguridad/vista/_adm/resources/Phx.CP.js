@@ -419,13 +419,13 @@ Phx.CP=function(){
 		    });
 
 
-            var detailsPanel = {
+           /* var detailsPanel = {
 				title: 'Details',
 		        region: 'center',
 		        bodyStyle: 'padding-bottom:15px;background:#eee;',
 				autoScroll: true,
 				item:Ext.Element.get('1rn')
-		    };
+		    };*/
 			
 
 
@@ -445,26 +445,32 @@ Phx.CP=function(){
              	{
 				  region: 'north',  
 				  border: true,
-				  margins: '0 0 1 0',        
+				  layout:'fit',
+				  autoHeight:true,
+				  margins: '0 0 0 0',        
 				  split:false,
+				 // height:37,
 				  bbar:[  
 				  {xtype:'label',
 				  width: 500,
 				  //autoHeight:true,
-				  html:' <a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:1px;margin-bottom:0px"/> </a>',
+				 
+				  html:' <a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> </a>',
 				  border: false
 				  },
 				  '->',{
 				  	xtype:'label',
-				  autoHeight:true,
+				
+				 
 				  iconCls:'user_suit',
 				 
 				  html:'<div id="1rn" align="right"><font >Usuario: </font><font ><b>'+Phx.CP.config_ini.nombre_usuario+'</b></font></div>'
 				  },'-',
-				   {
+				   { 
 				  	xtype:'label',
-				    autoHeight:true,
-				    html:'<div id="2rn" align="right"></div>'
+				  
+				    
+				    html:'<div id="2rn" align="right"><img src="../../../lib/imagenes/NoPerfilImage.jpg" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/></div>'
 				   },'-',
 				   {
 				            text: 'Cerrar sesion',
@@ -514,7 +520,7 @@ Phx.CP=function(){
 	                            if(reg.datos[0].extension){
 	                            	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].id_persona+'.'+reg.datos[0].extension;
 	                            }
-	                             Ext.Element.get('2rn').createChild('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:0px"/> ');
+	                             Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
 								 
 								},3000);
 						});
@@ -713,9 +719,6 @@ Phx.CP=function(){
 							   sw_auten=true;
 			        	   }
 			        	    
-			        	    
-			        	    //Ext.Element.get('1rn').appendChild('<img src="../../../lib/imagenes/kplian2.jpg"  style="margin-right:5px;margin-top:1px;margin-bottom:0px"/> ');
-				   
 			        	    form_login.setTitle("LOGIN");
 							Phx.CP.loadingHide();
 			        	  

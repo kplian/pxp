@@ -121,7 +121,7 @@ class MODAlarma extends MODbase{
 				
 		//Definicion de la lista del resultado del query
 		$this->setParametro('id_usuario','id_usuario','integer');
-		$this->setParametro('id_funcionario','id_usuario','integer');
+		$this->setParametro('id_funcionario','id_funcionario','integer');
 		$this->captura('id_alarma','int4');
 		$this->captura('acceso_directo','varchar');
 		$this->captura('id_funcionario','int4');

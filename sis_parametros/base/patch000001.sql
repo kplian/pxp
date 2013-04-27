@@ -649,3 +649,13 @@ PRIMARY KEY(id_grupo_ep)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-RAC-PARAM-0-22/04/2013*****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-0-26/04/2013****************************************/
+
+CREATE TABLE param.tgenerador_alarma(
+id_generador_alarma SERIAL NOT NULL, 
+funcion varchar NOT NULL, 
+PRIMARY KEY(id_generador_alarma)) INHERITS (pxp.tbase);
+
+/***********************************F-SCP-RAC-PARAM-0-26/04/2013*****************************************/
+

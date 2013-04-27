@@ -60,13 +60,13 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                                 direction:'ASC'
                             },
                             totalProperty:'total',
-                            fields: ['id_tipo_estado','codigo','nombre_estado'],
+                            fields: ['id_tipo_estado','codigo_estado','nombre_estado'],
                             // turn on remote sorting
                             remoteSort: true,
                             baseParams:{par_filtro:'tipes.nombre_estado#tipes.codigo'}
                         }),
                         valueField: 'id_tipo_estado',
-                        displayField: 'codigo',
+                        displayField: 'codigo_estado',
                         forceSelection:true,
                         typeAhead: false,
                         triggerAction: 'all',
@@ -77,7 +77,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                         width:210,
                         gwidth:220,
                         minChars:2,
-                        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo}</p>Prioridad: <strong>{nombre_estado}</strong> </div></tpl>'
+                        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo_estado}</p>Prioridad: <strong>{nombre_estado}</strong> </div></tpl>'
                     
                     },
                     {

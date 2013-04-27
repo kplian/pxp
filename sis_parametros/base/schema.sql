@@ -1,3 +1,1 @@
-DROP SCHEMA IF EXISTS param CASCADE;
-
-CREATE SCHEMA param AUTHORIZATION postgres;
+param
