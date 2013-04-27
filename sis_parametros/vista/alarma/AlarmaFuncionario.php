@@ -24,16 +24,13 @@ header("content-type: text/javascript; charset=UTF-8");
 				handler : this.accesoDirect,
 				tooltip : '<b>Acceso Directo</b><br/>Direcciona a la interfaz con mas información'
 			});
-
+			
 			this.init();
-			this.load({
-				params : {
-					start : 0,
-					limit : 50,
-					id_usuario : Phx.CP.config_ini.id_usuario,
-					id_funcionario : Phx.CP.config_ini.id_funcionario
-				}
-			})
+			
+			
+			this.store.baseParams.id_usuario=Phx.CP.config_ini.id_usuario;
+			this.store.baseParams.id_funcionario=Phx.CP.config_ini.id_funcionario;
+            this.load({params : {start : 0,limit : 50}})
 		},
 		accesoDirect : function() {
 

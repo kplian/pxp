@@ -3,7 +3,7 @@
 /////////////////////
 #RAC 07/02/2012
 #para ejecutar el llenado automatico de alarmas 
-#se configura un crontab para que puedaejecutar actiones de llenado en el servidor
+#se configura un crontab para que pueda ejecutar acciones de llenado en el servidor
 
 #revisar cron tab y si tiene contenido lo salva en un archivo
 crontab -l > cron.txt 
