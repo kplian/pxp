@@ -30,4 +30,4 @@ FROM (((information_schema.columns col LEFT JOIN
     (((cons.conrelid = c.oid) AND (c.relname = (col.table_name)::name))))
 WHERE (((col.table_schema)::text <> 'pg_catalog'::text) AND
     ((col.table_schema)::text <> 'information_schema'::text));
-/***********************************I-DEP-RCM-GEN-0-14/01/2013****************************************/
+/***********************************F-DEP-RCM-GEN-0-14/01/2013****************************************/
