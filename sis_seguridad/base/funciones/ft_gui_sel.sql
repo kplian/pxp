@@ -137,8 +137,11 @@ BEGIN
                                   from segu.tgui g
                                   inner join segu.tsubsistema s
                                       on s.id_subsistema = g.id_subsistema
-                                  where g.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
-                            ' order by g.id_gui ASC';
+                                  where g.id_subsistema = '|| v_parametros.id_subsistema;
+               if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and g.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by g.id_gui ASC';
                                                          
                return v_consulta;
 

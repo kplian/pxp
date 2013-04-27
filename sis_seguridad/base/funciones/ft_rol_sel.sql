@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_rol_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -102,8 +100,11 @@ BEGIN
                         INNER join segu.tsubsistema subsis
                         on subsis.id_subsistema=roll.id_subsistema 
                        
-                        WHERE  roll.modificado is null and roll.id_subsistema = '|| v_parametros.id_subsistema || 
-                        	' order by roll.id_rol';  
+                        WHERE roll.id_subsistema = '|| v_parametros.id_subsistema;
+               if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and roll.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by roll.id_rol ASC';
                
                return v_consulta;
 
