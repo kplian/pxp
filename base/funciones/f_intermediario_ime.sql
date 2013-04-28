@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_sid_web varchar,
@@ -187,7 +185,7 @@ BEGIN
                 end if;
             ELSE
                 --RAC 12/09/2011 validacion para campo date vacio 
-                if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time') and  valores[i]='')THEN
+                if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
                      v_consulta:=v_consulta || 'null' || ',';
                 else
                     v_consulta:=v_consulta ||''''|| valores[i] || ''',';
@@ -234,14 +232,14 @@ BEGIN
         else
            --RAC 12/09/2011 validacion para campo date vacio 
            if(v_upload_file)THEN
-              if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time') and  valores[v_tamano]='')THEN
+              if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time'  or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
                   v_consulta:=v_consulta || 'null' || ','''||par_files||'''::bytea)';
               else
                  v_consulta:=v_consulta ||''''|| valores[v_tamano] || ''','''||par_files||'''::bytea)';
               end if;
            
            ELSE
-              if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time') and  valores[v_tamano]='')THEN
+              if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time' or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
                   v_consulta:=v_consulta || 'null' || ')';
               else
                   v_consulta:=v_consulta ||''''|| valores[v_tamano] || ''')';
