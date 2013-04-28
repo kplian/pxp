@@ -125,12 +125,27 @@ class ACTFuncion extends ACTbase{
 			$turl = '';
 			$ttitle = '';
 			$tclass = '';
+			$definicion_atributo = 0;
 			foreach ($lines as $line_num => & $line) {
 								
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
 				}
-				
+				//Para el caso de combo rec
+				if (strpos(str_replace(' ', '', $line),'config:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0 && $definicion_atributo == 0) {
+					$definicion_atributo = 1;
+				} else if ($definicion_atributo == 1 && strpos(str_replace(' ', '', $line),'origen:') !== FALSE) {
+					$tempString = str_replace('"', "'", $line);
+					$tempArr = explode("'",$tempString);
+					$linesParent = $this->getComboRec($tempArr[1]);
+					
+					foreach ($linesParent as $lineParent) {
+						array_push($lines, $lineParent);
+					}
+					
+				} else if ($definicion_atributo == 1 && strpos($line, '}') !== FALSE) {
+					$definicion_atributo = 0;
+				}
 				if (strpos(str_replace(' ', '', $line),'require:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0) {
 					$tempString = str_replace('"', "'", $line);
 					$tempArr = explode("'",$tempString);
@@ -187,20 +202,33 @@ class ACTFuncion extends ACTbase{
 			    }
 				
 				//Para el caso de maestro detalle east,west,south
-			    if ((strpos($line, 'east')!== FALSE || strpos($line, 'west')!== FALSE || strpos($line, 'south')!== FALSE) 
+			    if ((strpos($line, 'east')!== FALSE || strpos($line, 'west')!== FALSE || strpos($line, 'south')!== FALSE || 
+					strpos($line, 'tabeast')!== FALSE || strpos($line, 'tabwest')!== FALSE || strpos($line, 'tabsouth')!== FALSE) 
 			    	&& (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
+			    	if (strpos($line, 'tab')!== FALSE) {
+						$booltab = 1;			    		
+			    	} else {
+			    		$booltab = 0;
+			    	}
 			    	$cadenaMD = $line;
 			    } else if (strpos($line, '}')!== FALSE && $cadenaMD != '') {
 			    	$cadenaMD .= $line;
 					$newGui = $this->getRelacion($cadenaMD);
+					if ($booltab == 1) {
+						$cadenaMD = 'tab';
+					} else {
+						$cadenaMD = '';
+					}
 					
-					$cadenaMD = '';
 					if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
 						//guardar datos de newgui y actualizar el id de newgui
 						$newGui = $this->saveGui($newGui, $gui['id_gui']);
 						array_push($relaciones, $newGui);
 					}
 					
+			    }else if (strpos($line, ']')!== FALSE && $cadenaMD != '') {
+			    	$cadenaMD = '';
+			    	
 			    } else if ($cadenaMD != '') {
 			    	$cadenaMD .= $line; 
 			    }
@@ -229,6 +257,37 @@ class ACTFuncion extends ACTbase{
 			
 		}
 		return $existe;
+	}
+	function getComboRec($opcion) {
+		$filename = '../../../pxp/lib/lib_vista/addcmp/ComboRec.js';
+		$res = array();
+		//se abre el archivo
+		if (file_exists($filename) && is_readable ($filename)) {
+			$lines = file($filename);
+			$comentado = 0;
+			$encontrado = 0;
+			foreach ($lines as $line_num => & $line) {
+				if (strpos($line, "/*")!== FALSE) {
+					$comentado = 1;
+				}
+				$line_sq = str_replace(' ', '', $line);
+				if (strpos(str_replace(' ', '', $line_sq),"if(config.origen=='" . $opcion . "')") !== FALSE && strpos($line_sq, '//') === FALSE && $comentado == 0 && $encontrado == 0) {
+					$encontrado = 1;			
+				} else if (strpos(str_replace(' ', '', $line_sq),"if(config.origen==") !== FALSE && $comentado == 0 && $encontrado == 1 && strpos($line_sq, '//')=== FALSE) {
+					$encontrado = 0;
+				} else if ($encontrado == 1){
+					array_push($res, $line);
+				}
+				
+				if (strpos($line, "*/")!== FALSE) {
+					$comentado = 0;
+				}
+			} 
+			
+		} else {
+			$this->notas .= 'No se encontro el archivo de definicion de Combo Recs'. $filename . "<BR>";
+		}
+		return $res;
 	}
 	function getRelacion ($str) {
 		$m = array();
@@ -282,12 +341,27 @@ class ACTFuncion extends ACTbase{
 			$lines = file($filename);
 			$comentado = 0;
 			$procedimientos = array();
+			$definicion_atributo = 0;
 			foreach ($lines as $line_num => & $line) {
 				
 				if (strpos($line, "/*")!== FALSE) {
 					$comentado = 1;
 				}
-				
+				//Para el caso de combo rec
+				if (strpos(str_replace(' ', '', $line),'config:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0 && $definicion_atributo == 0) {
+					$definicion_atributo = 1;
+				} else if ($definicion_atributo == 1 && strpos(str_replace(' ', '', $line),'origen:') !== FALSE) {
+					$tempString = str_replace('"', "'", $line);
+					$tempArr = explode("'",$tempString);
+					$linesParent = $this -> getComboRec($tempArr[1]);
+					
+					foreach ($linesParent as $lineParent) {
+						array_push($lines, $lineParent);
+					}
+					
+				} else if ($definicion_atributo == 1 && strpos($line, '}') !== FALSE) {
+					$definicion_atributo = 0;
+				}
 				
 				if (strpos(str_replace(' ', '', $line),'require:') !== FALSE && strpos($line, '//') === FALSE && $comentado == 0) {
 					$tempString = str_replace('"', "'", $line);
