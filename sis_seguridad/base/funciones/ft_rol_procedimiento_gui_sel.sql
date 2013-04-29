@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_rol_procedimiento_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_rol_procedimiento_gui_sel
@@ -129,8 +128,11 @@ BEGIN
                                 on rpg.id_rol = r.id_rol
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where  rpg.modificado is null and s.id_subsistema = '|| v_parametros.id_subsistema ||
-                            ' order by rpg.id_rol_procedimiento ASC';
+                            where  rpg.modificado is null and s.id_subsistema = '|| v_parametros.id_subsistema;
+               if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and rpg.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by rpg.id_rol_procedimiento ASC';
                                                          
                return v_consulta;
 
@@ -172,7 +174,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_rol_procedimiento_ime (OID = 305091) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

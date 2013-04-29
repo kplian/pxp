@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_estructura_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_estructura_gui_sel
@@ -95,9 +94,13 @@ BEGIN
                             inner join segu.tgui g on g.id_gui = eg.id_gui
                             inner join segu.tsubsistema s on g.id_subsistema = s.id_subsistema
                             inner join segu.tgui gfk on gfk.id_gui = eg.fk_id_gui
-                            where  eg.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema || 
-                            ' order by eg.id_estructura_gui ASC';
-                                                         
+                            where  g.id_subsistema = '|| v_parametros.id_subsistema;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and eg.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by eg.id_estructura_gui ASC';	
+                                                                       
                return v_consulta;
 
 
@@ -143,7 +146,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_funcion_ime (OID = 305056) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -132,8 +132,35 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		
 		this.addButton('aInterSis',{text:'Interfaces',iconCls: 'blist',disabled:true,handler:aInterSis,tooltip: '<b>Interfaces del Sistema</b><br/>Permite configurar transacciones por interfaz '});
 		this.addButton('sinc_func',{text:'Sincronizar',iconCls: 'blist',disabled:true,handler:sinc_func,tooltip: '<b>Sincronizar Funciones</b><br/>Sinc '});
-		this.addButton('exp_menu',{text:'Exportar Datos Seguridad',iconCls: 'blist',disabled:true,handler:expMenu,tooltip: '<b>Permite exportar los datos de seguridad del subsistema</b>'});
-		
+		this.addButton('exp_menu',{text:'Exportar Datos Seguridad',iconCls: 'blist',disabled:true,tooltip: '<b>Permite exportar los datos de seguridad del subsistema</b>',
+		menu:{
+   				items: [
+   				{
+   					text: 'Exportar Cambios Realizados', handler: this.expMenu, scope: this, argument : {todo:'no'}
+   				},{
+   					text: 'Exportar Todos los Datos de Seguridad', handler: this.expMenu, scope: this, argument : {todo : 'si'}
+   				}
+   				]
+   			}
+   		});
+		//Incluye un menú
+   		/*this.menuOp = new Ext.Toolbar.SplitButton({
+   			text: 'Exportar Datos Seguridad',
+   			scope: this,
+   			tooltip : '<b>Exportar</b><br/>',
+   			id : 'b-exp_menu-' + this.idContenedor,			
+   			menu:{
+   				items: [
+   				{
+   					text: 'Exportar Cambios Realizados', handler: this.expMenu, scope: this, argument : {todo:'no'}
+   				},{
+   					text: 'Exportar Todos los Datos de Seguridad', handler: this.expMenu, scope: this, argument : {todo : 'si'}
+   				}
+   				]
+   			}
+   		});*/
+   		//this.menuOp.bconf.id = 'b-' + 'exp_menu' + '-' + this.idContenedor;
+   		//this.tbar.add(this.menuOp);
 		function aInterSis(){
 			
 		
@@ -165,20 +192,21 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 			// _CP.loadWindows('../../../sis_legal/vista/garantia/garantia.php','Garantia',{width:800,height:500},this.sm.getSelected().data,this.idContenedor);
 		}
 		
-		function expMenu(){			
+		
+		this.load()
+	},
+	expMenu : function(resp){
 			var data=this.sm.getSelected().data.id_subsistema;
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
 				url:'../../sis_seguridad/control/Subsistema/ExportarDatosSeguridad',
-				params:{'id_subsistema':data},
+				params:{'id_subsistema' : data, 'todo' : resp.argument.todo},
 				success:this.successExport,
 				failure: this.conexionFailure,
 				timeout:this.timeout,
 				scope:this
 			});
 			
-		}
-		this.load()
 	},
 	
 	successSinc:function(resp){

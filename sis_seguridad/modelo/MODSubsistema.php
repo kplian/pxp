@@ -94,7 +94,8 @@ class MODSubsistema extends MODbase{
 			$this->tipo_procedimiento='SEL';
 			$this->setCount(false);
 			
-			$this->setParametro('id_subsistema','id_subsistema','integer');		
+			$this->setParametro('id_subsistema','id_subsistema','integer');
+			$this->setParametro('todo','todo','varchar');	
 			$this->captura('tipo','varchar');
 			$this->captura('nombre','varchar');
 			$this->captura('descripcion','text');
