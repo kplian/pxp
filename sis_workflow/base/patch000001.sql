@@ -29,6 +29,8 @@ CREATE TABLE wf.ttipo_estado (
   depto_asignacion varchar(50) DEFAULT 'ninguno'::character varying NOT NULL,
   nombre_depto_func_list varchar(255),
   obs             text,
+  alerta VARCHAR(3) DEFAULT 'no'::character varying NOT NULL, 
+  pedir_obs VARCHAR(3) DEFAULT 'no'::character varying NOT NULL, 
   PRIMARY KEY (id_tipo_estado)) INHERITS (pxp.tbase); 
   
   
@@ -51,6 +53,7 @@ CREATE TABLE wf.testado_wf (
   id_depto           int4,
   tipo_cambio 		 VARCHAR(20) NOT NULL DEFAULT 'siguiente'::varchar,
   obs TEXT DEFAULT ''::text NOT NULL, 
+   id_alarma INTEGER[], 
   PRIMARY KEY (id_estado_wf)) INHERITS (pxp.tbase);
   
   

@@ -41,6 +41,8 @@ DECLARE
     v_consulta_detalle		text;
     --Ids que se necesitan para  SAJ
     v_mensaje varchar;
+    g_registros  record;
+    v_consulta varchar;
 			    
 BEGIN   
 
@@ -61,12 +63,20 @@ BEGIN
             IF(v_parametros.tipo='TODOS' or v_parametros.tipo='SAJ')THEN 
                v_mensaje:= saj.f_verifica_alarma(v_parametros.id_usuario);
             END IF;*/
+           
+           --consula la configuracion de generadors
+           /*
+           tota alarma debe estar configurada previamente en la tabla para.tgenerador_alarma
+           
+           */
             
-            --ir introducion if que diparen la funcion segun sistema X
-            IF(v_parametros.tipo='TODOS' or v_parametros.tipo='GEM')THEN 
-                v_mensaje:= gem.f_verifica_alarma_gem(v_parametros.id_usuario);
-            END IF;
- 
+            FOR g_registros in (select ga.funcion
+            from param.tgenerador_alarma ga) LOOP
+                v_consulta = 'SELECT  '||g_registros.funcion||'('||v_parametros.id_usuario::varchar||');';
+                execute (v_consulta);
+            END LOOP;
+            
+            
            --Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Alarmas almacenado(a) con exito'); 
             v_resp = pxp.f_agrega_clave(v_resp,'respuesta',v_mensaje);

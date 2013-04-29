@@ -75,11 +75,18 @@ select pxp.f_insert_tgui ('Numero de tramite', 'Numero de tramite', 'WF.2.1', 'n
 select pxp.f_insert_tgui ('Estados', 'Estados', 'WF.1.2.1', 'no', 0, 'sis_workflow/vista/tipo_estado/TipoEstado.php', 4, '', 'TipoEstado', 'WF');
 select pxp.f_insert_tgui ('Hijos', 'Hijos', 'WF.1.2.1.1', 'no', 0, 'sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php', 5, '', '50%', 'WF');
 
+select pxp.f_insert_tgui ('Inicio de Tramites', 'Inicio de Tramites', 'INT', 'si', 3, 'sis_workflow/vista/proceso_wf/ProcesoWfIniTra.php', 2, '', 'ProcesoWfIniTra', 'WF');
+select pxp.f_insert_tgui ('Seguir Tramite', 'Seguimiento de tramites', 'STR', 'si', 4, 'sis_workflow/vista/proceso_wf/ProcesoWfVb.php', 2, '', 'ProcesoWfVb', 'WF');
+
+
 --estructura de interface
 
 select pxp.f_insert_testructura_gui ('WF.2.1', 'WF.2');
 select pxp.f_insert_testructura_gui ('WF.1.2.1', 'WF.1.2');
 select pxp.f_insert_testructura_gui ('WF.1.2.1.1', 'WF.1.2.1');
+
+select pxp.f_insert_testructura_gui ('INT', 'WF');
+select pxp.f_insert_testructura_gui ('STR', 'WF');
 
 --funciones--
 

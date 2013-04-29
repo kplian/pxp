@@ -42,7 +42,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		},
         {
             config:{
-                name: 'codigo',
+                name: 'codigo_estado',
                 fieldLabel: 'Código Estado',
                 allowBlank: false,
                 anchor: '70%',
@@ -154,6 +154,62 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'alerta',
+                fieldLabel: 'Alertar',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                emptyText:'si/no...',                   
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'alerta',                   
+               // displayField: 'descestilo',
+                store:['si','no']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'promac.inicio',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipes.alerta',
+                         options: ['si','no'],  
+                    },
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'pedir_obs',
+                fieldLabel: 'Pedir Instrucciones?',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                emptyText:'si/no...',                   
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'pedir_obs',                   
+               // displayField: 'descestilo',
+                store:['si','no']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'promac.inicio',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipes.pedir_obs',
+                         options: ['si','no'],  
+                    },
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'tipo_asignacion',
@@ -354,7 +410,8 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_tipo_proceso', type: 'string'},'codigo','obs','depto_asignacion','fin','nombre_depto_func_list'
+		{name:'desc_tipo_proceso', type: 'string'},
+		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list'
 		
 	],
 	sortInfo:{

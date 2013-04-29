@@ -155,6 +155,18 @@
 	
 	$_SESSION['_DIR_BACKGROUND_LOGIN']='../../../recursos/imagenes/Logo.png';
 	
+	//-----------------CORREO ELECTRONICO----------------------//
+    
+    $_SESSION['_MAIL_USUARIO']='kaplian@gmail.com';
+    $_SESSION['_MAIL_PASSWORD']='password...';
+    $_SESSION['_MAIL_REMITENTE']='kplain@gmail.com';
+    $_SESSION['_NOMBER_REMITENTE']='Sistema ERP';
+    
+    $_SESSION['_MAIL_SERVIDOR']='smtp.gmail.com';
+    $_SESSION['_MAIL_PUERTO']=465;
+    $_SESSION['_MAIL_AUTENTIFICACION']=true;
+    $_SESSION['_SMTPSecure']='ssl';
+	
 
 	
 ?>
