@@ -43,7 +43,7 @@ def generate_scripts (file_str):
 			dic['codigo'] = dic['codigo'].replace('\n','')
 			dic['codigo'] = dic['codigo'][2:]
 			if (searching_for == 'fin'):
-				 f_log.write("Se encontro: " + line.replace('*','')  + "cuando se buscaba el fin de un SCRIPT\n")
+				 f_log.write("ERROR: Se encontro: " + line.replace('*','')  + "cuando se buscaba el fin de un SCRIPT\n")
 	
 			searching_for = 'fin'
 		elif line.find('***F-SCP-') != -1 or line.find('***F-DEP-') !=-1 or line.find('***F-DAT-') != -1:
@@ -51,7 +51,7 @@ def generate_scripts (file_str):
 				scripts.append(dic)
                                 dic = dict(codigo = '', query = '', is_loaded='')
 			if (searching_for == 'inicio'):
-				f_log.write("Se encontro: " + line.replace('*','')  + "cuando se buscaba el inicio de un SCRIPT\n")
+				f_log.write("ERROR: Se encontro: " + line.replace('*','')  + "cuando se buscaba el inicio de un SCRIPT\n")
 
 			searching_for = 'inicio'
 				
@@ -140,7 +140,7 @@ if opcion == '1':
 	while (question != 'SI'	and question != 'NO'):
 		question = raw_input("Desea obtener un backup de la BD antes de eliminarla? (SI/NO) : ")
 		if question == 'SI':
-			restaurar_db(b)		
+			restaurar_db(db)		
 	datos = raw_input("Desea restaurar los datos de prueba? (s/n): ")
 elif opcion == '2':
 	datos = 'n'
