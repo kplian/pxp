@@ -6,7 +6,7 @@
  * Descripcion: Conexion y desconexion de bases de datos postgersql(conexiones persistenes)
  */
 // Esta es la variable que indica el host del servidor Postgres
-	$_SESSION["_HOST"] = "192.168.56.101";
+	$_SESSION["_HOST"] = "localhost";
 	//$HOST = "192.168.1.8";
 	//Puerto
 	$_SESSION["_PUERTO"] = "5432";
@@ -21,7 +21,7 @@
 	//nombre carpeta donde se aloja el framewoek en el servidor web
 	//la cokies solamente son admitidas en esta direccion
 	//$_SESSION["_FOLDER"] = "/web/lib/lib_control/";
-	$_SESSION["_FOLDER"] = "/web/";
+	$_SESSION["_FOLDER"] = "/kerp-boa/";
 	
 	//nombre carpeta de logs de postgres
 	$_SESSION["_FOLDER_LOGS_BD"] = "/var/lib/pgsql/9.1/data/pg_log/";
@@ -33,7 +33,7 @@
 		// Esta es la variable que indica el usuario del servidor Postgres
 	$_SESSION["_USUARIO_CONEXION"] = "conexion" ;
 	// Esta es la variable que indica la contrasena del usuario de Postgres
-	$_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
+	$_SESSION["_CONTRASENA_CONEXION"]	= "dbkerp_conexion" ;
 	
 	//DOMINIO PARA AUTENTIFICACION LDAP
 		$_SESSION["_DOMINIO"] = 'kplian.com';
@@ -45,7 +45,7 @@
 	
 	//$CONTRASENA	= "1234" ;
 	// Esta es la variable que indica la base de datos a utilizar
-	$_SESSION["_BASE_DATOS"]= "dbweb";
+	$_SESSION["_BASE_DATOS"]= "dbkerp";
 	
 	$_SESSION["codificacion_xml"] = "UTF-8";//latin 9 
 	
@@ -154,6 +154,18 @@
 	$_SESSION['_DIR_FABICON']='../../images/logo_reporte.jpg';
 	
 	$_SESSION['_DIR_BACKGROUND_LOGIN']='../../../recursos/imagenes/Logo.png';
+	
+	//-----------------CORREO ELECTRONICO----------------------//
+    
+    $_SESSION['_MAIL_USUARIO']='kplian@gmail.com';
+    $_SESSION['_MAIL_PASSWORD']='password...';
+    $_SESSION['_MAIL_REMITENTE']='kplain@gmail.com';
+    $_SESSION['_NOMBER_REMITENTE']='Sistema ERP';
+    
+    $_SESSION['_MAIL_SERVIDOR']='smtp.gmail.com';
+    $_SESSION['_MAIL_PUERTO']=465;
+    $_SESSION['_MAIL_AUTENTIFICACION']=true;
+    $_SESSION['_SMTPSecure']='ssl';
 	
 
 	

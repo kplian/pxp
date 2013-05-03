@@ -518,7 +518,7 @@ Phx.CP=function(){
 								var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
 	                            var _im ='../../../lib/imagenes/NoPerfilImage.jpg';
 	                            if(reg.datos[0].extension){
-	                            	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].id_persona+'.'+reg.datos[0].extension;
+	                            	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].foto;
 	                            }
 	                             Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
 								 

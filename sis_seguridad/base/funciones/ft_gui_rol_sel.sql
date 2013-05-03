@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_gui_rol_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.fr_gui_rol_sel
@@ -150,8 +149,11 @@ BEGIN
                                 on gr.id_rol = r.id_rol
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where  gr.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
-                            ' order by gr.id_gui_rol ASC';
+                            where  g.id_subsistema = '|| v_parametros.id_subsistema;
+               if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and gr.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by gr.id_gui_rol ASC';
                                                          
                return v_consulta;
 
@@ -196,7 +198,8 @@ EXCEPTION
 		raise exception '%',v_resp;          
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_gui_sel (OID = 305063) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

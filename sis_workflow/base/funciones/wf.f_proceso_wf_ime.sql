@@ -209,7 +209,8 @@ BEGIN
             ew.id_estado_wf,
             te.codigo,
             pw.fecha_ini,
-            te.id_tipo_estado
+            te.id_tipo_estado,
+            te.pedir_obs
           into 
             v_registros
             
@@ -254,85 +255,86 @@ BEGIN
             
             v_num_estados= array_length(va_id_tipo_estado, 1);
             
-           -- raise exception 'Estados...  %',v_num_estados;
+          --  raise exception 'Estados...  %',v_registros.pedir_obs;
+           
+          IF v_registros.pedir_obs = 'no' THEN
             
-            IF v_num_estados = 1 then
-                  -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
-                   raise notice ' si solo hay un estado';
-                 SELECT 
-                 *
-                  into
-                 v_num_funcionarios 
-                 FROM wf.f_funcionario_wf_sel(
-                     p_id_usuario, 
-                     va_id_tipo_estado[1], 
-                     v_fecha_ini,
-                     v_registros.id_estado_wf,
-                     TRUE) AS (total bigint);
-                     
-                IF v_num_funcionarios = 1 THEN
-                
-                  raise notice ' si solo es un funcionario, recuperamos el funcionario correspondiente';
-                -- si solo es un funcionario, recuperamos el funcionario correspondiente
-                     SELECT 
-                         id_funcionario
-                           into
-                         v_id_funcionario_estado
-                     FROM wf.f_funcionario_wf_sel(
-                         p_id_usuario, 
-                         va_id_tipo_estado[1], 
-                         v_fecha_ini,
-                         v_registros.id_estado_wf,
-                         FALSE) 
-                         AS (id_funcionario integer,
-                           desc_funcionario text,
-                           desc_funcionario_cargo text,
-                           prioridad integer);
-                END IF;    
-                     
-              
-              --verificamos el numero de deptos
-               raise notice 'verificamos el numero de deptos';
-               
-              
-                SELECT 
-                *
-                into
-                  v_num_deptos 
-               FROM wf.f_depto_wf_sel(
-                   p_id_usuario, 
-                   va_id_tipo_estado[1], 
-                   v_fecha_ini,
-                   v_registros.id_estado_wf,
-                   TRUE) AS (total bigint);
-                   
-               IF v_num_deptos = 1 THEN
-                  -- si solo es un funcionario, recuperamos el funcionario correspondiente
-                   raise notice 'si solo es un funcionario, recuperamos el funcionario correspondiente';
-             
-                       SELECT 
-                           id_depto
-                             into
-                           v_id_depto_estado
-                      FROM wf.f_depto_wf_sel(
+                      
+                IF v_num_estados = 1 then
+                      -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
+                       raise notice ' si solo hay un estado';
+                         SELECT 
+                         *
+                          into
+                         v_num_funcionarios 
+                         FROM wf.f_funcionario_wf_sel(
+                             p_id_usuario, 
+                             va_id_tipo_estado[1], 
+                             v_fecha_ini,
+                             v_registros.id_estado_wf,
+                             TRUE) AS (total bigint);
+                             
+                        IF v_num_funcionarios = 1 THEN
+                        
+                          raise notice ' si solo es un funcionario, recuperamos el funcionario correspondiente';
+                        -- si solo es un funcionario, recuperamos el funcionario correspondiente
+                             SELECT 
+                                 id_funcionario
+                                   into
+                                 v_id_funcionario_estado
+                             FROM wf.f_funcionario_wf_sel(
+                                 p_id_usuario, 
+                                 va_id_tipo_estado[1], 
+                                 v_fecha_ini,
+                                 v_registros.id_estado_wf,
+                                 FALSE) 
+                                 AS (id_funcionario integer,
+                                   desc_funcionario text,
+                                   desc_funcionario_cargo text,
+                                   prioridad integer);
+                        END IF;    
+                             
+                      
+                      --verificamos el numero de deptos
+                       raise notice 'verificamos el numero de deptos';
+                       
+                      
+                        SELECT 
+                        *
+                        into
+                          v_num_deptos 
+                       FROM wf.f_depto_wf_sel(
                            p_id_usuario, 
                            va_id_tipo_estado[1], 
                            v_fecha_ini,
                            v_registros.id_estado_wf,
-                           FALSE) 
-                           AS (id_depto integer,
-                             codigo_depto varchar,
-                             nombre_corto_depto varchar,
-                             nombre_depto varchar,
-                             prioridad integer);
+                           TRUE) AS (total bigint);
+                           
+                       IF v_num_deptos = 1 THEN
+                          -- si solo es un funcionario, recuperamos el funcionario correspondiente
+                           raise notice 'si solo es un funcionario, recuperamos el funcionario correspondiente';
+                     
+                               SELECT 
+                                   id_depto
+                                     into
+                                   v_id_depto_estado
+                              FROM wf.f_depto_wf_sel(
+                                   p_id_usuario, 
+                                   va_id_tipo_estado[1], 
+                                   v_fecha_ini,
+                                   v_registros.id_estado_wf,
+                                   FALSE) 
+                                   AS (id_depto integer,
+                                     codigo_depto varchar,
+                                     nombre_corto_depto varchar,
+                                     nombre_depto varchar,
+                                     prioridad integer);
+                      END IF;
+                  
                 END IF;
-              
-              
-              
-              
+            
              
              END IF;
-           
              raise notice 'si hay mas de un estado disponible  preguntamos al usuario';
              
             -- si hay mas de un estado disponible  preguntamos al usuario
@@ -351,21 +353,19 @@ BEGIN
            --Se se solicita cambiar de estado a la solicitud
            ------------------------------------------
            ELSEIF  v_parametros.operacion = 'cambiar' THEN
-          
-          
-            
-            -- obtener datos tipo estado
-            
-            select
-             te.codigo
-            into
-             v_codigo_estado
-            from wf.ttipo_estado te
-            where te.id_tipo_estado = v_parametros.id_tipo_estado;
-            
-            IF  pxp.f_existe_parametro('p_tabla','id_depto') THEN
-             
-             v_id_depto = v_parametros.id_depto;
+          		
+           		 -- obtener datos tipo estado
+                
+                select
+                 te.codigo
+                into
+                 v_codigo_estado
+                from wf.ttipo_estado te
+                where te.id_tipo_estado = v_parametros.id_tipo_estado;
+                
+                IF  pxp.f_existe_parametro('p_tabla','id_depto') THEN
+                 
+                 v_id_depto = v_parametros.id_depto;
             
             END IF;
             
@@ -513,7 +513,8 @@ BEGIN
                   v_parametros.id_estado_wf, 
                   v_id_proceso_wf, 
                   p_id_usuario,
-                  v_id_depto);
+                  v_id_depto,
+                  v_parametros.obs);
                       
              
               

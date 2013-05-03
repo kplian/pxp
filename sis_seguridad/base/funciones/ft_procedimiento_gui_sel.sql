@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_procedimiento_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  CAPA:          MODELO
@@ -115,8 +114,11 @@ BEGIN
                                 on g.id_gui = pg.id_gui
                             inner join segu.tsubsistema s
                                 on s.id_subsistema = g.id_subsistema
-                            where  pg.modificado is null and g.id_subsistema = '|| v_parametros.id_subsistema ||
-                            ' order by pg.id_procedimiento_gui';
+                            where  g.id_subsistema = '|| v_parametros.id_subsistema;
+               if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and pg.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by pg.id_procedimiento_gui ASC';
                                                          
                return v_consulta;
 
@@ -162,7 +164,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_procedimiento_ime (OID = 305081) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -143,11 +143,18 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                 modal:true,
                  closeAction: 'hide',
                 buttons: [{
-                    text: 'Guardar',
-                     handler:this.confSigEstado,
+                    text: '1 Guardar',
+                    handler:this.confSigEstado,
                     scope:this
                     
-                },{
+                },
+                {
+                    text: '2 Guardar',
+                    handler:this.antEstadoSubmmit,
+                    scope:this
+                    
+                },
+                {
                     text: 'Cancelar',
                     handler:function(){this.wEstado.hide()},
                     scope:this
@@ -544,12 +551,20 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
     sigEstado:function()
         {                   
             var d= this.sm.getSelected().data;
+            
+            this.cmbTipoEstado.show();
+            this.cmbFuncionarioWf.show();
+            
+            this.cmbTipoEstado.enable();
+            this.cmbFuncionarioWf.enable();
            
             Phx.CP.loadingShow();
             this.cmbTipoEstado.reset();
             this.cmbFuncionarioWf.reset();
             this.cmbFuncionarioWf.store.baseParams.id_estado_wf=d.id_estado_wf;
             this.cmbFuncionarioWf.store.baseParams.fecha=d.fecha_ini;
+            
+            
          
             Ext.Ajax.request({
                 // form:this.form.getForm().getEl(),
@@ -564,23 +579,38 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
        
         antEstado:function(res,eve)
         {                   
+            
+            this.wEstado.buttons[0].hide();
+            this.wEstado.buttons[1].show();
+            this.wEstado.show();
+            
+            this.cmbTipoEstado.hide();
+            this.cmbFuncionarioWf.hide();
+            this.cmbTipoEstado.disable();
+            this.cmbFuncionarioWf.disable();
+            
+                
+        },
+        
+        antEstadoSubmmit:function(res){
             var d= this.sm.getSelected().data;
            
             Phx.CP.loadingShow();
             var operacion = 'cambiar';
-            operacion=  res.argument.estado == 'inicio'?'inicio':operacion; 
-            
             Ext.Ajax.request({
-                // form:this.form.getForm().getEl(),
+               
                 url:'../../sis_workflow/control/ProcesoWf/anteriorEstadoProcesoWf',
                 params:{id_proceso_wf:d.id_proceso_wf, 
                         id_estado_wf:d.id_estado_wf, 
-                        operacion: operacion},
+                        operacion: operacion,
+                        obs:this.cmpObs.getValue()},
                 success:this.successSinc,
                 failure: this.conexionFailure,
                 timeout:this.timeout,
                 scope:this
-            });     
+            }); 
+            
+            
         },
 	
      successSinc:function(resp){
@@ -590,7 +620,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             if(!reg.ROOT.error){
                if (reg.ROOT.datos.operacion=='preguntar_todo'){
                    //TO DO, verificar consiguracion de tipo_proceso para perdir observaciones
-                   if(reg.ROOT.datos.num_estados==1 && reg.ROOT.datos.num_funcionarios==1 && 0==1){
+                   if(reg.ROOT.datos.num_estados==1 && reg.ROOT.datos.num_funcionarios==1){
                        //directamente mandamos los datos
                        Phx.CP.loadingShow();
                        var d= this.sm.getSelected().data;
@@ -615,7 +645,9 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                    else{
                      this.cmbTipoEstado.store.baseParams.estados= reg.ROOT.datos.estados;
                      this.cmbTipoEstado.modificado=true;
-                     this.cmbFuncionarioWf.disable()
+                     this.cmbFuncionarioWf.disable();
+                     this.wEstado.buttons[1].hide();
+                     this.wEstado.buttons[0].show();
                      this.wEstado.show();  
                   }
                    
