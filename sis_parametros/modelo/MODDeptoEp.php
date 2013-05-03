@@ -18,6 +18,7 @@ class MODDeptoEp extends MODbase{
 		$this->procedimiento='param.ft_depto_ep_sel';
 		$this->transaccion='PM_DEEP_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setParametro('id_depto','id_depto','int4');
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_depto_ep','int4');

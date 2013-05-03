@@ -56,7 +56,7 @@ BEGIN
 						inner join param.vep as ep on ep.id_ep = deep.id_ep
 						inner join segu.tusuario usu1 on usu1.id_usuario = deep.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = deep.id_usuario_mod
-				        where  ';
+				        where  deep.estado_reg = ''activo'' and  deep.id_depto =  '|| v_parametros.id_depto || ' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -83,7 +83,7 @@ vep 	#FECHA:		29-04-2013 20:34:21
 					    inner join param.vep as ep on ep.id_ep = deep.id_ep
 					    inner join segu.tusuario usu1 on usu1.id_usuario = deep.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = deep.id_usuario_mod
-					    where ';
+					    where  deep.estado_reg = ''activo'' and  deep.id_depto =  '|| v_parametros.id_depto || ' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
