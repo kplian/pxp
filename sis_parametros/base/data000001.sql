@@ -612,7 +612,7 @@ select pxp.f_insert_tprocedimiento ('PM_ASIS_ELI', 'Eliminacion de registros', '
 
 
 
-/***********************************F-DAT-RAC-PARAM-00-26/04/2013*****************************************/
+/***********************************I-DAT-RAC-PARAM-00-26/04/2013*****************************************/
 
 select pxp.f_insert_tgui ('Generadores de Alarma', 'Configuracion funciones que generan alarmas', 'GAL', 'si', 4, 'sis_parametros/vista/generador_alarma/GeneradorAlarma.php', 2, '', 'GeneradorAlarma', 'PARAM');
 
@@ -621,4 +621,4 @@ select pxp.f_insert_testructura_gui ('GAL', 'PARAM');
 select pxp.f_insert_tgui ('Grupos', 'Grupos', 'GQP', 'si', 8, 'sis_parametros/vista/grupo/Grupo.php', 3, '', 'Grupo', 'PARAM');
 select pxp.f_insert_testructura_gui ('GQP', 'CEP');
 
-/***********************************F-DAT-AAO-PARAM-00-26/04/2013*****************************************/
+/***********************************F-DAT-RAC-PARAM-00-26/04/2013*****************************************/
