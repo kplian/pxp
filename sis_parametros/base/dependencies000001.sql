@@ -718,3 +718,15 @@ select pxp.f_insert_tprocedimiento_gui ('PM_PLT_MOD', 'PLANT', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PLT_ELI', 'PLANT', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PLT_SEL', 'PLANT', 'no');
 /***********************************F-DEP-AAO-PARAM-72-23/04/2013*****************************************/
+/***********************************I-DEP-JRR-PARAM-0-29/04/2013*****************************************/
+
+ALTER TABLE ONLY param.tdepto_ep
+    ADD CONSTRAINT fk_tpm_depto_ep__id_depto FOREIGN KEY (id_depto) 
+    REFERENCES param.tdepto(id_depto);
+     
+ALTER TABLE ONLY param.tdepto_ep
+    ADD CONSTRAINT fk_tpm_depto_ep__id_ep FOREIGN KEY (id_ep)
+    REFERENCES param.tep(id_ep);
+/***********************************F-DEP-JRR-PARAM-0-29/04/2013*****************************************/
+    
+    
