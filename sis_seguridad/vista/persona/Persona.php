@@ -10,6 +10,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
+    tabEnter:true,
 	Atributos:[
 	{
    	  config:{
@@ -241,32 +242,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	fheight: 350,
 	fwidth: 400,
 	
-	onButtonTest:function(){
-        //Phx.vista.persona.superclass.onButtonTest.call(this);
-        //alert('dispara evento')
-        
-        console.log('1')
-        
-        console.log(this.grid.getView().fireEvent('itemclick', this.grid, 0));
-        
-        console.log('2')
-        
-         var b =this.getBoton('aSubirFoto');
-       // b.toggle(true)
-        //this.getBoton('aSubirFoto').btnEl.dom.click();
-         var e =  Ext.EventObject
-        console.log(b.fireEvent('click ',b,e));
-        b.resumeEvents()
-        console.log('3')
-        console.log(b.fireEvent('onClick ',b,e));
-        
-        //this.getBoton('aSubirFoto').getEl().fireEvent('click',element);
-        
-         //this.getBoton('aSubirFoto').handler.call(this.getBoton('aSubirFoto').scope)
-    
-    
-    
-    },
+	
     
 
 	// sobre carga de funcion
