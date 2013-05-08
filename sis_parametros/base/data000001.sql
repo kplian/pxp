@@ -622,3 +622,9 @@ select pxp.f_insert_tgui ('Grupos', 'Grupos', 'GQP', 'si', 8, 'sis_parametros/vi
 select pxp.f_insert_testructura_gui ('GQP', 'CEP');
 
 /***********************************F-DAT-RAC-PARAM-00-26/04/2013*****************************************/
+
+/***********************************I-DAT-GSS-PARAM-00-07/05/2013*****************************************/
+
+select pxp.f_insert_tprocedimiento ('PM_DEPUSUCOMB_SEL', 'Listado de departamento por usuario para combos', 'si', '', '', 'param.ft_depto_sel');
+
+/***********************************F-DAT-GSS-PARAM-00-07/05/2013*****************************************/
