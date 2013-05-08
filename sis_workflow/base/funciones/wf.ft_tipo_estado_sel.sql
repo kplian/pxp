@@ -151,7 +151,9 @@ BEGIN
                         tipes.obs,
                         tipes.depto_asignacion,
 						tipes.nombre_depto_func_list,
-                        tipes.fin
+                        tipes.fin,
+                        tipes.alerta,
+                        tipes.pedir_obs
                         	
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg

@@ -26,17 +26,21 @@ abstract class ACTbase
 		if (sizeof($myArray) == 1) {			
 			$includeDir = dirname($reflector->getFileName()) . "/../modelo/";
 			$fileName = $myArray [0] . '.php';			
-			
+			include_once $includeDir . $fileName;
+		 eval('$modelObj = new $myArray[0]($this->objParam);');		
 		} else if (sizeof($myArray) == 2) {			
 			$includeDir = dirname($reflector->getFileName()) . "/../../" . $myArray[0] . "/modelo/";
 			$fileName = $myArray [1] . '.php';			
-			
+		 include_once $includeDir . $fileName;
+		 eval('$modelObj = new $myArray[1]($this->objParam);');						
+		} else if (sizeof($myArray) == 3) {			
+			$includeDir = dirname($reflector->getFileName()) . "/../../../" . $myArray[1] . "/modelo/";
+			$fileName = $myArray [2] . '.php';			
+		 include_once $includeDir . $fileName;
+		 eval('$modelObj = new $myArray[2]($this->objParam);');			
 		} else {
 			throw new Exception(__METHOD__.': No se pudo incluir el modelo '.$className);
 		}
-		
-		include_once $includeDir . $fileName;
-		eval('$modelObj = new $myArray[0]($this->objParam);');
 		return $modelObj;
 		
 	}
