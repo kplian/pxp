@@ -128,7 +128,7 @@ BEGIN
         v_alarmas_con[1]:=param.f_inserta_alarma(
                                           p_id_funcionario,
                                           v_desc_alarma,
-                                         '',--acceso directo
+                                          p_acceso_directo,--acceso directo
                                           now()::date,
                                           p_tipo,
                                           p_titulo,
