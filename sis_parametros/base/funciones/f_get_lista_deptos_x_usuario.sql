@@ -31,11 +31,11 @@ BEGIN
     inner join segu.tusuario_grupo_ep uge on ge.id_grupo = uge.id_grupo and uge.estado_reg = 'activo' 
     inner join segu.tsubsistema s on s.id_subsistema = d.id_subsistema 
     where uge.id_usuario = p_id_usuario and s.codigo = p_codigo_subsistema;
-    if (v_depto_usuario is not null and v_depto_ep is not null) then
+    if (v_depto_usuario is not null) then
     	v_depto_usuario = v_depto_usuario || ',';
     end if;
     
-    return COALESCE(v_depto_usuario, '') || COALESCE(v_depto_ep, ''); 
+    return COALESCE(v_depto_usuario, '') || COALESCE(v_depto_ep, '-1'); 
 EXCEPTION
 
       WHEN OTHERS THEN
