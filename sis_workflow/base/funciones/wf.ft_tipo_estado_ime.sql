@@ -76,7 +76,9 @@ BEGIN
             obs,
             depto_asignacion,
             nombre_depto_func_list,
-            fin
+            fin,
+            alerta,
+            pedir_obs
           	) values(
 			v_parametros.nombre_estado,
 			v_parametros.id_tipo_proceso,
@@ -89,11 +91,13 @@ BEGIN
 			p_id_usuario,
 			null,
 			null,
-            v_parametros.codigo,
+            v_parametros.codigo_estado,
             v_parametros.obs,
             v_parametros.depto_asignacion,
             v_parametros.nombre_depto_func_list,
-            v_parametros.fin
+            v_parametros.fin,
+            v_parametros.alerta,
+        	v_parametros.pedir_obs
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -127,11 +131,13 @@ BEGIN
 			nombre_func_list = v_parametros.nombre_func_list,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
-            codigo=v_parametros.codigo,
+            codigo=v_parametros.codigo_estado,
             obs=v_parametros.obs,
             depto_asignacion=v_parametros.depto_asignacion,
             nombre_depto_func_list=v_parametros.nombre_depto_func_list,
-            fin=v_parametros.fin
+            fin=v_parametros.fin,
+            alerta=v_parametros.alerta,
+        	pedir_obs=v_parametros.pedir_obs
 			where id_tipo_estado=v_parametros.id_tipo_estado;
             
             --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '

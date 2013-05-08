@@ -76,6 +76,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                         queryDelay:500,
                         width:210,
                         gwidth:220,
+                         listWidth:'280',
                         minChars:2,
                         tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo_estado}</p>Prioridad: <strong>{nombre_estado}</strong> </div></tpl>'
                     
@@ -114,6 +115,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                         queryDelay:500,
                         width:210,
                         gwidth:220,
+                         listWidth:'280',
                         minChars:2,
                         tpl: '<tpl for="."><div class="x-combo-list-item"><p>{desc_funcionario}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
                     
@@ -143,13 +145,13 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                 modal:true,
                  closeAction: 'hide',
                 buttons: [{
-                    text: '1 Guardar',
+                    text: 'Guardar',
                     handler:this.confSigEstado,
                     scope:this
                     
                 },
                 {
-                    text: '2 Guardar',
+                    text: 'Guardar',
                     handler:this.antEstadoSubmmit,
                     scope:this
                     
@@ -486,7 +488,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                     fields: ['id_proceso_macro', 'nombre', 'codigo'],
                     // turn on remote sorting
                     remoteSort: true,
-                    baseParams: {par_filtro: 'promac.nombre#promac.codigo'}
+                    baseParams: {par_filtro: 'promac.nombre#promac.codigo',codigo_subsistema:'WF'}
                 }),
                 valueField: 'id_proceso_macro',
                 displayField: 'nombre',
@@ -496,6 +498,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                 mode: 'remote',
                 pageSize: 20,
                 queryDelay: 200,
+                 listWidth:'280',
                 anchor: '80%',
                 minChars: 2,
                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
@@ -648,6 +651,8 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                      this.cmbFuncionarioWf.disable();
                      this.wEstado.buttons[1].hide();
                      this.wEstado.buttons[0].show();
+                     
+                      
                      this.wEstado.show();  
                   }
                    

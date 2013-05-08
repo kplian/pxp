@@ -658,4 +658,19 @@ funcion varchar NOT NULL,
 PRIMARY KEY(id_generador_alarma)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-RAC-PARAM-0-26/04/2013*****************************************/
+/***********************************I-SCP-JRR-PARAM-0-29/04/2013*****************************************/ 
+
+CREATE TABLE param.tdepto_ep (
+  id_depto_ep SERIAL NOT NULL, 
+  id_depto INTEGER NOT NULL, 
+  id_ep INTEGER NOT NULL, 
+  CONSTRAINT tpm_depto_ep_pkey PRIMARY KEY(id_depto_ep)  
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITH OIDS;
+
+CREATE UNIQUE INDEX tdepto_ep_id__id_depto_id_ep ON param.tdepto_ep
+  USING btree (id_ep, id_depto)
+  WHERE ((estado_reg)::text = 'activo'::text);
+/***********************************F-SCP-JRR-PARAM-0-29/04/2013*****************************************/
 

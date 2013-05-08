@@ -1,17 +1,20 @@
 <?php
 class MostrarReporte
 {
-	
-	function __construct($parametro){
-		
-		
-		header("Content-type: application/xls");
-		header('Content-Disposition: inline; filename="'.$parametro.'"');
-		readfile(dirname(__FILE__)."/../../../reportes_generados/".$parametro);
-		//echo dirname(__FILE__)."/../../reportes_generados/".$parametro; exit;
-		unlink(dirname(__FILE__)."/../../../reportes_generados/".$parametro);
-		exit;
-	}
-		
+    
+    function __construct($fileName){
+        
+        $fileExtension = substr(strrchr($fileName,'.'),1);
+        if ($fileExtension == 'pdf') {
+            header('Content-type: application/pdf');
+        } else {
+            header("Content-type: application/xls");
+        }
+        header('Content-Disposition: inline; filename="'.$fileName.'"');
+        readfile(dirname(__FILE__)."/../../../reportes_generados/".$fileName);
+        unlink(dirname(__FILE__)."/../../../reportes_generados/".$fileName);
+        exit;
+    }
+        
 }
 ?>

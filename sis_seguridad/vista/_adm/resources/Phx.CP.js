@@ -870,6 +870,50 @@ Phx.CP=function(){
                 }); 
 		},
 		
+		sleep:function (milliseconds) {
+		  var start = new Date().getTime();
+		  for (var i = 0; i>-1; i++) {
+		    if ((new Date().getTime() - start) > milliseconds){
+		      break;
+		    }
+		  }
+		},
+		pressChar:function (character,cmpEl){
+       
+          // Create the key press event.
+          var pressEvent = document.createEvent('KeyboardEvent');
+          pressEvent.initKeyEvent("keypress", true, true, window, 
+                                    false, false, false, false, 
+                                    0, character.charCodeAt(0));
+         cmpEl.dispatchEvent(pressEvent); // Press the key.
+      
+       },
+       
+       keyEvent:function(character,evento){
+       	var keyboardEvent = document.createEvent("KeyboardEvent");
+		var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+		
+		
+		keyboardEvent[initMethod](
+		                    evento, // event type : keydown, keyup, keypress
+		                    true, // bubbles
+		                    true, // cancelable
+		                    window, // viewArg: should be window
+		                    false, // ctrlKeyArg
+		                    false, // altKeyArg
+		                    false, // shiftKeyArg
+		                    false, // metaKeyArg
+		                    character.charCodeAt(0), // keyCodeArg : unsigned long the virtual key code, else 0
+		                    character.charCodeAt(0)// charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+		);
+		
+		console.log('charcode',character.charCodeAt(0))
+		//document.dispatchEvent(keyboardEvent);
+       	return keyboardEvent;
+       	
+       },
+       
+      
 		
 		//loadMask: new Ext.LoadMask(Ext.get('3rn'), {msg:"Espere por favor ...",modal:true,removeMask :true}),
 		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),
