@@ -63,7 +63,7 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
         $objParam->defecto('dir_ordenacion','asc');
  
  
-        //TO DO, revisar la funcion genera alarmar para que capture de la configuracion
+        
         $objFunc=new MODAlarma($objParam);    
         $res=$objFunc->GeneraAlarma();
         

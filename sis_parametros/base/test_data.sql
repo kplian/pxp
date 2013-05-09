@@ -360,4 +360,16 @@ VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 23, 3, E'Proforma 
 INSERT INTO param.tplantilla ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_plantilla", "nro_linea", "desc_plantilla", "tipo", "sw_tesoro", "sw_compro")
 VALUES (1, NULL, E'2013-04-10 05:26:43.945', NULL, E'activo', 24, 1, E'Póliza de Importación', 1, E'si', E'si');
 
+----------------
+--- GRUPO
+----------------
 
+INSERT INTO param.tgrupo ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_grupo", "nombre", "obs")
+VALUES (1, NULL, E'2013-05-08 15:17:58.245', NULL, E'activo', 1, E'grupo uno', E'');
+
+----------------
+--- GRUPO-EP
+----------------
+
+INSERT INTO param.tgrupo_ep ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_grupo_ep", "id_grupo", "id_ep")
+VALUES (1, NULL, E'2013-05-08 15:18:16.256', NULL, E'activo', 1, 1, 2);

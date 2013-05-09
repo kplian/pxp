@@ -41,10 +41,17 @@ class CorreoExterno
        
    }
     
-    function addDestinatario($dir_destinatario,$nom_destinatario){
+    function addDestinatario($dir_destinatario,$nom_destinatario=''){
         $this->mail->AddAddress($dir_destinatario, $nom_destinatario);    
         
     }
+    
+    function addAdjunto($archivo){
+       
+        $this->mail->AddAttachment($archivo);    
+        
+    }
+   
    
     function enviarCorreo(){
                 if($this->autentificacion){
@@ -52,7 +59,7 @@ class CorreoExterno
                      $this->mail->Password = $this->mail_password;
                      $this->mail->Username = $this->mail_usuario; 
                      $this->mail->SMTPSecure = $this->SMTPSecure; 
-                     $this->mail->SMTPDebug  = 2;      
+                     //$this->mail->SMTPDebug  = 2;      
                   } 
                   
                  //para cuando el visor no puede leer HTML en el cuerpo”; 
@@ -60,11 +67,11 @@ class CorreoExterno
                  // si el cuerpo del mensaje es HTML
                   $this->mail->MsgHTML($this->mensaje_html);  
                   
-                if($this->mail->Send()) {
-                     return 'Error enviando: '.$this->mail->ErrorInfo;
+                if(!$this->mail->Send()) {
+                     return $this->mail->ErrorInfo;
                 }
                 else{
-                      return "Message Sent OK";
+                      return "OK";
                 }
                      
         
@@ -155,9 +162,9 @@ class CorreoExterno
                     </style>
                     </head>
                     <body>
-                    <h1>".$this->asunto."</h1>".stripslashes($this->mensaje)."
+                    <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
                     <p>-------------------------------------------<br/>
-                    Power by PXP
+                    Power by PXP - KPLIAN
                     <p>
                     </body>
                     </html>";
