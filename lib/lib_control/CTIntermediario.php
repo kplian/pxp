@@ -75,11 +75,11 @@ $fb->log($this->nombreClase,"clase");*/
 		if(isset($this->aPostData['m'])){
 			//si es matriz
 			//rac 22/09/2011 adicona parametro para mandar archivos 
-			$this->objParametro = new CTParametro($this->aPostData['p'],$this->aPostData['m'],$this->aPostFiles);
+			$this->objParametro = new CTParametro($this->aPostData['p'],$this->aPostData['m'],$this->aPostFiles,$this->aPostData['x']);
 		}
 		else{
 			//rac 22/09/2011 adicona parametro para mandar archivos 
-			$this->objParametro = new CTParametro($this->aPostData['p'],null,$this->aPostFiles);
+			$this->objParametro = new CTParametro($this->aPostData['p'],null,$this->aPostFiles,$this->aPostData['x']);
 		}
 
 		//$this->objParametro->setParametrosJson($this->aPostData['p']);
