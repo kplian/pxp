@@ -181,3 +181,10 @@ VALUES (55, NULL, E'marco', E'f5888d0bb58d611107e11f7cbc41c97a', E'2013-07-31', 
 
 INSERT INTO segu.tusuario ("id_usuario", "id_clasificador", "cuenta", "contrasena", "fecha_caducidad", "fecha_reg", "estilo", "contrasena_anterior", "id_persona", "estado_reg", "autentificacion")
 VALUES (56, NULL, E'rocio', E'325daa03a34823cef2fc367c779561ba', E'2013-08-31', E'2013-04-30', E'xtheme-gray.css', NULL, 8415, E'activo', E'local');
+
+---------------------
+--- USUARIO-GRUPO-EP
+--------------------
+
+INSERT INTO segu.tusuario_grupo_ep ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_grupo_ep", "id_usuario", "id_grupo")
+VALUES (1, NULL, E'2013-05-08 15:19:05.586', NULL, E'activo', 1, 51, 1);
