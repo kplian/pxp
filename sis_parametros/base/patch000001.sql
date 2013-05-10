@@ -86,7 +86,7 @@ CREATE TABLE param.tinstitucion (
     direccion varchar(200),
     codigo_banco varchar(10),
     es_banco varchar(2) DEFAULT 'NO'::character varying NOT NULL,
-    codigo varchar(25) NOT NULL,
+    codigo varchar(25),
     cargo_representante varchar DEFAULT 'Representante Legal'::character varying
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
