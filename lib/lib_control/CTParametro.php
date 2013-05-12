@@ -13,6 +13,8 @@ class CTParametro{
     private $aPostFiles=array();//rac 22092011
 	private $aFiltro;
 	private $matriz;
+	private $sistema;
+	private $clase;
 
 
 
@@ -32,10 +34,13 @@ class CTParametro{
 	 */
 	//function __construct($tip,$ord='',$dir='',$pun=0,$can=0,$fil='',$fil_col='',$fil_value=''){
 	//cambio rcm 20/07/2010
-	function __construct($pPostData,$matriz,$aPostFiles){
+	function __construct($pPostData,$matriz,$aPostFiles,$ruta){
 		$this->aPostData=$pPostData;
 		$this->matriz=$matriz;
 		$this->aPostFiles=$aPostFiles;
+		$tempArr = explode('/', $ruta);
+		$this->sistema = $tempArr[2];
+		$this->clase = $tempArr[4];
 		
 		if($pPostData!=''){
 			$this->iniciaParametro();
@@ -104,6 +109,30 @@ class CTParametro{
 	 */
 	function getTipoTran(){
 		return $this->tipo_tran;
+	}
+	
+	/**
+	 * Nombre funcion:	getSistema
+	 * Proposito:		Devuleve el subsistema enviado como parametro
+	 *
+	 * Fecha creacion:	08/05/2013
+	 *
+	 * @return String sistema
+	 */
+	function getSistema(){
+		return $this->sistema;
+	}
+	
+	/**
+	 * Nombre funcion:	getClase
+	 * Proposito:		Devuleve la clase enviado como parametro
+	 *
+	 * Fecha creacion:	08/05/2013
+	 *
+	 * @return String clase
+	 */
+	function getClase(){
+		return $this->clase;
 	}
 
 	/**
@@ -592,7 +621,7 @@ class CTParametro{
 	 * @param cadena $id
 	 */
 	
-	private function desofuscar($id){
+	public function desofuscar($id){
 	  //rac 16/11/2011
 	  //no desofusca valores null
 

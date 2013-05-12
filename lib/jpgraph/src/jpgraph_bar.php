@@ -3,9 +3,9 @@
  // File:        JPGRAPH_BAR.PHP
  // Description: Bar plot extension for JpGraph
  // Created:     2001-01-08
- // Ver:         $Id: jpgraph_bar.php 1632 2009-07-17 21:48:13Z ljp $
+ // Ver:         $Id: jpgraph_bar.php 1905 2009-10-06 18:00:21Z ljp $
  //
- // Copyright (c) Aditus Consulting. All rights reserved.
+ // Copyright (c) Asial Corporation. All rights reserved.
  //========================================================================
  */
 
@@ -41,6 +41,8 @@ class BarPlot extends Plot {
     protected $bar_shadow=false;
     protected $bar_shadow_color="black";
     protected $bar_shadow_hsize=3,$bar_shadow_vsize=3;
+    protected $bar_3d=false;
+    protected $bar_3d_hsize=3,$bar_3d_vsize=3;
 
     //---------------
     // CONSTRUCTOR
@@ -63,6 +65,14 @@ class BarPlot extends Plot {
         $this->value->margin += $aVSize;
     }
 
+    function Set3D($aHSize=3,$aVSize=3,$aShow=true) {
+        $this->bar_3d=$aShow;
+        $this->bar_3d_vsize=$aVSize;
+        $this->bar_3d_hsize=$aHSize;
+
+        $this->value->margin += $aVSize;
+    }
+
     // DEPRECATED use SetYBase instead
     function SetYMin($aYStartValue) {
         //die("JpGraph Error: Deprecated function SetYMin. Use SetYBase() instead.");
@@ -77,10 +87,10 @@ class BarPlot extends Plot {
     // The method will take the specified pattern anre
     // return a pattern index that corresponds to the original
     // patterm being rotated 90 degreees. This is needed when plottin
-    // Horizontal bars    
+    // Horizontal bars
     function RotatePattern($aPat,$aRotate=true) {
         $rotate = array(1 => 2, 2 => 1, 3 => 3, 4 => 5, 5 => 4, 6 => 6, 7 => 7, 8 => 8);
-        if( $aRotate ) { 
+        if( $aRotate ) {
             return $rotate[$aPat];
         }
         else {
@@ -203,8 +213,14 @@ class BarPlot extends Plot {
     }
 
     function SetFillColor($aColor) {
+        // Do an extra error check if the color is specified as an RGB array triple
+        // In that case convert it to a hex string since it will otherwise be
+        // interpretated as an array of colors for each individual bar.
+
+        $aColor = RGB::tryHexConversion($aColor);
         $this->fill = true ;
         $this->fill_color=$aColor;
+
     }
 
     function SetFillGradient($aFromColor,$aToColor=null,$aStyle=null) {
@@ -383,6 +399,11 @@ class BarPlot extends Plot {
                             $tocolor = $this->grad_tocolor;
                             $style = $this->grad_style;
                         }
+                        else {
+                            $fromcolor = $this->grad_fromcolor[$i % $ng][0];
+                            $tocolor = $this->grad_fromcolor[$i % $ng][1];
+                            $style = $this->grad_fromcolor[$i % $ng][2];
+                        }
                     }
                     else {
                         $fromcolor = $this->grad_fromcolor[$i % $ng][0];
@@ -390,8 +411,8 @@ class BarPlot extends Plot {
                         $style = $this->grad_fromcolor[$i % $ng][2];
                     }
                     $grad->FilledRectangle($pts[2],$pts[3],
-                    $pts[6],$pts[7],
-                    $fromcolor,$tocolor,$style);
+                                           $pts[6],$pts[7],
+                                           $fromcolor,$tocolor,$style);
                 }
                 else {
                     $grad->FilledRectangle($pts[2],$pts[3],
@@ -409,6 +430,7 @@ class BarPlot extends Plot {
                 $img->PopColor();
             }
 
+/////////////////////////kokorahen rectangle polygon//////////////////////
 
             // Remember value of this bar
             $val=$this->coords[0][$i];
@@ -451,6 +473,47 @@ class BarPlot extends Plot {
                     $img->PushColor($this->bar_shadow_color);
                 }
                 $img->FilledPolygon($sp);
+                $img->PopColor();
+
+            } elseif( $this->bar_3d && $val != 0) {
+              // Determine the 3D
+
+                $ssh = $this->bar_3d_hsize;
+                $ssv = $this->bar_3d_vsize;
+
+                // Create points to create a "upper-right" shadow
+                if( $val > 0 ) {
+                    $sp1[0]=$pts[6];  $sp1[1]=$pts[7];
+                    $sp1[2]=$pts[4];  $sp1[3]=$pts[5];
+                    $sp1[4]=$pts[4]+$ssh; $sp1[5]=$pts[5]-$ssv;
+                    $sp1[6]=$pts[6]+$ssh; $sp1[7]=$pts[7]-$ssv;
+
+                    $sp2[0]=$pts[4];  $sp2[1]=$pts[5];
+                    $sp2[2]=$pts[2];  $sp2[3]=$pts[3];
+                    $sp2[4]=$pts[2]+$ssh; $sp2[5]=$pts[3]-$ssv;
+                    $sp2[6]=$pts[4]+$ssh; $sp2[7]=$pts[5]-$ssv;
+
+                }
+                elseif( $val < 0 ) {
+                    $sp1[0]=$pts[4];  $sp1[1]=$pts[5];
+                    $sp1[2]=$pts[6];  $sp1[3]=$pts[7];
+                    $sp1[4]=$pts[6]+$ssh; $sp1[5]=$pts[7]-$ssv;
+                    $sp1[6]=$pts[4]+$ssh; $sp1[7]=$pts[5]-$ssv;
+
+                    $sp2[0]=$pts[6];  $sp2[1]=$pts[7];
+                    $sp2[2]=$pts[0];  $sp2[3]=$pts[1];
+                    $sp2[4]=$pts[0]+$ssh; $sp2[5]=$pts[1]-$ssv;
+                    $sp2[6]=$pts[6]+$ssh; $sp2[7]=$pts[7]-$ssv;
+                }
+
+                $base_color = $this->fill_color;
+
+                $img->PushColor($base_color . ':0.7');
+                $img->FilledPolygon($sp1);
+                $img->PopColor();
+
+                $img->PushColor($base_color . ':1.1');
+                $img->FilledPolygon($sp2);
                 $img->PopColor();
             }
 
@@ -498,6 +561,7 @@ class BarPlot extends Plot {
                     $prect->Stroke($img);
                 }
             }
+
             // Stroke the outline of the bar
             if( is_array($this->color) ) {
                 $img->SetColor($this->color[$i % count($this->color)]);
@@ -613,7 +677,8 @@ class BarPlot extends Plot {
 // Description: Produce grouped bar plots
 //===================================================
 class GroupBarPlot extends BarPlot {
-    private $plots, $nbrplots=0;
+    public $plots; 
+    private $nbrplots=0;
     //---------------
     // CONSTRUCTOR
     function GroupBarPlot($plots) {
@@ -704,7 +769,8 @@ class GroupBarPlot extends BarPlot {
 // Description: Produce accumulated bar plots
 //===================================================
 class AccBarPlot extends BarPlot {
-    private $plots=null,$nbrplots=0;
+    public $plots=null;
+    private $nbrplots=0;
     //---------------
     // CONSTRUCTOR
     function __construct($plots) {
@@ -726,6 +792,10 @@ class AccBarPlot extends BarPlot {
                 //'Individual bar plots in an AccBarPlot or GroupBarPlot can not have specified X-positions.');
             }
         }
+
+        // Use 0 weight by default which means that the individual bar
+        // weights will be used per part n the accumulated bar
+        $this->SetWeight(0);
 
         $this->numpoints = $plots[0]->numpoints;
         $this->value = new DisplayValue();
@@ -819,6 +889,7 @@ class AccBarPlot extends BarPlot {
     function Stroke($img,$xscale,$yscale) {
         $pattern=NULL;
         $img->SetLineWeight($this->weight);
+        $grad=null;
         for($i=0; $i < $this->numpoints-1; $i++) {
             $accy = 0;
             $accy_neg = 0;
@@ -907,13 +978,46 @@ class AccBarPlot extends BarPlot {
                 if ($this->plots[$j]->coords[0][$i] == 0 ) continue;
 
                 if( $this->plots[$j]->grad ) {
-                    $grad = new Gradient($img);
-                    $grad->FilledRectangle(
-                    $pts[2],$pts[3],
-                    $pts[6],$pts[7],
-                    $this->plots[$j]->grad_fromcolor,
-                    $this->plots[$j]->grad_tocolor,
-                    $this->plots[$j]->grad_style);
+                    if( $grad === null ) {
+                        $grad = new Gradient($img);
+                    }
+                    if( is_array($this->plots[$j]->grad_fromcolor) ) {
+                        // The first argument (grad_fromcolor) can be either an array or a single color. If it is an array
+                        // then we have two choices. It can either a) be a single color specified as an RGB triple or it can be
+                        // an array to specify both (from, to style) for each individual bar. The way to know the difference is
+                        // to investgate the first element. If this element is an integer [0,255] then we assume it is an RGB
+                        // triple.
+                        $ng = count($this->plots[$j]->grad_fromcolor);
+                        if( $ng === 3 ) {
+                            if( is_numeric($this->plots[$j]->grad_fromcolor[0]) && $this->plots[$j]->grad_fromcolor[0] > 0 &&
+                                 $this->plots[$j]->grad_fromcolor[0] < 256 ) {
+                                // RGB Triple
+                                $fromcolor = $this->plots[$j]->grad_fromcolor;
+                                $tocolor = $this->plots[$j]->grad_tocolor;
+                                $style = $this->plots[$j]->grad_style;
+                            }
+                            else {
+                                $fromcolor = $this->plots[$j]->grad_fromcolor[$i % $ng][0];
+                                $tocolor = $this->plots[$j]->grad_fromcolor[$i % $ng][1];
+                                $style = $this->plots[$j]->grad_fromcolor[$i % $ng][2];
+                            }
+                        }
+                        else {
+                            $fromcolor = $this->plots[$j]->grad_fromcolor[$i % $ng][0];
+                            $tocolor = $this->plots[$j]->grad_fromcolor[$i % $ng][1];
+                            $style = $this->plots[$j]->grad_fromcolor[$i % $ng][2];
+                        }
+                        $grad->FilledRectangle($pts[2],$pts[3],
+                                               $pts[6],$pts[7],
+                                               $fromcolor,$tocolor,$style);
+                    }
+                    else {
+                        $grad->FilledRectangle($pts[2],$pts[3],
+                                               $pts[6],$pts[7],
+                                               $this->plots[$j]->grad_fromcolor,
+                                               $this->plots[$j]->grad_tocolor,
+                                               $this->plots[$j]->grad_style);
+                    }
                 } else {
                     if (is_array($this->plots[$j]->fill_color) ) {
                         $numcolors = count($this->plots[$j]->fill_color);
@@ -932,8 +1036,9 @@ class AccBarPlot extends BarPlot {
                     if( $fillcolor !== false ) {
                         $img->FilledPolygon($pts);
                     }
-                    $img->SetColor($this->plots[$j]->color);
                 }
+
+                $img->SetColor($this->plots[$j]->color);
 
                 // Stroke the pattern
                 if( $this->plots[$j]->iPattern > -1 ) {
@@ -986,9 +1091,17 @@ class AccBarPlot extends BarPlot {
 
                 $pts[] = $pts[0];
                 $pts[] = $pts[1];
-                $img->SetLineWeight($this->plots[$j]->line_weight);
+                $img->SetLineWeight($this->plots[$j]->weight);
                 $img->Polygon($pts);
                 $img->SetLineWeight(1);
+            }
+
+            // Daw potential bar around the entire accbar bar
+            if( $this->weight > 0 ) {
+                $y=$yscale->Translate(0);
+                $img->SetColor($this->color);
+                $img->SetLineWeight($this->weight);
+                $img->Rectangle($pts[0],$y,$pts[6],$pts[5]);
             }
 
             // Draw labels for each acc.bar

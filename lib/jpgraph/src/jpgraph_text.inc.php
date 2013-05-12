@@ -4,9 +4,9 @@
 // Description: Class to handle text as object in the graph.
 //              The low level text layout engine is handled by the GD class
 // Created:     2001-01-08 (Refactored to separate file 2008-08-01)
-// Ver:         $Id: jpgraph_text.inc.php 1404 2009-06-28 15:25:41Z ljp $
+// Ver:         $Id: jpgraph_text.inc.php 1844 2009-09-26 17:05:31Z ljp $
 //
-// Copyright (c) Aditus Consulting. All rights reserved.
+// Copyright (c) Asial Corporation. All rights reserved.
 //========================================================================
 
 
@@ -15,17 +15,22 @@
 // Description: Arbitrary text object that can be added to the graph
 //===================================================
 class Text {
-    public $t,$margin=0;
+    public $t;
     public $x=0,$y=0,$halign="left",$valign="top",$color=array(0,0,0);
     public $hide=false, $dir=0;
     public $iScalePosY=null,$iScalePosX=null;
     public $iWordwrap=0;
-    public $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
+    public $font_family=FF_DEFAULT,$font_style=FS_NORMAL; // old. FF_FONT1
     protected $boxed=false; // Should the text be boxed
     protected $paragraph_align="left";
     protected $icornerradius=0,$ishadowwidth=3;
     protected $fcolor='white',$bcolor='black',$shadow=false;
     protected $iCSIMarea='',$iCSIMalt='',$iCSIMtarget='',$iCSIMWinTarget='';
+    private $iBoxType = 1; // Which variant of filled box around text we want
+
+    // for __get, __set
+    private $_margin;
+    private $_font_size=8; // old. 12
 
     //---------------
     // CONSTRUCTOR
@@ -49,7 +54,7 @@ class Text {
 
     // Alias for Pos()
     function SetPos($aXAbsPos=0,$aYAbsPos=0,$aHAlign="left",$aVAlign="top") {
-        //$this->Pos($aXAbsPos,$aYAbsPos,$aHAlign,$aVAlign);
+    //$this->Pos($aXAbsPos,$aYAbsPos,$aHAlign,$aVAlign);
         $this->x = $aXAbsPos;
         $this->y = $aYAbsPos;
         $this->halign = $aHAlign;
@@ -66,7 +71,7 @@ class Text {
         $this->halign = $aHAlign;
         $this->valign = $aVAlign;
         if( $aParagraphAlign != "" )
-        $this->paragraph_align = $aParagraphAlign;
+            $this->paragraph_align = $aParagraphAlign;
     }
 
     // Alias
@@ -97,18 +102,26 @@ class Text {
     // Specify that the text should be boxed. fcolor=frame color, bcolor=border color,
     // $shadow=drop shadow should be added around the text.
     function SetBox($aFrameColor=array(255,255,255),$aBorderColor=array(0,0,0),$aShadowColor=false,$aCornerRadius=4,$aShadowWidth=3) {
-        if( $aFrameColor==false )
-        $this->boxed=false;
-        else
-        $this->boxed=true;
+        if( $aFrameColor === false ) {
+            $this->boxed=false;
+        }
+        else {
+            $this->boxed=true;
+        }
         $this->fcolor=$aFrameColor;
         $this->bcolor=$aBorderColor;
         // For backwards compatibility when shadow was just true or false
-        if( $aShadowColor === true )
-        $aShadowColor = 'gray';
+        if( $aShadowColor === true ) {
+            $aShadowColor = 'gray';
+        }
         $this->shadow=$aShadowColor;
         $this->icornerradius=$aCornerRadius;
         $this->ishadowwidth=$aShadowWidth;
+    }
+
+    function SetBox2($aFrameColor=array(255,255,255),$aBorderColor=array(0,0,0),$aShadowColor=false,$aCornerRadius=4,$aShadowWidth=3) {
+        $this->iBoxType=2;
+        $this->SetBox($aFrameColor,$aBorderColor,$aShadowColor,$aCornerRadius,$aShadowWidth);
     }
 
     // Hide the text
@@ -136,7 +149,7 @@ class Text {
         $this->x = $aLeft + ($aRight-$aLeft )/2;
         $this->halign = "center";
         if( is_numeric($aYAbsPos) )
-        $this->y = $aYAbsPos;
+            $this->y = $aYAbsPos;
     }
 
     // Set text color
@@ -151,38 +164,39 @@ class Text {
     // Orientation of text. Note only TTF fonts can have an arbitrary angle
     function SetOrientation($aDirection=0) {
         if( is_numeric($aDirection) )
-        $this->dir=$aDirection;
+            $this->dir=$aDirection;
         elseif( $aDirection=="h" )
-        $this->dir = 0;
+            $this->dir = 0;
         elseif( $aDirection=="v" )
-        $this->dir = 90;
-        else JpGraphError::RaiseL(25051);//(" Invalid direction specified for text.");
+            $this->dir = 90;
+        else
+            JpGraphError::RaiseL(25051);//(" Invalid direction specified for text.");
     }
 
     // Total width of text
     function GetWidth($aImg) {
-        $aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
+        $aImg->SetFont($this->font_family,$this->font_style,$this->raw_font_size);
         $w = $aImg->GetTextWidth($this->t,$this->dir);
         return $w;
     }
 
     // Hight of font
     function GetFontHeight($aImg) {
-        $aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
+        $aImg->SetFont($this->font_family,$this->font_style,$this->raw_font_size);
         $h = $aImg->GetFontHeight();
         return $h;
 
     }
 
     function GetTextHeight($aImg) {
-        $aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
+        $aImg->SetFont($this->font_family,$this->font_style,$this->raw_font_size);
         $h = $aImg->GetTextHeight($this->t,$this->dir);
         return $h;
     }
 
     function GetHeight($aImg) {
-        // Synonym for GetTextHeight()
-        $aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
+    // Synonym for GetTextHeight()
+        $aImg->SetFont($this->font_family,$this->font_style,$this->raw_font_size);
         $h = $aImg->GetTextHeight($this->t,$this->dir);
         return $h;
     }
@@ -199,8 +213,8 @@ class Text {
         }
         else {
             $this->Stroke($aImg,
-            round($axscale->Translate($this->iScalePosX)),
-            round($ayscale->Translate($this->iScalePosY)));
+                round($axscale->Translate($this->iScalePosX)),
+                round($ayscale->Translate($this->iScalePosY)));
         }
     }
 
@@ -211,17 +225,19 @@ class Text {
     }
 
     function GetCSIMareas() {
-        if( $this->iCSIMtarget !== '' )
-        return $this->iCSIMarea;
-        else
-        return '';
+        if( $this->iCSIMtarget !== '' ) {
+            return $this->iCSIMarea;
+        }
+        else {
+            return '';
+        }
     }
 
     // Display text in image
     function Stroke($aImg,$x=null,$y=null) {
 
-        if( !empty($x) ) $this->x = round($x);
-        if( !empty($y) ) $this->y = round($y);
+        if( $x !== null ) $this->x = round($x);
+        if( $y !== null ) $this->y = round($y);
 
         // Insert newlines
         if( $this->iWordwrap > 0 ) {
@@ -234,21 +250,40 @@ class Text {
         if( $this->y < 1 && $this->y > 0 ) $this->y *= $aImg->height;
 
         $aImg->PushColor($this->color);
-        $aImg->SetFont($this->font_family,$this->font_style,$this->font_size);
+        $aImg->SetFont($this->font_family,$this->font_style,$this->raw_font_size);
         $aImg->SetTextAlign($this->halign,$this->valign);
+
         if( $this->boxed ) {
-            if( $this->fcolor=="nofill" )
-            $this->fcolor=false;
+            if( $this->fcolor=="nofill" ) {
+                $this->fcolor=false;
+            }
+
             $oldweight=$aImg->SetLineWeight(1);
-            $bbox = $aImg->StrokeBoxedText($this->x,$this->y,$this->t,
-            $this->dir,$this->fcolor,$this->bcolor,$this->shadow,
-            $this->paragraph_align,5,5,$this->icornerradius,
-            $this->ishadowwidth);
+
+            if( $this->iBoxType == 2 && $this->font_family > FF_FONT2+2 ) {
+
+                $bbox = $aImg->StrokeBoxedText2($this->x, $this->y,
+                                                $this->t, $this->dir,
+                                                $this->fcolor,
+                                                $this->bcolor,
+                                                $this->shadow,
+                                                $this->paragraph_align,
+                                                2,4,
+                                                $this->icornerradius,
+                                                $this->ishadowwidth);
+            }
+            else {
+                $bbox = $aImg->StrokeBoxedText($this->x,$this->y,$this->t,
+                    $this->dir,$this->fcolor,$this->bcolor,$this->shadow,
+                    $this->paragraph_align,3,3,$this->icornerradius,
+                    $this->ishadowwidth);
+            }
 
             $aImg->SetLineWeight($oldweight);
         }
         else {
-            $bbox = $aImg->StrokeText($this->x,$this->y,$this->t,$this->dir,$this->paragraph_align);
+            $debug=false;
+            $bbox = $aImg->StrokeText($this->x,$this->y,$this->t,$this->dir,$this->paragraph_align,$debug);
         }
 
         // Create CSIM targets
@@ -264,7 +299,27 @@ class Text {
         $this->iCSIMarea .= " />\n";
 
         $aImg->PopColor($this->color);
+    }
 
+    function __get($name) {
+
+        if (strpos($name, 'raw_') !== false) {
+            // if $name == 'raw_left_margin' , return $this->_left_margin;
+            $variable_name = '_' . str_replace('raw_', '', $name);
+            return $this->$variable_name;
+        }
+
+        $variable_name = '_' . $name; 
+
+        if (isset($this->$variable_name)) {
+            return $this->$variable_name * SUPERSAMPLING_SCALE;
+        } else {
+            JpGraphError::RaiseL('25132', $name);
+        } 
+    }
+
+    function __set($name, $value) {
+        $this->{'_'.$name} = $value;
     }
 } // Class
 

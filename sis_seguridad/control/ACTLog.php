@@ -96,8 +96,8 @@ class ACTLog extends ACTbase{
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
 		$this->objParam->defecto('ordenacion','relname');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		if ($this->objParam->getParametro('id_esquema')!='' && $this->objParam->getParametro('id_esquema')!='undefined'){
-			$this->objParam->addFiltro("mta.relnamespace=".$this->objParam->getParametro('id_esquema'));
+		if ($this->objParam->getParametro('oid')!='' && $this->objParam->getParametro('oid')!='undefined'){
+			$this->objParam->addFiltro("mta.relnamespace=".$this->objParam->getParametro('oid'));
 		}
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -118,8 +118,8 @@ class ACTLog extends ACTbase{
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
 		$this->objParam->defecto('ordenacion','proname');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		if ($this->objParam->getParametro('id_esquema')!='' && $this->objParam->getParametro('id_esquema')!='undefined'){
-			$this->objParam->addFiltro("mfu.pronamespace=".$this->objParam->getParametro('id_esquema'));
+		if ($this->objParam->getParametro('oid')!='' && $this->objParam->getParametro('oid')!='undefined'){
+			$this->objParam->addFiltro("mfu.pronamespace=".$this->objParam->getParametro('oid'));
 		}
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -140,8 +140,8 @@ class ACTLog extends ACTbase{
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
 		$this->objParam->defecto('ordenacion','indexrelname');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		if ($this->objParam->getParametro('id_tabla')!='' && $this->objParam->getParametro('id_tabla')!='undefined'){
-			$this->objParam->addFiltro("min.relid=".$this->objParam->getParametro('id_tabla'));
+		if ($this->objParam->getParametro('oid')!='' && $this->objParam->getParametro('oid')!='undefined'){
+			$this->objParam->addFiltro("min.relid=".$this->objParam->getParametro('oid'));
 		}
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
