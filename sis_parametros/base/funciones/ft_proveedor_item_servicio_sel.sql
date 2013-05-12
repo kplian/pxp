@@ -65,7 +65,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = pritse.id_usuario_mod
                                                 left join param.tservicio serv on serv.id_servicio = pritse.id_servicio
                                                 left join alm.titem ite on ite.id_item = pritse.id_item
-				        where  ';
+				        where ite.estado_reg = ''activo''';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -93,7 +93,7 @@ BEGIN
 					    left join segu.tusuario usu2 on usu2.id_usuario = pritse.id_usuario_mod
                                             left join param.tservicio serv on serv.id_servicio = pritse.id_servicio
                                             left join alm.titem ite on ite.id_item = pritse.id_item
-					    where ';
+					    where ite.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
