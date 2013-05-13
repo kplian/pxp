@@ -555,7 +555,7 @@ class Mensaje
 						if(strpos($aux,'id_')!==false){
 							//ofucasmos todas las variables que comiensen con id_
 						     $this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
-						} else if(strpos($aux,'id')!==false){
+						} else if($tmp[$i]=='id'){
 							//ofucasmos todas las variables que comiensen con id_
 							$this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
 						}
