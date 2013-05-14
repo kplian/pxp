@@ -103,7 +103,7 @@ Ext.extend(Phx.vista.monitor_objetos_funcion,Phx.gridInterfaz,{
 	},
 	onReloadPage:function(m){
 		this.maestro=m;
-		this.store.baseParams={id_esquema:this.maestro.nspoid};
+		this.store.baseParams={oid:this.maestro.nspoid};
 		this.load({params:{start:0, limit:50}})
 	}
 	

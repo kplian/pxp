@@ -10,11 +10,17 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
+Phx.vista.monitor_objetos_tabla=Ext.extend(Phx.gridInterfaz,{
 
-Phx.vista.monitor_objetos_tabla=function(config){
+	constructor:function(config){
+		this.maestro=config.maestro;
+    	//llama al constructor de la clase padre
+		Phx.vista.monitor_objetos_tabla.superclass.constructor.call(this,config);
+		this.init();
+		this.bloquearMenus();
+	},
 	
-	
-	this.Atributos=[
+	Atributos : [
 	{
 		//configuracion del componente
 		config:{
@@ -365,15 +371,7 @@ Phx.vista.monitor_objetos_tabla=function(config){
 		grid:true,
 		form:false
 	}
-	];
-
-	Phx.vista.monitor_objetos_tabla.superclass.constructor.call(this,config);
-	this.init();
-	
-	
-		
-}
-Ext.extend(Phx.vista.monitor_objetos_tabla,Phx.gridInterfaz,{
+	],
 	
 	title:'Log',
 	ActList:'../../sis_seguridad/control/Log/listarMonitorTabla',
@@ -427,14 +425,14 @@ Ext.extend(Phx.vista.monitor_objetos_tabla,Phx.gridInterfaz,{
 	
 
 	//sobre carga de funcion
-	preparaMenu:function(tb){
+	/*preparaMenu:function(tb){
 		//llamada funcion clace padre
-		Phx.vista.monitor_objetos_tabla.superclass.preparaMenu.call(this,tb);
+		return Phx.vista.monitor_objetos_tabla.superclass.preparaMenu.call(this,tb);
 		  
-	},
+	},*/
 	onReloadPage:function(m){
 		this.maestro=m;
-		this.store.baseParams={id_esquema:this.maestro.nspoid};
+		this.store.baseParams={oid:this.maestro.nspoid};
 		this.load({params:{start:0, limit:50}})
 	}
 	

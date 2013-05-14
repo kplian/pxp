@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_log_sel (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_log_sel
@@ -59,7 +58,7 @@ BEGIN
 -- to_char(logg.fecha_reg,''dd/mm/yyyy hh24:mi:ss''),
 
 
-               v_consulta:='select logg.id_log,
+               v_consulta:='select logg.id_log as identificador,
                             logg.id_usuario,
                             logg.cuenta_usuario,
                             logg.mac_maquina,
@@ -72,9 +71,9 @@ BEGIN
                             logg.consulta,
                             logg.usuario_base,
                             logg.tiempo_ejecucion,
-                            logg.pid_web,
-                            logg.pid_db,
-                            logg.sid_web,
+                            logg.pid_web as pidweb,
+                            logg.pid_db as piddb,
+                            logg.sid_web as sidweb,
                             logg.codigo_error,
                             logg.descripcion_transaccion,
                             logg.codigo_subsistema
@@ -123,7 +122,7 @@ BEGIN
                 raise exception 'No se tienen registros para la gestion y periodo seleccionados';
             end if;
 
-               v_consulta:='select logg.id_log,
+               v_consulta:='select logg.id_log as identificador,
                             logg.id_usuario,
                             logg.cuenta_usuario,
                             logg.mac_maquina,
@@ -136,9 +135,9 @@ BEGIN
                             logg.consulta,
                             logg.usuario_base,
                             logg.tiempo_ejecucion,
-                            logg.pid_web,
-                            logg.pid_db,
-                            logg.sid_web,
+                            logg.pid_web as pidweb,
+                            logg.pid_db as piddb,
+                            logg.sid_web as sidweb,
                             logg.codigo_error,
                             logg.descripcion_transaccion,
                             logg.codigo_subsistema
@@ -292,7 +291,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_menu_sel (OID = 305071) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

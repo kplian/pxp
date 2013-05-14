@@ -158,7 +158,7 @@ Phx.vista.bitacora_sistema=function(config){
 			
 		},
 		type:'TextField',
-		filters:{pfiltro:'proce.descripcion',
+		filters:{pfiltro:'descripcion',
 				type:'string'},
 		grid:true,
 		form:false

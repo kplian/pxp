@@ -11,10 +11,18 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 
-Phx.vista.monitor_objetos=function(config){
+Phx.vista.monitor_objetos=Ext.extend(Phx.gridInterfaz,{
+
+	constructor:function(config){
+		this.maestro=config.maestro;		
+    	//llama al constructor de la clase padre
+		Phx.vista.monitor_objetos.superclass.constructor.call(this,config);
+		
+		this.init();
+		this.load({params:{start:0, limit:this.tam_pag}});
 	
-	
-	this.Atributos=[
+	},
+	Atributos:[
 	{
 		//configuracion del componente
 		config:{
@@ -318,16 +326,7 @@ Phx.vista.monitor_objetos=function(config){
 		grid:true,
 		form:false
 	}
-	];
-
-	Phx.vista.monitor_objetos.superclass.constructor.call(this,config);
-	this.init();
-	this.load({params:{start:0, limit:50}});
-	
-	
-		
-}
-Ext.extend(Phx.vista.monitor_objetos,Phx.gridInterfaz,{
+	],
 	
 	title:'Log',
 	ActList:'../../sis_seguridad/control/Log/listarMonitorEsquema',
@@ -368,14 +367,14 @@ Ext.extend(Phx.vista.monitor_objetos,Phx.gridInterfaz,{
 	bsave:false,//boton para eliminar
 	bnew:false,//boton para eliminar
 	bedit:false,//boton para eliminar
-
-
 	//sobre carga de funcion
-	preparaMenu:function(tb){
+	/*preparaMenu:function(tb){
 		//llamada funcion clace padre
-		Phx.vista.monitor_objetos.superclass.preparaMenu.call(this,tb);
+		
+		return Phx.vista.monitor_objetos.superclass.preparaMenu.call(this,tb);
 		  
-	},
+	},*/
+
 	south:{
 		  url:'../../../sis_seguridad/vista/monitor_objetos/MonitorObjetosTabla.php',
 		  title:'Tablas', 
