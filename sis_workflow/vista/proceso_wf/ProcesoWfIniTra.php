@@ -19,7 +19,20 @@ Phx.vista.ProcesoWfIniTra = {
     		this.initButtons=[this.cmbProcesoMacro];
     		Phx.vista.ProcesoWfIniTra.superclass.constructor.call(this,config);
     		this.addButton('sig_estado',{text:'Siguiente',iconCls: 'badelante',disabled:true,handler:this.sigEstado,tooltip: '<b>Pasar al Siguiente Estado</b>'});
-       
+    		this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:diagramGantt,tooltip: '<b>Diagrama Gantt</b>'});
+      
+      function diagramGantt(){			
+							var data=this.sm.getSelected().data.nro_tramite;
+							Phx.CP.loadingShow();
+							Ext.Ajax.request({
+								url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
+								params:{'nro_tramite':data},
+								success:this.successExport,
+								failure: this.conexionFailure,
+								timeout:this.timeout,
+								scope:this
+							});			
+						} 
     },
 	onButtonNew: function() {
         
@@ -93,6 +106,7 @@ Phx.vista.ProcesoWfIniTra = {
       var tb =this.tbar;
       Phx.vista.ProcesoWfIniTra.superclass.preparaMenu.call(this,n);  
          
+         this.getBoton('diagrama_gantt').enable();
          if(data.tipo_estado_inicio=='si'){
             this.getBoton('sig_estado').enable();
           }
@@ -106,7 +120,7 @@ Phx.vista.ProcesoWfIniTra = {
         var tb = Phx.vista.ProcesoWf.superclass.liberaMenu.call(this);
         if(tb){
             this.getBoton('sig_estado').disable();
-           
+            this.getBoton('diagrama_gantt').disable();
            
         }
         return tb
