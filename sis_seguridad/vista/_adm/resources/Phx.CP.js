@@ -242,7 +242,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			 var p = this.add(new Ext.Panel({
 	                id: id,
 	                layout:'fit',
-	                //layout: 'border',
 	                title:title,
 	                closable: true,
 	                cclass : cls,
@@ -262,11 +261,10 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 				  				     //trae la clase padre
 				  				     //en el callback ejecuta la rerencia 
 				  				     //e instanca la clase hijo
-				  				      var wid='4rn'
-				  				     //console.log('IDEXTRA',wid);
-				  				     //Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
-				  				     //Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
 				  				     
+				  				    var wid= Ext.id();
+				  				    Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
+				  				    
 				  				  
 				  				     var el = Ext.get(wid); // Get Ext.Element object
 			                         var u = el.getUpdater();
@@ -1012,10 +1010,14 @@ Phx.CP=function(){
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
 			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
 		    if(Phx.vista[mycls].requireclase){
+		    	
+		    
   				     //trae la clase padre
-  				     //en el callback ejecuta la rerencia 
+  				     //en el callback ejecuta la herencia 
   				     //e instanca la clase hijo
-  				     var owid='4rn'
+  				      var owid= Ext.id();
+				  	  Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
+				  				    
   				     var el = Ext.get(owid); // este div esta quemado en el codigo html
                      var u = el.getUpdater();
                      var inter = Phx.vista[mycls];
@@ -1038,7 +1040,7 @@ Phx.CP=function(){
 		    	 // Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
-		    	Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
+				Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 		    }  
 		},
 		

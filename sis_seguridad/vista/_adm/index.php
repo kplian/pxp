@@ -162,6 +162,8 @@ if(!isset($_SESSION["_SESION"])){
 </div>
 <!-- div para cargar interfaces requeridas para herencia-->
 <div id="4rn"></div>
+<div id="5rn"></div>
+<div id="6rn"></div>
 <div id="3rn"></div>
 
   

@@ -41,6 +41,37 @@ class MODConceptoIngas extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function listarConceptoIngasPorPartidas(){
+        //Definicion de variables para ejecucion del procedimientp
+        //necesita sistema de presupuestos
+        $this->procedimiento='param.f_concepto_ingas_sel';
+        $this->transaccion='PM_CONIGPP_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+                
+        //Definicion de la lista del resultado del query
+        $this->setParametro('id_partidas','id_partidas','varchar');
+        $this->captura('id_concepto_ingas','int4');
+        $this->captura('desc_ingas','varchar');
+        $this->captura('tipo','varchar');
+        $this->captura('movimiento','varchar');
+        $this->captura('sw_tes','varchar');
+        $this->captura('id_oec','int4');
+        $this->captura('estado_reg','varchar');
+        $this->captura('id_usuario_reg','int4');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('fecha_mod','timestamp');
+        $this->captura('id_usuario_mod','int4');
+        $this->captura('usr_reg','varchar');
+        $this->captura('usr_mod','varchar');
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 	function insertarConceptoIngas(){
 		//Definicion de variables para ejecucion del procedimiento

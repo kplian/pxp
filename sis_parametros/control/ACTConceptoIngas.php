@@ -27,8 +27,7 @@ class ACTConceptoIngas extends ACTbase{
          if($this->objParam->getParametro('movimiento')!=''){
               $this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
          }
-        
-        
+         
 		
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -41,6 +40,40 @@ class ACTConceptoIngas extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function listarConceptoIngasPorPartidas(){
+        $this->objParam->defecto('ordenacion','id_concepto_ingas');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        
+        
+        if($this->objParam->getParametro('tipo')!=''){
+                    
+                 if($this->objParam->getParametro('tipo')=='Bien'){
+                   $this->objParam->addFiltro("conig.tipo =''Bien''");    
+                 }
+                 if($this->objParam->getParametro('tipo')=='Servicio'){
+                   $this->objParam->addFiltro("conig.tipo =''Servicio''");    
+                 }
+        }
+        
+         if($this->objParam->getParametro('movimiento')!=''){
+              $this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
+         }
+        
+         if($this->objParam->getParametro('id_centro_costo')!=''){
+              $this->objParam->addFiltro("(cc.id_centro_costo =".$this->objParam->getParametro('id_centro_costo')."  or cc.id_centro_costo is NULL)");    
+         }
+         
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODConceptoIngas','listarConceptoIngasPorPartidas');
+        } else{
+            $this->objFunc=$this->create('MODConceptoIngas');
+            
+            $this->res=$this->objFunc->listarConceptoIngasPorPartidas($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 				
 	function insertarConceptoIngas(){
 		$this->objFunc=$this->create('MODConceptoIngas');	
