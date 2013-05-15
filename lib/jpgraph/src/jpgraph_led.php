@@ -3,9 +3,9 @@
 // File:        JPGRAPH_LED.PHP
 // Description: Module to generate Dotted LED-like digits
 // Created:     2006-11-26
-// Ver:         $Id: jpgraph_led.php 1386 2009-06-27 11:55:44Z ljp $
+// Ver:         $Id: jpgraph_led.php 1674 2009-07-22 19:42:23Z ljp $
 //
-// Copyright 2006 (c) Aditus Consulting. All rights reserved.
+// Copyright 2006 (c) Asial Corporation. All rights reserved.
 //
 // Changed: 2007-08-06 by Alexander Kurochkin (inspector@list.ru)
 //========================================================================
@@ -27,6 +27,13 @@ DEFINE('LEDC_TEAL', 12);
 DEFINE('LEDC_STEELBLUE', 13);
 DEFINE('LEDC_NAVY', 14);
 DEFINE('LEDC_INVERTGRAY', 15);
+
+// Check that mb_strlen() is available
+if( ! function_exists('mb_strlen') ) {
+    JpGraphError::RaiseL(25500);
+    //'Multibyte strings must be enabled in the PHP installation in order to run the LED module
+    // so that the function mb_strlen() is available. See PHP documentation for more information.'
+}
 
 //========================================================================
 // CLASS DigitalLED74

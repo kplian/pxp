@@ -174,6 +174,25 @@ class MODProcesoWf extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+				
+				function estadosWF(){
+					//Definicion de variables para ejecucion 
+					$this->procedimiento = 'wf.f_proceso_wf_sel';
+					$this->transaccion = 'WF_TRAWF_SEL';
+					$this->tipo_procedimiento = 'SEL';
+					
+					//Define los porametros de la funcion
+					$this->setParametro('nro_tramite','nro_tramite','varchar');
+					$this->captura('fecha_reg','timestamp');
+					$this->captura('estado','varchar');
+					$this->captura('proceso','varchar');
+					$this->captura('func','text');
+					$this->captura('depto','varchar');
+					
+					$this->armarConsulta();
+					$this->ejecutarConsulta();
+					return $this->respuesta;
+				}
 			
 }
 ?>
