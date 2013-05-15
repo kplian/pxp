@@ -3,9 +3,9 @@
 // File:        JPGRAPH.PHP
 // Description: PHP Graph Plotting library. Base module.
 // Created:     2001-01-08
-// Ver:         $Id: jpgraph.php 1617 2009-07-16 15:24:17Z ljp $
+// Ver:         $Id: jpgraph.php 1924 2010-01-11 14:03:26Z ljp $
 //
-// Copyright (c) Aditus Consulting. All rights reserved.
+// Copyright (c) Asial Corporation. All rights reserved.
 //========================================================================
 
 require_once('jpg-config.inc.php');
@@ -15,10 +15,11 @@ require_once('jpgraph_ttf.inc.php');
 require_once('jpgraph_rgb.inc.php');
 require_once('jpgraph_text.inc.php');
 require_once('jpgraph_legend.inc.php');
+require_once('jpgraph_theme.inc.php');
 require_once('gd_image.inc.php');
 
 // Version info
-define('JPG_VERSION','3.0.0-rc1');
+define('JPG_VERSION','3.5.0b1');
 
 // Minimum required PHP version
 define('MIN_PHPVERSION','5.1.0');
@@ -159,6 +160,7 @@ define('SKEW3D_RIGHT',3);
 define("_JPG_DEBUG",false);
 define("_FORCE_IMGTOFILE",false);
 define("_FORCE_IMGDIR",'/tmp/jpgimg/');
+
 
 //
 // Automatic settings of path for cache and font directory
@@ -500,12 +502,12 @@ class Graph {
     public $cache_name;   // File name to be used for the current graph in the cache directory
     public $xgrid=null;   // X Grid object (linear or logarithmic)
     public $ygrid=null,$y2grid=null; //dito for Y
-    public $doframe=true,$frame_color='black', $frame_weight=1; // Frame around graph
+    public $doframe,$frame_color, $frame_weight; // Frame around graph
     public $boxed=false, $box_color='black', $box_weight=1;  // Box around plot area
-    public $doshadow=false,$shadow_width=4,$shadow_color=array(102,102,102); // Shadow for graph
+    public $doshadow=false,$shadow_width=4,$shadow_color='gray@0.5'; // Shadow for graph
     public $xaxis=null;   // X-axis (instane of Axis class)
     public $yaxis=null, $y2axis=null, $ynaxis=array(); // Y axis (instance of Axis class)
-    public $margin_color=array(230,230,230); // Margin color of graph
+    public $margin_color; // Margin color of graph
     public $plotarea_color=array(255,255,255); // Plot area color
     public $title,$subtitle,$subsubtitle;  // Title and subtitle(s) text object
     public $axtype="linlin";  // Type of axis
@@ -530,18 +532,21 @@ class Graph {
     public $tabtitle;
     public $bkg_gradtype=-1,$bkg_gradstyle=BGRAD_MARGIN;
     public $bkg_gradfrom='navy', $bkg_gradto='silver';
+    public $plot_gradtype=-1,$plot_gradstyle=BGRAD_MARGIN;
+    public $plot_gradfrom='silver', $plot_gradto='navy';
+
     public $titlebackground = false;
     public $titlebackground_color = 'lightblue',
            $titlebackground_style = 1,
-           $titlebackground_framecolor = 'blue',
-           $titlebackground_framestyle = 2,
-           $titlebackground_frameweight = 1,
-           $titlebackground_bevelheight = 3 ;
+           $titlebackground_framecolor,
+           $titlebackground_framestyle,
+           $titlebackground_frameweight,
+           $titlebackground_bevelheight;
     public $titlebkg_fillstyle=TITLEBKG_FILLSTYLE_SOLID;
     public $titlebkg_scolor1='black',$titlebkg_scolor2='white';
-    public $framebevel = false, $framebeveldepth = 2 ;
-    public $framebevelborder = false, $framebevelbordercolor='black';
-    public $framebevelcolor1='white@0.4', $framebevelcolor2='black@0.4';
+    public $framebevel, $framebeveldepth;
+    public $framebevelborder, $framebevelbordercolor;
+    public $framebevelcolor1, $framebevelcolor2;
     public $background_image_mix=100;
     public $background_cflag = '';
     public $background_cflag_type = BGIMG_FILLPLOT;
@@ -552,6 +557,7 @@ class Graph {
            $iImgTransFillColor='white',$iImgTransHighQ=false,
            $iImgTransBorder=false,$iImgTransHorizonPos=0.5;
     public $legend;
+    public $graph_theme;
     protected $iYAxisDeltaPos=50;
     protected $iIconDepth=DEPTH_BACK;
     protected $iAxisLblBgType = 0,
@@ -559,17 +565,24 @@ class Graph {
               $iYAxisLblBgFillColor = 'lightgray', $iYAxisLblBgColor = 'black';
     protected $iTables=NULL;
 
+    protected $isRunningClear = false;
+    protected $inputValues;
+    protected $isAfterSetScale = false;
+
     // aWIdth   Width in pixels of image
     // aHeight   Height in pixels of image
     // aCachedName Name for image file in cache directory
     // aTimeOut  Timeout in minutes for image in cache
     // aInline  If true the image is streamed back in the call to Stroke()
     //   If false the image is just created in the cache
-    function __construct($aWidth=300,$aHeight=200,$aCachedName='',$aTimeOut=0,$aInline=true) {
+    function __construct($aWidth=300,$aHeight=200,$aCachedName='',$aTimeout=0,$aInline=true) {
 
         if( !is_numeric($aWidth) || !is_numeric($aHeight) ) {
             JpGraphError::RaiseL(25008);//('Image width/height argument in Graph::Graph() must be numeric');
         }
+
+        // Initialize frame and margin
+        $this->InitializeFrameAndMargin();
 
         // Automatically generate the image file name based on the name of the script that
         // generates the graph
@@ -581,13 +594,15 @@ class Graph {
         $this->inline=$aInline;
 
         $this->img = new RotImage($aWidth,$aHeight);
-
         $this->cache  = new ImgStreamCache();
-        $this->cache->SetTimeOut($aTimeOut);
+
+        // Window doesn't like '?' in the file name so replace it with an '_'
+        $aCachedName = str_replace("?","_",$aCachedName);
+        $this->SetupCache($aCachedName, $aTimeout);
 
         $this->title = new Text();
         $this->title->ParagraphAlign('center');
-        $this->title->SetFont(FF_FONT2,FS_BOLD);
+        $this->title->SetFont(FF_DEFAULT,FS_NORMAL); //FF_FONT2, FS_BOLD
         $this->title->SetMargin(5);
         $this->title->SetAlign('center');
 
@@ -604,9 +619,6 @@ class Graph {
         $this->legend = new Legend();
         $this->footer = new Footer();
 
-        // Window doesn't like '?' in the file name so replace it with an '_'
-        $aCachedName = str_replace("?","_",$aCachedName);
-
         // If the cached version exist just read it directly from the
         // cache, stream it back to browser and exit
         if( $aCachedName!='' && READ_CACHE && $aInline ) {
@@ -615,10 +627,50 @@ class Graph {
             }
         }
 
-        $this->cache_name = $aCachedName;
         $this->SetTickDensity(); // Normal density
 
         $this->tabtitle = new GraphTabTitle();
+
+        if (!$this->isRunningClear) {
+            $this->inputValues = array();
+            $this->inputValues['aWidth'] = $aWidth;
+            $this->inputValues['aHeight'] = $aHeight;
+            $this->inputValues['aCachedName'] = $aCachedName;
+            $this->inputValues['aTimeout'] = $aTimeout;
+            $this->inputValues['aInline'] = $aInline;
+
+            $theme_class = DEFAULT_THEME_CLASS;
+            if (class_exists($theme_class)) {
+                $this->graph_theme = new $theme_class();
+            }
+        }
+    }
+
+    function InitializeFrameAndMargin() {
+        $this->doframe=true;
+        $this->frame_color='black';
+        $this->frame_weight=1; 
+
+        $this->titlebackground_framecolor = 'blue';
+        $this->titlebackground_framestyle = 2;
+        $this->titlebackground_frameweight = 1;
+        $this->titlebackground_bevelheight = 3;
+        $this->titlebkg_fillstyle=TITLEBKG_FILLSTYLE_SOLID;
+        $this->titlebkg_scolor1='black';
+        $this->titlebkg_scolor2='white';
+        $this->framebevel = false;
+        $this->framebeveldepth = 2;
+        $this->framebevelborder = false;
+        $this->framebevelbordercolor='black';
+        $this->framebevelcolor1='white@0.4';
+        $this->framebevelcolor2='black@0.4';
+
+        $this->margin_color = array(250,250,250);
+    }
+
+    function SetupCache($aFilename,$aTimeout=60) {
+        $this->cache_name = $aFilename;
+        $this->cache->SetTimeOut($aTimeout);
     }
 
     // Enable final image perspective transformation
@@ -718,17 +770,21 @@ class Graph {
         }
 
         if( $cl instanceof Text ) $this->AddText($aPlot);
-        elseif( class_exists('PlotLine') && ($cl instanceof PlotLine) )  $this->AddLine($aPlot);
+        elseif( class_exists('PlotLine',false) && ($cl instanceof PlotLine) )  $this->AddLine($aPlot);
         elseif( class_exists('PlotBand',false) && ($cl instanceof PlotBand) ) $this->AddBand($aPlot);
         elseif( class_exists('IconPlot',false) && ($cl instanceof IconPlot) ) $this->AddIcon($aPlot);
         elseif( class_exists('GTextTable',false) && ($cl instanceof GTextTable) ) $this->AddTable($aPlot);
         else {
-                if( is_array($aPlot) ) {
+            if( is_array($aPlot) ) {
                 $this->plots = array_merge($this->plots,$aPlot);
-                }
-                else {
-                        $this->plots[] = $aPlot;
-                        }
+            }
+            else {
+                $this->plots[] = $aPlot;
+            }
+        }
+
+        if ($this->graph_theme) {
+            $this->graph_theme->SetupPlot($aPlot);
         }
     }
 
@@ -779,6 +835,10 @@ class Graph {
         else {
             $this->y2plots[] = $aPlot;
         }
+
+        if ($this->graph_theme) {
+            $this->graph_theme->SetupPlot($aPlot);
+        }
     }
 
     // Add plot to the extra Y-axises
@@ -802,6 +862,10 @@ class Graph {
         }
         else {
             $this->ynplots[$aN][] = $aPlot;
+        }
+
+        if ($this->graph_theme) {
+            $this->graph_theme->SetupPlot($aPlot);
         }
     }
 
@@ -841,21 +905,25 @@ class Graph {
         if( $aToY2 ) {
             if( is_array($aLine) ) {
                 for($i=0; $i < count($aLine); ++$i ) {
-                    $this->y2lines[]=$aLine[$i];
+                    //$this->y2lines[]=$aLine[$i];
+                    $this->y2plots[]=$aLine[$i];
                 }
             }
             else {
-                $this->y2lines[] = $aLine;
+                //$this->y2lines[] = $aLine;
+                $this->y2plots[]=$aLine;
             }
         }
         else {
             if( is_array($aLine) ) {
                 for($i=0; $i<count($aLine); ++$i ) {
-                    $this->lines[]=$aLine[$i];
+                    //$this->lines[]=$aLine[$i];
+                    $this->plots[]=$aLine[$i];
                 }
             }
             else {
-                $this->lines[] = $aLine;
+                //$this->lines[] = $aLine;
+                $this->plots[] = $aLine;
             }
         }
     }
@@ -886,6 +954,12 @@ class Graph {
                 $this->bands[] = $aBand;
             }
         }
+    }
+
+    function SetPlotGradient($aFrom='navy',$aTo='silver',$aGradType=2) {
+        $this->plot_gradtype=$aGradType;
+        $this->plot_gradfrom = $aFrom;
+        $this->plot_gradto = $aTo;
     }
 
     function SetBackgroundGradient($aFrom='navy',$aTo='silver',$aGradType=2,$aStyle=BGRAD_FRAME) {
@@ -986,7 +1060,7 @@ class Graph {
     }
 
     // Set the shadow around the whole image
-    function SetShadow($aShowShadow=true,$aShadowWidth=5,$aShadowColor=array(102,102,102)) {
+    function SetShadow($aShowShadow=true,$aShadowWidth=5,$aShadowColor='darkgray') {
         $this->doshadow = $aShowShadow;
         $this->shadow_color = $aShadowColor;
         $this->shadow_width = $aShadowWidth;
@@ -1042,6 +1116,21 @@ class Graph {
         $this->xgrid = new Grid($this->xaxis);
         $this->ygrid = new Grid($this->yaxis);
         $this->ygrid->Show();
+
+
+        if (!$this->isRunningClear) {
+            $this->inputValues['aAxisType'] = $aAxisType;
+            $this->inputValues['aYMin'] = $aYMin;
+            $this->inputValues['aYMax'] = $aYMax;
+            $this->inputValues['aXMin'] = $aXMin;
+            $this->inputValues['aXMax'] = $aXMax;
+
+            if ($this->graph_theme) {
+                $this->graph_theme->ApplyGraph($this);
+            }
+        }
+
+        $this->isAfterSetScale = true;
     }
 
     // Specify secondary Y scale
@@ -1068,6 +1157,10 @@ class Graph {
 
         // Deafult position is the max x-value
         $this->y2grid = new Grid($this->y2axis);
+
+        if ($this->graph_theme) {
+          $this->graph_theme->ApplyGraph($this);
+        }
     }
 
     // Set the delta position (in pixels) between the multiple Y-axis
@@ -1095,6 +1188,10 @@ class Graph {
         $this->ynaxis[$aN] = new Axis($this->img,$this->ynscale[$aN]);
         $this->ynaxis[$aN]->scale->ticks->SetDirection(SIDE_LEFT);
         $this->ynaxis[$aN]->SetLabelSide(SIDE_RIGHT);
+
+        if ($this->graph_theme) {
+            $this->graph_theme->ApplyGraph($this);
+        }
     }
 
     // Specify density of ticks when autoscaling 'normal', 'dense', 'sparse', 'verysparse'
@@ -1347,7 +1444,7 @@ class Graph {
                 // to be converted to real arguments.
                 $tmp = str_replace('?','%3f',$baseimg);
                 $htmlwrap = $this->GetHTMLImageMap($aCSIMName)."\n".
-                            '<img src="'.CSIMCACHE_HTTP_DIR.$tmp.'" ismap="ismap" usemap="#'.$aCSIMName.'" border="'.$aBorder.'" width="'.$this->img->width.'" height="'.$this->img->height."\" alt=\"".$this->iCSIMImgAlt."\" />\n";
+                            '<img src="'.CSIMCACHE_HTTP_DIR.$tmp.'" ismap="ismap" usemap="#'.$aCSIMName.' width="'.$this->img->width.'" height="'.$this->img->height."\" alt=\"".$this->iCSIMImgAlt."\" />\n";
 
                 if($fh =  @fopen($basecsim,'w') ) {
                     fwrite($fh,$htmlwrap);
@@ -1382,7 +1479,7 @@ class Graph {
             $aScriptName=basename($_SERVER['PHP_SELF']);
         }
         $urlarg = $this->GetURLArguments(true);
-        return "<img src=\"".$aScriptName.'?'.$urlarg."\" ismap=\"ismap\" usemap=\"#".$aCSIMName.'" border="'.$aBorder.'" width="'.$this->img->width.'" height="'.$this->img->height."\" alt=\"".$this->iCSIMImgAlt."\" />\n";
+        return "<img src=\"".$aScriptName.'?'.$urlarg."\" ismap=\"ismap\" usemap=\"#".$aCSIMName.'" height="'.$this->img->height."\" alt=\"".$this->iCSIMImgAlt."\" />\n";
     }
 
     function GetTextsYMinMax($aY2=false) {
@@ -1444,13 +1541,28 @@ class Graph {
     }
 
     function GetXMinMax() {
+
         list($min,$ymin) = $this->plots[0]->Min();
         list($max,$ymax) = $this->plots[0]->Max();
+
+        $i=0;
+        // Some plots, e.g. PlotLine should not affect the scale
+        // and will return (null,null). We should ignore those
+        // values.
+        while( ($min===null || $max === null) && ($i < count($this->plots)-1) ) {
+            ++$i;
+            list($min,$ymin) = $this->plots[$i]->Min();
+            list($max,$ymax) = $this->plots[$i]->Max();
+        }
+
         foreach( $this->plots as $p ) {
             list($xmin,$ymin) = $p->Min();
             list($xmax,$ymax) = $p->Max();
-            $min = Min($xmin,$min);
-            $max = Max($xmax,$max);
+
+            if( $xmin !== null && $xmax !== null ) {
+                $min = Min($xmin,$min);
+                $max = Max($xmax,$max);
+            }
         }
 
         if( $this->y2axis != null ) {
@@ -1477,9 +1589,16 @@ class Graph {
     }
 
     function AdjustMarginsForTitles() {
-        $totrequired = ($this->title->t != '' ? $this->title->GetTextHeight($this->img) + $this->title->margin + 5 : 0 ) +
-            ($this->subtitle->t != '' ? $this->subtitle->GetTextHeight($this->img) + $this->subtitle->margin + 5 : 0 ) +
-            ($this->subsubtitle->t != '' ? $this->subsubtitle->GetTextHeight($this->img) + $this->subsubtitle->margin + 5 : 0 ) ;
+        $totrequired = 
+            ($this->title->t != '' 
+                ? $this->title->GetTextHeight($this->img) + $this->title->margin + 5 * SUPERSAMPLING_SCALE
+                : 0 ) +
+            ($this->subtitle->t != '' 
+                ? $this->subtitle->GetTextHeight($this->img) + $this->subtitle->margin + 5 * SUPERSAMPLING_SCALE
+                : 0 ) +
+            ($this->subsubtitle->t != '' 
+                ? $this->subsubtitle->GetTextHeight($this->img) + $this->subsubtitle->margin + 5 * SUPERSAMPLING_SCALE
+                : 0 ) ;
 
         $btotrequired = 0;
         if($this->xaxis != null &&  !$this->xaxis->hide && !$this->xaxis->hide_labels ) {
@@ -1514,13 +1633,24 @@ class Graph {
             // DO Nothing. It gets too messy to do this properly for 90 deg...
         }
         else{
+            // need more top margin
             if( $this->img->top_margin < $totrequired ) {
-                $this->SetMargin($this->img->left_margin,$this->img->right_margin,
-                $totrequired,$this->img->bottom_margin);
+                $this->SetMargin(
+                    $this->img->raw_left_margin,
+                    $this->img->raw_right_margin,
+                    $totrequired / SUPERSAMPLING_SCALE, 
+                    $this->img->raw_bottom_margin
+                );
             }
+
+            // need more bottom margin
             if( $this->img->bottom_margin < $btotrequired ) {
-                $this->SetMargin($this->img->left_margin,$this->img->right_margin,
-                $this->img->top_margin,$btotrequired);
+                $this->SetMargin(
+                    $this->img->raw_left_margin,
+                    $this->img->raw_right_margin,
+                    $this->img->raw_top_margin,
+                    $btotrequired / SUPERSAMPLING_SCALE
+                );
             }
         }
     }
@@ -1538,225 +1668,8 @@ class Graph {
         $this->img->Stream();
     }
 
-    // Stroke the graph
-    // $aStrokeFileName If != "" the image will be written to this file and NOT
-    // streamed back to the browser
-    function Stroke($aStrokeFileName='') {
-
-        // Fist make a sanity check that user has specified a scale
-        if( empty($this->yscale) ) {
-            JpGraphError::RaiseL(25031);//('You must specify what scale to use with a call to Graph::SetScale().');
-        }
-
-        // Start by adjusting the margin so that potential titles will fit.
-        $this->AdjustMarginsForTitles();
-
-        // Give the plot a chance to do any scale adjuments the individual plots
-        // wants to do. Right now this is only used by the contour plot to set scale
-        // limits
-
-        for($i=0; $i < count($this->plots) ; ++$i ) {
-            $this->plots[$i]->PreScaleSetup($this);
-        }
-
-        // Setup scale constants
-        if( $this->yscale ) $this->yscale->InitConstants($this->img);
-        if( $this->xscale ) $this->xscale->InitConstants($this->img);
-        if( $this->y2scale ) $this->y2scale->InitConstants($this->img);
-
-        $n=count($this->ynscale);
-        for($i=0; $i < $n; ++$i) {
-            if( $this->ynscale[$i] ) {
-                $this->ynscale[$i]->InitConstants($this->img);
-            }
-        }
-
-        // If the filename is the predefined value = '_csim_special_'
-        // we assume that the call to stroke only needs to do enough
-        // to correctly generate the CSIM maps.
-        // We use this variable to skip things we don't strictly need
-        // to do to generate the image map to improve performance
-        // a best we can. Therefor you will see a lot of tests !$_csim in the
-        // code below.
-        $_csim = ($aStrokeFileName===_CSIM_SPECIALFILE);
-
-        // We need to know if we have stroked the plot in the
-        // GetCSIMareas. Otherwise the CSIM hasn't been generated
-        // and in the case of GetCSIM called before stroke to generate
-        // CSIM without storing an image to disk GetCSIM must call Stroke.
-        $this->iHasStroked = true;
-
-        // Do any pre-stroke adjustment that is needed by the different plot types
-        // (i.e bar plots want's to add an offset to the x-labels etc)
-        for($i=0; $i < count($this->plots) ; ++$i ) {
-            $this->plots[$i]->PreStrokeAdjust($this);
-            $this->plots[$i]->DoLegend($this);
-        }
-
-        // Any plots on the second Y scale?
-        if( $this->y2scale != null ) {
-            for($i=0; $i<count($this->y2plots) ; ++$i ) {
-                $this->y2plots[$i]->PreStrokeAdjust($this);
-                $this->y2plots[$i]->DoLegend($this);
-            }
-        }
-
-        // Any plots on the extra Y axises?
-        $n = count($this->ynaxis);
-        for($i=0; $i<$n ; ++$i ) {
-            if( $this->ynplots == null || $this->ynplots[$i] == null) {
-                JpGraphError::RaiseL(25032,$i);//("No plots for Y-axis nbr:$i");
-            }
-            $m = count($this->ynplots[$i]);
-            for($j=0; $j < $m; ++$j ) {
-                $this->ynplots[$i][$j]->PreStrokeAdjust($this);
-                $this->ynplots[$i][$j]->DoLegend($this);
-            }
-        }
-
-        // Bail out if any of the Y-axis not been specified and
-        // has no plots. (This means it is impossible to do autoscaling and
-        // no other scale was given so we can't possible draw anything). If you use manual
-        // scaling you also have to supply the tick steps as well.
-        if( (!$this->yscale->IsSpecified() && count($this->plots)==0) ||
-            ($this->y2scale!=null && !$this->y2scale->IsSpecified() && count($this->y2plots)==0) ) {
-            //$e = "n=".count($this->y2plots)."\n";
-            // $e = "Can't draw unspecified Y-scale.<br>\nYou have either:<br>\n";
-            // $e .= "1. Specified an Y axis for autoscaling but have not supplied any plots<br>\n";
-            // $e .= "2. Specified a scale manually but have forgot to specify the tick steps";
-            JpGraphError::RaiseL(25026);
-        }
-
-        // Bail out if no plots and no specified X-scale
-        if( (!$this->xscale->IsSpecified() && count($this->plots)==0 && count($this->y2plots)==0) ) {
-            JpGraphError::RaiseL(25034);//("<strong>JpGraph: Can't draw unspecified X-scale.</strong><br>No plots.<br>");
-        }
-
-        //Check if we should autoscale y-axis
-        if( !$this->yscale->IsSpecified() && count($this->plots)>0 ) {
-            list($min,$max) = $this->GetPlotsYMinMax($this->plots);
-            $lres = $this->GetLinesYMinMax($this->lines);
-            if( is_array($lres) ) {
-                list($linmin,$linmax) = $lres ;
-                $min = min($min,$linmin);
-                $max = max($max,$linmax);
-            }
-            $tres = $this->GetTextsYMinMax();
-            if( is_array($tres) ) {
-                list($tmin,$tmax) = $tres ;
-                $min = min($min,$tmin);
-                $max = max($max,$tmax);
-            }
-            $this->yscale->AutoScale($this->img,$min,$max,
-            $this->img->plotheight/$this->ytick_factor);
-        }
-        elseif( $this->yscale->IsSpecified() && ( $this->yscale->auto_ticks || !$this->yscale->ticks->IsSpecified()) ) {
-            // The tick calculation will use the user suplied min/max values to determine
-            // the ticks. If auto_ticks is false the exact user specifed min and max
-            // values will be used for the scale.
-            // If auto_ticks is true then the scale might be slightly adjusted
-            // so that the min and max values falls on an even major step.
-            $min = $this->yscale->scale[0];
-            $max = $this->yscale->scale[1];
-            $this->yscale->AutoScale($this->img,$min,$max,
-            $this->img->plotheight/$this->ytick_factor,
-            $this->yscale->auto_ticks);
-
-            // Now make sure we show enough precision to accurate display the
-            // labels. If this is not done then the user might end up with
-            // a scale that might actually start with, say 13.5, butdue to rounding
-            // the scale label will ony show 14.
-            if( abs(floor($min)-$min) > 0 ) {
-
-                // If the user has set a format then we bail out
-                if( $this->yscale->ticks->label_formatstr == '' && $this->yscale->ticks->label_dateformatstr == '' ) {
-                    $this->yscale->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
-                }
-            }
-        }
-
-        if( $this->y2scale != null) {
-            if( !$this->y2scale->IsSpecified() && count($this->y2plots)>0 ) {
-                list($min,$max) = $this->GetPlotsYMinMax($this->y2plots);
-
-                $lres = $this->GetLinesYMinMax($this->y2lines);
-                if( is_array($lres) ) {
-                    list($linmin,$linmax) = $lres ;
-                    $min = min($min,$linmin);
-                    $max = max($max,$linmax);
-                }
-                $tres = $this->GetTextsYMinMax(true);
-                if( is_array($tres) ) {
-                    list($tmin,$tmax) = $tres ;
-                    $min = min($min,$tmin);
-                    $max = max($max,$tmax);
-                }
-                $this->y2scale->AutoScale($this->img,$min,$max,$this->img->plotheight/$this->ytick_factor);
-            }
-            elseif( $this->y2scale->IsSpecified() && ( $this->y2scale->auto_ticks || !$this->y2scale->ticks->IsSpecified()) ) {
-                // The tick calculation will use the user suplied min/max values to determine
-                // the ticks. If auto_ticks is false the exact user specifed min and max
-                // values will be used for the scale.
-                // If auto_ticks is true then the scale might be slightly adjusted
-                // so that the min and max values falls on an even major step.
-                $min = $this->y2scale->scale[0];
-                $max = $this->y2scale->scale[1];
-                $this->y2scale->AutoScale($this->img,$min,$max,
-                $this->img->plotheight/$this->ytick_factor,
-                $this->y2scale->auto_ticks);
-
-                // Now make sure we show enough precision to accurate display the
-                // labels. If this is not done then the user might end up with
-                // a scale that might actually start with, say 13.5, butdue to rounding
-                // the scale label will ony show 14.
-                if( abs(floor($min)-$min) > 0 ) {
-                    // If the user has set a format then we bail out
-                    if( $this->y2scale->ticks->label_formatstr == '' && $this->y2scale->ticks->label_dateformatstr == '' ) {
-                        $this->y2scale->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
-                    }
-                }
-
-            }
-        }
-
-        //
-        // Autoscale the extra Y-axises
-        //
-        $n = count($this->ynaxis);
-        for( $i=0; $i < $n; ++$i ) {
-            if( $this->ynscale[$i] != null) {
-                if( !$this->ynscale[$i]->IsSpecified() && count($this->ynplots[$i])>0 ) {
-                    list($min,$max) = $this->GetPlotsYMinMax($this->ynplots[$i]);
-                    $this->ynscale[$i]->AutoScale($this->img,$min,$max,$this->img->plotheight/$this->ytick_factor);
-                }
-                elseif( $this->ynscale[$i]->IsSpecified() && ( $this->ynscale[$i]->auto_ticks || !$this->ynscale[$i]->ticks->IsSpecified()) ) {
-                    // The tick calculation will use the user suplied min/max values to determine
-                    // the ticks. If auto_ticks is false the exact user specifed min and max
-                    // values will be used for the scale.
-                    // If auto_ticks is true then the scale might be slightly adjusted
-                    // so that the min and max values falls on an even major step.
-                    $min = $this->ynscale[$i]->scale[0];
-                    $max = $this->ynscale[$i]->scale[1];
-                    $this->ynscale[$i]->AutoScale($this->img,$min,$max,
-                    $this->img->plotheight/$this->ytick_factor,
-                    $this->ynscale[$i]->auto_ticks);
-
-                    // Now make sure we show enough precision to accurate display the
-                    // labels. If this is not done then the user might end up with
-                    // a scale that might actually start with, say 13.5, butdue to rounding
-                    // the scale label will ony show 14.
-                    if( abs(floor($min)-$min) > 0 ) {
-
-                        // If the user has set a format then we bail out
-                        if( $this->ynscale[$i]->ticks->label_formatstr == '' && $this->ynscale[$i]->ticks->label_dateformatstr == '' ) {
-                            $this->ynscale[$i]->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
-                        }
-                    }
-                }
-            }
-        }
-
-        //Check if we should autoscale x-axis
+    function doAutoscaleXAxis() {
+    //Check if we should autoscale x-axis
         if( !$this->xscale->IsSpecified() ) {
             if( substr($this->axtype,0,4) == "text" ) {
                 $max=0;
@@ -1844,26 +1757,9 @@ class Graph {
             if( !is_numeric($this->yaxis->pos) && !is_string($this->yaxis->pos) ) {
                 $this->yaxis->SetPos($this->xscale->GetMinVal());
             }
-            if( $this->y2axis != null ) {
-                if( !is_numeric($this->y2axis->pos) && !is_string($this->y2axis->pos) ) {
-                    $this->y2axis->SetPos($this->xscale->GetMaxVal());
-                }
-                $this->y2axis->SetTitleSide(SIDE_RIGHT);
-            }
-            $n = count($this->ynaxis);
-            $nY2adj = $this->y2axis != null ? $this->iYAxisDeltaPos : 0;
-            for( $i=0; $i < $n; ++$i ) {
-                if( $this->ynaxis[$i] != null ) {
-                    if( !is_numeric($this->ynaxis[$i]->pos) && !is_string($this->ynaxis[$i]->pos) ) {
-                        $this->ynaxis[$i]->SetPos($this->xscale->GetMaxVal());
-                        $this->ynaxis[$i]->SetPosAbsDelta($i*$this->iYAxisDeltaPos + $nY2adj);
-                    }
-                    $this->ynaxis[$i]->SetTitleSide(SIDE_RIGHT);
-                }
-            }
-
         }
-        elseif( $this->xscale->IsSpecified() && ( $this->xscale->auto_ticks || !$this->xscale->ticks->IsSpecified()) ) {
+        elseif( $this->xscale->IsSpecified() &&
+                ( $this->xscale->auto_ticks || !$this->xscale->ticks->IsSpecified()) ) {
             // The tick calculation will use the user suplied min/max values to determine
             // the ticks. If auto_ticks is false the exact user specifed min and max
             // values will be used for the scale.
@@ -1884,16 +1780,305 @@ class Graph {
                     $this->xscale->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
                 }
             }
-
-
-            if( $this->y2axis != null ) {
-                if( !is_numeric($this->y2axis->pos) && !is_string($this->y2axis->pos) ) {
-                    $this->y2axis->SetPos($this->xscale->GetMaxVal());
-                }
-                $this->y2axis->SetTitleSide(SIDE_RIGHT);
-            }
-
         }
+
+        // Position the optional Y2 and Yn axis to the rightmost position of the x-axis
+        if( $this->y2axis != null ) {
+            if( !is_numeric($this->y2axis->pos) && !is_string($this->y2axis->pos) ) {
+                $this->y2axis->SetPos($this->xscale->GetMaxVal());
+            }
+            $this->y2axis->SetTitleSide(SIDE_RIGHT);
+        }
+
+        $n = count($this->ynaxis);
+        $nY2adj = $this->y2axis != null ? $this->iYAxisDeltaPos : 0;
+        for( $i=0; $i < $n; ++$i ) {
+            if( $this->ynaxis[$i] != null ) {
+                if( !is_numeric($this->ynaxis[$i]->pos) && !is_string($this->ynaxis[$i]->pos) ) {
+                    $this->ynaxis[$i]->SetPos($this->xscale->GetMaxVal());
+                    $this->ynaxis[$i]->SetPosAbsDelta($i*$this->iYAxisDeltaPos + $nY2adj);
+                }
+                $this->ynaxis[$i]->SetTitleSide(SIDE_RIGHT);
+            }
+        }
+    }
+
+
+    function doAutoScaleYnAxis() {
+
+        if( $this->y2scale != null) {
+            if( !$this->y2scale->IsSpecified() && count($this->y2plots)>0 ) {
+                list($min,$max) = $this->GetPlotsYMinMax($this->y2plots);
+
+                $lres = $this->GetLinesYMinMax($this->y2lines);
+                if( is_array($lres) ) {
+                    list($linmin,$linmax) = $lres ;
+                    $min = min($min,$linmin);
+                    $max = max($max,$linmax);
+                }
+                $tres = $this->GetTextsYMinMax(true);
+                if( is_array($tres) ) {
+                    list($tmin,$tmax) = $tres ;
+                    $min = min($min,$tmin);
+                    $max = max($max,$tmax);
+                }
+                $this->y2scale->AutoScale($this->img,$min,$max,$this->img->plotheight/$this->ytick_factor);
+            }
+            elseif( $this->y2scale->IsSpecified() && ( $this->y2scale->auto_ticks || !$this->y2scale->ticks->IsSpecified()) ) {
+                // The tick calculation will use the user suplied min/max values to determine
+                // the ticks. If auto_ticks is false the exact user specifed min and max
+                // values will be used for the scale.
+                // If auto_ticks is true then the scale might be slightly adjusted
+                // so that the min and max values falls on an even major step.
+                $min = $this->y2scale->scale[0];
+                $max = $this->y2scale->scale[1];
+                $this->y2scale->AutoScale($this->img,$min,$max,
+                $this->img->plotheight/$this->ytick_factor,
+                $this->y2scale->auto_ticks);
+
+                // Now make sure we show enough precision to accurate display the
+                // labels. If this is not done then the user might end up with
+                // a scale that might actually start with, say 13.5, butdue to rounding
+                // the scale label will ony show 14.
+                if( abs(floor($min)-$min) > 0 ) {
+                    // If the user has set a format then we bail out
+                    if( $this->y2scale->ticks->label_formatstr == '' && $this->y2scale->ticks->label_dateformatstr == '' ) {
+                        $this->y2scale->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
+                    }
+                }
+
+            }
+        }
+
+
+        //
+        // Autoscale the extra Y-axises
+        //
+        $n = count($this->ynaxis);
+        for( $i=0; $i < $n; ++$i ) {
+            if( $this->ynscale[$i] != null) {
+                if( !$this->ynscale[$i]->IsSpecified() && count($this->ynplots[$i])>0 ) {
+                    list($min,$max) = $this->GetPlotsYMinMax($this->ynplots[$i]);
+                    $this->ynscale[$i]->AutoScale($this->img,$min,$max,$this->img->plotheight/$this->ytick_factor);
+                }
+                elseif( $this->ynscale[$i]->IsSpecified() && ( $this->ynscale[$i]->auto_ticks || !$this->ynscale[$i]->ticks->IsSpecified()) ) {
+                    // The tick calculation will use the user suplied min/max values to determine
+                    // the ticks. If auto_ticks is false the exact user specifed min and max
+                    // values will be used for the scale.
+                    // If auto_ticks is true then the scale might be slightly adjusted
+                    // so that the min and max values falls on an even major step.
+                    $min = $this->ynscale[$i]->scale[0];
+                    $max = $this->ynscale[$i]->scale[1];
+                    $this->ynscale[$i]->AutoScale($this->img,$min,$max,
+                    $this->img->plotheight/$this->ytick_factor,
+                    $this->ynscale[$i]->auto_ticks);
+
+                    // Now make sure we show enough precision to accurate display the
+                    // labels. If this is not done then the user might end up with
+                    // a scale that might actually start with, say 13.5, butdue to rounding
+                    // the scale label will ony show 14.
+                    if( abs(floor($min)-$min) > 0 ) {
+                        // If the user has set a format then we bail out
+                        if( $this->ynscale[$i]->ticks->label_formatstr == '' && $this->ynscale[$i]->ticks->label_dateformatstr == '' ) {
+                            $this->ynscale[$i]->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function doAutoScaleYAxis() {
+
+        //Check if we should autoscale y-axis
+        if( !$this->yscale->IsSpecified() && count($this->plots)>0 ) {
+            list($min,$max) = $this->GetPlotsYMinMax($this->plots);
+            $lres = $this->GetLinesYMinMax($this->lines);
+            if( is_array($lres) ) {
+                list($linmin,$linmax) = $lres ;
+                $min = min($min,$linmin);
+                $max = max($max,$linmax);
+            }
+            $tres = $this->GetTextsYMinMax();
+            if( is_array($tres) ) {
+                list($tmin,$tmax) = $tres ;
+                $min = min($min,$tmin);
+                $max = max($max,$tmax);
+            }
+            $this->yscale->AutoScale($this->img,$min,$max,
+            $this->img->plotheight/$this->ytick_factor);
+        }
+        elseif( $this->yscale->IsSpecified() && ( $this->yscale->auto_ticks || !$this->yscale->ticks->IsSpecified()) ) {
+            // The tick calculation will use the user suplied min/max values to determine
+            // the ticks. If auto_ticks is false the exact user specifed min and max
+            // values will be used for the scale.
+            // If auto_ticks is true then the scale might be slightly adjusted
+            // so that the min and max values falls on an even major step.
+            $min = $this->yscale->scale[0];
+            $max = $this->yscale->scale[1];
+            $this->yscale->AutoScale($this->img,$min,$max,
+            $this->img->plotheight/$this->ytick_factor,
+            $this->yscale->auto_ticks);
+
+            // Now make sure we show enough precision to accurate display the
+            // labels. If this is not done then the user might end up with
+            // a scale that might actually start with, say 13.5, butdue to rounding
+            // the scale label will ony show 14.
+            if( abs(floor($min)-$min) > 0 ) {
+
+                // If the user has set a format then we bail out
+                if( $this->yscale->ticks->label_formatstr == '' && $this->yscale->ticks->label_dateformatstr == '' ) {
+                    $this->yscale->ticks->precision = abs( floor(log10( abs(floor($min)-$min))) )+1;
+                }
+            }
+        }
+
+    }
+
+    function InitScaleConstants() {
+        // Setup scale constants
+        if( $this->yscale ) $this->yscale->InitConstants($this->img);
+        if( $this->xscale ) $this->xscale->InitConstants($this->img);
+        if( $this->y2scale ) $this->y2scale->InitConstants($this->img);
+
+        $n=count($this->ynscale);
+        for($i=0; $i < $n; ++$i) {
+            if( $this->ynscale[$i] ) {
+                $this->ynscale[$i]->InitConstants($this->img);
+            }
+        }
+    }
+
+    function doPrestrokeAdjustments() {
+
+        // Do any pre-stroke adjustment that is needed by the different plot types
+        // (i.e bar plots want's to add an offset to the x-labels etc)
+        for($i=0; $i < count($this->plots) ; ++$i ) {
+            $this->plots[$i]->PreStrokeAdjust($this);
+            $this->plots[$i]->DoLegend($this);
+        }
+
+        // Any plots on the second Y scale?
+        if( $this->y2scale != null ) {
+            for($i=0; $i<count($this->y2plots) ; ++$i ) {
+                $this->y2plots[$i]->PreStrokeAdjust($this);
+                $this->y2plots[$i]->DoLegend($this);
+            }
+        }
+
+        // Any plots on the extra Y axises?
+        $n = count($this->ynaxis);
+        for($i=0; $i<$n ; ++$i ) {
+            if( $this->ynplots == null || $this->ynplots[$i] == null) {
+                JpGraphError::RaiseL(25032,$i);//("No plots for Y-axis nbr:$i");
+            }
+            $m = count($this->ynplots[$i]);
+            for($j=0; $j < $m; ++$j ) {
+                $this->ynplots[$i][$j]->PreStrokeAdjust($this);
+                $this->ynplots[$i][$j]->DoLegend($this);
+            }
+        }
+    }
+
+    function StrokeBands($aDepth,$aCSIM) {
+    // Stroke bands
+        if( $this->bands != null && !$aCSIM) {
+            for($i=0; $i < count($this->bands); ++$i) {
+            // Stroke all bands that asks to be in the background
+                if( $this->bands[$i]->depth == $aDepth ) {
+                    $this->bands[$i]->Stroke($this->img,$this->xscale,$this->yscale);
+                }
+            }
+        }
+
+        if( $this->y2bands != null && $this->y2scale != null && !$aCSIM ) {
+            for($i=0; $i < count($this->y2bands); ++$i) {
+            // Stroke all bands that asks to be in the foreground
+                if( $this->y2bands[$i]->depth == $aDepth ) {
+                    $this->y2bands[$i]->Stroke($this->img,$this->xscale,$this->y2scale);
+                }
+            }
+        }
+    }
+
+
+    // Stroke the graph
+    // $aStrokeFileName If != "" the image will be written to this file and NOT
+    // streamed back to the browser
+    function Stroke($aStrokeFileName='') {
+        // Fist make a sanity check that user has specified a scale
+        if( empty($this->yscale) ) {
+            JpGraphError::RaiseL(25031);//('You must specify what scale to use with a call to Graph::SetScale().');
+        }
+
+        // Start by adjusting the margin so that potential titles will fit.
+        $this->AdjustMarginsForTitles();
+
+        // Give the plot a chance to do any scale adjuments the individual plots
+        // wants to do. Right now this is only used by the contour plot to set scale
+        // limits
+        for($i=0; $i < count($this->plots) ; ++$i ) {
+            $this->plots[$i]->PreScaleSetup($this);
+        }
+
+        // Init scale constants that are used to calculate the transformation from
+        // world to pixel coordinates
+        $this->InitScaleConstants();
+
+        // If the filename is the predefined value = '_csim_special_'
+        // we assume that the call to stroke only needs to do enough
+        // to correctly generate the CSIM maps.
+        // We use this variable to skip things we don't strictly need
+        // to do to generate the image map to improve performance
+        // a best we can. Therefor you will see a lot of tests !$_csim in the
+        // code below.
+        $_csim = ($aStrokeFileName===_CSIM_SPECIALFILE);
+
+        // If we are called the second time (perhaps the user has called GetHTMLImageMap()
+        // himself then the legends have alsready been populated once in order to get the
+        // CSIM coordinats. Since we do not want the legends to be populated a second time
+        // we clear the legends
+        $this->legend->Clear();
+
+        // We need to know if we have stroked the plot in the
+        // GetCSIMareas. Otherwise the CSIM hasn't been generated
+        // and in the case of GetCSIM called before stroke to generate
+        // CSIM without storing an image to disk GetCSIM must call Stroke.
+        $this->iHasStroked = true;
+
+        // Setup pre-stroked adjustments and Legends
+        $this->doPrestrokeAdjustments();
+
+        if ($this->graph_theme) {
+            $this->graph_theme->PreStrokeApply($this);
+        }
+
+        // Bail out if any of the Y-axis not been specified and
+        // has no plots. (This means it is impossible to do autoscaling and
+        // no other scale was given so we can't possible draw anything). If you use manual
+        // scaling you also have to supply the tick steps as well.
+        if( (!$this->yscale->IsSpecified() && count($this->plots)==0) ||
+            ($this->y2scale!=null && !$this->y2scale->IsSpecified() && count($this->y2plots)==0) ) {
+            //$e = "n=".count($this->y2plots)."\n";
+            // $e = "Can't draw unspecified Y-scale.<br>\nYou have either:<br>\n";
+            // $e .= "1. Specified an Y axis for autoscaling but have not supplied any plots<br>\n";
+            // $e .= "2. Specified a scale manually but have forgot to specify the tick steps";
+            JpGraphError::RaiseL(25026);
+        }
+
+        // Bail out if no plots and no specified X-scale
+        if( (!$this->xscale->IsSpecified() && count($this->plots)==0 && count($this->y2plots)==0) ) {
+            JpGraphError::RaiseL(25034);//("<strong>JpGraph: Can't draw unspecified X-scale.</strong><br>No plots.<br>");
+        }
+
+        // Autoscale the normal Y-axis
+        $this->doAutoScaleYAxis();
+
+        // Autoscale all additiopnal y-axis
+        $this->doAutoScaleYnAxis();
+
+        // Autoscale the regular x-axis and position the y-axis properly
+        $this->doAutoScaleXAxis();
 
         // If we have a negative values and x-axis position is at 0
         // we need to supress the first and possible the last tick since
@@ -1905,7 +2090,6 @@ class Graph {
         // For X-text scale we ignore all this since the tick are usually
         // much further in and not close to the Y-axis. Hence the test
         // for 'text'
-
         if( ($this->yaxis->pos==$this->xscale->GetMinVal() || (is_string($this->yaxis->pos) && $this->yaxis->pos=='min')) &&
             !is_numeric($this->xaxis->pos) && $this->yscale->GetMinVal() < 0 &&
             substr($this->axtype,0,4) != 'text' && $this->xaxis->pos != 'min' ) {
@@ -1920,7 +2104,6 @@ class Graph {
             $this->xscale->ticks->SupressLast();
         }
 
-
         if( !$_csim ) {
             $this->StrokePlotArea();
             if( $this->iIconDepth == DEPTH_BACK ) {
@@ -1929,24 +2112,8 @@ class Graph {
         }
         $this->StrokeAxis(false);
 
-        // Stroke bands
-        if( $this->bands != null && !$_csim) {
-            for($i=0; $i < count($this->bands); ++$i) {
-                // Stroke all bands that asks to be in the background
-                if( $this->bands[$i]->depth == DEPTH_BACK ) {
-                    $this->bands[$i]->Stroke($this->img,$this->xscale,$this->yscale);
-                }
-            }
-        }
-
-        if( $this->y2bands != null && $this->y2scale != null && !$_csim ) {
-            for($i=0; $i < count($this->y2bands); ++$i) {
-                // Stroke all bands that asks to be in the foreground
-                if( $this->y2bands[$i]->depth == DEPTH_BACK ) {
-                    $this->y2bands[$i]->Stroke($this->img,$this->xscale,$this->y2scale);
-                }
-            }
-        }
+        // Stroke colored bands
+        $this->StrokeBands(DEPTH_BACK,$_csim);
 
         if( $this->grid_depth == DEPTH_BACK && !$_csim) {
             $this->ygrid->Stroke();
@@ -1975,8 +2142,7 @@ class Graph {
                 $this->xscale->off += round($this->xscale->scale_factor/2)-round($this->text_scale_abscenteroff/2);
             }
             else {
-                $this->xscale->off +=
-                ceil($this->xscale->scale_factor*$this->text_scale_off*$this->xscale->ticks->minor_step);
+                $this->xscale->off += ceil($this->xscale->scale_factor*$this->text_scale_off*$this->xscale->ticks->minor_step);
             }
         }
 
@@ -2049,40 +2215,8 @@ class Graph {
             $this->xgrid->Stroke();
         }
 
-        // Stroke bands
-        if( $this->bands!= null ) {
-            for($i=0; $i < count($this->bands); ++$i) {
-                // Stroke all bands that asks to be in the foreground
-                if( $this->bands[$i]->depth == DEPTH_FRONT ) {
-                    $this->bands[$i]->Stroke($this->img,$this->xscale,$this->yscale);
-                }
-            }
-        }
-
-        if( $this->y2bands!= null && $this->y2scale != null ) {
-            for($i=0; $i < count($this->y2bands); ++$i) {
-                // Stroke all bands that asks to be in the foreground
-                if( $this->y2bands[$i]->depth == DEPTH_FRONT ) {
-                    $this->y2bands[$i]->Stroke($this->img,$this->xscale,$this->y2scale);
-                }
-            }
-        }
-
-
-        // Stroke any lines added
-        if( $this->lines != null ) {
-            for($i=0; $i < count($this->lines); ++$i) {
-                $this->lines[$i]->Stroke($this->img,$this->xscale,$this->yscale);
-                $this->lines[$i]->DoLegend($this);
-            }
-        }
-
-        if( $this->y2lines != null && $this->y2scale != null ) {
-            for($i=0; $i < count($this->y2lines); ++$i) {
-                $this->y2lines[$i]->Stroke($this->img,$this->xscale,$this->y2scale);
-                $this->y2lines[$i]->DoLegend($this);
-            }
-        }
+        // Stroke colored bands
+        $this->StrokeBands(DEPTH_FRONT,$_csim);
 
         // Finally draw the axis again since some plots may have nagged
         // the axis in the edges.
@@ -2378,6 +2512,19 @@ class Graph {
         return $img;
     }
 
+    function StrokePlotGrad() {
+        if( $this->plot_gradtype < 0  )
+            return;
+            
+        $grad = new Gradient($this->img);
+        $xl = $this->img->left_margin;
+        $yt = $this->img->top_margin;
+        $xr = $xl + $this->img->plotwidth+1 ;
+        $yb = $yt + $this->img->plotheight ;
+        $grad->FilledRectangle($xl,$yt,$xr,$yb,$this->plot_gradfrom,$this->plot_gradto,$this->plot_gradtype);
+
+    }
+
     function StrokeBackgroundGrad() {
         if( $this->bkg_gradtype < 0  )
             return;
@@ -2450,17 +2597,17 @@ class Graph {
                     $aa = $this->img->SetAngle(0);
                     $adj = ($this->img->height - $this->img->width)/2;
                     $this->img->CopyMerge($bkgimg,
-                    $this->img->bottom_margin-$adj,$this->img->left_margin+$adj,
-                    0,0,
-                    $this->img->plotheight+1,$this->img->plotwidth,
-                    $bw,$bh,$this->background_image_mix);
+                        $this->img->bottom_margin-$adj,$this->img->left_margin+$adj,
+                        0,0,
+                        $this->img->plotheight+1,$this->img->plotwidth,
+                        $bw,$bh,$this->background_image_mix);
                 }
                 else {
                     $this->FillPlotArea();
                     $this->img->CopyMerge($bkgimg,
-                    $this->img->left_margin,$this->img->top_margin,
-                    0,0,$this->img->plotwidth+1,$this->img->plotheight,
-                    $bw,$bh,$this->background_image_mix);
+                        $this->img->left_margin,$this->img->top_margin+1,
+                        0,0,$this->img->plotwidth+1,$this->img->plotheight,
+                        $bw,$bh,$this->background_image_mix);
                 }
                 break;
             case BGIMG_FILLFRAME: // Fill the whole area from upper left corner, resize to just fit
@@ -2552,7 +2699,7 @@ class Graph {
         }
 
         $this->img->SetColor($this->margin_color);
-        // $this->img->FilledRectangle(0,0,$this->img->width-1-$hadj,$this->img->height-1-$vadj);
+        $this->img->FilledRectangle(0,0,$this->img->width-1-$hadj,$this->img->height-1-$vadj);
 
         $this->img->FilledRectangle(0,0,$this->img->width-1-$hadj,$this->img->top_margin);
         $this->img->FilledRectangle(0,$this->img->top_margin,$this->img->left_margin,$this->img->height-1-$hadj);
@@ -2593,10 +2740,11 @@ class Graph {
             $aa = $this->img->SetAngle(0);
             $this->StrokeFrame();
             $aa = $this->img->SetAngle($aa);
-            $this->StrokeBackgroundGrad();
+            $this->StrokeBackgroundGrad(); 
             if( $this->bkg_gradtype < 0 || ($this->bkg_gradtype > 0 && $this->bkg_gradstyle==BGRAD_MARGIN) ) {
                 $this->FillPlotArea();
             }
+            $this->StrokePlotGrad();
         }
     }
 
@@ -2936,6 +3084,79 @@ class Graph {
         return array($min,$max);
     }
 
+    function hasLinePlotAndBarPlot() {
+        $has_line = false;
+        $has_bar  = false;
+
+        foreach ($this->plots as $plot) {
+            if ($plot instanceof LinePlot) {
+                $has_line = true;
+            }
+            if ($plot instanceof BarPlot) {
+                $has_bar = true;
+            }
+        }
+
+        if ($has_line && $has_bar) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function SetTheme($graph_theme) {
+
+        if (!($this instanceof PieGraph)) {
+            if (!$this->isAfterSetScale) {
+                JpGraphError::RaiseL(25133);//('Use Graph::SetTheme() after Graph::SetScale().');
+            }
+        }
+
+        if ($this->graph_theme) {
+            $this->ClearTheme();
+        }
+        $this->graph_theme = $graph_theme;
+        $this->graph_theme->ApplyGraph($this);
+    }
+
+    function ClearTheme() {
+        $this->graph_theme = null;
+
+        $this->isRunningClear = true;
+
+        $this->__construct(
+                $this->inputValues['aWidth'],
+                $this->inputValues['aHeight'],
+                $this->inputValues['aCachedName'],
+                $this->inputValues['aTimeout'],
+                $this->inputValues['aInline']
+            );
+ 
+        if (!($this instanceof PieGraph)) {
+            if ($this->isAfterSetScale) {
+                $this->SetScale(
+                        $this->inputValues['aAxisType'],
+                        $this->inputValues['aYMin'],
+                        $this->inputValues['aYMax'],
+                        $this->inputValues['aXMin'],
+                        $this->inputValues['aXMax']
+                    );       
+            }
+        }
+
+        $this->isRunningClear = false;
+    }
+
+    function SetSupersampling($do = false, $scale = 2) {
+        if ($do) {
+            define('SUPERSAMPLING_SCALE', $scale);
+           // $this->img->scale = $scale;
+        } else {
+            define('SUPERSAMPLING_SCALE', 1);
+            //$this->img->scale = 0;
+        }
+    }
+
 } // Class
 
 //===================================================
@@ -2943,7 +3164,7 @@ class Graph {
 // Description: Holds properties for a line
 //===================================================
 class LineProperty {
-    public $iWeight=1, $iColor='black', $iStyle='solid', $iShow=true;
+    public $iWeight=1, $iColor='black', $iStyle='solid', $iShow=false;
 
     function __construct($aWeight=1,$aColor='black',$aStyle='solid') {
         $this->iWeight = $aWeight;
@@ -3296,9 +3517,9 @@ class SuperScriptText extends Text {
 class Grid {
     protected $img;
     protected $scale;
-    protected $grid_color='#DDDDDD',$grid_mincolor='#DDDDDD';
-    protected $type='solid';
-    protected $show=false, $showMinor=false,$weight=1;
+    protected $majorcolor='#CCCCCC',$minorcolor='#DDDDDD';
+    protected $majortype='solid',$minortype='solid';
+    protected $show=false, $showMinor=false,$majorweight=1,$minorweight=1;
     protected $fill=false,$fillcolor=array('#EFEFEF','#BBCCFF');
 
     function __construct($aAxis) {
@@ -3307,20 +3528,26 @@ class Grid {
     }
 
     function SetColor($aMajColor,$aMinColor=false) {
-        $this->grid_color=$aMajColor;
+        $this->majorcolor=$aMajColor;
         if( $aMinColor === false ) {
             $aMinColor = $aMajColor ;
         }
-        $this->grid_mincolor = $aMinColor;
+        $this->minorcolor = $aMinColor;
     }
 
-    function SetWeight($aWeight) {
-        $this->weight=$aWeight;
+    function SetWeight($aMajorWeight,$aMinorWeight=1) {
+        $this->majorweight=$aMajorWeight;
+        $this->minorweight=$aMinorWeight;
     }
 
     // Specify if grid should be dashed, dotted or solid
-    function SetLineStyle($aType) {
-        $this->type = $aType;
+    function SetLineStyle($aMajorType,$aMinorType='solid') {
+        $this->majortype = $aMajorType;
+        $this->minortype = $aMinorType;
+    }
+
+    function SetStyle($aMajorType,$aMinorType='solid') {
+        $this->SetLineStyle($aMajorType,$aMinorType);
     }
 
     // Decide if both major and minor grid should be displayed
@@ -3337,21 +3564,18 @@ class Grid {
     // Display the grid
     function Stroke() {
         if( $this->showMinor && !$this->scale->textscale ) {
-            $tmp = $this->grid_color;
-            $this->grid_color = $this->grid_mincolor;
-            $this->DoStroke($this->scale->ticks->ticks_pos);
-            $this->grid_color = $tmp;
-            $this->DoStroke($this->scale->ticks->maj_ticks_pos);
+            $this->DoStroke($this->scale->ticks->ticks_pos,$this->minortype,$this->minorcolor,$this->minorweight);
+            $this->DoStroke($this->scale->ticks->maj_ticks_pos,$this->majortype,$this->majorcolor,$this->majorweight);
         }
         else {
-            $this->DoStroke($this->scale->ticks->maj_ticks_pos);
+            $this->DoStroke($this->scale->ticks->maj_ticks_pos,$this->majortype,$this->majorcolor,$this->majorweight);
         }
     }
 
     //--------------
     // Private methods
     // Draw the grid
-    function DoStroke($aTicksPos) {
+    function DoStroke($aTicksPos,$aType,$aColor,$aWeight) {
         if( !$this->show ) return;
         $nbrgrids = count($aTicksPos);
 
@@ -3371,11 +3595,11 @@ class Grid {
                 }
             }
 
-            $this->img->SetColor($this->grid_color);
-            $this->img->SetLineWeight($this->weight);
+            $this->img->SetColor($aColor);
+            $this->img->SetLineWeight($aWeight);
 
             // Draw grid lines
-            switch( $this->type ) {
+            switch( $aType ) {
                 case 'solid':  $style = LINESTYLE_SOLID; break;
                 case 'dotted': $style = LINESTYLE_DOTTED; break;
                 case 'dashed': $style = LINESTYLE_DASHED; break;
@@ -3386,7 +3610,7 @@ class Grid {
 
             for($i=0; $i < $nbrgrids; ++$i) {
                 $y=$aTicksPos[$i];
-                $this->img->StyleLine($xl,$y,$xr,$y,$style);
+                $this->img->StyleLine($xl,$y,$xr,$y,$style,true);
             }
         }
         elseif( $this->scale->type == 'x' ) {
@@ -3406,8 +3630,8 @@ class Grid {
                 }
             }
 
-            $this->img->SetColor($this->grid_color);
-            $this->img->SetLineWeight($this->weight);
+            $this->img->SetColor($aColor);
+            $this->img->SetLineWeight($aWeight);
 
             // We must also test for limit since we might have
             // an offset and the number of ticks is calculated with
@@ -3416,10 +3640,10 @@ class Grid {
             $i=0;
             $x=$aTicksPos[$i];
             while( $i<count($aTicksPos) && ($x=$aTicksPos[$i]) <= $limit ) {
-                if    ( $this->type == 'solid' )      $this->img->Line($x,$yl,$x,$yu);
-                elseif( $this->type == 'dotted' )     $this->img->DashedLine($x,$yl,$x,$yu,1,6);
-                elseif( $this->type == 'dashed' )     $this->img->DashedLine($x,$yl,$x,$yu,2,4);
-                elseif( $this->type == 'longdashed' ) $this->img->DashedLine($x,$yl,$x,$yu,8,6);
+                if    ( $aType == 'solid' )      $this->img->Line($x,$yl,$x,$yu);
+                elseif( $aType == 'dotted' )     $this->img->DashedLineForGrid($x,$yl,$x,$yu,1,6);
+                elseif( $aType == 'dashed' )     $this->img->DashedLineForGrid($x,$yl,$x,$yu,2,4);
+                elseif( $aType == 'longdashed' ) $this->img->DashedLineForGrid($x,$yl,$x,$yu,8,6);
                 ++$i;
             }
         }
@@ -3443,7 +3667,7 @@ class AxisPrototype {
     public $img=null;
     public $hide=false,$hide_labels=false;
     public $title=null;
-    public $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12,$label_angle=0;
+    public $font_family=FF_DEFAULT,$font_style=FS_NORMAL,$font_size=8,$label_angle=0;
     public $tick_step=1;
     public $pos = false;
     public $ticks_label = array();
@@ -3456,7 +3680,7 @@ class AxisPrototype {
     // should be labeled.
     protected $labelPos=0;   // Which side of the axis should the labels be?
     protected $title_adjust,$title_margin,$title_side=SIDE_LEFT;
-    protected $tick_label_margin=7;
+    protected $tick_label_margin=5;
     protected $label_halign = '',$label_valign = '', $label_para_align='left';
     protected $hide_line=false;
     protected $iDeltaAbsPos=0;
@@ -3478,7 +3702,7 @@ class AxisPrototype {
             $this->title_margin = 5;
             $this->title_adjust = 'high';
             $this->title->SetOrientation(0);
-            $this->tick_label_margin=7;
+            $this->tick_label_margin=5;
             $this->labelPos=SIDE_DOWN;
             $this->title_side=SIDE_DOWN;
         }
@@ -3683,13 +3907,21 @@ class Axis extends AxisPrototype {
                 $pos=$aOtherAxisScale->Translate(0);
             }
         }
+
         $pos += $this->iDeltaAbsPos;
         $this->img->SetLineWeight($this->weight);
         $this->img->SetColor($this->color);
         $this->img->SetFont($this->font_family,$this->font_style,$this->font_size);
+
         if( $this->scale->type == "x" ) {
             if( !$this->hide_line ) {
-                $this->img->FilledRectangle($this->img->left_margin,$pos,$this->img->width-$this->img->right_margin,$pos+$this->weight-1);
+                // Stroke X-axis
+                $this->img->FilledRectangle(
+                    $this->img->left_margin,
+                    $pos,
+                    $this->img->width - $this->img->right_margin,
+                    $pos + $this->weight-1
+                );
             }
             if( $this->title_side == SIDE_DOWN ) {
                 $y = $pos + $this->img->GetFontHeight() + $this->title_margin + $this->title->margin;
@@ -3717,8 +3949,15 @@ class Axis extends AxisPrototype {
             // Add line weight to the height of the axis since
             // the x-axis could have a width>1 and we want the axis to fit nicely together.
             if( !$this->hide_line ) {
-                $this->img->FilledRectangle($pos-$this->weight+1,$this->img->top_margin,$pos,$this->img->height-$this->img->bottom_margin+$this->weight-1);
+                // Stroke Y-axis
+                $this->img->FilledRectangle(
+                    $pos - $this->weight + 1, 
+                    $this->img->top_margin,
+                    $pos,
+                    $this->img->height - $this->img->bottom_margin + $this->weight - 1
+                );
             }
+
             $x=$pos ;
             if( $this->title_side == SIDE_LEFT ) {
                 $x -= $this->title_margin;
@@ -3766,11 +4005,11 @@ class Axis extends AxisPrototype {
     function StrokeLabels($aPos,$aMinor=false,$aAbsLabel=false) {
 
         if( is_array($this->label_color) && count($this->label_color) > 3 ) {
-                $this->ticks_label_colors = $this->label_color;
-                $this->img->SetColor($this->label_color[0]);
+            $this->ticks_label_colors = $this->label_color;
+            $this->img->SetColor($this->label_color[0]);
         }
         else {
-                        $this->img->SetColor($this->label_color);
+            $this->img->SetColor($this->label_color);
         }
         $this->img->SetFont($this->font_family,$this->font_style,$this->font_size);
         $yoff=$this->img->GetFontHeight()/2;
@@ -3806,7 +4045,7 @@ class Axis extends AxisPrototype {
 
                 // Set specific label color if specified
                 if( $ncolor > 0 ) {
-                          $this->img->SetColor($this->ticks_label_colors[$i % $ncolor]);
+                    $this->img->SetColor($this->ticks_label_colors[$i % $ncolor]);
                 }
 
                 // If the label has been specified use that and in other case
@@ -3827,8 +4066,14 @@ class Axis extends AxisPrototype {
                     else {
                         $label=$this->scale->ticks->maj_ticks_label[$i];
                     }
-                    if( $this->scale->textscale && $this->scale->ticks->label_formfunc == '' ) {
+
+                    // We number the scale from 1 and not from 0 so increase by one
+                    if( $this->scale->textscale && 
+                        $this->scale->ticks->label_formfunc == '' &&
+                        ! $this->scale->ticks->HaveManualLabels() ) {
+
                         ++$label;
+                        
                     }
                 }
 
@@ -3851,7 +4096,7 @@ class Axis extends AxisPrototype {
                                 $this->img->SetTextAlign($this->label_halign,$this->label_valign);
                             }
                         }
-                        $this->img->StrokeText($tpos,$aPos+$this->tick_label_margin+1,$label,
+                        $this->img->StrokeText($tpos,$aPos+$this->tick_label_margin,$label,
                         $this->label_angle,$this->label_para_align);
                     }
                     else {
@@ -4086,6 +4331,10 @@ class LinearTicks extends Ticks {
         $this->iManualTickLabels = $aLabels;
     }
 
+    function HaveManualLabels() {
+        return count($this->iManualTickLabels) > 0;
+    }
+
     // Specify all the tick positions manually and possible also the exact labels
     function _doManualTickPos($aScale) {
         $n=count($this->iManualTickPos);
@@ -4200,7 +4449,11 @@ class LinearTicks extends Ticks {
                 }
             }
             elseif( $aScale->type == "y" ) {
+                //@todo  s=2:20,12  s=1:50,6  $this->major_step:$nbr
+                // abs_point,limit s=1:270,80 s=2:540,160
+             // $this->major_step = 50;
                 $nbrmajticks=round(($aScale->GetMaxVal()-$aScale->GetMinVal())/$this->major_step)+1;
+//                $step = 5;
                 while( round($abs_pos) >= $limit ) {
                     $this->ticks_pos[$i] = round($abs_pos);
                     $this->ticks_label[$i]=$label;
@@ -4241,7 +4494,12 @@ class LinearTicks extends Ticks {
 
         if( $this->label_formfunc != '' ) {
             $f=$this->label_formfunc;
-            $l = call_user_func($f,$aVal);
+            if( $this->label_formatstr == '' ) {
+                $l = call_user_func($f,$aVal);
+            }
+            else {
+                $l = sprintf($this->label_formatstr, call_user_func($f,$aVal));
+            }
         }
         elseif( $this->label_formatstr != '' || $this->label_dateformatstr != '' ) {
             if( $this->label_usedateformat ) {
@@ -4411,11 +4669,12 @@ class LinearScale {
     public $name = 'lin';
     public $auto_ticks=false; // When using manual scale should the ticks be automatically set?
     public $world_abs_size; // Plot area size in pixels (Needed public in jpgraph_radar.php)
-    public $world_size; // Plot area size in world coordinates
     public $intscale=false; // Restrict autoscale to integers
     protected $autoscale_min=false; // Forced minimum value, auto determine max
     protected $autoscale_max=false; // Forced maximum value, auto determine min
     private $gracetop=0,$gracebottom=0;
+
+    private $_world_size; // Plot area size in world coordinates
 
     function __construct($aMin=0,$aMax=0,$aType='y') {
         assert($aType=='x' || $aType=='y' );
@@ -4491,7 +4750,7 @@ class LinearScale {
             return 0;
         }
         else {
-            return $this->off+($aCoord - $this->scale[0]) * $this->scale_factor;
+            return round($this->off+($aCoord - $this->scale[0]) * $this->scale_factor);
         }
     }
 
@@ -4632,6 +4891,11 @@ class LinearScale {
     // Calculate autoscale. Used if user hasn't given a scale and ticks
     // $maxsteps is the maximum number of major tickmarks allowed.
     function AutoScale($img,$min,$max,$maxsteps,$majend=true) {
+
+        if( !is_numeric($min) || !is_numeric($max) ) {
+            JpGraphError::Raise(25044);
+        }
+
         if( $this->intscale ) {
             $this->IntAutoScale($img,$min,$max,$maxsteps,$majend);
             return;
@@ -4770,7 +5034,7 @@ class LinearScale {
         if( $this->world_size<=0 ) {
             // This should never ever happen !!
             JpGraphError::RaiseL(25074);
-            //("You have unfortunately stumbled upon a bug in JpGraph. It seems like the scale range is ".$this->world_size." [for ".$this->type." scale] <br> Please report Bug #01 to jpgraph@aditus.nu and include the script that gave this error. This problem could potentially be caused by trying to use \"illegal\" values in the input data arrays (like trying to send in strings or only NULL values) which causes the autoscaling to fail.");
+            //("You have unfortunately stumbled upon a bug in JpGraph. It seems like the scale range is ".$this->world_size." [for ".$this->type." scale] <br> Please report Bug #01 to info@jpgraph.net and include the script that gave this error. This problem could potentially be caused by trying to use \"illegal\" values in the input data arrays (like trying to send in strings or only NULL values) which causes the autoscaling to fail.");
         }
 
         // scale_factor = number of pixels per world unit
@@ -4949,6 +5213,20 @@ class LinearScale {
         }
         return 3; // $c smallest
     }
+
+    function __get($name) {
+        $variable_name = '_' . $name; 
+
+        if (isset($this->$variable_name)) {
+            return $this->$variable_name * SUPERSAMPLING_SCALE;
+        } else {
+            JpGraphError::RaiseL('25132', $name);
+        } 
+    }
+
+    function __set($name, $value) {
+        $this->{'_'.$name} = $value;
+    }
 } // Class
 
 
@@ -4961,7 +5239,7 @@ class DisplayValue {
     public $show=false;
     public $valign='',$halign='center';
     public $format='%.1f',$negformat='';
-    private $ff=FF_FONT1,$fs=FS_NORMAL,$fsize=10;
+    private $ff=FF_DEFAULT,$fs=FS_NORMAL,$fsize=8;
     private $iFormCallback='';
     private $angle=0;
     private $color='navy',$negcolor='';
@@ -4981,7 +5259,7 @@ class DisplayValue {
         $this->negcolor = $aNegcolor;
     }
 
-    function SetFont($aFontFamily,$aFontStyle=FS_NORMAL,$aFontSize=10) {
+    function SetFont($aFontFamily,$aFontStyle=FS_NORMAL,$aFontSize=8) {
         $this->ff=$aFontFamily;
         $this->fs=$aFontStyle;
         $this->fsize=$aFontSize;
@@ -5106,11 +5384,21 @@ class Plot {
     protected $weight=1;
     protected $center=false;
 
+    protected $inputValues;
+    protected $isRunningClear = false;
+
     function __construct($aDatay,$aDatax=false) {
         $this->numpoints = count($aDatay);
         if( $this->numpoints==0 ) {
             JpGraphError::RaiseL(25121);//("Empty input data array specified for plot. Must have at least one data point.");
         }
+
+        if (!$this->isRunningClear) {
+            $this->inputValues = array();
+            $this->inputValues['aDatay'] = $aDatay;
+            $this->inputValues['aDatax'] = $aDatax;
+        }
+
         $this->coords[0]=$aDatay;
         if( is_array($aDatax) ) {
             $this->coords[1]=$aDatax;
@@ -5274,6 +5562,12 @@ class Plot {
         if( $this->legend != '' ) {
             $aGraph->legend->Add($this->legend,$this->color,'',0,$this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);
         }
+    }
+
+    function Clear() {
+        $this->isRunningClear = true;
+        $this->__construct($this->inputValues['aDatay'], $this->inputValues['aDatax']);
+        $this->isRunningClear = false;
     }
 
 } // Class

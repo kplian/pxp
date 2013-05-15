@@ -31,6 +31,7 @@ DECLARE
 	v_resp				varchar;
     
     v_filtro            varchar;
+    v_tramite 			record;
 			    
 BEGIN
 
@@ -159,6 +160,38 @@ BEGIN
 			return v_consulta;
 
 		end;
+    /*********************************    
+ 	#TRANSACCION:  'WF_TRAWF_SEL'
+ 	#DESCRIPCION:	Consulta flujos de tramite
+ 	#AUTOR:		Gonzalo Sarmiento Sejas	
+ 	#FECHA:		02-05-2013
+	***********************************/
+
+	elsif(p_transaccion='WF_TRAWF_SEL')then
+    begin 
+		select pwf.id_proceso_wf, pwf.id_estado_wf_prev, pwf.id_tipo_proceso into v_tramite
+		from wf.tproceso_wf pwf
+		where pwf.nro_tramite=v_parametros.nro_tramite;
+        
+        --Definicion de la respuesta         	
+        v_consulta:='select ewf.fecha_reg, 
+                      te.nombre_estado as estado,
+                      tp.nombre as proceso,
+                      COALESCE(fun.desc_funcionario1,''-'') as func,
+                      COALESCE(dep.nombre,''-'') as depto
+                      from wf.testado_wf ewf
+                      INNER JOIN wf.tproceso_wf pwf on pwf.id_proceso_wf=ewf.id_proceso_wf
+                      INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso=pwf.id_tipo_proceso
+                      INNER JOIN wf.ttipo_estado te on te.id_tipo_estado=ewf.id_tipo_estado
+                      LEFT JOIN orga.vfuncionario fun on fun.id_funcionario=ewf.id_funcionario
+                      LEFT JOIN orga.tdepto dep on dep.id_depto=ewf.id_depto
+                      where ewf.id_proceso_wf='||v_tramite.id_proceso_wf||'
+                      order by ewf.id_estado_wf';
+		raise notice '%', v_consulta;
+        --Devuelve la respuesta
+        return v_consulta;
+
+	end;
 					
 	else
 					     
