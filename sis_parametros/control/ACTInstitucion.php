@@ -13,6 +13,9 @@ class ACTInstitucion extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_institucion');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		if($this->objParam->getParametro('id_institucion')!=''){
+            $this->objParam->addFiltro("instit.id_institucion = " . $this->objParam->getParametro('id_institucion'));    
+        }
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam, $this);
 			$this->res = $this->objReporte->generarReporteListado('MODInstitucion','listarInstitucion');

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_validar_usuario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -124,7 +122,7 @@ BEGIN
               FROM  param.talarma ala
               LEFT JOIN orga.tfuncionario fun 
                 on fun.id_funcionario = ala.id_funcionario 
-              and ala.estado_reg = 'activo'
+              and ala.estado_reg = 'activo' and fun.estado_reg = 'activo'
               WHERE (    fun.id_persona = v_id_persona 
                       or ala.id_usuario = v_id_usuario)
               GROUP BY ala.id_funcionario, id_alarma;
@@ -139,7 +137,7 @@ BEGIN
               IF(v_id_funcionario is null) THEN
                     SELECT id_funcionario into  v_id_funcionario
                     FROM orga.tfuncionario fun 
-                    WHERE fun.id_persona = v_id_persona;
+                    WHERE fun.id_persona = v_id_persona and fun.estado_reg = 'activo';
               END IF;
               
               

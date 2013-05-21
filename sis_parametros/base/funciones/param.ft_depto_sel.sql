@@ -51,40 +51,88 @@ BEGIN
 
 
      if(par_transaccion='PM_DEPPTO_SEL')then
+     	BEGIN
+               v_consulta:='SELECT 
+                            DEPPTO.id_depto,
+                            DEPPTO.codigo,
+                            DEPPTO.nombre,
+                            DEPPTO.nombre_corto,
+                            DEPPTO.id_subsistema,
+                            DEPPTO.estado_reg,
+                            DEPPTO.fecha_reg,
+                            DEPPTO.id_usuario_reg,
+                            DEPPTO.fecha_mod,
+                            DEPPTO.id_usuario_mod,
+                            PERREG.nombre_completo1 as usureg,
+                            PERMOD.nombre_completo1 as usumod,
+                            SUBSIS.codigo||'' - ''||SUBSIS.nombre as desc_subsistema
+                            FROM param.tdepto DEPPTO
+                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
+                            INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
+                            INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
+                            LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
+                            LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                            WHERE ';
+               
+              
+               v_consulta:=v_consulta||v_parametros.filtro;
+               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+               raise notice '%',v_consulta;
+               return v_consulta;
+
+
+         END;
+
+ /*******************************
+ #TRANSACCION:  PM_DEPPTO_CONT
+ #DESCRIPCION:	cuenta la cantidad de departamentos
+ #AUTOR:		MZM	
+ #FECHA:		03-06-2011
+ #AUTOR_MOD:     RAC
+ #DESCRIPCION_MOD  se aumenta el filtro de id_subsistema cuando dea distinto de null	
+ #FECHA:		15-10-2011
+***********************************/
+
+     elsif(par_transaccion='PM_DEPPTO_CONT')then
+        BEGIN
+                  
+               v_consulta:='SELECT
+                                  count(DEPPTO.id_depto)
+                            FROM param.tdepto DEPPTO
+                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
+                            INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
+                            INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
+                            LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
+                            LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                            WHERE ';
+               v_consulta:=v_consulta||v_parametros.filtro;
+               
+                raise notice '%',v_consulta;
+               return v_consulta;
+         END;
+/*******************************
+ #TRANSACCION:  PM_DEPUSUCOMB_SEL
+ #DESCRIPCION:	Listado de departamento por usuario para combos
+ #AUTOR:		JRR	
+ #FECHA:		03-05-2013
+***********************************/
+
+
+     elsif(par_transaccion='PM_DEPUSUCOMB_SEL')then
 
           --consulta:=';
           
           
           BEGIN
           v_filadd = '';
-          IF (pxp.f_existe_parametro(par_tabla,'id_subsistema')) THEN
-          v_filadd = ' (DEPPTO.id_subsistema = ' ||v_parametros.id_subsistema||') and ';
-          
-          END IF;
-          
           IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
-          v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          	v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
           
           END IF;
-          
-          
-          /*IF   par_administrador != 1 THEN
-          
-            select  
-                   pxp.aggarray(depu.id_depto)
-                into 
-                   va_id_depto
-               from param.tdepto_usuario depu 
-               where depu.id_usuario =  par_id_usuario; 
-          
-               v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
-     
-          END IF;*/
-          
-          
-          
-          
-          
+                    
+          IF   par_administrador != 1 THEN
+          		v_filadd='(DEPPTO.id_depto  in ('|| param.f_get_lista_deptos_x_usuario(par_id_usuario, v_parametros.codigo_subsistema)  ||')) and';
+          END IF;         
 
                v_consulta:='SELECT 
                             DEPPTO.id_depto,
@@ -118,43 +166,23 @@ BEGIN
          END;
 
  /*******************************
- #TRANSACCION:  PM_DEPPTO_CONT
- #DESCRIPCION:	cuenta la cantidad de departamentos
- #AUTOR:		MZM	
- #FECHA:		03-06-2011
- #AUTOR_MOD:     RAC
- #DESCRIPCION_MOD  se aumenta el filtro de id_subsistema cuando dea distinto de null	
- #FECHA:		15-10-2011
+ #TRANSACCION:  PM_DEPUSUCOMB_CONT
+ #DESCRIPCION:	cuenta la cantidad de departamentos por usuario para combos
+ #AUTOR:		JRR
+ #FECHA:		03-05-2013
 ***********************************/
 
-     elsif(par_transaccion='PM_DEPPTO_CONT')then
+     elsif(par_transaccion='PM_DEPUSUCOMB_CONT')then
         BEGIN
-          
           v_filadd = '';
-          IF (pxp.f_existe_parametro(par_tabla,'id_subsistema')) THEN
-          v_filadd = ' (DEPPTO.id_subsistema = ' ||v_parametros.id_subsistema||') and ';
-          
-          END IF;
-          
           IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
-          v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          	v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
           
           END IF;
-          
-          
-          /*IF   par_administrador != 1 THEN
-          
-                  select  
-                     pxp.aggarray(depu.id_depto)
-                  into 
-                     va_id_depto
-                 from param.tdepto_usuario depu 
-                 where depu.id_usuario =  par_id_usuario; 
-            
-              v_filadd='(DEPPTO.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) and';
-          
-          END IF;*/
-          
+                    
+          IF   par_administrador != 1 THEN
+          		v_filadd='(DEPPTO.id_depto  in ('|| param.f_get_lista_deptos_x_usuario(par_id_usuario, v_parametros.codigo_subsistema)  ||')) and';
+          END IF;  
           
                v_consulta:='SELECT
                                   count(DEPPTO.id_depto)

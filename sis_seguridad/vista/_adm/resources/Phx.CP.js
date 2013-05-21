@@ -242,7 +242,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			 var p = this.add(new Ext.Panel({
 	                id: id,
 	                layout:'fit',
-	                //layout: 'border',
 	                title:title,
 	                closable: true,
 	                cclass : cls,
@@ -262,11 +261,10 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 				  				     //trae la clase padre
 				  				     //en el callback ejecuta la rerencia 
 				  				     //e instanca la clase hijo
-				  				      var wid='4rn'
-				  				     //console.log('IDEXTRA',wid);
-				  				     //Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
-				  				     //Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
 				  				     
+				  				    var wid= Ext.id();
+				  				    Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
+				  				    
 				  				  
 				  				     var el = Ext.get(wid); // Get Ext.Element object
 			                         var u = el.getUpdater();
@@ -870,6 +868,50 @@ Phx.CP=function(){
                 }); 
 		},
 		
+		sleep:function (milliseconds) {
+		  var start = new Date().getTime();
+		  for (var i = 0; i>-1; i++) {
+		    if ((new Date().getTime() - start) > milliseconds){
+		      break;
+		    }
+		  }
+		},
+		pressChar:function (character,cmpEl){
+       
+          // Create the key press event.
+          var pressEvent = document.createEvent('KeyboardEvent');
+          pressEvent.initKeyEvent("keypress", true, true, window, 
+                                    false, false, false, false, 
+                                    0, character.charCodeAt(0));
+         cmpEl.dispatchEvent(pressEvent); // Press the key.
+      
+       },
+       
+       keyEvent:function(character,evento){
+       	var keyboardEvent = document.createEvent("KeyboardEvent");
+		var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+		
+		
+		keyboardEvent[initMethod](
+		                    evento, // event type : keydown, keyup, keypress
+		                    true, // bubbles
+		                    true, // cancelable
+		                    window, // viewArg: should be window
+		                    false, // ctrlKeyArg
+		                    false, // altKeyArg
+		                    false, // shiftKeyArg
+		                    false, // metaKeyArg
+		                    character.charCodeAt(0), // keyCodeArg : unsigned long the virtual key code, else 0
+		                    character.charCodeAt(0)// charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+		);
+		
+		console.log('charcode',character.charCodeAt(0))
+		//document.dispatchEvent(keyboardEvent);
+       	return keyboardEvent;
+       	
+       },
+       
+      
 		
 		//loadMask: new Ext.LoadMask(Ext.get('3rn'), {msg:"Espere por favor ...",modal:true,removeMask :true}),
 		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),
@@ -968,10 +1010,14 @@ Phx.CP=function(){
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
 			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
 		    if(Phx.vista[mycls].requireclase){
+		    	
+		    
   				     //trae la clase padre
-  				     //en el callback ejecuta la rerencia 
+  				     //en el callback ejecuta la herencia 
   				     //e instanca la clase hijo
-  				     var owid='4rn'
+  				      var owid= Ext.id();
+				  	  Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
+				  				    
   				     var el = Ext.get(owid); // este div esta quemado en el codigo html
                      var u = el.getUpdater();
                      var inter = Phx.vista[mycls];
@@ -994,7 +1040,7 @@ Phx.CP=function(){
 		    	 // Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
-		    	Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
+				Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 		    }  
 		},
 		

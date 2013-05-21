@@ -213,7 +213,7 @@ Phx.vista.monitor_sistema=function(config){
 			
 		},
 		type:'TextField',
-		filters:{pfiltro:'proce.descripcion',
+		filters:{pfiltro:'descripcion_transaccion',
 				type:'string'},
 		grid:true,
 		form:false

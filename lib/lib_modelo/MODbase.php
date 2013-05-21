@@ -188,7 +188,56 @@ class MODbase extends driver
 	}
 	
 	
-	
+	/**
+	 * Nombre funcion:	setFile
+	 * Proposito:		Anade un archivo a la carpeta de uploaded files previa validacion
+	 * Fecha creacion:	08/05/2013
+	 * @param $nombre El nombre del campo que viene como parametro
+	 * @param $variable_id El nombre del campo que viene como id del archivo a subir
+	 * @param $blank  Si el parametro puede llegar vacio o no
+	 * @param $tamano Tamano maximo del archivo
+	 * @param $tipo_archivo array conteniendo los tipos de archivos permitidos
+	 */
+	function setFile($nombre,$variable_id,$blank=true,$tamano='',$tipo_archivo=null,$folder = ''){
+		//obtenemos el tipo de la base de datos
+		
+		$this->validacion->validar($nombre,$this->arregloFiles[$nombre],'bytea',$blank,$tamano,null,$tipo_archivo);
+		$upload_folder =  './../../../uploaded_files/' . $this->objParam->getSistema() . '/' .
+								 $this->objParam->getClase() . '/' ;
+		if ($folder != '') {
+			$upload_folder .= $folder . '/';
+		}
+		//nombre del archivo enviado por el cliente
+		$filename = $this->arregloFiles[$nombre]['name'];
+		//extension del archivo
+		$fileexte = substr($filename, strrpos($filename, '.')+1);
+		//nombre con el que se guarda en el servidor
+		$file_server_name = md5($this->arreglo[$variable_id] . $_SESSION["_SEMILLA"]) . ".$fileexte";
+		
+		if (!file_exists($upload_folder)) {
+			//echo $upload_folder;
+			//exit;
+			if (!mkdir($upload_folder,0744,true)) {
+				throw new Exception("No se puede crear el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
+									$this->objParam->getClase() . " para escribir el archivo " . $filename);
+			}	
+		} else {
+			if (!is_writable($upload_folder)) {
+				throw new Exception("No tiene permisos o no existe el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
+									$this->objParam->getClase() . " para escribir el archivo " . $filename);
+			}
+		
+		}
+			
+		// Passed verification
+	    if (move_uploaded_file($this->arregloFiles[$nombre]['tmp_name'], "$upload_folder$file_server_name")) {
+	        // Success
+	        chmod("$upload_folder/$file_server_name", 0644);
+	    } else {
+	    	throw new Exception("No se puede subir el archivo " . $filename);
+	    }				
+
+	}
 
 
 	function generaRespuestaParametros(){

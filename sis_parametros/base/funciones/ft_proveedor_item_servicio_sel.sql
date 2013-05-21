@@ -63,9 +63,9 @@ BEGIN
 						from param.tproveedor_item_servicio pritse
 						inner join segu.tusuario usu1 on usu1.id_usuario = pritse.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pritse.id_usuario_mod
-                                                left join param.tservicio serv on serv.id_servicio = pritse.id_servicio
-                                                left join alm.titem ite on ite.id_item = pritse.id_item
-				        where ite.estado_reg = ''activo''';
+                        left join param.tservicio serv on serv.id_servicio = pritse.id_servicio and serv.estado_reg = ''activo''
+                        left join alm.titem ite on ite.id_item = pritse.id_item and ite.estado_reg = ''activo''
+				        where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;

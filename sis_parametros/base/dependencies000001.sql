@@ -718,3 +718,59 @@ select pxp.f_insert_tprocedimiento_gui ('PM_PLT_MOD', 'PLANT', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PLT_ELI', 'PLANT', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PLT_SEL', 'PLANT', 'no');
 /***********************************F-DEP-AAO-PARAM-72-23/04/2013*****************************************/
+/***********************************I-DEP-JRR-PARAM-0-29/04/2013*****************************************/
+
+ALTER TABLE ONLY param.tdepto_ep
+    ADD CONSTRAINT fk_tpm_depto_ep__id_depto FOREIGN KEY (id_depto) 
+    REFERENCES param.tdepto(id_depto);
+     
+ALTER TABLE ONLY param.tdepto_ep
+    ADD CONSTRAINT fk_tpm_depto_ep__id_ep FOREIGN KEY (id_ep)
+    REFERENCES param.tep(id_ep);
+/***********************************F-DEP-JRR-PARAM-0-29/04/2013*****************************************/
+    
+    
+/***********************************I-DEP-RAC-PARAM-0-07/05/2013*****************************************/
+  
+  DROP VIEW param.vproveedor;
+  
+    CREATE OR REPLACE VIEW param.vproveedor(
+    id_proveedor,
+    id_persona,
+    codigo,
+    numero_sigma,
+    tipo,
+    id_institucion,
+    desc_proveedor,
+    nit,
+    id_lugar,
+    lugar,
+    pais,
+    email)
+AS
+  SELECT provee.id_proveedor,
+         provee.id_persona,
+         provee.codigo,
+         provee.numero_sigma,
+         provee.tipo,
+         provee.id_institucion,
+         pxp.f_iif(provee.id_persona IS NOT NULL,
+          person.nombre_completo1::character varying, ((instit.codigo::text ||
+           '-' ::text) || instit.nombre::text) ::character varying) AS
+            desc_proveedor,
+         provee.nit,
+         provee.id_lugar,
+         lug.nombre AS lugar,
+         param.f_obtener_padre_lugar(provee.id_lugar, 'pais' ::character varying
+         ) AS pais,
+         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
+          AS email
+  FROM param.tproveedor provee
+       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
+       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
+        provee.id_institucion
+       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
+  WHERE provee.estado_reg::text = 'activo' ::text;
+/***********************************F-DEP-RAC-PARAM-0-07/05/2013*****************************************/
+    
+    

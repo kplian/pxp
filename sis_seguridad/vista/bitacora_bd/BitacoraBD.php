@@ -95,7 +95,7 @@ Phx.vista.bitacora_bd=function(config){
 			
 		},
 		type:'TextField',
-		filters:{type:'string'},
+		filters:{pfiltro:'logg.descripcion',type:'string'},
 		grid:true,
 		form:false
 	},

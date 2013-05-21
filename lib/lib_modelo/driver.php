@@ -938,7 +938,7 @@ class driver
 					}
 					else
 					{
-						$resp_procedimiento = $this->divRespuesta(pg_last_error($link));
+						$resp_procedimiento=$this->divRespuesta(str_replace('ERROR:  ','', pg_last_error($link)));
 
 						//Existe error en la base de datos tomamamos el mensaje y el mensaje tecnico
 						$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,'Error al ejecutar la consulta',$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion_count,$this->tipo_procedimiento,$this->consulta);
@@ -1089,7 +1089,7 @@ class driver
 		$cadena = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $cadena);
 		
 		$res=json_decode($cadena,true);
-				
+					
 		$res['datos']=$res;
 		
 		if(count($res['datos'])>0)

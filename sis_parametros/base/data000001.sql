@@ -621,3 +621,10 @@ select pxp.f_insert_testructura_gui ('GQP', 'CEP');
 select pxp.f_add_catalog('PARAM','tgral__bandera','Si');
 select pxp.f_add_catalog('PARAM','tgral__bandera','No');
 /***********************************F-DAT-RCM-PARAM-00-03/05/2013*****************************************/
+/***********************************I-DAT-GSS-PARAM-00-07/05/2013*****************************************/
+
+select pxp.f_insert_tprocedimiento ('PM_DEPUSUCOMB_SEL', 'Listado de departamento por usuario para combos', 'si', '', '', 'param.ft_depto_sel');
+select pxp.f_insert_tprocedimiento ('PM_CECCOM_SEL', 'Consulta de datos de centro de costo combo', 'si', '', '', 'param.f_centro_costo_sel');
+select pxp.f_insert_tprocedimiento ('PM_CECCOM_CONT', 'Conteo de registros centro de costo combo', 'si', '', '', 'param.f_centro_costo_sel');
+
+/***********************************F-DAT-GSS-PARAM-00-07/05/2013*****************************************/
