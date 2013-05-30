@@ -674,3 +674,12 @@ CREATE UNIQUE INDEX tdepto_ep_id__id_depto_id_ep ON param.tdepto_ep
   WHERE ((estado_reg)::text = 'activo'::text);
 /***********************************F-SCP-JRR-PARAM-0-29/04/2013*****************************************/
 
+
+
+/***********************************I-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+ALTER TABLE param.tdepto_usuario
+  ADD COLUMN sw_alerta VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-RAC-PARAM-0-30/05/2013****************************************/
+

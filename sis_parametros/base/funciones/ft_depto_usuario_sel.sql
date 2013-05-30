@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_tdepto_usuario_sel (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:        Parametros Generales
@@ -57,7 +58,8 @@ BEGIN
                         usu1.cuenta as usr_reg,
                         usu2.cuenta as usr_mod   ,
                         person.nombre_completo1 as desc_usuario     ,
-                        depusu.cargo
+                        depusu.cargo,
+                        depusu.sw_alerta
                         from param.tdepto_usuario depusu 
                         inner join segu.tusuario usudep on usudep.id_usuario=depusu.id_usuario
                         inner join segu.vpersona person on person.id_persona=usudep.id_persona
@@ -123,7 +125,8 @@ EXCEPTION
             raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_tpm_proyecto_ime (OID = 304018) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

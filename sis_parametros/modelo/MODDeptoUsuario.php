@@ -34,6 +34,7 @@ class MODDeptoUsuario extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_usuario','text');
 		$this->captura('cargo','varchar');
+		$this->captura('sw_alerta','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -54,6 +55,9 @@ class MODDeptoUsuario extends MODbase{
 		$this->setParametro('id_depto','id_depto','int4');
 		$this->setParametro('id_usuario','id_usuario','int4');
 		$this->setParametro('cargo','cargo','varchar');
+		$this->setParametro('sw_alerta','sw_alerta','varchar');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -75,6 +79,7 @@ class MODDeptoUsuario extends MODbase{
 		$this->setParametro('id_depto','id_depto','int4');
 		$this->setParametro('id_usuario','id_usuario','int4');
 		$this->setParametro('cargo','cargo','varchar');
+		$this->setParametro('sw_alerta','sw_alerta','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
