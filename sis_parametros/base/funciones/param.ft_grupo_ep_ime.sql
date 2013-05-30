@@ -50,9 +50,11 @@ BEGIN
         begin
         
             if EXISTS (  select 1 from param.tgrupo_ep gep
-                         where  gep.id_ep = v_parametros.id_ep and gep.id_grupo = v_parametros.id_grupo) THEN
+                         where  ( gep.id_ep = v_parametros.id_ep or (id_ep is NULL  and  v_parametros.id_ep is null) ) 
+                             and  (gep.id_uo = v_parametros.id_uo or (id_uo is NULL  and  v_parametros.id_uo is null) ) 
+                             and gep.id_grupo = v_parametros.id_grupo) THEN
                  
-               raise exception 'La EP no puede duplicarce';
+               raise exception 'La EP/UO no puede duplicarce';
                       
             END IF;
         
@@ -65,7 +67,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            id_uo
           	) values(
 			'activo',
 			v_parametros.id_grupo,
@@ -73,7 +76,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.id_uo
 							
 			)RETURNING id_grupo_ep into v_id_grupo_ep;
 			
@@ -96,10 +100,15 @@ BEGIN
 	elsif(p_transaccion='PM_GQP_MOD')then
 
 		begin
-            if EXISTS (  select 1 from param.tgrupo_ep gep
-                         where gep.id_grupo_ep!=v_parametros.id_grupo_ep and   gep.id_ep = v_parametros.id_ep and gep.id_grupo = v_parametros.id_grupo) THEN
+         
+            
+             if EXISTS (  select 1 from param.tgrupo_ep gep
+                         where  ( gep.id_ep = v_parametros.id_ep or (id_ep is NULL  and  v_parametros.id_ep is null) ) 
+                             and  (gep.id_uo = v_parametros.id_uo or (id_uo is NULL  and  v_parametros.id_uo is null) ) 
+                             and gep.id_grupo = v_parametros.id_grupo)
+                             and gep.id_grupo_ep!=v_parametros.id_grupo_ep THEN
                  
-               raise exception 'La EP no puede duplicarce';
+               raise exception 'La EP/UO no puede duplicarce';
                       
             END IF;
         
@@ -109,7 +118,8 @@ BEGIN
 			id_grupo = v_parametros.id_grupo,
 			id_ep = v_parametros.id_ep,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            id_uo =  v_parametros.id_uo
 			where id_grupo_ep=v_parametros.id_grupo_ep;
                
 			--Definicion de la respuesta

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_centro_costo_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -29,6 +31,7 @@ DECLARE
 	v_resp				varchar;
     v_filadd			varchar;
     v_codigo_subsistema	varchar;
+    v_inner 			varchar;
 			    
 BEGIN
 
@@ -174,7 +177,116 @@ BEGIN
 			return v_consulta;
 
 		end;
-					
+	/*********************************    
+ 	#TRANSACCION:  'PM_CECCOMFU_SEL'
+ 	#DESCRIPCION:	Consulta de datos de centro de costo combo filtrado por grupo_ep del usuario
+ 	#AUTOR:		admin	
+ 	#FECHA:		31-05-2013 22:53:59
+	***********************************/				
+	elsif(p_transaccion='PM_CECCOMFU_SEL')then
+    	     				
+    	begin
+          v_filadd = '';
+         
+          
+          IF   p_administrador != 1 THEN
+          
+              select 
+              pxp.list(uge.id_grupo::text)
+              into 
+              v_filadd  
+             from segu.tusuario_grupo_ep uge 
+             where  uge.id_usuario = p_id_usuario;
+              
+              v_inner =  'inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
+                            
+                                 ((gep.id_uo = cec.id_uo  and gep.id_ep = cec.id_uo )
+                               or 
+                                 (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
+                               or
+                                 (gep.id_uo is NULL and gep.id_ep = cec.id_uo )) and gep.id_grupo in ('||v_filadd||') ';
+              		
+             
+               
+          
+          END IF;
+    		--Sentencia de la consulta
+			v_consulta:='select
+						 id_centro_costo,
+                          estado_reg,
+                          id_ep,
+                          id_gestion,
+                          id_uo,
+                          id_usuario_reg,
+                          fecha_reg,
+                          id_usuario_mod,
+                          fecha_mod,
+                          usr_reg,
+                          usr_mod,
+                          codigo_uo,
+                          nombre_uo,
+                          ep,
+                          gestion,
+                          codigo_cc	
+						from param.vcentro_costo cec
+                        '||v_inner||'
+						 WHERE ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			--raise exception '%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_CECCOMFU_CONT'
+ 	#DESCRIPCION:	Conteo de registros centro de costo combo
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2013 22:53:59
+	***********************************/
+
+	elsif(p_transaccion='PM_CECCOMFU_CONT')then
+
+		begin
+          v_filadd = '';
+          
+           IF   p_administrador != 1 THEN
+          
+              select 
+              pxp.list(uge.id_grupo::text)
+              into 
+              v_filadd  
+              from segu.tusuario_grupo_ep uge 
+              where  uge.id_usuario = p_id_usuario;
+              
+              v_inner =  'inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
+                            
+                                 ((gep.id_uo = cec.id_uo  and gep.id_ep = cec.id_uo )
+                               or 
+                                 (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
+                               or
+                                 (gep.id_uo is NULL and gep.id_ep = cec.id_uo )) and gep.id_grupo in ('||v_filadd||') ';
+              		
+             
+               
+          
+          END IF;
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(id_centro_costo)
+					    from param.vcentro_costo cec
+                         '||v_inner||'
+                        WHERE ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+			
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;				
 	else					     
 		raise exception 'Transaccion inexistente';					         
 	end if;
