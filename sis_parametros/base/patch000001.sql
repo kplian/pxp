@@ -674,6 +674,7 @@ CREATE UNIQUE INDEX tdepto_ep_id__id_depto_id_ep ON param.tdepto_ep
   WHERE ((estado_reg)::text = 'activo'::text);
 /***********************************F-SCP-JRR-PARAM-0-29/04/2013*****************************************/
 
+
 /***********************************I-SCP-JRR-PARAM-0-24/05/2013*****************************************/
 CREATE OR REPLACE VIEW param.vcentro_costo(
     id_centro_costo,
@@ -727,3 +728,13 @@ AS
        JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
        JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
 /***********************************F-SCP-JRR-PARAM-0-24/05/2013*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+ALTER TABLE param.tdepto_usuario
+  ADD COLUMN sw_alerta VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+

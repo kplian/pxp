@@ -123,6 +123,30 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+		{
+                config:{
+                    name:'sw_alerta',
+                    fieldLabel:'Recibe Alertas',
+                    allowBlank:false,
+                    emptyText:'Tipo...',
+                    typeAhead: true,
+                    triggerAction: 'all',
+                    lazyRender:true,
+                    mode: 'local',
+                    valueField: 'estilo',
+                    gwidth: 100,
+                    store:['si','no']
+                },
+                type:'ComboBox',
+                id_grupo:0,
+                filters:{   
+                         type: 'list',
+                         pfiltro:'conig.sw_alerta',
+                         options: ['si','no'],  
+                    },
+                grid:true,
+                form:true
+        },
        		{
 			config:{
 				name: 'estado_reg',
@@ -217,7 +241,7 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_usuario', type: 'string'},
-		{name:'cargo', type: 'string'}
+		{name:'cargo', type: 'string'},'sw_alerta'
 	],
 	sortInfo:{
 		field: 'id_depto_usuario',

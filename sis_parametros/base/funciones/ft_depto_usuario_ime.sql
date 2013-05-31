@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_tdepto_usuario_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -56,7 +57,9 @@ BEGIN
             fecha_reg,
             id_usuario_mod,
             fecha_mod    ,
-            cargo
+            cargo,
+            sw_alerta
+            
               ) values(
             'activo',
             v_parametros.id_depto,
@@ -65,7 +68,8 @@ BEGIN
             now(),
             null,
             null ,
-            v_parametros.cargo
+            v_parametros.cargo,
+            v_parametros.sw_alerta
             )RETURNING id_depto_usuario into v_id_depto_usuario;
                
             --Definicion de la respuesta
@@ -93,7 +97,8 @@ BEGIN
             id_usuario = v_parametros.id_usuario,
             id_usuario_mod = p_id_usuario,
             fecha_mod = now() ,
-            cargo=v_parametros.cargo
+            cargo=v_parametros.cargo,
+            sw_alerta=v_parametros.sw_alerta
             where id_depto_usuario=v_parametros.id_depto_usuario;
                
             --Definicion de la respuesta
@@ -145,7 +150,8 @@ EXCEPTION
                         
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_tdepto_usuario_sel (OID = 304017) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

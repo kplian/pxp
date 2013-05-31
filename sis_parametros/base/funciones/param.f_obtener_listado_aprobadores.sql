@@ -46,7 +46,7 @@ BEGIN
  	   	-		x		null		x        ->      NO EXISTE, ERROR DE CONFIGURACION
         -       null     x          x       ->       NO EXISTE, ERROR DE CONFIGURACION
       	-		x		x			x		 ->      NO EXISTE, ERROR DE CONFIGURACION
-       	-	   null     null        null     ->      NO EXISTE, ERROR DE CONFIGURACION
+       	-	   null     null        null     ->      si no tiene es aprobador por defecto para cualquier caso
   
   */
 
@@ -188,85 +188,90 @@ BEGIN
  --si no se encontro el aprobador
 IF v_sw_aprobador =false THEN
 
-  --  buscamos con la up y ep especificas
-   FOR v_registros in(SELECT
-             apro.id_aprobador,
-             apro.id_funcionario,
-             apro.fecha_ini,
-             apro.fecha_fin,
-             fun.desc_funcionario1 as desc_funcionario,
-             apro.monto_min,
-             apro.monto_max,
-             apro.id_ep,
-             apro.id_uo,
-             apro.id_centro_costo
-                     
-           FROM param.taprobador apro
-           inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
-           WHERE (((apro.id_ep = v_id_ep and apro.id_uo = v_id_uo and id_centro_costo is NULL)
-                 OR(apro.id_ep = v_id_ep and apro.id_uo is null and id_centro_costo is NULL)
-                 OR(apro.id_ep is null and apro.id_uo = v_id_uo  and id_centro_costo is NULL))
-                 and apro.estado_reg = 'activo')
-                 and (  (apro.fecha_ini <= p_fecha  and apro.fecha_fin >=p_fecha )   
-                      or 
-                        (apro.fecha_ini <= p_fecha and apro.fecha_fin is null ))
-                 and ((apro.monto_min <=  p_monto and apro.monto_max >= p_monto )
-                      or
-                      ( apro.monto_min <= p_monto and apro.monto_max is null ))
-                 
-                 
-                 )
-                 
-                 
-                  LOOP
-                 
-                 
-                 
-                 IF (v_id_ep = v_registros.id_ep and v_id_uo = v_registros.id_uo and v_id_ep is not null and v_id_uo is not null )  THEN
-                   
-                       v_prioridad = 2;  
-                 
-                 ELSEIF  v_id_ep is null and v_id_uo = v_registros.id_uo  THEN
+        --  buscamos con la uo y ep especificas
+         FOR v_registros in(SELECT
+                   apro.id_aprobador,
+                   apro.id_funcionario,
+                   apro.fecha_ini,
+                   apro.fecha_fin,
+                   fun.desc_funcionario1 as desc_funcionario,
+                   apro.monto_min,
+                   apro.monto_max,
+                   apro.id_ep,
+                   apro.id_uo,
+                   apro.id_centro_costo
+                           
+                 FROM param.taprobador apro
+                 inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
+                 WHERE (((apro.id_ep = v_id_ep and apro.id_uo = v_id_uo and id_centro_costo is NULL)
+                       OR(apro.id_ep = v_id_ep and apro.id_uo is null and id_centro_costo is NULL)
+                       OR(apro.id_ep is null and apro.id_uo = v_id_uo  and id_centro_costo is NULL)
+                       OR(apro.id_ep is null and apro.id_uo  is NULL  and id_centro_costo is NULL))
+                       and apro.estado_reg = 'activo')
+                       and (  (apro.fecha_ini <= p_fecha  and apro.fecha_fin >=p_fecha )   
+                            or 
+                              (apro.fecha_ini <= p_fecha and apro.fecha_fin is null ))
+                       and ((apro.monto_min <=  p_monto and apro.monto_max >= p_monto )
+                            or
+                            ( apro.monto_min <= p_monto and apro.monto_max is null ))
+                       
+                       
+                       )
+                       
+                       
+                        LOOP
+                       
+                       
+                       
+                       IF (v_id_ep = v_registros.id_ep and v_id_uo = v_registros.id_uo and v_id_ep is not null and v_id_uo is not null )  THEN
+                         
+                             v_prioridad = 2;  
+                       
+                       ELSEIF  v_id_ep is null and v_id_uo = v_registros.id_uo  THEN
+                          
+                             v_prioridad = 3; 
+                       
+                       ELSE
+                            v_prioridad = 4; 
+                       
+                       END IF;
+                       
+                       
+                 v_sw_aprobador = TRUE; 
                     
-                       v_prioridad = 3; 
                  
-                 ELSE
-                      v_prioridad = 4; 
-                 
-                 END IF;
-                 
-                 
-           v_sw_aprobador = TRUE; 
-              
-           
-           v_consulta=  'INSERT INTO  tt_aprobador_'||p_id_usuario||'(
-                              id_aprobador,
-                              id_funcionario,
-                              fecha_ini,
-                              fecha_fin,
-                              desc_funcionario,
-                              monto_min,
-                              monto_max,
-                              prioridad
-                              )
-                              VALUES
-                              (
-                              '||v_registros.id_aprobador::varchar||',
-                              '||v_registros.id_funcionario::varchar||',
-                              '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
-                              '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
-                               '''||COALESCE(v_registros.desc_funcionario,'---')||''',
-                              '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
-                              '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
-                              '||v_prioridad::varchar||'
-                              );';
-         
-       execute(v_consulta);
-              
-    END LOOP;             
+                 v_consulta=  'INSERT INTO  tt_aprobador_'||p_id_usuario||'(
+                                    id_aprobador,
+                                    id_funcionario,
+                                    fecha_ini,
+                                    fecha_fin,
+                                    desc_funcionario,
+                                    monto_min,
+                                    monto_max,
+                                    prioridad
+                                    )
+                                    VALUES
+                                    (
+                                    '||v_registros.id_aprobador::varchar||',
+                                    '||v_registros.id_funcionario::varchar||',
+                                    '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
+                                    '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
+                                     '''||COALESCE(v_registros.desc_funcionario,'---')||''',
+                                    '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
+                                    '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
+                                    '||v_prioridad::varchar||'
+                                    );';
+               
+             execute(v_consulta);
+                    
+          END LOOP;             
 
 
 END IF;
+
+
+
+
 
 
 IF v_sw_aprobador THEN
