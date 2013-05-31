@@ -1,6 +1,7 @@
 CREATE OR REPLACE FUNCTION pxp.f_insert_testructura_gui (
   par_codigo_gui varchar,
-  par_codigo_gui_fk varchar
+  par_codigo_gui_fk varchar,
+  par_modificado integer = 1
 )
 RETURNS varchar AS
 $body$
@@ -21,7 +22,7 @@ BEGIN
                     where id_gui = v_id_gui and fk_id_gui = v_id_gui_fk and estado_reg = 'activo'))then
     
     	insert into segu.testructura_gui (id_gui, fk_id_gui, modificado)
-    	values (v_id_gui, v_id_gui_fk, 1);
+    	values (v_id_gui, v_id_gui_fk, par_modificado);
     end if;
     return 'exito';
 END;
