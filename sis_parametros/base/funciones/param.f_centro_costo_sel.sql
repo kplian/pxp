@@ -62,7 +62,12 @@ BEGIN
                           nombre_uo,
                           ep,
                           gestion,
-                          codigo_cc	
+                          codigo_cc,
+                          nombre_programa,
+         					nombre_proyecto,
+         					nombre_actividad,
+         					nombre_financiador,
+         					nombre_regional
 						from param.vcentro_costo cec
 						 where  ';
 			

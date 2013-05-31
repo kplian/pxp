@@ -38,7 +38,11 @@ class MODCentroCosto extends MODbase{
 		$this->captura('gestion','integer');
 		$this->captura('codigo_cc','text');
 		
-		
+		$this->captura('nombre_programa','varchar');
+		$this->captura('nombre_proyecto','varchar');
+		$this->captura('nombre_actividad','varchar');
+		$this->captura('nombre_financiador','varchar');
+		$this->captura('nombre_regional','varchar');		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
