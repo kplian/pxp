@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_depto_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -32,6 +34,8 @@ v_resp             varchar;
 v_filadd varchar;
 
 va_id_depto  integer[];
+v_inner  varchar;
+v_codadd  varchar;
 
 
 BEGIN
@@ -198,6 +202,153 @@ BEGIN
                 raise notice '%',v_consulta;
                return v_consulta;
          END;
+     /*******************************
+ #TRANSACCION:  PM_DEPFILUSU_SEL
+ #DESCRIPCION:	Listado departametos filtrado por los grupos ep del usuarios
+ #AUTOR:		RAC	
+ #FECHA:		03-06-2013
+***********************************/
+
+
+     elsif(par_transaccion='PM_DEPFILUSU_SEL')then
+
+        
+          v_codadd = '';
+          
+          
+          BEGIN
+       
+          IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
+          	v_codadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          
+          END IF;
+                    
+          
+          v_filadd = '';
+          
+           v_inner='';
+          
+          IF   par_administrador != 1 THEN
+          
+              select 
+              pxp.list(uge.id_grupo::text)
+              into 
+              v_filadd  
+             from segu.tusuario_grupo_ep uge 
+             where  uge.id_usuario = par_id_usuario;
+              
+              v_inner =  '
+                          inner join param.tdepto_uo_ep due on due.id_depto =DEPPTO.id_depto
+                          inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
+                            
+                                 ((gep.id_uo = due.id_uo  and gep.id_ep = due.id_ep )
+                               or 
+                                 (gep.id_uo = due.id_uo  and gep.id_ep is NULL )
+                               or
+                                 (gep.id_uo is NULL and gep.id_ep = due.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+              		
+             
+               
+          
+          END IF;     
+
+               v_consulta:='SELECT 
+                            DISTINCT
+                            DEPPTO.id_depto,
+                            DEPPTO.codigo,
+                            DEPPTO.nombre,
+                            DEPPTO.nombre_corto,
+                            DEPPTO.id_subsistema,
+                            DEPPTO.estado_reg,
+                            DEPPTO.fecha_reg,
+                            DEPPTO.id_usuario_reg,
+                            DEPPTO.fecha_mod,
+                            DEPPTO.id_usuario_mod,
+                            PERREG.nombre_completo1 as usureg,
+                            PERMOD.nombre_completo1 as usumod,
+                            SUBSIS.codigo||'' - ''||SUBSIS.nombre as desc_subsistema
+                            FROM param.tdepto DEPPTO
+                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
+                            INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
+                            INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
+                            LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
+                            LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                             '||v_inner||'
+                            WHERE '||v_codadd;
+               
+              
+               v_consulta:=v_consulta||v_parametros.filtro;
+               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+               raise notice    '% % %',v_filadd,par_id_usuario,v_consulta;
+               return v_consulta;
+
+
+         END;
+
+ /*******************************
+ #TRANSACCION: PM_DEPFILUSU_CONT
+ #DESCRIPCION:	Listado departametos filtrado por los grupos ep del usuarios
+ #AUTOR:		RAc
+ #FECHA:		03-06-2013
+***********************************/
+
+     elsif(par_transaccion='PM_DEPFILUSU_CONT')then
+        BEGIN
+         
+        
+        
+          v_codadd = '';
+          IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
+          	v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          
+          END IF;
+         
+          v_filadd = '';
+       
+          v_inner='';
+         
+        
+         IF   par_administrador != 1 THEN
+          
+              select 
+              pxp.list(uge.id_grupo::text)
+              into 
+              v_filadd  
+             from segu.tusuario_grupo_ep uge 
+             where  uge.id_usuario = par_id_usuario;
+              
+              v_inner =  '
+                          inner join param.tdepto_uo_ep due on due.id_depto =DEPPTO.id_depto
+                          inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
+                            
+                                 ((gep.id_uo = due.id_uo  and gep.id_ep = due.id_ep )
+                               or 
+                                 (gep.id_uo = due.id_uo  and gep.id_ep is NULL )
+                               or
+                                 (gep.id_uo is NULL and gep.id_ep = due.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+              		
+             
+               
+          
+          END IF;   
+          
+               v_consulta:='SELECT
+                                  count(DISTINCT DEPPTO.id_depto)
+                            FROM param.tdepto DEPPTO
+                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
+                            INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
+                            INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
+                            LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
+                            LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                             '||v_inner||'
+                            WHERE '||v_codadd;
+               v_consulta:=v_consulta||v_parametros.filtro;
+               
+             
+               return v_consulta;
+         END;    
+         
+         
      else
          raise exception 'No existe la opcion';
 

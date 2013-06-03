@@ -26,7 +26,7 @@ Phx.vista.DeptoUo=Ext.extend(Phx.gridInterfaz,{
 	 	 if(dataMaestro){ 
 	 	 	this.onEnablePanel(this,dataMaestro)
 	 	 }
-	  }
+	    }
 		
 	},
 			

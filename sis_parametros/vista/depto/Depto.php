@@ -54,7 +54,13 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		  title:'Depto - EP', 
 		  height:'50%',
 		  cls:'DeptoEp'
-		 }]	,
+		 },
+		 {
+          url:'../../../sis_parametros/vista/depto_uo_ep/DeptoUoEp.php',
+          title:'Depto UO - EP', 
+          height:'50%',
+          cls:'DeptoUoEp'
+         }]	,
 	Atributos:[
 		{
 			//configuracion del componente
