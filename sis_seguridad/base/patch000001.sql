@@ -851,4 +851,15 @@ PRIMARY KEY(id_usuario_grupo_ep)) INHERITS (pxp.tbase);
  
 /*****************************F-SCP-RAC-SEGU-0-22/04/2013*************/
 
+/*****************************I-SCP-JRR-SEGU-0-31/05/2013*************/
+
+CREATE TABLE segu.tusuario_grupo_ep(
+id_usuario_grupo_ep SERIAL NOT NULL,
+id_usuario integer, 
+id_grupo integer,
+PRIMARY KEY(id_usuario_grupo_ep)) INHERITS (pxp.tbase);
+
+ 
+/*****************************F-SCP-JRR-SEGU-0-21/05/2013*************/
+
 
