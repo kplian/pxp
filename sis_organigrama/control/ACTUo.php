@@ -15,6 +15,11 @@ class ACTUo extends ACTbase{
 		if ($this->objParam->getParametro('correspondencia') != '') {
 			$this->objParam->addFiltro("UO.correspondencia = ''".$this->objParam->getParametro('correspondencia')."''");  
 		}
+		
+		if ($this->objParam->getParametro('presupuesta') != '') {
+            $this->objParam->addFiltro("UO.presupuesta = ''".$this->objParam->getParametro('presupuesta')."''");  
+        }
+		
 		if ($this->objParam->getParametro('id_funcionario_uo_presupuesta') != '') {
 			$this->objParam->addFiltro("UO.id_uo = orga.f_get_uo_presupuesta(NULL, ". $this->objParam->getParametro('id_funcionario_uo_presupuesta') .",''" . $this->objParam->getParametro('fecha') . "'')"); 
 		}

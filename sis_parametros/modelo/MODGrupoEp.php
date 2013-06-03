@@ -31,6 +31,8 @@ class MODGrupoEp extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('ep','text');
+		$this->captura('id_uo','int4');
+		$this->captura('desc_uo','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -50,6 +52,7 @@ class MODGrupoEp extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_grupo','id_grupo','int4');
 		$this->setParametro('id_ep','id_ep','int4');
+		$this->setParametro('id_uo','id_uo','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -70,6 +73,8 @@ class MODGrupoEp extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_grupo','id_grupo','int4');
 		$this->setParametro('id_ep','id_ep','int4');
+		$this->setParametro('id_uo','id_uo','int4');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

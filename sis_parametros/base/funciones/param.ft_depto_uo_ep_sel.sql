@@ -1,6 +1,6 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION param.ft_grupo_ep_sel (
+CREATE OR REPLACE FUNCTION param.ft_depto_uo_ep_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -10,10 +10,10 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
- FUNCION: 		param.ft_grupo_ep_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tgrupo_ep'
+ FUNCION: 		param.ft_depto_uo_ep_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tdepto_uo_ep'
  AUTOR: 		 (admin)
- FECHA:	        22-04-2013 14:49:40
+ FECHA:	        03-06-2013 15:15:03
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -32,68 +32,71 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'param.ft_grupo_ep_sel';
+	v_nombre_funcion = 'param.ft_depto_uo_ep_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_GQP_SEL'
+ 	#TRANSACCION:  'PM_DUE_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		22-04-2013 14:49:40
+ 	#FECHA:		03-06-2013 15:15:03
 	***********************************/
 
-	if(p_transaccion='PM_GQP_SEL')then
+	if(p_transaccion='PM_DUE_SEL')then
      				
     	begin
     		--Sentencia de la consulta
-			v_consulta:='select
-						gqp.id_grupo_ep,
-						gqp.estado_reg,
-						gqp.id_grupo,
-						gqp.id_ep,
-						gqp.fecha_reg,
-						gqp.id_usuario_reg,
-						gqp.fecha_mod,
-						gqp.id_usuario_mod,
+			v_consulta:='select 
+                        due.id_depto_uo_ep,
+						due.id_uo,
+						due.id_depto,
+						due.id_ep,
+						due.estado_reg,
+						due.id_usuario_reg,
+						due.fecha_reg,
+						due.fecha_mod,
+						due.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        e.ep,
-                        uo.id_uo,
-                        ''(''||uo.codigo||'')-''||uo.nombre_unidad as desc_uo
-						from param.tgrupo_ep gqp
-                        left join orga.tuo uo on uo.id_uo = gqp.id_uo
-						inner join segu.tusuario usu1 on usu1.id_usuario = gqp.id_usuario_reg
-                        left join param.vep e on e.id_ep = gqp.id_ep
-						left join segu.tusuario usu2 on usu2.id_usuario = gqp.id_usuario_mod
-						  where  ';
+                        ep.ep,
+                        ''(''||COALESCE(uo.codigo,'''')||'')''||COALESCE(uo.nombre_unidad,''nan'') as desc_uo
+                        	
+						from param.tdepto_uo_ep due
+						inner join segu.tusuario usu1 on usu1.id_usuario = due.id_usuario_reg
+                        left join param.vep as ep on ep.id_ep = due.id_ep
+                        left join orga.tuo uo on uo.id_uo = due.id_uo
+						left join segu.tusuario usu2 on usu2.id_usuario = due.id_usuario_mod
+				        where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
+           -- raise notice  '%',v_consulta;
+            
 			return v_consulta;
 						
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_GQP_CONT'
+ 	#TRANSACCION:  'PM_DUE_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		22-04-2013 14:49:40
+ 	#FECHA:		03-06-2013 15:15:03
 	***********************************/
 
-	elsif(p_transaccion='PM_GQP_CONT')then
+	elsif(p_transaccion='PM_DUE_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_grupo_ep)
-					    from param.tgrupo_ep gqp
-                        left join orga.tuo uo on uo.id_uo = gqp.id_uo
-						inner join segu.tusuario usu1 on usu1.id_usuario = gqp.id_usuario_reg
-                        left join param.vep e on e.id_ep = gqp.id_ep
-						left join segu.tusuario usu2 on usu2.id_usuario = gqp.id_usuario_mod
-						where ';
+			v_consulta:='select count(id_depto_uo_ep)
+					    from param.tdepto_uo_ep due
+						inner join segu.tusuario usu1 on usu1.id_usuario = due.id_usuario_reg
+                        left join param.vep as ep on ep.id_ep = due.id_ep
+                        left join orga.tuo uo on uo.id_uo = due.id_uo
+						left join segu.tusuario usu2 on usu2.id_usuario = due.id_usuario_mod
+				        where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

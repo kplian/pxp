@@ -674,3 +674,87 @@ CREATE UNIQUE INDEX tdepto_ep_id__id_depto_id_ep ON param.tdepto_ep
   WHERE ((estado_reg)::text = 'activo'::text);
 /***********************************F-SCP-JRR-PARAM-0-29/04/2013*****************************************/
 
+
+/***********************************I-SCP-JRR-PARAM-0-24/05/2013*****************************************/
+CREATE OR REPLACE VIEW param.vcentro_costo(
+    id_centro_costo,
+    estado_reg,
+    id_ep,
+    id_gestion,
+    id_uo,
+    id_usuario_reg,
+    fecha_reg,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    codigo_uo,
+    nombre_uo,
+    ep,
+    gestion,
+    codigo_cc,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    nombre_financiador,
+    nombre_regional)
+AS
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
+          ::text) || ges.gestion) || ')' ::text AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
+/***********************************F-SCP-JRR-PARAM-0-24/05/2013*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+ALTER TABLE param.tdepto_usuario
+  ADD COLUMN sw_alerta VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-31/05/2013****************************************/
+
+ALTER TABLE param.tgrupo_ep
+ ADD COLUMN id_uo integer;
+  
+/***********************************F-SCP-RAC-PARAM-0-31/05/2013****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-03/06/2013****************************************/
+
+  CREATE TABLE param.tdepto_uo_ep(
+    id_depto_uo_ep SERIAL NOT NULL,
+    id_depto int4,
+    id_ep int4,
+    id_uo int4,
+    PRIMARY KEY (id_depto_uo_ep))
+    INHERITS (pxp.tbase); 
+    
+/***********************************F-SCP-RAC-PARAM-0-03/06/2013****************************************/
+  

@@ -20,12 +20,18 @@ $body$
 FUNCION: f_inserta_alarma
 AUTOR: 	    fprudencio
 PARAMETROS: par_id_funcionario : indica el funcionario para el que se genera la alrma
-            par_descripcion: una descripción de la alarma
+            par_descripcion: una descripcion de la alarma
             par_acceso_directo: es el link que lleva a la relacion de la alarma generada
             par_fecha: Indica la fecha de vencimiento de la alarma
             par_tipo: indica el tipo de alarma, puede ser alarma o notificacion
             par_obs: son las observaciones de la alarma
- 			par_id_usuario_alarma: indica el usuario para que se cre la alarma (solo si funcionario es NULL)
+ 			par_id_usuario: integer,   el usuario que registra la alarma
+            
+            par_clase varchar,        clases a ejecutar en interface deacceso directo
+            par_titulo varchar,       titulo de la interface de acceso directo
+            par_parametros varchar,   parametros a mandar a la interface de acceso directo
+            par_id_usuario_alarma integer,dica el usuario para que se cre la alarma (solo si funcionario es NULL)
+            par_titulo_correo varchar,   titulo de correo
           
 ************************************/
 DECLARE
@@ -37,7 +43,7 @@ BEGIN
 
 v_nombre_funcion:='param.f_inserta_alarma';
    
-   --realizamos la inserción de datos en alarma
+   --realizamos la inserciÃ³n de datos en alarma
    
    insert into param.talarma(
 			acceso_directo,
