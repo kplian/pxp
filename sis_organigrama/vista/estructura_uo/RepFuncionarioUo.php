@@ -6,7 +6,6 @@
 *@date 17/05/2013
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -207,6 +206,7 @@ Phx.vista.RepFuncionarioUo=Ext.extend(Phx.gridInterfaz,{
 	bdel:false,
 	bsave:false,
 	bedit:false,
+	bnew:false,
     codReporte:'S/C',
 	codSistema:'PXP',
 	pdfOrientacion:'L',
@@ -217,5 +217,3 @@ Phx.vista.RepFuncionarioUo=Ext.extend(Phx.gridInterfaz,{
 	}
 })
 </script>
-		
-		

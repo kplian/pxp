@@ -889,6 +889,8 @@ class ReportePDF extends TCPDF
 		        $this->Cell($width1, $height/4, 'Revisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
 		        $this->Cell($width2, $height/4, '1', "B", 0, 'C', false, '', 0, false, 'T', 'C');
 		        
+				
+				
 		        $this->SetFont('','');
 		        $y += 5;
 		        $this->SetXY($x+170, $y);

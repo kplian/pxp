@@ -610,19 +610,17 @@ select pxp.f_insert_tprocedimiento ('PM_ASIS_MOD', 'Modificacion de registros', 
 select pxp.f_insert_tprocedimiento ('PM_ASIS_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_asistente_ime');
 /***********************************F-DAT-AAO-PARAM-72-23/04/2013*****************************************/
 
-
-
 /***********************************I-DAT-RAC-PARAM-00-26/04/2013*****************************************/
-
 select pxp.f_insert_tgui ('Generadores de Alarma', 'Configuracion funciones que generan alarmas', 'GAL', 'si', 4, 'sis_parametros/vista/generador_alarma/GeneradorAlarma.php', 2, '', 'GeneradorAlarma', 'PARAM');
-
 select pxp.f_insert_testructura_gui ('GAL', 'PARAM');
-
 select pxp.f_insert_tgui ('Grupos', 'Grupos', 'GQP', 'si', 8, 'sis_parametros/vista/grupo/Grupo.php', 3, '', 'Grupo', 'PARAM');
 select pxp.f_insert_testructura_gui ('GQP', 'CEP');
-
 /***********************************F-DAT-RAC-PARAM-00-26/04/2013*****************************************/
 
+/***********************************I-DAT-RCM-PARAM-00-03/05/2013*****************************************/
+select pxp.f_add_catalog('PARAM','tgral__bandera','Si');
+select pxp.f_add_catalog('PARAM','tgral__bandera','No');
+/***********************************F-DAT-RCM-PARAM-00-03/05/2013*****************************************/
 /***********************************I-DAT-GSS-PARAM-00-07/05/2013*****************************************/
 
 select pxp.f_insert_tprocedimiento ('PM_DEPUSUCOMB_SEL', 'Listado de departamento por usuario para combos', 'si', '', '', 'param.ft_depto_sel');
