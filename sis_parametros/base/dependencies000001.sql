@@ -828,3 +828,76 @@ AS
 /***********************************F-DEP-JRR-PARAM-0-24/05/2013*****************************************/
     
     
+
+/***********************************I-DEP-RAC-PARAM-0-04/06/2013*****************************************/
+    
+    
+
+ALTER TABLE param.tdepto_usuario
+  ADD CONSTRAINT fk_tdepto_usuario__id_depto FOREIGN KEY (id_depto)
+    REFERENCES param.tdepto(id_depto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ ALTER TABLE param.tdepto_usuario
+  ADD CONSTRAINT tfk_depto_usuario__id_usuario FOREIGN KEY (id_usuario)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE; 
+    
+ --------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT fk_tproveedor__id_institucion FOREIGN KEY (id_institucion)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;  
+    
+    
+ ALTER TABLE param.tproveedor
+  ADD CONSTRAINT fk_tproveedor__id_persona FOREIGN KEY (id_persona)
+    REFERENCES segu.tpersona(id_persona)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;    
+  
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT tproveedor_fk FOREIGN KEY (id_lugar)
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;  
+  
+ --------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT tproveedor__id_lugar FOREIGN KEY (id_lugar)
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+--------------- SQL ---------------
+
+CREATE INDEX tpersona_idx ON segu.tpersona
+  USING btree (nombre, apellido_paterno, apellido_materno);
+
+--------------- SQL ---------------
+
+CREATE INDEX tproveedor_idx2 ON param.tproveedor
+  USING btree (id_persona);
+
+ /***********************************F-DEP-RAC-PARAM-0-04/06/2013*****************************************/
+    
+    
+  
+    
+    
+    
+    
+
+

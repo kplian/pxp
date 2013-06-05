@@ -30,7 +30,7 @@ class ACTDepto extends ACTbase{
 		
 	}
 	
-	function listarDeptoCombo(){
+	function listarDeptoFiltradoDeptoUsuario(){
 
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','depto');
@@ -43,7 +43,7 @@ class ACTDepto extends ACTbase{
 		else {
 			$this->objFunSeguridad=$this->create('MODDepto');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarDeptoCombo($this->objParam);
+			$this->res=$this->objFunSeguridad->listarDeptoFiltradoDeptoUsuario($this->objParam);
 			
 		}
 		

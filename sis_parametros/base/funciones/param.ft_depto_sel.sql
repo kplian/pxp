@@ -123,7 +123,7 @@ BEGIN
          END;
 /*******************************
  #TRANSACCION:  PM_DEPUSUCOMB_SEL
- #DESCRIPCION:	Listado de departamento por usuario para combos
+ #DESCRIPCION:	Listado de departamento filtrados por los usuarios configurados en los mismo
  #AUTOR:		JRR	
  #FECHA:		03-05-2013
 ***********************************/

@@ -50,7 +50,14 @@ class MODDepto extends MODbase{
 
 	}
 
-	function listarDeptoCombo(){
+	/*
+	
+	Listado de departametos filtrado por lo usuarios configurados dentro los mismos 
+	en la tabla depto usuario
+	
+	*/
+	
+	function listarDeptoFiltradoDeptoUsuario(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='param.ft_depto_sel';// nombre procedimiento almacenado
 		$this->transaccion='PM_DEPUSUCOMB_SEL';//nombre de la transaccion
