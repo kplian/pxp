@@ -60,7 +60,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
             	]*/
 			},
 			type:'RadioGroup',
-			filters:{pfiltro:'pritse.estado_reg',type:'string'},
+			//filters:{pfiltro:'serv.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
