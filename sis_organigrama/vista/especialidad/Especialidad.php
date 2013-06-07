@@ -100,7 +100,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_especialidad_nivel']);}
 			},
 			type:'ComboBox',
-			filters:{pfiltro:'espcia.nombre',type:'string'},
+			filters:{pfiltro:'espniv.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true

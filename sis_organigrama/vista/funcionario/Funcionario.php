@@ -156,7 +156,7 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'NumberField',
-	       		filters:{type:'numeric'},
+	       		filters:{type:'string'},
 	       		id_grupo:0,
 	       		grid:true,
 	       		form:false
@@ -173,7 +173,7 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'NumberField',
-	       		filters:{type:'numeric'},
+	       		filters:{type:'string'},
 	       		id_grupo:0,
 	       		grid:true,
 	       		form:false
@@ -234,6 +234,7 @@ Phx.vista.funcionario=function(config){
 	       		id_grupo:0,
 	       		filters:{	
 	       		         type: 'list',
+	       		         pfiltro:'FUNCIO.estado_reg',
 	       				 dataIndex: 'size',
 	       				 options: ['activo','inactivo'],	
 	       		 	},
