@@ -328,6 +328,8 @@ BEGIN
 	/*********************************    
  	#TRANSACCION:  'PM_CCFILDEP_SEL'
  	#DESCRIPCION:	Consulta  de centro de costos filtrado por el departamento que llega como parametros id_depto
+                    ademas si la opcio filtrar = grupo_ep ademas anhade al filtro las 
+                    lo grupo_de ep correspondiente al usuario
  	#AUTOR:		rac	
  	#FECHA:		03-06-2013 22:53:59
 	***********************************/				
@@ -345,6 +347,37 @@ BEGIN
         *  ESTO POR QUE ESTA TRES CONSULTAS UTILIZAN EL MISMO COMBO REC PARA MOSTRAR LOS RESULTADOS
         * 
         **********************************/
+        
+        
+          v_filadd = '';
+          v_inner='';
+          
+          IF   p_administrador != 1   and  pxp.f_existe_parametro('p_tabla','filtrar')  THEN
+          
+          
+              IF v_parametros.filtrar = 'grupo_ep'  THEN
+                  select 
+                  pxp.list(uge.id_grupo::text)
+                  into 
+                  v_filadd  
+                 from segu.tusuario_grupo_ep uge 
+                 where  uge.id_usuario = p_id_usuario;
+                  
+                  v_inner =  'inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
+                                
+                                     ((gep.id_uo = cec.id_uo  and gep.id_ep = cec.id_ep )
+                                   or 
+                                     (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
+                                   or
+                                     (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                  		
+                 
+               END IF;    
+          
+          END IF;
+        
+        
+        
         
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -381,7 +414,9 @@ BEGIN
                                  
                                  
                                  and due.id_depto = '||COALESCE(v_parametros.id_depto,0)||'
-						 WHERE ';
+						 '||v_inner||'
+                        
+                         WHERE ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -403,7 +438,32 @@ BEGIN
 
 		begin
         
-        
+          v_filadd = '';
+          v_inner='';
+          
+          IF   p_administrador != 1   and  pxp.f_existe_parametro('p_tabla','filtrar')  THEN
+          
+          
+              IF v_parametros.filtrar = 'grupo_ep'  THEN
+                  select 
+                  pxp.list(uge.id_grupo::text)
+                  into 
+                  v_filadd  
+                 from segu.tusuario_grupo_ep uge 
+                 where  uge.id_usuario = p_id_usuario;
+                  
+                  v_inner =  'inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
+                                
+                                     ((gep.id_uo = cec.id_uo  and gep.id_ep = cec.id_ep )
+                                   or 
+                                     (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
+                                   or
+                                     (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                  		
+                 
+               END IF;    
+          
+          END IF;
       
         
 			--Sentencia de la consulta de conteo de registros
@@ -419,6 +479,7 @@ BEGIN
                                  
                                  
                                  and due.id_depto = '||COALESCE(v_parametros.id_depto,0)||'
+                         '||v_inner||'
 						 WHERE';
 			
 			--Definicion de la respuesta		    

@@ -162,7 +162,8 @@ class MODCentroCosto extends MODbase{
         $this->procedimiento='param.f_centro_costo_sel';
         $this->transaccion='PM_CCFILDEP_SEL';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
-        $this->setParametro('id_depto','id_depto','integer');        
+        $this->setParametro('id_depto','id_depto','integer'); 
+        $this->setParametro('filtrar','filtrar','varchar');               
         //Definicion de la lista del resultado del query
         $this->captura('id_centro_costo','int4');
         $this->captura('estado_reg','varchar');
