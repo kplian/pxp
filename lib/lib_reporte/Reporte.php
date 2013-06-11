@@ -53,6 +53,7 @@ class Reporte
 			
 			//Setea propiedades para generación del reporte
 			$this->objReporteFormato->setTitulo1($this->objParam->getParametro('titulo'));
+			$this->objReporteFormato->setTitulo2($this->objParam->getParametro('titulo1'));
 			//Se definen las columnas que se vana mostrar
 			$this->objReporteFormato->defineDatosMostrar($this->objParam->getColumnasReporte());
 		}
