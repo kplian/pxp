@@ -246,7 +246,7 @@ class ReportePDF extends TCPDF
 		}
 		
 		//var_dump($this->objParam->getParametro('maestro'));exit;
-		if($this->objParam->getParametro('maestro')!=null){
+		if($this->objParam->getParametro('maestro')!=null&&$this->objParam->getParametro('desplegarMaestro')=='si'){
 			$this->swMaestro=1;
 			//if(is_array($this->objParam->getParametro('maestro'))){
 				$arr=array();
@@ -267,10 +267,10 @@ class ReportePDF extends TCPDF
 					//array_push($arrMas,$key['value']);
 				}
 				//echo $i;exit;
-				if($this->objParam->getParametro('filaInicioDatos')==0){
+				if($this->objParam->getParametro('filaInicioEtiquetas')==0){
 					 $this->maestroY=($i-1)*4;
 				} else{
-					$this->maestroY=$this->objParam->getParametro('filaInicioDatos');	
+					$this->maestroY=$this->objParam->getParametro('filaInicioEtiquetas');	
 				}
 				
 				//echo 'fukc';exit;
@@ -437,9 +437,9 @@ class ReportePDF extends TCPDF
 	}
 
 	function addTabla($datas, $border=1, $fill=1,$titulos=0,$relleno=0) {
-		ob_start();
+		/*ob_start();
 		$fb=FirePHP::getInstance(true);
-		$fb->log('sssss',"count(pArrayDatos)");
+		$fb->log('sssss',"count(pArrayDatos)");*/
 		
 		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1">';
 		$cont=1;
@@ -475,8 +475,10 @@ class ReportePDF extends TCPDF
 					</tr>';
 		}
 		$html.='</table>';
+		//echo $html;exit;
 		if($this->swMaestro){
 			$this->setY($this->maestroY);
+			$this->maestroY=$this->maestroY+$this->objParam->getParametro('filaInicioDatos');
 		}
 		//var_dump($html);exit;
 		$this->writeHTML($html,false,false,false,false,'');
@@ -685,7 +687,7 @@ class ReportePDF extends TCPDF
 		}
 	}
 
-	function generarReporte(){
+	function generarReporte(){ 
 		if($this->tipoReporte=='pdf'){
 			//Da formato al array de las etiquetas a clave valor
 			for($i=0;$i<count($this->aDetalleKeys);$i++) {
@@ -698,7 +700,6 @@ class ReportePDF extends TCPDF
 				$this->renderEtiquetas();
 				$this->swDetalleEtiquetas=1;
 			}
-	
 			$this->renderDetalle();
 		}
 		parent::output($this->url_archivo,'F');
