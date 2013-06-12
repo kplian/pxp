@@ -18,7 +18,8 @@ class MODValidacion
 								'filtro_sql'=>'varchar',
 								'smallint'=>'smallint',
 								'int4'=>'int4',
-								'int8'=>'int8');
+								'int8'=>'int8',
+								'consulta_select'=>'text');
 	
 	function getTipo($tipo){
 		//RAC 1/09/2011
@@ -33,6 +34,7 @@ class MODValidacion
 	}
 	
 	function validar($nombre,$valor,$tipo,$blank,$tamano,$opciones,$tipo_archivo){
+		
 		if($tipo=='integer' || $tipo=='smallint' || $tipo=='int4'|| $tipo=='int8'){
 			
 			$this->validarEntero($nombre,$valor,$blank,$tamano);
@@ -41,6 +43,10 @@ class MODValidacion
 		elseif ($tipo=='varchar'){
 			
 			$this->validarvarchar($nombre,$valor,$blank,$tamano);
+		}
+		elseif ($tipo=='consulta_select'){								
+				$this->validarSelect($nombre,$valor,$blank,$tamano);				
+			 $this->validartext($nombre,$valor,$blank,$tamano);
 		}
 		elseif ($tipo=='text'){
 			
@@ -86,9 +92,6 @@ class MODValidacion
 		elseif ($tipo=='bytea'){
 			
 			$this->validarBytea($nombre,$valor,$blank,$tamano,$opciones,$tipo_archivo);
-			
-			 
-			
 			
 		}
 		else{
@@ -443,9 +446,26 @@ class MODValidacion
 
 	}
 	
-
-	
-	
-	
+	function validarSelect($nombre,$valor,$blank,$tamano){		
+			
+			if($blank==false){
+				array_push($this->res,'El campo '.$nombre." debe ser registrado");
+			}
+			else{
+				$needle = array("insert", "update", "delete", "create","alter","drop","into", "values", 
+				"trigger", "view", "rule","CREATEDB","CREATEROLE","CREATEUSER","EXECUTE","EXEC");
+				$words = explode(' ', $valor);				
+				foreach ($words as $word) {				
+						foreach ($needle as $keyword) {
+								if(strpos($word,$keyword)!==false){
+									if(strpos($word,$keyword)==0){
+												array_push($this->res,'El campo '.$nombre.'contiene ordenes no permitidas');
+											 throw new Exception("El campo contiene la orden no permitida ".strtoupper($word));
+									}
+								}							
+						}	
+				}								 
+			}					
+	}
 	
 }
