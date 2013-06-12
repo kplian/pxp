@@ -95,9 +95,9 @@ class Reporte
 		if($this->objParam->getParametro('tipoReporte')=='pdf_grid')
 			$this->objReporteFormato->SetFont('helvetica', '', 8);
 		$cad = $this->create($nombre_clase);
+		
 		//eval('$cad = new $nombre_clase();');
 		eval('$this->res=$cad->'.$metodo_ejecutar.'($this->objParam);');
-		
 		if($this->res->getTipo()=='ERROR'){
 			return $this->res;
 		}
@@ -106,7 +106,7 @@ class Reporte
 	
 		
 		$puntero=$puntero+$_SESSION['cantidad_reportes'];
-		
+				
 		//Imprime los títulos de las columnas para exportación pdf_grid
 		if($this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporteFormato->imprimirColsGrid();
@@ -121,6 +121,7 @@ class Reporte
 				//var_dump($rec);
 			}
 		}
+		
 		$this->objReporteFormato->addTabla($arrTmp);
 
 		while($cantidad_registros > $puntero){
@@ -141,16 +142,17 @@ class Reporte
 				}
 			}
 			
-			$this->objReporteFormato->addTabla($arrTmp);
+			//$this->objReporteFormato->addTabla($arrTmp);
 			
 			$puntero=$puntero+$_SESSION['cantidad_reportes'];
 		}
+		
 		$this->objReporteFormato->generarReporte();
 		$this->mensajeExito=new Mensaje();
 		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado',
 										'Se generó con éxito el reporte: '.$this->nombreArchivo,'control');
 		$this->mensajeExito->setArchivoGenerado($this->nombreArchivo);
-		
+	
 		return $this->mensajeExito;
 		
 	}
