@@ -102,7 +102,7 @@ BEGIN
           
           BEGIN
          -- raise exception 'rererer: % % %',v_parametros.id_uo,v_parametros.estado_reg,v_parametros.id_funcionario;
-              if ( select count(*)=1 from 
+              /*if ( select count(*)=1 from 
                            orga.tuo_funcionario 
                            where    id_uo=v_parametros.id_uo 
                                 and estado_reg=v_parametros.estado_reg and
@@ -111,15 +111,17 @@ BEGIN
                                     and id_uo=v_parametros.id_uo) then
                            
                            raise exception 'El cargo es individual y ya existe otro funcionario asignado actualmente';
-               end if;
+               end if;*/
                 
  
                 --verficar que el funcionario no este activo en dos unidades simultaneamente
-                
+                --raise exception '%    %',v_parametros.id_funcionario,v_parametros.id_uo;
                if ( v_parametros.estado_reg='activo' and
                       ((select count(id_funcionario) from 
-                           orga.tuo_funcionario 
-                           where     id_funcionario=v_parametros.id_funcionario ))>0) then
+                           orga.tuo_funcionario  a
+                           where a.id_funcionario=v_parametros.id_funcionario
+                           and a.estado_reg = 'activo'
+                           and a.id_uo != v_parametros.id_uo))>0) then
                            
                            raise exception 'El Funcionario se encuentra en otro cargo vigente primero inactive su asignacion actual';
                end if;
@@ -141,11 +143,11 @@ BEGIN
                 and id_uo_funcionario=v_parametros.id_uo_funcionario;
                 
                 --10-04-2012: sincronizacion de UO entre BD
-                v_respuesta_sinc:=orga.f_sincroniza_uo_empleado_entre_bd(v_parametros.id_uo_funcionario,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'UPDATE');
+/*                v_respuesta_sinc:=orga.f_sincroniza_uo_empleado_entre_bd(v_parametros.id_uo_funcionario,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'UPDATE');
                      
                 if(v_respuesta_sinc!='si')  then
                   raise exception 'Sincronizacion de UO en BD externa no realizada%',v_respuesta_sinc;
-                end if;
+                end if;*/
                 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Modificacion a asignacion empleado-uo modificada con exito '||v_parametros.id_uo_funcionario||': Funcionario ('|| (select desc_funcionario1 from orga.vfuncionario where id_funcionario=v_parametros.id_funcionario) || ') - UO'|| (select nombre_unidad from orga.tuo where id_uo=v_parametros.id_uo));
                v_resp = pxp.f_agrega_clave(v_resp,'id_uo',v_parametros.id_uo::varchar);
