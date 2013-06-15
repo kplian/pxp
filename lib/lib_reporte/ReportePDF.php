@@ -441,7 +441,7 @@ class ReportePDF extends TCPDF
 		$fb=FirePHP::getInstance(true);
 		$fb->log('sssss',"count(pArrayDatos)");*/
 		
-		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1">';
+		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1"  style="font-size:16px">';
 		$cont=1;
 
 		foreach($datas AS $data) {
