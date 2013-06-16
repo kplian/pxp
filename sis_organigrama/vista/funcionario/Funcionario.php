@@ -345,7 +345,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	'telefono_ofi',
 	'horario1',
 	'horario2',
-	'horario3'
+	'horario3',
+	'horario4'
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',

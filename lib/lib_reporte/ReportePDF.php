@@ -60,6 +60,10 @@ class ReportePDF extends TCPDF
 	protected $arrNumeracion=array();
 	protected $swNumeracion='si';
 	
+	protected $swMaestro=0;
+	protected $maestroX;
+	protected $maestroY;
+	
 	/**
 	 * Nombre funcion:	ReportePDF
 	 * Proposito:		Constructor de la Función genérica de ReportePDF (Define el nombre del archivo, titulo, cabecera derecha y logo y pie)
@@ -232,36 +236,57 @@ class ReportePDF extends TCPDF
 		}
 		*/
 	}
-	
-	
-	function Header(){
-		if($this->orientacion=='P'){
-			if($this->alinearCabecera=='L'){
-				$align=0;
-			} else{
-				$align=170;
-			}
-			
-			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
-			
-			if($this->objParam->getParametro('maestro')!=''){
-				//var_dump($this->objParam->getParametro('maestro'));exit;
-//				var_dump($this->aMaestroEtiquetas);exit;
-				/*$arr=array();
+
+	function definirMaestro(){
+		$cantCol=2;
+		$anchoCol=93;
+		if($this->orientacion=='L'){
+			$cantCol=4;
+			$anchoCol=60;
+		}
+		
+		//var_dump($this->objParam->getParametro('maestro'));exit;
+		if($this->objParam->getParametro('maestro')!=null&&$this->objParam->getParametro('desplegarMaestro')=='si'){
+			$this->swMaestro=1;
+			//if(is_array($this->objParam->getParametro('maestro'))){
+				$arr=array();
 				$arrMas=array();
 				$arrMasEt=array();
 				$arr=$this->_json_decode($this->objParam->getParametro('maestro'),true);
+				$i=0;
 				foreach ($arr as $key)  {
-					array_push($arrMasEt,$key['label']);
-					array_push($arrMas,$key['value']);
+					if($i%$cantCol==0){
+						$this->Ln();
+					}
+					//echo $key['label'].' ->'.$key['value'].'\n';
+					//$this->Cell(50, 5, $key['label'].': '.$key['value'], 0, 0, 'L', 0, '', 0, false, 'C', 'C');
+					//MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0)
+					$this->MultiCell($anchoCol, 5, $key['label'].': '.$key['value'], 0, '', 0, 0, '', '', true, 0, false);
+					$i++;
+					//array_push($arrMasEt,$key['label']);
+					//array_push($arrMas,$key['value']);
+				}
+				//echo $i;exit;
+				if($this->objParam->getParametro('filaInicioEtiquetas')==0){
+					 $this->maestroY=($i-1)*4;
+				} else{
+					$this->maestroY=$this->objParam->getParametro('filaInicioEtiquetas');	
 				}
 				
-				$this->setMaestroEtiquetas($arrMasEt);
+				//echo 'fukc';exit;
+				//var_dump($arrMas);exit;
+				
+				/*foreach ($variable as $key => $value) {
+					
+				}*/
+				
+				/*$this->setMaestroEtiquetas($arrMasEt);
 				$this->setAnchoMaestroEtiquetas(15);
 				$this->setMaestroLC(array($arrMas));
 				$this->setmaestroBloqueCant(2);
 				$this->setMaestroBloqueAncho(array(50,50));
 				$this->renderMaestro();*/
+				//$this->setXY(50,50);
 				
 				
 
@@ -281,6 +306,21 @@ class ReportePDF extends TCPDF
 				$this->renderMaestro();*/
 				
 			}
+	}
+	
+	
+	function Header(){
+		if($this->orientacion=='P'){
+			if($this->alinearCabecera=='L'){
+				$align=0;
+			} else{
+				$align=170;
+			}
+			
+			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
+			$this->Ln();
+			$this->definirMaestro();
+			
 			
 
 		} else if($this->orientacion=='L'){
@@ -291,15 +331,8 @@ class ReportePDF extends TCPDF
 			}
 			$this->definirCabecera($this->objParam->getParametro('codSistema'),$this->orientacion);
 			
-			if($this->objParam->getParametro('maestro')!=''){
-				/*$aux=$this->objParam->_json_decode($this->objParam->getParametro('maestro'));
-				$this->Ln();
-				for ($i=0;$i<count($aux);$i++){
-					$this->Cell(0, 10, $aux[$i]['label'].': ', 0, 2, 'C', 0, '', 0, false, 'C', 'C');
-					$this->Cell(150, 10, $aux[$i]['value'], 0, 2, 'C', 0, '', 1, false, 'C', 'C');
-					//var_dump ($aux[$i]);exit;
-				}*/
-			}
+			$this->Ln();
+			$this->definirMaestro();
 			
 		} else{
 			throw new Exception("Reporte: Orientación incorrecta, debe ser 'P' o 'L'");
@@ -404,11 +437,11 @@ class ReportePDF extends TCPDF
 	}
 
 	function addTabla($datas, $border=1, $fill=1,$titulos=0,$relleno=0) {
-		ob_start();
+		/*ob_start();
 		$fb=FirePHP::getInstance(true);
-		$fb->log('sssss',"count(pArrayDatos)");
+		$fb->log('sssss',"count(pArrayDatos)");*/
 		
-		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1">';
+		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1"  style="font-size:16px">';
 		$cont=1;
 
 		foreach($datas AS $data) {
@@ -442,16 +475,23 @@ class ReportePDF extends TCPDF
 					</tr>';
 		}
 		$html.='</table>';
+		//echo $html;exit;
+		if($this->swMaestro){
+			$this->setY($this->maestroY);
+			$this->maestroY=$this->maestroY+$this->objParam->getParametro('filaInicioDatos');
+		}
+		//var_dump($html);exit;
 		$this->writeHTML($html,false,false,false,false,'');
 	}
 	
 	private function renderTabla($pArrayDatos,$pArrayColVisibles,$pBorder=1, $pFill=1, $pArrayColAncho='', $pArrayColAlign='',$pArrayKeys='',$pConTit=0,$pTotCols='no') {
-		ob_start();
+		/*ob_start();
 		$fb=FirePHP::getInstance(true);
-		$fb->log('kkkk',"rendertabla");
+		$fb->log('kkkk',"rendertabla");*/
 		
 		//$this->AddPage();
 		//Inicializa en cero el array de totales
+		//var_dump($pArrayDatos);exit;
 		$sw_totales=0;
 		if($pTotCols=='si'){
 			$sw_totales=1;
@@ -647,7 +687,7 @@ class ReportePDF extends TCPDF
 		}
 	}
 
-	function generarReporte(){
+	function generarReporte(){ 
 		if($this->tipoReporte=='pdf'){
 			//Da formato al array de las etiquetas a clave valor
 			for($i=0;$i<count($this->aDetalleKeys);$i++) {
@@ -660,7 +700,6 @@ class ReportePDF extends TCPDF
 				$this->renderEtiquetas();
 				$this->swDetalleEtiquetas=1;
 			}
-	
 			$this->renderDetalle();
 		}
 		parent::output($this->url_archivo,'F');
@@ -861,7 +900,7 @@ class ReportePDF extends TCPDF
 		        
 		        $x = $this->GetX();
 		        $y = $this->GetY();
-		        $this->SetFontSize(12);
+		        $this->SetFontSize(14);
 		        $this->SetFont('','B');        
 		        $this->Cell(170, $height/2, $this->titulo1, 1, 2, 'C', false, '', 1, false, 'T', 'C');        
 		        $this->setXY($x,$y+$height/2);
@@ -893,6 +932,12 @@ class ReportePDF extends TCPDF
 				
 		        $this->SetFont('','');
 		        $y += 5;
+				$this->SetXY($x, $y);
+				$this->SetFontSize(14);
+		        $this->SetFont('','B');  
+				$this->Cell(170, $height/2,$this->titulo2 , 1, 2, 'C', false, '', 0, false, 'T', 'C');
+				$this->SetFont('','');
+				$this->SetFontSize(7);
 		        $this->SetXY($x+170, $y);
 		        $this->setCellPaddings(2);
 		        $this->SetFont('','B');
@@ -984,6 +1029,12 @@ class ReportePDF extends TCPDF
 		        
 		        $this->SetFont('','');
 		        $y += 5;
+				$this->SetXY($x, $y);
+				$this->SetFontSize(14);
+		        $this->SetFont('','B');  
+				$this->Cell(105, $height/2,$this->titulo2 , 1, 2, 'C', false, '', 0, false, 'T', 'C');
+				$this->SetFont('','');
+				$this->SetFontSize(7);
 		        $this->SetXY($x+105, $y);
 		        $this->setCellPaddings(2);
 		        $this->Cell($width1, $height/4, 'Fecha Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');

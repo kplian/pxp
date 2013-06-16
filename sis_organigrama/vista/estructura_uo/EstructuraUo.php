@@ -252,7 +252,14 @@ Phx.vista.EstructuraUo=function(config){
 				console.log('llamada')
 			},this);
 			
-			
+		this.addButton('btnReporteFun',	{
+				text: 'Funcionarios',
+				//iconCls: 'bchecklist',
+				disabled: false,
+				handler: this.onBtnReporteFun,
+				tooltip: '<b>Funcionarios</b><br/>Listado de funcionarios por unidad organizacional'
+			}
+		);	
 		
 		//coloca elementos en la barra de herramientas
 		this.tbar.add('->');
@@ -318,6 +325,21 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			     this.root.reload();
 			}
 		},
+		
+		onBtnReporteFun: function(){
+			var node = this.sm.getSelectedNode();
+			var data = node.attributes;
+			Phx.CP.loadWindows('../../../sis_organigrama/vista/estructura_uo/RepFuncionarioUo.php',
+					'Funcionarios',
+					{
+						width:1000,
+						height:600
+				    },
+				    data,
+				    this.idContenedor,
+				    'RepFuncionarioUo'
+			);
+		},	
 	
 		
 		//sobrecarga prepara menu
