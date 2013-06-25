@@ -857,13 +857,15 @@ class driver
 						if($this->tipo_resp=='archivo'){
 
 							//crea un archivo fisico en el servidor
+							if($row[$this->nombre_file]!=''&&$row[$this->extencion]!='')
+							{
 							 $handle=fopen($this->ruta_archivo.$row[$this->nombre_file].'.'.$row[$this->extencion], "w+"); //abrir un enlace a la imagen de acuerdo al oid
 				             $row[$this->nombre_col]=base64_decode(pg_unescape_bytea($row[$this->nombre_col]));//decodificar la imagen
 					         fwrite($handle, $row[$this->nombre_col]);
 					         fclose($handle);
 					         $row[$this->nombre_col]=$row[$this->nombre_file].'.'.$row[$this->extencion];
 								
-
+							}
 						   }
 	                     elseif($this->tipo_resp=='sesion'){
 	                     	

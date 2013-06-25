@@ -19,7 +19,8 @@ class MODValidacion
 								'smallint'=>'smallint',
 								'int4'=>'int4',
 								'int8'=>'int8',
-								'consulta_select'=>'text');
+								'consulta_select'=>'text',
+								'codigo_html'=>'text');
 	
 	function getTipo($tipo){
 		//RAC 1/09/2011
@@ -47,6 +48,9 @@ class MODValidacion
 		elseif ($tipo=='consulta_select'){								
 				$this->validarSelect($nombre,$valor,$blank,$tamano);				
 			 $this->validartext($nombre,$valor,$blank,$tamano);
+		}
+		elseif ($tipo=='codigo_html'){								
+				$this->validarCodigoHtml($nombre,$valor,$blank,$tamano);
 		}
 		elseif ($tipo=='text'){
 			
@@ -139,7 +143,7 @@ class MODValidacion
 		}
 			
 	}
-	/*
+	
 	function validarotro($nombre,$valor,$blank,$tamano,$opciones){
 		
 		if(trim($valor=='') || !isset($valor) || $valor==null){
@@ -174,7 +178,7 @@ class MODValidacion
 			
 		
 	}
-	*/
+	
 	function validarvarchar($nombre,$valor,$blank,$tamano){
 		
 		if(trim($valor=='') || !isset($valor) || $valor==null){
@@ -465,6 +469,13 @@ class MODValidacion
 								}							
 						}	
 				}								 
+			}					
+	}
+	
+	function validarCodigoHtml($nombre,$valor,$blank,$tamano){		
+			
+			if($blank==false){
+				array_push($this->res,'El campo '.$nombre." debe ser registrado");
 			}					
 	}
 	
