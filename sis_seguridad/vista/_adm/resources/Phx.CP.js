@@ -189,8 +189,8 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
 				me.selectedNodes.push(n);
 			}
 			
-			return  !n.attributes.leaf || resp;
-			//return   resp;
+			//return  !n.attributes.leaf || resp;
+			return   resp;
 			
 		});
 		
@@ -239,12 +239,11 @@ MainPanel = function(config){
         //minTabWidth: 135,
         //tabWidth: 135,
         plugins: new Ext.ux.TabCloseMenu(),
-        enableTabScroll: true
+        enableTabScroll: true,
         //activeTab: 0,
-	        
-	        
-	        
-	}));
+        
+       
+  }));
 
 	
 };
@@ -349,6 +348,7 @@ Phx.CP=function(){
     var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista;
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
+	var contNodo = 0;
     return{
 
 		// funcion que se ejcuta despues de una autentificacion exitosa
@@ -357,6 +357,22 @@ Phx.CP=function(){
          	Ext.QuickTips.init();
 			// definicion de la instancia de la clase menu
 			menu=new Menu({});
+			alert('llega')
+			menu.on('beforeload',function(){
+				if(contNodo==0){
+					 Ext.getBody().mask('Loading...', 'x-mask-loading').dom.style.zIndex = '9999';
+					 
+				} 
+				contNodo++;
+				},this)
+			menu.on('load',function(){
+				if(contNodo==1){
+					 Ext.getBody().unmask();
+				} 
+				contNodo--;
+				},this)
+			
+			
 			// manejo de errores
 			menu.loader.addListener('loadexception',Phx.CP.conexionFailure); 
 			// menu contextual
