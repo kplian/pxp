@@ -120,13 +120,14 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
             tbar:[ ' ',
 			new Ext.form.TextField({
 				width: 200,
-				emptyText:'Find a Class',
+				emptyText:'Buscar...',
                 enableKeyEvents: true,
 				listeners:{
 					render: function(f){
                     	this.filter = new Ext.tree.TreeFilter(this, {
                     		clearBlank: true,
-                    		autoClear: true
+                    		autoClear: true,
+                    		remove:true
                     	});
 					},
                     keydown: {
@@ -151,31 +152,57 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
         })
         Menu.superclass.initComponent.call(this);
     },
+    clearFiltered:function(){
+    	Ext.each(this.selectedNodes, function(n){
+				if(n&&n.ui){
+					n.setCls('')
+				}
+			});
+			selectedNodes=new Array();
+    	
+    },
+    selectedNodes:new Array(),
+    
 	filterTree: function(t, e){
 		var text = t.getValue();
+		this.clearFiltered();
+		var me = this;
+		
 		Ext.each(this.hiddenPkgs, function(n){
-			n.ui.show();
+			if(n&&n.ui){
+				n.ui.show();
+			}
 		});
 		if(!text){
 			this.filter.clear();
+			
 			return;
 		}
-		this.expandAll();
+		//this.expandAll();
 		
 		var re = new RegExp('^' + Ext.escapeRe(text), 'i');
 		this.filter.filterBy(function(n){
-			return !n.attributes.isClass || re.test(n.text);
+			var resp =  re.test(n.text)|| re.test(n.attributes.descripcion);
+			if(resp){
+				
+				n.setCls('light-node');
+				me.selectedNodes.push(n);
+			}
+			
+			return  !n.attributes.leaf || resp;
+			//return   resp;
+			
 		});
 		
 		// hide empty packages that weren't filtered
 		this.hiddenPkgs = [];
-                var me = this;
-		this.root.cascade(function(n){
-			if(!n.attributes.isClass && n.ui.ctNode.offsetHeight < 3){
+             
+		/*this.root.cascade(function(n){
+			if(!n.attributes.leaf && n.ui.ctNode.offsetHeight < 3){
 				n.ui.hide();
 				me.hiddenPkgs.push(n);
 			}
-		});
+		});*/
 	},
 	tools:[{
 		id:'refresh',
@@ -403,7 +430,7 @@ Phx.CP=function(){
 							ruta= '/'+naux.id+ruta;
 							naux=naux.parentNode
 						}
-						mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.cls)
+						mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
 					}
 				}
 			});
