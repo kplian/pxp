@@ -357,8 +357,7 @@ Phx.CP=function(){
          	Ext.QuickTips.init();
 			// definicion de la instancia de la clase menu
 			menu=new Menu({});
-			alert('llega')
-			menu.on('beforeload',function(){
+		    menu.on('beforeload',function(){
 				if(contNodo==0){
 					 Ext.getBody().mask('Loading...', 'x-mask-loading').dom.style.zIndex = '9999';
 					 
