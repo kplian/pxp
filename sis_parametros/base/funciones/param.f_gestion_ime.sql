@@ -31,12 +31,13 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_gestion	integer;
-    
-    v_fecha_ini date;
-    v_fecha_fin date;
-    v_cont integer;
-    v_anho integer;
+	v_id_gestion			integer;
+    v_fecha_ini 			date;
+    v_fecha_fin 			date;
+    v_cont 					integer;
+    v_anho 					integer;
+    v_id_periodo 			integer;
+    v_rec					record;
 			    
 BEGIN
 
@@ -52,17 +53,15 @@ BEGIN
 
 	if(p_transaccion='PM_GES_INS')then
     
-           begin
-            --vallida que la gestion dea unica
-            
-            IF exists(select 1 from param.tgestion where gestion = v_parametros.gestion) THEN
-            
-              raise exception 'La gestion ya existe';
-              
-            END IF;
+		begin
            
+            --(1) Validación de existencia de la gestión
+            if exists(select 1 from param.tgestion
+            		where gestion = v_parametros.gestion) THEN
+              raise exception 'Gestión existente';
+            end if;
            
-        	--Sentencia de la insercion
+        	--(2) Sentencia de la insercion
         	insert into param.tgestion(
 			id_moneda_base,
 			id_empresa,
@@ -83,47 +82,60 @@ BEGIN
 			p_id_usuario,
 			null,
 			null
-							
-			)RETURNING id_gestion into v_id_gestion;
+			) returning id_gestion into v_id_gestion;
             
-            --inserta en la tabla periodo
-            
+            --(3) Generación de los Períodos y Períodos Subsistema
             v_cont =1;
             
-            WHILE v_cont <= 12 LOOP
-            
-             -- obtiene primer del mes correspondiente a la fecha_ini
-                        
-             v_fecha_ini= ('01-'||v_cont||'-'||v_parametros.gestion)::date;
-             -- obtiene el ultimo dia del mes correspondiente a la fecha_fin
-           
-             v_fecha_fin=(date_trunc('MONTH', v_fecha_ini) + INTERVAL '1 MONTH - 1 day')::date;
-             
-             INSERT INTO 
-                          param.tperiodo
-                        (
-                          id_usuario_reg,
-                          id_usuario_mod,
-                          fecha_reg,
-                          fecha_mod,
-                          estado_reg,
-                        
-                          periodo,
-                          id_gestion,
-                          fecha_ini,
-                          fecha_fin
-                        ) 
-                        VALUES (
-                          p_id_usuario,
-                          NULL,
-                          now(),
-                          NULL,
-                          'activo',
-                          v_cont,
-                          v_id_gestion,
-                          v_fecha_ini,
-                          v_fecha_fin
-                        );
+			while v_cont <= 12 loop
+	            --Obtención del primer día del mes correspondiente a la fecha_ini
+	            v_fecha_ini= ('01-'||v_cont||'-'||v_parametros.gestion)::date;
+	            
+	            --Obtención el último dia del mes correspondiente a la fecha_fin
+	            v_fecha_fin=(date_trunc('MONTH', v_fecha_ini) + INTERVAL '1 MONTH - 1 day')::date;
+	             
+	            insert into param.tperiodo(
+                  id_usuario_reg,
+                  id_usuario_mod,
+                  fecha_reg,
+                  fecha_mod,
+                  estado_reg,
+                  periodo,
+                  id_gestion,
+                  fecha_ini,
+                  fecha_fin
+                ) VALUES (
+                  p_id_usuario,
+                  NULL,
+                  now(),
+                  NULL,
+                  'activo',
+                  v_cont,
+                  v_id_gestion,
+                  v_fecha_ini,
+                  v_fecha_fin
+                ) returning id_periodo into v_id_periodo;
+                
+                --Registro de los periodos de los subsistemas existentes
+                for v_rec in (select id_subsistema
+                			from segu.tsubsistema
+                			where estado_reg = 'activo') loop
+                	insert into param.tperiodo_subsistema(
+                	id_periodo,
+                	id_subsistema,
+                	estado,
+                	id_usuario_reg,
+                	fecha_reg
+                	) values(
+                	v_id_periodo,
+                	v_rec.id_subsistema,
+                	'cerrado',
+                	p_id_usuario,
+                	now()
+                	);
+                	
+                		
+                end loop;
             
                v_cont=v_cont+1;
             

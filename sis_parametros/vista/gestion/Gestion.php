@@ -52,7 +52,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 						baseParams:{par_filtro:'nombre'}
 				}),
 				valueField: 'id_empresa',
-				displayField: 'codigo',
+				displayField: 'nombre',
 				gdisplayField:'desc_empresa',
 				hiddenName: 'id_empresa',
 				forceSelection:true,
@@ -78,22 +78,27 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 			
 			grid:true,
 			form:true
-	},
-		
+		},
 		{
-			config:{
+			config: {
 				name: 'gestion',
-				fieldLabel: 'gestion',
-				allowBlank: true,
-				anchor: '80%',
+				fieldLabel: 'Gestión',
+				anchor: '60%',
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'gestion',
 				gwidth: 100,
-				maxLength:4
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tgral__gestion'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['gestion']);}
 			},
-			type:'NumberField',
+			type: 'ComboRec',
+			id_grupo: 0,
 			filters:{pfiltro:'ges.gestion',type:'numeric'},
-			id_grupo:1,
-			grid:true,
-			form:true
+			grid: true,
+			form: true
 		},
 	   	{
 	   			config:{
@@ -102,6 +107,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 	   				fieldLabel:'Moneda',
 	   				gdisplayField:'moneda',//mapea al store del grid
 	   				gwidth:200,
+	   				allowBlank: false,
 		   			renderer:function (value, p, record){return String.format('{0} - {1}', record.data['codigo_moneda'], record.data['moneda']);}
 	       	     },
 	   			type:'ComboRec',
@@ -113,21 +119,27 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 	   		   
 	   			grid:true,
 	   			form:true
-	   	 },
+	   	},
 		{
-			config:{
+			config: {
 				name: 'estado',
-				fieldLabel: 'estado',
-				allowBlank: true,
-				anchor: '80%',
+				fieldLabel: 'Estado',
+				anchor: '60%',
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'estado',
 				gwidth: 100,
-				maxLength:15
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tgral__estado'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['estado']);}
 			},
-			type:'TextField',
+			type: 'ComboRec',
+			id_grupo: 0,
 			filters:{pfiltro:'ges.estado',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
+			grid: true,
+			form: true
 		},
 		{
 			config:{
@@ -232,17 +244,17 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_gestion',
 		direction: 'ASC'
 	},
-	
-	east:{
+	south:{
 		  url:'../../../sis_parametros/vista/periodo/Periodo.php',
 		  title:'Periodos', 
-		  width:400,
+		  height : '50%',
 		  cls:'Periodo'
 		},
 	bdel:true,
-	bsave:true
-	}
-)
+	bsave:true,
+	fwidth:'50%',
+	fheight:'50%'
+})
 </script>
 		
 		

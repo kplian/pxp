@@ -29,6 +29,7 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
+	v_cons				varchar;
 			    
 BEGIN
 
@@ -62,15 +63,15 @@ BEGIN
                             pesu.fecha_mod,
                             pesu.id_usuario_mod,
                             usu1.cuenta as usr_reg,
-                            usu2.cuenta as usr_mod	
+                            usu2.cuenta as usr_mod,
+                            sis.codigo || '' - '' ||sis.nombre as desc_subsistema	
 						from param.tperiodo_subsistema pesu
                         left join segu.tsubsistema sis on sis.id_subsistema = pesu.id_subsistema
 						inner join segu.tusuario usu1 on usu1.id_usuario = pesu.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pesu.id_usuario_mod
                         inner join param.tperiodo peri on peri.id_periodo = pesu.id_periodo
                         inner join param.tgestion gest on gest.id_gestion = peri.id_gestion
-				        where sis.codigo = '''|| v_parametros.codigo_subsistema ||''' and ';
-			
+				        where ';
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
@@ -97,8 +98,19 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = pesu.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pesu.id_usuario_mod
                         inner join param.tperiodo peri on peri.id_periodo = pesu.id_periodo
-                        inner join param.tgestion gest on gest.id_gestion = peri.id_gestion
-				        where sis.codigo = '''|| v_parametros.codigo_subsistema ||''' and ';
+                        inner join param.tgestion gest on gest.id_gestion = peri.id_gestion 
+                        where ';
+                        
+                        v_cons='';
+                        if pxp.f_existe_parametro(p_tabla,'codigo_subsistema') then
+                        	v_cons = ' sis.codigo = '''|| v_parametros.codigo_subsistema ||''' and ';
+                        elsif pxp.f_existe_parametro(p_tabla,'id_periodo') then
+                        	v_cons = ' pesu.id_periodo = '|| v_parametros.id_periodo ||' and ';
+                        end if;
+                        
+				        if v_consulta != '' then
+				        	v_consulta = v_consulta || v_cons;
+				        end if;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
