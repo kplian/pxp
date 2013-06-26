@@ -703,3 +703,9 @@ ALTER TABLE param.tgrupo_ep
     
 /***********************************F-SCP-RAC-PARAM-0-03/06/2013****************************************/
   
+/***********************************I-SCP-RCM-PARAM-0-28/06/2013****************************************/
+ALTER TABLE param.tcorrelativo
+  ADD COLUMN tabla varchar(70);
+ALTER TABLE param.tcorrelativo
+  ADD COLUMN id_tabla INTEGER;
+/***********************************F-SCP-RCM-PARAM-0-28/06/2013****************************************/
