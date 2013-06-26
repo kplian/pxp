@@ -16,6 +16,12 @@ class ACTInstitucion extends ACTbase{
 		if($this->objParam->getParametro('id_institucion')!=''){
             $this->objParam->addFiltro("instit.id_institucion = " . $this->objParam->getParametro('id_institucion'));    
         }
+        
+        if($this->objParam->getParametro('es_banco')!=''){
+            $this->objParam->addFiltro("instit.es_banco = ''".$this->objParam->getParametro('es_banco')."''");    
+        }
+        
+        
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam, $this);
 			$this->res = $this->objReporte->generarReporteListado('MODInstitucion','listarInstitucion');

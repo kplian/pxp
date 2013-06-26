@@ -35,7 +35,7 @@ def generate_scripts (file_str):
 	dic = dict(codigo='',query='', is_loaded='')
 	searching_for = 'inicio'	
         for line in file:
-                if line.find('***I-SCP-') != -1 or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 :
+                if line.find('***I-SCP-') != -1 or line.find('***I-DEP-') !=-1 or line.find('***I-DAT-') != -1 or line.find('***I-TYP-') != -1:
                         dic['codigo'] = line.replace('*','')
 			dic['codigo'] = dic['codigo'].replace('/','')
 			dic['codigo'] = dic['codigo'].replace(' ','')
@@ -46,7 +46,7 @@ def generate_scripts (file_str):
 				 f_log.write("ERROR: Se encontro: " + line.replace('*','')  + "cuando se buscaba el fin de un SCRIPT\n")
 	
 			searching_for = 'fin'
-		elif line.find('***F-SCP-') != -1 or line.find('***F-DEP-') !=-1 or line.find('***F-DAT-') != -1:
+		elif line.find('***F-SCP-') != -1 or line.find('***F-DEP-') !=-1 or line.find('***F-DAT-') != -1 or line.find('***F-TYP-') != -1:
 			if dic['codigo'] != '':
 				scripts.append(dic)
                                 dic = dict(codigo = '', query = '', is_loaded='')
@@ -74,13 +74,16 @@ def execute_script (systems , kind, file_log):
     	for f in patches:
             if f.startswith(kind):
 		file_log.write("*************"+ kind + " : " + item + "\n")
-            	sql_scripts = generate_scripts(item + 'base/' + f)
-   		for script in sql_scripts:
+            	
+		sql_scripts = generate_scripts(item + 'base/' + f)
+   		
+		for script in sql_scripts:
         
                 	command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
         
                 	for line in run_command(command):
-            
+                            if kind == 'custom_type':
+                        	print line 
                     	    if (line.strip() == '0'):
                         	f_command = open('/tmp/file_command.txt','w')
                         	f_command.write('BEGIN;')
@@ -173,24 +176,32 @@ except:
         print 'Solo se han recuperado los esquemas basicos del framework. (No existe el archivo sistemas.txt o no es posible leerlo'
 
 
-# Primero se restaura los esquemas y las funciones
+# Primero se restaura los esquemas
 for item in url:
-	for line in run_command('echo "/********************FUNCIONES y ESQUEMAS: ' + item + '*******************/"'):
+	for line in run_command('echo "/********************ESQUEMAS: ' + item + '*******************/"'):
     		f_log.write(line)
 	#restaurar subsistema
-        funciones_dir = item + 'base/funciones/'
-    	if item ==os.path.dirname(__file__) +  '/../../' and opcion == '1':
+        #esquema pxp:se crea el esquema sin usar la funcion manage schema ya q td no existe
+	if item ==os.path.dirname(__file__) +  '/../../' and opcion == '1':
 		command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql'
 		for line in run_command(command):
                 	f_log.write(line)	
+	#otros esquemas:se crea el esquema usando la funcion manage schema
 	elif item !=os.path.dirname(__file__) +  '/../../':
 		esquemas = get_schema(item + 'base/schema.sql')
-		for esquema in esquemas:	
-			
+		for esquema in esquemas:			
 			command = 'psql '+ db + ' -c  "select pxp.f_manage_schema(\$\$' + esquema  + '\$\$,' + opcion + ')"'
 			for line in run_command(command):
        				f_log.write(line)
-    	#crear funciones
+
+#Se crean los tipos
+execute_script(url, 'custom_type', f_log)
+#Crear funciones
+for item in url:
+	 #restaurar subsistema
+	for line in run_command('echo "/********************FUNCIONES: ' + item + '*******************/"'):
+                f_log.write(line)
+        funciones_dir = item + 'base/funciones/'	
     	funciones = os.listdir( funciones_dir )
     	for f in funciones:
     		if f.endswith('.sql'):
