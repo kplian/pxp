@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
   par_codigo_documento varchar,
   par_id integer,
@@ -7,7 +5,12 @@ CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
   par_id_depto integer,
   par_id_usuario integer,
   par_codigo_subsistema varchar,
-  par_formato varchar
+  par_formato varchar,
+  par_digitos_periodo integer = 0,
+  par_digitos_correlativo integer = 0,
+  par_tabla varchar = 'no_aplica'::character varying,
+  par_id_tabla integer = 0,
+  par_cod_tabla varchar = 'no_aplica'::character varying
 )
 RETURNS varchar AS
 $body$
@@ -157,7 +160,45 @@ BEGIN
         raise exception 'Obtencion de correlativo no realizada. Documento inexistente % o esta inactivo',par_codigo_documento;
     end if;
     
-    --2) verifica si el  tipo de numeracio es depto y si es asi que  exista la variable id_depto
+    
+    ------------------
+    -- Verificación de Tipo de Numeración
+    ------------------
+    if (v_tipo_numeracion  = 'depto') then
+    	if par_id_depto is null then
+    		raise exception 'La numeracion del documento requiere indicar DEPTO';
+    	else
+    		--obtenemos codigo depto
+     		select d.codigo into v_codigo_depto from param.tdepto d where d.id_depto = par_id_depto;
+    	end if;
+    elsif (v_tipo_numeracion = 'uo') then
+    	if par_id_uo is null then
+    		raise exception 'La numeracion del documento requiere indicar UO';
+    	else
+    		--obtenemos codigo UO
+      		select u.codigo into v_codigo_uo from orga.tuo u where u.id_uo = par_id_uo;
+    	end if;
+    elsif (v_tipo_numeracion = 'depto_uo') then
+    	if par_id_uo is null or par_id_depto is null then
+    		raise exception 'La numeracion del documento requiere indicar UO y DEPTO';
+    	else
+    		--obtenemos codigo depto
+     		select d.codigo into v_codigo_depto from param.tdepto d where d.id_depto = par_id_depto;
+     		--obtenemos codigo UO
+      		select u.codigo into v_codigo_uo from orga.tuo u where u.id_uo = par_id_uo;
+    	end if;
+    elsif (v_tipo_numeracion = 'tabla') then
+    	--Asume la numeración para cualquier tabla
+    	if par_id_tabla is null then
+    		raise exception 'La numeracion del documento requiere indicar ID TABLA';
+    	end if;
+    else
+    	raise exception 'Tipo de numeración no válida';
+    end if;
+    
+    
+    
+    /*--2) verifica si el  tipo de numeracio es depto y si es asi que  exista la variable id_depto
     if (v_tipo_numeracion  in ('depto','depto_uo') and par_id_depto is null) then
         raise exception 'La numeracion del documento requiere indicar DEPTO';
     else
@@ -172,11 +213,14 @@ BEGIN
     else
       --obtenemos codigo UO
       select u.codigo into v_codigo_uo from orga.tuo u where u.id_uo = par_id_uo;
-    end if;
+    end if;*/
+    
+    
+    -------------------------------------------------
     
     
     -- 4) IF - Si la numeracion se realiza por periodo obtiene el periodo correspondiente
-        --     NOTA si el par_id esta definido indica le periodo al que se quiere
+        --     NOTA si el par_id esta definido indica el periodo al que se quiere
         --     obtener el correlativo
     v_id:=par_id;
     
@@ -194,11 +238,10 @@ BEGIN
             into v_id, v_num_periodo ,v_num_gestion
             from param.tperiodo p
             inner join param.tgestion ges 
-              on ges.id_gestion = p.id_gestion 
-              and ges.estado_reg ='activo'
-             
-              
-            where p.estado_reg='activo' and  now()::date between fecha_ini and fecha_fin ;
+            on ges.id_gestion = p.id_gestion 
+            and ges.estado_reg ='activo'
+            where p.estado_reg='activo' and
+            now()::date between fecha_ini and fecha_fin ;
             
             if(v_id is null) then
                raise exception 'Periodo para la fecha % inexistente', now()::date ;
@@ -209,12 +252,12 @@ BEGIN
             into v_id, v_num_periodo,v_num_gestion
             from param.tperiodo p
             inner join param.tgestion ges 
-                on ges.id_gestion = p.id_gestion 
-                and ges.estado_reg ='activo'
-              
+            on ges.id_gestion = p.id_gestion 
+            and ges.estado_reg ='activo'
             where  p.estado_reg='activo' and p.id_periodo = par_id;  
     
          END IF; 
+         
          -- en funcion al id enviado
          if exists (select 1 from param.tperiodo where id_periodo=v_id and estado_reg!='activo') then
                raise exception 'El periodo solicitado no esta activo';
@@ -267,13 +310,14 @@ BEGIN
                   and id_gestion '|| pxp.f_iif(v_periodo_gestion='gestion','= '||v_id::varchar,'is NULL') ||'
                   and id_periodo '|| pxp.f_iif (v_periodo_gestion='periodo','= '||v_id::varchar,'is NULL')||'
                   and id_uo      '||  pxp.f_iif(v_tipo_numeracion in ('uo','depto_uo'), '= '||par_id_uo::varchar,'is NULL')||'
-                  and id_depto   '|| pxp.f_iif(v_tipo_numeracion in ('depto','depto_uo'),'= '||par_id_depto::varchar, 'is NULL');
+                  and id_depto   '|| pxp.f_iif(v_tipo_numeracion in ('depto','depto_uo'),'= '||par_id_depto::varchar, 'is NULL')||'
+                  and tabla   '|| pxp.f_iif(v_tipo_numeracion in ('tabla'),'= '''||par_tabla||'''', 'is NULL')||'
+                  and id_tabla   '|| pxp.f_iif(v_tipo_numeracion in ('tabla'),'= '||par_id_tabla::varchar, 'is NULL');
      
      
      FOR g_registros in EXECUTE('select 0 as res
                           from param.tcorrelativo 
-                          where '|| v_where)
-     LOOP
+                          where '|| v_where) LOOP
      
        
            v_correlativo:=g_registros.res;
@@ -305,7 +349,9 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
           fecha_reg,   
           id_usuario_reg , 
           id_uo,
-          id_depto)
+          id_depto,
+          tabla,
+          id_tabla)
          values (
          	par_id_documento, 
             pxp.f_iif(v_periodo_gestion='gestion',v_id::varchar,NULL)::integer, 
@@ -316,7 +362,9 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
             now(), 
             par_id_usuario, 
             pxp.f_iif(v_tipo_numeracion in ('uo','depto_uo'), par_id_uo::varchar, NULL)::integer, 
-            pxp.f_iif((v_tipo_numeracion in ('depto','depto_uo')),par_id_depto::varchar, NULL)::integer
+            pxp.f_iif((v_tipo_numeracion in ('depto','depto_uo')),par_id_depto::varchar, NULL)::integer,
+            pxp.f_iif((v_tipo_numeracion in ('tabla')),par_tabla, NULL)::varchar,
+            pxp.f_iif((v_tipo_numeracion in ('tabla')),par_id_tabla::varchar, NULL)::integer
             );
          	v_correlativo:=1;
       else
@@ -330,8 +378,7 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
                                           FROM param.tcorrelativo
                                           WHERE '|| v_where ||'
                                           FOR UPDATE
-                                          ')
-             LOOP
+                                          ') LOOP
              
               	update param.tcorrelativo
          	 	set num_siguiente=g_registros.num_actual+2,
@@ -353,9 +400,9 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
                         --raise exception 'aa%',par_formato;
   IF(par_formato = 'sin')THEN
               
-    return v_correlativo::varchar;
+    return  pxp.f_iif(par_digitos_correlativo>0,pxp.f_llenar_ceros(v_correlativo::numeric,par_digitos_correlativo),v_correlativo::varchar);
     
-  ELSEIF par_formato is  not null THEN
+  ELSEIF par_formato is not null THEN
                   
      
       
@@ -363,9 +410,10 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
       v_formula = replace(v_formula,'uo', COALESCE(v_codigo_uo,'')::varchar);  
       v_formula = replace(v_formula,'codsub', COALESCE(par_codigo_subsistema,'')::varchar);
       v_formula = replace(v_formula,'coddoc', COALESCE(par_codigo_documento,'')::varchar);
-      v_formula = replace(v_formula,'periodo', COALESCE(v_num_periodo::varchar,'')::varchar);
+      v_formula = replace(v_formula,'periodo', COALESCE(pxp.f_iif(par_digitos_periodo>0,pxp.f_llenar_ceros(v_num_periodo::numeric,par_digitos_periodo),v_num_periodo::varchar),'')::varchar);
       v_formula = replace(v_formula,'gestion', COALESCE(v_num_gestion::varchar,'')::varchar);
-      v_formula = replace(v_formula,'correlativo', COALESCE(v_correlativo::varchar,'')::varchar);
+      v_formula = replace(v_formula,'correlativo', COALESCE(pxp.f_iif(par_digitos_correlativo>0,pxp.f_llenar_ceros(v_correlativo::numeric,par_digitos_correlativo),v_correlativo::varchar),'')::varchar);
+      v_formula = replace(v_formula,'codtabla', COALESCE(par_cod_tabla::varchar,'')::varchar);
   
      
      return  v_formula;
@@ -377,9 +425,10 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
           v_formula = replace(v_formula,'uo', COALESCE(v_codigo_uo,'')::varchar);  
           v_formula = replace(v_formula,'codsub', COALESCE(par_codigo_subsistema,'')::varchar);
           v_formula = replace(v_formula,'coddoc', COALESCE(par_codigo_documento,'')::varchar);
-          v_formula = replace(v_formula,'periodo', COALESCE(v_num_periodo::varchar,'')::varchar);
+          v_formula = replace(v_formula,'periodo', COALESCE(pxp.f_iif(par_digitos_periodo>0,pxp.f_llenar_ceros(v_num_periodo::numeric,par_digitos_periodo),v_num_periodo::varchar),'')::varchar);
           v_formula = replace(v_formula,'gestion', COALESCE(v_num_gestion::varchar,'')::varchar);
-          v_formula = replace(v_formula,'correlativo', COALESCE(v_correlativo::varchar,'')::varchar);
+          v_formula = replace(v_formula,'correlativo', COALESCE(pxp.f_iif(par_digitos_correlativo>0,pxp.f_llenar_ceros(v_correlativo::numeric,par_digitos_correlativo),v_correlativo::varchar),'')::varchar);
+          v_formula = replace(v_formula,'codtabla', COALESCE(par_cod_tabla::varchar,'')::varchar);
       
          return  v_formula;
 
@@ -395,13 +444,15 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
                 
               ELSEIF v_tipo_numeracion = 'depto' THEN  
                   v_formula = v_codigo_depto;        
+              ELSEIF v_tipo_numeracion = 'tabla' THEN  
+                  v_formula = par_cod_tabla;
                 
               END IF;
             
                IF  v_periodo_gestion = 'periodo' THEN
-                 v_formula = v_formula||'-'||COALESCE(par_codigo_documento,'')||'-'||COALESCE(v_num_periodo::varchar,'')||'/'||COALESCE(v_correlativo::varchar,'')||'-'||COALESCE(v_num_gestion::varchar,'');
+                 v_formula = v_formula||'-'||COALESCE(par_codigo_documento,'')||'-'||COALESCE(pxp.f_iif(par_digitos_periodo>0,pxp.f_llenar_ceros(v_num_periodo::numeric,par_digitos_periodo),v_num_periodo::varchar),'')||'/'||COALESCE(v_correlativo::varchar,'')||'-'||COALESCE(v_num_gestion::varchar,'');
                ELSE
-                 v_formula = v_formula||'-'||COALESCE(par_codigo_documento,'')||'-'||COALESCE(v_correlativo::varchar,'')||'-'||COALESCE(v_num_gestion::varchar,'');     
+                 v_formula = v_formula||'-'||COALESCE(par_codigo_documento,'')||'-'||COALESCE(pxp.f_iif(par_digitos_correlativo>0,pxp.f_llenar_ceros(v_correlativo::numeric,par_digitos_correlativo),v_correlativo::varchar),'')||'-'||COALESCE(v_num_gestion::varchar,'');     
                END IF;
                
              return  v_formula; 
