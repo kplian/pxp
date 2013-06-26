@@ -1039,7 +1039,7 @@ class ReportePDF extends TCPDF
 		        $this->setCellPaddings(2);
 		        $this->Cell($width1, $height/4, 'Fecha Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
 		        $this->SetFont('','B');
-		        $this->Cell($width2, $height/4, '29/06/2012', "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width2, $height/4, $this->objParam->getParametro('fechaRep'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
 		        
 		        $this->SetFont('','');
 		        $y += 5;
