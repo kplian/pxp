@@ -148,3 +148,9 @@ CREATE TABLE pxp.tforenkey (
 ) WITHOUT OIDS;
 
 /****************************F-SCP-RAC-PXP-0-23/01/2013*************/
+
+/****************************I-SCP-GSS-PXP-0-04/07/2013*************/
+
+CREATE EXTENSION IF NOT EXISTS hstore;
+
+/****************************F-SCP-GSS-PXP-0-04/07/2013*************/
