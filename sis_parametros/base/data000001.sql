@@ -610,19 +610,17 @@ select pxp.f_insert_tprocedimiento ('PM_ASIS_MOD', 'Modificacion de registros', 
 select pxp.f_insert_tprocedimiento ('PM_ASIS_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_asistente_ime');
 /***********************************F-DAT-AAO-PARAM-72-23/04/2013*****************************************/
 
-
-
 /***********************************I-DAT-RAC-PARAM-00-26/04/2013*****************************************/
-
 select pxp.f_insert_tgui ('Generadores de Alarma', 'Configuracion funciones que generan alarmas', 'GAL', 'si', 4, 'sis_parametros/vista/generador_alarma/GeneradorAlarma.php', 2, '', 'GeneradorAlarma', 'PARAM');
-
 select pxp.f_insert_testructura_gui ('GAL', 'PARAM');
-
 select pxp.f_insert_tgui ('Grupos', 'Grupos', 'GQP', 'si', 8, 'sis_parametros/vista/grupo/Grupo.php', 3, '', 'Grupo', 'PARAM');
 select pxp.f_insert_testructura_gui ('GQP', 'CEP');
-
 /***********************************F-DAT-RAC-PARAM-00-26/04/2013*****************************************/
 
+/***********************************I-DAT-RCM-PARAM-00-03/05/2013*****************************************/
+select pxp.f_add_catalog('PARAM','tgral__bandera','Si');
+select pxp.f_add_catalog('PARAM','tgral__bandera','No');
+/***********************************F-DAT-RCM-PARAM-00-03/05/2013*****************************************/
 /***********************************I-DAT-GSS-PARAM-00-07/05/2013*****************************************/
 
 select pxp.f_insert_tprocedimiento ('PM_DEPUSUCOMB_SEL', 'Listado de departamento por usuario para combos', 'si', '', '', 'param.ft_depto_sel');
@@ -630,3 +628,30 @@ select pxp.f_insert_tprocedimiento ('PM_CECCOM_SEL', 'Consulta de datos de centr
 select pxp.f_insert_tprocedimiento ('PM_CECCOM_CONT', 'Conteo de registros centro de costo combo', 'si', '', '', 'param.f_centro_costo_sel');
 
 /***********************************F-DAT-GSS-PARAM-00-07/05/2013*****************************************/
+
+/***********************************I-DAT-RCM-PARAM-00-24/06/2013*****************************************/
+select pxp.f_add_catalog('PARAM','tgral__estado','activo');
+select pxp.f_add_catalog('PARAM','tgral__estado','inactivo');
+
+select pxp.f_add_catalog('PARAM','tgral__gestion','2005');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2006');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2007');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2008');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2009');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2010');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2011');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2012');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2013');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2014');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2015');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2016');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2017');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2018');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2019');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2020');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2021');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2022');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2023');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2024');
+select pxp.f_add_catalog('PARAM','tgral__gestion','2025');
+/***********************************F-DAT-RCM-PARAM-00-24/06/2013*****************************************/

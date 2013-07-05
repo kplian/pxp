@@ -852,3 +852,4 @@ PRIMARY KEY(id_usuario_grupo_ep)) INHERITS (pxp.tbase);
 /*****************************F-SCP-RAC-SEGU-0-22/04/2013*************/
 
 
+

@@ -593,7 +593,7 @@ select pxp.f_insert_tprocedimiento_gui ('PM_PROY_MOD', 'PRO', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PROY_ELI', 'PRO', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PROY_SEL', 'PRO', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE', 'no');
+--select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_LUG_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_LUG_ARB_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_INS', 'PROVEE', 'no');
@@ -601,8 +601,8 @@ select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_MOD', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_ELI', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PROVEEV_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITEM_SEL', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE.1', 'no');
+--select pxp.f_insert_tprocedimiento_gui ('SAL_ITEM_SEL', 'PROVEE.1', 'no');
+--select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_SEL', 'PROVEE.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PRITSE_INS', 'PROVEE.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_PRITSE_MOD', 'PROVEE.1', 'no');
@@ -772,5 +772,160 @@ AS
        LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
   WHERE provee.estado_reg::text = 'activo' ::text;
 /***********************************F-DEP-RAC-PARAM-0-07/05/2013*****************************************/
+
+/***********************************I-DEP-JRR-PARAM-0-24/05/2013*****************************************/
+CREATE OR REPLACE VIEW param.vcentro_costo(
+    id_centro_costo,
+    estado_reg,
+    id_ep,
+    id_gestion,
+    id_uo,
+    id_usuario_reg,
+    fecha_reg,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    codigo_uo,
+    nombre_uo,
+    ep,
+    gestion,
+    codigo_cc,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    nombre_financiador,
+    nombre_regional)
+AS
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
+          ::text) || ges.gestion) || ')' ::text AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
+/***********************************F-DEP-JRR-PARAM-0-24/05/2013*****************************************/
     
     
+
+/***********************************I-DEP-RAC-PARAM-0-04/06/2013*****************************************/
+    
+    
+
+ALTER TABLE param.tdepto_usuario
+  ADD CONSTRAINT fk_tdepto_usuario__id_depto FOREIGN KEY (id_depto)
+    REFERENCES param.tdepto(id_depto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ ALTER TABLE param.tdepto_usuario
+  ADD CONSTRAINT tfk_depto_usuario__id_usuario FOREIGN KEY (id_usuario)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE; 
+    
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT tproveedor_fk FOREIGN KEY (id_lugar)
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;  
+  
+ --------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT tproveedor__id_lugar FOREIGN KEY (id_lugar)
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+--------------- SQL ---------------
+
+CREATE INDEX tpersona_idx ON segu.tpersona
+  USING btree (nombre, apellido_paterno, apellido_materno);
+
+--------------- SQL ---------------
+
+CREATE INDEX tproveedor_idx2 ON param.tproveedor
+  USING btree (id_persona);
+
+/***********************************F-DEP-RAC-PARAM-0-04/06/2013*****************************************/
+
+/***********************************I-DEP-JRR-PARAM-0-24/05/2013*****************************************/
+CREATE OR REPLACE VIEW param.vcentro_costo(
+    id_centro_costo,
+    estado_reg,
+    id_ep,
+    id_gestion,
+    id_uo,
+    id_usuario_reg,
+    fecha_reg,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    codigo_uo,
+    nombre_uo,
+    ep,
+    gestion,
+    codigo_cc,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    nombre_financiador,
+    nombre_regional)
+AS
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
+          ::text) || ges.gestion) || ')' ::text AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
+/***********************************F-DEP-JRR-PARAM-0-24/05/2013*****************************************/

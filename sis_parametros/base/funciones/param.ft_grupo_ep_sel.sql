@@ -57,10 +57,13 @@ BEGIN
 						gqp.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        e.ep
+                        e.ep,
+                        uo.id_uo,
+                        ''(''||uo.codigo||'')-''||uo.nombre_unidad as desc_uo
 						from param.tgrupo_ep gqp
+                        left join orga.tuo uo on uo.id_uo = gqp.id_uo
 						inner join segu.tusuario usu1 on usu1.id_usuario = gqp.id_usuario_reg
-                        inner join param.vep e on e.id_ep = gqp.id_ep
+                        left join param.vep e on e.id_ep = gqp.id_ep
 						left join segu.tusuario usu2 on usu2.id_usuario = gqp.id_usuario_mod
 						  where  ';
 			
@@ -86,8 +89,9 @@ BEGIN
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_grupo_ep)
 					    from param.tgrupo_ep gqp
+                        left join orga.tuo uo on uo.id_uo = gqp.id_uo
 						inner join segu.tusuario usu1 on usu1.id_usuario = gqp.id_usuario_reg
-                        inner join param.vep e on e.id_ep = gqp.id_ep
+                        left join param.vep e on e.id_ep = gqp.id_ep
 						left join segu.tusuario usu2 on usu2.id_usuario = gqp.id_usuario_mod
 						where ';
 			

@@ -16,15 +16,6 @@ header("content-type: text/javascript; charset=UTF-8");
 			this.maestro = config.maestro;
 			Phx.vista.PeriodoSubsistema.superclass.constructor.call(this, config);
 			this.init();
-
-			this.addButton('btnGenerarPeriodos', {
-				text : 'Generar Periodos',
-				iconCls : 'bok',
-				disabled : false,
-				handler : this.onBtnGenerarPeriodos,
-				tooltip : '<b>Generar Periodos</b><br/>Genera los periodos disponibles por el sistema'
-			});
-
 			this.addButton('btnSwitchEstadoPeriodo', {
 				text : '',
 				iconCls : 'bunlock',
@@ -33,13 +24,6 @@ header("content-type: text/javascript; charset=UTF-8");
 				tooltip : '<b>Abrir Periodo</b>'
 			});
 
-			this.load({
-				params : {
-					start : 0,
-					limit : 50,
-					codigo_subsistema : this.codigoSubsistema
-				}
-			})
 		},
 		Atributos : [{
 			config : {
@@ -65,6 +49,23 @@ header("content-type: text/javascript; charset=UTF-8");
 			},
 			type : 'Field',
 			grid : false
+		}, {
+			config : {
+				name : 'desc_subsistema',
+				fieldLabel : 'Subsistema',
+				allowBlank : true,
+				anchor : '80%',
+				gwidth : 100,
+				maxLength : 20
+			},
+			type : 'TextField',
+			filters : {
+				pfiltro : 'sis.codigo#sis.nombre',
+				type : 'string'
+			},
+			id_grupo : 1,
+			grid : true,
+			form : true
 		}, {
 			config : {
 				name : 'estado',
@@ -298,7 +299,8 @@ header("content-type: text/javascript; charset=UTF-8");
 		}, {
 			name : 'usr_mod',
 			type : 'string'
-		}],
+		},
+		'desc_subsistema'],
 		sortInfo : {
 			field : 'id_periodo_subsistema',
 			direction : 'ASC'
@@ -325,23 +327,6 @@ header("content-type: text/javascript; charset=UTF-8");
 		liberaMenu : function(n) {
 			Phx.vista.PeriodoSubsistema.superclass.liberaMenu.call(this, n);
 			this.getBoton('btnSwitchEstadoPeriodo').disable();
-		},
-		onBtnGenerarPeriodos : function() {
-			var global = this;
-			Ext.Msg.confirm('Confirmación', '¿Está seguro de generar los periodos para el sistema ' + this.codigoSubsistema + '?', function(btn) {
-				if (btn == "yes") {
-					Ext.Ajax.request({
-						url : '../../sis_parametros/control/PeriodoSubsistema/generarPeriodoSubsistema',
-						params : {
-							'codigo_subsistema' : global.codigoSubsistema
-						},
-						success : global.successSave,
-						failure : global.conexionFailure,
-						timeout : global.timeout,
-						scope : global
-					});
-				}
-			});
 		},
 		onBtnSwitchEstadoPeriodo : function() {
 			var global = this;
@@ -372,7 +357,16 @@ header("content-type: text/javascript; charset=UTF-8");
 				timeout : global.timeout,
 				scope : global
 			});
-		}
-	})
+		},
+	loadValoresIniciales:function(){
+		Phx.vista.PeriodoSubsistema.superclass.loadValoresIniciales.call(this);
+		this.getComponente('id_periodo').setValue(this.maestro.id_periodo);		
+	},
+	onReloadPage:function(m){
+		this.maestro=m;
+		this.store.baseParams={id_periodo:this.maestro.id_periodo};
+		this.load({params:{start:0, limit:50}})
+	}
+})
 </script>
 

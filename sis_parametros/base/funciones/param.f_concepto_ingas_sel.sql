@@ -98,7 +98,78 @@ BEGIN
 			return v_consulta;
 
 		end;
-					
+	/*********************************    
+ 	#TRANSACCION:  'PM_CONIGPP_SEL'
+ 	#DESCRIPCION:	Consulta de datos conmceptos de gasto filtrados por partidas
+ 	#AUTOR:		admin	
+ 	#FECHA:		25-02-2013 19:49:23
+	***********************************/
+
+	elseif(p_transaccion='PM_CONIGPP_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select 
+                               distinct
+                               conig.id_concepto_ingas,
+                               conig.desc_ingas,
+                               conig.tipo,
+                               conig.movimiento,
+                               conig.sw_tes,
+                               conig.id_oec,
+                               conig.estado_reg,
+                               conig.id_usuario_reg,
+                               conig.fecha_reg,
+                               conig.fecha_mod,
+                               conig.id_usuario_mod,
+                               usu1.cuenta as usr_reg,
+                               usu2.cuenta as usr_mod
+                        from param.tconcepto_ingas conig
+                             inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                             left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+                             inner join pre.tconcepto_cta cc on cc.id_concepto_ingas = conig.id_concepto_ingas 
+                             and cc.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
+				        where  ';
+                        
+                       
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            
+            
+             raise notice '%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_CONIGPP_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		25-02-2013 19:49:23
+	***********************************/
+
+	elsif(p_transaccion='PM_CONIGPP_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(conig.id_concepto_ingas)
+					    from param.tconcepto_ingas conig
+                             inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                             left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+                             inner join pre.tconcepto_cta cc on cc.id_concepto_ingas = conig.id_concepto_ingas 
+                             and cc.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
+				        where ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;				
 	else
 					     
 		raise exception 'Transaccion inexistente';

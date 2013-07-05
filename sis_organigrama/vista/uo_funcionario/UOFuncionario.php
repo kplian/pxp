@@ -82,7 +82,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        	     },
    			type:'ComboRec',//ComboRec
    			id_grupo:0,
-   			filters:{pfiltro:'funcio.desc_person',
+   			filters:{pfiltro:'funcio.desc_funcionario1',
 				type:'string'
 			},
    		   

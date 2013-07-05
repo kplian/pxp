@@ -33,6 +33,10 @@ BEGIN
         from orga.tuo_funcionario funuo
         where funuo.estado_reg = 'activo' and funuo.id_funcionario = par_id_funcionario and
         	funuo.fecha_asignacion <= par_fecha and (funuo.fecha_finalizacion is null or funuo.fecha_finalizacion >= par_fecha);
+        if (v_id_uo is null)then
+        	return -1;
+        end if;
+        
             
         return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL);
     end if;

@@ -147,7 +147,20 @@ if(!isset($_SESSION["_SESION"])){
       
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-lang-es.js"></script>
     
- 
+ 	<?php 		
+ 		$dir = scandir(dirname(__FILE__) . "/../../../../");
+		
+		foreach($dir as $file) {
+			
+		   	if(is_dir(dirname(__FILE__) . "/../../../../" . $file) && ($file!='..' && $file!='.') && strpos($file, 'sis_') === 0) {
+		   								   		
+		    	if (file_exists(dirname(__FILE__) . "/../../../../" . $file . '/vista/_comborec/comborec.js')){
+		    		
+		    		echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"../../../" . $file . "/vista/_comborec/comborec.js\"></script>";
+		    	}
+		   	}
+		}
+ 	?>
 
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
   
@@ -162,10 +175,9 @@ if(!isset($_SESSION["_SESION"])){
 </div>
 <!-- div para cargar interfaces requeridas para herencia-->
 <div id="4rn"></div>
+<div id="5rn"></div>
+<div id="6rn"></div>
 <div id="3rn"></div>
-
-  
-<script src="http://script.chatwee.com/chacha-server/chatwee_103202.js" type="text/javascript"></script>
-
+ 
   </body>
 </html>

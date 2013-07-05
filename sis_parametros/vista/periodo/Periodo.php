@@ -202,9 +202,14 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 	bdel:false,
 	bsave:false,
 	bedit:false,
-	bnew:false
-	}
-)
+	bnew:false,
+	east:{
+		  url:'../../../sis_parametros/vista/periodo_subsistema/PeriodoSubsistema.php',
+		  title:'Periodo Subistema', 
+		  width:'50%',
+		  cls:'PeriodoSubsistema'
+		}
+})
 </script>
 		
 		

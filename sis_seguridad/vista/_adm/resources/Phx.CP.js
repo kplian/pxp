@@ -120,13 +120,14 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
             tbar:[ ' ',
 			new Ext.form.TextField({
 				width: 200,
-				emptyText:'Find a Class',
+				emptyText:'Buscar...',
                 enableKeyEvents: true,
 				listeners:{
 					render: function(f){
                     	this.filter = new Ext.tree.TreeFilter(this, {
                     		clearBlank: true,
-                    		autoClear: true
+                    		autoClear: true,
+                    		remove:true
                     	});
 					},
                     keydown: {
@@ -151,31 +152,57 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
         })
         Menu.superclass.initComponent.call(this);
     },
+    clearFiltered:function(){
+    	Ext.each(this.selectedNodes, function(n){
+				if(n&&n.ui){
+					n.setCls('')
+				}
+			});
+			selectedNodes=new Array();
+    	
+    },
+    selectedNodes:new Array(),
+    
 	filterTree: function(t, e){
 		var text = t.getValue();
+		this.clearFiltered();
+		var me = this;
+		
 		Ext.each(this.hiddenPkgs, function(n){
-			n.ui.show();
+			if(n&&n.ui){
+				n.ui.show();
+			}
 		});
 		if(!text){
 			this.filter.clear();
+			
 			return;
 		}
-		this.expandAll();
+		//this.expandAll();
 		
 		var re = new RegExp('^' + Ext.escapeRe(text), 'i');
 		this.filter.filterBy(function(n){
-			return !n.attributes.isClass || re.test(n.text);
+			var resp =  re.test(n.text)|| re.test(n.attributes.descripcion);
+			if(resp){
+				
+				n.setCls('light-node');
+				me.selectedNodes.push(n);
+			}
+			
+			//return  !n.attributes.leaf || resp;
+			return   resp;
+			
 		});
 		
 		// hide empty packages that weren't filtered
 		this.hiddenPkgs = [];
-                var me = this;
-		this.root.cascade(function(n){
-			if(!n.attributes.isClass && n.ui.ctNode.offsetHeight < 3){
+             
+		/*this.root.cascade(function(n){
+			if(!n.attributes.leaf && n.ui.ctNode.offsetHeight < 3){
 				n.ui.hide();
 				me.hiddenPkgs.push(n);
 			}
-		});
+		});*/
 	},
 	tools:[{
 		id:'refresh',
@@ -212,12 +239,11 @@ MainPanel = function(config){
         //minTabWidth: 135,
         //tabWidth: 135,
         plugins: new Ext.ux.TabCloseMenu(),
-        enableTabScroll: true
+        enableTabScroll: true,
         //activeTab: 0,
-	        
-	        
-	        
-	}));
+        
+       
+  }));
 
 	
 };
@@ -242,7 +268,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			 var p = this.add(new Ext.Panel({
 	                id: id,
 	                layout:'fit',
-	                //layout: 'border',
 	                title:title,
 	                closable: true,
 	                cclass : cls,
@@ -262,11 +287,10 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 				  				     //trae la clase padre
 				  				     //en el callback ejecuta la rerencia 
 				  				     //e instanca la clase hijo
-				  				      var wid='4rn'
-				  				     //console.log('IDEXTRA',wid);
-				  				     //Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
-				  				     //Ext.DomHelper.append(document.body, {html:'<div id="4rn"></div>'});
 				  				     
+				  				    var wid= Ext.id();
+				  				    Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
+				  				    
 				  				  
 				  				     var el = Ext.get(wid); // Get Ext.Element object
 			                         var u = el.getUpdater();
@@ -324,6 +348,7 @@ Phx.CP=function(){
     var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista;
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
+	var contNodo = 0;
     return{
 
 		// funcion que se ejcuta despues de una autentificacion exitosa
@@ -332,6 +357,21 @@ Phx.CP=function(){
          	Ext.QuickTips.init();
 			// definicion de la instancia de la clase menu
 			menu=new Menu({});
+		    menu.on('beforeload',function(){
+				if(contNodo==0){
+					 Ext.getBody().mask('Loading...', 'x-mask-loading').dom.style.zIndex = '9999';
+					 
+				} 
+				contNodo++;
+				},this)
+			menu.on('load',function(){
+				if(contNodo==1){
+					 Ext.getBody().unmask();
+				} 
+				contNodo--;
+				},this)
+			
+			
 			// manejo de errores
 			menu.loader.addListener('loadexception',Phx.CP.conexionFailure); 
 			// menu contextual
@@ -405,7 +445,7 @@ Phx.CP=function(){
 							ruta= '/'+naux.id+ruta;
 							naux=naux.parentNode
 						}
-						mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.cls)
+						mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
 					}
 				}
 			});
@@ -1012,10 +1052,14 @@ Phx.CP=function(){
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
 			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
 		    if(Phx.vista[mycls].requireclase){
+		    	
+		    
   				     //trae la clase padre
-  				     //en el callback ejecuta la rerencia 
+  				     //en el callback ejecuta la herencia 
   				     //e instanca la clase hijo
-  				     var owid='4rn'
+  				      var owid= Ext.id();
+				  	  Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
+				  				    
   				     var el = Ext.get(owid); // este div esta quemado en el codigo html
                      var u = el.getUpdater();
                      var inter = Phx.vista[mycls];
@@ -1038,7 +1082,7 @@ Phx.CP=function(){
 		    	 // Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
-		    	Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
+				Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 		    }  
 		},
 		

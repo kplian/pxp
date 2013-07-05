@@ -15,7 +15,9 @@ class ACTPersona extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','ap_paterno');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		
+		if($this->objParam->getParametro('id_persona')!=''){
+            $this->objParam->addFiltro("p.id_persona = " . $this->objParam->getParametro('id_persona'));    
+        }
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			

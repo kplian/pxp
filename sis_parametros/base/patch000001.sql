@@ -674,3 +674,38 @@ CREATE UNIQUE INDEX tdepto_ep_id__id_depto_id_ep ON param.tdepto_ep
   WHERE ((estado_reg)::text = 'activo'::text);
 /***********************************F-SCP-JRR-PARAM-0-29/04/2013*****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+ALTER TABLE param.tdepto_usuario
+  ADD COLUMN sw_alerta VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-RAC-PARAM-0-30/05/2013****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-31/05/2013****************************************/
+
+ALTER TABLE param.tgrupo_ep
+ ADD COLUMN id_uo integer;
+  
+/***********************************F-SCP-RAC-PARAM-0-31/05/2013****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-03/06/2013****************************************/
+
+  CREATE TABLE param.tdepto_uo_ep(
+    id_depto_uo_ep SERIAL NOT NULL,
+    id_depto int4,
+    id_ep int4,
+    id_uo int4,
+    PRIMARY KEY (id_depto_uo_ep))
+    INHERITS (pxp.tbase); 
+    
+/***********************************F-SCP-RAC-PARAM-0-03/06/2013****************************************/
+  
+/***********************************I-SCP-RCM-PARAM-0-28/06/2013****************************************/
+ALTER TABLE param.tcorrelativo
+  ADD COLUMN tabla varchar(70);
+ALTER TABLE param.tcorrelativo
+  ADD COLUMN id_tabla INTEGER;
+/***********************************F-SCP-RCM-PARAM-0-28/06/2013****************************************/

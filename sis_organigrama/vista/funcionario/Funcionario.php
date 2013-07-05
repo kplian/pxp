@@ -129,24 +129,6 @@ Phx.vista.funcionario=function(config){
 	       		grid:true,
 	       		form:true
 	       	},
-
-	       	{
-	       		config:{
-	       			fieldLabel: "Teléfono Oficina",
-	       			gwidth: 120,
-	       			name: 'telefono_ofi',
-	       			allowBlank:false,	
-	       			maxLength:100,
-	       			minLength:1,
-	       			anchor:'100%'
-	       		},
-	       		type:'TextField',
-	       		filters:{type:'string'},
-	       		id_grupo:0,
-	       		grid:true,
-	       		form:true
-	       	},
-
 	       	{
 	       		config:{
 	       			fieldLabel: "Interno",
@@ -174,7 +156,7 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'NumberField',
-	       		filters:{type:'numeric'},
+	       		filters:{type:'string'},
 	       		id_grupo:0,
 	       		grid:true,
 	       		form:false
@@ -191,7 +173,7 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'NumberField',
-	       		filters:{type:'numeric'},
+	       		filters:{type:'string'},
 	       		id_grupo:0,
 	       		grid:true,
 	       		form:false
@@ -252,6 +234,7 @@ Phx.vista.funcionario=function(config){
 	       		id_grupo:0,
 	       		filters:{	
 	       		         type: 'list',
+	       		         pfiltro:'FUNCIO.estado_reg',
 	       				 dataIndex: 'size',
 	       				 options: ['activo','inactivo'],	
 	       		 	},
@@ -362,7 +345,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	'telefono_ofi',
 	'horario1',
 	'horario2',
-	'horario3'
+	'horario3',
+	'horario4'
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',

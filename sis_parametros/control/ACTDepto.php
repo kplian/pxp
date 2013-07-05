@@ -30,7 +30,7 @@ class ACTDepto extends ACTbase{
 		
 	}
 	
-	function listarDeptoCombo(){
+	function listarDeptoFiltradoDeptoUsuario(){
 
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','depto');
@@ -43,7 +43,7 @@ class ACTDepto extends ACTbase{
 		else {
 			$this->objFunSeguridad=$this->create('MODDepto');
 			//ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
-			$this->res=$this->objFunSeguridad->listarDeptoCombo($this->objParam);
+			$this->res=$this->objFunSeguridad->listarDeptoFiltradoDeptoUsuario($this->objParam);
 			
 		}
 		
@@ -51,6 +51,31 @@ class ACTDepto extends ACTbase{
 		
 		
 	}
+	
+	function listarDeptoFiltradoXUsuario(){
+
+        // parametros de ordenacion por defecto
+        $this->objParam->defecto('ordenacion','depto');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        
+        if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte=new Reporte($this->objParam, $this);
+            $this->res=$this->objReporte->generarReporteListado('MODDepto','listarDeptoFiltradoXUsuario');
+        }
+        else {
+            $this->objFunSeguridad=$this->create('MODDepto');
+            //ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
+            $this->res=$this->objFunSeguridad->listarDeptoFiltradoXUsuario($this->objParam);
+            
+        }
+        
+        $this->res->imprimirRespuesta($this->res->generarJson());
+        
+        
+    }
+    
+	
+	
 	
 	function insertarDepto(){
 	
