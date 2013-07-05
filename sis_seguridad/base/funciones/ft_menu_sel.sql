@@ -79,6 +79,7 @@ BEGIN
                                        INNER JOIN segu.testructura_gui eg
                                        ON g.id_gui=eg.id_gui
                                   WHERE g.visible=''si''
+								  AND g.estado_reg = ''activo''
                                   AND eg.fk_id_gui::text like '''||v_parametros.id_padre||'''
                                   AND g.nivel::text like '''||v_nivel||'''
                                   ORDER BY g.orden_logico,eg.fk_id_gui';
@@ -124,6 +125,7 @@ BEGIN
                    on u.id_usuario=ur.id_usuario
                    and u.estado_reg=''activo''
                    where g.visible=''si''
+				   AND g.estado_reg = ''activo''
                    and eg.fk_id_gui::text like '''||v_parametros.id_padre||'''
                    AND g.nivel::text like '''||v_nivel||'''
                    and u.id_usuario ='|| par_id_usuario||'
