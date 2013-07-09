@@ -20,7 +20,6 @@ class MODAlarma extends MODbase{
 		$this->transaccion='PM_GENALA_INS';
 		//definicion de variables
 		$this->tipo_conexion='seguridad';
-		
 		$this->tipo_procedimiento='IME';
 		$this->count=false;
 				
@@ -37,7 +36,6 @@ class MODAlarma extends MODbase{
 		
 				
 		$this->armarConsulta();
-		
 		$this->ejecutarConsulta();
 		
 		 

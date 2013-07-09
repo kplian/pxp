@@ -66,12 +66,12 @@ BEGIN
            
            --consula la configuracion de generadors
            /*
-           tota alarma debe estar configurada previamente en la tabla para.tgenerador_alarma
+           toda alarma debe estar configurada previamente en la tabla para.tgenerador_alarma
            
            */
             
             FOR g_registros in (select ga.funcion
-            from param.tgenerador_alarma ga) LOOP
+            					from param.tgenerador_alarma ga) LOOP
                 v_consulta = 'SELECT  '||g_registros.funcion||'('||v_parametros.id_usuario::varchar||');';
                 execute (v_consulta);
             END LOOP;

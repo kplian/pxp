@@ -165,7 +165,7 @@ class CorreoExterno
                     <body>
                     <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
                     <p>-------------------------------------------<br/>
-                    Power by PXP - KPLIAN
+                    Powered by KPLIAN
                     <p>
                     </body>
                     </html>";

@@ -709,3 +709,8 @@ ALTER TABLE param.tcorrelativo
 ALTER TABLE param.tcorrelativo
   ADD COLUMN id_tabla INTEGER;
 /***********************************F-SCP-RCM-PARAM-0-28/06/2013****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-09/07/2013****************************************/
+ALTER TABLE param.talarma
+  ADD CONSTRAINT chk_talarma__tipo CHECK (tipo in ('alarma','notificacion'));
+/***********************************F-SCP-RCM-PARAM-0-09/07/2013****************************************/
