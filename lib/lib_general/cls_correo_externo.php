@@ -65,7 +65,8 @@ class CorreoExterno
                  //para cuando el visor no puede leer HTML en el cuerpo”; 
                    $this->mail->AltBody =  $this->mail->mensaje;
                  // si el cuerpo del mensaje es HTML
-                  $this->mail->MsgHTML($this->mensaje_html);  
+                  $this->mail->MsgHTML($this->mensaje_html);
+				    
                   
                 if(!$this->mail->Send()) {
                      return $this->mail->ErrorInfo;

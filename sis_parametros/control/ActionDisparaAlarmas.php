@@ -87,6 +87,7 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
                 $correo->setTitulo($d['titulo_correo']);
                 $correo->setDefaultPlantilla();
                 $correo->enviarCorreo();
+				//echo 'ddddd';exit;
                
               
             }

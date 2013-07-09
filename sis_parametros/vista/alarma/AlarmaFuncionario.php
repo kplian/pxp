@@ -91,7 +91,7 @@ header("content-type: text/javascript; charset=UTF-8");
 		}, {
 			config : {
 				name : 'obs',
-				fieldLabel : 'Obs.',
+				fieldLabel : 'Título',
 				allowBlank : true,
 				anchor : '80%',
 				gwidth : 100,
@@ -110,7 +110,18 @@ header("content-type: text/javascript; charset=UTF-8");
 				name : 'dias',
 				fieldLabel : 'Dias',
 				allowBlank : true,
-				gwidth : 35
+				gwidth : 35,
+				renderer:function(value, p, record) {
+					var cadDias;
+					if(value){
+						if(value<0){
+							cadDias='<b><font color="red">'+value+'</font></b>'
+						} else {
+							cadDias='<b><font color="orange">'+value+'</font></b>'
+						}
+					}
+					return String.format('{0}', cadDias);
+				}
 			},
 			type : 'Field',
 			//filters:{pfiltro:'alarm.obs',type:'string'},
@@ -120,7 +131,7 @@ header("content-type: text/javascript; charset=UTF-8");
 		}, {
 			config : {
 				name : 'fecha',
-				fieldLabel : 'fecha Fin',
+				fieldLabel : 'Fecha',
 				allowBlank : true,
 				anchor : '80%',
 				gwidth : 100,
@@ -141,14 +152,17 @@ header("content-type: text/javascript; charset=UTF-8");
 		}, {
 			config : {
 				name : 'descripcion',
-				fieldLabel : 'descripcion',
+				fieldLabel : 'Descripción',
 				allowBlank : true,
 				disabled : false,
 				grow : true,
 				minGrow : 200,
 				anchor : '80%',
 				gwidth : 300,
-				maxLength : 200
+				maxLength : 200,
+				renderer : function(value, p, record) {
+					return value ? '<p>'+value+'</p>':''
+				}
 			},
 			type : 'TextArea',
 			filters : {
