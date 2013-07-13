@@ -34,7 +34,7 @@ class CTParametro{
 	 */
 	//function __construct($tip,$ord='',$dir='',$pun=0,$can=0,$fil='',$fil_col='',$fil_value=''){
 	//cambio rcm 20/07/2010
-	function __construct($pPostData,$matriz,$aPostFiles,$ruta){
+	function __construct($pPostData,$matriz,$aPostFiles,$ruta=''){
 		$this->aPostData=$pPostData;
 		$this->matriz=$matriz;
 		$this->aPostFiles=$aPostFiles;

@@ -4,7 +4,7 @@
  Proposito: Invocar al disparador de alarmas saltandose los pasos de 
  *          autentificacion
  * 		    este archivo se  invoca desde un cron tab en servidor linux
- *          solo deberia llamarce desde hay otras llamadas no seran autorizadas 
+ *          solo deberia llamarse desde ahí, otras llamadas no seran autorizadas 
  Autor:	Kplian (RAC)
  Fecha:	19/07/2010
  */
@@ -61,39 +61,41 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
         ////////////////
         $objParam->defecto('ordenacion','id_lugar');
         $objParam->defecto('dir_ordenacion','asc');
- 
- 
         
         $objFunc=new MODAlarma($objParam);    
         $res=$objFunc->GeneraAlarma();
-        
+		if($res->getTipo()=='ERROR'){
+			echo 'Se ha producido un error-> Mensaje Técnico:'.$res->getMensajeTec();
+			exit;        
+		}
+		
         $objFunc=new MODAlarma($objParam);  
         $res2=$objFunc->listarAlarmaCorrespondeciaPendiente();
-        
+		if($res2->getTipo()=='ERROR'){
+			echo 'Se ha producido un error-> Mensaje Técnico:'.$res2->getMensajeTec();
+			exit;        
+		}
         
         $correo=new CorreoExterno();
-         //var_dump($res2->datos);
-        foreach ($res2->datos as $d){
-             
-            
-       echo   'correo -> '.$d['email_empresa'].'</BR>' ;
-                
-            
-           if(isset($d['email_empresa'])){
-                    
-                $correo->addDestinatario($d['email_empresa'],'xx xx');
+
+		foreach ($res2->datos as $d){
+       		echo   'correo -> '.$d['email_empresa'].'</BR>' ;
+			if(isset($d['email_empresa'])){
+				$correo->addDestinatario($d['email_empresa'],'xx xx');
                 $correo->setAsunto($d['tipo'].' '.$d['titulo_correo'].' '.$d['obs']);
                 $correo->setMensaje($d['descripcion']);
                 $correo->setTitulo($d['titulo_correo']);
                 $correo->setDefaultPlantilla();
                 $correo->enviarCorreo();
-               
-              
             }
         }
+		
         $objFunc=new MODAlarma($objParam);
         $res2=$objFunc->modificarEnvioCorreo();
-        
+		if($res2->getTipo()=='ERROR'){
+			echo 'Se ha producido un error-> Mensaje Técnico:'.$res2->getMensajeTec();
+			exit;        
+		}
         $res2->imprimirRespuesta($res2->generarJson());
  
 ?>
