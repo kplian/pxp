@@ -271,7 +271,11 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 				anchor:"100%",
 				gwidth:220,
 				minChars:2,
-				renderer:function (value, p, record){return String.format('{0}', record.data['lugar']);}
+				renderer:function (value, p, record){return String.format('{0}', record.data['lugar']);},
+				tinit:true,
+				turl:'../../../sis_parametros/vista/lugar/Lugar.php',
+	   			ttitle:'Registro de Lugares',
+       			tdata:{}
 			},
 			type:'ComboBox',
 			filters:{pfiltro:'lug.nombre',type:'string'},
