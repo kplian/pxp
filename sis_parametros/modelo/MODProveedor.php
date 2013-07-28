@@ -64,6 +64,7 @@ class MODProveedor extends MODbase{
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
+		$this->setParametro('id_lugar','id_lugar','int4');
 	
         $this->captura('id_proveedor','INTEGER');
 		$this->captura('id_persona','INTEGER');
@@ -79,6 +80,7 @@ class MODProveedor extends MODbase{
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+		//echo $this->consulta; exit;
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta

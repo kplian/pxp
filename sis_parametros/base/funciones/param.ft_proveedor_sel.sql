@@ -27,6 +27,7 @@ DECLARE
   v_parametros      record;
   v_nombre_funcion    text;
   v_resp        varchar;
+  v_ids			varchar;
           
 BEGIN
 
@@ -125,10 +126,11 @@ raise notice '%',v_consulta;
   elseif(p_transaccion='PM_PROVEEV_SEL')then
             
       begin
-          
-        --Sentencia de la consulta
-      v_consulta:='select
-            id_proveedor,
+      	
+         
+      	--Sentencia de la consulta
+     	 v_consulta:='select
+            			id_proveedor,
                         id_persona,
                         codigo,
                         numero_sigma,
@@ -141,6 +143,11 @@ raise notice '%',v_consulta;
                         pais
             from param.vproveedor provee
             where  ';
+            
+            if pxp.f_existe_parametro(p_tabla,'id_lugar') then
+      			v_ids = param.f_get_id_lugares(v_parametros.id_lugar);
+      			v_consulta = v_consulta || 'provee.id_lugar in ('||v_ids||') and ';
+      		end if;
       
       --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
@@ -165,6 +172,12 @@ raise notice '%',v_consulta;
       v_consulta:='select count(id_proveedor)
               from param.vproveedor provee
               where ';
+              
+			if pxp.f_existe_parametro(p_tabla,'id_lugar') then
+      			v_ids = param.f_get_id_lugares(v_parametros.id_lugar);
+      			
+      			v_consulta = v_consulta || 'provee.id_lugar in ('||v_ids||') and ';
+      		end if;
       
       --Definicion de la respuesta        
       v_consulta:=v_consulta||v_parametros.filtro;
