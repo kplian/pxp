@@ -18,7 +18,7 @@ RETURNS integer AS
 $body$
 /************************************
 FUNCION: f_inserta_alarma
-AUTOR: 	    fprudencio
+AUTOR: 	    rac
 PARAMETROS: par_id_funcionario : indica el funcionario para el que se genera la alrma
             par_descripcion: una descripcion de la alarma
             par_acceso_directo: es el link que lleva a la relacion de la alarma generada
@@ -39,12 +39,12 @@ DECLARE
     v_id_alarma                             integer;
     v_nombre_funcion						text;  
     v_resp                                  varchar;
+    
 BEGIN
 
-v_nombre_funcion:='param.f_inserta_alarma';
+	v_nombre_funcion:='param.f_inserta_alarma';
    
-   --realizamos la inserciÃ³n de datos en alarma
-   
+   --Realizamos la insercion de datos en alarma
    insert into param.talarma(
 			acceso_directo,
 			id_funcionario,

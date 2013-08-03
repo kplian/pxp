@@ -61,6 +61,20 @@ BEGIN
 
           --consulta:=';
           BEGIN
+          
+          		--Verificación de persona ya registrada
+          		--CI
+          		if exists(select 1 from segu.tpersona
+          					where ci = v_parametros.ci) then
+          			raise exception 'Este número de Carnet de Identidad ya fue registrado';
+          		end if;
+          		--Nombre completo
+          		if exists(select 1 from segu.tpersona
+          					where upper(nombre) = upper(v_parametros.nombre)
+          					and upper(apellido_paterno) = upper(v_parametros.ap_paterno)
+          					and upper(apellido_materno) = upper(v_parametros.ap_materno)) then
+          			raise exception 'Persona ya registrada';
+          		end if;
 
                        
                insert into segu.tpersona (
@@ -109,7 +123,21 @@ BEGIN
           --consulta:=';
           BEGIN
           
-   -- raise exception 'ERROR al subir archivo';
+   				--Verificación de persona ya registrada
+          		--CI
+          		if exists(select 1 from segu.tpersona
+          					where ci = v_parametros.ci
+          					and id_persona != v_parametros.id_persona) then
+          			raise exception 'Este número de Carnet de Identidad ya fue registrado';
+          		end if;
+          		--Nombre completo
+          		if exists(select 1 from segu.tpersona
+          					where upper(nombre) = upper(v_parametros.nombre)
+          					and upper(apellido_paterno) = upper(v_parametros.ap_paterno)
+          					and upper(apellido_materno) = upper(v_parametros.ap_materno)
+          					and id_persona != v_parametros.id_persona) then
+          			raise exception 'Persona ya registrada';
+          		end if;
 
                update segu.tpersona 
                set nombre=v_parametros.nombre,
