@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -175,11 +177,11 @@ BEGIN
                where id_uo_funcionario=v_parametros.id_uo_funcionario;
               
                --10-04-2012: sincronizacion de UO entre BD
-                v_respuesta_sinc:=orga.f_sincroniza_uo_empleado_entre_bd(v_parametros.id_uo_funcionario,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'DELETE');
+               /* v_respuesta_sinc:=orga.f_sincroniza_uo_empleado_entre_bd(v_parametros.id_uo_funcionario,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'DELETE');
                      
                 if(v_respuesta_sinc!='si')  then
                   raise exception 'Sincronizacion de UO en BD externa no realizada%',v_respuesta_sinc;
-                end if;
+                end if;*/
                 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','asignacion empleado-uo eliminada con exito '||v_parametros.id_uo_funcionario||': Funcionario ('|| (select desc_funcionario1 from orga.vfuncionario where id_funcionario=v_id_funcionario) || ') - UO'|| (select nombre_unidad from orga.tuo where id_uo=v_id_uo));
                v_resp = pxp.f_agrega_clave(v_resp,'id_uo',v_id_uo::varchar);
