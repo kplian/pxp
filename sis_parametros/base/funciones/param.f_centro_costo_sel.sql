@@ -236,7 +236,7 @@ BEGIN
                                or 
                                  (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
                                or
-                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
               		
              
                
@@ -306,7 +306,7 @@ BEGIN
                                or 
                                  (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
                                or
-                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
               		
              
                
@@ -371,7 +371,7 @@ BEGIN
                                    or 
                                      (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
                                    or
-                                     (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                     (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
                   		
                  
                END IF;    
