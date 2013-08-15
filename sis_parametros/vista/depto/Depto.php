@@ -60,6 +60,12 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
           title:'Depto UO - EP', 
           height:'50%',
           cls:'DeptoUoEp'
+         },
+         {
+          url:'../../../sis_parametros/vista/firma/Firma.php',
+          title:'Firmas Documentos', 
+          height:'50%',
+          cls:'Firma'
          }]	,
 	Atributos:[
 		{

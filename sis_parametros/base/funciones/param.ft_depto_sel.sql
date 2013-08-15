@@ -252,7 +252,7 @@ BEGIN
                                or 
                                  (gep.id_uo = due.id_uo  and gep.id_ep is NULL )
                                or
-                                 (gep.id_uo is NULL and gep.id_ep = due.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                 (gep.id_uo is NULL and gep.id_ep = due.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
               		
              
                
@@ -286,7 +286,7 @@ BEGIN
               
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-               raise notice    '% % %',v_filadd,par_id_usuario,v_consulta;
+               raise notice    '--->  % % %',v_filadd,par_id_usuario,v_consulta;
                return v_consulta;
 
 

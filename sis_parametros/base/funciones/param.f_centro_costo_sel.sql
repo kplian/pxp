@@ -236,7 +236,7 @@ BEGIN
                                or 
                                  (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
                                or
-                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
               		
              
                
@@ -306,7 +306,7 @@ BEGIN
                                or 
                                  (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
                                or
-                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                 (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
               		
              
                
@@ -352,9 +352,11 @@ BEGIN
           v_filadd = '';
           v_inner='';
           
-          IF   p_administrador != 1   and  pxp.f_existe_parametro('p_tabla','filtrar')  THEN
+     
           
+          IF   p_administrador != 1   and  pxp.f_existe_parametro(p_tabla,'filtrar')  THEN
           
+        
               IF v_parametros.filtrar = 'grupo_ep'  THEN
                   select 
                   pxp.list(uge.id_grupo::text)
@@ -369,10 +371,12 @@ BEGIN
                                    or 
                                      (gep.id_uo = cec.id_uo  and gep.id_ep is NULL )
                                    or
-                                     (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||v_filadd||') ';
+                                     (gep.id_uo is NULL and gep.id_ep = cec.id_ep )) and gep.id_grupo in ('||COALESCE(v_filadd,'0')||') ';
                   		
                  
                END IF;    
+               
+            
           
           END IF;
         
@@ -421,7 +425,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-			--raise exception '%',v_consulta;
+			raise notice '%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -441,7 +445,7 @@ BEGIN
           v_filadd = '';
           v_inner='';
           
-          IF   p_administrador != 1   and  pxp.f_existe_parametro('p_tabla','filtrar')  THEN
+          IF   p_administrador != 1   and  pxp.f_existe_parametro(p_tabla,'filtrar')  THEN
           
           
               IF v_parametros.filtrar = 'grupo_ep'  THEN
