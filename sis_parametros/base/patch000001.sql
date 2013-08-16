@@ -710,7 +710,26 @@ ALTER TABLE param.tcorrelativo
   ADD COLUMN id_tabla INTEGER;
 /***********************************F-SCP-RCM-PARAM-0-28/06/2013****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-0-15/07/2013****************************************/
+
+CREATE TABLE param.tfirma(
+    id_firma SERIAL NOT NULL,
+    id_documento int4 NOT NULL,
+    id_depto int4 NOT NULL,
+    id_funcionario int4,
+    prioridad int4,
+    monto_min numeric(19, 2),
+    monto_max numeric(19, 2),
+    desc_firma varchar(250),
+    PRIMARY KEY (id_firma))
+INHERITS (pxp.tbase);
+
+/***********************************F-SCP-RAC-PARAM-0-15/07/2013****************************************/
+
+
 /***********************************I-SCP-RCM-PARAM-0-09/07/2013****************************************/
 ALTER TABLE param.talarma
   ADD CONSTRAINT chk_talarma__tipo CHECK (tipo in ('alarma','notificacion'));
 /***********************************F-SCP-RCM-PARAM-0-09/07/2013****************************************/
+
