@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_usuario_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
 
@@ -114,13 +115,13 @@ BEGIN
                        RETURNING id_usuario into v_id_usuario;
             
              --05-04-2012:
-             IF  v_sincronizar='true' THEN
+           /*  IF  v_sincronizar='true' THEN
                  v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'INSERT');
     	         if(v_respuesta_sinc!='si') then   
                      raise exception 'Sincronizacion de usuario en BD externa no realizada';
                  end if;  
              
-             END IF;
+             END IF;*/
              --fin 05-04-2012
              
              
@@ -180,7 +181,7 @@ BEGIN
              WHERE id_usuario=v_parametros.id_usuario;
             
               --05-04-2012:
-                IF  v_sincronizar= 'true' THEN
+            /*    IF  v_sincronizar= 'true' THEN
                 
                 
                  v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'UPDATE');
@@ -188,7 +189,7 @@ BEGIN
                       raise exception 'Sincronizacion de actualizacion de usuario en BD externa no realizada';
                  end if;  
              
-                END IF;
+                END IF;*/
              
              --fin 05-04-2012
              
@@ -210,14 +211,14 @@ BEGIN
                --05-04-2012:
                
                
-               IF  v_sincronizar= 'true' THEN
+             /*  IF  v_sincronizar= 'true' THEN
                 
                  v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'UPDATE');
     	         if(v_respuesta_sinc!='si') then   
                       raise exception 'Sincronizacion de actualizacion de usuario en BD externa no realizada';
                  end if;  
              
-                END IF;
+                END IF;*/
                
                 
                --fin 05-04-2012
@@ -288,13 +289,13 @@ BEGIN
                --05-04-2012:
              
                
-                IF  v_sincronizar= 'true' THEN
+               /* IF  v_sincronizar= 'true' THEN
                  v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'DELETE');
     	         if(v_respuesta_sinc!='si') then   
                       raise exception 'Sincronizacion de actualizacion de usuario en BD externa no realizada';
                  end if;  
              
-                END IF;
+                END IF;*/
                
                 
                --fin 05-04-2012
@@ -323,7 +324,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_usuario_proyecto_ime (OID = 305102) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.f_get_funcionarios_x_usuario_asistente (
   par_fecha date,
   par_id_usuario integer
@@ -12,6 +14,8 @@ DECLARE
     v_id_funcionario		integer;
 BEGIN
   	v_nombre_funcion = 'orga.f_get_funcionarios_x_usuario_asistente';
+    
+    
     --obtener el id_funcionario del empleado actual
     select id_funcionario
     into v_id_funcionario
@@ -20,6 +24,8 @@ BEGIN
         on f.id_persona = u.id_persona    
     where u.id_usuario = par_id_usuario;
     
+    
+    --si es adminsitrador retorna todo
     if (exists (select 1
     			from segu.tusuario_rol ur
     			inner join segu.trol r on ur.id_rol = r.id_rol and ur.estado_reg = 'activo'
@@ -51,10 +57,11 @@ BEGIN
                                 
             )
             SELECT id_funcionario FROM path where id_funcionario is not null';                
-             raise notice '%',v_consulta;        
+        
         v_consulta := v_consulta || ' UNION select ' || v_id_funcionario;
         return query execute (v_consulta);
      end if;
+    
      return;
                      
                
