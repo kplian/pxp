@@ -43,6 +43,7 @@ class MODEstructuraUo extends MODbase {
 			$this->captura('id_estructura_uo','integer');
 			$this->captura('correspondencia','varchar');
 			$this->captura('gerencia','varchar');
+			$this->captura('checked','varchar');
 			$this->armarConsulta();
 			$this->ejecutarConsulta();
 			return $this->respuesta;	

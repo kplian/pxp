@@ -138,7 +138,8 @@ BEGIN
                 update orga.tuo_funcionario
                 set 
                    fecha_asignacion=v_parametros.fecha_asignacion::date,
-                   id_funcionario=v_parametros.id_funcionario
+                   id_funcionario=v_parametros.id_funcionario,
+                   fecha_finalizacion = v_parametros.fecha_finalizacion
                 where id_uo=v_parametros.id_uo
                 and id_uo_funcionario=v_parametros.id_uo_funcionario;
                 
