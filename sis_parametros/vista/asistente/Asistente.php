@@ -18,6 +18,15 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.Asistente.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
+		
+		//Manejadores de Eventos
+		this.Cmp.uo.on('focus',this.viewOrganigrama,this)
+		this.Cmp.recursivo.on('select',this.onRecursivo,this);
+		
+		//Obtencion de componentes
+		this.uo=this.Cmp.uo;
+		this.id_uo=this.Cmp.id_uo;
+		this.id_estructura_uo=this.Cmp.id_estructura_uo;
 	},
 	tam_pag:50,
 			
@@ -32,27 +41,7 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
-   			config:{
-       		    name:'id_uo',
-       		    hiddenName: 'id_uo',
-          		origen:'UO',
-   				fieldLabel:'UO',
-   				gdisplayField:'desc_uo',//mapea al store del grid
-   			    gwidth:200,
-   			    baseParams: { correspondencia : 'si' },
-   			     renderer:function (value, p, record){return String.format('{0}', record.data['desc_uo']);}
-       	     },
-   			type:'ComboRec',
-   			id_grupo:1,
-   			filters:{	
-		        pfiltro:'uo.codigo#uo.nombre_unidad',
-				type:'string'
-			},
-   		     grid:true,
-   			form:true
-   	      },
-		{
+   	     {
    			config:{
        		    name:'id_funcionario',
        		     hiddenName: 'id_funcionario',
@@ -70,6 +59,77 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
    		    grid:true,
    			form:true
 		 },
+   	     {
+			config: {
+				name: 'recursivo',
+				fieldLabel: 'Recursivo',
+				anchor: '100%',
+				tinit: true,
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'recursivo',
+				gwidth: 100,
+				tinit: false,
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tgral__bandera'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['recursivo']);}
+			},
+			type: 'ComboRec',
+			id_grupo: 0,
+			filters:{pfiltro:'asis.recursivo',type:'string'},
+			grid: true,
+			form: true
+		},
+		{
+   			config:{
+       		    name:'id_uo',
+       		    hiddenName: 'id_uo',
+          		origen:'UO',
+   				fieldLabel:'Unidad Org.',
+   				gdisplayField:'desc_uo',//mapea al store del grid
+   			    gwidth:200,
+   			    //baseParams: { correspondencia : 'si' },
+   			     renderer:function (value, p, record){return String.format('{0}', record.data['desc_uo']);}
+       	     },
+   			type:'ComboRec',
+   			id_grupo:1,
+   			filters:{	
+		        pfiltro:'uo.codigo#uo.nombre_unidad',
+				type:'string'
+			},
+   		     grid:true,
+   			form:true
+   	      },
+		{
+			config: {
+				name: 'uo',
+				fieldLabel: 'Organigrama',
+				allowBlank: true,
+				anchor: '100%',
+				gwidth: 200,
+				minChars: 2,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['desc_uo']);
+				}
+			},
+			type: 'TextArea',
+			id_grupo: 0,
+			filters: {pfiltro: 'uo.nombre',type: 'string'},
+			grid: true,
+			form: true
+		},
+		{
+			config: {
+				name: 'id_estructura_uo',
+				labelSeparator:'',
+				inputType:'hidden',
+			},
+			type: 'Field',
+			grid: true,
+			form: true
+		},
 		{
 			config:{
 				name: 'estado_reg',
@@ -167,16 +227,192 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+		{name:'recursivo', type: 'string'}
 	],
 	sortInfo:{
 		field: 'id_asistente',
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
-	}
-)
+	bsave:true,
+	id_uos:'',
+	id_estructura_uo:'',
+	uo:'',
+	id_uorg:'',
+	/*createWindow: function() {
+		this.formNew = new Ext.form.FormPanel({
+			baseCls: 'x-plain-' + this.idContenedor,
+			bodyStyle: 'padding:10 20px 10;',
+			autoDestroy: true,
+			border: false,
+			layout: 'form',
+			items: [{
+				xtype:'combo',
+				name:'id_uo_frm',
+				fieldLabel: 'Funcionario',
+				allowBlank:false,
+				emptyText: 'Funcionario...',
+				store: new Ext.data.JsonStore({
+						url: '../../sis_organigrama/control/Funcionario/listarFuncionario',
+						id: 'id_funcionario',
+						root: 'datos',
+						sortInfo:{
+							field: 'desc_person',
+							direction: 'ASC'
+						},
+						totalProperty: 'total',
+						fields: ['id_funcionario','codigo','desc_person','ci','documento','telefono','celular','correo'],
+						remoteSort: true,
+						baseParams: {par_filtro:'funcio.codigo#nombre_completo1'}
+		    		
+					}),
+					tpl:'<tpl for="."><div class="x-combo-list-item"><p>{codigo} - Sis: {codigo_sub} </p><p>{desc_person}</p><p>CI:{ci}</p> </div></tpl>',
+					valueField: 'id_funcionario',
+       				displayField: 'desc_person',
+       				hiddenName: 'id_funcionario',
+       				triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:10,
+       				queryDelay:1000,
+       				listWidth:'280',
+       				width:250,
+       				minChars:2
+				},{
+				xtype: 'textarea',
+				name: 'uo_frm',
+				fieldLabel: 'Unidades Organizacionales',
+				allowBlank: true,
+				width: 250,
+				anchor: '100%',
+				readonly: true
+			}]
+		});
+
+		this.uo = this.formNew.getForm().findField('uo_frm');
+		this.id_uorg = this.formNew.getForm().findField('id_uo_frm');
+		
+		this.uo.on('focus',this.viewOrganigrama,this);
+
+		this.winNew = new Ext.Window({
+			title: 'Nuevo',
+			collapsible: true,
+			maximizable: true,
+			autoDestroy: true,
+			width: 450,
+			height: 250,
+			layout: 'fit',
+			plain: true,
+			bodyStyle: 'padding:5px;',
+			buttonAlign: 'center',
+			items: this.formNew,
+			modal: true,
+			closeAction: 'hide',
+			buttons: [{
+				text: 'Guardar',
+				handler: this.onGuardar,
+				scope: this
+
+			}, {
+				text: 'Cancelar',
+				handler: function() {
+					this.winNew.hide()
+				},
+				scope: this
+			}]
+		});
+
+	},*/
+		/*onGuardar: function(){
+			if(this.formNew.getForm().isValid()){
+				Phx.CP.loadingShow();
+				Ext.Ajax.request({
+					url: '../../sis_parametros/control/Asistente/insertarAsistente',
+					params: {
+						id_uos : this.id_uos,
+						id_funcionario: this.id_uorg.getValue()
+					},
+					success: function(resp){
+						Phx.CP.loadingHide();
+						var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+						if (reg.ROOT.error) {
+							alert("ERROR no esperado")
+						} else {
+							this.winNew.hide();
+							this.reload();
+						}
+					},
+					failure: this.conexionFailure,
+					timeout: this.timeout,
+					scope: this
+				});
+			}
+			
+		},*/
+		viewOrganigrama: function(){
+			var data={};
+			data.recursivo='no';
+			if(this.Cmp.recursivo.getValue()=='Si'){
+				data.recursivo='si';
+			}
+			Phx.CP.loadWindows('../../../sis_organigrama/vista/estructura_uo/EstructuraUoCheck.php',
+						'Organigrama',
+						{
+							width:'60%',
+							height:'70%'
+					    },
+					    data,
+					    this.idContenedor,
+					    'EstructuraUoCheck'
+				);
+		},
+		onButtonNew: function(){
+			Phx.vista.Asistente.superclass.onButtonNew.call(this);
+			this.Cmp.id_uo.disable();
+			this.Cmp.uo.disable();
+			this.Cmp.uo.show();
+			this.Cmp.recursivo.enable();
+		},
+		onButtonEdit: function(){
+			Phx.vista.Asistente.superclass.onButtonEdit.call(this);
+			
+			//Carga los parametros del store de UO
+			if(this.Cmp.recursivo.getValue()=='Si'){
+				Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'si'})
+			} else{
+				Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'no'})
+			}
+			this.Cmp.id_uo.modificado=true;
+			
+			//Muestra/Esconde los componentes
+			this.Cmp.id_uo.show();
+			this.Cmp.id_uo.enable();
+			this.Cmp.uo.hide();
+			this.Cmp.id_uo.allowBlank=false;
+			this.Cmp.uo.allowBlank=true;
+			//Bloquea Recursivo
+			this.Cmp.recursivo.disable();
+			
+		},
+		onRecursivo: function(cmb,rec){
+ 			if(rec.data){
+ 				if(rec.data.descripcion=='Si'){
+ 					Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'si'})
+ 					this.Cmp.uo.disable();
+ 					this.Cmp.id_uo.enable()
+ 					this.Cmp.id_uo.allowBlank=false
+ 					this.Cmp.uo.allowBlank=true
+ 				} else{
+ 					Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'no'})
+ 					this.Cmp.uo.enable();
+ 					this.Cmp.id_uo.disable()
+ 					this.Cmp.id_uo.allowBlank=true
+ 					this.Cmp.uo.allowBlank=false
+ 				}
+ 				this.Cmp.id_uo.modificado=true;
+ 			}
+		}
+})
 </script>
 		
 		

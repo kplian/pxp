@@ -313,14 +313,16 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 		array = rbtItSer.items;
 		
 		//Evaluate the radio checked and asign a valur for the variable
-		if(array.items[0].checked){
-			tmp='item';
-		} else{
-			tmp='servicio';
+		if(array.items){
+			if(array.items[0].checked){
+				tmp='item';
+			} else{
+				tmp='servicio';
+			}
+	
+			//Añade los parámetros extra para mandar por submit
+			this.argumentExtraSubmit.item_servicio=tmp;
 		}
-
-		//Añade los parámetros extra para mandar por submit
-		this.argumentExtraSubmit.item_servicio=tmp;
 	}
 })
 </script>

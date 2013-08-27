@@ -102,5 +102,3 @@ FROM (((orga.tfuncionario funcio JOIN segu.vpersona person ON
 
 
 /********************************************F-DEP-RAC-ORGA-0-31/12/2012********************************************/
-
-

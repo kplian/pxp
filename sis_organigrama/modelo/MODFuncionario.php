@@ -80,7 +80,7 @@ class MODFuncionario extends MODbase{
 		$this->captura('estado_reg_asi','varchar');
 		//Ejecuta la funcion
 		$this->armarConsulta();
-		
+		//echo $this->consulta;exit;
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}

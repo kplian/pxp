@@ -768,7 +768,6 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-	tam_pag:50,
 			
 	Atributos:[
 		{
@@ -789,7 +788,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 		
 		$this->strTexto.="
 	],
-	
+	tam_pag:50,	
 	title:'".$this->gTabla->getTitulo()."',
 	ActSave:'../../sis_".$this->gTabla->getCarpetaSistema()."/control/".$this->gTabla->getSujetoTablaJava()."/insertar".$this->gTabla->getSujetoTablaJava()."',
 	ActDel:'../../sis_".$this->gTabla->getCarpetaSistema()."/control/".$this->gTabla->getSujetoTablaJava()."/eliminar".$this->gTabla->getSujetoTablaJava()."',
@@ -1159,6 +1158,8 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 	
 	private function definicionColumnas($p_Columnas,$pColBasicas='columnas'){
 		$cadena='';
+		ob_start();
+		$fb=FirePHP::getInstance(true);
 
 		for($i=0;$i<count($p_Columnas); $i++){
 			
@@ -1213,8 +1214,65 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 				$alias=$this->gTabla->getAliasLower().".".$p_Columnas[$i]->getColumna('nombre');
 			}
 			
-			//Define la cadena de la columna
-			$cadena.="
+			//echo $p_Columnas[$i]->getColumna('nombre').' --- '.substr($p_Columnas[$i]->getColumna('nombre'),0,3).'::';
+			
+			/*if($p_Columnas[$i]->getColumna('nombre')=='id_cuenta'){
+				echo $p_Columnas[$i]->getColumna('nombre').' --- '.substr($p_Columnas[$i]->getColumna('nombre'),0,3).'::';
+				echo 'AAA;;'.$this->gLlave[0]->getColumna('nombre');
+			}*/
+			
+			//Verifica si es un campo llave foranea para crear el combo
+			if($p_Columnas[$i]->getColumna('nombre')!=$this->gLlave[0]->getColumna('nombre')&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_reg'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_mod'&&substr($p_Columnas[$i]->getColumna('nombre'),0,3)=='id_'){
+				//echo 'entra';
+				//Combo
+				$cadena.="
+		{
+			config: {
+				name: '".$name."',
+				fieldLabel: '".$label."',
+				allowBlank: ".$this->nulo($p_Columnas[$i]->getColumna('nulo')).",
+				emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_/control/Clase/Metodo',
+					id: 'id_',
+					root: 'datos',
+					sortInfo: {
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_', 'nombre', 'codigo'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'movtip.nombre#movtip.codigo'}
+				}),
+				valueField: 'id_',
+				displayField: 'nombre',
+				gdisplayField: 'desc_',
+				hiddenName: '".$name."',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '100%',
+				gwidth: 150,
+				minChars: 2,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['desc_']);
+				}
+			},
+			type: 'ComboBox',
+			id_grupo: 0,
+			filters: {pfiltro: 'movtip.nombre',type: 'string'},
+			grid: ".$grid.",
+			form: ".$grid."
+		},";
+					
+			} else{
+				//Define la cadena de la columna
+				$cadena.="
 		{
 			config:{
 				name: '".$name."',
@@ -1222,46 +1280,47 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 				allowBlank: ".$this->nulo($p_Columnas[$i]->getColumna('nulo')).",
 				anchor: '".$p_Columnas[$i]->getColumna('form_ancho_porcen')."%',
 				gwidth: ".$p_Columnas[$i]->getColumna('grid_ancho').",";
-			
-			//Verifica si es campo fecha para aumentar el renderer
-			if($tipodato=='date'){
-				$cadena.="
-						format: 'd/m/Y', 
-						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''},";
-			 }
-			
-		      if($tipodato=='timestamp'){
-						$cadena.="
-						format: 'd/m/Y', 
-						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''},";
-					}
-			
-			
-			
-			//Verifica si es necesario definir limite maximo en funcion del componente
-			$sw=0;
-			if($this->maximaLongitud($p_Columnas[$i])){
-				$sw=1;
-				$cadena.="\n\t\t\t\tmaxLength:".$p_Columnas[$i]->getColumna('longitud').",";
+				
+				//Verifica si es campo fecha para aumentar el renderer
+				if($tipodato=='date'){
+					$cadena.="
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''},";
+				 }
+				
+			      if($tipodato=='timestamp'){
+							$cadena.="
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''},";
+				}
+
+				//Verifica si es necesario definir limite maximo en funcion del componente
+				$sw=0;
+				if($this->maximaLongitud($p_Columnas[$i])){
+					$sw=1;
+					$cadena.="\n\t\t\t\tmaxLength:".$p_Columnas[$i]->getColumna('longitud').",";
+				}
+				
+				//Quita la ultima coma
+				$cadena= substr($cadena,0,strlen($cadena)-1);
+				
+				if($tipodato=='timestamp'){
+					$tipodato = 'date';
+				}
+				
+				$cadena.="\n\t\t\t},
+				type:'".$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'),'tipo_comp')."',
+				filters:{pfiltro:'".$alias."',type:'".$tipodato."'},
+				id_grupo:".$p_Columnas[$i]->getColumna('grupo').",
+				grid:".$grid.",
+				form:".$form.",";
+				$cadena= substr($cadena,0,strlen($cadena)-1);
+				$cadena.="\n\t\t},";
+				
+				//$fb->log($p_Columnas[$i],"columnas");
+						
 			}
 			
-			//Quita la ultima coma
-			$cadena= substr($cadena,0,strlen($cadena)-1);
-			
-			if($tipodato=='timestamp'){
-				$tipodato = 'date';
-			}
-			
-			$cadena.="\n\t\t\t},
-			type:'".$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'),'tipo_comp')."',
-			filters:{pfiltro:'".$alias."',type:'".$tipodato."'},
-			id_grupo:".$p_Columnas[$i]->getColumna('grupo').",
-			grid:".$grid.",
-			form:".$form.",";
-			$cadena= substr($cadena,0,strlen($cadena)-1);
-			$cadena.="\n\t\t},";
-			
-			//$fb->log($p_Columnas[$i],"columnas");
 		}
 		
 		return $cadena;

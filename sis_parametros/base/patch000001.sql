@@ -733,3 +733,7 @@ ALTER TABLE param.talarma
   ADD CONSTRAINT chk_talarma__tipo CHECK (tipo in ('alarma','notificacion'));
 /***********************************F-SCP-RCM-PARAM-0-09/07/2013****************************************/
 
+/***********************************I-SCP-RCM-PARAM-0-26/08/2013****************************************/
+alter table param.tasistente
+add column recursivo varchar(2);
+/***********************************F-SCP-RCM-PARAM-0-26/08/2013****************************************/
