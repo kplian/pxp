@@ -25,8 +25,9 @@ header("content-type: text/javascript; charset=UTF-8");
 		btriguerreturn:true,
 		onButtonTriguerreturn: function(){
 			this.seleccionNodos(this.root);
-			Phx.CP.getPagina(this.idContenedorPadre).Cmp.uo.setValue(this.desc_uo);
-			Phx.CP.getPagina(this.idContenedorPadre).Cmp.id_estructura_uo.setValue(this.id_estructura_uo);
+			Phx.CP.getPagina(this.idContenedorPadre).uo.setValue(this.desc_uo);
+			Phx.CP.getPagina(this.idContenedorPadre).id_estructura_uo.setValue(this.id_estructura_uo);
+			Phx.CP.getPagina(this.idContenedorPadre).id_uo.setValue(this.id_uo);
 			this.panel.close();
 		},
 		getAllChildNodes: function(node){
@@ -43,8 +44,10 @@ header("content-type: text/javascript; charset=UTF-8");
 	            	if(Mynode.attributes.checked){
 	            		console.log(Mynode.attributes)
 	            		var _id = ','+Mynode.attributes.id_estructura_uo;
+	            		var _iduo = ','+Mynode.attributes.id_uo;
 	            		var _desc = ', '+Mynode.attributes.text;
 	            		this.id_estructura_uo = this.id_estructura_uo + _id;
+	            		this.id_uo = this.id_uo + _iduo;
 	            		this.desc_uo = this.desc_uo + _desc;  
 	            	}
 	            },this);         
@@ -53,12 +56,16 @@ header("content-type: text/javascript; charset=UTF-8");
 		},
 		seleccionNodos: function(node){
 			this.id_estructura_uo='';
+			this.id_uo='';
 			this.desc_uo='';
 			var nodes = this.getAllChildNodes(node);
 			this.id_estructura_uo = this.id_estructura_uo.substring(1,this.id_estructura_uo.length)
+			this.id_uo = this.id_uo.substring(1,this.id_uo.length)
 			this.desc_uo = this.desc_uo.substring(1,this.desc_uo.length)
+			console.log(this.id_uo)
 		},
 		id_estructura_uo:'',
+		id_uo:'',
 		desc_uo:''
 	}; 
 </script>
