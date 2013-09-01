@@ -208,9 +208,13 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 	bdel:true,
 	bsave:false,
 	fwidth: 450,
-	fheight: 250
-	}
-)
+	fheight: 250,
+	codReporte:'S/C',
+	codSistema:'GEM',
+	pdfOrientacion:'L',
+	title1:'REGISTRO',
+	title2:'Especialidades Técnicas'
+})
 </script>
 		
 		
