@@ -160,9 +160,13 @@ Phx.vista.EspecialidadNivel=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
-	}
-)
+	bsave:true,
+	codReporte:'S/C',
+	codSistema:'GEM',
+	pdfOrientacion:'L',
+	title1:'REGISTRO',
+	title2:'Niveles de Especialización'
+})
 </script>
 		
 		
