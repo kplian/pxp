@@ -197,3 +197,8 @@ select pxp.f_insert_tprocedimiento ('RH_FUNCIO_INS', '	Inserta Funcionarios
 
 /********************************************F-DAT-RAC-ORGA-0-31/12/2012********************************************/
 
+/********************************************I-DAT-RCM-ALM-0-16/08/2013********************************************/
+select pxp.f_add_catalog('ORGA','tfuncionario__opciones','Todos los Funcionarios');
+select pxp.f_add_catalog('ORGA','tfuncionario__opciones','Seleccionar Funcionarios');
+select pxp.f_add_catalog('ORGA','tfuncionario__opciones','Por Organigrama');
+/********************************************F-DAT-RCM-ALM-0-16/08/2013********************************************/

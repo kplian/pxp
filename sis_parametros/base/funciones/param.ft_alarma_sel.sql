@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -29,8 +27,9 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-    v_id_funcionario integer;
-    v_filtro varchar;
+    v_id_funcionario 	integer;
+    v_filtro 			varchar;
+    v_cond				varchar;
 			    
 BEGIN
                                                     
@@ -99,6 +98,12 @@ BEGIN
      				
     	begin
         
+        	if p_administrador != 1 then
+            	v_cond = '(usua.id_usuario =  '||v_parametros.id_usuario||'
+                		or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and ';
+            else
+            	v_cond = '0=0 and ';
+            end if;
          
          
     		--Sentencia de la consulta
@@ -126,13 +131,14 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
                         left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
                         left join segu.tusuario usua  on  usua.id_usuario = alarm.id_usuario
-				        where  (usua.id_usuario =  '||v_parametros.id_usuario||' or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and'  ;
+				        where ';
+            v_consulta = v_consulta || v_cond;
 				       
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+			raise notice '%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -148,14 +154,22 @@ BEGIN
 	elsif(p_transaccion='PM_ALARM_CONT')then
 
 		begin
+        	if p_administrador != 1 then
+            	v_cond = '(usua.id_usuario =  '||v_parametros.id_usuario||'
+                		or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and ';
+            else
+            	v_cond = '0=0 and ';
+            end if;
+            
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_alarma)
 					    from param.talarma alarm
 					    inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-                        inner join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
-                        inner join segu.vpersona person on person.id_persona=funcio.id_persona
-				        where  ';
+                        left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
+                        left join segu.tusuario usua  on  usua.id_usuario = alarm.id_usuario
+				        where ';
+            v_consulta = v_consulta || v_cond;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

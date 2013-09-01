@@ -56,7 +56,8 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         fun.desc_funcionario1,
-                        uo.codigo||''-''||uo.nombre_unidad as desc_uo
+                        uo.codigo||''-''||uo.nombre_unidad as desc_uo,
+                        asis.recursivo
 						from param.tasistente asis
 						inner join segu.tusuario usu1 on usu1.id_usuario = asis.id_usuario_reg
                          inner join orga.vfuncionario fun on fun.id_funcionario = asis.id_funcionario
