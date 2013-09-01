@@ -1,3 +1,10 @@
+CREATE OR REPLACE FUNCTION orga.f_get_funcionarios_x_usuario_asistente (
+  par_fecha date,
+  par_id_usuario integer,
+  par_criterio varchar = 'todos'::character varying
+)
+RETURNS SETOF record AS
+$body$
 /*
 Modificaciones
 
@@ -128,3 +135,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
+$body$
+LANGUAGE 'plpgsql'
+STABLE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100 ROWS 1000;
