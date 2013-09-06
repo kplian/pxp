@@ -150,7 +150,11 @@ class MODDepto extends MODbase{
     function listarDeptoFiltradoXUOsEPs(){
         //Definicion de variables para ejecucion del procedimiento
         $this->procedimiento='param.ft_depto_sel';// nombre procedimiento almacenado
-        $this->transaccion='PM_DEPFILUSU_SEL';//nombre de la transaccion
+       // $this->transaccion='PM_DEPFILUSU_SEL';//nombre de la transaccion
+       
+       $this->transaccion='PM_DEPFILEPUO_SEL';//nombre de la transaccion
+        
+        
         $this->tipo_procedimiento='SEL';//tipo de transaccion
         
     

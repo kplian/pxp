@@ -132,7 +132,17 @@ BEGIN
                 v_consulta:=v_consulta || valores[i] || ',';
             end if;
         ELSE
-            v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
+           
+            --RAC 12/09/2011 validacion para campo date vacio 
+            if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
+                 v_consulta:=v_consulta || 'null' || ',';
+            else
+                  --v_consulta:=v_consulta ||''''|| valores[i] || ''',';
+                  v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
+            end if;
+            
+            
+            
         end if;
 
     end loop;
@@ -143,8 +153,17 @@ BEGIN
         else
             v_consulta:=v_consulta || valores[v_tamano] || ')';
         end if;
-    ELSE
-          v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') || ''')';
+   
+     ELSE
+     
+     --RAC 12/09/2011 validacion para campo date vacio 
+            if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time' or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
+                 v_consulta:=v_consulta || 'null' || || ''')';
+            else
+                  v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') || ''')';
+            end if;
+     
+    
     end if;
    
     execute v_consulta;

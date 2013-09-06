@@ -306,7 +306,7 @@ BEGIN
         
           v_codadd = '';
           IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
-          	v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          	v_codadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
           
           END IF;
          
@@ -373,9 +373,10 @@ BEGIN
          BEGIN
          
          
+      
           v_codadd = '';
           IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
-          	v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          	v_codadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
           
           END IF;
           
@@ -386,9 +387,10 @@ BEGIN
           v_a_eps = string_to_array(v_parametros.eps, ',');
           v_a_uos = string_to_array(v_parametros.uos, ',');
           
-           v_size := array_length(v_parametros.eps);
           
-          for v_i IN 1..size
+           v_size :=array_upper(v_a_eps,1);
+          
+          for v_i IN 1..v_size
           Loop
           
              IF v_i =1 THEN
@@ -442,6 +444,7 @@ BEGIN
                              '||v_codadd;
                
               
+         
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
                raise notice    '% % %',v_filadd,par_id_usuario,v_consulta;
@@ -469,16 +472,16 @@ BEGIN
         
           v_codadd = '';
           IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
-          	v_filadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
+          	v_codadd = ' (SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||''') and ';
           
           END IF;
           
           v_a_eps = string_to_array(v_parametros.eps, ',');
           v_a_uos = string_to_array(v_parametros.uos, ',');
           
-           v_size := array_length(v_parametros.eps);
+          v_size :=array_upper(v_a_eps,1);
           
-          for v_i IN 1..size
+          for v_i IN 1..v_size
           Loop
           
              IF v_i =1 THEN
