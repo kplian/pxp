@@ -528,7 +528,11 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			this.mostrarComponente(this.getComponente('id_institucion'));
 		}
 		
-	}
+	},
+	title1: 'REGISTRO',
+	title2: 'Proveedores',
+	codReporte: 'GMAN-RG-SM-032',
+	fechaRep:'26/05/2012'
 })
 </script>
 		
