@@ -60,9 +60,7 @@ class ACTConceptoIngas extends ACTbase{
               $this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
          }
         
-         if($this->objParam->getParametro('id_centro_costo')!=''){
-              $this->objParam->addFiltro("(cc.id_centro_costo =".$this->objParam->getParametro('id_centro_costo')."  or cc.id_centro_costo is NULL)");    
-         }
+       
          
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
             $this->objReporte = new Reporte($this->objParam,$this);
