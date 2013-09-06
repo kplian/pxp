@@ -10,8 +10,7 @@
 class ACTPeriodoSubsistema extends ACTbase {
 
     function listarPeriodoSubsistema() {
-        $this->objParam->defecto('ordenacion', 'id_periodo_subsistema');
-        $this->objParam->defecto('dir_ordenacion', 'asc');
+        $this->objParam->defecto('ordenacion', 'gest.gestion desc, peri.periodo desc');
 		
 		if($this->objParam->getParametro('id_periodo')!=''){
 			$this->objParam->addFiltro("pesu.id_periodo = ".$this->objParam->getParametro('id_periodo'));	

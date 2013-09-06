@@ -121,7 +121,23 @@ class MODGestion extends MODbase{
         return $this->respuesta;
     }
 	
-	
+	//RCM 03/09/2013: Genera los periodos de los subsistema faltantes
+	function sincronizarPeriodoSubsis(){
+		//Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.f_gestion_ime';
+        $this->transaccion='PM_PERSUB_SIN';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_gestion','id_gestion','integer');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+	}
 			
 }
 ?>

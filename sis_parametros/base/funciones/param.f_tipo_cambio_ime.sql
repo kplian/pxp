@@ -155,12 +155,14 @@ BEGIN
 			
             
         
-           select 
+           /*select 
             tc.oficial
            into 
             v_tipo_cambio
            from param.ttipo_cambio tc
-           where tc.fecha = v_parametros.fecha and tc.id_moneda = v_parametros.id_moneda;
+           where tc.fecha = v_parametros.fecha and tc.id_moneda = v_parametros.id_moneda;*/
+          
+          v_tipo_cambio = param.f_get_tipo_cambio(v_parametros.id_moneda,v_parametros.fecha,v_parametros.tipo);
             
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo de Cambio obtenido)'); 

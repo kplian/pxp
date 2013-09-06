@@ -117,9 +117,11 @@ class MODTipoCambio extends MODbase{
         //Define los parametros para la funcion
         $this->setParametro('id_moneda','id_moneda','int4');
         $this->setParametro('fecha','fecha','date');
+		$this->setParametro('tipo','tipo','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
+		//echo $this->consulta;exit;
         $this->ejecutarConsulta();
 
         //Devuelve la respuesta

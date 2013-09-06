@@ -182,11 +182,11 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'}
 		
 	],
 	sortInfo:{
-		field: 'id_periodo',
+		field: 'periodo',
 		direction: 'ASC'
 	},
 	onReloadPage:function(m){
