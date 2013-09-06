@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_sel (
 RETURNS varchar AS
 $body$
 /**************************************************************************
- FUNCION: 		RHUM.ft_estructura_uo_sel
+ FUNCION: 		orga.ft_estructura_uo_sel
  DESCRIPCIÓN:  listado de uo
  AUTOR: 	    KPLIAN (mzm)	
  FECHA:	        
@@ -38,7 +38,7 @@ v_join varchar;
 BEGIN
 
      v_parametros:=pxp.f_get_record(par_tabla);
-     v_nombre_funcion:='rhum.ft_estructura_uo_sel';
+     v_nombre_funcion:='orga.ft_estructura_uo_sel';
     
 
 /*******************************
