@@ -18,6 +18,17 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.Gestion.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:50}})
+		
+		//Botón para crear los subsistemas periodos de los subsistemas nuevos
+		this.addButton('btnSincPeriodoSubsis',
+			{
+				text: 'Generar Periodo Subsistema',
+				iconCls: 'bchecklist',
+				disabled: true,
+				handler: this.sincPeriodoSubsis,
+				tooltip: '<b>Generar Periodos para Subsistemas</b><br/>Permite crear los periodos para los subsistemas creados recientemente'
+			}
+		);
 	},
 			
 	Atributos:[
@@ -253,7 +264,41 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 	bdel:true,
 	bsave:true,
 	fwidth:'50%',
-	fheight:'50%'
+	fheight:'50%',
+	sincPeriodoSubsis: function(){
+		Ext.Msg.confirm('Confirmación','¿Está seguro de Generar los Periodos para los subsistemas recientes?',function(btn){
+			var rec=this.sm.getSelected();
+				Phx.CP.loadingShow();
+				Ext.Ajax.request({
+					url:'../../sis_parametros/control/Gestion/sincronizarPeriodoSubsis',
+					params:{'id_gestion': rec.data.id_gestion},
+					success: this.successSinc,
+					failure: this.conexionFailure,
+					timeout: this.timeout,
+					scope:this
+				});
+		}, this)
+	},
+	successSinc: function(resp) {
+		Phx.CP.loadingHide();
+		var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+		if (reg.ROOT.error) {
+			Ext.Msg.alert('Error','Generación no realizada: se ha producido un error inesperado. Comuníquese con el Administrador del Sistema.')
+		} else {
+			Ext.Msg.alert('Mensaje','Proceso ejecutado con éxito')
+		}
+
+	},
+	preparaMenu: function(n) {
+		var tb = Phx.vista.Gestion.superclass.preparaMenu.call(this);
+	  	this.getBoton('btnSincPeriodoSubsis').setDisabled(false);
+  		return tb;
+	},
+	liberaMenu: function() {
+		var tb = Phx.vista.Gestion.superclass.liberaMenu.call(this);
+		this.getBoton('btnSincPeriodoSubsis').setDisabled(true);
+		return tb;
+	}
 })
 </script>
 		

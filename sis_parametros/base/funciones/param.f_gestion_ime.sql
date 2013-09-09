@@ -119,7 +119,8 @@ BEGIN
                 --Registro de los periodos de los subsistemas existentes
                 for v_rec in (select id_subsistema
                 			from segu.tsubsistema
-                			where estado_reg = 'activo') loop
+                			where estado_reg = 'activo'
+                			and codigo not in ('PXP','GEN','SEGU','WF','PARAM','ORGA','MIGRA')) loop
                 	insert into param.tperiodo_subsistema(
                 	id_periodo,
                 	id_subsistema,
@@ -237,6 +238,51 @@ BEGIN
             v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_id_gestion::varchar);
            
               
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+		
+	/*********************************    
+ 	#TRANSACCION:  'PM_PERSUB_SIN'
+ 	#DESCRIPCION:	Generación de los periodos subsistema para los subsistemas recientes
+ 	#AUTOR:			RCM	
+ 	#FECHA:			03/09/2013
+	***********************************/
+
+	elsif(p_transaccion='PM_PERSUB_SIN')then
+    
+		begin
+           
+            --(1) Validación de existencia de la gestión
+            if exists(select 1 from param.tgestion
+            		where gestion = v_parametros.id_gestion) THEN
+              raise exception 'Gestión existente';
+            end if;
+           
+           --(2) Recorre todos los períodos de la gestión y crea los periodos subsistemas para todos los sistemas que no tengan
+        	for v_rec in (select id_periodo 
+        					from param.tperiodo
+        					where id_gestion = v_parametros.id_gestion) loop
+
+        		insert into param.tperiodo_subsistema(
+				id_periodo, id_subsistema, id_usuario_reg, fecha_reg, estado
+				)
+				select
+				v_rec.id_periodo, sis.id_subsistema,p_id_usuario, now(), 'activo'
+				from segu.tsubsistema sis
+				where sis.id_subsistema not in (select id_subsistema
+												from param.tperiodo_subsistema
+				                                where id_periodo = v_rec.id_periodo)
+				and sis.codigo not in ('PXP','GEN','SEGU','WF','PARAM','ORGA','MIGRA');
+
+        					
+        	end loop;
+            
+			--Definicion de la respuesta
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Sincronización de periodos de subsistemas nuevos relizao con éxito (id_gestion'||v_parametros.id_gestion||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_id_gestion::varchar);
+
             --Devuelve la respuesta
             return v_resp;
 

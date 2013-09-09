@@ -11,7 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 	Phx.vista.PeriodoSubsistema = Ext.extend(Phx.gridInterfaz, {
-		codigoSubsistema : 'PXP',
+		codSist : 'PXP',
 		constructor : function(config) {
 			this.maestro = config.maestro;
 			Phx.vista.PeriodoSubsistema.superclass.constructor.call(this, config);
@@ -23,7 +23,8 @@ header("content-type: text/javascript; charset=UTF-8");
 				handler : this.onBtnSwitchEstadoPeriodo,
 				tooltip : '<b>Abrir Periodo</b>'
 			});
-
+			//Setea el store del grid con el codigo del subsistema
+			Ext.apply(this.store.baseParams,{codSist:this.codSist});
 		},
 		Atributos : [{
 			config : {
@@ -301,10 +302,10 @@ header("content-type: text/javascript; charset=UTF-8");
 			type : 'string'
 		},
 		'desc_subsistema'],
-		sortInfo : {
+		/*sortInfo : {
 			field : 'id_periodo_subsistema',
-			direction : 'ASC'
-		},
+			direction : 'desc'
+		},*/
 		bdel : false,
 		bedit : false,
 		bnew : false,
