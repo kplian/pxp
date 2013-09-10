@@ -90,16 +90,16 @@ header("content-type: text/javascript; charset=UTF-8");
 			form : false
 		}, {
 			config : {
-				name : 'obs',
+				name : 'titulo',
 				fieldLabel : 'Título',
 				allowBlank : true,
 				anchor : '80%',
-				gwidth : 100,
+				gwidth : 210,
 				maxLength : 10
 			},
 			type : 'Field',
 			filters : {
-				pfiltro : 'alarm.obs',
+				pfiltro : 'alarm.titulo',
 				type : 'string'
 			},
 			id_grupo : 1,
@@ -173,6 +173,23 @@ header("content-type: text/javascript; charset=UTF-8");
 			grid : true,
 			form : true
 		}, {
+			config : {
+				name : 'obs',
+				fieldLabel : 'Observaciones',
+				allowBlank : true,
+				anchor : '80%',
+				gwidth : 300,
+				maxLength : 10
+			},
+			type : 'Field',
+			filters : {
+				pfiltro : 'alarm.obs',
+				type : 'string'
+			},
+			id_grupo : 1,
+			grid : true,
+			form : false
+		},{
 			config : {
 				name : 'estado_reg',
 				fieldLabel : 'Estado Reg.',

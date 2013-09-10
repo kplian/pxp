@@ -35,7 +35,7 @@ class ACTGestion extends ACTbase{
 	}
 						
 	function eliminarGestion(){
-			$this->objFunc=$this->create('MODGestion');	
+		$this->objFunc=$this->create('MODGestion');	
 		$this->res=$this->objFunc->eliminarGestion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
@@ -45,6 +45,13 @@ class ACTGestion extends ACTbase{
         $this->res=$this->objFunc->obtenerGestionByFecha($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+	
+	//RCM 03/09/2013: Genera los periodos de los subsistema faltantes
+	function sincronizarPeriodoSubsis(){
+		$this->objFunc=$this->create('MODGestion');	
+		$this->res=$this->objFunc->sincronizarPeriodoSubsis($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 	
 	
 			

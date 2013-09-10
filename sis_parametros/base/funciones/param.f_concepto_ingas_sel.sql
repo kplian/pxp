@@ -127,8 +127,8 @@ BEGIN
                         from param.tconcepto_ingas conig
                              inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                              left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-                             inner join pre.tconcepto_cta cc on cc.id_concepto_ingas = conig.id_concepto_ingas 
-                             and cc.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
+                             inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas 
+                             and cp.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
 				        where  ';
                         
                        
@@ -156,11 +156,11 @@ BEGIN
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(conig.id_concepto_ingas)
-					    from param.tconcepto_ingas conig
+					     from param.tconcepto_ingas conig
                              inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                              left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-                             inner join pre.tconcepto_cta cc on cc.id_concepto_ingas = conig.id_concepto_ingas 
-                             and cc.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
+                             inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas 
+                             and cp.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
 				        where ';
 			
 			--Definicion de la respuesta		    

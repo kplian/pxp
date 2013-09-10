@@ -29,7 +29,8 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_asistente	integer;
+	v_id_asistente			integer;
+	v_sql					varchar;
 			    
 BEGIN
 
@@ -46,7 +47,25 @@ BEGIN
 	if(p_transaccion='PM_ASIS_INS')then
 					
         begin
-        	--Sentencia de la insercion
+        	--Guardando el array de UOs
+        	if coalesce(v_parametros.id_uo,'') != '' then
+                v_sql = '
+                        insert into param.tasistente(
+                        id_uo,id_funcionario,estado_reg, recursivo, id_usuario_reg, fecha_reg)
+                        select
+                        uo.id_uo,' || v_parametros.id_funcionario ||', ''activo'','''||v_parametros.recursivo||''','||p_id_usuario||',now()
+                        from orga.tuo uo
+                        where uo.id_uo = ANY(ARRAY['||v_parametros.id_uo||'])
+                        and uo.id_uo not in (select id_uo
+                                            from param.tasistente
+                                            where id_uo is not null
+                                            and estado_reg = ''activo''
+                                            and id_funcionario = ' || v_parametros.id_funcionario ||')';
+
+                execute(v_sql);
+            end if;
+        
+        	/*--Sentencia de la insercion
         	insert into param.tasistente(
 			id_uo,
 			id_funcionario,
@@ -64,11 +83,11 @@ BEGIN
 			null,
 			null
 							
-			)RETURNING id_asistente into v_id_asistente;
+			)RETURNING id_asistente into v_id_asistente;*/
 			
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Registro de Asistentes por UO almacenado(a) con exito (id_asistente'||v_id_asistente||')'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_asistente',v_id_asistente::varchar);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Registro de Asistentes por UO almacenado(a) con exito'); 
+            --v_resp = pxp.f_agrega_clave(v_resp,'id_asistente',v_id_asistente::varchar);
 
             --Devuelve la respuesta
             return v_resp;
@@ -90,7 +109,8 @@ BEGIN
 			id_uo = v_parametros.id_uo,
 			id_funcionario = v_parametros.id_funcionario,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+			recursivo = v_parametros.recursivo
 			where id_asistente=v_parametros.id_asistente;
                
 			--Definicion de la respuesta

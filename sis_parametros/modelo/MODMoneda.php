@@ -106,6 +106,6 @@ class MODMoneda extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+		
 }
 ?>

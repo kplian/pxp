@@ -40,7 +40,6 @@ class ACTFuncionario extends ACTbase{
 	function listarFuncionarioCargo(){
 
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
-		
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
@@ -59,8 +58,6 @@ class ACTFuncionario extends ACTbase{
 										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $this->objParam->getParametro('fecha') . "'', " .
 																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
 		}
-		
-		        		
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

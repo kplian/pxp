@@ -17,6 +17,13 @@ abstract class ACTbase
 		$this->objParam=  $pParam;		
 	}
 	
+	/**
+	*
+	*   Ejemplo:   
+	*
+	*
+	*/
+	
 	function create($className) {
 		$myArray = explode("/", $className);
 		$reflector = new ReflectionClass(get_class($this));

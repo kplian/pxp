@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_sid_web varchar,
@@ -160,7 +162,7 @@ BEGIN
     END IF;
    -- raise exception 'aa%',v_consulta;
    
-       RAISE NOTICE 'LLEGAAAAAAAA  2222';
+    
     execute(v_consulta);
     
       
@@ -188,7 +190,8 @@ BEGIN
                 if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
                      v_consulta:=v_consulta || 'null' || ',';
                 else
-                    v_consulta:=v_consulta ||''''|| valores[i] || ''',';
+                    --v_consulta:=v_consulta ||''''|| valores[i] || ''',';
+                    v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
                 end if;
             
 
@@ -199,7 +202,7 @@ BEGIN
         --   raise exception 'cons%',v_consulta;
          -- 3.3) introduce el final de la cadena de insercion
          
- --        raise exception '11111  %',par_files;
+ 
         
          --encode(par_files,'escape')
         if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8')then
@@ -228,7 +231,7 @@ BEGIN
                     v_consulta:=v_consulta || valores[v_tamano] || ')';
                 end if;
             END IF;
-           RAISE NOTICE 'LLEGAAAAAAAA 333333333'; 
+        
         else
            --RAC 12/09/2011 validacion para campo date vacio 
            if(v_upload_file)THEN
@@ -242,15 +245,16 @@ BEGIN
               if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time' or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
                   v_consulta:=v_consulta || 'null' || ')';
               else
-                  v_consulta:=v_consulta ||''''|| valores[v_tamano] || ''')';
+                 -- v_consulta:=v_consulta ||''''|| valores[v_tamano] || ''')';
+                  
+                  v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') ||  ''')';
               end if;
             
            END IF;
         
         end if;
       -- 3.4  Ejecuta la cadena de insercion  en la tabla temporal con los datos recibidos del servidor
-      -- raise exception 'aa%', v_consulta;
-         raise notice '>> %', v_consulta;       
+    
         execute v_consulta;
         
        --3.5) Arma en una cadena  la llamada al  procedimiento almacenado destino, le envia
@@ -335,7 +339,7 @@ BEGIN
                   end if;
                 
             end if;
-            --raise exception '%',v_consulta;
+          
             
           -- 4.2.4  Ejecuta la cadena de insercion  en la tabla temporal con los datos recibidos del servidor
 
@@ -394,7 +398,10 @@ BEGIN
                                 par_pid_web,
                                 v_id_subsistema,
                                 v_habilitar_log);
-    
+                                
+                                                               
+ 
+ 
     v_resp='';
     v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','EXITO');
     v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
@@ -414,6 +421,9 @@ EXCEPTION
   		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
   		--raise exception '%',v_resp;
         v_tipo_error='ERROR_TRANSACCION_BD';
+         
+        --RAC 07/09/2013 para escapar comillas simples en el registro de  log
+         v_retorno:=replace(par_consulta,'''','''''');
         
          if(v_nivel_error=0)then
             v_tipo_error='ERROR_BLOQUEO';
@@ -432,7 +442,7 @@ EXCEPTION
                                 pxp.f_obtiene_clave_valor(v_resp,'mensaje','','','valor'),
                                 pxp.f_obtiene_clave_valor(v_resp,'procedimientos','','','valor'),
                                 par_transaccion,
-                                par_consulta,
+                                v_retorno,
                                 NULL,
                                 getpgusername()::varchar,
                                 SQLSTATE::varchar,

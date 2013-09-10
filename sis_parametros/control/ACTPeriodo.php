@@ -10,7 +10,7 @@
 class ACTPeriodo extends ACTbase{    
 			
 	function listarPeriodo(){
-		$this->objParam->defecto('ordenacion','id_periodo');
+		$this->objParam->defecto('ordenacion','periodo');
 		
 	    if($this->objParam->getParametro('id_gestion')!=''){
 	    	$this->objParam->addFiltro("per.id_gestion = ".$this->objParam->getParametro('id_gestion'));	
