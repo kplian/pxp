@@ -6,7 +6,7 @@
 *@date 18-04-2013 09:01:51
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
-require_once(dirname(__FILE__).'/../reportes/DiagramadorGanttTramite.php');
+require_once(dirname(__FILE__).'/../reportes/DiagramadorGanttWF.php');
 require_once(dirname(__FILE__).'/../../pxpReport/DataSource.php');
 
 class ACTProcesoWf extends ACTbase{    
@@ -66,33 +66,47 @@ class ACTProcesoWf extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
     
-				function diagramaGanttTramite(){
+	function diagramaGanttTramite(){
 					
-					  $dataSource = new DataSource();
+				$dataSource = new DataSource();
 			    //$idSolicitud = $this->objParam->getParametro('nro_tramite');
 			    //$this->objParam->addParametroConsulta('id_plan_mant',$idPlanMant);
 			    $this->objParam->addParametroConsulta('ordenacion','nro_tramite');
 			    $this->objParam->addParametroConsulta('dir_ordenacion','ASC');
 			    $this->objParam->addParametroConsulta('cantidad',1000);
 			    $this->objParam->addParametroConsulta('puntero',0);
-			    $this->objFunc = $this->create('MODProcesoWf');
-			    $resultSolicitud = $this->objFunc->estadosWF();
-			    $datosSolicitud = $resultSolicitud->getDatos();
-							$dataSource->setDataset($datosSolicitud);
-			  		//build the diagram
-			    $nombreArchivo='diagramaGanttTramite.png';
 			    
-			    $diagramador = new DiagramadorGanttTramite();
-							$diagramador->setDataSource($dataSource);
-							$diagramador->graficar($nombreArchivo);
-							
-			    $mensajeExito = new Mensaje();
-			    $mensajeExito->setMensaje('EXITO','DiagramaGanttTramite.php','Diagrama Gantt de tramite generado',
-			                                    'Se generó con éxito el diagrama para: '.$nombreArchivo,'control');
-			    $mensajeExito->setArchivoGenerado($nombreArchivo);
-			    $this->res = $mensajeExito;
-			    $this->res->imprimirRespuesta($this->res->generarJson());
-				}  
+			    $this->objFunc = $this->create('MODProcesoWf');
+			    
+			    $resultSolicitud = $this->objFunc->listarGantWf();
+			    
+			    if($resultSolicitud->getTipo()=='EXITO'){
+			    
+        			    $datosSolicitud = $resultSolicitud->getDatos();
+        			    $dataSource->setDataset($datosSolicitud);
+        			  	
+        			    $nombreArchivo='diagramaGanttTramite.png';
+        			    
+        			    $diagramador = new DiagramadorGanttWF();
+        				$diagramador->setDataSource($dataSource);
+        				$diagramador->graficar($nombreArchivo);
+        							
+        			    $mensajeExito = new Mensaje();
+        			    
+        			    $mensajeExito->setMensaje('EXITO','DiagramaGanttTramite.php','Diagrama Gantt de tramite generado',
+        			                                    'Se generó con éxito el diagrama para: '.$nombreArchivo,'control');
+        			    
+        			    $mensajeExito->setArchivoGenerado($nombreArchivo);
+        			    $this->res = $mensajeExito;
+        			    $this->res->imprimirRespuesta($this->res->generarJson());
+			    
+                }
+                else{
+                        
+                     $resultSolicitud->imprimirRespuesta($resultSolicitud->generarJson());
+                
+				} 
+		} 
 			
 }
 

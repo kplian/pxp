@@ -7,7 +7,11 @@ class MostrarReporte
         $fileExtension = substr(strrchr($fileName,'.'),1);
         if ($fileExtension == 'pdf') {
             header('Content-type: application/pdf');
-        } else {
+        } 
+         if ($fileExtension == 'png') {
+             header("Content-type: image/png");
+         }
+        else {
             header("Content-type: application/xls");
         }
         header('Content-Disposition: inline; filename="'.$fileName.'"');

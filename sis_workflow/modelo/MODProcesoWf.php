@@ -49,6 +49,11 @@ class MODProcesoWf extends MODbase{
 		$this->captura('tipo_estado_disparador','varchar');
 		$this->captura('obs','text');
 		
+		
+		
+		
+                              
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -56,6 +61,51 @@ class MODProcesoWf extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	
+function listarGantWf(){
+    
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.f_gant_wf';// nombre procedimiento almacenado
+        $this->transaccion='WF_GATNREP_SEL';//nombre de la transaccion
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+        
+        $this->setTipoRetorno('record');
+        
+        $this->setParametro('id_proceso_wf','id_proceso_wf','integer');
+        
+       //Definicion de la lista del resultado del query
+        $this->captura('id','integer');                          
+        $this->captura('id_proceso_wf','integer');
+        $this->captura('id_estado_wf','integer');
+        $this->captura('tipo','varchar');       
+        $this->captura('nombre','varchar');
+        $this->captura('fecha_ini','TIMESTAMP');
+        $this->captura('fecha_fin','TIMESTAMP');        
+        $this->captura('descripcion','varchar');
+        $this->captura('id_siguiente','integer');
+        $this->captura('tramite','varchar');
+        $this->captura('codigo','varchar');
+        
+        $this->captura('id_funcionario','integer');
+        $this->captura('funcionario','text');
+        $this->captura('id_usuario','integer');
+        $this->captura('cuenta','varchar');
+        $this->captura('id_depto','integer');
+        $this->captura('depto','varchar');
+        
+        //$this->captura('id_estructura_uo','integer');
+        //Ejecuta la funcion
+        $this->armarConsulta();
+        
+        //echo $this->getConsulta();
+        $this->ejecutarConsulta();
+        return $this->respuesta;
+
+    }
+    
+    
 			
 	function insertarProcesoWf(){
 		//Definicion de variables para ejecucion del procedimiento
@@ -175,24 +225,24 @@ class MODProcesoWf extends MODbase{
         return $this->respuesta;
     }
 				
-				function estadosWF(){
-					//Definicion de variables para ejecucion 
-					$this->procedimiento = 'wf.f_proceso_wf_sel';
-					$this->transaccion = 'WF_TRAWF_SEL';
-					$this->tipo_procedimiento = 'SEL';
-					
-					//Define los porametros de la funcion
-					$this->setParametro('nro_tramite','nro_tramite','varchar');
-					$this->captura('fecha_reg','timestamp');
-					$this->captura('estado','varchar');
-					$this->captura('proceso','varchar');
-					$this->captura('func','text');
-					$this->captura('depto','varchar');
-					
-					$this->armarConsulta();
-					$this->ejecutarConsulta();
-					return $this->respuesta;
-				}
+	function estadosWF(){
+		//Definicion de variables para ejecucion 
+		$this->procedimiento = 'wf.f_proceso_wf_sel';
+		$this->transaccion = 'WF_TRAWF_SEL';
+		$this->tipo_procedimiento = 'SEL';
+		
+		//Define los porametros de la funcion
+		$this->setParametro('nro_tramite','nro_tramite','varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('estado','varchar');
+		$this->captura('proceso','varchar');
+		$this->captura('func','text');
+		$this->captura('depto','varchar');
+		
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
 			
 }
 ?>

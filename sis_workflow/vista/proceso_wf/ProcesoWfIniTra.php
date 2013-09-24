@@ -22,11 +22,11 @@ Phx.vista.ProcesoWfIniTra = {
     		this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:diagramGantt,tooltip: '<b>Diagrama Gantt</b>'});
       
       function diagramGantt(){			
-							var data=this.sm.getSelected().data.nro_tramite;
+							var data=this.sm.getSelected().data.id_proceso_wf;
 							Phx.CP.loadingShow();
 							Ext.Ajax.request({
 								url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
-								params:{'nro_tramite':data},
+								params:{'id_proceso_wf':data},
 								success:this.successExport,
 								failure: this.conexionFailure,
 								timeout:this.timeout,

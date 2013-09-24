@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION wf.f_registra_proceso_disparado_wf (
   p_id_estado_wf_dis integer,
   p_id_funcionario integer,
   p_id_depto integer,
+  p_descripcion varchar = '---'::character varying,
   out ps_id_proceso_wf integer,
   out ps_id_estado_wf integer,
   out ps_codigo_estado varchar
@@ -113,7 +114,8 @@ BEGIN
           estado_reg,
           id_tipo_proceso,
           nro_tramite,
-          id_estado_wf_prev
+          id_estado_wf_prev,
+          descripcion
           
         ) 
         VALUES (
@@ -122,7 +124,8 @@ BEGIN
           'activo',
           v_id_tipo_proceso_next,
           v_nro_tramite,
-          p_id_estado_wf_dis
+          p_id_estado_wf_dis,
+          p_descripcion
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
   
