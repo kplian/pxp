@@ -68,7 +68,8 @@ class CTParametro{
 		$this->parametros_consulta['cantidad']=isset($this->arreglo_parametros['limit'])?$this->arreglo_parametros['limit']:'';
 
 
-
+        //si existe el parametros query la consulta viene de un filtro
+        
 		if(isset($this->arreglo_parametros['query'])){
 			//FILTRO PARA COMBO
 			$this->parametros_consulta['filtro']=$this->armarFiltro($this->arreglo_parametros['query'],'CLASICO',$this->arreglo_parametros['par_filtro']);
@@ -409,6 +410,10 @@ class CTParametro{
 		$qs='';
 
 		if($tipo=='JSON'){
+		        /*echo '<pre>';  
+		        var_dump($filter);
+		         echo '</pre>'; */
+		    
 			//decodifica filtro JSON usado en grillas
 			
 			for ($i=0;$i<count($filter);$i++){
@@ -421,7 +426,7 @@ class CTParametro{
 					         
 					         $paramfiltro = explode('#',$filter[$i]['field']);
 					         
-					         $qs='';
+					         $qs.='';
                             $filteraux=trim($filter[$i]['field']);
                             $contador = count($paramfiltro);
                             $qs .= " AND ( 1=0 ";
