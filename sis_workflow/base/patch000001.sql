@@ -127,3 +127,12 @@ CREATE TABLE wf.tfuncionario_tipo_estado (
   PRIMARY KEY (id_labores_tipo_proceso)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-FRH-WF-0-18/02/2013****************************************/
+
+/***********************************I-SCP-RAC-WF-0-18/09/2013****************************************/
+
+ALTER TABLE wf.tproceso_wf
+  ADD COLUMN descripcion VARCHAR(250);
+  
+/***********************************F-SCP-RAC-WF-0-18/09/2013****************************************/
+
+

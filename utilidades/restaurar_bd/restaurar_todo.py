@@ -206,7 +206,8 @@ for item in url:
     	for f in funciones:
     		if f.endswith('.sql'):
             		command = 'psql -q -d ' + db + ' < ' + funciones_dir + f
-    			for line in run_command(command):
+            		f_log.write('restaurando '+funciones_dir + f+'\n')
+                for line in run_command(command):
                                     f_log.write(line)
 
 #crear objetos de cada esquema
