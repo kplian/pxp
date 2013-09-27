@@ -1,0 +1,31 @@
+body {
+  font-family: Arial, Verdana, Georgia, "Times New Roman", Times, serif;
+  font-size: 15px;
+}
+.table_border {
+     border-style:solid;
+     border-width:1px 1px 1px 1px;
+     border-color:#000000;
+}
+h1 {
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+}
+h2 {
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+h3{
+	font-size: 15px;
+	font-weight: bold;
+	text-align: left;
+}
+.td_label{
+	text-align: center;
+	font-weight: bold;
+}
+.td_currency{
+	text-align: right;
+}

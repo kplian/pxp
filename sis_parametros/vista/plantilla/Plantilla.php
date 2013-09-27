@@ -211,12 +211,11 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_plantilla',
 		direction: 'ASC'
 	},
-	bdel:false,
-	bnew:false,
-	bedit:false,
+	bdel:true,
+	bnew:true,
+	bedit:true,
 	bsave:true
-	}
-)
+})
 </script>
 		
 		
