@@ -155,14 +155,30 @@ BEGIN
 			
             
         
-           /*select 
+           select 
             tc.oficial
            into 
             v_tipo_cambio
            from param.ttipo_cambio tc
-           where tc.fecha = v_parametros.fecha and tc.id_moneda = v_parametros.id_moneda;*/
-          
-          v_tipo_cambio = param.f_get_tipo_cambio(v_parametros.id_moneda,v_parametros.fecha,v_parametros.tipo);
+           where tc.fecha = v_parametros.fecha and tc.id_moneda = v_parametros.id_moneda;
+           
+           
+           IF v_tipo_cambio is NULL THEN
+           
+               IF ( SELECT 1  FROM  PARAM.tmoneda  m  
+                    WHERE  m.tipo_moneda = 'base' 
+                        and m.id_moneda =  v_parametros.id_moneda ) THEN
+              
+                 v_tipo_cambio = 1;
+           
+               ELSE
+                  
+                  raise exception 'No existe tipode cambio para la fecha %',v_parametros.fecha;  
+                        
+               END IF;        
+           
+             
+           END IF;
             
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo de Cambio obtenido)'); 
