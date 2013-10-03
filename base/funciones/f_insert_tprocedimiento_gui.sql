@@ -13,6 +13,10 @@ BEGIN
     from segu.tgui g
     where g.codigo_gui = par_gui;
     
+    if coalesce(v_id_gui,-1) = -1 then
+    	raise exception 'Error al insertar Procedimiento. No existe el codigo de Interfaz: "%"  (procedimiento: "%")',par_gui,par_procedimiento;
+    end if;
+    
     select id_procedimiento into v_id_procedimiento
     from segu.tprocedimiento p
     where p.codigo = par_procedimiento;
