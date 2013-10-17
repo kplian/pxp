@@ -70,6 +70,21 @@ class ACTTipoEstado extends ACTbase{
 		$this->res=$this->objFunc->eliminarTipoEstado($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function listarEstadoSiguiente(){
+		$this->objParam->defecto('ordenacion','id_tipo_estado');
+		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODTipoEstado','listarEstadoSiguiente');
+		} else{
+			$this->objFunc=$this->create('MODTipoEstado');
+			
+			$this->res=$this->objFunc->listarEstadoSiguiente($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 

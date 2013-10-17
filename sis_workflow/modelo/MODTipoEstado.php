@@ -156,6 +156,49 @@ class MODTipoEstado extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	//RCM: Listado de los siguientes estados posibles
+	function listarEstadoSiguiente(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_tipo_estado_sel';
+		$this->transaccion='WF_SIGEST_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+		//Define los parametros para la funcion
+		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
+		$this->setParametro('id_tipo_estado_padre','id_tipo_estado_padre','int4');
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('id_tipo_estado','int4');
+		$this->captura('nombre_estado','varchar');
+		$this->captura('id_tipo_proceso','int4');
+		$this->captura('inicio','varchar');
+		$this->captura('disparador','varchar');
+		$this->captura('tipo_asignacion','varchar');
+		$this->captura('nombre_func_list','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('desc_tipo_proceso','varchar');
+		$this->captura('codigo_estado','varchar');
+		$this->captura('obs','text');
+		$this->captura('depto_asignacion','varchar');
+		$this->captura('nombre_depto_func_list','varchar');
+		$this->captura('fin','varchar');
+		$this->captura('alerta','varchar');
+		$this->captura('pedir_obs','varchar');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>

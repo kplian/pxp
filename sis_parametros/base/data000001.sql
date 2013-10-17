@@ -655,3 +655,8 @@ select pxp.f_add_catalog('PARAM','tgral__gestion','2023');
 select pxp.f_add_catalog('PARAM','tgral__gestion','2024');
 select pxp.f_add_catalog('PARAM','tgral__gestion','2025');
 /***********************************F-DAT-RCM-PARAM-00-24/06/2013*****************************************/
+
+/***********************************I-DAT-RCM-PARAM-00-08/10/2013*****************************************/
+select pxp.f_add_catalog('PARAM','tgral__bandera_min','si');
+select pxp.f_add_catalog('PARAM','tgral__bandera_min','no');
+/***********************************F-DAT-RCM-PARAM-00-08/10/2013*****************************************/
