@@ -119,9 +119,9 @@ class DiagramadorGanttTramite{
 		//$graph->SetDateRange($fechaInicio,$fechaFin);					 
 	    $archivo = dirname(__FILE__).'/../../../reportes_generados/'.$filename;
 	    
-	    $graph->StrokeCSIM();
-	    exit;
-		//$graph->Stroke($archivo);
+	    //$graph->StrokeCSIM();
+	    //exit;
+		$graph->Stroke($archivo);
 	
 	}
 }
