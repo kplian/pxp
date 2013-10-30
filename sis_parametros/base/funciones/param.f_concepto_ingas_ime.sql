@@ -59,7 +59,9 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+			activo_fijo,
+			almacenable
           	) values(
 			v_parametros.desc_ingas,
 			v_parametros.tipo,
@@ -70,8 +72,9 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
-							
+			null,
+			v_parametros.activo_fijo,
+			v_parametros.almacenable				
 			)RETURNING id_concepto_ingas into v_id_concepto_ingas;
 			
 			--Definicion de la respuesta
@@ -101,7 +104,9 @@ BEGIN
 			sw_tes = v_parametros.sw_tes,
 			
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+			activo_fijo=v_parametros.activo_fijo,
+			almacenable =v_parametros.almacenable
 			where id_concepto_ingas=v_parametros.id_concepto_ingas;
                
 			--Definicion de la respuesta
