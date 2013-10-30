@@ -1013,7 +1013,6 @@ class driver
 				
 				//Verifica si se produjo algon error logico en la funcion
 				$resp_procedimiento = $this->divRespuesta($array[0]['f_intermediario_ime']);
-				
 
 				  if($this->uploadFile){
 					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->parConsulta);
@@ -1082,10 +1081,11 @@ class driver
 	
 	function divRespuesta($cadena){
 		$res=array();
-		
+		//echo $cadena;exit;
 		//Limpia el json si corresponde
-		$aux=strpos($cadena,'}');
+		$aux=strripos ($cadena,'}');
 		$cadena=substr($cadena,0,$aux+1);
+		//echo $cadena;exit;
 		
 		//jrr:removiendo saltos de linea y tabas para una buena decodificacion del json
 		$cadena = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $cadena);

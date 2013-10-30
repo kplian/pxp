@@ -117,8 +117,52 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	       		 	},
 	       		grid:true,
 	       		form:true
-	       	}
-		,
+	       	},
+	     {
+			config: {
+				name: 'activo_fijo',
+				fieldLabel: 'Activo Fijo?',
+				anchor: '100%',
+				tinit: false,
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'activo_fijo',
+				gwidth: 100,
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tgral__bandera_min'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['activo_fijo']);}
+			},
+			type: 'ComboRec',
+			id_grupo: 0,
+			filters:{pfiltro:'conig.activo_fijo',type:'string'},
+			grid: true,
+			form: true
+		},  
+		{
+			config: {
+				name: 'almacenable',
+				fieldLabel: 'Almacenable?',
+				anchor: '100%',
+				tinit: false,
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'almacenable',
+				gwidth: 100,
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tgral__bandera_min'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['almacenable']);}
+			},
+			type: 'ComboRec',
+			id_grupo: 0,
+			filters:{pfiltro:'conig.almacenable',type:'string'},
+			grid: true,
+			form: true
+		},  	
+	     
 		{
 			config:{
 				name: 'estado_reg',
@@ -217,6 +261,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'activo_fijo', type: 'string'},
+		{name:'almacenable', type: 'string'}
 		
 	],
 	sortInfo:{

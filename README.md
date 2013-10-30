@@ -7,7 +7,7 @@ TO USE IT BY FIRST TIME:
 
 1. Create folder for your project
 2. Inside the folder of your project clone this repository (This will create the pxp folder)
-    #git  clone http://github.com/jriverarojas/pxp.git
+    #git  clone http://github.com/kplian/pxp.git
 
 3. Create a empty database for your project 
 4. You must create soft-links inside your project root folder to: 

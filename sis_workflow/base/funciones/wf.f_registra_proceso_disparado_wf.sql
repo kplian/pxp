@@ -1,10 +1,10 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_registra_proceso_disparado_wf (
   p_id_usuario_reg integer,
   p_id_estado_wf_dis integer,
   p_id_funcionario integer,
   p_id_depto integer,
+  p_descripcion varchar = '---'::character varying,
+  p_codigo_tipo_proceso varchar = ''::character varying,
   out ps_id_proceso_wf integer,
   out ps_id_estado_wf integer,
   out ps_codigo_estado varchar
@@ -62,14 +62,31 @@ BEGIN
     inner join wf.testado_wf ew  on ew.id_tipo_estado = te.id_tipo_estado
     where ew.id_estado_wf = p_id_estado_wf_dis;
     
-    ---raise exception 'rrrrrrrrrrr  %',v_id_tipo_estado_prev;
+    --raise exception 'rrrrrrrrrrr  % , %',p_codigo_tipo_proceso,v_codigo_prev;
+    
+    if p_codigo_tipo_proceso = '' then
+    	--Valida que no haya más de un registro
+        if exists(select 1 from wf.ttipo_proceso
+        		where id_tipo_estado = v_id_tipo_estado_prev
+                having count(id_tipo_proceso)>1) then
+        	raise exception 'Existe más de un camino para seguir, debería ser solamente uno (%)',v_codigo_prev;
+        end if;
+    	select
+         tp.id_tipo_proceso
+        into 
+          v_id_tipo_proceso_next
+        from wf.ttipo_proceso tp 
+        where   tp.id_tipo_estado=v_id_tipo_estado_prev;
+    else
+    	select
+         tp.id_tipo_proceso
+        into 
+          v_id_tipo_proceso_next
+        from wf.ttipo_proceso tp 
+        where   tp.id_tipo_estado=v_id_tipo_estado_prev
+        and tp.codigo = p_codigo_tipo_proceso;
+    end if;
         
-    select
-     tp.id_tipo_proceso
-    into 
-      v_id_tipo_proceso_next
-    from wf.ttipo_proceso tp 
-    where   tp.id_tipo_estado=v_id_tipo_estado_prev;
     
     
     IF v_id_tipo_proceso_next is NULL THEN 
@@ -113,7 +130,8 @@ BEGIN
           estado_reg,
           id_tipo_proceso,
           nro_tramite,
-          id_estado_wf_prev
+          id_estado_wf_prev,
+          descripcion
           
         ) 
         VALUES (
@@ -122,7 +140,8 @@ BEGIN
           'activo',
           v_id_tipo_proceso_next,
           v_nro_tramite,
-          p_id_estado_wf_dis
+          p_id_estado_wf_dis,
+          p_descripcion
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
   

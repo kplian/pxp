@@ -6,6 +6,7 @@ CREATE OR REPLACE FUNCTION wf.f_inicia_tramite (
   p_codigo_tipo_proceso varchar,
   p_id_funcionario integer,
   p_id_depto integer = NULL::integer,
+  p_descripcion varchar = ' ---'::character varying,
   out ps_num_tramite varchar,
   out ps_id_proceso_wf integer,
   out ps_id_estado_wf integer,
@@ -78,14 +79,16 @@ BEGIN
           fecha_reg,
           estado_reg,
           id_tipo_proceso,
-          nro_tramite
+          nro_tramite,
+          descripcion
         ) 
         VALUES (
           p_id_usuario_reg,
           now(),
           'activo',
           v_id_tipo_proceso,
-          ps_num_tramite
+          ps_num_tramite,
+          p_descripcion
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
    -- recupera el tipo_estado_inicial 

@@ -737,3 +737,11 @@ ALTER TABLE param.talarma
 alter table param.tasistente
 add column recursivo varchar(2);
 /***********************************F-SCP-RCM-PARAM-0-26/08/2013****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-01/10/2013****************************************/
+alter table param.tconcepto_ingas
+add column activo_fijo VARCHAR(5) DEFAULT 'no';
+
+alter table param.tconcepto_ingas
+add column almacenable VARCHAR(5) DEFAULT 'no'; 
+/***********************************F-SCP-RCM-PARAM-0-01/10/2013****************************************/

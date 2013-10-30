@@ -358,6 +358,15 @@ class cls_archivos
         }
 
     }
+
+	/*
+	 * AUtor: RCM
+	 * Fecha: 18/09/2013
+	 * Descripción: Crea un archivo con el texto enviado en la ruta indicada
+	 */
+	public function crearArchivo($pTexto,$pNombreArchivo,$pRuta){
+		file_put_contents($pRuta.'/'.$pNombreArchivo, $pTexto);
+	}
     
 }
 ?>

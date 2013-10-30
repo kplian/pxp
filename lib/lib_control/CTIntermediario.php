@@ -354,7 +354,7 @@ $fb->log($this->nombreClase,"clase");*/
 					}
 				}
 			} else{
-				//session_destroy();
+				session_destroy();
 				//var_dump( $_SESSION["_SESION"]);
                 //exit;
 				throw new Exception('sesion no iniciada',2);

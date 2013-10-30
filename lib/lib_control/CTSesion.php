@@ -135,13 +135,13 @@ class CTSesion {
 
 			//echo "$this->sid_base =".session_id (). " !!!!!  $this->ip_base =".$this->getIP ();
 			//exit;
+             //en un entorno de internet esta valiacion no es util debido a NAT
 
-
-			if ($this->sid_base == session_id () && $this->ip_base == $this->getIP ()) {
+			//if ($this->sid_base == session_id () && $this->ip_base == $this->getIP ()) {
 
 				return true;
 					
-			}
+			//}
 		}
 
 		return false;

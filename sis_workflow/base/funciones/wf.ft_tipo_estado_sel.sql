@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -84,7 +82,7 @@ BEGIN
 			return v_consulta;
 						
 		end;
- /*********************************    
+ 	/*********************************    
  	#TRANSACCION:  'WF_FUNTIPES_CONT'
  	#DESCRIPCION:	Consulta los funcionarios correpondientes con el tipo de estado
  	#AUTOR:		admin	
@@ -218,6 +216,87 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
 					    where ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+		
+	/*********************************    
+ 	#TRANSACCION:  'WF_SIGEST_SEL'
+ 	#DESCRIPCION:	Devuelve los siguientes estados posibles
+ 	#AUTOR:			RCM	
+ 	#FECHA:			15/10/2013
+	***********************************/
+
+	elseif(p_transaccion='WF_SIGEST_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+						tipes.id_tipo_estado,
+						tipes.nombre_estado,
+						tipes.id_tipo_proceso,
+						tipes.inicio,
+						tipes.disparador,
+						tipes.tipo_asignacion,
+						tipes.nombre_func_list,
+						tipes.estado_reg,
+						tipes.fecha_reg,
+						tipes.id_usuario_reg,
+						tipes.fecha_mod,
+						tipes.id_usuario_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod,
+                        tp.nombre AS desc_tipo_proceso,
+                        tipes.codigo as codigo_estado,
+                        tipes.obs,
+                        tipes.depto_asignacion,
+						tipes.nombre_depto_func_list,
+                        tipes.fin,
+                        tipes.alerta,
+                        tipes.pedir_obs
+						from wf.ttipo_estado tipes
+						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
+                        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = tipes.id_tipo_estado
+						where tipes.id_tipo_proceso = ' || v_parametros.id_tipo_proceso || '   
+						and  ee.id_tipo_estado_padre = ' || v_parametros.id_tipo_estado_padre || '
+				        and ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+		
+	/*********************************    
+ 	#TRANSACCION:  'WF_SIGEST_CONT'
+ 	#DESCRIPCION:	Conteo de registros de los siguientes estados posibles
+ 	#AUTOR:			RCM	
+ 	#FECHA:			15/10/2013
+	***********************************/
+
+	elsif(p_transaccion='WF_SIGEST_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(tipes.id_tipo_estado)
+					    from wf.ttipo_estado tipes
+						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
+                        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = tipes.id_tipo_estado
+						where tipes.id_tipo_proceso = ' || v_parametros.id_tipo_proceso || '   
+						and  ee.id_tipo_estado_padre = ' || v_parametros.id_tipo_estado_padre || '
+				        and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

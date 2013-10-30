@@ -166,7 +166,7 @@ class ACTEstructuraUo extends ACTbase {
 			//array_push($arreglo,array('nombre'=>'id','valor'=>'id_gui'));
 			array_push($arreglo, array('nombre' => 'id', 'valor' => 'id_uo'));
 			array_push($arreglo, array('nombre' => 'codigo', 'valor' => 'codigo'));
-			array_push($arreglo, array('nombre' => 'text', 'valor' => 'nombre_unidad'));
+			array_push($arreglo,array('nombre'=>'text','valores'=>'<b>(#codigo#)</b> - #nombre_unidad#'));
 			array_push($arreglo, array('nombre' => 'desc', 'valor' => 'descripcion'));
 			array_push($arreglo, array('nombre' => 'cargo', 'valor' => 'nombre_cargo'));
 

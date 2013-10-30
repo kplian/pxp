@@ -33,6 +33,8 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('activo_fijo','varchar');
+		$this->captura('almacenable','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -64,6 +66,8 @@ class MODConceptoIngas extends MODbase{
         $this->captura('id_usuario_mod','int4');
         $this->captura('usr_reg','varchar');
         $this->captura('usr_mod','varchar');
+		$this->captura('activo_fijo','varchar');
+		$this->captura('almacenable','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -86,6 +90,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('sw_tes','sw_tes','varchar');
 		$this->setParametro('id_oec','id_oec','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('activo_fijo','activo_fijo','varchar');
+		$this->setParametro('almacenable','almacenable','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -109,6 +115,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('sw_tes','sw_tes','varchar');
 		$this->setParametro('id_oec','id_oec','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('activo_fijo','activo_fijo','varchar');
+		$this->setParametro('almacenable','almacenable','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

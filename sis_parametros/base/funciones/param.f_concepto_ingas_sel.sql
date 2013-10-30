@@ -59,7 +59,9 @@ BEGIN
 						conig.fecha_mod,
 						conig.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						conig.activo_fijo,
+						conig.almacenable	
 						from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
@@ -123,7 +125,9 @@ BEGIN
                                conig.fecha_mod,
                                conig.id_usuario_mod,
                                usu1.cuenta as usr_reg,
-                               usu2.cuenta as usr_mod
+                               usu2.cuenta as usr_mod,
+                               conig.activo_fijo,
+							   conig.almacenable	
                         from param.tconcepto_ingas conig
                              inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                              left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
