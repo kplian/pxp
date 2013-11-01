@@ -84,9 +84,14 @@ BEGIN
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             WHERE ';
-               
               
                v_consulta:=v_consulta||v_parametros.filtro;
+               
+               if pxp.f_existe_parametro(par_tabla,'codigo_subsistema') then
+		          	v_consulta =  v_consulta || ' AND SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||'''';
+		       end if;
+               
+               
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
                raise notice '%',v_consulta;
                return v_consulta;
@@ -117,6 +122,10 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             WHERE ';
                v_consulta:=v_consulta||v_parametros.filtro;
+               
+               if pxp.f_existe_parametro(par_tabla,'codigo_subsistema') then
+		          	v_consulta =  v_consulta || ' AND SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||'''';
+		       end if;
                
                 raise notice '%',v_consulta;
                return v_consulta;
