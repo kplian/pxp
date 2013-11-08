@@ -83,8 +83,14 @@ class DiagramadorGanttWF{
                
               
             
-              $resp = ($dataset[$i]['funcionario']!=0)?$dataset[$i]['funcionario']:$dataset[$i]['depto'];
+              $resp = ($dataset[$i]['funcionario']!='')?$dataset[$i]['funcionario']:$dataset[$i]['depto'];
               $resp = ($resp =='')?$dataset[$i]['cuenta']:$resp;
+              
+              
+              //$resp = $dataset[$i]['depto'].'('.$dataset[$i]['cuenta'].") ->".$dataset[$i]['funcionario'];
+              
+              //$resp = $dataset[$i]['depto'].'('.$dataset[$i]['cuenta'].");
+              
               
               $fini=$fecha_reg_ini->format('d M H:m');
               $ffin=$fecha_reg_fin->format('d M H:m');
@@ -111,6 +117,10 @@ class DiagramadorGanttWF{
                  
               }
                
+             //mostramos cuenta de usuario si existe
+             if($dataset[$i]['cuenta']!=''){
+                $desc_principal = $desc_principal.'('.$dataset[$i]['cuenta'].")" ; 
+             }
              
              $cabecera = array($desc_principal,
                          utf8_decode($resp),

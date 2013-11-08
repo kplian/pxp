@@ -19,7 +19,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.TipoProceso.superclass.constructor.call(this,config);
 		this.init();
 		
-		
+		 this.bloquearOrdenamientoGrid();
 		this.cmbProcesoMacro.on('select', function(){
 		    
 		    if(this.validarFiltros()){
@@ -44,6 +44,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
     },
     
      capturaFiltros:function(combo, record, index){
+        this.desbloquearOrdenamientoGrid();
         this.store.baseParams.id_proceso_macro=this.cmbProcesoMacro.getValue();
         this.load(); 
             
@@ -127,7 +128,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '60%',
 				gwidth: 100,
-				maxLength:5
+				maxLength:10
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipproc.codigo',type:'string'},
