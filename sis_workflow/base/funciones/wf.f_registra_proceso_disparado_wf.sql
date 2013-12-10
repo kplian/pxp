@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_registra_proceso_disparado_wf (
   p_id_usuario_reg integer,
   p_id_estado_wf_dis integer,
@@ -38,6 +40,8 @@ DECLARE
    v_codigo_estado_next varchar;
    v_id_proceso_wf_prev integer;
    v_nro_tramite varchar;
+   
+   v_cantidad_disparos integer;
  
   
 BEGIN
@@ -62,32 +66,88 @@ BEGIN
     inner join wf.testado_wf ew  on ew.id_tipo_estado = te.id_tipo_estado
     where ew.id_estado_wf = p_id_estado_wf_dis;
     
-    --raise exception 'rrrrrrrrrrr  % , %',p_codigo_tipo_proceso,v_codigo_prev;
+   
+
+
+    ---------------------------------------
+    -- IDentifica siguiente proceso al que se dispara
+    -----------------------------------------
     
-    if p_codigo_tipo_proceso = '' then
-    	--Valida que no haya más de un registro
-        if exists(select 1 from wf.ttipo_proceso
-        		where id_tipo_estado = v_id_tipo_estado_prev
-                having count(id_tipo_proceso)>1) then
-        	raise exception 'Existe más de un camino para seguir, debería ser solamente uno (%)',v_codigo_prev;
-        end if;
-    	select
+    
+    --p_codigo_tipo_proceso por defecto tiene el valor '' 
+    -- si tuviera mas de un proceso disparado idntifica por que camino debe seguir
+    
+    
+    --primero preguntar  si tiene al menos un proceso 
+    -- si solo tiene uno,  no  se utiliza el codigo, 
+    -- si tiene mas de uno se utiliza el codigo
+    -- si no tiene ninguno sale un error
+    
+    
+     
+     
+     --cuenta cuantos procesos de dispara
+      select 
+       count(tp.codigo)    
+      into 
+      v_cantidad_disparos
+      from wf.ttipo_proceso tp
+      where id_tipo_estado = v_id_tipo_estado_prev;
+     
+     
+    
+    -- si solo tiene un proceso disparado
+    if v_cantidad_disparos = 1 then
+    	
+         select
          tp.id_tipo_proceso
         into 
           v_id_tipo_proceso_next
         from wf.ttipo_proceso tp 
         where   tp.id_tipo_estado=v_id_tipo_estado_prev;
+    
+    -- si el proceso ni apunta a ningun lado
+    elsif v_cantidad_disparos = 0 then
+    
+    
+     raise exception 'El estado %, no apunta  a ningun proceso',v_codigo_prev;
+    
+    
+    
+    --si tiene mas de uno se busca el camino segun el codigo
     else
-    	select
-         tp.id_tipo_proceso
-        into 
-          v_id_tipo_proceso_next
-        from wf.ttipo_proceso tp 
-        where   tp.id_tipo_estado=v_id_tipo_estado_prev
-        and tp.codigo = p_codigo_tipo_proceso;
+    
+       if  p_codigo_tipo_proceso = '' then
+       
+         raise exception 'El proceso tiene % destino(s) posible(s), y no se especifico por cual camino se debe seguir';
+       
+       else
+    
+          select
+           tp.id_tipo_proceso
+          into 
+            v_id_tipo_proceso_next
+          from wf.ttipo_proceso tp 
+          where   tp.id_tipo_estado=v_id_tipo_estado_prev
+          and tp.codigo = p_codigo_tipo_proceso;
+          
+          --si no existe un camino oese a tener codigo se lanza un error
+          if  v_id_tipo_proceso_next is NULL then
+       
+             raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %', p_codigo_tipo_proceso;
+       
+          end if;
+      
+      
+      end if;
+    
+    
     end if;
         
     
+    
+    
+     
     
     IF v_id_tipo_proceso_next is NULL THEN 
     
