@@ -105,8 +105,8 @@ BEGIN
              if EXISTS (  select 1 from param.tgrupo_ep gep
                          where  ( gep.id_ep = v_parametros.id_ep or (id_ep is NULL  and  v_parametros.id_ep is null) ) 
                              and  (gep.id_uo = v_parametros.id_uo or (id_uo is NULL  and  v_parametros.id_uo is null) ) 
-                             and gep.id_grupo = v_parametros.id_grupo)
-                             and gep.id_grupo_ep!=v_parametros.id_grupo_ep THEN
+                             and gep.id_grupo = v_parametros.id_grupo
+                             and gep.id_grupo_ep!=v_parametros.id_grupo_ep) THEN
                  
                raise exception 'La EP/UO no puede duplicarce';
                       
