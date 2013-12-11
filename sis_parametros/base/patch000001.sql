@@ -745,3 +745,33 @@ add column activo_fijo VARCHAR(5) DEFAULT 'no';
 alter table param.tconcepto_ingas
 add column almacenable VARCHAR(5) DEFAULT 'no'; 
 /***********************************F-SCP-RCM-PARAM-0-01/10/2013****************************************/
+
+
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-11/12/2013****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.taprobador
+  ADD COLUMN id_uo_cargo INTEGER;
+
+COMMENT ON COLUMN param.taprobador.id_uo_cargo
+IS 'identifica el cargo al del funcionario parobador,   si no hay cargo, si no hay un cargo identificado busca el funconario';
+
+ALTER TABLE param.taprobador
+  ADD COLUMN id_proceso_macro INTEGER;
+
+COMMENT ON COLUMN param.taprobador.id_proceso_macro
+IS 'ri esta definido filtra los  aprobadores por este criterio';
+
+
+ALTER TABLE param.taprobador
+  ALTER COLUMN id_funcionario DROP NOT NULL;
+
+/***********************************F-SCP-RAC-PARAM-0-11/12/2013****************************************/
+
+
+
+

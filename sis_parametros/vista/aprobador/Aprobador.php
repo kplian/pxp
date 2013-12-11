@@ -48,12 +48,82 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config: {
+                name: 'id_proceso_macro',
+                fieldLabel: 'Proceso',
+                typeAhead: false,
+                forceSelection: false,
+                 hiddenName: 'id_proceso_macro',
+                allowBlank: true,
+                emptyText: 'Lista de Procesos...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_workflow/control/ProcesoMacro/listarProcesoMacro',
+                    id: 'id_proceso_macro',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_proceso_macro', 'nombre', 'codigo'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'promac.nombre#promac.codigo'}
+                }),
+                valueField: 'id_proceso_macro',
+                displayField: 'nombre',
+                gdisplayField: 'desc_proceso_macro',
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 20,
+                queryDelay: 200,
+                listWidth:280,
+                minChars: 2,
+                gwidth: 170,
+                renderer: function(value, p, record) {
+                    return String.format('{0}', record.data['desc_proceso_macro']);
+                },
+                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {
+                pfiltro: 'pm.nombre',
+                type: 'string'
+            },
+            grid: true,
+            form: true
+        },
+        {
+            config:{
+                    name:'id_uo_cargo',
+                    origen:'UO',
+                    fieldLabel:'Cargo',
+                    emptyText:'Cargo Aprobador...',
+                    displayField: 'nombre_cargo',
+                    allowBlank:true,
+                    gdisplayField:'desc_uo_cargo',//mapea al store del grid
+                    gwidth:200,
+                    baseParams:{presupuesta:'si'},
+                    tpl:'<tpl for="."><div class="x-combo-list-item">{codigo}<p>{nombre_cargo}</p> </div></tpl>',
+                    renderer:function (value, p, record){return String.format('{0}', record.data['desc_uo_cargo']);}
+                },
+            type:'ComboRec',
+            id_grupo:0,
+            filters:{pfiltro:'nombre_unidad',type:'string'},
+            grid:true,
+            form:true
+       }
+        
+        ,
 		{
 		   			config:{
 		       		    name:'id_funcionario',
 		   				origen:'FUNCIONARIO',
 		   				fieldLabel:'Funcionario',
-		   				allowBlank:false,
+		   				allowBlank:true,
 		                gwidth:200,
 		   				valueField: 'id_funcionario',
 		   			    gdisplayField: 'desc_funcionario',
@@ -64,7 +134,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		   			filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
 		   		    grid:true,
 		   			form:true
-		 },
+		 } ,
          {
             config:{
                     name:'id_uo',
@@ -295,7 +365,12 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'id_ep', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_uo','desc_ep','desc_funcionario','desc_cc','desc_subsistema'
+		{name:'usr_mod', type: 'string'},
+		'desc_uo','desc_ep',
+		'desc_funcionario','desc_cc',
+		'desc_subsistema','id_uo_cargo',
+		'desc_uo_cargo','id_proceso_macro',
+		'desc_proceso_macro'
 		
 	],
 	sortInfo:{

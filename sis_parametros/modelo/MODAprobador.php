@@ -45,6 +45,14 @@ class MODAprobador extends MODbase{
 		$this->captura('desc_funcionario','text');
 		$this->captura('desc_subsistema','varchar');
 		
+		$this->captura('id_uo_cargo','integer');
+        $this->captura('desc_uo_cargo','text');
+        $this->captura('id_proceso_macro','integer');
+        $this->captura('desc_proceso_macro','varchar');
+		
+		
+	
+		
 				
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -72,6 +80,9 @@ class MODAprobador extends MODbase{
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('id_subsistema','id_subsistema','int4');
 		$this->setParametro('id_ep','id_ep','int4');
+		
+		$this->setParametro('id_uo_cargo','id_uo_cargo','int4');
+		$this->setParametro('id_proceso_macro','id_proceso_macro','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -98,6 +109,7 @@ class MODAprobador extends MODbase{
         $this->setParametro('id_uo','id_uo','int4');
         $this->setParametro('id_ep','id_ep','int4');
         $this->setParametro('id_centro_costo','id_centro_costo','int4');
+        $this->setParametro('id_proceso_macro','id_proceso_macro','int4');
         $this->setParametro('fecha','fecha','date');
         $this->setParametro('codigo_subsistema','codigo_subsistema','varchar');
         $this->setParametro('monto','monto','numeric');
@@ -136,6 +148,8 @@ class MODAprobador extends MODbase{
 		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('id_subsistema','id_subsistema','int4');
 		$this->setParametro('id_ep','id_ep','int4');
+		$this->setParametro('id_uo_cargo','id_uo_cargo','int4');
+        $this->setParametro('id_proceso_macro','id_proceso_macro','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

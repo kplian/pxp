@@ -70,6 +70,15 @@ BEGIN
              END IF;
           
           END IF;
+          
+          
+          
+          
+          IF v_parametros.id_uo_cargo is null and v_parametros.id_funcionario is null THEN
+           
+              raise exception  'Tiene que especificar almenos un cargo o un funcionario';
+          
+          END IF;
         
         	--Sentencia de la insercion
         	insert into param.taprobador(
@@ -87,7 +96,9 @@ BEGIN
 			id_usuario_reg,
 			fecha_mod,
 			id_usuario_mod,
-            id_ep
+            id_ep,
+            id_uo_cargo,
+            id_proceso_macro
           	) values(
 			'activo',
 			v_parametros.id_centro_costo,
@@ -103,7 +114,9 @@ BEGIN
 			p_id_usuario,
 			null,
 			null,
-            v_parametros.id_ep
+            v_parametros.id_ep,
+            v_parametros.id_uo_cargo,
+            v_parametros.id_proceso_macro
 							
 			)RETURNING id_aprobador into v_id_aprobador;
 			
@@ -145,6 +158,12 @@ BEGIN
              END IF;
           
           END IF;
+          
+          IF v_parametros.id_uo_cargo is null and v_parametros.id_funcionario is null THEN
+           
+              raise exception  'Tiene que especificar almenos un cargo o un funcionario';
+          
+          END IF;
         
         
 			--Sentencia de la modificacion
@@ -160,7 +179,9 @@ BEGIN
 			id_subsistema = v_parametros.id_subsistema,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
-            id_ep = v_parametros.id_ep
+            id_ep = v_parametros.id_ep,
+            id_uo_cargo= v_parametros.id_uo_cargo,
+            id_proceso_macro=v_parametros.id_proceso_macro
 			where id_aprobador=v_parametros.id_aprobador;
                
 			--Definicion de la respuesta
