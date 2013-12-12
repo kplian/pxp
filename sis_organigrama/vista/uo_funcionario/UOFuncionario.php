@@ -170,7 +170,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			type:'ComboBox',
 			grid:true,
 			id_grupo:1,
-			form:true
+			form:true,
+            grid:true
 		}
 		],
 
@@ -258,7 +259,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		
 			//this.ocultarComponente(this.getComponente('id_parametro'));
 		
-		this.getComponente('estado_reg').on('beforeselect',function(combo,record,index){
+		/*this.getComponente('estado_reg').on('beforeselect',function(combo,record,index){
 				if(record.json[0]=='inactivo'){
 					//getComponente('fecha_finalizacion').allowBlank=false;
 					txt_fecha_fin.allowBlank=false;
@@ -274,7 +275,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 					//getComponente('fecha_finalizacion').allowBlank=false;
 				}
 			}
-		)
+		)*/
 		this.init();
 		//deshabilita botones
 		this.grid.getTopToolbar().disable();
