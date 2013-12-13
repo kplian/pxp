@@ -65,6 +65,7 @@ v_id_uo integer;
 v_id_ep integer;
 v_id_centro_costo integer;
 v_id_subsistema integer;
+v_id_proceso_macro integer;
 
 BEGIN
 
@@ -83,6 +84,7 @@ BEGIN
           id_ep ->  EP
           id_centro_costo -> Centro de Costo
           id_subsistema -> parametrizacion para que sistema
+          id_proceso_macro -> identifica el WF 
           fecha    -> fecha de solicitud para verificar quien corresponde segun fecha
           monto    ->  monto solicitado para aprobacion
           codigo_subsistema ->  codigo subsistema 
@@ -132,14 +134,25 @@ BEGIN
      v_id_centro_costo = v_parametros.id_centro_costo;
    
    END IF;
+   
+   
+   IF(pxp.f_existe_parametro(p_tabla,'id_proceso_macro')) THEN
+   
+     v_id_proceso_macro = v_parametros.id_proceso_macro;
+   
+   END IF;
+   
+   
+   
 
- raise notice '%,%,%,%,%,%,%', v_id_uo, --id_uo
+ raise notice '%,%,%,%,%,%,%,%', v_id_uo, --id_uo
                         v_id_ep,--p_id_ep,
                         v_id_centro_costo,--p_id_centro_costo, 
                         v_id_subsistema, --id_subsistema
                         v_parametros.fecha, 
                         v_parametros.monto,
-                        p_id_usuario;
+                        p_id_usuario,
+                        v_id_proceso_macro;
 
   --   listado ded la funcioan
   
@@ -156,7 +169,8 @@ BEGIN
                         v_id_subsistema, --id_subsistema
                         v_parametros.fecha, 
                         v_parametros.monto,
-                        p_id_usuario)
+                        p_id_usuario,
+                        v_id_proceso_macro)
                         AS ( id_aprobador integer,
                             id_funcionario integer,
                             fecha_ini date,

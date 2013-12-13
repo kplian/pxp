@@ -7,7 +7,8 @@ CREATE OR REPLACE FUNCTION param.f_obtener_listado_aprobadores (
   p_id_subsistema integer,
   p_fecha date,
   p_monto numeric,
-  p_id_usuario integer
+  p_id_usuario integer,
+  p_id_proceso_macro integer = NULL::integer
 )
 RETURNS SETOF record AS
 $body$
@@ -22,6 +23,16 @@ v_registros record;
 v_id_uo integer;
 v_id_ep integer;
 v_prioridad integer;
+
+
+v_fun_array integer[];
+
+v_i integer;
+
+v_resp varchar;
+v_nombre_funcion varchar;
+
+v_desc_funcionario varchar;
   
 BEGIN
 
@@ -34,19 +45,20 @@ BEGIN
     
     2) la configuracion de aprobaciones se realiza  segun las siguientes combinaciones
    
-     Prioridad, id_uo  , id_ep,  id_centro_costo 
+     Prioridad, id_uo  , id_ep,  id_centro_costo, id_proceso_macro 
          
-       1        null     null         x       ->   configuracion mas especifica, con centro de costos, tiene mayor priorida
-       2		 x         x         null     ->   configuracion mas especifica
-       3		 x		 null		 null     ->   por defecto para todas las uo  
-       4     	null      x          null     ->   por defecto para las ep,  tine prioridad la configuracion por uo
+       1        null     null         x       	x	->   configuracion mas especifica, con centro de costos, tiene mayor priorida
+       2        null     null         x       null  ->   configuracion mas especifica, con centro de costos, tiene mayor priorida
+       3		 x         x         null     		->   configuracion mas especifica
+       4		 x		 null		 null     		->   por defecto para todas las uo  
+       5     	null      x          null     		->   por defecto para las ep,  tine prioridad la configuracion por uo
             
        
        
- 	   	-		x		null		x        ->      NO EXISTE, ERROR DE CONFIGURACION
-        -       null     x          x       ->       NO EXISTE, ERROR DE CONFIGURACION
-      	-		x		x			x		 ->      NO EXISTE, ERROR DE CONFIGURACION
-       	-	   null     null        null     ->      si no tiene es aprobador por defecto para cualquier caso
+ 	   	-		x		null		x       	    -> 	   NO EXISTE, ERROR DE CONFIGURACION
+        -       null     x          x       		->      NO EXISTE, ERROR DE CONFIGURACION
+      	-		x		 x			x		 		->      NO EXISTE, ERROR DE CONFIGURACION
+       	-	   null     null        null     		->      si no tiene es aprobador por defecto para cualquier caso
   
   */
 
@@ -60,6 +72,8 @@ BEGIN
        
         1.2)  No existe confi para el centro de costo desglosa id_ep y el id_uo 
         
+           1.2.0)  IF busca configuracion especifica para la combinacion  id_ep e id_uo y id_proceso_macro
+           
            1.2.1)  IF busca onfiguracion especifica para la combinacion  id_ep e id_uo
            
            1.2.2)  ELSEIF busca configuracion con id_uo
@@ -80,8 +94,10 @@ BEGIN
    
        */
    
-
+ 
  v_sw_aprobador = false;
+ 
+ v_nombre_funcion = 'param.f_obtener_listado_aprobadores';
  
  -- crea tabla temporal
  
@@ -101,6 +117,10 @@ BEGIN
  
  
  
+ --buscar con id_proceso_macro especifico
+ 
+
+ 
  IF(p_id_centro_costo is not NULL) THEN
  
       FOR v_registros in(
@@ -109,16 +129,17 @@ BEGIN
            apro.id_funcionario,
            apro.fecha_ini,
            apro.fecha_fin,
-           fun.desc_funcionario1 as desc_funcionario,
            apro.monto_min,
            apro.monto_max,
            apro.id_ep,
            apro.id_uo,
-           apro.id_centro_costo
+           apro.id_centro_costo,
+           apro.id_uo_cargo,
+           apro.id_proceso_macro
                    
          FROM param.taprobador apro
-         inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
          WHERE ( apro.id_centro_costo = p_id_centro_costo 
+                 and ((apro.id_proceso_macro = p_id_proceso_macro) or (apro.id_proceso_macro is NULL))
                 and apro.id_ep is null and apro.id_uo is null 
                  and apro.estado_reg = 'activo'
                ) 
@@ -131,30 +152,58 @@ BEGIN
                
                ) LOOP
       
-             v_consulta=  'INSERT INTO table tt_aprobador_'||p_id_usuario||'(
-                              id_aprobador,
-                              id_funcionario,
-                              fecha_ini,
-                              fecha_fin,
-                              desc_funcionario,
-                              monto_min,
-                              monto_max,
-                              prioridad
-                              )
-                              VALUES
-                              (
-                              '||v_registros.id_aprobador::varchar||',
-                              '||v_registros.id_funcionario::varchar||',
-                              '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
-                              '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
-                              '''||COALESCE(v_registros.desc_funcionario,'---')||''',
-                              '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
-                              '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
-                              1
-                              );';
-         
-      
-            execute(v_consulta);
+            
+            
+          
+            
+            --  si el cargo esta especificado
+             
+            IF v_registros.id_uo_cargo is not null THEN
+               --  busca funcionario  para el cargo
+               v_fun_array =  orga.f_obtener_funcionarios_x_uo_array(v_registros.id_uo_cargo, p_fecha);
+            
+            ELSE
+             --si el cargo no esta especificado tomamo directamente el funcionario  
+             v_fun_array [1] = v_registros.id_funcionario;
+            
+            END IF;
+            
+            
+            FOR v_i IN 1 .. array_upper(v_fun_array, 1)
+            LOOP
+            
+                 select  
+                 fun.desc_funcionario1 
+                  into 
+                  v_desc_funcionario  
+                 from orga.vfuncionario fun where fun.id_funcionario = v_fun_array[v_i];
+              
+                 v_consulta=  'INSERT INTO table tt_aprobador_'||p_id_usuario||'(
+                                  id_aprobador,
+                                  id_funcionario,
+                                  fecha_ini,
+                                  fecha_fin,
+                                  desc_funcionario,
+                                  monto_min,
+                                  monto_max,
+                                  prioridad
+                                  )
+                                  VALUES
+                                  (
+                                  '||v_registros.id_aprobador::varchar||',
+                                  '||v_fun_array[v_i]::varchar||',
+                                  '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
+                                  '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
+                                  '''||COALESCE(v_desc_funcionario,'---')||''',
+                                  '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
+                                  '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
+                                  1
+                                  );';
+             
+          
+                  execute(v_consulta);
+            END LOOP;  
+           
             
             v_sw_aprobador = true;
       
@@ -194,19 +243,31 @@ IF v_sw_aprobador =false THEN
                    apro.id_funcionario,
                    apro.fecha_ini,
                    apro.fecha_fin,
-                   fun.desc_funcionario1 as desc_funcionario,
+                   
                    apro.monto_min,
                    apro.monto_max,
                    apro.id_ep,
                    apro.id_uo,
-                   apro.id_centro_costo
+                   apro.id_centro_costo,
+                   apro.id_uo_cargo,
+                   apro.id_proceso_macro
                            
                  FROM param.taprobador apro
-                 inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
-                 WHERE (((apro.id_ep = v_id_ep and apro.id_uo = v_id_uo and id_centro_costo is NULL)
-                       OR(apro.id_ep = v_id_ep and apro.id_uo is null and id_centro_costo is NULL)
-                       OR(apro.id_ep is null and apro.id_uo = v_id_uo  and id_centro_costo is NULL)
-                       OR(apro.id_ep is null and apro.id_uo  is NULL  and id_centro_costo is NULL))
+                 WHERE ((
+                 
+                         (apro.id_ep = v_id_ep and apro.id_uo = v_id_uo and  apro.id_centro_costo is NULL and apro.id_proceso_macro = p_id_proceso_macro)
+                       OR(apro.id_ep = v_id_ep and apro.id_uo = v_id_uo and  apro.id_centro_costo is NULL and apro.id_proceso_macro is NULL)
+                         
+                       OR(apro.id_ep = v_id_ep and apro.id_uo is null and  apro.id_centro_costo is NULL and apro.id_proceso_macro = p_id_proceso_macro)
+                       OR(apro.id_ep = v_id_ep and apro.id_uo is null and  apro.id_centro_costo is NULL and apro.id_proceso_macro is NULL)
+                       
+                       
+                       OR(apro.id_ep is null and apro.id_uo = v_id_uo  and  apro.id_centro_costo is NULL and apro.id_proceso_macro = p_id_proceso_macro)
+                       OR(apro.id_ep is null and apro.id_uo = v_id_uo  and  apro.id_centro_costo is NULL and apro.id_proceso_macro is NULL)
+                       
+                       OR(apro.id_ep is null and apro.id_uo  is NULL  and  apro.id_centro_costo is NULL and apro.id_proceso_macro = p_id_proceso_macro)
+                       OR(apro.id_proceso_macro is null and apro.id_uo  is NULL  and  apro.id_centro_costo is NULL and apro.id_proceso_macro is NULL))
+                       
                        and apro.estado_reg = 'activo')
                        and (  (apro.fecha_ini <= p_fecha  and apro.fecha_fin >=p_fecha )   
                             or 
@@ -237,32 +298,63 @@ IF v_sw_aprobador =false THEN
                        END IF;
                        
                        
-                 v_sw_aprobador = TRUE; 
-                    
+                 v_sw_aprobador = TRUE;
                  
-                 v_consulta=  'INSERT INTO  tt_aprobador_'||p_id_usuario||'(
-                                    id_aprobador,
-                                    id_funcionario,
-                                    fecha_ini,
-                                    fecha_fin,
-                                    desc_funcionario,
-                                    monto_min,
-                                    monto_max,
-                                    prioridad
-                                    )
-                                    VALUES
-                                    (
-                                    '||v_registros.id_aprobador::varchar||',
-                                    '||v_registros.id_funcionario::varchar||',
-                                    '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
-                                    '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
-                                     '''||COALESCE(v_registros.desc_funcionario,'---')||''',
-                                    '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
-                                    '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
-                                    '||v_prioridad::varchar||'
-                                    );';
+                 --  si el cargo esta especificado
+             
+         
+                IF v_registros.id_uo_cargo is not null THEN
+                   --  busca funcionario  para el cargo
+                  
+                 v_fun_array =  orga.f_obtener_funcionarios_x_uo_array(v_registros.id_uo_cargo, p_fecha);
+                
+                ELSE
+                 --si el cargo no esta especificado tomamo directamente el funcionario  
+                   v_fun_array[1] = v_registros.id_funcionario;
+                
+                END IF; 
+                
+                
+                --  raise exception 'PPPPPP';
+                
+                --recorremos el array de funcionarios
+                FOR v_i IN 1 .. array_upper(v_fun_array, 1)
+                LOOP    
+                
+                
+              
+                
+                 select  
+                 fun.desc_funcionario1 
+                  into 
+                  v_desc_funcionario  
+                 from orga.vfuncionario fun where fun.id_funcionario = v_fun_array[v_i];
+                 
+                   v_consulta=  'INSERT INTO  tt_aprobador_'||p_id_usuario||'(
+                                      id_aprobador,
+                                      id_funcionario,
+                                      fecha_ini,
+                                      fecha_fin,
+                                      desc_funcionario,
+                                      monto_min,
+                                      monto_max,
+                                      prioridad
+                                      )
+                                      VALUES
+                                      (
+                                      '||v_registros.id_aprobador::varchar||',
+                                      '||v_fun_array[v_i]::varchar||',
+                                      '||COALESCE(''''||v_registros.fecha_ini::VARCHAR||'''','NULL')||',
+                                      '||COALESCE(''''||v_registros.fecha_fin::varchar||'''','NULL')||',
+                                       '''||COALESCE(v_desc_funcionario,'---')||''',
+                                      '||COALESCE(v_registros.monto_min::varchar,'NULL')||',
+                                      '||COALESCE(v_registros.monto_max::varchar,'NULL')||',
+                                      '||v_prioridad::varchar||'
+                                      );';
+                
                
-             execute(v_consulta);
+                 execute(v_consulta);
+               END LOOP;
                     
           END LOOP;             
 
@@ -300,6 +392,15 @@ ELSE
     raise exception 'No existen aprobadores configurados, consulte con el administrador de sistema';
 END IF;
  
+EXCEPTION
+				
+	WHEN OTHERS THEN
+		v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp;
+
 
 END;
 $body$

@@ -30,8 +30,14 @@ v_id_uo     integer;
 v_resp INTEGER[];
 v_cont integer;
 
+v_nombre_funcion varchar;
+v_resp_varchar varchar;
+
 
 BEGIN
+
+
+v_nombre_funcion = 'orga.f_obtener_funcionarios_x_uo_array';
 
 
 
@@ -45,14 +51,27 @@ v_cont = 1;
                                    or (ha.fecha_asignacion <= p_fecha and ha.fecha_finalizacion is NULL))
                          ) loop
 
-               if(v_respuesta!='') then
                   v_resp[v_cont]=v_registros.id_funcionario;
                   v_cont= v_cont +1;
                   
-               end if;
+              
 
      end loop;
+     
 return v_resp;
+
+EXCEPTION
+				
+	WHEN OTHERS THEN
+		v_resp_varchar='';
+		v_resp_varchar = pxp.f_agrega_clave(v_resp_varchar,'mensaje',SQLERRM);
+		v_resp_varchar = pxp.f_agrega_clave(v_resp_varchar,'codigo_error',SQLSTATE);
+		v_resp_varchar = pxp.f_agrega_clave(v_resp_varchar,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp_varchar;
+
+
+
+
 END;
 $body$
 LANGUAGE 'plpgsql'

@@ -69,11 +69,17 @@ BEGIN
                         apro.id_ep,
                         ep.ep as desc_ep,
                         fun.desc_funcionario1 as desc_funcionario,
-                        sub.nombre as desc_subsistema
+                        sub.nombre as desc_subsistema,
+                        apro.id_uo_cargo,
+                        uoc.codigo ||''-''||  uoc.nombre_cargo as desc_uo_cargo,
+                        apro.id_proceso_macro,
+                        pm.nombre as desc_proceso_macro
                        	from param.taprobador apro
 						inner join segu.tusuario usu1 on usu1.id_usuario = apro.id_usuario_reg
-						inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
-                         inner join segu.tsubsistema sub on sub.id_subsistema = apro.id_subsistema
+						inner join segu.tsubsistema sub on sub.id_subsistema = apro.id_subsistema
+                        left join wf.tproceso_macro pm  on pm.id_proceso_macro = apro.id_proceso_macro
+                        left join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
+                        left join orga.tuo uoc on uoc.id_uo = apro.id_uo_cargo
                         left join orga.tuo uo on uo.id_uo = apro.id_uo
                         left join param.vep ep on ep.id_ep = apro.id_ep
                         left join param.vcentro_costo cc on cc.id_centro_costo = apro.id_centro_costo
@@ -103,13 +109,15 @@ BEGIN
 			v_consulta:='select count(id_aprobador)
 					    from param.taprobador apro
 						inner join segu.tusuario usu1 on usu1.id_usuario = apro.id_usuario_reg
-						inner join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
-                         inner join segu.tsubsistema sub on sub.id_subsistema = apro.id_subsistema
+						inner join segu.tsubsistema sub on sub.id_subsistema = apro.id_subsistema
+                        left join wf.tproceso_macro pm  on pm.id_proceso_macro = apro.id_proceso_macro
+                        left join orga.vfuncionario fun on fun.id_funcionario = apro.id_funcionario
+                        left join orga.tuo uoc on uoc.id_uo = apro.id_uo_cargo
                         left join orga.tuo uo on uo.id_uo = apro.id_uo
                         left join param.vep ep on ep.id_ep = apro.id_ep
                         left join param.vcentro_costo cc on cc.id_centro_costo = apro.id_centro_costo
                         left join segu.tusuario usu2 on usu2.id_usuario = apro.id_usuario_mod
-                         where ';
+                        where ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
