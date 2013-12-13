@@ -41,6 +41,7 @@ class ACTTipoEstado extends ACTbase{
 	
 	
 	function listarFuncionarioWf(){
+            
         $this->objParam->defecto('ordenacion','id_funcionario');
         $this->objParam->defecto('dir_ordenacion','asc');
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
