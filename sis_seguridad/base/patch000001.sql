@@ -853,3 +853,16 @@ PRIMARY KEY(id_usuario_grupo_ep)) INHERITS (pxp.tbase);
 
 
 
+/*****************************I-SCP-RAC-SEGU-0-16/12/2013*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN correo2 VARCHAR(40);
+  
+/*****************************F-SCP-RAC-SEGU-0-16/12/2013*************/
+
+
+
+
