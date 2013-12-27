@@ -866,3 +866,59 @@ ALTER TABLE segu.tpersona
 
 
 
+/*****************************I-SCP-RAC-SEGU-0-18/12/2013*************/
+
+ ALTER TABLE segu.tprocedimiento_gui
+  ADD COLUMN nombre_boton VARCHAR(100);
+
+COMMENT ON COLUMN segu.tprocedimiento_gui.nombre_boton
+IS 'Nombre del boton';
+ 
+ ALTER TABLE segu.tprocedimiento_gui
+  ADD COLUMN imagen VARCHAR(100);
+
+COMMENT ON COLUMN segu.tprocedimiento_gui.imagen
+IS 'ruta de la imagen que se muestra en os manuales';
+ 
+
+ALTER TABLE segu.tgui
+  ADD COLUMN imagen VARCHAR(100);
+
+COMMENT ON COLUMN segu.tgui.imagen
+IS 'Imagen para los manuales';
+
+CREATE TABLE segu.ttutotial (
+  id_tutotial SERIAL, 
+  nombre VARCHAR(250), 
+  descripcion TEXT, 
+  id_subsistema INTEGER, 
+  video VARCHAR(100), 
+  extension VARCHAR(20), 
+  PRIMARY KEY(id_tutotial)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+ 
+ 
+ALTER TABLE segu.tprocedimiento
+  ADD COLUMN parametros_in TEXT;
+
+COMMENT ON COLUMN segu.tprocedimiento.parametros_in
+IS 'descripcion de los parametros de entrada'; 
+ 
+ALTER TABLE segu.tprocedimiento
+  ADD COLUMN parametros_out TEXT;
+
+COMMENT ON COLUMN segu.tprocedimiento.parametros_out
+IS 'descripcion de los parametros de salida';
+
+
+ALTER TABLE segu.tprocedimiento
+  ADD COLUMN descripcion_tec TEXT;
+
+COMMENT ON COLUMN segu.tprocedimiento.descripcion_tec
+IS 'xescripcion tecnica'; 
+ 
+/*****************************F-SCP-RAC-SEGU-0-18/12/2013*************/
+
+ 
+
