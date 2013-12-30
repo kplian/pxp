@@ -774,4 +774,35 @@ ALTER TABLE param.taprobador
 
 
 
+/***********************************I-SCP-ECR-PARAM-0-23/12/2013****************************************/
 
+
+--1
+CREATE TABLE param.tgrupo_archivo(
+  id_grupo_archivo SERIAL NOT NULL, 
+  nombre varchar(100), 
+  descripcion varchar(1000), 
+  CONSTRAINT pk_tgrupo_archivo__id_grupo_archivo PRIMARY KEY (id_grupo_archivo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+--2
+CREATE TABLE param.textension(
+  id_extension SERIAL NOT NULL, 
+  extension varchar(10) NOT NULL, 
+  peso_max_upload_mb numeric(18,2) DEFAULT 0, 
+  CONSTRAINT pk_textension__id_extension PRIMARY KEY (id_extension)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+--3
+CREATE TABLE param.textension_grupo_archivo(
+  id_extension_grupo_archivo SERIAL NOT NULL, 
+  id_extension INTEGER NOT NULL,
+  id_grupo_archivo INTEGER NOT NULL,
+  CONSTRAINT pk_textension_grupo_archivo__id_extension_grupo_archivo PRIMARY KEY (id_extension_grupo_archivo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+
+/***********************************F-SCP-ECR-PARAM-0-23/12/2013****************************************/
