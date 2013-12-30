@@ -315,7 +315,7 @@ class Mensaje
 					$cont=0;
 					foreach ($this->datos as $d){
 						$this->datos[$cont]=array_merge($this->datos[$cont],$this->nivel_arbol[0]['arreglo']);
-						$this->datos[$cont]=crearCampos($this->datos[$cont],$this->nivel_arbol[0]['arreglo_equivalencias']);
+						$this->datos[$cont]=$this->crearCampos($this->datos[$cont],$this->nivel_arbol[0]['arreglo_equivalencias']);
 						$cont++;
 					}
 					return '(' . json_encode($this->datos) . ')';
