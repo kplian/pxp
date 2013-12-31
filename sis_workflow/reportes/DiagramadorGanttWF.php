@@ -173,8 +173,6 @@ class DiagramadorGanttWF{
                 $graph->scale->week->SetStyle(HOURSTYLE_HM24); 
                 $sw =2; 
                 $fechaFin=$fechaFin->add(new DateInterval('PT800H'));    
-                
-            
         }
         elseif ($diferencia->format('%m') > 0 ){
               //escala de dias
@@ -182,8 +180,6 @@ class DiagramadorGanttWF{
               $graph->scale->week->SetStyle(HOURSTYLE_HM24);
               $sw =3; 
               $fechaFin=$fechaFin->add(new DateInterval('PT500H'));        
-                
-            
         }
         elseif ($diferencia->format('%m') == 0 && $diferencia->format('%d') > 1){
               //escala de dias 
@@ -193,8 +189,6 @@ class DiagramadorGanttWF{
               $sw =4; 
               $fechaFin=$fechaFin->add(new DateInterval('PT200H')); 
               //$fechaFin=$fechaInicio->diff(new DateInterval('PT24H'));  
-                
-            
         }
         else{
            //escala de horas 
@@ -202,24 +196,20 @@ class DiagramadorGanttWF{
             $graph->scale->week->SetStyle(HOURSTYLE_HM24);
             $fechaFin=$fechaFin->add(new DateInterval('PT48H'));
             $sw =5;      
-            
         }
-		  
 		  
 		$graph->scale->actinfo->SetColTitles(
         array('Tipo','Responsable','Duracion','Inicio','Fin'),array(40,100));
         
-		
-				
+		// Setup a horizontal grid
+        $graph->hgrid->Show();
+        $graph->hgrid->SetRowFillColor('darkblue@0.9'); 	
+			
 		$graph->SetDateRange($fechaInicio->format('Y-m-d H:m'),$fechaFin->format('Y-m-d H:m'));                  
         
-        
         //$graph->SetDateRange('2013-06-04','2013-08-04');                  
-       
         $graph->title->Set("Diagrama Gant Work Flow");
-
-       
-       //$graph->scale->week->SetStyle(MINUTESTYLE_MM);
+        //$graph->scale->week->SetStyle(MINUTESTYLE_MM);
 
         $graph->scale->week->SetFont(FF_FONT1);
 
