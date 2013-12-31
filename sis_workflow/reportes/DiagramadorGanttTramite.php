@@ -53,7 +53,11 @@ class DiagramadorGanttTramite{
 		$graph->scale->month->grid->SetColor('gray');
 		$graph->scale->month->grid->Show(true);
 		$graph->scale->year->grid->SetColor('gray');
-		$graph->scale->year->grid->Show(true);					
+		$graph->scale->year->grid->Show(true);	
+		
+		// Setup a horizontal grid
+        $graph->hgrid->Show();
+        $graph->hgrid->SetRowFillColor('darkblue@0.9');				
 		
 		// Setup activity info
 		
@@ -70,6 +74,7 @@ class DiagramadorGanttTramite{
 		$tamanioDataset = count($dataset);
 		$fechaInicio=0;
 		$fechaFin=0;
+		
 		
 		
 		for ($i=0;$i<$tamanioDataset;$i++) {						 

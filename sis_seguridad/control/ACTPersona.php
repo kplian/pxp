@@ -6,8 +6,8 @@
  Autor:	Kplian
  Fecha:	01/07/2010
  */
-class ACTPersona extends ACTbase{    
-
+class ACTPersona extends ACTbase{
+	        
 	function listarPersona(){
 
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
@@ -30,13 +30,16 @@ class ACTPersona extends ACTbase{
 			$this->res=$this->objFunSeguridad->listarPersona();
 			
 		}
-		
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());
-		
-		
-		
 	}
+	
+	function listarAlmacenApiREST(){
+            
+        
+            
+        
+    }
 	
 	function listarPersonaFoto(){
 

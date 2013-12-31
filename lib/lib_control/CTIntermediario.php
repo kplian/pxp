@@ -38,6 +38,7 @@ class CTIntermediario{
      	//Obtencion de los datos enviados por la vista
 		$this->objPostData=new CTPostData();
 		$this->aPostData=$this->objPostData->getData();
+		
 		//var_dump($this->aPostData);exit;
 		//rac 22/09/2011 
 		$this->aPostFiles=$this->objPostData->getFiles();
@@ -49,11 +50,12 @@ class CTIntermediario{
 		//echo 'POST: '.$this->aPostData['r'];exit;
 		
 				/*ob_start();
-$fb=FirePHP::getInstance(true);
-$fb->log($this->nombreClase,"clase");*/
+        $fb=FirePHP::getInstance(true);
+        $fb->log($this->nombreClase,"clase");*/
 		if(isset($this->aPostData['r'])){
 			$objReporte=new MostrarReporte($this->aPostData['r']);
 		}
+		
 		//Verifica la existencia de los parametros de direccionamiento
 		$this->verificaParametrosDirec();
 
@@ -142,13 +144,6 @@ $fb->log($this->nombreClase,"clase");*/
 		//Forma la cadena del include y el nombre de la clase
 		$this->nombreClase=self::$prefijo.$this->nombreClase;
 		$this->rutaInclude='../'.$this->rutaArchivo.$this->nombreClase.'.php';
-		//echo __FILE__;exit;
-		//echo 'dd:'.$this->rutaInclude;exit;
-		/*ob_start();
-$fb=FirePHP::getInstance(true);
-$fb->log($this->nombreClase,"clase");*/
-
-		//Incluye el archivo
 		include_once $this->rutaInclude;
 	}
 

@@ -12,20 +12,57 @@ class conexion
 
 	
 	function conectarnp(){
-		$cadena="host=".$_SESSION['_HOST']." port=".$_SESSION["_PUERTO"]." dbname=".$_SESSION['_BASE_DATOS']." user=".$_SESSION['_BASE_DATOS']."_". $_SESSION['_LOGIN']." password=".$_SESSION['_CONTRASENA'];
-
-		if($conexion = pg_connect($cadena))
-		{
-			return $conexion;
-		}
-		else{
-				
-			return 0;
-		}
+		try {       
+    		 $_host='';
+    		 $_port='';
+    		 $_dbname='';
+    		 $_user='';
+    		 $_password='';
+    		     
+    		 if(isset($_SESSION['_HOST'])){
+    		      $_host   = $_SESSION['_HOST'];
+    		 }
+    		 
+    		 if(isset($_SESSION['_PUERTO'])){
+                  $_port   = $_SESSION['_PUERTO'];
+             } 
+             
+             if(isset($_SESSION['_BASE_DATOS'])){
+                   $_dbname= $_SESSION['_BASE_DATOS'];
+             } 
+             
+             if(isset($_SESSION['_BASE_DATOS']) && isset($_SESSION['_LOGIN'])){
+                   $_user= $_SESSION['_BASE_DATOS']."_". $_SESSION['_LOGIN'];
+             } 
+             
+             if(isset($_SESSION['_CONTRASENA'])){
+                   $_password= $_SESSION['_CONTRASENA'];
+             }  
+    		    
+    		    
+    		$cadena="host=". $_host." port=".$_port." dbname=".$_dbname." user=".$_user." password=".$_password;
+    
+    		if($conexion = pg_connect($cadena))
+    		{
+    			return $conexion;
+    		}
+    		else{
+    				
+    			return 0;
+    		}
+		
+	  } 
+	  catch (Exception $e){
+            //TODO manejo de errores
+            //echo 'Error capturado -> '.$e->getMessage();
+      }
 
 	}
+	
 	function desconectarnp($link){
+		    
 		$respuesta=pg_close($link);
+		
 		return $respuesta;
 	}
 	
@@ -73,6 +110,7 @@ class conexion
 	
 	
 	function conectarSegu(){
+		    
 		$cadena="host=".$_SESSION['_HOST']." port=".$_SESSION["_PUERTO"]." dbname=".$_SESSION['_BASE_DATOS']." user=".$_SESSION['_BASE_DATOS']."_".$_SESSION['_USUARIO_CONEXION']." password=".$_SESSION['_CONTRASENA_CONEXION'];
 		//echo $cadena;exit;
 		if($conexion = pg_connect($cadena))
