@@ -1103,8 +1103,8 @@ class driver
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
 		
-		/*if(count($res['datos'])>0)
-			$aux=array_shift($res['datos']);*/
+		if(count($res['datos'])>0)
+			$aux=array_shift($res['datos']);
 
 		//var_dump($aux);exit;
 		
