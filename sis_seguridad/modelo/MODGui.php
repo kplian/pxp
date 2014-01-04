@@ -88,6 +88,47 @@
 		return $this->respuesta;	
 	}
 
+
+
+//------- LISTAR GUI : Para llenar el arbol de interfaces ----//
+	function getGui(){
+		  	
+		$this->procedimiento='segu.ft_gui_sel';
+		$this->transaccion='SEG_GETGUI_SEL';
+		$this->tipo_procedimiento='SEL';
+		
+		$this->setCount(false);						
+				
+		$this->setParametro('id_gui','id_gui','integer');
+		
+		
+			
+		//defino varialbes que se captran como retornod e la funcion
+		$this->captura('id_gui','integer');
+		$this->captura('id_subsistema','integer');
+		$this->captura('id_gui_padre','integer');
+		$this->captura('codigo_gui','varchar');	
+		$this->captura('nombre','varchar');		
+		$this->captura('descripcion','text'); 
+		$this->captura('nivel','integer');
+		$this->captura('visible','segu.si_no');		
+		$this->captura('orden_logico','integer');
+		$this->captura('ruta_archivo','text');
+		$this->captura('icono','varchar');
+		$this->captura('clase_vista','varchar');
+		$this->captura('tipo_dato','varchar');
+		$this->captura('id_nodo','varchar');
+		
+		$this->captura('imagen','varchar');
+	
+		$this->armarConsulta();
+		
+
+		$this->ejecutarConsulta();
+		return $this->respuesta;	
+	}
+
+
 	function listarGuiSincronizacion(){
 		  	
 		$this->procedimiento='segu.ft_gui_sel';
