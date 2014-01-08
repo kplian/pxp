@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+
+
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+<style>
+	
+body {
+font-family: 'Lato', sans-serif;
+}	
+
+
+#Logo {
+    display: block;
+    margin: 1em auto 0;
+    width: 30%;
+    margin-bottom: 10px;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+	</head>
+	
+	<body>
+    
+    <div data-role="page" data-theme="a">
+    	<div data-role="header" data-theme="b" >
+        <h2>Plantilla Kplain</h2>
+        
+        
+        </div>
+        
+        <div data-role="content" class="ui-content jqm-content" data-theme="a" >
+        	
+        	
+        	<img  id="Logo" src="logo.png" />
+        	
+        	   <textarea id="comment-post-text"></textarea>
+        
+<input type="hidden" id="user-name" value="favio figueroa" />
+<a href="#" data-role="button" data-inline="true" id="comment-post-btn" data-ajax="false">ver</a>
+        
+			
+			 <div class="ui-body ui-body-a ui-corner-all">
+<h3>Heading</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse accumsan blandit fermentum. Pellentesque cursus mauris purus, auctor commodo mi ullamcorper nec. Donec semper mattis eros, nec condimentum ante sollicitudin quis. Etiam orci sem, porttitor ut tellus nec, blandit posuere urna. Proin a arcu non lacus pretium faucibus. Aliquam sed est porttitor, ullamcorper urna nec, vehicula lorem. Cras porttitor est lorem, non venenatis diam convallis congue.</p>
+  </div>
+			
+			
+        <a href="#pagina2" data-transition="slide" data-role="button" data-inline="true" data-theme="b">Aceptar</a>
+        
+       
+        </div>
+      
+    </div>
+        
+        
+
+
+        
+        <div data-role="footer">
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#" data-icon="grid">Summary</a></li>
+                <li><a href="#" data-icon="star" class="ui-btn-active">Favs</a></li>
+                <li><a href="#" data-icon="gear">Setup</a></li>
+            </ul>
+        </div><!-- /navbar -->
+</div><!-- /footer -->
+
+
+    </div>
+    
+    
+    
+     <div data-role="page" id="pagina2" data-add-back-btn="true">
+    	<div data-role="header" data-theme="b">
+        <h1>Tutorial</h1>
+        </div>
+        
+        <div data-role="content">
+        Favio Figueroa asd
+        <a href="#pagina1" data-rel="back">volver</a>
+        
+       
+            <h1>Login con JQM</h1>
+     
+        
+            <form id="form_login">
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="txtuser">Usuario:</label>
+                    <input type="text" name="txtuser" id="txtuser" value="" placeholder="Name" />
+                </div>
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="txtpassword">Contraseña:</label>
+                    <input type="password" name="txtpassword" id="txtpassword" value="" placeholder="Password" />
+                </div>
+                <input type="button" value="Login" id="btnLogin">
+            </form>
+             <!--<div id="errorMsg" style="background-color:red;color: #FFFFFF;">Usuario o Contraseña no valida</div>-->
+     
+
+        
+        </div>
+        
+        <div data-role="footer">
+        <h4>http:sajama.net</h4>
+        </div>
+    </div>
+    
+    
+   	</body>
+    
+</html>

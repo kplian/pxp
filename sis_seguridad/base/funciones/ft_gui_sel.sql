@@ -1,8 +1,8 @@
-CREATE OR REPLACE FUNCTION segu.ft_gui_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
+CREATE OR REPLACE FUNCTION "segu"."ft_gui_sel" (
+  "par_administrador" integer,
+  "par_id_usuario" integer,
+  "par_tabla" varchar,
+  "par_transaccion" varchar
 )
 RETURNS varchar AS
 $body$
@@ -110,6 +110,61 @@ BEGIN
 
 
          END;
+         
+ 
+
+/*******************************    
+ #TRANSACCION:  SEG_GETGUI_SEL
+ #DESCRIPCION:	Lista de datos para el manual
+ #AUTOR:		KPLIAN(rac), favio figueroa penarrieta		
+ #FECHA:		08/01/14
+***********************************/
+     elsif(par_transaccion='SEG_GETGUI_SEL')then
+
+          --consulta:=';
+          BEGIN
+          
+                       
+
+                 v_consulta =  'SELECT
+                          g.id_gui,
+                          g.id_subsistema,
+                          eg.fk_id_gui as id_gui_padre,
+                          g.codigo_gui,
+                          g.nombre,
+                          g.descripcion,
+                          g.nivel,
+                          g.visible,
+                          g.orden_logico,
+                          g.ruta_archivo,
+                          g.icono,
+                          g.clase_vista,
+                                       
+                          case
+                          when (g.ruta_archivo is null or g.ruta_archivo='''')then
+                               ''carpeta''::varchar
+                          ELSE
+                              ''interface''::varchar
+                          END as tipo_dato,
+                          case
+                             when (g.ruta_archivo is null or g.ruta_archivo = '''') then 
+                             (g.id_gui||''_carpeta'')::varchar
+                             ELSE 
+                             (g.id_gui||''_interface'')::varchar
+                           END 
+                           as id_nodo,
+                           g.imagen
+                    FROM segu.tgui g
+                         INNER  JOIN segu.testructura_gui eg
+                         ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
+                     WHERE g.estado_reg=''activo'' and g.id_gui = '|| v_parametros.id_gui;
+               
+               return v_consulta;
+
+
+         END;        
+         
+         
 /*******************************    
  #TRANSACCION:  SEG_EXPGUI_SEL
  #DESCRIPCION:	Listado de guis de un subsistema para exportar
