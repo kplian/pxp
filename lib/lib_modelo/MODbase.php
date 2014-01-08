@@ -82,12 +82,22 @@ class MODbase extends driver
 		}
 	}
 	function ejecutarConsulta($res=null){
+	        
+	   try {
+		     
 		if(count($this->validacion->getRes())==0){
 			parent::ejecutarConsulta($res);
 		}
 		else{
 			$this->generaRespuestaParametros();
 		}
+		
+     }	 
+      catch (Exception $e){
+           //TODO   DEBUG DE ERRORES  
+          //echo 'Error capturado -> '.$e->getMessage();
+      }
+		
 
 	}
 
