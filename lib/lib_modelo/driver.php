@@ -1010,17 +1010,15 @@ class driver
 				//Libera la memoria
 				pg_free_result($res);
 				
-				
 				//Verifica si se produjo algon error logico en la funcion
 				$resp_procedimiento = $this->divRespuesta($array[0]['f_intermediario_ime']);
-
 				  if($this->uploadFile){
 					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->parConsulta);
 				  }
 				  else{
 	      			$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
 				  }  
-				
+		
                  $this->respuesta->setDatos($resp_procedimiento['datos']);
 
 
@@ -1091,8 +1089,10 @@ class driver
 		$cadena = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $cadena);
 		
 		$res=json_decode($cadena,true);
+		
 					
 		$res['datos']=$res;
+		//var_dump($res['datos']);exit;
 		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
@@ -1105,8 +1105,8 @@ class driver
 		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
-		
-		
+
+		//var_dump($aux);exit;
 		
 		if($res['tipo_respuesta']=='EXITO'){
 			$res['mensaje']="La transacción se ha ejecutado con éxito";
@@ -1119,6 +1119,7 @@ class driver
 			}
 			$res['mensaje_tec']=$res['mensaje']."   Procedimientos: ".$res['procedimientos'];
 		}
+		
 		return $res;
 		
 	}

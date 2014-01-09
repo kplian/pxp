@@ -2,7 +2,7 @@
 /**
 *@package pXP
 *@file DiagramadorGanttTramite.php
-*@author  Gonzalo Sarmiento
+*@author  Rensi Arteaga Copari
 *@date 14-05-2013
 *@description Clase que que genera el diagrama Gantt con ayuda de la libreria jpgraph
 */

@@ -43,6 +43,7 @@ v_id_proceso_ant integer;
 
 v_i integer;
 p_id_proceso_wf integer;
+v_id_proceso_wf_prev integer;
  
 
 BEGIN
@@ -68,7 +69,39 @@ BEGIN
     p_id_proceso_wf = v_parametros.id_proceso_wf;
 
 
-   -- 0) Crea una tabla temporal con los datos que se utilizaran 
+   --0) recperar id_proceso_wf inicial
+	 WITH RECURSIVE path_rec(id_estado_wf_prev, id_proceso_wf_prev ) AS (
+	    SELECT  
+	      pwf.id_estado_wf_prev,
+	      ewf.id_proceso_wf as id_proceso_wf_prev
+	    FROM wf.tproceso_wf pwf
+	    inner join wf.testado_wf ewf on ewf.id_estado_wf = pwf.id_estado_wf_prev 
+	    WHERE pwf.id_proceso_wf = p_id_proceso_wf
+	
+	    UNION
+	    SELECT
+	    pwf2.id_estado_wf_prev, 
+	    ewf2.id_proceso_wf as id_proceso_wf_prev
+	    FROM wf.tproceso_wf pwf2
+	    inner join path_rec  pr on pwf2.id_proceso_wf = pr.id_proceso_wf_prev
+	    inner join wf.testado_wf ewf2 on ewf2.id_estado_wf = pwf2.id_estado_wf_prev 
+	     
+	)
+    SELECT 
+      id_proceso_wf_prev 
+    into
+      v_id_proceso_wf_prev
+    FROM path_rec order by id_proceso_wf_prev limit 1 offset 0;
+   
+   
+   IF v_id_proceso_wf_prev is NULL THEN
+   
+      v_id_proceso_wf_prev = p_id_proceso_wf;
+   
+   END IF;
+   
+   
+   -- 1) Crea una tabla temporal con los datos que se utilizaran 
 
  
    
@@ -95,7 +128,7 @@ BEGIN
     
     
                  
-      IF not ( wf.f_gant_wf_recursiva(p_id_proceso_wf,NULL ,p_id_usuario)) THEN
+      IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario)) THEN
                 
         raise exception 'Error al recuperar los datos del diagrama gant';
                 

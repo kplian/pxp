@@ -52,6 +52,8 @@ BEGIN
       v_nombre_funcion = 'wf.f_funcionario_wf_sel';
 
 
+   --raise exception 'LLEGA .......';
+
     --recupera el tipo de listado:   todos, listado, funcion_listado  
     
     --no son  admitidos  las asignacion de dapartamento en esta funcion
@@ -296,8 +298,52 @@ BEGIN
                  
                  
                  END IF;
+       /*
+         Recuperamos  el funcionario solicitante de la solicitud partiendo del plan de pago
+       
+       */
       
-               
+       ELSEIF v_nombre_func_list ='ADQ_SOL_COMPRA'  THEN
+       
+               IF p_count=FALSE then
+                 -- sabemos que p_id_estado_wf  corresponde al estado del plan de pagos
+                    
+                    v_consulta='select
+                          fun.id_funcionario,
+                          fun.desc_funcionario1 as desc_funcionario,
+                          ''Solicitante''::text  as desc_funcionario_cargo,
+                          1 as prioridad
+                        from adq.tsolicitud sol
+                        inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario
+                        inner join adq.tproceso_compra p on p.id_solicitud = sol.id_solicitud
+                        inner join adq.tcotizacion c on c.id_proceso_compra = p.id_proceso_compra
+                        inner join tes.tplan_pago pp on pp.id_obligacion_pago = c.id_obligacion_pago  
+                        where pp.id_estado_wf = '||p_id_estado_wf||'
+                        and '||p_filtro||'
+                            order by fun.desc_funcionario1
+                            limit '|| p_limit::varchar||' offset '||p_start::varchar;
+                        
+                          FOR g_registros in execute (v_consulta)LOOP     
+                  		   RETURN NEXT g_registros;
+                		 END LOOP;
+                 ELSE
+                       v_consulta='select
+                          COUNT(fun.id_funcionario)
+                        from adq.tsolicitud sol
+                        inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario
+                        inner join adq.tproceso_compra p on p.id_solicitud = sol.id_solicitud
+                        inner join adq.tcotizacion c on c.id_proceso_compra = p.id_proceso_compra
+                        inner join tes.tplan_pago pp on pp.id_obligacion_pago = c.id_obligacion_pago  
+                        where pp.id_estado_wf = '||p_id_estado_wf||'
+                        and '||p_filtro;
+                        
+                          FOR g_registros in execute (v_consulta)LOOP     
+                  		   RETURN NEXT g_registros;
+                		  END LOOP;
+                 
+                 
+                 END IF;
+      
        ELSEIF v_nombre_func_list ='ADQ_APR_SOL_COMPRA'  THEN
        
                IF p_count=FALSE then

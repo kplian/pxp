@@ -78,6 +78,24 @@ class ACTGui extends ACTbase{
 		
 
 	}
+
+
+
+/*
+	 *
+	 * 
+	 * 
+	 * */
+	
+	function getGui(){
+		//recupera lso datos recibidos desde la vista y los pone en  variables
+	   	$this->objFun=$this->create('MODGui');
+		
+	    $this->res=$this->objFun->getGui($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	
+	}
+
 	
 	/*
 	 * ELIMINAR GUI
