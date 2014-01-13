@@ -319,7 +319,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			direction:'ASC'
 		},
 		onButtonAct:function(){
-			alert('llega');
+			
 			this.sm.clearSelections();
 			var dfil = this.datoFiltro.getValue();
 			var dcheck = this.checkInactivos.getValue();
