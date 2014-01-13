@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION orga.f_uo_arb_recursivo (
-  v_id integer
+  v_id integer,
+  p_activos varchar = 'si'::character varying
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA ENDESIS - SISTEMA DE ...
@@ -69,6 +69,7 @@ g_registros                record;  -- PARA ALMACENAR EL CONJUNTO DE DATOS RESUL
 v_bool varchar;
 v_bool2 varchar;
 v_nivel varchar;
+v_select_funcionarios	varchar;
 BEGIN
 
 
@@ -89,7 +90,11 @@ BEGIN
   --1)IF  si no hay registros en la tabla temporal
    IF v_count is NULL THEN
         --1.1) Listamos el registro  con el v_id  de la tabla orignal
-        
+         if (p_activos = 'no') THEN
+              v_select_funcionarios = '(orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo, now()::date, ''no'')) as funcionarios,';
+          else
+              v_select_funcionarios = '(orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo)) as funcionarios,';
+          end if;
          v_consulta := 'SELECT
                            UNIORG.id_uo,
                            UNIORG.nombre_unidad,
@@ -99,7 +104,7 @@ BEGIN
                            ESTORG.id_estructura_uo,
                            ESTORG.id_uo_padre,
                            UNIORG.estado_reg,
-                           (orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo)) as funcionarios,
+                           ' || v_select_funcionarios || '
                            UNIORG.presupuesta,
                            UNIORG.correspondencia,
                            UNIORG.codigo, 
@@ -168,7 +173,7 @@ BEGIN
         
         --1.3.1) nivel = fun_red(v_id_padre) RECURSIVAMENTE
         
-          v_nivel := orga.f_uo_arb_recursivo(g_registros.id_uo_padre);
+          v_nivel := orga.f_uo_arb_recursivo(g_registros.id_uo_padre,p_activos);
           
         --1.3.2) insertamos el registro de v_id con niveles = nivel+v_id
                      
@@ -229,7 +234,8 @@ BEGIN
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_estructura_uo_ime (OID = 304947) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

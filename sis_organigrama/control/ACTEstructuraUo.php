@@ -283,7 +283,7 @@ class ACTEstructuraUo extends ACTbase {
 		if ($f["resaltar"] == 'si') {
 
 			$text = $f["nombre_unidad"] . '  <FONT SIZE="+1"><b>*</b></FONT>';
-			$expanded = 'false';
+			$expanded = 'true';
 		} else {
 
 			$text = $f["nombre_unidad"];

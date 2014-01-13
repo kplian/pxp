@@ -179,7 +179,7 @@ Phx.vista.RepFuncionarioUo=Ext.extend(Phx.gridInterfaz,{
 	title:'Funcionarios x Unidad',
 	ActSave:'../../sis_organigrama/control/EstructuraUo/insertarFuncionarioUo',
 	ActDel:'../../sis_organigrama/control/EstructuraUo/eliminarFuncionarioUo',
-	ActList:'../../sis_organigrama/control/EstructuraUo/listarFuncionarioUo',
+	ActList:'../../sis_organigrama/control/UoFuncionario/ListarUoFuncionario',
 	id_store:'id_uo_funcionario',
 	fields: [
 		{name:'id_uo_funcionario', type: 'numeric'},
