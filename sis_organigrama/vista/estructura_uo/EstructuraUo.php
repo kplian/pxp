@@ -244,20 +244,23 @@ Phx.vista.EstructuraUo=function(config){
 		];
 		
 		Phx.vista.EstructuraUo.superclass.constructor.call(this,config);
-		
-		
-		
-	
-             this.datoFiltro.on('valid',function(f,n,o){
-				console.log('llamada')
-			},this);
+		          
 			
-		this.addButton('btnReporteFun',	{
+		/*this.addButton('btnReporteFun',	{
 				text: 'Funcionarios',
 				//iconCls: 'bchecklist',
 				disabled: false,
 				handler: this.onBtnReporteFun,
 				tooltip: '<b>Funcionarios</b><br/>Listado de funcionarios por unidad organizacional'
+			}
+		);*/
+		
+		this.addButton('btnCargo',	{
+				text: 'Cargos',
+				iconCls: 'bcargo',
+				disabled: false,
+				handler: this.onBtnCargos,
+				tooltip: '<b>Cargos</b><br/>Listado de cargos por unidad organizacional'
 			}
 		);	
 		
@@ -265,6 +268,8 @@ Phx.vista.EstructuraUo=function(config){
 		this.tbar.add('->');
    		this.tbar.add(' Filtrar:');
    		this.tbar.add(this.datoFiltro);
+   		this.tbar.add('Inactivos:');
+   		this.tbar.add(this.checkInactivos);
 		
 		//de inicio bloqueamos el botono nuevo
 		//this.tbar.items.get('b-new-'+this.idContenedor).disable()
@@ -282,7 +287,9 @@ Phx.vista.EstructuraUo=function(config){
 Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		datoFiltro:new Ext.form.Field({ 
 		                        allowBlank:true,
-					       		width: 200}),
+					       		width: 150}),
+		checkInactivos:new Ext.form.Checkbox({ 
+		                        width: 25}),
     	title:'estructura_uo',
 		ActSave:'../../sis_organigrama/control/EstructuraUo/guardarEstructuraUo',
 		ActDel:'../../sis_organigrama/control/EstructuraUo/eliminarEstructuraUo',	
@@ -315,9 +322,15 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			
 			this.sm.clearSelections();
 			var dfil = this.datoFiltro.getValue();
+			var dcheck = this.checkInactivos.getValue();
+			
 			if(dfil && dfil!=''){
-				this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil};
-			     this.root.reload();
+				if (dcheck) {
+					this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil, p_activos : 'no'};
+				} else {
+					this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil};
+				}
+				this.root.reload();
 			}
 			else
 			{
@@ -326,7 +339,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			}
 		},
 		
-		onBtnReporteFun: function(){
+		/*onBtnReporteFun: function(){
 			var node = this.sm.getSelectedNode();
 			var data = node.attributes;
 			Phx.CP.loadWindows('../../../sis_organigrama/vista/estructura_uo/RepFuncionarioUo.php',
@@ -339,7 +352,22 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 				    this.idContenedor,
 				    'RepFuncionarioUo'
 			);
-		},	
+		},	*/
+		
+		onBtnCargo: function(){
+			var node = this.sm.getSelectedNode();
+			var data = node.attributes;
+			Phx.CP.loadWindows('../../../sis_organigrama/vista/cargo/Cargo.php',
+					'Cargos por Unidad',
+					{
+						width:1000,
+						height:600
+				    },
+				    data,
+				    this.idContenedor,
+				    'Cargo'
+			);
+		},
 	
 		
 		//sobrecarga prepara menu

@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION orga.f_uo_arb_inicia (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS SETOF record
-AS 
+RETURNS SETOF record AS
 $body$
 /**************************************************************************
  SISTEMA ENDESIS - SISTEMA DE ...
@@ -78,6 +77,8 @@ v_niveles_acsi varchar;
 
 pm_criterio_filtro varchar;
 v_id integer;
+v_select_funcionarios	varchar;
+v_activos		varchar;
 
 BEGIN
 
@@ -107,6 +108,13 @@ raise notice '00000  RH_INIUOARB_SEL=%',p_transaccion;
     v_nombre_funcion = 'orga.f_uo_arb_inicia';
     v_parametros = pxp.f_get_record(p_tabla);
     pm_criterio_filtro= v_parametros.criterio_filtro_arb;
+    if (pxp.f_existe_parametro(p_tabla,'p_activos')) THEN
+    	v_activos = 'no';
+    	v_select_funcionarios = '(orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo, now()::date, ''no'')) as funcionarios,';
+    else
+    	v_activos = 'si';    	
+    	v_select_funcionarios = '(orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo)) as funcionarios,';
+    end if;
     
 raise notice '%',pm_criterio_filtro;
 	/*********************************    
@@ -151,9 +159,9 @@ raise notice '11111111';
                            UNIORG.descripcion,
                            ESTORG.id_estructura_uo,
                            ESTORG.id_uo_padre,
-                           UNIORG.estado_reg,
-                           (orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo)) as funcionarios,
-                           UNIORG.presupuesta,
+                           UNIORG.estado_reg,'
+                           || v_select_funcionarios ||
+                           'UNIORG.presupuesta,
                            UNIORG.correspondencia,
                            UNIORG.codigo, 
                            UNIORG.nodo_base, 
@@ -193,7 +201,7 @@ raise notice '2222222222';
                    --   1.2.1.1) Inicia la llamada recursiva para obetener el nivel final 
               --     (en el camino va insertando en la tabla temporal todos los padres del regisotro)
                             
-                   v_nivel=orga.f_uo_arb_recursivo(g_registros.id_uo_padre);
+                   v_nivel=orga.f_uo_arb_recursivo(g_registros.id_uo_padre,v_activos);
                    
                    v_nivel=v_nivel||g_registros.id_uo||'a';
                    
@@ -311,7 +319,8 @@ EXCEPTION
 				        
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_uo_arb_recursivo (OID = 304945) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100 ROWS 1000;
