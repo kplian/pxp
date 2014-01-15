@@ -4254,3 +4254,9 @@ select pxp.f_delete_tgui ('funciones');
 select pxp.f_delete_tgui ('');
 select pxp.f_delete_tgui ('LOG');
 /********************************************F-DAT-JRR-SEGU-0-02/02/2013**********************************************/
+
+/********************************************I-DAT-RCM-SEGU-0-17/01/2014**********************************************/
+select pxp.f_insert_tgui ('Tablas migradas ENDESIS', 'Listado de las tablas que se migran de ENDESIS', 'TBLMIG', 'si', 3, 'sis_seguridad/vista/tabla_migrar/TablaMigrar.php', 3, '', 'TablaMigrar', 'SEGU');
+
+select pxp.f_insert_testructura_gui ('TBLMIG', 'o');
+/********************************************F-DAT-RCM-SEGU-0-17/01/2014**********************************************/

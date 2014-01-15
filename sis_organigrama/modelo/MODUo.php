@@ -64,6 +64,7 @@ function listarUoFiltro(){
 		
 		$this->setParametro('id_uo','id_uo','integer');
 		$this->setParametro('criterio_filtro_arb','criterio_filtro_arb','varchar');
+		$this->setParametro('p_activos','p_activos','varchar');
 		//Definicion de la lista del resultado del query
 		$this->captura('niveles','varchar');						  
 		$this->captura('id_uo','integer');
