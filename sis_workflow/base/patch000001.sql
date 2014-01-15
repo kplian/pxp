@@ -143,3 +143,75 @@ ALTER TABLE wf.ttipo_proceso
   ALTER COLUMN codigo TYPE VARCHAR(10) COLLATE pg_catalog."default";
 
 /***********************************F-SCP-RAC-WF-0-03/12/2013****************************************/
+
+
+
+/***********************************I-SCP-RAC-WF-0-15/01/2014****************************************/
+
+CREATE TABLE wf.ttipo_documento(
+    id_tipo_documento SERIAL NOT NULL,
+    id_tipo_proceso int4 NOT NULL,
+    id_proceso_macro int4 NOT NULL,
+    codigo varchar(25),
+    nombre varchar(255),
+    descripcion text,
+    action  varchar,
+    tipo VARCHAR(30) DEFAULT 'escaneado'::::character varying NOT NULL, 
+    PRIMARY KEY (id_tipo_documento)) INHERITS (pxp.tbase);
+
+
+ 
+CREATE TABLE wf.ttipo_documento_estado(
+    id_tipo_documento_estado SERIAL NOT NULL,
+    id_tipo_documento int4 NOT NULL,
+    id_tipo_proceso int4 NOT NULL,
+    id_tipo_estado int4 NOT NULL,
+    momento varchar(255),
+    PRIMARY KEY (id_tipo_documento_estado))INHERITS (pxp.tbase);
+
+
+CREATE TABLE wf.tdocumento_wf(
+    id_documento_wf SERIAL NOT NULL,
+    id_tipo_documento serial NOT NULL,
+    id_proceso_wf serial NOT NULL,
+    num_tramite varchar(200),
+    momento varchar(255),
+    nombre_tipo_doc varchar(200),
+    nombre_doc varchar(200),
+    chequeado varchar(10),
+    url varchar(200),
+    extencion varchar(5),
+    obs text,
+    PRIMARY KEY (id_documento_wf)) INHERITS (pxp.tbase);
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_wf
+  ADD COLUMN codigo_proceso VARCHAR(150) DEFAULT '' NOT NULL;
+  
+
+ALTER TABLE wf.tproceso_wf
+  ALTER COLUMN codigo_proceso DROP DEFAULT;
+  
+  
+COMMENT ON COLUMN wf.tproceso_wf.codigo_proceso
+IS 'es un codigo que permite identifica al proceso origen de manrea univoca, por ejemplo nuro de solicitud de compra, orden de compra, o numero de cuota, etc';
+
+
+--------------- SQL ---------------
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_wf
+  ALTER COLUMN descripcion TYPE VARCHAR(1000) COLLATE pg_catalog."default";
+
+
+ALTER TABLE wf.tproceso_wf
+  ALTER COLUMN codigo_proceso TYPE VARCHAR(350) COLLATE pg_catalog."default";
+
+
+/***********************************F-SCP-RAC-WF-0-15/01/2014****************************************/
+
+
+
