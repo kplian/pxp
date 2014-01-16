@@ -77,7 +77,7 @@ BEGIN
           pwf.id_tipo_proceso
 	    FROM wf.tproceso_wf pwf
 	    inner join wf.testado_wf ewfini on ewfini.id_proceso_wf = pwf.id_proceso_wf
-	    WHERE ewfini.id_estado_wf = 1330
+	    WHERE ewfini.id_estado_wf = p_id_estado_wf
 	
 	    UNION
 	    SELECT

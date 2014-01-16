@@ -240,7 +240,11 @@ BEGIN
    
     
     -- inserta documentos en estado borrador si estan configurados
-    v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario, p_id_proceso_wf, v_id_estado_actual);
+     v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario, p_id_proceso_wf, v_id_estado_actual);
+    
+    
+    -- verificar documentos
+    v_resp_doc = wf.f_verifica_documento(p_id_usuario, v_id_estado_actual);
     
     return v_id_estado_actual;
   
