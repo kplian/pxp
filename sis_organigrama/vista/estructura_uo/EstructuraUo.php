@@ -71,6 +71,49 @@ Phx.vista.EstructuraUo=function(config){
 		
 		{
 			config:{
+				name: 'id_nivel_organizacional',
+				fieldLabel: 'Nivel Organizacional',
+				allowBlank: false,
+				emptyText:'Nivel...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_organigrama/control/NivelOrganizacional/listarNivelOrganizacional',
+					id: 'id_nivel_organizacional',
+					root: 'datos',
+					sortInfo:{
+						field: 'numero_nivel',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_nivel_organizacional','numero_nivel','nombre_nivel'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams:{par_filtro:'nivorg.numero_nivel,nivorg.nombre_nivel'}
+				}),
+				valueField: 'id_nivel_organizacional',
+				displayField: 'nombre_nivel',
+				gdisplayField:'nombre_nivel',
+				hiddenName: 'id_nivel_organizacional',
+    			triggerAction: 'all',
+    			lazyRender:true,
+				mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				anchor:"100%",
+				gwidth:150,
+				minChars:2,
+				tpl:'<tpl for="."><div class="x-combo-list-item"><p>{numero_nivel}</p><p>{nombre_nivel}</p></div></tpl>',
+				renderer:function (value, p, record){return String.format('{0}', record.data['nombre_nivel']);}
+			},
+			type:'ComboBox',
+			filters:{pfiltro:'ofi.nombre',type:'string'},
+			id_grupo:0,
+			grid:true,
+			form:true
+		},
+		
+		{
+			config:{
 				fieldLabel: "Nombre",
 				gwidth: 120,
 				name: 'nombre_unidad',
@@ -305,6 +348,9 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		'id', //identificador unico del nodo (concatena identificador de tabla con el tipo de nodo)
 		      //porque en distintas tablas pueden exitir idetificadores iguales
 		'tipo_meta',
+		'id_nivel_organizacional',
+		'nombre_nivel',
+		'tipo_meta',
 		'id_estructura_uo',
 		'id_uo',
 		'id_uo_padre',
@@ -338,7 +384,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			     this.root.reload();
 			}
 		},
-		
+				
 		/*onBtnReporteFun: function(){
 			var node = this.sm.getSelectedNode();
 			var data = node.attributes;
@@ -354,7 +400,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			);
 		},	*/
 		
-		onBtnCargo: function(){
+		onBtnCargos: function(){
 			var node = this.sm.getSelectedNode();
 			var data = node.attributes;
 			Phx.CP.loadWindows('../../../sis_organigrama/vista/cargo/Cargo.php',
@@ -371,18 +417,13 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 	
 		
 		//sobrecarga prepara menu
-		preparaMenu:function(tb,n){
-			//si es una nodo tipo carpeta habilitamos la opcion de nuevo	
-			/*if((n.attributes.nodo_base == 'si' || n.attributes.tipo_dato == 'no' )&& n.attributes.id != 'id'){
-					
-				}
-				else {
-					tb.items.get('b-new-'+this.idContenedor).disable()
-				}*/
-			
-			//tb.items.get('b-new-'+this.idContenedor).enable()
-			// llamada funcion clace padre
-			Phx.vista.EstructuraUo.superclass.preparaMenu.call(this,tb,n)
+		preparaMenu:function(n) {
+		this.getBoton('btnCargo').enable();
+		Phx.vista.EstructuraUo.superclass.preparaMenu.call(this,n);
+		},
+		liberaMenu : function () {
+			this.getBoton('btnCargo').disable();
+			Phx.vista.EstructuraUo.superclass.liberaMenu.call(this);
 		},
 		/*Sobre carga boton new */
 		onButtonNew:function(){
@@ -441,10 +482,10 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 	 * title:'Representante', height:200 },
 	 */	
 		
-          east:{
+          south:{
 		  url:'../../../sis_organigrama/vista/uo_funcionario/UOFuncionario.php',
 		  title:'Asignacion de Funcionarios a Unidad', 
-		  width:400,
+		  height:'50%',
 		  cls:'uo_funcionario'
 		 },
 		bdel:true,// boton para eliminar

@@ -64,8 +64,7 @@ BEGIN
                
                 --verficar que el funcionario no este activo en dos unidades simultaneamente
                 
-                if ( v_parametros.estado_reg='activo' and
-                      ((select count(id_funcionario) from 
+                if ( ((select count(id_funcionario) from 
                            orga.tuo_funcionario  UOF
                            where     id_funcionario=v_parametros.id_funcionario AND uof.estado_reg='activo' ))>0) then
                            
@@ -77,12 +76,23 @@ BEGIN
                id_uo=v_parametros.id_uo and estado_reg='activo') then
                   raise exception 'Insercion no realizada. El funcionacio ya esta asignado a la unidad';
                end if;
+               
+               if (v_parametros.fecha_finalizacion is not null and v_parametros.fecha_finalizacion <= v_parametros.fecha_asignacion)then
+               		raise exception 'La fecha de finalización no puede ser menor o igual a la fecha de asignación';
+               end if;
 
                INSERT INTO orga.tuo_funcionario
-               (id_uo, id_funcionario, fecha_asignacion, estado_reg)
-               values(v_parametros.id_uo, v_parametros.id_funcionario,v_parametros.fecha_asignacion, v_parametros.estado_reg)  
+               			(	id_uo, 						id_funcionario, 						fecha_asignacion,
+               				fecha_finalizacion,			id_cargo,								observaciones_finalizacion,
+               				nro_documento_asignacion,	fecha_documento_asignacion,				id_usuario_reg,
+               				tipo)
+               values(		v_parametros.id_uo, 		v_parametros.id_funcionario,			v_parametros.fecha_asignacion,
+               				v_parametros.fecha_finalizacion,v_parametros.id_cargo,				v_parametros.observaciones_finalizacion,
+               				v_parametros.nro_documento_asignacion,v_parametros.fecha_documento_asignacion,par_id_usuario,
+               				v_parametros.tipo)  
                RETURNING id_uo_funcionario INTO v_id_uo_funcionario;
-              
+               
+                            
                --10-04-2012: sincronizacion de UO entre BD
               /* v_respuesta_sinc:=orga.f_sincroniza_uo_empleado_entre_bd(v_id_uo_funcionario,'10.172.0.13','5432','db_link','db_link','dbendesis' ,'INSERT');
                      
@@ -118,8 +128,7 @@ BEGIN
  
                 --verficar que el funcionario no este activo en dos unidades simultaneamente
                 --raise exception '%    %',v_parametros.id_funcionario,v_parametros.id_uo;
-               if ( v_parametros.estado_reg='activo' and
-                      ((select count(id_funcionario) from 
+               if ( ((select count(id_funcionario) from 
                            orga.tuo_funcionario  a
                            where a.id_funcionario=v_parametros.id_funcionario
                            and a.estado_reg = 'activo'
@@ -133,14 +142,15 @@ BEGIN
                 --si el estado es inactivo == la fecha finalizacion debe ser llenada
                
                
-                if(v_parametros.estado_reg='inactivo' and v_parametros.fecha_finalizacion is null) then
-                   raise exception 'La inactivacion al cargo requiere indicar la fecha de finalizacion';
-                end if;
+                if (v_parametros.fecha_finalizacion is not null and v_parametros.fecha_finalizacion <= v_parametros.fecha_asignacion)then
+               		raise exception 'La fecha de finalización no puede ser menor o igual a la fecha de asignación';
+               end if;
                 
                 update orga.tuo_funcionario
                 set 
-                   fecha_asignacion=v_parametros.fecha_asignacion::date,
-                   id_funcionario=v_parametros.id_funcionario,
+                   observaciones_finalizacion = v_parametros.observaciones_finalizacion,
+               		nro_documento_asignacion = v_parametros.nro_documento_asignacion,	
+               		fecha_documento_asignacion = v_parametros.fecha_documento_asignacion,                   
                    fecha_finalizacion = v_parametros.fecha_finalizacion
                 where id_uo=v_parametros.id_uo
                 and id_uo_funcionario=v_parametros.id_uo_funcionario;
@@ -174,7 +184,8 @@ BEGIN
                
                --elimina siempre que puede: como el registro de uo_fun es referncial en ORGA, se posible eliminarlo todo el tiempo
                -- se debe cuidar q en el diseno cuando se requiera obtener la dependencia de un funcionario, se deb guardar la referencia vigente de uo_funcionario
-               delete from orga.tuo_funcionario
+              update orga.tuo_funcionario
+              set estado_reg = 'inactivo'
                where id_uo_funcionario=v_parametros.id_uo_funcionario;
               
                --10-04-2012: sincronizacion de UO entre BD

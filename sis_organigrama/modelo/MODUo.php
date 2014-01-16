@@ -82,10 +82,13 @@ function listarUoFiltro(){
         $this->captura('funcionarios','varchar');
         $this->captura('resaltar','varchar');
 		$this->captura('id_uo_padre','integer');
+		$this->captura('id_nivel_organizacional','integer');
+		$this->captura('nombre_nivel','varchar');
 		//$this->captura('id_estructura_uo','integer');
 		//Ejecuta la funcion
 		$this->armarConsulta();
-		
+		/*echo $this->consulta;
+			exit;*/
 		//echo $this->getConsulta();
 		$this->ejecutarConsulta();
 		return $this->respuesta;

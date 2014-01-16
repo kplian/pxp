@@ -97,6 +97,21 @@ Phx.vista.funcionario=function(config){
 	       		grid:true,
 	       		form:true
 	       	},
+	       	{
+	       		config:{
+	       			fieldLabel: "Antiguedad Anterior (meses)",
+	       			gwidth: 120,
+	       			name: 'antiguedad_anterior',
+	       			allowBlank:true,	
+	       			maxLength:3,
+	       			minLength:1,
+	       			anchor:'100%'
+	       		},
+	       		type:'NumberField',
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
 	       	{	
 	       		config:{
 	       			fieldLabel: "Correo Empresarial",
@@ -291,7 +306,14 @@ Phx.vista.funcionario=function(config){
 	       	];
 	       	
 	Phx.vista.funcionario.superclass.constructor.call(this,config);
-	
+	this.addButton('btnCuenta',
+        {
+            text: 'Cuenta Bancaria',
+            iconCls: 'blist',
+            disabled: true,
+            handler: this.onBtnCuenta,
+            tooltip: 'Cuenta Bancaria del Empleado'
+        });
 	this.init();
 	var txt_ci=this.getComponente('ci');	
 	var txt_correo=this.getComponente('correo');	
@@ -300,16 +322,13 @@ Phx.vista.funcionario=function(config){
 	//this.getComponente();
 	
 	
-	
+
 	function onPersona(c,r,e){
 		txt_ci.setValue(r.data.ci);
 		txt_correo.setValue(r.data.correo);
 		txt_telefono.setValue(r.data.telefono);
 	}
-	this.load({params:{start:0, limit:50}});
-	
-	
-	
+	this.load({params:{start:0, limit:50}});	
 	
 }
 
@@ -324,6 +343,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'id_persona'},
 	{name:'desc_person',type:'string'},
 	{name:'codigo',type:'string'},
+	{name:'antiguedad_anterior',type:'numeric'},
 
 	{name:'estado_reg', type: 'string'},
 
@@ -365,7 +385,30 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	bdel:true,
 	bsave:false,
 	fwidth: 450,
-	fheight: 430
+	fheight: 430,
+	onBtnCuenta: function(){
+			var rec = {maestro: this.sm.getSelected().data} 
+						      
+            Phx.CP.loadWindows('../../../sis_organigrama/vista/funcionario_cuenta_bancaria/FuncionarioCuentaBancaria.php',
+                    'Cuenta Bancaria del Empleado',
+                    {
+                        width:700,
+                        height:450
+                    },
+                    rec,
+                    this.idContenedor,
+                    'FuncionarioCuentaBancaria');
+	},
+	preparaMenu:function()
+    {	
+        this.getBoton('btnCuenta').enable();      
+        Phx.vista.funcionario.superclass.preparaMenu.call(this);
+    },
+    liberaMenu:function()
+    {	
+        this.getBoton('btnCuenta').disable();       
+        Phx.vista.funcionario.superclass.liberaMenu.call(this);
+    }
 		  
 		 
 })

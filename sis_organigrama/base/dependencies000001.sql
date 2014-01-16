@@ -102,3 +102,171 @@ FROM (((orga.tfuncionario funcio JOIN segu.vpersona person ON
 
 
 /********************************************F-DEP-RAC-ORGA-0-31/12/2012********************************************/
+
+
+/********************************************I-DEP-JRR-ORGA-0-9/01/2014********************************************/
+ALTER TABLE orga.tescala_salarial
+  ADD CONSTRAINT fk__tescala_salarial__id_categoria_salarial FOREIGN KEY (id_categoria_salarial)
+    REFERENCES orga.tcategoria_salarial(id_categoria_salarial)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo
+  ADD CONSTRAINT fk__tcargo__id_escala_salarial FOREIGN KEY (id_escala_salarial)
+    REFERENCES orga.tescala_salarial(id_escala_salarial)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+ALTER TABLE orga.tcargo
+  ADD CONSTRAINT fk__tcargo__id_tipo_contrato FOREIGN KEY (id_tipo_contrato)
+    REFERENCES orga.ttipo_contrato(id_tipo_contrato)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo
+  ADD CONSTRAINT fk__tcargo__id_lugar FOREIGN KEY (id_lugar)
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.ttemporal_cargo
+  ADD CONSTRAINT fk__ttemporal_cargo_id_temporal_jerarquia_aprobacion FOREIGN KEY (id_temporal_jerarquia_aprobacion)
+    REFERENCES orga.ttemporal_jerarquia_aprobacion(id_temporal_jerarquia_aprobacion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo
+  ADD CONSTRAINT fk__tcargo__id_temporal_cargo FOREIGN KEY (id_temporal_cargo)
+    REFERENCES orga.ttemporal_cargo(id_temporal_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo_centro_costo
+  ADD CONSTRAINT fk__tcargo_centro_costo__id_cargo FOREIGN KEY (id_cargo)
+    REFERENCES orga.tcargo(id_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo_centro_costo
+  ADD CONSTRAINT fk__tcargo_centro_costo__id_centro_costo FOREIGN KEY (id_centro_costo)
+    REFERENCES param.tcentro_costo(id_centro_costo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo_centro_costo
+  ADD CONSTRAINT fk__tcargo_centro_costo__id_gestion FOREIGN KEY (id_gestion)
+    REFERENCES param.tgestion(id_gestion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo_presupuesto
+  ADD CONSTRAINT fk__tcargo_presupuesto__id_cargo FOREIGN KEY (id_cargo)
+    REFERENCES orga.tcargo(id_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+ALTER TABLE orga.tcargo_presupuesto
+  ADD CONSTRAINT fk__tcargo_presupuesto__id_gestion FOREIGN KEY (id_gestion)
+    REFERENCES param.tgestion(id_gestion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo_presupuesto
+  ADD CONSTRAINT fk__tcargo_presupuesto__id_centro_costo FOREIGN KEY (id_centro_costo)
+    REFERENCES param.tcentro_costo(id_centro_costo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE; 
+
+ALTER TABLE orga.tuo
+  ADD CONSTRAINT fk__tuo__id_nivel_organizacional FOREIGN KEY (id_nivel_organizacional)
+    REFERENCES orga.tnivel_organizacional(id_nivel_organizacional)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE; 
+
+
+ALTER TABLE orga.toficina
+  ADD CONSTRAINT fk__toficina__id_lugar FOREIGN KEY (id_lugar)
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo
+  ADD CONSTRAINT fk__tcargo__id_oficina FOREIGN KEY (id_oficina)
+    REFERENCES orga.toficina(id_oficina)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tcargo
+  ADD CONSTRAINT fk__tcargo__id_uo FOREIGN KEY (id_uo)
+    REFERENCES orga.tuo(id_uo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+CREATE OR REPLACE VIEW orga.vfuncionario_cargo(
+    id_uo_funcionario,
+    id_funcionario,
+    desc_funcionario1,
+    desc_funcionario2,
+    id_uo,
+    nombre_cargo,
+    fecha_asignacion,
+    fecha_finalizacion,
+    num_doc,
+    ci,
+    codigo,
+    email_empresa,
+    estado_reg_fun,
+    estado_reg_asi)
+AS
+  SELECT uof.id_uo_funcionario,
+         funcio.id_funcionario,
+         person.nombre_completo1 AS desc_funcionario1,
+         person.nombre_completo2 AS desc_funcionario2,
+         uo.id_uo,
+         uo.nombre_cargo,
+         uof.fecha_asignacion,
+         uof.fecha_finalizacion,
+         person.num_documento AS num_doc,
+         person.ci,
+         funcio.codigo,
+         funcio.email_empresa,
+         funcio.estado_reg AS estado_reg_fun,
+         uof.estado_reg AS estado_reg_asi
+  FROM orga.tfuncionario funcio
+       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
+       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
+        funcio.id_funcionario
+       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
+  where uof.estado_reg = 'activo';
+  
+ALTER TABLE orga.tfuncionario_cuenta_bancaria
+  ADD CONSTRAINT fk__tfuncionario_cuenta_bancaria__id_funcionario FOREIGN KEY (id_funcionario)
+    REFERENCES orga.tfuncionario(id_funcionario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE orga.tfuncionario_cuenta_bancaria
+  ADD CONSTRAINT fk__tfuncionario_cuenta_bancaria__id_institucion FOREIGN KEY (id_institucion)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/********************************************F-DEP-JRR-ORGA-0-9/01/2014********************************************/
