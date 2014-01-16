@@ -921,4 +921,12 @@ IS 'xescripcion tecnica';
 /*****************************F-SCP-RAC-SEGU-0-18/12/2013*************/
 
  
-
+/*****************************I-SCP-RCM-SEGU-0-17/01/2014*************/
+CREATE TABLE segu.ttabla_migrar (
+  id_tabla_migrar SERIAL, 
+  nombre_tabla VARCHAR(120), 
+  nombre_funcion VARCHAR(200), 
+  CONSTRAINT ttabla_migrar_pkey PRIMARY KEY(id_tabla_migrar)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+/*****************************F-SCP-RCM-SEGU-0-17/01/2014*************/
