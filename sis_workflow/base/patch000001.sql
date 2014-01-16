@@ -214,4 +214,29 @@ ALTER TABLE wf.tproceso_wf
 /***********************************F-SCP-RAC-WF-0-15/01/2014****************************************/
 
 
+/***********************************I-SCP-RAC-WF-0-16/01/2014****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN id_estado_ini INTEGER;
+
+COMMENT ON COLUMN wf.tdocumento_wf.id_estado_ini
+IS 'hace referencia al estado donde se creo el documento';
+
+
+/***********************************F-SCP-RAC-WF-0-16/01/2014****************************************/
+
+
+
+/***********************************I-SCP-RAC-WF-0-18/01/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  RENAME COLUMN extencion TO extension;
+
+
+/***********************************F-SCP-RAC-WF-0-18/01/2014****************************************/
 

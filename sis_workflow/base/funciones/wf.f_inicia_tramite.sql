@@ -46,6 +46,7 @@ DECLARE
   v_id_tipo_proceso integer;
   v_id_tipo_estado integer;
   v_inicio varchar;
+  v_resp_doc boolean;
   
 BEGIN
 
@@ -131,6 +132,13 @@ BEGIN
         p_id_depto
       
       )RETURNING id_estado_wf into ps_id_estado_wf;
+      
+      
+   -- inserta documentos en estado borrador si estan configurados
+   v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario_reg, ps_id_proceso_wf, ps_id_estado_wf);
+ 
+      
+      
     
  EXCEPTION
 				

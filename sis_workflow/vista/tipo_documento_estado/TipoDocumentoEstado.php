@@ -245,6 +245,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 	onReloadPage:function(m){
         this.maestro=m;
         this.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
+        this.store.baseParams={id_tipo_documento:this.maestro.id_tipo_documento};
         this.load({params:{start:0, limit:50}});
         
         

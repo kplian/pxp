@@ -43,6 +43,7 @@ DECLARE
    v_nro_tramite varchar;
    
    v_cantidad_disparos integer;
+   v_resp_doc  boolean;
  
   
 BEGIN
@@ -233,11 +234,11 @@ BEGIN
           p_id_depto
         )RETURNING id_estado_wf into ps_id_estado_wf;  
         
-      
-      
-      
-        ps_codigo_estado  = v_codigo_estado_next;
-      
+       ps_codigo_estado  = v_codigo_estado_next;
+        
+       -- inserta documentos en estado borrador si estan configurados
+       v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario_reg, ps_id_proceso_wf, v_id_tipo_estado_next);
+        
       return;
  
 
