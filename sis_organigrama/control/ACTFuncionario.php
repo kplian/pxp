@@ -44,8 +44,8 @@ class ACTFuncionario extends ACTbase{
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-		if($this->objParam->getParametro('id_funcionario')!=''){
-            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "''," . $this->objParam->getParametro('id_funcionario') . ")
+		if($this->objParam->getParametro('id_funcionario_dependiente')!=''){
+            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "''," . $this->objParam->getParametro('id_funcionario_dependiente') . ")
             														 AS (id_funcionario INTEGER))");    
         }
         
