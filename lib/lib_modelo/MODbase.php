@@ -243,6 +243,8 @@ class MODbase extends driver
 	    if (move_uploaded_file($this->arregloFiles[$nombre]['tmp_name'], "$upload_folder$file_server_name")) {
 	        // Success
 	        chmod("$upload_folder/$file_server_name", 0644);
+	        
+	        return "$upload_folder/$file_server_name";
 	    } else {
 	    	throw new Exception("No se puede subir el archivo " . $filename);
 	    }				
