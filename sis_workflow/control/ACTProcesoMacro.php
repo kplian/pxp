@@ -152,14 +152,16 @@ class ACTProcesoMacro extends ACTbase{
 							$row['nombre_estado_hijo']."');\r\n");
 					
 				} else {
-             									
+					if ($row['prioridad'] == '') {
+						$row['prioridad'] = 'NULL';
+					}             									
 					fwrite ($file, 
 						"select wf.f_insert_testructura_estado ('".
 								$row['codigo_estado_padre']."', '" .
 								$row['codigo_proceso_estado_padre']."', '" . 
 								$row['codigo_estado_hijo']."', '" .
-								$row['codigo_proceso_estado_hijo']."', '" .
-								$row['prioridad']."', '" .
+								$row['codigo_proceso_estado_hijo']."', " .
+								$row['prioridad'].", '" .
 								$row['regla']."', '" . 
 								$row['estado_reg']."');\r\n");
 				}				
