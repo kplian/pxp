@@ -10,6 +10,8 @@ class MostrarReporte
         	header("Content-type: application/xls");
 		} else if ($fileExtension == 'png') {
 			header("Content-type: image/png");
+        }  else if ($fileExtension == 'sql') {
+			header("Content-type: text/plain");
         } else {
             header("Content-type: text/html");
         }
@@ -22,7 +24,7 @@ class MostrarReporte
         header("Pragma: no-cache");
         
         readfile(dirname(__FILE__)."/../../../reportes_generados/".$fileName);
-        unlink(dirname(__FILE__)."/../../../reportes_generados/".$fileName);
+        //unlink(dirname(__FILE__)."/../../../reportes_generados/".$fileName);
         exit;
     }
         
