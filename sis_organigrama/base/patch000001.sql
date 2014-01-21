@@ -380,3 +380,12 @@ CREATE TABLE orga.tfuncionario_cuenta_bancaria (
 )INHERITS (pxp.tbase) WITH OIDS;
 
 /*****************************F-SCP-JRR-ORGA-0-9/01/2014*************/
+
+/*****************************I-SCP-JRR-ORGA-0-21/01/2014*************/
+CREATE TABLE orga.ttipo_contrato (
+  id_tipo_contrato SERIAL, 
+  codigo VARCHAR NOT NULL, 
+  nombre VARCHAR NOT NULL, 
+  CONSTRAINT ttipo_contrato_pkey PRIMARY KEY(id_tipo_contrato) 
+)INHERITS (pxp.tbase) WITH OIDS;
+/*****************************F-SCP-JRR-ORGA-0-21/01/2014*************/
