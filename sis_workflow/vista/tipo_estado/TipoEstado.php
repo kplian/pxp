@@ -422,6 +422,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=m;
 		this.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
 		this.load({params:{start:0, limit:50}})
+		
 	},
 	loadValoresIniciales:function()
 	{

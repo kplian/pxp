@@ -15,9 +15,14 @@ class ACTTipoProceso extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		
-		 if($this->objParam->getParametro('id_proceso_macro')!=''){
+		if($this->objParam->getParametro('id_proceso_macro')!=''){
             $this->objParam->addFiltro("tipproc.id_proceso_macro = ".$this->objParam->getParametro('id_proceso_macro'));    
         }
+        
+         if($this->objParam->getParametro('id_tipo_proceso')!=''){
+            $this->objParam->addFiltro("tipproc.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));    
+        }
+        
         
          if($this->objParam->getParametro('inicio')!=''){
             $inicio=$this->objParam->getParametro('inicio');    

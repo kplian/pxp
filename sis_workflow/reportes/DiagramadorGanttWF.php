@@ -2,7 +2,7 @@
 /**
 *@package pXP
 *@file DiagramadorGanttTramite.php
-*@author  Gonzalo Sarmiento
+*@author  Rensi Arteaga Copari
 *@date 14-05-2013
 *@description Clase que que genera el diagrama Gantt con ayuda de la libreria jpgraph
 */
@@ -42,7 +42,8 @@ class DiagramadorGanttWF{
 		$constrains = array();
 		
 		for ($i=0;$i<$tamanioDataset;$i++) {
-		    
+		    //echo date_format(new DateTime($dataset[$i]['fecha_ini']),'Y-m-d H:i:s');
+		    //exit;
 			     						 
 			 if($i==0){
 		       $fechaInicio=  new DateTime($dataset[$i]['fecha_ini']);
@@ -92,8 +93,8 @@ class DiagramadorGanttWF{
               //$resp = $dataset[$i]['depto'].'('.$dataset[$i]['cuenta'].");
               
               
-              $fini=$fecha_reg_ini->format('d M H:m');
-              $ffin=$fecha_reg_fin->format('d M H:m');
+              $fini=$fecha_reg_ini->format('d M H:i:s');
+              $ffin=$fecha_reg_fin->format('d M H:i:s');
               
               $start = strtotime($dataset[$i]['fecha_ini']);
               $end = strtotime($dataset[$i]['fecha_fin']);
@@ -132,15 +133,15 @@ class DiagramadorGanttWF{
 			 array_push($actividad,$tipo);
 			 array_push($actividad,$cabecera);
 			 
-			 array_push($actividad,$fecha_reg_ini->format('Y-m-d H:m'));
+			 array_push($actividad,$fecha_reg_ini->format('Y-m-d H:i:s'));
 			 
 			 if ($dataset[$i]['tipo']!='estado_final'){
-			    array_push($actividad,$fecha_reg_fin->format('Y-m-d H:m'));
+			    array_push($actividad,$fecha_reg_fin->format('Y-m-d H:i:s'));
              }
              
              array_push($actividad,utf8_decode($dataset[$i]['descripcion']));
              array_push($actividad,'#'.$dataset[$i]['id']); 
-             array_push($actividad,$fecha_reg_ini->format('Y-m-d H:m'));   
+             array_push($actividad,$fecha_reg_ini->format('Y-m-d H:i:s'));   
 			 
 			 //prepara las relaciones entre tipos
 			 
@@ -205,7 +206,7 @@ class DiagramadorGanttWF{
         $graph->hgrid->Show();
         $graph->hgrid->SetRowFillColor('darkblue@0.9'); 	
 			
-		$graph->SetDateRange($fechaInicio->format('Y-m-d H:m'),$fechaFin->format('Y-m-d H:m'));                  
+		$graph->SetDateRange($fechaInicio->format('Y-m-d H:i:s'),$fechaFin->format('Y-m-d H:i:s'));                  
         
         //$graph->SetDateRange('2013-06-04','2013-08-04');                  
         $graph->title->Set("Diagrama Gant Work Flow");
@@ -229,8 +230,8 @@ class DiagramadorGanttWF{
 		
 		echo ('<pre>');
 		var_dump($sw);
-		var_dump($fechaInicio->format('Y-m-d H:m:s'));
-        var_dump($fechaFin->format('Y-m-d H:m:s'));
+		var_dump($fechaInicio->format('Y-m-d H:i:s'));
+        var_dump($fechaFin->format('Y-m-d H:i:s'));
 		
 		var_dump($data);
 		echo ('</pre>');
