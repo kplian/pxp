@@ -82,6 +82,7 @@ function listarGantWf(){
         $this->captura('tipo','varchar');       
         $this->captura('nombre','varchar');
         $this->captura('fecha_ini','TIMESTAMP');
+       
         $this->captura('fecha_fin','TIMESTAMP');        
         $this->captura('descripcion','varchar');
         $this->captura('id_siguiente','integer');

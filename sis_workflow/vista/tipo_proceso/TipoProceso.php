@@ -371,6 +371,14 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		  cls:'TipoEstado'
 		  },
 		  {
+          url:'../../../sis_workflow/vista/tipo_documento/TipoDocumento.php',
+          title:'Tipo de Documentos', 
+          width:400,
+          cls:'TipoDocumento'
+          }
+		  
+		  ,
+		  {
 		  url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
           title:'Labores', 
           width:400,

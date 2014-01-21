@@ -36,9 +36,13 @@ class MODUoFuncionario extends MODbase{
         $this->captura('id_usuario_reg','integer');
         $this->captura('USUREG','text');
 		$this->captura('USUMOD','text');
+		$this->captura('id_cargo','integer');
+		$this->captura('desc_cargo','text');
+		$this->captura('observaciones_finalizacion','varchar');
+		$this->captura('nro_documento_asignacion','varchar');
+		$this->captura('fecha_documento_asignacion','date');
+		$this->captura('tipo','varchar');
 		
-		
-    	
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		
@@ -59,7 +63,12 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('id_uo','id_uo','integer');
 		$this->setParametro('id_funcionario','id_funcionario','integer');
 		$this->setParametro('fecha_asignacion','fecha_asignacion','date');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('fecha_finalizacion','fecha_finalizacion','date');
+		$this->setParametro('id_cargo','id_cargo','integer');		
+		$this->setParametro('observaciones_finalizacion','observaciones_finalizacion','varchar');
+		$this->setParametro('nro_documento_asignacion','nro_documento_asignacion','varchar');
+		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
+		$this->setParametro('tipo','tipo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,7 +89,11 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('id_funcionario','id_funcionario','integer');
 		$this->setParametro('fecha_asignacion','fecha_asignacion','date');
 		$this->setParametro('fecha_finalizacion','fecha_finalizacion','date');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('id_cargo','id_cargo','integer');		
+		$this->setParametro('observaciones_finalizacion','observaciones_finalizacion','varchar');
+		$this->setParametro('nro_documento_asignacion','nro_documento_asignacion','varchar');
+		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
+		
 		
 	
 		//Ejecuta la instruccion

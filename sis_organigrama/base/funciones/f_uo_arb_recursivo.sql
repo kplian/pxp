@@ -109,10 +109,14 @@ BEGIN
                            UNIORG.correspondencia,
                            UNIORG.codigo, 
                            UNIORG.nodo_base, 
-                           UNIORG.gerencia
+                           UNIORG.gerencia,
+                           UNIORG.id_nivel_organizacional,
+                           nivorg.nombre_nivel
                            FROM orga.testructura_uo ESTORG
                            INNER JOIN orga.tuo UNIORG
                            ON UNIORG.id_uo = ESTORG.id_uo_hijo
+                           INNER JOIN orga.tnivel_organizacional nivorg
+                           	on nivorg.id_nivel_organizacional = UNIORG.id_nivel_organizacional
                            WHERE UNIORG.estado_reg= ''activo''  AND UNIORG.id_uo = '||COALESCE(v_id,'0');
         
       FOR g_registros in EXECUTE (v_consulta) LOOP
@@ -139,7 +143,9 @@ BEGIN
                         estado_reg,
                         funcionarios,
                         resaltar,
-                        id_uo_padre
+                        id_uo_padre,
+                        id_nivel_organizacional,
+                        nombre_nivel
                      )
                      VALUES
                      (  v_id||'a'::varchar,
@@ -157,7 +163,9 @@ BEGIN
                         g_registros.estado_reg,
                         g_registros.funcionarios,
                         'no',
-                        g_registros.id_uo_padre
+                        g_registros.id_uo_padre,
+                        g_registros.id_nivel_organizacional,
+                        g_registros.nombre_nivel
                      );
                      
         
@@ -193,7 +201,9 @@ BEGIN
                         estado_reg,
                         funcionarios,
                         resaltar,
-                        id_uo_padre
+                        id_uo_padre,
+                        id_nivel_organizacional,
+                        nombre_nivel
 
                      )
                      VALUES
@@ -212,7 +222,9 @@ BEGIN
                         g_registros.estado_reg,
                         g_registros.funcionarios,
                         'no',
-                        g_registros.id_uo_padre
+                        g_registros.id_uo_padre,
+                        g_registros.id_nivel_organizacional,
+                        g_registros.nombre_nivel
                      );
                      
                      raise notice '<<<<<<< SALE DEL IF';

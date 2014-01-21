@@ -293,6 +293,9 @@ class Mensaje
 	 *
 	 */
 	function generarJson(){
+		if(count($_FILES)==0){
+      		header('Content-type: application/json'); 
+   		} 
 		//si es exito y es sel devuelvo los valores de una consulta
 		//ofuscacion de identificadores
 		if($_SESSION["_OFUSCAR_ID"]=='si'){
@@ -346,7 +349,7 @@ class Mensaje
 		//sino devuelvo un mensaje
 		else{
 			return $this->generarMensajeJson();
-		}
+		}		
 	}
    	/**
 	 * Nombre funcion:	crearCampos
@@ -445,7 +448,7 @@ class Mensaje
 		if (get_magic_quotes_gpc()) {
 			$res = stripslashes($res);
 		}
-
+		
 		return $res;
 
 	}
@@ -496,7 +499,7 @@ class Mensaje
 		}
 		else{
 			header("HTTP/1.1 200 ok");
-			header('Content-type: application/json'); 
+			
 			//rac comentado por que generaba que el archivo se descargue al utilizar uploadfile
 			//header('Content-Type:'.$_SESSION['type_header'].';'.' charset="'.$_SESSION['codificacion_header'].'"');
 		}	

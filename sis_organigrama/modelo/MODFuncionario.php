@@ -19,7 +19,9 @@ class MODFuncionario extends MODbase{
 		$this->transaccion='RH_FUNCIO_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
-			
+		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('fecha','fecha','date');
+		$this->setParametro('id_uo','id_uo','integer');	
 		//Definicion de la lista del resultado del query
 	
 		//defino varialbes que se captran como retornod e la funcion
@@ -44,6 +46,7 @@ class MODFuncionario extends MODbase{
 		$this->captura('celular1','varchar');
 		$this->captura('correo','varchar');
 		$this->captura('telefono_ofi','varchar');
+		$this->captura('antiguedad_anterior','integer');
 		
 		//Ejecuta la funcion
 		$this->armarConsulta();		
@@ -78,6 +81,7 @@ class MODFuncionario extends MODbase{
 		$this->captura('email_empresa','varchar');
 		$this->captura('estado_reg_fun','varchar');
 		$this->captura('estado_reg_asi','varchar');
+		$this->setParametro('antiguedad_anterior','antiguedad_anterior','varchar');
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		//echo $this->consulta;exit;
@@ -107,6 +111,7 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('email_empresa','email_empresa','varchar');
 		$this->setParametro('interno','interno','varchar');
 		$this->setParametro('telefono_ofi','telefono_ofi','varchar');
+		$this->setParametro('antiguedad_anterior','antiguedad_anterior','integer');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -134,6 +139,7 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('email_empresa','email_empresa','varchar');
 		$this->setParametro('interno','interno','varchar');
 		$this->setParametro('telefono_ofi','telefono_ofi','varchar');
+		$this->setParametro('antiguedad_anterior','antiguedad_anterior','integer');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				

@@ -63,16 +63,23 @@ BEGIN
                                   UOFUNC.id_usuario_mod,
                                   UOFUNC.id_usuario_reg,
                                   PERREG.nombre_completo2 AS USUREG,
-                                  PERMOD.nombre_completo2 AS USUMOD
+                                  PERMOD.nombre_completo2 AS USUMOD,
+                                  cargo.id_cargo,
+                                  (coalesce(cargo.codigo, ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
+                                  UOFUNC.observaciones_finalizacion,
+                                  UOFUNC.nro_documento_asignacion,
+                                  UOFUNC.fecha_documento_asignacion,
+                                  UOFUNC.tipo                                  
                                   
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
+                            INNER JOIN orga.tcargo cargo ON cargo.id_cargo = UOFUNC.id_cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE  UOFUNC.estado_reg !=''eliminado'' and ';
+                            WHERE  UOFUNC.estado_reg !=''inactivo'' and ';
 
               
                 v_id_padre:=v_parametros.id_uo;
@@ -106,9 +113,10 @@ BEGIN
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
+                            INNER JOIN orga.tcargo cargo ON cargo.id_cargo = UOFUNC.id_cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE UOFUNC.estado_reg !=''eliminado'' and ';
+                            WHERE UOFUNC.estado_reg !=''inactivo'' and ';
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;

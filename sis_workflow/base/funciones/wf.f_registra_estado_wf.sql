@@ -54,6 +54,7 @@ DECLARE
     
     v_registros_ant record;
     v_registros_depto record;
+    v_resp_doc boolean;
 	
     
 BEGIN
@@ -236,7 +237,10 @@ BEGIN
     SET estado_reg = 'inactivo'
     WHERE id_estado_wf = p_id_estado_wf_anterior;
     
-    --raise notice 'estado actual, %', v_id_estado_actual;
+   
+    
+    -- inserta documentos en estado borrador si estan configurados
+    v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario, p_id_proceso_wf, v_id_estado_actual);
     
     return v_id_estado_actual;
   
