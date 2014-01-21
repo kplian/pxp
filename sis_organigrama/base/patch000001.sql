@@ -250,7 +250,7 @@ CREATE TABLE orga.tipo_contrato (
   id_tipo_contrato SERIAL NOT NULL, 
   codigo VARCHAR(20) NOT NULL, 
   nombre VARCHAR(200) NOT NULL, 
-  PRIMARY KEY(id_tipo_cargo)
+  PRIMARY KEY(id_tipo_contrato)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
@@ -273,7 +273,7 @@ CREATE TABLE orga.tcargo_presupuesto (
   id_gestion INTEGER NOT NULL,
   PRIMARY KEY(id_cargo_presupuesto)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS
+WITHOUT OIDS;
 
 CREATE TABLE orga.tcargo_centro_costo (
   id_cargo_centro_costo SERIAL NOT NULL, 
@@ -284,7 +284,7 @@ CREATE TABLE orga.tcargo_centro_costo (
   id_gestion INTEGER NOT NULL,
   PRIMARY KEY(id_cargo_centro_costo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS
+WITHOUT OIDS;
 
 CREATE TABLE orga.ttemporal_cargo (
   id_temporal_cargo SERIAL NOT NULL, 
