@@ -223,3 +223,160 @@ add column telefono_ofi varchar(50);
 ALTER TABLE orga.tfuncionario 
   ADD UNIQUE (id_persona);
 /*****************************F-SCP-RAC-ORGA-0-11/03/2013*************/
+
+/*****************************I-SCP-JRR-ORGA-0-9/01/2014*************/
+CREATE TABLE orga.tcategoria_salarial (
+  id_categoria_salarial SERIAL NOT NULL, 
+  codigo VARCHAR(20) NOT NULL, 
+  nombre VARCHAR(200) NOT NULL, 
+  PRIMARY KEY(id_categoria_salarial)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+
+CREATE TABLE orga.tescala_salarial (
+  id_escala_salarial SERIAL NOT NULL, 
+  id_categoria_salarial INTEGER NOT NULL, 
+  codigo VARCHAR(20) NOT NULL, 
+  nombre VARCHAR(200) NOT NULL, 
+  haber_basico NUMERIC(9,2) NOT NULL, 
+  fecha_ini DATE NOT NULL, 
+  fecha_fin DATE, 
+  PRIMARY KEY(id_escala_salarial)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+CREATE TABLE orga.tipo_contrato (
+  id_tipo_contrato SERIAL NOT NULL, 
+  codigo VARCHAR(20) NOT NULL, 
+  nombre VARCHAR(200) NOT NULL, 
+  PRIMARY KEY(id_tipo_cargo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+CREATE TABLE orga.tcargo (
+  id_cargo SERIAL NOT NULL, 
+  id_uo	INTEGER NOT NULL,
+  id_tipo_contrato INTEGER NOT NULL, 
+  id_escala_salarial INTEGER NOT NULL, 
+  codigo VARCHAR(20) NOT NULL, 
+  PRIMARY KEY(id_cargo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+CREATE TABLE orga.tcargo_presupuesto (
+  id_cargo_presupuesto SERIAL NOT NULL, 
+  id_centro_costo INTEGER NOT NULL, 
+  id_cargo INTEGER NOT NULL,
+  porcentaje NUMERIC(5,2) NOT NULL, 
+  fecha_ini DATE NOT NULL, 
+  id_gestion INTEGER NOT NULL,
+  PRIMARY KEY(id_cargo_presupuesto)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS
+
+CREATE TABLE orga.tcargo_centro_costo (
+  id_cargo_centro_costo SERIAL NOT NULL, 
+  id_centro_costo INTEGER NOT NULL, 
+  id_cargo INTEGER NOT NULL,
+  porcentaje NUMERIC(5,2) NOT NULL, 
+  fecha_ini DATE NOT NULL, 
+  id_gestion INTEGER NOT NULL,
+  PRIMARY KEY(id_cargo_centro_costo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS
+
+CREATE TABLE orga.ttemporal_cargo (
+  id_temporal_cargo SERIAL NOT NULL, 
+  nombre VARCHAR(200) NOT NULL, 
+  estado VARCHAR(20) NOT NULL, 
+  id_temporal_jerarquia_aprobacion INTEGER NOT NULL, 
+  PRIMARY KEY(id_temporal_cargo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+CREATE TABLE orga.ttemporal_jerarquia_aprobacion (
+  id_temporal_jerarquia_aprobacion SERIAL NOT NULL, 
+  nombre VARCHAR(200) NOT NULL, 
+  numero INTEGER NOT NULL, 
+  estado VARCHAR(20) NOT NULL, 
+  PRIMARY KEY(id_temporal_jerarquia_aprobacion)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+CREATE TABLE orga.toficina (
+  id_oficina SERIAL NOT NULL, 
+  codigo VARCHAR(20) NOT NULL, 
+  nombre VARCHAR(200) NOT NULL, 
+  id_lugar INTEGER NOT NULL, 
+  aeropuerto VARCHAR(2) NOT NULL, 
+  PRIMARY KEY(id_oficina)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN tipo VARCHAR(10);
+  
+
+ALTER TABLE orga.tuo_funcionario
+  ADD CONSTRAINT tuo_funcionario__tipo_chk CHECK (tipo='funcional' or tipo = 'oficial');
+  
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN fecha_documento_asignacion DATE;
+
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN nro_documento_asignacion VARCHAR(50);
+
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN observaciones_finalizacion VARCHAR(50);
+  
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN id_cargo INTEGER;
+  
+ALTER TABLE orga.tescala_salarial
+  ADD COLUMN aprobado VARCHAR(2) DEFAULT 'si' NOT NULL;
+
+ALTER TABLE orga.tescala_salarial
+  ADD COLUMN nro_casos INTEGER NOT NULL;
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN nombre VARCHAR(200) NOT NULL;
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN fecha_ini DATE NOT NULL;
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN fecha_fin DATE;
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN id_lugar INTEGER NOT NULL;
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN id_temporal_cargo INTEGER NOT NULL;
+  
+ALTER TABLE orga.tescala_salarial
+  ADD CONSTRAINT chk__tescala_salarial__aprobado CHECK (aprobado = 'si' or aprobado = 'no');
+  
+ALTER TABLE orga.tuo
+  ADD COLUMN id_nivel_organizacional INTEGER;
+  
+ALTER TABLE orga.toficina
+  ADD CONSTRAINT chk__toficina__aeropuerto CHECK (aeropuerto = 'si' or aeropuerto = 'no');
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN id_oficina INTEGER NOT NULL;
+  
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN antiguedad_anterior INTEGER;
+  
+CREATE TABLE orga.tfuncionario_cuenta_bancaria (
+  id_funcionario_cuenta_bancaria SERIAL, 
+  id_funcionario INTEGER NOT NULL, 
+  nro_cuenta VARCHAR NOT NULL, 
+  id_institucion INTEGER NOT NULL, 
+  fecha_ini DATE NOT NULL, 
+  fecha_fin DATE, 
+  CONSTRAINT tfuncionario_cuenta_bancaria_pkey PRIMARY KEY(id_funcionario_cuenta_bancaria) 
+)INHERITS (pxp.tbase) WITH OIDS;
+
+/*****************************F-SCP-JRR-ORGA-0-9/01/2014*************/

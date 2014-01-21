@@ -143,7 +143,9 @@ raise notice '11111111';
                                   estado_reg varchar,
                                   funcionarios varchar,
                                   resaltar varchar,
-                                  id_uo_padre integer
+                                  id_uo_padre integer,
+                                  id_nivel_organizacional integer,
+                                  nombre_nivel varchar
                                  
                                   
                                 ) ON COMMIT DROP;
@@ -165,10 +167,14 @@ raise notice '11111111';
                            UNIORG.correspondencia,
                            UNIORG.codigo, 
                            UNIORG.nodo_base, 
-                           UNIORG.gerencia
+                           UNIORG.gerencia,
+                           UNIORG.id_nivel_organizacional,
+                           nivorg.nombre_nivel
                            FROM orga.testructura_uo ESTORG
                            INNER JOIN orga.tuo UNIORG
                            ON UNIORG.id_uo = ESTORG.id_uo_hijo
+                           INNER JOIN orga.tnivel_organizacional nivorg
+                           	on nivorg.id_nivel_organizacional = UNIORG.id_nivel_organizacional
                            WHERE UNIORG.estado_reg=''activo''  ORDER BY  UNIORG.id_uo asc) AS ORG WHERE  (codigo  ilike ''%'||pm_criterio_filtro||'%''  or funcionarios ilike ''%'||pm_criterio_filtro||'%'' or nombre_cargo ilike ''%'||pm_criterio_filtro||'%'' )  ';
                            
                         
@@ -233,7 +239,9 @@ raise notice '2222222222';
                         estado_reg,
                         funcionarios,
                         resaltar,
-                        id_uo_padre
+                        id_uo_padre,
+                        id_nivel_organizacional,
+                        nombre_nivel
                      )
                      VALUES
                      (  v_nivel::varchar,
@@ -251,7 +259,9 @@ raise notice '2222222222';
                         g_registros.estado_reg,
                         g_registros.funcionarios,
                         'si', --RESALTA LOS REGISTRO QUE COINCIDEN CON EL FILTRO DE LA BUSQUEDA
-                        g_registros.id_uo_padre
+                        g_registros.id_uo_padre,
+                        g_registros.id_nivel_organizacional,
+                        g_registros.nombre_nivel
                         );        
               END IF;        
        END LOOP;
@@ -276,7 +286,9 @@ raise notice '2222222222';
                         estado_reg,
                         funcionarios,
                         resaltar,
-                        id_uo_padre
+                        id_uo_padre,
+                        id_nivel_organizacional,
+                        nombre_nivel
                       FROM organigrama_filtro
                       ORDER BY niveles asc ) LOOP
      RETURN NEXT g_registros;

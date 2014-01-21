@@ -33,6 +33,7 @@ v_mensaje_error    text;
 v_resp             varchar;
 v_filadd           varchar;
 v_id_funcionario	integer;
+v_ids_funcionario	varchar;
 
 
 BEGIN
@@ -71,7 +72,8 @@ BEGIN
                             PERSON.telefono1, 
                             PERSON.celular1, 
                             PERSON.correo,
-                            FUNCIO.telefono_ofi
+                            FUNCIO.telefono_ofi,
+                            FUNCIO.antiguedad_anterior
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
@@ -81,6 +83,17 @@ BEGIN
                
                
                v_consulta := v_consulta || v_parametros.filtro;
+               
+               if (pxp.f_existe_parametro(par_tabla, 'tipo') and
+				pxp.f_existe_parametro(par_tabla, 'fecha') and 
+				pxp.f_existe_parametro(par_tabla, 'id_uo')) then
+				
+				if (v_parametros.tipo is not null and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
+					v_ids_funcionario = orga.f_get_funcionarios_con_asignacion_activa(v_parametros.id_uo, v_parametros.fecha);
+					v_consulta := v_consulta || ' and FUNCIO.id_funcionario not in (' || v_ids_funcionario ||') ';
+					
+				end if;
+			end if;
                
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 

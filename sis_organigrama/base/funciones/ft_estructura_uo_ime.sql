@@ -77,7 +77,8 @@ BEGIN
                    id_usuario_reg, 
                    nodo_base, 
                    correspondencia, 
-                   gerencia)
+                   gerencia,
+                   id_nivel_organizacional)
                values(
                  upper(v_parametros.codigo), 
                  upper(v_parametros.nombre_unidad), 
@@ -90,7 +91,8 @@ BEGIN
                  par_id_usuario, 
                  v_parametros.nodo_base, 
                  v_parametros.correspondencia, 
-                 v_parametros.gerencia)
+                 v_parametros.gerencia,
+                 v_parametros.id_nivel_organizacional)
                  
                RETURNING id_uo into v_id_uo;
 
@@ -167,7 +169,8 @@ BEGIN
                    presupuesta=v_parametros.presupuesta,
                    nodo_base=v_parametros.nodo_base,
                    correspondencia=v_parametros.correspondencia,
-                   gerencia=v_parametros.gerencia
+                   gerencia=v_parametros.gerencia,
+                   id_nivel_organizacional = v_parametros.id_nivel_organizacional
                 where id_uo=v_parametros.id_uo;
                 
                /* --10-04-2012: sincronizacion de UO entre BD
