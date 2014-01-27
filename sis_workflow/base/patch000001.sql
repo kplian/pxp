@@ -156,7 +156,7 @@ CREATE TABLE wf.ttipo_documento(
     nombre varchar(255),
     descripcion text,
     action  varchar,
-    tipo VARCHAR(30) DEFAULT 'escaneado'::::character varying NOT NULL, 
+    tipo VARCHAR(30) DEFAULT 'escaneado'::character varying NOT NULL, 
     PRIMARY KEY (id_tipo_documento)) INHERITS (pxp.tbase);
 
 

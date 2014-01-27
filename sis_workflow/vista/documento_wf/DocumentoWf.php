@@ -93,7 +93,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 type:'TextField',
                 filters:{pfiltro:'td.codigo',type:'string'},
                 id_grupo:1,
-                grid:true,
+                grid:false,
                 form:false
         },
         {
@@ -128,6 +128,21 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         },
         {
             config:{
+                name: 'nombre_estado',
+                fieldLabel: 'Estado',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:10
+            },
+                type:'TextField',
+                filters:{pfiltro:'tewf.nombre_estado',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
+        },
+        {
+            config:{
                 fieldLabel: "Enlace",
                 gwidth: 130,
                 inputType:'file',
@@ -141,6 +156,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                                 data += "&extension=" + record.data['extension'];
                                 data += "&sistema=sis_workflow";
                                 data += "&clase=DocumentoWf";
+                                data += "&url="+record.data['url'];
                                 return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir documento</a></div>");
                             }
                         },  
@@ -323,7 +339,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'descripcion_tipo_documento',
         'nro_tramite',
         'codigo_proceso',
-        'descripcion_proceso_wf',
+        'descripcion_proceso_wf','nombre_estado'
 		
 		
 	],

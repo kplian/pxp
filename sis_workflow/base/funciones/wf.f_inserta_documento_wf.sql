@@ -81,7 +81,7 @@ BEGIN
             
                if exists( select 1 
                           from wf.tdocumento_wf dw 
-                          where dw.id_documento_wf = p_id_proceso_wf and  dw.id_tipo_documento =  v_registros.id_tipo_documento)   THEN
+                          where dw.id_proceso_wf = p_id_proceso_wf and  dw.id_tipo_documento =  v_registros.id_tipo_documento)   THEN
                           
                        raise notice 'el documento ya existe para proceso' ;   
                            

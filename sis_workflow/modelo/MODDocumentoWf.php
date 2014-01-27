@@ -46,6 +46,7 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('nro_tramite','varchar');
 		$this->captura('codigo_proceso','varchar');
 		$this->captura('descripcion_proceso_wf','varchar');
+		$this->captura('nombre_estado','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -140,8 +141,14 @@ class MODDocumentoWf extends MODbase{
         $this->setParametro('id_documento_wf','id_documento_wf','integer');   
         $this->setParametro('extension','extension','varchar');
         
-        $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png'));
-               
+        $file_name = $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png'));
+         
+        
+         
+        //manda como parametro el nombre del arhivo 
+        $this->aParam->addParametro('file_name',$file_name);
+        $this->arreglo['file_name']= $file_name;
+        $this->setParametro('file_name','file_name','varchar');       
         //Ejecuta la instruccion
         $this->armarConsulta();
                 

@@ -100,7 +100,8 @@ BEGIN
             update wf.tdocumento_wf set
             --archivo=v_parametros.archivo,
             extension=v_parametros.extension,
-            chequeado = 'si'
+            chequeado = 'si',
+            url = v_parametros.file_name
             where id_documento_wf=v_parametros.id_documento_wf;
             
              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo modificado con exito '||v_parametros.id_documento_wf); 

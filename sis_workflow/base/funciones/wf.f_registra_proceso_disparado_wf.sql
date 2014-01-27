@@ -183,6 +183,8 @@ BEGIN
      
      --inserta el nuevo proceso
      
+      
+     
      -- inserta el proceso con el numero de tramite
          INSERT INTO 
           wf.tproceso_wf
@@ -237,7 +239,9 @@ BEGIN
        ps_codigo_estado  = v_codigo_estado_next;
         
        -- inserta documentos en estado borrador si estan configurados
-       v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario_reg, ps_id_proceso_wf, v_id_tipo_estado_next);
+       v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario_reg, ps_id_proceso_wf, ps_id_estado_wf);
+       -- verificar documentos
+       v_resp_doc = wf.f_verifica_documento(p_id_usuario_reg, ps_id_estado_wf);
         
       return;
  

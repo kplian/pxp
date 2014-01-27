@@ -85,13 +85,16 @@ BEGIN
                         td.descripcion as descripcion_tipo_documento,
                         pw.nro_tramite,
                         pw.codigo_proceso,
-                        pw.descripcion as descripcion_proceso_wf
+                        pw.descripcion as descripcion_proceso_wf,
+                        tewf.nombre_estado
 						from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
                         left join segu.tusuario usu2 on usu2.id_usuario = dwf.id_usuario_mod
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
+                        inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
+                        inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
 				        where  pw.nro_tramite = '''||v_nro_tramite||''' and td.id_proceso_macro = '||v_id_proceso_macro||' and ';
 			
 			--Definicion de la respuesta
@@ -137,6 +140,8 @@ BEGIN
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
                         left join segu.tusuario usu2 on usu2.id_usuario = dwf.id_usuario_mod
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
+                        inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
+                        inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
 				        where  pw.nro_tramite = '''||v_nro_tramite||''' and td.id_proceso_macro = '||v_id_proceso_macro||' and ';
 			
 			--Definicion de la respuesta		    
