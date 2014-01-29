@@ -20,6 +20,12 @@ class ACTInstitucion extends ACTbase{
         if($this->objParam->getParametro('es_banco')!=''){
             $this->objParam->addFiltro("instit.es_banco = ''".$this->objParam->getParametro('es_banco')."''");    
         }
+		
+		if($this->objParam->getParametro('no_es_proveedor')!=''){
+            $this->objParam->addFiltro("instit.id_institucion not in (select id_institucion 
+            															from param.tproveedor 
+            															where id_institucion = instit.id_institucion)");    
+        }
         
         
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

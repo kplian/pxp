@@ -53,7 +53,9 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+			zona_franca,
+			frontera
           	) values(
 			v_parametros.aeropuerto,
 			v_parametros.id_lugar,
@@ -63,7 +65,9 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+			v_parametros.zona_franca,
+			v_parametros.frontera
 							
 			)RETURNING id_oficina into v_id_oficina;
 			
@@ -93,7 +97,9 @@ BEGIN
 			nombre = v_parametros.nombre,
 			codigo = v_parametros.codigo,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+			zona_franca = v_parametros.zona_franca,
+			frontera = v_parametros.frontera
 			where id_oficina=v_parametros.id_oficina;
                
 			--Definicion de la respuesta

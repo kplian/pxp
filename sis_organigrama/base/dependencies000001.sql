@@ -270,3 +270,14 @@ ALTER TABLE orga.tfuncionario_cuenta_bancaria
     NOT DEFERRABLE;
 
 /********************************************F-DEP-JRR-ORGA-0-9/01/2014********************************************/
+
+/********************************************I-DEP-JRR-ORGA-0-24/01/2014********************************************/
+
+ALTER TABLE orga.tuo_funcionario
+  ADD CONSTRAINT fk__tuo_funcionario__id_cargo FOREIGN KEY (id_cargo)
+    REFERENCES orga.tcargo(id_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+/********************************************F-DEP-JRR-ORGA-0-24/01/2014********************************************/

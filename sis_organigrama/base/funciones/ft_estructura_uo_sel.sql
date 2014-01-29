@@ -93,7 +93,7 @@ BEGIN
                                   on UO.id_uo=euo.id_uo_hijo  and euo.estado_reg=''activo''
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
-                            INNER JOIN orga.tnivel_organizacional nivorg on nivorg.id_nivel_organizacional = UO.id_nivel_organizacional
+                            LEFT JOIN orga.tnivel_organizacional nivorg on nivorg.id_nivel_organizacional = UO.id_nivel_organizacional
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE '|| v_condicion;
