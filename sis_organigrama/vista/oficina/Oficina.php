@@ -128,6 +128,50 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'zona_franca',
+				fieldLabel: 'Es Zona Franca',
+				allowBlank: false,
+				emptyText:'Zona Franca...',
+	       		typeAhead: true,
+	       		triggerAction: 'all',
+	       		lazyRender:true,
+	       		mode: 'local',
+				gwidth: 100,
+				store:['si','no']
+			},
+				type:'ComboBox',
+				filters:{	
+	       		         type: 'list',
+	       				 options: ['si','no'],	
+	       		 	},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'frontera',
+				fieldLabel: 'Es Frontera',
+				allowBlank: false,
+				emptyText:'Frontera...',
+	       		typeAhead: true,
+	       		triggerAction: 'all',
+	       		lazyRender:true,
+	       		mode: 'local',
+				gwidth: 100,
+				store:['si','no']
+			},
+				type:'ComboBox',
+				filters:{	
+	       		         type: 'list',
+	       				 options: ['si','no'],	
+	       		 	},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
@@ -213,6 +257,8 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_oficina', type: 'numeric'},
 		{name:'aeropuerto', type: 'string'},
+		{name:'zona_franca', type: 'string'},
+		{name:'frontera', type: 'string'},
 		{name:'id_lugar', type: 'numeric'},
 		{name:'nombre', type: 'string'},
 		{name:'nombre_lugar', type: 'string'},
@@ -234,7 +280,9 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 	bsave:true,
 	loadValoresIniciales:function()
     {	
-        this.Cmp.aeropuerto.setValue('no');       
+        this.Cmp.aeropuerto.setValue('no'); 
+        this.Cmp.zona_franca.setValue('no');    
+        this.Cmp.frontera.setValue('no');          
         Phx.vista.Oficina.superclass.loadValoresIniciales.call(this);
     }
 	}
