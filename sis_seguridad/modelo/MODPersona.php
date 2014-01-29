@@ -35,6 +35,7 @@ class MODPersona extends MODbase{
 		$this->captura('celular2','varchar');
 		$this->captura('fecha_nacimiento','date');
 		$this->captura('genero','varchar');
+		$this->captura('direccion','varchar');
 
 		//Ejecuta la funcion
 		$this->armarConsulta();
