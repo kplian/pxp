@@ -10,7 +10,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.SubirArchivoWf=Ext.extend(Phx.frmInterfaz,{
-    ActSave:'../../sis_workflow/control/DocumentoWf/SubirArchivoWf',
+    ActSave:'../../sis_workflow/control/DocumentoWf/subirArchivoWf',
 
     constructor:function(config)
     {   
