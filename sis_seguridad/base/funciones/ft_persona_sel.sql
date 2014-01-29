@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_persona_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -72,8 +70,12 @@ BEGIN
                               p.num_documento,
                               p.telefono1,
                               p.telefono2,
-                              p.celular2
-                          FROM segu.vpersona p WHERE ';
+                              p.celular2,
+                              per.fecha_nacimiento,
+                              per.genero
+                          FROM segu.vpersona p 
+                          inner join segu.tpersona per on per.id_persona = p.id_persona 
+                          WHERE ';
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta || ' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
                --raise exception '%',v_consulta;
@@ -98,7 +100,9 @@ BEGIN
           BEGIN
                
                v_consulta:='select count(p.id_persona)
-               from segu.vpersona p where ';
+               				FROM segu.vpersona p 
+                          	inner join segu.tpersona per on per.id_persona = p.id_persona 
+                          	WHERE ';
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;
