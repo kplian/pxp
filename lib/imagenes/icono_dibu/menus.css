@@ -217,3 +217,12 @@
 .bincremento_salarial {
     background-image:url(dibu_incremento.png) !important;
 }
+.bclock {
+    background-image:url(dibu_clock.png) !important;
+}
+.bcalculator {
+    background-image:url(dibu_calculator.png) !important;
+}
+.bmoney {
+    background-image:url(dibu_money.png) !important;
+}

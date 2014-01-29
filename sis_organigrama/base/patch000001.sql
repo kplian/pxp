@@ -389,3 +389,11 @@ CREATE TABLE orga.ttipo_contrato (
   CONSTRAINT ttipo_contrato_pkey PRIMARY KEY(id_tipo_contrato) 
 )INHERITS (pxp.tbase) WITH OIDS;
 /*****************************F-SCP-JRR-ORGA-0-21/01/2014*************/
+
+/*****************************I-SCP-JRR-ORGA-0-29/01/2014*************/
+ALTER TABLE orga.toficina
+  ADD COLUMN zona_franca VARCHAR(2);
+
+ALTER TABLE orga.toficina
+  ADD COLUMN frontera VARCHAR(2);
+/*****************************F-SCP-JRR-ORGA-0-29/01/2014*************/

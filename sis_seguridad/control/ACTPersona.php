@@ -18,6 +18,11 @@ class ACTPersona extends ACTbase{
 		if($this->objParam->getParametro('id_persona')!=''){
             $this->objParam->addFiltro("p.id_persona = " . $this->objParam->getParametro('id_persona'));    
         }
+		if($this->objParam->getParametro('no_es_proveedor')!=''){
+            $this->objParam->addFiltro("p.id_persona not in (select id_persona 
+            															from param.tproveedor 
+            															where id_persona = p.id_persona)");    
+        }
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -64,7 +62,7 @@ BEGIN
                
                 --verficar que el funcionario no este activo en dos unidades simultaneamente
                 
-                if ( ((select count(id_funcionario) from 
+               /* if ( ((select count(id_funcionario) from 
                            orga.tuo_funcionario  UOF
                            where     id_funcionario=v_parametros.id_funcionario AND uof.estado_reg='activo' ))>0) then
                            
@@ -75,7 +73,7 @@ BEGIN
                if exists (select 1 from orga.tuo_funcionario where id_funcionario=v_parametros.id_funcionario and
                id_uo=v_parametros.id_uo and estado_reg='activo') then
                   raise exception 'Insercion no realizada. El funcionacio ya esta asignado a la unidad';
-               end if;
+               end if;*/
                
                if (v_parametros.fecha_finalizacion is not null and v_parametros.fecha_finalizacion <= v_parametros.fecha_asignacion)then
                		raise exception 'La fecha de finalización no puede ser menor o igual a la fecha de asignación';
