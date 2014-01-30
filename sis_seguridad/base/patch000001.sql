@@ -930,3 +930,8 @@ CREATE TABLE segu.ttabla_migrar (
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 /*****************************F-SCP-RCM-SEGU-0-17/01/2014*************/
+
+/*****************************I-SCP-RCM-SEGU-0-29/01/2014*************/
+ALTER TABLE segu.tpersona
+  ALTER COLUMN genero TYPE VARCHAR(15);
+/*****************************F-SCP-RCM-SEGU-0-29/01/2014*************/
