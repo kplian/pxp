@@ -13,19 +13,19 @@ DECLARE
 BEGIN
 	v_nombre_funcion = 'param.f_get_factor_actualizacion_ufv';
     
-    select tipo_cambio
+    select oficial
     into v_tipo_cambio1
     from param.ttipo_cambio tc
     inner join param.tmoneda m on m.id_moneda = tc.id_moneda
     where m.codigo = 'UFV' and tc.fecha = p_fecha_ini and 
-          p.estado_reg = 'activo' and m.estado_reg = 'activo';
+          tc.estado_reg = 'activo' and m.estado_reg = 'activo';
     
-    select tipo_cambio
+    select oficial
     into v_tipo_cambio2
     from param.ttipo_cambio tc
     inner join param.tmoneda m on m.id_moneda = tc.id_moneda
     where m.codigo = 'UFV' and tc.fecha = p_fecha_fin and 
-          p.estado_reg = 'activo' and m.estado_reg = 'activo';
+          tc.estado_reg = 'activo' and m.estado_reg = 'activo';
     
     if (v_tipo_cambio1 is null) then
     	raise exception 'No existe tipo de cambio para la fecha: % , para la moneda: UFV',p_fecha_ini;

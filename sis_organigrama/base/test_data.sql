@@ -443,8 +443,6 @@ VALUES (NULL, NULL, E'2013-03-20 13:45:04.997', E'2013-03-20 13:45:04.997', E'ac
 INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo_funcionario", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
 VALUES (1, 8, E'2012-11-10 00:00:00', E'2013-02-04 16:29:58', E'activo', 200, 3, 10, E'2007-12-31', E'2013-02-03');
 
-INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo_funcionario", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
-VALUES (1, 8, E'2012-11-10 00:00:00', E'2013-02-04 16:59:47', E'activo', 229, 4, 12, E'2009-01-20', E'2013-02-01');
 
 INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo_funcionario", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
 VALUES (1, 8, E'2012-11-10 00:00:00', E'2012-11-23 18:26:25', E'activo', 235, 128, 22, E'2009-09-01', E'2012-10-31');
