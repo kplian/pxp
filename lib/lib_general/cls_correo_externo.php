@@ -46,6 +46,12 @@ class CorreoExterno
         
     }
     
+    function addCC($dir_destinatario,$nom_destinatario=''){
+        $this->mail->AddCC($dir_destinatario, $nom_destinatario);
+    }
+    
+    
+    
     function addAdjunto($archivo){
        
         $this->mail->AddAttachment($archivo);    
@@ -165,7 +171,7 @@ class CorreoExterno
                     <body>
                     <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
                     <p>-------------------------------------------<br/>
-                    Powered by KPLIAN
+                    <h6>Powered by KPLIAN<h6>
                     <p>
                     </body>
                     </html>";
