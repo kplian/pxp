@@ -104,6 +104,8 @@ BEGIN
            where tp.id_tipo_proceso = v_parametros.id_tipo_proceso;
         
         
+            --todo obtener numero de documento
+        
         
            -- inciiar el tramite en el sistema de WF
                  SELECT 
@@ -121,9 +123,16 @@ BEGIN
                        p_id_usuario, 
                        v_id_gestion, 
                        v_codigo_tipo_proceso, 
-                       v_parametros.id_funcionario_usu);
+                       v_parametros.id_funcionario_usu,
+                       NULL,
+                       'Inicio de tramite.... ',
+                       'NUM CORRE');
         
-        
+             
+            
+            
+            
+            
             update wf.tproceso_wf set
               id_persona = v_parametros.id_persona,
               id_institucion = v_parametros.id_institucion,

@@ -180,6 +180,25 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             this.cmbFuncionarioWf.modificado=true;
         },this);
         
+       this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+  
+     
+        
+        
+       function diagramGantt(){         
+            var data=this.sm.getSelected().data.id_proceso_wf;
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
+                params:{'id_proceso_wf':data},
+                success:this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });         
+        }
+        
+        
         
 	},
 	tam_pag:50,

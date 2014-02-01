@@ -113,13 +113,14 @@ Phx.vista.ProcesoWfIniTra = {
           else{
               this.getBoton('sig_estado').disable();  
           }
-          
+          this.getBoton('diagrama_gantt').enable(); 
           return tb 
      }, 
      liberaMenu:function(){
         var tb = Phx.vista.ProcesoWf.superclass.liberaMenu.call(this);
         if(tb){
             this.getBoton('sig_estado').disable();
+            this.getBoton('diagrama_gantt').disable();
             this.getBoton('diagrama_gantt').disable();
            
         }
