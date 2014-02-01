@@ -72,7 +72,8 @@ BEGIN
                               p.telefono2,
                               p.celular2,
                               per.fecha_nacimiento,
-                              per.genero
+                              per.genero,
+                              per.direccion
                           FROM segu.vpersona p 
                           inner join segu.tpersona per on per.id_persona = p.id_persona 
                           WHERE ';

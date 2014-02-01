@@ -226,6 +226,12 @@ if (datos  == 's'):
             for line in run_command(command):
                 f_log.write(line)
 
+if os.access(os.path.dirname(__file__) + '/../../base/aggregates.sql', os.R_OK):
+	f_log.write("**************AGGREGATES : ")
+	command = 'psql '+ db + ' < ' + os.path.dirname(__file__) + '/../../base/aggregates.sql'
+	for line in run_command(command):
+		f_log.write(line)
+
 #crear dependencias de cada esquema
 execute_script(url, 'dependencies',f_log)
   
