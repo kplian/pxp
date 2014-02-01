@@ -103,7 +103,8 @@ BEGIN
      s.nombre,
      s.codigo,
      s.id_subsistema,
-     te.nombre_estado
+     te.nombre_estado,
+     pm.nombre as nombre_proceso_macro
     INTO
      v_registros
     FROM wf.ttipo_estado te
@@ -158,7 +159,7 @@ BEGIN
                                                       p_titulo,--titulo
                                                       p_parametros::varchar,
                                                       NULL::integer,
-                                                      ('Alerta del sistema '||v_registros.nombre||'('||v_registros.codigo||')')::varchar
+                                                      ('Alerta del sistema '||v_registros.nombre||'('||v_registros.codigo||') '||'['|| v_registros.nombre_proceso_macro  ||']')::varchar
                                                      );
                                                      
                                                       
