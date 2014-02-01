@@ -196,6 +196,10 @@ for item in url:
 
 #Se crean los tipos
 execute_script(url, 'custom_type', f_log)
+#crear objetos de cada esquema
+execute_script(url, 'patch', f_log)
+
+
 #Crear funciones
 for item in url:
 	 #restaurar subsistema
@@ -209,9 +213,6 @@ for item in url:
             		f_log.write('restaurando '+funciones_dir + f+'\n')
                 for line in run_command(command):
                                     f_log.write(line)
-
-#crear objetos de cada esquema
-execute_script(url, 'patch', f_log)
 
 #insertar datos de cada esquema
 execute_script(url,'data', f_log)

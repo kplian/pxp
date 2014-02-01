@@ -32,4 +32,42 @@ FROM pg_class c
    JOIN tables t ON t.oid = d.refobjid
    JOIN llaves k ON ((k.esquema::text || '.'::text) || k.tabla::text) = t.tabla
     WHERE d.deptype = 'a'::"char";
+ 
+ --
+-- Definition for aggregate list (OID = 305122) : 
+--
+CREATE AGGREGATE pxp.list (text) (
+    SFUNC = pxp.comma_cat,
+    STYPE = text
+);
+--
+-- Definition for aggregate text_concat (OID = 305136) : 
+--
+CREATE AGGREGATE pxp.text_concat (text) (
+    SFUNC = pxp.concat,
+    STYPE = text
+);
+--
+-- Definition for aggregate textcat_all (OID = 305137) : 
+--
+CREATE AGGREGATE pxp.textcat_all (text) (
+    SFUNC = textcat,
+    STYPE = text
+);
+
+--
+-- Definition for aggregate aggarray (OID = 404687) : 
+--
+CREATE AGGREGATE pxp.aggarray (anyelement) (
+    SFUNC = pxp.aggregate_array,
+    STYPE = anyarray
+);
+--
+-- Definition for aggregate aggarray1 (OID = 404688) : 
+--
+CREATE AGGREGATE pxp.aggarray1 (anyelement) (
+    SFUNC = pxp.aggregate_array,
+    STYPE = anyarray
+);
+
 /****************************F-SCP-RCM-PXP-0-30/11/2012*************/
