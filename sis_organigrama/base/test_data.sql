@@ -533,4 +533,3 @@ VALUES (1, NULL, E'2012-11-10 00:00:00', NULL, E'activo', 214, 300, 161, E'2008-
 
 INSERT INTO orga.tuo_funcionario ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_uo_funcionario", "id_uo", "id_funcionario", "fecha_asignacion", "fecha_finalizacion")
 VALUES (1, 8, E'2012-11-10 00:00:00', E'2013-02-05 17:21:59', E'activo', 638, 301, 65, E'2012-06-01', E'2012-12-12');
-

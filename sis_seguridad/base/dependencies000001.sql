@@ -337,6 +337,20 @@ CREATE TRIGGER trig_trol_procedimiento_gui BEFORE UPDATE
 ON segu.trol_procedimiento_gui FOR EACH ROW 
 EXECUTE PROCEDURE segu.ftrig_trol_procedimiento_gui();
 
+-- Definition for trigger trig_log (OID = 308351) : 
+--
+CREATE TRIGGER trig_log
+    BEFORE INSERT ON segu.tlog
+    FOR EACH ROW
+    EXECUTE PROCEDURE segu.ftrig_log ();
+--
+-- Definition for trigger trigger_usuario (OID = 308352) : 
+--
+CREATE TRIGGER trigger_usuario
+    AFTER INSERT OR DELETE OR UPDATE ON segu.tusuario
+    FOR EACH ROW
+    EXECUTE PROCEDURE pxp.trigger_usuario ();
+
 /***********************************F-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 
 /********************************************I-DEP-JRR-SEGU-0-02/02/2013**********************************************/

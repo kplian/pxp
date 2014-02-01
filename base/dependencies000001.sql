@@ -32,4 +32,5 @@ FROM pg_class c
    JOIN tables t ON t.oid = d.refobjid
    JOIN llaves k ON ((k.esquema::text || '.'::text) || k.tabla::text) = t.tabla
     WHERE d.deptype = 'a'::"char";
+
 /****************************F-SCP-RCM-PXP-0-30/11/2012*************/

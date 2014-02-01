@@ -702,19 +702,7 @@ ALTER TABLE ONLY segu.tusuario
     ADD CONSTRAINT tusuario_cuenta_key
     UNIQUE (cuenta);
 
--- Definition for trigger trig_log (OID = 308351) : 
---
-CREATE TRIGGER trig_log
-    BEFORE INSERT ON segu.tlog
-    FOR EACH ROW
-    EXECUTE PROCEDURE segu.ftrig_log ();
---
--- Definition for trigger trigger_usuario (OID = 308352) : 
---
-CREATE TRIGGER trigger_usuario
-    AFTER INSERT OR DELETE OR UPDATE ON segu.tusuario
-    FOR EACH ROW
-    EXECUTE PROCEDURE pxp.trigger_usuario ();
+
 
 /***********************************F-SCP-JRR-SEGU-1-19/11/2012****************************************/
 
