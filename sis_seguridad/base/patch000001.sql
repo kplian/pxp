@@ -923,3 +923,8 @@ WITHOUT OIDS;
 ALTER TABLE segu.tpersona
   ALTER COLUMN genero TYPE VARCHAR(15);
 /*****************************F-SCP-RCM-SEGU-0-29/01/2014*************/
+
+/*****************************I-SCP-JRR-SEGU-0-01/02/2014*************/
+ALTER TABLE segu.tpersona
+  ALTER COLUMN extension TYPE VARCHAR(100);
+/*****************************F-SCP-RCM-SEGU-0-01/02/2014*************/
