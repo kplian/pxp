@@ -32,6 +32,7 @@ Phx.vista.ProcesoWfVb = {
       Phx.vista.ProcesoWfVb.superclass.preparaMenu.call(this,n); 
           this.getBoton('sig_estado').enable(); 
           this.getBoton('ant_estado').enable();
+          this.getBoton('diagrama_gantt').enable();
          
           return tb 
      }, 
@@ -41,6 +42,7 @@ Phx.vista.ProcesoWfVb = {
            
             this.getBoton('ant_estado').disable();
             this.getBoton('sig_estado').disable();
+            this.getBoton('diagrama_gantt').disable();
            
         }
         return tb
