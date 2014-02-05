@@ -84,7 +84,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Descripcion',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:500
 			},
 			type:'TextArea',
