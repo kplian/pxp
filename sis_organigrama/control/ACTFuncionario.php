@@ -110,6 +110,17 @@ class ACTFuncionario extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
+	
+	function getEmailEmpresa(){
+        //@id_funcionario -> funcionario del que vamos a recuperar el correo
+        //crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+        $this->objFunSeguridad=$this->create('MODFuncionario'); 
+        $this->res=$this->objFunSeguridad->getEmailEmpresa($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+
+    }
+	
+	
 
 }
 

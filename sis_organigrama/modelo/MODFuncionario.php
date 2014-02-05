@@ -163,5 +163,21 @@ class MODFuncionario extends MODbase{
 		return $this->respuesta;
 	}
 	
+	function getEmailEmpresa(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='orga.ft_funcionario_ime';
+        $this->transaccion='RH_MAILFUN_GET';
+        $this->tipo_procedimiento='IME';
+            
+        //Define los parametros para la funcion
+        $this->setParametro('id_funcionario','id_funcionario','integer');
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+                
+        $this->ejecutarConsulta();
+        return $this->respuesta;
+    }
+	
+	
 }
 ?>
