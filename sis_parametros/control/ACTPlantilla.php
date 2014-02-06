@@ -13,12 +13,16 @@ class ACTPlantilla extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_plantilla');
         $this->objParam->defecto('dir_ordenacion','asc');
 		
-		 if($this->objParam->getParametro('sw_compro')!=''){
+		if($this->objParam->getParametro('sw_compro')!=''){
             $this->objParam->addFiltro("sw_compro = ''".$this->objParam->getParametro('sw_compro')."''");  
         }
         
-         if($this->objParam->getParametro('sw_tesoro')!=''){
+        if($this->objParam->getParametro('sw_tesoro')!=''){
             $this->objParam->addFiltro("sw_tesoro = ''".$this->objParam->getParametro('sw_tesoro')."''");  
+        }
+        
+        if($this->objParam->getParametro('sw_monto_excento')!=''){
+            $this->objParam->addFiltro("sw_monto_excento = ''".$this->objParam->getParametro('sw_monto_excento')."''");  
         }
         
 		
