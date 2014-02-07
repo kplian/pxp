@@ -177,12 +177,13 @@ class MODbase extends driver
 						$this->valoresFiles="'".$data."'";
 					}
 					else{
-					
-					  //rac 27/10/11 se escapa los valores entrantes para permitir almacenar comillas simples	
-					  $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
-						
-					  $this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-					  array_push($this->valores,$this->arreglo[$valor]);
+					        
+					   $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
+                            
+                       $this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
+                       array_push($this->valores,$this->arreglo[$valor]);     
+    					
+					  
 					}
 				}elseif(isset($this->arregloFiles[$valor])){
 					
