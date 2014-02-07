@@ -226,3 +226,11 @@
 .bmoney {
     background-image:url(dibu_money.png) !important;
 }
+
+.badd {
+    background-image:url(dibu_add_16.png) !important;
+}
+
+.bdelete {
+    background-image:url(dibu_delete_16.png) !important;
+}
