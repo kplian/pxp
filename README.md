@@ -27,7 +27,7 @@ TO USE IT BY FIRST TIME:
     ln -s pxp/sis_workflow sis_workflow (execute inside your project root folder)
 
    All these folders and files are inside pxp.
-5. Create a folder named "reportes_generados" inside your project root folder with write access for Apache user.
+5. Create two folders one named "reportes_generados" and other "uploaded_files" inside your project root folder with write access for Apache user.
 6. Create a file named "DatosGenerales.php" inside pxp/lib. This file could be a copy of DatosGenerales.sample.php wich already exists in the same folder.
   It's necesary to do some configurations in that file according to the database.
 

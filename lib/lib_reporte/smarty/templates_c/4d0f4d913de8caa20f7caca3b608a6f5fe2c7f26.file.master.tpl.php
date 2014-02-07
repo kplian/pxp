@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.14, created on 2013-09-18 09:31:31
+<?php /* Smarty version Smarty-3.1.14, created on 2014-02-21 11:52:18
          compiled from "/var/www/html/kerp-boa/sis_contabilidad/reportes/tpl_comprobante/master.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:117248218523971c33797d4-47113325%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '4d0f4d913de8caa20f7caca3b608a6f5fe2c7f26' => 
     array (
       0 => '/var/www/html/kerp-boa/sis_contabilidad/reportes/tpl_comprobante/master.tpl',
-      1 => 1379622856,
+      1 => 1383163893,
       2 => 'file',
     ),
   ),

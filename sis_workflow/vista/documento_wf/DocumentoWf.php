@@ -25,6 +25,16 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 tooltip : '<b>Cargar Documento</b><br/>Al subir el archivo, el registro sera marcado como Chequeado OK'
         });
         
+        this.addButton('btnMomento', {
+                text : 'Cambiar Modo',
+                iconCls : 'bunlock',
+                disabled : true,
+                handler : this.cambiarMomento,
+                tooltip : '<b>Hacer Obligatorio/Quitar axigencia</b><br/>Se verifica este estado si el documento  tiene al menos un estado de verificacón'
+        });
+        
+        
+        
        this.init();
         this.load({params:{
             start:0, 
@@ -66,7 +76,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Escaneado',
                 allowBlank: true,
                 anchor: '80%',
-                gwidth: 100,
+                gwidth: 65,
                 renderer:function (value, p, record){  
                             if(record.data['chequeado'] == 'si')
                                 return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_ok.png' align='center' width='45' height='45'/></div>");
@@ -85,8 +95,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 name: 'chequeado_fisico',
                 fieldLabel: 'Físico',
                 allowBlank: true,
-                width: 100,
-                gwidth: 100,
+                width: 65,
+                gwidth: 65,
                 valueField: 'momento',                  
                 store:['si','no'],
                 triggerAction: 'all',
@@ -103,6 +113,27 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             id_grupo:1,
             grid:true,
             form:true
+        },
+        {
+            config:{
+                name: 'momento',
+                fieldLabel: 'momento',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 65,
+                maxLength:255,
+                renderer:function (value, p, record){  
+                            if(record.data['momento'] == 'exigir')
+                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_lock.png' align='center' width='45' height='45'/></div>");
+                            else
+                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_unlock.png' align='center' width='45' height='45'/></div>");
+                        },
+            },
+                type:'TextField',
+                filters:{pfiltro:'dwf.momento',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
         },
 		
 		{
@@ -330,7 +361,38 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
-		}
+		},
+        {
+            config:{
+                name: 'fecha_upload',
+                fieldLabel: 'Fecha Escan.',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                            format: 'd/m/Y', 
+                            renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+            },
+                type:'DateField',
+                filters:{pfiltro:'dwf.fecha_mod',type:'date'},
+                id_grupo:1,
+                grid:true,
+                form:false
+        },
+        {
+            config:{
+                name: 'usr_upload',
+                fieldLabel: 'Escaneado por',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:4
+            },
+                type:'NumberField',
+                filters:{pfiltro:'usu3.cuenta',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
+        }
 	],
 	tam_pag:50,	
 	title:'Documento',
@@ -365,7 +427,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'codigo_proceso',
         'descripcion_proceso_wf',
         'nombre_estado',
-        'chequeado_fisico'
+        'chequeado_fisico',
+        'usr_upload',
+        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'}
 		
 		
 	],
@@ -373,17 +437,59 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	preparaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
         this.getBoton('btnUpload').enable();
+        this.getBoton('btnMomento').enable(); 
+        
+        var data = this.getSelectedData();
+        if(data['momento']== 'exigir'){
+            this.getBoton('btnMomento').setIconClass('bunlock')
+        }
+        else{
+            this.getBoton('btnMomento').setIconClass('block')
+        }
+        
     },
     
     liberaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.liberaMenu.call(this,tb)
-        this.getBoton('btnUpload').disable();      
+        this.getBoton('btnUpload').disable(); 
+        this.getBoton('btnMomento').disable();        
     },
 	
 	sortInfo:{
 		field: 'id_documento_wf',
 		direction: 'ASC'
 	},
+	tabeast:[
+         {
+          url:'../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstadoWF.php',
+          title:'Estados por momento', 
+          width:400,
+          cls:'TipoDocumentoEstadoWF'
+         }
+    
+       ],
+	
+	cambiarMomento:function(){
+	    Phx.CP.loadingShow();
+	    var d = this.sm.getSelected().data;
+        Ext.Ajax.request({
+            url:'../../sis_workflow/control/DocumentoWf/cambiarMomento',
+            params:{id_documento_wf:d.id_documento_wf},
+            success:this.successMomento,
+            failure: this.conexionFailure,
+            timeout:this.timeout,
+            scope:this
+        }); 
+	    
+	},
+	successMomento:function(resp){
+       Phx.CP.loadingHide();
+       var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+       if(!reg.ROOT.error){
+         this.reload();
+       }
+    },
+         
 	bdel:false,
 	bnew:false,
 	bsave:false

@@ -45,6 +45,14 @@ class ACTDocumentoWf extends ACTbase{
         $this->res=$this->objFunc->subirDocumentoWfArchivo();
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+    
+    function cambiarMomento(){
+        $this->objFunc=$this->create('MODDocumentoWf'); 
+        $this->res=$this->objFunc->cambiarMomento($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    
+    
 			
 }
 

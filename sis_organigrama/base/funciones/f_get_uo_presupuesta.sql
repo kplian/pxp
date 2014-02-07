@@ -12,11 +12,12 @@ DECLARE
     v_consulta				text;
     v_id_uo					integer;
     v_presupuesta			varchar;
+     v_id_uo_hijo		integer;
 BEGIN
   	v_nombre_funcion = 'orga.f_get_uo_presupuesta';
     if (par_id_uo is not null) then
-    	select euo.id_uo_padre, uo.presupuesta
-        into v_id_uo, v_presupuesta
+    	select euo.id_uo_padre, uo.presupuesta, euo.id_uo_hijo
+        into v_id_uo, v_presupuesta, v_id_uo_hijo
         from orga.tuo uo
         inner join orga.testructura_uo euo
         	on euo.id_uo_hijo = uo.id_uo
@@ -25,7 +26,11 @@ BEGIN
         if (v_presupuesta = 'si') then
         	return par_id_uo;
         else
-        	return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL); 
+        	if (v_id_uo = v_id_uo_hijo) then
+        		return NULL; 
+            else
+            	return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL);
+            end if; 
         end if;
     
     else

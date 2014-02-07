@@ -279,3 +279,18 @@ IS 'verificar o exigir documentos fisicos';
 /***********************************F-SCP-RAC-WF-0-17/02/2014****************************************/
 
 
+
+/***********************************I-SCP-RAC-WF-0-21/02/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN id_usuario_upload INTEGER;
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN fecha_upload TIMESTAMP WITHOUT TIME ZONE;
+  
+/***********************************F-SCP-RAC-WF-0-22/02/2014****************************************/
+

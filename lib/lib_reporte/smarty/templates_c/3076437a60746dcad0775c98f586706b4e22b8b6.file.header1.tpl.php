@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.14, created on 2013-09-18 18:55:21
+<?php /* Smarty version Smarty-3.1.14, created on 2014-02-21 11:52:18
          compiled from "/var/www/html/kerp-boa/pxp/lib/lib_reporte/smarty/templates/header1.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1473489824523971c329bd52-40948977%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3076437a60746dcad0775c98f586706b4e22b8b6' => 
     array (
       0 => '/var/www/html/kerp-boa/pxp/lib/lib_reporte/smarty/templates/header1.tpl',
-      1 => 1379711171,
+      1 => 1383163814,
       2 => 'file',
     ),
   ),

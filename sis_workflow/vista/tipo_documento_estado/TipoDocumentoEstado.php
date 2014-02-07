@@ -49,7 +49,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Momento',
                 allowBlank: false,
                 anchor: '80%',
-                gwidth: 150,
+                gwidth: 70,
                 maxLength:50,
                 emptyText:'momento...',                
                 typeAhead: true,
@@ -337,6 +337,10 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
       else{
          this.Cmp.id_tipo_proceso.store.baseParams.id_tipo_proceso='';
       }
+      
+      this.Cmp.id_tipo_proceso.store.baseParams.id_proceso_macro=this.maestro.id_proceso_macro;
+      this.Cmp.id_tipo_estado.store.baseParams.id_tipo_proceso=this.Cmp.id_tipo_proceso.getValue();
+      
       this.Cmp.id_tipo_proceso.modificado=true;
        
        
