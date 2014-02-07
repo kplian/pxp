@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_verifica_permisos (
   par_id_usuario integer,
   par_transaccion varchar,
@@ -84,7 +82,8 @@ begin
              'SEG_OPERFOT_SEL',
              'PM_ALARM_SEL',
              'PM_ALARM_CONT',
-             'PM_ALARM_ELI'))) THEN
+             'PM_ALARM_ELI',
+             'SEG_LISTUSU_SEG'))) THEN
             po_tiene_permisos = true;
          
          END IF; 

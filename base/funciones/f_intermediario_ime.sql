@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_sid_web varchar,
@@ -110,7 +108,7 @@ BEGIN
             '''||par_sid_web||''','||par_pid_web||','''||par_transaccion||''','''||par_procedimiento||''')'
             ,'sesion');
        
-    if(par_transaccion='SEG_VALUSU_SEG')then
+    if(par_transaccion='SEG_VALUSU_SEG' or par_transaccion='SEG_LISTUSU_SEG')then
     
   
        
@@ -151,7 +149,8 @@ BEGIN
 
     for i in 1..(v_tamano-1) loop
         v_consulta:=v_consulta || variables[i] || ' ' || tipos[i] || ',';
-    end loop;  
+    end loop;
+      
     --verifica si recibe archivos tipo bytea
     if( variable_files !='') THEN
       v_upload_file=true;
