@@ -50,6 +50,8 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/GroupSummary.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/gridsummary.css"/>
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/RowEditor.css" />
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/treegrid/treegrid.css" />
+   
 
     
    <link rel="stylesheet" type="text/css" href="resources/docs.css"></link>
@@ -110,7 +112,7 @@ if(!isset($_SESSION["_SESION"])){
 	<script type="text/javascript" src="../../../lib/ux/Portal.js"></script>
     <script type="text/javascript" src="../../../lib/ux/PortalColumn.js"></script>
     <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>
-	<!--
+    	
 	<script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridSorter.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumnResizer.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridNodeUI.js"></script>
@@ -118,7 +120,7 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumns.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGrid.js"></script>
     
-   -->
+   
     <script type="text/javascript" src="../../../lib/ux/GMapPanel.js"></script>
     <!-- componentes extendidos  -->	  
     <script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.PagingMemoryProxy.js"></script>

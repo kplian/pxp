@@ -112,7 +112,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
                 },
             type:'ComboRec',
             id_grupo:0,
-            filters:{pfiltro:'nombre_unidad',type:'string'},
+            filters:{pfiltro:'uoc.nombre_unidad',type:'string'},
             grid:true,
             form:true
        }
@@ -148,7 +148,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
                 },
             type:'ComboRec',
             id_grupo:0,
-            filters:{pfiltro:'nombre_unidad',type:'string'},
+            filters:{pfiltro:'uo.nombre_unidad',type:'string'},
             grid:true,
             form:true
        },

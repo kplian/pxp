@@ -21,7 +21,7 @@ constructor: function(config){}
 </script>
 </head>
 <body  bgcolor="#FFFFFF">
-<table width="100%" border="0" bgcolor="#FFFFFF"  height="100%" background="<?php  echo $_SESSION['_DIR_IMAGEN_INI']?>">  
+<table width="100%" border="0" bgcolor="#FFFFFF"  height="100%" style="background:#ffffff url('<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>') no-repeat center center;">  
   <!--
   <tr height="70%">
     <td colspan="2"><div align="center"><img src="../../../sis_seguridad/vista/inicio/logos/image001.gif" width="347" height="200" /></div></td>

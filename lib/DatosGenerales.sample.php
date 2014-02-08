@@ -149,6 +149,8 @@
 	  
 	$_SESSION['_DIR_LOGO']='/imagenes/logos/logo.png'; 
 	
+	$_SESSION['_MINI_LOGO']='../../../lib/imagenes/kplian2.jpg';
+	
 	$_SESSION['_DIR_IMAGEN_INI']='../../../lib/imagenes/fondo_ini.jpg';
 	
 	$_SESSION['_DIR_FABICON']='../../images/logo_reporte.jpg';
@@ -166,6 +168,11 @@
     $_SESSION['_MAIL_PUERTO']=465;
     $_SESSION['_MAIL_AUTENTIFICACION']=true;
     $_SESSION['_SMTPSecure']='ssl';
+    
+     //-----correos de notificaciones---------//
+    $_SESSION['_MAIL_NITIFICACIONES_1']='dcastro@boa.bo';//se utiliza para enviar correo al area legal 
+    
+    
 	
 
 	
