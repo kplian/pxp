@@ -44,6 +44,8 @@ DECLARE
    
    v_cantidad_disparos integer;
    v_resp_doc  boolean;
+   
+   v_array_codigo_tipo_proceso varchar[];
  
   
 BEGIN
@@ -121,9 +123,14 @@ BEGIN
     
        if  p_codigo_tipo_proceso = '' then
        
-         raise exception 'El proceso tiene % destino(s) posible(s), y no se especifico por cual camino se debe seguir';
+         raise exception 'El proceso tiene % destino(s) posible(s), y no se especifico por cual camino se debe seguir. (ADMIN: Considere agregar el codigo de proceso nuevo a la llamada)) ',v_cantidad_disparos;
        
        else
+       
+        
+          
+          v_array_codigo_tipo_proceso = regexp_split_to_array(p_codigo_tipo_proceso, E',');
+       
     
           select
            tp.id_tipo_proceso
@@ -131,12 +138,12 @@ BEGIN
             v_id_tipo_proceso_next
           from wf.ttipo_proceso tp 
           where   tp.id_tipo_estado=v_id_tipo_estado_prev
-          and tp.codigo = p_codigo_tipo_proceso;
+          and tp.codigo = ANY (v_array_codigo_tipo_proceso);
           
           --si no existe un camino oese a tener codigo se lanza un error
           if  v_id_tipo_proceso_next is NULL then
        
-             raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %', p_codigo_tipo_proceso;
+             raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %',v_cantidad_disparos, p_codigo_tipo_proceso;
        
           end if;
       

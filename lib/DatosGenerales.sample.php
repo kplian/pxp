@@ -147,7 +147,7 @@
 	
 	$_SESSION['_DIR_FAV_ICON']='../../../lib/images/favicon.ico';
 	  
-	$_SESSION['_DIR_LOGO']='/images/logo.jpg'; 
+	$_SESSION['_DIR_LOGO']='/imagenes/logos/logo.png'; 
 	
 	$_SESSION['_DIR_IMAGEN_INI']='../../../lib/imagenes/fondo_ini.jpg';
 	
