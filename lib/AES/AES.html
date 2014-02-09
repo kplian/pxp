@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>AES</title>
+
+  
+  
+  <script src="aes.js">/* AES JavaScript implementation */</script>
+  
+  <script src="aes-ctr.js">/* AES Counter Mode implementation */</script>
+  
+  <script src="base64.js">/* Base64 encoding */</script>
+  
+  <script src="utf8.js">/* UTF-8 encoding */</script>
+ 
+</head><body>
+<br>
+
+<form name="f" action="none!">
+  <fieldset>
+  <ul>
+    <li> <label for="pw">Llave</label> <input size="30" name="pw" id="pw" value="La clave de 3ncr1pt@r" style="width: 24em;"> </li>
+    <li> <label for="pt">TextoPlano</label> <input name="pt" id="pt" value="En un lugar de la Mancha" style="width: 24em;"> </li>
+    <li><span style="float: left; width: 7em;"><button type="button" name="Encriptar" id="encrypt" onclick="f.cipher.value = Aes.Ctr.encrypt(f.pt.value, f.pw.value, 256)">Encriptar</button></span>
+      <input name="cipher" id="cipher" readonly="readonly" style="width: 40em;" type="text"> </li>
+    <li> <span style="float: left; width: 7em;"><button type="button" name="Desencriptar" id="decrypt" onclick="f.plain.value = Aes.Ctr.decrypt(f.cipher.value, f.pw.value, 256)">Desencriptar</button></span>
+      <input name="plain" id="plain" readonly="readonly" style="width: 24em;" type="text"> </li>
+  </ul>
+  </fieldset>
+</form>
+
+</body></html>
