@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		orga.ft_funcionario_ime
@@ -33,6 +34,7 @@ v_ids						varchar[];
 v_tamano					integer;
 v_i 						integer;
 v_id_funcionario			integer;
+v_email_empresa             varchar;
 
 BEGIN
 
@@ -150,7 +152,31 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);
 
         END;
+     
+/*******************************    
+ #TRANSACCION:  RH_MAILFUN_GET
+ #DESCRIPCION:	Recuepra el email del funcionario
+ #AUTOR:	    RAC
+ #FECHA:		04-02-2014
+***********************************/
+
+    elsif(par_transaccion='RH_MAILFUN_GET')then
+        BEGIN
         
+         --inactivacion de la periodo
+              select 
+              fun.email_empresa
+              into
+              v_email_empresa
+              from orga.tfuncionario fun
+              where fun.id_funcionario = v_parametros.id_funcionario;
+              
+              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Recupera el correo del funcionario');
+              v_resp = pxp.f_agrega_clave(v_resp,'email_empresa',v_email_empresa::varchar);
+
+        END;
+    
+       
    
     else
 
@@ -171,7 +197,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_funcionario_sel (OID = 304951) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
