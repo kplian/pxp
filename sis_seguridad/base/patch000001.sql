@@ -928,3 +928,10 @@ ALTER TABLE segu.tpersona
 ALTER TABLE segu.tpersona
   ALTER COLUMN extension TYPE VARCHAR(100);
 /*****************************F-SCP-RCM-SEGU-0-01/02/2014*************/
+
+/*****************************I-SCP-RCM-SEGU-0-08/02/2014*************/
+
+ALTER TABLE segu.tfuncion
+  ALTER COLUMN nombre type varchar(100);
+
+/*****************************F-SCP-RCM-SEGU-0-08/02/2014*************/
