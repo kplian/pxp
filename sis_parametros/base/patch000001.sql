@@ -814,3 +814,17 @@ ALTER TABLE param.tproveedor
 
 /***********************************F-SCP-JRR-PARAM-0-08/02/2014****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-0-11/02/2014****************************************/
+
+--------------- SQL ---------------
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_monto_excento VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_monto_excento
+IS 'El documento requiere solictar porc_monto_excento_var,  se utiliza para factura electrica donde no se conoce el de antemano el porcentaje del monto excento de impuestos';
+
+
+/***********************************F-SCP-RAC-PARAM-0-11/02/2014****************************************/
+
+

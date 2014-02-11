@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_plantilla_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_plantilla_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema de Contabilidad
  FUNCION: 		param.f_plantilla_ime
@@ -54,7 +59,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            sw_monto_excento
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -65,7 +71,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.sw_monto_excento
 							
 			)RETURNING id_plantilla into v_id_plantilla;
 			
@@ -96,7 +103,8 @@ BEGIN
 			nro_linea = v_parametros.nro_linea,
 			tipo = v_parametros.tipo,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            sw_monto_excento = v_parametros.sw_monto_excento
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta
@@ -147,7 +155,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_plantilla_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

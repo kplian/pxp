@@ -33,6 +33,9 @@ class MODPlantilla extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('sw_monto_excento','varchar');
+		
+
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -55,6 +58,9 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_compro','sw_compro','varchar');
 		$this->setParametro('nro_linea','nro_linea','numeric');
 		$this->setParametro('tipo','tipo','numeric');
+		$this->setParametro('sw_monto_excento','sw_monto_excento','varchar');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -78,6 +84,7 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_compro','sw_compro','varchar');
 		$this->setParametro('nro_linea','nro_linea','numeric');
 		$this->setParametro('tipo','tipo','numeric');
+		$this->setParametro('sw_monto_excento','sw_monto_excento','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
