@@ -41,7 +41,7 @@ DECLARE
   v_registros  record;
   v_registros_doc   record;
   
-  v_id_proceso_wf_ini integer;
+  v_id_proceso_wf_ini integer[];
   
   v_sw boolean;
   
@@ -69,38 +69,38 @@ BEGIN
        
        
        
-       -- obtener los tipo de documentos del momento  verificar o exigir,  relacionados con este estado
+       -- obtener los tipos de documentos del momento  verificar o exigir o hacer_exigible,  relacionados con este estado
        --  y  los tipo_proceso_wf a verificar
-       FOR v_registros in (SELECT 
+       FOR v_registros in (
+                             SELECT 
                                     td.id_tipo_documento,
                                     td.id_tipo_proceso,
                                     td.nombre,
                                     td.codigo,
                                     td.descripcion,
-                                    tde.momento
+                                    tde.momento,
+                                    tde.tipo_busqueda
                                   FROM  wf.ttipo_documento_estado tde 
                                   INNER JOIN  wf.ttipo_documento  td 
                                     on td.id_tipo_documento  = tde.id_tipo_documento
-                                    and (tde.momento = 'exigir'  or tde.momento = 'verificar')
+                                    and (tde.momento = 'exigir'  or tde.momento = 'verificar' or tde.momento = 'hacer_exigible')
                                     and tde.id_tipo_estado = v_id_tipo_estado
                                     ) LOOP
        
        
+               -- recuriva mente encontra el proceso_wf correspondiente a los tipo_proceso identificados
                 
-       
-       
-              -- recuriva mente encontra el proceso_wf correspondiente a los tipo_proceso identificados
-                
-                v_id_proceso_wf_ini = wf.f_encontrar_proceso_wf(v_registros.id_tipo_proceso, p_id_estado_wf);
+               v_id_proceso_wf_ini = wf.f_encontrar_proceso_wf(v_registros.id_tipo_proceso, p_id_estado_wf,v_registros.tipo_busqueda);
                 
               
               
-             --raise exception 'looop  %, %',v_registros.id_tipo_proceso,p_id_estado_wf;
+              --raise exception 'looop  %, %',v_registros.id_tipo_proceso,p_id_estado_wf;
                 
              
               -- preguntar si el documento fue escaneado
                 FOR v_registros_doc  in( 
-                    select   
+                    select 
+                       dwf.id_documento_wf,  
                        dwf.momento,
                        dwf.chequeado,
                        pwf.codigo_proceso,
@@ -108,7 +108,7 @@ BEGIN
                     from wf.tdocumento_wf dwf
                     inner join wf.tproceso_wf pwf on pwf.id_proceso_wf = dwf.id_proceso_wf
                     
-                    where  dwf.id_proceso_wf =  v_id_proceso_wf_ini 
+                    where  dwf.id_proceso_wf = ANY(v_id_proceso_wf_ini) 
                       and  dwf.id_tipo_documento = v_registros.id_tipo_documento) LOOP
                       
                       
@@ -125,13 +125,22 @@ BEGIN
                    
                        --marcamos el documento como no escaneado
                        v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||')';   
+                       v_resp_cadena=v_resp_cadena||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br/>';   
                    
                    
                    ELSEIF v_registros.momento = 'verificar' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
                        --marcamos el documento como no escaneado
                        v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||')';   
+                       v_resp_cadena=v_resp_cadena||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br/>';   
+                   
+                   
+                   ELSEIF v_registros.momento = 'hacer_exigible' and  v_registros_doc.momento = 'verificar'  THEN
+                      
+                       update wf.tdocumento_wf dwf set
+                         momento = 'exigir'
+                       where dwf.id_documento_wf = v_registros_doc.id_documento_wf;
+                       
+                       
                    END IF;
                    
                END LOOP; 
@@ -145,7 +154,7 @@ BEGIN
         
         END IF;
         
-      
+    
      
        RETURN TRUE;
     

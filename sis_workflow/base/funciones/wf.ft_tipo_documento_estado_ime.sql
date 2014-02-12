@@ -58,7 +58,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            tipo_busqueda
           	) values(
 			v_parametros.id_tipo_estado,
 			v_parametros.id_tipo_documento,
@@ -68,7 +69,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.tipo_busqueda
 							
 			)RETURNING id_tipo_documento_estado into v_id_tipo_documento_estado;
 			
@@ -98,7 +100,8 @@ BEGIN
 			id_tipo_proceso = v_parametros.id_tipo_proceso,
 			momento = v_parametros.momento,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            tipo_busqueda = v_parametros.tipo_busqueda
 			where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
                
 			--Definicion de la respuesta

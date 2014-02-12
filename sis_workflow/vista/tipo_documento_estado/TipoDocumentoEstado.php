@@ -57,7 +57,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 mode: 'local',
                 valueField: 'momento',                  
-                store:['crear','verificar','exigir']
+                store:['crear','verificar','exigir','hacer_exigible']
             },
             type:'ComboBox',
             //filters:{pfiltro:'des.momento',type:'string'},
@@ -65,7 +65,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             filters:{   
                          type: 'list',
                          pfiltro:'tipdw.tipo',
-                         options: ['crear','verificar','exigir'],   
+                         options: ['crear','verificar','exigir','hacer_exigible'],   
                     },
             grid:true,
             form:true
@@ -162,6 +162,37 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             grid: true,
             form: true
         },
+        {
+            config:{
+                name: 'tipo_busqueda',
+                fieldLabel: 'Busqueda ',
+                allowBlank: false,
+                anchor: '70%',
+                gwidth: 150,
+                maxLength:50,
+                emptyText:'Tipo...',                
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'tipo_asignacion',                  
+              store:['superior','inferior']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'tipdw.tipo',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'des.tipo_busqueda',
+                         options: ['superior','inferior'],   
+                    },
+            grid:true,
+            form:true
+        },
+        
+        
+        
+        
        
 		{
 			config:{
@@ -332,7 +363,9 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_tipo_proceso','desc_tipo_estado'
+		{name:'usr_mod', type: 'string'},
+		'desc_tipo_proceso',
+		'desc_tipo_estado','tipo_busqueda'
 		
 	],
 	sortInfo:{

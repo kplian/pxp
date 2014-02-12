@@ -2,9 +2,10 @@
 
 CREATE OR REPLACE FUNCTION wf.f_encontrar_proceso_wf (
   p_id_tipo_proceso integer,
-  p_id_estado_wf integer
+  p_id_estado_wf integer,
+  p_tipo_busqueda varchar = 'superior'::character varying
 )
-RETURNS integer AS
+RETURNS integer [] AS
 $body$
 /**************************************************************************
  FUNCION: 		wf.f_encontrar_proceso_wf
@@ -60,48 +61,95 @@ v_i integer;
 v_temp_fin varchar;
 
 
-v_id_proceso_wf  integer;
+v_id_proceso_wf  integer[];
+v_id_proceso_wf_ini  integer;
  
 
 BEGIN
 
 
-
     v_nombre_funcion = 'wf.f_encontrar_proceso_wf';
     
-      WITH RECURSIVE path_rec(id_estado_wf, id_estado_wf_prev,id_proceso_wf,id_tipo_proceso ) AS (
-	    SELECT  
-	      ewfini.id_estado_wf,
-          pwf.id_estado_wf_prev,
-          pwf.id_proceso_wf ,
-          pwf.id_tipo_proceso
-	    FROM wf.tproceso_wf pwf
-	    inner join wf.testado_wf ewfini on ewfini.id_proceso_wf = pwf.id_proceso_wf
-	    WHERE ewfini.id_estado_wf = p_id_estado_wf
-	
-	    UNION
-	    SELECT
-	    ewf2.id_estado_wf, 
-        pwf2.id_estado_wf_prev,
-        pwf2.id_proceso_wf,
-        pwf2.id_tipo_proceso
-	    FROM wf.tproceso_wf pwf2
-        inner join wf.testado_wf ewf2 on ewf2.id_proceso_wf = pwf2.id_proceso_wf
-	    inner join path_rec  pr on ewf2.id_estado_wf = pr.id_estado_wf_prev
-	   
-	     
-	)
-    SELECT 
-       id_proceso_wf
-    into 
-       v_id_proceso_wf 
-    FROM path_rec where id_tipo_proceso = p_id_tipo_proceso;
-    
-    
-   
-   
-   
-   RETURN v_id_proceso_wf;
+      IF p_tipo_busqueda = 'superior' THEN
+      
+      -- buscar el tipo de proceso entre los nodos superiores
+            
+                WITH RECURSIVE path_rec(id_estado_wf, id_estado_wf_prev,id_proceso_wf,id_tipo_proceso ) AS (
+                  SELECT  
+                    ewfini.id_estado_wf,
+                    pwf.id_estado_wf_prev,
+                    pwf.id_proceso_wf ,
+                    pwf.id_tipo_proceso
+                  FROM wf.tproceso_wf pwf
+                  inner join wf.testado_wf ewfini on ewfini.id_proceso_wf = pwf.id_proceso_wf
+                  WHERE ewfini.id_estado_wf = p_id_estado_wf
+          	
+                  UNION
+                  SELECT
+                  ewf2.id_estado_wf, 
+                  pwf2.id_estado_wf_prev,
+                  pwf2.id_proceso_wf,
+                  pwf2.id_tipo_proceso
+                  FROM wf.tproceso_wf pwf2
+                  inner join wf.testado_wf ewf2 on ewf2.id_proceso_wf = pwf2.id_proceso_wf
+                  inner join path_rec  pr on ewf2.id_estado_wf = pr.id_estado_wf_prev
+          	   
+          	     
+              )
+              SELECT 
+                 pxp.aggarray(id_proceso_wf)
+              into 
+                 v_id_proceso_wf 
+              FROM path_rec where id_tipo_proceso = p_id_tipo_proceso;
+      
+      
+      
+      ELSEIF  p_tipo_busqueda = 'inferior'  THEN
+      
+         -- buscar el tipo de proceso entre los nodos inferiores
+         
+           --obtenermos el proceso wf del estado
+             select  
+               ewf.id_proceso_wf
+             into
+                v_id_proceso_wf_ini
+             from  wf.testado_wf ewf  where  ewf.id_estado_wf =  p_id_estado_wf;
+         
+      
+           WITH RECURSIVE path_rec(id_proceso_wf_sig, id_tipo_proceso) AS (
+        	    
+                select 
+                  pwf.id_proceso_wf as id_proceso_wf_sig,
+                  pwf.id_tipo_proceso
+                from wf.testado_wf  ewf
+                inner join wf.tproceso_wf  pwf on pwf.id_estado_wf_prev = ewf.id_estado_wf
+                where  ewf.id_proceso_wf = v_id_proceso_wf_ini
+                
+            UNION
+                select 
+                  pwf2.id_proceso_wf as id_proceso_wf_sig,
+                  pwf2.id_tipo_proceso
+                
+                from wf.testado_wf  ewf2
+                inner join wf.tproceso_wf  pwf2 on pwf2.id_estado_wf_prev = ewf2.id_estado_wf
+                inner join path_rec  pr on ewf2.id_proceso_wf = pr.id_proceso_wf_sig 
+                
+                
+           )
+            SELECT 
+             pxp.aggarray(id_proceso_wf_sig)
+            into 
+             v_id_proceso_wf 
+            FROM path_rec where id_tipo_proceso = p_id_tipo_proceso; 
+             
+            
+      
+      
+      END IF;
+      
+      
+      
+    RETURN v_id_proceso_wf;
 
 
 EXCEPTION

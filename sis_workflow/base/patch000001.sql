@@ -242,6 +242,18 @@ ALTER TABLE wf.tdocumento_wf
 
 
 
+/***********************************I-SCP-RAC-WF-0-12/02/2014****************************************/
+
+
+ALTER TABLE wf.ttipo_documento_estado
+  ADD COLUMN tipo_busqueda VARCHAR(12) DEFAULT 'superior' NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_documento_estado.tipo_busqueda
+IS 'superior o inferior, define la forma de buscar el documento';
+
+
+
+/***********************************F-SCP-RAC-WF-0-12/02/2014****************************************/
 
 
 

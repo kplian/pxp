@@ -60,7 +60,8 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         tp.codigo||''-''||tp.nombre as desc_tipo_proceso,
-                        te.codigo||''-''||te.nombre_estado as desc_tipo_estado
+                        te.codigo||''-''||te.nombre_estado as desc_tipo_estado,
+                        des.tipo_busqueda
                         	
 						from wf.ttipo_documento_estado des
 						inner join segu.tusuario usu1 on usu1.id_usuario = des.id_usuario_reg
