@@ -59,7 +59,7 @@ if(!isset($_SESSION["_SESION"])){
 
 	<!-- GC -->
 </head>
-<body  style="{background:#ffffff url(<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>) no-repeat center center;}"  scroll="no" id="docs">
+<body  style="background:#ffffff url('<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>') no-repeat center center;">
  
 <div id="loading-mask" style=""></div>
   <div id="loading">
