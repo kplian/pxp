@@ -1,7 +1,6 @@
 CREATE OR REPLACE FUNCTION pxp.trigger_usuario (
 )
-RETURNS trigger
-AS 
+RETURNS trigger AS
 $body$
 /**************************************************************************
  SISTEMA ENDESIS - SISTEMA DE SEGURIDAD (SSS)
@@ -88,10 +87,18 @@ _SEMILLA = '+_)(*&^%$#@!@TERPODO';
             --Modificación de login
                select (current_database()::text)||'_'||NEW.cuenta into g_new_login;
                select (current_database()::text)||'_'||OLD.cuenta into g_old_login;
-                 
+            --jrr:para crear el usuario de bd en caso de q no exista
+            IF NOT EXISTS(SELECT *
+                                  FROM pg_catalog.pg_user u
+                                  where u.usename = g_old_login) THEN
+             	--Crea el usuario de base de datos
+                g_consulta := 'CREATE USER "'||g_new_login||'"';
+                g_consulta := g_consulta||' WITH SUPERUSER ENCRYPTED PASSWORD '''||md5(_SEMILLA||OLD.contrasena)||'''';
+                g_consulta := g_consulta||' VALID UNTIL '''||OLD.fecha_caducidad||'''';
+                EXECUTE(g_consulta);             
                 
-           
-                
+             END IF;          
+             --end jrr   
              IF (OLD.cuenta != NEW.cuenta) THEN
                		 g_consulta := 'ALTER USER "'||g_old_login||'" RENAME TO "'||g_new_login||'"';
           
@@ -169,8 +176,8 @@ _SEMILLA = '+_)(*&^%$#@!@TERPODO';
 
 END;
 $body$
-    LANGUAGE plpgsql;
-
---
--- Definition for function f_insert_tfuncion (OID = 429309) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
