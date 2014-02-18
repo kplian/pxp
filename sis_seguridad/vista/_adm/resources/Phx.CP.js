@@ -50,7 +50,6 @@ Ext.apply(Ext.form.VTypes, {
     
     hex: function(val, field){
 		var v=/^[0-9A-F]+$/i .test(val);;
-    	console.log(v);
     	return /^[0-9A-F]+$/i .test(val);;
     },
     hexText:'El valor no está en Hexadecimal',
@@ -287,6 +286,9 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                title:title,
 	                closable: true,
 	                cclass : cls,
+	                //stateful:true,
+	                //allowDomMove:false,
+	                //bufferResize:true,
 	                iconCls:iconCls,
 	                listeners:{
 	                	scope:this,
@@ -302,7 +304,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
 	  				  	
-	  				  	  console.log('--->>>>',r,a,o)
 	  				  	  var objConfig = o.argument.options.arguments
 	  				  	
 	  					  // Al retorno de de cargar la ventana
@@ -349,6 +350,10 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 							  				    		  	               objConfig.arrayInt,
 							  				    		  	               objConfig.indice -1
 							  				    		  	               );
+							  				    		  	               
+							  				    		 //Ext.get(Phx.vista[clase].idContenedor).doLayout()
+							  				    		 //Phx.CP.getPagina(id).panel.doLayout(); 	               
+							  				    		  	               
 							  				    		}
 					  				      	 	  }
 							  				       catch(err){
@@ -376,6 +381,8 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  				    		  	               objConfig.arrayInt,
 		  				    		  	               objConfig.indice -1
 		  				    		  	               );
+		  				    		  	               
+		  				    		  //Phx.CP.getPagina(id).panel.doLayout();	               
 		  				    		}
 		  				    		
 		  				    		
@@ -389,7 +396,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				    	}  
 	  				   }
 	  				   else{
-	  				   	console.log('no existe la clase '+clase)
+	  				   	alert('no existe la clase '+clase)
 	  				   }
 	  				 },
 	  				  scripts :true}
@@ -625,12 +632,14 @@ Phx.CP=function(){
 	                            }
 	                             Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
 								 
+								  
+								 
 								},3000);
 						});
 		   
-		   
 		   //get state interface from gui
-		   this.getStateGui()
+		   //Phx.CP.getStateGui()
+		   
 			
 		},
 		//para capturar variables enviadas por get
@@ -717,8 +726,7 @@ Phx.CP=function(){
 			
 			//win_login.addKeyListener(Ext.EventObject.ENTER, Phx.CP.entrar); // Tecla enter
 
-              //console.log(x,y,z);
-			if(x=='activa'){
+            if(x=='activa'){
 				Phx.CP.CRIPT=new Phx.Encriptacion({encryptionExponent:regreso.e,
 							modulus:regreso.m,
 							permutacion:regreso.p,
@@ -819,14 +827,27 @@ Phx.CP=function(){
 							//aplica el estilo de vista del usuario
 							Phx.CP.setEstiloVista(Phx.CP.config_ini.estilo_vista);
 							win_login.hide();
+							
+							var cookiUser = Ext.util.Cookies.get('usuario');
+							if(cookiUser == Phx.CP.config_ini.nombre_usuario){
+								this.arrayInterfaces = [];
+							}
+							else{
+								Ext.util.Cookies.set('usuario',Phx.CP.config_ini.nombre_usuario);
+							}
+							
+							
 							//si s la primera vez inicia el entorno
-			        	   if(!sw_auten){
+							if(!sw_auten){
 			        		   Phx.CP.init();
 							   sw_auten=true;
 			        	   }
 			        	    
 			        	    form_login.setTitle("LOGIN");
 							Phx.CP.loadingHide();
+							
+							
+							
 			        	  
 			      		}
 						else{
@@ -838,11 +859,8 @@ Phx.CP=function(){
 		                            iconCls: 'x-status-error',
 		                            clear: true // auto-clear after a set interval
 		                        });
-		                        
-		                     
-						     }
+		                     }
 							ajax.failure();
-
 						}
 						
 						
@@ -1012,9 +1030,7 @@ Phx.CP=function(){
 		                    character.charCodeAt(0)// charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
 		);
 		
-		console.log('charcode',character.charCodeAt(0))
-		//document.dispatchEvent(keyboardEvent);
-       	return keyboardEvent;
+		return keyboardEvent;
        	
        },
        
@@ -1094,9 +1110,7 @@ Phx.CP=function(){
 	  	 		this.arrayInterfaces.splice(index, 1);
 	  	 		Ext.util.Cookies.set('arrayInterfaces',JSON.stringify(this.arrayInterfaces));
 	  	 	}
-	  	 	console.log('cookie',Ext.util.Cookies.get('arrayInterfaces'))
-	  	 	
-	    },
+	  	},
 		findArrayInterfaces:function(clase){
 	    	var i = 0;
 	    	for (var i = 0; i <  this.arrayInterfaces.length ;i++){
@@ -1110,7 +1124,6 @@ Phx.CP=function(){
 	    getStateGui:function(){
 	    	temp = Ext.util.Cookies.get('arrayInterfaces')
 	    	this.arrayInterfaces=JSON.parse(temp)
-	    	console.log('getStateGui',this.arrayInterfaces)
 	    	if(!this.arrayInterfaces){
 	    		this.arrayInterfaces = [];
 	    	}
