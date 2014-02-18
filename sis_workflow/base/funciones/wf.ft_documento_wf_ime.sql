@@ -50,7 +50,9 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update wf.tdocumento_wf set
-			obs = v_parametros.obs
+			obs = v_parametros.obs,
+            chequeado_fisico = v_parametros.chequeado_fisico
+            
 			where id_documento_wf=v_parametros.id_documento_wf;
                
 			--Definicion de la respuesta

@@ -86,7 +86,8 @@ BEGIN
                         pw.nro_tramite,
                         pw.codigo_proceso,
                         pw.descripcion as descripcion_proceso_wf,
-                        tewf.nombre_estado
+                        tewf.nombre_estado,
+                        dwf.chequeado_fisico
 						from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento

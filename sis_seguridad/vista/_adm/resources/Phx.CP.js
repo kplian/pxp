@@ -60,7 +60,7 @@ Ext.apply(Ext.form.VTypes, {
 
 
 // /////////////////////////////////
-// DEFINICON DE LA CLASE MANU //
+// DEFINICON DE LA CLASE MENU //
 // ////////////////////////////////
 Menu=function(config){
 	
@@ -111,7 +111,10 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
 	
 	selectClass : function(cls){
 		if(cls){
-			this.getSelectionModel().select(this.getNodeById(cls))
+			if(this.getNodeById(cls)){
+				this.getSelectionModel().select(this.getNodeById(cls))
+			}
+			
 		}
 	},
 	initComponent: function(){
@@ -249,7 +252,18 @@ MainPanel = function(config){
 };
 
 Ext.extend(MainPanel, Ext.TabPanel,{
-	loadClass : function(href, cls, title,icono,ruta,clase){
+	loadClass : function(href, cls, title,icono,ruta,clase,cookie){
+		
+		 var objConfig = {
+		  	               'href':href, 
+		  	               'cls':cls, 
+		  	               'title':title,
+		  	               'icono':icono,
+		  	               'ruta':ruta,
+		  	               'clase':clase,
+		  	               'cookie':cookie
+		  	              };
+		  	              
 		 var id = 'docs-' + cls;
 		 var tab = this.getComponent(id);
 		 //si el tab existe toma el foco
@@ -272,11 +286,24 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                closable: true,
 	                cclass : cls,
 	                iconCls:iconCls,
+	                listeners:{
+	                	scope:this,
+	                	'close':function(){
+	                		alert(href)
+	                		Phx.CP.removeStateGui(clase)
+	                	}
+	                	
+	                },
 	                autoLoad: {
 	  				  url: href,
 	  				  params:{idContenedor:id,_tipo:'direc'},
 	  				  showLoadIndicator: "Cargando...",
+	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
+	  				  	
+	  				  	  console.log('--->>>>',r,a,o)
+	  				  	  var objConfig = o.argument.options.arguments
+	  				  	
 	  					  // Al retorno de de cargar la ventana
 	  					  // ejecuta la clase que llega con el codigo de la url
 	  					  // el nombre de la clase viene en la variable cls que
@@ -297,8 +324,8 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			                         //var inter = Phx.vista[clase];
 				  				       u.update(
 				  				      	 {url:Phx.vista[clase].require, 
-				  				      	 params:{idContenedor:id,_tipo:'direc'},
-				  				      	 scripts :true,
+				  				      	  params:{idContenedor:id,_tipo:'direc',},
+				  				      	  scripts :true,
 				  				      	  showLoadIndicator: "Cargando...2",
 				  				      	  callback: function(r,a,o){
 					  				      	 	 try{
@@ -318,7 +345,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			  				 }
 	  				    	else{
 		  				    	try{
-		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params));
+		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
 		  				      	}
 		  				        catch(err){
 		  				       		var resp = Array();
@@ -337,6 +364,9 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	            this.setActiveTab(p);
 	      }
 	}
+	
+	
+		  				      	
 	
 });
 
@@ -454,7 +484,7 @@ Phx.CP=function(){
 			mainPanel=new MainPanel({menuTree:menu});
 			mainPanel.on('tabchange', function(tp, tab){
 				if(tab){
-				menu.selectClass(tab.cclass);
+				   menu.selectClass(tab.cclass);
 				}
 		    });
 
@@ -564,7 +594,10 @@ Phx.CP=function(){
 								 
 								},3000);
 						});
-		   	  
+		   
+		   
+		   //get state interface from gui
+		   //this.getStateGui()
 			
 		},
 		//para capturar variables enviadas por get
@@ -886,15 +919,14 @@ Phx.CP=function(){
            }
            else{
 				Ext.Msg.show({
-					title: 'ERROR',
+					title: 'AVISO ... ',
+					icon:Ext.MessageBox.INFO,
 					msg:mensaje,
 					buttons: Ext.Msg.OK,
 					minWidth:500,
 					minHeight:100
 	
 				});
-				
-				
 				
 			}
 		},
@@ -996,8 +1028,16 @@ Phx.CP=function(){
 
 
 		elementos:new Array(),
-		setPagina:function(e){
+		initMode:true,
+		setPagina:function(e,objConfig){
 			this.elementos.push(e);
+			if(objConfig){
+				//si el level es 0 guardamos en la cookie
+				if(objConfig.clase!='tabInicial'){
+					this.saveStateGui(objConfig)
+				}
+			}
+			
 		},
 
 		getPagina:function(e){
@@ -1007,6 +1047,53 @@ Phx.CP=function(){
 				}
 			}
 		},
+		arrayInterfaces:[],
+		saveStateGui:function(objConfig){
+		  if(!(objConfig.cookie)){
+		        this.arrayInterfaces.push(objConfig)
+		    	Ext.util.Cookies.set('arrayInterfaces',JSON.stringify(this.arrayInterfaces));
+		   }
+	    },
+	    
+	    removeStateGui:function(clase){
+	    	var index = this.findArrayInterfaces(clase)
+	  	 	if(index != -1){
+	  	 		this.arrayInterfaces.splice(index, 1);
+	  	 		Ext.util.Cookies.set('arrayInterfaces',JSON.stringify(this.arrayInterfaces));
+	  	 	}
+	  	 	console.log('cookie',Ext.util.Cookies.get('arrayInterfaces'))
+	  	 	
+	    },
+		findArrayInterfaces:function(clase){
+	    	var i = 0;
+	    	for (var i = 0; i <  this.arrayInterfaces.length ;i++){
+	        	if (this.arrayInterfaces[i].clase == clase){
+	        		return i;
+	        	}
+	        }
+	    	return  -1;
+	    },
+	    
+	    getStateGui:function(){
+	    	temp = Ext.util.Cookies.get('arrayInterfaces')
+	    	this.arrayInterfaces=JSON.parse(temp)
+	    	console.log('getStateGui',this.arrayInterfaces)
+	    	if(!this.arrayInterfaces){
+	    		this.arrayInterfaces = [];
+	    	}
+	    	alert('getstate')
+	    	
+	    	for (var i = 0; i <  this.arrayInterfaces.length;i++){
+	        	obj = this.arrayInterfaces[i]
+	        	alert(i)
+	        	//this.getMainPanel().loadClass(obj.href, obj.cls, obj.title,obj.icono,obj.ruta,obj.clase)
+	        	//this.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase);
+	        	Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase,true);
+	        	for (var j = 0; j <  10000000*i;j++){}
+	        	                          
+	        }  	
+        },
+		
 		// para destruir paginas
 		destroyPage:function(id){
 			for(var i=0;i<this.elementos.length;i++){
@@ -1057,8 +1144,8 @@ Phx.CP=function(){
   				     //trae la clase padre
   				     //en el callback ejecuta la herencia 
   				     //e instanca la clase hijo
-  				      var owid= Ext.id();
-				  	  Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
+  				     var owid= Ext.id();
+				  	 Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
 				  				    
   				     var el = Ext.get(owid); // este div esta quemado en el codigo html
                      var u = el.getUpdater();
@@ -1076,7 +1163,7 @@ Phx.CP=function(){
   				      	 	eval('Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
   				      	 
   				      	 }
-  				      	 })
+  				     })
   				 }
 		    else{
 		    	 // Al retorno de de cargar la ventana

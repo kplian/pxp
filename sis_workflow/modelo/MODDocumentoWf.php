@@ -47,6 +47,7 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('codigo_proceso','varchar');
 		$this->captura('descripcion_proceso_wf','varchar');
 		$this->captura('nombre_estado','varchar');
+		$this->captura('chequeado_fisico','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -103,6 +104,7 @@ class MODDocumentoWf extends MODbase{
 		$this->setParametro('nombre_tipo_doc','nombre_tipo_doc','varchar');
 		$this->setParametro('nombre_doc','nombre_doc','varchar');
 		$this->setParametro('momento','momento','varchar');
+		$this->setParametro('chequeado_fisico','chequeado_fisico','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

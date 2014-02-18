@@ -57,7 +57,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 mode: 'local',
                 valueField: 'momento',                  
-                store:['crear','verificar','exigir','hacer_exigible']
+                store:['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico']
             },
             type:'ComboBox',
             //filters:{pfiltro:'des.momento',type:'string'},
@@ -65,7 +65,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             filters:{   
                          type: 'list',
                          pfiltro:'tipdw.tipo',
-                         options: ['crear','verificar','exigir','hacer_exigible'],   
+                         options: ['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico'],   
                     },
             grid:true,
             form:true
@@ -88,7 +88,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 					totalProperty: 'total',
 					fields: ['id_tipo_proceso', 'nombre', 'codigo','id_proceso_macro','desc_proceso_macro'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'tp.nombre'}
+					baseParams: {par_filtro: 'tipproc.nombre#tipproc.codigo'}
 				}),
 				valueField: 'id_tipo_proceso',
 				displayField: 'nombre',
@@ -135,7 +135,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                     fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo_estado','disparador','fin','desc_tipo_proceso'],
                     // turn on remote sorting
                     remoteSort: true,
-                    baseParams: {par_filtro: 'tipes.nombre_estado'}
+                    baseParams: {par_filtro: 'tipes.nombre_estado#tipes.codigo'}
                 }),
                 valueField: 'id_tipo_estado',
                 displayField: 'nombre_estado',

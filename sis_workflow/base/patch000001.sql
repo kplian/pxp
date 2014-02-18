@@ -257,3 +257,25 @@ IS 'superior o inferior, define la forma de buscar el documento';
 
 
 
+/***********************************I-SCP-RAC-WF-0-17/02/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN chequeado_fisico VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.chequeado_fisico
+IS 'identifica los documentos que se tienen fisicamente';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN momento_fisico VARCHAR(30) DEFAULT 'verificar' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.momento_fisico
+IS 'verificar o exigir documentos fisicos';
+
+
+/***********************************F-SCP-RAC-WF-0-17/02/2014****************************************/
+
+

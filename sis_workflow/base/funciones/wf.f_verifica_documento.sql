@@ -46,6 +46,7 @@ DECLARE
   v_sw boolean;
   
   v_resp_cadena varchar;
+  v_resp_fisico varchar;
   
 BEGIN
 
@@ -65,7 +66,8 @@ BEGIN
        
        
        v_sw = FALSE;
-       v_resp_cadena = 'Documentos no escaneados:<br/>';
+       v_resp_cadena = '';
+       v_resp_fisico = '';
        
        
        
@@ -83,7 +85,7 @@ BEGIN
                                   FROM  wf.ttipo_documento_estado tde 
                                   INNER JOIN  wf.ttipo_documento  td 
                                     on td.id_tipo_documento  = tde.id_tipo_documento
-                                    and (tde.momento = 'exigir'  or tde.momento = 'verificar' or tde.momento = 'hacer_exigible')
+                                    and (tde.momento = 'exigir'  or tde.momento = 'verificar' or tde.momento = 'hacer_exigible' or tde.momento = 'verificar_fisico' or tde.momento = 'exigir_fisico')
                                     and tde.id_tipo_estado = v_id_tipo_estado
                                     ) LOOP
        
@@ -103,6 +105,7 @@ BEGIN
                        dwf.id_documento_wf,  
                        dwf.momento,
                        dwf.chequeado,
+                       dwf.chequeado_fisico,
                        pwf.codigo_proceso,
                        pwf.descripcion
                     from wf.tdocumento_wf dwf
@@ -143,12 +146,44 @@ BEGIN
                        
                    END IF;
                    
+                   --REVISION DE LA BANDERA DE DOCUMENTOS FISICOS
+                   IF v_registros.momento = 'exigir_fisico' and  v_registros_doc.chequeado_fisico = 'no'  THEN
+                      --marcamos que el documento no tiene el respaldo fiscico
+                       v_sw=TRUE;
+                       v_resp_fisico=v_resp_fisico||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br/>';   
+                   
+                   ELSEIF v_registros.momento = 'verificar_fisico' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado_fisico = 'no'  THEN
+                       --marcamos el documento como no escaneado
+                       v_sw=TRUE;
+                       v_resp_fisico=v_resp_fisico||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br/>';   
+                   
+                   END IF; 
+                   
+                  
+                   
+                   
+                   
                END LOOP; 
                 
         END LOOP;
        
        --mostramos errores si existen
         IF v_sw THEN
+        
+        
+       
+            IF v_resp_cadena != '' THEN
+               
+               v_resp_cadena = 'Documentos no escaneados:<br/>'||v_resp_cadena;
+            
+            END IF;
+            
+            IF v_resp_fisico != '' THEN
+               
+               v_resp_cadena = v_resp_cadena||'<br/>No se verificiaron los documentos físicos de:<br/>' ||v_resp_fisico;
+            
+            END IF;
+        
         
            raise exception '%',v_resp_cadena;
         
