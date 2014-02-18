@@ -289,7 +289,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                listeners:{
 	                	scope:this,
 	                	'close':function(){
-	                		alert(href)
 	                		Phx.CP.removeStateGui(clase)
 	                	}
 	                	
