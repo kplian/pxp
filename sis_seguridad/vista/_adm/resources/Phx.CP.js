@@ -252,7 +252,7 @@ MainPanel = function(config){
 };
 
 Ext.extend(MainPanel, Ext.TabPanel,{
-	loadClass : function(href, cls, title,icono,ruta,clase,cookie){
+	loadClass : function(href, cls, title,icono,ruta,clase,cookie,arrayInt,indice){
 		
 		 var objConfig = {
 		  	               'href':href, 
@@ -261,7 +261,9 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  	               'icono':icono,
 		  	               'ruta':ruta,
 		  	               'clase':clase,
-		  	               'cookie':cookie
+		  	               'cookie':cookie,
+		  	               'arrayInt':arrayInt,
+		  	               'indice':indice
 		  	              };
 		  	              
 		 var id = 'docs-' + cls;
@@ -323,15 +325,31 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			                         //var inter = Phx.vista[clase];
 				  				       u.update(
 				  				      	 {url:Phx.vista[clase].require, 
-				  				      	  params:{idContenedor:id,_tipo:'direc',},
+				  				      	  params:{idContenedor:id,_tipo:'direc'},
+				  				      	  arguments:objConfig,
 				  				      	  scripts :true,
 				  				      	  showLoadIndicator: "Cargando...2",
 				  				      	  callback: function(r,a,o){
 					  				      	 	 try{
+					  				      	 	 	
+					  				      	 	 	var objConfig = o.argument.options.arguments
 					  				      	 		//genera herencia 
 					  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
 					  				      	 		//ejecuta la clase hijo
-					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params))
+					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+					  				      	 		if(objConfig.cookie && objConfig.indice > 0){
+		  				    		  
+							  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
+							  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
+							  				    		  	               obj.title,
+							  				    		  	               obj.icono,
+							  				    		  	               obj.ruta,
+							  				    		  	               obj.clase,
+							  				    		  	               true,
+							  				    		  	               objConfig.arrayInt,
+							  				    		  	               objConfig.indice -1
+							  				    		  	               );
+							  				    		}
 					  				      	 	  }
 							  				       catch(err){
 							  				       	var resp = Array();
@@ -345,6 +363,22 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				    	else{
 		  				    	try{
 		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+		  				    		
+		  				    		if(objConfig.cookie && objConfig.indice > 0){
+		  				    		  
+		  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
+		  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
+		  				    		  	               obj.title,
+		  				    		  	               obj.icono,
+		  				    		  	               obj.ruta,
+		  				    		  	               obj.clase,
+		  				    		  	               true,
+		  				    		  	               objConfig.arrayInt,
+		  				    		  	               objConfig.indice -1
+		  				    		  	               );
+		  				    		}
+		  				    		
+		  				    		
 		  				      	}
 		  				        catch(err){
 		  				       		var resp = Array();
@@ -596,7 +630,7 @@ Phx.CP=function(){
 		   
 		   
 		   //get state interface from gui
-		   //this.getStateGui()
+		   this.getStateGui()
 			
 		},
 		//para capturar variables enviadas por get
@@ -1080,17 +1114,13 @@ Phx.CP=function(){
 	    	if(!this.arrayInterfaces){
 	    		this.arrayInterfaces = [];
 	    	}
-	    	alert('getstate')
 	    	
-	    	for (var i = 0; i <  this.arrayInterfaces.length;i++){
-	        	obj = this.arrayInterfaces[i]
-	        	alert(i)
-	        	//this.getMainPanel().loadClass(obj.href, obj.cls, obj.title,obj.icono,obj.ruta,obj.clase)
-	        	//this.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase);
-	        	Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase,true);
-	        	for (var j = 0; j <  10000000*i;j++){}
-	        	                          
-	        }  	
+	    	
+	    	if(this.arrayInterfaces.length > 0){
+	    	   var ind =  this.arrayInterfaces.length -1
+	    	   var obj = this.arrayInterfaces[ind]
+	           Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase,true,this.arrayInterfaces,ind);
+	        }	
         },
 		
 		// para destruir paginas
