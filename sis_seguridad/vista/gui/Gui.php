@@ -233,6 +233,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 	    enableDD:true,
 	    idNodoDD: 'id_gui',
 	    idOldParentDD: 'id_gui_padre',
+	    idTargetDD:'id_gui',
 		expanded:false,
 		useArrows: true,
 		rootVisible: true,
