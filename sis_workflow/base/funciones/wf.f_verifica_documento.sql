@@ -165,6 +165,9 @@ BEGIN
                 
         END LOOP;
        
+       
+      -- raise exception '... %,%,%',v_sw,v_resp_cadena,v_resp_fisico;
+       
        --mostramos errores si existen
         IF v_sw THEN
         
@@ -187,7 +190,7 @@ BEGIN
         
         END IF;
         
-      
+       raise exception '%',v_resp_cadena;
     
      
        RETURN TRUE;
