@@ -126,13 +126,13 @@ BEGIN
                    
                        --marcamos el documento como no escaneado
                        v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br/>';   
+                       v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '|||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
                    
                    
                    ELSEIF v_registros.momento = 'verificar' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
                        --marcamos el documento como no escaneado
                        v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br/>';   
+                       v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
                    
                    
                    ELSEIF v_registros.momento = 'hacer_exigible' and  v_registros_doc.momento = 'verificar'  THEN
@@ -148,12 +148,12 @@ BEGIN
                    IF v_registros.momento = 'exigir_fisico' and  v_registros_doc.chequeado_fisico = 'no'  THEN
                       --marcamos que el documento no tiene el respaldo fiscico
                        v_sw=TRUE;
-                       v_resp_fisico=v_resp_fisico||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br>';   
+                       v_resp_fisico=v_resp_fisico||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br> ';   
                    
                    ELSEIF v_registros.momento = 'verificar_fisico' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado_fisico = 'no'  THEN
                        --marcamos el documento como no escaneado
                        v_sw=TRUE;
-                       v_resp_fisico=v_resp_fisico||'Doc. ["'||v_registros.nombre  ||'"] del proc. '||v_registros_doc.codigo_proceso||'(' ||v_registros_doc.descripcion||') <br>';   
+                       v_resp_fisico=v_resp_fisico||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br> ';   
                    
                    END IF; 
                    
@@ -175,7 +175,7 @@ BEGIN
        
             IF v_resp_cadena != '' THEN
                
-               v_resp_cadena = 'Documentos no escaneados:'||v_resp_cadena;
+               v_resp_cadena = 'Documentos no escaneados:<br>'||v_resp_cadena;
             
             END IF;
             
@@ -186,11 +186,11 @@ BEGIN
             END IF;
         
         
-           
+            raise exception '%',v_resp_cadena;
         
         END IF;
         
-       raise exception '%',v_resp_cadena;
+       
     
      
        RETURN TRUE;
