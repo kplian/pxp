@@ -300,7 +300,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
 	  				  	
-	  				  	  console.log('--->>>>',r,a,o)
+	  				  	  //console.log('--->>>>',r,a,o)
 	  				  	  var objConfig = o.argument.options.arguments
 	  				  	
 	  					  // Al retorno de de cargar la ventana
