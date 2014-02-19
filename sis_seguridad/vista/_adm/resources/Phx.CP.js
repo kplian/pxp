@@ -304,6 +304,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
 	  				  	
+
 	  				  	  var objConfig = o.argument.options.arguments
 	  				  	
 	  					  // Al retorno de de cargar la ventana
@@ -1288,11 +1289,10 @@ Phx.CP=function(){
 		},
 		log: function(){
 		    if( typeof window.console != 'undefined' ){
-		        console.log.apply( null, arguments ); 
+		        console.log.apply(null,arguments); 
 		    }
 		}
 	}
 }();
 // al cargar el script ejecuta primero el metodo login
 //Ext.onReady(Phx.CP.iniciarLogin,Phx.CP,true);
-
