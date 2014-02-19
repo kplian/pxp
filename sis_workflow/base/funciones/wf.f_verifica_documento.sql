@@ -187,7 +187,7 @@ BEGIN
         
         END IF;
         
-        raise exception 'FINALZA';
+      
     
      
        RETURN TRUE;
