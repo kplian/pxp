@@ -359,6 +359,28 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		{name:'desc_tipo_estado', type: 'string'},'inicio'
 		
 	],
+	onButtonNew: function() {
+        
+        if(this.validarFiltros()){
+             Phx.vista.TipoProceso.superclass.onButtonNew.call(this);
+             this.filtraAddEdit();
+            
+            
+            }
+        else{
+            alert('Seleccione el Proceso Macro');
+        }
+        
+       
+    },
+    
+    filtraAddEdit:function(){
+        this.Cmp.id_tipo_estado.store.baseParams.id_proceso_macro=this.cmbProcesoMacro.getValue();
+        this.Cmp.id_tipo_estado.modificado=true;
+            
+        
+    },
+	
 	sortInfo:{
 		field: 'id_tipo_proceso',
 		direction: 'ASC'

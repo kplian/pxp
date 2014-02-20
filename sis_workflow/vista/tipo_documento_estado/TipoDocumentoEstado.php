@@ -337,6 +337,10 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
       else{
          this.Cmp.id_tipo_proceso.store.baseParams.id_tipo_proceso='';
       }
+      
+      this.Cmp.id_tipo_proceso.store.baseParams.id_proceso_macro=this.maestro.id_proceso_macro;
+      this.Cmp.id_tipo_estado.store.baseParams.id_tipo_proceso=this.Cmp.id_tipo_proceso.getValue();
+      
       this.Cmp.id_tipo_proceso.modificado=true;
        
        
