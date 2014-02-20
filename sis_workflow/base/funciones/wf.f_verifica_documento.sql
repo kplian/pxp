@@ -126,7 +126,7 @@ BEGIN
                    
                        --marcamos el documento como no escaneado
                        v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '|||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
+                       v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
                    
                    
                    ELSEIF v_registros.momento = 'verificar' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
