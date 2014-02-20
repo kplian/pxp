@@ -95,6 +95,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 pageSize: 20,
                 queryDelay: 200,
                 anchor: '80%',
+                listWidth:'280',
+                resizable:true,
                 minChars: 2,
                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
             }),

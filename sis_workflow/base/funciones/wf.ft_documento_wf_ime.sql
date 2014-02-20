@@ -39,8 +39,8 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'WF_DWF_INS'
- 	#DESCRIPCION:	Insercion de registros
+ 	#TRANSACCION:  'WF_DWF_MOD'
+ 	#DESCRIPCION:	Mofifica documentos, chequeo fisico y boservaciones
  	#AUTOR:		admin	
  	#FECHA:		15-01-2014 13:52:19
 	***********************************/
@@ -51,7 +51,9 @@ BEGIN
 			--Sentencia de la modificacion
 			update wf.tdocumento_wf set
 			obs = v_parametros.obs,
-            chequeado_fisico = v_parametros.chequeado_fisico
+            chequeado_fisico = v_parametros.chequeado_fisico,
+            fecha_mod = now(),
+            id_usuario_mod = p_id_usuario
             
 			where id_documento_wf=v_parametros.id_documento_wf;
                
@@ -103,7 +105,9 @@ BEGIN
             --archivo=v_parametros.archivo,
             extension=v_parametros.extension,
             chequeado = 'si',
-            url = v_parametros.file_name
+            url = v_parametros.file_name,
+            fecha_mod = now(),
+            id_usuario_mod = p_id_usuario
             where id_documento_wf=v_parametros.id_documento_wf;
             
              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo modificado con exito '||v_parametros.id_documento_wf); 
