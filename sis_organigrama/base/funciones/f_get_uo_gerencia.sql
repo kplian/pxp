@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION orga.f_get_uo_presupuesta (
+CREATE OR REPLACE FUNCTION orga.f_get_uo_gerencia (
   par_id_uo integer,
   par_id_funcionario integer,
   par_fecha date
@@ -11,26 +11,26 @@ DECLARE
 	v_mensaje_error         text;
     v_consulta				text;
     v_id_uo					integer;
-    v_presupuesta			varchar;
-     v_id_uo_hijo		integer;
+    v_gerencia			varchar;
+    v_id_uo_hijo		integer;
 BEGIN
-  	v_nombre_funcion = 'orga.f_get_uo_presupuesta';
+  	v_nombre_funcion = 'orga.f_get_uo_gerencia';
     if (par_id_uo is not null) then
-    	select euo.id_uo_padre, uo.presupuesta, euo.id_uo_hijo
-        into v_id_uo, v_presupuesta, v_id_uo_hijo
+    	select euo.id_uo_padre, uo.gerencia, euo.id_uo_hijo
+        into v_id_uo, v_gerencia, v_id_uo_hijo
         from orga.tuo uo
         inner join orga.testructura_uo euo
         	on euo.id_uo_hijo = uo.id_uo
         where euo.id_uo_hijo = par_id_uo;
         
-        if (v_presupuesta = 'si') then
+        if (v_gerencia = 'si') then
         	return par_id_uo;
         else
         	if (v_id_uo = v_id_uo_hijo) then
         		return NULL; 
             else
-            	return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL);
-            end if; 
+            	return orga.f_get_uo_gerencia(v_id_uo, NULL, NULL);
+            end if;
         end if;
     
     else
@@ -43,7 +43,7 @@ BEGIN
         end if;
         
             
-        return orga.f_get_uo_presupuesta(v_id_uo, NULL, NULL);
+        return orga.f_get_uo_gerencia(v_id_uo, NULL, NULL);
     end if;
     
            

@@ -7,8 +7,9 @@ class MYPDF extends TCPDF {
 	var $tablenumbers=array();
 	
     public function MultiRow($row, $fill = false, $border = 1) {
+    	
         $index = 0;
-		$height_base = 10;
+		$height_base = 3;
 		$height_aux = 0;
 		$page_aux = 0;
 		$y_pos_aux = 0;
@@ -36,6 +37,7 @@ class MYPDF extends TCPDF {
 		$index = 0;
 		foreach ($row as $data) {
 			
+		
             if ($numbers && $this->tablenumbers[$index] > 0) {
             	$data = number_format ( $data , $this->tablenumbers[$index] , '.' , ',' );
             }
@@ -44,6 +46,7 @@ class MYPDF extends TCPDF {
 			$index++;
 			
         }
+		
 		$this->ln();
 		$this->setPage($page_aux);		
 		
