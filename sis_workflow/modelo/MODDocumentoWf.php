@@ -49,7 +49,9 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('nombre_estado','varchar');
 		$this->captura('chequeado_fisico','varchar');
 		
-		
+		$this->captura('usr_upload','varchar');
+        $this->captura('fecha_upload','timestamp');
+        
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -155,6 +157,23 @@ class MODDocumentoWf extends MODbase{
         $this->armarConsulta();
                 
         $this->ejecutarConsulta();
+        return $this->respuesta;
+    }
+    
+    function cambiarMomento(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.ft_documento_wf_ime';
+        $this->transaccion='WF_CABMOM_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_documento_wf','id_documento_wf','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
         return $this->respuesta;
     }
 			

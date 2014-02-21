@@ -49,7 +49,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Momento',
                 allowBlank: false,
                 anchor: '80%',
-                gwidth: 150,
+                gwidth: 70,
                 maxLength:50,
                 emptyText:'momento...',                
                 typeAhead: true,

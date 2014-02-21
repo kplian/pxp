@@ -87,12 +87,15 @@ BEGIN
                         pw.codigo_proceso,
                         pw.descripcion as descripcion_proceso_wf,
                         tewf.nombre_estado,
-                        dwf.chequeado_fisico
+                        dwf.chequeado_fisico,
+                        usu3.cuenta as usr_upload,
+                        dwf.fecha_upload
 						from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
                         left join segu.tusuario usu2 on usu2.id_usuario = dwf.id_usuario_mod
+                        left join segu.tusuario usu3 on usu3.id_usuario = dwf.id_usuario_upload
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
@@ -140,6 +143,7 @@ BEGIN
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
                         left join segu.tusuario usu2 on usu2.id_usuario = dwf.id_usuario_mod
+                        left join segu.tusuario usu3 on usu3.id_usuario = dwf.id_usuario_upload
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado

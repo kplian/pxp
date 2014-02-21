@@ -31,7 +31,8 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_documento_wf	integer;
+	v_id_documento_wf		integer;
+    v_momento				varchar;
 			    
 BEGIN
 
@@ -107,7 +108,9 @@ BEGIN
             chequeado = 'si',
             url = v_parametros.file_name,
             fecha_mod = now(),
-            id_usuario_mod = p_id_usuario
+            id_usuario_mod = p_id_usuario,
+            fecha_upload = now(),
+            id_usuario_upload = p_id_usuario
             where id_documento_wf=v_parametros.id_documento_wf;
             
              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo modificado con exito '||v_parametros.id_documento_wf); 
@@ -115,7 +118,43 @@ BEGIN
              
              return v_resp;
         end;
-         
+  /*********************************    
+  #TRANSACCION:  'WF_CABMOM_IME'
+  #DESCRIPCION: Cambiar Momentos (exigir, verificar) de Documentos WF
+  #AUTOR:   admin 
+  #FECHA:   08-02-2013 19:01:00
+  ***********************************/
+    
+     elsif(p_transaccion='WF_CABMOM_IME')then
+      begin
+          
+            select 
+             dwf.momento
+            into
+             v_momento
+            from wf.tdocumento_wf  dwf
+            where dwf.id_documento_wf = v_parametros.id_documento_wf;
+            
+            IF v_momento  = 'exigir' THEN
+               v_momento = 'verificar';
+            ELSE
+               v_momento = 'exigir';
+            END IF;
+            
+            update wf.tdocumento_wf set
+              momento = v_momento,
+              fecha_mod = now(),
+              id_usuario_mod = p_id_usuario
+            where id_documento_wf=v_parametros.id_documento_wf;
+            
+             
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo modificado con exito '||v_parametros.id_documento_wf); 
+             v_resp = pxp.f_agrega_clave(v_resp,'id_documento_wf',v_parametros.id_documento_wf::varchar);
+             
+             return v_resp;
+        end;
+  
+       
  
         
 	else
