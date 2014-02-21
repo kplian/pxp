@@ -397,3 +397,15 @@ ALTER TABLE orga.toficina
 ALTER TABLE orga.toficina
   ADD COLUMN frontera VARCHAR(2);
 /*****************************F-SCP-JRR-ORGA-0-29/01/2014*************/
+
+/*****************************I-SCP-JRR-ORGA-0-13/02/2014*************/
+ALTER TABLE orga.tuo
+  ADD COLUMN planilla VARCHAR(2);
+
+ALTER TABLE orga.tuo
+  ALTER COLUMN planilla SET DEFAULT 'no';
+  
+ALTER TABLE orga.tuo
+  ADD COLUMN prioridad VARCHAR(30);
+
+/*****************************F-SCP-JRR-ORGA-0-13/02/2014*************/

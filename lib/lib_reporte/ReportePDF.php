@@ -4,8 +4,9 @@ session_start();
 include(dirname(__FILE__).'/../DatosGenerales.php');
 require_once(dirname(__FILE__).'/../tcpdf/config/lang/spa.php');
 require_once(dirname(__FILE__).'/../tcpdf/tcpdf.php');
+require_once(dirname(__FILE__).'/mypdf.php');
 
-class ReportePDF extends TCPDF
+class ReportePDF extends MYPDF
 {
 	var $tablewidths=array();
 	var $tablealigns=array();
