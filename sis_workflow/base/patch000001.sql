@@ -240,3 +240,42 @@ ALTER TABLE wf.tdocumento_wf
 
 /***********************************F-SCP-RAC-WF-0-18/01/2014****************************************/
 
+
+
+/***********************************I-SCP-RAC-WF-0-12/02/2014****************************************/
+
+
+ALTER TABLE wf.ttipo_documento_estado
+  ADD COLUMN tipo_busqueda VARCHAR(12) DEFAULT 'superior' NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_documento_estado.tipo_busqueda
+IS 'superior o inferior, define la forma de buscar el documento';
+
+
+
+/***********************************F-SCP-RAC-WF-0-12/02/2014****************************************/
+
+
+
+/***********************************I-SCP-RAC-WF-0-17/02/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN chequeado_fisico VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.chequeado_fisico
+IS 'identifica los documentos que se tienen fisicamente';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN momento_fisico VARCHAR(30) DEFAULT 'verificar' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.momento_fisico
+IS 'verificar o exigir documentos fisicos';
+
+
+/***********************************F-SCP-RAC-WF-0-17/02/2014****************************************/
+
+

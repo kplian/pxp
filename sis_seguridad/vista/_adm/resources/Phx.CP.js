@@ -50,7 +50,6 @@ Ext.apply(Ext.form.VTypes, {
     
     hex: function(val, field){
 		var v=/^[0-9A-F]+$/i .test(val);;
-    	console.log(v);
     	return /^[0-9A-F]+$/i .test(val);;
     },
     hexText:'El valor no está en Hexadecimal',
@@ -60,7 +59,7 @@ Ext.apply(Ext.form.VTypes, {
 
 
 // /////////////////////////////////
-// DEFINICON DE LA CLASE MANU //
+// DEFINICON DE LA CLASE MENU //
 // ////////////////////////////////
 Menu=function(config){
 	
@@ -111,7 +110,10 @@ Ext.extend(Menu,Ext.tree.TreePanel,{
 	
 	selectClass : function(cls){
 		if(cls){
-			this.getSelectionModel().select(this.getNodeById(cls))
+			if(this.getNodeById(cls)){
+				this.getSelectionModel().select(this.getNodeById(cls))
+			}
+			
 		}
 	},
 	initComponent: function(){
@@ -249,7 +251,20 @@ MainPanel = function(config){
 };
 
 Ext.extend(MainPanel, Ext.TabPanel,{
-	loadClass : function(href, cls, title,icono,ruta,clase){
+	loadClass : function(href, cls, title,icono,ruta,clase,cookie,arrayInt,indice){
+		
+		 var objConfig = {
+		  	               'href':href, 
+		  	               'cls':cls, 
+		  	               'title':title,
+		  	               'icono':icono,
+		  	               'ruta':ruta,
+		  	               'clase':clase,
+		  	               'cookie':cookie,
+		  	               'arrayInt':arrayInt,
+		  	               'indice':indice
+		  	              };
+		  	              
 		 var id = 'docs-' + cls;
 		 var tab = this.getComponent(id);
 		 //si el tab existe toma el foco
@@ -271,12 +286,27 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                title:title,
 	                closable: true,
 	                cclass : cls,
+	                //stateful:true,
+	                //allowDomMove:false,
+	                //bufferResize:true,
 	                iconCls:iconCls,
+	                listeners:{
+	                	scope:this,
+	                	'close':function(){
+	                		Phx.CP.removeStateGui(clase)
+	                	}
+	                	
+	                },
 	                autoLoad: {
 	  				  url: href,
 	  				  params:{idContenedor:id,_tipo:'direc'},
 	  				  showLoadIndicator: "Cargando...",
+	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
+	  				  	
+
+	  				  	  var objConfig = o.argument.options.arguments
+	  				  	
 	  					  // Al retorno de de cargar la ventana
 	  					  // ejecuta la clase que llega con el codigo de la url
 	  					  // el nombre de la clase viene en la variable cls que
@@ -297,15 +327,35 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			                         //var inter = Phx.vista[clase];
 				  				       u.update(
 				  				      	 {url:Phx.vista[clase].require, 
-				  				      	 params:{idContenedor:id,_tipo:'direc'},
-				  				      	 scripts :true,
+				  				      	  params:{idContenedor:id,_tipo:'direc'},
+				  				      	  arguments:objConfig,
+				  				      	  scripts :true,
 				  				      	  showLoadIndicator: "Cargando...2",
 				  				      	  callback: function(r,a,o){
 					  				      	 	 try{
+					  				      	 	 	
+					  				      	 	 	var objConfig = o.argument.options.arguments
 					  				      	 		//genera herencia 
 					  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
 					  				      	 		//ejecuta la clase hijo
-					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params))
+					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+					  				      	 		if(objConfig.cookie && objConfig.indice > 0){
+		  				    		  
+							  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
+							  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
+							  				    		  	               obj.title,
+							  				    		  	               obj.icono,
+							  				    		  	               obj.ruta,
+							  				    		  	               obj.clase,
+							  				    		  	               true,
+							  				    		  	               objConfig.arrayInt,
+							  				    		  	               objConfig.indice -1
+							  				    		  	               );
+							  				    		  	               
+							  				    		 //Ext.get(Phx.vista[clase].idContenedor).doLayout()
+							  				    		 //Phx.CP.getPagina(id).panel.doLayout(); 	               
+							  				    		  	               
+							  				    		}
 					  				      	 	  }
 							  				       catch(err){
 							  				       	var resp = Array();
@@ -318,7 +368,25 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			  				 }
 	  				    	else{
 		  				    	try{
-		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params));
+		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+		  				    		
+		  				    		if(objConfig.cookie && objConfig.indice > 0){
+		  				    		  
+		  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
+		  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
+		  				    		  	               obj.title,
+		  				    		  	               obj.icono,
+		  				    		  	               obj.ruta,
+		  				    		  	               obj.clase,
+		  				    		  	               true,
+		  				    		  	               objConfig.arrayInt,
+		  				    		  	               objConfig.indice -1
+		  				    		  	               );
+		  				    		  	               
+		  				    		  //Phx.CP.getPagina(id).panel.doLayout();	               
+		  				    		}
+		  				    		
+		  				    		
 		  				      	}
 		  				        catch(err){
 		  				       		var resp = Array();
@@ -329,7 +397,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				    	}  
 	  				   }
 	  				   else{
-	  				   	console.log('no existe la clase '+clase)
+	  				   	alert('no existe la clase '+clase)
 	  				   }
 	  				 },
 	  				  scripts :true}
@@ -337,6 +405,9 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	            this.setActiveTab(p);
 	      }
 	}
+	
+	
+		  				      	
 	
 });
 
@@ -454,7 +525,7 @@ Phx.CP=function(){
 			mainPanel=new MainPanel({menuTree:menu});
 			mainPanel.on('tabchange', function(tp, tab){
 				if(tab){
-				menu.selectClass(tab.cclass);
+				   menu.selectClass(tab.cclass);
 				}
 		    });
 
@@ -562,9 +633,14 @@ Phx.CP=function(){
 	                            }
 	                             Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
 								 
+								  
+								 
 								},3000);
 						});
-		   	  
+		   
+		   //get state interface from gui
+		   //Phx.CP.getStateGui()
+		   
 			
 		},
 		//para capturar variables enviadas por get
@@ -651,8 +727,7 @@ Phx.CP=function(){
 			
 			//win_login.addKeyListener(Ext.EventObject.ENTER, Phx.CP.entrar); // Tecla enter
 
-              //console.log(x,y,z);
-			if(x=='activa'){
+            if(x=='activa'){
 				Phx.CP.CRIPT=new Phx.Encriptacion({encryptionExponent:regreso.e,
 							modulus:regreso.m,
 							permutacion:regreso.p,
@@ -753,14 +828,27 @@ Phx.CP=function(){
 							//aplica el estilo de vista del usuario
 							Phx.CP.setEstiloVista(Phx.CP.config_ini.estilo_vista);
 							win_login.hide();
+							
+							var cookiUser = Ext.util.Cookies.get('usuario');
+							if(cookiUser == Phx.CP.config_ini.nombre_usuario){
+								this.arrayInterfaces = [];
+							}
+							else{
+								Ext.util.Cookies.set('usuario',Phx.CP.config_ini.nombre_usuario);
+							}
+							
+							
 							//si s la primera vez inicia el entorno
-			        	   if(!sw_auten){
+							if(!sw_auten){
 			        		   Phx.CP.init();
 							   sw_auten=true;
 			        	   }
 			        	    
 			        	    form_login.setTitle("LOGIN");
 							Phx.CP.loadingHide();
+							
+							
+							
 			        	  
 			      		}
 						else{
@@ -772,11 +860,8 @@ Phx.CP=function(){
 		                            iconCls: 'x-status-error',
 		                            clear: true // auto-clear after a set interval
 		                        });
-		                        
-		                     
-						     }
+		                     }
 							ajax.failure();
-
 						}
 						
 						
@@ -886,15 +971,14 @@ Phx.CP=function(){
            }
            else{
 				Ext.Msg.show({
-					title: 'ERROR',
+					title: 'AVISO ... ',
+					icon:Ext.MessageBox.INFO,
 					msg:mensaje,
 					buttons: Ext.Msg.OK,
 					minWidth:500,
 					minHeight:100
 	
 				});
-				
-				
 				
 			}
 		},
@@ -947,9 +1031,7 @@ Phx.CP=function(){
 		                    character.charCodeAt(0)// charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
 		);
 		
-		console.log('charcode',character.charCodeAt(0))
-		//document.dispatchEvent(keyboardEvent);
-       	return keyboardEvent;
+		return keyboardEvent;
        	
        },
        
@@ -996,8 +1078,16 @@ Phx.CP=function(){
 
 
 		elementos:new Array(),
-		setPagina:function(e){
+		initMode:true,
+		setPagina:function(e,objConfig){
 			this.elementos.push(e);
+			if(objConfig){
+				//si el level es 0 guardamos en la cookie
+				if(objConfig.clase!='tabInicial'){
+					this.saveStateGui(objConfig)
+				}
+			}
+			
 		},
 
 		getPagina:function(e){
@@ -1007,6 +1097,46 @@ Phx.CP=function(){
 				}
 			}
 		},
+		arrayInterfaces:[],
+		saveStateGui:function(objConfig){
+		  if(!(objConfig.cookie)){
+		        this.arrayInterfaces.push(objConfig)
+		    	Ext.util.Cookies.set('arrayInterfaces',JSON.stringify(this.arrayInterfaces));
+		   }
+	    },
+	    
+	    removeStateGui:function(clase){
+	    	var index = this.findArrayInterfaces(clase)
+	  	 	if(index != -1){
+	  	 		this.arrayInterfaces.splice(index, 1);
+	  	 		Ext.util.Cookies.set('arrayInterfaces',JSON.stringify(this.arrayInterfaces));
+	  	 	}
+	  	},
+		findArrayInterfaces:function(clase){
+	    	var i = 0;
+	    	for (var i = 0; i <  this.arrayInterfaces.length ;i++){
+	        	if (this.arrayInterfaces[i].clase == clase){
+	        		return i;
+	        	}
+	        }
+	    	return  -1;
+	    },
+	    
+	    getStateGui:function(){
+	    	temp = Ext.util.Cookies.get('arrayInterfaces')
+	    	this.arrayInterfaces=JSON.parse(temp)
+	    	if(!this.arrayInterfaces){
+	    		this.arrayInterfaces = [];
+	    	}
+	    	
+	    	
+	    	if(this.arrayInterfaces.length > 0){
+	    	   var ind =  this.arrayInterfaces.length -1
+	    	   var obj = this.arrayInterfaces[ind]
+	           Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase,true,this.arrayInterfaces,ind);
+	        }	
+        },
+		
 		// para destruir paginas
 		destroyPage:function(id){
 			for(var i=0;i<this.elementos.length;i++){
@@ -1057,8 +1187,8 @@ Phx.CP=function(){
   				     //trae la clase padre
   				     //en el callback ejecuta la herencia 
   				     //e instanca la clase hijo
-  				      var owid= Ext.id();
-				  	  Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
+  				     var owid= Ext.id();
+				  	 Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
 				  				    
   				     var el = Ext.get(owid); // este div esta quemado en el codigo html
                      var u = el.getUpdater();
@@ -1076,7 +1206,7 @@ Phx.CP=function(){
   				      	 	eval('Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
   				      	 
   				      	 }
-  				      	 })
+  				     })
   				 }
 		    else{
 		    	 // Al retorno de de cargar la ventana
@@ -1159,11 +1289,10 @@ Phx.CP=function(){
 		},
 		log: function(){
 		    if( typeof window.console != 'undefined' ){
-		        console.log.apply( null, arguments ); 
+		        console.log.apply(null,arguments); 
 		    }
 		}
 	}
 }();
 // al cargar el script ejecuta primero el metodo login
 //Ext.onReady(Phx.CP.iniciarLogin,Phx.CP,true);
-

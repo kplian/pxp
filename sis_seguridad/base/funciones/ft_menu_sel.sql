@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_menu_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -78,6 +76,7 @@ BEGIN
                                   FROM segu.tgui g
                                        INNER JOIN segu.testructura_gui eg
                                        ON g.id_gui=eg.id_gui
+                                       AND eg.estado_reg = ''activo''
                                   WHERE g.visible=''si''
 								  AND g.estado_reg = ''activo''
                                   AND eg.fk_id_gui::text like '''||v_parametros.id_padre||'''

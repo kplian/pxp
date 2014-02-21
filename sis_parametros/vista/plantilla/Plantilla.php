@@ -77,6 +77,22 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'sw_monto_excento',
+                fieldLabel: 'Sw Excento',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:2
+            },
+            type:'TextField',
+            filters:{pfiltro:'plt.sw_monto_excento',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+		
 		{
 			config:{
 				name: 'nro_linea',
@@ -204,7 +220,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'sw_monto_excento'
 		
 	],
 	sortInfo:{

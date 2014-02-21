@@ -57,7 +57,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 mode: 'local',
                 valueField: 'momento',                  
-                store:['crear','verificar','exigir']
+                store:['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico']
             },
             type:'ComboBox',
             //filters:{pfiltro:'des.momento',type:'string'},
@@ -65,7 +65,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             filters:{   
                          type: 'list',
                          pfiltro:'tipdw.tipo',
-                         options: ['crear','verificar','exigir'],   
+                         options: ['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico'],   
                     },
             grid:true,
             form:true
@@ -88,7 +88,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 					totalProperty: 'total',
 					fields: ['id_tipo_proceso', 'nombre', 'codigo','id_proceso_macro','desc_proceso_macro'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'tp.nombre'}
+					baseParams: {par_filtro: 'tipproc.nombre#tipproc.codigo'}
 				}),
 				valueField: 'id_tipo_proceso',
 				displayField: 'nombre',
@@ -135,7 +135,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                     fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo_estado','disparador','fin','desc_tipo_proceso'],
                     // turn on remote sorting
                     remoteSort: true,
-                    baseParams: {par_filtro: 'tipes.nombre_estado'}
+                    baseParams: {par_filtro: 'tipes.nombre_estado#tipes.codigo'}
                 }),
                 valueField: 'id_tipo_estado',
                 displayField: 'nombre_estado',
@@ -162,6 +162,37 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             grid: true,
             form: true
         },
+        {
+            config:{
+                name: 'tipo_busqueda',
+                fieldLabel: 'Busqueda ',
+                allowBlank: false,
+                anchor: '70%',
+                gwidth: 150,
+                maxLength:50,
+                emptyText:'Tipo...',                
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'tipo_asignacion',                  
+              store:['superior','inferior']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'tipdw.tipo',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'des.tipo_busqueda',
+                         options: ['superior','inferior'],   
+                    },
+            grid:true,
+            form:true
+        },
+        
+        
+        
+        
        
 		{
 			config:{
@@ -306,6 +337,10 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
       else{
          this.Cmp.id_tipo_proceso.store.baseParams.id_tipo_proceso='';
       }
+      
+      this.Cmp.id_tipo_proceso.store.baseParams.id_proceso_macro=this.maestro.id_proceso_macro;
+      this.Cmp.id_tipo_estado.store.baseParams.id_tipo_proceso=this.Cmp.id_tipo_proceso.getValue();
+      
       this.Cmp.id_tipo_proceso.modificado=true;
        
        
@@ -332,7 +367,9 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_tipo_proceso','desc_tipo_estado'
+		{name:'usr_mod', type: 'string'},
+		'desc_tipo_proceso',
+		'desc_tipo_estado','tipo_busqueda'
 		
 	],
 	sortInfo:{

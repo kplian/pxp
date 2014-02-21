@@ -16,6 +16,11 @@ class ACTTipoEstado extends ACTbase{
 	    	$this->objParam->addFiltro("tipes.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));	
 		}
 		
+		if($this->objParam->getParametro('id_proceso_macro')!=''){
+            $this->objParam->addFiltro("tp.id_proceso_macro = ".$this->objParam->getParametro('id_proceso_macro'));    
+        }
+		
+		
 		 if($this->objParam->getParametro('estados')!=''){
             $this->objParam->addFiltro("tipes.id_tipo_estado in (".$this->objParam->getParametro('estados').")");    
         }

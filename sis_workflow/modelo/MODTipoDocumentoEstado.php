@@ -36,6 +36,8 @@ class MODTipoDocumentoEstado extends MODbase{
 		$this->captura('desc_tipo_proceso','text');
 		$this->captura('desc_tipo_estado','text');
 		
+		$this->captura('tipo_busqueda','varchar');
+		
 		
 		
 		//Ejecuta la instruccion
@@ -58,6 +60,11 @@ class MODTipoDocumentoEstado extends MODbase{
 		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('momento','momento','varchar');
+		
+		$this->setParametro('tipo_busqueda','tipo_busqueda','varchar');
+		
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,6 +87,8 @@ class MODTipoDocumentoEstado extends MODbase{
 		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('momento','momento','varchar');
+		
+		$this->setParametro('tipo_busqueda','tipo_busqueda','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

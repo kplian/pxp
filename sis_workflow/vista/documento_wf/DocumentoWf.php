@@ -63,7 +63,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'chequeado',
-                fieldLabel: 'Chequeado',
+                fieldLabel: 'Escaneado',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -79,6 +79,30 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             id_grupo:1,
             grid:true,
             form:false
+        },
+        {
+            config:{
+                name: 'chequeado_fisico',
+                fieldLabel: 'Físico',
+                allowBlank: true,
+                width: 100,
+                gwidth: 100,
+                valueField: 'momento',                  
+                store:['si','no'],
+                triggerAction: 'all',
+                lazyRender:true,
+                renderer:function (value, p, record){  
+                            if(record.data['chequeado_fisico'] == 'si')
+                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_ok.png' align='center' width='45' height='45'/></div>");
+                            else
+                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_eli.png' align='center' width='45' height='45'/></div>");
+                        },
+            },
+            type:'ComboBox',
+            filters:{pfiltro:'dwf.chequeado_fisico',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
         },
 		
 		{
@@ -339,7 +363,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'descripcion_tipo_documento',
         'nro_tramite',
         'codigo_proceso',
-        'descripcion_proceso_wf','nombre_estado'
+        'descripcion_proceso_wf',
+        'nombre_estado',
+        'chequeado_fisico'
 		
 		
 	],
