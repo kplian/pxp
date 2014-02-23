@@ -239,7 +239,7 @@ class CTParametro{
 	private function obtenerParametroFiltro(){
 		//decodifica el json del postdata
 		//var_dump($this->aPostData);
-		$aux=json_decode($this->aPostData['p'],true);//
+		$aux=json_decode($this->aPostData,true);//
 		//echo 'decode: '. json_decode('{"tipo":"inter"}');exit;
 		//$aux=json_decode($this->aPostData,true);
 		//echo 'ddddddccccooooooo';exit;
