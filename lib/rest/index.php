@@ -7,10 +7,11 @@
  *
  * If you are using Composer, you can skip this step.
  */
-include_once(dirname(__FILE__)."../lib/lib_control/CTSesion.php");
+include_once(dirname(__FILE__)."/../../lib/lib_control/CTSesion.php");
+
 session_start();
-include(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
-include_once('../lib/lib_general/Errores.php');
+include(dirname(__FILE__).'/../../lib/DatosGenerales.php');
+include_once('../../lib/lib_general/Errores.php');
 
 //estable aprametros ce la cookie de sesion
 $_SESSION["_CANTIDAD_ERRORES"]=0;//inicia control cantidad de error anidados
@@ -21,7 +22,7 @@ else{
     session_set_cookie_params (0,$_SESSION["_FOLDER"], '' ,false ,false);
 }
 
-include_once(dirname(__FILE__).'/../lib/lib_control/CTincludes.php');
+include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
 
 
 
@@ -194,9 +195,10 @@ $app->get(
 
 
 $app->get(
+	 
     '/api/:sistema/:clase_control/:metodo(/:start(/:limit))',
     function ($sistema,$clase_control,$metodo,$start=0,$limit=10000)  {
-                
+    	        
         //TODO validar cadenas vaias y retorna error en forma JSON
         $ruta_include = 'sis_'.$sistema.'/control/ACT'.$clase_control.'.php';
         $ruta_url = 'sis_'+$sistema.'/control/'.$clase_control.'/'.$metodo;
@@ -205,8 +207,9 @@ $app->get(
         //throw new Exception('La sesion ha sido duplicada',2);
         
          //TODO desencriptar variables ...
-        
+        echo dirname(__FILE__);
         $objPostData=new CTPostData();
+		
         $aPostData = $objPostData->getData();
         
         //add elements to array 
@@ -227,7 +230,7 @@ $app->get(
         $JSON = json_encode($aPostData);
         
         $objParam = new CTParametro($JSON,null,null,'../../'.$ruta_url);
-        include_once dirname(__FILE__).'/../'.$ruta_include;
+        include_once dirname(__FILE__).'/../../'.$ruta_include;
         
         //Instancia la clase dinamica para ejecutar la accion requerida
         eval('$cad = new ACT'.$clase_control.'($objParam);');
