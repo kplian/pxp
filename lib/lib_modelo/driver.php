@@ -624,7 +624,7 @@ class driver
 			$this->consulta.="'si',";
 		}
 		
-	    if(!$_SESSION["_IP_ADMIN"]){
+	    if(!isset($_SESSION["_IP_ADMIN"])){
 
 			$this->consulta.='NULL,';
 		}

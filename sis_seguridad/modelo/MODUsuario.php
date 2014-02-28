@@ -22,12 +22,16 @@ class MODUsuario extends MODbase {
 		
 		$this->tipo_procedimiento='IME';
 		$this->count=false;
-				
-		//$this->count=false;	
-		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
-							 "contrasena"=>md5($this->arreglo['contrasena']),
-							 "dir_ip"=>getenv("REMOTE_ADDR"));
-		
+		if ($this->arreglo['_tipo'] == 'restAuten') {		
+			//$this->count=false;	
+			$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
+								 "contrasena"=>$this->arreglo['contrasena'],
+								 "dir_ip"=>getenv("REMOTE_ADDR"));
+		} else {
+			$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
+								 "contrasena"=>md5($this->arreglo['contrasena']),
+								 "dir_ip"=>getenv("REMOTE_ADDR"));
+		}		
 		//Define los parametros para ejecucion de la funcion
 		$this->setParametro('login','usuario','varchar');
 		$this->setParametro('password','contrasena','varchar');		
@@ -39,7 +43,7 @@ class MODUsuario extends MODbase {
 		
 				
 		$this->armarConsulta();
-		//echo $this->getConsulta(); exit;
+		
 		$this->ejecutarConsulta();
 		
 		 
@@ -77,7 +81,29 @@ class MODUsuario extends MODbase {
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
+		
+		return $this->respuesta;
 
+	}
+
+	function listarUsuarioSeguridad(){
+		
+		
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='segu.ft_validar_usuario_ime';// nombre procedimiento almacenado
+		$this->transaccion='SEG_LISTUSU_SEG';//nombre de la transaccion
+		$this->tipo_procedimiento='IME';//tipo de transaccion
+		
+		//definicion de variables
+		$this->tipo_conexion='seguridad';		
+		
+		$this->setParametro('login','usuario','varchar');
+			
+		
+		//Ejecuta la funcion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
 		return $this->respuesta;
 
 	}

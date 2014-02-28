@@ -223,19 +223,20 @@ class ACTAuten extends ACTbase {
 			$_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
 			$_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
 			$_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
-		    	
-			echo "{success:true,
-			cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
-			nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
-			nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
-			id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
-			id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
-			autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
-			estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
-			mensaje_tec:'".$_SESSION["mensaje_tec"]."',
-			timeout:".$_SESSION["_TIMEOUT"]."}";
-
-			exit;
+		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
+				echo "{success:true,
+				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
+				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
+				nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
+				id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
+				id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
+				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
+				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
+				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
+				timeout:".$_SESSION["_TIMEOUT"]."}";
+	
+				exit;
+			}
 		 }
 		}
 	}

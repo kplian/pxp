@@ -163,7 +163,31 @@ BEGIN
                
           END;
           
-    
+     elsif(par_transaccion='SEG_LISTUSU_SEG')then
+		BEGIN
+     		SELECT 
+                  u.id_usuario,u.cuenta,p.nombre,p.apellido_paterno,
+                  p.apellido_materno,u.estilo,u.autentificacion,p.id_persona,u.contrasena
+            INTO
+                  v_id_usuario,v_cuenta,v_nombre,v_apellido_paterno,
+                  v_apellido_materno,v_estilo,v_autentificacion,v_id_persona,v_contrasena
+            FROM segu.tusuario u 
+            INNER JOIN segu.tpersona p  
+                	ON  p.id_persona = u.id_persona
+            WHERE u.cuenta=v_parametros.login;
+            
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario encontrado'); 
+               v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+               v_resp = pxp.f_agrega_clave(v_resp,'cuenta',v_cuenta);
+               v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_nombre);
+               v_resp = pxp.f_agrega_clave(v_resp,'apellido_paterno',v_apellido_paterno);
+               v_resp = pxp.f_agrega_clave(v_resp,'apellido_materno',v_apellido_materno);
+               v_resp = pxp.f_agrega_clave(v_resp,'estilo',v_estilo);
+               v_resp = pxp.f_agrega_clave(v_resp,'id_persona',v_id_persona::varchar);
+               v_resp = pxp.f_agrega_clave(v_resp,'autentificacion',v_autentificacion::varchar);
+               v_resp = pxp.f_agrega_clave(v_resp,'contrasena',v_contrasena::varchar);
+               return v_resp;
+     	END;       
      else
          raise exception 'No existe la opcion';
       
