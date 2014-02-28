@@ -252,6 +252,13 @@ BEGIN
               v_filadd  
              from segu.tusuario_grupo_ep uge 
              where  uge.id_usuario = par_id_usuario;
+             
+             
+             IF  v_filadd is NULL THEN
+              
+                 raise exception 'El usuario no tiene ningun grupo EP-UO asignado';
+              
+              END IF;
               
               v_inner =  '
                           inner join param.tdepto_uo_ep due on due.id_depto =DEPPTO.id_depto
@@ -333,6 +340,13 @@ BEGIN
              from segu.tusuario_grupo_ep uge 
              where  uge.id_usuario = par_id_usuario;
               
+              IF  v_filadd is NULL THEN
+              
+                 raise exception 'El usuario no tiene ningun grupo EP-UO asignado';
+              
+              END IF;
+             
+             
               v_inner =  '
                           inner join param.tdepto_uo_ep due on due.id_depto =DEPPTO.id_depto
                           inner join param.tgrupo_ep gep on gep.estado_reg = ''activo'' and
@@ -358,6 +372,9 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                              '||v_inner||'
                             WHERE '||v_codadd;
+               
+               raise notice '%',v_consulta;
+               
                v_consulta:=v_consulta||v_parametros.filtro;
                
              
