@@ -47,6 +47,9 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/AwesomeCombo/static/css/Ext.ux.AwesomeCombo.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/fileuploadfield/css/fileuploadfield.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/ColumnHeaderGroup.css" />
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/GroupSummary.css" />
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/gridsummary.css"/>
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/RowEditor.css" />
 
     
    <link rel="stylesheet" type="text/css" href="resources/docs.css"></link>
@@ -101,6 +104,9 @@ if(!isset($_SESSION["_SESION"])){
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/NumericFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/BooleanFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/RowEditor.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/GridSummary.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/GroupSummary.js"></script>
+	
 	<script type="text/javascript" src="../../../lib/ux/Portal.js"></script>
     <script type="text/javascript" src="../../../lib/ux/PortalColumn.js"></script>
     <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>

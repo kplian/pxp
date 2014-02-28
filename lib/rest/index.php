@@ -7,11 +7,13 @@
  *
  * If you are using Composer, you can skip this step.
  */
+
 include_once(dirname(__FILE__)."/../../../lib/lib_control/CTSesion.php");
 session_start();
 include_once(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_general/Errores.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_control/CTincludes.php');
+
 
 
 
@@ -23,9 +25,6 @@ if($_SESSION["_FORSSL"]=='SI'){
 else{
     session_set_cookie_params (0,$_SESSION["_FOLDER"], '' ,false ,false);
 }
-
-
-
 
 
 require 'Slim/Slim.php';
@@ -194,7 +193,7 @@ function persona2($r,$t){
        // $objParam = new CTParametro('{}');
         $objParam = new CTParametro('{"start":"'.$start.'","limit":"'.$limit.'","sort":"id_persona","dir":"ASC"}',null,null,'../../sis_seguridad/control/Persona/listarPersonaFoto');
         
-        include_once dirname(__FILE__).'/../sis_seguridad/control/ACTPersona.php';
+        include_once dirname(__FILE__).'/../../sis_seguridad/control/ACTPersona.php';
         
        
         $cad = new ACTPersona($objParam);
@@ -334,8 +333,10 @@ $app->get(
         //arma $JSON
         $JSON = json_encode($aPostData);
         
+
         $objParam = new CTParametro($JSON,null,null,'../../'.$ruta_url);
         include_once dirname(__FILE__).'/../../../'.$ruta_include;
+
         
         //Instancia la clase dinamica para ejecutar la accion requerida
         eval('$cad = new ACT'.$clase_control.'($objParam);');
