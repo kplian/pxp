@@ -116,6 +116,20 @@ class ACTFuncionario extends ACTbase{
         //crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
         $this->objFunSeguridad=$this->create('MODFuncionario'); 
         $this->res=$this->objFunSeguridad->getEmailEmpresa($this->objParam);
+        
+        //adiciona correo de notificaciones desde la onfiguracion  general
+        
+        $array = $this->res->getDatos();
+        
+        if(isset($_SESSION['_MAIL_NITIFICACIONES_1'])){
+            $array['email_notificaciones_1'] = $_SESSION['_MAIL_NITIFICACIONES_1'];
+        }
+        if(isset($_SESSION['_MAIL_NITIFICACIONES_2'])){
+            $array['email_notificaciones_2'] = $_SESSION['_MAIL_NITIFICACIONES_2'];
+        }
+        
+        $this->res->setDatos($array);
+        
         $this->res->imprimirRespuesta($this->res->generarJson());
 
     }
