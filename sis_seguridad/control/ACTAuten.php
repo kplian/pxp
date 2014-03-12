@@ -228,6 +228,7 @@ class ACTAuten extends ACTbase {
 				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
 				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
 				nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
+				mini_logo:'".$_SESSION["_MINI_LOGO"]."',
 				id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
 				id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
 				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
