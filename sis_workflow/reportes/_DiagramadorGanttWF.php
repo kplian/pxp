@@ -11,7 +11,7 @@ require_once (dirname(__FILE__).'/../../lib/jpgraph/src/jpgraph.php');
 require_once (dirname(__FILE__).'/../../lib/jpgraph/src/jpgraph_gantt.php');
 
 class DiagramadorGanttWF{
-
+	
     private $dataSource;
     public function setDataSource(DataSource $dataSource) {
         $this->dataSource = $dataSource;
@@ -20,53 +20,53 @@ class DiagramadorGanttWF{
     public function getDataSource() {
         return $this->dataSource;
     }
-
-    public function graficar($filename){
-
-        $graph = new GanttGraph();
-
-        $graph->SetShadow(); 
+	
+	public function graficar($filename){
+		
+	    $graph = new GanttGraph();
+		
+		$graph->SetShadow(); 
         $graph->SetBox();
-
-        $dataset=$this->dataSource->getDataset();
-
-        $tamanioDataset = count($dataset);
-
-        $fecha_reg_ini = new DateTime();
+		
+		$dataset=$this->dataSource->getDataset();
+		
+		$tamanioDataset = count($dataset);
+		
+		$fecha_reg_ini = new DateTime();
         $fecha_reg_fin = new DateTime();
         $fechaInicio = new DateTime();
         $fechaFin = new DateTime();
         
         
-        $data = array();
-        $constrains = array();
-
-        for ($i=0;$i<$tamanioDataset;$i++) {
-            //echo date_format(new DateTime($dataset[$i]['fecha_ini']),'Y-m-d H:i:s');
-            //exit;
-
-             if($i==0){
-               $fechaInicio=  new DateTime($dataset[$i]['fecha_ini']);
-               $fechaFin = new DateTime($dataset[$i]['fecha_fin']);
-
+		$data = array();
+		$constrains = array();
+		
+		for ($i=0;$i<$tamanioDataset;$i++) {
+		    //echo date_format(new DateTime($dataset[$i]['fecha_ini']),'Y-m-d H:i:s');
+		    //exit;
+			     						 
+			 if($i==0){
+		       $fechaInicio=  new DateTime($dataset[$i]['fecha_ini']);
+		       $fechaFin = new DateTime($dataset[$i]['fecha_fin']);
+		     
              }
              
              if ( $fechaFin  < new DateTime($dataset[$i]['fecha_ini'])  && $dataset[$i]['tipo'] =='estado_final' ){
                      
                 $fechaFin = new DateTime($dataset[$i]['fecha_ini']);  
              }
-
-             $actividad = array();
-
+		     
+		     $actividad = array();
+		     
             
-             array_push($actividad,$dataset[$i]['id']); 
-
-             $prefijo = '';
-
-             if ($dataset[$i]['tipo']=='proceso'){
-                 $tipo = ACTYPE_GROUP;
+			 array_push($actividad,$dataset[$i]['id']);	
+			 
+			 $prefijo = '';
+			 
+			 if ($dataset[$i]['tipo']=='proceso'){
+			     $tipo = ACTYPE_GROUP;
              }
-             if ($dataset[$i]['tipo']=='estado'){
+			 if ($dataset[$i]['tipo']=='estado'){
                  $tipo = ACTYPE_NORMAL;
                  $prefijo ='  ';
              }
@@ -112,7 +112,7 @@ class DiagramadorGanttWF{
                   else{
                      $resp = '--';
                      $tiempo = $days_between.' dias';
-                     $desc_principal=$desc_principal."\n".$dataset[$i]['descripcion'];
+                     $desc_principal=$desc_principal;
                       
                   }
                  
@@ -125,62 +125,73 @@ class DiagramadorGanttWF{
              
              $cabecera = array($desc_principal,
                          utf8_decode($resp),
+                        // utf8_decode($dataset[$i]['descripcion']),
+                         utf8_decode("asdasd \n asdasd \n aasdas das  asd asd asd asd \\nasda sd"),
+                         
+                         
                          $tiempo, 
                          $fini ,
                          $ffin);
                 
                  
-             array_push($actividad,$tipo);
-             array_push($actividad,$cabecera);
-
-             array_push($actividad,$fecha_reg_ini->format('Y-m-d H:i:s'));
-
-             if ($dataset[$i]['tipo']!='estado_final'){
-                array_push($actividad,$fecha_reg_fin->format('Y-m-d H:i:s'));
+			 array_push($actividad,$tipo);
+			 array_push($actividad,$cabecera);
+			 
+			 array_push($actividad,$fecha_reg_ini->format('Y-m-d H:i:s'));
+			 
+			 if ($dataset[$i]['tipo']!='estado_final'){
+			    array_push($actividad,$fecha_reg_fin->format('Y-m-d H:i:s'));
              }
              
-             array_push($actividad,utf8_decode($dataset[$i]['descripcion']));
+             //array_push($actividad,utf8_decode($dataset[$i]['descripcion']));
+             
+             //array_push($actividad,$desc_principal);
+             
+             array_push($actividad,"asdasd \n asdasd \n aasdas das  asd asd asd asd \nasda sd </p>");
+             
+             
+             
              array_push($actividad,'#'.$dataset[$i]['id']); 
              array_push($actividad,$fecha_reg_ini->format('Y-m-d H:i:s'));   
-
-             //prepara las relaciones entre tipos
-
-              if ($dataset[$i]['tipo']=='estado' && $dataset[$i]['id_siguiente'] != 0)
-                array_push($constrains, array($dataset[$i]['id'],$dataset[$i]['id_siguiente'],CONSTRAIN_ENDSTART));
-
-
-             array_push($data,$actividad);                       
-        }   
-
-
-        //definir scala en funcion al dia inicial y dia final
-
-
-        $diferencia =  $fechaInicio->diff($fechaFin);
-
-
-        if ($diferencia->format('%m') >  6 ){
-
-                 //escala de meses 
-                 $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH );
-                 $graph->scale->week->SetStyle(HOURSTYLE_HM24);
-                 $sw =1;
-                  $fechaFin=$fechaFin->add(new DateInterval('PT1200H'));
-
-         }
-         elseif ($diferencia->format('%m') >  1){
+			 
+			 //prepara las relaciones entre tipos
+			 
+			  if ($dataset[$i]['tipo']=='estado' && $dataset[$i]['id_siguiente'] != 0)
+			    array_push($constrains, array($dataset[$i]['id'],$dataset[$i]['id_siguiente'],CONSTRAIN_ENDSTART));
+			 
+			 
+			 array_push($data,$actividad);						 
+		}	
+		
+		
+		//definir scala en funcion al dia inicial y dia final
+		
+		
+		$diferencia =  $fechaInicio->diff($fechaFin);
+		
+		 
+		if ($diferencia->format('%m') >  6 ){
+		              
+		         //escala de meses 
+		         $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH );
+		         $graph->scale->week->SetStyle(HOURSTYLE_HM24);
+		         $sw =1;
+		          $fechaFin=$fechaFin->add(new DateInterval('PT1000H'));
+		      
+		 }
+		 elseif ($diferencia->format('%m') >  1){
               //escala de semanas 
                $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK   );
                 $graph->scale->week->SetStyle(HOURSTYLE_HM24); 
                 $sw =2; 
-                $fechaFin=$fechaFin->add(new DateInterval('PT1000H'));    
+                $fechaFin=$fechaFin->add(new DateInterval('PT800H'));    
         }
         elseif ($diferencia->format('%m') > 0 ){
               //escala de dias
               $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK | GANTT_HDAY  );
               $graph->scale->week->SetStyle(HOURSTYLE_HM24);
               $sw =3; 
-              $fechaFin=$fechaFin->add(new DateInterval('PT800H'));        
+              $fechaFin=$fechaFin->add(new DateInterval('PT500H'));        
         }
         elseif ($diferencia->format('%m') == 0 && $diferencia->format('%d') > 1){
               //escala de dias 
@@ -188,26 +199,26 @@ class DiagramadorGanttWF{
               $graph->scale->week->SetStyle(HOURSTYLE_HM24);
               $graph->scale->hour->SetInterval(12);
               $sw =4; 
-              $fechaFin=$fechaFin->add(new DateInterval('PT300H')); 
-               
+              $fechaFin=$fechaFin->add(new DateInterval('PT200H')); 
+              //$fechaFin=$fechaInicio->diff(new DateInterval('PT24H'));  
         }
         else{
            //escala de horas 
            $graph->ShowHeaders( GANTT_HDAY | GANTT_HHOUR ); 
             $graph->scale->week->SetStyle(HOURSTYLE_HM24);
-            $fechaFin=$fechaFin->add(new DateInterval('PT100H'));
+            $fechaFin=$fechaFin->add(new DateInterval('PT48H'));
             $sw =5;      
         }
-
-        $graph->scale->actinfo->SetColTitles(
-        array('Tipo','Responsable','Duracion','Inicio','Fin'),array(40,100));
+		  
+		$graph->scale->actinfo->SetColTitles(
+        array('Tipo','Responsable','Observaciones','Duracion','Inicio','Fin'),array(40,100));
         
-        // Setup a horizontal grid
+		// Setup a horizontal grid
         $graph->hgrid->Show();
-        $graph->hgrid->SetRowFillColor('darkblue@0.9');     
-
-        $graph->SetDateRange($fechaInicio->format('Y-m-d H:i:s'),$fechaFin->format('Y-m-d H:i:s'));                  
-        
+        $graph->hgrid->SetRowFillColor('darkblue@0.9'); 	
+			
+		$graph->SetDateRange($fechaInicio->format('Y-m-d H:i:s'),$fechaFin->format('Y-m-d H:i:s'));                  
+         
         //$graph->SetDateRange('2013-06-04','2013-08-04');                  
         $graph->title->Set("Diagrama Gant Work Flow");
         //$graph->scale->week->SetStyle(MINUTESTYLE_MM);
@@ -215,32 +226,32 @@ class DiagramadorGanttWF{
         $graph->scale->week->SetFont(FF_FONT1);
 
         $progress = array();
-
+		
         $graph->CreateSimple($data,$constrains,$progress);
-
-
-        $archivo = dirname(__FILE__).'/../../../reportes_generados/'.$filename;
-
-
-        //$graph->StrokeCSIM();
-        $graph->Stroke($archivo);
-
-
-        /*
-        
-        echo ('<pre>');
-        var_dump($sw);
-        var_dump($fechaInicio->format('Y-m-d H:i:s'));
+		
+		
+	    $archivo = dirname(__FILE__).'/../../../reportes_generados/'.$filename;
+	
+		
+		//$graph->StrokeCSIM();
+		$graph->Stroke($archivo);
+		
+		
+		/*
+		
+		echo ('<pre>');
+		var_dump($sw);
+		var_dump($fechaInicio->format('Y-m-d H:i:s'));
         var_dump($fechaFin->format('Y-m-d H:i:s'));
-        
-        var_dump($data);
-        echo ('</pre>');
-        
-        echo ('<pre>');
-        print_r($constrains);
-        echo ('</pre>');*/
-
-    }
+		
+		var_dump($data);
+		echo ('</pre>');
+		
+		echo ('<pre>');
+		print_r($constrains);
+		echo ('</pre>');*/
+	
+	}
 }
 
 ?>

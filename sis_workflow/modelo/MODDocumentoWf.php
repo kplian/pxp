@@ -134,30 +134,35 @@ class MODDocumentoWf extends MODbase{
 	}
 	
 	function subirDocumentoWfArchivo(){
-        $this->procedimiento='wf.ft_documento_wf_ime';
-        $this->transaccion='WF_DOCWFAR_MOD';
-        $this->tipo_procedimiento='IME';
-        
-        $ext = pathinfo($this->arregloFiles['archivo']['name']);
-        $this->arreglo['extension']= $ext['extension'];
-        
-        //Define los parametros para la funcion 
-        $this->setParametro('id_documento_wf','id_documento_wf','integer');   
-        $this->setParametro('extension','extension','varchar');
-        
-        $file_name = $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png'));
-         
-        
-         
-        //manda como parametro el nombre del arhivo 
-        $this->aParam->addParametro('file_name',$file_name);
-        $this->arreglo['file_name']= $file_name;
-        $this->setParametro('file_name','file_name','varchar');       
-        //Ejecuta la instruccion
-        $this->armarConsulta();
-                
-        $this->ejecutarConsulta();
-        return $this->respuesta;
+                    
+           
+            $this->procedimiento='wf.ft_documento_wf_ime';
+            $this->transaccion='WF_DOCWFAR_MOD';
+            $this->tipo_procedimiento='IME';
+            
+            $ext = pathinfo($this->arregloFiles['archivo']['name']);
+            $this->arreglo['extension']= $ext['extension'];
+            
+            //Define los parametros para la funcion 
+            $this->setParametro('id_documento_wf','id_documento_wf','integer');   
+            $this->setParametro('extension','extension','varchar');
+            $file_name = $this->getFileName('archivo','id_documento_wf');
+            
+            //manda como parametro el nombre del arhivo 
+            $this->aParam->addParametro('file_name',$file_name);
+            $this->arreglo['file_name']= $file_name;
+            $this->setParametro('file_name','file_name','varchar');       
+            //Ejecuta la instruccion
+            $this->armarConsulta();
+                    
+            $this->ejecutarConsulta();
+            
+            if($this->respuesta->getTipo() == 'EXITO'){
+               //mov file
+               $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png'));
+            }
+            
+            return $this->respuesta;
     }
     
     function cambiarMomento(){

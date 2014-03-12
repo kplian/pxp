@@ -201,6 +201,7 @@ class MODbase extends driver
 	
 	/**
 	 * Nombre funcion:	setFile
+	 * Autor:   JJR (KPLAIAN)
 	 * Proposito:		Anade un archivo a la carpeta de uploaded files previa validacion
 	 * Fecha creacion:	08/05/2013
 	 * @param $nombre El nombre del campo que viene como parametro
@@ -252,6 +253,35 @@ class MODbase extends driver
 
 	}
 
+	 /**
+     * Nombre funcion:  getFileNAme
+     * Autor RAC (KPLIAN)
+     * Proposito:       recuepra el nombre del archivo por subir
+     * Fecha creacion:  12/03/2014
+     * @param $nombre El nombre del campo que viene como parametro
+     * @param $variable_id El nombre del campo que viene como id del archivo a subir
+     * @param $folder subfolder donde se guardara el archivo
+     */
+    
+    function getFileName($nombre,$variable_id,$folder = ''){
+        
+        //obtenemos el tipo de la base de datos
+        $upload_folder =  './../../../uploaded_files/' . $this->objParam->getSistema() . '/' .
+                                 $this->objParam->getClase() . '/' ;
+        if ($folder != '') {
+            $upload_folder .= $folder . '/';
+        }
+        //nombre del archivo enviado por el cliente
+        $filename = $this->arregloFiles[$nombre]['name'];
+        //extension del archivo
+        $fileexte = substr($filename, strrpos($filename, '.')+1);
+        //nombre con el que se guarda en el servidor
+        
+        $file_server_name = md5($this->arreglo[$variable_id] . $_SESSION["_SEMILLA"]) . ".$fileexte";
+        
+        return "$upload_folder$file_server_name";
+            
+     }
 
 	function generaRespuestaParametros(){
 		$cadena='';
