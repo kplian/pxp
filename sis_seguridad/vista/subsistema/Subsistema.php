@@ -32,7 +32,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 			name: 'codigo',
 			allowBlank:false,	
 			maxLength:20,
-			minLength:3
+			minLength:2
 		},
 		type:'TextField',
 		filters:{type:'string'},
