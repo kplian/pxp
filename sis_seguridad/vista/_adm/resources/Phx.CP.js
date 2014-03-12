@@ -566,7 +566,7 @@ Phx.CP=function(){
 				  width: 500,
 				  //autoHeight:true,
 				 
-				  html:' <a href="http://www.kplian.com" target="_blank"><img src="../../../lib/imagenes/kplian2.jpg"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> </a>',
+				  html:' <a href="http://www.kplian.com" target="_blank"><img src="'+Phx.CP.config_ini.mini_logo+'"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> </a>',
 				  border: false
 				  },
 				  '->',{
