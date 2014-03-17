@@ -45,12 +45,24 @@ class ACTFuncionario extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if($this->objParam->getParametro('id_funcionario_dependiente')!=''){
-            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "''," . $this->objParam->getParametro('id_funcionario_dependiente') . ")
+		     //por defecto filtra solo superior con presupuesto    
+		     $presupuesto = 'si';    
+		     if($this->objParam->getParametro('presupuesto')!=''){
+		         $presupuesto = $this->objParam->getParametro('presupuesto');
+		     } 
+		     
+		     //por defecto no filtra por gerencias   
+             $gerencia = 'todos';    
+             if($this->objParam->getParametro('gerencia')!=''){
+                 $gerencia = $this->objParam->getParametro('gerencia');
+             } 
+		    
+            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "''," . $this->objParam->getParametro('id_funcionario_dependiente') . ",''".$presupuesto."'',''".$gerencia."'')
             														 AS (id_funcionario INTEGER))");    
         }
         
         if($this->objParam->getParametro('fecha')!=''){
-            $this->objParam->addFiltro(" ( (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  >= ''".$this->objParam->getParametro('fecha')."'') or (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  is NULL))");    
+            $this->objParam->addFiltro(" ((FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  >= ''".$this->objParam->getParametro('fecha')."'') or (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  is NULL))");    
         }
 		
 		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
