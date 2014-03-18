@@ -77,6 +77,7 @@ class MODProveedor extends MODbase{
 		$this->captura('id_lugar','int4');
 		$this->captura('lugar','varchar');
 		$this->captura('pais','varchar');
+		$this->captura('rotulo_comercial','varchar');
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();

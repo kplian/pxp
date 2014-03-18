@@ -21,6 +21,8 @@ DECLARE
     v_curdb     varchar;
     v_resp          varchar;
     v_nombre_funcion   text;
+    v_pa_pid		varchar;
+    v_pa_query		varchar;
     
 BEGIN
     v_nombre_funcion='segu.f_monitorear_recursos';
@@ -35,10 +37,18 @@ BEGIN
     FROM '/tmp/procesos.csv'
     WITH csv;
     
+    if (split_part(version(),' ',2) >= '9.3.0') then
+    	v_pa_pid = 'pa.pid';
+        v_pa_query = 'pa.query';
+    else
+    	v_pa_pid = 'pa.procpid';
+        v_pa_query = 'pa.current_query';
+    end if;
+    
     execute ('CREATE TEMPORARY TABLE tt_monitor_recursos ON COMMIT DROP AS
                 select pa.usename::varchar as usuario_bd,
                 s.transaccion_actual,s.funcion_actual,
-                pa.current_query::text as consulta,to_char(s.inicio_proceso,''DD/MM/YYYY HH24:MI:SS'') as hora_inicio_proceso,
+                ' || v_pa_query || '::text as consulta,to_char(s.inicio_proceso,''DD/MM/YYYY HH24:MI:SS'') as hora_inicio_proceso,
                 to_char(query_start,''DD/MM/YYYY HH24:MI:SS'') as hora_inicio_consulta,
                 mbd.pid as pid_bd,
                 mbd.proceso as proceso_bd,
@@ -57,7 +67,7 @@ BEGIN
                 inner join tt_procesos_so mbd
                 on(mbd.pid=s.pid_bd)
                 inner join pg_stat_activity pa
-                on(pa.procpid=mbd.pid)
+                on(' || v_pa_pid || '=mbd.pid)
                 inner join tt_procesos_so mweb
                 on(mweb.pid=s.pid_web)
                 where datname='''||v_curdb||'''');
