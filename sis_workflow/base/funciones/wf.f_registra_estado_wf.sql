@@ -121,13 +121,13 @@ BEGIN
     END IF;
     
     
-    if(v_registros.alerta = 'si' and  p_id_funcionario is not NULL) THEN
+    if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
         
-           v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
+            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
                  
          
-        v_cont_alarma = 1;
-        IF p_id_funcionario is not NULL and (v_registros_ant.id_funcionario is null or v_registros_ant.id_funcionario != p_id_funcionario)  THEN
+           v_cont_alarma = 1;
+           IF p_id_funcionario is not NULL and (v_registros_ant.id_funcionario is null or v_registros_ant.id_funcionario != p_id_funcionario)  THEN
           
           
                    /*
