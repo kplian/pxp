@@ -343,7 +343,7 @@ BEGIN
                  
                  
                  END IF;
-      
+       --Adquisiciones aprobacion del funcionario aprobador
        ELSEIF v_nombre_func_list ='ADQ_APR_SOL_COMPRA'  THEN
        
                IF p_count=FALSE then
@@ -352,7 +352,7 @@ BEGIN
                     v_consulta='select
                           fun.id_funcionario,
                           fun.desc_funcionario1 as desc_funcionario,
-                          ''Supervisor''::text  as desc_funcionario_cargo,
+                          ''Gerente''::text  as desc_funcionario_cargo,
                           1 as prioridad
                         from adq.tsolicitud sol
                         inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_aprobador
@@ -378,6 +378,44 @@ BEGIN
                  
                  
                  END IF;
+      --Adquisiciones aprobacion del funcionario supervisor
+       ELSEIF v_nombre_func_list ='ADQ_SUP_SOL_COMPRA'  THEN
+       
+               IF p_count=FALSE then
+                 --recuperamos el supervidor  de la solictud de compra
+                
+                    v_consulta='select
+                          fun.id_funcionario,
+                          fun.desc_funcionario1 as desc_funcionario,
+                          ''Supervisor''::text  as desc_funcionario_cargo,
+                          1 as prioridad
+                        from adq.tsolicitud sol
+                        inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_supervisor
+                        where sol.id_estado_wf = '||p_id_estado_wf||'
+                        and '||p_filtro||'
+                            order by fun.desc_funcionario1
+                            limit '|| p_limit::varchar||' offset '||p_start::varchar;
+                        
+                          FOR g_registros in execute (v_consulta)LOOP     
+                  		   RETURN NEXT g_registros;
+                		 END LOOP;
+                 ELSE
+                       v_consulta='select
+                          COUNT(fun.id_funcionario)
+                        from adq.tsolicitud sol
+                        inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_supervisor
+                        where sol.id_estado_wf = '||p_id_estado_wf||'
+                        and '||p_filtro;
+                        
+                          FOR g_registros in execute (v_consulta)LOOP     
+                  		   RETURN NEXT g_registros;
+                		  END LOOP;
+                 
+                 
+                 END IF;
+      
+    
+      
       
       ELSE
       
