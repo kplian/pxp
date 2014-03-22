@@ -565,12 +565,19 @@ SELECT segu.f_grant_all_privileges ('rol_usuario_dbweb','todos');
 PARA INSTALAR PHP  MCRYPT  EN CENTOS 5.X CLIENTE Y SERVIDOR REST
 
 wget http://museum.php.net/php5/php-5.3.3.tar.gz
+
 tar xf php-5.3.3.tar.gz
+
 cd php-5.3.3/ext/mcrypt/
+
 yum install php53-devel
+
 yum install libmcrypt libmcrypt-devel
+
 phpize && ./configure && make && sudo make install
+
 sudo echo "extension=mcrypt.so" > /etc/php.d/mcrypt.ini
+
 /etc/init.d/httpd restart
  
 PARA HABILITAR REWRITE ENGINE PARA SERVIDOR  REST
