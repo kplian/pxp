@@ -1087,7 +1087,7 @@ Phx.CP=function(){
 					this.saveStateGui(objConfig)
 				}
 			}
-			
+			return e;
 		},
 
 		getPagina:function(e){
@@ -1195,32 +1195,46 @@ Phx.CP=function(){
                      var inter = Phx.vista[mycls];
   				       u.update(
   				      	 {url:inter.require, 
-  				      	 params:o.argument.params,
-  				      	 //params:{idContenedor:id,_tipo:'direc'},
-  				      	 scripts :true,
+  				      	  params:o.argument.params,
+  				      	  //params:{idContenedor:id,_tipo:'direc'},
+  				      	  scripts :true,
   				      	  showLoadIndicator: "Cargando...2",
   				      	  callback: function(r,a,o){
   				      	 	//genera herencia 
   				      	 	eval('Phx.vista.'+mycls+'= Ext.extend('+inter.requireclase+',inter)')
   				      	 	//ejecuta la clase hijo
-  				      	 	eval('Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
+  				      	 	eval('var obj = Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
+  				      	 	//adciona eventos al objeto interface si existen
+							if(o.argument.options.listeners){
+								var ev = o.argument.options.listeners;
+								for (var i = 0; i < ev.config.length; i++) {
+									obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+								}
+								
+							}
   				      	 
   				      	 }
   				     })
   				 }
 		    else{
-		    	 // Al retorno de de cargar la ventana
+		    	// Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
-				Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
+				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
+				//adciona eventos al objeto interface si existen
+				if(o.argument.options.listeners){
+					var ev = o.argument.options.listeners;
+					for (var i = 0; i < ev.config.length; i++) {
+						obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+					}
+				}
 		    }  
 		},
 		
 		
 		
 		// para cargar ventanas hijo
-
-		loadWindows:function(url,title,config,params,pid,mycls){
+        loadWindows:function(url,title,config,params,pid,mycls,listeners){
 			// url: donde se encuentra el js de la ventana que se quiere abrir
 			// title: titulo de la ventanan que se abrira
 			// config: configuracion de la venta
@@ -1280,7 +1294,7 @@ Phx.CP=function(){
 					          text: "Cargando...", 
 					          showLoadIndicator: "Cargando...",
 					          scripts :true,
-					          //arguments:{idContenedor:wid,idContenedorPadre:pid,params:params,cls:cls},
+					          listeners:listeners,
 					          callback:this.callbackWindows
 					} 
 				}));

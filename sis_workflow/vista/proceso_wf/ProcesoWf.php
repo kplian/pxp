@@ -198,9 +198,14 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             });         
         }
         
-        
-        
-	},
+        this.addButton('estado_wf',{
+                    text:'',iconCls: 
+                    'bgantt',
+                    disabled:false,
+                    handler:this.openFormEstadoWf,
+                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+  
+    },
 	tam_pag:50,
 			
 	Atributos:[
@@ -338,8 +343,8 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             form:true
           },         {
             config:{
-                name:'id_institucion',
-                origen:'INSTITUCION',
+                 name:'id_institucion',
+                 origen:'INSTITUCION',
                  allowBlank:false,
                  tinit:true,
                  fieldLabel:'Originado por',
@@ -706,6 +711,44 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
        
         
     },
+    
+    openFormEstadoWf:function(){
+        
+        var rec=this.sm.getSelected();
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/EstadoWf.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:450,
+                height:150
+            }, {data:rec.data}, this.idContenedor,'EstadoWf',
+            {
+                config:[{
+                          event:'save',
+                          delegate: function(){alert('save ....')},
+                        },
+                        {
+                          event:'init',
+                          delegate: function(){alert('evento disparado....')},  
+                        },
+                        {
+                          event:'delete',
+                          delegate: this.onDeleteXXX,  
+                        }],
+                
+                scope:this
+             })
+        
+        
+    },
+    
+    onDeleteXXX:function(){
+        
+        alert('DELETE ..............')  
+        
+    },
+	
+	
 	
 	bdel:true,
 	bsave:false
