@@ -65,7 +65,7 @@ if(!isset($_SESSION["_SESION"])){
 	<!-- GC -->
 </head>
 <body  style="background:#ffffff url('<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>') no-repeat center center;">
- 
+ z
 <div id="loading-mask" style=""></div>
   <div id="loading">
     <div class="loading-indicator"><img src="../../../lib/images/bigrotation2.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>Cargando...</div>
