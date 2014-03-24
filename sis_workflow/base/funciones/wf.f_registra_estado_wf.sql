@@ -169,9 +169,13 @@ BEGIN
               
               
             --raise exception  'id_depto % ,%',v_registros_ant.id_depto   ,p_id_depto;  
-        
-              IF p_id_depto is not NULL  and  (v_registros_ant.id_depto is null or v_registros_ant.id_depto != p_id_depto)  THEN
+              
+              --RAC TODOm comentado para que el depto de aduqiisicones recibva alertas, analizar si hay otra forma de hacerlo
+              --IF p_id_depto is not NULL  and  (v_registros_ant.id_depto is null or v_registros_ant.id_depto != p_id_depto)  THEN
                
+              
+              IF p_id_depto is not NULL  THEN
+              
               -- buscamos entre los usarios del depto quien puede recibir alerta
                
                  FOR  v_registros_depto in  ( 

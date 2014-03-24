@@ -610,12 +610,14 @@ Phx.CP=function(){
 						modal:false
 				    },{id_usuario:Phx.CP.config_ini.id_usuario},
 				    'Phx.CP','AlarmaFuncionario');
-			// url: donde se encuentra el js de la ventana que se quiere abrir
-			// title: titulo de la ventanan que se abrira
-			// config: configuracion de la venta
-			// params: parametros que se le pasaran al js
-			// pid: identificador de la ventana padre
-			// cls: nombre de la clase que se va ejecutar
+			/*
+			  url: donde se encuentra el js de la ventana que se quiere abrir
+			  title: titulo de la ventanan que se abrira
+			  config: configuracion de la venta
+			  params: parametros que se le pasaran al js
+			  pid: identificador de la ventana padre
+			  cls: nombre de la clase que se va ejecutar
+			*/
 			}
 			
 			//abrir un tab de vienbenida
@@ -1178,7 +1180,8 @@ Phx.CP=function(){
 	     */
 	     
 		callbackWindows:function(r,a,o){
-			 //si existe la variable mycls la utiliza
+			
+			//si existe la variable mycls  (deherencia )la aplica
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
 			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
 		    if(Phx.vista[mycls].requireclase){
@@ -1204,6 +1207,7 @@ Phx.CP=function(){
   				      	 	eval('Phx.vista.'+mycls+'= Ext.extend('+inter.requireclase+',inter)')
   				      	 	//ejecuta la clase hijo
   				      	 	eval('var obj = Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
+  				      	 	
   				      	 	//adciona eventos al objeto interface si existen
 							if(o.argument.options.listeners){
 								var ev = o.argument.options.listeners;
@@ -1235,17 +1239,18 @@ Phx.CP=function(){
 		
 		// para cargar ventanas hijo
         loadWindows:function(url,title,config,params,pid,mycls,listeners){
-			// url: donde se encuentra el js de la ventana que se quiere abrir
-			// title: titulo de la ventanan que se abrira
-			// config: configuracion de la venta
-			// params: parametros que se le pasaran al js
-			// pid: identificador de la ventana padre
-			// cls: nombre de la clase que se va ejecutar
-			
+			/*
+			* url: donde se encuentra el js de la ventana que se quiere abrir
+			* title: titulo de la ventanan que se abrira
+			* config: configuracion de la venta
+			* params: parametros que se le pasaran al js
+			* pid: identificador de la ventana padre
+			* cls: nombre de la clase que se va ejecutar
+			*/
 			
 			var sw=false// ,_url=url.split('?');
 
-			// Busca si la ventana ya fue abierta para recarla
+			// Busca si la ventana ya fue abierta para recarla - comentado temporalmente
 			/*
 			 * for(var i=0;i<pagHijo.length;i++){ if(pagHijo[i].url==_url[0]){
 			 * var paginaHijo=Phx.CP.getPagina(pagHijo[i].idContenedor);
