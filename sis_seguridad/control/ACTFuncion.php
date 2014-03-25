@@ -298,6 +298,7 @@ class ACTFuncion extends ACTbase{
 		} else if (preg_match_all('/\'([^\']+)\'/', $str, $m) ) {
 			
 		}
+		var_dump($m);
 		if(count($m) > 0) {
 			return array('ruta_archivo'=>str_replace('../', '', $m[1][0]) , 'nombre'=> $m[1][1], 'descripcion'=>$m[1][1],'clase_vista'=>$m[1][2]);
 		} else {
