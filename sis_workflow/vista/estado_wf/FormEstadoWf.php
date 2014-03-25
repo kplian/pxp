@@ -12,8 +12,99 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     ActSave:'../../sis_workflow/control/DocumentoWf/subirArchivoWf',
     
+    
+    //grupo de formulario
+    
+    layout:'fit',
     constructor:function(config)
     {   
+        //TODO llamada ajax para cargar los caminos posible de flujo
+        //TODO  contruir los grupos y formualrio con los datos obtenidos
+        console.log('llega...',config,config.idContenedor)
+        var cardNav = function(incr){
+            
+            console.log(incr,config.icContenedor)
+            
+                var l =   this.form.getComponent('card-wizard-panel').getLayout();
+                //var l = Ext.getCmp('card-wizard-panel').getLayout();
+                
+                var i = l.activeItem.id.split(config.idContenedor+'-card-')[1];
+                var next = parseInt(i, 10) + incr;
+                l.setActiveItem(next);
+                
+                this.wizartLast.setDisabled(next==0);
+                this.wizartNext.setDisabled(next==2);
+            };
+                    
+        //this.fheight = this.calTamPor('100', Ext.getBody())
+        this.wizartNext = new Ext.Button({
+                        text: 'Next &raquo;',
+                        handler: cardNav.createDelegate(this, [1])
+                });
+        this.wizartLast = new Ext.Button({
+                        text: '&laquo; Previous',
+                        handler: cardNav.createDelegate(this, [-1]),
+                        disabled: true
+                    });
+        this.Grupos= [
+                   {
+                    layout:'card',
+                    itemId:'card-wizard-panel',
+                    activeItem: 0,
+                    margins: '2 5 5 0',
+                    
+                    //height: 'auto',
+                    autoScroll: true,
+                    //autoHeight: true,
+                    bodyStyle: 'padding:15px',
+                    defaults: {border:false},
+                    bbar: ['->',this.wizartLast, this.wizartNext],
+                    //border: false,
+                   // defaults: {
+                   //    border: false
+                   // },            
+                    items: [/*{
+                                id: config.idContenedor+'card-0',
+                                bodyStyle: 'padding-right:5px;',
+                                layout:'fit',
+                                items: [{
+                                    xtype: 'fieldset',
+                                    title: 'Datos principales',
+                                    autoHeight: true,
+                                    items: [],
+                                    id_grupo:0
+                                }]
+                            }*/
+                           {
+                               
+                                id: config.idContenedor+'-card-0',
+                                xtype: 'fieldset',
+                                title: 'Datos principales',
+                                autoHeight: true,
+                                items: [],
+                                id_grupo:0
+                                
+                            }
+                           , {
+                                id: config.idContenedor+'-card-1',
+                                bodyStyle: 'padding-left:5px;',
+                                layout:'fit',
+                                items: [{
+                                    xtype: 'fieldset',
+                                    title: 'Orden y rutas',
+                                    autoHeight: true,
+                                    items: [],
+                                    id_grupo:1
+                                }]
+                            },{
+                                id: config.idContenedor+'-card-2',
+                                html: '<h1>Congratulations!</h1><p>Step 3 of 3 - Complete</p>'
+                            }]
+                }
+            
+            ];
+            
+        
         Phx.vista.FormEstadoWf.superclass.constructor.call(this,config);
         //declaracion de eventos
         this.addEvents('beforesave');
@@ -26,7 +117,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         this.Cmp.id_tipo_estado.store.on('loadexception', this.conexionFailure,this);
         this.Cmp.id_funcionario_wf.store.on('loadexception', this.conexionFailure,this);
       
-        this.cmbTipoEstado.on('select',function(){
+        this.Cmp.id_tipo_estado.on('select',function(){
             
             this.Cmp.id_funcionario_wf.enable();
             this.Cmp.id_funcionario_wf.store.baseParams.id_tipo_estado = this.cmbTipoEstado.getValue();
@@ -43,11 +134,11 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         Phx.vista.FormEstadoWf.superclass.loadValoresIniciales.call(this);
         console.log(this.maestro)
         
-        Phx.CP.loadingShow();
+        //Phx.CP.loadingShow();
         
         
-        this.Cmp.id_funcionario_wf.store.baseParams.id_estado_wf=this.maestro.id_estado_wf;
-        this.Cmp.id_funcionario_wf.store.baseParams.fecha=this.maestro.fecha_ini;
+        this.Cmp.id_funcionario_wf.store.baseParams.id_estado_wf=this.id_estado_wf;
+        this.Cmp.id_funcionario_wf.store.baseParams.fecha=this.fecha_ini;
             
            /*, Ext.Ajax.request({
                 // form:this.form.getForm().getEl(),
@@ -239,6 +330,8 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     
     
     onSubmit:function(){
+       //TODO passar los datos obtenidos del wizard y pasar  el evento save 
+        
         if (this.form.getForm().isValid()) {
             this.fireEvent('beforesave');
             
