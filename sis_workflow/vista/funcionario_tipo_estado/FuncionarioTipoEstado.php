@@ -52,59 +52,12 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
             form: true
         },
 		{
-            config: {
-                name: 'id_labores_tipo_proceso',
-                fieldLabel: 'Labores',
-                typeAhead: false,
-                forceSelection: false,
-                allowBlank: true,
-                emptyText: 'Lista de labores...',
-                store: new Ext.data.JsonStore({
-                    url: '../../sis_workflow/control/LaboresTipoProceso/listarLaboresTipoProceso',
-                    id: 'id_labores_tipo_proceso',
-                    root: 'datos',
-                    sortInfo: {
-                        field: 'nombre',
-                        direction: 'ASC'
-                    },
-                    totalProperty: 'total',
-                    fields: ['id_labores_tipo_proceso', 'nombre', 'descripcion'],
-                    // turn on remote sorting
-                    remoteSort: true,
-                    baseParams: {par_filtro: 'labtproc.nombre#labtproc.descripcion', funcionario_te: '1'}
-                }),
-                valueField: 'id_labores_tipo_proceso',
-                displayField: 'nombre',
-                gdisplayField: 'desc_labores',
-                triggerAction: 'all',
-                lazyRender: true,
-                mode: 'remote',
-                pageSize: 20,
-                queryDelay: 200,
-                anchor: '80%',
-                minChars: 2,
-                gwidth: 200,
-                renderer: function(value, p, record) {
-                    return String.format('{0}', record.data['desc_labores']);
-                },
-                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Descripción: <strong>{descripcion}</strong> </div></tpl>'
-            },
-            type: 'ComboBox',
-            id_grupo: 0,
-            filters: {
-                pfiltro: 'ltp.nombre',
-                type: 'string'
-            },
-            grid: true,
-            form: true
-        },
-		{
             config:{
                 name:'id_funcionario',
                 origen:'FUNCIONARIO',
                 tinit:true,
                 fieldLabel:'Funcionario',
-                allowBlank:false,
+                allowBlank:true,
                 gwidth:200,
                 valueField: 'id_funcionario',
                 gdisplayField:'desc_funcionario1',//mapea al store del grid
@@ -158,6 +111,53 @@ Phx.vista.FuncionarioTipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:false
 		},
+        {
+            config: {
+                name: 'id_labores_tipo_proceso',
+                fieldLabel: 'Labores',
+                typeAhead: false,
+                forceSelection: false,
+                allowBlank: true,
+                emptyText: 'Lista de labores...',
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_workflow/control/LaboresTipoProceso/listarLaboresTipoProceso',
+                    id: 'id_labores_tipo_proceso',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'nombre',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_labores_tipo_proceso', 'nombre', 'descripcion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'labtproc.nombre#labtproc.descripcion', funcionario_te: '1'}
+                }),
+                valueField: 'id_labores_tipo_proceso',
+                displayField: 'nombre',
+                gdisplayField: 'desc_labores',
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'remote',
+                pageSize: 20,
+                queryDelay: 200,
+                anchor: '80%',
+                minChars: 2,
+                gwidth: 200,
+                renderer: function(value, p, record) {
+                    return String.format('{0}', record.data['desc_labores']);
+                },
+                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Descripción: <strong>{descripcion}</strong> </div></tpl>'
+            },
+            type: 'ComboBox',
+            id_grupo: 0,
+            filters: {
+                pfiltro: 'ltp.nombre',
+                type: 'string'
+            },
+            grid: true,
+            form: true
+        },
 		{
 			config:{
 				name: 'fecha_reg',

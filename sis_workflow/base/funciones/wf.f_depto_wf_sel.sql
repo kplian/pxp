@@ -76,11 +76,11 @@ BEGIN
     
     
 
-    
+    --raise exception 'llega %',v_depto_asignacion;
   
   if v_depto_asignacion = 'ninguno' then
           IF p_count THEN
-            -- FOR g_registros in (select 1::bigint from (select 1 ) aa)  LOOP   
+           
              
              FOR g_registros in (select 0::bigint as total)   LOOP   
                            
@@ -101,15 +101,20 @@ BEGIN
                          dep.codigo as codigo_depto,
                          dep.nombre_corto as nombre_corto_depto,
                          dep.nombre as nombre_depto,
-                         1 as prioridad
+                         1 as prioridad,
+                         sub.nombre as subsistema
                          FROM
                          wf.testado_wf ew
                          inner join param.tdepto dep on dep.id_depto = ew.id_depto
+                         inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema 
                          WHERE ew.id_estado_wf='||p_id_estado_wf;
                          
                        FOR g_registros in execute(v_consulta) LOOP     
                            RETURN NEXT g_registros;
                        END LOOP;    
+                       
+                      
+                       
            
            
            ELSE
@@ -127,15 +132,19 @@ BEGIN
            END IF;    
   
   
-      elseif v_depto_asignacion = 'depto_listado' then
+      elseif v_depto_asignacion = 'todos' then
+               
                IF p_count=FALSE then
                       v_consulta='select DISTINCT (dep.id_depto),
                                          dep.codigo as codigo_depto,
                                          dep.nombre_corto as nombre_corto_depto,
                                          dep.nombre as nombre_depto,
-                                         1 as prioridad
+                                         1 as prioridad,
+                                         sub.nombre  as subsistema
+                    
                                   from param.tdepto dep
-                                       inner join wf.tfuncionario_tipo_estado fte on fte.id_depto = dep.id_depto 
+                                 		inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
+                                  		inner join wf.tfuncionario_tipo_estado fte on fte.id_depto = dep.id_depto 
                                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
                                    where '||p_filtro||'
                                          order by dep.codigo
@@ -152,6 +161,7 @@ BEGIN
                       v_consulta='select 
                           COUNT(DISTINCT(dep.id_depto))
                           from param.tdepto dep
+                                       inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
                                        inner join wf.tfuncionario_tipo_estado fte on fte.id_depto = dep.id_depto 
                                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
                                    where '||p_filtro;
@@ -165,7 +175,54 @@ BEGIN
                 
                 END IF;
      
-     
+     elseif v_depto_asignacion = 'depto_listado' then
+    
+          
+           IF p_count=FALSE then
+           
+                 v_consulta='select 
+                         DISTINCT(dep.id_depto),
+                         dep.codigo as codigo_depto,
+                         dep.nombre_corto as nombre_corto_depto,
+                         dep.nombre as nombre_depto,
+                         1 as prioridad,
+                         sub.nombre as subsistema
+                    
+                   from param.tdepto dep
+                   inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
+                   inner join wf.tfuncionario_tipo_estado fte 
+                       on fte.id_depto = dep.id_depto 
+                       and fte.id_tipo_estado = '||p_id_tipo_estado||'
+                   where  '||p_filtro||'
+                            order by sub.nombre
+                            limit '|| p_limit::varchar||' offset '||p_start::varchar;
+                  
+                 --raise exception 'v_consulta %',v_consulta; 
+                 -- listado de todos los funcionarios en la tabla 
+                 FOR g_registros in execute (v_consulta)LOOP     
+                   RETURN NEXT g_registros;
+                 END LOOP;
+       
+          ELSE
+          
+            	v_consulta='select 
+                    COUNT(DISTINCT(dep.id_depto))
+                     from param.tdepto dep
+                   inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
+                   inner join wf.tfuncionario_tipo_estado fte 
+                       on fte.id_depto = dep.id_depto 
+                       and fte.id_tipo_estado = '||p_id_tipo_estado||'
+                    where '||p_filtro;
+                  
+                
+                  
+                 -- listado de todos los funcionarios en la tabla 
+                 FOR g_registros in execute (v_consulta)LOOP     
+                   RETURN NEXT g_registros;
+                 END LOOP;
+          
+          
+          END IF;
      
      elseif v_depto_asignacion = 'depto_func_list' then  
       
@@ -188,9 +245,11 @@ BEGIN
                                          dep.codigo as codigo_depto,
                                          dep.nombre_corto as nombre_corto_depto,
                                          dep.nombre as nombre_depto,
-                                         1 as prioridad
+                                         1 as prioridad,
+                                         sub.nombre as subsistema
                                 from adq.tsolicitud sol
-                                inner join param.tdepto dep on dep.id_depto = sol.id_depto
+                                  inner join param.tdepto dep on dep.id_depto = sol.id_depto
+                                  inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
                                 where sol.id_estado_wf = '||p_id_estado_wf||'  
                                 and '||p_filtro||'
                                   order by  dep.codigo
@@ -206,6 +265,7 @@ BEGIN
                                   COUNT(dep.id_depto) as total
                                 from adq.tsolicitud sol
                                 inner join param.tdepto dep on dep.id_depto = sol.id_depto
+                                inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
                                 where sol.id_estado_wf = '||p_id_estado_wf||'  
                                 and '||p_filtro;   
                                           

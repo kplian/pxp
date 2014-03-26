@@ -60,6 +60,22 @@ class ACTTipoEstado extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
     
+    function listarDeptoWf(){
+            
+        $this->objParam->defecto('ordenacion','id_depto');
+        $this->objParam->defecto('subsistema','asc');
+        
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODTipoEstado','listarDeptoWf');
+        } else{
+            $this->objFunc=$this->create('MODTipoEstado');
+            
+            $this->res=$this->objFunc->listarDeptoWf($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    
 				
 	function insertarTipoEstado(){
 		$this->objFunc=$this->create('MODTipoEstado');	

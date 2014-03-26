@@ -52,10 +52,17 @@ class ACTProcesoWf extends ACTbase{
 		$this->res=$this->objFunc->eliminarProcesoWf($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
 	function siguienteEstadoProcesoWf(){
         $this->objFunc=$this->create('MODProcesoWf');  
         $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
         $this->res=$this->objFunc->siguienteEstadoProcesoWf($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function verficarSigEstProcesoWf(){
+        $this->objFunc=$this->create('MODProcesoWf');  
+        $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+        $this->res=$this->objFunc->verficarSigEstProcesoWf($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
     

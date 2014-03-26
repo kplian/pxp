@@ -180,6 +180,24 @@ function listarGantWf(){
 		return $this->respuesta;
 	}
 	
+	function verficarSigEstProcesoWf(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.f_proceso_wf_ime';
+        $this->transaccion='WF_VERSIGPRO_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+        $this->setParametro('operacion','operacion','varchar');
+        
+       //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
 	function siguienteEstadoProcesoWf(){
         //Definicion de variables para ejecucion del procedimiento
         $this->procedimiento='wf.f_proceso_wf_ime';

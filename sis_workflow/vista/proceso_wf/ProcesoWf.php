@@ -17,7 +17,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		
 		Phx.vista.ProcesoWf.superclass.constructor.call(this,config);
 		this.init();
-		 this.store.baseParams={tipo_interfaz:this.nombreVista};
+		this.store.baseParams={tipo_interfaz:this.nombreVista};
 		//this.load({params:{start:0, limit:this.tam_pag}});
 		this.iniciarEventos();
         
@@ -38,7 +38,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
            
             border: false,
             layout: 'form',
-             autoHeight: true,
+            autoHeight: true,
            
     
                 items: [
@@ -724,11 +724,11 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
             {
                 config:[{
-                          event:'save',
+                          event:'beforesave',
                           delegate: function(){alert('save ....')},
                         },
                         {
-                          event:'init',
+                          event:'successsave',
                           delegate: function(){alert('evento disparado....')},  
                         },
                         {

@@ -79,7 +79,41 @@ BEGIN
   
   if v_tipo_asignacion = 'ninguno' then
   
-       raise exception 'no se admiten funcionarios en este estado';  
+       -- 'Se fuerza el retorno registro vacios para que la consulta no de error'; 
+       -- cuando el estado sea ninguno se ve convenieto bloquear el combo 
+       
+       IF p_count=FALSE then
+           
+           v_consulta= 'select 
+                         0 as id_funcionario,
+                         ''---''::text as  desc_funcionario,
+                         ''---''::text  as desc_funcionario_cargo,
+                         1 as prioridad
+                         FROM
+                             wf.testado_wf ew
+                         WHERE ew.id_estado_wf=0';
+                         
+                       FOR g_registros in execute(v_consulta) LOOP     
+                           RETURN NEXT g_registros;
+                       END LOOP;    
+           
+           
+           ELSE
+           
+               --retorna 0
+                v_consulta= 'select 
+                             0
+                            FROM
+                             wf.testado_wf ew
+                           WHERE ew.id_estado_wf=0';
+                         
+                       FOR g_registros in execute(v_consulta) LOOP     
+                           RETURN NEXT g_registros;
+                       END LOOP; 
+            
+           END IF;
+       
+       
        
   elseif  v_tipo_asignacion = 'anterior' then
   

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -117,8 +119,80 @@ BEGIN
 			return v_consulta;
 						
 		end;
+        
+        
+     /*********************************    
+ 	#TRANSACCION:  'WF_DEPTIPES_SEL'
+ 	#DESCRIPCION:	Consulta los departamentos correspondientes al tipo de estado wf
+ 	#AUTOR:		admin	
+ 	#FECHA:		21-02-2013 15:36:11
+	***********************************/
 
-	/*********************************    
+	elsif(p_transaccion='WF_DEPTIPES_SEL')then
+     				
+    	begin
+                                 
+          v_consulta:=' 
+                   SELECT 
+                    id_depto,
+                    codigo_depto,
+                    nombre_corto_depto,
+                    nombre_depto,
+                    prioridad,
+                    subsistema
+                   FROM wf.f_depto_wf_sel(
+                     '||p_id_usuario::varchar||', 
+                     '||v_parametros.id_tipo_estado::varchar||', 
+                      '''||v_parametros.fecha::varchar||''',
+                      '|| v_parametros.id_estado_wf::varchar||',
+                      FALSE,
+                      '||v_parametros.cantidad||',
+                      '||v_parametros.puntero||',
+                      '||quote_literal(v_parametros.filtro)||'
+                      
+                     ) AS (id_depto integer,
+                           codigo_depto varchar,
+                           nombre_corto_depto varchar,
+                           nombre_depto varchar,
+                           prioridad integer,
+                           subsistema varchar)';
+                      
+         --Devuelve la respuesta
+		return v_consulta;
+						
+		end;
+ 	/*********************************    
+ 	#TRANSACCION:  'WF_DEPTIPES_CONT'
+ 	#DESCRIPCION:	Cuenta los registros de la consulta de departamentos correspondientes al tipo de estado wf
+ 	#AUTOR:		admin	
+ 	#FECHA:		21-02-2013 15:36:11
+	***********************************/
+
+	elseif(p_transaccion='WF_DEPTIPES_CONT')then
+     				
+    	begin
+       
+         v_consulta:=' 
+                   SELECT 
+                   total
+                   FROM wf.f_depto_wf_sel(
+                     '||p_id_usuario::varchar||', 
+                     '||v_parametros.id_tipo_estado::varchar||', 
+                      '''||v_parametros.fecha::varchar||''',
+                      '|| v_parametros.id_estado_wf::varchar||',
+                      TRUE,
+                      '||v_parametros.cantidad||',
+                      '||v_parametros.puntero||',
+                      '||quote_literal(v_parametros.filtro)||'
+                      
+                     ) AS (total bigint)';
+                      
+             --Devuelve la respuesta
+			return v_consulta;
+						
+		end;    
+
+   /*********************************    
  	#TRANSACCION:  'WF_TIPES_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
