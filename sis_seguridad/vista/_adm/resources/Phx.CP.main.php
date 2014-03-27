@@ -27,6 +27,7 @@ header("content-type: text/javascript; charset=UTF-8");
 			x:".$x.",
             parammetros:{cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
 			nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
+			mini_logo:'".$_SESSION["_MINI_LOGO"]."',
 			nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
 			id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
 			id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',

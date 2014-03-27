@@ -57,7 +57,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 mode: 'local',
                 valueField: 'momento',                  
-                store:['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico']
+                store:['crear','verificar','exigir','hacer_exigible','exigir_fisico','verificar_fisico']
             },
             type:'ComboBox',
             //filters:{pfiltro:'des.momento',type:'string'},

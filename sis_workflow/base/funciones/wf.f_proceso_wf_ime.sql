@@ -337,7 +337,8 @@ BEGIN
                                      codigo_depto varchar,
                                      nombre_corto_depto varchar,
                                      nombre_depto varchar,
-                                     prioridad integer);
+                                     prioridad integer,
+                                     subsistema varchar);
                       END IF;
                   
                 END IF;
@@ -401,6 +402,173 @@ BEGIN
             return v_resp;
         
         end;
+        
+     /*********************************    
+ 	#TRANSACCION:  'WF_VERSIGPRO_IME'
+ 	#DESCRIPCION:   Verificas los parametros necesriso para tomas la decision sobre el sisguiete estado
+ 	#AUTOR:		RAC	
+ 	#FECHA:		23-03-2014 12:12:51
+	***********************************/
+
+	elseif(p_transaccion='WF_VERSIGPRO_IME')then   
+        begin
+        
+        --obtenermos datos basicos
+          
+          select
+            pw.id_proceso_wf,
+            ew.id_estado_wf,
+            te.codigo,
+            pw.fecha_ini,
+            te.id_tipo_estado,
+            te.pedir_obs,
+            pw.nro_tramite
+          into 
+            v_registros
+            
+          from wf.tproceso_wf pw
+          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
+          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+          where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
+          
+         
+        
+         ------------------------------------------------------------------------------------------------------- 
+         -- Verifica  los posibles estados sigueintes para que desde la interfaz se tome la decision si es necesario
+         ------------------------------------------------------------------------------------------------------
+          IF  v_parametros.operacion = 'verificar' THEN
+          
+                  --buscamos siguiente estado correpondiente al proceso del WF
+                 
+                  ----- variables de retorno------
+                  
+                  v_num_estados=0;
+                  v_num_funcionarios=0;
+                  v_num_deptos=0;
+                  
+                  --------------------------------- 
+              
+                 SELECT  
+                     ps_id_tipo_estado,
+                     ps_codigo_estado,
+                     ps_disparador,
+                     ps_regla,
+                     ps_prioridad
+                 into
+                    va_id_tipo_estado,
+                    va_codigo_estado,
+                    va_disparador,
+                    va_regla,
+                    va_prioridad
+                
+                FROM wf.f_obtener_estado_wf(v_registros.id_proceso_wf, NULL,v_registros.id_tipo_estado,'siguiente'); 
+          
+                raise notice 'verifica';
+                
+                v_num_estados= array_length(va_id_tipo_estado, 1);
+            
+                 --  raise exception 'Estados...  %',v_registros.pedir_obs;
+           
+                IF v_registros.pedir_obs = 'no' THEN
+                  
+                            
+                      IF v_num_estados = 1 then
+                            -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
+                             raise notice ' si solo hay un estado';
+                               SELECT 
+                               *
+                                into
+                               v_num_funcionarios 
+                               FROM wf.f_funcionario_wf_sel(
+                                   p_id_usuario, 
+                                   va_id_tipo_estado[1], 
+                                   v_fecha_ini,
+                                   v_registros.id_estado_wf,
+                                   TRUE) AS (total bigint);
+                                   
+                              IF v_num_funcionarios = 1 THEN
+                              
+                                raise notice ' si solo es un funcionario, recuperamos el funcionario correspondiente';
+                              -- si solo es un funcionario, recuperamos el funcionario correspondiente
+                                   SELECT 
+                                       id_funcionario
+                                         into
+                                       v_id_funcionario_estado
+                                   FROM wf.f_funcionario_wf_sel(
+                                       p_id_usuario, 
+                                       va_id_tipo_estado[1], 
+                                       v_fecha_ini,
+                                       v_registros.id_estado_wf,
+                                       FALSE) 
+                                       AS (id_funcionario integer,
+                                         desc_funcionario text,
+                                         desc_funcionario_cargo text,
+                                         prioridad integer);
+                              END IF;    
+                                   
+                            
+                            --verificamos el numero de deptos
+                             raise notice 'verificamos el numero de deptos';
+                             
+                            
+                              SELECT 
+                              *
+                              into
+                                v_num_deptos 
+                             FROM wf.f_depto_wf_sel(
+                                 p_id_usuario, 
+                                 va_id_tipo_estado[1], 
+                                 v_fecha_ini,
+                                 v_registros.id_estado_wf,
+                                 TRUE) AS (total bigint);
+                                 
+                             IF v_num_deptos = 1 THEN
+                                -- si solo es un funcionario, recuperamos el funcionario correspondiente
+                                 raise notice 'si solo es un funcionario, recuperamos el funcionario correspondiente';
+                           
+                                     SELECT 
+                                         id_depto
+                                           into
+                                         v_id_depto_estado
+                                    FROM wf.f_depto_wf_sel(
+                                         p_id_usuario, 
+                                         va_id_tipo_estado[1], 
+                                         v_fecha_ini,
+                                         v_registros.id_estado_wf,
+                                         FALSE) 
+                                         AS (id_depto integer,
+                                           codigo_depto varchar,
+                                           nombre_corto_depto varchar,
+                                           nombre_depto varchar,
+                                           prioridad integer);
+                            END IF;
+                        
+                      END IF;
+                  
+                   
+                   END IF;
+                   raise notice 'si hay mas de un estado disponible  preguntamos al usuario';
+                   
+                  -- si hay mas de un estado disponible  preguntamos al usuario
+                  v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Verificacion para el siguiente estado)'); 
+                  v_resp = pxp.f_agrega_clave(v_resp,'estados', array_to_string(va_id_tipo_estado, ','));
+                  v_resp = pxp.f_agrega_clave(v_resp,'operacion','preguntar_todo');
+                  v_resp = pxp.f_agrega_clave(v_resp,'num_estados',v_num_estados::varchar);
+                  v_resp = pxp.f_agrega_clave(v_resp,'num_funcionarios',v_num_funcionarios::varchar);
+                  v_resp = pxp.f_agrega_clave(v_resp,'num_deptos',v_num_deptos::varchar);
+                  v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario_estado',v_id_funcionario_estado::varchar);
+                  v_resp = pxp.f_agrega_clave(v_resp,'id_depto_estado',v_id_depto_estado::varchar);
+                  v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado', va_id_tipo_estado[1]::varchar);
+                  
+           END IF;
+           
+          --Devuelve la respuesta
+            return v_resp;
+        
+        end;   
+        
+        
+        
     
     /*********************************    
  	#TRANSACCION:  'WF_ANTEPRO_IME'

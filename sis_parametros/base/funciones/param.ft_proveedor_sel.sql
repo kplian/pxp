@@ -140,7 +140,8 @@ raise notice '%',v_consulta;
                         nit,
                         id_lugar,
                         lugar,
-                        pais
+                        pais,
+                        rotulo_comercial
             from param.vproveedor provee
             where  ';
             

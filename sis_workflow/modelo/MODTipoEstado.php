@@ -78,6 +78,35 @@ class MODTipoEstado extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    
+    function listarDeptoWf(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='wf.ft_tipo_estado_sel';
+        $this->transaccion='WF_DEPTIPES_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        
+        //$this->setCount(false);
+        
+        $this->setParametro('id_tipo_estado','id_tipo_estado','integer');
+        $this->setParametro('fecha','fecha','date');
+        $this->setParametro('id_estado_wf','id_estado_wf','integer');
+        
+        //Definicion de la lista del resultado del query
+        $this->captura('id_depto','int4');
+        $this->captura('codigo_depto','varchar');
+        $this->captura('nombre_corto_depto','varchar');
+        $this->captura('nombre_depto','varchar');
+        $this->captura('prioridad','int4');
+        $this->captura('subsistema','varchar');
+        
+       
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 	function insertarTipoEstado(){
 		//Definicion de variables para ejecucion del procedimiento

@@ -175,7 +175,7 @@ class Mensaje
 
 	/**
 	 * Nombre funcion:	getTipo
-	 * Proposito:		devuelve el tipo de mensaje error o exito
+	 * Proposito:		devuelve el tipo de mensaje ERROR o EXITO
 	 * Fecha creacion:	12/04/2009
 	 * @return tipo cadena
 	 *

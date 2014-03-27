@@ -1,0 +1,72 @@
+/* 
+    Document   : slidenav
+    Created on : Apr 26, 2013, 3:09:46 PM
+    Author     : SWARNENDU
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* For left side navigation */
+
+
+.slide ,
+.nav-list {
+    -webkit-animation-duration: .200s;
+				-webkit-transition-timing-function: cubic-bezier(0.275, 0.080, 0.425, 0.855); 
+}
+
+.slide {
+				background: #f1f1f1;
+				z-index: 1;
+}
+
+.x-toolbar{
+    z-index: 1000 !important;
+}
+
+/* Main view */
+
+@-webkit-keyframes slideout {
+    from { 
+				-webkit-transform: translateX(0px); 
+} to {
+				-webkit-transform: translateX(250px); 
+}}
+
+@-webkit-keyframes slidein {
+    from { -webkit-transform: translateX(250px); }
+to { -webkit-transform: translateX(0px); }
+}
+
+.slide.out {
+    -webkit-animation-name: slideout;
+    -webkit-transform: translateX(250px);
+}
+
+.slide.in {
+    -webkit-animation-name: slidein;
+    -webkit-transform: translateX(0px);
+}
+
+/* Main view ENDS */
+
+/* Nav menu view */
+
+.nav-list{
+    height: 100%;
+				background: #222;
+				-webkit-box-shadow: inset -15px 0px 30px -15px rgba(0,0,0,1);
+				position: absolute !important;
+    left: 0;
+}
+
+.nav-list .x-list-item{
+				color: rgb(223, 223, 223);
+				border-bottom: 1px solid #000 !important;
+				border-top: 1px solid #333 !important;
+				font-size: 15px;
+}
+
+/* Nav menu view ENDS */
+
+/* For left side navigation ENDS */

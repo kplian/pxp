@@ -17,7 +17,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		
 		Phx.vista.ProcesoWf.superclass.constructor.call(this,config);
 		this.init();
-		 this.store.baseParams={tipo_interfaz:this.nombreVista};
+		this.store.baseParams={tipo_interfaz:this.nombreVista};
 		//this.load({params:{start:0, limit:this.tam_pag}});
 		this.iniciarEventos();
         
@@ -38,7 +38,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
            
             border: false,
             layout: 'form',
-             autoHeight: true,
+            autoHeight: true,
            
     
                 items: [
@@ -198,9 +198,14 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             });         
         }
         
-        
-        
-	},
+        this.addButton('estado_wf',{
+                    text:'',iconCls: 
+                    'bgantt',
+                    disabled:false,
+                    handler:this.openFormEstadoWf,
+                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+  
+    },
 	tam_pag:50,
 			
 	Atributos:[
@@ -338,8 +343,8 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             form:true
           },         {
             config:{
-                name:'id_institucion',
-                origen:'INSTITUCION',
+                 name:'id_institucion',
+                 origen:'INSTITUCION',
                  allowBlank:false,
                  tinit:true,
                  fieldLabel:'Originado por',
@@ -706,6 +711,44 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
        
         
     },
+    
+    openFormEstadoWf:function(){
+        
+        var rec=this.sm.getSelected();
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:700,
+                height:450
+            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
+            {
+                config:[{
+                          event:'beforesave',
+                          delegate: function(){alert('save ....')},
+                        },
+                        {
+                          event:'successsave',
+                          delegate: function(){alert('evento disparado....')},  
+                        },
+                        {
+                          event:'delete',
+                          delegate: this.onDeleteXXX,  
+                        }],
+                
+                scope:this
+             })
+        
+        
+    },
+    
+    onDeleteXXX:function(){
+        
+        alert('DELETE ..............')  
+        
+    },
+	
+	
 	
 	bdel:true,
 	bsave:false
