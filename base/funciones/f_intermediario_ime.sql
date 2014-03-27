@@ -178,7 +178,7 @@ BEGIN
         
         for i in 1..(v_tamano-1) loop
             -- 3.2.1)IF si los valores son del tipo numeric o integer los espacios se insertan con valores nulos
-            IF(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4' or tipos[i]='int8')then
+            IF(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4' or tipos[i]='int8' or tipos[i]='bigint')then
                 if(valores[i]='')THEN
                     v_consulta:=v_consulta || 'null' || ',';
                 else
@@ -204,7 +204,7 @@ BEGIN
  
         
          --encode(par_files,'escape')
-        if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8')then
+        if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8' or tipos[v_tamano]='bigint')then
             
              if(v_upload_file)THEN
                  if(valores[v_tamano]='')THEN
