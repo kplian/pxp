@@ -106,10 +106,10 @@ function authPxp($headersArray) {
 	}
 	
 	//desencriptar usuario y contrasena
-	$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+	$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
 	
 	if (count($auxArray) == 2) {
-		$reqArray['usuario'] = $auxArray[1];
+		$reqArray['usuario'] = $headersArray['Pxp-User'];
 		
 		
 		//armar array con _tipo,usuario y contrasena
@@ -283,8 +283,110 @@ $app->get(
 
 $app->get(
 	 
-    '/:sistema/:clase_control/:metodo(/:start(/:limit))',
-    function ($sistema,$clase_control,$metodo,$start=0,$limit=10000) use ($app) {
+    '/:sistema/:clase_control/:metodo',
+    function ($sistema,$clase_control,$metodo) use ($app) {
+    	$headers = $app->request->headers;	
+		$cookies = $app->request->cookies;
+		
+		//var_dump($app->request->cookies);
+    	if (isset($headers['Php-Auth-User'])) {
+    		authPxp($headers);
+		} else if (!isset($cookies['PHPSESSID']) || $_SESSION["_SESION"]->getEstado()=='inactiva' || $_SESSION["_SESION"]->getEstado()=='preparada') {
+			$men=new Mensaje();
+			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 291','No hay una sesion activa para realizar esta peticion',
+			'Codigo de error: SESION',
+			'control','','','OTRO','');
+			
+			//rac 21092011 					
+			$men->imprimirRespuesta($men->generarJson(),'401');
+			exit;
+		}
+    	
+		//var_dump($app->request->headers);
+		
+    	     
+        //TODO validar cadenas vaias y retorna error en forma JSON
+        $ruta_include = 'sis_'.$sistema.'/control/ACT'.$clase_control.'.php';
+        $ruta_url = 'sis_'+$sistema.'/control/'.$clase_control.'/'.$metodo;
+         
+        //TODO verificar sesion
+        //throw new Exception('La sesion ha sido duplicada',2);
+        $start = $app->request->params('start');
+		$limit = $app->request->params('limit');
+		$sort = $app->request->params('sort');
+		$dir = $app->request->params('dir');
+		$filter = $app->request->params('filter');
+		
+         //TODO desencriptar variables ...
+        $objPostData=new CTPostData();
+		
+        $aPostData = $objPostData->getData();
+        
+        //add elements to array 
+        if(isset($start)){
+             $aPostData['start'] = $start;
+        }
+        else{
+             $aPostData['start'] = 0;
+        }
+        if(isset($limit)){
+             $aPostData['limit'] = $limit;
+        }
+        else{
+             $aPostData['limit'] = 10000;
+        }
+		if(isset($sort)){
+             $aPostData['sort'] = $sort;
+        }       
+		if(isset($dir)){
+             $aPostData['dir'] = $dir;
+        } 
+		if(isset($filter)){
+             $aPostData['filter'] = $filter;
+        }        
+        
+        //arma $JSON
+        $JSON = json_encode($aPostData);
+        
+
+        $objParam = new CTParametro($JSON,null,null,'../../'.$ruta_url);
+        include_once dirname(__FILE__).'/../../../'.$ruta_include;
+
+        
+        //Instancia la clase dinamica para ejecutar la accion requerida
+        eval('$cad = new ACT'.$clase_control.'($objParam);');
+		
+        eval('$cad->'.$metodo.'();');
+        
+    }
+); 
+
+$app->post(
+	 
+    '/seguridad/Auten/verificarCredenciales',
+    function () use ($app) {    	
+    	$auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));    	
+    	authPxp($auxHeaders); 
+		
+		echo "{success:true,
+				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
+				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
+				nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
+				id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
+				id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
+				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
+				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
+				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
+				timeout:".$_SESSION["_TIMEOUT"]."}";
+	
+				exit;		
+    }
+); 
+
+$app->post(
+	 
+    '/:sistema/:clase_control/:metodo',
+    function ($sistema,$clase_control,$metodo) use ($app) {
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		//var_dump($app->request->cookies);
@@ -315,26 +417,23 @@ $app->get(
         $objPostData=new CTPostData();
 		
         $aPostData = $objPostData->getData();
-        
-        //add elements to array 
-        if(isset($start)){
-             $aPostData['start'] = $start;
-        }
-        else{
-             $aPostData['start'] = 0;
-        }
-        if(isset($limit)){
-             $aPostData['limit'] = $limit;
-        }
-        else{
-             $aPostData['limit'] = 10000;
-        }
+		
+        foreach($app->request->post() as $key => $val) {
+        	$aPostData[$key] = $val;
+		} 
+		
+		if ($app->request->post('_tipo') == 'matriz' ) {
+			$m = 1;  
+		} else {
+			$m = null;
+		}
+		     
         
         //arma $JSON
         $JSON = json_encode($aPostData);
         
 
-        $objParam = new CTParametro($JSON,null,null,'../../'.$ruta_url);
+        $objParam = new CTParametro($JSON,$m,null,'../../'.$ruta_url);
         include_once dirname(__FILE__).'/../../../'.$ruta_include;
 
         
@@ -345,6 +444,9 @@ $app->get(
         
     }
 ); 
+
+
+
 
 
 $app->get('/books/:id/:op/', 
