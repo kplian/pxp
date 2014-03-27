@@ -281,7 +281,7 @@ IS 'verificar o exigir documentos fisicos';
 
 
 /***********************************I-SCP-RAC-WF-0-21/02/2014****************************************/
-/*
+
 --------------- SQL ---------------
 
 ALTER TABLE wf.tdocumento_wf
@@ -290,7 +290,61 @@ ALTER TABLE wf.tdocumento_wf
 --------------- SQL ---------------
 
 ALTER TABLE wf.tdocumento_wf
-  ADD COLUMN fecha_upload TIMESTAMP WITHOUT TIME ZONE;*/
+  ADD COLUMN fecha_upload TIMESTAMP WITHOUT TIME ZONE;
   
 /***********************************F-SCP-RAC-WF-0-22/02/2014****************************************/
+
+
+
+/***********************************I-SCP-RAC-WF-0-25/03/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso
+  ADD COLUMN funcion_validacion_wf VARCHAR(200);
+
+COMMENT ON COLUMN wf.ttipo_proceso.funcion_validacion_wf
+IS 'Nombre de la funcion de validacion, esta funcion retorna falso o verdadero. Sirve para decidir si el proceso se inia o no (ejemplo preingresos de almaces o aactivos fijos al relaizar compras)';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso
+  ADD COLUMN tipo_disparo VARCHAR(40);
+
+COMMENT ON COLUMN wf.ttipo_proceso.tipo_disparo
+IS 'obligatorio -> define si el proceso se dispara siempre, opcional -> (el usuario decide), opcional_automatico (se revisa la funcion de validacion), bandeja -> el proceso queda pendiente en una bandeja de espera';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso
+  ADD COLUMN descripcion VARCHAR;
+
+COMMENT ON COLUMN wf.ttipo_proceso.descripcion
+IS 'campo que describe el tipo de proceso';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  DROP CONSTRAINT ttipo_estado_fk RESTRICT;
+  
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN descripcion VARCHAR;  
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN plantilla_mensaje VARCHAR;
+
+COMMENT ON COLUMN wf.ttipo_estado.plantilla_mensaje
+IS 'plantilla de mensajes para el envio de alertas';
+
+--------------- SQL ---------------
+
+COMMENT ON COLUMN wf.ttipo_estado.obs
+IS 'Este campo se utiliza para adicionar comodines que pueden ser utile en el proceso. Por ejemplo sirve para identificar que partidas son revisadas por los vistos buenos de almancenes y activos fijos';
+
+/***********************************F-SCP-RAC-WF-0-25/03/2014****************************************/
 

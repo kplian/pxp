@@ -36,6 +36,7 @@ DECLARE
     y varchar;
     
     _SEMILLA varchar;
+    v_registros		record;
 BEGIN
 
       --*** EJECUCIÓN DEL PROCEDIMIENTO ESPECÍFICO
@@ -63,6 +64,14 @@ _SEMILLA = '+_)(*&^%$#@!@TERPODO';
                      g_consulta := g_consulta||' '||'VALID UNTIL '''||NEW.fecha_caducidad||'''';
 
                      EXECUTE(g_consulta);
+                     
+                     for v_registros in (	select r.* from segu.trol r
+                     						inner join segu.tsubsistema s on r.id_subsistema = s.id_subsistema
+                                            where s.codigo = 'PXP') loop
+                     
+                     		insert into segu.tusuario_rol(id_usuario, id_rol, fecha_reg)VALUES(
+                            	NEW.id_usuario, v_registros.id_rol, now());                       
+                	 end loop;
 
                   
                      --ASGINACION DE ROLES

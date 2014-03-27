@@ -17,7 +17,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		
 		Phx.vista.ProcesoWf.superclass.constructor.call(this,config);
 		this.init();
-		 this.store.baseParams={tipo_interfaz:this.nombreVista};
+		this.store.baseParams={tipo_interfaz:this.nombreVista};
 		//this.load({params:{start:0, limit:this.tam_pag}});
 		this.iniciarEventos();
         
@@ -38,7 +38,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
            
             border: false,
             layout: 'form',
-             autoHeight: true,
+            autoHeight: true,
            
     
                 items: [
@@ -715,20 +715,20 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
     openFormEstadoWf:function(){
         
         var rec=this.sm.getSelected();
-            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/EstadoWf.php',
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
             'Estado de Wf',
             {
                 modal:true,
-                width:450,
-                height:150
-            }, {data:rec.data}, this.idContenedor,'EstadoWf',
+                width:700,
+                height:450
+            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
             {
                 config:[{
-                          event:'save',
+                          event:'beforesave',
                           delegate: function(){alert('save ....')},
                         },
                         {
-                          event:'init',
+                          event:'successsave',
                           delegate: function(){alert('evento disparado....')},  
                         },
                         {

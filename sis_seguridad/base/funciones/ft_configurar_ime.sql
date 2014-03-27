@@ -1,17 +1,16 @@
 CREATE OR REPLACE FUNCTION segu.ft_configurar_ime (
   p_administrador integer,
   p_id_usuario integer,
-  p_tabla character varying,
-  p_transaccion character varying
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Esquema de seguridad
  FUNCION: 		segu.ft_configurar_ime
  DESCRIPCION:   Funcion que modifica la configuración de la vista, la autentificación y las contraseñas
- AUTOR: 		 (mflores)
+ AUTOR: 		 (jrivera)
  FECHA:	        01-12-2011 15:03
  COMENTARIOS:	
 ***************************************************************************
@@ -58,12 +57,7 @@ BEGIN
     
 		begin
         
-        if (v_parametros.autentificacion = 'Contraseña ENDESIS') then
-        	v_parametros.autentificacion = 'local';
-        else
-        	v_parametros.autentificacion = 'ldap';
-        end if;
-        
+                
         select contrasena
         into v_clave_anterior
         from segu.tusuario
@@ -81,12 +75,29 @@ BEGIN
             and usuari.id_usuario = p_id_usuario) THEN
 			
             --  guarda nueva contraseña solo si coinciden la nueva y la confirmacion
-		
+				 
                 --1.1.1) IF si la contraseña nueva es igual a la confirmacion
 				IF (v_parametros.clave_nueva = v_parametros.clave_confirmacion) THEN
 		
 		        --1.1.1.1) modifico contraseña
 	            -- se actualiza la clave  
+                if (pxp.f_get_variable_global('sincronizar') = 'true') then
+                	/*UPDATE segu.tusuario SET
+                   		 estilo = v_parametros.estilo,                         
+                         autentificacion = v_parametros.autentificacion                         
+					WHERE segu.tusuario.id_usuario = p_id_usuario;*/
+                    
+                    select * FROM dblink(migra.f_obtener_cadena_conexion(), 
+                        'SELECT * 
+                        FROM sss.f_tsg_configurar_contrasena_pxp_iud(' || p_id_usuario || ',''' ||
+                        		v_parametros.clave_nueva || ''')',TRUE)AS t1(resp varchar)
+                                into v_resp;                  
+                         
+                         select * FROM dblink(migra.f_obtener_cadena_conexion(),
+                         'SELECT * FROM migracion.f_sincronizacion()',FALSE)AS t1(resp varchar)
+                         into v_resp;
+                                   
+                else
                   UPDATE segu.tusuario SET
                    		 contrasena_anterior = v_clave_anterior,
 			             contrasena = v_parametros.clave_nueva,
@@ -94,6 +105,7 @@ BEGIN
                          autentificacion = v_parametros.autentificacion
                          
 					WHERE segu.tusuario.id_usuario = p_id_usuario;
+                end if;
                     
                     v_mod_exito = 1;
                     
@@ -161,7 +173,8 @@ EXCEPTION
 				        
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_ep_ime (OID = 305050) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
