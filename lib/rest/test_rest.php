@@ -1,12 +1,12 @@
 <?php
 
-	include 'PxpRestClient.php';
+	/*include 'PxpRestClient.php';
 	
 	//phpinfo();
 	$pxpRestClient = PxpRestClient::connect('192.168.56.101','kerp-boa/pxp/lib/rest/')
 					->setCredentialsPxp('admin','admin');
 	
-	echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array('start'=>'0','limit'=>'3'));
+	echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array('start'=>'0','limit'=>'3'));*/
 	//echo '................';
 	/*echo $pxpRestClient->doPost('seguridad/UsuarioRol/guardarUsuarioRol',array("id_usuario"=>"20","id_rol"=>"1"));
 	echo '................';
@@ -16,7 +16,13 @@
 	/*$prefix = uniqid('pxp');
 	echo $pxpRestClient->doPost('seguridad/Auten/verificarCredenciales',array("usuario"=>"admin","contrasena"=>fnEncrypt($prefix . '$$' .md5('admin'),md5('admin'))));
 	
+		
+	*/
 	
+	echo fnEncrypt('admin','admin');echo "<BR>";
+	echo fnEncrypt2('admin','admin');
+	
+	exit;
 	
 	function fnEncrypt($sValue, $sSecretKey)
 	{
@@ -35,4 +41,18 @@
 	                )
 	            ), "\0"
 	        );
-	}*/
+	}
+	
+	function fnEncrypt2($sValue, $sSecretKey)
+	{
+	    return rtrim(
+	        base64_encode(
+	            mcrypt_encrypt(
+	                MCRYPT_RIJNDAEL_256,
+	                $sSecretKey, $sValue, 
+	                MCRYPT_MODE_ECB	                
+	                )
+	            ), "\0"
+	        );
+	}
+	
