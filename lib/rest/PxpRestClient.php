@@ -34,10 +34,14 @@ class PxpRestClient
      */
     static public function connect($host, $base_url='', $port = 80, $protocol = self::HTTP)
     {
+    	
         return new self($host, $base_url, $port, $protocol);
     }    
     protected function __construct($host, $base_url='', $port, $protocol)
-    {   unlink(COOKIE_FILE);     
+    {
+    	
+    	if (is_readable(COOKIE_FILE))
+    		unlink(COOKIE_FILE);     
         $this->_host     = $host;
         $this->_port     = $port;
         $this->_protocol = $protocol;
@@ -46,6 +50,7 @@ class PxpRestClient
     
     public function setCredentialsPxp($user, $pass)
     {
+    	
     	if (!extension_loaded('mcrypt')) {			
 		    throw new Exception('El modulo mcrypt no esta instalado en el cliente REST. No es posible realizar una petición REST en este momento', 2);			 
 		}

@@ -12,6 +12,8 @@ include_once(dirname(__FILE__)."/../cifrado/rsa.class.php");
 include_once(dirname(__FILE__)."/../cifrado/feistel.php");
 include_once(dirname(__FILE__).'/ACTbase.php');
 include_once(dirname(__FILE__).'/../lib_modelo/MODbase.php');
+include_once(dirname(__FILE__).'/../rest/PxpRestClient.php');
+
 /*include_once(dirname(__FILE__).'/../../sis_seguridad/control/ACTbaseSeguridad.php');
 include_once(dirname(__FILE__).'/../../sis_seguridad/modelo/MODbaseSeguridad.php');*/
 
