@@ -29,7 +29,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'codigo',
 				fieldLabel: 'Código',
-				allowBlank: false,
+				allowBlank: true,
 				width: '100%',
 				gwidth: 100,
 				maxLength:100
@@ -128,7 +128,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				typeAhead:true,
 				triggerAction:'all',
 				mode:'local',
-				store:['SI','NO']
+				store:['si','no']
 			},
 			valorInicial:'NO',
 			type:'ComboBox',
