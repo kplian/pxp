@@ -116,6 +116,31 @@ class Mensaje
 		$this->tipo_transaccion=$tipo_trans;
 		$this->consulta=$consulta;
 	}
+	
+	/**
+	 * Nombre funcion:	setMensajeFromJson
+	 * Proposito:		Registra los valores del mensaje a enviar desde un json
+	 * Fecha creación:	30/03/2014
+	 *
+	 * @param cadena $json
+	 */
+	function setMensajeFromJson($json){
+		$aux_array = json_decode($json);
+		$this->mensaje=$aux_array->ROOT->detalle->mensaje;
+		$this->mensaje_tec=$aux_array->ROOT->detalle->mensaje_tec;
+		//$this->archivo=$archivo;
+		if ($aux_array->ROOT->error) {
+			$this->tipo='ERROR';
+		} else {
+			$this->tipo='EXITO';
+		}
+		
+		$this->capa=$aux_array->ROOT->detalle->capa;
+		$this->procedimiento=$aux_array->ROOT->detalle->procedimiento;
+		$this->transaccion=$aux_array->ROOT->detalle->transaccion;
+		//$this->tipo_transaccion=$tipo_trans;
+		$this->consulta=$aux_array->ROOT->detalle->consulta;
+	}
 
 
 	/**
