@@ -180,6 +180,26 @@ function listarGantWf(){
 		return $this->respuesta;
 	}
 	
+	
+	function checkNextState(){
+        //chequea los procesos disparados para el estado especificado
+        $this->procedimiento='wf.f_proceso_wf_ime';
+        $this->transaccion='WF_CHKSTA_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+        $this->setParametro('id_tipo_estado_sig','id_tipo_estado_sig','int4');
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
+	
 	function verficarSigEstProcesoWf(){
         //Definicion de variables para ejecucion del procedimiento
         $this->procedimiento='wf.f_proceso_wf_ime';

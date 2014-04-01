@@ -67,6 +67,10 @@ DECLARE
    
      v_id_estado_wf_ant integer;
      v_id_tipo_proceso integer;
+     v_registro_est_sig  record;
+     v_ejec varchar;
+     sw_coma  BOOLEAN;
+     v_json varchar;
    
 
 BEGIN
@@ -567,7 +571,84 @@ BEGIN
         
         end;   
         
+     
+    /*********************************    
+ 	#TRANSACCION:  'WF_CHKSTA_IME'
+ 	#DESCRIPCION:   Este procedimiento verifica los procesos disparados disponibles  y
+                    retorna los datos para configurar el la interface wizard de wf (vista)
+ 	#AUTOR:		RAC	
+ 	#FECHA:	823-03-2014 12:12:51
+	***********************************/
+
+	elseif(p_transaccion='WF_CHKSTA_IME')then   
+        begin
         
+         --obtenermos datos basicos del proceso
+          
+          select
+            pw.id_proceso_wf,
+            ew.id_estado_wf,
+            te.codigo,
+            pw.fecha_ini,
+            te.id_tipo_estado,
+            te.pedir_obs,
+            pw.nro_tramite
+          into 
+            v_registros
+            
+          from wf.tproceso_wf pw
+          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
+          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+          where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
+          
+         
+         v_json = '[';
+         sw_coma = FALSE;  -- el primer elemento no tiene coma
+         --obtenemos datos del estado siguiente
+         FOR v_registro_est_sig in (
+                    select 
+                      tp.tipo_disparo,
+                      tp.funcion_validacion_wf,
+                      tp.nombre,
+                      tp.codigo,
+                      tp.descripcion,
+                      tp.id_tipo_proceso
+                   from  wf.ttipo_proceso tp
+                   inner join wf.ttipo_estado te on te.id_tipo_estado = tp.id_tipo_estado 
+                   where tp.id_tipo_estado   = v_parametros.id_tipo_estado_sig) LOOP
+         
+         
+                 --ejecuta funcion de validacion de procesos disparados
+                 IF v_registro_est_sig.funcion_validacion_wf is  NULL THEN
+                      v_ejec = 'true';
+                 ELSE
+                    --TODO  obenter funcion de validacion
+                    v_ejec = 'true';
+                 END IF;
+                 
+                 
+                 IF v_ejec = 'true' THEN
+                     IF  sw_coma THEN
+                         v_json = v_json ||',';
+                     ELSE
+                        sw_coma = TRUE;
+                     END IF;
+                     v_json = v_json ||'{''nombre'':'''|| v_registro_est_sig.nombre||''',''codigo'':'''|| v_registro_est_sig.codigo||''',''id_tipo_proceso'':'|| v_registro_est_sig.id_tipo_proceso||',''tipo_disparo'':'''|| COALESCE(v_registro_est_sig.tipo_disparo,'')||'''}';
+                 END IF;
+          END LOOP;
+          
+          v_json=v_json||']';
+          
+         --raise exception '%',v_json;
+         
+         -- si hay mas de un estado disponible  preguntamos al usuario
+         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','check procesos disparado'); 
+         v_resp = pxp.f_agrega_clave(v_resp,'procesos',v_json);
+           
+         --Devuelve la respuesta
+         return v_resp;
+        
+        end;      
         
     
     /*********************************    
