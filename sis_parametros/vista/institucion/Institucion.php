@@ -130,7 +130,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 				mode:'local',
 				store:['si','no']
 			},
-			valorInicial:'NO',
+			valorInicial:'no',
 			type:'ComboBox',
 			filters:{pfiltro:'instit.es_banco',type:'string'},
 			id_grupo:1,
