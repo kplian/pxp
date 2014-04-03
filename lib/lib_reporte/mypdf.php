@@ -5,9 +5,10 @@ class MYPDF extends TCPDF {
     var $tablewidths=array();
 	var $tablealigns=array();
 	var $tablenumbers=array();
+	var $tableborders=array();
+	var $tabletextcolor=array();
 	
-    public function MultiRow($row, $fill = false, $border = 1) {
-    	
+    public function MultiRow($row, $fill = false, $border = 1, $textcolor = array(0,0,0)) {    	
         $index = 0;
 		$height_base = 3;
 		$height_aux = 0;
@@ -41,8 +42,18 @@ class MYPDF extends TCPDF {
             if ($numbers && $this->tablenumbers[$index] > 0) {
             	$data = number_format ( $data , $this->tablenumbers[$index] , '.' , ',' );
             }
+			//definicion de border
 			
-			$this->MultiCell($this->tablewidths[$index], $height_aux, $data, $border,$this->tablealigns[$index], $fill, 0, '','' , true);
+			$border_final = ((count($this->tableborders)>0)?$this->tableborders[$index]:$border);
+			
+			
+			//definicion de cambio de color
+			$textcolor_final = ((count($this->tabletextcolor)>0)?$this->tabletextcolor[$index]:$tabletextcolor);
+			
+			
+			$this->setTextColorArray($textcolor_final);
+			
+			$this->MultiCell($this->tablewidths[$index], $height_aux, $data, $border_final,$this->tablealigns[$index], $fill, 0, '','' , true);
 			$index++;
 			
         }

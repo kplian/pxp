@@ -55,11 +55,6 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         this.maxCount = this.maxCount +  1;
     },
     cardNav : function(incr){
-            console.log('destruirTarjetas',this.destruirTarjetas)
-            console.log('maxCount', this.maxCount)
-            console.log('contadorTarjetas', this.contadorTarjetas)
-            
-            
             if(this.destruirTarjetas){
                 var wizard = this.form.getComponent('card-wizard-panel');
                 

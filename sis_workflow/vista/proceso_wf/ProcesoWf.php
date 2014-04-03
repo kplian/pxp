@@ -725,7 +725,8 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             {
                 config:[{
                           event:'beforesave',
-                          delegate: function(){alert('save ....')},
+                          delegate: this.onSaveWizard,
+                          
                         },
                         {
                           event:'successsave',
@@ -747,10 +748,13 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
         alert('DELETE ..............')  
         
     },
-	
-	
-	
-	bdel:true,
+    onSaveWizard:function(wizard,resp){
+    
+          alert('save ....')
+          console.log(resp);    
+    
+    },
+    bdel:true,
 	bsave:false
 	
 	}
