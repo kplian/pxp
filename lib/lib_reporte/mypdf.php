@@ -47,7 +47,7 @@ class MYPDF extends TCPDF {
 			$border_final = (isset($this->tableborders[$index])?$this->tableborders[$index]:$border);
 						
 			//definicion de cambio de color
-			$textcolor_final = (isset($this->tabletextcolor[$index])?$this->tabletextcolor[$index]:$tabletextcolor);			
+			$textcolor_final = (isset($this->tabletextcolor[$index])?$this->tabletextcolor[$index]:$textcolor);			
 			
 			$this->setTextColorArray($textcolor_final);
 			
