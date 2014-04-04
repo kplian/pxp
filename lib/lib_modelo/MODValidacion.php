@@ -156,7 +156,7 @@ class MODValidacion
 		}
 		if(($tamano!='' && isset($tamano) && $tamano!=null)&&(strlen($valor)>$tamano))
 		{
-			return 'El tama�o en el campo '.$nombre." es mayor al m�ximo permitido";
+			return 'El tamaño en el campo '.$nombre." es mayor al máximo permitido";
 		}
 		
 		$res=$this->validarEspeciales($nombre,$valor);
@@ -371,6 +371,12 @@ class MODValidacion
 		{
 			
 			throw new Exception("Error en validacion de caracteres en el campo $nombre, posible cross site scripting (elimine los caracteres especiales). Este evento sera reportado");
+		}
+		
+		if(strpos($valor, "'") != false)
+		{
+			
+			throw new Exception("Error en validacion de caracteres en el campo $nombre, no está permitido el caracter '");
 		}
 				
 	}
