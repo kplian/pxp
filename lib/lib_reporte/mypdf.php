@@ -42,14 +42,12 @@ class MYPDF extends TCPDF {
             if ($numbers && $this->tablenumbers[$index] > 0) {
             	$data = number_format ( $data , $this->tablenumbers[$index] , '.' , ',' );
             }
+			
 			//definicion de border
-			
-			$border_final = ((count($this->tableborders)>0)?$this->tableborders[$index]:$border);
-			
-			
+			$border_final = (isset($this->tableborders[$index])?$this->tableborders[$index]:$border);
+						
 			//definicion de cambio de color
-			$textcolor_final = ((count($this->tabletextcolor)>0)?$this->tabletextcolor[$index]:$tabletextcolor);
-			
+			$textcolor_final = (isset($this->tabletextcolor[$index])?$this->tabletextcolor[$index]:$tabletextcolor);			
 			
 			$this->setTextColorArray($textcolor_final);
 			
