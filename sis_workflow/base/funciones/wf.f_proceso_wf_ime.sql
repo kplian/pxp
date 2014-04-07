@@ -68,9 +68,14 @@ DECLARE
      v_id_estado_wf_ant integer;
      v_id_tipo_proceso integer;
      v_registro_est_sig  record;
+     v_registros_proc  record;
      v_ejec varchar;
      sw_coma  BOOLEAN;
      v_json varchar;
+     v_codigo_tipo_pro  varchar;
+     
+     
+     v_procesos_json  json;
    
 
 BEGIN
@@ -795,6 +800,124 @@ BEGIN
         
         
         end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'WF_SESPRO_IME'
+ 	#DESCRIPCION:	 Cambio de estado en el proceso de WF, controla tambien el inicio de los procesos disparados
+ 	#AUTOR:		RAC	
+ 	#FECHA:		07-04-2014 12:12:51
+	***********************************/
+
+	elseif(p_transaccion='WF_SESPRO_IME')then   
+        begin
+        
+        
+        /*   PARAMETROS
+         
+        $this->setParametro('id_proceso_wf_act','id_proceso_wf_act','int4');
+        $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+        $this->setParametro('id_funcionario_wf','id_funcionario_wf','int4');
+        $this->setParametro('id_depto_wf','id_depto_wf','int4');
+        $this->setParametro('obs','obs','text');
+        $this->setParametro('json_procesos','json_procesos','text');
+       
+     */
+         
+         --captura datos basicos del estado actual del proceso WF
+         
+         select
+            pw.id_proceso_wf,
+            ew.id_estado_wf,
+            te.codigo,
+            pw.fecha_ini,
+            te.id_tipo_estado,
+            te.pedir_obs
+          into 
+            v_registros
+            
+          from wf.tproceso_wf pw
+          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
+          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+          where pw.id_proceso_wf =  v_parametros.id_proceso_wf_act;
+          
+          
+          select
+             te.codigo
+            into
+             v_codigo_estado
+          from wf.ttipo_estado te
+          where te.id_tipo_estado = v_parametros.id_tipo_estado;
+         
+         -------------------------------------
+         --cambia el estado de proceso actual
+         -------------------------------------
+        
+         -- hay que recuperar el supervidor que seria el estado inmediato,...
+         v_id_estado_actual =  wf.f_registra_estado_wf(v_parametros.id_tipo_estado,   --p_id_tipo_estado_siguiente
+                                                       v_parametros.id_funcionario_wf, 
+                                                       v_registros.id_estado_wf,   --  p_id_estado_wf_anterior
+                                                       v_parametros.id_proceso_wf_act,
+                                                       p_id_usuario,
+                                                       v_parametros.id_depto_wf,
+                                                       v_parametros.obs);
+        
+          
+          --------------------------------------
+          -- registra los procesos disparados
+          --------------------------------------
+         
+          FOR v_registros_proc in ( select * from json_populate_recordset(null::wf.proceso_disparado_wf, v_parametros.json_procesos::json)) LOOP
+    
+               --get cdigo tipo proceso
+               select   
+                  tp.codigo 
+               into 
+                  v_codigo_tipo_pro   
+               from wf.ttipo_proceso tp 
+                where  tp.id_tipo_proceso =  v_registros_proc.id_tipo_proceso_pro;
+          
+          
+               -- disparar creacion de procesos seleccionados
+              
+              SELECT
+                       ps_id_proceso_wf,
+                       ps_id_estado_wf,
+                       ps_codigo_estado
+                 into
+                       v_id_proceso_wf,
+                       v_id_estado_wf,
+                       v_codigo_estado
+              FROM wf.f_registra_proceso_disparado_wf(
+                       p_id_usuario,
+                       v_id_estado_actual, 
+                       v_registros_proc.id_funcionario_wf_pro, 
+                       v_registros_proc.id_depto_wf_pro,
+                       v_registros_proc.obs_pro,
+                       v_codigo_tipo_pro,    
+                       v_codigo_tipo_pro);
+                       
+                       
+           END LOOP;
+          
+         
+        
+                
+            
+          
+            
+           -- si hay mas de un estado disponible  preguntamos al usuario
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
+          
+          
+         
+
+        
+          --Devuelve la respuesta
+            return v_resp;
+        
+        end;
+    
     
     
     else

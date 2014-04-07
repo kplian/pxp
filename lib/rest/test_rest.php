@@ -1,53 +1,14 @@
 <?php
-	
+	//$srt= mb_convert_encoding('!"·$%&/()=1234567890','UTF-8');
+	$srt = iconv ( 'UTF-8' , 'ISO-8859-15' , '!"·$%&/()=1234567890' );
+	echo $str;
+			exit;
 	include 'PxpRestClient.php';
 	
 	//phpinfo();
-	$pxpRestClient = PxpRestClient::connect('192.168.56.104','Encomiendas3/pxp/lib/rest/')
-					->setCredentialsPxp('admin','admin');
+	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/')
+					->setCredentialsPxp('jrivera','jrivera');
 	
-	echo $pxpRestClient->doGet('encomiendas/Manifiesto/listarManifiesto',array());
-	//echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array('start'=>'0','limit'=>'3'));
-	//echo '................';
-	/*echo $pxpRestClient->doPost('seguridad/UsuarioRol/guardarUsuarioRol',array("id_usuario"=>"20","id_rol"=>"1"));
-	echo '................';
-	echo $pxpRestClient->doPost('seguridad/UsuarioRol/eliminarUsuarioRol',array("_tipo"=>"matriz","row"=>"{\"0\":{\"id_usuario_rol\":\"15\",\"_fila\":1}}"));
-	
-	*/
-	/*$prefix = uniqid('pxp');
-	echo $pxpRestClient->doPost('seguridad/Auten/verificarCredenciales',array("usuario"=>"admin","contrasena"=>fnEncrypt($prefix . '$$' .md5('admin'),md5('admin'))));
-	
-*/	
-	function fnEncrypt($sValue, $sSecretKey)
-	{
-	    return rtrim(
-	        base64_encode(
-	            mcrypt_encrypt(
-	                MCRYPT_RIJNDAEL_256,
-	                $sSecretKey, $sValue, 
-	                MCRYPT_MODE_ECB, 
-	                mcrypt_create_iv(
-	                    mcrypt_get_iv_size(
-	                        MCRYPT_RIJNDAEL_256, 
-	                        MCRYPT_MODE_ECB
-	                    ), 
-	                    MCRYPT_RAND)
-	                )
-	            ), "\0"
-	        );
-	}
-	
-	function fnEncrypt2($sValue, $sSecretKey)
-	{
-
-	    return rtrim(
-	        base64_encode(
-	            mcrypt_encrypt(
-	                MCRYPT_RIJNDAEL_256,
-	                $sSecretKey, $sValue, 
-	                MCRYPT_MODE_ECB	                
-	                )
-	            ), "\0"
-	        );
-	}
+	//echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array());
+	echo $pxpRestClient->doGet('tesoreria/CuentaDocumentadaEndesis/listarFondoAvance',array());
 	

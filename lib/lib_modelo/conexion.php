@@ -59,7 +59,15 @@ class conexion
 
 	}
 
-	function conectarpdo(){
+	function conectarpdo($externo=''){
+
+		if ($externo != '') {
+			$ext = "_" . $externo;
+		}
+		else {
+			$ext = "";
+		}
+		
 		try {       
     		 $_host='';
     		 $_port='';
@@ -67,28 +75,31 @@ class conexion
     		 $_user='';
     		 $_password='';
     		     
-    		 if(isset($_SESSION['_HOST'])){
-    		      $_host   = $_SESSION['_HOST'];
+    		 if(isset($_SESSION['_HOST'.$ext])){
+    		      $_host   = $_SESSION['_HOST'.$ext];
     		 }
     		 
-    		 if(isset($_SESSION['_PUERTO'])){
-                  $_port   = $_SESSION['_PUERTO'];
+    		 if(isset($_SESSION['_PUERTO'.$ext])){
+                  $_port   = $_SESSION['_PUERTO'.$ext];
              } 
              
-             if(isset($_SESSION['_BASE_DATOS'])){
-                   $_dbname= $_SESSION['_BASE_DATOS'];
+             if(isset($_SESSION['_BASE_DATOS'.$ext])){
+                   $_dbname= $_SESSION['_BASE_DATOS'.$ext];
              } 
              
-             if(isset($_SESSION['_BASE_DATOS']) && isset($_SESSION['_LOGIN'])){
-                   $_user= $_SESSION['_BASE_DATOS']."_". $_SESSION['_LOGIN'];
+             if(isset($_SESSION['_BASE_DATOS'.$ext]) && isset($_SESSION['_LOGIN'])){
+                   $_user= $_SESSION['_BASE_DATOS'.$ext]."_". $_SESSION['_LOGIN'];
              } 
              
-             if(isset($_SESSION['_CONTRASENA'])){
-                   $_password= $_SESSION['_CONTRASENA'];
-             }  
-    		
+             if(isset($_SESSION['_CONTRASENA_MD5']) && isset($_SESSION['_SEMILLA'.$ext])){
+                   $_password= md5(stripslashes(mb_convert_encoding('!"·$%&/()=1234567890','ISO-8859-15')) . $_SESSION['_CONTRASENA_MD5']);
+             } else if(isset($_SESSION['_CONTRASENA'])){
+             	$_password= $_SESSION['_CONTRASENA'];
+             } 
+    		echo mb_convert_encoding('!"·$%&/()=1234567890','ISO-8859-1');
+			exit;
     		$cadena="pgsql:host=". $_host.";port=".$_port.";dbname=".$_dbname.";user=".$_user.";password=".$_password;
-    
+    		
     		if($conexion = new PDO($cadena))
     		{
     			return $conexion;
@@ -101,7 +112,7 @@ class conexion
 	  } 
 	  catch (Exception $e){
             //TODO manejo de errores
-            //echo 'Error capturado -> '.$e->getMessage();
+            throw new Exception('Error al conectar a la base de datos los datos por PDO'.$cadena);
       }
 
 	}

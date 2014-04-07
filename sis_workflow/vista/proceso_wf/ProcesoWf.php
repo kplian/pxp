@@ -656,6 +656,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                         url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
                         params:{id_proceso_wf:d.id_proceso_wf,
                             operacion:'cambiar',
+                            
                             id_tipo_estado:reg.ROOT.datos.id_tipo_estado,
                             id_funcionario:reg.ROOT.datos.id_funcionario_estado,
                             id_depto:reg.ROOT.datos.id_depto_estado,
@@ -748,11 +749,37 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
         alert('DELETE ..............')  
         
     },
+    successWizard:function(resp){
+        console.log(resp)
+        Phx.CP.loadingHide();
+        resp.argument.wizard.panel.destroy()
+        this.reload();
+        
+        
+        
+    },
+    
     onSaveWizard:function(wizard,resp){
-    
-          alert('save ....')
-          console.log(resp);    
-    
+        
+        Phx.CP.loadingShow();
+        Ext.Ajax.request({
+            url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
+            params:{
+                
+                id_proceso_wf_act:  resp.id_proceso_wf_act,
+                id_tipo_estado:     resp.id_tipo_estado,
+                id_funcionario_wf:  resp.id_funcionario_wf,
+                id_depto_wf:        resp.id_depto_wf,
+                obs:                resp.obs,
+                json_procesos:      Ext.util.JSON.encode(resp.procesos)
+                },
+            success:this.successWizard,
+            failure: this.conexionFailure,
+            argument:{wizard:wizard},
+            timeout:this.timeout,
+            scope:this
+        });
+         
     },
     bdel:true,
 	bsave:false

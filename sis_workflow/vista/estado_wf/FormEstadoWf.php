@@ -289,6 +289,13 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                              },
                              
                              {
+                               xtype:'field',
+                               labelSeparator:'',
+                               inputType:'hidden',
+                               name:'id_tipo_proceso_pro['+cont+']',
+                               value: proc.id_tipo_proceso
+                             },
+                             {
                                xtype:'checkbox',
                                fieldLabel: 'Iniciar Proceso',
                                name:'iniar_pro['+cont+']',
@@ -476,9 +483,14 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            inipro.disable()
        }
        else{
-           //proceso opcional
-           var wizard = this.form.getComponent('card-wizard-panel');
+           inipro.setValue(false);
+           this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
+           this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
        }
+       
+        
+       
+       
        
        inipro.on('check',function(obj, checked ){
            
@@ -487,17 +499,20 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            // var card = wizard.getComponent(this.idContenedor+'-card-'+i).getComponent(this.idContenedor+'-card-'+i)
            //var card = Ext.getCmp(this.idContenedor+'-fieldset['+cont+']');
            //card.setDisabled(checked)
-          this.form.getForm().findField('id_funcionario_wf_pro['+cont+']').setDisabled(checked);
-          this.form.getForm().findField('obs_pro['+cont+']').setDisabled(checked);
-          this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(checked);
-          this.form.getForm().findField('id_depto_wf_pro['+cont+']').setDisabled(checked);
-           
           
+          if(checked){
+              this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(!checked);
+              this.form.getForm().findField('obs_pro['+cont+']').setDisabled(!checked);
+          }
+          else{
+             this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(!checked);
+             this.form.getForm().findField('id_funcionario_wf_pro['+cont+']').setDisabled(!checked);
+             this.form.getForm().findField('id_depto_wf_pro['+cont+']').setDisabled(!checked);
+             this.form.getForm().findField('obs_pro['+cont+']').setDisabled(!checked);
+          }
            
        },this)
                            
-       //this.cmbTipoEstado.store.baseParams.estados= reg.ROOT.datos.estados;
-       // this.cmbTipoEstado.modificado=true;                    
        this.contadorTarjetas = this.contadorTarjetas + 1
         
     },
@@ -689,6 +704,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     },
     getValues:function(){
         var resp = {
+                   id_proceso_wf_act:this.data.id_proceso_wf,
                    id_tipo_estado:this.Cmp.id_tipo_estado.getValue(),
                    id_funcionario_wf:this.Cmp.id_funcionario_wf.getValue(),
                    id_depto_wf:this.Cmp.id_depto_wf.getValue(),
@@ -697,12 +713,18 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
             }
             
             for (var i=1;i<this.contadorTarjetas;i++){
-                resp.procesos.push({
-                id_funcionario_wf_pro:this.form.getForm().findField('id_funcionario_wf_pro['+i+']').getValue(),
-                obs_pro:this.form.getForm().findField('obs_pro['+i+']').getValue(),
-                id_tipo_estado_pro:this.form.getForm().findField('id_tipo_estado_pro['+i+']').getValue(),
-                id_depto_wf_pro:this.form.getForm().findField('id_depto_wf_pro['+i+']').getValue()
-                });
+                
+                if(this.form.getForm().findField('iniar_pro['+i+']').getValue()){
+                      resp.procesos.push({
+                        iniar_pro:this.form.getForm().findField('iniar_pro['+i+']').getValue(),
+                        id_tipo_proceso_pro:this.form.getForm().findField('id_tipo_proceso_pro['+i+']').getValue(),
+                        id_tipo_estado_pro:this.form.getForm().findField('id_tipo_estado_pro['+i+']').getValue(),
+                        id_depto_wf_pro:this.form.getForm().findField('id_depto_wf_pro['+i+']').getValue(),
+                        id_funcionario_wf_pro:this.form.getForm().findField('id_funcionario_wf_pro['+i+']').getValue(),
+                        obs_pro:this.form.getForm().findField('obs_pro['+i+']').getValue()
+                      });  
+                 }
+                
             }
             //validamos otras tarjetas segun el indice
             

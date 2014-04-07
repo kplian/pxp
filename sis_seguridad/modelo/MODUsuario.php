@@ -40,7 +40,7 @@ class MODUsuario extends MODbase {
 		//Se definen los datos para las variables de sesion
 		$_SESSION["_LOGIN"]=$this->arreglo['usuario'];
 		$_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->arreglo['contrasena']);
-		
+		$_SESSION["_CONTRASENA_MD5"] = $this->arreglo['contrasena'];
 				
 		$this->armarConsulta();
 		
