@@ -16,17 +16,17 @@ include_once(dirname(__FILE__).'/../PHPMailer/class.smtp.php');
 
 include_once(dirname(__FILE__).'/../lib_general/cls_correo_externo.php');
 
-echo dirname(__FILE__);
 
         $correo=new CorreoExterno();
         
 
-        $correo->addDestinatario('rensi@kplian.com','rensi arteaga');
+        $correo->addDestinatario('jaime@kplian.com','rensi arteaga');
         $correo->setAsunto('prueba de correo externo');
         $correo->setMensaje('este es el cuerpo del mensaje');
         $correo->setTitulo('Correo de prueba');
         $correo->setDefaultPlantilla();
-        $correo->enviarCorreo();
+        $mensaje = $correo->enviarCorreo();
+		echo $mensaje;
          
       
 ?>

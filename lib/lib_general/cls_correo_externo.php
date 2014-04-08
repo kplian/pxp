@@ -18,7 +18,7 @@ class CorreoExterno
     
     function __construct(){
             
-        $this->autentificacion=true;        
+        $this->autentificacion=$_SESSION['_MAIL_AUTENTIFICACION'];        
         $this->mail_usuario=$_SESSION['_MAIL_USUARIO'];
         $this->mail_password=$_SESSION['_MAIL_PASSWORD'];
         $this->mail_servidor=$_SESSION['_MAIL_SERVIDOR'];
@@ -61,7 +61,7 @@ class CorreoExterno
    
     function enviarCorreo(){
                 if($this->autentificacion){
-                     $this->mail->SMTPAuth = true;               
+                     $this->mail->SMTPAuth = $this->autentificacion;               
                      $this->mail->Password = $this->mail_password;
                      $this->mail->Username = $this->mail_usuario; 
                      $this->mail->SMTPSecure = $this->SMTPSecure; 
