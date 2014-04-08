@@ -18,15 +18,9 @@ Phx.vista.ProcesoWfVb = {
 	constructor: function(config) {
     		this.initButtons=[this.cmbProcesoMacro];
     		Phx.vista.ProcesoWfVb.superclass.constructor.call(this,config);
-            
-            this.addButton('ant_estado',{argument: {estado: 'anterior'},text:'Anterior',iconCls: 'batras',disabled:true,handler:this.antEstado,tooltip: '<b>Regresar al Anterior Estado</b>'});
-            this.addButton('sig_estado',{text:'Siguiente',iconCls: 'badelante',disabled:true,handler:this.sigEstado,tooltip: '<b>Pasar al Siguiente Estado</b>'});
-         
-            
-    
-     },
+    },
      
-     preparaMenu:function(n){
+   /* preparaMenu:function(n){
       var data = this.getSelectedData();
       var tb =this.tbar;
       Phx.vista.ProcesoWfVb.superclass.preparaMenu.call(this,n); 
@@ -46,7 +40,7 @@ Phx.vista.ProcesoWfVb = {
            
         }
         return tb
-    },
+    },*/
     bedit:false,
     bnew:false,
     bdel:false

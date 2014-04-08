@@ -32,6 +32,12 @@ DECLARE
     
     v_filtro            varchar;
     v_tramite 			record;
+    v_historico         varchar;
+    
+    v_inner varchar;
+    v_strg_pro varchar;
+    v_strg_obs  varchar;
+    va_id_depto integer[];
 			    
 BEGIN
 
@@ -49,24 +55,81 @@ BEGIN
      				
     	begin
         
-            v_filtro='';
+             select  
+                 pxp.aggarray(depu.id_depto)
+             into 
+                   va_id_depto
+            from param.tdepto_usuario depu 
+            where depu.id_usuario =  p_id_usuario and depu.cargo = 'responsable'; 
+        
+             
+          v_filtro='';
             
-            IF p_administrador !=1  and v_parametros.tipo_interfaz = 'ProcesoWfIniTra' THEN
-               v_filtro = '(ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'  or pwf.id_usuario_reg='||p_id_usuario||' ) and ';
+            IF v_parametros.tipo_interfaz = 'ProcesoWfIniTra' THEN
+                 IF p_administrador !=1  then
+                   
+                   v_filtro = ' (lower(tp.inicio)=''si'') and  (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'  or pwf.id_usuario_reg='||p_id_usuario||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) )   and ';
+                 
+                 ELSE
+                 
+                   v_filtro =' (lower(tp.inicio)=''si'') and ';
+                
+                 END IF;
+                 
+                  
+            
             END IF;
+            
             
             IF  v_parametros.tipo_interfaz = 'ProcesoWfVb' THEN
                 IF p_administrador !=1 THEN
-                    v_filtro = '(ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||' ) and  (lower(te.inicio)!=''si'') and ';
+                    v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
                 ELSE
                      v_filtro = ' (lower(te.inicio)!=''si'') and ';
                 END IF;
             END IF;
             
+            
+             IF  pxp.f_existe_parametro(p_tabla,'historico') THEN
+             
+             v_historico =  v_parametros.historico;
+            
+            ELSE
+            
+            v_historico = 'no';
+            
+            END IF;
+            
+            IF v_historico =  'si' THEN
+            
+               v_inner =   'inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf';
+               v_strg_pro = 'DISTINCT(pwf.id_proceso_wf)'; 
+               v_strg_obs = '''---''::text';
+               
+               IF p_administrador =1 THEN
+              
+                  v_filtro = ' (lower(sol.estado)!=''borrador'' ) and ';
+              
+               END IF;
+               
+               
+            
+            ELSE
+            
+               v_inner =  'inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf and  ew.estado_reg = ''activo''';
+               v_strg_pro = 'pwf.id_proceso_wf';
+               v_strg_obs = 'ew.obs'; 
+               
+             END IF;
+            
+            
         
         
     		--Sentencia de la consulta
-			v_consulta:='select pwf.id_proceso_wf,
+			v_consulta:='select 
+            
+                             pwf.id_proceso_wf,
+                             '||v_strg_pro||'
                              pwf.id_tipo_proceso,
                              pwf.nro_tramite,
                              pwf.id_estado_wf_prev,
@@ -90,14 +153,13 @@ BEGIN
                              te.inicio as tipo_estado_inicio,
                              te.fin    as  tipo_estado_fin,
                              te.disparador as tipo_estado_disparador,
-                             ew.obs
+                             '||v_strg_obs||'
                         from wf.tproceso_wf pwf
                            inner join wf.ttipo_proceso tp on pwf.id_tipo_proceso = tp.id_tipo_proceso
                            inner join segu.tusuario usu1 on usu1.id_usuario = pwf.id_usuario_reg
                            inner join wf.tproceso_macro pm on tp.id_proceso_macro =
-                            pm.id_proceso_macro
-                           inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf and
-                            ew.estado_reg = ''activo''
+                           pm.id_proceso_macro
+                           '||v_inner||'
                            inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
                            left join segu.tusuario usu2 on usu2.id_usuario = pwf.id_usuario_mod
                            left join segu.vpersona per on per.id_persona = pwf.id_persona

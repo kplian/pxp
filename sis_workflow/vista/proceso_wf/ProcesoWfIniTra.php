@@ -18,21 +18,8 @@ Phx.vista.ProcesoWfIniTra = {
 	constructor: function(config) {
     		this.initButtons=[this.cmbProcesoMacro];
     		Phx.vista.ProcesoWfIniTra.superclass.constructor.call(this,config);
-    		this.addButton('sig_estado',{text:'Siguiente',iconCls: 'badelante',disabled:true,handler:this.sigEstado,tooltip: '<b>Pasar al Siguiente Estado</b>'});
-    		this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:diagramGantt,tooltip: '<b>Diagrama Gantt</b>'});
-      
-      function diagramGantt(){			
-							var data=this.sm.getSelected().data.id_proceso_wf;
-							Phx.CP.loadingShow();
-							Ext.Ajax.request({
-								url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
-								params:{'id_proceso_wf':data},
-								success:this.successExport,
-								failure: this.conexionFailure,
-								timeout:this.timeout,
-								scope:this
-							});			
-						} 
+    				
+						
     },
 	onButtonNew: function() {
         
@@ -101,7 +88,7 @@ Phx.vista.ProcesoWfIniTra = {
                     },this); 
                     
     },
-    preparaMenu:function(n){
+   /* preparaMenu:function(n){
       var data = this.getSelectedData();
       var tb =this.tbar;
       Phx.vista.ProcesoWfIniTra.superclass.preparaMenu.call(this,n);  
@@ -125,7 +112,7 @@ Phx.vista.ProcesoWfIniTra = {
            
         }
         return tb
-    },
+    },*/
     
      filtraAddEdit:function(){
         this.cmpTipoProceso.store.baseParams.id_proceso_macro=this.cmbProcesoMacro.getValue();

@@ -92,12 +92,11 @@ class conexion
              } 
              
              if(isset($_SESSION['_CONTRASENA_MD5']) && isset($_SESSION['_SEMILLA'.$ext])){
-                   $_password= md5(stripslashes(mb_convert_encoding('!"·$%&/()=1234567890','ISO-8859-15')) . $_SESSION['_CONTRASENA_MD5']);
+                   $_password= md5($_SESSION['_SEMILLA'.$ext] . $_SESSION['_CONTRASENA_MD5']);
              } else if(isset($_SESSION['_CONTRASENA'])){
              	$_password= $_SESSION['_CONTRASENA'];
              } 
-    		echo mb_convert_encoding('!"·$%&/()=1234567890','ISO-8859-1');
-			exit;
+    		
     		$cadena="pgsql:host=". $_host.";port=".$_port.";dbname=".$_dbname.";user=".$_user.";password=".$_password;
     		
     		if($conexion = new PDO($cadena))

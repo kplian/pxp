@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -55,15 +57,11 @@ BEGIN
 			v_consulta:='
                         select
 						alarm.id_alarma,
-                        Case COALESCE( funcio.id_funcionario,0)  
-                          when  0  THEN
-                          
-                            per.correo   
-                        	
-                          ELSE 
-                            funcio.email_empresa
-                          end as email_empresa,
-						alarm.fecha,
+                        
+                         pxp.f_iif(funcio.id_funcionario is NULL, pxp.f_iif(fnciousu.id_funcionario is NULL,per.correo, fnciousu.email_empresa  )  ,funcio.email_empresa)
+                        AS email_empresa,
+                        
+                        alarm.fecha,
 						alarm.descripcion,
 					    alarm.clase,
                         alarm.titulo,
@@ -75,6 +73,7 @@ BEGIN
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
                         left join segu.tpersona per on per.id_persona = usu.id_persona
+                        left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
                         where alarm.sw_correo = 0';
                         
              --modificar correpondencia

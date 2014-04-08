@@ -20,6 +20,7 @@ class MODProcesoWf extends MODbase{
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');
 		$this->setParametro('tipo_interfaz','tipo_interfaz','varchar');
+		$this->setParametro('historico','historico','varchar');
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_proceso_wf','int4');

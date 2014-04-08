@@ -13,18 +13,38 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
+    	
+    	//funcionalidad para listado de historicos
+        this.historico = 'no';
+        this.tbarItems = ['-',{
+            text: 'Histórico',
+            enableToggle: true,
+            pressed: false,
+            toggleHandler: function(btn, pressed) {
+               
+                if(pressed){
+                    this.historico = 'si';
+                     this.desBotoneshistorico();
+                }
+                else{
+                   this.historico = 'no' 
+                }
+                
+                this.store.baseParams.historico = this.historico;
+                this.onButtonAct();
+             },
+            scope: this
+           }];
+    	
+    	
     	//llama al constructor de la clase padre
-		
-		Phx.vista.ProcesoWf.superclass.constructor.call(this,config);
+    	Phx.vista.ProcesoWf.superclass.constructor.call(this,config);
 		this.init();
 		this.store.baseParams={tipo_interfaz:this.nombreVista};
 		//this.load({params:{start:0, limit:this.tam_pag}});
 		this.iniciarEventos();
-        
-        
         this.cmbProcesoMacro.on('select', function(){
-            
-            if(this.validarFiltros()){
+           if(this.validarFiltros()){
                   this.capturaFiltros();
            }
             
@@ -32,160 +52,27 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
         },this);
         
         
-            this.formEstado = new Ext.form.FormPanel({
-            baseCls: 'x-plain',
-            autoDestroy: true,
-           
-            border: false,
-            layout: 'form',
-            autoHeight: true,
-           
-    
-                items: [
-                    {
-                        xtype: 'combo',
-                        name: 'id_tipo_estado',
-                          hiddenName: 'id_tipo_estado',
-                        fieldLabel: 'Siguiente Estado',
-                        listWidth:280,
-                        allowBlank: false,
-                        emptyText:'Elija el estado siguiente',
-                        store:new Ext.data.JsonStore(
-                        {
-                            url: '../../sis_workflow/control/TipoEstado/listarTipoEstado',
-                            id: 'id_tipo_estado',
-                            root:'datos',
-                            sortInfo:{
-                                field:'tipes.codigo',
-                                direction:'ASC'
-                            },
-                            totalProperty:'total',
-                            fields: ['id_tipo_estado','codigo_estado','nombre_estado'],
-                            // turn on remote sorting
-                            remoteSort: true,
-                            baseParams:{par_filtro:'tipes.nombre_estado#tipes.codigo'}
-                        }),
-                        valueField: 'id_tipo_estado',
-                        displayField: 'codigo_estado',
-                        forceSelection:true,
-                        typeAhead: false,
-                        triggerAction: 'all',
-                        lazyRender:true,
-                        mode:'remote',
-                        pageSize:50,
-                        queryDelay:500,
-                        width:210,
-                        gwidth:220,
-                         listWidth:'280',
-                        minChars:2,
-                        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo_estado}</p>Prioridad: <strong>{nombre_estado}</strong> </div></tpl>'
-                    
-                    },
-                    {
-                        xtype: 'combo',
-                        name: 'id_funcionario_wf',
-                        hiddenName: 'id_funcionario_wf',
-                        fieldLabel: 'Funcionario Resp.',
-                        allowBlank: false,
-                        emptyText:'Elija un funcionario',
-                        listWidth:280,
-                        store:new Ext.data.JsonStore(
-                        {
-                            url: '../../sis_workflow/control/TipoEstado/listarFuncionarioWf',
-                            id: 'id_funcionario',
-                            root:'datos',
-                            sortInfo:{
-                                field:'prioridad',
-                                direction:'ASC'
-                            },
-                            totalProperty:'total',
-                            fields: ['id_funcionario','desc_funcionario','prioridad'],
-                            // turn on remote sorting
-                            remoteSort: true,
-                            baseParams:{par_filtro:'fun.desc_funcionario1'}
-                        }),
-                        valueField: 'id_funcionario',
-                        displayField: 'desc_funcionario',
-                        forceSelection:true,
-                        typeAhead: false,
-                        triggerAction: 'all',
-                        lazyRender:true,
-                        mode:'remote',
-                        pageSize:50,
-                        queryDelay:500,
-                        width:210,
-                        gwidth:220,
-                         listWidth:'280',
-                        minChars:2,
-                        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{desc_funcionario}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
-                    
-                    },
-                    {
-                        name: 'obs',
-                        xtype: 'textarea',
-                        fieldLabel: 'Intrucciones',
-                        allowBlank: false,
-                        anchor: '80%',
-                        maxLength:500
-                    }]
-            });
         
-            this.wEstado = new Ext.Window({
-                title: 'Estados',
-                collapsible: true,
-                maximizable: true,
-                 autoDestroy: true,
-                width: 350,
-                height: 200,
-                layout: 'fit',
-                plain: true,
-                bodyStyle: 'padding:5px;',
-                buttonAlign: 'center',
-                items: this.formEstado,
-                modal:true,
-                 closeAction: 'hide',
-                buttons: [{
-                    text: 'Guardar',
-                    handler:this.confSigEstado,
-                    scope:this
-                    
-                },
-                {
-                    text: 'Guardar',
-                    handler:this.antEstadoSubmmit,
-                    scope:this
-                    
-                },
-                {
-                    text: 'Cancelar',
-                    handler:function(){this.wEstado.hide()},
-                    scope:this
-                }]
-            });
-            
-        this.cmbTipoEstado =this.formEstado.getForm().findField('id_tipo_estado');
-        this.cmbTipoEstado.store.on('loadexception', this.conexionFailure,this);
-     
-        this.cmbFuncionarioWf =this.formEstado.getForm().findField('id_funcionario_wf');
-        this.cmbFuncionarioWf.store.on('loadexception', this.conexionFailure,this);
-      
-        this.cmpObs =this.formEstado.getForm().findField('obs');
-        
-        
-        
-        this.cmbTipoEstado.on('select',function(){
-            
-            this.cmbFuncionarioWf.enable();
-            this.cmbFuncionarioWf.store.baseParams.id_tipo_estado = this.cmbTipoEstado.getValue();
-            this.cmbFuncionarioWf.modificado=true;
-        },this);
-        
-       this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+       this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
   
      
+        this.addButton('ant_estado',{
+                    text:'Anterior',
+                    iconCls:'batras',
+                    disabled:true,
+                    handler:this.openAntFormEstadoWf,
+                    tooltip: '<b>Retroceder un estado</b>'});
         
         
-       function diagramGantt(){         
+        this.addButton('sig_estado',{
+                    text:'Siguiente',
+                    iconCls:'badelante',
+                    disabled:true,
+                    handler:this.openFormEstadoWf,
+                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+  
+    },
+    diagramGantt:function (){         
             var data=this.sm.getSelected().data.id_proceso_wf;
             Phx.CP.loadingShow();
             Ext.Ajax.request({
@@ -196,16 +83,9 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                 timeout:this.timeout,
                 scope:this
             });         
-        }
-        
-        this.addButton('estado_wf',{
-                    text:'',iconCls: 
-                    'bgantt',
-                    disabled:false,
-                    handler:this.openFormEstadoWf,
-                    tooltip: '<b>Cambiar al siguientes estado</b>'});
-  
     },
+    
+    
 	tam_pag:50,
 			
 	Atributos:[
@@ -493,6 +373,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},'tipo_estado_disparador','tipo_estado_inicio','tipo_estado_fin','id_estado_wf',
 		'desc_tipo_proceso','desc_persona','desc_institucion','tipo_ini','codigo_estado'
 	],
+	
 	cmbProcesoMacro:new Ext.form.ComboBox({
                 name: 'id_proceso_macro',
                 fieldLabel: 'Proceso',
@@ -551,166 +432,38 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
      
-     
-     
-	confSigEstado :function() {                   
-            var d= this.sm.getSelected().data;
-           
-            if ( this.formEstado.getForm().isValid()){
-                 Phx.CP.loadingShow();
-                    Ext.Ajax.request({
-                        // form:this.form.getForm().getEl(),
-                        url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
-                        params:{
-                            id_proceso_wf:d.id_proceso_wf,
-                            operacion:'cambiar',
-                            id_tipo_estado:this.cmbTipoEstado.getValue(),
-                            id_funcionario:this.cmbFuncionarioWf.getValue(),
-                            obs:this.cmpObs.getValue()
-                            },
-                        success:this.successSinc,
-                        failure: this.conexionFailure,
-                        timeout:this.timeout,
-                        scope:this
-                    }); 
-              }    
-    },
-    sigEstado:function()
-        {                   
-            var d= this.sm.getSelected().data;
-            
-            this.cmbTipoEstado.show();
-            this.cmbFuncionarioWf.show();
-            
-            this.cmbTipoEstado.enable();
-            this.cmbFuncionarioWf.enable();
-           
+    onAntEstado:function(wizard,resp){
             Phx.CP.loadingShow();
-            this.cmbTipoEstado.reset();
-            this.cmbFuncionarioWf.reset();
-            this.cmbFuncionarioWf.store.baseParams.id_estado_wf=d.id_estado_wf;
-            this.cmbFuncionarioWf.store.baseParams.fecha=d.fecha_ini;
-            
-            
-         
             Ext.Ajax.request({
-                // form:this.form.getForm().getEl(),
-                url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
-                params:{id_proceso_wf:d.id_proceso_wf,operacion:'verificar'},
-                success:this.successSinc,
-                failure: this.conexionFailure,
-                timeout:this.timeout,
-                scope:this
-            });     
-        },
-       
-        antEstado:function(res,eve)
-        {                   
-            
-            this.wEstado.buttons[0].hide();
-            this.wEstado.buttons[1].show();
-            this.wEstado.show();
-            
-            this.cmbTipoEstado.hide();
-            this.cmbFuncionarioWf.hide();
-            this.cmbTipoEstado.disable();
-            this.cmbFuncionarioWf.disable();
-            
-                
-        },
-        
-        antEstadoSubmmit:function(res){
-            var d= this.sm.getSelected().data;
-           
-            Phx.CP.loadingShow();
-            var operacion = 'cambiar';
-            Ext.Ajax.request({
-               
                 url:'../../sis_workflow/control/ProcesoWf/anteriorEstadoProcesoWf',
-                params:{id_proceso_wf:d.id_proceso_wf, 
-                        id_estado_wf:d.id_estado_wf, 
-                        operacion: operacion,
-                        obs:this.cmpObs.getValue()},
+                params:{id_proceso_wf:resp.id_proceso_wf, 
+                        id_estado_wf:resp.id_estado_wf, 
+                        operacion: 'cambiar',
+                        obs:resp.obs},
+                argument:{wizard:wizard},        
                 success:this.successSinc,
                 failure: this.conexionFailure,
                 timeout:this.timeout,
                 scope:this
             }); 
-            
-            
-        },
+     },
+    
+    
+    successSinc:function(resp){
+        Phx.CP.loadingHide();
+        resp.argument.wizard.panel.destroy()
+        this.reload();
+     }, 
+     
 	
-     successSinc:function(resp){
-            
-            Phx.CP.loadingHide();
-            var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-            if(!reg.ROOT.error){
-               if (reg.ROOT.datos.operacion=='preguntar_todo'){
-                   //TO DO, verificar consiguracion de tipo_proceso para perdir observaciones
-                   if(reg.ROOT.datos.num_estados==1 && reg.ROOT.datos.num_funcionarios==1){
-                       //directamente mandamos los datos
-                       Phx.CP.loadingShow();
-                       var d= this.sm.getSelected().data;
-                       Ext.Ajax.request({
-                        // form:this.form.getForm().getEl(),
-                        url:'../../sis_workflow/control/ProcesoWf/siguienteEstadoProcesoWf',
-                        params:{id_proceso_wf:d.id_proceso_wf,
-                            operacion:'cambiar',
-                            
-                            id_tipo_estado:reg.ROOT.datos.id_tipo_estado,
-                            id_funcionario:reg.ROOT.datos.id_funcionario_estado,
-                            id_depto:reg.ROOT.datos.id_depto_estado,
-                            id_proceso_wf:d.id_proceso_wf,
-                            obs:this.cmpObs.getValue()
-                            
-                            },
-                        success:this.successSinc,
-                        failure: this.conexionFailure,
-                        timeout:this.timeout,
-                        scope:this
-                    }); 
-                 }
-                   else{
-                     this.cmbTipoEstado.store.baseParams.estados= reg.ROOT.datos.estados;
-                     this.cmbTipoEstado.modificado=true;
-                     this.cmbFuncionarioWf.disable();
-                     this.wEstado.buttons[1].hide();
-                     this.wEstado.buttons[0].show();
-                     
-                      
-                     this.wEstado.show();  
-                  }
-                   
-               }
-               
-                if (reg.ROOT.datos.operacion=='cambio_exitoso'){
-                
-                  this.reload();
-                  this.wEstado.hide();
-                
-                }
-               
-                
-            }else{
-                
-                alert('ocurrio un error durante el proceso')
-            }
-           
-            
-        },
     onButtonAct:function(){
-          if(this.validarFiltros())
-           {
-               
-             Phx.vista.ProcesoWf.superclass.onButtonAct.call(this);
-            
-            }
+        if(this.validarFiltros())
+        {
+           Phx.vista.ProcesoWf.superclass.onButtonAct.call(this);
+        }
         else{
             alert('Seleccione el Trámite');
         }
-       
-       
-        
     },
     
     openFormEstadoWf:function(){
@@ -728,14 +481,6 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                           event:'beforesave',
                           delegate: this.onSaveWizard,
                           
-                        },
-                        {
-                          event:'successsave',
-                          delegate: function(){alert('evento disparado....')},  
-                        },
-                        {
-                          event:'delete',
-                          delegate: this.onDeleteXXX,  
                         }],
                 
                 scope:this
@@ -744,20 +489,34 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
         
     },
     
-    onDeleteXXX:function(){
-        
-        alert('DELETE ..............')  
-        
-    },
+    
+    openAntFormEstadoWf:function(){
+         var rec=this.sm.getSelected();
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/AntFormEstadoWf.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:450,
+                height:250
+            }, {data:rec.data}, this.idContenedor,'AntFormEstadoWf',
+            {
+                config:[{
+                          event:'beforesave',
+                          delegate: this.onAntEstado,
+                        }
+                        ],
+               scope:this
+             })
+   },
+   
+   
+    
+   
     successWizard:function(resp){
-        console.log(resp)
         Phx.CP.loadingHide();
         resp.argument.wizard.panel.destroy()
         this.reload();
-        
-        
-        
-    },
+     },
     
     onSaveWizard:function(wizard,resp){
         
@@ -781,6 +540,63 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
         });
          
     },
+    
+    //deshabilitas botones para informacion historica
+    desBotoneshistorico:function(){
+          
+          this.getBoton('ant_estado').disable();
+          this.getBoton('sig_estado').disable();
+          
+          if(this.bedit){
+            this.getBoton('edit').disable();  
+          }
+          
+          if(this.bdel){
+               this.getBoton('del').disable();
+          }
+          if(this.bnew){
+               this.getBoton('new').disable();
+          }
+         
+          
+    },
+    preparaMenu:function(n){
+      var data = this.getSelectedData();
+      var tb =this.tbar;
+      Phx.vista.ProcesoWf.superclass.preparaMenu.call(this,n); 
+     
+       if(this.historico == 'no'){
+          
+          this.getBoton('sig_estado').enable();
+          this.getBoton('ant_estado').enable();
+          this.getBoton('diagrama_gantt').enable();
+          
+          if(data.codigo_estado == 'borrador' ){ 
+             this.getBoton('ant_estado').disable();
+           
+          }
+          if(data.codigo_estado == 'finalizado' || data.codigo_estado =='anulado'){
+               this.getBoton('sig_estado').disable();
+               this.getBoton('ant_estado').disable();
+          }
+       }   
+      else{
+          this.desBotoneshistorico();
+          
+      }    
+      return tb;
+    },
+    liberaMenu:function(){
+        var tb = Phx.vista.ProcesoWf.superclass.liberaMenu.call(this);
+        if(tb){
+            this.getBoton('sig_estado').disable();
+            this.getBoton('ant_estado').disable();
+            this.getBoton('diagrama_gantt').disable();
+           
+        }
+        return tb
+    },
+    
     bdel:true,
 	bsave:false
 	

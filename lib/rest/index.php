@@ -364,7 +364,8 @@ $app->get(
 $app->post(
 	 
     '/seguridad/Auten/verificarCredenciales',
-    function () use ($app) {    	
+    function () use ($app) {
+    	   	    	
     	$auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));    	
     	authPxp($auxHeaders); 
 		
@@ -386,7 +387,7 @@ $app->post(
 $app->post(
 	 
     '/:sistema/:clase_control/:metodo',
-    function ($sistema,$clase_control,$metodo) use ($app) {
+    function ($sistema,$clase_control,$metodo) use ($app) {    		
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		//var_dump($app->request->cookies);
@@ -463,6 +464,14 @@ $app->post(
     '/post',
     function () {
         echo 'This is a POST route';
+    }
+);
+
+// POST route
+$app->get(
+    '/get',
+    function () {
+        echo 'This is a GET route';
     }
 );
 

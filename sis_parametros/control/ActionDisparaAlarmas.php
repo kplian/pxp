@@ -81,7 +81,7 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 		foreach ($res2->datos as $d){
        		echo   'correo -> '.$d['email_empresa'].'</BR>' ;
 			if(isset($d['email_empresa'])){
-				$correo->addDestinatario($d['email_empresa'],'xx xx');
+				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']);
                 $correo->setAsunto($d['tipo'].' '.$d['titulo_correo'].' '.$d['obs']);
                 $correo->setMensaje($d['descripcion']);
                 $correo->setTitulo($d['titulo_correo']);
