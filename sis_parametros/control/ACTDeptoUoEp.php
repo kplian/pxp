@@ -39,10 +39,18 @@ class ACTDeptoUoEp extends ACTbase{
 	}
 						
 	function eliminarDeptoUoEp(){
-			$this->objFunc=$this->create('MODDeptoUoEp');	
+		$this->objFunc=$this->create('MODDeptoUoEp');	
 		$this->res=$this->objFunc->eliminarDeptoUoEp($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function sincUoEp(){
+        $this->objFunc=$this->create('MODDeptoUoEp');   
+        $this->res=$this->objFunc->sincUoEp($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+	
+	
 			
 }
 

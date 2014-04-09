@@ -6,6 +6,9 @@ set_exception_handler('exception_handler');
 set_error_handler('error_handler');
 */
 //Jaime:Se incluye datos generales de conexion y otros de configuracion
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 ?>
 <html> 
 <head> 

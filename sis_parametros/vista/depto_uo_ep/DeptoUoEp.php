@@ -16,6 +16,12 @@ Phx.vista.DeptoUoEp=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.DeptoUoEp.superclass.constructor.call(this,config);
+		
+		this.addButton('add_ep',{text:'Todas las EP\'s', iconCls: 'blist',disabled:true,handler:this.sinc_ep,tooltip: '<b>EP\'s</b><br/>Adicionar todas las EP\'s '});
+        this.addButton('add_uo',{text:'Todas las UO\'s', iconCls: 'blist',disabled:true,handler:this.sinc_uo,tooltip: '<b>EP\'s</b><br/>Adicionar todas las UO\'s '});
+        
+		
+		
 		this.init();
 		this.bloquearMenus();
 		if(Phx.CP.getPagina(this.idContenedorPadre)){
@@ -188,6 +194,43 @@ Phx.vista.DeptoUoEp=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_depto_uo_ep',
 		direction: 'ASC'
 	},
+	
+	sinc_ep:function(){
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_parametros/control/DeptoUoEp/sincUoEp',
+                params:{'id_depto':this.maestro.id_depto, 'config':'ep'},
+                success:this.successSinc,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });
+   },
+   sinc_uo:function(){
+           Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_parametros/control/DeptoUoEp/sincUoEp',
+                params:{'id_depto':this.maestro.id_depto, 'config':'uo'},
+                success:this.successSinc,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });
+   },
+   
+    successSinc:function(resp){
+            Phx.CP.loadingHide();
+            var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+            if(!reg.ROOT.error){
+                alert(reg.ROOT.datos.msg)
+                
+            }else{
+                alert('ocurrio un error durante el proceso')
+            }
+            this.reload();
+    },
+	
+	
 	bdel:true,
 	bsave:true
 	,

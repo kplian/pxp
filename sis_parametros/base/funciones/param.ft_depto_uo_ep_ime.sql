@@ -32,6 +32,9 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_depto_uo_ep	integer;
+    v_array_ep			INTEGER[];
+    v_registros    record;
+    v_count        integer;
 			    
 BEGIN
 
@@ -155,6 +158,107 @@ BEGIN
             return v_resp;
 
 		end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'PM_SINCEPUO_IME'
+ 	#DESCRIPCION:	Sincronizar todas las ep o uo en el depto selecionado
+ 	#AUTOR:		admin	
+ 	#FECHA:		03-06-2013 15:15:03
+	***********************************/
+
+	elsif(p_transaccion='PM_SINCEPUO_IME')then
+
+		begin
+			--Sentencia de la eliminacion 
+            
+            
+            
+            if v_parametros.config = 'ep' then
+             
+               --obtiene todas la EP
+               select  
+               pxp.aggarray(due.id_ep) 
+                into  
+                v_array_ep 
+               from param.tdepto_uo_ep  due 
+               where due.id_depto = v_parametros.id_depto  and due.id_uo is NULL and due.estado_reg = 'activo'; 
+               
+               v_count = 0;
+                           
+               FOR v_registros in execute('select id_ep from param.tep  where estado_reg = ''activo''  and id_ep  not in ('||COALESCE(array_to_string(v_array_ep,','),'0')||')') LOOP
+              
+                 
+                   insert into param.tdepto_uo_ep  ( id_depto, 
+                                                     id_ep,  
+                                                     id_uo,  
+                                                     id_usuario_reg, 
+                                                     fecha_reg) 
+                                            values ( v_parametros.id_depto,
+                                            		 v_registros.id_ep, 
+                                                     NULL, 
+                                                     p_id_usuario, 
+                                                     now());
+                                            
+                                            
+                  v_count = v_count +1;
+               
+               
+               END LOOP;
+            
+            else
+            
+                --obtiene todas la UO
+               
+               select  
+               pxp.aggarray(due.id_uo) 
+                into  
+                v_array_ep 
+               from param.tdepto_uo_ep  due 
+               where due.id_depto = v_parametros.id_depto  and due.id_ep is NULL and due.estado_reg = 'activo';
+               
+               v_count = 0;
+                           
+               FOR v_registros in execute('select id_uo from orga.tuo  uo where uo.presupuesta = ''si'' and uo.estado_reg = ''activo'' and  id_uo  not in ('||COALESCE(array_to_string(v_array_ep,','),'0')||')') LOOP
+              
+                 
+                   insert into param.tdepto_uo_ep  ( id_depto, 
+                                                     id_ep,  
+                                                     id_uo,  
+                                                     id_usuario_reg, 
+                                                     fecha_reg) 
+                                            values ( v_parametros.id_depto,
+                                            		 NULL,
+                                                      v_registros.id_uo,  
+                                                     p_id_usuario, 
+                                                     now());
+                                            
+                                            
+                  v_count = v_count +1;
+               
+               
+               END LOOP;
+            
+            
+            
+            end if;
+            
+           
+			
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','total '||v_parametros.config ||' sincronizados '|| v_count::varchar); 
+             v_resp = pxp.f_agrega_clave(v_resp,'msg','total '||v_parametros.config ||' sincronizados '|| v_count::varchar); 
+            v_resp = pxp.f_agrega_clave(v_resp,'count',v_count::varchar);
+          
+           
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;    
+        
+        
+        
          
 	else
      

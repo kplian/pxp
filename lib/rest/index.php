@@ -279,7 +279,47 @@ $app->get(
     }
 ); 
 
-
+$app->get(
+	 
+    '/seguridad/Auten/verificarCredenciales',
+    function () use ($app) {
+    	$mensaje = '';
+    	if ($app->request->get('usuario') == '') {
+    		$mensaje = "No se recibio el parametro usuario";
+    	}
+		if ($app->request->get('contrasena') == '') {
+			$mensaje = "No se recibio el parametro contrasena";
+		}
+		
+		if ($mensaje != '') {
+	    	$men=new Mensaje();
+			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
+			'Codigo de error: AUTEN',
+			'control','','','OTRO','');
+							
+			$men->imprimirRespuesta($men->generarJson(),'406');
+			exit;
+		}  	   	    	
+    	
+    	
+    	$auxHeaders = array('Pxp-User'=>$app->request->get('usuario'),'Php-Auth-User'=>$app->request->get('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));    	
+    	authPxp($auxHeaders); 
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+		header('Access-Control-Allow-Headers: Content-Type');
+		echo "{success:true,
+				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
+				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
+				nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
+				id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
+				id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
+				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
+				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
+				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
+				timeout:".$_SESSION["_TIMEOUT"]."}";	
+				exit;		
+    }
+); 
 
 $app->get(
 	 
@@ -365,10 +405,30 @@ $app->post(
 	 
     '/seguridad/Auten/verificarCredenciales',
     function () use ($app) {
-    	   	    	
+    	$mensaje = '';
+    	if ($app->request->post('usuario') == '') {
+    		$mensaje = "No se recibio el parametro usuario";
+    	}
+		if ($app->request->post('contrasena') == '') {
+			$mensaje = "No se recibio el parametro contrasena";
+		}
+		
+		if ($mensaje != '') {
+	    	$men=new Mensaje();
+			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
+			'Codigo de error: AUTEN',
+			'control','','','OTRO','');
+							
+			$men->imprimirRespuesta($men->generarJson(),'406');
+			exit;
+		}  	   	    	
+    	
+    	
     	$auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));    	
     	authPxp($auxHeaders); 
-		
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+		header('Access-Control-Allow-Headers: Content-Type');
 		echo "{success:true,
 				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
 				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
@@ -378,11 +438,12 @@ $app->post(
 				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
 				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
 				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
-				timeout:".$_SESSION["_TIMEOUT"]."}";
-	
+				timeout:".$_SESSION["_TIMEOUT"]."}";	
 				exit;		
     }
 ); 
+
+
 
 $app->post(
 	 

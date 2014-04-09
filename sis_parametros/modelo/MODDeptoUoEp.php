@@ -99,6 +99,28 @@ class MODDeptoUoEp extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	
+	
+	function sincUoEp(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_depto_uo_ep_ime';
+        $this->transaccion='PM_SINCEPUO_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('config','config','varchar');
+        $this->setParametro('id_depto','id_depto','int4');
+        
+        
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>
