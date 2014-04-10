@@ -319,7 +319,7 @@ class Mensaje
 	 */
 	function generarJson(){
 		if(count($_FILES)==0){
-      		header('Content-type: application/json'); 
+      		header('Content-type: application/json; charset=utf-8'); 
    		} 
 		//si es exito y es sel devuelvo los valores de una consulta
 		//ofuscacion de identificadores
