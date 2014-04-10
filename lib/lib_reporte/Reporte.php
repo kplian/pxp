@@ -104,7 +104,8 @@ class Reporte
 		
 		$cantidad_registros=$this->res->getTotal();
 	
-		
+		echo $cantidad_registros;
+		exit;
 		$puntero=$puntero+$_SESSION['cantidad_reportes'];
 				
 		//Imprime los títulos de las columnas para exportación pdf_grid
