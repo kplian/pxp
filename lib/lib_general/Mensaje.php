@@ -330,7 +330,7 @@ class Mensaje
 		if($this->getTipo()=='EXITO' && $this->tipo_transaccion=='SEL'){
 
 			if($this->tipo_respuesta!='arbol'){
-				return '({"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '})';
+				return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
 			}
 			else{
 				if(count($this->nivel_arbol)==0){
@@ -346,7 +346,7 @@ class Mensaje
 						$this->datos[$cont]=$this->crearCampos($this->datos[$cont],$this->nivel_arbol[0]['arreglo_equivalencias']);
 						$cont++;
 					}
-					return '(' . json_encode($this->datos) . ')';
+					return json_encode($this->datos);
 				}
 				else{
 					$cont=0;
@@ -366,7 +366,7 @@ class Mensaje
 						}
 						$cont++;
 					}
-					return '(' . json_encode($this->datos) . ')';
+					return json_encode($this->datos);
 				}
 
 			}

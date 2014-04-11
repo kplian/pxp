@@ -192,6 +192,7 @@ class ACTAuten extends ACTbase {
 			$_SESSION["autentificado"] = "SI";
 	        $_SESSION["ss_id_usuario"] = $this->datos['id_usuario'];
 			$_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
+			$_SESSION["ss_id_person"] = $this->datos['id_persona'];
 			$_SESSION["_SESION"]->setIdUsuario($this->datos['id_usuario']);
 			//cambia el estado del Objeto de sesion activa
 			$_SESSION["_SESION"]->setEstado("activa");
