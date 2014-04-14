@@ -17,11 +17,12 @@ class PxpRestClient
 	private $_request_number = 1;
 	private $_first_connection = true;
 	private $_error_number = 0;
+	private $_cookie_file = '';
 	
     const HTTP  = 'http';
     const HTTPS = 'https';
-	const COOKIE_FILE = "cookie.txt";
-    
+	
+	    
     private $_connMultiple = false;
     /**
      * Factory of the class. Lazy connect
@@ -38,10 +39,14 @@ class PxpRestClient
         return new self($host, $base_url, $port, $protocol);
     }    
     protected function __construct($host, $base_url='', $port, $protocol)
-    {
+    {    	
+    	if ( !function_exists('sys_get_temp_dir'))
+			$this->_cookie_file = "/tmp/cookie_" . uniqid('pxp') . ".txt";
+		else 
+			$this->_cookie_file = sys_get_temp_dir() . "/cookie_" . uniqid('pxp') . ".txt";			
     	
-    	if (is_readable(COOKIE_FILE))
-    		unlink(COOKIE_FILE);     
+    	if (is_readable($this->_cookie_file))
+    		unlink($this->_cookie_file);     
         $this->_host     = $host;
         $this->_port     = $port;
         $this->_protocol = $protocol;
@@ -250,9 +255,8 @@ class PxpRestClient
         curl_setopt($s, CURLOPT_RETURNTRANSFER, true);
 		//curl_setopt($s, CURLOPT_HEADER, true);
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt ($s, CURLOPT_COOKIEJAR, COOKIE_FILE);
-		curl_setopt ($s, CURLOPT_COOKIEFILE, COOKIE_FILE); 
-
+		curl_setopt ($s, CURLOPT_COOKIEJAR, $this->_cookie_file);		
+		curl_setopt ($s, CURLOPT_COOKIEFILE, $this->_cookie_file); 		
 
 		
         $_out = curl_exec($s);
