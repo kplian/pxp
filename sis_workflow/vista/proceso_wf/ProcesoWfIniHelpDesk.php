@@ -13,7 +13,7 @@ Phx.vista.ProcesoWfIniHD = {
 	require:'../../../sis_workflow/vista/proceso_wf/ProcesoWf.php',
 	requireclase:'Phx.vista.ProcesoWf',
 	title:'Help Desk',
-	nombreVista: 'ProcesoWfIniHD',
+	nombreVista: 'ProcesoWfIniTra',
 	bnew:true,
 	bedit:false,
 	bdel:false,
