@@ -22,6 +22,11 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         this.addEvents('beforesave');
         this.addEvents('successsave');
         
+        if(config.data.url_verificacion){
+           this.url_verificacion =  config.data.url_verificacion;
+        }
+        
+        
         //llamada ajax para cargar los caminos posible de flujo
         Phx.CP.loadingShow();
         Ext.Ajax.request({
@@ -105,8 +110,61 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                else{
                    this.Cmp.id_depto_wf.disable();  
                }
+               
+               if(record.data.pedir_obs == 'si'){
+                    
+                    this.Cmp.obs.allowBlank = false;
+               }
+               else{
+                    this.Cmp.obs.allowBlank = true; 
+               }
+               
+               
+               
         },this);
         this.loadValoresIniciales();
+        
+        //carga valores por defecto si los combos tiene una sola opcion
+        this.Cmp.id_tipo_estado.store.load({params:{start:0,limit:50}, 
+           callback : function (r) {
+                //si solo tenemos un estado cargamos valores pro defecto
+                if (r.length == 1 ) {                       
+                    
+                    this.Cmp.id_tipo_estado.setValue(r[0].data.id_tipo_estado);
+                    this.Cmp.id_tipo_estado.fireEvent('select',this.Cmp.id_tipo_estado, r[0], 0)
+                    //caga valores para el combo funcionario
+                    if(r[0].data.tipo_asignacion != 'ninguno'){
+                         this.Cmp.id_funcionario_wf.store.load({params:{start:0,limit:50}, 
+                           callback : function (r) {
+                                if (r.length == 1 ) {                       
+                                    this.Cmp.id_funcionario_wf.setValue(r[0].data.id_funcionario);
+                                } 
+                            }, scope : this
+                        });
+                    }
+                    //carga valores para el combo depto
+                     if(r[0].data.depto_asignacion != 'ninguno'){
+                    
+                        this.Cmp.id_depto_wf.store.load({params:{start:0,limit:50}, 
+                               callback : function (r) {
+                                    if (r.length == 1 ) {                       
+                                        this.Cmp.id_depto_wf.setValue(r[0].data.id_depto);
+                                    }    
+                                                    
+                                }, scope : this
+                        });
+                      }
+                 }   
+                                
+            }, scope : this
+        });
+        
+        
+        
+        
+        
+        
+        
     },
     
     ///////////////////////////////////////

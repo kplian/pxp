@@ -10,7 +10,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
-
+	nombreVista : 'ProcesoWf',
 	constructor:function(config){
 		this.maestro=config.maestro;
     	
@@ -51,7 +51,15 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
             
         },this);
         
-        
+       this.addButton('btnChequeoDocumentosWf',
+            {
+                text: 'Chequear Documentos',
+                iconCls: 'bchecklist',
+                disabled: true,
+                handler: this.loadCheckDocumentosWf,
+                tooltip: '<b>Documentos del Proceso</b><br/>Subir los documetos requeridos en el proceso seleccionada.'
+            }
+        ); 
         
        this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
   
@@ -408,7 +416,21 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
                 minChars: 2,
                tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
        }),
-            
+    
+    loadCheckDocumentosWf:function() {
+            var rec=this.sm.getSelected();
+            rec.data.nombreVista = this.nombreVista;
+            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
+                    'Chequear documento del WF',
+                    {
+                        width:'90%',
+                        height:500
+                    },
+                    rec.data,
+                    this.idContenedor,
+                    'DocumentoWf'
+        )
+    },        
     
     validarFiltros:function(){
         if(this.cmbProcesoMacro.isValid()){
@@ -429,7 +451,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
     
     sortInfo:{
 		field: 'id_proceso_wf',
-		direction: 'ASC'
+		direction: 'DESC'
 	},
      
     onAntEstado:function(wizard,resp){
@@ -564,7 +586,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
       var data = this.getSelectedData();
       var tb =this.tbar;
       Phx.vista.ProcesoWf.superclass.preparaMenu.call(this,n); 
-     
+     this.getBoton('btnChequeoDocumentosWf').setDisabled(false);
        if(this.historico == 'no'){
           
           this.getBoton('sig_estado').enable();
@@ -588,6 +610,7 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
     },
     liberaMenu:function(){
         var tb = Phx.vista.ProcesoWf.superclass.liberaMenu.call(this);
+        this.getBoton('btnChequeoDocumentosWf').setDisabled(true);
         if(tb){
             this.getBoton('sig_estado').disable();
             this.getBoton('ant_estado').disable();

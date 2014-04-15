@@ -19,6 +19,18 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.bloquearMenus();
 		
+		this.addButton('btnPlaMen',
+            {
+                text: 'Plantilla de Correo',
+                iconCls: 'bchecklist',
+                disabled: true,
+                handler: this.formPlantilleMensaje,
+                tooltip: '<b>Plantilla de Correo</b><br/>Personaliza los correos enviados en alertas en tipo de estado seleccionado.'
+            }
+        ); 
+		
+		
+		
 	},
 			
 	Atributos:[
@@ -451,6 +463,39 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
          }
 	
 	   ],
+	
+	formPlantilleMensaje:function(wizard,resp){
+            var rec=this.sm.getSelected();
+            Phx.CP.loadWindows('../../../sis_workflow/vista/tipo_estado/PlantillaMensaje.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:'80%',
+                height:400
+            }, {data:rec.data}, 
+               this.idContenedor,
+               'PlantillaMensaje'
+            )
+         
+    },
+    
+    preparaMenu:function(n){
+      Phx.vista.TipoEstado.superclass.preparaMenu.call(this,n); 
+      this.getBoton('btnPlaMen').enable();
+      return this.tbar;
+    },
+    
+    liberaMenu:function(){
+        var tb = Phx.vista.TipoEstado.superclass.liberaMenu.call(this);
+        if(tb){
+             this.getBoton('btnPlaMen').disable();
+        }
+        return tb
+    },
+    
+    
+    
+    
 	
 	bdel:true,
 	bsave:false
