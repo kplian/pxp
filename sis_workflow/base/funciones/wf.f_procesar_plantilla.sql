@@ -153,7 +153,7 @@ BEGIN
                   ESTADO_ACTUAL
                   CODIGO
                   FUNCIONARIO_PREVIO
-                  DEPTO_PREVIOO
+                  DEPTO_PREVIO
                   
                   */
                   
