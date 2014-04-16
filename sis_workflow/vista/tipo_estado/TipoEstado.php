@@ -423,7 +423,8 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_tipo_proceso', type: 'string'},
-		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list'
+		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
+		'plantilla_mensaje_asunto','plantilla_mensaje'
 		
 	],
 	sortInfo:{

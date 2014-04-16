@@ -89,7 +89,13 @@ class ACTTipoEstado extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-						
+			
+	function modificarPlantillaCorreo(){
+        $this->objFunc=$this->create('MODTipoEstado');  
+        $this->res=$this->objFunc->modificarPlantillaCorreo($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    
 	function eliminarTipoEstado(){
 			$this->objFunc=$this->create('MODTipoEstado');	
 		$this->res=$this->objFunc->eliminarTipoEstado($this->objParam);

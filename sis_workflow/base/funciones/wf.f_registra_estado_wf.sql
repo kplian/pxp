@@ -55,6 +55,9 @@ DECLARE
     v_registros_ant record;
     v_registros_depto record;
     v_resp_doc boolean;
+    
+    v_plantilla_correo  varchar;
+    v_plantilla_asunto  varchar;
 	
     
 BEGIN
@@ -104,7 +107,9 @@ BEGIN
      s.codigo,
      s.id_subsistema,
      te.nombre_estado,
-     pm.nombre as nombre_proceso_macro
+     pm.nombre as nombre_proceso_macro,
+     te.plantilla_mensaje,
+     te.plantilla_mensaje_asunto
     INTO
      v_registros
     FROM wf.ttipo_estado te
@@ -123,21 +128,31 @@ BEGIN
     
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
         
-            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
-                 
-         
+           v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
            v_cont_alarma = 1;
+           v_plantilla_asunto = p_titulo;
+           
+            --  si tiene plantilla de correo la procesamos
+            IF v_registros.plantilla_mensaje is not null and v_registros.plantilla_mensaje != '' THEN
+             
+                  v_plantilla_correo =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla_mensaje, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                  v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla_mensaje_asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                  
+                  v_desc_alarma = v_plantilla_correo;
+           
+            END IF;
+           
            IF p_id_funcionario is not NULL and (v_registros_ant.id_funcionario is null or v_registros_ant.id_funcionario != p_id_funcionario)  THEN
           
           
                    /*
-                        par_id_funcionario : indica el funcionario para el que se genera la alrma
-                        par_descripcion: una descripcion de la alarma
-                        par_acceso_directo: es el link que lleva a la relacion de la alarma generada
-                        par_fecha: Indica la fecha de vencimiento de la alarma
-                        par_tipo: indica el tipo de alarma, puede ser alarma o notificacion
-                        par_obs: son las observaciones de la alarma
-                        par_id_usuario: integer,   el usuario que registra la alarma
+                        par_id_funcionario :   indica el funcionario para el que se genera la alrma
+                        par_descripcion:       una descripcion de la alarma
+                        par_acceso_directo:    es el link que lleva a la relacion de la alarma generada
+                        par_fecha:             Indica la fecha de vencimiento de la alarma
+                        par_tipo:              indica el tipo de alarma, puede ser alarma o notificacion
+                        par_obs:               son las observaciones de la alarma
+                        par_id_usuario:        integer,   el usuario que registra la alarma
                         
                         par_clase varchar,        clases a ejecutar en interface deacceso directo
                         par_titulo varchar,       titulo de la interface de acceso directo
@@ -147,13 +162,13 @@ BEGIN
                    
                    */
                    
-                   v_alarmas_con[v_cont_alarma]:=param.f_inserta_alarma(
+                  v_alarmas_con[v_cont_alarma]:=param.f_inserta_alarma(
                                                       p_id_funcionario,
-                                                      v_desc_alarma,
+                                                      v_desc_alarma,    --descripcion alarmce
                                                       p_acceso_directo,--acceso directo
                                                       now()::date,
                                                       p_tipo,
-                                                      p_titulo,
+                                                      v_plantilla_asunto,   -->
                                                       p_id_usuario,
                                                       p_clase,
                                                       p_titulo,--titulo
@@ -190,7 +205,7 @@ BEGIN
                                                         p_acceso_directo,--acceso directo
                                                         now()::date,
                                                         p_tipo,
-                                                        p_titulo,
+                                                        v_plantilla_asunto,
                                                         p_id_usuario,
                                                         p_clase,
                                                         p_titulo,--titulo

@@ -8,5 +8,5 @@
 	//echo $pxpRestClient->doGet('libre/tesoreria/CuentaDocumentadaEndesis/listarFondoAvance2',array("limit"=>'10'));
 	echo $pxpRestClient->doGet('tesoreria/CuentaDocumentadaEndesis/listarFondoAvance',array("limit"=>'10'));
 	//echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array());
-	echo $pxpRestClient->doPost('tesoreria/CuentaDocumentadaEndesis/aprobarFondoAvance',array("id_cuenta_documentada"=>'358',"accion"=>"cancelar"));
+	//echo $pxpRestClient->doPost('tesoreria/CuentaDocumentadaEndesis/aprobarFondoAvance',array("id_cuenta_documentada"=>'356',"accion"=>"cancelar"));
 	

@@ -68,6 +68,7 @@ class PxpRestClient
 		
 		$this->addHeader("Pxp-user: $user");
         $this->_pass = $this->fnEncrypt($prefix . '$$' . $this->_pass, $this->_pass);
+		
         return $this;
     }
 	
