@@ -34,3 +34,68 @@ FROM pg_class c
     WHERE d.deptype = 'a'::"char";
 
 /****************************F-SCP-RCM-PXP-0-30/11/2012*************/
+
+/****************************I-SCP-JRR-PXP-0-25/04/2014********************************/
+
+select pxp.f_insert_testructura_gui ('INITRAHP', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('VIDEMANU', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('INITRAHP.1', 'INITRAHP');
+select pxp.f_insert_testructura_gui ('INITRAHP.2', 'INITRAHP');
+select pxp.f_insert_testructura_gui ('INITRAHP.3', 'INITRAHP');
+select pxp.f_insert_testructura_gui ('INITRAHP.4', 'INITRAHP');
+select pxp.f_insert_testructura_gui ('INITRAHP.5', 'INITRAHP');
+select pxp.f_insert_testructura_gui ('INITRAHP.1.1', 'INITRAHP.1');
+select pxp.f_insert_testructura_gui ('INITRAHP.1.2', 'INITRAHP.1');
+select pxp.f_insert_testructura_gui ('INITRAHP.4.1', 'INITRAHP.4');
+select pxp.f_insert_testructura_gui ('INITRAHP.5.1', 'INITRAHP.5');
+select pxp.f_insert_testructura_gui ('INITRAHP.5.1.1', 'INITRAHP.5.1');
+select pxp.f_insert_tprocedimiento_gui ('WF_GATNREP_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPPROC_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PWF_INS', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PWF_MOD', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PWF_ELI', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PWF_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_ANTEPRO_IME', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_SESPRO_IME', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'INITRAHP', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SG_TUTO_SEL', 'VIDEMANU', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SG_TUTO_CONT', 'VIDEMANU', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DWF_MOD', 'INITRAHP.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DWF_ELI', 'INITRAHP.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DWF_SEL', 'INITRAHP.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_CABMOM_IME', 'INITRAHP.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DOCWFAR_MOD', 'INITRAHP.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPPROC_SEL', 'INITRAHP.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_SEL', 'INITRAHP.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DES_INS', 'INITRAHP.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DES_MOD', 'INITRAHP.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DES_ELI', 'INITRAHP.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DES_SEL', 'INITRAHP.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DOCWFAR_MOD', 'INITRAHP.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_VERSIGPRO_IME', 'INITRAHP.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_CHKSTA_IME', 'INITRAHP.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_TIPES_SEL', 'INITRAHP.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_FUNTIPES_SEL', 'INITRAHP.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DEPTIPES_SEL', 'INITRAHP.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('WF_DOCWFAR_MOD', 'INITRAHP.3', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'INITRAHP.4', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'INITRAHP.4', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'INITRAHP.4', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INITRAHP.4', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'INITRAHP.4.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_INS', 'INITRAHP.5', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_MOD', 'INITRAHP.5', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_ELI', 'INITRAHP.5', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'INITRAHP.5', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'INITRAHP.5', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INITRAHP.5', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'INITRAHP.5.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'INITRAHP.5.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'INITRAHP.5.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INITRAHP.5.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'INITRAHP.5.1.1', 'no');
+
+/****************************F-SCP-JRR-PXP-0-25/04/2014********************************/

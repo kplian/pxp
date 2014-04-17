@@ -281,3 +281,11 @@ ALTER TABLE orga.tuo_funcionario
     NOT DEFERRABLE;
     
 /********************************************F-DEP-JRR-ORGA-0-24/01/2014********************************************/
+
+/*********************************I-DEP-JRR-ORGA-0-25/04/2014***********************************/
+select pxp.f_insert_testructura_gui ('ESTORG.2.1.2.1', 'ESTORG.2.1.2');
+select pxp.f_insert_testructura_gui ('FUNCIO.2.1', 'FUNCIO.2');
+select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'ESTORG.2.1.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'FUNCIO.2.1', 'no');
+
+/*********************************F-DEP-JRR-ORGA-0-25/04/2014***********************************/
