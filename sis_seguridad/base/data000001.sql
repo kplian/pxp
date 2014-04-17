@@ -33,8 +33,8 @@ VALUES ('SEGU', 'Sistema de Seguridad', '2009-11-02', 'SG', 'activo', 'seguridad
 
 
 
-INSERT INTO segu.tgui ("id_gui", "nombre", "descripcion", "fecha_reg", "codigo_gui", "visible", "orden_logico", "ruta_archivo", "nivel", "icono", "id_subsistema", "clase_vista", "estado_reg")
-VALUES (0, E'SISTEMA', E'NODO RAIZ', E'2009-09-08', E'SISTEMA', E'si', 1, NULL, 0, NULL, 0, E'NODO RAIZ', E'activo');
+INSERT INTO segu.tgui ("id_gui", "nombre", "descripcion", "fecha_reg", "codigo_gui", "visible", "orden_logico", "ruta_archivo", "nivel", "icono", "id_subsistema", "clase_vista", "estado_reg", "modificado")
+VALUES (0, E'SISTEMA', E'NODO RAIZ', E'2009-09-08', E'SISTEMA', E'si', 1, NULL, 0, NULL, 0, E'NODO RAIZ', E'activo', 1);
 
 
 
