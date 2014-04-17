@@ -63,7 +63,10 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         pm.nombre AS desc_proceso_macro,
                         te.nombre_estado AS desc_tipo_estado,
-                        tipproc.inicio 		
+                        tipproc.inicio,
+                        tipproc.tipo_disparo, 
+                        tipproc.funcion_validacion_wf,
+                        tipproc.descripcion		
 						from wf.ttipo_proceso tipproc
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipproc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod

@@ -59,9 +59,7 @@ BEGIN
          
          END IF; 
             
-        
-        
-        
+       
         	--Sentencia de la insercion
         	insert into wf.ttipo_proceso(
 			nombre,
@@ -75,7 +73,10 @@ BEGIN
 			id_usuario_reg,
 			fecha_mod,
 			id_usuario_mod,
-            inicio
+            inicio,
+            tipo_disparo,
+            funcion_validacion_wf,
+            descripcion
           	) values(
 			v_parametros.nombre,
 			v_parametros.codigo,
@@ -88,7 +89,10 @@ BEGIN
 			p_id_usuario,
 			null,
 			null,
-            v_parametros.inicio
+            v_parametros.inicio,
+            v_parametros.tipo_disparo,
+            v_parametros.funcion_validacion_wf,
+            v_parametros.descripcion
 							
 			)RETURNING id_tipo_proceso into v_id_tipo_proceso;
 			
@@ -135,7 +139,10 @@ BEGIN
 			id_tipo_estado = v_parametros.id_tipo_estado,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
-            inicio=v_parametros.inicio
+            inicio=v_parametros.inicio,
+            tipo_disparo=v_parametros.tipo_disparo,
+            funcion_validacion_wf=v_parametros.funcion_validacion_wf,
+            descripcion=v_parametros.descripcion
 			where id_tipo_proceso=v_parametros.id_tipo_proceso;
                
 			--Definicion de la respuesta

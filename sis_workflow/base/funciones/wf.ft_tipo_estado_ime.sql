@@ -159,6 +159,37 @@ BEGIN
             
 		end;
 
+   /*********************************    
+ 	#TRANSACCION:  'WF_UPDPLAMEN_MOD'
+ 	#DESCRIPCION:	Actualizar la plantilla de mensajes de correo
+ 	#AUTOR:		admin	
+ 	#FECHA:		21-02-2013 15:36:11
+	***********************************/
+
+	elsif(p_transaccion='WF_UPDPLAMEN_MOD')then
+
+		begin
+        	            
+			--Sentencia de la modificacion
+			update wf.ttipo_estado set
+            plantilla_mensaje_asunto = v_parametros.plantilla_mensaje_asunto,
+            plantilla_mensaje = v_parametros.plantilla_mensaje,
+            id_usuario_mod = p_id_usuario,
+            fecha_mod = now()
+			
+			where id_tipo_estado=v_parametros.id_tipo_estado;
+            
+            
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modifico la plantilla de correodel tipo estado'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_parametros.id_tipo_estado::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+
+
 	/*********************************    
  	#TRANSACCION:  'WF_TIPES_ELI'
  	#DESCRIPCION:	Eliminacion de registros

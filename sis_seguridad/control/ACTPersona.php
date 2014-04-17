@@ -18,6 +18,10 @@ class ACTPersona extends ACTbase{
 		if($this->objParam->getParametro('id_persona')!=''){
             $this->objParam->addFiltro("p.id_persona = " . $this->objParam->getParametro('id_persona'));    
         }
+		
+		if($this->objParam->getParametro('usuario_activo') == 'si'){
+            $this->objParam->addFiltro("p.id_persona = " . $_SESSION["ss_id_persona"]);    
+        }
 		if($this->objParam->getParametro('no_es_proveedor')!=''){
             $this->objParam->addFiltro("p.id_persona not in (select id_persona 
             															from param.tproveedor 

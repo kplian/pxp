@@ -29,6 +29,7 @@ DECLARE
     v_mensaje_error    text;
     v_nivel             varchar;
     v_resp				varchar;
+    v_filtro_codigo		varchar;
 
 /*
 
@@ -49,9 +50,15 @@ BEGIN
  #AUTOR:		KPLIAN(jrr)		
  #FECHA:		08/01/11	
 ***********************************/
+	v_filtro_codigo = '';
     if(par_transaccion='SEG_MENU_SEL')then
         if(v_parametros.id_padre='%')then
-            v_nivel:='1';
+        	if (pxp.f_existe_parametro(par_tabla, 'busqueda')) then
+            	v_nivel:='%';
+            	v_filtro_codigo = ' and g.codigo_gui = ''' || v_parametros.codigo || ''' ';
+            else
+            	v_nivel = 1;
+            end if;
         else
             v_nivel='%';
         end if;
@@ -61,6 +68,7 @@ BEGIN
               v_consulta:= 'SELECT
                                         g.id_gui,
                                         g.nombre,
+                                        g.codigo_gui,
                                         g.descripcion,
                                         g.nivel,
                                         g.orden_logico,
@@ -77,10 +85,12 @@ BEGIN
                                        INNER JOIN segu.testructura_gui eg
                                        ON g.id_gui=eg.id_gui
                                        AND eg.estado_reg = ''activo''
+                                       INNER JOIN segu.tgui padre
+                                       ON padre.id_gui = eg.fk_id_gui
                                   WHERE g.visible=''si''
 								  AND g.estado_reg = ''activo''
-                                  AND eg.fk_id_gui::text like '''||v_parametros.id_padre||'''
-                                  AND g.nivel::text like '''||v_nivel||'''
+                                  AND padre.codigo_gui::text like '''||v_parametros.id_padre||'''
+                                  AND g.nivel::text like '''||v_nivel|| '''' || v_filtro_codigo || '
                                   ORDER BY g.orden_logico,eg.fk_id_gui';
                                   
                                   raise notice 'adm: %',v_consulta;
@@ -94,6 +104,7 @@ BEGIN
                    'SELECT 
                    g.id_gui,
                    g.nombre,
+                   g.codigo_gui,
                    g.descripcion,
                    g.nivel,
                    g.orden_logico,
@@ -108,6 +119,8 @@ BEGIN
                    g.icono 
                    FROM segu.tgui g
                    inner join segu.testructura_gui eg
+                   INNER JOIN segu.tgui padre
+                   ON padre.id_gui = eg.fk_id_gui
                    on g.id_gui=eg.id_gui
                    and g.estado_reg=''activo''
                    and eg.estado_reg=''activo''
@@ -125,8 +138,8 @@ BEGIN
                    and u.estado_reg=''activo''
                    where g.visible=''si''
 				   AND g.estado_reg = ''activo''
-                   and eg.fk_id_gui::text like '''||v_parametros.id_padre||'''
-                   AND g.nivel::text like '''||v_nivel||'''
+                   and padre.codigo_gui::text like '''||v_parametros.id_padre||'''
+                   AND g.nivel::text like '''||v_nivel|| '''' || v_filtro_codigo || '
                    and u.id_usuario ='|| par_id_usuario||'
                    group by 
                    

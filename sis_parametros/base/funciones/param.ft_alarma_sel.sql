@@ -51,9 +51,7 @@ BEGIN
      				
     	begin
             
-        --raise exception 'XXXXxxxx';
-        
-            --Sentencia de la consulta
+           --Sentencia de la consulta
 			v_consulta:='
                         select
 						alarm.id_alarma,
@@ -68,8 +66,9 @@ BEGIN
                         alarm.obs,
                         alarm.tipo,
                         (alarm.fecha-now()::date)::integer as dias,
-                         alarm.titulo_correo
-						from param.talarma alarm
+                        alarm.titulo_correo,
+						alarm.acceso_directo
+                        from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
                         left join segu.tpersona per on per.id_persona = usu.id_persona
@@ -206,7 +205,47 @@ BEGIN
 			--Devuelve la respuesta
 			return v_consulta;
 
-		end;				
+		end;	
+        
+     /*********************************    
+ 	#TRANSACCION:  'PM_GETALA_SEL'
+ 	#DESCRIPCION:	recupera datos de la alerta especificada
+ 	#AUTOR:		rensi	
+ 	#FECHA:		21-04-2014 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_GETALA_SEL')then
+
+		begin
+			--Sentencia de la eliminacion
+            
+           v_consulta =  'SELECT
+                     	alarm.id_alarma,
+						alarm.acceso_directo,
+						alarm.id_funcionario,
+						alarm.fecha,
+						alarm.estado_reg,
+						alarm.descripcion,
+						alarm.id_usuario_reg,
+						alarm.fecha_reg,
+						alarm.id_usuario_mod,
+						alarm.fecha_mod,
+						alarm.clase,
+                        alarm.titulo,
+                        alarm.parametros,
+                        alarm.obs,
+                        alarm.tipo,
+                        (alarm.fecha-now()::date)::integer as dias
+						from param.talarma alarm
+						where alarm.id_alarma='||v_parametros.id_alarma;
+            
+            --Devuelve la respuesta
+			return v_consulta;
+			
+            
+
+		end;    
+        			
 	else
 					     
 		raise exception 'Transaccion inexistente';

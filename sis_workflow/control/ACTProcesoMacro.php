@@ -18,6 +18,10 @@ class ACTProcesoMacro extends ACTbase{
 	    	$this->objParam->addFiltro("subs.codigo = ''".$this->objParam->getParametro('codigo_subsistema')."''");	
 		}
 		
+		if($this->objParam->getParametro('codigo_proceso')!=''){
+	    	$this->objParam->addFiltro("promac.codigo = ''".$this->objParam->getParametro('codigo_proceso')."''");	
+		}
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODProcesoMacro','listarProcesoMacro');

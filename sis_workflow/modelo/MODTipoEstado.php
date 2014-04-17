@@ -43,6 +43,10 @@ class MODTipoEstado extends MODbase{
 		$this->captura('alerta','varchar');
 		$this->captura('pedir_obs','varchar');
 		
+		$this->captura('plantilla_mensaje_asunto','varchar');
+		$this->captura('plantilla_mensaje','varchar');
+		
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -168,6 +172,25 @@ class MODTipoEstado extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function modificarPlantillaCorreo(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.ft_tipo_estado_ime';
+        $this->transaccion='WF_UPDPLAMEN_MOD';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+        $this->setParametro('plantilla_mensaje_asunto','plantilla_mensaje_asunto','varchar');
+        $this->setParametro('plantilla_mensaje','plantilla_mensaje','codigo_html');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 	function eliminarTipoEstado(){
 		//Definicion de variables para ejecucion del procedimiento

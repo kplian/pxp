@@ -13,6 +13,7 @@ class CorreoExterno
     protected $titulo;
     protected $autentificacion;
     protected $SMTPSecure;
+    protected $acceso_directo;
   
     protected $mail;
     
@@ -27,11 +28,13 @@ class CorreoExterno
         $this->remitente=$_SESSION['_MAIL_REMITENTE'];
         $this->nombre_remitente=$_SESSION['_NOMBER_REMITENTE'];  
         $this->SMTPSecure=$_SESSION['_SMTPSecure'];
+        $this->acceso_directo='';
         
         
              
          $this->mail= new PHPMailer();
          $this->mail->IsSMTP();
+         $this->mail->CharSet='UTF-8';
          $this->mail->Host = $this->mail_servidor;
          $this->mail->Port = $this->mail_puerto;
          $this->mail->From = $this->remitente;
@@ -42,8 +45,11 @@ class CorreoExterno
    }
     
     function addDestinatario($dir_destinatario,$nom_destinatario=''){
-        $this->mail->AddAddress($dir_destinatario, $nom_destinatario);    
-        
+    	if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
+    		$this->mail->AddAddress($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
+    	} else {
+    		$this->mail->AddAddress($dir_destinatario, $nom_destinatario); 
+    	}       
     }
     
     function addCC($dir_destinatario,$nom_destinatario=''){
@@ -89,6 +95,11 @@ class CorreoExterno
              $this->mensaje= $mensaje;
               $this->mail->AltBody =  $this->mail->mensaje;
          
+    }
+    
+    function setAccesoDirecto ($acceso_directo)
+    {
+       $this->acceso_directo=$acceso_directo;
     }
     
     function setTitulo ($titulo)
@@ -143,7 +154,14 @@ class CorreoExterno
     }  
     
     function setDefaultPlantilla(){
-                          
+            $acceso='';
+            if($this->acceso_directo!=''){
+                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/../../../sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
+                $acceso = '<a href="'.$actual_link.'">Acceso directo</a>';   
+            } 
+            
+            
+            
             $this->mensaje_html=$cuerpo = "
                     <html>
                     <head>
@@ -170,9 +188,13 @@ class CorreoExterno
                     </head>
                     <body>
                     <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
-                    <p>-------------------------------------------<br/>
-                    <h6>Powered by KPLIAN<h6>
-                    <p>
+                    <br/>
+                    ".$acceso."
+                    <br/>
+                    <p>-------------------------------------------</p>
+                    <br/>
+                    <br/>
+                    <H6>Powered by KPLIAN</H6>
                     </body>
                     </html>";
         

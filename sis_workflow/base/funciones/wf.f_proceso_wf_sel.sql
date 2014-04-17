@@ -67,14 +67,10 @@ BEGIN
             
             IF v_parametros.tipo_interfaz = 'ProcesoWfIniTra' THEN
                  IF p_administrador !=1  then
-                   
-                   v_filtro = ' (lower(tp.inicio)=''si'') and  (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'  or pwf.id_usuario_reg='||p_id_usuario||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')) )   and ';
-                 
+                    v_filtro = ' (lower(tp.inicio)=''si'') and  (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||' )   and ';
                  ELSE
-                 
-                   v_filtro =' (lower(tp.inicio)=''si'') and ';
-                
-                 END IF;
+                  v_filtro =' (lower(tp.inicio)=''si'') and ';
+                END IF;
                  
                   
             
@@ -85,12 +81,12 @@ BEGIN
                 IF p_administrador !=1 THEN
                     v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
                 ELSE
-                     v_filtro = ' (lower(te.inicio)!=''si'') and ';
+                     v_filtro = '  ((lower(tp.inicio)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
                 END IF;
             END IF;
             
             
-             IF  pxp.f_existe_parametro(p_tabla,'historico') THEN
+            IF  pxp.f_existe_parametro(p_tabla,'historico') THEN
              
              v_historico =  v_parametros.historico;
             
@@ -108,7 +104,7 @@ BEGIN
                
                IF p_administrador =1 THEN
               
-                  v_filtro = ' (lower(sol.estado)!=''borrador'' ) and ';
+                  v_filtro = ' (lower(te.codigo)!=''borrador'' ) and ';
               
                END IF;
                
@@ -127,9 +123,7 @@ BEGIN
         
     		--Sentencia de la consulta
 			v_consulta:='select 
-            
-                             pwf.id_proceso_wf,
-                             '||v_strg_pro||'
+                             '||v_strg_pro||',
                              pwf.id_tipo_proceso,
                              pwf.nro_tramite,
                              pwf.id_estado_wf_prev,
@@ -169,6 +163,9 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+             raise notice 'CONSULTA->>  %',v_consulta;
+
 
 			--Devuelve la respuesta
 			return v_consulta;

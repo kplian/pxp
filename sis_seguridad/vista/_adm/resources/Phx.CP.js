@@ -416,16 +416,141 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 // ////////////////////////////////////////
 Ext.namespace('Phx','Phx.vista');
 Phx.CP=function(){
-    var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista;
+    var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista,windowManager;
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
 	var contNodo = 0;
     return{
-
+        
+        evaluateHash:function(action,token_inicio){
+        	
+        	
+		    //verificamos la accion
+		    if(action=='main-tabs'){
+				if (token_inicio == '' || token_inicio == 'PXPWELCOME') {
+	        		this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
+	        	} else {
+	        		var node = menu.getNodeById(token_inicio);
+	        		if (node) {
+		    			node.fireEvent('click', node);
+		    		} else {
+		    			//buscar el nodo con una peticion ajax si se encuentra se abre si no se encuentra se lanza una excepcion
+		    			Ext.Ajax.request({
+		                    url:'../../sis_seguridad/control/Menu/listarPermisoArb',
+		                    params:{node:'id', busqueda : 'si', codigo : token_inicio},
+		                    success : function(response, opts) {
+		                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
+								if(regreso.length > 1){								
+									var interfaz = regreso[0];														
+									this.getMainPanel().loadClass('../../../' + interfaz.ruta, interfaz.id, interfaz.nombre,'','',interfaz.clase_vista);
+									//mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
+								} else {
+									alert('No se encontro la interfaz del token enviado en la URL');
+								}
+		                    	
+		                    	
+		                    },
+		                    failure: this.conexionFailure,
+		                    timeout:this.timeout,
+		                    scope:this
+		                });
+		    		}
+	        	} 
+        	}
+        	else{
+        		//si la accion es procesar una alertar recuperamos el datos
+        		if(action=='alerta'){
+        			
+        			Ext.Ajax.request({
+	                    url:'../../sis_parametros/control/Alarma/getAlarma',
+	                    params:{'id_alarma':token_inicio},
+	                    success : function(response, opts) {
+	                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText)).datos;	                    	
+														
+							console.log(regreso)
+														
+							if(regreso.length > 0){
+								var interfaz = regreso[0];	
+								var par = Ext.util.JSON.decode(Ext.util.Format.trim(interfaz.parametros))
+								Phx.CP.loadWindows(interfaz.acceso_directo, interfaz.titulo, {
+											modal : true,
+											width : '90%',
+											height : '90%'
+										}, par, this.idContenedor, interfaz.clase)
+							}
+							else{
+								alert('Nos se encontro el acceso, la alerta fue eliminada')
+							}
+							
+						},
+	                    failure: this.conexionFailure,
+	                    timeout:this.timeout,
+	                    scope:this
+	                });
+        			
+        		}
+        	}
+        },
+        
 		// funcion que se ejcuta despues de una autentificacion exitosa
 		// para dibujar los paneles de menu y mainpanel
 		init:function(){
          	Ext.QuickTips.init();
+         	Ext.History.init();
+         	Ext.History.on('change', function(token){  
+         		   					
+		        if(token && token != 'null') {
+		        	
+		            var parts = token.split(':'),
+		                tabId = 'docs-' + parts[1],
+		                action = parts[0],
+		                tab = mainPanel.getComponent(tabId);		            
+		            
+		            windowManager.each(function(w){
+		            	w.close();
+		            	
+		            },this);	            
+		            
+		            
+		            if(action=='main-tabs'){
+						 //si el tab existe toma el foco
+						if(tab){
+					    	mainPanel.setActiveTab(tab);
+					            
+					    } else {
+					    	var node = menu.getNodeById(parts[1]);				    	
+					    	if (node) {				    		
+				    			node.fireEvent('click', node);
+				    		} else {
+				    			//buscar el nodo con una peticion ajax si se encuentra se abre si no se encuentra se lanza una excepcion
+				    			Ext.Ajax.request({
+				                    url:'../../sis_seguridad/control/Menu/listarPermisoArb',
+				                    params:{node:'id', busqueda : 'si', codigo : parts[1]},
+				                    success : function(response, opts) {
+				                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
+										if(regreso.length > 1){
+											var interfaz = regreso[0];														
+											mainPanel.loadClass('../../../' + interfaz.ruta, interfaz.id, interfaz.nombre,'','',interfaz.clase_vista);
+											
+										} else {
+											alert('No se encontro la interfaz del token enviado en la URL');
+										}    	
+				                    	
+				                    },
+				                    failure: this.conexionFailure,
+				                    timeout:this.timeout,
+				                    scope:this
+				                });
+				    		}
+					    }
+				   }	
+				   else{
+				   	 Phx.CP.evaluateHash(action,parts[1]);
+				   }	            
+		        }else{        	
+		            mainPanel.loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');           
+		        }
+		    });
 			// definicion de la instancia de la clase menu
 			menu=new Menu({});
 		    menu.on('beforeload',function(){
@@ -499,7 +624,9 @@ Phx.CP=function(){
 
 			menu.on('click', function(node, e){
 				if(node.isLeaf()){
-					e.stopEvent();
+					if (e != undefined) {
+						e.stopEvent();
+					}
 					var naux=node,icono,ruta='';
 
 					if(node.text=='Salir'){
@@ -516,20 +643,29 @@ Phx.CP=function(){
 							ruta= '/'+naux.id+ruta;
 							naux=naux.parentNode
 						}
-						mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
+						
+						mainPanel.loadClass('../../../' + node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
 					}
 				}
 			});
 
         	// definicion de una instacia de la clase MainPanel
 			mainPanel=new MainPanel({menuTree:menu});
+			windowManager = new Ext.WindowGroup(), 
 			mainPanel.on('tabchange', function(tp, tab){
-				if(tab){
-				   menu.selectClass(tab.cclass);
+				if(tab){  
+					var aux = tab.id.split('-');
+					var token_id = aux[1];					
+					if (token_id != 'salir') {
+						Ext.History.add('main-tabs:' + token_id);						
+						menu.selectClass(tab.cclass);
+						
+					}
 				}
+				
 		    });
 
-
+			
            /* var detailsPanel = {
 				title: 'Details',
 		        region: 'center',
@@ -620,13 +756,22 @@ Phx.CP=function(){
 			*/
 			}
 			
-			//abrir un tab de vienbenida
-			
-			this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
+			//evalua hash de la url
+			var tokenDelimiter = ':',
+			    action,
+			    token_inicio = "",
+			    aux = window.location.hash.substr(1);
+			    
+			    
+		    if (aux) {
+		    	var arreglo_aux = aux.split(tokenDelimiter);
+		    	token_inicio = arreglo_aux[1];
+		    	action = arreglo_aux[0];
+		    } 
+			Phx.CP.evaluateHash(action,token_inicio);
 			
 			Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
 						function(resp){
-							
 							setTimeout(function(){
 								var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
 	                            var _im ='../../../lib/imagenes/NoPerfilImage.jpg';
@@ -634,8 +779,6 @@ Phx.CP=function(){
 	                            	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].foto;
 	                            }
 	                             Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
-								 
-								  
 								 
 								},3000);
 						});
@@ -781,7 +924,7 @@ Phx.CP=function(){
 		key_e:'7',
 		key_k:'1',
 		key_p:'2314',
-
+		
 
 		getPlublicKey:function(){
 
@@ -1075,11 +1218,16 @@ Phx.CP=function(){
 			Ext.util.CSS.swapStyleSheet('theme','../../../lib/ext3/resources/css/'+val);
         },
 		getMainPanel:function(){
-			return mainPanel
+			return mainPanel;
+		},
+		
+		getWindowManager:function(){
+			return windowManager;
 		},
 
 
 		elementos:new Array(),
+		
 		initMode:true,
 		setPagina:function(e,objConfig){
 			this.elementos.push(e);
@@ -1238,7 +1386,7 @@ Phx.CP=function(){
 		
 		
 		// para cargar ventanas hijo
-        loadWindows:function(url,title,config,params,pid,mycls,listeners){
+        loadWindows:function(url,title,config,params,pid,mycls,listeners){        	
 			/*
 			* url: donde se encuentra el js de la ventana que se quiere abrir
 			* title: titulo de la ventanan que se abrira
@@ -1290,6 +1438,7 @@ Phx.CP=function(){
 					id:wid,// manager: this.windows,
 					// anchor: '100% 100%',  // anchor width and height
 					autoDestroy:true,
+					manager : this.getWindowManager(),
 					//layout: 'border',
 					//height:screen.height,
 				   // width:'100%',

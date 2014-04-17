@@ -37,6 +37,14 @@ class MODTipoProceso extends MODbase{
 		$this->captura('desc_proceso_macro','varchar');
 		$this->captura('desc_tipo_estado','varchar');
 		$this->captura('inicio','varchar');
+		$this->captura('tipo_disparo','varchar');
+		
+		$this->captura('funcion_validacion_wf','varchar');
+		$this->captura('descripcion','varchar');
+		
+		
+		
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -61,6 +69,11 @@ class MODTipoProceso extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_tipo_estado','id_tipo_estado','int4');
 		$this->setParametro('inicio','inicio','varchar');
+		$this->setParametro('tipo_disparo','tipo_disparo','varchar');
+		$this->setParametro('funcion_validacion_wf','funcion_validacion_wf','varchar');
+		$this->setParametro('descripcion','descripcion','varchar');
+		
+		
 		
 
 		//Ejecuta la instruccion
@@ -87,6 +100,10 @@ class MODTipoProceso extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_tipo_estado','id_tipo_estado','int4');
 		$this->setParametro('inicio','inicio','varchar');
+		$this->setParametro('tipo_disparo','tipo_disparo','varchar');
+		$this->setParametro('funcion_validacion_wf','funcion_validacion_wf','varchar');
+        $this->setParametro('descripcion','descripcion','varchar');
+        
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

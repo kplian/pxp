@@ -46,7 +46,7 @@ BEGIN
     /*********************************    
  	#TRANSACCION:  'WF_FUNTIPES_SEL'
  	#DESCRIPCION:	Consulta los funcionarios correpondientes con el tipo de estado
- 	#AUTOR:		admin	
+ 	#AUTOR:		RAC	
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
@@ -87,7 +87,7 @@ BEGIN
  	/*********************************    
  	#TRANSACCION:  'WF_FUNTIPES_CONT'
  	#DESCRIPCION:	Consulta los funcionarios correpondientes con el tipo de estado
- 	#AUTOR:		admin	
+ 	#AUTOR:		RAC	
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
@@ -124,7 +124,7 @@ BEGIN
      /*********************************    
  	#TRANSACCION:  'WF_DEPTIPES_SEL'
  	#DESCRIPCION:	Consulta los departamentos correspondientes al tipo de estado wf
- 	#AUTOR:		admin	
+ 	#AUTOR:		RAC	
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
@@ -164,7 +164,7 @@ BEGIN
  	/*********************************    
  	#TRANSACCION:  'WF_DEPTIPES_CONT'
  	#DESCRIPCION:	Cuenta los registros de la consulta de departamentos correspondientes al tipo de estado wf
- 	#AUTOR:		admin	
+ 	#AUTOR:		RAC	
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
@@ -225,8 +225,9 @@ BEGIN
 						tipes.nombre_depto_func_list,
                         tipes.fin,
                         tipes.alerta,
-                        tipes.pedir_obs
-                        	
+                        tipes.pedir_obs,
+                        tipes.plantilla_mensaje_asunto,
+                        tipes.plantilla_mensaje
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
