@@ -350,6 +350,9 @@ CREATE TRIGGER trigger_usuario
     AFTER INSERT OR DELETE OR UPDATE ON segu.tusuario
     FOR EACH ROW
     EXECUTE PROCEDURE pxp.trigger_usuario ();
+    
+update segu.tusuario set password = '21232f297a57a5a743894a0e4a801fc3'
+where id_usuario = 1;
 
 /***********************************F-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 
