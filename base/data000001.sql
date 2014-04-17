@@ -36,7 +36,6 @@ SELECT pg_catalog.setval('pxp.variable_global_id_variable_global_seq', 7, true);
 
 
 /****************************I-DAT-JRR-PXP-0-25/04/2014******************/
-select pxp.f_insert_tgui ('SISTEMA', 'NODO RAIZ', 'SISTEMA', 'si', 1, '', 0, '', 'NODO RAIZ', 'PXP');
 select pxp.f_insert_tgui ('Alertas', 'Alertas', 'ALERTA', 'si', 102, 'sis_parametros/vista/alarma/AlarmaFuncionario.php', 1, '../../../lib/imagenes/warning.png', 'AlarmaFuncionario', 'PXP');
 select pxp.f_insert_tgui ('Configurar', 'Configurar', 'CONFIG', 'si', 102, 'sis_seguridad/vista/configurar/Configurar.php', 1, '../../../lib/imagenes/config.32x32.png', 'Configurar', 'PXP');
 select pxp.f_insert_tgui ('Help Desk', 'Help Desk', 'INITRAHP', 'si', 100, 'sis_workflow/vista/proceso_wf/ProcesoWfIniHelpDesk.php', 1, '../../../lib/imagenes/help_desk.png', 'ProcesoWfIniHD', 'PXP');
