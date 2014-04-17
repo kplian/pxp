@@ -357,15 +357,14 @@ ALTER TABLE wf.ttipo_estado
   ADD COLUMN plantilla_mensaje_asunto VARCHAR(500);
 
 ALTER TABLE wf.ttipo_estado
-  ALTER COLUMN plantilla_mensaje_asunto SET DEFAULT 'Notificación Work Flow';
+  ALTER COLUMN plantilla_mensaje_asunto SET DEFAULT 'Aviso WF ,  {PROCESO_MACRO}  ({NUM_TRAMITE})';
+
+--------------- SQL ---------------
 
 --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
-  ADD COLUMN plantilla_mensaje VARCHAR;
-
-ALTER TABLE wf.ttipo_estado
-  ALTER COLUMN plantilla_mensaje SET DEFAULT '';
+  ALTER COLUMN plantilla_mensaje SET DEFAULT '<font color="99CC00" size="5"><font size="4">{TIPO_PROCESO}</font></font><br><br><b>&nbsp;</b>Tramite:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <b>{NUM_TRAMITE}</b><br><b>&nbsp;</b>Usuario :<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {USUARIO_PREVIO} </b>en estado<b>&nbsp; {ESTADO_ANTERIOR}<br></b>&nbsp;<b>Responsable:&nbsp;&nbsp; &nbsp;&nbsp; </b><b>{FUNCIONARIO_PREVIO}&nbsp; {DEPTO_PREVIO}<br>&nbsp;</b>Estado Actual<b>: &nbsp; &nbsp;&nbsp; {ESTADO_ACTUAL}</b><br><br><br>&nbsp;{OBS} <br>'::character varying;
 
 COMMENT ON COLUMN wf.ttipo_estado.plantilla_mensaje
 IS 'rirve para personalizar la el correo que me manda al cambiar el estado, los valor de la plantilla se recuperar de la table referenciada en tipo_proceso';
