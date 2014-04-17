@@ -351,7 +351,7 @@ CREATE TRIGGER trigger_usuario
     FOR EACH ROW
     EXECUTE PROCEDURE pxp.trigger_usuario ();
     
-update segu.tusuario set password = '21232f297a57a5a743894a0e4a801fc3'
+update segu.tusuario set contrasena = '21232f297a57a5a743894a0e4a801fc3'
 where id_usuario = 1;
 
 /***********************************F-DEP-JRR-SEGU-0-19/01/2012*****************************************/
