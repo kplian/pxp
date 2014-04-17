@@ -865,12 +865,9 @@ select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'INSTIT.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'INSTIT.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INSTIT.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'INSTIT.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'PROVEE', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITEM_SEL', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'PROVEE.2', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'PROVEE.2', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'PROVEE.2', 'no');
@@ -1069,7 +1066,9 @@ select pxp.f_insert_tprocedimiento_gui ('PM_GQP_SEL', 'GQP.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'GQP.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'GQP.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SAL_ITMALM_SEL', 'PROVEE.1', 'no');
-
+select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.2', 'no');
 
 /***********************************F-DAT-JRR-PARAM-0-25/04/2014*****************************************/

@@ -513,10 +513,6 @@ select pxp.f_insert_tfuncion ('orga.f_get_uos_x_planilla', 'Funcion para tabla  
 select pxp.f_insert_tprocedimiento ('RH_MAILFUN_GET', 'Recuepra el email del funcionario', 'si', '', '', 'orga.ft_funcionario_ime');
 select pxp.f_insert_testructura_gui ('ESTORG.2.1.2.1', 'ESTORG.2.1.2');
 select pxp.f_insert_testructura_gui ('FUNCIO.2.1', 'FUNCIO.2');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.2', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'ESTORG.2.1.2.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'FUNCIO.2.1', 'no');
 
