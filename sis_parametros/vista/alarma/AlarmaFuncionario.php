@@ -38,7 +38,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
 			var par = Ext.util.JSON.decode(Ext.util.Format.trim(rec.data.parametros))
 
-			console.log(par, rec.data)
+			//console.log(par, rec.data)
 			//Phx.CP.loadWindows('../../../sis_legal/vista/proceso_contrato/subirContrato.php',
 			Phx.CP.loadWindows(rec.data.acceso_directo, rec.data.titulo, {
 				modal : true,
