@@ -3,7 +3,7 @@
 class MODbase extends driver
 {
 	protected $aParam;
-	protected $arreglo;
+	public $arreglo;
 	protected $arregloFiles;
 	
 	protected $arreglo_consultas;
@@ -118,7 +118,7 @@ class MODbase extends driver
 	function setParametro($nombre,$valor,$tipo,$blank=true,$tamano='',$opciones=null,$tipo_archivo=null){
 		//obtenemos el tipo de la base de datos
 		//throw new exception('Desde donde llama pendejos');
-
+		
 		$tipo_base=$this->validacion->getTipo($tipo);
 
 		//anadimos el nombre y el tipo a los arreglos correspondientes
@@ -177,6 +177,7 @@ class MODbase extends driver
 						$this->valoresFiles="'".$data."'";
 					}
 					else{
+						
 					        
 					   $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
                             
