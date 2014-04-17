@@ -4498,4 +4498,6 @@ select pxp.f_insert_tprocedimiento ('SG_TUTO_ELI', 'Eliminacion de registros', '
 select pxp.f_insert_tprocedimiento ('SG_TUTO_SEL', 'Consulta de datos', 'si', '', '', 'segu.ft_video_sel');
 select pxp.f_insert_tprocedimiento ('SG_TUTO_CONT', 'Conteo de registros', 'si', '', '', 'segu.ft_video_sel');
 
+select pxp.f_insert_trol ('PXP-Rol inicial', 'PXP-Rol inicial', 'PXP');
+
 /*******************************************F-DAT-JRR-SEGU-0-25/04/2014***********************************************/
