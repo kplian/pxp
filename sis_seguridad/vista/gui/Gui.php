@@ -204,7 +204,7 @@ Phx.vista.gui=function(config) {
 			config:{
 				fieldLabel: "Parametros",
 				gwidth: 120,
-				name: 'parametros',
+				name: 'json_parametros',
 				
 				allowBlank:true,
 				anchor:'100%'
@@ -263,6 +263,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 		'visible',
 		'orden_logico',
 		'ruta_archivo',
+		'json_parametros',
 		'icono'],
 		sortInfo:{
 			field: 'id',
