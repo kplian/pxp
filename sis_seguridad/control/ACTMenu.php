@@ -39,7 +39,7 @@ class ACTMenu extends ACTbase {
 		$this->res->setTipoRespuestaArbol();
 		
 		$arreglo=array();
-		array_push($arreglo,array('nombre'=>'id','valor'=>'id_gui'));
+		array_push($arreglo,array('nombre'=>'id','valor'=>'codigo_gui')); 
 		array_push($arreglo,array('nombre'=>'text','valor'=>'nombre'));
 		array_push($arreglo,array('nombre'=>'qtip','valor'=>'descripcion'));
 		array_push($arreglo,array('nombre'=>'ruta','valor'=>'ruta_archivo'));

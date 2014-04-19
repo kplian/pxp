@@ -33,10 +33,13 @@
 		$this->setCount(false);
 						
 		$this->setParametro('id_padre','id_padre','varchar');
+		$this->setParametro('busqueda','busqueda','varchar');
+		$this->setParametro('codigo','codigo','varchar');
 				
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('id_gui','integer');
 		$this->captura('nombre','varchar');
+		$this->captura('codigo_gui','varchar');
 		$this->captura('descripcion','text');
 		$this->captura('nivel','integer');
 		$this->captura('orden_logico','integer');

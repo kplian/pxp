@@ -177,6 +177,7 @@ if(!isset($_SESSION["_SESION"])){
   <div id="x-tab">
   <div id="x-tab-panel"></div>
   <div class="x-clear"></div>
+  
 	
 	
 </div>
@@ -185,6 +186,10 @@ if(!isset($_SESSION["_SESION"])){
 <div id="5rn"></div>
 <div id="6rn"></div>
 <div id="3rn"></div>
- 
+	<!-- form para uso de history-->
+ 	<form id="history-form" class="x-hidden">
+    	<input type="hidden" id="x-history-field" value="tab1:subtab1">
+    	<iframe id="x-history-frame"></iframe>
+	</form>
   </body>
 </html>
