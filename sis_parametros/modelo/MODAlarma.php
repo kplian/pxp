@@ -215,14 +215,32 @@ class MODAlarma extends MODbase{
 	
 
 			
-	function eliminarAlarma(){
+	function getAlarma(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='param.ft_alarma_ime';
-		$this->transaccion='PM_ALARM_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->procedimiento='param.ft_alarma_sel';
+		$this->transaccion='PM_GETALA_SEL';
+		$this->tipo_procedimiento='SEL';
+		$this->setCount(false);
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_alarma','id_alarma','int4');
+		
+		$this->captura('id_alarma','int4');
+        $this->captura('acceso_directo','varchar');
+        $this->captura('id_funcionario','int4');
+        $this->captura('fecha','date');
+        $this->captura('estado_reg','varchar');
+        $this->captura('descripcion','varchar');
+        $this->captura('id_usuario_reg','int4');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('id_usuario_mod','int4');
+        $this->captura('fecha_mod','timestamp');
+        $this->captura('clase','varchar');
+        $this->captura('titulo','varchar');
+        $this->captura('parametros','varchar');
+        $this->captura('obs','varchar');
+        $this->captura('tipo','varchar');
+        $this->captura('dias','integer');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

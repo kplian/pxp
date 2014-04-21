@@ -23,6 +23,7 @@ class ACTAlarma extends ACTbase{
 		}
 		
 		*/
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODAlarma','listarAlarma');
@@ -58,6 +59,12 @@ class ACTAlarma extends ACTbase{
 		$this->res=$this->objFunc->eliminarAlarma();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function getAlarma(){
+        $this->objFunc=$this->create('MODAlarma');      
+        $this->res=$this->objFunc->getAlarma();
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 
