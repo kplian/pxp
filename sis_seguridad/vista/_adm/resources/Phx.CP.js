@@ -456,7 +456,7 @@ Phx.CP=function(){
 			                    params:{node:'id', busqueda : 'si', codigo : parts[1]},
 			                    success : function(response, opts) {
 			                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
-									if(regreso.length > 0){
+									if(regreso.length > 1){
 										var interfaz = regreso[0];														
 										mainPanel.loadClass('../../../' + interfaz.ruta, interfaz.id, interfaz.nombre,'','',interfaz.clase_vista);
 										
@@ -568,7 +568,7 @@ Phx.CP=function(){
 							naux=naux.parentNode
 						}
 						
-						mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
+						mainPanel.loadClass('../../../' + node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
 					}
 				}
 			});
@@ -577,14 +577,13 @@ Phx.CP=function(){
 			mainPanel=new MainPanel({menuTree:menu});
 			windowManager = new Ext.WindowGroup(), 
 			mainPanel.on('tabchange', function(tp, tab){
-				  
-				var aux = tab.id.split('-');
-				var token_id = aux[1];
-				
-				if (token_id != 'salir') {
-					Ext.History.add('main-tabs:' + token_id);
-					if(tab){
-					   menu.selectClass(tab.cclass);
+				if(tab){  
+					var aux = tab.id.split('-');
+					var token_id = aux[1];					
+					if (token_id != 'salir') {
+						Ext.History.add('main-tabs:' + token_id);						
+						menu.selectClass(tab.cclass);
+						
 					}
 				}
 				
@@ -704,7 +703,7 @@ Phx.CP=function(){
 	                    params:{node:'id', busqueda : 'si', codigo : token_inicio},
 	                    success : function(response, opts) {
 	                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
-							if(regreso.length > 0){
+							if(regreso.length > 1){								
 								var interfaz = regreso[0];														
 								this.getMainPanel().loadClass('../../../' + interfaz.ruta, interfaz.id, interfaz.nombre,'','',interfaz.clase_vista);
 								//mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
