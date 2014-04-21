@@ -71,7 +71,8 @@ BEGIN
     ew.estado_reg,
     ew.id_funcionario,
     ew.id_depto,
-    tew.alerta
+    tew.alerta,
+    ew.id_depto
     into
     v_registros_ant
     from wf.testado_wf ew
@@ -189,7 +190,7 @@ BEGIN
               --IF p_id_depto is not NULL  and  (v_registros_ant.id_depto is null or v_registros_ant.id_depto != p_id_depto)  THEN
                
               
-              IF p_id_depto is not NULL  THEN
+              IF p_id_depto is not NULL   and  v_registros_ant.id_depto != p_id_depto  THEN
               
               -- buscamos entre los usarios del depto quien puede recibir alerta
                

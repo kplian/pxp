@@ -13,6 +13,7 @@ class CorreoExterno
     protected $titulo;
     protected $autentificacion;
     protected $SMTPSecure;
+    protected $acceso_directo;
   
     protected $mail;
     
@@ -27,6 +28,7 @@ class CorreoExterno
         $this->remitente=$_SESSION['_MAIL_REMITENTE'];
         $this->nombre_remitente=$_SESSION['_NOMBER_REMITENTE'];  
         $this->SMTPSecure=$_SESSION['_SMTPSecure'];
+        $this->acceso_directo='';
         
         
              
@@ -91,6 +93,11 @@ class CorreoExterno
          
     }
     
+    function setAccesoDirecto ($acceso_directo)
+    {
+       $this->acceso_directo=$acceso_directo;
+    }
+    
     function setTitulo ($titulo)
     {
              $this->titulo= $titulo;
@@ -143,7 +150,14 @@ class CorreoExterno
     }  
     
     function setDefaultPlantilla(){
-                          
+            $acceso='';
+            if($this->acceso_directo!=''){
+                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/../../../sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
+                $acceso = '<a href="'.$actual_link.'">Acceso directo</a>';   
+            } 
+            
+            
+            
             $this->mensaje_html=$cuerpo = "
                     <html>
                     <head>
@@ -170,9 +184,13 @@ class CorreoExterno
                     </head>
                     <body>
                     <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
-                    <p>-------------------------------------------<br/>
-                    <h6>Powered by KPLIAN<h6>
-                    <p>
+                    <br/>
+                    ".$acceso."
+                    <br/>
+                    <p>-------------------------------------------</p>
+                    <br/>
+                    <br/>
+                    <H6>Powered by KPLIAN</H6>
                     </body>
                     </html>";
         

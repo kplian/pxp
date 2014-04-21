@@ -51,9 +51,7 @@ BEGIN
      				
     	begin
             
-        --raise exception 'XXXXxxxx';
-        
-            --Sentencia de la consulta
+           --Sentencia de la consulta
 			v_consulta:='
                         select
 						alarm.id_alarma,
@@ -68,8 +66,9 @@ BEGIN
                         alarm.obs,
                         alarm.tipo,
                         (alarm.fecha-now()::date)::integer as dias,
-                         alarm.titulo_correo
-						from param.talarma alarm
+                        alarm.titulo_correo,
+						alarm.acceso_directo
+                        from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
                         left join segu.tpersona per on per.id_persona = usu.id_persona

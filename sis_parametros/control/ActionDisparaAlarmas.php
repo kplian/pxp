@@ -84,6 +84,12 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']);
                 $correo->setAsunto($d['tipo'].' '.$d['titulo_correo'].' '.$d['obs']);
                 $correo->setMensaje($d['descripcion']);
+                
+                if ($d['acceso_directo'] !='' && $d['acceso_directo'] != NULL){
+                  $correo->setAccesoDirecto($d['id_alarma']);      
+                    
+                }
+                
                 $correo->setTitulo($d['titulo_correo']);
                 $correo->setDefaultPlantilla();
                 $correo->enviarCorreo();

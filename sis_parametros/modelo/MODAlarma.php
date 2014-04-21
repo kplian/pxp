@@ -98,7 +98,7 @@ class MODAlarma extends MODbase{
 		$this->captura('tipo','varchar');
 		$this->captura('dias','integer');
 		$this->captura('titulo_correo','varchar');
-		
+		$this->captura('acceso_directo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
