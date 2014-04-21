@@ -690,7 +690,8 @@ Phx.CP=function(){
 		    	var arreglo_aux = aux.split(tokenDelimiter);
 		    	token_inicio = arreglo_aux[1];
 		    } 
-			if (token_inicio == '') {
+		    
+			if (token_inicio == '' || token_inicio == 'PXPWELCOME') {
         		this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
         	} else {
         		var node = menu.getNodeById(token_inicio);
