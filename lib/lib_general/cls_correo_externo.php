@@ -34,6 +34,7 @@ class CorreoExterno
              
          $this->mail= new PHPMailer();
          $this->mail->IsSMTP();
+         $this->mail->CharSet='UTF-8';
          $this->mail->Host = $this->mail_servidor;
          $this->mail->Port = $this->mail_puerto;
          $this->mail->From = $this->remitente;
@@ -44,7 +45,12 @@ class CorreoExterno
    }
     
     function addDestinatario($dir_destinatario,$nom_destinatario=''){
-        $this->mail->AddAddress($dir_destinatario, $nom_destinatario);    
+    	if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
+    		$this->mail->AddAddress($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
+    	} else {
+    		$this->mail->AddAddress($dir_destinatario, $nom_destinatario); 
+    	}
+           
         
     }
     
