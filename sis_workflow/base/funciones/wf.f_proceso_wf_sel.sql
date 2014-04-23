@@ -81,7 +81,7 @@ BEGIN
                 IF p_administrador !=1 THEN
                     v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
                 ELSE
-                     v_filtro = ' (lower(te.inicio)!=''si'') and ';
+                     v_filtro = '  ((lower(tp.inicio)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
                 END IF;
             END IF;
             

@@ -201,6 +201,44 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			grid: true,
 			form: true
 		},
+        {
+            config:{
+                name: 'tipo_disparo',
+                fieldLabel: 'Tipo disparo',
+                allowBlank: true,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                store:['opcional','obligatorio','bandeja_espera']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'tipproc.tipo_disparo',
+                        type: 'list',
+                        //dataIndex: 'size',
+                        options: ['opcional','obligatorio','bandeja_espera'],  
+                    },
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'funcion_validacion_wf',
+                fieldLabel: 'Func. Val Dips.',
+                allowBlank: true,
+                anchor: '60%',
+                gwidth: 150,
+                maxLength:100
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipproc.funcion_validacion_wf',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'tabla',
@@ -252,12 +290,27 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			filters:{	pfiltro:'tipproc.inicio',
 	       		         type: 'list',
-	       				 dataIndex: 'size',
+	       				 //dataIndex: 'size',
 	       				 options: ['si','no'],	
 	       		 	},
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'descripcion',
+                fieldLabel: 'Desc',
+                allowBlank: true,
+                anchor: '70%',
+                gwidth: 200,
+                maxLength:150
+            },
+            type:'TextArea',
+            filters:{pfiltro:'tipproc.descripcion',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -358,7 +411,9 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_proceso_macro', type: 'string'},
-		{name:'desc_tipo_estado', type: 'string'},'inicio'
+		{name:'desc_tipo_estado', type: 'string'},
+		'inicio','tipo_disparo',
+		'funcion_validacion_wf','descripcion'
 		
 	],
 	onButtonNew: function() {

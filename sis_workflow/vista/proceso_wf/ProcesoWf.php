@@ -489,8 +489,13 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
     },
     
     openFormEstadoWf:function(){
+       
         
         var rec=this.sm.getSelected();
+        
+         console.log(rec.data)
+        
+        
             Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
             'Estado de Wf',
             {

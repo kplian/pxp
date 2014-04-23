@@ -414,7 +414,7 @@ BEGIN
         
      /*********************************    
  	#TRANSACCION:  'WF_VERSIGPRO_IME'
- 	#DESCRIPCION:   Verificas los parametros necesriso para tomas la decision sobre el sisguiete estado
+ 	#DESCRIPCION:   Verifica los parametros necesarios para tomar la decision sobre el sisguiente estado
  	#AUTOR:		RAC	
  	#FECHA:		23-03-2014 12:12:51
 	***********************************/
@@ -488,7 +488,7 @@ BEGIN
                    FROM wf.f_funcionario_wf_sel(
                        p_id_usuario, 
                        va_id_tipo_estado[1], 
-                       v_fecha_ini,
+                       v_registros.fecha_ini,
                        v_registros.id_estado_wf,
                        TRUE) AS (total bigint);
                                    
@@ -506,7 +506,7 @@ BEGIN
                  FROM wf.f_depto_wf_sel(
                      p_id_usuario, 
                      va_id_tipo_estado[1], 
-                     v_fecha_ini,
+                     v_registros.fecha_ini,
                      v_registros.id_estado_wf,
                      TRUE) AS (total bigint);
                                  
@@ -705,6 +705,16 @@ BEGIN
 	elseif(p_transaccion='WF_CHKSTA_IME')then   
         begin
         
+        
+          IF v_parametros.id_proceso_wf is NULL THEN
+          
+             raise exception 'El Identificador de proceso WF no puede ser nulo';
+          
+          END IF;
+          
+          
+          
+        
          --obtenermos datos basicos del proceso
           
           select
@@ -741,11 +751,16 @@ BEGIN
          
          
                  --ejecuta funcion de validacion de procesos disparados
-                 IF v_registro_est_sig.funcion_validacion_wf is  NULL THEN
+                 IF v_registro_est_sig.funcion_validacion_wf is  NULL or v_registro_est_sig.funcion_validacion_wf = '' THEN
                       v_ejec = 'true';
                  ELSE
                     --TODO  obenter funcion de validacion
-                    v_ejec = 'true';
+                    EXECUTE  'select ' || v_registro_est_sig.funcion_validacion_wf  ||'('||p_id_usuario::varchar||','|| v_parametros.id_proceso_wf::varchar||')' into v_ejec;
+                             
+		 
+                
+         
+         
                  END IF;
                  
                  
@@ -978,13 +993,12 @@ BEGIN
                                                        v_parametros.id_depto_wf,
                                                        v_parametros.obs);
         
-          
+         
           --------------------------------------
           -- registra los procesos disparados
           --------------------------------------
-         
           FOR v_registros_proc in ( select * from json_populate_recordset(null::wf.proceso_disparado_wf, v_parametros.json_procesos::json)) LOOP
-    
+   
                --get cdigo tipo proceso
                select   
                   tp.codigo 
@@ -992,8 +1006,8 @@ BEGIN
                   v_codigo_tipo_pro   
                from wf.ttipo_proceso tp 
                 where  tp.id_tipo_proceso =  v_registros_proc.id_tipo_proceso_pro;
-          
-          
+          -- raise exception 'llega... %',v_registros_proc;  
+         
                -- disparar creacion de procesos seleccionados
               
               SELECT
@@ -1006,14 +1020,14 @@ BEGIN
                        v_codigo_estado
               FROM wf.f_registra_proceso_disparado_wf(
                        p_id_usuario,
-                       v_id_estado_actual, 
-                       v_registros_proc.id_funcionario_wf_pro, 
-                       v_registros_proc.id_depto_wf_pro,
+                       v_id_estado_actual::integer, 
+                       v_registros_proc.id_funcionario_wf_pro::integer, 
+                       v_registros_proc.id_depto_wf_pro::integer,
                        v_registros_proc.obs_pro,
                        v_codigo_tipo_pro,    
                        v_codigo_tipo_pro);
-                       
-                       
+                     
+                      
            END LOOP;
           
          
@@ -1024,8 +1038,7 @@ BEGIN
            v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
           
           
-         
-
+        
         
           --Devuelve la respuesta
             return v_resp;

@@ -278,9 +278,12 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         //llamada ajax para cargar los caminos posible de flujo
         
          Phx.CP.loadingShow();
+         
+         console.log('ppp',this)
+         
          Ext.Ajax.request({
                 url:this.url_check_state,
-                params:{id_proceso_wf:this.id_proceso_wf,
+                params:{id_proceso_wf:this.data.id_proceso_wf,
                         id_tipo_estado_sig: this.Cmp.id_tipo_estado.getValue()},
                 success:this.successNextState,
                 failure: this.conexionFailure,
@@ -773,12 +776,16 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
             for (var i=1;i<this.contadorTarjetas;i++){
                 
                 if(this.form.getForm().findField('iniar_pro['+i+']').getValue()){
+                    
+                    var t_id_depto = this.form.getForm().findField('id_depto_wf_pro['+i+']').getValue(),
+                        t_id_func = this.form.getForm().findField('id_funcionario_wf_pro['+i+']').getValue();
+                      
                       resp.procesos.push({
                         iniar_pro:this.form.getForm().findField('iniar_pro['+i+']').getValue(),
                         id_tipo_proceso_pro:this.form.getForm().findField('id_tipo_proceso_pro['+i+']').getValue(),
                         id_tipo_estado_pro:this.form.getForm().findField('id_tipo_estado_pro['+i+']').getValue(),
-                        id_depto_wf_pro:this.form.getForm().findField('id_depto_wf_pro['+i+']').getValue(),
-                        id_funcionario_wf_pro:this.form.getForm().findField('id_funcionario_wf_pro['+i+']').getValue(),
+                        id_depto_wf_pro:(t_id_depto>0)?t_id_depto:undefined,
+                        id_funcionario_wf_pro:(t_id_func>0)?t_id_func:undefined,
                         obs_pro:this.form.getForm().findField('obs_pro['+i+']').getValue()
                       });  
                  }
