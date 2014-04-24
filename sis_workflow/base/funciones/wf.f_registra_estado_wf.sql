@@ -58,21 +58,27 @@ DECLARE
     
     v_plantilla_correo  varchar;
     v_plantilla_asunto  varchar;
+    
+    va_id_tipo_estado integer[];
+    va_codigo_estado varchar[];
+    v_resgistros_prod_dis   record;
+    v_sw_error  boolean;
+    v_mensaje_error    varchar;
 	
     
 BEGIN
 
-  --raise exception 'p_id_tipo_estado_siguiente %, p_id_funcionario %   ,p_id_estado_wf_anterior %   ,%',p_id_tipo_estado_siguiente,p_id_funcionario,p_id_estado_wf_anterior,p_id_proceso_wf;
-    
-    --revisar que el estado se encuentre activo, en caso contrario puede
-    --se una orden desde una pantalla desactualizada
-    
+     v_nombre_funcion ='f_registra_estado_wf';
+
+   
     select 
     ew.estado_reg,
     ew.id_funcionario,
     ew.id_depto,
     tew.alerta,
-    ew.id_depto
+    ew.id_depto,
+    tew.id_tipo_estado,
+    tew.disparador
     into
     v_registros_ant
     from wf.testado_wf ew
@@ -80,16 +86,18 @@ BEGIN
     where ew.id_estado_wf = p_id_estado_wf_anterior;
     
     
+    --revisar que el estado se encuentre activo, en caso contrario puede
+    --se una orden desde una pantalla desactualizada
     
-    
-    if (v_registros_ant.estado_reg ='inactivo') THEN
-    
-    	raise exception 'El estado se encuentra inactivo, actualice sus datos' ;
-    
+    IF (v_registros_ant.estado_reg ='inactivo') THEN
+       raise exception 'El estado se encuentra inactivo, actualice sus datos' ;
     END IF;
 
+    
 
-    v_nombre_funcion ='f_registra_estado_wf';
+
+
+   
     v_id_estado_actual = -1;
       
     if( p_id_tipo_estado_siguiente is null 
@@ -100,7 +108,7 @@ BEGIN
       
     end if;
     
-    --verificamos si requiere manejo de alerta
+    --recupera datos del tipo estado siguiente
     
     SELECT 
      te.alerta,
@@ -110,7 +118,8 @@ BEGIN
      te.nombre_estado,
      pm.nombre as nombre_proceso_macro,
      te.plantilla_mensaje,
-     te.plantilla_mensaje_asunto
+     te.plantilla_mensaje_asunto,
+     te.disparador
     INTO
      v_registros
     FROM wf.ttipo_estado te
@@ -120,13 +129,81 @@ BEGIN
     WHERE te.id_tipo_estado = p_id_tipo_estado_siguiente;
     
     
+    -- TODO,  verificar si esta retrocediendo ...
+    
+    --------------------------------------------------------
+    --  VERIFICAR  PROCESOS DIPSRADO EN EL CASO DE RETROCEDER
+    --------------------------------------------------------
+    
+       -- OJO  cosideramos que esta funcion es para pasar de uno en uno
+       
+       --   el estado actual es disparado??
+       IF v_registros_ant.disparador = 'si' THEN
+           
+            -- obtener los tipos del estado padre
+             SELECT 
+                ps_id_tipo_estado,
+                ps_codigo_estado
+             into
+                va_id_tipo_estado,
+                va_codigo_estado 
+             FROM wf.f_obtener_cadena_tipos_estados_anteriores_wf(v_registros_ant.id_tipo_estado);
+             
+             --  si el tipo del estado siguiente se corrsponde con un estado anterior,  diferente del actual,
+             --  esta retrocediento
+            
+             IF      p_id_tipo_estado_siguiente=ANY(va_id_tipo_estado)  
+                 and p_id_tipo_estado_siguiente != v_registros_ant.id_tipo_estado THEN
+               
+                     --  revisamos los  procesos disparados en el estado actual 
+               
+                     v_sw_error = false;
+                     v_mensaje_error='';
+                     FOR v_resgistros_prod_dis in (select 
+                           ewf.id_estado_wf,
+                           te.codigo,
+                           te.nombre_estado,
+                           tp.nombre
+                          FROM wf.tproceso_wf pwf
+                          inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
+                          inner join  wf.testado_wf ewf on ewf.id_proceso_wf = pwf.id_proceso_wf and ewf.estado_reg = 'activo'
+                          inner join  wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado 
+                          WHERE pwf.id_estado_wf_prev = p_id_estado_wf_anterior AND
+                          te.codigo not in ('cancelado','anulado','eliminado','desierto','anulada','cancelada','eliminada','desierta')
+                          ) LOOP
+                         
+                         --  si tiene procesos disparados que no esten en estado:  cancelado o  eliminado o anulado o desierto, 
+                         -- marcamos que existe un error
+                         v_sw_error = true;
+                         
+                         IF v_mensaje_error='' THEN
+                            v_mensaje_error = v_resgistros_prod_dis.nombre||'('||v_resgistros_prod_dis.codigo||')';
+                         ELSE
+                            v_mensaje_error = v_mensaje_error||', <br>'||v_resgistros_prod_dis.nombre||'('||v_resgistros_prod_dis.codigo||')';
+                         END IF;
+                     
+                     
+                     
+                     END LOOP;
+                     
+                     IF v_sw_error THEN
+                       raise exception 'No puede revertir revise los sigueintes procesos anexos:<br>%',v_mensaje_error;
+                     END IF;
+                   
+                 
+             END IF ;
+        
+        END IF;
+    
+    
+    
     IF(v_registros.id_subsistema is NULL ) THEN
     
        raise exception  'El proceso macro no esta relacionado con ningun sistema';
     
     END IF;
     
-    
+     --verificamos si requiere manejo de alerta
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
         
            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;

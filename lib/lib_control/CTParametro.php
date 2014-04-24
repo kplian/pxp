@@ -276,13 +276,7 @@ class CTParametro{
 	 * @return array arreglo de parametros
 	 *
 	 */
-	function getArregloFiles(){
-
-		
-		
-		//echo('getArregloFiles');
-		//var_dump($this->$aPostFiles);
-		
+	function getArregloFiles() {		
 		return $this->aPostFiles;
 	}
 	

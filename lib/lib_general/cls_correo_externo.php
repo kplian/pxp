@@ -49,9 +49,7 @@ class CorreoExterno
     		$this->mail->AddAddress($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
     	} else {
     		$this->mail->AddAddress($dir_destinatario, $nom_destinatario); 
-    	}
-           
-        
+    	}       
     }
     
     function addCC($dir_destinatario,$nom_destinatario=''){
