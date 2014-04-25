@@ -100,7 +100,7 @@ BEGIN
  v_nombre_funcion = 'param.f_obtener_listado_aprobadores';
  
  -- crea tabla temporal
- 
+  
         --Creación de tabla temporal
 		v_consulta = 'create temp table tt_aprobador_'||p_id_usuario||'(
                  id_aprobador integer,
@@ -115,7 +115,7 @@ BEGIN
         
          execute(v_consulta);
  
- 
+
  
  --buscar con id_proceso_macro especifico
  
@@ -153,7 +153,7 @@ BEGIN
                ) LOOP
       
             
-            
+           
           
             
             --  si el cargo esta especificado
@@ -161,6 +161,9 @@ BEGIN
             IF v_registros.id_uo_cargo is not null THEN
                --  busca funcionario  para el cargo
                v_fun_array =  orga.f_obtener_funcionarios_x_uo_array(v_registros.id_uo_cargo, p_fecha);
+               IF v_fun_array is NULL  THEN
+                   raise exception 'No se encontraron funcionarios par el  cargo, revise la asignacion del cargo en el organigrama';
+               END IF;
             
             ELSE
              --si el cargo no esta especificado tomamo directamente el funcionario  
@@ -209,7 +212,7 @@ BEGIN
       
       END LOOP;
       
-      
+      raise exception 'TEST';
      -- si todavia no encontramos aprobador solo con el centro de costo
      -- desglosamos el CC y obtenemos su EP y UO 
      IF v_sw_aprobador =false THEN
@@ -282,7 +285,7 @@ IF v_sw_aprobador =false THEN
                        
                         LOOP
                        
-                       
+                        
                        
                        IF (v_id_ep = v_registros.id_ep and v_id_uo = v_registros.id_uo and v_id_ep is not null and v_id_uo is not null )  THEN
                          
@@ -301,12 +304,19 @@ IF v_sw_aprobador =false THEN
                  v_sw_aprobador = TRUE;
                  
                  --  si el cargo esta especificado
+                 
+                 
+                
              
          
                 IF v_registros.id_uo_cargo is not null THEN
                    --  busca funcionario  para el cargo
                   
-                 v_fun_array =  orga.f_obtener_funcionarios_x_uo_array(v_registros.id_uo_cargo, p_fecha);
+                    v_fun_array =  orga.f_obtener_funcionarios_x_uo_array(v_registros.id_uo_cargo, p_fecha);
+                 
+                   IF v_fun_array is NULL  THEN
+                        raise exception 'No se encontraron funcionarios par el  cargo, revise la asignacion del cargo en el organigrama';
+                   END IF;
                 
                 ELSE
                  --si el cargo no esta especificado tomamo directamente el funcionario  
@@ -314,17 +324,15 @@ IF v_sw_aprobador =false THEN
                 
                 END IF; 
                 
+                  
                 
-                --  raise exception 'PPPPPP';
                 
+               
                 --recorremos el array de funcionarios
                 FOR v_i IN 1 .. array_upper(v_fun_array, 1)
                 LOOP    
                 
-                
-              
-                
-                 select  
+                  select  
                  fun.desc_funcionario1 
                   into 
                   v_desc_funcionario  

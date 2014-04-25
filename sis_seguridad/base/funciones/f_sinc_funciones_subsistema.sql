@@ -81,7 +81,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                        
                        raise notice ' listado funcion -> %',v_nombre_function;
                        
-                       if(v_nombre_function not in ('segu.f_sinc_funciones_subsistema'))THEN
+                       if(v_nombre_function not in ('segu.f_sinc_funciones_subsistema', 'segu.f_verif_eliminado'))THEN
                          --
                          
                          -- verifica la existencia de la funcion tipo sel con prefijo ft

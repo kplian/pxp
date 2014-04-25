@@ -198,11 +198,17 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from wf.tproceso_wf
-            where id_proceso_wf=v_parametros.id_proceso_wf;
-               
-            --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','PROCESO WF eliminado(a)'); 
+            
+           v_id_estado_actual =   wf.f_cancela_proceso_wf (
+                                     'anulado',
+                                      v_parametros.id_proceso_wf,
+                                      p_id_usuario,
+                                      'se elimina el proceso'
+                                    );
+            
+            
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','PROCESO WF anulado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_proceso_wf',v_parametros.id_proceso_wf::varchar);
               
             --Devuelve la respuesta

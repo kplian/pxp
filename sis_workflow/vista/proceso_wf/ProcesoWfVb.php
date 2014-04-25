@@ -43,7 +43,7 @@ Phx.vista.ProcesoWfVb = {
     },*/
     bedit:false,
     bnew:false,
-    bdel:false
+    bdel:true
     
 };
 </script>

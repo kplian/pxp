@@ -19,3 +19,23 @@ select pxp.f_insert_testructura_gui ('PROCGEN', 'GEN');
 select pxp.f_insert_testructura_gui ('TABLA', 'PROCGEN');
 select pxp.f_insert_testructura_gui ('COL', 'TABLA');
 /***********************************F-DAT-RCM-GEN-0-14/01/2013****************************************/
+
+
+/***********************************I-DAT-JRR-GEN-0-25/04/2014****************************************/
+select pxp.f_insert_tfuncion ('gen.ft_tabla_sel', 'Funcion para tabla     ', 'GEN');
+select pxp.f_insert_tfuncion ('gen.f_obtener_datos_tabla_sel', 'Funcion para tabla     ', 'GEN');
+select pxp.f_insert_tfuncion ('gen.ft_tabla_ime', 'Funcion para tabla     ', 'GEN');
+select pxp.f_insert_tfuncion ('gen.ft_columna_ime', 'Funcion para tabla     ', 'GEN');
+select pxp.f_insert_tfuncion ('gen.ft_columna_sel', 'Funcion para tabla     ', 'GEN');
+select pxp.f_insert_tfuncion ('gen.ft_esquema_sel', 'Funcion para tabla     ', 'GEN');
+select pxp.f_insert_tprocedimiento ('GEN_TABLA_INS', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'gen.ft_tabla_ime');
+select pxp.f_insert_tprocedimiento ('GEN_TABLA_MOD', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'gen.ft_tabla_ime');
+select pxp.f_insert_tprocedimiento ('GEN_TABLA_ELI', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'gen.ft_tabla_ime');
+select pxp.f_insert_tprocedimiento ('GEN_COLUMN_INS', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'gen.ft_columna_ime');
+select pxp.f_insert_tprocedimiento ('GEN_COLUMN_MOD', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'gen.ft_columna_ime');
+select pxp.f_insert_tprocedimiento ('GEN_COLUMN_ELI', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'gen.ft_columna_ime');
+select pxp.f_insert_tprocedimiento ('GEN_ESQUEM_SEL', 'Listado de esquemas en los metadatos para el combo del generador', 'si', '', '', 'gen.ft_esquema_sel');
+select pxp.f_insert_tprocedimiento ('GEN_ESQUEM_CONT', 'Listado de esquemas en los metadatos para el combo del generador', 'si', '', '', 'gen.ft_esquema_sel');
+/***********************************F-DAT-JRR-GEN-0-25/04/2014****************************************/
+
+
