@@ -107,13 +107,28 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		
 	bdel:true,// boton para eliminar
 	bsave:false,// boton para eliminar
-
-	east:{
+	tabeast:[
+		{
 		  url:'../../../sis_seguridad/vista/funcion/Funcion.php',
 		  title:'Funcion', 
 		  width:400,
 		  cls:'funcion'
 		 },
+         {
+          url:'../../../sis_seguridad/vista/video/Video.php',
+          title:'Video', 
+          width:400,
+          cls:'Video'
+         }
+          
+        ],
+
+	/*east:{
+		  url:'../../../sis_seguridad/vista/funcion/Funcion.php',
+		  title:'Funcion', 
+		  width:400,
+		  cls:'funcion'
+		 },*/
 	// sobre carga de funcion
 	preparaMenu:function(tb){
 		// llamada funcion clace padre

@@ -1,0 +1,483 @@
+/**
+*** least.js
+*** Author: Kamil Czujowski, Sergej Müller
+*** Version: 1.5
+*** Made with ♥ - Copyright (c) 2013 Hamburg, Germany - All rights reserved.
+*** https://twitter.com/kamilczujowski, http://wpcoder.de
+**/
+
+/* @group SCSS */
+/* FONT */	 
+@import url(http://fonts.googleapis.com/css?family=Arvo);
+/* @end */
+
+/* @group Mixins */
+
+@mixin Georgia($size, $height, $weight: normal) {
+	font-family: Georgia, Arial, sans-serif;
+	font-size: $size;
+	line-height: $height;
+	font-weight: $weight;
+}
+@mixin Arvo($size, $height, $weight: normal) {
+	font-family: Arvo, Arial, sans-serif;
+	font-size: $size;
+	line-height: $height;
+	font-weight: $weight;
+}
+
+@mixin Helvetica($size, $height, $weight: normal) {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: $size;
+	line-height: $height;
+	font-weight: $weight;
+}
+@mixin Courier($size, $height, $weight: normal) {
+	font-family: Courier, Arial, sans-serif;
+	font-size: $size;
+	line-height: $height;
+	font-weight: $weight;
+}
+
+@mixin transition ($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+@mixin rotate($arguments) {
+    -webkit-transform: $arguments;
+    -moz-transform: $arguments;
+    -ms-transform: $arguments;
+    -o-transform: $arguments;
+    transform: $arguments;
+}
+
+@mixin background-opacity($color, $opacity: 0.5) {
+    background: $color;
+    background: rgba($color, $opacity);
+}
+
+/* @end */
+
+/* @group Colors */
+$black: #000;
+$white: #fff;
+$red: #e94439;
+$least-red: #f5244a;
+$codeBlue: #53a0cd;
+$whiteLight: #fafafa;
+
+$borderWhite: #FFF;
+$borderBlack: #333;
+
+/* @end */
+
+/* @group Default */
+* {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	outline: 0;
+}
+
+html {
+	background-color: #fdfcfb;
+}
+
+body {
+	height: 100%;
+	min-height: 100%;
+	position: relative;
+	margin: 50px auto 20px auto;
+}
+
+ul {
+	list-style: none;
+}
+
+a {
+	color: $red;
+	text-decoration: none;
+	
+	&:hover {
+		color: lighten($red, 10%);
+		text-decoration: underline;
+	}
+}
+
+h2 {
+	@include Arvo(30px, 25px, 500);
+	text-transform: uppercase;
+	color: $white;
+	letter-spacing: 1px;
+}
+
+h1 {
+	@include Arvo(60px, 75px, 800);
+	color: $red;
+	
+	text-transform: lowercase;
+}
+
+p {
+	@include Georgia(15px, 15px, 100);
+	color: $white;
+}
+/* @group Placeholder */
+::-webkit-input-placeholder {
+	color: lighten($black, 50%);
+}
+::-moz-placeholder {
+	color: lighten($black, 50%);
+}
+:-ms-input-placeholder {
+	color: lighten($black, 50%);
+}
+input:-moz-placeholder {
+	color: lighten($black, 50%);
+}
+/* @end */
+/* @end */
+
+/* @group Header */
+header {
+	min-width:100%;
+	width: 100%;
+	text-align: center;
+	
+	min-height: 150px;
+	
+	p {
+		@include Arvo(15px, 25px, 400);
+		color: $red;
+		
+		text-transform: uppercase;
+	}
+	
+	figure {
+		width: 250px;
+		background-color: $red;
+		
+		box-shadow: 1px 1px 5px;
+		
+		position: absolute;
+		right: -60px;
+		top: 0;
+		
+		overflow: hidden;
+		
+		padding: 5px 0;
+
+		@include rotate(rotate(45deg));
+		@include transition(background-color, 0.5s, linear);
+
+		a {
+			@include Helvetica(14px, 18px, 400);
+			color: $white;
+			
+			&:hover {
+				color: $white;
+				text-decoration: none;
+			}
+		}
+		
+		&:hover {
+			background-color: fadeout($red, 25%);
+		}
+	}
+}
+/* @end */
+
+/* @group Article */
+article {
+	width: 100%;
+	min-width: 100%;
+	
+	text-align: center;
+	
+	margin: 0 0 30px 0;
+	
+	&:first-child {
+		margin: 0;
+	}
+
+	hr {
+		max-width: 674px;
+		border-top: 1px solid darken(#f5f2f0, 5%);
+
+		margin: 30px auto 0 auto;
+	}
+	
+	h2 {
+		@include Arvo(20px, 25px, 400);
+		color: $red;
+		
+		text-transform: uppercase;
+	}
+	
+	h3 {
+		@include Arvo(15px, 25px, 400);
+		color: $red;
+		text-transform: uppercase;
+		
+		margin: 15px 0 0 0;
+	}
+	
+	p {
+		@include Helvetica(14px, 18px, 300);
+		color: $black;
+		display: inline-block;
+		margin: 15px 0 0;
+		
+		max-width: 650px;
+	}
+	input[type=submit],
+	a#button {
+		-webkit-appearance: none;
+		background-color: $red;
+		
+		max-width: 150px;
+		
+		color: $white;
+		
+		display: block;
+		margin: 20px auto 0 auto;
+		
+		padding: 15px 30px;
+		border-radius: 8px;
+		
+		@include Helvetica(20px, 20px, 300);
+		@include transition(background-color, 0.5s, linear);
+		
+		&:hover {
+			text-decoration: none;
+			background-color: lighten($red, 10%);
+		}
+	}
+
+	#adsense {
+		display: block;
+
+		margin: 55px auto 0 auto;
+	}
+
+	#mc_embed_signup {
+		max-width:650px;
+		margin: 40px auto 50px auto;
+
+		label {
+			@include Arvo(20px, 25px, 400);
+			color: $red;
+			text-transform: uppercase;
+		}
+
+		input {
+			border: 1px solid #f5f2f0;
+			width: 325px;
+			padding: 10px 5px;
+
+			margin: 10px 0;
+
+			color: $black;
+
+			&[type=submit] {
+				margin: 10px auto;
+				color: $white;
+
+				cursor: pointer;
+			}
+		}
+	}
+	
+	strong {
+		font-weight:600;
+	}
+	
+	figure {
+		max-width: 960px;
+		margin: 25px auto 0 auto;
+
+		.gplus{
+		    margin-left: 15px;
+		    display: inline-block;
+		}
+	}
+}
+/* @end */
+
+/* @group Footer */
+footer {
+	min-width:100%;
+	width: 100%;
+	text-align: center;
+	
+	margin: 50px 0 0 0;
+	
+	p {
+		@include Helvetica(14px, 22px, 300);
+		color: $black;
+		display: block;
+	}
+	
+	span {
+		display: inline-block;
+		color: $red;
+		font-size: 20px;
+		margin: 0 3px;
+
+		@include transition(color, 0.5s, linear);
+		
+		&:hover {
+			color: lighten($red, 10%);
+		}
+	}
+	
+	a {
+		color: $red;
+		
+		&:hover {
+			color: lighten($red, 10%);
+			text-decoration: underline;
+		}
+	}
+}
+/* @end */
+
+ /* CSS Ribbon by Simon Whitaker */
+ .github-fork-ribbon {
+   position: absolute;
+   padding: 2px 0;
+
+   background-color: $red;
+
+   /* Add a drop shadow */
+   -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
+   box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
+
+   z-index: 9999;
+   pointer-events: auto;
+ }
+
+ .github-fork-ribbon a,
+ .github-fork-ribbon a:hover {
+   @include Helvetica(13px, 20px, 400);
+   color: $white;
+
+   /* Set the text properties */
+   text-decoration: none;
+   text-shadow: 0 -1px rgba(0,0,0,0.5);
+   text-align: center;
+
+   /* Set the geometry. If you fiddle with these you'll also need to tweak the top and right values in #github-fork-ribbon. */
+   width: 220px;
+
+   display: inline-block;
+   padding: 2px 0;
+
+   /* Add "stitching" effect */
+   border-width: 1px 0;
+   border-style: dotted;
+   border-color: rgba(255,255,255,0.7);
+ }
+
+ .github-fork-ribbon-wrapper {
+   width: 180px;
+   height: 165px;
+   position: absolute;
+   overflow: hidden;
+   top: -50px;
+   z-index: 9997;
+   pointer-events: none;
+ }
+
+ .github-fork-ribbon-wrapper.fixed {
+   position: fixed;
+ }
+ .github-fork-ribbon-wrapper.right {
+   right: 0;
+ }
+
+ .github-fork-ribbon-wrapper.right .github-fork-ribbon {
+   top: 50px;
+   right: -43px;
+
+   @include rotate(rotate(45deg));
+ }
+/* @end */
+
+/* @group Overlay */
+.layer {
+	width: 100%;
+	height: 100%;
+
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	z-index: 9998;
+
+	display: none;
+
+	@include background-opacity($white, 0.7);
+
+	.container {
+		width: 450px;
+		height: 400px;
+
+		position: absolute;
+		top: 50%;
+		left: 50%;
+
+		margin: -225px 0 0 -250px;
+		padding: 20px;
+
+		background-color: $white;
+
+		border: 3px solid;
+		border-color: $least-red;
+		
+		z-index: 99999;
+		display: block;
+
+		text-align: center;
+
+		a.close {
+			background-size: 100%;
+			background-image: url("http://leastjs.com/src/img/close.svg");
+			width: 30px;
+			height: 30px;
+			display: block;
+			cursor: pointer;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+
+			text-indent: -9999px;
+		}
+
+		a {
+			@include Helvetica(20px, 22px, 300);
+
+			h1, h2 {
+				@include Arvo(30px, 40px, 300);
+				color: $least-red;
+			}
+
+			h1 {
+				margin-top: 25px;
+			}
+
+			h2 {
+				margin-top: 50px;
+			}
+
+			&:hover {
+				text-decoration: none;
+			}
+		}
+	}
+}
+/* @end */

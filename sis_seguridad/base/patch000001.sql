@@ -935,3 +935,16 @@ ALTER TABLE segu.tfuncion
   ALTER COLUMN nombre type varchar(100);
 
 /*****************************F-SCP-RCM-SEGU-0-08/02/2014*************/
+
+
+/*****************************I-SCP-FFP-SEGU-0-25/04/2014*************/
+CREATE TABLE segu.tvideo (
+  id_video SERIAL,
+  titulo VARCHAR(50) NOT NULL,
+  url VARCHAR(50),
+  descripcion VARCHAR(50),
+  id_subsistema INTEGER NOT NULL,
+  CONSTRAINT video_pkey PRIMARY KEY(id_video)
+) INHERITS (pxp.tbase)
+
+/*****************************F-SCP-FFP-SEGU-0-25/04/2014*************/

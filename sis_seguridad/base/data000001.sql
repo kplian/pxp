@@ -4260,3 +4260,5 @@ select pxp.f_insert_tgui ('Tablas migradas ENDESIS', 'Listado de las tablas que 
 
 select pxp.f_insert_testructura_gui ('TBLMIG', 'o');
 /********************************************F-DAT-RCM-SEGU-0-17/01/2014**********************************************/
+
+
