@@ -343,7 +343,6 @@ select pxp.f_insert_tprocedimiento ('SEG_EXPPROCGUI_SEL', '	Listado de procedimi
 ', 'si', '', '', 'segu.ft_procedimiento_gui_sel');
 select pxp.f_insert_tprocedimiento ('SEG_PROGUI_SEL', '	Lista procedimientos de una interfaz dada
 ', 'si', '', '', 'segu.ft_procedimiento_gui_sel');
-select pxp.f_insert_tprocedimiento (''',v_cant),''', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.f_verif_eliminado');
 select pxp.f_insert_tprocedimiento ('SEG_SINCFUN_MOD', '	Este proceso busca todas las funciones de base de datos para el esquema seleccionado
                 las  introduce en la tabla de fucniones luego revisa el cuerpo de la funcion 
                 y saca los codigos de procedimiento y sus descripciones
@@ -4467,7 +4466,6 @@ select pxp.f_insert_tprocedimiento ('SG_TICOM_MOD', 'Modificacion de registros',
 select pxp.f_insert_tprocedimiento ('SG_TICOM_ELI', 'Eliminacion de registros', 'si', '', '', 'segu.f_tipo_comunicacion_ime');
 select pxp.f_insert_tprocedimiento ('SEG_USUPRO_SEL', 'lista las proyectos por usuario', 'si', '', '', 'segu.ft_usuario_proyecto_sel');
 select pxp.f_insert_tprocedimiento ('SEG_USUPRO_CONT', 'contar proyectos por usuario', 'si', '', '', 'segu.ft_usuario_proyecto_sel');
-select pxp.f_insert_tprocedimiento (''',v_cant),''', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.f_verif_eliminado');
 select pxp.f_insert_tprocedimiento ('SG_PROY_SEL', 'Consulta de datos', 'si', '', '', 'segu.ft_proyecto_sel');
 select pxp.f_insert_tprocedimiento ('SG_PROY_CONT', 'Conteo de registros', 'si', '', '', 'segu.ft_proyecto_sel');
 select pxp.f_insert_tprocedimiento ('SEG_GETGUI_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'segu.ft_gui_sel');
