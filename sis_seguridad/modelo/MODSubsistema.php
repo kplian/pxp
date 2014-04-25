@@ -107,12 +107,7 @@ class MODSubsistema extends MODbase{
 			$this->captura('icono','varchar');
 			$this->captura('clase_vista','varchar');
 			$this->captura('subsistema','varchar');
-			$this->captura('estado_reg','pxp.estado_reg');
-			
-		
-		
-		
-		
+			$this->captura('estado_reg','pxp.estado_reg');		
 		
 		$this->armarConsulta();	
 		

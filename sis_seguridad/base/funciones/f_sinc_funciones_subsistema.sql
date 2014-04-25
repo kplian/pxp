@@ -72,7 +72,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
      for v_registros in (  SELECT p.proname AS v_funcion
                            FROM pg_proc p
                               INNER JOIN pg_namespace n ON p.pronamespace = n.oid
-                           WHERE n.nspname = v_esquema 
+                           WHERE n.nspname = v_esquema and n.nspname not like 'pxp'
                              and  p.proname not like '\_%')
                          loop
                        

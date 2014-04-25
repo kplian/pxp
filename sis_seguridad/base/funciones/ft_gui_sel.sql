@@ -1,8 +1,8 @@
-CREATE OR REPLACE FUNCTION "segu"."ft_gui_sel" (
-  "par_administrador" integer,
-  "par_id_usuario" integer,
-  "par_tabla" varchar,
-  "par_transaccion" varchar
+CREATE OR REPLACE FUNCTION segu.ft_gui_sel (
+  par_administrador integer,
+  par_id_usuario integer,
+  par_tabla varchar,
+  par_transaccion varchar
 )
 RETURNS varchar AS
 $body$
@@ -221,7 +221,7 @@ BEGIN
                                     g.clase_vista
                                   from segu.tgui g
                                   where estado_reg = ''activo'' and ruta_archivo is not null and visible = ''si'' 
-                                  	and clase_vista is not null and nivel > 1 and trim(both '' '' from ruta_archivo) != '''' and  trim(both '' '' from clase_vista) !=''''
+                                  	and clase_vista is not null and ((nivel > 1) or (nivel = 1 and subsistema = 0)) and trim(both '' '' from ruta_archivo) != '''' and  trim(both '' '' from clase_vista) !=''''
                                   	and g.id_subsistema = '|| v_parametros.id_subsistema ||
                             ' order by g.id_gui ASC';
                                                          

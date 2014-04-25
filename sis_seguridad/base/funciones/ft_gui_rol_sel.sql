@@ -141,15 +141,15 @@ BEGIN
           --consulta:=';
           BEGIN
 
-               v_consulta:='select ''gui_rol''::varchar, g.codigo_gui, r.rol,r.estado_reg
+               v_consulta:='select ''gui_rol''::varchar, g.codigo_gui, r.rol,gr.estado_reg
                             from segu.tgui_rol gr
                             inner join segu.tgui g
                                 on gr.id_gui = g.id_gui
                             inner join segu.trol r
                                 on gr.id_rol = r.id_rol
                             inner join segu.tsubsistema s
-                                on s.id_subsistema = g.id_subsistema
-                            where  g.id_subsistema = '|| v_parametros.id_subsistema;
+                                on s.id_subsistema = r.id_subsistema
+                            where  r.id_subsistema = '|| v_parametros.id_subsistema;
                if (v_parametros.todo = 'no') then                   
                		v_consulta = v_consulta || ' and gr.modificado is null ';
                end if;
