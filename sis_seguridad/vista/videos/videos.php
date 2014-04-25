@@ -115,7 +115,7 @@
 	$.ajax({
 		type: "POST",
 		//url:"../../../../encomiendas/lib/lib_control/Intermediario.php", 
-		url:"../../../../encomiendas/lib/rest/seguridad/Subsistema/listarSubsistema",
+		url:"../../../lib/rest/seguridad/Subsistema/listarSubsistema",
 		data: {"start":"0","limit":"100","sort":"id_subsistema","dir":"ASC"},
 		 datatype: 'json',	
 		success: function(resp)
@@ -147,7 +147,7 @@ $('#e1').change(function(){
 	var id_subsistema = $('#e1').val();
 		$.ajax({
 		type: "POST",
-		url:"../../../../encomiendas/lib/rest/seguridad/Video/listarVideo",
+		url:"../../../lib/rest/seguridad/Video/listarVideo",
 		data: {"start":"0","limit":"50","sort":"id_video","dir":"ASC","id_subsistema":id_subsistema},
 		 datatype: 'json',	
 		success: function(resp)
