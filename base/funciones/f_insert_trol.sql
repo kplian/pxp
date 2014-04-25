@@ -14,7 +14,7 @@ BEGIN
     	ALTER TABLE segu.trol DISABLE TRIGGER USER;
     	update segu.trol set
     		rol = par_rol, 
-    		descripcion = par_descripcion,
+    		descripcion = par_desc,
     		modificado = 1
     	where rol = par_rol and estado_reg = 'activo';
     	ALTER TABLE segu.trol ENABLE TRIGGER USER;    
