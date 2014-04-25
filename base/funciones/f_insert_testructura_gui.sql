@@ -23,6 +23,14 @@ BEGIN
     
     	insert into segu.testructura_gui (id_gui, fk_id_gui, modificado)
     	values (v_id_gui, v_id_gui_fk, par_modificado);
+    	
+    else
+    	ALTER TABLE segu.testructura_gui DISABLE TRIGGER USER;
+    	
+    	update segu.testructura_gui set modificado = 1 
+    	where id_gui = v_id_gui and fk_id_gui = v_id_gui_fk;
+    	
+    	ALTER TABLE segu.testructura_gui ENABLE TRIGGER USER; 
     end if;
     return 'exito';
 END;

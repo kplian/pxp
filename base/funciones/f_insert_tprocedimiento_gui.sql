@@ -25,6 +25,13 @@ BEGIN
                     where id_gui = v_id_gui and id_procedimiento = v_id_procedimiento and estado_reg = 'activo'))then
         insert into segu.tprocedimiento_gui (id_procedimiento, id_gui, boton, modificado)
         values (v_id_procedimiento, v_id_gui, par_boton, 1);
+    else
+    	ALTER TABLE segu.tprocedimiento_gui DISABLE TRIGGER USER;
+    	
+    	update segu.tprocedimiento_gui set modificado = 1 
+    	where id_procedimiento = v_id_procedimiento and id_gui = v_id_gui;
+    	
+    	ALTER TABLE segu.tprocedimiento_gui ENABLE TRIGGER USER; 
     end if;
     return 'exito';
 END;

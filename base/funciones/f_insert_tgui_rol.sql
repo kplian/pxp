@@ -27,6 +27,14 @@ raise notice  'v_id_gui  % v_id_rol   % ', v_id_gui, v_id_rol;
         insert 
             into segu.tgui_rol (id_rol, id_gui, estado_reg, modificado)
                         values (v_id_rol, v_id_gui, 'activo', 1);
+                        
+    else
+    	ALTER TABLE segu.tgui_rol DISABLE TRIGGER USER;
+    	
+    	update segu.tgui_rol set modificado = 1 
+    	where id_rol = v_id_rol and id_gui = v_id_gui;
+    	
+    	ALTER TABLE segu.tgui_rol ENABLE TRIGGER USER; 
     end if;
     return 'exito';
 END;

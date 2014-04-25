@@ -26,7 +26,16 @@ BEGIN
                     where id_rol = v_id_rol and id_procedimiento_gui = v_id_procedimiento_gui and estado_reg = 'activo'))then
         insert into segu.trol_procedimiento_gui (id_rol, id_procedimiento_gui, modificado)
         values (v_id_rol, v_id_procedimiento_gui, 1);
+    
+    else
+    	ALTER TABLE segu.trol_procedimiento_gui DISABLE TRIGGER USER;
+    	
+    	update segu.trol_procedimiento_gui set modificado = 1 
+    	where id_rol = v_id_rol and id_procedimiento_gui = v_id_procedimiento_gui;
+    	
+    	ALTER TABLE segu.trol_procedimiento_gui ENABLE TRIGGER USER; 
     end if;
+    
     return 'exito';
 END;
 $body$
