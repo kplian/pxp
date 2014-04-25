@@ -945,6 +945,6 @@ CREATE TABLE segu.tvideo (
   descripcion VARCHAR(50),
   id_subsistema INTEGER NOT NULL,
   CONSTRAINT video_pkey PRIMARY KEY(id_video)
-) INHERITS (pxp.tbase)
+) INHERITS (pxp.tbase);
 
 /*****************************F-SCP-FFP-SEGU-0-25/04/2014*************/
