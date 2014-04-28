@@ -8,10 +8,6 @@ DECLARE
    
 BEGIN
 	
-    select id_subsistema into v_id_subsistema
-    from segu.tsubsistema s
-    where s.codigo = par_subsistema;
-    
     update segu.trol set estado_reg = 'inactivo'
     where estado_reg = 'activo' and rol = par_rol;
 
