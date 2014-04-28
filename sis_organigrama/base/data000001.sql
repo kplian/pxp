@@ -502,3 +502,22 @@ select pxp.f_insert_tprocedimiento_gui ('OR_OFI_MOD', 'OFICI', 'no');
 select pxp.f_insert_tprocedimiento_gui ('OR_OFI_ELI', 'OFICI', 'no');
 select pxp.f_insert_tprocedimiento_gui ('OR_OFI_SEL', 'OFICI', 'no');
 /*****************************F-DAT-JRR-ORGA-0-9/01/2014*************/
+
+/*****************************I-DAT-JRR-ORGA-0-25/04/2014*************/
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'ESTORG.2.1.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 7, '', 'subirFotoPersona', 'ORGA');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'FUNCIO.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 5, '', 'subirFotoPersona', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_get_uos_x_gerencia', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_get_uo_planilla', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_get_uo_gerencia', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_get_uos_x_planilla', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tprocedimiento ('RH_MAILFUN_GET', 'Recuepra el email del funcionario', 'si', '', '', 'orga.ft_funcionario_ime');
+select pxp.f_insert_testructura_gui ('ESTORG.2.1.2.1', 'ESTORG.2.1.2');
+select pxp.f_insert_testructura_gui ('FUNCIO.2.1', 'FUNCIO.2');
+select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.2', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'ESTORG.2.1.2.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'FUNCIO.2.1', 'no');
+
+/*****************************F-DAT-JRR-ORGA-0-25/04/2014*************/
