@@ -58,10 +58,12 @@ DECLARE
     
     v_consulta varchar;
     v_nombre_funcion varchar;
-    v_resp varchar;
+    v_resp  varchar;
+    v_as  varchar;
+    v_campos   varchar;
 
 BEGIN
-  v_nombre_funcion ='wf.f_depto_wf_sel';
+    v_nombre_funcion ='wf.f_depto_wf_sel';
 
     --recupera el tipo de listado:   todos, listado, funcion_listado  
     
@@ -107,7 +109,7 @@ BEGIN
                          wf.testado_wf ew
                          inner join param.tdepto dep on dep.id_depto = ew.id_depto
                          inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema 
-                         WHERE ew.id_estado_wf='||p_id_estado_wf;
+                         WHERE   dep.estado_reg=''activo''  and  ew.id_estado_wf='||p_id_estado_wf;
                          
                        FOR g_registros in execute(v_consulta) LOOP     
                            RETURN NEXT g_registros;
@@ -123,7 +125,7 @@ BEGIN
                           FROM
                          wf.testado_wf ew
                          inner join param.tdepto dep on dep.id_depto = ew.id_depto
-                         WHERE ew.id_estado_wf='||p_id_estado_wf;
+                         WHERE  dep.estado_reg=''activo''  and   ew.id_estado_wf='||p_id_estado_wf;
                          
                        FOR g_registros in execute(v_consulta) LOOP     
                            RETURN NEXT g_registros;
@@ -146,7 +148,7 @@ BEGIN
                                  		inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
                                   		inner join wf.tfuncionario_tipo_estado fte on fte.id_depto = dep.id_depto 
                                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                                   where '||p_filtro||'
+                                   where  dep.estado_reg=''activo''  and  '||p_filtro||'
                                          order by dep.codigo
                                          limit '|| p_limit::varchar||' offset '||p_start::varchar;
                         
@@ -164,7 +166,7 @@ BEGIN
                                        inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
                                        inner join wf.tfuncionario_tipo_estado fte on fte.id_depto = dep.id_depto 
                                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                                   where '||p_filtro;
+                                   where  dep.estado_reg=''activo''  and  '||p_filtro;
                         
           
                        -- listado de todos los funcionarios en la tabla 
@@ -193,7 +195,7 @@ BEGIN
                    inner join wf.tfuncionario_tipo_estado fte 
                        on fte.id_depto = dep.id_depto 
                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                   where  '||p_filtro||'
+                   where  dep.estado_reg=''activo''  and  '||p_filtro||'
                             order by sub.nombre
                             limit '|| p_limit::varchar||' offset '||p_start::varchar;
                   
@@ -212,7 +214,7 @@ BEGIN
                    inner join wf.tfuncionario_tipo_estado fte 
                        on fte.id_depto = dep.id_depto 
                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                    where '||p_filtro;
+                    where  dep.estado_reg=''activo'' and '||p_filtro;
                   
                 
                   
@@ -250,7 +252,7 @@ BEGIN
                                 from adq.tsolicitud sol
                                   inner join param.tdepto dep on dep.id_depto = sol.id_depto
                                   inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
-                                where sol.id_estado_wf = '||p_id_estado_wf||'  
+                                where sol.id_estado_wf = '||p_id_estado_wf||'  and dep.estado_reg=''activo''
                                 and '||p_filtro||'
                                   order by  dep.codigo
                                   limit '|| p_limit::varchar||' offset '||p_start::varchar;   
@@ -266,7 +268,7 @@ BEGIN
                                 from adq.tsolicitud sol
                                 inner join param.tdepto dep on dep.id_depto = sol.id_depto
                                 inner join segu.tsubsistema sub on sub.id_subsistema = dep.id_subsistema
-                                where sol.id_estado_wf = '||p_id_estado_wf||'  
+                                where sol.id_estado_wf = '||p_id_estado_wf||'  and dep.estado_reg=''activo''
                                 and '||p_filtro;   
                                           
                                FOR g_registros in execute (v_consulta)LOOP     
@@ -278,8 +280,47 @@ BEGIN
                
             
             ELSE
-            
-              raise exception ' Funcion de listado no identificada (%)',v_nombre_depto_func_list;
+              --  ejecutar funcion de listado 
+                 IF p_count=FALSE then
+                  
+                    v_campos = 'id_depto,
+                                codigo_depto,
+                                nombre_corto_depto,
+                                nombre_depto,
+                                prioridad,
+                                subsistema';
+                                
+                    v_as = ' (id_depto integer,
+                                       codigo_depto varchar,
+                                       nombre_corto_depto varchar,
+                                       nombre_depto varchar,
+                                       prioridad integer,
+                                       subsistema varchar)';
+                 else
+                    v_as = ' (total bigint)';
+                    v_campos = ' total  ';
+                 
+                 END IF;
+                  
+                  v_consulta:='SELECT 
+                                '||v_campos||'
+                               FROM '||v_nombre_depto_func_list||'(
+                                 '||p_id_usuario::varchar||', 
+                                 '||p_id_tipo_estado::varchar||', 
+                                  '''|| COALESCE(p_fecha,now())::varchar||''',
+                                  '||p_id_estado_wf::varchar||',
+                                  '||p_count::varchar||',
+                                  '||p_limit||',
+                                  '||p_start||',
+                                  '||quote_literal(p_filtro)||'
+                                  
+                                 ) AS '||v_as;
+                                       
+                                      
+                  FOR g_registros in execute (v_consulta)LOOP  
+                    RETURN NEXT g_registros;
+                  END LOOP;
+              
             
             END IF;
       else

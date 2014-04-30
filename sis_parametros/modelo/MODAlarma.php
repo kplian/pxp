@@ -249,6 +249,23 @@ class MODAlarma extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function eliminarAlarma(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_alarma_ime';
+        $this->transaccion='PM_ALARM_ELI';
+        $this->tipo_procedimiento='IME';
+
+        //Define los parametros para la funcion
+        $this->setParametro('id_alarma','id_alarma','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

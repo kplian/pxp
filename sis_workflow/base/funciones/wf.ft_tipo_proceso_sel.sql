@@ -66,7 +66,8 @@ BEGIN
                         tipproc.inicio,
                         tipproc.tipo_disparo, 
                         tipproc.funcion_validacion_wf,
-                        tipproc.descripcion		
+                        tipproc.descripcion,
+                        tipproc.codigo_llave		
 						from wf.ttipo_proceso tipproc
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipproc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod

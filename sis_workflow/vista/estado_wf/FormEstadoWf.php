@@ -68,6 +68,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         this.Cmp.id_tipo_estado.modificado=true;    
         this.Cmp.id_tipo_estado.store.on('loadexception', this.conexionFailure,this);
         this.Cmp.id_funcionario_wf.store.on('loadexception', this.conexionFailure,this);
+        this.Cmp.id_depto_wf.store.on('loadexception', this.conexionFailure,this);
         this.Cmp.id_funcionario_wf.disable();
         this.Cmp.id_depto_wf.disable();
         
@@ -278,9 +279,6 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         //llamada ajax para cargar los caminos posible de flujo
         
          Phx.CP.loadingShow();
-         
-         console.log('ppp',this)
-         
          Ext.Ajax.request({
                 url:this.url_check_state,
                 params:{id_proceso_wf:this.data.id_proceso_wf,
@@ -575,6 +573,45 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
        },this)
                            
        this.contadorTarjetas = this.contadorTarjetas + 1
+       
+       //carga inicial de valores en los procesos de la tarjeta
+       //carga valores por defecto si los combos tiene una sola opcion
+       Phx.CP.loadingShow();
+       var cmpEstado = this.form.getForm().findField('id_tipo_estado_pro['+cont+']');
+       var cmpFun = this.form.getForm().findField('id_funcionario_wf_pro['+cont+']');
+       var cmpDep = this.form.getForm().findField('id_depto_wf_pro['+cont+']')
+       cmpEstado.store.load({params:{start:0,limit:50}, 
+           callback : function (r) {
+                Phx.CP.loadingHide();
+                //si solo tenemos un estado cargamos valores pordefecto
+                if (r.length == 1 ) {                       
+                    
+                    cmpEstado.setValue(r[0].data.id_tipo_estado);
+                    cmpEstado.fireEvent('select',cmpEstado, r[0], 0)
+                    //caga valores para el combo funcionario
+                    if(r[0].data.tipo_asignacion != 'ninguno'){
+                         cmpFun.store.load({params:{start:0,limit:50}, 
+                           callback : function (r) {
+                                if (r.length == 1 ) {                       
+                                    cmpFun.setValue(r[0].data.id_funcionario);
+                                } 
+                            }, scope : this
+                        });
+                    }
+                    //carga valores para el combo depto
+                     if(r[0].data.depto_asignacion != 'ninguno'){
+                    
+                        cmpDep.store.load({params:{start:0,limit:50}, 
+                               callback : function (r) {
+                                    if (r.length == 1 ) {                       
+                                        cmpDep.setValue(r[0].data.id_depto);
+                                    }    
+                              }, scope : this
+                        });
+                      }
+                 }   
+            }, scope : this
+        });
         
     },
     
@@ -758,7 +795,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     title:'Estado del WF',
     
     onSubmit:function(){
-       //TODO passar los datos obtenidos del wizard y pasar  el evento save 
+       //passar los datos obtenidos del wizard y pasar  el evento save 
        if (this.form.getForm().isValid()) {
            this.fireEvent('beforesave',this,this.getValues());
        }

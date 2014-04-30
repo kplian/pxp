@@ -127,7 +127,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'codigo',
 				fieldLabel: 'Código',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '60%',
 				gwidth: 100,
 				maxLength:10
@@ -138,6 +138,21 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'codigo_llave',
+                fieldLabel: 'Código llave',
+                allowBlank: false,
+                anchor: '60%',
+                gwidth: 100,
+                maxLength:150
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipproc.codigo_llave',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'nombre',
@@ -413,7 +428,9 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		{name:'desc_proceso_macro', type: 'string'},
 		{name:'desc_tipo_estado', type: 'string'},
 		'inicio','tipo_disparo',
-		'funcion_validacion_wf','descripcion'
+		'funcion_validacion_wf',
+		'descripcion',
+		'codigo_llave'
 		
 	],
 	onButtonNew: function() {
@@ -444,24 +461,22 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 	},
 	tabeast:[
 		  {
-		  url:'../../../sis_workflow/vista/tipo_estado/TipoEstado.php',
-		  title:'Estados', 
-		  width:400,
-		  cls:'TipoEstado'
+    		  url:'../../../sis_workflow/vista/tipo_estado/TipoEstado.php',
+    		  title:'Estados', 
+    		  width:400,
+    		  cls:'TipoEstado'
 		  },
 		  {
-          url:'../../../sis_workflow/vista/tipo_documento/TipoDocumento.php',
-          title:'Tipo de Documentos', 
-          width:400,
-          cls:'TipoDocumento'
-          }
-		  
-		  ,
+              url:'../../../sis_workflow/vista/tipo_documento/TipoDocumento.php',
+              title:'Tipo de Documentos', 
+              width:400,
+              cls:'TipoDocumento'
+          },
 		  {
-		  url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
-          title:'Labores', 
-          width:400,
-          cls:'LaboresTipoProceso'    
+    		url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
+            title:'Labores', 
+            width:400,
+            cls:'LaboresTipoProceso'    
 		  }
 		],
 	bdel:true,

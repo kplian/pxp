@@ -374,10 +374,16 @@ IS 'rirve para personalizar la el correo que me manda al cambiar el estado, los 
 
 
 
-/***********************************I-SCP-RAC-WF-0-23/04/2014****************************************/
+/***********************************I-SCP-RAC-WF-0-29/04/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso
+  ADD COLUMN codigo_llave VARCHAR(200);
+
+COMMENT ON COLUMN wf.ttipo_proceso.codigo_llave
+IS 'Este codigo permite identificar en tiempode ejecucion la anturaleza del proceso, pro ejemeplo, existe para procesos de Obligacion de pago, esto nos permite identificar que son obligaciones de pago y no ingresos a almacenes';
 
 
-
-
-/***********************************F-SCP-RAC-WF-0-23/04/2014****************************************/
+/***********************************F-SCP-RAC-WF-0-29/04/2014****************************************/
 

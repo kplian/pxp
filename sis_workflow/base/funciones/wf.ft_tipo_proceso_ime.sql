@@ -76,7 +76,8 @@ BEGIN
             inicio,
             tipo_disparo,
             funcion_validacion_wf,
-            descripcion
+            descripcion,
+            codigo_llave
           	) values(
 			v_parametros.nombre,
 			v_parametros.codigo,
@@ -92,7 +93,8 @@ BEGIN
             v_parametros.inicio,
             v_parametros.tipo_disparo,
             v_parametros.funcion_validacion_wf,
-            v_parametros.descripcion
+            v_parametros.descripcion,
+            v_parametros.codigo_llave
 							
 			)RETURNING id_tipo_proceso into v_id_tipo_proceso;
 			
@@ -142,7 +144,8 @@ BEGIN
             inicio=v_parametros.inicio,
             tipo_disparo=v_parametros.tipo_disparo,
             funcion_validacion_wf=v_parametros.funcion_validacion_wf,
-            descripcion=v_parametros.descripcion
+            descripcion=v_parametros.descripcion,
+            codigo_llave= v_parametros.codigo_llave
 			where id_tipo_proceso=v_parametros.id_tipo_proceso;
                
 			--Definicion de la respuesta

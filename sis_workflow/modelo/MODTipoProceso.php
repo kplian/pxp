@@ -41,6 +41,7 @@ class MODTipoProceso extends MODbase{
 		
 		$this->captura('funcion_validacion_wf','varchar');
 		$this->captura('descripcion','varchar');
+		$this->captura('codigo_llave','varchar');
 		
 		
 		
@@ -72,6 +73,9 @@ class MODTipoProceso extends MODbase{
 		$this->setParametro('tipo_disparo','tipo_disparo','varchar');
 		$this->setParametro('funcion_validacion_wf','funcion_validacion_wf','varchar');
 		$this->setParametro('descripcion','descripcion','varchar');
+		$this->setParametro('codigo_llave','codigo_llave','varchar');
+		
+		
 		
 		
 		
@@ -103,6 +107,7 @@ class MODTipoProceso extends MODbase{
 		$this->setParametro('tipo_disparo','tipo_disparo','varchar');
 		$this->setParametro('funcion_validacion_wf','funcion_validacion_wf','varchar');
         $this->setParametro('descripcion','descripcion','varchar');
+        $this->setParametro('codigo_llave','codigo_llave','varchar');
         
 
 		//Ejecuta la instruccion

@@ -65,7 +65,7 @@ BEGIN
                    FROM wf.f_funcionario_wf_sel(
                      '||p_id_usuario::varchar||', 
                      '||v_parametros.id_tipo_estado::varchar||', 
-                      '''||v_parametros.fecha::varchar||''',
+                      '''|| COALESCE(v_parametros.fecha,now())::varchar||''',
                       '|| v_parametros.id_estado_wf::varchar||',
                       FALSE,
                       '||v_parametros.cantidad||',
@@ -103,7 +103,7 @@ BEGIN
                    FROM wf.f_funcionario_wf_sel(
                      '||p_id_usuario::varchar||', 
                      '||v_parametros.id_tipo_estado::varchar||', 
-                      '''||v_parametros.fecha::varchar||''',
+                      '''||COALESCE(v_parametros.fecha,now())::varchar||''',
                       '|| v_parametros.id_estado_wf::varchar||',
                       TRUE,
                       '||v_parametros.cantidad||',
@@ -131,8 +131,8 @@ BEGIN
 	elsif(p_transaccion='WF_DEPTIPES_SEL')then
      				
     	begin
-                                 
-          v_consulta:=' 
+               
+        v_consulta:=' 
                    SELECT 
                     id_depto,
                     codigo_depto,
@@ -143,7 +143,7 @@ BEGIN
                    FROM wf.f_depto_wf_sel(
                      '||p_id_usuario::varchar||', 
                      '||v_parametros.id_tipo_estado::varchar||', 
-                      '''||v_parametros.fecha::varchar||''',
+                      '''|| COALESCE(v_parametros.fecha,now())::varchar||''',
                       '|| v_parametros.id_estado_wf::varchar||',
                       FALSE,
                       '||v_parametros.cantidad||',
@@ -158,6 +158,9 @@ BEGIN
                            subsistema varchar)';
                       
          --Devuelve la respuesta
+         
+           
+         
 		return v_consulta;
 						
 		end;
@@ -178,7 +181,7 @@ BEGIN
                    FROM wf.f_depto_wf_sel(
                      '||p_id_usuario::varchar||', 
                      '||v_parametros.id_tipo_estado::varchar||', 
-                      '''||v_parametros.fecha::varchar||''',
+                      '''||COALESCE(v_parametros.fecha,now())::varchar||''',
                       '|| v_parametros.id_estado_wf::varchar||',
                       TRUE,
                       '||v_parametros.cantidad||',
