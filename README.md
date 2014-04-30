@@ -5,8 +5,9 @@ Example
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
-user:      angela.correa
-password:  angela.correa
+	user:      angela.correa
+	 
+	password:  angela.correa
 
 Framework PXP for agile web development
 
