@@ -84,9 +84,11 @@ if(!isset($_SESSION["_SESION"])){
      	
      	
      	<script type="text/javascript" src="resources/TaskBar.js"></script> -->
+     
      <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
 	 <script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
-	   <script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
+	 <script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
+	 <script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
      <!-- status bar -->
       <script type="text/javascript" src="../../../lib/ux/statusbar/StatusBar.js"></script>
 	

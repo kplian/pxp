@@ -22,16 +22,11 @@ class MODUsuario extends MODbase {
 		
 		$this->tipo_procedimiento='IME';
 		$this->count=false;
-		if ($this->arreglo['_tipo'] == 'restAuten') {		
-			//$this->count=false;	
-			$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
-								 "contrasena"=>$this->arreglo['contrasena'],
-								 "dir_ip"=>getenv("REMOTE_ADDR"));
-		} else {
-			$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
-								 "contrasena"=>md5($this->arreglo['contrasena']),
-								 "dir_ip"=>getenv("REMOTE_ADDR"));
-		}		
+		
+		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
+							 "contrasena"=>$this->arreglo['contrasena'],
+							 "dir_ip"=>getenv("REMOTE_ADDR"));
+				
 		//Define los parametros para ejecucion de la funcion
 		$this->setParametro('login','usuario','varchar');
 		$this->setParametro('password','contrasena','varchar');		

@@ -21,10 +21,6 @@ class MODConfigurar extends MODbase
 		$this->transaccion='SG_CONF_MOD';
 		$this->tipo_procedimiento='IME';
 		
-		$this->arreglo['clave_anterior'] = md5($this->arreglo['clave_anterior']);
-		$this->arreglo['clave_nueva'] = md5($this->arreglo['clave_nueva']);
-		$this->arreglo['clave_confirmacion'] = md5($this->arreglo['clave_confirmacion']);
-		$this->arreglo['clave_windows'] = md5($this->arreglo['clave_windows']);			
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_usuario','id_usuario','int4');

@@ -1037,7 +1037,12 @@ Phx.CP=function(){
 
 					Ext.Ajax.request({
 						url:form_login.url,
-						params:Ext.apply({_tipo:'auten'},form_login.getForm().getValues()),
+						params:{
+							_tipo:'auten',
+							contrasena: md5(form_login.getForm().findField('contrasena').getValue()),
+							usuario:form_login.getForm().findField('usuario').getValue()
+							
+							},
 						method:'POST',
 						success:ajax.success,
 						failure:ajax.failure
