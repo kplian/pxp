@@ -442,7 +442,7 @@ Phx.CP=function(){
 		                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
 								if(regreso.length > 1){								
 									var interfaz = regreso[0];														
-									this.getMainPanel().loadClass('../../../' + interfaz.ruta, interfaz.id, interfaz.nombre,'','',interfaz.clase_vista);
+									this.getMainPanel().loadClass('../../../' + interfaz.ruta, interfaz.codigo_gui, interfaz.nombre,'','',interfaz.clase_vista);
 									//mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
 								} else {
 									alert('No se encontro la interfaz del token enviado en la URL');
@@ -530,7 +530,7 @@ Phx.CP=function(){
 				                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
 										if(regreso.length > 1){
 											var interfaz = regreso[0];														
-											mainPanel.loadClass('../../../' + interfaz.ruta, interfaz.id, interfaz.nombre,'','',interfaz.clase_vista);
+											mainPanel.loadClass('../../../' + interfaz.ruta, interfaz.codigo_gui, interfaz.nombre,'','',interfaz.clase_vista);
 											
 										} else {
 											alert('No se encontro la interfaz del token enviado en la URL');
@@ -644,7 +644,7 @@ Phx.CP=function(){
 							naux=naux.parentNode
 						}
 						
-						mainPanel.loadClass('../../../' + node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
+						mainPanel.loadClass('../../../' + node.attributes.ruta,node.attributes.codigo_gui,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
 					}
 				}
 			});
