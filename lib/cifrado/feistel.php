@@ -3,14 +3,17 @@ class feistel{
 	private $alfabeto;
 	private $n=2;
 	private $bloque=4;
+	private  $tam_alfabeto = 64;
 	function __construct(){
-		$this->alfabeto=array("0","1","2","3","4","5","6","7","8","9","."," ");
-		/*$this->alfabeto=array("0","1","2","3","4","5","6","7","8","9","."," ","",
-		                       "q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l",
+		//$this->alfabeto=array("0","1","2","3","4","5","6","7","8","9","."," ");
+		$this->alfabeto=array("0","1","2","3","4","5","6","7","8","9","."," ",
+		                       "q","w","e","r","t","y","u","i","o","p",
+		                       "a","s","d","f","g","h","j","k","l",
 		                       "z","x","c","v","b","n","m",
-		                       "Q","W","E","R","T","Y","U","I","O","P","A","S","D","F","G","H","J","K","L",
+		                       "Q","W","E","R","T","Y","U","I","O","P",
+		                       "A","S","D","F","G","H","J","K","L",
 		                       "Z","X","C","V","B","N","M");
-		*/	
+			
 	}
 	function generarPi(){
 		$pi='';
@@ -61,7 +64,10 @@ class feistel{
 			
 			for($i=0;$i<strlen($data);$i++){
 				if($tipo==1){
-					$auxi=$auxi.$this->caracterPosicion(($this->buscaPosicion($data{$i})+$k)%12);
+					//$auxi=$auxi.$this->caracterPosicion(($this->buscaPosicion($data{$i})+$k)%12);
+					$auxi=$auxi.$this->caracterPosicion(($this->buscaPosicion($data{$i})+$k)%$this->tam_alfabeto);
+                    
+					
 														
 				}
 				else{
@@ -84,7 +90,9 @@ class feistel{
 				else{
 				$var=$this->buscaPosicion($auxi{$i})-$k;
 					if($var<0){
-						$var=$var+12;					
+						//$var=$var+12;	
+						
+						$var=$var+$this->tam_alfabeto;				
 					}
 					$aux2=$aux2.$this->caracterPosicion($var);
 				}
@@ -96,13 +104,175 @@ class feistel{
 		return $res;
 		
 	}
+	
+	
+	
+	
 	function buscaPosicion($caracter){
 		if($caracter=="."){
 			return 10;
 		}
 		elseif($caracter==" "){
 			return 11;
-		}else{
+		}
+		elseif($caracter=="q"){
+            return 12;
+        }
+		elseif($caracter=="w"){
+            return 13;
+        }
+        elseif($caracter=="e"){
+            return 14;
+        }
+        elseif($caracter=="r"){
+            return 15;
+        }
+        elseif($caracter=="t"){
+            return 16;
+        }
+        elseif($caracter=="y"){
+            return 17;
+        }
+        elseif($caracter=="u"){
+            return 18;
+        }
+        elseif($caracter=="i"){
+            return 19;
+        }
+        elseif($caracter=="o"){
+            return 20;
+        }
+        elseif($caracter=="p"){
+            return 21;
+        }
+        elseif($caracter=="a"){
+            return 22;
+        }
+        elseif($caracter=="s"){
+            return 23;
+        }
+        elseif($caracter=="d"){
+            return 24;
+        }
+        elseif($caracter=="f"){
+            return 25;
+        }
+        elseif($caracter=="g"){
+            return 26;
+        }
+        elseif($caracter=="h"){
+            return 27;
+        }
+        elseif($caracter=="j"){
+            return 28;
+        }
+        elseif($caracter=="k"){
+            return 29;
+        }
+        elseif($caracter=="l"){
+            return 30;
+        }
+        elseif($caracter=="z"){
+            return 31;
+        }
+        elseif($caracter=="x"){
+            return 32;
+        }
+        elseif($caracter=="c"){
+            return 33;
+        }
+        elseif($caracter=="v"){
+            return 34;
+        }
+        elseif($caracter=="b"){
+            return 35;
+        }
+        elseif($caracter=="n"){
+            return 36;
+        }
+        elseif($caracter=="m"){
+            return 37;
+        }
+        elseif($caracter=="Q"){
+            return 38;
+        }
+        elseif($caracter=="W"){
+            return 39;
+        }
+        elseif($caracter=="E"){
+            return 40;
+        }
+        elseif($caracter=="R"){
+            return 41;
+        }
+        elseif($caracter=="T"){
+            return 42;
+        }
+        elseif($caracter=="Y"){
+            return 43;
+        }
+        elseif($caracter=="U"){
+            return 44;
+        }
+        elseif($caracter=="I"){
+            return 45;
+        }
+        elseif($caracter=="O"){
+            return 46;
+        }
+        elseif($caracter=="P"){
+            return 47;
+        }
+        elseif($caracter=="A"){
+            return 48;
+        }
+        elseif($caracter=="S"){
+            return 49;
+        }
+        elseif($caracter=="D"){
+            return 50;
+        }
+        elseif($caracter=="F"){
+            return 51;
+        }
+        elseif($caracter=="G"){
+            return 52;
+        }
+        elseif($caracter=="H"){
+            return 53;
+        }
+        elseif($caracter=="J"){
+            return 54;
+        }
+        elseif($caracter=="K"){
+            return 55;
+        }
+        elseif($caracter=="L"){
+            return 56;
+        }
+        elseif($caracter=="Z"){
+            return 57;
+        }
+        elseif($caracter=="X"){
+            return 58;
+        }
+        elseif($caracter=="C"){
+            return 59;
+        }
+        elseif($caracter=="V"){
+            return 60;
+        }
+        elseif($caracter=="B"){
+            return 61;
+        }
+        elseif($caracter=="N"){
+            return 62;
+        }
+        elseif($caracter=="M"){
+            return 63;
+        }
+       
+        else{
 			return (int)$caracter;
 		}
 	}

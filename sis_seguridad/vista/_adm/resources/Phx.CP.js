@@ -1120,15 +1120,18 @@ Phx.CP=function(){
            	
            }
            else{
-				Ext.Msg.show({
+           	
+           	   Ext.Msg.show({
 					title: 'AVISO ... ',
 					icon:Ext.MessageBox.INFO,
 					msg:mensaje,
 					buttons: Ext.Msg.OK,
 					minWidth:500,
-					minHeight:100
+					minHeight:100,
+					modal:true
 	
 				});
+				Ext.MessageBox.getDialog().getEl().setStyle('z-index','19999');
 				
 			}
 		},
@@ -1458,7 +1461,9 @@ Phx.CP=function(){
 					} 
 				}));
 				Win.show();
+				return wid;
 			}
+			
 		},
 		log: function(){
 		    if( typeof window.console != 'undefined' ){

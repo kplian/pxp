@@ -568,8 +568,7 @@ class Mensaje
 					//var_dump($f);
 					$tmp=array();
 		            $tmp=array_keys($f);
-		            
-					$tam = sizeof($tmp);
+		            $tam = sizeof($tmp);
 		        }
 				
 				
@@ -577,16 +576,19 @@ class Mensaje
 				for( $i=0; $i<= $tam; $i++){
 					//RCM 23/09/2011: se aumenta variable temporal con los 3 primeros caracteres para la comparación con la cadena 'id_'
 					//y se aumenta el caso de comparación con la cadena 'id'
-					
+					//echo $tmp[$i]."</br>";
 					//RAC 25/10/2011: validacion de varialbes
 					if(isset($tmp[$i]) && isset($f[$tmp[$i]])){
 						$aux=substr($tmp[$i],0,3);
 						if(strpos($aux,'id_')!==false){
 							//ofucasmos todas las variables que comiensen con id_
 						     $this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
-						} else if($tmp[$i]=='id'){
+						     //echo $tmp[$i].".......</br>";
+						     
+						} else if(trim($tmp[$i])=='id'){
 							//ofucasmos todas las variables que comiensen con id_
 							$this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
+							//echo $tmp[$i].".......</br>";
 						}
 					}
 				}

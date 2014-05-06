@@ -18,7 +18,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-
+$_SESSION["_OFUSCAR_ID"]='no'; 
 //estable aprametros ce la cookie de sesion
 $_SESSION["_CANTIDAD_ERRORES"]=0;//inicia control cantidad de error anidados
 if($_SESSION["_FORSSL"]=='SI'){
