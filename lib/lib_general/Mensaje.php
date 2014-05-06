@@ -322,14 +322,15 @@ class Mensaje
       		header('Content-type: application/json; charset=utf-8'); 
    		} 
 		//si es exito y es sel devuelvo los valores de una consulta
-		//ofuscacion de identificadores
-		if($_SESSION["_OFUSCAR_ID"]=='si'){
-			$this->ofuscarIdentificadores();
-		}
+		
 
 		if($this->getTipo()=='EXITO' && $this->tipo_transaccion=='SEL'){
 
 			if($this->tipo_respuesta!='arbol'){
+			    //ofuscacion de identificadores
+                if($_SESSION["_OFUSCAR_ID"]=='si'){
+                    $this->ofuscarIdentificadores();
+                }
 				return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
 			}
 			else{
@@ -346,6 +347,10 @@ class Mensaje
 						$this->datos[$cont]=$this->crearCampos($this->datos[$cont],$this->nivel_arbol[0]['arreglo_equivalencias']);
 						$cont++;
 					}
+					if($_SESSION["_OFUSCAR_ID"]=='si'){
+                       $this->ofuscarIdentificadores();
+                    }
+					
 					return json_encode($this->datos);
 				}
 				else{
@@ -366,6 +371,10 @@ class Mensaje
 						}
 						$cont++;
 					}
+					if($_SESSION["_OFUSCAR_ID"]=='si'){
+                       $this->ofuscarIdentificadores();
+                    }
+					
 					return json_encode($this->datos);
 				}
 
@@ -373,6 +382,7 @@ class Mensaje
 		}
 		//sino devuelvo un mensaje
 		else{
+		    
 			return $this->generarMensajeJson();
 		}		
 	}
@@ -548,7 +558,7 @@ class Mensaje
                 
                 
                 //se obtienen los nombre de las variables
-				//para el caso de grillar los nosmbre de las variables no varian para todaas las filas
+				//para el caso de grilla los nombres de las variables no varian para todaas las filas
 				if ($this->tipo_respuesta!='arbol')
 				{	$tmp=array();
 		            $tmp=array_keys($this->datos[0]);
@@ -588,7 +598,7 @@ class Mensaje
 						} else if(trim($tmp[$i])=='id'){
 							//ofucasmos todas las variables que comiensen con id_
 							$this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
-							//echo $tmp[$i].".......</br>";
+							//echo $tmp[$i].".......</br>".$f[$tmp[$i]];
 						}
 					}
 				}
