@@ -489,7 +489,7 @@ class MODValidacion
 			}					
 	}
 	
-	function validarCodigoHtml(){		
+	function validarCodigoHtml($nombre,$valor,$blank,$tamano){		
 		 if($blank==false){
                 array_push($this->res,'El campo '.$nombre." debe ser registrado");
         }	

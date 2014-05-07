@@ -13,6 +13,34 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
+	    
+	    this.Grupos= [
+                   {
+                    layout:'column',
+                    width:'100%',
+                    autoScroll:true,
+                    items: [
+                           {id: config.idContenedor+'-card-0',
+                            width:'45%',
+                            xtype: 'fieldset',
+                            title: 'Datos principales',
+                            autoHeight: true,
+                            border:false,
+                            //margin:'5 5 5 5',
+                            items: [],
+                            id_grupo:0
+                           },
+                           {
+                               xtype:'panel',
+                               //margin:'5 5 5 5',
+                               width:'45%',
+                               html:'Es posible hacer una llamada a una funcion con las siguientes variables:<br/>wf.f_mi_funcion(p_id_usuario, p_id_proceso_wf, p_id_estado_anterior, p_id_tipo_estado_actual) El retorno debe ser FALSE o TRUE<br/>---------<b><h2>Variables WF, para las reglas</h2></b> <br> PROCESO_MACRO<br>TIPO_PROCESO<br>NUM_TRAMITE<br>USUARIO_PREVIO<br>ESTADO_ANTERIOR<br>OBS<br>ESTADO_ACTUAL<br>CODIGO_ANTERIOR<br><br>CODIGO_ACTUAL<br>FUNCIONARIO_PREVIO<br>DEPTO_PREVIO<br><br>** Verificar que las variables que referencian a la tabla existan  EJM {$tabla.desc_proveedor}'
+                               
+                           }]
+                }
+            
+            ];
+	    
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.EstructuraEstadoHijo.superclass.constructor.call(this,config);
@@ -72,7 +100,7 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 				mode: 'remote',
 				pageSize: 20,
 				queryDelay: 200,
-				anchor: '80%',
+				anchor: '100%',
 				minChars: 2,
 				gwidth: 200,
 				renderer: function(value, p, record) {
@@ -93,12 +121,13 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'prioridad',
 				fieldLabel: 'Prioridad',
-				allowBlank: true,
-				anchor: '80%',
+				allowBlank: false,
+				anchor: '100%',
 				gwidth: 100,
 				maxLength:4
 			},
 			type:'NumberField',
+			valorInicial:1,
 			filters:{pfiltro:'estes.prioridad',type:'numeric'},
 			id_grupo:1,
 			grid:true,
@@ -109,7 +138,7 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 				name: 'regla',
 				fieldLabel: 'Regla (función a llamar)',
 				allowBlank: true,
-				anchor: '80%',
+				anchor: '100%',
 				gwidth: 300,
 				maxLength:1000
 			},

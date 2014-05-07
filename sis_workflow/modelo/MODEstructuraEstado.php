@@ -53,7 +53,7 @@ class MODEstructuraEstado extends MODbase{
 		$this->setParametro('id_tipo_estado_padre','id_tipo_estado_padre','int4');
 		$this->setParametro('id_tipo_estado_hijo','id_tipo_estado_hijo','int4');
 		$this->setParametro('prioridad','prioridad','int4');
-		$this->setParametro('regla','regla','varchar');
+		$this->setParametro('regla','regla','codigo_html');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -75,7 +75,7 @@ class MODEstructuraEstado extends MODbase{
 		$this->setParametro('id_tipo_estado_padre','id_tipo_estado_padre','int4');
 		$this->setParametro('id_tipo_estado_hijo','id_tipo_estado_hijo','int4');
 		$this->setParametro('prioridad','prioridad','int4');
-		$this->setParametro('regla','regla','varchar');
+		$this->setParametro('regla','regla','codigo_html');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
