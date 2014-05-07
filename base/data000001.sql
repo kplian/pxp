@@ -52,3 +52,9 @@ select pxp.f_insert_tgui ('Personas', 'Personas', 'INITRAHP.5.1', 'no', 0, 'sis_
 select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'INITRAHP.5.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 5, '', 'subirFotoPersona', 'WF');
 
 /****************************F-DAT-JRR-PXP-0-25/04/2014******************/
+
+/****************************I-DAT-JRR-PXP-0-07/05/2014******************/
+select pxp.f_insert_tgui ('Alertas', 'Alertas', 'ALERTA', 'si', 102, 'sis_parametros/vista/alarma/AlarmaFuncionario.php', 1, '../../../lib/imagenes/warning.png', 'AlarmaFuncionario', 'PXP');
+select pxp.f_insert_tgui ('Configurar', 'Configurar', 'CONFIG', 'si', 102, 'sis_seguridad/vista/configurar/Configurar.php', 1, '../../../lib/imagenes/config.32x32.png', 'Configurar', 'PXP');
+
+/****************************F-DAT-JRR-PXP-0-07/05/2014******************/
