@@ -664,6 +664,7 @@ class Mensaje
 
 	function ofuscar_json($json){
         //var_dump($json);
+        
         $json = str_replace("'", "\"",$json);    
         
         $temp = json_decode($json,true);
@@ -671,8 +672,7 @@ class Mensaje
         
         $k=0;
         foreach($temp as $f){
-            //echo 'XX';
-            //var_dump($f);
+                
             $tmp=array();
             $tmp  =  array_keys($f);
             $tam  =  sizeof($tmp);
