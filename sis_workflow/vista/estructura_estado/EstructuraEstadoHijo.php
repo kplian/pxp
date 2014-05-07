@@ -26,7 +26,7 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
                             title: 'Datos principales',
                             autoHeight: true,
                             border:false,
-                            //margin:'5 5 5 5',
+                            margin:'5 5 5 5',
                             items: [],
                             id_grupo:0
                            },
@@ -266,7 +266,9 @@ Phx.vista.EstructuraEstadoHijo=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:false
+	bsave:false,
+	fheight: '80%',
+    fwidth: '80%'
 	}
 )
 </script>
