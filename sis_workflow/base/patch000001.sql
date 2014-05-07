@@ -326,11 +326,6 @@ IS 'campo que describe el tipo de proceso';
 --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
-  DROP CONSTRAINT ttipo_estado_fk RESTRICT;
-  
---------------- SQL ---------------
-
-ALTER TABLE wf.ttipo_estado
   ADD COLUMN descripcion VARCHAR;  
 
 --------------- SQL ---------------
