@@ -300,7 +300,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                     //DESTRUIR TARJETAS
                     this.destruirTarjetas();
                     // CREAR TARJETAS .....
-                    var procesos = Ext.util.JSON.decode(reg.ROOT.datos.procesos);
+                    var procesos = Ext.util.JSON.decode(reg.ROOT.datos.json_procesos);
                     //optine al  panel de wizard
                     var wizard = this.form.getComponent('card-wizard-panel');
                         
