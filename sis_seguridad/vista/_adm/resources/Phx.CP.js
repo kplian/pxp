@@ -11,6 +11,22 @@
 Ext.BLANK_IMAGE_URL = 'resources/s.gif';
 Ext.FORMATO_MONETARIO = '0.000,00/i';
 
+Ext.override(Ext.form.Field, 
+	{	afterRender : Ext.form.Field.prototype.afterRender.createSequence(function()
+		{
+			var qt = this.qtip;
+		    if (qt)
+		    {	Ext.QuickTips.register({
+		        target:  this,
+		        title: '',
+		        text: qt,
+		        enabled: true,
+		        showDelay: 20
+		    	});
+		    }
+		})
+	});
+
 //RCM: 18/11/2011 Vtype personalizado para validación de fechas por rango y de comparación de passwords
 Ext.apply(Ext.form.VTypes, {
     daterange : function(val, field) {
