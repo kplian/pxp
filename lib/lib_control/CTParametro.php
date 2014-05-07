@@ -532,14 +532,12 @@ class CTParametro{
 					
 					if(isset($tmp[$i])){
 					  $aux=substr($tmp[$i],0,3);
-					
-					//echo '----'.$tmp[$i]; exit;
-							if(strpos($aux,'id_')!==false ||$tmp[$i]=='node'|| $tmp[$i]=='id'){
+					  if(strpos($aux,'id_')!==false ||$tmp[$i]=='node'|| $tmp[$i]=='id'){
 								//ofucasmos todas las variables que comiensen con id_
 		
 								//cuando la variable nodo se maneja desde arboles la primera vez el valor es
 								//igual a 'id' y no es necesaria la desofuscacion
-							//if( $tmp[$i]!='id_proveedor'){ echo $tmp[$i]; exit;}
+		    					//if( $tmp[$i]!='id_proveedor'){ echo $tmp[$i]; exit;}
 							   if($tmp[$i]!='node' || $this->arreglo_parametros[$tmp[$i]]!='id'){
 			                        //quitamos la ofuscacion de los identificadores
 			                    
@@ -547,7 +545,15 @@ class CTParametro{
 								    //if( $tmp[$i]!='id_proveedor'){ echo '---'.$this->arreglo_parametros[$tmp[$i]]; exit;}
 								}
 						
-					  }
+		         		}
+		         		$aux=substr($tmp[$i],0,5);
+                        if(strpos($aux,'json_')!==false){
+                                
+                                $this->arreglo_parametros[$tmp[$i]]=$this->desofuscar_json($this->arreglo_parametros[$tmp[$i]]);
+                                
+                        
+                        }    
+		         		    
 						
 					}
 				}
@@ -580,25 +586,14 @@ class CTParametro{
 					if(strpos($aux,'id_')!==false){
 						//ofucasmos todas las variables que comiensen con id_
 
-						/*	var_dump($this->arreglo_parametros[$j]);
-						 var_dump($tmp[$i]);*/
-
-
-						//var_dump($this->arreglo_parametros[$j][$tmp[$i]]);
-							
-
 						$this->arreglo_parametros[$j][$tmp[$i]]=$this->desofuscar($f[$tmp[$i]]);
-
-						//var_dump($this->arreglo_parametros[$j][$tmp[$i]]);
-
-							
-
-
-						//  var_dump($this->desofuscar($f[$tmp[$i]]));
-
-						//    var_dump(this->arreglo_parametros[$j][$tmp[$i]]);
-						//var_dump($f);
 					}
+					
+					 $aux=substr($tmp[$i],0,5);
+                     if(strpos($aux,'json_')!==false){
+                        $this->arreglo_parametros[$j][$tmp[$i]]=$this->desofuscar_json($f[$tmp[$i]]);
+                     }
+					
 				  }
 				}
 
@@ -608,6 +603,50 @@ class CTParametro{
 		}
 	}
 
+	
+	
+    
+    /*
+     * Nombre funcion:  desofuscar
+     * Proposito:   quita la ofuscacion de cadenas json
+     * Fecha creacion:  07/05/2014
+     * autor:rac
+     * Modificacion: Rensi Arteaga Copari
+     */
+    
+    public function desofuscar_json($json){
+            
+        $json = str_replace("'", "\"",$json);    
+        
+        $temp = json_decode($json,true);
+        
+        $k=0;
+        foreach($temp as $f){
+                
+            $tmp=array();
+            $tmp  =  array_keys($f);
+            $tam  =  sizeof($tmp);
+                    
+            for( $ii=0; $ii<= $tam; $ii++){
+                     
+                 $aux=substr($tmp[$ii],0,3);
+                 if(strpos($aux,'id_')!==false){
+                   $temp[$k][$tmp[$ii]]=$this->desofuscar($f[$tmp[$ii]]);
+                 }       
+                
+            }
+            
+            $k++;
+        }
+        
+        
+        return  json_encode($temp);
+          
+    }
+	
+	
+	
+	
 /**
 	 * Nombre funcion:	desofuscar
 	 * Proposito:	quita la ofuscacion de los identificadores

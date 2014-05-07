@@ -300,7 +300,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                     //DESTRUIR TARJETAS
                     this.destruirTarjetas();
                     // CREAR TARJETAS .....
-                    var procesos = Ext.util.JSON.decode(reg.ROOT.datos.procesos);
+                    var procesos = Ext.util.JSON.decode(reg.ROOT.datos.json_procesos);
                     //optine al  panel de wizard
                     var wizard = this.form.getComponent('card-wizard-panel');
                         
@@ -821,8 +821,8 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                         iniar_pro:this.form.getForm().findField('iniar_pro['+i+']').getValue(),
                         id_tipo_proceso_pro:this.form.getForm().findField('id_tipo_proceso_pro['+i+']').getValue(),
                         id_tipo_estado_pro:this.form.getForm().findField('id_tipo_estado_pro['+i+']').getValue(),
-                        id_depto_wf_pro:(t_id_depto>0)?t_id_depto:undefined,
-                        id_funcionario_wf_pro:(t_id_func>0)?t_id_func:undefined,
+                        id_depto_wf_pro:(t_id_depto)?t_id_depto:undefined,
+                        id_funcionario_wf_pro:(t_id_func)?t_id_func:undefined,
                         obs_pro:this.form.getForm().findField('obs_pro['+i+']').getValue()
                       });  
                  }

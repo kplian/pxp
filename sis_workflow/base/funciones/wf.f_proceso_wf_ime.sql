@@ -786,7 +786,7 @@ BEGIN
          
          -- si hay mas de un estado disponible  preguntamos al usuario
          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','check procesos disparado'); 
-         v_resp = pxp.f_agrega_clave(v_resp,'procesos',v_json);
+         v_resp = pxp.f_agrega_clave(v_resp,'json_procesos',v_json);
            
          --Devuelve la respuesta
          return v_resp;

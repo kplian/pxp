@@ -382,7 +382,9 @@ class Mensaje
 		}
 		//sino devuelvo un mensaje
 		else{
-		    
+		    if($_SESSION["_OFUSCAR_ID"]=='si'){
+               $this->ofuscarIdentificadores();
+            }
 			return $this->generarMensajeJson();
 		}		
 	}
@@ -600,6 +602,14 @@ class Mensaje
 							$this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
 							//echo $tmp[$i].".......</br>".$f[$tmp[$i]];
 						}
+						//RAC 5/5/2014
+						//verificamos si la varialble contiene una cadena json_
+						$aux=substr($tmp[$i],0,5);
+                        if(strpos($aux,'json_')!==false){
+                            //ofucasmos todas las variables que comiensen con id_
+                             $this->datos[$j][$tmp[$i]]=$this->ofuscar_json($f[$tmp[$i]]);
+                             
+                        }
 					}
 				}
 				$j++;
@@ -626,12 +636,62 @@ class Mensaje
 							//ofucasmos todas las variables que comiensen con id_
 							$this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);
 						}
+						//RAC 5/5/2014
+                        //verificamos si la varialble contiene una cadena json_
+                        $aux=substr($tmp[$i],0,5);
+                        if(strpos($aux,'json_')!==false){
+                            //ofucasmos todas las variables que comiensen con id_
+                            $this->datos[$tmp[$i]]=$this->ofuscar_json($this->datos[$tmp[$i]]);
+                             //echo $tmp[$i].".......</br>";
+                             
+                        }
+						
+						
 					}
 			}
 			
 			
 		}
 	}
+	
+	/*
+	 * Nombre funcion:  ofuscar_json
+     * Proposito:   decodifica una cadena json, busca los identificadores , los ofusca  y retorna la nueva cade json codificada
+     * Fecha creacion:  07/05/2014
+     * autor:rac
+     * Modificacion: Rensi Arteaga Copari
+     */
+
+	function ofuscar_json($json){
+        //var_dump($json);
+        
+        $json = str_replace("'", "\"",$json);    
+        
+        $temp = json_decode($json,true);
+        
+        
+        $k=0;
+        foreach($temp as $f){
+                
+            $tmp=array();
+            $tmp  =  array_keys($f);
+            $tam  =  sizeof($tmp);
+                    
+            for( $ii=0; $ii<= $tam; $ii++){
+                     
+                 $aux=substr($tmp[$ii],0,3);
+                 if(strpos($aux,'id_')!==false){
+                   $temp[$k][$tmp[$ii]]=$this->ofuscar($f[$tmp[$ii]]);
+                 }       
+                
+            }
+            
+            $k++;
+        }
+         
+        return  json_encode($temp);
+    }	
+	
 /**
  
 	 * Nombre funcion:	ofuscar
