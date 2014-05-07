@@ -382,3 +382,81 @@ IS 'Este codigo permite identificar en tiempode ejecucion la anturaleza del proc
 
 /***********************************F-SCP-RAC-WF-0-29/04/2014****************************************/
 
+/*******************************************I-SCP-JRR-WF-0-07/05/2014*************************************/
+
+CREATE TABLE wf.ttabla (
+  id_tabla SERIAL NOT NULL,
+  id_tipo_proceso INTEGER NOT NULL, 
+  bd_nombre_tabla VARCHAR(100) NOT NULL,
+  bd_codigo_tabla VARCHAR(25) NOT NULL, 
+  bd_descripcion TEXT, 
+  bd_scripts_extras TEXT, 
+  vista_tipo VARCHAR(30) NOT NULL, 
+  vista_posicion VARCHAR(50), 
+  vista_id_tabla_maestro INTEGER,
+  vista_campo_ordenacion VARCHAR(100),
+  vista_dir_ordenacion VARCHAR(3),  
+  vista_campo_maestro INTEGER,
+  vista_scripts_extras	TEXT,
+  menu_nombre VARCHAR(100), 
+  menu_icono VARCHAR(100), 
+  menu_codigo VARCHAR(25), 
+  PRIMARY KEY(id_tabla)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+COMMENT ON COLUMN wf.ttabla.vista_id_tabla_maestro
+IS 'la tabla qu es maestro en caso de que sea detalle';
+
+COMMENT ON COLUMN wf.ttabla.vista_campo_maestro
+IS 'el campo del maestro en caso de ser detalle';
+
+COMMENT ON COLUMN wf.ttabla.vista_scripts_extras
+IS 'En este campo debe registrarse un json con los metodos que se desean sobrescribir de la clase';
+
+COMMENT ON COLUMN wf.ttabla.bd_scripts_extras
+IS 'En este campo se puede definir llaves foraneas, indices, triggers, funciones y otros que puedan ser necesarios para la tabla';
+
+
+CREATE TABLE wf.ttipo_columna (
+  id_tipo_columna SERIAL NOT NULL,
+  id_tabla INTEGER NOT NULL, 
+  bd_nombre_columna VARCHAR(100) NOT NULL,
+  bd_tipo_columna VARCHAR(100) NOT NULL,
+  bd_descripcion_columna TEXT, 
+  bd_campos_adicionales TEXT, 
+  bd_joins_adicionales TEXT, 
+  grid_sobreescribe_filtro TEXT,  
+  grid_campos_adicionales TEXT,
+  form_tipo_columna VARCHAR(100) NOT NULL, 
+  form_es_combo VARCHAR(2), 
+  form_combo_rec VARCHAR(50), 
+  form_sobreescribe_config INTEGER,  
+  PRIMARY KEY(id_tipo_columna)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+COMMENT ON COLUMN wf.ttipo_columna.bd_campos_adicionales
+IS 'el formato es : "nombre_columna nombre_modelo tipo" separados por comas por cada campo adicional';
+
+COMMENT ON COLUMN wf.ttipo_columna.grid_campos_adicionales
+IS 'el formato es : "nombre tipo formato" separados por comas por cada campo adicional';
+
+COMMENT ON COLUMN wf.ttipo_columna.form_sobreescribe_config
+IS 'sobreescribir el config de una columna en la vista, debe ser un objeto de tipo json {}';
+
+COMMENT ON COLUMN wf.ttipo_columna.grid_sobreescribe_filtro
+IS 'sobreescribir el filtro de una columna en la vista, debe ser un objeto de tipo json {}';
+
+
+CREATE TABLE wf.tcolumna_estado (
+  id_columna_estado SERIAL NOT NULL,
+  id_tipo_columna INTEGER NOT NULL,
+  id_tipo_estado INTEGER NOT NULL, 
+  momento VARCHAR(100) NOT NULL,   
+  PRIMARY KEY(id_columna_estado)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/*******************************************F-SCP-JRR-WF-0-07/05/2014*************************************/
+

@@ -344,3 +344,46 @@ select pxp.f_insert_tprocedimiento_gui ('WF_DEPTIPES_SEL', 'STR.4', 'no');
 select pxp.f_insert_tprocedimiento_gui ('WF_DOCWFAR_MOD', 'STR.5', 'no');
 
 /*******************************************F-DEP-JRR-WF-0-25/04/2014*************************************/
+
+/*******************************************I-DEP-JRR-WF-0-07/05/2014*************************************/
+DROP TABLE wf.tcolumna_valor;
+DROP TABLE wf.tcolumna;
+
+ALTER TABLE wf.ttabla
+  ADD CONSTRAINT fk_ttabla__id_tipo_proceso FOREIGN KEY (id_tipo_proceso)
+    REFERENCES wf.ttipo_proceso(id_tipo_proceso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE wf.ttabla
+  ADD CONSTRAINT fk_ttabla__vista_id_tabla_maestro FOREIGN KEY (vista_id_tabla_maestro)
+    REFERENCES wf.ttabla(id_tabla)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+    
+ALTER TABLE wf.ttipo_columna
+  ADD CONSTRAINT fk_ttipo_columna__id_tabla FOREIGN KEY (id_tabla)
+    REFERENCES wf.ttabla(id_tabla)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+ALTER TABLE wf.tcolumna_estado
+  ADD CONSTRAINT fk_tcolumna_estado__id_tipo_estado FOREIGN KEY (id_tipo_estado)
+    REFERENCES wf.ttipo_estado(id_tipo_estado)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+ALTER TABLE wf.tcolumna_estado
+  ADD CONSTRAINT fk_tcolumna_estado__id_tipo_columna FOREIGN KEY (id_tipo_columna)
+    REFERENCES wf.ttipo_columna(id_tipo_columna)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+/*******************************************F-DEP-JRR-WF-0-07/05/2014*************************************/
