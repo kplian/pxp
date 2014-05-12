@@ -228,6 +228,8 @@ BEGIN
 
      elsif(par_transaccion='PM_DEPFILUSU_SEL')then
 
+
+         --raise exception 'LLEga';
         
           v_codadd = '';
           
@@ -297,7 +299,7 @@ BEGIN
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                              '||v_inner||'
-                            WHERE '||v_codadd;
+                            WHERE   DEPPTO.estado_reg = ''activo''  and '||v_codadd;
                
               
                v_consulta:=v_consulta||v_parametros.filtro;
@@ -371,7 +373,7 @@ BEGIN
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                              '||v_inner||'
-                            WHERE '||v_codadd;
+                            WHERE DEPPTO.estado_reg = ''activo''  and   '||v_codadd;
                
                raise notice '%',v_consulta;
                
@@ -452,7 +454,7 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             inner join param.tdepto_uo_ep due on 
                                 due.id_depto = DEPPTO.id_depto and due.estado_reg = ''activo'' 
-                            WHERE  
+                            WHERE  DEPPTO.estado_reg = ''activo'' and  
                             
                             
                             
@@ -530,7 +532,7 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             inner join param.tdepto_uo_ep due on 
                                 due.id_depto = DEPPTO.id_depto and due.estado_reg = ''activo'' 
-                            WHERE  
+                            WHERE  DEPPTO.estado_reg = ''activo'' and  
                             
                                 (
                                 (due.id_ep,due.id_uo) in ('||v_uos_eps||')
