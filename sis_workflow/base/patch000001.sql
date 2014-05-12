@@ -396,7 +396,7 @@ CREATE TABLE wf.ttabla (
   vista_id_tabla_maestro INTEGER,
   vista_campo_ordenacion VARCHAR(100),
   vista_dir_ordenacion VARCHAR(3),  
-  vista_campo_maestro INTEGER,
+  vista_campo_maestro VARCHAR(50),
   vista_scripts_extras	TEXT,
   menu_nombre VARCHAR(100), 
   menu_icono VARCHAR(100), 

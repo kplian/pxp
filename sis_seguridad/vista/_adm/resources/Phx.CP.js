@@ -432,7 +432,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 // ////////////////////////////////////////
 Ext.namespace('Phx','Phx.vista');
 Phx.CP=function(){
-    var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista,windowManager;
+    var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista;
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
 	var contNodo = 0;
@@ -522,7 +522,7 @@ Phx.CP=function(){
 		                action = parts[0],
 		                tab = mainPanel.getComponent(tabId);		            
 		            
-		            windowManager.each(function(w){
+		            Ext.WindowMgr.each(function(w){
 		            	w.close();
 		            	
 		            },this);	            
@@ -667,7 +667,7 @@ Phx.CP=function(){
 
         	// definicion de una instacia de la clase MainPanel
 			mainPanel=new MainPanel({menuTree:menu});
-			windowManager = new Ext.WindowGroup(), 
+			//windowManager = new Ext.WindowGroup(), 
 			mainPanel.on('tabchange', function(tp, tab){
 				if(tab){  
 					var aux = tab.id.split('-');
@@ -1245,9 +1245,9 @@ Phx.CP=function(){
 			return mainPanel;
 		},
 		
-		getWindowManager:function(){
+		/*getWindowManager:function(){
 			return windowManager;
-		},
+		},*/
 
 
 		elementos:new Array(),
@@ -1462,7 +1462,7 @@ Phx.CP=function(){
 					id:wid,// manager: this.windows,
 					// anchor: '100% 100%',  // anchor width and height
 					autoDestroy:true,
-					manager : this.getWindowManager(),
+					//manager : this.getWindowManager(),
 					//layout: 'border',
 					//height:screen.height,
 				   // width:'100%',
