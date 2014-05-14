@@ -1,0 +1,183 @@
+CREATE OR REPLACE FUNCTION "wf"."ft_tabla_ime" (	
+				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
+RETURNS character varying AS
+$BODY$
+
+/**************************************************************************
+ SISTEMA:		Work Flow
+ FUNCION: 		wf.ft_tabla_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'wf.ttabla'
+ AUTOR: 		 (admin)
+ FECHA:	        07-05-2014 21:39:40
+ COMENTARIOS:	
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+
+ DESCRIPCION:	
+ AUTOR:			
+ FECHA:		
+***************************************************************************/
+
+DECLARE
+
+	v_nro_requerimiento    	integer;
+	v_parametros           	record;
+	v_id_requerimiento     	integer;
+	v_resp		            varchar;
+	v_nombre_funcion        text;
+	v_mensaje_error         text;
+	v_id_tabla	integer;
+			    
+BEGIN
+
+    v_nombre_funcion = 'wf.ft_tabla_ime';
+    v_parametros = pxp.f_get_record(p_tabla);
+
+	/*********************************    
+ 	#TRANSACCION:  'WF_tabla_INS'
+ 	#DESCRIPCION:	Insercion de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2014 21:39:40
+	***********************************/
+
+	if(p_transaccion='WF_tabla_INS')then
+					
+        begin
+        	--Sentencia de la insercion
+        	insert into wf.ttabla(
+			id_tipo_proceso,
+			vista_id_tabla_maestro,
+			bd_scripts_extras,
+			vista_campo_maestro,
+			vista_scripts_extras,
+			bd_descripcion,
+			vista_tipo,
+			menu_icono,
+			menu_nombre,
+			vista_campo_ordenacion,
+			vista_posicion,
+			estado_reg,
+			menu_codigo,
+			bd_nombre_tabla,
+			bd_codigo_tabla,
+			vista_dir_ordenacion,
+			fecha_reg,
+			id_usuario_reg,
+			id_usuario_mod,
+			fecha_mod
+          	) values(
+			v_parametros.id_tipo_proceso,
+			v_parametros.vista_id_tabla_maestro,
+			v_parametros.bd_scripts_extras,
+			v_parametros.vista_campo_maestro,
+			v_parametros.vista_scripts_extras,
+			v_parametros.bd_descripcion,
+			v_parametros.vista_tipo,
+			v_parametros.menu_icono,
+			v_parametros.menu_nombre,
+			v_parametros.vista_campo_ordenacion,
+			v_parametros.vista_posicion,
+			'activo',
+			v_parametros.menu_codigo,
+			v_parametros.bd_nombre_tabla,
+			v_parametros.bd_codigo_tabla,
+			v_parametros.vista_dir_ordenacion,
+			now(),
+			p_id_usuario,
+			null,
+			null
+							
+			)RETURNING id_tabla into v_id_tabla;
+			
+			--Definicion de la respuesta
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla almacenado(a) con exito (id_tabla'||v_id_tabla||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_id_tabla::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'WF_tabla_MOD'
+ 	#DESCRIPCION:	Modificacion de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2014 21:39:40
+	***********************************/
+
+	elsif(p_transaccion='WF_tabla_MOD')then
+
+		begin
+			--Sentencia de la modificacion
+			update wf.ttabla set
+			id_tipo_proceso = v_parametros.id_tipo_proceso,
+			vista_id_tabla_maestro = v_parametros.vista_id_tabla_maestro,
+			bd_scripts_extras = v_parametros.bd_scripts_extras,
+			vista_campo_maestro = v_parametros.vista_campo_maestro,
+			vista_scripts_extras = v_parametros.vista_scripts_extras,
+			bd_descripcion = v_parametros.bd_descripcion,
+			vista_tipo = v_parametros.vista_tipo,
+			menu_icono = v_parametros.menu_icono,
+			menu_nombre = v_parametros.menu_nombre,
+			vista_campo_ordenacion = v_parametros.vista_campo_ordenacion,
+			vista_posicion = v_parametros.vista_posicion,
+			menu_codigo = v_parametros.menu_codigo,
+			bd_nombre_tabla = v_parametros.bd_nombre_tabla,
+			bd_codigo_tabla = v_parametros.bd_codigo_tabla,
+			vista_dir_ordenacion = v_parametros.vista_dir_ordenacion,
+			id_usuario_mod = p_id_usuario,
+			fecha_mod = now()
+			where id_tabla=v_parametros.id_tabla;
+               
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'WF_tabla_ELI'
+ 	#DESCRIPCION:	Eliminacion de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2014 21:39:40
+	***********************************/
+
+	elsif(p_transaccion='WF_tabla_ELI')then
+
+		begin
+			--Sentencia de la eliminacion
+			delete from wf.ttabla
+            where id_tabla=v_parametros.id_tabla;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+         
+	else
+     
+    	raise exception 'Transaccion inexistente: %',p_transaccion;
+
+	end if;
+
+EXCEPTION
+				
+	WHEN OTHERS THEN
+		v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp;
+				        
+END;
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE
+COST 100;
+ALTER FUNCTION "wf"."ft_tabla_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

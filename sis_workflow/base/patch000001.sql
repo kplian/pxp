@@ -395,12 +395,14 @@ CREATE TABLE wf.ttabla (
   vista_posicion VARCHAR(50), 
   vista_id_tabla_maestro INTEGER,
   vista_campo_ordenacion VARCHAR(100),
-  vista_dir_ordenacion VARCHAR(3),  
+  vista_dir_ordenacion VARCHAR(4),  
   vista_campo_maestro VARCHAR(50),
   vista_scripts_extras	TEXT,
   menu_nombre VARCHAR(100), 
   menu_icono VARCHAR(100), 
-  menu_codigo VARCHAR(25), 
+  menu_codigo VARCHAR(25),
+  ejecutado VARCHAR(2) DEFAULT 'no' NOT NULL,
+  script_ejecutado VARCHAR(2) DEFAULT 'no' NOT NULL,
   PRIMARY KEY(id_tabla)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -423,15 +425,19 @@ CREATE TABLE wf.ttipo_columna (
   id_tabla INTEGER NOT NULL, 
   bd_nombre_columna VARCHAR(100) NOT NULL,
   bd_tipo_columna VARCHAR(100) NOT NULL,
-  bd_descripcion_columna TEXT, 
+  bd_descripcion_columna TEXT,
+  bd_tamano_columna VARCHAR(5),  
   bd_campos_adicionales TEXT, 
-  bd_joins_adicionales TEXT, 
+  bd_joins_adicionales TEXT,
+  bd_formula_calculo TEXT, 
   grid_sobreescribe_filtro TEXT,  
   grid_campos_adicionales TEXT,
-  form_tipo_columna VARCHAR(100) NOT NULL, 
+  form_tipo_columna VARCHAR(100) NOT NULL,
+  form_label VARCHAR(100), 
   form_es_combo VARCHAR(2), 
   form_combo_rec VARCHAR(50), 
-  form_sobreescribe_config INTEGER,  
+  form_sobreescribe_config TEXT, 
+  ejecutado VARCHAR(2) DEFAULT 'no' NOT NULL,
   PRIMARY KEY(id_tipo_columna)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
