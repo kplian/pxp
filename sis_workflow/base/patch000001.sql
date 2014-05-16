@@ -482,3 +482,78 @@ IS 'este campo recibe los cargo del depto que reciben la alerta, si no tiene val
 /*******************************************F-SCP-RAC-WF-0-15/05/2014*************************************/
 
 
+/***********************************I-SCP-RCM-WF-0-05/05/2014****************************************/
+CREATE TABLE wf.ttipo_componente (
+  id_tipo_componente SERIAL,
+  codigo VARCHAR(50) UNIQUE,
+  nombre VARCHAR(100),
+  CONSTRAINT pk_id_tipo_componente PRIMARY KEY(id_tipo_componente)
+) INHERITS (pxp.tbase);
+
+COMMENT ON TABLE wf.ttipo_componente
+IS 'Almacena los tipos de componente disponibles para la generación de formularios dinámicos';
+
+COMMENT ON COLUMN wf.ttipo_componente.id_tipo_componente
+IS 'Identificador de la tabla';
+
+COMMENT ON COLUMN wf.ttipo_componente.codigo
+IS 'Codigo unico que representa al componente';
+
+COMMENT ON COLUMN wf.ttipo_componente.nombre
+IS 'Nombre descriptivo del componente';
+
+CREATE TABLE wf.ttipo_propiedad (
+  id_tipo_propiedad SERIAL,
+  codigo VARCHAR(50) NOT NULL,
+  nombre VARCHAR(150) NOT NULL,
+  tipo_dato VARCHAR(30) NOT NULL,
+  PRIMARY KEY(id_tipo_propiedad)
+) INHERITS (pxp.tbase);
+
+COMMENT ON TABLE wf.ttipo_propiedad
+IS 'Almacena los tipos de propiedad generales que podrán ser relacionados a los tipos de componente';
+
+COMMENT ON COLUMN wf.ttipo_propiedad.id_tipo_propiedad
+IS 'Identificador de la tabla';
+
+COMMENT ON COLUMN wf.ttipo_propiedad.id_tipo_componente
+IS 'Llave foranea a la tabla wf.ttipo_componente';
+
+COMMENT ON COLUMN wf.ttipo_propiedad.codigo
+IS 'Codigo unico que representa al tipo de propiedad';
+
+COMMENT ON COLUMN wf.ttipo_propiedad.nombre
+IS 'Nombre descriptivo del tipo de propiedad';
+
+COMMENT ON COLUMN wf.ttipo_propiedad.tipo_dato
+IS 'Tipo de dato por defecto para el valor del tipo de propiedad';
+
+CREATE TABLE wf.ttipo_comp_tipo_prop (
+  id_tipo_comp_tipo_prop SERIAL,
+  id_tipo_propiedad INTEGER NOT NULL,
+  id_tipo_componente INTEGER NOT NULL,
+  obligatorio VARCHAR(2) NOT NULL,
+  tipo_dato VARCHAR(40) NOT NULL,
+  PRIMARY KEY(id_tipo_comp_tipo_prop)
+) INHERITS (pxp.tbase)
+;
+
+COMMENT ON TABLE wf.ttipo_comp_tipo_prop
+IS 'Almacena los tipos de propiedad para cada tipo de componente';
+
+COMMENT ON COLUMN wf.ttipo_comp_tipo_prop.id_tipo_comp_tipo_prop
+IS 'Identificador de la tabla';
+
+COMMENT ON COLUMN wf.ttipo_comp_tipo_prop.id_tipo_propiedad
+IS 'Llave foranea de la tabla wf.ttipo_propiedad';
+
+COMMENT ON COLUMN wf.ttipo_comp_tipo_prop.id_tipo_componente
+IS 'Llave foranea de la tabla wf.ttipo_componente';
+
+COMMENT ON COLUMN wf.ttipo_comp_tipo_prop.obligatorio
+IS 'Define si el registro del valor del tipo de propiedad sera obligatorio';
+
+COMMENT ON COLUMN wf.ttipo_comp_tipo_prop.tipo_dato
+IS 'Tipo de dato para el valor del tipo de propiedad';
+
+/***********************************F-SCP-RCM-WF-0-05/05/2014****************************************/

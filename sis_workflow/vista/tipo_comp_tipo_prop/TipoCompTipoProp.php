@@ -111,7 +111,7 @@ Phx.vista.TipoCompTipoProp=Ext.extend(Phx.gridInterfaz,{
 				name: 'tipo_dato',
 				fieldLabel: 'Tipo de dato',
 				anchor: '100%',
-				tinit: true,
+				tinit: true,z|
 				allowBlank: false,
 				origen: 'CATALOGO',
 				gdisplayField: 'tipo_dato',
