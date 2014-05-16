@@ -26,7 +26,15 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_tabla	integer;
+	v_id_tabla				integer;
+    v_tabla					record;
+    v_query					varchar;
+    v_col_ejecutadas		integer;
+    v_ejecuta_tabla			integer;
+    v_ejecuta_script		integer;
+    v_columnas				record;
+    v_mensaje				varchar;
+    v_tamano				varchar;
 			    
 BEGIN
 
@@ -154,6 +162,96 @@ BEGIN
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tabla eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+		
+	/*********************************    
+ 	#TRANSACCION:  'WF_EJSCTABLA_PRO'
+ 	#DESCRIPCION:	Eliminacion de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2014 21:39:40
+	***********************************/
+
+	elsif(p_transaccion='WF_EJSCTABLA_PRO')then
+
+		begin
+        	
+        	v_col_ejecutadas = 0;
+    		v_ejecuta_tabla = 0;
+    		v_ejecuta_script = 0;
+            
+        	--Obtener esquema, datos de tabla            
+            select lower(s.codigo) as esquema, t.*
+            into v_tabla
+            from wf.ttabla t 
+            inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
+            inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
+            inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
+            where t.id_tabla = v_parametros.id_tabla;
+            
+            if (v_tabla.ejecutado = 'no')then
+                --Crear Tabla
+                v_query = 'CREATE TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' (' ||
+                            'id_' || v_tabla.bd_nombre_tabla || ' SERIAL NOT NULL,
+                            PRIMARY KEY (id_' || v_tabla.bd_nombre_tabla || ')) INHERITS (pxp.tbase);';
+                execute (v_query);
+                
+                update wf.ttabla set ejecutado = 'si' where id_tabla = v_parametros.id_tabla;
+                
+                v_ejecuta_tabla = 1;
+            end if;
+                     
+			-- Crear Columnas
+            for v_columnas in (	select * from wf.ttipo_columna 
+            					where id_tabla = v_parametros.id_tabla and ejecutado = 'no') loop
+            	v_tamano = '';
+                if (v_columnas.bd_tamano_columna is not null and v_columnas.bd_tamano_columna != '') then
+                	v_tamano = '(' || replace(v_columnas.bd_tamano_columna, '_', ',') || ')';
+                end if;
+                v_query = '	ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '
+  							ADD COLUMN ' || v_columnas.bd_nombre_columna || ' ' || v_columnas.bd_tipo_columna || v_tamano || ';';
+                             
+                execute (v_query);
+                
+                update wf.ttipo_columna set ejecutado = 'si' where id_tipo_columna = v_columnas.id_tipo_columna;
+                
+                v_col_ejecutadas = v_col_ejecutadas + 1;
+            end loop;
+            
+            --Ejecutar Scripts Adicionales
+            if (v_tabla.script_ejecutado = 'no' and (
+            			v_tabla.bd_scripts_extras is not null and trim(both ' ' from v_tabla.bd_scripts_extras) != '') )then 
+                        
+            	execute (v_tabla.bd_scripts_extras);
+                
+                update wf.ttabla set script_ejecutado = 'si' where id_tabla = v_parametros.id_tabla;
+                v_ejecuta_script = 1;
+            end if;
+            
+            if (v_ejecuta_script = 0 and v_col_ejecutadas = 0 and v_ejecuta_tabla = 0) then
+            	raise exception 'No hay ningun script, tabla o columna para ejecutar. En caso de querer adicionar scripts, guardelos en el campo de texto y ejecutelos directamente en la base de datos';
+            end if;            
+            
+            if (v_ejecuta_script = 1) then
+            	v_mensaje =  'Se han creado la tabla correctamente';
+            ELSE
+            	v_mensaje = 'No se ha creado la tabla, debido a que ya se encontraba creada. ';
+            end if;
+            
+            v_mensaje =  v_mensaje || 'Se han creado ' || v_col_ejecutadas || ' columnas en al tabla. ' ;        
+                       
+            if (v_ejecuta_script = 1) then
+            	v_mensaje =  v_mensaje || 'Se han ejecutado los scripts adicionales.';
+            ELSE
+            	v_mensaje = v_mensaje || 'No se han ejecutado los scripts adicionales, debido a que ya fueron ejecutados.';
+            end if;                      
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje',v_mensaje); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
               
             --Devuelve la respuesta

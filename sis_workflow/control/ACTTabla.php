@@ -36,6 +36,14 @@ class ACTTabla extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function ejecutarScriptTabla(){
+		$this->objFunc=$this->create('MODTabla');	
+				
+		$this->res=$this->objFunc->ejecutarScriptTabla($this->objParam);
+		
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 						
 	function eliminarTabla(){
 			$this->objFunc=$this->create('MODTabla');	

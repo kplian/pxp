@@ -20,9 +20,9 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
 		this.addButton('btnGenerar',
             {
                 text: 'Ejecutar',
-                iconCls: 'b',
+                iconCls: 'bexecdb',
                 disabled: true,
-                handler: this.onBtnTablas,
+                handler: this.onBtnEjecutarScript,
                 tooltip: 'Ejecutar Script de Creación de Base de Datos, Columnas y Scripts Adicionales'
             }
         );
@@ -524,7 +524,26 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
     	this.Cmp.menu_icono.allowBlank = true;    	
     	
     },
-    
+    preparaMenu : function () {
+    	this.getBoton('btnGenerar').enable();
+    	Phx.vista.Tabla.superclass.preparaMenu.call(this);
+    },
+    liberaMenu : function () {
+    	this.getBoton('btnGenerar').disable();
+    	Phx.vista.Tabla.superclass.liberaMenu.call(this);
+    },
+    onBtnEjecutarScript : function (params){
+    	var rec = this.sm.getSelected();		
+		Ext.Ajax.request({
+				url:'../../sis_workflow/control/Tabla/ejecutarScriptTabla',
+				success:this.successDel,
+				failure:this.conexionFailure,
+				params:{'id_tabla':rec.data.id_tabla },
+				timeout:this.timeout,
+				scope:this
+			})
+    	    	
+    },
 	Grupos: [
             {
                 layout: 'column',

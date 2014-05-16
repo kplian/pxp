@@ -134,6 +134,23 @@ class MODTabla extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function ejecutarScriptTabla(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='wf.ft_tabla_ime';
+		$this->transaccion='WF_EJSCTABLA_PRO';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_tabla','id_tabla','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>
