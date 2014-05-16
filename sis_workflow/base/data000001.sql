@@ -281,3 +281,14 @@ select pxp.f_insert_tprocedimiento ('WF_VERSIGPRO_BK', 'Verificas los parametros
 select pxp.f_insert_tprocedimiento ('WF_UPDPLAMEN_MOD', 'Actualizar la plantilla de mensajes de correo', 'si', '', '', 'wf.ft_tipo_estado_ime');
 
 /******************************************F-DAT-JRR-WF-0-25/04/2014**********************************************/
+
+
+
+
+/******************************************I-DAT-RCM-WF-0-21/05/2014**********************************************/
+
+select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','string');
+select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','date');
+select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','numeric');
+
+/******************************************F-DAT-RCM-WF-0-21/05/2014**********************************************/
