@@ -18,6 +18,15 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.TipoProceso.superclass.constructor.call(this,config);
 		this.init();
+		this.addButton('btnTabla',
+            {
+                text: 'Tablas',
+                iconCls: 'blist',
+                disabled: true,
+                handler: this.onBtnTablas,
+                tooltip: 'Tablas del Proceso'
+            }
+        );
 		
 		 this.bloquearOrdenamientoGrid();
 		this.cmbProcesoMacro.on('select', function(){
@@ -459,28 +468,59 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_tipo_proceso',
 		direction: 'ASC'
 	},
+	onBtnTablas: function(){
+			var rec = {maestro: this.sm.getSelected().data};
+						      
+            Phx.CP.loadWindows('../../../sis_workflow/vista/tabla/Tabla.php',
+                    'Tablas Relacionadas a este tipo proceso',
+                    {
+                        width:800,
+                        height:'90%'
+                    },
+                    rec,
+                    this.idContenedor,
+                    'Tabla');
+	},
 	tabeast:[
 		  {
     		  url:'../../../sis_workflow/vista/tipo_estado/TipoEstado.php',
     		  title:'Estados', 
-    		  width:400,
+    		  width:450,
     		  cls:'TipoEstado'
 		  },
 		  {
               url:'../../../sis_workflow/vista/tipo_documento/TipoDocumento.php',
-              title:'Tipo de Documentos', 
-              width:400,
+              title:'Tipo Documento', 
+              width:450,
               cls:'TipoDocumento'
+          },
+           {
+              url:'../../../sis_workflow/vista/tipo_columna/TipoColumna.php',
+              title:'Tipo Columna', 
+              width:450,
+              cls:'TipoColumna'
           },
 		  {
     		url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
             title:'Labores', 
-            width:400,
+            width:450,
             cls:'LaboresTipoProceso'    
 		  }
 		],
 	bdel:true,
-	bsave:false
+	bsave:false,
+	preparaMenu:function()
+    {	
+        this.getBoton('btnTabla').enable();  
+            
+        Phx.vista.TipoProceso.superclass.preparaMenu.call(this);
+    },
+    liberaMenu:function()
+    {	
+        this.getBoton('btnTabla').disable(); 
+              
+        Phx.vista.TipoProceso.superclass.liberaMenu.call(this);
+    },
 	}
 )
 </script>
