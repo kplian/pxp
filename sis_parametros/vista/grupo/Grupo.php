@@ -37,7 +37,7 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'nombre',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 180,
 				maxLength:400
 			},
 			type:'TextField',
@@ -167,7 +167,7 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
     east:{
           url:'../../../sis_parametros/vista/grupo_ep/GrupoEp.php',
           title:'Roles', 
-          width:400,
+          width:'45%',
           cls:'GrupoEp'
          }
     }

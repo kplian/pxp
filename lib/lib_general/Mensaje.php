@@ -715,11 +715,11 @@ class Mensaje
 		foreach($ids as $idk){		
 			if($idk!=''){
 				if($sw==0){
-					$respue=$iFeis->encriptar($idk.'.'.$_SESSION["_SEMILLA_OFUS"],$_SESSION['key_p'],$_SESSION['key_k'],1);
+					$respue=$iFeis->encriptar($idk.'...'.$_SESSION["_SEMILLA_OFUS"],$_SESSION['key_p'],$_SESSION['key_k'],1);
 				    $sw=1;
 				}
 				else{
-			    	$respue=$respue.','.$iFeis->encriptar($idk.'.'.$_SESSION["_SEMILLA_OFUS"],$_SESSION['key_p'],$_SESSION['key_k'],1);
+			    	$respue=$respue.','.$iFeis->encriptar($idk.'...'.$_SESSION["_SEMILLA_OFUS"],$_SESSION['key_p'],$_SESSION['key_k'],1);
 				}
 			  }
 			}

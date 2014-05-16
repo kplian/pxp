@@ -522,9 +522,12 @@ Phx.CP=function(){
 		                action = parts[0],
 		                tab = mainPanel.getComponent(tabId);		            
 		            
+		            
+		            //cerramos todas las ventanas abiertas con loadWindows
 		            Ext.WindowMgr.each(function(w){
-		            	w.close();
-		            	
+		            	if(w.is_page){
+		            		w.close();
+		            	}
 		            },this);	            
 		            
 		            
@@ -1477,6 +1480,7 @@ Phx.CP=function(){
 					} 
 				}));
 				Win.show();
+				Win.is_page=true;
 				return wid;
 			}
 			

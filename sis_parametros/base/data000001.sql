@@ -791,3 +791,18 @@ select pxp.f_insert_tprocedimiento ('PM_GETALA_SEL', 'recupera datos de la alert
 
 
 /***********************************F-DAT-JRR-PARAM-0-25/04/2014*****************************************/
+
+
+
+/***********************************I-DAT-RAC-PARAM-0-15/05/2014*****************************************/
+
+select pxp.f_add_catalog('PARAM','tdepto_usuario_cargo','responsable');
+select pxp.f_add_catalog('PARAM','tdepto_usuario_cargo','auxiliar');
+
+/***********************************F-DAT-RAC-PARAM-0-15/05/2014*****************************************/
+
+
+
+
+
+

@@ -460,3 +460,19 @@ WITHOUT OIDS;
 
 /*******************************************F-SCP-JRR-WF-0-07/05/2014*************************************/
 
+
+
+/*******************************************I-SCP-RAC-WF-0-15/05/2014*************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN cargo_depto VARCHAR(200)[];
+
+COMMENT ON COLUMN wf.ttipo_estado.cargo_depto
+IS 'este campo recibe los cargo del depto que reciben la alerta, si no tiene valores se les manda  todos';
+
+
+/*******************************************F-SCP-RAC-WF-0-15/05/2014*************************************/
+
+
