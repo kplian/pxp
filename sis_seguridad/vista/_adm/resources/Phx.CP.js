@@ -479,7 +479,7 @@ Phx.CP=function(){
         			
         			Ext.Ajax.request({
 	                    url:'../../sis_parametros/control/Alarma/getAlarma',
-	                    params:{'id_alarma':token_inicio},
+	                    params:{'alarma':token_inicio},
 	                    success : function(response, opts) {
 	                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText)).datos;	                    	
 														

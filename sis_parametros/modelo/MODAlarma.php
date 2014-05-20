@@ -223,7 +223,7 @@ class MODAlarma extends MODbase{
 		$this->setCount(false);
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_alarma','id_alarma','int4');
+		$this->setParametro('id_alarma','alarma','int4');
 		
 		$this->captura('id_alarma','int4');
         $this->captura('acceso_directo','varchar');
