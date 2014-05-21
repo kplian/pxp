@@ -11,11 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 
-Phx.vista.gui=function(config){
-	
-	
-
-
+Phx.vista.gui=function(config) {
 	   this.Atributos =[
 	      //Primera posicion va el identificador de nodo
 		{
@@ -203,6 +199,20 @@ Phx.vista.gui=function(config){
 			type:'TextField',
 			id_grupo:1,
 			form:true
+		},
+		{
+			config:{
+				fieldLabel: "Parametros",
+				gwidth: 120,
+				name: 'parametros',
+				
+				allowBlank:true,
+				anchor:'100%'
+				
+			},
+			type:'TextArea',
+			id_grupo:1,
+			form:true
 		}];
 		
 		Phx.vista.gui.superclass.constructor.call(this,config);
@@ -285,6 +295,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').enable();
 				this.getComponente('icono').enable();
 				this.getComponente('clase_vista').enable();
+				this.getComponente('parametros').enable();
 			}
 			else{
 				
@@ -292,6 +303,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').disable();
 				this.getComponente('icono').disable();
 				this.getComponente('clase_vista').disable();
+				this.getComponente('parametros').disable();
 				
 			}	
 		
@@ -335,6 +347,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').enable();
 				this.getComponente('icono').enable();
 				this.getComponente('clase_vista').enable();
+				this.getComponente('parametros').enable();
 			}
 			else{
 				
@@ -342,6 +355,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').disable();
 				this.getComponente('icono').disable();
 				this.getComponente('clase_vista').disable();
+				this.getComponente('parametros').disable();
 			}	
 			Phx.vista.gui.superclass.onButtonEdit.call(this);
 		},
@@ -356,11 +370,13 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 					this.getComponente('ruta_archivo').enable();
 				    this.getComponente('icono').enable();
 				    this.getComponente('clase_vista').enable();
+				    this.getComponente('parametros').enable();
 				}
 				else{
 					this.getComponente('ruta_archivo').disable();
 					this.getComponente('icono').disable();
 					this.getComponente('clase_vista').disable();
+					this.getComponente('parametros').disable();
 				}
 			},this)
 		},

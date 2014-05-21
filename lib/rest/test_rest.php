@@ -3,12 +3,12 @@
 	
 	include 'PxpRestClient.php';	
 	//phpinfo();
-	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/')
-					->setCredentialsPxp('jrivera','jrivera');
+	$pxpRestClient = PxpRestClient::connect('192.168.56.101','kerp-boa/pxp/lib/rest/')
+					->setCredentialsPxp('admin','admin');
 	//echo $pxpRestClient->doGet('libre/tesoreria/CuentaDocumentadaEndesis/listarFondoAvance2',array("limit"=>'10'));
 	//echo $pxpRestClient->doGet('tesoreria/CuentaDocumentadaEndesis/listarFondoAvance',array("limit"=>'10'));
-	echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array());
-	echo $pxpRestClient->doPost('tesoreria/CuentaDocumentadaEndesis/aprobarFondoAvance',array("id_cuenta_documentada"=>'356',"accion"=>"cancelar"));
+	//echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array());
+	echo $pxpRestClient->doGet('workflow/Tabla/cargarDatosTablaProceso',array("tipo_proceso"=>'SOLCO',"tipo_estado"=>"borrador",'limit'=>'100'));
 	
 
 

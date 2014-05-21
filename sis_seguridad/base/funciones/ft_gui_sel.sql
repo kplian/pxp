@@ -98,7 +98,8 @@ BEGIN
                                            ELSE 
                                            (g.id_gui||''_interface'')::varchar
                                          END 
-                                         as id_nodo
+                                         as id_nodo,
+                                         g.parametros
                                   FROM segu.tgui g
                                        '||v_join||' JOIN segu.testructura_gui eg
                                        ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
@@ -153,7 +154,8 @@ BEGIN
                              (g.id_gui||''_interface'')::varchar
                            END 
                            as id_nodo,
-                           g.imagen
+                           g.imagen,
+                           g.parametros
                     FROM segu.tgui g
                          INNER  JOIN segu.testructura_gui eg
                          ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
@@ -188,7 +190,8 @@ BEGIN
                                     g.icono,
                                     g.clase_vista,
                                     s.codigo,
-                                    g.estado_reg
+                                    g.estado_reg,
+                                    g.parametros
                                   from segu.tgui g
                                   inner join segu.tsubsistema s
                                       on s.id_subsistema = g.id_subsistema
@@ -218,7 +221,8 @@ BEGIN
                 					g.nombre,
                                     g.descripcion,
                                     g.ruta_archivo,
-                                    g.clase_vista
+                                    g.clase_vista,
+                                    g.parametros
                                   from segu.tgui g
                                   where estado_reg = ''activo'' and ruta_archivo is not null and visible = ''si'' 
                                   	and clase_vista is not null and ((nivel > 1) or (nivel = 1 and subsistema = 0)) and trim(both '' '' from ruta_archivo) != '''' and  trim(both '' '' from clase_vista) !=''''

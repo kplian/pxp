@@ -80,7 +80,8 @@ BEGIN
                                         ELSE
                                             ''hoja''::varchar
                                         END,
-                                        g.icono 
+                                        g.icono,
+                                        g.parametros
                                   FROM segu.tgui g
                                        INNER JOIN segu.testructura_gui eg
                                        ON g.id_gui=eg.id_gui
@@ -116,7 +117,8 @@ BEGIN
                        ELSE
                            ''hoja''::varchar
                    END ,
-                   g.icono 
+                   g.icono,
+                   g.parametros 
                    FROM segu.tgui g
                    inner join segu.testructura_gui eg
                    INNER JOIN segu.tgui padre

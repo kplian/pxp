@@ -948,3 +948,10 @@ CREATE TABLE segu.tvideo (
 ) INHERITS (pxp.tbase);
 
 /*****************************F-SCP-FFP-SEGU-0-25/04/2014*************/
+
+/*****************************I-SCP-JRR-SEGU-0-21/05/2014*************/
+
+ALTER TABLE segu.tgui
+  ADD COLUMN parametros TEXT;
+
+/*****************************F-SCP-JRR-SEGU-0-21/05/2014*************/

@@ -1,10 +1,14 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tabla_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION wf.ft_tabla_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
- FUNCION: 		wf.ft_tabla_sel
+ FUNCION: 		wf.ft_tabla_instancia_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttabla'
  AUTOR: 		 (admin)
  FECHA:	        07-05-2014 21:39:40
@@ -69,6 +73,7 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = tabla.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tabla.id_usuario_mod
 						left join wf.ttabla maestro on tabla.vista_id_tabla_maestro = maestro.id_tabla
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tabla.id_tipo_proceso
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -96,6 +101,7 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = tabla.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tabla.id_usuario_mod
 						left join wf.ttabla maestro on tabla.vista_id_tabla_maestro = maestro.id_tabla
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tabla.id_tipo_proceso
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -121,7 +127,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_tabla_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

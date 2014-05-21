@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tabla_sel"(	
+CREATE OR REPLACE FUNCTION "wf"."ft_tabla_instancia_sel"(	
 				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
 /**************************************************************************
  SISTEMA:		Work Flow
- FUNCION: 		wf.ft_tabla_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttabla'
+ FUNCION: 		wf.ft_tabla_instancia_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttabla_instancia'
  AUTOR: 		 (admin)
  FECHA:	        07-05-2014 21:39:40
  COMENTARIOS:	
@@ -52,7 +52,11 @@ BEGIN
             where t.id_tabla = v_parametros.id_tabla;
     		
     		--Sentencia de la consulta
-			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ';
+			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ' || 
+						 	v_tabla.bd_codigo_tabla || '.estado, ' ||
+						 	v_tabla.bd_codigo_tabla || '.id_estado_wf, ' ||
+						 	v_tabla.bd_codigo_tabla || '.id_proceso_wf, ';
+						 	 
 			v_joins_adicionales = '';
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
