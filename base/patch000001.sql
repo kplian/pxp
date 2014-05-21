@@ -119,3 +119,13 @@ CREATE TABLE pxp.tforenkey (
 CREATE EXTENSION IF NOT EXISTS hstore;
 
 /****************************F-SCP-GSS-PXP-0-04/07/2013*************/
+
+
+
+/****************************I-SCP-RAC-PXP-0-19/05/2014*************/
+
+ALTER TABLE pxp.tbase
+  ADD COLUMN id_usuario_ai INTEGER;
+
+/****************************F-SCP-RAC-PXP-0-19/05/2014*************/
+

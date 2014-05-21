@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_validar_usuario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -42,6 +44,8 @@ v_autentificacion varchar;
 v_id_persona integer;
 v_id_funcionario integer;
 v_contrasena varchar;
+v_id_cargo integer;
+v_cont_interino  integer;
 
 /*
 
@@ -74,6 +78,14 @@ BEGIN
                     
  #AUTOR_MOD:		KPLIAN(rac)	
  #FECHA_MOD:		22-11-2011	
+  *******************************    
+
+ #DESCRIPCION_MOD:	(1) se aumenta la verificacion de interinos
+                    
+                    
+ #AUTOR_MOD:		KPLIAN(rac)	
+ #FECHA_MOD:		20-05-2014	
+ 
 ***********************************/
 
      if(par_transaccion='SEG_VALUSU_SEG')then
@@ -85,11 +97,25 @@ BEGIN
            --     
             v_id_usuario=null;
             SELECT 
-                  u.id_usuario,u.cuenta,p.nombre,p.apellido_paterno,
-                  p.apellido_materno,u.estilo,u.autentificacion,p.id_persona,u.contrasena
+                  u.id_usuario,
+                  u.cuenta,
+                  p.nombre,
+                  p.apellido_paterno,
+                  p.apellido_materno,
+                  u.estilo,
+                  u.autentificacion,
+                  p.id_persona,
+                  u.contrasena
             INTO
-                  v_id_usuario,v_cuenta,v_nombre,v_apellido_paterno,
-                  v_apellido_materno,v_estilo,v_autentificacion,v_id_persona,v_contrasena
+                  v_id_usuario,
+                  v_cuenta,
+                  v_nombre,
+                  v_apellido_paterno,
+                  v_apellido_materno,
+                  v_estilo,
+                  v_autentificacion,
+                  v_id_persona,
+                  v_contrasena
             FROM segu.tusuario u 
             INNER JOIN segu.tpersona p  
                 	ON  p.id_persona = u.id_persona
@@ -117,8 +143,12 @@ BEGIN
               --verificamos si el usuario tiene alertas
               v_cont_alertas = 0;
               
-              SELECT count(id_alarma) ,ala.id_funcionario
-              into v_cont_alertas,v_id_funcionario
+              SELECT 
+                   count(id_alarma) ,
+                   ala.id_funcionario
+              into 
+                  v_cont_alertas,
+                  v_id_funcionario
               FROM  param.talarma ala
               LEFT JOIN orga.tfuncionario fun 
                 on fun.id_funcionario = ala.id_funcionario 
@@ -135,13 +165,51 @@ BEGIN
               --este este inactivo o activo
               
               IF(v_id_funcionario is null) THEN
-                    SELECT id_funcionario into  v_id_funcionario
+                    SELECT 
+                       id_funcionario 
+                     into  
+                       v_id_funcionario
                     FROM orga.tfuncionario fun 
-                    WHERE fun.id_persona = v_id_persona and fun.estado_reg = 'activo';
+                    WHERE 
+                         fun.id_persona = v_id_persona 
+                    and  fun.estado_reg = 'activo';
               END IF;
               
+              --obtenermos el cargo
+              IF(v_id_funcionario is not null) THEN
+                    
+                    SELECT 
+                        uof.id_cargo 
+                      into  
+                        v_id_cargo
+                    FROM orga.tuo_funcionario  uof
+                    WHERE uof.id_funcionario =  v_id_funcionario
+                          and uof.tipo = 'oficial'
+                          and uof.estado_reg = 'activo'
+                          and uof.fecha_asignacion <= now() 
+                          and (uof.fecha_finalizacion >=now() or   uof.fecha_finalizacion is NULL);
+              
+             
+           
+            END IF;
+              
+             
+              -- obtenermos el numero de suplentes
+              
+               IF(v_id_cargo is not null) THEN
+                
+                  select 
+                    count(int.id_interinato) into v_cont_interino
+                  from orga.tinterinato int
+                  where  
+                          now()::Date BETWEEN  int.fecha_ini  and int.fecha_fin
+                     and  int.id_cargo_suplente =  v_id_cargo  
+                     and int.estado_reg='activo'; 
+                     
+               END IF;
               
               v_cont_alertas=COALESCE(v_cont_alertas,0);
+              v_cont_interino=COALESCE(v_cont_interino,0);
               --raise exception '%',v_id_funcionario;
                     
 
@@ -153,8 +221,11 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'apellido_materno',v_apellido_materno);
                v_resp = pxp.f_agrega_clave(v_resp,'estilo',v_estilo);
                v_resp = pxp.f_agrega_clave(v_resp,'cont_alertas',v_cont_alertas::varchar);
+               v_resp = pxp.f_agrega_clave(v_resp,'cont_interino',v_cont_interino::varchar);
+               
                v_resp = pxp.f_agrega_clave(v_resp,'id_persona',v_id_persona::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_id_funcionario::varchar);
+               v_resp = pxp.f_agrega_clave(v_resp,'id_cargo',v_id_cargo::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'autentificacion',v_autentificacion::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'contrasena',v_contrasena::varchar);
               

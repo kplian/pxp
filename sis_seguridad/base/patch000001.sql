@@ -948,3 +948,23 @@ CREATE TABLE segu.tvideo (
 ) INHERITS (pxp.tbase);
 
 /*****************************F-SCP-FFP-SEGU-0-25/04/2014*************/
+
+
+
+
+/*****************************I-SCP-RAC-SEGU-0-21/5/2014*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN tipo SET DEFAULT 'oficial';
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN tipo SET NOT NULL;
+
+
+/*****************************I-SCP-RAC-SEGU-0-21/05/2014*************/
+
+
+
+

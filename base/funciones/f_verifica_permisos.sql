@@ -87,7 +87,10 @@ begin
              'PM_ALARM_ELI',
              'SEG_LISTUSU_SEG',
              'SG_CONF_MOD',
-             'PM_GETALA_SEL'))) THEN
+             'PM_GETALA_SEL',
+             'OR_INT_SEL',
+             'OR_INT_CONT',
+             'OR_APLINT_IME'))) THEN
             po_tiene_permisos = true;
          
          END IF; 

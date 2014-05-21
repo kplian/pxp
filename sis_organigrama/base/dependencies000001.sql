@@ -289,3 +289,47 @@ select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'ESTORG.2.1.2.1', '
 select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'FUNCIO.2.1', 'no');
 
 /*********************************F-DEP-JRR-ORGA-0-25/04/2014***********************************/
+
+
+/*********************************I-DEP-RAC-ORGA-0-25/05/2014***********************************/
+
+
+ALTER TABLE orga.tinterinato
+  ADD CONSTRAINT tinterinato_ed_usuario_fk FOREIGN KEY (id_usuario_reg)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+    
+--------------- SQL ---------------
+
+ALTER TABLE orga.tinterinato
+  ADD CONSTRAINT fk_tinterinato__id_usuario_mod FOREIGN KEY (id_usuario_mod)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+    
+--------------- SQL ---------------
+
+ALTER TABLE orga.tinterinato
+  ADD CONSTRAINT fk_tinterinato__id_cargo_titular FOREIGN KEY (id_cargo_titular)
+    REFERENCES orga.tcargo(id_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+    
+--------------- SQL ---------------
+
+ALTER TABLE orga.tinterinato
+  ADD CONSTRAINT fk_tinterinato__id_cargo_suplente FOREIGN KEY (id_cargo_suplente)
+    REFERENCES orga.tcargo(id_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/*********************************F-DEP-RAC-ORGA-0-25/05/2014***********************************/
+
