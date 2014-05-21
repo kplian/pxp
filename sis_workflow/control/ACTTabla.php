@@ -50,6 +50,23 @@ class ACTTabla extends ACTbase{
 		$this->res=$this->objFunc->eliminarTabla($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function cargarDatosTablaProceso(){
+		$this->objParam->defecto('ordenacion','id_tabla');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+		$this->objParam->addFiltro("tp.codigo = ''". $this->objParam->getParametro('tipo_proceso')."''");
+		$this->objParam->addFiltro("TABLA.vista_id_tabla_maestro is null");
+		
+		
+		$this->objFunc=$this->create('MODTabla');
+			
+		$this->res=$this->objFunc->cargarDatosTablaProceso();
+		
+		$_SESSION['_wf_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')] = $this->res->getDatos();
+		
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 

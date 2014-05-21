@@ -149,7 +149,8 @@ BEGIN
                                 nivel,
                                 icono,
                                 id_subsistema,
-                                clase_vista)
+                                clase_vista,
+                                parametros)
                          values(
                               
                                 v_parametros.codigo_gui,
@@ -161,7 +162,8 @@ BEGIN
                                 v_nivel+1, 
                                 v_parametros.icono,
                                 v_id_subsistema,
-                                v_parametros.clase_vista)
+                                v_parametros.clase_vista,
+                                v_parametros.parametros)
                          RETURNING id_gui into v_id_gui;
                             
 
@@ -225,7 +227,8 @@ BEGIN
                        ruta_archivo=v_parametros.ruta_archivo,                      
                        icono=v_parametros.icono,
                        --id_subsistema=v_parametros.id_subsistema,
-                       clase_vista=v_parametros.clase_vista
+                       clase_vista=v_parametros.clase_vista,
+                       parametros=v_parametros.parametros
 
                  where id_gui=v_parametros.id_gui;  
                  

@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tipo_columna_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_tipo_columna_sel
@@ -105,6 +109,61 @@ BEGIN
 			return v_consulta;
 
 		end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'WF_TIPCOLES_SEL'
+ 	#DESCRIPCION:	Consulta de datos por estado
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2014 21:41:15
+	***********************************/
+
+	elsif(p_transaccion='WF_TIPCOLES_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+						tipcol.id_tipo_columna,
+						tipcol.id_tabla,
+						tabla.id_tipo_proceso,
+						tipcol.bd_campos_adicionales,
+						tipcol.form_combo_rec,
+						tipcol.bd_joins_adicionales,
+						tipcol.bd_descripcion_columna,
+						tipcol.bd_tamano_columna,
+						tipcol.bd_formula_calculo,
+						tipcol.form_sobreescribe_config,
+						tipcol.form_tipo_columna,
+						tipcol.grid_sobreescribe_filtro,
+						tipcol.estado_reg,
+						tipcol.bd_nombre_columna,
+						tipcol.form_es_combo,
+						tipcol.form_label,
+						tipcol.grid_campos_adicionales,
+						tipcol.bd_tipo_columna,
+						tipcol.id_usuario_reg,
+						tipcol.fecha_reg,
+						tipcol.id_usuario_mod,
+						tipcol.fecha_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod,
+                        coles.momento	
+						from wf.ttipo_columna tipcol
+						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
+						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
+                        left join wf.tcolumna_estado coles on coles.id_tipo_columna = tipcol.id_tipo_columna
+                        left join wf.ttipo_estado te on te.id_tipo_estado = coles.id_tipo_estado
+						left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
+				        where  ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||' and (te.codigo = '''|| v_parametros.tipo_estado || ''' or te.codigo is null) ';
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
 					
 	else
 					     
@@ -121,7 +180,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_tipo_columna_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

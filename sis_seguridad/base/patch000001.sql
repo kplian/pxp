@@ -952,6 +952,7 @@ CREATE TABLE segu.tvideo (
 
 
 
+
 /*****************************I-SCP-RAC-SEGU-0-21/5/2014*************/
 
 --------------- SQL ---------------
@@ -967,4 +968,11 @@ ALTER TABLE orga.tuo_funcionario
 
 
 
+
+/*****************************I-SCP-JRR-SEGU-0-21/05/2014*************/
+
+ALTER TABLE segu.tgui
+  ADD COLUMN parametros TEXT;
+
+/*****************************F-SCP-JRR-SEGU-0-21/05/2014*************/
 

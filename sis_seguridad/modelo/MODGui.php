@@ -47,7 +47,7 @@
 		$this->captura('clase_vista','varchar'); 
 		$this->captura('tipo_dato','varchar');
 		$this->captura('icono','varchar');
-		//$this->captura('texto','varchar');
+		$this->captura('json_parametros','text');
 					
 		
 		$this->armarConsulta();
@@ -83,6 +83,7 @@
 		$this->captura('clase_vista','varchar');
 		$this->captura('tipo_dato','varchar');
 		$this->captura('id_nodo','varchar');
+		$this->captura('json_parametros','text');
 	
 		$this->armarConsulta();
 		
@@ -123,6 +124,7 @@
 		$this->captura('id_nodo','varchar');
 		
 		$this->captura('imagen','varchar');
+		$this->captura('json_parametros','text');
 	
 		$this->armarConsulta();
 		
@@ -146,6 +148,7 @@
 		$this->captura('descripcion','text'); 
 		$this->captura('ruta_archivo','text');
 		$this->captura('clase_vista','varchar');
+		$this->captura('json_parametros','text');
 		
 		$this->armarConsulta();
 		
@@ -177,7 +180,7 @@
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('clase_vista','clase_vista','varchar');
 		$this->setParametro('tipo_dato','tipo_dato','varchar');
-		
+		$this->setParametro('json_parametros','parametros','text');
 	
     	//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -207,6 +210,7 @@
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('clase_vista','clase_vista','varchar');
 		$this->setParametro('tipo_dato','tipo_dato','varchar');
+		$this->setParametro('json_parametros','parametros','text');
 		
 		
 		//Ejecuta la instruccion
