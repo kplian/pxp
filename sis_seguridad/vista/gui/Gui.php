@@ -296,7 +296,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').enable();
 				this.getComponente('icono').enable();
 				this.getComponente('clase_vista').enable();
-				this.getComponente('parametros').enable();
+				this.getComponente('json_parametros').enable();
 			}
 			else{
 				
@@ -304,7 +304,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').disable();
 				this.getComponente('icono').disable();
 				this.getComponente('clase_vista').disable();
-				this.getComponente('parametros').disable();
+				this.getComponente('json_parametros').disable();
 				
 			}	
 		
@@ -348,7 +348,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').enable();
 				this.getComponente('icono').enable();
 				this.getComponente('clase_vista').enable();
-				this.getComponente('parametros').enable();
+				this.getComponente('json_parametros').enable();
 			}
 			else{
 				
@@ -356,7 +356,7 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 				this.getComponente('ruta_archivo').disable();
 				this.getComponente('icono').disable();
 				this.getComponente('clase_vista').disable();
-				this.getComponente('parametros').disable();
+				this.getComponente('json_parametros').disable();
 			}	
 			Phx.vista.gui.superclass.onButtonEdit.call(this);
 		},
@@ -371,13 +371,13 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 					this.getComponente('ruta_archivo').enable();
 				    this.getComponente('icono').enable();
 				    this.getComponente('clase_vista').enable();
-				    this.getComponente('parametros').enable();
+				    this.getComponente('json_parametros').enable();
 				}
-				else{
+				else{ 
 					this.getComponente('ruta_archivo').disable();
 					this.getComponente('icono').disable();
 					this.getComponente('clase_vista').disable();
-					this.getComponente('parametros').disable();
+					this.getComponente('json_parametros').disable();
 				}
 			},this)
 		},
