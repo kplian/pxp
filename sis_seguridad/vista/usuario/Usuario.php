@@ -6,7 +6,6 @@
 *@date 14-02-2011 
 *@description  Vista para desplegar lista de usuarios
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>

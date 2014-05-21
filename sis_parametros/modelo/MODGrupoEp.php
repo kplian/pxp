@@ -100,6 +100,27 @@ class MODGrupoEp extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function sincUoEp(){
+        
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_grupo_ep_ime';
+        $this->transaccion='PM_SINCGREPUO_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('config','config','varchar');
+        $this->setParametro('id_grupo','id_grupo','int4');
+        
+        
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

@@ -44,6 +44,12 @@ class ACTGrupoEp extends ACTbase{
 		$this->res=$this->objFunc->eliminarGrupoEp($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function sincUoEp(){
+        $this->objFunc=$this->create('MODGrupoEp');   
+        $this->res=$this->objFunc->sincUoEp($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

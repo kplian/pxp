@@ -112,28 +112,27 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		},
         {
             config:{
-                name: 'fin',
-                fieldLabel: 'Fin ?',
+                name:'fin',
+                fieldLabel:'Fin ?',
                 allowBlank: false,
-                anchor: '40%',
-                gwidth: 50,
+                anchor:'40%',
+                gwidth:50,
                 maxLength:2,
                 emptyText:'si/no...',                   
-                typeAhead: true,
-                triggerAction: 'all',
+                typeAhead:true,
+                triggerAction:'all',
                 lazyRender:true,
-                mode: 'local',
-                valueField: 'inicio',                   
+                mode:'local',
+                valueField:'inicio',                   
                // displayField: 'descestilo',
                 store:['si','no']
             },
             type:'ComboBox',
             //filters:{pfiltro:'promac.inicio',type:'string'},
             id_grupo:1,
-            filters:{   
-                         type: 'list',
-                         pfiltro:'tipes.fin',
-                         options: ['si','no'],  
+            filters:{type: 'list',
+                     pfiltro:'tipes.fin',
+                     options: ['si','no']
                     },
             grid:true,
             form:true
@@ -310,6 +309,54 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         },
         {
             config:{
+                    name:'cargo_depto',
+                    fieldLabel:'Cargo',
+                    qtip:'En este campo se defines los  cargos que reciben alerta,  si no se marca niguno se los manda a todos',
+                    tinit:false,
+                    resizable:true,
+                    tasignacion:false,
+                    allowBlank:true,
+                    store: new Ext.data.JsonStore({
+                            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                            id: 'id_catalogo',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'descripcion',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_catalogo','codigo','descripcion'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams: {par_filtro:'descripcion',
+                                         cod_subsistema : 'PARAM',
+                                         catalogo_tipo : 'tdepto_usuario_cargo'}
+                        }),
+                    
+                    valueField: 'descripcion',
+                    displayField: 'descripcion',
+                    gdisplayField: 'cargo_depto',
+                    hiddenName: 'catalogo',
+                    forceSelection:true,
+                    typeAhead: false,
+                    triggerAction: 'all',
+                    lazyRender:true,
+                    mode:'remote',
+                    pageSize:10,
+                    queryDelay:1000,
+                    width:250,
+                    enableMultiSelect:true,
+                    minChars:2
+                },
+                type:'AwesomeCombo',
+                id_grupo:0,
+                grid:true,
+                form:true
+        },
+        
+        
+        {
+            config:{
                 name: 'obs',
                 fieldLabel: 'Obs(config adicional)',
                 allowBlank: true,
@@ -424,7 +471,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_tipo_proceso', type: 'string'},
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
-		'plantilla_mensaje_asunto','plantilla_mensaje'
+		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto'
 		
 	],
 	sortInfo:{
@@ -494,11 +541,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         return tb
     },
     
-    
-    
-    
-	
-	bdel:true,
+    bdel:true,
 	bsave:false
 	}
 )

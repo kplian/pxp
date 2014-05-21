@@ -670,7 +670,7 @@ class CTParametro{
 		
 		    $sw=0;
 			foreach($idso as $idr){	
-                       $ido=explode(".",$iFeis->encriptar($idr,$_SESSION['key_p_inv'],$_SESSION['key_k'],2));
+                       $ido=explode("...",$iFeis->encriptar($idr,$_SESSION['key_p_inv'],$_SESSION['key_k'],2));
                         if($ido[1]!=$_SESSION["_SEMILLA_OFUS"]){
 							throw new Exception('Un identificador a sido distorcionado',2);
 						}

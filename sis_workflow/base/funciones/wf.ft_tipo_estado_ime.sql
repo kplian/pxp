@@ -78,7 +78,8 @@ BEGIN
             nombre_depto_func_list,
             fin,
             alerta,
-            pedir_obs
+            pedir_obs,
+            cargo_depto
           	) values(
 			v_parametros.nombre_estado,
 			v_parametros.id_tipo_proceso,
@@ -97,7 +98,8 @@ BEGIN
             v_parametros.nombre_depto_func_list,
             v_parametros.fin,
             v_parametros.alerta,
-        	v_parametros.pedir_obs
+        	v_parametros.pedir_obs,
+            string_to_array(v_parametros.cargo_depto,',')
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -137,7 +139,8 @@ BEGIN
             nombre_depto_func_list=v_parametros.nombre_depto_func_list,
             fin=v_parametros.fin,
             alerta=v_parametros.alerta,
-        	pedir_obs=v_parametros.pedir_obs
+        	pedir_obs=v_parametros.pedir_obs,
+            cargo_depto=string_to_array(v_parametros.cargo_depto,',')
 			where id_tipo_estado=v_parametros.id_tipo_estado;
             
             --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '

@@ -45,6 +45,7 @@ class MODTipoEstado extends MODbase{
 		
 		$this->captura('plantilla_mensaje_asunto','varchar');
 		$this->captura('plantilla_mensaje','varchar');
+		$this->captura('cargo_depto','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -133,6 +134,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('fin','fin','varchar');
 		$this->setParametro('alerta','alerta','varchar');
 		$this->setParametro('pedir_obs','pedir_obs','varchar');
+		$this->setParametro('cargo_depto','cargo_depto','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -164,6 +166,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('fin','fin','varchar');
 		$this->setParametro('alerta','alerta','varchar');
         $this->setParametro('pedir_obs','pedir_obs','varchar');
+        $this->setParametro('cargo_depto','cargo_depto','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

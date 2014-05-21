@@ -108,21 +108,30 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
    		   
    			grid:true,
    			form:true
-       	},{
-			config:{
-				name: 'cargo',
-				fieldLabel: 'Cargo',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:50
-			},
-			type:'TextField',
-			filters:{pfiltro:'depusu.cargo',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
+       	}, {
+            config : {
+                name : 'cargo',
+                fieldLabel : 'Cargo',
+                anchor : '100%',
+                tinit : false,
+                allowBlank : false,
+                origen : 'CATALOGO',
+                gdisplayField : 'cargo',
+                gwidth : 100,
+                baseParams : {
+                    cod_subsistema : 'PARAM',
+                    catalogo_tipo : 'tdepto_usuario_cargo'
+                }
+            },
+            type : 'ComboRec',
+            id_grupo : 0,
+            filters : {
+                pfiltro : 'depusu.cargo',
+                type : 'string'
+            },
+            grid : true,
+            form : true
+        },
 		{
                 config:{
                     name:'sw_alerta',

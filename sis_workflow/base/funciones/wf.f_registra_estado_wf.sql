@@ -119,7 +119,8 @@ BEGIN
      pm.nombre as nombre_proceso_macro,
      te.plantilla_mensaje,
      te.plantilla_mensaje_asunto,
-     te.disparador
+     te.disparador,
+     te.cargo_depto
     INTO
      v_registros
     FROM wf.ttipo_estado te
@@ -261,21 +262,22 @@ BEGIN
               END IF;
               
               
-            --raise exception  'id_depto % ,%',v_registros_ant.id_depto   ,p_id_depto;  
+             --manejo de alertas para departamentos
               
-              --RAC TODOm comentado para que el depto de aduqiisicones recibva alertas, analizar si hay otra forma de hacerlo
-              --IF p_id_depto is not NULL  and  (v_registros_ant.id_depto is null or v_registros_ant.id_depto != p_id_depto)  THEN
-               
+               IF p_id_depto is not NULL   and  (v_registros_ant.id_depto is  NULL or v_registros_ant.id_depto != p_id_depto)  THEN
               
-              IF p_id_depto is not NULL   and  v_registros_ant.id_depto != p_id_depto  THEN
+                  -- buscamos entre los usarios del depto quien puede recibir alerta
               
-              -- buscamos entre los usarios del depto quien puede recibir alerta
-               
-                 FOR  v_registros_depto in  ( 
+                FOR  v_registros_depto in  ( 
                        select  du.id_usuario 
                        from  param.tdepto_usuario du 
                        where du.id_depto = p_id_depto 
-                         and du.sw_alerta = 'si') LOOP
+                         and du.sw_alerta = 'si'
+                         and ( du.cargo=ANY(v_registros.cargo_depto) or v_registros.cargo_depto is NULL )
+                         
+                         ) LOOP
+                         
+                   
                   
                      v_alarmas_con[v_cont_alarma]:=param.f_inserta_alarma(
                                                         NULL,
@@ -303,7 +305,6 @@ BEGIN
               
     END IF;
     
-    --todo manejo de alertas para departamentos
     
      
    

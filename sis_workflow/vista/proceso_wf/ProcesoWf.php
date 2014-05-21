@@ -592,11 +592,11 @@ Phx.vista.ProcesoWf=Ext.extend(Phx.gridInterfaz,{
       var tb =this.tbar;
       Phx.vista.ProcesoWf.superclass.preparaMenu.call(this,n); 
      this.getBoton('btnChequeoDocumentosWf').setDisabled(false);
+     this.getBoton('diagrama_gantt').enable();
        if(this.historico == 'no'){
           
           this.getBoton('sig_estado').enable();
-          this.getBoton('ant_estado').enable();
-          this.getBoton('diagrama_gantt').enable();
+          this.getBoton('ant_estado').enable();          
           
           if(data.codigo_estado == 'borrador' ){ 
              this.getBoton('ant_estado').disable();

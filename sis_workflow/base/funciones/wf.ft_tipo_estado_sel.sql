@@ -230,7 +230,10 @@ BEGIN
                         tipes.alerta,
                         tipes.pedir_obs,
                         tipes.plantilla_mensaje_asunto,
-                        tipes.plantilla_mensaje
+                        tipes.plantilla_mensaje,
+                       -- tipes.cargo_depto::varchar
+                        array_to_string( tipes.cargo_depto,'','',''null'')::varchar
+                        
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
