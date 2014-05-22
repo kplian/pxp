@@ -964,7 +964,7 @@ ALTER TABLE orga.tuo_funcionario
   ALTER COLUMN tipo SET NOT NULL;
 
 
-/*****************************I-SCP-RAC-SEGU-0-21/05/2014*************/
+/*****************************F-SCP-RAC-SEGU-0-21/05/2014*************/
 
 
 
