@@ -58,3 +58,16 @@ select pxp.f_insert_tgui ('Alertas', 'Alertas', 'ALERTA', 'si', 102, 'sis_parame
 select pxp.f_insert_tgui ('Configurar', 'Configurar', 'CONFIG', 'si', 102, 'sis_seguridad/vista/configurar/Configurar.php', 1, '../../../lib/imagenes/config.32x32.png', 'Configurar', 'PXP');
 
 /****************************F-DAT-JRR-PXP-0-07/05/2014******************/
+
+
+/****************************I-DAT-RAC-PXP-0-21/05/2014******************/
+
+
+select pxp.f_insert_tgui ('Aplicar Interinato', 'Aplicar interinato, asume lor roles y responsabilidades del  titular', 'APLIINT', 'si', 105, 'sis_organigrama/vista/interinato/AplicarInterino.php', 1, '', 'AplicarInterino', 'PXP');
+
+/****************************F-DAT-RAC-PXP-0-21/05/2014******************/
+
+
+
+
+

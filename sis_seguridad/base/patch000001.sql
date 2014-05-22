@@ -949,9 +949,30 @@ CREATE TABLE segu.tvideo (
 
 /*****************************F-SCP-FFP-SEGU-0-25/04/2014*************/
 
+
+
+
+
+/*****************************I-SCP-RAC-SEGU-0-21/5/2014*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN tipo SET DEFAULT 'oficial';
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN tipo SET NOT NULL;
+
+
+/*****************************F-SCP-RAC-SEGU-0-21/05/2014*************/
+
+
+
+
 /*****************************I-SCP-JRR-SEGU-0-21/05/2014*************/
 
 ALTER TABLE segu.tgui
   ADD COLUMN parametros TEXT;
 
 /*****************************F-SCP-JRR-SEGU-0-21/05/2014*************/
+

@@ -513,3 +513,18 @@ select pxp.f_insert_tfuncion ('orga.f_get_uos_x_planilla', 'Funcion para tabla  
 select pxp.f_insert_tprocedimiento ('RH_MAILFUN_GET', 'Recuepra el email del funcionario', 'si', '', '', 'orga.ft_funcionario_ime');
 
 /*****************************F-DAT-JRR-ORGA-0-25/04/2014*************/
+
+
+/*****************************I-DAT-RAC-ORGA-0-21/05/2014*************/
+
+select pxp.f_insert_tgui ('Interinos', 'Registro de Interinos', 'Interinos', 'si', 1, 'sis_organigrama/vista/interinato/AsignarInterino.php', 3, '', 'AsignarInterino', 'ORGA');
+select pxp.f_insert_testructura_gui ('Interinos', 'PROCRH');
+
+
+/*****************************F-DAT-RAC-ORGA-0-21/05/2014*************/
+
+
+
+
+
+

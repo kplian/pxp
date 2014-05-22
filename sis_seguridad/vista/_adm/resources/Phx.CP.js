@@ -771,25 +771,40 @@ Phx.CP=function(){
 			});
 
 			viewport.doLayout();
-			
-			//si usuario tiene alertas iniciamos la ventana
-	         if(Phx.CP.config_ini.cont_alertas>0){
+			console.log('cont_interino',Phx.CP.config_ini,Phx.CP.config_ini.cont_interino*1 > 0)
+			if(Phx.CP.config_ini.cont_interino*1 > 0){
 				
-				this.loadWindows('../../../sis_parametros/vista/alarma/AlarmaFuncionario.php','Alarmas',{
-						width:900,
-						height:400,
-						modal:false
-				    },{id_usuario:Phx.CP.config_ini.id_usuario},
-				    'Phx.CP','AlarmaFuncionario');
-			/*
-			  url: donde se encuentra el js de la ventana que se quiere abrir
-			  title: titulo de la ventanan que se abrira
-			  config: configuracion de la venta
-			  params: parametros que se le pasaran al js
-			  pid: identificador de la ventana padre
-			  cls: nombre de la clase que se va ejecutar
-			*/
+				this.loadWindows('../../../sis_organigrama/vista/interinato/AplicarInterino.php','Aplicar Interinato',{
+								width:550,
+								height:250,
+								modal:false
+						    },{id_usuario:Phx.CP.config_ini.id_usuario},
+						    'Phx.CP','AplicarInterino');
+				
 			}
+			else{	
+				//si usuario tiene alertas iniciamos la ventana
+		         if(Phx.CP.config_ini.cont_alertas > 0){
+					
+					this.loadWindows('../../../sis_parametros/vista/alarma/AlarmaFuncionario.php','Alarmas',{
+							width:900,
+							height:400,
+							modal:false
+					    },{id_usuario:Phx.CP.config_ini.id_usuario},
+					    'Phx.CP','AlarmaFuncionario');
+				/*
+				  url: donde se encuentra el js de la ventana que se quiere abrir
+				  title: titulo de la ventanan que se abrira
+				  config: configuracion de la venta
+				  params: parametros que se le pasaran al js
+				  pid: identificador de la ventana padre
+				  cls: nombre de la clase que se va ejecutar
+				*/
+				}
+			}
+			
+			
+			
 			
 			//evalua hash de la url
 			var tokenDelimiter = ':',

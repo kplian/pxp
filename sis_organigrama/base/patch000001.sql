@@ -409,3 +409,23 @@ ALTER TABLE orga.tuo
   ADD COLUMN prioridad VARCHAR(30);
 
 /*****************************F-SCP-JRR-ORGA-0-13/02/2014*************/
+
+
+/*****************************I-SCP-RAC-ORGA-0-20/05/2014*************/
+
+
+CREATE TABLE orga.tinterinato (
+  id_interinato SERIAL, 
+  id_cargo_titular INTEGER NOT NULL, 
+  id_cargo_suplente INTEGER NOT NULL, 
+  fecha_ini DATE NOT NULL, 
+  fecha_fin DATE NOT NULL, 
+  descripcion TEXT, 
+  CONSTRAINT tinterinato_pkey PRIMARY KEY(id_interinato)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/*****************************F-SCP-RAC-ORGA-0-20/05/2014*************/
+
+
+
