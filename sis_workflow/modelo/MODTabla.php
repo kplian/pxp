@@ -208,11 +208,12 @@ class MODTabla extends MODbase{
 		}
 		
 		if ($res) {
+			$i = 0;
 			while ($row = pg_fetch_array($res,NULL,PGSQL_ASSOC)){
 				//obtener las columnas
-				$array[$row['bd_nombre_tabla']] = array();
+				$array[$i] = array();
 				
-				$array[$row['bd_nombre_tabla']]['atributos'] = $row;
+				$array[$i]['atributos'] = $row;
 				
 				
 				$this->arreglo_consultas['filtro'] = ' tipcol.id_tabla = '. $row['id_tabla'];
@@ -222,7 +223,7 @@ class MODTabla extends MODbase{
 					return $columnas;
 					//retornar en mensaje
 				
-				$array[$row['bd_nombre_tabla']]['columnas'] = $columnas;
+				$array[$i]['columnas'] = $columnas;
 				
 				//obtener las tablas
 				//se cambia el filtro para la siguiente consulta
@@ -232,7 +233,8 @@ class MODTabla extends MODbase{
 				if ($tablas instanceof Mensaje)//Si es instancia de mensaje
 					return $tablas;
 					//retornar en mensaje			
-				$array[$row['bd_nombre_tabla']]['detalles'] = $tablas;
+				$array[$i]['detalles'] = $tablas;
+				$i++;
 				
 			}
 			pg_free_result($res);

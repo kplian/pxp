@@ -267,7 +267,7 @@ MainPanel = function(config){
 };
 
 Ext.extend(MainPanel, Ext.TabPanel,{
-	loadClass : function(href, cls, title,icono,ruta,clase,cookie,arrayInt,indice){
+	loadClass : function(href, cls, title,icono,ruta,clase,params){
 		
 		 var objConfig = {
 		  	               'href':href, 
@@ -276,9 +276,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  	               'icono':icono,
 		  	               'ruta':ruta,
 		  	               'clase':clase,
-		  	               'cookie':cookie,
-		  	               'arrayInt':arrayInt,
-		  	               'indice':indice
+		  	               'params':params
 		  	              };
 		  	              
 		 var id = 'docs-' + cls;
@@ -355,7 +353,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 					  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
 					  				      	 		//ejecuta la clase hijo
 					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
-					  				      	 		if(objConfig.cookie && objConfig.indice > 0){
+					  				      	 		/*if(objConfig.cookie && objConfig.indice > 0){
 		  				    		  
 							  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
 							  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
@@ -371,7 +369,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 							  				    		 //Ext.get(Phx.vista[clase].idContenedor).doLayout()
 							  				    		 //Phx.CP.getPagina(id).panel.doLayout(); 	               
 							  				    		  	               
-							  				    		}
+							  				    		}*/
 					  				      	 	  }
 							  				       catch(err){
 							  				       	var resp = Array();
@@ -384,9 +382,27 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			  				 }
 	  				    	else{
 		  				    	try{
-		  				    		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+		  				    		//jrr 22/05/2014 se anade parametros
+		  				    		if (objConfig.params != undefined ) {
+		  				    			objConfig.params = Ext.util.JSON.decode(Ext.util.Format.trim(objConfig.params));
+		  				    		}
+		  				    		//jrr 22/05/2014 para vistas autogeneradas si tiene como parametros el proceso y el estado
+		  				    		if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
+		  				    			var clase_generada = objConfig.params.proceso + '_' + objConfig.params.estado;
+		  				    			objConfig.params.indice = 0;
+		  				    			eval('Phx.vista[clase_generada] = {}');
+		  				    			eval('Phx.vista[clase_generada]= Ext.extend(Phx.vista.ProcesoInstancia,Phx.vista[clase_generada])');
+		  				    					  				    			
+		  				    			Phx.CP.setPagina(new Phx.vista[clase_generada](Ext.apply(objConfig.params,o.argument.params)),objConfig);
+		  				    		} else {
+		  				    			if ( objConfig.params != undefined ) {
+		  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
+		  				    			} else {
+		  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+		  				    			}
+		  				    		}
 		  				    		
-		  				    		if(objConfig.cookie && objConfig.indice > 0){
+		  				    		/*if(objConfig.cookie && objConfig.indice > 0){
 		  				    		  
 		  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
 		  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
@@ -400,7 +416,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  				    		  	               );
 		  				    		  	               
 		  				    		  //Phx.CP.getPagina(id).panel.doLayout();	               
-		  				    		}
+		  				    		}*/
 		  				    		
 		  				    		
 		  				      	}
@@ -458,8 +474,8 @@ Phx.CP=function(){
 		                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
 								if(regreso.length > 1){								
 									var interfaz = regreso[0];														
-									this.getMainPanel().loadClass('../../../' + interfaz.ruta, interfaz.codigo_gui, interfaz.nombre,'','',interfaz.clase_vista);
-									//mainPanel.loadClass('../../../'+node.attributes.ruta,node.id,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
+									this.getMainPanel().loadClass('../../../' + interfaz.ruta, interfaz.codigo_gui, interfaz.nombre,'','',interfaz.clase_vista,interfaz.json_parametros);
+									
 								} else {
 									alert('No se encontro la interfaz del token enviado en la URL');
 								}
@@ -549,7 +565,7 @@ Phx.CP=function(){
 				                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText));	                    	
 										if(regreso.length > 1){
 											var interfaz = regreso[0];														
-											mainPanel.loadClass('../../../' + interfaz.ruta, interfaz.codigo_gui, interfaz.nombre,'','',interfaz.clase_vista);
+											mainPanel.loadClass('../../../' + interfaz.ruta, interfaz.codigo_gui, interfaz.nombre,'','',interfaz.clase_vista,interfaz.json_parametros);
 											
 										} else {
 											alert('No se encontro la interfaz del token enviado en la URL');
@@ -663,7 +679,7 @@ Phx.CP=function(){
 							naux=naux.parentNode
 						}
 						
-						mainPanel.loadClass('../../../' + node.attributes.ruta,node.attributes.codigo_gui,node.attributes.nombre,icono,ruta,node.attributes.clase_vista)
+						mainPanel.loadClass('../../../' + node.attributes.ruta,node.attributes.codigo_gui,node.attributes.nombre,icono,ruta,node.attributes.clase_vista,node.attributes.json_parametros)
 					}
 				}
 			});
@@ -1256,7 +1272,7 @@ Phx.CP=function(){
 		elementos:new Array(),
 		
 		initMode:true,
-		setPagina:function(e,objConfig){
+		setPagina:function(e,objConfig){			
 			this.elementos.push(e);
 			if(objConfig){
 				//si el level es 0 guardamos en la cookie
@@ -1299,7 +1315,7 @@ Phx.CP=function(){
 	    	return  -1;
 	    },
 	    
-	    getStateGui:function(){
+	    /*getStateGui:function(){
 	    	temp = Ext.util.Cookies.get('arrayInterfaces')
 	    	this.arrayInterfaces=JSON.parse(temp)
 	    	if(!this.arrayInterfaces){
@@ -1312,7 +1328,7 @@ Phx.CP=function(){
 	    	   var obj = this.arrayInterfaces[ind]
 	           Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, obj.title,obj.icono,obj.ruta,obj.clase,true,this.arrayInterfaces,ind);
 	        }	
-        },
+        },*/
 		
 		// para destruir paginas
 		destroyPage:function(id){

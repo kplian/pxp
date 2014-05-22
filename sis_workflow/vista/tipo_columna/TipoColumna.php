@@ -48,15 +48,15 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 	        width:100
 	    });	
 	    
-	    this.equivalencias =  { 'varchar' : 'string',
-	    						'text' : 'string',
-	    						'numeric' : 'numeric',
-	    						'integer' : 'numeric',	    						
-	    						'bigint' : 'numeric',
-	    						'date' : 'date',
-	    						'timestamp' : 'date',
+	    this.equivalencias =  { 'varchar' : 'TextField',
+	    						'text' : 'TextArea',
+	    						'numeric' : 'NumberField',
+	    						'integer' : 'NumberField',	    						
+	    						'bigint' : 'NumberField',
+	    						'date' : 'DateField',
+	    						'timestamp' : 'DateField',
 	    						'time' : 'time',
-	    						'boolean' : 'boolean' };	    						
+	    						'boolean' : 'CheckBox' };	    						
 	    						
 		var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
         if(dataPadre){
