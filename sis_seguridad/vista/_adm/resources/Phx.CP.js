@@ -349,10 +349,19 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 					  				      	 	 try{
 					  				      	 	 	
 					  				      	 	 	var objConfig = o.argument.options.arguments
-					  				      	 		//genera herencia 
+					  				      	 	 	//jrr 22/05/2014 se anade parametros
+						  				    		if (objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
+						  				    			objConfig.params = Ext.util.JSON.decode(Ext.util.Format.trim(objConfig.params));
+						  				    		}
+						  				    		//genera herencia 
 					  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
-					  				      	 		//ejecuta la clase hijo
-					  				      	 		Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+						  				    		if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
+					  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
+					  				    			} else {
+					  				    				
+					  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
+					  				    			}
+					  				      	 		
 					  				      	 		/*if(objConfig.cookie && objConfig.indice > 0){
 		  				    		  
 							  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
@@ -383,21 +392,18 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	  				    	else{
 		  				    	try{
 		  				    		//jrr 22/05/2014 se anade parametros
-		  				    		if (objConfig.params != undefined ) {
+		  				    		if (objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
 		  				    			objConfig.params = Ext.util.JSON.decode(Ext.util.Format.trim(objConfig.params));
 		  				    		}
 		  				    		//jrr 22/05/2014 para vistas autogeneradas si tiene como parametros el proceso y el estado
 		  				    		if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
-		  				    			var clase_generada = objConfig.params.proceso + '_' + objConfig.params.estado;
-		  				    			objConfig.params.indice = 0;
-		  				    			eval('Phx.vista[clase_generada] = {}');
-		  				    			eval('Phx.vista[clase_generada]= Ext.extend(Phx.vista.ProcesoInstancia,Phx.vista[clase_generada])');
-		  				    					  				    			
-		  				    			Phx.CP.setPagina(new Phx.vista[clase_generada](Ext.apply(objConfig.params,o.argument.params)),objConfig);
+		  				    			Phx.CP.crearPaginaDinamica(Ext.apply(objConfig.params,o.argument.params),objConfig);
+		  				    			
 		  				    		} else {
-		  				    			if ( objConfig.params != undefined ) {
+		  				    			if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "" ) {
 		  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
 		  				    			} else {
+		  				    				console.log(objConfig);
 		  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
 		  				    			}
 		  				    		}
@@ -1297,7 +1303,42 @@ Phx.CP=function(){
 			}
 			return e;
 		},
+		//jrr crear la pgina dinamicamente 
+		crearPaginaDinamica:function(params, objConfig){	
+			var params_to_send = {'objConfig' : objConfig,'params':params};
+			//hacer ajax request para obtener datos del proceso en el estado actual
+        	Ext.Ajax.request({
+		        url:'../../sis_workflow/control/Tabla/cargarDatosTablaProceso',//cargarDatosTablaProceso
+		        params:{'tipo_proceso':params.proceso, 'tipo_estado' : params.estado, 'limit' : 100, 'start' : 0},
+		        success: Phx.CP.successCrearPaginaDinamica,
+		        arguments : params_to_send,
+		        failure: this.conexionFailure,
+		        timeout:this.timeout,
+		        scope:this
+		    }); 		
+			
 
+		},
+		
+		successCrearPaginaDinamica :function (resp, o ) {			
+			
+	        var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText)).datos;
+	        
+	        var clase_generada = o.arguments.params.proceso + '_' + o.arguments.params.estado;
+		  	o.arguments.params.indice = 0;
+		  	o.arguments.params.configProceso = objRes;
+		  	
+			Phx.vista[clase_generada] = {};
+			if (objRes[0].atributos.vista_scripts_extras != '' && 
+		        objRes[0].atributos.vista_scripts_extras != undefined && 
+		        objRes[0].atributos.vista_scripts_extras != null) {
+		        Ext.apply(Phx.vista[clase_generada], Ext.util.JSON.decode(Ext.util.Format.trim(objRes[0].atributos.vista_scripts_extras)));
+			} 
+			
+		  	eval('Phx.vista[clase_generada]= Ext.extend(Phx.vista.ProcesoInstancia,Phx.vista[clase_generada])');		  				    					  				    			
+		  	Phx.CP.setPagina(new Phx.vista[clase_generada](o.arguments.params),o.arguments.objConfig);
+	    },
+		
 		getPagina:function(e){
 			for (var i=0;i<=this.elementos.length;i++){
 				if(this.elementos[i]&&this.elementos[i].idContenedor==e){
