@@ -618,29 +618,61 @@ class CTParametro{
             
         $json = str_replace("'", "\"",$json);    
         
-        $temp = json_decode($json,true);
+        if(isset($json)&&$json!=''&&$json!='null'){
         
-        $k=0;
-        foreach($temp as $f){
-                
-            $tmp=array();
-            $tmp  =  array_keys($f);
-            $tam  =  sizeof($tmp);
-                    
-            for( $ii=0; $ii<= $tam; $ii++){
-                     
-                 $aux=substr($tmp[$ii],0,3);
-                 if(strpos($aux,'id_')!==false){
-                   $temp[$k][$tmp[$ii]]=$this->desofuscar($f[$tmp[$ii]]);
-                 }       
-                
-            }
+            $temp = json_decode($json,true);
             
-            $k++;
+             if(json_last_error()){
+                throw new Exception('la cadena JSON no es valida');
+             }
+             
+             $k = 0;
+             
+             if(!$this->is_assoc($temp)){
+                       
+                   foreach($temp as $f){
+                    
+                        $tmp=array();
+                        $tmp  =  array_keys($f);
+                        $tam  =  sizeof($tmp);
+                                
+                        for( $ii=0; $ii<= $tam; $ii++){
+                                 
+                             $aux=substr($tmp[$ii],0,3);
+                             if(strpos($aux,'id_')!==false){
+                               $temp[$k][$tmp[$ii]]=$this->desofuscar($f[$tmp[$ii]]);
+                             }       
+                            
+                        }
+                        
+                        $k++;
+                    }  
+                 
+             }
+             else{
+                    $tmp=array();
+                    $tmp  =  array_keys($temp);
+                    $tam  =  sizeof($temp);
+                            
+                    for( $ii=0; $ii<= $tam; $ii++){
+                             
+                         $aux=substr($tmp[$ii],0,3);
+                         if(strpos($aux,'id_')!==false){
+                           $temp[$k][$tmp[$ii]]=$this->desofuscar($f[$tmp[$ii]]);
+                         }       
+                        
+                    }
+                 
+             }
+             
+           
+			
+            
+            
+            
+            return  json_encode($temp);
         }
-        
-        
-        return  json_encode($temp);
+        return '';
           
     }
 	
@@ -669,6 +701,8 @@ class CTParametro{
 			$idso=explode(',',$id);
 		
 		    $sw=0;
+			
+			
 			foreach($idso as $idr){	
                        $ido=explode("...",$iFeis->encriptar($idr,$_SESSION['key_p_inv'],$_SESSION['key_k'],2));
                         if($ido[1]!=$_SESSION["_SEMILLA_OFUS"]){
@@ -693,6 +727,11 @@ class CTParametro{
 			return $id;	
 		}
 	}
+	
+	public static function is_assoc($arr)
+    {
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
 
 
 }

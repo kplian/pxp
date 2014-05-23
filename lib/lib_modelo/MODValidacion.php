@@ -20,7 +20,8 @@ class MODValidacion
 								'int4'=>'int4',
 								'int8'=>'int8',
 								'consulta_select'=>'text',
-								'codigo_html'=>'text');
+								'codigo_html'=>'text',
+								'json_text'=>'text' );
 	
 	function getTipo($tipo){
 		//RAC 1/09/2011
@@ -45,25 +46,48 @@ class MODValidacion
 			
 			$this->validarvarchar($nombre,$valor,$blank,$tamano);
 		}
+		elseif ($tipo=='text'){
+            
+            $this->validartext($nombre,$valor,$blank,$tamano);
+        }
+        elseif ($tipo=='boolean'){
+            
+            $this->validarBoolean($nombre,$valor,$blank,$tamano);
+        }
+        elseif ($tipo=='numeric'){
+            
+            $this->validarfloat($nombre,$valor,$blank,$tamano);
+        }
+		
+		elseif ($tipo=='date'){
+            
+            //cambiar por un validador de fechas
+            $this->validarvarchar($nombre,$valor,$blank,$tamano);
+        }
+        elseif ($tipo=='time'){
+            
+            $this->validarvarchar($nombre,$valor,$blank,$tamano);
+        }
+        elseif ($tipo=='bytea'){
+            
+            $this->validarBytea($nombre,$valor,$blank,$tamano,$opciones,$tipo_archivo);
+            
+        }
 		elseif ($tipo=='consulta_select'){								
 				$this->validarSelect($nombre,$valor,$blank,$tamano);				
 			 $this->validartext($nombre,$valor,$blank,$tamano);
 		}
-		elseif ($tipo=='codigo_html'){								
-				$this->validarCodigoHtml($nombre,$valor,$blank,$tamano);
+		
+		elseif ($tipo=='json_text'){								
+				$this->validarJson($nombre,$valor,$blank,$tamano);
 		}
-		elseif ($tipo=='text'){
-			
-			$this->validartext($nombre,$valor,$blank,$tamano);
-		}
-		elseif ($tipo=='boolean'){
-			
-			$this->validarBoolean($nombre,$valor,$blank,$tamano);
-		}
-		elseif ($tipo=='numeric'){
-			
-			$this->validarfloat($nombre,$valor,$blank,$tamano);
-		}
+		
+		elseif ($tipo=='codigo_html'){                                
+                $this->validarCodigoHtml($nombre,$valor,$blank,$tamano);
+        }
+		
+		
+		
 		elseif ($tipo=='email'){
 			
 			$this->validaremail($nombre,$valor,$blank,$tamano);
@@ -84,20 +108,7 @@ class MODValidacion
 			
 			$this->validarfiltrosql($nombre,$valor);
 		}
-		elseif ($tipo=='date'){
-			
-			//cambiar por un validador de fechas
-			$this->validarvarchar($nombre,$valor,$blank,$tamano);
-		}
-		elseif ($tipo=='time'){
-			
-			$this->validarvarchar($nombre,$valor,$blank,$tamano);
-		}
-		elseif ($tipo=='bytea'){
-			
-			$this->validarBytea($nombre,$valor,$blank,$tamano,$opciones,$tipo_archivo);
-			
-		}
+		
 		else{
 			//posiblemente se trata de un dato enum lo validamos como varchar
 			$this->validarvarchar($nombre,$valor,$blank,$tamano);
@@ -478,11 +489,27 @@ class MODValidacion
 			}					
 	}
 	
-	function validarCodigoHtml($nombre,$valor,$blank,$tamano){		
-			
-			if($blank==false){
-				array_push($this->res,'El campo '.$nombre." debe ser registrado");
-			}					
+	function validarCodigoHtml(){		
+		 if($blank==false){
+                array_push($this->res,'El campo '.$nombre." debe ser registrado");
+        }	
+								
 	}
+	
+	function validarJson($nombre,$valor,$blank,$tamano) {
+                
+        if($blank==false){
+                array_push($this->res,'El campo '.$nombre." debe ser registrado");
+        }            
+        json_decode($valor);
+        if(json_last_error() != JSON_ERROR_NONE){
+           throw new Exception("El archivo no se pudo subir, por favor intentelo de nuevo");
+        }
+        
+     
+    
+    
+    }
+	
 	
 }
