@@ -180,7 +180,7 @@
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('clase_vista','clase_vista','varchar');
 		$this->setParametro('tipo_dato','tipo_dato','varchar');
-		$this->setParametro('parametros','json_parametros','text');
+		$this->setParametro('parametros','json_parametros','json_text');
 	
     	//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -210,7 +210,7 @@
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('clase_vista','clase_vista','varchar');
 		$this->setParametro('tipo_dato','tipo_dato','varchar');
-		$this->setParametro('parametros','json_parametros','text');
+		$this->setParametro('parametros','json_parametros','json_text');
 		
 		
 		//Ejecuta la instruccion

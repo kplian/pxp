@@ -183,6 +183,47 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
+        {
+       			config:{
+       				name:'vista_estados_new',
+       				fieldLabel:'Boton Nuevo',
+       				allowBlank:true,
+       				emptyText:'Estados...',
+       				store: new Ext.data.JsonStore({
+	                    url: '../../sis_workflow/control/TipoEstado/listarTipoEstado',
+	                    id: 'id_tipo_estado',
+	                    root: 'datos',
+	                    sortInfo: {
+	                        field: 'tipes.codigo',
+	                        direction: 'ASC'
+	                    },
+	                    totalProperty: 'total',
+	                    fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo_estado','disparador','fin','desc_tipo_proceso'],
+	                    // turn on remote sorting
+	                    remoteSort: true,
+	                    baseParams: {par_filtro: 'tipes.nombre_estado#tipes.codigo'}
+	                }),
+       				valueField: 'codigo_estado',
+       				displayField: 'codigo_estado',
+       				forceSelection:true,
+       				typeAhead: false,
+           			triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:100,
+       				queryDelay:1000,
+       				width:250,
+       				minChars:2,
+	       			enableMultiSelect:true,
+       			
+       				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+
+       			},
+       			type:'AwesomeCombo',
+       			id_grupo:0,
+       			grid:false,
+       			form:true
+       	}
 		
 		{
 			config:{
