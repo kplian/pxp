@@ -59,6 +59,8 @@ class ACTInterinato extends ACTbase{
              //si el cambio fue exitoso cambiamos los valores de neustras variables de session   
             $this->datos=$this->res->getDatos();           
             $_SESSION["autentificado"] = "SI";
+            $_SESSION["ss_id_usuario_ai"] = $_SESSION["ss_id_usuario"];
+            $_SESSION["_NOM_USUARIO_AI"] = $_SESSION["_NOM_USUARIO"];
             $_SESSION["ss_id_usuario"] = $this->datos['id_usuario'];
             $_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
             $_SESSION["ss_id_cargo"] = $this->datos['id_cargo'];

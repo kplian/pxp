@@ -195,6 +195,7 @@ class ACTAuten extends ACTbase {
 		 else{
 			$_SESSION["autentificado"] = "SI";
 	        $_SESSION["ss_id_usuario"] = $this->datos['id_usuario'];
+	        
 			$_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
 			$_SESSION["ss_id_cargo"] = $this->datos['id_cargo'];
 			$_SESSION["ss_id_persona"] = $this->datos['id_persona'];

@@ -252,7 +252,7 @@ Ext.extend(Phx.vista.monitor_bd,Phx.gridInterfaz,{
 	{name:'sidweb', type: 'string'},
 	{name:'codigo_error', type: 'string'},
 	{name:'descripcion_transaccion', type: 'string'},
-	{name:'codigo_subsistema', type: 'string'}
+	{name:'codigo_subsistema', type: 'string'},'usuario_ai'
 	],
 	sortInfo:{
 		field: 'logg.fecha_reg',

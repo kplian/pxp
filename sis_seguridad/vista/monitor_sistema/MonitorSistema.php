@@ -136,6 +136,24 @@ Phx.vista.monitor_sistema=function(config){
 		form:false
 	},
 	{
+        config:{
+            fieldLabel: "Usuario AI",
+            gwidth: 100,
+            name: 'usuario_ai',
+            renderer:{
+                        fn:this.renderColor,
+                        scope:this
+                    }
+            
+        },
+        type:'TextField',
+        filters:{type:'string'},
+        grid:true,
+        form:false
+    },
+	
+	
+	{
 		config:{
 			fieldLabel: "IP",
 			gwidth: 100,
@@ -351,7 +369,7 @@ Ext.extend(Phx.vista.monitor_sistema,Phx.gridInterfaz,{
 	{name:'sidweb', type: 'string'},
 	{name:'codigo_error', type: 'string'},
 	{name:'descripcion_transaccion', type: 'string'},
-	{name:'codigo_subsistema', type: 'string'}
+	{name:'codigo_subsistema', type: 'string'},'usuario_ai'
 	],
 	sortInfo:{
 		field: 'logg.fecha_reg',

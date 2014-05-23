@@ -542,3 +542,60 @@ select pxp.f_insert_trol_procedimiento_gui ('PXP-Rol inicial', 'WF_DES_SEL', 'IN
 select pxp.f_insert_trol_procedimiento_gui ('PXP-Rol inicial', 'WF_DOCWFAR_MOD', 'INITRAHP.1.1');
 
 /*******************************************F-DEP-JRR-SEGU-0-25/04/2014**********************************************/
+
+
+
+
+
+/*******************************************I-DEP-RAC-SEGU-0-23/05/2014**********************************************/
+
+
+--------------- SQL ---------------
+
+ -- object recreation
+DROP VIEW segu.vlog;
+
+CREATE VIEW segu.vlog
+AS
+  SELECT tlog.id_log,
+         tlog.id_usuario,
+         tlog.id_subsistema,
+         tlog.mac_maquina,
+         tlog.ip_maquina,
+         tlog.tipo_log,
+         tlog.descripcion,
+         tlog.fecha_reg,
+         tlog.estado_reg,
+         tlog.procedimientos,
+         tlog.transaccion,
+         tlog.consulta,
+         tlog.tiempo_ejecucion,
+         tlog.usuario_base,
+         tlog.codigo_error,
+         tlog.dia_semana,
+         tlog.pid_db,
+         tlog.pid_web,
+         tlog.sid_web,
+         tlog.cuenta_usuario,
+         tlog.descripcion_transaccion,
+         tlog.codigo_subsistema,
+         tlog.usuario_ai
+  FROM segu.tlog
+  WHERE tlog.fecha_reg >=(now() - '24:00:00' ::interval) AND
+        tlog.fecha_reg <= now();
+
+ALTER TABLE segu.vlog
+  OWNER TO postgres;
+
+
+
+/*******************************************F-DEP-RAC-SEGU-0-23/05/2014**********************************************/
+
+
+
+
+
+
+
+
+

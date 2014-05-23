@@ -48,6 +48,18 @@ Phx.vista.log=Ext.extend(Phx.gridInterfaz,{
 		grid:true,
 		form:false
 	},
+     {
+        config:{
+            fieldLabel: "Usuario AI",
+            gwidth: 150,
+            name: 'usuario_ai'
+            
+        },
+        type:'TextField',
+        filters:{type:'string'},
+        grid:true,
+        form:false
+    },
 	{
 		config:{
 			fieldLabel: "Fecha/Hora",
@@ -153,7 +165,7 @@ Phx.vista.log=Ext.extend(Phx.gridInterfaz,{
 	{name:'procedimientos', type: 'string'},
 	{name:'transaccion', type: 'string'},
 	{name:'descripcion', type: 'string'},
-	{name:'consulta', type: 'string'}
+	{name:'consulta', type: 'string'},'usuario_ai'
 		],
 	sortInfo:{
 		field: 'logg.fecha_reg',

@@ -976,3 +976,25 @@ ALTER TABLE segu.tgui
 
 /*****************************F-SCP-JRR-SEGU-0-21/05/2014*************/
 
+
+
+/*****************************I-SCP-RAC-SEGU-0-22/05/2014*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tlog
+  ADD COLUMN id_usuario_ai INTEGER;
+
+COMMENT ON COLUMN segu.tlog.id_usuario_ai
+IS 'hace referencia la usuario interino que pudo haber asmido el rol temporalmente,  si es nulo significa que el id_usuario_reg.  es el responsable de la trasaccion';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tlog
+  ADD COLUMN usuario_ai VARCHAR(350);
+
+COMMENT ON COLUMN segu.tlog.usuario_ai
+IS 'nombre del usuario ai que pudo reponsable de la trasaccion';
+
+/*****************************F-SCP-RAC-SEGU-0-22/05/2014*************/

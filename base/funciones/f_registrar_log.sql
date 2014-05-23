@@ -1,23 +1,26 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_registrar_log (
   par_id_usuario integer,
-  par_ip character varying,
-  par_mac character varying,
-  par_tipo_log character varying,
+  par_ip varchar,
+  par_mac varchar,
+  par_tipo_log varchar,
   par_descripcion text,
   par_procedimientos text,
-  par_transaccion character varying,
-  par_consulta character varying,
+  par_transaccion varchar,
+  par_consulta varchar,
   par_tiempo_ejecucion integer,
-  par_usuario_base character varying,
-  par_codigo_error character varying,
+  par_usuario_base varchar,
+  par_codigo_error varchar,
   par_pid_db integer,
-  par_sid_web character varying,
+  par_sid_web varchar,
   par_pid_web integer,
   par_id_subsistema integer,
-  par_log integer
+  par_log integer,
+  par_id_usuario_ai integer = NULL::integer,
+  par_nom_usuario_ai varchar = NULL::character varying
 )
-RETURNS integer
-AS 
+RETURNS integer AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_ime
@@ -92,19 +95,21 @@ begin
     v_id_log=(select nextval('segu.tlog_id_log_seq'));
      --RAC, RCM: cambios para qe devuelva el id_log
      
+    
+     
      insert into segu.tlog(
      id_log,
      id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg,
      estado_reg,procedimientos,transaccion,consulta,tiempo_ejecucion,
      usuario_base,codigo_error,dia_semana,pid_db,pid_web,sid_web,cuenta_usuario,
-     descripcion_transaccion,codigo_subsistema,id_subsistema,si_log
+     descripcion_transaccion,codigo_subsistema,id_subsistema,si_log,id_usuario_ai,usuario_ai
      ) values(
      v_id_log,
      par_id_usuario,par_mac,par_ip,par_tipo_log,par_descripcion,now(),'activo',
      par_procedimientos,par_transaccion,par_consulta,par_tiempo_ejecucion,
      par_usuario_base,par_codigo_error,to_char(now(),'D')::integer,
      v_pid_db,par_pid_web,par_sid_web,v_cuenta,
-     v_desc_transaccion,v_subsistema,par_id_subsistema,par_log
+     v_desc_transaccion,v_subsistema,par_id_subsistema,par_log,par_id_usuario_ai, par_nom_usuario_ai
      ) ;
     
     IF(par_tipo_log in('ERROR_WEB','ERROR_CONTROLADO_PHP','INYECCION','SESION',
@@ -156,7 +161,8 @@ begin
 
 end;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_resp_array (OID = 304247) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

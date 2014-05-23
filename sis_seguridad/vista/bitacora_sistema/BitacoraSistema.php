@@ -55,6 +55,22 @@ Phx.vista.bitacora_sistema=function(config){
 		grid:true,
 		form:false
 	},
+	
+	{
+        config:{
+            fieldLabel: "Usuario AI",
+            gwidth: 100,
+            name: 'usuario_ai'
+            
+        },
+        type: 'TextField',
+        filters: {type:'string'},
+        grid: true,
+        form: false
+    },
+	
+	
+	
 	{
 		config:{
 			fieldLabel: "Consulta",
@@ -329,7 +345,7 @@ Ext.extend(Phx.vista.bitacora_sistema,Phx.gridInterfaz,{
 	{name:'sidweb', type: 'string'},
 	{name:'codigo_error', type: 'string'},
 	{name:'descripcion_transaccion', type: 'string'},
-	{name:'codigo_subsistema', type: 'string'}
+	{name:'codigo_subsistema', type: 'string'},'usuario_ai'
 	],
 	sortInfo:{
 		field: 'logg.fecha_reg',

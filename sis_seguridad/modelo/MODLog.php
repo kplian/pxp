@@ -44,6 +44,7 @@ class MODLog extends MODbase{
 		$this->captura('codigo_error','varchar');
 		$this->captura('descripcion_transaccion','text');
 		$this->captura('codigo_subsistema','varchar');
+		$this->captura('usuario_ai','varchar');
 				
 		//Ejecuta la funcion
 		$this->armarConsulta();
@@ -82,6 +83,7 @@ class MODLog extends MODbase{
 		$this->captura('codigo_error','varchar');
 		$this->captura('descripcion_transaccion','text');
 		$this->captura('codigo_subsistema','varchar');
+		$this->captura('usuario_ai','varchar');
 		$this->captura('dia_semana','varchar');
 				
 		//Ejecuta la funcion
@@ -122,6 +124,7 @@ class MODLog extends MODbase{
 		$this->captura('codigo_error','varchar');
 		$this->captura('descripcion_transaccion','text');
 		$this->captura('codigo_subsistema','varchar');
+		$this->captura('usuario_ai','varchar');
 		
 				
 		//Ejecuta la funcion

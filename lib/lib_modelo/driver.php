@@ -3,6 +3,8 @@ class driver
 {
 	//Definicion de datos bosicos para llamadas s parocedimeintos almacenados
 	protected $id_usuario;
+	protected $id_usuario_ai;
+	protected $nom_usuario_ai;
 	protected $ip;
 	protected $mac;
 	protected $procedimiento;
@@ -84,6 +86,14 @@ class driver
 		if(isset($_SESSION["ss_id_usuario"])){
 				$this->id_usuario=$_SESSION["ss_id_usuario"];
 		}
+		
+		if(isset($_SESSION["ss_id_usuario_ai"])){
+                $this->id_usuario_ai=$_SESSION["ss_id_usuario_ai"];
+        }
+        
+        if(isset($_SESSION["_NOM_USUARIO_AI"])){
+                $this->nom_usuario_ai=$_SESSION["_NOM_USUARIO_AI"];
+        }
 		
 		$this->ip=getenv("REMOTE_ADDR");
 		$this->mac="99:99:99:99:99:99";
@@ -313,13 +323,31 @@ class driver
 		$this->consulta='select * from pxp.f_intermediario_sel(';
 		
 		
-		
+		//agrega parametros fijos a la consulta intermediario sel
 		if($this->null($this->id_usuario)){
 			$this->consulta.='NULL,';
 		}
 		else{
 			$this->consulta.=$this->id_usuario.',';
 		}
+		
+		if($this->null($this->id_usuario_ai)){
+            $this->consulta.='NULL,';
+        }
+       else{
+            $this->consulta.=$this->id_usuario_ai.',';
+           
+        }
+        
+        if($this->null($this->nom_usuario_ai)){
+            $this->consulta.='NULL::varchar,';
+        }
+        else{
+            $this->consulta.="'".$this->nom_usuario_ai."',";
+        }
+		
+		
+		
 		$this->consulta.="'".session_id()."',";
 		$this->consulta.=getmypid().',';
 		if($this->null($this->ip)){
@@ -459,6 +487,21 @@ class driver
 		else{
 			$this->consulta.=$this->id_usuario.',';
 		}
+		
+		if($this->null($this->id_usuario_ai)){
+            $this->consulta.='NULL,';
+        }
+        else{
+            $this->consulta.=$this->id_usuario_ai.',';
+        }
+        
+        if($this->null($this->nom_usuario_ai)){
+            $this->consulta.='NULL::varchar,';
+        }
+        else{
+            $this->consulta.="'".$this->nom_usuario_ai."',";
+        }
+		
 		$this->consulta.="'".session_id()."',";
 		$this->consulta.=getmypid().',';
 		if($this->null($this->ip)){
@@ -576,6 +619,21 @@ class driver
 		else{
 			$this->consulta.=$this->id_usuario.',';
 		}
+		
+		if($this->null($this->id_usuario_ai)){
+            $this->consulta.='NULL,';
+        }
+        else{
+            $this->consulta.=$this->id_usuario_ai.',';
+        }
+        
+        if($this->null($this->nom_usuario_ai)){
+            $this->consulta.='NULL::varchar,';
+        }
+        else{
+             $this->consulta.="'".$this->nom_usuario_ai."',";
+        }
+		
 		$this->consulta.="'".session_id()."',";
 		$this->consulta.=getmypid().',';
 		if($this->null($this->ip)){

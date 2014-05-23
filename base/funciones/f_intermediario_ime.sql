@@ -1,5 +1,9 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
+  par_id_usuario_ai integer,
+  par_nom_usuario_ai varchar,
   par_sid_web varchar,
   par_pid_web integer,
   par_ip varchar,
@@ -396,10 +400,12 @@ BEGIN
                                 par_sid_web,
                                 par_pid_web,
                                 v_id_subsistema,
-                                v_habilitar_log);
+                                v_habilitar_log,
+                                par_id_usuario_ai,
+                                par_nom_usuario_ai);
                                 
                                                                
- 
+ -- raise exception 'ssssssssssssss';
  
     v_resp='';
     v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','EXITO');
@@ -434,6 +440,8 @@ EXCEPTION
             v_tipo_error='ERROR_CONTROLADO_BD';
          end if;
         --Registro en el log
+        
+       
         v_id_log:=pxp.f_registrar_log(v_id_usuario,
         						par_ip,
                                 par_mac::varchar,
@@ -449,7 +457,10 @@ EXCEPTION
                                 par_sid_web,
                                 par_pid_web,
                                 v_id_subsistema,
-                                1);
+                                1,
+                                par_id_usuario_ai,
+                                par_nom_usuario_ai
+                                );
                                 
         v_resp = pxp.f_agrega_clave(v_resp,'id_log',v_id_log::varchar);
         

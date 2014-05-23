@@ -67,7 +67,7 @@ class ACTGenerador extends ACTbase{
 				array_push($this->gLlave,new GENColumna($data));
 			} else{
 				//Verifica si existen los campos basicos
-				if($data['nombre']=='id_usuario_reg'||$data['nombre']=='fecha_reg'){
+				if($data['nombre']=='id_usuario_reg'||$data['nombre']=='fecha_reg'||$data['nombre']=='id_usuario_ai'||$data['nombre']=='usuario_ai'){
 					array_push($this->gCamposBasicosInsert,new GENColumna($data));
 				} elseif ($data['nombre']=='id_usuario_mod'||$data['nombre']=='fecha_mod'){
 					array_push($this->gCamposBasicosUpdate,new GENColumna($data));
@@ -191,7 +191,14 @@ BEGIN
 								
 								if($this->gCamposBasicosInsert[$i]->getColumna('nombre')=='id_usuario_reg'){
 									$this->strTexto.= "\n\t\t\tp_id_usuario,";
-								} else{
+								}
+                                elseif($this->gCamposBasicosInsert[$i]->getColumna('nombre')=='id_usuario_ai'){
+                                    $this->strTexto.= "\n\t\t\tv_parametros._id_usuario_ai,";
+                                }
+                                elseif($this->gCamposBasicosInsert[$i]->getColumna('nombre')=='usuario_ai'){
+                                    $this->strTexto.= "\n\t\t\tv_parametros._nombre_usuario_ai,";
+                                } 
+								else{
 									$this->strTexto.= "\n\t\t\tnow(),";	
 								}
 							}
@@ -201,8 +208,12 @@ BEGIN
 								$this->strTexto.= "\n\t\t\tnull,";	
 							}
 							
+			
+			
 							$this->strTexto= substr($this->strTexto,0,strlen($this->strTexto)-1)."
 							
+			
+			
 			)RETURNING ".$this->gLlave[0]->getColumna('nombre')." into v_".$this->gLlave[0]->getColumna('nombre').";
 			
 			--Definicion de la respuesta
@@ -235,7 +246,17 @@ BEGIN
 							for($i=0;$i<count($this->gCamposBasicosUpdate); $i++){
 								if($this->gCamposBasicosUpdate[$i]->getColumna('nombre')=='id_usuario_mod'){
 									$this->strTexto.= "\n\t\t\tid_usuario_mod = p_id_usuario,";
-								} else{
+								} 
+								
+                                elseif($this->gCamposBasicosUpdate[$i]->getColumna('nombre')=='id_usuario_ai'){
+                                    $this->strTexto.= "\n\t\t\tid_usuario_mod = v_parametros._id_usuario_ai,";
+                                }
+                                
+                                elseif($this->gCamposBasicosUpdate[$i]->getColumna('nombre')=='usuario_ai'){
+                                    $this->strTexto.= "\n\t\t\tid_usuario_mod = v_parametros._nombre_usuario_ai,";
+                                }
+								
+								else{
 									$this->strTexto.= "\n\t\t\t".$this->gCamposBasicosUpdate[$i]->getColumna('nombre')." = now(),";	
 								}
 							}
@@ -1166,52 +1187,66 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 			//Verifica si se trata de las columnas basicas de insert y de updte para por defecto no mostrar en el formulario
 			if($p_Columnas[$i]->getColumna('nombre')=='id_usuario_reg'||
 				$p_Columnas[$i]->getColumna('nombre')=='id_usuario_mod'||
+				$p_Columnas[$i]->getColumna('nombre')=='id_usuario_ai'||
+				$p_Columnas[$i]->getColumna('nombre')=='usuario_ai'||
 				$p_Columnas[$i]->getColumna('nombre')=='fecha_reg'||
 				$p_Columnas[$i]->getColumna('nombre')=='fecha_mod'||
 				$p_Columnas[$i]->getColumna('nombre')=='estado_reg'
 			){
-				$form='false';
-				$name=$p_Columnas[$i]->getColumna('nombre');
-				$tipodato=$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'));
-				$alias=$this->gTabla->getAliasLower().".".$p_Columnas[$i]->getColumna('nombre');
-				$grid='true';
-				
-				//Define los label por defecto
-				if($p_Columnas[$i]->getColumna('nombre')=='id_usuario_reg'){
-					$label='Creado por';
-					$name='usr_reg';
-					$tipodato='string';
-					$alias='usu1.cuenta';
-				} elseif($p_Columnas[$i]->getColumna('nombre')=='id_usuario_mod'){
-					$label='Modificado por';
-					$name='usr_mod';
-					$tipodato='string';
-					$alias='usu2.cuenta';
-				} elseif($p_Columnas[$i]->getColumna('nombre')=='fecha_reg'){
-					$label='Fecha creación';
-				} elseif($p_Columnas[$i]->getColumna('nombre')=='fecha_mod'){
-					$label='Fecha Modif.';
-				} elseif($p_Columnas[$i]->getColumna('nombre')=='estado_reg'){
-					$label='Estado Reg.';
-				}
+    				$form='false';
+    				$name=$p_Columnas[$i]->getColumna('nombre');
+    				$tipodato=$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'));
+    				$alias=$this->gTabla->getAliasLower().".".$p_Columnas[$i]->getColumna('nombre');
+    				$grid='true';
+    				
+    				if($p_Columnas[$i]->getColumna('nombre')=='id_usuario_ai'){
+    				    $grid='false';
+    				}
+    				
+    				//Define los label por defecto
+    				if($p_Columnas[$i]->getColumna('nombre')=='id_usuario_reg'){
+    					$label='Creado por';
+    					$name='usr_reg';
+    					$tipodato='string';
+    					$alias='usu1.cuenta';
+    				} elseif($p_Columnas[$i]->getColumna('nombre')=='id_usuario_mod'){
+    					$label='Modificado por';
+    					$name='usr_mod';
+    					$tipodato='string';
+    					$alias='usu2.cuenta';
+    				} 
+    				elseif($p_Columnas[$i]->getColumna('nombre')=='usuario_ai'){
+                        $label='Funcionaro AI';
+                        $name='usuario_ai';
+                        $tipodato='string';
+                        $alias=$this->gTabla->getAliasLower()."."."usuario_ai";
+                    }
+    				
+    				elseif($p_Columnas[$i]->getColumna('nombre')=='fecha_reg'){
+    					$label='Fecha creación';
+    				} elseif($p_Columnas[$i]->getColumna('nombre')=='fecha_mod'){
+    					$label='Fecha Modif.';
+    				} elseif($p_Columnas[$i]->getColumna('nombre')=='estado_reg'){
+    					$label='Estado Reg.';
+    				}
 			} else{
-				//Verifica si el campo ser� desplegado en el formulario
-				if($p_Columnas[$i]->getColumna('guardar')=='si'){
-					$form='true';
-				} else{
-					$form='false';
-				}
-				//Verificacion de despliegue en el grid
-				if($p_Columnas[$i]->getColumna('grid_mostrar')=='no'){
-					$grid='false';
-				} else{
-					$grid='true';
-				}
-				
-				$label=$p_Columnas[$i]->getColumna('etiqueta');
-				$name=$p_Columnas[$i]->getColumna('nombre');
-				$tipodato=$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'));
-				$alias=$this->gTabla->getAliasLower().".".$p_Columnas[$i]->getColumna('nombre');
+    				//Verifica si el campo debe ser  desplegado en el formulario
+    				if($p_Columnas[$i]->getColumna('guardar')=='si'){
+    					$form='true';
+    				} else{
+    					$form='false';
+    				}
+    				//Verificacion de despliegue en el grid
+    				if($p_Columnas[$i]->getColumna('grid_mostrar')=='no'){
+    					$grid='false';
+    				} else{
+    					$grid='true';
+    				}
+    				
+    				$label=$p_Columnas[$i]->getColumna('etiqueta');
+    				$name=$p_Columnas[$i]->getColumna('nombre');
+    				$tipodato=$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'));
+    				$alias=$this->gTabla->getAliasLower().".".$p_Columnas[$i]->getColumna('nombre');
 			}
 			
 			//echo $p_Columnas[$i]->getColumna('nombre').' --- '.substr($p_Columnas[$i]->getColumna('nombre'),0,3).'::';
