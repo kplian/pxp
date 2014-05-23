@@ -5,7 +5,6 @@ class MODbase extends driver
 	protected $aParam;
 	public $arreglo;
 	protected $arregloFiles;
-	
 	protected $arreglo_consultas;
 	protected $validacion;
 	protected $nombre_archivo;
@@ -69,6 +68,8 @@ class MODbase extends driver
 					$cont++;
 				}
 			}
+			$this->setUsuarioAi();
+			
 
 		}
 
@@ -315,6 +316,74 @@ class MODbase extends driver
 		$this->setParametro('cantidad','cantidad','integer');
 
 	}
+	
+	/**
+     * Nombre funcion:  addParametro
+     * Proposito:       Anade una parametro manual (que puede ser insertado directamente en el modelo)
+                        que se coloca en el arreglo de 
+     *                  parametros a ser enviados a un procedimeinto
+     * author:          RAC                 
+     * Fecha creacion:  12/05/2014
+     * @param $nombre El nombre del campo que se envia
+     * @param $valor  el valor del parametros
+     * @param $tipo Tipo del campoq ue se envia (todos los tipos de postges y otros definidos tb)
+     * @param $blank true o false si premite nulo o no)
+     * @param $tamano Tamaoo del campo definido si es nulo se aplica el amximo para el tipo de campo postgres sino hay moximo es ilimitado
+     */
+    function addParametro($nombre,$valor,$tipo,$blank=true,$tamano='',$opciones=null,$tipo_archivo=null){
+        //obtenemos el tipo de la base de datos
+        
+        $tipo_base=$this->validacion->getTipo($tipo);
+
+        
+        array_push($this->variables,$nombre);
+        array_push($this->tipos,$tipo);
+         
+
+        if($this->esMatriz){
+            $valor2=array();
+            $cont=0;
+            foreach ($this->arreglo as $row){
+                //rac 27/10/11 se escapa los valores entrantes para permitir almacenar comillas simples 
+                $row[$valor]=pg_escape_string(pg_escape_string($valor));
+                $this->validacion->validar($nombre,$valor,$tipo,$blank,$tamano,$opciones,$tipo_archivo);
+                $this->valores[$cont][$nombre]=$valor;
+                $cont++;
+            }
+                
+        }
+        else{
+            
+           if(isset($valor)){
+               $this->arreglo[$valor]=pg_escape_string(pg_escape_string($valor));
+               $this->validacion->validar($nombre,$valor,$tipo,$blank,$tamano,$opciones,$tipo_archivo);
+               array_push($this->valores,$valor);     
+                        
+           }
+                
+        }
+
+    }
+	
+	function setUsuarioAi(){
+	         
+	     if (isset($_SESSION["ss_id_usuario_ai"]))   {
+	         $id_usuario_ai = $_SESSION["ss_id_usuario_ai"];
+	         $nombre_usuario = $_SESSION["_NOM_USUARIO_AI"];
+	     }else{
+	         $id_usuario_ai = 'NULL';
+	         $nombre_usuario = 'NULL';
+	     }
+	         
+	    $this->addParametro('_id_usuario_ai',$id_usuario_ai,'int4');
+	    $this->addParametro('_nombre_usuario_ai',$nombre_usuario,'varchar');
+	    
+        
+
+    }
+	
+	
+	
 
 }
 ?>

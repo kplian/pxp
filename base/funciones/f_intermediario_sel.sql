@@ -2,6 +2,8 @@
 
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
+  par_id_usuario_ai integer,
+  par_nom_usuario varchar,
   par_sid_web varchar,
   par_pid_web integer,
   par_ip varchar,
@@ -219,7 +221,10 @@ BEGIN
                                 par_sid_web,
                                 par_pid_web,
                                 v_id_subsistema,
-                                v_habilitar_log);
+                                v_habilitar_log,
+                                par_id_usuario_ai,
+                                par_nom_usuario
+                                );
                                 
                                 
      return query execute (v_retorno);                          

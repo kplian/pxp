@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_log_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -76,7 +78,8 @@ BEGIN
                             logg.sid_web as sidweb,
                             logg.codigo_error,
                             logg.descripcion_transaccion,
-                            logg.codigo_subsistema
+                            logg.codigo_subsistema,
+                            logg.usuario_ai
                             
                         from segu.vlog logg
                         where  ';
@@ -140,7 +143,8 @@ BEGIN
                             logg.sid_web as sidweb,
                             logg.codigo_error,
                             logg.descripcion_transaccion,
-                            logg.codigo_subsistema
+                            logg.codigo_subsistema,
+                            logg.usuario_ai
 
                         from log.tlog_'||v_parametros.gestion||'_'||v_parametros.periodo||' logg
                         where  si_log=1 and ';
@@ -218,6 +222,7 @@ BEGIN
                             logg.codigo_error,
                             logg.descripcion_transaccion,
                             logg.codigo_subsistema,
+                            logg.usuario_ai,
                             (case when logg.dia_semana=1 then
                                 ''domingo''
                             when logg.dia_semana=2 then

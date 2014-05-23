@@ -1,7 +1,8 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ftrig_log (
 )
-RETURNS trigger
-AS 
+RETURNS trigger AS
 $body$
 DECLARE
 	nombre_tabla   varchar;
@@ -11,7 +12,7 @@ DECLARE
     fecha2 			date;
     crear_tabla		text;
 	v_rol 			varchar;
-    	
+    	  
 
 BEGIN
 
@@ -83,7 +84,11 @@ BEGIN
     coalesce(''''||NEW.cuenta_usuario||'''','null')||','||
     coalesce(''''||NEW.descripcion_transaccion||'''','null')||','||
     coalesce(''''||NEW.codigo_subsistema||'''','null')||','||
-    NEW.si_log;
+    NEW.si_log||','|| 
+    coalesce(''''||(NEW.id_usuario_ai::text)||'''','null')||','||
+    coalesce(''''||NEW.usuario_ai||'''','null');
+    
+    
 
     valores=replace(valores,'\\','\\\\');
  	
@@ -96,4 +101,8 @@ end if;
  RETURN NULL;
 END;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100;

@@ -62,7 +62,7 @@ Phx.vista.AplicarInterino = {
             Phx.CP.loadingHide();
             var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
             if(!reg.ROOT.error){
-               
+                Phx.CP.loadingShow();
                 window.location.reload()
                
             }else{
