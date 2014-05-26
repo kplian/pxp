@@ -236,9 +236,11 @@ BEGIN
           					for($i=0;$i<count($this->gCol); $i++){
           						if($this->gCol[$i]->getColumna('nombre')!=$this->gTabla->getId() 
 									&&	$this->gCol[$i]->getColumna('guardar')=='si'){
+									    
 										if($this->gCol[$i]->getColumna('nombre')!='estado_reg'){
 											$this->strTexto.= "\n\t\t\t".$this->gCol[$i]->getColumna('nombre')." = v_parametros.".$this->gCol[$i]->getColumna('nombre').",";		
 										}
+										
 									
 								}
 							}
@@ -247,19 +249,18 @@ BEGIN
 								if($this->gCamposBasicosUpdate[$i]->getColumna('nombre')=='id_usuario_mod'){
 									$this->strTexto.= "\n\t\t\tid_usuario_mod = p_id_usuario,";
 								} 
-								
-                                elseif($this->gCamposBasicosUpdate[$i]->getColumna('nombre')=='id_usuario_ai'){
-                                    $this->strTexto.= "\n\t\t\tid_usuario_mod = v_parametros._id_usuario_ai,";
-                                }
-                                
-                                elseif($this->gCamposBasicosUpdate[$i]->getColumna('nombre')=='usuario_ai'){
-                                    $this->strTexto.= "\n\t\t\tid_usuario_mod = v_parametros._nombre_usuario_ai,";
-                                }
-								
 								else{
 									$this->strTexto.= "\n\t\t\t".$this->gCamposBasicosUpdate[$i]->getColumna('nombre')." = now(),";	
 								}
 							}
+							
+							
+							//RAC agrega datos de usuario ai
+							$this->strTexto.= "\n\t\t\tid_usuario_ai = v_parametros._id_usuario_ai,";
+                            $this->strTexto.= "\n\t\t\tusuario_ai = v_parametros._nombre_usuario_ai,";
+                            
+							
+							
 							$this->strTexto= substr($this->strTexto,0,strlen($this->strTexto)-1)."
 			where ".$this->gLlave[0]->getColumna('nombre')."=v_parametros.".$this->gLlave[0]->getColumna('nombre').";
                
@@ -1257,7 +1258,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 			}*/
 			
 			//Verifica si es un campo llave foranea para crear el combo
-			if($p_Columnas[$i]->getColumna('nombre')!=$this->gLlave[0]->getColumna('nombre')&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_reg'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_mod'&&substr($p_Columnas[$i]->getColumna('nombre'),0,3)=='id_'){
+			if($p_Columnas[$i]->getColumna('nombre')!=$this->gLlave[0]->getColumna('nombre')&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_ai'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_reg'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_mod'&&substr($p_Columnas[$i]->getColumna('nombre'),0,3)=='id_'){
 				//echo 'entra';
 				//Combo
 				$cadena.="
@@ -1331,7 +1332,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 
 				//Verifica si es necesario definir limite maximo en funcion del componente
 				$sw=0;
-				if($this->maximaLongitud($p_Columnas[$i])){
+				if($this->maximaLongitud($p_Columnas[$i])>0){
 					$sw=1;
 					$cadena.="\n\t\t\t\tmaxLength:".$p_Columnas[$i]->getColumna('longitud').",";
 				}
@@ -1343,8 +1344,17 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 					$tipodato = 'date';
 				}
 				
+				$tipo_componente = $this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'),'tipo_comp');
+				
+				if($p_Columnas[$i]->getColumna('nombre')!=$this->gLlave[0]->getColumna('nombre')&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_ai'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_reg'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_mod'){
+                
+                   $tipo_componente = 'Field';
+                }
+				
+				
+				
 				$cadena.="\n\t\t\t},
-				type:'".$this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'),'tipo_comp')."',
+				type:'".$tipo_componente."',
 				filters:{pfiltro:'".$alias."',type:'".$tipodato."'},
 				id_grupo:".$p_Columnas[$i]->getColumna('grupo').",
 				grid:".$grid.",
