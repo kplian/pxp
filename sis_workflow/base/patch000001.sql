@@ -557,3 +557,12 @@ COMMENT ON COLUMN wf.ttipo_comp_tipo_prop.tipo_dato
 IS 'Tipo de dato para el valor del tipo de propiedad';
 
 /***********************************F-SCP-RCM-WF-0-05/05/2014****************************************/
+
+/***********************************I-SCP-JRR-WF-0-23/05/2014****************************************/
+ALTER TABLE wf.ttabla
+  ADD COLUMN vista_estados_new VARCHAR(100)[];
+  
+ALTER TABLE wf.ttabla
+  ADD COLUMN vista_estados_delete VARCHAR(100)[];
+
+/***********************************F-SCP-JRR-WF-0-23/05/2014****************************************/
