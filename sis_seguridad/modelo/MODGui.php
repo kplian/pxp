@@ -154,6 +154,7 @@
 		
 		
 		$this->ejecutarConsulta();
+		//var_dump($this->respuesta);
 		return $this->respuesta;	
 	}
 
