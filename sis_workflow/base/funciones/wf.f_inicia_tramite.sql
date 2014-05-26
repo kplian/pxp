@@ -2,6 +2,8 @@
 
 CREATE OR REPLACE FUNCTION wf.f_inicia_tramite (
   p_id_usuario_reg integer,
+  p_id_usuario_ai integer,
+  p_usuario_ai varchar,
   p_id_gestion integer,
   p_codigo_tipo_proceso varchar,
   p_id_funcionario integer,
@@ -83,7 +85,9 @@ BEGIN
           id_tipo_proceso,
           nro_tramite,
           descripcion,
-          codigo_proceso
+          codigo_proceso,
+          id_usuario_ai,
+          usuario_ai
         ) 
         VALUES (
           p_id_usuario_reg,
@@ -92,7 +96,9 @@ BEGIN
           v_id_tipo_proceso,
           ps_num_tramite,
           p_descripcion,
-          p_codigo_proceso
+          p_codigo_proceso,
+          p_id_usuario_ai,
+          p_usuario_ai
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
    -- recupera el tipo_estado_inicial 
@@ -118,7 +124,9 @@ BEGIN
         id_tipo_estado,
         id_proceso_wf,
         id_funcionario,
-        id_depto
+        id_depto,
+        id_usuario_ai,
+        usuario_ai
        
       ) 
       VALUES (
@@ -129,7 +137,9 @@ BEGIN
         v_id_tipo_estado,
         ps_id_proceso_wf,
         p_id_funcionario,
-        p_id_depto
+        p_id_depto,
+        p_id_usuario_ai,
+        p_usuario_ai
       
       )RETURNING id_estado_wf into ps_id_estado_wf;
       

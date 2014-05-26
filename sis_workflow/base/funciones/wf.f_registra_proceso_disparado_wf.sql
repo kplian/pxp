@@ -2,6 +2,8 @@
 
 CREATE OR REPLACE FUNCTION wf.f_registra_proceso_disparado_wf (
   p_id_usuario_reg integer,
+  p_id_usuario_ai integer,
+  p_usuario_ai varchar,
   p_id_estado_wf_dis integer,
   p_id_funcionario integer,
   p_id_depto integer,
@@ -203,7 +205,9 @@ BEGIN
           nro_tramite,
           id_estado_wf_prev,
           descripcion,
-          codigo_proceso
+          codigo_proceso,
+          id_usuario_ai,
+          usuario_ai
           
         ) 
         VALUES (
@@ -214,7 +218,9 @@ BEGIN
           v_nro_tramite,
           p_id_estado_wf_dis,
           p_descripcion,
-          p_codigo_proceso_wf
+          p_codigo_proceso_wf,
+          p_id_usuario_ai,
+          p_usuario_ai
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
   
@@ -230,7 +236,9 @@ BEGIN
           id_tipo_estado,
           id_proceso_wf,
           id_funcionario,
-          id_depto
+          id_depto,
+          id_usuario_ai,
+          usuario_ai
         ) 
         VALUES (
           p_id_usuario_reg,
@@ -240,7 +248,9 @@ BEGIN
           v_id_tipo_estado_next,
           ps_id_proceso_wf,
           p_id_funcionario,
-          p_id_depto
+          p_id_depto,
+          p_id_usuario_ai,
+          p_usuario_ai
         )RETURNING id_estado_wf into ps_id_estado_wf;  
         
        ps_codigo_estado  = v_codigo_estado_next;

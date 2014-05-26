@@ -112,6 +112,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             filters:{pfiltro:'dwf.chequeado_fisico',type:'string'},
             id_grupo:1,
             grid:true,
+            egrid:true,
             form:true
         },
         {
@@ -492,7 +493,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
          
 	bdel:false,
 	bnew:false,
-	bsave:false
+	bsave:true
 	}
 )
 </script>

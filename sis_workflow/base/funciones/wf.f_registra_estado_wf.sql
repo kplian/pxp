@@ -6,6 +6,8 @@ CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
   p_id_estado_wf_anterior integer,
   p_id_proceso_wf integer,
   p_id_usuario integer,
+  p_id_usuario_ai integer,
+  p_usuario_ai varchar,
   p_id_depto integer = NULL::integer,
   p_obs text = ''::text,
   p_acceso_directo varchar = ''::character varying,
@@ -318,7 +320,9 @@ BEGIN
      id_usuario_reg,
      id_depto,
      obs,
-     id_alarma) 
+     id_alarma,
+     id_usuario_ai,
+     usuario_ai) 
     values(
        p_id_estado_wf_anterior, 
        p_id_tipo_estado_siguiente, 
@@ -329,7 +333,9 @@ BEGIN
        p_id_usuario,
        p_id_depto,
        p_obs,
-       v_alarmas_con) 
+       v_alarmas_con,
+       p_id_usuario_ai,
+       p_usuario_ai) 
     RETURNING id_estado_wf INTO v_id_estado_actual;  
             
     UPDATE wf.testado_wf 
