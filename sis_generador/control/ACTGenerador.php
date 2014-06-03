@@ -208,7 +208,11 @@ BEGIN
 								$this->strTexto.= "\n\t\t\tnull,";	
 							}
 							
-			
+			                 if(!isset($this->gLlave[0])){
+			                         
+			                    throw new Exception('No existe la columna llave primaria, verifique la tabla y verifique la configuracion en el detalle del generador');
+			                 }
+			                   
 			
 							$this->strTexto= substr($this->strTexto,0,strlen($this->strTexto)-1)."
 							
