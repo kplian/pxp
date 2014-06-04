@@ -241,12 +241,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	       		lazyRender:true,
 	       		mode: 'local',
 				gwidth: 100,
-				store:['fin contrato','retiro','renuncia']
+				store:['fin contrato','retiro','renuncia','promocion','transferencia']
 			},
 				type:'ComboBox',
 				filters:{	
 	       		         type: 'list',
-	       				 options: ['fin contrato','retiro','renuncia'],
+	       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia'],
 	       		 	},
 				id_grupo:1,
 				grid:true,
