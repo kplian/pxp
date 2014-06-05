@@ -13,17 +13,20 @@ DECLARE
     v_id_uo					integer;
     v_gerencia			varchar;
     v_id_uo_hijo		integer;
+    v_nivel				integer;
 BEGIN
   	v_nombre_funcion = 'orga.f_get_uo_gerencia';
     if (par_id_uo is not null) then
-    	select euo.id_uo_padre, uo.gerencia, euo.id_uo_hijo
-        into v_id_uo, v_gerencia, v_id_uo_hijo
+    	select euo.id_uo_padre, uo.gerencia, euo.id_uo_hijo,ni.numero_nivel
+        into v_id_uo, v_gerencia, v_id_uo_hijo, v_nivel
         from orga.tuo uo
         inner join orga.testructura_uo euo
         	on euo.id_uo_hijo = uo.id_uo
+        inner join orga.tnivel_organizacional ni
+        	on ni.id_nivel_organizacional = uo.id_nivel_organizacional
         where euo.id_uo_hijo = par_id_uo;
         
-        if (v_gerencia = 'si') then
+        if (v_nivel in (1,2)) then
         	return par_id_uo;
         else
         	if (v_id_uo = v_id_uo_hijo) then
