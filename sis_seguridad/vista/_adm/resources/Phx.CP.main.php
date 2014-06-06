@@ -18,6 +18,10 @@ header("content-type: text/javascript; charset=UTF-8");
        
        if($_GET["estado_sesion"]=='activa')
 	   {
+		        
+		if(!isset($_SESSION["_CONT_ALERTAS"]) || $_SESSION["_CONT_ALERTAS"]==''){
+		    $_SESSION["_CONT_ALERTAS"] = 0;
+		}   
 		echo "var _PARAMETROS={
 			success:true,
 		    m:'".$_SESSION['key_m']."',
