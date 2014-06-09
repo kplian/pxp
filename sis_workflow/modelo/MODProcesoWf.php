@@ -96,6 +96,8 @@ function listarGantWf(){
         $this->captura('cuenta','varchar');
         $this->captura('id_depto','integer');
         $this->captura('depto','varchar');
+        $this->captura('nombre_usuario_ai','varchar');
+        
         
         //$this->captura('id_estructura_uo','integer');
         //Ejecuta la funcion

@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION wf.f_obtener_estado_wf (
   p_id_estado_wf integer,
   p_id_tipo_estado integer,
   p_operacion varchar,
+  p_id_usuario integer = NULL::integer,
   out ps_id_tipo_estado integer [],
   out ps_codigo_estado varchar [],
   out ps_disparador varchar [],
@@ -171,14 +172,17 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
                               -- se marca en una bandera que hubo insercion
                               sw_insercion = 'si';
                            ELSE   
-                              --  si tiene regla se evalua 
-                             
-                               IF wf.f_evaluar_regla_wf (v_registros.regla,v_id_estado_wf) THEN  
-                                -- si la el resutlado es positivo se inserta en la tabla
-                                
+                               --  si tiene regla se evalua
+                               -- si la el resutlado es positivo se inserta en la tabla 
+                               IF wf.f_evaluar_regla_wf (
+                                                     p_id_usuario, 
+                                                     p_id_proceso_wf, 
+                                                     v_registros.regla, --pantilla o funcion de evaluacion
+                                                     v_registros.id_tipo_estado, 
+                                                     v_id_estado_wf) THEN  
                                 
                                   --  si no hay regla apra evaluar se inserta directo en la tabla
-                                   v_consulta=  'INSERT INTO  tt_tipo_estad(
+                                   v_consulta=  'INSERT INTO  tt_tipo_estado(
                                                        id_tipo_estado ,
                                                        codigo,
                                                        disparador,
@@ -205,7 +209,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
                            END IF; 
                    END LOOP;
                    
-                    -- si la bandera muestra que huvo una insercion se rompe el FOR 
+                    -- si la bandera muestra que hubo una insercion se rompe el FOR 
                     IF  sw_insercion = 'si' THEN
                     
                       EXIT;
@@ -221,11 +225,11 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
         
         
         select 
-           pxp.aggarray(te.id_tipo_estado),
-           pxp.aggarray(te.codigo),
-           pxp.aggarray(te.disparador),
-           pxp.aggarray(ee.regla),
-           pxp.aggarray(ee.prioridad)
+           pxp.aggarray(id_tipo_estado),
+           pxp.aggarray(codigo),
+           pxp.aggarray(disparador),
+           pxp.aggarray(regla),
+           pxp.aggarray(prioridad)
         into
           ps_id_tipo_estado,
           ps_codigo_estado,
@@ -233,10 +237,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
           ps_regla,
           ps_prioridad
           
-        from  wf.ttipo_estado te 
-        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
-        where te.id_tipo_proceso = v_id_tipo_proceso  
-        and  ee.id_tipo_estado_padre = v_id_tipo_estado;
+        from  tt_tipo_estado;
   
     ELSEIF p_operacion = 'anterior' THEN
    

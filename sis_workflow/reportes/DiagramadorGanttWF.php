@@ -119,7 +119,11 @@ class DiagramadorGanttWF{
               }
                
              //mostramos cuenta de usuario si existe
-             if($dataset[$i]['cuenta']!=''){
+             
+             if($dataset[$i]['nombre_usuario_ai']!=''&&$dataset[$i]['nombre_usuario_ai']!='NULL'){
+                 $desc_principal = $desc_principal.'(AI: '.$dataset[$i]['nombre_usuario_ai'].")" ; 
+             }
+             elseif($dataset[$i]['cuenta']!=''){
                 $desc_principal = $desc_principal.'('.$dataset[$i]['cuenta'].")" ; 
              }
              
