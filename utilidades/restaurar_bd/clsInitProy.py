@@ -7,63 +7,60 @@ from git import Repo
 
 class clsInitProy:
 
-	def __init__(self, pStrProyNombre, pStrBDesquema, pStrPath):
+	def __init__(self, pStrProyNombre, pStrBDesquema):
 		self.strProyNombre = pStrProyNombre
 		self.strProyNombreFull = 'sis_' + pStrProyNombre
-		self.strPath = pStrPath
-		self.strPathFull = self.strPath + self.strProyNombreFull
+		self.strPath = os.path.dirname(__file__)+'/'+self.strProyNombreFull
 		self.strBDesquema = pStrBDesquema
 		
 	def crearDirectorios(self):
 		#Verifica que no exista ya el directorio
 		try:
-		
-			if not os.path.exists(self.strPathFull):
-				os.makedirs(self.strPathFull)
+			if not os.path.exists(self.strPath):
+				os.makedirs(self.strPath)
 				#Inicializa repositorio Git
-				newRepo = Repo.init(self.strPathFull)
+				newRepo = Repo.init(self.strPath)
 				#Crea las carpetas de la estructura
-				if not os.path.exists(self.strPathFull+'/base'):
-					os.makedirs(self.strPathFull+'/base')
-				if not os.path.exists(self.strPathFull+'/base/funciones'):
-					os.makedirs(self.strPathFull+'/base/funciones')
-				if not os.path.exists(self.strPathFull+'/control'):
-					os.makedirs(self.strPathFull+'/control')
-				if not os.path.exists(self.strPathFull+'/modelo'):
-					os.makedirs(self.strPathFull+'/modelo')
-				if not os.path.exists(self.strPathFull+'/vista'):
-					os.makedirs(self.strPathFull+'/vista')
+				if not os.path.exists(self.strPath+'/base'):
+					os.makedirs(self.strPath+'/base')
+				if not os.path.exists(self.strPath+'/base/funciones'):
+					os.makedirs(self.strPath+'/base/funciones')
+				if not os.path.exists(self.strPath+'/control'):
+					os.makedirs(self.strPath+'/control')
+				if not os.path.exists(self.strPath+'/modelo'):
+					os.makedirs(self.strPath+'/modelo')
+				if not os.path.exists(self.strPath+'/vista'):
+					os.makedirs(self.strPath+'/vista')
 		except:
 			sys.exit('Proyecto ya existente')
 			
 	def crearArchivos(self):
-		if not os.path.isfile(self.strPathFull+'/base/data000001.sql'):
-			#with open(self.strPathFull+'/base/data000001.sql', 'w+'): pass
-			open(self.strPathFull+'/base/data000001.sql', 'w+').close()
-		if not os.path.isfile(self.strPathFull+'/base/dependencies000001.sql'):
-			open(self.strPathFull+'/base/dependencies000001.sql', 'w+').close()
-		if not os.path.isfile(self.strPathFull+'/base/patch000001.sql'):
-			open(self.strPathFull+'/base/patch000001.sql', 'w+').close()
-		if not os.path.isfile(self.strPathFull+'/base/schema.sql'):
-			f = open(self.strPathFull+'/base/schema.sql', 'w+')
+		if not os.path.isfile(self.strPath+'/base/data000001.sql'):
+			#with open(self.strPath+'/base/data000001.sql', 'w+'): pass
+			open(self.strPath+'/base/data000001.sql', 'w+').close()
+		if not os.path.isfile(self.strPath+'/base/dependencies000001.sql'):
+			open(self.strPath+'/base/dependencies000001.sql', 'w+').close()
+		if not os.path.isfile(self.strPath+'/base/patch000001.sql'):
+			open(self.strPath+'/base/patch000001.sql', 'w+').close()
+		if not os.path.isfile(self.strPath+'/base/schema.sql'):
+			f = open(self.strPath+'/base/schema.sql', 'w+')
 			f.write(self.strBDesquema)
 			f.close()
 			
 	def actualizarArchivoSistemas(self):
-		
-		if not os.path.isfile(self.strPath+'sistemas.txt'):
+		if not os.path.isfile(os.path.dirname(__file__)+'/sistemas.txt'):
 			f = open(self.strPath+'sistemas.txt', 'w+').close()
 			aux = '../../../' + self.strProyNombreFull + '/'
 		else:
 			aux = '\n../../../' + self.strProyNombreFull + '/'
 			
-		f = open(self.strPath+'sistemas.txt', 'a')
+		f = open(os.path.dirname(__file__)+'/sistemas.txt', 'a')
 		f.write(aux)
 		f.close()
 			
 	def getProyecto(self):
-		return self.strPathFull
-		
+		return self.strPath
+		 
 	def getProyectoNombre(self):
 		return self.strProyNombre
 			
@@ -71,18 +68,16 @@ class clsInitProy:
 print '**************CREAR PROYECTO NUEVO PXP*********************'
 
 strProyNombre = raw_input('Introduzca el nombre del Nuevo Proyecto: ')
-strProyAlias = raw_input('Introduzca el alias del Nuevo Proyecto: ')
-strPath = raw_input('Introduzca el path: ')
 strBDesquema = raw_input('Introduzca el nombre del Esquema de Base de datos: ')
 print __file__
-objProy = clsInitProy(strProyNombre,strBDesquema,strPath)
+objProy = clsInitProy(strProyNombre,strBDesquema)
 
 print '-------------------------------------------'
-print 'Se creará el proyecto con en la siguiente ruta: ' + objProy.getProyecto()
+print 'Se creara el proyecto en la siguiente ruta: ' + objProy.getProyecto()
 
 strOk = ''
 while (strOk != 'si' and strOk != 'no'):
-	strOk = raw_input('¿Esta seguro de crear el proyecto? (si/no)')
+	strOk = raw_input('Esta seguro de crear el proyecto? (si/no)')
 if strOk == 'si':
 	objProy.crearDirectorios()
 	objProy.crearArchivos()
