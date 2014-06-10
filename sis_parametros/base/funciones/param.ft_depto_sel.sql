@@ -43,6 +43,7 @@ v_a_uos varchar[];
 v_uos_eps varchar;
 v_size  integer;
 v_i integer;
+v_id_deptos  varchar;
 
 
 BEGIN
@@ -142,7 +143,7 @@ BEGIN
 
           --consulta:=';
           
-          
+         
           BEGIN
           v_filadd = '';
           IF (pxp.f_existe_parametro(par_tabla,'codigo_subsistema')) THEN
@@ -151,8 +152,15 @@ BEGIN
           END IF;
                     
           IF   par_administrador != 1 THEN
-          		v_filadd='(DEPPTO.id_depto  in ('|| param.f_get_lista_deptos_x_usuario(par_id_usuario, v_parametros.codigo_subsistema)  ||')) and';
-          END IF;         
+          
+                 v_id_deptos =  param.f_get_lista_deptos_x_usuario(par_id_usuario, v_parametros.codigo_subsistema);
+                IF(v_id_deptos='')THEN
+                   v_id_deptos = '0';
+                END IF;
+                
+          		v_filadd='(DEPPTO.id_depto  in ('||v_id_deptos||')) and';
+            END IF;  
+                 
 
                v_consulta:='SELECT 
                             DEPPTO.id_depto,
@@ -176,7 +184,8 @@ BEGIN
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
                             WHERE '||v_filadd;
                
-              
+             
+          
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
                raise notice '%',v_consulta;
@@ -201,7 +210,13 @@ BEGIN
           END IF;
                     
           IF   par_administrador != 1 THEN
-          		v_filadd='(DEPPTO.id_depto  in ('|| param.f_get_lista_deptos_x_usuario(par_id_usuario, v_parametros.codigo_subsistema)  ||')) and';
+          
+                v_id_deptos =  param.f_get_lista_deptos_x_usuario(par_id_usuario, v_parametros.codigo_subsistema);
+                IF(v_id_deptos='')THEN
+                   v_id_deptos = '0';
+                END IF;
+                
+          		v_filadd='(DEPPTO.id_depto  in ('||v_id_deptos||')) and';
           END IF;  
           
                v_consulta:='SELECT
