@@ -61,6 +61,7 @@ DECLARE
     v_resp  varchar;
     v_as  varchar;
     v_campos   varchar;
+    v_id_proceso_wf  integer;
 
 BEGIN
     v_nombre_funcion ='wf.f_depto_wf_sel';
@@ -178,6 +179,13 @@ BEGIN
                 END IF;
      
      elseif v_depto_asignacion = 'depto_listado' then
+     
+            select 
+              e.id_proceso_wf
+            into
+              v_id_proceso_wf
+            from wf.testado_wf e
+            where e.id_estado_wf = p_id_estado_wf;
     
           
            IF p_count=FALSE then
@@ -196,6 +204,12 @@ BEGIN
                        on fte.id_depto = dep.id_depto 
                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
                    where  dep.estado_reg=''activo''  and  '||p_filtro||'
+                             and (wf.f_evaluar_regla_wf (
+                                                     '||COALESCE(p_id_usuario::varchar,'NULL')||', 
+                                                     '||COALESCE(v_id_proceso_wf::varchar,'NULL')||', 
+                                                     fte.regla,
+                                                     '||COALESCE(p_id_tipo_estado::varchar,'NULL')||', 
+                                                     '||COALESCE(p_id_estado_wf::varchar,'NULL')||'))
                             order by sub.nombre
                             limit '|| p_limit::varchar||' offset '||p_start::varchar;
                   
@@ -214,7 +228,13 @@ BEGIN
                    inner join wf.tfuncionario_tipo_estado fte 
                        on fte.id_depto = dep.id_depto 
                        and fte.id_tipo_estado = '||p_id_tipo_estado||'
-                    where  dep.estado_reg=''activo'' and '||p_filtro;
+                    where  dep.estado_reg=''activo'' and '||p_filtro||'
+                           and (wf.f_evaluar_regla_wf (
+                                                     '||COALESCE(p_id_usuario::varchar,'NULL')||', 
+                                                     '||COALESCE(v_id_proceso_wf::varchar,'NULL')||', 
+                                                     fte.regla,
+                                                     '||COALESCE(p_id_tipo_estado::varchar,'NULL')||', 
+                                                     '||COALESCE(p_id_estado_wf::varchar,'NULL')||'))';
                   
                 
                   

@@ -35,6 +35,7 @@ class MODFuncionarioTipoEstado extends MODbase{
         $this->captura('desc_funcionario1','varchar');
         $this->captura('desc_depto','varchar');
 		$this->captura('desc_labores','varchar');
+		$this->captura('regla','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -54,6 +55,7 @@ class MODFuncionarioTipoEstado extends MODbase{
 		$this->setParametro('id_tipo_estado','id_tipo_estado','int4');
 		$this->setParametro('id_funcionario','id_funcionario','int4');
 		$this->setParametro('id_depto','id_depto','int4');
+		$this->setParametro('regla','regla','codigo_html');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
 		//Ejecuta la instruccion
@@ -77,6 +79,7 @@ class MODFuncionarioTipoEstado extends MODbase{
 		$this->setParametro('id_funcionario','id_funcionario','int4');
 		$this->setParametro('id_depto','id_depto','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('regla','regla','codigo_html');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

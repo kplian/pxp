@@ -33,6 +33,12 @@ BEGIN
             
             v_retorno = FALSE;
             
+            IF p_plantilla is NULL or p_plantilla = '' THEN
+            
+             return TRUE;
+             
+            END IF;
+            
             --para determina si es funcion (primeo suponemos que lo es)
             --si es funcion obtenmos el nombre
             v_nombre_funcion = split_part(p_plantilla, '.', 2);

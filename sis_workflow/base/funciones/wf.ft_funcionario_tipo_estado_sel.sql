@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_funcionario_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -60,7 +62,8 @@ BEGIN
                         usu2.cuenta as usr_mod,
                         FUN.desc_funcionario1::varchar AS desc_funcionario1,
                         depto.nombre AS desc_depto,
-                        ltp.nombre AS desc_labores  
+                        ltp.nombre AS desc_labores ,
+                        functest.regla 
                         from wf.tfuncionario_tipo_estado functest
                         inner join segu.tusuario usu1 on usu1.id_usuario = functest.id_usuario_reg
                         left join segu.tusuario usu2 on usu2.id_usuario = functest.id_usuario_mod

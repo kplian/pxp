@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_funcionario_tipo_estado_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION wf.ft_funcionario_tipo_estado_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar, 
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_funcionario_tipo_estado_ime
@@ -53,7 +58,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            regla
           	) values(
 			v_parametros.id_labores_tipo_proceso,
 			v_parametros.id_tipo_estado,
@@ -63,7 +69,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.regla
 							
 			)RETURNING id_funcionario_tipo_estado into v_id_funcionario_tipo_estado;
 			
@@ -93,7 +100,8 @@ BEGIN
 			id_funcionario = v_parametros.id_funcionario,
 			id_depto = v_parametros.id_depto,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+            regla = v_parametros.regla
 			where id_funcionario_tipo_estado=v_parametros.id_funcionario_tipo_estado;
                
 			--Definicion de la respuesta
@@ -144,7 +152,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_funcionario_tipo_estado_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
