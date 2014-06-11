@@ -139,8 +139,6 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 	constructor: function(config){
 		// configuracion del data store
 		
-		
-
 		Phx.vista.Subsistema.superclass.constructor.call(this,config);
 
 		this.init();
@@ -148,16 +146,21 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		this.addButton('aInterSis',{text:'Interfaces',iconCls: 'blist',disabled:true,handler:aInterSis,tooltip: '<b>Interfaces del Sistema</b><br/>Permite configurar transacciones por interfaz '});
 		this.addButton('sinc_func',{text:'Sincronizar',iconCls: 'blist',disabled:true,handler:sinc_func,tooltip: '<b>Sincronizar Funciones</b><br/>Sinc '});
 		this.addButton('exp_menu',{text:'Exportar Datos Seguridad',iconCls: 'blist',disabled:true,tooltip: '<b>Permite exportar los datos de seguridad del subsistema</b>',
-		menu:{
-   				items: [
-   				{
-   					text: 'Exportar Cambios Realizados', handler: this.expMenu, scope: this, argument : {todo:'no'}
-   				},{
-   					text: 'Exportar Todos los Datos de Seguridad', handler: this.expMenu, scope: this, argument : {todo : 'si'}
-   				}
-   				]
-   			}
-   		});
+                		menu:{
+                   				items: [
+                   				{
+                   					text: 'Exportar Cambios Realizados', handler: this.expMenu, scope: this, argument : {todo:'no'}
+                   				},{
+                   					text: 'Exportar Todos los Datos de Seguridad', handler: this.expMenu, scope: this, argument : {todo : 'si'}
+                   				}
+                   				]
+                   			}
+                   		});
+        
+        this.addButton('testb',{text:'test',iconCls: 'blist',disabled:false,handler:this.text_func,tooltip: '<b>test action</b><br/>Sinc '});
+        
+   		
+   		
 		//Incluye un menú
    		/*this.menuOp = new Ext.Toolbar.SplitButton({
    			text: 'Exportar Datos Seguridad',
@@ -210,6 +213,19 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		
 		this.load()
 	},
+	text_func :function(){
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_seguridad/control/Gui/listarMenuMobile',
+                params:{xxx:'xx'},
+                success:this.successSinc,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });
+    },
+	
+	
 	expMenu : function(resp){
 			var data=this.sm.getSelected().data.id_subsistema;
 			Phx.CP.loadingShow();

@@ -150,7 +150,10 @@ BEGIN
                                 icono,
                                 id_subsistema,
                                 clase_vista,
-                                parametros)
+                                parametros,
+                                sw_mobile,
+                                codigo_mobile,
+                                orden_mobile)
                          values(
                               
                                 v_parametros.codigo_gui,
@@ -163,7 +166,10 @@ BEGIN
                                 v_parametros.icono,
                                 v_id_subsistema,
                                 v_parametros.clase_vista,
-                                v_parametros.parametros)
+                                v_parametros.parametros,
+                                v_parametros.sw_mobile,
+                                v_parametros.codigo_mobile,
+                                v_parametros.orden_mobile)
                          RETURNING id_gui into v_id_gui;
                             
 
@@ -228,7 +234,10 @@ BEGIN
                        icono=v_parametros.icono,
                        --id_subsistema=v_parametros.id_subsistema,
                        clase_vista=v_parametros.clase_vista,
-                       parametros=v_parametros.parametros
+                       parametros=v_parametros.parametros,
+                       sw_mobile = v_parametros.sw_mobile,
+                       codigo_mobile = v_parametros.codigo_mobile,
+                       orden_mobile = v_parametros.orden_mobile
 
                  where id_gui=v_parametros.id_gui;  
                  

@@ -58,8 +58,32 @@
 	}
 	
 	
+	function listarMenuMobile(){
+    
+        $this->procedimiento='segu.ft_menu_sel';
+        $this->transaccion='SEG_GUIMOB_SEL';
+        $this->tipo_procedimiento='SEL';
+        
+        $this->setCount(false);
+                        
+        //defino varialbes que se captran como retornod e la funcion
+        $this->captura('id_gui','integer');
+        $this->captura('codigo_gui','varchar');
+        $this->captura('nombre','varchar');
+        $this->captura('codigo_mobile','varchar');
+        $this->captura('desc_mobile','text'); 
+        
+        $this->armarConsulta();
+        
+        //echo  $this->consulta;
+        $this->ejecutarConsulta();
+        //var_dump($this->respuesta);
+        return $this->respuesta;
+   }
+	
+	
 	//------- LISTAR GUI : Para llenar el arbol de interfaces ----//
-	function listarGui(){
+   function listarGui(){
 		  	
 		$this->procedimiento='segu.ft_gui_sel';
 		$this->transaccion='SEG_GUI_SEL';
@@ -84,6 +108,12 @@
 		$this->captura('tipo_dato','varchar');
 		$this->captura('id_nodo','varchar');
 		$this->captura('json_parametros','text');
+		
+		$this->captura('codigo_mobile','varchar');
+		$this->captura('sw_mobile','varchar');
+		$this->captura('orden_mobile','numeric');
+		
+		
 	
 		$this->armarConsulta();
 		
@@ -182,6 +212,10 @@
 		$this->setParametro('clase_vista','clase_vista','varchar');
 		$this->setParametro('tipo_dato','tipo_dato','varchar');
 		$this->setParametro('parametros','json_parametros','json_text');
+		
+		$this->setParametro('sw_mobile','sw_mobile','varchar');
+		$this->setParametro('codigo_mobile','codigo_mobile','varchar');
+		$this->setParametro('orden_mobile','orden_mobile','numeric');
 	
     	//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -212,6 +246,10 @@
 		$this->setParametro('clase_vista','clase_vista','varchar');
 		$this->setParametro('tipo_dato','tipo_dato','varchar');
 		$this->setParametro('parametros','json_parametros','json_text');
+		
+		$this->setParametro('sw_mobile','sw_mobile','varchar');
+        $this->setParametro('codigo_mobile','codigo_mobile','varchar');
+        $this->setParametro('orden_mobile','orden_mobile','numeric');
 		
 		
 		//Ejecuta la instruccion

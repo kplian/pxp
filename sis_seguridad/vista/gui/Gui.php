@@ -213,7 +213,67 @@ Phx.vista.gui=function(config) {
 			type:'TextArea',
 			id_grupo:1,
 			form:true
-		}];
+		},
+        {
+            config:{
+                name:'sw_mobile',
+                fieldLabel:'Mobile',
+                typeAhead: true,
+                allowBlank:false,
+                triggerAction: 'all',
+                emptyText:'Seleccione Opcion...',
+                selectOnFocus:true,
+                mode:'local',
+                store:new Ext.data.ArrayStore({
+                fields: ['ID', 'valor'],
+                data :  [['si','si'],   
+                        ['no','no']]
+                            
+                }),
+                valueField:'ID',
+                displayField:'valor',
+                width:150,          
+                
+            },
+            type:'ComboBox',
+            valorInicial:'no',
+            id_grupo:3,
+            form:true
+        },
+        {
+            config:{
+                fieldLabel: "Codigo Mobile",
+                gwidth: 120,
+                name: 'codigo_mobile',
+                
+                allowBlank:true,
+                anchor:'100%'
+                
+            },
+            type:'TextField',
+            id_grupo:3,
+            form:true
+        },
+        {config:{
+            fieldLabel: "Orden Mobile",
+            gwidth: 100,
+            width:'100%',
+            maxLength:15,
+            minLength:1,
+            allowBlank:true,
+            selectOnFocus:true,
+            allowDecimals:false,
+            allowNegative:false,
+            minValue:0,
+            name: 'orden_mobile'
+            },
+            type:'NumberField',
+            valorInicial:0.0,
+            id_grupo:3,
+            filters:{type: 'numeric'},
+        
+            form:true
+        }];
 		
 		Phx.vista.gui.superclass.constructor.call(this,config);
 		
@@ -264,7 +324,10 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
 		'orden_logico',
 		'ruta_archivo',
 		'json_parametros',
-		'icono'],
+		'icono',
+		'sw_mobile',
+		'codigo_mobile',
+		'orden_mobile'],
 		sortInfo:{
 			field: 'id',
 			direction:'ASC'
@@ -407,15 +470,26 @@ Ext.extend(Phx.vista.gui,Phx.arbInterfaz,{
                     border: false
                 },            
                 items: [{
-					        bodyStyle: 'padding-right:5px;',
-					        items: [{
-					            xtype: 'fieldset',
-					            title: 'Datos principales',
-					            autoHeight: true,
-					            items: [],
-						        id_grupo:0
-					        }]
-					    }, {
+    					       
+    					        bodyStyle: 'padding-right:5px;',
+    					        items: [{
+    					            xtype: 'fieldset',
+    					            title: 'Datos principales',
+    					            autoHeight: true,
+    					            items: [],
+    						        id_grupo:0
+    					        }]
+    					    }, {
+                                bodyStyle: 'padding-left:5px;',
+                                items: [{
+                                    xtype: 'fieldset',
+                                    title: 'Mobile',
+                                    autoHeight: true,
+                                    items: [],
+                                    id_grupo:3
+                                }]
+                            }
+                        , {
 					        bodyStyle: 'padding-left:5px;',
 					        items: [{
 					            xtype: 'fieldset',

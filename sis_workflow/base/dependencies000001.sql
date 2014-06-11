@@ -387,3 +387,69 @@ ALTER TABLE wf.tcolumna_estado
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 /*******************************************F-DEP-JRR-WF-0-07/05/2014*************************************/
+
+
+
+
+
+
+
+/*******************************************I-DEP-RAC-WF-0-09/05/2014*************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD CONSTRAINT ttipo_proceso_origen_id_tipo_proceso_fk FOREIGN KEY (id_tipo_proceso)
+    REFERENCES wf.ttipo_proceso(id_tipo_proceso)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD CONSTRAINT ttipo_proceso_origen__id_tipo_estado_fk FOREIGN KEY (id_tipo_estado)
+    REFERENCES wf.ttipo_estado(id_tipo_estado)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD CONSTRAINT ttipo_proceso_origen__id_proceso_macro_fk FOREIGN KEY (id_proceso_macro)
+    REFERENCES wf.tproceso_macro(id_proceso_macro)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD CONSTRAINT ttipo_proceso_origen__id_usuario_reg_fk FOREIGN KEY (id_usuario_reg)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD CONSTRAINT ttipo_proceso_origen__id_usuario_mod_fk FOREIGN KEY (id_usuario_mod)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD CONSTRAINT ttipo_proceso_origen__id_usuario_ai_fk FOREIGN KEY (id_usuario_ai)
+    REFERENCES segu.tusuario(id_usuario)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/*******************************************F-DEP-RAC-WF-0-09/05/2014*************************************/

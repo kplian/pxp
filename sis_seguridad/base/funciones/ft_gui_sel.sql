@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -99,7 +101,10 @@ BEGIN
                                            (g.id_gui||''_interface'')::varchar
                                          END 
                                          as id_nodo,
-                                         g.parametros
+                                         g.parametros,
+                                         g.codigo_mobile,
+                                         g.sw_mobile,
+                                         g.orden_mobile
                                   FROM segu.tgui g
                                        '||v_join||' JOIN segu.testructura_gui eg
                                        ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
@@ -262,6 +267,9 @@ BEGIN
               v_consulta:=v_consulta|| ' and estgui.fk_id_gui= '||v_id_padre;
                return v_consulta;
          END;
+
+  
+
 
      else
          raise exception 'No existe la opcion';

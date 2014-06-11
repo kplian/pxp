@@ -175,6 +175,16 @@ class ACTGui extends ACTbase{
 
 	}
 	
+	function listarMenuMobile(){
+        //echo 'xxxxxxxx';
+        //el objeto objParam contiene todas la variables recibidad desde la interfaz
+        $this->objFunSeguridad=$this->create('MODGui');
+        //ejecuta el metodo de lista personas a travez de la intefaz objetoFunSeguridad 
+        $this->res=$this->objFunSeguridad->listarMenuMobile($this->objParam);
+        
+        $this->res->imprimirRespuesta($this->res->generarJson());       
+    }
+	
 	
    
 	

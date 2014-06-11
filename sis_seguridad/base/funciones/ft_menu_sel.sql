@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_menu_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -119,7 +121,7 @@ BEGIN
                    END ,
                    g.icono,
                    g.parametros 
-                   FROM segu.tgui g
+                   FROM segu.tgui g  
                    inner join segu.testructura_gui eg
                    INNER JOIN segu.tgui padre
                    ON padre.id_gui = eg.fk_id_gui
@@ -161,6 +163,64 @@ BEGIN
               return v_consulta;
            END;
         END IF;
+    
+/*******************************    
+ #TRANSACCION:  SEG_GUIMOB_SEL
+ #DESCRIPCION:	Listado de GUI para mobile 
+ #AUTOR:		KPLIAN(rac)		
+ #FECHA:		14/06/14
+
+***********************************/
+     elsif(par_transaccion='SEG_GUIMOB_SEL')then
+
+          --consulta:=';
+          BEGIN
+          
+         -- raise exception 'XXXX';
+             
+            IF(par_administrador=1) THEN
+
+                    
+                v_consulta =  'SELECT
+                                    g.id_gui,
+                                    g.codigo_gui,
+                                    g.nombre,
+                                    g.codigo_mobile,
+                                    sub.prefijo||'' ''||g.nombre as desc_mobile
+                                                   
+                              FROM segu.tgui g
+                              INNER JOIN segu.testructura_gui eg ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
+                              INNER JOIN segu.tsubsistema sub ON sub.id_subsistema = g.id_subsistema
+                              WHERE g.estado_reg=''activo''  and sw_mobile = ''si'' 
+                              ORDER BY desc_mobile, g.nombre';
+              
+             ELSE
+                  
+                  v_consulta =  'SELECT
+                                      g.id_gui,
+                                      g.codigo_gui,
+                                      g.nombre,
+                                      g.codigo_mobile,
+                                      sub.prefijo||'' ''||g.nombre as desc_mobile
+                                                           
+                                FROM segu.tgui g
+                                INNER JOIN segu.testructura_gui eg ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
+                                INNER JOIN segu.tsubsistema sub ON sub.id_subsistema = g.id_subsistema
+                                WHERE g.estado_reg=''activo''  and sw_mobile = ''si'' 
+                                ORDER BY desc_mobile, g.nombre';
+          
+          
+          END IF; 
+               
+            raise notice '%',v_consulta;   
+         return v_consulta;
+
+
+         END;  
+    
+
+
+    
      else
          raise exception 'No existe la opcion';
 

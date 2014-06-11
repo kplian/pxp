@@ -1000,3 +1000,24 @@ COMMENT ON COLUMN segu.tlog.usuario_ai
 IS 'nombre del usuario ai que pudo reponsable de la trasaccion';
 
 /*****************************F-SCP-RAC-SEGU-0-22/05/2014*************/
+
+
+
+
+/*****************************I-SCP-RAC-SEGU-0-16/06/2014*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tgui
+  ADD COLUMN sw_mobile VARCHAR(5) DEFAULT 'no' NOT NULL;
+--------------- SQL ---------------
+ALTER TABLE segu.tgui
+  ADD COLUMN orden_mobile NUMERIC DEFAULT 0 NOT NULL;
+--------------- SQL ---------------
+ALTER TABLE segu.tgui
+  ADD COLUMN codigo_mobile VARCHAR(250);
+
+/*****************************F-SCP-RAC-SEGU-0-16/06/2014*************/
+
+
+

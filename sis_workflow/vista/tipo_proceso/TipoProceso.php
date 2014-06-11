@@ -500,6 +500,12 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
               width:450,
               cls:'TipoColumna'
           },
+           {
+              url:'../../../sis_workflow/vista/tipo_proceso_origen/TipoProcesoOrigen.php',
+              title:'Origenes', 
+              width:450,
+              cls:'TipoProcesoOrigen'
+          },
 		  {
     		url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
             title:'Labores', 

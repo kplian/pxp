@@ -611,3 +611,52 @@ IS 'Nombre de los valores del catálogo';
 COMMENT ON COLUMN wf.tcatalogo_valor.orden
 IS 'Orden de despliegue de los valores del catálogo';
 /***********************************F-SCP-RCM-WF-0-22/05/2014****************************************/
+
+
+
+
+/***********************************I-SCP-RCM-WF-0-09/06/2014****************************************/
+
+
+
+CREATE TABLE wf.ttipo_proceso_origen (
+  id_tipo_proceso_origin SERIAL, 
+  id_tipo_estado INTEGER NOT NULL, 
+  id_tipo_proceso INTEGER NOT NULL, 
+  tipo_disparo VARCHAR NOT NULL, 
+  funcion_validacion_wf TEXT, 
+  id_proceso_macro INTEGER, 
+  CONSTRAINT ttipo_proceso_origen_pkey PRIMARY KEY(id_tipo_proceso_origin)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ALTER COLUMN id_tipo_proceso_origin SET STATISTICS 0;
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ALTER COLUMN id_tipo_estado SET STATISTICS 0;
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ALTER COLUMN id_tipo_proceso SET STATISTICS 0;
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ALTER COLUMN funcion_validacion_wf SET STATISTICS 0;
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ALTER COLUMN id_proceso_macro SET STATISTICS 0;
+
+COMMENT ON COLUMN wf.ttipo_proceso_origen.tipo_disparo
+IS 'obligatorio -> define si el proceso se dispara siempre, opcional -> (el usuario decide), opcional_automatico (se revisa la funcion de validacion), bandeja -> el proceso queda pendiente en una bandeja de espera';
+
+COMMENT ON COLUMN wf.ttipo_proceso_origen.funcion_validacion_wf
+IS 'tuncion de validacion o regla a ser evaluada';
+
+COMMENT ON COLUMN wf.ttipo_proceso_origen.id_proceso_macro
+IS 'ee utiliza para filtrar los tipo_estado disaradores que se muestran';
+
+
+
+/***********************************F-SCP-RCM-WF-0-09/06/2014****************************************/
+
+
+
