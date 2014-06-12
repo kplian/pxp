@@ -109,7 +109,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
    IF p_operacion = 'siguiente' THEN
    
         --Creación de tabla temporal
-		v_consulta = '
+		/*v_consulta = '
         DROP TABLE IF EXISTS tt_tipo_estado;
         create temp table tt_tipo_estado(
                  id_tipo_estado  integer,
@@ -237,7 +237,32 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
           ps_regla,
           ps_prioridad
           
-        from  tt_tipo_estado;
+        from  tt_tipo_estado;*/
+        
+        
+        
+        select 
+             pxp.aggarray(te.id_tipo_estado),
+             pxp.aggarray(te.codigo),
+             pxp.aggarray(te.disparador),
+             pxp.aggarray(ee.regla),
+             pxp.aggarray(ee.prioridad)
+          into
+            ps_id_tipo_estado,
+            ps_codigo_estado,
+            ps_disparador,
+            ps_regla,
+            ps_prioridad
+            
+          from  wf.ttipo_estado te 
+          inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
+          where te.id_tipo_proceso = v_id_tipo_proceso  
+          and  ee.id_tipo_estado_padre = v_id_tipo_estado;
+        
+        
+        
+        
+        
   
     ELSEIF p_operacion = 'anterior' THEN
    
