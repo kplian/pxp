@@ -21,7 +21,16 @@ header("content-type: text/javascript; charset=UTF-8");
 		        
 		if(!isset($_SESSION["_CONT_ALERTAS"]) || $_SESSION["_CONT_ALERTAS"]==''){
 		    $_SESSION["_CONT_ALERTAS"] = 0;
-		}   
+		} 
+		
+		if(!isset($_SESSION["_SIS_INTEGRACION"])){
+                $sis_integracion = 'NO';
+        }
+        else{
+              $sis_integracion = $_SESSION["_SIS_INTEGRACION"];
+        }
+        
+		  
 		echo "var _PARAMETROS={
 			success:true,
 		    m:'".$_SESSION['key_m']."',
@@ -30,7 +39,7 @@ header("content-type: text/javascript; charset=UTF-8");
 			p:'".$_SESSION['_p']."',
 			x:".$x.",
             parammetros:{cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
-			nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
+            nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
 			mini_logo:'".$_SESSION["_MINI_LOGO"]."',
 			nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
 			id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
@@ -38,6 +47,7 @@ header("content-type: text/javascript; charset=UTF-8");
 			autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
 			estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
 			mensaje_tec:'".$_SESSION["mensaje_tec"]."',
+			sis_integracion:'".$sis_integracion."',
 			timeout:".$_SESSION["_TIMEOUT"]."
             }};
 			";

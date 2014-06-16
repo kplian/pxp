@@ -172,7 +172,12 @@
      //-----correos de notificaciones---------//
     $_SESSION['_MAIL_NITIFICACIONES_1']='dcastro@boa.bo';//se utiliza para enviar correo al area legal 
     
-    
+   
+   // EL SSITEMA SE INTEGRA CON  OTROS----------------------------------------------------
+    //esto puede activa o desactivar funcionalidad en otros sistemas
+    //ENDESIS, NO, (SE PUEDEN ANHADIR SEGUN NECSIDAD)
+    //tiene que estar sincronizado con la variable global en base de datos
+    $_SESSION['_SIS_INTEGRACION']='NO'; 
 	
 
 	

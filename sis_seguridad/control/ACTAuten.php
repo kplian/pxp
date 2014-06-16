@@ -231,6 +231,15 @@ class ACTAuten extends ACTbase {
 			$_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
 			$_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
 			$_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
+			
+			if(!isset($_SESSION["_SIS_INTEGRACION"])){
+			    $sis_integracion = 'NO';
+			}
+            else{
+                  $sis_integracion = $_SESSION["_SIS_INTEGRACION"];
+            }
+			
+			
 		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
 				echo "{success:true,
 				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
@@ -243,6 +252,7 @@ class ACTAuten extends ACTbase {
 				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
 				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
 				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
+				sis_integracion:'".$sis_integracion."',
 				timeout:".$_SESSION["_TIMEOUT"]."}";
 	
 				exit;
