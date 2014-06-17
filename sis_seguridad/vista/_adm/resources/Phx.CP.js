@@ -403,7 +403,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  				    			if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "" ) {
 		  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
 		  				    			} else {
-		  				    				console.log(objConfig);
 		  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
 		  				    			}
 		  				    		}
@@ -504,8 +503,6 @@ Phx.CP=function(){
 	                    params:{'alarma':token_inicio},
 	                    success : function(response, opts) {
 	                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText)).datos;	                    	
-														
-							console.log(regreso)
 														
 							if(regreso.length > 0){
 								var interfaz = regreso[0];	
@@ -777,7 +774,6 @@ Phx.CP=function(){
 			});
 
 			viewport.doLayout();
-			console.log('cont_interino',Phx.CP.config_ini,Phx.CP.config_ini.cont_interino*1 > 0)
 			if(Phx.CP.config_ini.cont_interino*1 > 0){
 				
 				this.loadWindows('../../../sis_organigrama/vista/interinato/AplicarInterino.php','Aplicar Interinato',{
