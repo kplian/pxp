@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION wf.f_obtener_estado_wf (
   p_id_estado_wf integer,
   p_id_tipo_estado integer,
   p_operacion varchar,
+  p_id_usuario integer = NULL::integer,
   out ps_id_tipo_estado integer [],
   out ps_codigo_estado varchar [],
   out ps_disparador varchar [],
@@ -42,6 +43,11 @@ v_resp varchar;
 
 v_id_tipo_proceso integer;
 v_id_tipo_estado integer;
+v_consulta       varchar;
+v_registros_prioridades record;
+v_registros    record;
+sw_insercion  varchar;
+v_id_estado_wf  integer;
 	
 BEGIN
 
@@ -72,19 +78,158 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
  	 v_id_tipo_estado=p_id_tipo_estado;
   
   end if;
+  
+  
+  IF p_id_estado_wf is NULL THEN
+  --si nos mandan el id_estado_wd atual o recuperamos a partir del id_proceso_wf
+  
+          select
+            ew.id_estado_wf
+          into 
+            v_id_estado_wf
+            
+          from wf.tproceso_wf pw
+          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
+          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+          where pw.id_proceso_wf =  p_id_proceso_wf;
+  ELSE
+  
+       v_id_estado_wf = p_id_estado_wf;
+  
+  
+  END IF;
+  
+  
+  
 
- -- raise exception '% %  %',v_id_tipo_estado, p_id_proceso_wf,p_id_estado_wf;
+ 
 
    -- recuperar siguiente estado
    
    IF p_operacion = 'siguiente' THEN
    
+        --Creación de tabla temporal
+		/*v_consulta = '
+        DROP TABLE IF EXISTS tt_tipo_estado;
+        create temp table tt_tipo_estado(
+                 id_tipo_estado  integer,
+                 codigo varchar,
+			     disparador varchar,
+			     regla text,
+                 prioridad integer
+			)on commit drop;';
+        
+         execute(v_consulta);
+         
+         
+         sw_insercion = 'no';
+         
+        --FOR recorre primero las prioridades de menor a mayor
+        
+        FOR v_registros_prioridades in (select 
+                           DISTINCT(ee.prioridad)
+                        from  wf.ttipo_estado te 
+                        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
+                        where      te.id_tipo_proceso = v_id_tipo_proceso  
+                              and  ee.id_tipo_estado_padre = v_id_tipo_estado
+                        order by prioridad asc) LOOP
+                        
+                
+                  --  FOR  recorre la aristas con la prioridad indicada
+                  FOR v_registros in  (select
+                                           te.id_tipo_estado,
+                                           te.codigo,
+                                           te.disparador,
+                                           ee.regla,
+                                           ee.prioridad
+                                      from  wf.ttipo_estado te 
+                                      inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
+                                      where      te.id_tipo_proceso = v_id_tipo_proceso  
+                                            and  ee.id_tipo_estado_padre = v_id_tipo_estado
+                                            and  ee.prioridad = v_registros_prioridades.prioridad
+                                      order by ee.prioridad asc) LOOP        
+                        
+                           IF v_registros.regla is NULL or v_registros.regla = '' THEN
+                              --  si no hay regla apra evaluar se inserta directo en la tabla
+                              v_consulta=  'INSERT INTO  tt_tipo_estado(
+                                           id_tipo_estado ,
+                                           codigo,
+                                           disparador,
+                                           prioridad
+                                      )
+                                      VALUES
+                                      (
+                                      '||v_registros.id_tipo_estado::varchar||',
+                                      '||COALESCE(''''||v_registros.codigo::VARCHAR||'''','NULL')||',
+                                      '||COALESCE(''''||v_registros.disparador::VARCHAR||'''','NULL')||',
+                                      '||v_registros.prioridad::varchar||'
+                                     );';
+                
+               
+                                    execute(v_consulta);
+                           
+                              
+                              -- se marca en una bandera que hubo insercion
+                              sw_insercion = 'si';
+                           ELSE   
+                               --  si tiene regla se evalua
+                               -- si la el resutlado es positivo se inserta en la tabla 
+                               IF wf.f_evaluar_regla_wf (
+                                                     p_id_usuario, 
+                                                     p_id_proceso_wf, 
+                                                     v_registros.regla, --pantilla o funcion de evaluacion
+                                                     v_registros.id_tipo_estado, 
+                                                     v_id_estado_wf) THEN  
+                                
+                                  --  si no hay regla apra evaluar se inserta directo en la tabla
+                                   v_consulta=  'INSERT INTO  tt_tipo_estado(
+                                                       id_tipo_estado ,
+                                                       codigo,
+                                                       disparador,
+                                                       prioridad
+                                                  )
+                                                  VALUES
+                                                  (
+                                                  '||v_registros.id_tipo_estado::varchar||',
+                                                  '||COALESCE(''''||v_registros.codigo::VARCHAR||'''','NULL')||',
+                                                  '||COALESCE(''''||v_registros.disparador::VARCHAR||'''','NULL')||',
+                                                  '||v_registros.prioridad::varchar||'
+                                                 );';
+                
+               
+                                    execute(v_consulta);
+                              
+                                -- se marca en una bandera que hubo insercion
+                                
+                                sw_insercion = 'si';
+                              
+                              
+                              END IF;  
+                                
+                           END IF; 
+                   END LOOP;
+                   
+                    -- si la bandera muestra que hubo una insercion se rompe el FOR 
+                    IF  sw_insercion = 'si' THEN
+                    
+                      EXIT;
+                    
+                    END IF;
+           
+       
+        
+        
+        END LOOP;
+        
+         -- se retorna el resultado de la tabla temporal
+        
+        
         select 
-           pxp.aggarray(te.id_tipo_estado),
-           pxp.aggarray(te.codigo),
-           pxp.aggarray(te.disparador),
-           pxp.aggarray(ee.regla),
-           pxp.aggarray(ee.prioridad)
+           pxp.aggarray(id_tipo_estado),
+           pxp.aggarray(codigo),
+           pxp.aggarray(disparador),
+           pxp.aggarray(regla),
+           pxp.aggarray(prioridad)
         into
           ps_id_tipo_estado,
           ps_codigo_estado,
@@ -92,10 +237,32 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
           ps_regla,
           ps_prioridad
           
-        from  wf.ttipo_estado te 
-        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
-        where te.id_tipo_proceso = v_id_tipo_proceso  
-        and  ee.id_tipo_estado_padre = v_id_tipo_estado;
+        from  tt_tipo_estado;*/
+        
+        
+        
+        select 
+             pxp.aggarray(te.id_tipo_estado),
+             pxp.aggarray(te.codigo),
+             pxp.aggarray(te.disparador),
+             pxp.aggarray(ee.regla),
+             pxp.aggarray(ee.prioridad)
+          into
+            ps_id_tipo_estado,
+            ps_codigo_estado,
+            ps_disparador,
+            ps_regla,
+            ps_prioridad
+            
+          from  wf.ttipo_estado te 
+          inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
+          where te.id_tipo_proceso = v_id_tipo_proceso  
+          and  ee.id_tipo_estado_padre = v_id_tipo_estado;
+        
+        
+        
+        
+        
   
     ELSEIF p_operacion = 'anterior' THEN
    

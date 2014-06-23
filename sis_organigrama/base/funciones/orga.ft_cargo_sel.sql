@@ -75,7 +75,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = cargo.id_usuario_mod
 						inner join orga.ttipo_contrato tipcon on tipcon.id_tipo_contrato = cargo.id_tipo_contrato
 						inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial
-						inner join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
+						left join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
 				        where cargo.estado_reg = ''activo'' and (cargo.fecha_fin is null or cargo.fecha_fin >= now()::date) and ';
 			
 			--Definicion de la respuesta
@@ -113,7 +113,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = cargo.id_usuario_mod
 						inner join orga.ttipo_contrato tipcon on tipcon.id_tipo_contrato = cargo.id_tipo_contrato
 						inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial
-						inner join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
+						left join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
 					    where cargo.estado_reg = ''activo'' and (cargo.fecha_fin is null or cargo.fecha_fin >= now()::date) and ';
 			
 			--Definicion de la respuesta		    

@@ -237,8 +237,12 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_persona',
 		direction: 'ASC'
 	},
-	bdel:true,// boton para eliminar
-	bsave:true,// boton para eliminar
+	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	
+	
 	fheight: 350,
 	fwidth: 400,
 	

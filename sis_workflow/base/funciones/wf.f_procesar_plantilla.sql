@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_plantilla text,
   p_id_tipo_estado_actual integer,
   p_id_estado_anterior integer,
-  p_obs text
+  p_obs text = ''::text
 )
 RETURNS text AS
 $body$
@@ -14,6 +14,12 @@ $body$
 Autor:  Rensi Arteaga Copari  KPLIAN
 Fecha 15/04/2014
 Descripcion:   procesa una plantilla de correo del work floew para depues mandarla por correo o enviar alertas
+--------------------------
+Autor:  Rensi Arteaga Copari  KPLIAN
+Fecha 6/06/2014
+Descripcion:   Esta funcion puede generalizarce para procesar no solamente plantilla de correo , sino tambien plantilla de formular
+               Se utilizara tambien para las procesar las plantillar de las arreglas en las aristas
+               en la funcion  wf.f_obtener_estado_wf()
 
 
 */
@@ -34,11 +40,12 @@ v_NUM_TRAMITE		 varchar;
 v_USUARIO_PREVIO	 varchar;	
 v_ESTADO_ANTERIOR	 varchar;
 v_OBS				 varchar;
-v_CODIGO			 varchar;
+v_CODIGO_ACTUAL		 varchar;
 v_ESTADO_ACTUAL 	 varchar;
 v_FUNCIONARIO_PREVIO  varchar;
 v_DEPTO_PREVIO  	 varchar;
 v_PROCESO_MACRO      varchar;
+v_CODIGO_ANTERIOR     varchar;  
 
 v_sw_busqueda  boolean;
 v_tabla					record;
@@ -60,9 +67,10 @@ BEGIN
   NUM_TRAMITE
   USUARIO_PREVIO
   ESTADO_ANTERIOR
+  CODIGO_ANTERIOR
+  CODIGO_ACTUAL
   OBS
   ESTADO_ACTUAL
-  CODIGO
   FUNCIONARIO_PREVIO
   DEPTO_PREVIO 
   
@@ -151,9 +159,11 @@ BEGIN
                   ESTADO_ANTERIOR
                   OBS
                   ESTADO_ACTUAL
-                  CODIGO
+                  CODIGO_ACTUAL
                   FUNCIONARIO_PREVIO
                   DEPTO_PREVIO
+                  
+                  
                   
                   */
                   
@@ -167,11 +177,13 @@ BEGIN
                   select 
                     tew.nombre_estado,
                     f.desc_funcionario1,
-                    d.nombre
+                    d.nombre,
+                    tew.codigo
                   into
                     v_ESTADO_ANTERIOR,
                     v_FUNCIONARIO_PREVIO,
-                    v_DEPTO_PREVIO
+                    v_DEPTO_PREVIO,
+                    v_CODIGO_ANTERIOR
                   from  wf.testado_wf ew
                   inner join wf.ttipo_estado  tew on tew.id_tipo_estado = ew.id_tipo_estado
                   left join orga.vfuncionario f on f.id_funcionario = ew.id_funcionario
@@ -180,9 +192,11 @@ BEGIN
                   
                   
                   select 
-                  te.nombre_estado
+                  te.nombre_estado,
+                  te.codigo
                   into
-                  v_ESTADO_ACTUAL
+                  v_ESTADO_ACTUAL,
+                  v_CODIGO_ACTUAL
                   from wf.ttipo_estado te
                   where te.id_tipo_estado = p_id_tipo_estado_actual;
                   
@@ -251,6 +265,11 @@ BEGIN
               v_template_evaluado = replace(v_template_evaluado, '{DEPTO_PREVIO}',COALESCE(v_DEPTO_PREVIO,''));
               v_template_evaluado = replace(v_template_evaluado, '{PROCESO_MACRO}',COALESCE(v_PROCESO_MACRO,''));
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ACTUAL}',COALESCE(v_ESTADO_ACTUAL,''));
+              v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ANTERIOR}',COALESCE(v_CODIGO_ANTERIOR,''));
+              v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ACTUAL}',COALESCE(v_CODIGO_ACTUAL,''));
+              
+              
+              
               
               
               

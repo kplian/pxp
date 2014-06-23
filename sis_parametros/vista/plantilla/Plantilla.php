@@ -227,10 +227,11 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_plantilla',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bnew:true,
-	bedit:true,
-	bsave:true
+	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	
 })
 </script>
 		

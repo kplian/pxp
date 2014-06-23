@@ -208,7 +208,11 @@ BEGIN
 								$this->strTexto.= "\n\t\t\tnull,";	
 							}
 							
-			
+			                 if(!isset($this->gLlave[0])){
+			                         
+			                    throw new Exception('No existe la columna llave primaria, verifique la tabla y verifique la configuracion en el detalle del generador');
+			                 }
+			                   
 			
 							$this->strTexto= substr($this->strTexto,0,strlen($this->strTexto)-1)."
 							
@@ -1346,7 +1350,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 				
 				$tipo_componente = $this->tipoDato($p_Columnas[$i]->getColumna('tipo_dato'),'tipo_comp');
 				
-				if($p_Columnas[$i]->getColumna('nombre')!=$this->gLlave[0]->getColumna('nombre')&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_ai'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_reg'&&$p_Columnas[$i]->getColumna('nombre')!='id_usuario_mod'){
+				if($p_Columnas[$i]->getColumna('nombre')=='id_usuario_reg'||$p_Columnas[$i]->getColumna('nombre')=='id_usuario_mod'||$p_Columnas[$i]->getColumna('nombre')=='id_usuario_ai'){
                 
                    $tipo_componente = 'Field';
                 }

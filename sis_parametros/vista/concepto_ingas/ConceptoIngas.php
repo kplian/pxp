@@ -269,8 +269,10 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_concepto_ingas',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true
+	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true
 	}
 )
 </script>

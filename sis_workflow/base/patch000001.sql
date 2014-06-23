@@ -516,9 +516,6 @@ IS 'Almacena los tipos de propiedad generales que podrán ser relacionados a los
 COMMENT ON COLUMN wf.ttipo_propiedad.id_tipo_propiedad
 IS 'Identificador de la tabla';
 
-COMMENT ON COLUMN wf.ttipo_propiedad.id_tipo_componente
-IS 'Llave foranea a la tabla wf.ttipo_componente';
-
 COMMENT ON COLUMN wf.ttipo_propiedad.codigo
 IS 'Codigo unico que representa al tipo de propiedad';
 

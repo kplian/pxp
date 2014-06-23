@@ -8,7 +8,7 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Work Flow
- FUNCION: 		wf.ft_tabla_ime
+ FUNCION: 		wf.ft_tabla_instancia_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla autogenerada del workflow
  AUTOR: 		 (admin)
  FECHA:	        07-05-2014 21:39:40
@@ -47,7 +47,7 @@ DECLARE
 			    
 BEGIN
 
-    v_nombre_funcion = 'wf.ft_tabla_ime';
+    v_nombre_funcion = 'wf.ft_tabla_instancia_ime';
     v_parametros = pxp.f_get_json(p_tabla);
 
 	/*********************************    
@@ -303,9 +303,16 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
+<<<<<<< HEAD
 $body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+=======
+$BODY$
+LANGUAGE 'plpgsql' VOLATILE
+COST 100;
+ALTER FUNCTION "wf"."ft_tabla_instancia_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+>>>>>>> 69f1d1e802f2423702e7cb264030092feae075d8

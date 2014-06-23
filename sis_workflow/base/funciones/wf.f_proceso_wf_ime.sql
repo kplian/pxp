@@ -93,6 +93,8 @@ BEGIN
 	if(p_transaccion='WF_PWF_INS')then
 					
         begin
+        
+        
            
            select per.id_periodo,
                   ges.id_gestion
@@ -105,6 +107,8 @@ BEGIN
            limit 1 offset 0;
            
            
+         --  raise exception 'sss %',v_parametros.fecha_ini ;
+           
            select 
            tp.codigo
            into
@@ -112,7 +116,7 @@ BEGIN
            from wf.ttipo_proceso tp 
            where tp.id_tipo_proceso = v_parametros.id_tipo_proceso;
         
-        
+       
             --todo obtener numero de documento
         
         
@@ -130,6 +134,8 @@ BEGIN
                         
                   FROM wf.f_inicia_tramite(
                        p_id_usuario, 
+                       v_parametros._id_usuario_ai,
+                       v_parametros._nombre_usuario_ai,
                        v_id_gestion, 
                        v_codigo_tipo_proceso, 
                        v_parametros.id_funcionario_usu,
@@ -138,8 +144,8 @@ BEGIN
                        'NUM CORRE');
         
              
-            
-            
+           
+          
             
             
             update wf.tproceso_wf set
@@ -273,7 +279,12 @@ BEGIN
                 va_regla,
                 va_prioridad
             
-            FROM wf.f_obtener_estado_wf(v_registros.id_proceso_wf, NULL,v_registros.id_tipo_estado,'siguiente'); 
+            FROM wf.f_obtener_estado_wf(
+            v_registros.id_proceso_wf, 
+            NULL,
+            v_registros.id_tipo_estado,
+            'siguiente',
+            p_id_usuario); 
           
             raise notice 'verifica';
             
@@ -402,6 +413,8 @@ BEGIN
                                                            v_registros.id_estado_wf, 
                                                            v_registros.id_proceso_wf,
                                                            p_id_usuario,
+                                                           v_parametros._id_usuario_ai,
+                                                           v_parametros._nombre_usuario_ai,
                                                            v_id_depto,
                                                            v_parametros.obs);
             
@@ -476,7 +489,12 @@ BEGIN
                     va_regla,
                     va_prioridad
                 
-                FROM wf.f_obtener_estado_wf(v_registros.id_proceso_wf, NULL,v_registros.id_tipo_estado,'siguiente'); 
+                FROM wf.f_obtener_estado_wf(
+                v_registros.id_proceso_wf,
+                 NULL,
+                 v_registros.id_tipo_estado,
+                 'siguiente',
+                 p_id_usuario); 
           
                 raise notice 'verifica';
                 
@@ -593,7 +611,12 @@ BEGIN
                     va_regla,
                     va_prioridad
                 
-                FROM wf.f_obtener_estado_wf(v_registros.id_proceso_wf, NULL,v_registros.id_tipo_estado,'siguiente'); 
+                FROM wf.f_obtener_estado_wf(
+                    v_registros.id_proceso_wf,
+                     NULL,
+                     v_registros.id_tipo_estado,
+                     'siguiente',
+                     p_id_usuario); 
           
                 raise notice 'verifica';
                 
@@ -847,6 +870,8 @@ BEGIN
                           v_parametros.id_estado_wf, 
                           v_id_proceso_wf, 
                           p_id_usuario,
+                          v_parametros._id_usuario_ai,
+                          v_parametros._nombre_usuario_ai,
                           v_id_depto);
                       
                     
@@ -914,6 +939,8 @@ BEGIN
                   v_parametros.id_estado_wf, 
                   v_id_proceso_wf, 
                   p_id_usuario,
+                  v_parametros._id_usuario_ai,
+                  v_parametros._nombre_usuario_ai,
                   v_id_depto,
                   v_parametros.obs);
                       
@@ -996,6 +1023,8 @@ BEGIN
                                                        v_registros.id_estado_wf,   --  p_id_estado_wf_anterior
                                                        v_parametros.id_proceso_wf_act,
                                                        p_id_usuario,
+                                                       v_parametros._id_usuario_ai,
+                                                       v_parametros._nombre_usuario_ai,
                                                        v_parametros.id_depto_wf,
                                                        v_parametros.obs);
         
@@ -1026,6 +1055,8 @@ BEGIN
                        v_codigo_estado
               FROM wf.f_registra_proceso_disparado_wf(
                        p_id_usuario,
+                       v_parametros._id_usuario_ai,
+                       v_parametros._nombre_usuario_ai,
                        v_id_estado_actual::integer, 
                        v_registros_proc.id_funcionario_wf_pro::integer, 
                        v_registros_proc.id_depto_wf_pro::integer,

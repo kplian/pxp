@@ -99,14 +99,15 @@ BEGIN
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
-				        where  pw.nro_tramite = '''||v_nro_tramite||''' and td.id_proceso_macro = '||v_id_proceso_macro||' and ';
+				        where  pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and td.id_proceso_macro = '||v_id_proceso_macro||' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-            raise notice '%',v_consulta;
+            --raise exception '%',v_consulta;
 
+--raise exception 'xxx';
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -147,7 +148,7 @@ BEGIN
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
-				        where  pw.nro_tramite = '''||v_nro_tramite||''' and td.id_proceso_macro = '||v_id_proceso_macro||' and ';
+				        where  pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and td.id_proceso_macro = '||v_id_proceso_macro||' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

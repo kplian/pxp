@@ -95,7 +95,13 @@ class driver
                 $this->nom_usuario_ai=$_SESSION["_NOM_USUARIO_AI"];
         }
 		
-		$this->ip=getenv("REMOTE_ADDR");
+		if (getenv('HTTP_CLIENT_IP')){
+		    $this->ip = $_SERVER['HTTP_CLIENT_IP'];
+		} 
+		else{ 
+		    $this->ip = $_SERVER['REMOTE_ADDR'];
+		}
+		
 		$this->mac="99:99:99:99:99:99";
 		
 		$this->consulta_armada=false;

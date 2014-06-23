@@ -96,6 +96,8 @@ function listarGantWf(){
         $this->captura('cuenta','varchar');
         $this->captura('id_depto','integer');
         $this->captura('depto','varchar');
+        $this->captura('nombre_usuario_ai','varchar');
+        
         
         //$this->captura('id_estructura_uo','integer');
         //Ejecuta la funcion
@@ -283,7 +285,7 @@ function listarGantWf(){
         $this->setParametro('id_funcionario','id_funcionario','int4');
         $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
         $this->setParametro('id_estado_wf','id_estado_wf','int4');
-          $this->setParametro('obs','obs','text');
+        $this->setParametro('obs','obs','text');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

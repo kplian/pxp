@@ -6,9 +6,9 @@
 class CTParametro{
 	
 	private $tipo_tran;//SEL || IME || OTRO
-	private $arreglo_parametros=array();
+	public $arreglo_parametros=array();
 	private $columnas_excel=array();
-	private $parametros_consulta=array();
+	public $parametros_consulta=array();
 	private $aPostData;
     private $aPostFiles=array();//rac 22092011
 	private $aFiltro;
