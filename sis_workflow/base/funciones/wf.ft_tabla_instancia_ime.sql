@@ -303,16 +303,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-<<<<<<< HEAD
 $body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-=======
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
-COST 100;
-ALTER FUNCTION "wf"."ft_tabla_instancia_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
->>>>>>> 69f1d1e802f2423702e7cb264030092feae075d8
