@@ -100,6 +100,77 @@ BEGIN
 			return v_consulta;
 
 		end;
+     /*********************************    
+ 	#TRANSACCION:  'PM_CONIGPAR_SEL'
+ 	#DESCRIPCION:	istado de conceptos de gatos con partidas prespeustaria
+ 	#AUTOR:		rac	
+ 	#FECHA:		20-06-2014 19:49:23
+	***********************************/
+
+	elsif(p_transaccion='PM_CONIGPAR_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+                          conig.id_concepto_ingas,
+                          conig.desc_ingas,
+                          conig.tipo,
+                          conig.movimiento,
+                          conig.sw_tes,
+                          conig.id_oec,
+                          conig.estado_reg,
+                          conig.id_usuario_reg,
+                          conig.fecha_reg,
+                          conig.fecha_mod,
+                          conig.id_usuario_mod,
+                          usu1.cuenta as usr_reg,
+                          usu2.cuenta as usr_mod,
+                          conig.activo_fijo,
+                          conig.almacenable,
+                          par.codigo||'' ''||par.nombre_partida as desc_partida	
+                          from param.tconcepto_ingas conig
+                          inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas
+                          inner join pre.tpartida par on par.id_partida = cp.id_partida
+                          inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                          left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+				        where  ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_CONIGPAR_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		rac	
+ 	#FECHA:		20-06-2014 19:49:23
+	***********************************/
+
+	elsif(p_transaccion='PM_CONIGPAR_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(conig.id_concepto_ingas)
+					      from param.tconcepto_ingas conig
+                          inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas
+                          inner join pre.tpartida par on par.id_partida = cp.id_partida
+                          inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                          left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+				        where ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;   
+        
 	/*********************************    
  	#TRANSACCION:  'PM_CONIGPP_SEL'
  	#DESCRIPCION:	Consulta de datos conmceptos de gasto filtrados por partidas
