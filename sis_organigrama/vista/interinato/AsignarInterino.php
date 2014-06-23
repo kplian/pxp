@@ -13,7 +13,7 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.AsignarInterino = {
     bedit:true,
-    bnew:false,
+    bnew:true,
     bsave:false,
     bdel:true,
 	require:'../../../sis_organigrama/vista/interinato/Interinato.php',

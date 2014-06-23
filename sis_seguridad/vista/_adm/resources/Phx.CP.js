@@ -278,10 +278,15 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  	               'clase':clase,
 		  	               'params':params
 		  	              };
-		  	              
-		 var id = 'docs-' + cls;
+		 //jrr si es uan vista autogenerada el id es diferente 	              
+		 if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
+		 	var id = 'docs-' + objConfig.params.proceso + '_' + objConfig.params.estado;
+		 } else {
+		 	var id = 'docs-' + cls;
+		 }
 		 var tab = this.getComponent(id);
 		 //si el tab existe toma el foco
+		 
 		 if(tab){
 	            this.setActiveTab(tab);
 	            
@@ -403,7 +408,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  				    			if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "" ) {
 		  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
 		  				    			} else {
-		  				    				console.log(objConfig);
 		  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
 		  				    			}
 		  				    		}
@@ -504,8 +508,6 @@ Phx.CP=function(){
 	                    params:{'alarma':token_inicio},
 	                    success : function(response, opts) {
 	                    	var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText)).datos;	                    	
-														
-							console.log(regreso)
 														
 							if(regreso.length > 0){
 								var interfaz = regreso[0];	
@@ -777,7 +779,6 @@ Phx.CP=function(){
 			});
 
 			viewport.doLayout();
-			console.log('cont_interino',Phx.CP.config_ini,Phx.CP.config_ini.cont_interino*1 > 0)
 			if(Phx.CP.config_ini.cont_interino*1 > 0){
 				
 				this.loadWindows('../../../sis_organigrama/vista/interinato/AplicarInterino.php','Aplicar Interinato',{
@@ -1325,6 +1326,7 @@ Phx.CP=function(){
 	        var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText)).datos;
 	        
 	        var clase_generada = o.arguments.params.proceso + '_' + o.arguments.params.estado;
+	        
 		  	o.arguments.params.indice = 0;
 		  	o.arguments.params.configProceso = objRes;
 		  	
@@ -1471,6 +1473,7 @@ Phx.CP=function(){
 		    	// Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
+				
 				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){

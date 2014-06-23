@@ -279,7 +279,12 @@ BEGIN
                 va_regla,
                 va_prioridad
             
-            FROM wf.f_obtener_estado_wf(v_registros.id_proceso_wf, NULL,v_registros.id_tipo_estado,'siguiente'); 
+            FROM wf.f_obtener_estado_wf(
+            v_registros.id_proceso_wf, 
+            NULL,
+            v_registros.id_tipo_estado,
+            'siguiente',
+            p_id_usuario); 
           
             raise notice 'verifica';
             
@@ -484,7 +489,12 @@ BEGIN
                     va_regla,
                     va_prioridad
                 
-                FROM wf.f_obtener_estado_wf(v_registros.id_proceso_wf, NULL,v_registros.id_tipo_estado,'siguiente'); 
+                FROM wf.f_obtener_estado_wf(
+                v_registros.id_proceso_wf,
+                 NULL,
+                 v_registros.id_tipo_estado,
+                 'siguiente',
+                 p_id_usuario); 
           
                 raise notice 'verifica';
                 
@@ -604,7 +614,9 @@ BEGIN
                 FROM wf.f_obtener_estado_wf(
                     v_registros.id_proceso_wf,
                      NULL,
-                     v_registros.id_tipo_estado,'siguiente'); 
+                     v_registros.id_tipo_estado,
+                     'siguiente',
+                     p_id_usuario); 
           
                 raise notice 'verifica';
                 
@@ -858,6 +870,8 @@ BEGIN
                           v_parametros.id_estado_wf, 
                           v_id_proceso_wf, 
                           p_id_usuario,
+                          v_parametros._id_usuario_ai,
+                          v_parametros._nombre_usuario_ai,
                           v_id_depto);
                       
                     

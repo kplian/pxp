@@ -48,7 +48,7 @@ v_registros_prioridades record;
 v_registros    record;
 sw_insercion  varchar;
 v_id_estado_wf  integer;
-	
+
 BEGIN
 
 v_nombre_funcion = 'wf.f_obtener_estado_wf';
@@ -263,7 +263,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
    END IF;
 return;
  EXCEPTION
-				
+
 	WHEN OTHERS THEN
 		v_resp='';
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);

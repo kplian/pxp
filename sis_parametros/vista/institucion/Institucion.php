@@ -497,8 +497,10 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_institucion',
 		direction: 'ASC'
 	},
-	bdel:true,
 	bsave:false,
+	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	fheight: 350,
 	fwidth: 400
 	}

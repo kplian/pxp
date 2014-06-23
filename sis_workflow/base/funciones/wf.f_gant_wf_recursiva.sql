@@ -116,7 +116,8 @@ BEGIN
                          fun.id_funcionario,
                          fun.desc_funcionario1  as funcionario,
                          depto.id_depto,
-                         depto.codigo as departamento
+                         depto.codigo as departamento,
+                         ewf.usuario_ai
                          
                          
                        FROM  wf.testado_wf ewf
@@ -153,7 +154,8 @@ BEGIN
                               id_usuario,
                               cuenta,
                               id_depto,
-                              depto
+                              depto,
+                              nombre_usuario_ai
                               
                                
                              )
@@ -175,7 +177,8 @@ BEGIN
                               v_registros.id_usuario,
                               v_registros.cuenta,
                               v_registros.id_depto,
-                              v_registros.departamento 
+                              v_registros.departamento,
+                              v_registros.usuario_ai 
                              ) RETURNING id into v_id_estado;
                       
                        

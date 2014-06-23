@@ -123,7 +123,8 @@ BEGIN
                                       id_usuario INTEGER,
                                       cuenta varchar,
                                       id_depto integer,
-                                      depto varchar
+                                      depto varchar,
+                                      nombre_usuario_ai varchar
                                      ) ON COMMIT DROP;
     
     
@@ -154,7 +155,8 @@ BEGIN
                         COALESCE(id_usuario,0),
                         cuenta ,
                         COALESCE(id_depto,0),
-                        depto
+                        depto,
+                        COALESCE(nombre_usuario_ai,'')
                       FROM temp_gant_wf 
                       order by id) LOOP
      RETURN NEXT v_registros;

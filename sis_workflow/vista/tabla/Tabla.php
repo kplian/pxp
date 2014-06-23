@@ -27,7 +27,10 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
             }
         );
 		this.iniciarEventos();
-		this.load({params:{start:0, limit:this.tam_pag,id_tipo_proceso : this.maestro.id_tipo_proceso}})
+		this.load({params:{start:0, limit:this.tam_pag,id_tipo_proceso : this.maestro.id_tipo_proceso}});
+		this.Cmp.vista_estados_new.store.baseParams.id_tipo_proceso = this.maestro.id_tipo_proceso;
+		this.Cmp.vista_estados_delete.store.baseParams.id_tipo_proceso = this.maestro.id_tipo_proceso;
+		
 	},
 			
 	Atributos:[
@@ -220,10 +223,51 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
 
        			},
        			type:'AwesomeCombo',
-       			id_grupo:0,
+       			id_grupo:2,
        			grid:false,
        			form:true
-       	}
+       	},
+       	{
+       			config:{
+       				name:'vista_estados_delete',
+       				fieldLabel:'Boton Delete',
+       				allowBlank:true,
+       				emptyText:'Estados...',
+       				store: new Ext.data.JsonStore({
+	                    url: '../../sis_workflow/control/TipoEstado/listarTipoEstado',
+	                    id: 'id_tipo_estado',
+	                    root: 'datos',
+	                    sortInfo: {
+	                        field: 'tipes.codigo',
+	                        direction: 'ASC'
+	                    },
+	                    totalProperty: 'total',
+	                    fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo_estado','disparador','fin','desc_tipo_proceso'],
+	                    // turn on remote sorting
+	                    remoteSort: true,
+	                    baseParams: {par_filtro: 'tipes.nombre_estado#tipes.codigo'}
+	                }),
+       				valueField: 'codigo_estado',
+       				displayField: 'codigo_estado',
+       				forceSelection:true,
+       				typeAhead: false,
+           			triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:100,
+       				queryDelay:1000,
+       				width:250,
+       				minChars:2,
+	       			enableMultiSelect:true,
+       			
+       				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+
+       			},
+       			type:'AwesomeCombo',
+       			id_grupo:2,
+       			grid:false,
+       			form:true
+       	},
 		
 		{
 			config:{
@@ -287,7 +331,7 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
                 gwidth: 200,
                 qtip:'La tabla que es el maestro de esta tabla',
                 renderer: function(value, p, record) {
-                    return String.format('{0}', record.data['bd_nombre_tabla_maestro']);
+                    return String.format('{0}', record.data['nombre_tabla_maestro']);
                 },
                 tpl: '<tpl for="."><div class="x-combo-list-item"><p>({bd_codigo_tabla})- {bd_nombre_tabla}</p></div></tpl>'
             },
@@ -471,6 +515,9 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_tipo_proceso', type: 'numeric'},
 		{name:'vista_id_tabla_maestro', type: 'numeric'},
 		{name:'bd_scripts_extras', type: 'string'},
+		{name:'vista_estados_new', type: 'string'},
+		{name:'vista_estados_delete', type: 'string'},
+		{name:'bd_scripts_extras', type: 'string'},
 		{name:'vista_campo_maestro', type: 'string'},
 		{name:'vista_scripts_extras', type: 'string'},
 		{name:'bd_descripcion', type: 'string'},
@@ -482,7 +529,7 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
 		{name:'estado_reg', type: 'string'},
 		{name:'menu_codigo', type: 'string'},
 		{name:'bd_nombre_tabla', type: 'string'},
-		{name:'bd_nombre_tabla_maestro', type: 'string'},
+		{name:'nombre_tabla_maestro', type: 'string'},
 		{name:'bd_codigo_tabla', type: 'string'},
 		{name:'vista_dir_ordenacion', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
