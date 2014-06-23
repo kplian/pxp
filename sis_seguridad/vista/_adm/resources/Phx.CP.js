@@ -278,10 +278,15 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  	               'clase':clase,
 		  	               'params':params
 		  	              };
-		  	              
-		 var id = 'docs-' + cls;
+		 //jrr si es uan vista autogenerada el id es diferente 	              
+		 if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
+		 	var id = 'docs-' + objConfig.params.proceso + '_' + objConfig.params.estado;
+		 } else {
+		 	var id = 'docs-' + cls;
+		 }
 		 var tab = this.getComponent(id);
 		 //si el tab existe toma el foco
+		 
 		 if(tab){
 	            this.setActiveTab(tab);
 	            
@@ -1325,6 +1330,7 @@ Phx.CP=function(){
 	        var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText)).datos;
 	        
 	        var clase_generada = o.arguments.params.proceso + '_' + o.arguments.params.estado;
+	        
 		  	o.arguments.params.indice = 0;
 		  	o.arguments.params.configProceso = objRes;
 		  	
@@ -1471,6 +1477,7 @@ Phx.CP=function(){
 		    	// Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
+				
 				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){

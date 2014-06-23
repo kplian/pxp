@@ -480,14 +480,14 @@ IS 'este campo recibe los cargo del depto que reciben la alerta, si no tiene val
 
 
 /*******************************************F-SCP-RAC-WF-0-15/05/2014*************************************/
-
+ 
 
 /***********************************I-SCP-RCM-WF-0-05/05/2014****************************************/
 CREATE TABLE wf.ttipo_componente (
   id_tipo_componente SERIAL,
   codigo VARCHAR(50) UNIQUE,
   nombre VARCHAR(100),
-  CONSTRAINT pk_id_tipo_componente PRIMARY KEY(id_tipo_componente)
+  CONSTRAINT pk_ttipo_componente__id_tipo_componente PRIMARY KEY(id_tipo_componente)
 ) INHERITS (pxp.tbase);
 
 COMMENT ON TABLE wf.ttipo_componente
@@ -507,7 +507,7 @@ CREATE TABLE wf.ttipo_propiedad (
   codigo VARCHAR(50) NOT NULL,
   nombre VARCHAR(150) NOT NULL,
   tipo_dato VARCHAR(30) NOT NULL,
-  PRIMARY KEY(id_tipo_propiedad)
+  CONSTRAINT pk_tipo_propiedad_id_tipo_propiedad PRIMARY KEY(id_tipo_propiedad)
 ) INHERITS (pxp.tbase);
 
 COMMENT ON TABLE wf.ttipo_propiedad
@@ -534,7 +534,7 @@ CREATE TABLE wf.ttipo_comp_tipo_prop (
   id_tipo_componente INTEGER NOT NULL,
   obligatorio VARCHAR(2) NOT NULL,
   tipo_dato VARCHAR(40) NOT NULL,
-  PRIMARY KEY(id_tipo_comp_tipo_prop)
+  CONSTRAINT pk_tipo_comp_tipo_prop__id_tipo_comp_tipo_prop PRIMARY KEY(id_tipo_comp_tipo_prop)
 ) INHERITS (pxp.tbase)
 ;
 
@@ -558,6 +558,7 @@ IS 'Tipo de dato para el valor del tipo de propiedad';
 
 /***********************************F-SCP-RCM-WF-0-05/05/2014****************************************/
 
+
 /***********************************I-SCP-JRR-WF-0-23/05/2014****************************************/
 ALTER TABLE wf.ttabla
   ADD COLUMN vista_estados_new VARCHAR(100)[];
@@ -566,3 +567,68 @@ ALTER TABLE wf.ttabla
   ADD COLUMN vista_estados_delete VARCHAR(100)[];
 
 /***********************************F-SCP-JRR-WF-0-23/05/2014****************************************/
+
+/***********************************I-SCP-RCM-WF-0-22/05/2014****************************************/
+CREATE TABLE wf.tcatalogo (
+  id_catalogo SERIAL,
+  id_proceso_macro integer not null,
+  codigo VARCHAR(50) NOT NULL,
+  nombre VARCHAR(150) NOT NULL,
+  CONSTRAINT pk_tcatalogo__id_catalogo PRIMARY KEY(id_catalogo)
+) INHERITS (pxp.tbase);
+
+COMMENT ON TABLE wf.tcatalogo
+IS 'Los catálogos se refieren a dominios de datos limitados, que podrán ser utilizados por los formularios
+dinámicos del workflow por proceso macro';
+
+COMMENT ON COLUMN wf.tcatalogo.id_catalogo
+IS 'Identificador de la cabecera de Catalogos de WF';
+
+COMMENT ON COLUMN wf.tcatalogo.id_proceso_macro
+IS 'Llave foránea de la tabla wf.tproceso_macro';
+
+COMMENT ON COLUMN wf.tcatalogo.codigo
+IS 'Código único (llave alterna) para nombrar al Catálogo';
+
+COMMENT ON COLUMN wf.tcatalogo.nombre
+IS 'Nombre del catálogo';
+
+CREATE TABLE wf.tcatalogo_valor (
+  id_catalogo_valor SERIAL,
+  fk_id_catalogo_valor integer,
+  id_catalogo integer not null,
+  codigo VARCHAR(50) NOT NULL,
+  nombre VARCHAR(200) NOT NULL,
+  orden smallint not null,
+  CONSTRAINT pk_tcatalogo_valor__id_catalogo_valor PRIMARY KEY(id_catalogo_valor)
+) INHERITS (pxp.tbase);
+
+COMMENT ON TABLE wf.tcatalogo_valor
+IS 'Valores definidos en el catálogo (o dominio) creado';
+
+COMMENT ON COLUMN wf.tcatalogo_valor.id_catalogo_valor
+IS 'Identificador de la tabla';
+
+COMMENT ON COLUMN wf.tcatalogo_valor.id_catalogo_valor
+IS 'Relación recursiva para registro de datos jerárquicos (árbol)';
+
+COMMENT ON COLUMN wf.tcatalogo_valor.id_catalogo
+IS 'Llave foránea del maestro de la tabla wf.tcatalogo';
+
+COMMENT ON COLUMN wf.tcatalogo_valor.codigo
+IS 'Código único (llave alterna) de los valores del catálogo';
+
+COMMENT ON COLUMN wf.tcatalogo_valor.nombre
+IS 'Nombre de los valores del catálogo';
+
+COMMENT ON COLUMN wf.tcatalogo_valor.orden
+IS 'Orden de despliegue de los valores del catálogo';
+/***********************************F-SCP-RCM-WF-0-22/05/2014****************************************/
+
+/***********************************I-SCP-JRR-WF-0-20/06/2014****************************************/
+
+ALTER TABLE wf.ttabla
+  ALTER COLUMN vista_campo_maestro TYPE VARCHAR(75);
+
+/***********************************F-SCP-JRR-WF-0-20/06/2014****************************************/
+

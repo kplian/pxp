@@ -24,7 +24,7 @@ class MODTabla extends MODbase{
 		$this->captura('id_tipo_proceso','int4');
 		$this->captura('vista_id_tabla_maestro','int4');
 		$this->captura('bd_scripts_extras','text');
-		$this->captura('vista_campo_maestro','int4');
+		$this->captura('vista_campo_maestro','varchar');
 		$this->captura('vista_scripts_extras','text');
 		$this->captura('bd_descripcion','text');
 		$this->captura('vista_tipo','varchar');
@@ -44,6 +44,8 @@ class MODTabla extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_tabla_maestro','varchar');
+		$this->captura('vista_estados_new','text');
+		$this->captura('vista_estados_delete','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -63,7 +65,7 @@ class MODTabla extends MODbase{
 		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
 		$this->setParametro('vista_id_tabla_maestro','vista_id_tabla_maestro','int4');
 		$this->setParametro('bd_scripts_extras','bd_scripts_extras','text');
-		$this->setParametro('vista_campo_maestro','vista_campo_maestro','int4');
+		$this->setParametro('vista_campo_maestro','vista_campo_maestro','varchar');
 		$this->setParametro('vista_scripts_extras','vista_scripts_extras','text');
 		$this->setParametro('bd_descripcion','bd_descripcion','text');
 		$this->setParametro('vista_tipo','vista_tipo','varchar');
@@ -76,6 +78,8 @@ class MODTabla extends MODbase{
 		$this->setParametro('bd_nombre_tabla','bd_nombre_tabla','varchar');
 		$this->setParametro('bd_codigo_tabla','bd_codigo_tabla','varchar');
 		$this->setParametro('vista_dir_ordenacion','vista_dir_ordenacion','varchar');
+		$this->setParametro('vista_estados_new','vista_estados_new','varchar');
+		$this->setParametro('vista_estados_delete','vista_estados_delete','varchar');		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -96,7 +100,7 @@ class MODTabla extends MODbase{
 		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
 		$this->setParametro('vista_id_tabla_maestro','vista_id_tabla_maestro','int4');
 		$this->setParametro('bd_scripts_extras','bd_scripts_extras','text');
-		$this->setParametro('vista_campo_maestro','vista_campo_maestro','int4');
+		$this->setParametro('vista_campo_maestro','vista_campo_maestro','varchar');
 		$this->setParametro('vista_scripts_extras','vista_scripts_extras','text');
 		$this->setParametro('bd_descripcion','bd_descripcion','text');
 		$this->setParametro('vista_tipo','vista_tipo','varchar');
@@ -109,6 +113,8 @@ class MODTabla extends MODbase{
 		$this->setParametro('bd_nombre_tabla','bd_nombre_tabla','varchar');
 		$this->setParametro('bd_codigo_tabla','bd_codigo_tabla','varchar');
 		$this->setParametro('vista_dir_ordenacion','vista_dir_ordenacion','varchar');
+		$this->setParametro('vista_estados_new','vista_estados_new','varchar');
+		$this->setParametro('vista_estados_delete','vista_estados_delete','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -169,7 +175,7 @@ class MODTabla extends MODbase{
 		$this->captura('id_tipo_proceso','int4');
 		$this->captura('vista_id_tabla_maestro','int4');
 		$this->captura('bd_scripts_extras','text');
-		$this->captura('vista_campo_maestro','int4');
+		$this->captura('vista_campo_maestro','varchar');
 		$this->captura('vista_scripts_extras','text');
 		$this->captura('bd_descripcion','text');
 		$this->captura('vista_tipo','varchar');
@@ -189,6 +195,8 @@ class MODTabla extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_tabla_maestro','varchar');
+		$this->captura('vista_estados_new','text');
+		$this->captura('vista_estados_delete','text');
 		
 		$this->armarConsulta();	
 		if ($link == 0) {
@@ -312,6 +320,122 @@ class MODTabla extends MODbase{
 			$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
 			return $this->respuesta;
 		}
+	}
+
+	function listarTablaInstancia(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_tabla_instancia_sel';
+		$this->transaccion='WF_TABLAINS_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+		$this->setParametro('id_tabla','id_tabla','integer');
+		
+		//Definicion de la lista del resultado del query
+		$this->captura('id_' . $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'],'int4');
+		
+		if ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_tipo'] == 'maestro') {
+				
+			$this->captura('estado','varchar');
+			$this->captura('id_estado_wf','int4');
+			$this->captura('id_proceso_wf','int4');
+		}
+		
+		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
+			
+			$this->captura($value['bd_nombre_columna'],$value['bd_tipo_columna']);		
+			
+		}		
+		
+		$this->captura('estado_reg','varchar');		
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function insertarTablaInstancia(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='wf.ft_tabla_instancia_ime';
+		$this->transaccion='WF_TABLAINS_INS';
+		$this->tipo_procedimiento='IME';
+		
+		$this->setParametro('id_tabla','id_tabla','integer');
+		$this->setParametro('tipo_estado','tipo_estado','varchar');
+		$this->setParametro('tipo_proceso','tipo_proceso','varchar');
+		//si es detalle se añade un parametro para el id del maestro
+		if ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_tipo'] != 'maestro') {
+			
+			$this->setParametro($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_campo_maestro'],
+								$_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_campo_maestro'],'integer');
+		}
+		//Define los parametros para la funcion		
+		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
+			$this->setParametro($value['bd_nombre_columna'],$value['bd_nombre_columna'],$value['bd_tipo_columna']);			
+		}			
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	function modificarTablaInstancia(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='wf.ft_tabla_instancia_ime';
+		$this->transaccion='WF_TABLAINS_MOD';
+		$this->tipo_procedimiento='IME';
+				
+		$this->setParametro('id_tabla','id_tabla','integer');
+		$this->setParametro('tipo_estado','tipo_estado','varchar');
+		$this->setParametro('tipo_proceso','tipo_proceso','varchar');
+		$bd_nombre_tabla = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'];
+		$this->setParametro('id_'.$bd_nombre_tabla,'id_'.$bd_nombre_tabla,'integer');
+		//Define los parametros para la funcion		
+		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
+			$this->setParametro($value['bd_nombre_columna'],$value['bd_nombre_columna'],$value['bd_tipo_columna']);			
+		}	
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+			
+	function eliminarTablaInstancia(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='wf.ft_tabla_instancia_ime';
+		$this->transaccion='WF_TABLAINS_ELI';
+		$this->tipo_procedimiento='IME';
+		
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_tabla','id_tabla','integer');
+		$this->setParametro('tipo_estado','tipo_estado','varchar');
+		$this->setParametro('tipo_proceso','tipo_proceso','varchar');
+		$aux = $this->objParam->getParametro('0');
+		
+		$bd_nombre_tabla = $_SESSION['_wf_ins_'.$aux['tipo_proceso'].'_'.$aux['tipo_estado']]['atributos']['bd_nombre_tabla'];
+		$this->setParametro('id_'.$bd_nombre_tabla,'id_'.$bd_nombre_tabla,'integer');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
 	}
 			
 }
