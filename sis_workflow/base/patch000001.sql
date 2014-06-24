@@ -622,9 +622,6 @@ COMMENT ON COLUMN wf.tcatalogo_valor.orden
 IS 'Orden de despliegue de los valores del catálogo';
 /***********************************F-SCP-RCM-WF-0-22/05/2014****************************************/
 
-<<<<<<< HEAD
-
-
 
 /***********************************I-SCP-RCM-WF-0-09/06/2014****************************************/
 
@@ -670,12 +667,12 @@ IS 'ee utiliza para filtrar los tipo_estado disaradores que se muestran';
 /***********************************F-SCP-RCM-WF-0-09/06/2014****************************************/
 
 
-=======
+
 /***********************************I-SCP-JRR-WF-0-20/06/2014****************************************/
 
 ALTER TABLE wf.ttabla
   ALTER COLUMN vista_campo_maestro TYPE VARCHAR(75);
 
 /***********************************F-SCP-JRR-WF-0-20/06/2014****************************************/
->>>>>>> master
+
 
