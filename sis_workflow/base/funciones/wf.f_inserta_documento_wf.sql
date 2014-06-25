@@ -41,11 +41,21 @@ DECLARE
   v_nro_tramite varchar;
   v_registros  record;
   
+  v_registro_estado record;
+  
 BEGIN
 
      v_nombre_funcion = 'wf.f_inserta_documento_wf';
      
     
+      select
+        ewf.id_estado_anterior,
+        ewf.id_tipo_estado
+      into
+        v_registro_estado
+      from wf.testado_wf ewf
+      where ewf.id_estado_wf = p_id_estado_wf;
+
 
         --obtener tipos
         
@@ -68,7 +78,8 @@ BEGIN
                                tdo.id_tipo_documento,
                                tdo.codigo,
                                tdo.nombre,
-                               ted.momento
+                               ted.momento,
+                               ted.regla
                           from  wf.testado_wf ew 
                               inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado
                               inner join wf.ttipo_documento_estado ted on ted.id_tipo_estado   = te.id_tipo_estado and ted.momento = 'crear'
@@ -87,37 +98,44 @@ BEGIN
                            
                ELSE
                
-               --crea el documento para este proceso y estado especifico
                
-               INSERT INTO 
-                      wf.tdocumento_wf
-                    (
-                      id_usuario_reg,
-                      fecha_reg,
-                      estado_reg,
-                      id_tipo_documento,
-                      id_proceso_wf,
-                      num_tramite,
-                      momento,
-                      chequeado,
-                      id_estado_ini
-                    ) 
-                    VALUES (
-                      p_id_usuario_reg,
-                      now(),
-                     'activo',
-                      v_registros.id_tipo_documento,
-                      p_id_proceso_wf,
-                      v_num_tramite,
-                      'verificar',
-                      'no',
-                      p_id_estado_wf
-                    );
-              
-              
-              END IF; 
+              IF  (wf.f_evaluar_regla_wf (p_id_usuario_reg,
+                                          p_id_proceso_wf,
+                                          v_registros.regla,
+                                          v_registro_estado.id_tipo_estado,
+                                          v_registro_estado.id_estado_anterior))  THEN
+               
+                     --crea el documento para este proceso y estado especifico
+                     
+                     INSERT INTO 
+                            wf.tdocumento_wf
+                          (
+                            id_usuario_reg,
+                            fecha_reg,
+                            estado_reg,
+                            id_tipo_documento,
+                            id_proceso_wf,
+                            num_tramite,
+                            momento,
+                            chequeado,
+                            id_estado_ini
+                          ) 
+                          VALUES (
+                            p_id_usuario_reg,
+                            now(),
+                           'activo',
+                            v_registros.id_tipo_documento,
+                            p_id_proceso_wf,
+                            v_num_tramite,
+                            'verificar',
+                            'no',
+                            p_id_estado_wf
+                          );
+                    
+                    
+                    END IF; 
         
-        
+             END IF;
         
         END LOOP;
      

@@ -37,6 +37,7 @@ class MODTipoDocumentoEstado extends MODbase{
 		$this->captura('desc_tipo_estado','text');
 		
 		$this->captura('tipo_busqueda','varchar');
+		$this->captura('regla','varchar');
 		
 		
 		
@@ -62,6 +63,7 @@ class MODTipoDocumentoEstado extends MODbase{
 		$this->setParametro('momento','momento','varchar');
 		
 		$this->setParametro('tipo_busqueda','tipo_busqueda','varchar');
+		$this->setParametro('regla','regla','codigo_html');
 		
 		
 		
@@ -89,6 +91,7 @@ class MODTipoDocumentoEstado extends MODbase{
 		$this->setParametro('momento','momento','varchar');
 		
 		$this->setParametro('tipo_busqueda','tipo_busqueda','varchar');
+		$this->setParametro('regla','regla','codigo_html');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

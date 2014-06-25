@@ -47,19 +47,24 @@ DECLARE
   
   v_resp_cadena varchar;
   v_resp_fisico varchar;
+  v_registro_estado  record;
   
 BEGIN
 
        v_nombre_funcion = 'wf.f_verifica_documento';
        
        
-       select 
-         ewf.id_tipo_estado
+       select
+        ewf.id_estado_anterior,
+        ewf.id_tipo_estado,
+        ewf.id_proceso_wf
        into
-       	v_id_tipo_estado
+        v_registro_estado
        from wf.testado_wf ewf
-       inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
-       where  ewf.id_estado_wf = p_id_estado_wf;
+       where ewf.id_estado_wf = p_id_estado_wf;
+       
+       v_id_tipo_estado = v_registro_estado.id_tipo_estado;
+       
        
        
        
@@ -80,7 +85,8 @@ BEGIN
                                     td.codigo,
                                     td.descripcion,
                                     tde.momento,
-                                    tde.tipo_busqueda
+                                    tde.tipo_busqueda,
+                                    tde.regla
                                   FROM  wf.ttipo_documento_estado tde 
                                   INNER JOIN  wf.ttipo_documento  td 
                                     on td.id_tipo_documento  = tde.id_tipo_documento
@@ -89,79 +95,89 @@ BEGIN
                                     ) LOOP
        
        
-               -- recuriva mente encontra el proceso_wf correspondiente a los tipo_proceso identificados
-                
-               v_id_proceso_wf_ini = wf.f_encontrar_proceso_wf(v_registros.id_tipo_proceso, p_id_estado_wf,v_registros.tipo_busqueda);
-                
-              
-              
-              --raise exception 'looop  %, %',v_registros.id_tipo_proceso,p_id_estado_wf;
-                
-              
-              -- preguntar si el documento fue escaneado
-                FOR v_registros_doc  in( 
-                    select 
-                       dwf.id_documento_wf,  
-                       dwf.momento,
-                       dwf.chequeado,
-                       dwf.chequeado_fisico,
-                       pwf.codigo_proceso,
-                       pwf.descripcion
-                    from wf.tdocumento_wf dwf
-                    inner join wf.tproceso_wf pwf on pwf.id_proceso_wf = dwf.id_proceso_wf
-                    
-                    where  dwf.id_proceso_wf = ANY(v_id_proceso_wf_ini) 
-                      and  dwf.id_tipo_documento = v_registros.id_tipo_documento) LOOP
+               --si la regla es verdadera ...
+                IF  (wf.f_evaluar_regla_wf ( p_id_usuario_reg,
+                                             v_registro_estado.id_proceso_wf,
+                                             v_registros.regla,
+                                             v_registro_estado.id_tipo_estado,
+                                             v_registro_estado.id_estado_anterior))  THEN
+               
+                       -- recuriva mente encontra el proceso_wf correspondiente a los tipo_proceso identificados
+                        
+                       v_id_proceso_wf_ini = wf.f_encontrar_proceso_wf(v_registros.id_tipo_proceso, p_id_estado_wf,v_registros.tipo_busqueda);
+                        
                       
                       
+                      --raise exception 'looop  %, %',v_registros.id_tipo_proceso,p_id_estado_wf;
+                        
                       
-                   
-                  --  si el momento del tipo documento es exigir 
-                  --  verificar si fue escaneado
-                 
-                
-                  -- raise exception '----   %',v_registros_doc;
-                
-                   IF v_registros.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
-                   
-                       --marcamos el documento como no escaneado
-                       v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
-                   
-                   
-                   ELSEIF v_registros.momento = 'verificar' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
-                       --marcamos el documento como no escaneado
-                       v_sw=TRUE;
-                       v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
-                   
-                   
-                   ELSEIF v_registros.momento = 'hacer_exigible' and  v_registros_doc.momento = 'verificar'  THEN
-                      
-                       update wf.tdocumento_wf dwf set
-                         momento = 'exigir'
-                       where dwf.id_documento_wf = v_registros_doc.id_documento_wf;
-                       
-                       
-                   END IF;
-                   
-                   --REVISION DE LA BANDERA DE DOCUMENTOS FISICOS
-                   IF v_registros.momento = 'exigir_fisico' and  v_registros_doc.chequeado_fisico = 'no'  THEN
-                      --marcamos que el documento no tiene el respaldo fiscico
-                       v_sw=TRUE;
-                       v_resp_fisico=v_resp_fisico||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br> ';   
-                   
-                   ELSEIF v_registros.momento = 'verificar_fisico' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado_fisico = 'no'  THEN
-                       --marcamos el documento como no escaneado
-                       v_sw=TRUE;
-                       v_resp_fisico=v_resp_fisico||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br> ';   
-                   
-                   END IF; 
-                   
-                  
-                   
-                   
-                   
-               END LOOP; 
+                      -- preguntar si el documento fue escaneado
+                        FOR v_registros_doc  in( 
+                            select 
+                               dwf.id_documento_wf,  
+                               dwf.momento,
+                               dwf.chequeado,
+                               dwf.chequeado_fisico,
+                               pwf.codigo_proceso,
+                               pwf.descripcion
+                            from wf.tdocumento_wf dwf
+                            inner join wf.tproceso_wf pwf on pwf.id_proceso_wf = dwf.id_proceso_wf
+                            
+                            where  dwf.id_proceso_wf = ANY(v_id_proceso_wf_ini) 
+                              and  dwf.id_tipo_documento = v_registros.id_tipo_documento) LOOP
+                              
+                              
+                              
+                           
+                          --  si el momento del tipo documento es exigir 
+                          --  verificar si fue escaneado
+                         
+                        
+                          -- raise exception '----   %',v_registros_doc;
+                        
+                           IF v_registros.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
+                           
+                               --marcamos el documento como no escaneado
+                               v_sw=TRUE;
+                               v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
+                           
+                           
+                           ELSEIF v_registros.momento = 'verificar' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
+                               --marcamos el documento como no escaneado
+                               v_sw=TRUE;
+                               v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
+                           
+                           
+                           ELSEIF v_registros.momento = 'hacer_exigible' and  v_registros_doc.momento = 'verificar'  THEN
+                              
+                               update wf.tdocumento_wf dwf set
+                                 momento = 'exigir'
+                               where dwf.id_documento_wf = v_registros_doc.id_documento_wf;
+                               
+                               
+                           END IF;
+                           
+                           --REVISION DE LA BANDERA DE DOCUMENTOS FISICOS
+                           IF v_registros.momento = 'exigir_fisico' and  v_registros_doc.chequeado_fisico = 'no'  THEN
+                              --marcamos que el documento no tiene el respaldo fiscico
+                               v_sw=TRUE;
+                               v_resp_fisico=v_resp_fisico||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br> ';   
+                           
+                           ELSEIF v_registros.momento = 'verificar_fisico' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado_fisico = 'no'  THEN
+                               --marcamos el documento como no escaneado
+                               v_sw=TRUE;
+                               v_resp_fisico=v_resp_fisico||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br> ';   
+                           
+                           END IF; 
+                           
+                          
+                           
+                           
+                           
+                       END LOOP; 
+               
+               END IF;
+               
                 
         END LOOP;
        
