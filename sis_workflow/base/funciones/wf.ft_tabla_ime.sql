@@ -38,6 +38,9 @@ DECLARE
     v_columnas				record;
     v_mensaje				varchar;
     v_tamano				varchar;
+    v_registros				record;
+    v_respuesta				integer;
+    v_nombre_tabla_maestro	varchar;
 			    
 BEGIN
 
@@ -194,7 +197,7 @@ BEGIN
     		v_ejecuta_script = 0;
             
         	--Obtener esquema, datos de tabla            
-            select lower(s.codigo) as esquema, t.*
+            select lower(s.codigo) as esquema, t.*,tp.codigo as codigo_proceso
             into v_tabla
             from wf.ttabla t 
             inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
@@ -202,20 +205,59 @@ BEGIN
             inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
             where t.id_tabla = v_parametros.id_tabla;
             
+            v_respuesta = wf.f_registra_gui_tabla(v_tabla.codigo_proceso,v_tabla.menu_nombre, NULL, NULL);
+            /*Para cada estado del tipo_proceso*/
+            for v_registros in (select *
+            					from wf.ttipo_estado  te
+                                where te.id_tipo_proceso = v_tabla.id_tipo_proceso and te.fin='no') loop
+            
+            	v_respuesta = wf.f_registra_gui_tabla(v_tabla.codigo_proceso,v_tabla.menu_nombre, v_registros.codigo,v_registros.nombre_estado);	
+            end loop;
+            
             if (v_tabla.ejecutado = 'no')then
-                --Crear Tabla
+            
+            	--Crear Tabla
                 v_query = 'CREATE TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' (' ||
                             'id_' || v_tabla.bd_nombre_tabla || ' SERIAL NOT NULL,
                             PRIMARY KEY (id_' || v_tabla.bd_nombre_tabla || ')) INHERITS (pxp.tbase);';
                 
-                
+                execute (v_query);
                 update wf.ttabla set ejecutado = 'si' where id_tabla = v_parametros.id_tabla;
                 
                 v_ejecuta_tabla = 1;
-                --anadiendo el maestro en la tabla
-                v_query = '	ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '
-  							ADD COLUMN ' || v_tabla.vista_campo_maestro || ' INTEGER NOT NULL;';
-                execute (v_query);
+                
+                if (v_tabla.vista_tipo != 'maestro') then
+                	--obtener nombre_tabla_maestro
+                    SELECT t.bd_nombre_tabla into v_nombre_tabla_maestro
+                    from wf.ttabla t
+                    where t.id_tabla = v_tabla.vista_id_tabla_maestro;
+                     
+                    --anadiendo el maestro en la tabla
+                    v_query = '	ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '
+                                ADD COLUMN ' || v_tabla.vista_campo_maestro || ' INTEGER NOT NULL;';
+                    execute (v_query);
+                    v_query = 'ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ADD CONSTRAINT fk_' || v_tabla.bd_nombre_tabla || '__' || v_tabla.vista_campo_maestro || ' FOREIGN
+ 								KEY( ' || v_tabla.vista_campo_maestro || ') REFERENCES ' || v_tabla.esquema || '.t' ||v_nombre_tabla_maestro || '( ' || v_tabla.vista_campo_maestro || ')';
+                    
+                    execute (v_query);
+                ELSE
+                	v_query = '	ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '
+                                ADD COLUMN id_estado_wf INTEGER NOT NULL,
+	  							ADD COLUMN id_proceso_wf INTEGER NOT NULL,  
+                                ADD COLUMN estado VARCHAR(50) NOT NULL;';
+                    execute (v_query);
+                    
+                    v_query = 'ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ADD CONSTRAINT fk_' || v_tabla.bd_nombre_tabla || '__id_estado_wf FOREIGN
+ 								KEY(id_estado_wf) REFERENCES wf.testado_wf( id_estado_wf)';
+                    
+                    execute (v_query);
+                    
+                    v_query = 'ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ADD CONSTRAINT fk_' || v_tabla.bd_nombre_tabla || '__id_proceso_wf FOREIGN
+ 								KEY(id_proceso_wf) REFERENCES wf.tproceso_wf( id_proceso_wf)';
+                    
+                    execute (v_query);
+                    
+                end if;
             end if;
                      
 			-- Crear Columnas

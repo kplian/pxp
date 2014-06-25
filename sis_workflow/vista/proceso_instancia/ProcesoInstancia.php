@@ -22,24 +22,26 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			
 			//funcionalidad para listado de historicos
         	this.historico = 'no';
-        	this.tbarItems = ['-',{
-            text: 'Histórico',
-            enableToggle: true,
-            pressed: false,
-            toggleHandler: function(btn, pressed) {               
-                if(pressed){
-                    this.historico = 'si';
-                     this.desBotoneshistorico();
-                }
-                else{
-                   this.historico = 'no' 
-                }
-                
-                this.store.baseParams.historico = this.historico;
-                this.onButtonAct();
-             },
-            scope: this
-           }];
+        	if (this.configProceso[this.config.indice].atributos.vista_tipo == 'maestro') {
+	        	this.tbarItems = ['-',{
+	            text: 'Histórico',
+	            enableToggle: true,
+	            pressed: false,
+	            toggleHandler: function(btn, pressed) {               
+	                if(pressed){
+	                    this.historico = 'si';
+	                     this.desBotoneshistorico();
+	                }
+	                else{
+	                   this.historico = 'no' 
+	                }
+	                
+	                this.store.baseParams.historico = this.historico;
+	                this.onButtonAct();
+	             },
+	            scope: this
+	           }];
+	       }
            this.armaColumnas();	        			
 			//armar ordenacion y otros detalles
 			this.armaOrdenacionyOtros();
@@ -226,6 +228,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 					
 					//anadir campo en el store
 					this.addStoreField(this.configProceso[this.config.indice].columnas[i]);
+					var filter_name =  this.configProceso[this.config.indice].atributos.bd_codigo_tabla + '.' + this.configProceso[this.config.indice].columnas[i].bd_nombre_columna
 					
 					//anadir campo como atributo
 					var config_columna = {
@@ -236,6 +239,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		                },
 		                id_grupo : 0,
 		                grid : true,
+		                filters : {pfiltro : filter_name , type:'string'},
 		                form: false};
 		            config_columna.config.name = this.configProceso[this.config.indice].columnas[i].bd_nombre_columna;
 		            if (this.configProceso[this.config.indice].columnas[i].bd_descripcion_columna != '' && 

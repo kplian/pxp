@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -76,6 +74,9 @@ DECLARE
      
      
      v_procesos_json  json;
+     v_id_tabla		integer;
+     v_tabla		record;
+     v_query		text;
    
 
 BEGIN
@@ -856,7 +857,7 @@ BEGIN
                         
                         --
                       select 
-                           ew.id_proceso_wf 
+                           ew.id_proceso_wf
                         into 
                            v_id_proceso_wf
                       from wf.testado_wf ew
@@ -873,6 +874,33 @@ BEGIN
                           v_parametros._id_usuario_ai,
                           v_parametros._nombre_usuario_ai,
                           v_id_depto);
+                      /*jrr: Actualizar la tabla del proceso si es que existe*/
+         select id_tabla
+         into v_id_tabla
+         from wf.tproceso_wf p
+         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = p.id_tipo_proceso
+         inner join wf.ttabla ta on tp.id_tipo_proceso = ta.id_tipo_proceso
+         where p.id_proceso_wf =  v_id_proceso_wf and ta.vista_tipo = 'maestro';
+         
+         if ( v_id_tabla is not null ) then
+         	select lower(s.codigo) as esquema, t.*
+            into v_tabla
+            from wf.ttabla t 
+            inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
+            inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
+            inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
+            where t.id_tabla = v_id_tabla;
+            
+            v_query = ' update  ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '  
+                    set estado = ''' || v_codigo_estado || ''',
+                    id_estado_wf = ' ||  v_id_estado_actual || ',
+                    id_usuario_mod = ' ||  p_id_usuario || ',
+                    fecha_mod=now()
+                    where id_proceso_wf=' || v_id_proceso_wf;
+                                                          
+            execute (v_query);           
+            
+         end if;
                       
                     
                         -- si hay mas de un estado disponible  preguntamos al usuario
@@ -1027,6 +1055,35 @@ BEGIN
                                                        v_parametros._nombre_usuario_ai,
                                                        v_parametros.id_depto_wf,
                                                        v_parametros.obs);
+         /*jrr: Actualizar la tabla del proceso si es que existe*/
+         select id_tabla
+         into v_id_tabla
+         from wf.tproceso_wf p
+         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = p.id_tipo_proceso
+         inner join wf.ttabla ta on tp.id_tipo_proceso = ta.id_tipo_proceso
+         where p.id_proceso_wf =  v_registros.id_proceso_wf and ta.vista_tipo = 'maestro';
+         
+         if ( v_id_tabla is not null ) then
+         	select lower(s.codigo) as esquema, t.*
+            into v_tabla
+            from wf.ttabla t 
+            inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
+            inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
+            inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
+            where t.id_tabla = v_id_tabla;
+            
+            v_query = ' update  ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '  
+                    set estado = ''' || v_codigo_estado || ''',
+                    id_estado_wf = ' ||  v_id_estado_actual || ',
+                    id_usuario_mod = ' ||  p_id_usuario || ',
+                    fecha_mod=now()
+                    where id_proceso_wf=' || v_registros.id_proceso_wf;
+                                                          
+            execute (v_query);           
+            
+         end if;
+         
+         	
         
          
           --------------------------------------

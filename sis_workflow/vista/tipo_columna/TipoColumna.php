@@ -333,7 +333,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 100,
 				qtip : 'Sobreescribir el filtro de una columna en la vista, debe ser un objeto de tipo json {}'
 			},
-				type:'TextField',
+				type:'TextArea',
 				filters:{pfiltro:'tipcol.grid_sobreescribe_filtro',type:'string'},
 				id_grupo:3,
 				grid:true,

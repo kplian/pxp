@@ -329,6 +329,8 @@ class MODTabla extends MODbase{
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
 		$this->setParametro('id_tabla','id_tabla','integer');
+		$this->setParametro('historico','historico','varchar');
+		$this->setParametro('tipo_estado','tipo_estado','varchar');
 		
 		//Definicion de la lista del resultado del query
 		$this->captura('id_' . $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'],'int4');

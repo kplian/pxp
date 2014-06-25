@@ -30,6 +30,10 @@ DECLARE
 	v_tabla				record;
 	v_joins_adicionales text;
 	v_columnas			record;
+    v_joins_wf			text;
+    v_filtro			varchar;
+    v_id_funcionario_usuario	integer;
+    
 			    
 BEGIN
 
@@ -46,6 +50,12 @@ BEGIN
 	if(p_transaccion='WF_TABLAINS_SEL')then
      				
     	begin
+        	select f.id_funcionario into v_id_funcionario_usuario
+            from segu.tusuario u
+            inner join orga.tfuncionario f 
+            	on f.id_persona = u.id_persona
+            where u.id_usuario = p_id_usuario;
+            
     		--Obtener esquema, datos de tabla            
             select lower(s.codigo) as esquema, t.*
             into v_tabla
@@ -57,17 +67,22 @@ BEGIN
     		
     		--Sentencia de la consulta
 			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ';
-            
+            v_joins_wf = '';
+            v_filtro = ' 0 = 0 and ';
             if (v_tabla.vista_tipo = 'maestro') then
             
 				v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado, ' ||
 						 	v_tabla.bd_codigo_tabla || '.id_estado_wf, ' ||
 						 	v_tabla.bd_codigo_tabla || '.id_proceso_wf, ';
+                IF p_administrador !=1  then
+                	v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
+                    v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
+                END IF;
 			end if;			 	 
 			v_joins_adicionales = '';
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
-            					where id_tabla = v_parametros.id_tabla) loop
+            					where id_tabla = v_parametros.id_tabla order by id_tipo_columna asc) loop
             	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ';
             	
             	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then                	
@@ -94,6 +109,8 @@ BEGIN
 						v_joins_adicionales || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and '; 
             if (v_tabla.vista_tipo = 'maestro') then            				 
             	v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado != ''anulado'' and ';
+                v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado = ''' || v_parametros.tipo_estado || ''' and ';
+                v_consulta = v_consulta || v_filtro;
             end if;			
 				        
 			

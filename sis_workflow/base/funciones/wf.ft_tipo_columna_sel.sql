@@ -146,19 +146,22 @@ BEGIN
 						tipcol.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        coles.momento	
+                        (select coles.momento
+                        from wf.tcolumna_estado coles
+                        inner join wf.ttipo_estado te
+                        	on te.id_tipo_estado = coles.id_tipo_estado
+                        where te.codigo = '''|| v_parametros.tipo_estado || ''' 
+                        	and coles.id_tipo_columna = tipcol.id_tipo_columna) as momento	
 						from wf.ttipo_columna tipcol
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
-                        left join wf.tcolumna_estado coles on coles.id_tipo_columna = tipcol.id_tipo_columna
-                        left join wf.ttipo_estado te on te.id_tipo_estado = coles.id_tipo_estado
-						left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
+                        left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
 				        where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
-            v_consulta:=v_consulta||' and (te.codigo = '''|| v_parametros.tipo_estado || ''' or te.codigo is null) ';
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            --v_consulta:=v_consulta||' and (te.codigo = '''|| v_parametros.tipo_estado || ''' or te.codigo is null) ';
+			v_consulta:=v_consulta||' order by tipcol.id_tipo_columna asc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
