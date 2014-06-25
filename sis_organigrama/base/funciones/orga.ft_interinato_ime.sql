@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_interinato_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -36,6 +34,7 @@ DECLARE
     v_date                  date;
     v_cont_interino         integer;
     v_cont_alertas          integer;
+    v_sql					text;
 			    
 BEGIN
 
@@ -52,33 +51,45 @@ BEGIN
 	if(p_transaccion='OR_INT_INS')then
 					
         begin
-        	--Sentencia de la insercion
-        	insert into orga.tinterinato(
-			id_cargo_titular,
-			id_cargo_suplente,
-			fecha_ini,
-			descripcion,
-			
-			fecha_fin,
-			estado_reg,
-			id_usuario_reg,
-			fecha_reg,
-			id_usuario_mod,
-			fecha_mod
-          	) values(
-			v_parametros.id_cargo_titular,
-			v_parametros.id_cargo_suplente,
-			v_parametros.fecha_ini,
-			v_parametros.descripcion,
-			
-			v_parametros.fecha_fin,
-			'activo',
-			p_id_usuario,
-			now(),
-			null,
-			null
-							
+        	
+        	
+              --Sentencia de la insercion
+              insert into orga.tinterinato(
+              id_cargo_titular,
+              id_cargo_suplente,
+              fecha_ini,
+              descripcion,
+  			
+              fecha_fin,
+              estado_reg,
+              id_usuario_reg,
+              fecha_reg,
+              id_usuario_mod,
+              fecha_mod
+              ) values(
+              v_parametros.id_cargo_titular,
+              v_parametros.id_cargo_suplente,
+              v_parametros.fecha_ini,
+              v_parametros.descripcion,
+  			
+              v_parametros.fecha_fin,
+              'activo',
+              p_id_usuario,
+              now(),
+              null,
+              null
+  							
 			)RETURNING id_interinato into v_id_interinato;
+            
+            if (pxp.f_get_variable_global('sincronizar') = 'true') then
+            	v_sql = 'INSERT INTO 
+                			kard.tkp_interinato (id_interinato,id_item_titular,id_item_suplente,
+                            					fecha_ini,fecha_fin,descripcion) VALUES ('||
+                                                v_id_interinato || ',' || v_parametros.id_cargo_titular || ',' 
+                                                || v_parametros.id_cargo_suplente || ',''' || v_parametros.fecha_ini || ''',''' ||
+                                                v_parametros.fecha_fin || ''',''' || v_parametros.descripcion || ''');';
+            	v_resp = dblink_exec(migra.f_obtener_cadena_conexion(), v_sql,true);
+            end if;
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Interinato almacenado(a) con exito (id_interinato'||v_id_interinato||')'); 
@@ -110,6 +121,21 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now()
 			where id_interinato=v_parametros.id_interinato;
+            
+            if (pxp.f_get_variable_global('sincronizar') = 'true') then
+            	v_sql = 'update
+                			kard.tkp_interinato set
+                            id_item_titular = ' || v_parametros.id_cargo_titular || ',
+                            id_item_suplente = ' || v_parametros.id_cargo_suplente || ',
+                            fecha_ini = ''' ||v_parametros.fecha_ini|| ''',
+                            descripcion = ''' ||v_parametros.descripcion|| ''',                			
+                            fecha_fin = ''' || v_parametros.fecha_fin || ''',
+                            usuario_mod = "current_user"(),
+                            fecha_mod = now()
+                            where id_interinato = '||v_parametros.id_interinato;
+                --raise exception '%',v_sql;
+            	v_resp = dblink_exec(migra.f_obtener_cadena_conexion(), v_sql,true);
+            end if;
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Interinato modificado(a)'); 
@@ -131,8 +157,17 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
+            
+            
 			delete from orga.tinterinato
             where id_interinato=v_parametros.id_interinato;
+            
+            if (pxp.f_get_variable_global('sincronizar') = 'true') then
+            	v_sql = 'delete from 
+                			kard.tkp_interinato 
+                            where id_interinato = '||v_parametros.id_interinato;
+            	v_resp = dblink_exec(migra.f_obtener_cadena_conexion(), v_sql,true);
+            end if;
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Interinato eliminado(a)'); 
