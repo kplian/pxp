@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tabla_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION wf.ft_tabla_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_tabla_ime
@@ -72,7 +75,9 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+			vista_estados_new,
+			vista_estados_delete
           	) values(
 			v_parametros.id_tipo_proceso,
 			v_parametros.vista_id_tabla_maestro,
@@ -93,7 +98,9 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+			string_to_array(v_parametros.vista_estados_new, ','),
+			string_to_array(v_parametros.vista_estados_delete, ',')
 							
 			)RETURNING id_tabla into v_id_tabla;
 			
@@ -134,7 +141,9 @@ BEGIN
 			bd_codigo_tabla = v_parametros.bd_codigo_tabla,
 			vista_dir_ordenacion = v_parametros.vista_dir_ordenacion,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+			vista_estados_new = string_to_array(v_parametros.vista_estados_new, ','),
+			vista_estados_delete = string_to_array(v_parametros.vista_estados_delete, ',')
 			where id_tabla=v_parametros.id_tabla;
                
 			--Definicion de la respuesta
@@ -198,11 +207,15 @@ BEGIN
                 v_query = 'CREATE TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' (' ||
                             'id_' || v_tabla.bd_nombre_tabla || ' SERIAL NOT NULL,
                             PRIMARY KEY (id_' || v_tabla.bd_nombre_tabla || ')) INHERITS (pxp.tbase);';
-                execute (v_query);
+                
                 
                 update wf.ttabla set ejecutado = 'si' where id_tabla = v_parametros.id_tabla;
                 
                 v_ejecuta_tabla = 1;
+                --anadiendo el maestro en la tabla
+                v_query = '	ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '
+  							ADD COLUMN ' || v_tabla.vista_campo_maestro || ' INTEGER NOT NULL;';
+                execute (v_query);
             end if;
                      
 			-- Crear Columnas
@@ -215,12 +228,11 @@ BEGIN
                 v_query = '	ALTER TABLE ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '
   							ADD COLUMN ' || v_columnas.bd_nombre_columna || ' ' || v_columnas.bd_tipo_columna || v_tamano || ';';
                              
-                execute (v_query);
-                
+                execute (v_query);            
                 update wf.ttipo_columna set ejecutado = 'si' where id_tipo_columna = v_columnas.id_tipo_columna;
                 
                 v_col_ejecutadas = v_col_ejecutadas + 1;
-            end loop;
+            end loop;              
             
             --Ejecutar Scripts Adicionales
             if (v_tabla.script_ejecutado = 'no' and (
@@ -275,7 +287,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_tabla_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

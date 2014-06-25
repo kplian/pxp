@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tabla_instancia_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION wf.ft_tabla_instancia_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_tabla_instancia_sel
@@ -52,19 +56,28 @@ BEGIN
             where t.id_tabla = v_parametros.id_tabla;
     		
     		--Sentencia de la consulta
-			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ' || 
-						 	v_tabla.bd_codigo_tabla || '.estado, ' ||
+			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ';
+            
+            if (v_tabla.vista_tipo = 'maestro') then
+            
+				v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado, ' ||
 						 	v_tabla.bd_codigo_tabla || '.id_estado_wf, ' ||
 						 	v_tabla.bd_codigo_tabla || '.id_proceso_wf, ';
-						 	 
+			end if;			 	 
 			v_joins_adicionales = '';
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
             					where id_tabla = v_parametros.id_tabla) loop
-            	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ' || 
-            				 coalesce(v_columnas.bd_campos_adicionales|| ', ', '');
-            				 
-            	v_joins_adicionales = 	v_joins_adicionales || coalesce(v_columnas.bd_joins_adicionales, '') || ' ';	
+            	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ';
+            	
+            	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then                	
+            		v_consulta = v_consulta || v_columnas.bd_campos_adicionales|| ', ';
+            	end if;
+            	
+            	if (v_columnas.bd_joins_adicionales is not null and v_columnas.bd_joins_adicionales != '')then
+            		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ', ';
+            	end if;           				 
+            		
             end loop;
 			
 			v_consulta = v_consulta || 
@@ -75,11 +88,13 @@ BEGIN
 							v_tabla.bd_codigo_tabla || '.fecha_mod,
 							usu1.cuenta as usr_reg,
 							usu1.cuenta as usr_mod
-						from ' || v_tabla.esquema || '.' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
+						from ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
 						inner join segu.tusuario usu1 on usu1.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_mod ' ||
-						v_joins_adicionales;
-						
+						v_joins_adicionales || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and '; 
+            if (v_tabla.vista_tipo = 'maestro') then            				 
+            	v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado != ''anulado'' and ';
+            end if;			
 				        
 			
 			--Definicion de la respuesta
@@ -117,13 +132,19 @@ BEGIN
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
             					where id_tabla = v_parametros.id_tabla) loop            	
-            	v_joins_adicionales = 	v_joins_adicionales || coalesce(v_columnas.bd_joins_adicionales, '') || ' ';	
+            	if (v_columnas.bd_joins_adicionales is not null and v_columnas.bd_joins_adicionales != '')then
+            		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ', ';
+            	end if;  	
             end loop;
 			
-			v_consulta =' from ' || v_tabla.esquema || '.' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
+			v_consulta = v_consulta || ' from ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
 						inner join segu.tusuario usu1 on usu1.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_mod ' ||
-						v_joins_adicionales;
+						v_joins_adicionales || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and ';
+                        
+            if (v_tabla.vista_tipo = 'maestro') then            				 
+            	v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado != ''anulado'' and ';
+            end if;			
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -148,7 +169,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_tabla_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

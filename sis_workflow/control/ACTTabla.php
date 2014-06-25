@@ -9,6 +9,51 @@
 
 class ACTTabla extends ACTbase{    
 			
+	function listarTablaInstancia(){
+		//obtiene la posicion de la tabla instanciada
+		$_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')] = $this->obtenerTablaInstancia();
+		$id_maestro = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_campo_maestro'];
+		$codigo_tabla = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_codigo_tabla'];
+		
+		//si existe como parametro el id del maestro se anade el filtro
+		if ($this->objParam->getParametro($id_maestro) != '') {			
+			$this->objParam->addFiltro($codigo_tabla . "." . $id_maestro  . " = ". $this->objParam->getParametro($id_maestro));
+		}
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODTabla','listarTablaInstancia');
+		} else{
+			$this->objFunc=$this->create('MODTabla');			
+			$this->res=$this->objFunc->listarTablaInstancia($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function insertarTablaInstancia(){
+		$this->objFunc=$this->create('MODTabla');	
+		//obtiene la posicion de la tabla instanciada
+		$_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')] = $this->obtenerTablaInstancia();
+		
+		if($this->objParam->insertar('id_' . $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'])){
+			$this->res=$this->objFunc->insertarTablaInstancia($this->objParam);			
+		} else{			
+			$this->res=$this->objFunc->modificarTablaInstancia($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function eliminarTablaInstancia(){
+		$this->objFunc=$this->create('MODTabla');
+		$aux = $this->objParam->getParametro('0');			
+		
+		$_SESSION['_wf_ins_'.$aux['tipo_proceso'].'_'.$aux['tipo_estado']] = $this->obtenerTablaInstancia();
+			
+		
+		$this->res=$this->objFunc->eliminarTablaInstancia($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
 	function listarTabla(){
 		$this->objParam->defecto('ordenacion','id_tabla');
 
@@ -46,7 +91,7 @@ class ACTTabla extends ACTbase{
 	}
 						
 	function eliminarTabla(){
-			$this->objFunc=$this->create('MODTabla');	
+		$this->objFunc=$this->create('MODTabla');	
 		$this->res=$this->objFunc->eliminarTabla($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
@@ -67,7 +112,39 @@ class ACTTabla extends ACTbase{
 		
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function obtenerTablaInstancia ($prof=array()) {
+		
+		if ($this->objParam->esMatriz()) {
+			$aux = $this->objParam->getParametro('0');
+			$cadena = '$_SESSION["_wf_' . $aux['tipo_proceso'] . "_" . $aux['tipo_estado'] . '"][0]';			
+			$id_tabla = $aux['id_tabla'];
+		} else {
+			$cadena = '$_SESSION["_wf_' . $this->objParam->getParametro('tipo_proceso') . "_" . $this->objParam->getParametro('tipo_estado') . '"][0]';
+			$id_tabla = $this->objParam->getParametro('id_tabla');
+		}
+		
+		$res = 0 ;
 			
+		foreach ($prof as $value) {
+			$cadena .=  "[detalles][$value]";
+		}
+			
+		eval('$variable = '. $cadena . ';');		
+						
+		if ($variable['atributos']['id_tabla'] == $id_tabla) {
+			return $variable;
+		} else {
+			for ($i = 0; $i < count($variable['detalles']);$i++ ) {
+				array_push($prof,$i);
+				$res = $this->obtenerTablaInstancia($prof);
+				if ($res != 0) {
+					return $res;
+				}
+			}
+			return 0;
+		}
+	}			
 }
 
 ?>

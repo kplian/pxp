@@ -68,7 +68,9 @@ BEGIN
 						tabla.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-						maestro.bd_nombre_tabla	
+						maestro.bd_nombre_tabla,
+						array_to_string(tabla.vista_estados_new, '',''),
+						array_to_string(tabla.vista_estados_delete, '','')	
 						from wf.ttabla tabla
 						inner join segu.tusuario usu1 on usu1.id_usuario = tabla.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tabla.id_usuario_mod
@@ -79,7 +81,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+			--raise exception '%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						

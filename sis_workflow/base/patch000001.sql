@@ -480,7 +480,7 @@ IS 'este campo recibe los cargo del depto que reciben la alerta, si no tiene val
 
 
 /*******************************************F-SCP-RAC-WF-0-15/05/2014*************************************/
-
+ 
 
 /***********************************I-SCP-RCM-WF-0-05/05/2014****************************************/
 CREATE TABLE wf.ttipo_componente (
@@ -555,6 +555,16 @@ IS 'Tipo de dato para el valor del tipo de propiedad';
 
 /***********************************F-SCP-RCM-WF-0-05/05/2014****************************************/
 
+
+/***********************************I-SCP-JRR-WF-0-23/05/2014****************************************/
+ALTER TABLE wf.ttabla
+  ADD COLUMN vista_estados_new VARCHAR(100)[];
+  
+ALTER TABLE wf.ttabla
+  ADD COLUMN vista_estados_delete VARCHAR(100)[];
+
+/***********************************F-SCP-JRR-WF-0-23/05/2014****************************************/
+
 /***********************************I-SCP-RCM-WF-0-22/05/2014****************************************/
 CREATE TABLE wf.tcatalogo (
   id_catalogo SERIAL,
@@ -611,3 +621,11 @@ IS 'Nombre de los valores del catálogo';
 COMMENT ON COLUMN wf.tcatalogo_valor.orden
 IS 'Orden de despliegue de los valores del catálogo';
 /***********************************F-SCP-RCM-WF-0-22/05/2014****************************************/
+
+/***********************************I-SCP-JRR-WF-0-20/06/2014****************************************/
+
+ALTER TABLE wf.ttabla
+  ALTER COLUMN vista_campo_maestro TYPE VARCHAR(75);
+
+/***********************************F-SCP-JRR-WF-0-20/06/2014****************************************/
+
