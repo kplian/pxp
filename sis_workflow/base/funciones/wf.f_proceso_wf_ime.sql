@@ -883,6 +883,7 @@ BEGIN
          where p.id_proceso_wf =  v_id_proceso_wf and ta.vista_tipo = 'maestro';
          
          if ( v_id_tabla is not null ) then
+         	
          	select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 
@@ -1064,6 +1065,12 @@ BEGIN
          where p.id_proceso_wf =  v_registros.id_proceso_wf and ta.vista_tipo = 'maestro';
          
          if ( v_id_tabla is not null ) then
+         	--validar los datos del formulario en caso de que existe una tabla relacionada
+            
+            if (wf.f_valida_cambio_estado(v_registros.id_estado_wf) = false) then
+            	raise exception 'Por favor edite el registro y llene los campos obligatorios antes de pasar de estado';
+            end if;
+            
          	select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 
