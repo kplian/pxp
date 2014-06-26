@@ -106,10 +106,19 @@ BEGIN
 						from ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
 						inner join segu.tusuario usu1 on usu1.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_mod ' ||
-						v_joins_adicionales || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and '; 
+						v_joins_adicionales || v_joins_wf ||' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and '; 
             if (v_tabla.vista_tipo = 'maestro') then            				 
             	v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado != ''anulado'' and ';
-                v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado = ''' || v_parametros.tipo_estado || ''' and ';
+                
+                IF  (pxp.f_existe_parametro(p_tabla,'historico')= false) THEN
+             		v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado = ''' || v_parametros.tipo_estado || ''' and ';
+             	end if; 
+                
+                IF  (pxp.f_existe_parametro(p_tabla,'historico')) THEN
+                	if (v_parametros.historico != 'si')then
+             			v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado = ''' || v_parametros.tipo_estado || ''' and ';
+                    end if;
+             	end if;                
                 v_consulta = v_consulta || v_filtro;
             end if;			
 				        
@@ -144,6 +153,15 @@ BEGIN
             
 			--Sentencia de la consulta de conteo de registros
 			v_consulta = 'select count(id_' || v_tabla.bd_nombre_tabla || ') ';
+            v_joins_wf = '';
+            v_filtro = ' 0 = 0 and ';
+            if (v_tabla.vista_tipo = 'maestro') then            
+                IF p_administrador !=1  then
+                	v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
+                    v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
+                END IF;
+			end if;
+            
 			v_joins_adicionales = '';
 			
 			--campos y campos adicionales
@@ -157,15 +175,26 @@ BEGIN
 			v_consulta = v_consulta || ' from ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
 						inner join segu.tusuario usu1 on usu1.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_mod ' ||
-						v_joins_adicionales || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and ';
+						v_joins_adicionales || v_joins_wf || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and ';
                         
             if (v_tabla.vista_tipo = 'maestro') then            				 
             	v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado != ''anulado'' and ';
-            end if;			
+                
+                IF  (pxp.f_existe_parametro(p_tabla,'historico')= false) THEN
+             		v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado = ''' || v_parametros.tipo_estado || ''' and ';
+             	end if; 
+                
+                IF  (pxp.f_existe_parametro(p_tabla,'historico')) THEN
+                	if (v_parametros.historico != 'si')then
+             			v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado = ''' || v_parametros.tipo_estado || ''' and ';
+                    end if;
+             	end if;                
+                v_consulta = v_consulta || v_filtro;
+            end if;		
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
-
+			--raise exception '%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 

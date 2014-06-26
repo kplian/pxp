@@ -44,18 +44,18 @@ BEGIN
         v_ruta_archivo = 'sis_workflow/vista/proceso_instancia/ProcesoInstancia.php';
     	v_nombre_estado = ' ' || p_nombre_estado;
         v_clase_vista = 'ProcesoInstancia';
-        v_parametros = '{proceso:"' || p_codigo_proceso || '",estado:"' || p_codigo_estado || '"}';
+        v_parametros = '{"proceso":"' || p_codigo_proceso || '","estado":"' || p_codigo_estado || '"}';
         
         /*Obtener el id_gui del padre*/
         select id_gui into v_id_gui_padre
         from segu.tgui g
-        where g.codigo_gui = 'WF_' || p_codigo_proceso and estado_reg = 'activo'; 
+        where g.codigo_gui = 'WF.' || p_codigo_proceso and estado_reg = 'activo'; 
         
     end if;
     
     select id_gui into v_id_gui
     from segu.tgui 
-    where codigo_gui='WF_'||p_codigo_proceso ||v_codigo_estado and estado_reg = 'activo';
+    where codigo_gui='WF.'||p_codigo_proceso ||v_codigo_estado and estado_reg = 'activo';
     
 	--si no existe insert y si existe update
 	if (v_id_gui is not null)then
@@ -71,7 +71,7 @@ BEGIN
             	orden_logico, 		ruta_archivo, 	nivel, 		icono, 
                 id_subsistema, 		clase_vista, 	modificado, combo_trigger, 
                 imagen, 			parametros, 	sw_mobile, 	orden_mobile, codigo_mobile)
-        VALUES (p_nombre_proceso || v_nombre_estado,p_nombre_proceso || v_nombre_estado , 'WF_'||p_codigo_proceso ||v_codigo_estado, 'si',
+        VALUES (p_nombre_proceso || v_nombre_estado,p_nombre_proceso || v_nombre_estado , 'WF.'||p_codigo_proceso ||v_codigo_estado, 'si',
         		1, 					v_ruta_archivo, v_nivel,	'', 
                 v_id_subsistema,	v_clase_vista, 	NULL, 		NULL, 
                 NULL, 				v_parametros, 	'no', 		0, 				NULL) RETURNING id_gui into v_id_gui;

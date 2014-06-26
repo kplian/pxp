@@ -592,7 +592,9 @@ class Mensaje
 					//RAC 25/10/2011: validacion de varialbes
 					if(isset($tmp[$i]) && isset($f[$tmp[$i]])){
 						$aux=substr($tmp[$i],0,3);
-						if(strpos($aux,'id_')!==false){
+						if ($this->is_assoc($f[$tmp[$i]])) {
+							$this->datos[$j][$tmp[$i]] = $this->ofuscar_array($f[$tmp[$i]]);
+						} else if(strpos($aux,'id_')!==false){
 							//ofucasmos todas las variables que comiensen con id_
 						     $this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
 						     //echo $tmp[$i].".......</br>";
@@ -627,10 +629,10 @@ class Mensaje
 					//RAC 25/10/2011: validacion de varialbes
 					if(isset($tmp[$i]) && isset($this->datos[$tmp[$i]])){
 						$aux=substr($tmp[$i],0,3);
-						if(strpos($aux,'id_')!==false){
-							//ofucasmos todas las variables que comiensen con id_
-							
-							
+						if ($this->is_assoc($this->datos[$tmp[$i]])) {
+							$this->datos[$tmp[$i]] = $this->ofuscar_array($this->datos[$tmp[$i]]);
+						} else if(strpos($aux,'id_')!==false){
+							//ofucasmos todas las variables que comiensen con id_							
 						     $this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);
 						} elseif(strpos($aux,'id')!==false){
 							//ofucasmos todas las variables que comiensen con id_
@@ -714,6 +716,40 @@ class Mensaje
          }
          return  '';
         
+    }
+
+	/*
+	 * Nombre funcion:  ofuscar_json
+     * Proposito:   decodifica una cadena json, busca los identificadores , los ofusca  y retorna la nueva cade json codificada
+     * Fecha creacion:  07/05/2014
+     * autor:rac
+     * Modificacion: Rensi Arteaga Copari
+     */
+
+	function ofuscar_array($arreglo) {                    
+        
+        foreach($arreglo as $key => $f){
+        	$aux=substr($key,0,3);
+             if($this->is_assoc($f)) {
+			 	$this->ofuscar_array($f);
+			 } else {
+			 	if(strpos($aux,'id_')!==false){
+				//ofucasmos todas las variables que comiensen con id_							
+			     $arreglo[$key] = $this->ofuscar($f);
+				} elseif(strpos($aux,'id')!==false){
+					//ofucasmos todas las variables que comiensen con id_
+					$arreglo[$key] = $this->ofuscar($f);
+				}
+				//RAC 5/5/2014
+                //verificamos si la varialble contiene una cadena json_
+                $aux=substr($key,0,5);
+                if(strpos($aux,'json_')!==false){
+                    //ofucasmos todas las variables que comiensen con id_
+                    $arreglo[$key]=$this->ofuscar_json($f);                  
+                }
+			 }       
+        }           
+     	return  $arreglo;        
     }	
 	
 /**
@@ -753,7 +789,11 @@ class Mensaje
 	}
 	public static function is_assoc($arr)
     {
-        return array_keys($arr) !== range(0, count($arr) - 1);
+    	if (is_array($arr)) {
+        	return array_keys($arr) !== range(0, count($arr) - 1);
+		} else {
+			return false;
+		}
     }
 	
 

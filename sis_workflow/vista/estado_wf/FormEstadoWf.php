@@ -35,14 +35,21 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                         operacion:'verificar'},
                 argument:{'config':config},
                 success:this.successSinc,
-                failure: this.conexionFailure,
+                failure: this.meConexionFailure,
                 timeout:this.timeout,
                 scope:this
             });
         
      },
      
-     successSinc:function(resp){
+     meConexionFailure:function(resp){
+         this.conexionFailure(resp);
+         this.close();
+         this.destroy();
+    },
+     
+     
+    successSinc:function(resp){
         Phx.CP.loadingHide();
         var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
         if(!reg.ROOT.error){
@@ -158,14 +165,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                  }   
                                 
             }, scope : this
-        });
-        
-        
-        
-        
-        
-        
-        
+        });        
     },
     
     ///////////////////////////////////////
