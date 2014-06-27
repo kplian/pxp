@@ -171,6 +171,9 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				{name:'id_usuario_reg', type: 'numeric'},
 				{name:'id_usuario_mod', type: 'numeric'},
 				{name:'estado_reg', type: 'string'},
+				{name:'estado', type: 'string'},
+				{name:'obs', type: 'string'},
+				{name:'nro_tramite', type: 'string'},
 				{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},				
 				{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 				{name:'usr_reg', type: 'string'},
@@ -221,6 +224,37 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				type:'Field',
 				form:true 
 			});
+			
+			this.Atributos.push({
+				//configuracion del componente
+				config:{
+	                name: 'nro_tramite',
+	                fieldLabel: 'Nro Trámite',	                
+	                gwidth: 130
+	            },
+	            type:'TextField',
+	            filters:{pfiltro:'pw.nro_tramite',type:'string'},
+	            id_grupo:0,
+	            grid:true,
+	            form:false 
+				});
+			
+			this.Atributos.push({
+				//configuracion del componente
+				config:{
+	                name: 'obs',
+	                fieldLabel: 'Observaciones de Estado',	                
+	                gwidth: 170,
+	                anchor:'80%',
+	                readOnly:true,
+	                allowBlank:true
+	            },
+	            type:'TextArea',
+	            filters:{pfiltro:'ew.obs',type:'string'},
+	            id_grupo:0,
+	            grid:true,
+	            form:true 
+				});
 									
 			for (var i = 0 ;i < this.configProceso[this.config.indice].columnas.length; i++) {
 				
@@ -316,16 +350,28 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			    }
 	            	            
 	            
-			}	
+			}
+			
+			this.Atributos.push({
+				//configuracion del componente
+				config:{
+	                name: 'estado',
+	                fieldLabel: 'Estado',	                
+	                gwidth: 100
+	            },
+	            type:'TextField',
+	            filters:{pfiltro:'usu1.cuenta',type:'string'},
+	            id_grupo:0,
+	            grid:true,
+	            form:false 
+				});
+				
 			this.Atributos.push({
 				//configuracion del componente
 				config:{
 	                name: 'usr_reg',
-	                fieldLabel: 'Creado por',
-	                allowBlank: true,
-	                anchor: '80%',
-	                gwidth: 100,
-	                maxLength:10
+	                fieldLabel: 'Creado por',	                
+	                gwidth: 100
 	            },
 	            type:'TextField',
 	            filters:{pfiltro:'usu1.cuenta',type:'string'},
@@ -339,10 +385,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				config:{
 	                name: 'estado_reg',
 	                fieldLabel: 'Estado Reg.',
-	                allowBlank: true,
-	                anchor: '80%',
-	                gwidth: 100,
-	                maxLength:10
+	                gwidth: 100
 	            },
 	            type:'TextField',
 	            filters:{pfiltro:this.configProceso[this.config.indice].atributos.bd_codigo_tabla + '.estado_reg',type:'string'},
@@ -355,11 +398,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				//configuracion del componente
 				config:{
 	                name: 'fecha_mod',
-	                fieldLabel: 'Fecha Modif',
-	                allowBlank: true,
-	                anchor: '80%',
+	                fieldLabel: 'Fecha Modif',	                
 	                gwidth: 100,
-	                format: 'd/m/Y', 
 					renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 	            },
 	            type:'DateField',
@@ -373,11 +413,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				//configuracion del componente
 				config:{
 	                name: 'usr_mod',
-	                fieldLabel: 'Modificado por',
-	                allowBlank: true,
-	                anchor: '80%',
-	                gwidth: 100,
-	                maxLength:10
+	                fieldLabel: 'Modificado por',	                
+	                gwidth: 100
 	            },
 	            type:'TextField',
 	            filters:{pfiltro:'usu2.cuenta',type:'string'},

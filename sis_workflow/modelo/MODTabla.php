@@ -340,6 +340,8 @@ class MODTabla extends MODbase{
 			$this->captura('estado','varchar');
 			$this->captura('id_estado_wf','int4');
 			$this->captura('id_proceso_wf','int4');
+			$this->captura('obs','text');
+			$this->captura('nro_tramite','varchar');
 		}
 		
 		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {

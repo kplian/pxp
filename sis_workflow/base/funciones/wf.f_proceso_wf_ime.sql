@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -460,6 +462,13 @@ BEGIN
           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
+          
+          IF NOT wf.f_valida_cambio_estado(v_registros.id_estado_wf) THEN
+          
+              raise exception 'Faltan parametros obligatorios para el estado actual';
+          
+          END IF;
+          
          
         
          ------------------------------------------------------------------------------------------------------- 
@@ -883,7 +892,6 @@ BEGIN
          where p.id_proceso_wf =  v_id_proceso_wf and ta.vista_tipo = 'maestro';
          
          if ( v_id_tabla is not null ) then
-         	
          	select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 
@@ -1065,12 +1073,6 @@ BEGIN
          where p.id_proceso_wf =  v_registros.id_proceso_wf and ta.vista_tipo = 'maestro';
          
          if ( v_id_tabla is not null ) then
-         	--validar los datos del formulario en caso de que existe una tabla relacionada
-            
-            if (wf.f_valida_cambio_estado(v_registros.id_estado_wf) = false) then
-            	raise exception 'Por favor edite el registro y llene los campos obligatorios antes de pasar de estado';
-            end if;
-            
          	select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 

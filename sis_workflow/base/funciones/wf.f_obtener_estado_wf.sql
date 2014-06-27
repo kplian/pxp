@@ -127,14 +127,19 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
         --FOR recorre primero las prioridades de menor a mayor
         
         FOR v_registros_prioridades in (select 
-                           DISTINCT(ee.prioridad)
+                           DISTINCT(ee.prioridad) as prioridad
                         from  wf.ttipo_estado te 
-                        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
+                        inner join  wf.testructura_estado ee 
+                              on ee.id_tipo_estado_hijo = te.id_tipo_estado
                         where      te.id_tipo_proceso = v_id_tipo_proceso  
                               and  ee.id_tipo_estado_padre = v_id_tipo_estado
                         order by prioridad asc) LOOP
                         
+                        
+                   -- raise exception '%',v_registros_prioridades.prioridad;
+                        
                 
+        
                   --  FOR  recorre la aristas con la prioridad indicada
                   FOR v_registros in  (select
                                            te.id_tipo_estado,
