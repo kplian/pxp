@@ -43,8 +43,7 @@ class ACTEstructuraUo extends ACTbase {
 			$this -> res = $this -> objFunSeguridad -> listarUoFiltro($this -> objParam);
 			
 			if ($this -> res) {
-				var_dump($this->res);
-				exit;
+				
 				foreach ($this->res->datos as $f) {
 					//var_dump($f);
 					if ($pri == 1) {
