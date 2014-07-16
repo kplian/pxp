@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -65,7 +63,7 @@ BEGIN
 						from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where  ';
+				        where coning.estado_reg = ''activo'' and  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -91,7 +89,7 @@ BEGIN
 					    from param.tconcepto_ingas conig
 					    inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-					    where ';
+					    where coning.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -133,7 +131,7 @@ BEGIN
                           inner join pre.tpartida par on par.id_partida = cp.id_partida
                           inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                           left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where  ';
+				        where  coning.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -161,7 +159,7 @@ BEGIN
                           inner join pre.tpartida par on par.id_partida = cp.id_partida
                           inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                           left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where ';
+				        where coning.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -204,7 +202,7 @@ BEGIN
                              left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
                              inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas 
                              and cp.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
-				        where  ';
+				        where  coning.estado_reg = ''activo'' and ';
                         
                        
 			
@@ -236,7 +234,7 @@ BEGIN
                              left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
                              inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas 
                              and cp.id_partida in ('||COALESCE(v_parametros.id_partidas,'0')||') 
-				        where ';
+				        where coning.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
