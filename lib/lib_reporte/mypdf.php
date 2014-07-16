@@ -15,6 +15,7 @@ class MYPDF extends TCPDF {
 		$page_aux = 0;
 		$y_pos_aux = 0;
 		$page_ini = $this->getPage();
+		$numbers = false;
 		if (count ($this->tablenumbers) > 0 ) {
 			$numbers = true;
 		}	
@@ -70,10 +71,12 @@ class MYPDF extends TCPDF {
 		$y_pos_aux = 0;
 			
 		$index = 0;
+		$numbers = false;
+		if (count ($this->tablenumbers) > 0 ) {
+			$numbers = true;
+		}	
 		foreach ($row as $data) {
-			
-		
-            if ($numbers && $this->tablenumbers[$index] > 0) {
+		    if ($numbers && $this->tablenumbers[$index] > 0) {
             	$data = number_format ( $data , $this->tablenumbers[$index] , '.' , ',' );
             }
 			
