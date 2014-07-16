@@ -61,6 +61,37 @@ class MYPDF extends TCPDF {
 		
         $this->SetXY($this->getX(),$y_pos_aux); 
     }
+
+	public function UniRow($row, $fill = false, $border = 1, $textcolor = array(0,0,0)) {    	
+        $index = 0;
+		$height_base = 3;
+		$height_aux = 0;
+		$page_aux = 0;
+		$y_pos_aux = 0;
+			
+		$index = 0;
+		foreach ($row as $data) {
+			
+		
+            if ($numbers && $this->tablenumbers[$index] > 0) {
+            	$data = number_format ( $data , $this->tablenumbers[$index] , '.' , ',' );
+            }
+			
+			//definicion de border
+			$border_final = (isset($this->tableborders[$index])?$this->tableborders[$index]:$border);
+						
+			//definicion de cambio de color
+			$textcolor_final = (isset($this->tabletextcolor[$index])?$this->tabletextcolor[$index]:$textcolor);			
+			
+			$this->setTextColorArray($textcolor_final);
+			
+			$this->Cell($this->tablewidths[$index], 4, $data, $border_final,0,$this->tablealigns[$index], $fill);
+			$index++;
+			
+        }		
+		$this->ln();
+		 
+    }
 	public function getHeight($w=0, $h=0, $txt, $border=1, $align='L', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0) {
 		// store current object 
         $this->startTransaction(); 
