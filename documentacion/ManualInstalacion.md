@@ -1,4 +1,4 @@
-NSTALACIÓN FRAMEWORK PXP
+INSTALACIÓN FRAMEWORK PXP
 =========================
 
 POSTGRES + APACHE + PHP5 (CENTOS 5.7)
@@ -36,11 +36,12 @@ Adicionar la linea
 
 ```exclude=postgresql*```
 
-3)  ```rpm -U pgdg-centos91-9.1-4.noarch.rpm```
+3) Instalar el repositorio
 
-
+```rpm -U pgdg-centos91-9.1-4.noarch.rpm```
 
 INSTALACIÓN DE REPOSITORIO POSTGRES (Y LIBRERIAS ADICONALES)
+-------------------------------------------------------------
 
 1) yum -y install postgresql91-server postgresql91-docs postgresql91-contrib postgresql91-plperl postgresql91-plpython postgresql91-pltcl postgresql91-test rhdb-utils gcc-objc postgresql91-devel postgis91
 
