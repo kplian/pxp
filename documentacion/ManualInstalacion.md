@@ -1,14 +1,15 @@
 NSTALACIÓN FRAMEWORK PXP
+=========================
 
 POSTGRES + APACHE + PHP5 (CENTOS 5.7)
-
+---------------------------------------
 
 
 Este es el manual inicial realizado con nuestros programadores , puede contener errores u omisiones, que esperamos solucionar con ayuda de todos ustedes, son bienvenidos todos los comentarios y sugerencias
 
 
-
 Prerrequisitos:
+----------------
 
 contar con los archivos
 backup de base de datos
@@ -17,24 +18,25 @@ puede conseguir las ultimas versiones aqui
 
 
 INSTALACIÓN DE REPOSITORIO POSTGRES
+------------------------------------
 
 Referencia: http://yum.postgresql.org/howtoyum.php
 
 1) Descargar el RPM adecuado para su distribución desde aquí ­http://yum.postgresql.org/repopackages.php
 
-wget http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-centos91-9.1-4.noarch.rpm
+```wget http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-centos91-9.1-4.noarch.rpm```
 
 2) Como root
 
-cd /etc/yum.repos.d
+```cd /etc/yum.repos.d```
 
-vim /etc/yum.repos.d/CentOS-Base.repo
+```vim /etc/yum.repos.d/CentOS-Base.repo```
 
 Adicionar la linea
 
-exclude=postgresql*
+```exclude=postgresql*```
 
-3)  rpm -U pgdg-centos91-9.1-4.noarch.rpm
+3)  ```rpm -U pgdg-centos91-9.1-4.noarch.rpm```
 
 
 
