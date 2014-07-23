@@ -20,27 +20,27 @@ INSTALACIÓN DE REPOSITORIO POSTGRES
 
 Referencia: http://yum.postgresql.org/howtoyum.php
 
-1) Descargar el RPM adecuado para su distribución desde aquí­http://yum.postgresql.org/repopackages.php
+1) Descargar el RPM adecuado para su distribución desde aquí ­http://yum.postgresql.org/repopackages.php
 
-# wget http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-centos91-9.1-4.noarch.rpm
+wget http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-centos91-9.1-4.noarch.rpm
 
 2) Como root
 
-#cd /etc/yum.repos.d
+cd /etc/yum.repos.d
 
-#vim /etc/yum.repos.d/CentOS-Base.repo
+vim /etc/yum.repos.d/CentOS-Base.repo
 
 Adicionar la linea
 
 exclude=postgresql*
 
-3) # rpm -U pgdg-centos91-9.1-4.noarch.rpm
+3)  rpm -U pgdg-centos91-9.1-4.noarch.rpm
 
 
 
 INSTALACIÓN DE REPOSITORIO POSTGRES (Y LIBRERIAS ADICONALES)
 
-1) #yum -y install postgresql91-server postgresql91-docs postgresql91-contrib postgresql91-plperl postgresql91-plpython postgresql91-pltcl postgresql91-test rhdb-utils gcc-objc postgresql91-devel postgis91
+1) yum -y install postgresql91-server postgresql91-docs postgresql91-contrib postgresql91-plperl postgresql91-plpython postgresql91-pltcl postgresql91-test rhdb-utils gcc-objc postgresql91-devel postgis91
 
 gcc-objc: herramientas para compilar en c
 
@@ -48,20 +48,20 @@ postgresql91-devel: cabeceras y librerí­as (sin esto no se puede compilar en c
 
 2)Primera corrida de Postgres
 
-#service postgresql-9.1.2 initdb
+service postgresql-9.1.2 initdb
 
-# service postgresql-9.1 start
+service postgresql-9.1 start
 
 3)Inicio automÃ¡tico de Postgresserive pos
 
-# chkconfig postgresql-9.1 on
+ chkconfig postgresql-9.1 on
 
 
 INSTALAR APACHE, PHP
 
 1) Instalar repositorio. Edita el archivo
 
-#vim /etc/yum.repos.d/CentOSBase.repo
+vim /etc/yum.repos.d/CentOSBase.repo
 
 Adicionar
 
@@ -74,13 +74,13 @@ gpgkey=http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka
 
 luego importer las llaves
 
-#rpm --import http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka
+rpm --import http://www.jasonlitka.com/media/RPM-GPG-KEY-jlitka
 
  
 
 2) Ejecutar como root:
 
-# yum -y install httpd php53  mod_ssl mod_auth_pgsql  php-pear php53-bcmath  php53-cli php53-ldap php53-pdo php53-pgsql php53-gd
+ yum -y install httpd php53  mod_ssl mod_auth_pgsql  php-pear php53-bcmath  php53-cli php53-ldap php53-pdo php53-pgsql php53-gd
 
 httpd: apache 2
 
@@ -106,33 +106,31 @@ Después iniciar apache:
 
 3) Inicio de apache
 
-# service httpd start
+ service httpd start
 
 4) Configuración automática de inicio
 
-# chkconfig httpd on
+ chkconfig httpd on
 
 5)Para permitir conexiones desde php hacia la base de datos. Si el SELINUX esta activo como root ejecutar:
 
-#setsebool -P httpd_can_network_connect_db=1
+setsebool -P httpd_can_network_connect_db=1
 
 6)Habilitar el Firrewal para que acepte conexiones en los puertos HTTP (80), HTTPS (443) y Postgres (5432)
 
-#setup (entorno gráfico para configurar iptables)
+setup (entorno gráfico para configurar iptables)
 
  
 
 7)Configuracion de /etc/php.ini
 
-#veshabilitar errores por defecto
-
-
+deshabilitar errores por defecto
 
 display_errors = Off
 
  
 
-# configurarcion de persistnecia en php postgres (esto es opcional depende si queremos conexiones persistentes solo experimental)
+configurarcion de persistnecia en php postgres (esto es opcional depende si queremos conexiones persistentes solo experimental)
 
 
 
@@ -144,13 +142,12 @@ pgsql.auto_reset_persistent = on
 
 Nota
 
-#triempo de ejecución 30 minutos considerando sistemas complejos, No es lo mismo que una página web común
+tiempo de ejecución 30 minutos considerando sistemas complejos, No es lo mismo que una página web común
 
 max_execution_time = 1800
 
- 
 
-#para manejo de archivos subir la capacidad de envio
+para manejo de archivos subir la capacidad de envio
 
  
 
@@ -172,7 +169,7 @@ CONFIGURACIÓN Y PREPARACION DE LA BASE DE DATOS
 
 1) En pg_hba.conf habilitar las IP que se conectarán, y cambiar el método de autenticación a md5 tanto de los sockets unix como de Ipv4
 
-# vim /var/lib/pgsql/9.1/data/pg_hba.conf
+ vim /var/lib/pgsql/9.1/data/pg_hba.conf
 
 -------------------
 
@@ -180,7 +177,7 @@ local all all md5
 
 local all postgres,bdweb_conexion trust
 
-# IPv4 local connections:
+ IPv4 local connections:
 
 hostall all 127.0.0.1/32 md5
 
@@ -188,7 +185,7 @@ hostall all 192.168.2.236/32 md5
 
 2) Configurar Archivo
 
-#vim /var/lib/pgsql/9.1/data/postgresql.conf
+vim /var/lib/pgsql/9.1/data/postgresql.conf
 
 Buscar e l parámetro y descomentar
 
@@ -211,15 +208,15 @@ bytea_output = 'escape'
 
 3)  Creación de la base de datos. Como root
 
-#su postgres
+su postgres
 
-#psql
+psql
 
 =# create database dbweb with encoding ="UTF-8";
 
 =# \q 
 
-# exit
+ exit
 
 3) Configuracion de Postgis
 
@@ -227,15 +224,15 @@ Buscar los archivos Â postgis.sql y spatial_ref_sys.sql
 
 /usr/pgsql-9.1/share/contrib/postgis-1.5/postgis.sql
 
-#psql -d dbweb -f postgis.sql
+psql -d dbweb -f postgis.sql
 
-#psql -d dbweb -f spatial_ref_sys.sql
+psql -d dbweb -f spatial_ref_sys.sql
 
 4)Creación de los primeros usuarios
 
-#su postgres
+su postgres
 
-#psql
+psql
 
 //el password de usuario debe coincidir con el asignado en el archive de configuracion ../wev/lib/DatosGenerales.php en su variable
 
@@ -265,13 +262,13 @@ El usuario "admin" del framework tendrá el siguiente usuario de base de datos
 
 5)  Instalación de scipt de contrib _int.sql que contiene varias funciones de manejo de intarray
 
-#su postgres -
+su postgres -
 
-#psql -d dbweb
+psql -d dbweb
 
 Dentro de psql ejecutar lo siguiente:
 
-# \i /usr/pgsql-9.0/share/contrib/_int.sql;
+ \i /usr/pgsql-9.0/share/contrib/_int.sql;
 
  
 
@@ -281,11 +278,11 @@ Preparación de PXP
 
 Copiar el archivo dentro de /var/www/html
 
-# tar -xzvf web.X.tar.gz
+ tar -xzvf web.X.tar.gz
 
-# chown -R apache.apache /var/www/html/web/
+ chown -R apache.apache /var/www/html/web/
 
-# chmod 700 -R /var/www/html/web/
+ chmod 700 -R /var/www/html/web/
 
 2)Archivo de Configuración  /var/www/html/web/lib/DatosGenerales.php
 
@@ -332,37 +329,37 @@ Descargar el paquete de.http://www.cabextract.org.uk/ con preferencia el tar.gz:
 
 1.  Proceder a descomprimir y ejecutar:
 
-# gzip -cd < cabextract-1.4.tar.gz | tar xf -
-# cd cabextract-1.4
-# ./configure
-# make
-# make install
+ gzip -cd < cabextract-1.4.tar.gz | tar xf -
+ cd cabextract-1.4
+ ./configure
+ make
+ make install
 
 
 2.Baja la especificación del paquete msttcorefonts con el comando:
 
-# wget http://corefonts.sourceforge.net/msttcorefonts-2.0-1.spec
+ wget http://corefonts.sourceforge.net/msttcorefonts-2.0-1.spec
 
 3.Con la especificación podemos generar el nuevo rpm:
 
-# rpmbuild -bb msttcorefonts-2.0-1.spec
+ rpmbuild -bb msttcorefonts-2.0-1.spec
 
 3.1 Solución en el caso de ver: rpmbuild: command not found
-# yum install rpm-build
+ yum install rpm-build
 
  
 
 4.  El anterior comando baja los archivos necesarios los compila y genera el rpm (Necesitas tener instaladas las herramientas de desarrollo en tu sistema). Ahora nos toca instalar ese paquete:
 
-# rpm -ivh /usr/src/redhat/RPMS/noarch/msttcorefonts-2.0-1.noarch.rpm
+ rpm -ivh /usr/src/redhat/RPMS/noarch/msttcorefonts-2.0-1.noarch.rpm
 
 5.Los nuevos fondos se instalan en /usr/share/fonts/truetype/. Para permitir que jpgraph encuentre los fonts requeridos crear el directorio:
 
-# mkdir /usr/share/fonts/truetype / msttcorefonts
+ mkdir /usr/share/fonts/truetype / msttcorefonts
 
 y copiar los fondos con:
 
-# cp /usr/share/fonts/trutype/*.ttf /usr/share/fonts/truetype/msttcorefonts
+ cp /usr/share/fonts/trutype/*.ttf /usr/share/fonts/truetype/msttcorefonts
 
 
 
@@ -392,17 +389,17 @@ gcc -I /usr/local/include -I /usr/pgsql-9.0/include/server/ -shared -o phx.so ph
 
 Hacer dueño a root con
 
-#chown root.postgres phx.so
+chown root.postgres phx.so
 
 Dar permisos con
 
-#chmod 750 phx.so
+chmod 750 phx.so
 
 3)  Copiar el archivo phxbd.sh a la ruta /usr/local/lib/
 
 Verificar el contenido sea el siguiente
 
-#vim /usr/local/lib/phxbd.php
+vim /usr/local/lib/phxbd.php
 
 CONTENIDO DEL ARCHIVO:
 
@@ -416,9 +413,9 @@ chmod 740 /tmp/procesos.csv
 
 Asignar los permisos necesarios para la corrida del archivo
 
-#sudo chown root.root /usr/local/lib/phxbd.sh
+sudo chown root.root /usr/local/lib/phxbd.sh
 
-#sudo chmod 700 /usr/local/lib/phxbd.sh
+sudo chmod 700 /usr/local/lib/phxbd.sh
 
 4)  Crear Cron como usuario postgres para log de bd apartir del archivo
 
@@ -428,9 +425,9 @@ Es este archivo cambiar [/opt/PostgreSQL/9.1/data/pg_log/postgresql] de acuerdo 
 
 NOTA: El archivo Cron.txt tiene la configuración del para la generación de bitácoras y también para el envío de las alarmas configuradas en el framework.
 
-#su postgres
+su postgres
 
-# crontab /usr/local/lib/cron.txt
+ crontab /usr/local/lib/cron.txt
 
 5) Modificar postgresql.conf de acuerdo a lo requerido
 
@@ -464,11 +461,11 @@ $_SESSION["_NOMBRE_LOG_BD"] ="postgresql";
 
 7) Asignar permisos a postgres para hacer sudo al ejecutar el script. Como root ejecutar
 
-#visudo
+visudo
 
 Comentar:
 
-#Defaultsrequiretty
+Defaultsrequiretty
 
 adir:
 
