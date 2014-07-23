@@ -34,7 +34,7 @@ Referencia: http://yum.postgresql.org/howtoyum.php
 
 Adicionar la linea
 
-```exclude=postgresql*```
+```exclude=postgresql* ```
 
 3) Instalar el repositorio
 
