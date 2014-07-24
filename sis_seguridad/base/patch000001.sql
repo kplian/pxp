@@ -951,26 +951,6 @@ CREATE TABLE segu.tvideo (
 
 
 
-
-
-/*****************************I-SCP-RAC-SEGU-0-21/5/2014*************/
-
---------------- SQL ---------------
-update orga.tuo_funcionario set
-tipo = 'oficial';
-
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN tipo SET DEFAULT 'oficial';
-
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN tipo SET NOT NULL;
-
-
-/*****************************F-SCP-RAC-SEGU-0-21/05/2014*************/
-
-
-
-
 /*****************************I-SCP-JRR-SEGU-0-21/05/2014*************/
 
 ALTER TABLE segu.tgui
