@@ -16,7 +16,7 @@ BEGIN
     from segu.tgui g
     where g.codigo_gui = par_codigo_gui_fk;
     ALTER TABLE segu.testructura_gui DISABLE TRIGGER USER;   
-    update segu.testructura_gui set estado_reg = 'inactivo'
+    update segu.testructura_gui set estado_reg = 'inactivo',modificado = 1 
     where id_gui = v_id_gui and fk_id_gui = v_id_gui_fk 
           and estado_reg = 'activo';
     ALTER TABLE segu.testructura_gui ENABLE TRIGGER USER; 

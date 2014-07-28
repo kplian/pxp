@@ -20,7 +20,7 @@ BEGIN
     where g.codigo_gui = par_gui;
     ALTER TABLE segu.tgui_rol DISABLE TRIGGER USER; 
     update segu.tgui_rol
-    set estado_reg = 'inactivo'
+    set estado_reg = 'inactivo',modificado = 1 
     where id_rol = v_id_rol and
     	id_gui = v_id_gui and estado_reg = 'activo';
     ALTER TABLE segu.tgui_rol ENABLE TRIGGER USER; 

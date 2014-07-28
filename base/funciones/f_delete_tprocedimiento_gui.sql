@@ -17,7 +17,7 @@ BEGIN
     where p.codigo = par_procedimiento;
     ALTER TABLE segu.tprocedimiento_gui DISABLE TRIGGER USER; 
     update segu.tprocedimiento_gui
-    set estado_reg = 'inactivo'
+    set estado_reg = 'inactivo',modificado = 1 
     where estado_reg = 'activo' and id_procedimiento = v_id_procedimiento 
     		and id_gui = v_id_gui;
     ALTER TABLE segu.tprocedimiento_gui ENABLE TRIGGER USER;

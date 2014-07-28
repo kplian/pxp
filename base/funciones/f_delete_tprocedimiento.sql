@@ -8,7 +8,7 @@ DECLARE
 BEGIN
 	ALTER TABLE segu.tprocedimiento DISABLE TRIGGER USER; 
 	update segu.tprocedimiento
-    set estado_reg = 'inactivo'
+    set estado_reg = 'inactivo',modificado = 1 
     where estado_reg = 'activo' and codigo = par_codigo;
     ALTER TABLE segu.tprocedimiento ENABLE TRIGGER USER; 
     return 'exito';

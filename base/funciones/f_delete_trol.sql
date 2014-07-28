@@ -8,7 +8,7 @@ DECLARE
    
 BEGIN
 	ALTER TABLE segu.trol DISABLE TRIGGER USER;
-    update segu.trol set estado_reg = 'inactivo'
+    update segu.trol set estado_reg = 'inactivo',modificado = 1 
     where estado_reg = 'activo' and rol = par_rol;
 	ALTER TABLE segu.trol ENABLE TRIGGER USER;
     return 'exito';
