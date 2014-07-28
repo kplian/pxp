@@ -80,13 +80,15 @@ BEGIN
                             descripcion,
                             id_subsistema, 
                             nombre,
-                            nivel
+                            nivel,
+                            orden_logico
                             )
                   VALUES(
                            v_parametros.codigo,
                             '',
                            v_id,
                            upper(v_parametros.nombre),
+                           1,
                            1) returning  id_gui into v_id_gui;
                            
                   v_resp = (select pxp.f_insert_testructura_gui(v_parametros.codigo,'SISTEMA', NULL));

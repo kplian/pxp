@@ -7,10 +7,10 @@ DECLARE
 	v_id_subsistema integer;
    
 BEGIN
-	
+	ALTER TABLE segu.trol DISABLE TRIGGER USER;
     update segu.trol set estado_reg = 'inactivo'
     where estado_reg = 'activo' and rol = par_rol;
-
+	ALTER TABLE segu.trol ENABLE TRIGGER USER;
     return 'exito';
 END;
 $body$

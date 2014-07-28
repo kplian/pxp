@@ -15,11 +15,12 @@ BEGIN
     select id_procedimiento into v_id_procedimiento
     from segu.tprocedimiento p
     where p.codigo = par_procedimiento;
-    
+    ALTER TABLE segu.tprocedimiento_gui DISABLE TRIGGER USER; 
     update segu.tprocedimiento_gui
     set estado_reg = 'inactivo'
     where estado_reg = 'activo' and id_procedimiento = v_id_procedimiento 
     		and id_gui = v_id_gui;
+    ALTER TABLE segu.tprocedimiento_gui ENABLE TRIGGER USER;
     
     return 'exito';
 END;

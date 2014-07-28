@@ -6,9 +6,11 @@ $body$
 DECLARE
 	v_id_funcion integer;
 BEGIN
+	ALTER TABLE segu.tprocedimiento DISABLE TRIGGER USER; 
 	update segu.tprocedimiento
     set estado_reg = 'inactivo'
     where estado_reg = 'activo' and codigo = par_codigo;
+    ALTER TABLE segu.tprocedimiento ENABLE TRIGGER USER; 
     return 'exito';
 END;
 $body$

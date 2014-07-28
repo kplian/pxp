@@ -786,7 +786,22 @@ BEGIN
                       tp.id_tipo_proceso
                    from  wf.ttipo_proceso tp
                    inner join wf.ttipo_estado te on te.id_tipo_estado = tp.id_tipo_estado 
-                   where tp.id_tipo_estado   = v_parametros.id_tipo_estado_sig) LOOP
+                   where tp.estado_reg = 'activo'  and   tp.id_tipo_estado   = v_parametros.id_tipo_estado_sig
+                   
+                  UNION
+                 select 
+                      po.tipo_disparo,
+                      po.funcion_validacion_wf,
+                      tp.nombre,
+                      tp.codigo,
+                      tp.descripcion,
+                      tp.id_tipo_proceso
+                   from  wf.ttipo_proceso tp
+                   inner join wf.ttipo_proceso_origen po on po.id_tipo_proceso = tp.id_tipo_proceso
+                   inner join wf.ttipo_estado te on te.id_tipo_estado = po.id_tipo_estado 
+                   where tp.estado_reg = 'activo' and   po.id_tipo_estado   = v_parametros.id_tipo_estado_sig 
+                   
+                  ) LOOP
          
          
                  --ejecuta funcion de validacion de procesos disparados

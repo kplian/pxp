@@ -142,11 +142,24 @@ BEGIN
           where   tp.id_tipo_estado=v_id_tipo_estado_prev
           and tp.codigo = ANY (v_array_codigo_tipo_proceso);
           
+         
           --si no existe un camino oese a tener codigo se lanza un error
           if  v_id_tipo_proceso_next is NULL then
-       
-             raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %',v_cantidad_disparos, p_codigo_tipo_proceso;
-       
+             
+              -- chequear en la tabla de procesos origen
+               select
+                 tp.id_tipo_proceso
+                into 
+                  v_id_tipo_proceso_next
+                from wf.ttipo_proceso_origen tpo 
+                inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tpo.id_tipo_proceso
+                where   tpo.id_tipo_estado=v_id_tipo_estado_prev
+                and tp.codigo = ANY (v_array_codigo_tipo_proceso);
+              
+              if  v_id_tipo_proceso_next is NULL then
+                   raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %',v_cantidad_disparos, p_codigo_tipo_proceso;
+              end if;
+                
           end if;
       
       

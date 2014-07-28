@@ -6,8 +6,10 @@ $body$
 DECLARE
 	
 BEGIN
+	ALTER TABLE segu.tgui DISABLE TRIGGER USER;  
 	update segu.tgui set estado_reg = 'inactivo'
     where estado_reg = 'activo' and codigo_gui = par_codigo_gui;
+    ALTER TABLE segu.tgui ENABLE TRIGGER USER; 
     return 'exito';
 END;
 $body$

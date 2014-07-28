@@ -10,9 +10,10 @@ BEGIN
 	select id_subsistema into v_id_subsistema
     from segu.tsubsistema s
     where s.codigo = par_subsistema;
-    
+    ALTER TABLE segu.tfuncion DISABLE TRIGGER USER; 
     update segu.tfuncion set estado_reg = 'inactivo'
     where nombre = par_nombre and  id_subsistema = v_id_subsistema and estado_reg = 'activo';
+    ALTER TABLE segu.tfuncion ENABLE TRIGGER USER; 
     return 'exito';
 END;
 $body$

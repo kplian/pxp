@@ -73,7 +73,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod
                         INNER JOIN wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
                         LEFT JOIN wf.ttipo_estado te on te.id_tipo_estado = tipproc.id_tipo_estado
-				        where  ';
+				        where  tipproc.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -101,7 +101,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod
                         INNER JOIN wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
                         LEFT JOIN wf.ttipo_estado te on te.id_tipo_estado = tipproc.id_tipo_estado
-					    where ';
+					    where tipproc.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
