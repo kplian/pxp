@@ -427,6 +427,24 @@ WITHOUT OIDS;
 
 /*****************************F-SCP-RAC-ORGA-0-20/05/2014*************/
 
+
+/*****************************I-SCP-RAC-ORGA-0-21/05/2014*************/
+
+--------------- SQL ---------------
+update orga.tuo_funcionario set
+tipo = 'oficial';
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN tipo SET DEFAULT 'oficial';
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN tipo SET NOT NULL;
+
+
+/*****************************F-SCP-RAC-ORGA-0-21/05/2014*************/
+
+
+
 /*****************************I-SCP-JRR-ORGA-0-04/06/2014*************/
 ALTER TABLE orga.tuo_funcionario
   ALTER COLUMN observaciones_finalizacion SET DEFAULT 'fin contrato';
