@@ -333,3 +333,16 @@ ALTER TABLE orga.tinterinato
 
 /*********************************F-DEP-RAC-ORGA-0-25/05/2014***********************************/
 
+
+/*********************************I-DEP-JRR-ORGA-0-31/07/2014***********************************/
+
+ALTER TABLE orga.toficina_cuenta
+  ADD CONSTRAINT fk_toficina_cuenta__id_oficina FOREIGN KEY (id_oficina)
+    REFERENCES orga.toficina(id_oficina)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+    
+/*********************************F-DEP-JRR-ORGA-0-31/07/2014***********************************/
+

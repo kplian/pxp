@@ -16,6 +16,14 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.Oficina.superclass.constructor.call(this,config);
+		this.addButton('btnCuenta',
+        {
+            text: 'Cuentas de Servicios',
+            iconCls: 'blist',
+            disabled: true,
+            handler: this.onBtnCuenta,
+            tooltip: 'Servicios por oficina'
+        });
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
@@ -278,12 +286,35 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true,
+	onBtnCuenta: function(){
+			var rec = {maestro: this.sm.getSelected().data} 
+						      
+            Phx.CP.loadWindows('../../../sis_organigrama/vista/oficina_cuenta/OficinaCuenta.php',
+                    'Servicios de la Oficina',
+                    {
+                        width:700,
+                        height:450
+                    },
+                    rec,
+                    this.idContenedor,
+                    'OficinaCuenta');
+	},
 	loadValoresIniciales:function()
     {	
         this.Cmp.aeropuerto.setValue('no'); 
         this.Cmp.zona_franca.setValue('no');    
         this.Cmp.frontera.setValue('no');          
         Phx.vista.Oficina.superclass.loadValoresIniciales.call(this);
+    },
+    preparaMenu:function()
+    {	
+        this.getBoton('btnCuenta').enable();      
+        Phx.vista.Oficina.superclass.preparaMenu.call(this);
+    },
+    liberaMenu:function()
+    {	
+        this.getBoton('btnCuenta').disable();       
+        Phx.vista.Oficina.superclass.liberaMenu.call(this);
     }
 	}
 )

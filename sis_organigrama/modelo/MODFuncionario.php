@@ -81,6 +81,16 @@ class MODFuncionario extends MODbase{
 		$this->captura('email_empresa','varchar');
 		$this->captura('estado_reg_fun','varchar');
 		$this->captura('estado_reg_asi','varchar');
+		
+		$this->captura('id_cargo','integer');
+		$this->captura('descripcion_cargo','varchar');
+		$this->captura('cargo_codigo','varchar');
+		
+		
+		
+		
+		
+                            
 		$this->setParametro('antiguedad_anterior','antiguedad_anterior','varchar');
 		//Ejecuta la funcion
 		$this->armarConsulta();

@@ -27,17 +27,17 @@ Phx.vista.AsignarInterino = {
 	 * */
 	
 	constructor: function(config) {
-	    
-	   Phx.vista.AsignarInterino.superclass.constructor.call(this,config);
-       this.load({params:{start:0, limit:this.tam_pag}})
+	   
+	  this.Atributos[this.getIndAtributo('id_cargo_titular')].form=false;
+ 
+	  Phx.vista.AsignarInterino.superclass.constructor.call(this,config);
+      this.load({params:{start:0, limit:this.tam_pag}})
         
-    }
+    },
     
-   
+    ActSave:'../../sis_organigrama/control/Interinato/asignarMiSuplente',
+    ActList:'../../sis_organigrama/control/Interinato/listarMisSuplentes',
     
-     
-    
-    
-    
+ 
 };
 </script>

@@ -154,7 +154,11 @@ BEGIN
                             FUNCAR.codigo,
                             FUNCAR.email_empresa,
                             FUNCAR.estado_reg_fun,
-                            FUNCAR.estado_reg_asi
+                            FUNCAR.estado_reg_asi,
+                            FUNCAR.id_cargo,
+                            FUNCAR.descripcion_cargo,
+                            FUNCAR.cargo_codigo
+                            
                             FROM orga.vfuncionario_cargo FUNCAR 
                             WHERE '||v_filadd;
                

@@ -31,6 +31,40 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+        {
+            config:{
+                name: 'fecha_ini',
+                fieldLabel: 'Fecha Ini',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                            format: 'd/m/Y', 
+                            renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+            },
+                type:'DateField',
+                filters:{pfiltro:'int.fecha_ini',type:'date'},
+                valorInicial:new Date(),
+                id_grupo:1,
+                grid:true,
+                form:true
+        },
+        
+        {
+            config:{
+                name: 'fecha_fin',
+                fieldLabel: 'Fecha Fin',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                            format: 'd/m/Y', 
+                            renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+            },
+                type:'DateField',
+                filters:{pfiltro:'int.fecha_fin',type:'date'},
+                id_grupo:1,
+                grid:true,
+                form:true
+        },
 		{
 			config: {
 				name: 'id_cargo_titular',
@@ -38,20 +72,21 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				emptyText: 'Elija una opción...',
 				store: new Ext.data.JsonStore({
-					url: '../../sis_organigrama/control/Cargo/listarCargo',
-					id: 'id_cargo',
-					root: 'datos',
-					sortInfo: {
-						field: 'cargo.nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_cargo', 'nombre',],
-					remoteSort: true,
-					baseParams: {par_filtro: 'cargo.nombre'}
-				}),
-				valueField: 'id_cargo',
-				displayField: 'nombre',
+                    url: '../../sis_organigrama/control/Funcionario/listarFuncionarioCargo',
+                    id: 'id_cargo',
+                    root: 'datos',
+                    sortInfo: {
+                        field: 'descripcion_cargo',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_cargo', 'nombre','desc_funcionario1','id_funcionario','descripcion_cargo','id_cargo'],
+                    remoteSort: true,
+                    baseParams: {par_filtro: 'descripcion_cargo#desc_funcionario1#desc_funcionario2'}
+                }),
+                tpl:'<tpl for="."><div class="x-combo-list-item"><p>{descripcion_cargo}</p><p>{desc_funcionario1}</p> </div></tpl>',
+                valueField: 'id_cargo',
+				displayField: 'descripcion_cargo',
 				gdisplayField: 'nombre_titular',
 				hiddenName: 'id_cargo_titular',
 				forceSelection: true,
@@ -96,20 +131,21 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				emptyText: 'Elija una opción...',
 				store: new Ext.data.JsonStore({
-					url: '../../sis_organigrama/control/Cargo/listarCargo',
+					url: '../../sis_organigrama/control/Funcionario/listarFuncionarioCargo',
 					id: 'id_cargo',
 					root: 'datos',
 					sortInfo: {
-						field: 'cargo.nombre',
+						field: 'descripcion_cargo',
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_cargo', 'nombre'],
+					fields: ['id_cargo', 'nombre','desc_funcionario1','id_funcionario','descripcion_cargo','id_cargo'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'cargo.nombre'}
+					baseParams: {par_filtro: 'descripcion_cargo#desc_funcionario1#desc_funcionario2'}
 				}),
-				valueField: 'id_cargo',
-				displayField: 'nombre',
+				tpl:'<tpl for="."><div class="x-combo-list-item"><p>{descripcion_cargo}</p><p>{desc_funcionario1}</p> </div></tpl>',
+                valueField: 'id_cargo',
+				displayField: 'descripcion_cargo',
 				gdisplayField: 'nombre_suplente',
 				hiddenName: 'id_cargo_suplente',
 				forceSelection: true,
@@ -147,39 +183,6 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:false
         },
-		{
-			config:{
-				name: 'fecha_ini',
-				fieldLabel: 'Fecha Ini',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'int.fecha_ini',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		
-		{
-			config:{
-				name: 'fecha_fin',
-				fieldLabel: 'Fecha Fin',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'int.fecha_fin',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
         {
             config:{
                 name: 'descripcion',
@@ -300,8 +303,33 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	
+	iniciarEventos:function(){
+        
+        //inicio de eventos 
+        this.Cmp.fecha_ini.on('change',function(f){
+            
+             this.Cmp.id_cargo_titular.enable();             
+             this.Cmp.id_cargo_titular.store.baseParams.fecha = this.Cmp.fecha_ini.getValue().dateFormat(this.Cmp.fecha_ini.format);
+             this.Cmp.id_cargo_titular.modificado=true;
+             
+             this.Cmp.id_cargo_suplente.enable();             
+             this.Cmp.id_cargo_suplente.store.baseParams.fecha = this.Cmp.fecha_ini.getValue().dateFormat(this.Cmp.fecha_ini.format);
+             this.Cmp.id_cargo_suplente.modificado=true;
+             
+          },this);
+	},
 	
+	onButtonEdit:function(){
+       Phx.vista.Interinato.superclass.onButtonEdit.call(this); 
+       this.Cmp.id_cargo_titular.store.baseParams.fecha = this.Cmp.fecha_ini.getValue().dateFormat(this.Cmp.fecha_ini.format);
+       this.Cmp.id_cargo_titular.modificado=true;
+     
+       this.Cmp.id_cargo_suplente.store.baseParams.fecha = this.Cmp.fecha_ini.getValue().dateFormat(this.Cmp.fecha_ini.format);
+       this.Cmp.id_cargo_suplente.modificado=true;
+       
+       
 	
+	},
 	sortInfo:{
 		field: 'id_interinato',
 		direction: 'ASC'
