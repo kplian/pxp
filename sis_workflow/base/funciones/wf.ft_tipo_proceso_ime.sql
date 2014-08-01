@@ -167,10 +167,12 @@ BEGIN
 	elsif(p_transaccion='WF_TIPPROC_ELI')then
 
 		begin
-			--Sentencia de la eliminacion
-			delete from wf.ttipo_proceso
-            where id_tipo_proceso=v_parametros.id_tipo_proceso;
-               
+			
+            --Sentencia de la modificacion
+			update wf.ttipo_proceso set
+			estado_reg = 'inactivo'
+			where id_tipo_proceso=v_parametros.id_tipo_proceso;
+            
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Proceso eliminado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_proceso',v_parametros.id_tipo_proceso::varchar);

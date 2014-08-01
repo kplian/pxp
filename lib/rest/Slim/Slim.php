@@ -622,7 +622,7 @@ class Slim
      */
     public function error($argument = null)
     {
-        if (is_callable($argument)) {
+        if (is_callable($argument)) {        	
             //Register error handler
             $this->error = $argument;
         } else {
@@ -646,7 +646,7 @@ class Slim
     protected function callErrorHandler($argument = null)
     {
         ob_start();
-        if (is_callable($this->error)) {
+        if (is_callable($this->error)) {        	        	
             call_user_func_array($this->error, array($argument));
         } else {
             call_user_func_array(array($this, 'defaultError'), array($argument));

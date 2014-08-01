@@ -90,7 +90,9 @@ begin
              'PM_GETALA_SEL',
              'OR_INT_SEL',
              'OR_INT_CONT',
-             'OR_APLINT_IME'))) THEN
+             'SEG_GUIMOB_SEL',     --listado menu mobile
+             'OR_APLINT_IME'      --aplica interinato      
+             ))) THEN
             po_tiene_permisos = true;
          
          END IF; 

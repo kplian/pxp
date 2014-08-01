@@ -16,7 +16,8 @@ include_once(dirname(__FILE__).'/../../../lib/lib_control/CTincludes.php');
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: *');
+header('Access-Control-Max-Age: 1728000');
 
 $_SESSION["_OFUSCAR_ID"]='no'; 
 //estable aprametros ce la cookie de sesion
@@ -44,11 +45,13 @@ require 'Slim/Slim.php';
  */
 $app = new \Slim\Slim(array(
     'log.level' => \Slim\Log::EMERGENCY,
-    'debug' => true
+    'debug' => false
 ));
 register_shutdown_function('fatalErrorShutdownHandler');
 set_exception_handler('exception_handler');
 set_error_handler('error_handler');
+
+$app->error('exception_handler');
 $app->log->setEnabled(false);
 
 $app->response->headers->set('Content-Type', 'application/json');
@@ -108,15 +111,11 @@ function authPxp($headersArray) {
 	}
 	
 	//desencriptar usuario y contrasena
-	$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
+	$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
 	
-	if (count($auxArray) == 2) {
-		$reqArray['usuario'] = $headersArray['Pxp-User'];
-		
-		
-		//armar array con _tipo,usuario y contrasena
-		$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
-		$reqArray['contrasena'] =  $auxArray[1];	
+	if (count($auxArray) == 2 && $auxArray[1] == $headersArray['Pxp-User']) {
+		$reqArray['usuario'] = $headersArray['Pxp-User'];		
+		$reqArray['contrasena'] =  $md5Pass;	
 		$reqArray['_tipo'] = 'restAuten';
 	
     
@@ -265,7 +264,7 @@ $app->get(
       
         // $_SESSION["_PETICION"]=serialize($aPostData);
         $aPostData = $objPostData->getData();
-        
+        $_SESSION["_PETICION"]=serialize($aPostData);
         // $objParam = new CTParametro('{}');
         $objParam = new CTParametro('{"start":"'.$start.'","limit":"'.$limit.'","sort":"id_persona","dir":"ASC"}',null,null,'../../sis_seguridad/control/Persona/listarPersonaFoto');
         
@@ -344,7 +343,7 @@ $app->get(
 		if(isset($filter)){
              $aPostData['filter'] = $filter;
         }        
-        
+        $_SESSION["_PETICION"]=serialize($aPostData);
         //arma $JSON
         $JSON = json_encode($aPostData);
         
@@ -365,27 +364,32 @@ $app->post(
 	 
     '/seguridad/Auten/verificarCredenciales',
     function () use ($app) {
-    	$mensaje = '';
-    	if ($app->request->post('usuario') == '') {
-    		$mensaje = "No se recibio el parametro usuario";
-    	}
-		if ($app->request->post('contrasena') == '') {
-			$mensaje = "No se recibio el parametro contrasena";
-		}
-		
-		if ($mensaje != '') {
-	    	$men=new Mensaje();
-			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
-			'Codigo de error: AUTEN',
-			'control','','','OTRO','');
-							
-			$men->imprimirRespuesta($men->generarJson(),'406');
-			exit;
-		}  	   	    	
-    	
-    	
-    	$auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));    	
-    	authPxp($auxHeaders); 		
+    	$headers = $app->request->headers;
+		if (isset($headers['Php-Auth-User'])) {
+    		authPxp($headers);
+		} else {	
+	    	$mensaje = '';
+	    	if ($app->request->post('usuario') == '') {
+	    		$mensaje = "No se recibio el parametro usuario";
+	    	}
+			if ($app->request->post('contrasena') == '') {
+				$mensaje = "No se recibio el parametro contrasena";
+			}
+			
+			if ($mensaje != '') {
+		    	$men=new Mensaje();
+				$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
+				'Codigo de error: AUTEN',
+				'control','','','OTRO','');
+								
+				$men->imprimirRespuesta($men->generarJson(),'406');
+				exit;
+			}  	   	    	
+	    	
+	    	
+	    	$auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));    	
+	    	authPxp($auxHeaders); 
+	    }		
 		echo "{success:true,
 				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
 				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
@@ -447,7 +451,7 @@ $app->post(
 			$m = null;
 		}
 		     
-        
+        $_SESSION["_PETICION"]=serialize($aPostData);
         //arma $JSON
         $JSON = json_encode($aPostData);
         
@@ -513,6 +517,16 @@ $app->delete(
         echo 'This is a DELETE route';
     }
 );
+
+$app->options('/:sistema/:clase_control/:metodo', function ($sistema,$clase_control,$metodo) {
+    header('Access-Control-Allow-Origin: *');
+	header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+	header('Access-Control-Allow-Headers: pxp-user, content-type, Php-Auth-User, Php-Auth-Pw');
+	header('Access-Control-Max-Age: 1728000');
+	
+	
+	
+});
 
 /**
  * Step 4: Run the Slim application

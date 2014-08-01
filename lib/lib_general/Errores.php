@@ -3,6 +3,7 @@
 	include_once("Mensaje.php");
 	
 	function exception_handler($exception){
+		
 		$_SESSION["_CANTIDAD_ERRORES"]++;
 		$mensaje=$exception->getMessage();
 		if($_SESSION['_CANTIDAD_ERRORES']<4){
@@ -17,9 +18,10 @@
 				
 			  $_SESSION['cantidad_errores']=0;
 			}	
-		    if($_SESSION['cantidad_errores']<3){
+		    if($_SESSION['cantidad_errores']<3){		    	
 				$bdlog=new MODLogError($categoria,$exception->getMessage(),'Archivo: '.$exception->getFile().
 										' Linea: '.$exception->getLine().'.  Traza de errores: '.$exception->getTraceAsString());
+				
 				$bdlog->guardarLogError();
 			}
 			

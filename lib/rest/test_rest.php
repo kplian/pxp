@@ -3,12 +3,33 @@
 	
 	include 'PxpRestClient.php';	
 	//phpinfo();
-	$pxpRestClient = PxpRestClient::connect('192.168.225.72','kerp/pxp/lib/rest/')
-					->setCredentialsPxp('admin','admin');
+	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/')
+					->setCredentialsPxp('admin','123');
 	//echo $pxpRestClient->doGet('libre/tesoreria/CuentaDocumentadaEndesis/listarFondoAvance2',array("limit"=>'10'));
 	//echo $pxpRestClient->doGet('tesoreria/CuentaDocumentadaEndesis/listarFondoAvance',array("limit"=>'10'));
 	//echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array());
-	echo $pxpRestClient->doGet('seguridad/Gui/listarMenuMobile',array("tipo_proceso"=>'SOLCO'));
+	/*echo $pxpRestClient->doPost('organigrama/Interinato/asignarMiSuplente',
+	    array(	"id_interinato"=>'',"id_cargo_suplente"=>16,"fecha_ini"=>"01/07/2014",
+	    		"fecha_fin"=>"01/08/2014", "descripcion"=>"" ));
+	    		
+	echo $pxpRestClient->doPost('seguridad/Gui/listarMenuMobile',
+	    array(	"_dc"=>'1406749352192',"start"=>0,"limit"=>25,
+	    		"page"=>1));
+				*/
+				
+			/*	kerp_capacitacion/pxp/lib/rest/organigrama/Funcionario/listarFuncionarioCargo
+	echo $pxpRestClient->doGet('organigrama/Interinato/listarMisSuplentes',
+	    array(	"sort"=>'id_interinato',"start"=>0,"limit"=>50,
+	    		"dir"=>'ASC'));*/
+	
+	/*
+	echo $pxpRestClient->doGet('organigrama/Funcionario/listarFuncionarioCargo',
+        array(  "sort"=>'descripcion_cargo',"start"=>0,"limit"=>50,"dir"=>'ASC'
+                ));*/
+                
+  echo $pxpRestClient->doGet('organigrama/Funcionario/listarFuncionarioCargo',
+        array(  "start"=>0,"limit"=>50
+                ));              
 	
 
 
