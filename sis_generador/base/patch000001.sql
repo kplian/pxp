@@ -44,3 +44,12 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 CREATE UNIQUE INDEX uk_ttabla_esquema_nombre ON gen.ttabla USING btree (esquema, nombre);
 /***********************************F-SCP-JRR-GEN-1-19/11/2012****************************************/
+
+
+/****************************I-SCP-JRR-GEN-0-21/11/2014*************/
+
+CREATE TABLE gen.tprueba2 (
+    campo1 varchar
+) WITHOUT OIDS;
+
+/****************************F-SCP-JRR-GEN-0-21/11/2014*************/
