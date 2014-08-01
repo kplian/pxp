@@ -19,6 +19,7 @@ header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: *');
 header('Access-Control-Max-Age: 1728000');
 
+
 $_SESSION["_OFUSCAR_ID"]='no'; 
 //estable aprametros ce la cookie de sesion
 $_SESSION["_CANTIDAD_ERRORES"]=0;//inicia control cantidad de error anidados
@@ -109,11 +110,17 @@ function authPxp($headersArray) {
 		if ($mensaje == '')
 	    $mensaje = 'El modulo mcrypt no esta instalado en el servidor. No es posible utilizar REST en este momento';
 	}
-	
+	if ($headersArray['Pxp-User'] == $headersArray['Php-Auth-User']) {
+		
+		$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
+		$headers = false;
+	} else {
 	//desencriptar usuario y contrasena
-	$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+		$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+		$headers = true;
+	}
 	
-	if (count($auxArray) == 2 && $auxArray[1] == $headersArray['Pxp-User']) {
+	if (count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
 		$reqArray['usuario'] = $headersArray['Pxp-User'];		
 		$reqArray['contrasena'] =  $md5Pass;	
 		$reqArray['_tipo'] = 'restAuten';
@@ -364,6 +371,7 @@ $app->post(
 	 
     '/seguridad/Auten/verificarCredenciales',
     function () use ($app) {
+    	
     	$headers = $app->request->headers;
 		if (isset($headers['Php-Auth-User'])) {
     		authPxp($headers);

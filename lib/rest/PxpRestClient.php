@@ -34,8 +34,7 @@ class PxpRestClient
      * @return Http
      */
     static public function connect($host, $base_url='', $port = 80, $protocol = self::HTTP)
-    {
-    	
+    {    	
         return new self($host, $base_url, $port, $protocol);
     }    
     protected function __construct($host, $base_url='', $port, $protocol)
@@ -50,7 +49,7 @@ class PxpRestClient
         $this->_host     = $host;
         $this->_port     = $port;
         $this->_protocol = $protocol;
-		$this->_base_url = $base_url;
+		$this->_base_url = $base_url;		
     }
     
     public function setCredentialsPxp($user, $pass)
