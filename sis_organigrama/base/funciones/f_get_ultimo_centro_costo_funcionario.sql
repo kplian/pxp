@@ -29,7 +29,7 @@ BEGIN
         on carpre.id_cargo = car.id_cargo and carpre.id_gestion = v_periodo.id_gestion
     where carpre.estado_reg = 'activo' and uofun.estado_reg = 'activo' and
         uofun.id_funcionario = p_id_funcionario and uofun.fecha_asignacion <= v_periodo.fecha_fin and
-        (uofun.fecha_finalizacion >= v_periodo.fecha_inicio or uofun.fecha_finalizacion is null)
+        (uofun.fecha_finalizacion >= v_periodo.fecha_ini or uofun.fecha_finalizacion is null)
         and carpre.fecha_ini<=v_periodo.fecha_fin
     order by uofun.fecha_asignacion,carpre.fecha_ini desc limit 1;   
            

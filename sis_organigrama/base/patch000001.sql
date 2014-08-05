@@ -519,4 +519,12 @@ WITHOUT OIDS;
 
 /*****************************F-SCP-JRR-ORGA-0-31/07/2014*************/
 
+/*****************************I-SCP-JRR-ORGA-0-01/08/2014*************/
+CREATE TYPE wf.cuenta_form AS (  
+  id_oficina_cuenta INTEGER,
+  monto NUMERIC(18,2)
+);
+
+/*****************************F-SCP-JRR-ORGA-0-01/08/2014*************/
+
 
