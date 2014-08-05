@@ -62,6 +62,72 @@ class MODProcesoWf extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	/*
+	
+	DESC      Listado de estado del work flow para visto bueno desde la interface de mobile
+	AUTHOR:  RAC
+	
+	*/
+	
+	function listarProcesoWfMobile(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='wf.f_proceso_wf_sel';
+        $this->transaccion='WF_VOBOWF_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');
+        $this->setParametro('tipo_interfaz','tipo_interfaz','varchar');
+        $this->setParametro('historico','historico','varchar');
+                
+        //Definicion de la lista del resultado del query
+        $this->captura('id_proceso_wf','int4');
+        $this->captura('id_tipo_proceso','int4');
+        $this->captura('nro_tramite','varchar');
+        $this->captura('id_estado_wf_prev','int4');
+        $this->captura('estado_reg','varchar');
+        $this->captura('id_persona','int4');
+        $this->captura('valor_cl','int8');
+        $this->captura('id_institucion','int4');
+        $this->captura('id_usuario_reg','int4');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('fecha_mod','timestamp');
+        $this->captura('id_usuario_mod','int4');
+        $this->captura('usr_reg','varchar');
+        $this->captura('usr_mod','varchar');
+        $this->captura('desc_tipo_proceso','varchar');
+        $this->captura('tipo_ini','varchar');
+        $this->captura('fecha_ini','date');
+        $this->captura('desc_persona','text');
+        $this->captura('desc_institucion','varchar');
+        $this->captura('codigo_estado','varchar');
+        
+        $this->captura('id_estado_wf','integer');
+        $this->captura('tipo_estado_inicio','varchar');
+        $this->captura('tipo_estado_fin','varchar');
+        $this->captura('tipo_estado_disparador','varchar');
+        $this->captura('obs','text');
+        
+        $this->captura('desc_funcionario1','text');
+        $this->captura('nombre_depto','varchar');
+        $this->captura('usu_reg_ew','varchar');
+        $this->captura('nombre_tipo_estado','varchar');
+        
+        
+        
+        
+        
+        
+        
+        
+                              
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
 	
 	
 function listarGantWf(){
@@ -201,6 +267,25 @@ function listarGantWf(){
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    
+    function evaluaPlantillaEstado(){
+        //chequea los procesos disparados para el estado especificado
+        $this->procedimiento='wf.f_proceso_wf_ime';
+        $this->transaccion='WF_EVAPLA_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_estado_wf','id_estado_wf','int4');
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
+	
 	
 	
 	function verficarSigEstProcesoWf(){

@@ -32,6 +32,29 @@ class ACTProcesoWf extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function listarProcesoWfMobile(){
+        $this->objParam->defecto('ordenacion','id_proceso_wf');
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+         
+         if($this->objParam->getParametro('id_proceso_macro')!=''){
+            $this->objParam->addFiltro("pm.id_proceso_macro = ".$this->objParam->getParametro('id_proceso_macro'));    
+        }
+        
+         $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+        
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODProcesoWf','listarProcesoWfMobile');
+        } else{
+            $this->objFunc=$this->create('MODProcesoWf');
+            
+            $this->res=$this->objFunc->listarProcesoWfMobile($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+        
 				
 	function insertarProcesoWf(){
 	    $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
@@ -72,6 +95,15 @@ class ACTProcesoWf extends ACTbase{
         $this->res=$this->objFunc->checkNextState($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+      
+    function evaluaPlantillaEstado(){
+        $this->objFunc=$this->create('MODProcesoWf');  
+        $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+        $this->res=$this->objFunc->evaluaPlantillaEstado($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    
+    
     
     function anteriorEstadoProcesoWf(){
         $this->objFunc=$this->create('MODProcesoWf');  

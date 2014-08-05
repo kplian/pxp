@@ -346,3 +346,25 @@ ALTER TABLE orga.toficina_cuenta
     
 /*********************************F-DEP-JRR-ORGA-0-31/07/2014***********************************/
 
+
+
+/*********************************I-DEP-RAC-ORGA-0-05/08/2014***********************************/
+select pxp.f_insert_testructura_gui ('OFICI.1', 'OFICI');
+select pxp.f_insert_testructura_gui ('ASIGINGEN', 'PROCRH');
+select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_INS', 'OFICI.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_MOD', 'OFICI.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_ELI', 'OFICI.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_SEL', 'OFICI.1', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_INS', 'Interinos', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_SEL', 'Interinos', 'no');
+select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'Interinos', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_MOD', 'Interinos', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_ELI', 'Interinos', 'no');
+select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'ASIGINGEN', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_INS', 'ASIGINGEN', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_MOD', 'ASIGINGEN', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_ELI', 'ASIGINGEN', 'no');
+select pxp.f_insert_tprocedimiento_gui ('OR_INT_SEL', 'ASIGINGEN', 'no');
+
+/*********************************F-DEP-RAC-ORGA-0-05/08/2014***********************************/
+

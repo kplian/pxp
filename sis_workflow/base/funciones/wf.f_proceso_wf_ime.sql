@@ -79,6 +79,8 @@ DECLARE
      v_id_tabla		integer;
      v_tabla		record;
      v_query		text;
+     v_plantilla_correo   varchar;
+     v_plantilla_asunto   varchar;
    
 
 BEGIN
@@ -224,6 +226,59 @@ BEGIN
             return v_resp;
 
 		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'WF_EVAPLA_IME'
+ 	#DESCRIPCION:	Evalua plantilla de estado para el WF
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-04-2013 09:01:51
+	***********************************/
+
+	elsif(p_transaccion='WF_EVAPLA_IME')then
+
+		begin
+			--captura de datos
+            --recupera datos del tipo estado siguiente
+    
+            SELECT 
+             te.alerta,
+             s.nombre,
+             s.codigo,
+             s.id_subsistema,
+             te.nombre_estado,
+             pm.nombre as nombre_proceso_macro,
+             te.plantilla_mensaje,
+             te.plantilla_mensaje_asunto,
+             te.disparador,
+             te.cargo_depto,
+             te.id_tipo_estado,
+             ew.id_estado_anterior,
+             ew.obs,
+             ew.id_proceso_wf
+            INTO
+             v_registros
+            FROM wf.ttipo_estado te
+            inner join wf.ttipo_proceso tp on tp.id_tipo_proceso  = te.id_tipo_proceso
+            inner join wf.tproceso_macro pm on tp.id_proceso_macro = pm.id_proceso_macro
+            inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema 
+            inner join wf.testado_wf ew  on ew.id_tipo_estado = te.id_tipo_estado
+            WHERE ew.id_estado_wf =  v_parametros.id_estado_wf;
+            
+            
+            v_plantilla_correo =  wf.f_procesar_plantilla(p_id_usuario, v_registros.id_proceso_wf, v_registros.plantilla_mensaje, v_registros.id_tipo_estado, v_registros.id_estado_anterior, v_registros.obs);
+            v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, v_registros.id_proceso_wf, v_registros.plantilla_mensaje_asunto,v_registros.id_tipo_estado, v_registros.id_estado_anterior, v_registros.obs);
+                  
+                  
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Plantilla procesada)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'plantilla_correo',v_plantilla_correo::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'plantilla_asunto',v_plantilla_asunto::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;    
+        
          
 	/*********************************    
  	#TRANSACCION:  'WF_SIGPRO_IME'

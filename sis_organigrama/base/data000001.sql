@@ -524,6 +524,32 @@ select pxp.f_insert_testructura_gui ('Interinos', 'PROCRH');
 /*****************************F-DAT-RAC-ORGA-0-21/05/2014*************/
 
 
+/*****************************I-DAT-RAC-ORGA-0-05/08/2014*************/
+
+
+select pxp.f_insert_tgui ('Servicios de la Oficina', 'Servicios de la Oficina', 'OFICI.1', 'no', 0, 'sis_organigrama/vista/oficina_cuenta/OficinaCuenta.php', 4, '', 'OficinaCuenta', 'ORGA');
+select pxp.f_insert_tgui ('Asignacion de Interinos', 'Asignacion de interinos general', 'ASIGINGEN', 'si', 1, 'sis_organigrama/vista/interinato/Interinato.php', 3, '', 'Interinato', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_get_funcionarios_x_cargo', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.ft_interinato_ime', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.ft_interinato_sel', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.ft_oficina_cuenta_sel', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.ft_oficina_cuenta_ime', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_prorratear_x_empleado', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tfuncion ('orga.f_get_ultimo_centro_costo_funcionario', 'Funcion para tabla     ', 'ORGA');
+select pxp.f_insert_tprocedimiento ('OR_INT_INS', 'Insercion de registros', 'si', '', '', 'orga.ft_interinato_ime');
+select pxp.f_insert_tprocedimiento ('OR_INT_MOD', 'Modificacion de registros', 'si', '', '', 'orga.ft_interinato_ime');
+select pxp.f_insert_tprocedimiento ('OR_INT_ELI', 'Eliminacion de registros', 'si', '', '', 'orga.ft_interinato_ime');
+select pxp.f_insert_tprocedimiento ('OR_APLINT_IME', 'captura los datos del interinato selecionado para su postrior aplicacion', 'si', '', '', 'orga.ft_interinato_ime');
+select pxp.f_insert_tprocedimiento ('OR_INT_SEL', 'Consulta de datos', 'si', '', '', 'orga.ft_interinato_sel');
+select pxp.f_insert_tprocedimiento ('OR_INT_CONT', 'Conteo de registros', 'si', '', '', 'orga.ft_interinato_sel');
+select pxp.f_insert_tprocedimiento ('OR_OFCU_SEL', 'Consulta de datos', 'si', '', '', 'orga.ft_oficina_cuenta_sel');
+select pxp.f_insert_tprocedimiento ('OR_OFCU_CONT', 'Conteo de registros', 'si', '', '', 'orga.ft_oficina_cuenta_sel');
+select pxp.f_insert_tprocedimiento ('OR_OFCU_INS', 'Insercion de registros', 'si', '', '', 'orga.ft_oficina_cuenta_ime');
+select pxp.f_insert_tprocedimiento ('OR_OFCU_MOD', 'Modificacion de registros', 'si', '', '', 'orga.ft_oficina_cuenta_ime');
+select pxp.f_insert_tprocedimiento ('OR_OFCU_ELI', 'Eliminacion de registros', 'si', '', '', 'orga.ft_oficina_cuenta_ime');
+
+
+/*****************************F-DAT-RAC-ORGA-0-05/08/2014*************/
 
 
 

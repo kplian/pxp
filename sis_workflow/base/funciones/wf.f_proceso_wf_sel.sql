@@ -72,8 +72,6 @@ BEGIN
                   v_filtro =' (lower(tp.inicio)=''si'') and ';
                 END IF;
                  
-                  
-            
             END IF;
             
             
@@ -82,6 +80,16 @@ BEGIN
                     v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
                 ELSE
                      v_filtro = '  ((lower(tp.inicio)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
+                END IF;
+            END IF;
+            
+            --interface para visto de procesos simple, generalemte usado en mobile
+            IF  v_parametros.tipo_interfaz = 'VoBoProceso' THEN
+                IF p_administrador !=1 THEN
+                    v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
+                ELSE
+                    -- v_filtro = '  ((lower(te.mobile)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
+                    v_filtro = '0=0 and ';
                 END IF;
             END IF;
             
@@ -268,6 +276,226 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+   /*********************************    
+ 	#TRANSACCION:  'WF_VOBOWF_SEL'
+ 	#DESCRIPCION:	Consulta de vistos buenos pendietes de prceso WF
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-04-2013 09:01:51
+	***********************************/
+
+	elsif(p_transaccion='WF_VOBOWF_SEL')then
+     				
+    	begin
+        
+             select  
+                 pxp.aggarray(depu.id_depto)
+             into 
+                   va_id_depto
+            from param.tdepto_usuario depu 
+            where depu.id_usuario =  p_id_usuario; 
+        
+             
+          v_filtro='';
+            
+            --interface para visto de procesos simple, generalemte usado en mobile
+            IF  v_parametros.tipo_interfaz = 'VoBoProceso' THEN
+                IF p_administrador !=1 THEN
+                    v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
+                ELSE
+                    -- v_filtro = '  ((lower(te.mobile)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
+                    v_filtro = '0=0 and ';
+                END IF;
+            END IF;
+            
+            
+            IF  pxp.f_existe_parametro(p_tabla,'historico') THEN
+             
+             v_historico =  v_parametros.historico;
+            
+            ELSE
+            
+            v_historico = 'no';
+            
+            END IF;
+            
+            IF v_historico =  'si' THEN
+            
+               v_inner =   'inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf';
+               v_strg_pro = 'DISTINCT(pwf.id_proceso_wf)'; 
+               v_strg_obs = '''---''::text';
+               
+               IF p_administrador =1 THEN
+              
+                  v_filtro = ' (lower(te.codigo)!=''borrador'' ) and ';
+              
+               END IF;
+               
+               
+            
+            ELSE
+            
+               v_inner =  'inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf and  ew.estado_reg = ''activo''';
+               v_strg_pro = 'pwf.id_proceso_wf';
+               v_strg_obs = 'ew.obs'; 
+               
+             END IF;
+            
+            
+        
+        
+    		--Sentencia de la consulta
+			v_consulta:='select 
+                             '||v_strg_pro||',
+                             pwf.id_tipo_proceso,
+                             pwf.nro_tramite,
+                             pwf.id_estado_wf_prev,
+                             pwf.estado_reg,
+                             pwf.id_persona,
+                             pwf.valor_cl,
+                             pwf.id_institucion,
+                             pwf.id_usuario_reg,
+                             pwf.fecha_reg,
+                             pwf.fecha_mod,
+                             pwf.id_usuario_mod,
+                             usu1.cuenta as usr_reg,
+                             usu2.cuenta as usr_mod,
+                             tp.nombre as desc_tipo_proceso,
+                             pwf.tipo_ini,
+                             pwf.fecha_ini,
+                             per.nombre_completo1 as desc_persona,
+                             int.nombre as desc_intitucion,       
+                             te.codigo as codigo_estado,
+                             ew.id_estado_wf,
+                             te.inicio as tipo_estado_inicio,
+                             te.fin    as  tipo_estado_fin,
+                             te.disparador as tipo_estado_disparador,
+                             '||v_strg_obs||',
+                             fea.desc_funcionario1,
+                             dea.nombre as nombre_depto,
+                             usu3.cuenta as usu_reg_ew,
+                             te.nombre_estado as nombre_tipo_estado
+                        from wf.tproceso_wf pwf
+                           inner join wf.ttipo_proceso tp on pwf.id_tipo_proceso = tp.id_tipo_proceso
+                           inner join segu.tusuario usu1 on usu1.id_usuario = pwf.id_usuario_reg
+                           inner join wf.tproceso_macro pm on tp.id_proceso_macro =
+                           pm.id_proceso_macro
+                           '||v_inner||'
+                           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+                           inner join segu.tusuario usu3 on usu3.id_usuario = ew.id_usuario_reg
+                           left join segu.tusuario usu2 on usu2.id_usuario = pwf.id_usuario_mod
+                           left join segu.vpersona per on per.id_persona = pwf.id_persona
+                           left join param.tinstitucion int on int.id_institucion = pwf.id_institucion
+                           left  join wf.testado_wf ewant on ewant.id_estado_wf = ew.id_estado_anterior
+                           left  join orga.vfuncionario fea on fea.id_funcionario = ewant.id_funcionario
+                           left  join param.tdepto  dea  on dea.id_depto = ewant.id_depto
+                        where '||v_filtro;
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+             raise notice 'CONSULTA->>  %',v_consulta;
+
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'WF_VOBOWF_CONT'
+ 	#DESCRIPCION:	Conteo de registros de Vistos buenos para el proceso WF
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-04-2013 09:01:51
+	***********************************/
+
+	elsif(p_transaccion='WF_VOBOWF_CONT')then
+
+		begin
+        
+             select  
+                   pxp.aggarray(depu.id_depto)
+               into 
+                     va_id_depto
+              from param.tdepto_usuario depu 
+              where depu.id_usuario =  p_id_usuario; 
+              
+             v_filtro='';
+              
+              --interface para visto de procesos simple, generalemte usado en mobile
+             IF  v_parametros.tipo_interfaz = 'VoBoProceso' THEN
+                IF p_administrador !=1 THEN
+                    v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
+                ELSE
+                    -- v_filtro = '  ((lower(te.mobile)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
+                    v_filtro = '0=0 and ';
+                END IF;
+             END IF;
+          
+               
+            
+              
+              
+              IF  pxp.f_existe_parametro(p_tabla,'historico') THEN
+               
+               v_historico =  v_parametros.historico;
+              
+              ELSE
+              
+              v_historico = 'no';
+              
+              END IF;
+              
+              IF v_historico =  'si' THEN
+              
+                 v_inner =   'inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf';
+                 v_strg_pro = 'DISTINCT(pwf.id_proceso_wf)'; 
+                 v_strg_obs = '''---''::text';
+                 
+                 IF p_administrador =1 THEN
+                
+                    v_filtro = ' (lower(te.codigo)!=''borrador'' ) and ';
+                
+                 END IF;
+                 
+                 
+              
+              ELSE
+              
+                 v_inner =  'inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf and  ew.estado_reg = ''activo''';
+                 v_strg_pro = 'pwf.id_proceso_wf';
+                 v_strg_obs = 'ew.obs'; 
+                 
+               END IF;
+              
+             
+              --Sentencia de la consulta de conteo de registros
+              v_consulta:='select count('||v_strg_pro||')
+                          from wf.tproceso_wf pwf
+                             inner join wf.ttipo_proceso tp on pwf.id_tipo_proceso = tp.id_tipo_proceso
+                             inner join segu.tusuario usu1 on usu1.id_usuario = pwf.id_usuario_reg
+                             inner join wf.tproceso_macro pm on tp.id_proceso_macro =  pm.id_proceso_macro
+                             '||v_inner||'
+                             inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+                             inner join segu.tusuario usu3 on usu3.id_usuario = ew.id_usuario_reg
+                             left join segu.tusuario usu2 on usu2.id_usuario = pwf.id_usuario_mod
+                             left join segu.vpersona per on per.id_persona = pwf.id_persona
+                             left join param.tinstitucion int on int.id_institucion = pwf.id_institucion
+                             left  join wf.testado_wf ewant on ewant.id_estado_wf = ew.id_estado_anterior
+                             left  join orga.vfuncionario fea on fea.id_funcionario = ewant.id_funcionario
+                             left  join param.tdepto  dea  on dea.id_depto = ewant.id_depto
+                          where '||v_filtro;
+  			
+              --Definicion de la respuesta		    
+              v_consulta:=v_consulta||v_parametros.filtro;
+
+              --Devuelve la respuesta
+              return v_consulta;
+
+		end; 
+        
+        
     /*********************************    
  	#TRANSACCION:  'WF_TRAWF_SEL'
  	#DESCRIPCION:	Consulta flujos de tramite

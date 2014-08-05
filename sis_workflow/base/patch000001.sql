@@ -694,3 +694,15 @@ ALTER TABLE wf.ttipo_documento_estado
   
 /***********************************F-SCP-RAC-WF-1-24/06/2014****************************************/
   
+  
+  
+/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+ 
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN mobile VARCHAR(10) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_estado.mobile
+IS 'si o no, se muestra en el la interface de vobowf,  solo es conveniente las interfaces que solo necesitas ir adelante o atras';
+  
+/***********************************F-SCP-RAC-WF-1-04/08/2014****************************************/
+  
