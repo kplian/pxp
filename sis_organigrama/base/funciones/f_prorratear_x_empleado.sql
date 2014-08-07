@@ -78,7 +78,7 @@ BEGIN
             	v_suma = v_suma + round((v_registros.consumo*v_factor),2);
             end if;
         end loop;
-  	elsif (p_codigo_prorrateo = 'POFICINA') then
+  	elsif (p_codigo_prorrateo = 'POFI') then
   		
         	/*Obtener el id_oficina a partir de la cuenta*/
             select id_oficina into v_id_oficina
@@ -98,15 +98,15 @@ BEGIN
                     (uofun.fecha_finalizacion >= v_periodo.fecha_fin or uofun.fecha_finalizacion is NULL)
                     and uofun.estado_reg = 'activo' and car.id_oficina = v_id_oficina )loop
                 	v_id_centro_costo = null;
-                	v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,v_id_periodo);
+                	v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
                      
                     if (v_id_centro_costo is null) then
-                        raise exception 'Existe un empleado que no tiene asignado centro de costo';
+                        raise exception 'Existe un empleado que no tiene asignado centro de costo: %',v_funcionarios.id_funcionario;
                     end if;
                     
                     if (v_funcionarios.total = v_funcionarios.numero) then
                     	
-                        insert into temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
+                        insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
             			values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma );
                     	
                         v_suma = p_monto;
@@ -134,15 +134,15 @@ BEGIN
                     (uofun.fecha_finalizacion >= v_periodo.fecha_fin or uofun.fecha_finalizacion is NULL)
                     and uofun.estado_reg = 'activo')loop
                 	v_id_centro_costo = null;
-                	v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,v_id_periodo);
+                	v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
                      
                     if (v_id_centro_costo is null) then
-                        raise exception 'Existe un empleado que no tiene asignado centro de costo';
+                        raise exception 'Existe un empleado que no tiene asignado centro de costo: %',v_funcionarios.id_funcionario;
                     end if;
                     
                     if (v_funcionarios.total = v_funcionarios.numero) then
                     	
-                        insert into temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
+                        insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
             			values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma );
                     	
                         v_suma = p_monto;
