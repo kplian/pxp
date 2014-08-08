@@ -374,7 +374,9 @@ BEGIN
                              fea.desc_funcionario1,
                              dea.nombre as nombre_depto,
                              usu3.cuenta as usu_reg_ew,
-                             te.nombre_estado as nombre_tipo_estado
+                             te.nombre_estado as nombre_tipo_estado,
+                             sub.nombre as nombre_subsistema,
+                             sub.codigo as codigo_subsistema
                         from wf.tproceso_wf pwf
                            inner join wf.ttipo_proceso tp on pwf.id_tipo_proceso = tp.id_tipo_proceso
                            inner join segu.tusuario usu1 on usu1.id_usuario = pwf.id_usuario_reg
@@ -383,6 +385,8 @@ BEGIN
                            '||v_inner||'
                            inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
                            inner join segu.tusuario usu3 on usu3.id_usuario = ew.id_usuario_reg
+                           inner join segu.tsubsistema sub on sub.id_subsistema = pm.id_subsistema
+                          
                            left join segu.tusuario usu2 on usu2.id_usuario = pwf.id_usuario_mod
                            left join segu.vpersona per on per.id_persona = pwf.id_persona
                            left join param.tinstitucion int on int.id_institucion = pwf.id_institucion
@@ -479,6 +483,8 @@ BEGIN
                              '||v_inner||'
                              inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
                              inner join segu.tusuario usu3 on usu3.id_usuario = ew.id_usuario_reg
+                             inner join segu.tsubsistema sub on sub.id_subsistema = pm.id_subsistema
+                          
                              left join segu.tusuario usu2 on usu2.id_usuario = pwf.id_usuario_mod
                              left join segu.vpersona per on per.id_persona = pwf.id_persona
                              left join param.tinstitucion int on int.id_institucion = pwf.id_institucion

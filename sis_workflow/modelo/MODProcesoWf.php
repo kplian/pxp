@@ -111,6 +111,9 @@ class MODProcesoWf extends MODbase{
         $this->captura('usu_reg_ew','varchar');
         $this->captura('nombre_tipo_estado','varchar');
         
+        $this->captura('nombre_subsistema','varchar');
+        $this->captura('codigo_subsistema','varchar');
+        
         
         
         

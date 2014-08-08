@@ -84,8 +84,7 @@ BEGIN
                 v_template_evaluado = p_plantilla;
                 v_nombre_funcion = 'wf.f_procesar_plantilla';
                 
-                -- raise exception '--b   %',v_tmp_plantilla;
-                
+              
                 --obtenemos datos basicos
                 
                  select 
@@ -102,8 +101,7 @@ BEGIN
                   inner join wf.tproceso_macro pm  on pm.id_proceso_macro = tpw.id_proceso_macro
                   where pw.id_proceso_wf = p_id_proceso_wf;
   
-  
-         		 ------------------------------------------------------------------------
+                 ------------------------------------------------------------------------
                  --  RECUPERAMOS LOS NOMBRES DE LAS PALABRAS CLAVE DE LA PLANTILLA QUE
                  --  HACEN REFERENCIA A LA TABLA DE TIPO PROCESO
                  -------------------------------------------------------------------------
@@ -145,6 +143,7 @@ BEGIN
                       
                   END IF;
                   
+                 
                 
                   -----------------------------------------
                   --  Evaluar diccionario
@@ -173,6 +172,13 @@ BEGIN
                   v_NUM_TRAMITE     = v_registros.nro_tramite;
                   
                   -- p_id_estado_anterior
+                  
+                  
+                  v_ESTADO_ANTERIOR = '';
+                  v_FUNCIONARIO_PREVIO = '';
+                  v_DEPTO_PREVIO = '';
+                  v_CODIGO_ANTERIOR = '';
+                  
                   
                   select 
                     tew.nombre_estado,
@@ -219,6 +225,8 @@ BEGIN
                   v_columnas_consulta=v_columna_nueva::varchar;
                   v_columnas_consulta=replace(v_columnas_consulta,'{','');
                   v_columnas_consulta=replace(v_columnas_consulta,'}','');
+                  
+                 
                  
                  --  solo si existe tabla de referencia
                 IF  v_registros.tabla != '' and v_registros.tabla is not null and v_columnas_consulta != '' and v_columnas_consulta is not null THEN
@@ -228,8 +236,8 @@ BEGIN
                                 ||v_registros.tabla||'.id_proceso_wf='|| p_id_proceso_wf ||'' into v_tabla;
                                 
                     
-                     
-                     
+                 
+                       
                        --------------------------------------------------
                        --  REMPLAZAR valores obtenidos en la plantilla
                        --------------------------------------------------
@@ -253,9 +261,6 @@ BEGIN
               --  REMPLAZAR valores del dicionario
               --------------------------------------------------
              
-              
-              
-             
               v_template_evaluado = replace(v_template_evaluado, '{TIPO_PROCESO}',COALESCE(v_TIPO_PROCESO,''));
               v_template_evaluado = replace(v_template_evaluado, '{NUM_TRAMITE}',COALESCE(v_NUM_TRAMITE,''));
               v_template_evaluado = replace(v_template_evaluado, '{USUARIO_PREVIO}',COALESCE(v_USUARIO_PREVIO,''));
@@ -267,10 +272,6 @@ BEGIN
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ACTUAL}',COALESCE(v_ESTADO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ANTERIOR}',COALESCE(v_CODIGO_ANTERIOR,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ACTUAL}',COALESCE(v_CODIGO_ACTUAL,''));
-              
-              
-              
-              
               
               
               return  v_template_evaluado;

@@ -27,9 +27,11 @@ class ACTInterinato extends ACTbase{
             $this->objParam->addFiltro("int.id_cargo_suplente = ".$this->objParam->getParametro('id_cargo_suplente'));    
         }
         
-        if($this->objParam->getParametro('estado_reg')=='activo'){
-            $this->objParam->addFiltro(" now()::Date BETWEEN  int.fecha_ini  and int.fecha_fin ");    
-        }
+        //if($this->objParam->getParametro('estado_reg')=='activo'){
+                
+            $this->objParam->addFiltro(" now()::Date BETWEEN  int.fecha_ini  and int.fecha_fin "); 
+            $this->objParam->addFiltro(" now()::Date BETWEEN uofs.fecha_asignacion and COALESCE(uofs.fecha_finalizacion,now()::Date)");   
+        //}
         
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
             $this->objReporte = new Reporte($this->objParam,$this);
@@ -51,9 +53,11 @@ class ACTInterinato extends ACTbase{
             $this->objParam->addFiltro("int.id_cargo_suplente = ".$this->objParam->getParametro('id_cargo_suplente'));    
         }
         
-        if($this->objParam->getParametro('estado_reg')=='activo'){
+       // if($this->objParam->getParametro('estado_reg')=='activo'){
             $this->objParam->addFiltro(" now()::Date BETWEEN  int.fecha_ini  and int.fecha_fin ");    
-        }
+            $this->objParam->addFiltro(" now()::Date BETWEEN uoft.fecha_asignacion and COALESCE(uoft.fecha_finalizacion,now()::Date)");   
+        
+        //}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

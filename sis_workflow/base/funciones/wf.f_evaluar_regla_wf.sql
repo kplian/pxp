@@ -31,6 +31,8 @@ v_retorno boolean;
 BEGIN
             v_nombre_funcion = 'f_evaluar_regla_wf';
             
+                      
+            
             v_retorno = FALSE;
             
             IF p_plantilla is NULL or p_plantilla = '' THEN
@@ -50,6 +52,8 @@ BEGIN
                              
 		    ELSE
             
+           
+            
                    --si es una regla procesamos la plantilla para replazar los valroes correspondientes
                    v_template_evaluado =  wf.f_procesar_plantilla( 
                                                      p_id_usuario, 
@@ -58,11 +62,21 @@ BEGIN
                                                      p_id_tipo_estado_actual, 
                                                      p_id_estado_anterior, 
                                                      p_obs);
+                   
+                  
+                                                     
                    --evaluamos la plantilla  y retornamos el resutlado
                    v_template_evaluado = replace('select '||v_template_evaluado, '"', '''');
                    
-                   execute (v_template_evaluado) into v_retorno;
-            
+                  
+                   --OJO,  las reglas pueden ser nulas en los procesos iniciales
+                   --   ejm solicitud de compra, en ese caso no se tiene datos apra procesar la regla
+                   --   hay es conveniente llamar a las funciones de evaluacion de documentos e insercion de documentos
+                   --   depues de insertado el tramite y la tabla correpondientes (ejm adq.tsolicitud_compra)
+                   
+                   IF v_template_evaluado is not null THEN
+                   		execute (v_template_evaluado) into v_retorno;
+                   END IF;
             
             END IF;
             
