@@ -26,7 +26,7 @@ include_once('CTincludes.php');
 
 //Instancia la Clase Intermediario y se direcciona la solicitud realizada
 
-$a=new CTIntermediario();
-$a->direccionarAccion();
+$pxp=new CTIntermediario();
+$pxp->direccionarAccion();
 
 ?>

@@ -16,9 +16,9 @@ class MODRolProcedimiento extends MODbase
 	
 	function listarRolProcedimiento(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_rol_procedimiento_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ROLPRO_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_rol_procedimiento_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ROLPRO_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		
 		//defino varialbes que se captran como retornod e la funcion
@@ -30,28 +30,28 @@ class MODRolProcedimiento extends MODbase
 								
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function insertarRolProcedimiento(){
 				
-		$this->procedimiento='segu.ft_rol_procedimiento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ROLPRO_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_rol_procedimiento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ROLPRO_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 				
 		$this->setparametro('id_procedimiento','id_procedimiento','integer');
 		$this->setparametro('id_rol','id_rol','integer');
 				
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarRolProcedimiento(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_rol_procedimiento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ROLPRO_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_rol_procedimiento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ROLPRO_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 				
 		$this->setparametro('id_rol_procedimiento','id_rol_procedimiento','integer');
 		$this->setparametro('id_procedimiento','id_procedimiento','integer');
@@ -59,20 +59,20 @@ class MODRolProcedimiento extends MODbase
 						
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarRolProcedimiento(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_rol_procedimiento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ROLPRO_ELI';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_rol_procedimiento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ROLPRO_ELI');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 				
 		$this->setparametro('id_rol_procedimiento','id_rol_procedimiento','integer');
 		
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

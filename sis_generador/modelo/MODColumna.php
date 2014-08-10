@@ -7,9 +7,9 @@ class MODColumna extends MODbase{
 	
 	function listarColumna(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_columna_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_COLUMN_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.ft_columna_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_COLUMN_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//Definicion de la lista del resultado del query
 	
@@ -41,14 +41,14 @@ class MODColumna extends MODbase{
 		
 		//echo $this->consulta;exit;
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function insertarColumna(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_columna_ime';
-		$this->transaccion='GEN_COLUMN_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('gen.ft_columna_ime');
+		$this->setTransaccion('GEN_COLUMN_INS');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('nombre','nombre','varchar');
@@ -67,14 +67,14 @@ class MODColumna extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarColumna(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_columna_ime';
-		$this->transaccion='GEN_COLUMN_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('gen.ft_columna_ime');
+		$this->setTransaccion('GEN_COLUMN_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_columna','id_columna','integer');
@@ -94,14 +94,14 @@ class MODColumna extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarColumna(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_columna_ime';
-		$this->transaccion='GEN_COLUMN_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('gen.ft_columna_ime');
+		$this->setTransaccion('GEN_COLUMN_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_columna','id_columna','integer');
@@ -110,14 +110,14 @@ class MODColumna extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function listarDatosColumna(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_columna_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_DATCOL_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.ft_columna_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_DATCOL_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//Definicion de la lista del resultado del query
 	
@@ -138,7 +138,7 @@ class MODColumna extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

@@ -17,9 +17,9 @@ class MODGuiRol extends MODbase {
 	function listarGuiRol(){
 		
 		//var_dump($this->objParam);
-		$this->procedimiento='segu.ft_gui_rol_sel';
-		$this->transaccion='SEG_GUIROL_SEL';
-		$this->tipo_procedimiento='SEL';
+		$this->setProcedimiento('segu.ft_gui_rol_sel');
+		$this->setTransaccion('SEG_GUIROL_SEL');
+		$this->setTipoProcedimiento('SEL');
 		$this->setCount(false);
 		
 	    $this->setParametro('id_padre','id_padre','varchar');
@@ -58,15 +58,14 @@ class MODGuiRol extends MODbase {
         
 		
 		/*obtencion de procedimientos*/
-		
-        
+
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else{
-		    $this->procedimiento='segu.ft_rol_procedimiento_gui_sel';
-			$this->transaccion='SEG_ROLPROGUI_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_rol_procedimiento_gui_sel');
+			$this->setTransaccion('SEG_ROLPROGUI_SEL');
+			$this->setTipoProcedimiento('SEL');
 			//$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -87,7 +86,7 @@ class MODGuiRol extends MODbase {
 		}
 		
         
-       return $this->respuesta;
+       return $this->getRespuesta();
 		
 	}
 	
@@ -95,9 +94,9 @@ class MODGuiRol extends MODbase {
 		
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_gui_rol_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_GUIROL_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_gui_rol_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_GUIROL_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 	
 		
@@ -112,7 +111,7 @@ class MODGuiRol extends MODbase {
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 		
 	}
 }

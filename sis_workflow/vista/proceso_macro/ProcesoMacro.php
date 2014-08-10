@@ -231,9 +231,15 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 	tabsouth:[{
 		  url:'../../../sis_workflow/vista/num_tramite/NumTramite.php',
 		  title:'Numero de tramite', 
-		  height:'35%',	//altura de la ventana hijo
+		  height:'45%',	//altura de la ventana hijo
 		  //width:'50%',		//ancho de la ventana hjo
 		  cls:'NumTramite'
+		},{
+			url:'../../../sis_workflow/vista/catalogo/Catalogo.php',
+			title:'Catálogos', 
+			height:'45%',	//altura de la ventana hijo
+			//width:'50%',		//ancho de la ventana hjo
+			cls:'Catalogo'
 		}		
 	],
 	preparaMenu:function(tb){

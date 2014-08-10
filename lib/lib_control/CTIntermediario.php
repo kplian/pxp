@@ -33,25 +33,20 @@ class CTIntermediario{
 	//    Constructores , destructores
 	///////////////////////////////////
 	function __construct(){
-		//echo  server_port;
-		//exit;
      	//Obtencion de los datos enviados por la vista
 		$this->objPostData=new CTPostData();
 		$this->aPostData=$this->objPostData->getData();
-		
-		//var_dump($this->aPostData);exit;
+
 		//rac 22/09/2011 
 		$this->aPostFiles=$this->objPostData->getFiles();
 		
-		//var_dump($this->aPostFiles);
-		//exit;
-		
 		$_SESSION["_PETICION"]=serialize($this->aPostData);
-		//echo 'POST: '.$this->aPostData['r'];exit;
 		
-				/*ob_start();
+		/*ob_start();
         $fb=FirePHP::getInstance(true);
-        $fb->log($this->nombreClase,"clase");*/
+        $fb->log($_SESSION["_PETICION"],"clase");*/
+		
+		
 		if(isset($this->aPostData['r'])){
 			$objReporte=new MostrarReporte($this->aPostData['r']);
 		}

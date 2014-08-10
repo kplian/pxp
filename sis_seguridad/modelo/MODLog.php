@@ -16,9 +16,9 @@ class MODLog extends MODbase{
 	
 	function listarLog(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_log_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_LOG_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_log_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_LOG_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		$this->setParametro('gestion','gestion','varchar');
 		$this->setParametro('periodo','periodo','varchar');
@@ -50,14 +50,14 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	function listarLogHorario(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_log_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_LOGHOR_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_log_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_LOGHOR_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		$this->setParametro('gestion','gestion','varchar');
 		$this->setParametro('periodo','periodo','varchar');
@@ -90,15 +90,15 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function listarLogMonitor(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_log_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_LOGMON_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_log_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_LOGMON_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		$this->arreglo=array("archivo_log" =>$_SESSION['_FOLDER_LOGS_BD'].$_SESSION['_NOMBRE_LOG_BD']);
 		$this->setParametro('archivo_log','archivo_log','varchar');
@@ -131,15 +131,15 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function listarMonitorEsquema(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_monitor_bd_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_MONESQ_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_monitor_bd_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_MONESQ_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 				
 		$this->captura('nspoid','integer');
@@ -174,14 +174,14 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	function listarMonitorTabla(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_monitor_bd_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_MONTAB_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_monitor_bd_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_MONTAB_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 				
 		$this->captura('oid','integer');
@@ -221,14 +221,14 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	function listarMonitorFuncion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_monitor_bd_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_MONFUN_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_monitor_bd_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_MONFUN_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 				
 		$this->captura('oid','integer');
@@ -242,14 +242,14 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	function listarMonitorIndice(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_monitor_bd_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_MONIND_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_monitor_bd_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_MONIND_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		$this->captura('relid','integer');		
 		$this->captura('indexrelid','integer');
@@ -264,15 +264,15 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	function listarMonitorRecursos(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_monitor_bd_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_MONREC_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
-		$this->count=false;
+		$this->setProcedimiento('segu.ft_monitor_bd_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_MONREC_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
+		$this->setCount(false);
 		
 		$this->captura('usuario_bd','varchar');
 		$this->captura('transaccion_actual','varchar');
@@ -298,7 +298,7 @@ class MODLog extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	

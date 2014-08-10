@@ -18,9 +18,9 @@ class MODPatronEvento extends MODbase {
 		
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_patron_evento_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PATEVE_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_patron_evento_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PATEVE_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		
 		
@@ -39,16 +39,16 @@ class MODPatronEvento extends MODbase {
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function insertarPatronEvento(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_patron_evento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PATEVE_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_patron_evento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PATEVE_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		
 	
@@ -65,15 +65,15 @@ class MODPatronEvento extends MODbase {
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarPatronEvento(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_patron_evento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PATEVE_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_patron_evento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PATEVE_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		
 		
@@ -92,15 +92,15 @@ class MODPatronEvento extends MODbase {
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarPatronEvento(){
 	
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_patron_evento_ime';
-		$this->transaccion='SEG_PATEVE_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_patron_evento_ime');
+		$this->setTransaccion('SEG_PATEVE_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los setParametros para la funcion
 		$this->setParametro('id_patron_evento','id_patron_evento','integer');
@@ -108,7 +108,7 @@ class MODPatronEvento extends MODbase {
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	

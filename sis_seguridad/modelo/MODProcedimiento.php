@@ -15,9 +15,9 @@ class MODProcedimiento extends MODbase{
 	
 	function listarProcedimientoCmb(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROCECMB_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROCECMB_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		//parametro para filtrado
 		
 		$this->setParametro('id_funcion','id_funcion','integer');
@@ -34,15 +34,15 @@ class MODProcedimiento extends MODbase{
       	//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-    	return $this->respuesta;
+    	return $this->getRespuesta();
 
 	}
 	
 	function insertarProcedimiento(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROCED_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROCED_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		//Define los parametros para la funcion	
 		$this->setParametro('id_funcion','id_funcion','integer');
 		$this->setParametro('codigo','codigo','varchar');
@@ -52,15 +52,15 @@ class MODProcedimiento extends MODbase{
     	//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarProcedimiento(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROCED_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROCED_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_procedimiento','id_procedimiento','integer');
@@ -72,14 +72,14 @@ class MODProcedimiento extends MODbase{
 		//Ejecuta la instruccion
 		$this->armarConsulta();		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarProcedimiento(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_procedimiento_ime';
-		$this->transaccion='SEG_PROCED_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_procedimiento_ime');
+		$this->setTransaccion('SEG_PROCED_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_procedimiento','id_procedimiento','integer');
@@ -87,7 +87,7 @@ class MODProcedimiento extends MODbase{
 		$this->armarConsulta();
 					
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

@@ -17,31 +17,38 @@ class MODSesion extends MODbase {
 		
 			//$driver = new driver ( 'segu.ft_sesion_ime', 'SEG_SESION_INS', 'IME' );
 			
-			$this->procedimiento='segu.ft_sesion_ime';
-		    $this->transaccion='SEG_SESION_INS';
-		    $this->tipo_procedimiento='IME';
+			$this->setProcedimiento('segu.ft_sesion_ime');
+		    $this->setTransaccion('SEG_SESION_INS');
+		    $this->setTipoProcedimiento('IME');
+			//$this->setTipoConexion('seguridad');
 			
 			//envia parametros para guardar la sesion en la base de datos 
-			$this->arreglo=array("variable" =>$sid,"id_usuario" =>$id_usuario,"ip" =>$ip,"datos"=>$datos,"pid"=>getmypid());
-	        $this->setParametro ( 'variable', 'variable', 'text' );
-			$this->setParametro ( 'id_usuario', 'id_usuario', 'integer' );
-			$this->setParametro ( 'ip', 'ip', 'varchar' );
-			$this->setParametro ( 'datos', 'datos', 'text' );
-			$this->setParametro ( 'pid', 'pid', 'integer' );
+			$this->arreglo=array("variable" =>$sid,
+								"id_usuario" =>$id_usuario,
+								"ip" =>$ip,
+								"datos"=>$datos,
+								"pid"=>getmypid());
+	        $this->setParametro('variable', 'variable', 'text');
+			$this->setParametro('id_usuario', 'id_usuario', 'integer');
+			$this->setParametro('ip', 'ip', 'varchar');
+			$this->setParametro('datos', 'datos', 'text');
+			$this->setParametro('pid', 'pid', 'integer');
 			
 			$this->armarConsulta ();
 			$consulta = $this->getConsulta ();
-			
-			$this->ejecutarConsulta ();
-			return $this->respuesta;;
+			//echo '2:'.$consulta;exit;
+
+			$this->ejecutarConsulta();
+
+			return $this->getRespuesta();
 
 	}
 	
 	function recuparaSidBase($id_usuario) {
 
-		$this->procedimiento='segu.ft_sesion_sel';
-		$this->transaccion='SEG_SESION_SEL';
-		$this->tipo_procedimiento='SEL';
+		$this->setProcedimiento('segu.ft_sesion_sel');
+		$this->setTransaccion('SEG_SESION_SEL');
+		$this->setTipoProcedimiento('SEL');
 		$this->setCount(false);
 		
 		//echo "id_usuario $id_usuario";exit;
@@ -59,12 +66,10 @@ class MODSesion extends MODbase {
 		
 		$this->armarConsulta ();
 		$consulta = $this->getConsulta ();
-			
+
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
-	
-	
 	
 }
 ?>

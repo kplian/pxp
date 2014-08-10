@@ -39,8 +39,7 @@ class MODLogError{
 												$this->peticion.",
 												NULL,NULL,NULL,NULL,
 												'".session_id()."',".getmypid().",NULL,1)";
-		
-		 
+
 		$link=$this->cone->conectarSegu();
 		if($res = pg_query($link,$consulta)){
 		 	while ($row = pg_fetch_array($res,NULL,PGSQL_ASSOC))

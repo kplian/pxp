@@ -91,9 +91,11 @@ class CTSesion {
 	function setEstado($est) {
 		$this->funSeguridad = new MODSesion();
 		if ($est == 'activa') {
-
+			
 			$this->rotarSid ();
+			//echo '1';exit;
 			$this->funSeguridad->insertarSesion ( $this->sid, $this->ip, $this->id_usuario,'');
+			//echo 'WWWWWW';exit;
 			$this->estado = 'activa';
 
 		} elseif ($est == 'inactiva') {

@@ -282,9 +282,6 @@ select pxp.f_insert_tprocedimiento ('WF_UPDPLAMEN_MOD', 'Actualizar la plantilla
 
 /******************************************F-DAT-JRR-WF-0-25/04/2014**********************************************/
 
-
-
-
 /******************************************I-DAT-RCM-WF-0-21/05/2014**********************************************/
 
 select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','string');
@@ -292,3 +289,11 @@ select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','date');
 select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','numeric');
 
 /******************************************F-DAT-RCM-WF-0-21/05/2014**********************************************/
+
+/********************************************I-DAT-RCM-WF-0-15/05/2014**********************************************/
+select pxp.f_insert_tgui ('Definición de Tipos de Formularios', 'Definición de Tipos de Formularios', 'WF200', 'si', 1, '', 2, '', '', 'WF');
+select pxp.f_insert_tgui ('Tipos de Componentes', 'Tipos de Componentes', 'WF210', 'si', 1, 'sis_workflow/vista/tipo_componente/TipoComponente.php', 2, '', 'TipoComponente', 'WF');
+
+select pxp.f_insert_testructura_gui ('WF200', 'WF');
+select pxp.f_insert_testructura_gui ('WF210', 'WF200');
+/********************************************F-DAT-RCM-WF-0-15/05/2014**********************************************/

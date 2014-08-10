@@ -18,9 +18,9 @@ class MODHorarioTrabajo extends MODbase {
 		
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_horario_trabajo_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_HORTRA_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_horario_trabajo_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_HORTRA_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		
 		
@@ -36,16 +36,16 @@ class MODHorarioTrabajo extends MODbase {
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function insertarHorarioTrabajo(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_horario_trabajo_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_HORTRA_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_horario_trabajo_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_HORTRA_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		$this->setParametro('dia_semana','num_dia','integer');
 		$this->setParametro('hora_ini','hora_ini','time');
@@ -56,15 +56,15 @@ class MODHorarioTrabajo extends MODbase {
 		
 		$this->ejecutarConsulta();
 		//echo $this->getConsulta(); exit;
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarHorarioTrabajo(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_horario_trabajo_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_HORTRA_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_horario_trabajo_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_HORTRA_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		
 		
@@ -78,15 +78,15 @@ class MODHorarioTrabajo extends MODbase {
 				
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarHorarioTrabajo(){
 	
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_horario_trabajo_ime';
-		$this->transaccion='SEG_HORTRA_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_horario_trabajo_ime');
+		$this->setTransaccion('SEG_HORTRA_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los setParametros para la funcion
 		$this->setParametro('id_horario_trabajo','id_horario_trabajo','integer');
@@ -94,7 +94,7 @@ class MODHorarioTrabajo extends MODbase {
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	

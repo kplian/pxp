@@ -22,12 +22,7 @@ class ACTAuten extends ACTbase {
 	//Constructor
 	////////////
 	function __construct(CTParametro &$pParam){
-		
-		
 		parent::__construct($pParam);	
-		
-			
-		
 	}
 
 	/////////
@@ -38,12 +33,10 @@ class ACTAuten extends ACTbase {
 	function getPublicKey(){
 		//Se obtiene el primer primo
 		$this->funciones= $this->create('MODPrimo');
+		
 		$this->res=$this->funciones->ObtenerPrimo();
 		
-		
-		//echo 'resp:'.$this->res;exit;
 		if($this->res->getTipo()=='ERROR'){
-			
 			$this->res->imprimirRespuesta($this->res->generarJson());
 			exit;
 		}
@@ -54,7 +47,6 @@ class ACTAuten extends ACTbase {
    
 		//Se obtiene el segundo primo
 		$this->res=$this->funciones->ObtenerPrimo();
-
 		if($this->res->getTipo()=='ERROR'){
 			$this->res->imprimirRespuesta($this->res->generarJson());
 			exit;
@@ -100,6 +92,7 @@ class ACTAuten extends ACTbase {
 	    if($_SESSION["encriptar_data"]=='si'){
 	    	$x=1;
 	    }
+		
 		$_SESSION['_p']=$this->fei->aumenta1($_SESSION['key_p']);
 
 		//Devuelve la respuesta
@@ -116,12 +109,10 @@ class ACTAuten extends ACTbase {
 	//Verifica las credenciales de usuario
 	
 	function verificarCredenciales(){
-		
 		$this->funciones= $this->create('MODUsuario');
 		$this->res=$this->funciones->ValidaUsuario();
 		$this->datos=$this->res->getDatos();
-
-
+		
 		if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){
 			//si no existe le mando otra vez a la portada
 			$_SESSION["autentificado"] = "NO";
@@ -139,44 +130,38 @@ class ACTAuten extends ACTbase {
 			$_SESSION["ss_ip"] = "";
 			$_SESSION["ss_mac"] = "";
 
-           echo "{success:false,mensaje:'".addslashes($this->res->getMensaje())."'}";
+			echo "{success:false,mensaje:'".addslashes($this->res->getMensaje())."'}";
 			exit;
-		}
-		else{
+		} else {
 			$LDAP=TRUE;
 			
 			//preguntamos el tipo de autentificacion
             if($this->datos['autentificacion']=='ldap'){
-				
 				$_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->datos['contrasena']);
 				$conex = ldap_connect($_SESSION["_SERVER_LDAP"],$_SESSION["_PORT_LDAP"]) or die ("No ha sido posible conectarse al servidor");
 				ldap_set_option($conex, LDAP_OPT_PROTOCOL_VERSION, 3);
 				
 				if ($conex) { 
-						   // bind with appropriate dn to give update access 
+					// bind with appropriate dn to give update access 
 					$r=ldap_bind($conex,trim($this->objParam->getParametro('usuario')).'@'.$_SESSION["_DOMINIO"],addslashes(htmlentities(trim($this->objParam->getParametro('contrasena')),ENT_QUOTES))); 
 	
-				   if ($r && trim($this->objParam->getParametro('contrasena'))!= '') 
-					{
+				   if($r && trim($this->objParam->getParametro('contrasena'))!= ''){
                        $LDAP=TRUE;
-					}
-					else{
+					} else {
 					   $LDAP=FALSE; 
 					}
 
 					ldap_close($conex);
 					
-				}
-				else{
+				} else {
 					$LDAP=FALSE;
 				} 
 	
 			}
-			
-			
-		 //si falla la autentificacion LDAP cerramos sesion
-		 if(!$LDAP){
-		 	$_SESSION["autentificado"] = "NO";
+
+			//si falla la autentificacion LDAP cerramos sesion
+			if(!$LDAP){
+				$_SESSION["autentificado"] = "NO";
 				$_SESSION["ss_id_usuario"] = "";
 				$_SESSION["ss_id_lugar"] = "";
 				$_SESSION["ss_nombre_lugar"] = "";
@@ -190,64 +175,63 @@ class ACTAuten extends ACTbase {
 				$_SESSION["ss_id_persona"] = "";
 				$_SESSION["ss_ip"] = "";
 				$_SESSION["ss_mac"] = "";
+		
+			} else {
+				$_SESSION["autentificado"] = "SI";
+		        $_SESSION["ss_id_usuario"] = $this->datos['id_usuario'];
+				$_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
+				$_SESSION["ss_id_cargo"] = $this->datos['id_cargo'];
+				$_SESSION["ss_id_persona"] = $this->datos['id_persona'];
+				$_SESSION["_SESION"]->setIdUsuario($this->datos['id_usuario']);
+				//cambia el estado del Objeto de sesion activa
+				//var_dump($_SESSION["_SESION"]);exit;
+				$_SESSION["_SESION"]->setEstado("activa");
+				//echo 'ddddddddddddddddddAAAAAA';exit;
+				
+				
+				if($_SESSION["_ESTADO_SISTEMA"]=='desarrollo'){
+		        	$_SESSION["mensaje_tec"]=true;
+		     	} else {
+		        	$_SESSION["mensaje_tec"]=false;
+				}
+				$mres = new Mensaje();		
+				if($_SESSION["_OFUSCAR_ID"]=='si'){
+					$id_usuario_ofus = $mres->ofuscar(($this->datos['id_usuario']));
+					$id_funcionario_ofus = $mres->ofuscar(($this->datos['id_funcionario']));
+				} else {
+					$id_usuario_ofus = $this->datos['id_usuario'];
+					$id_funcionario_ofus = $this->datos['id_funcionario'];
+				}
+			
+			
+				////
+				
+				$_SESSION["_CONT_ALERTAS"] = $this->datos['cont_alertas'];
+				$_SESSION["_CONT_INTERINO"] = $this->datos['cont_interino'];
+				$_SESSION["_NOM_USUARIO"] = $this->datos['nombre']." ".$this->datos['apellido_paterno']." ".$this->datos['apellido_materno'];
+				$_SESSION["_ID_USUARIO_OFUS"] = $id_usuario_ofus;
+				$_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
+				$_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
+				$_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
+				
+			    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
+					echo "{success:true,
+					cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
+					cont_interino:".$_SESSION["_CONT_INTERINO"].",
+					nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
+					nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
+					mini_logo:'".$_SESSION["_MINI_LOGO"]."',
+					id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
+					id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
+					autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
+					estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
+					mensaje_tec:'".$_SESSION["mensaje_tec"]."',
+					timeout:".$_SESSION["_TIMEOUT"]."}";
 	
-		 }
-		 else{
-			$_SESSION["autentificado"] = "SI";
-	        $_SESSION["ss_id_usuario"] = $this->datos['id_usuario'];
-	        
-			$_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
-			$_SESSION["ss_id_cargo"] = $this->datos['id_cargo'];
-			$_SESSION["ss_id_persona"] = $this->datos['id_persona'];
-			$_SESSION["_SESION"]->setIdUsuario($this->datos['id_usuario']);
-			//cambia el estado del Objeto de sesion activa
-			$_SESSION["_SESION"]->setEstado("activa");
-			
-			
-			
-		    if($_SESSION["_ESTADO_SISTEMA"]=='desarrollo'){
-	          $_SESSION["mensaje_tec"]=true;
-	     	}
-			else{
-	          $_SESSION["mensaje_tec"]=false;
+					exit;
+				}
 			}
-			$mres = new Mensaje();		
-			if($_SESSION["_OFUSCAR_ID"]=='si'){
-				$id_usuario_ofus = $mres->ofuscar(($this->datos['id_usuario']));
-				$id_funcionario_ofus = $mres->ofuscar(($this->datos['id_funcionario']));
-			}
-			else{
-				$id_usuario_ofus = $this->datos['id_usuario'];
-				$id_funcionario_ofus = $this->datos['id_funcionario'];
-			}
-			
-			
-			////
-			
-			$_SESSION["_CONT_ALERTAS"] = $this->datos['cont_alertas'];
-			$_SESSION["_CONT_INTERINO"] = $this->datos['cont_interino'];
-			$_SESSION["_NOM_USUARIO"] = $this->datos['nombre']." ".$this->datos['apellido_paterno']." ".$this->datos['apellido_materno'];
-			$_SESSION["_ID_USUARIO_OFUS"] = $id_usuario_ofus;
-			$_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
-			$_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
-			$_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
-		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
-				echo "{success:true,
-				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
-				cont_interino:".$_SESSION["_CONT_INTERINO"].",
-				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
-				nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
-				mini_logo:'".$_SESSION["_MINI_LOGO"]."',
-				id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
-				id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
-				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',
-				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
-				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
-				timeout:".$_SESSION["_TIMEOUT"]."}";
-	
-				exit;
-			}
-		 }
+		
 		}
 	}
 	

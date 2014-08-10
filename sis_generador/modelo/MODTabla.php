@@ -8,9 +8,9 @@ class MODTabla extends MODbase{
 	
 	function listarTabla(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_tabla_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_TABLA_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.ft_tabla_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_TABLA_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//Definicion de la lista del resultado del query
 	
@@ -39,13 +39,13 @@ class MODTabla extends MODbase{
 		//echo $this->consulta;exit();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	function listarTablaCombo(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_tabla_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_TABLACOM_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.ft_tabla_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_TABLACOM_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//Definicion de la lista del resultado del query
 	
@@ -60,14 +60,14 @@ class MODTabla extends MODbase{
 		exit();*/
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function insertarTabla(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_tabla_ime';
-		$this->transaccion='GEN_TABLA_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('gen.ft_tabla_ime');
+		$this->setTransaccion('GEN_TABLA_INS');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('esquema','esquema','varchar');
@@ -85,14 +85,14 @@ class MODTabla extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarTabla(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_tabla_ime';
-		$this->transaccion='GEN_TABLA_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('gen.ft_tabla_ime');
+		$this->setTransaccion('GEN_TABLA_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_tabla','id_tabla','integer');
@@ -111,14 +111,14 @@ class MODTabla extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarTabla(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_tabla_ime';
-		$this->transaccion='GEN_TABLA_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('gen.ft_tabla_ime');
+		$this->setTransaccion('GEN_TABLA_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_tabla','id_tabla','integer');
@@ -127,7 +127,7 @@ class MODTabla extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

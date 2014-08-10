@@ -21,6 +21,7 @@ class ACTOficina extends ACTbase{
 			
 			$this->res=$this->objFunc->listarOficina($this->objParam);
 		}
+		//var_dump($this->res);exit;
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
@@ -35,7 +36,7 @@ class ACTOficina extends ACTbase{
 	}
 						
 	function eliminarOficina(){
-			$this->objFunc=$this->create('MODOficina');	
+		$this->objFunc=$this->create('MODOficina');	
 		$this->res=$this->objFunc->eliminarOficina($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

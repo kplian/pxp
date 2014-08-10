@@ -1021,6 +1021,7 @@ Phx.CP=function(){
 					success:function(resp){
 					   var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
 					   sw_auten_veri=false;
+					   console.log(regreso)
 			           if(regreso.success){
 			        	   // copia configuracion inicial recuperada
 							Ext.apply(Phx.CP.config_ini,regreso);
@@ -1090,7 +1091,7 @@ Phx.CP=function(){
 					  'Powered-By': 'Pxp'
 					};
 					// Envia crendenciales al servidor
-
+					console.log(form_login.url)
 					Ext.Ajax.request({
 						url:form_login.url,
 						params:{

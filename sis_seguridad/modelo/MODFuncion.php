@@ -14,9 +14,9 @@ class MODFuncion extends MODbase{
 	
 	function listarFuncion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_funcion_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_FUNCIO_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_funcion_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_FUNCIO_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//Definicion de la lista del resultado del query
 	    $this->setParametro('id_subsistema','id_subsistema','integer');
@@ -35,14 +35,14 @@ class MODFuncion extends MODbase{
 		
 		$consulta=$this->getConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function insertarFuncion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_funcion_ime';
-		$this->transaccion='SEG_FUNCIO_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_funcion_ime');
+		$this->setTransaccion('SEG_FUNCIO_INS');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('nombre','nombre','varchar');
@@ -53,14 +53,14 @@ class MODFuncion extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarFuncion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_funcion_ime';
-		$this->transaccion='SEG_FUNCIO_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_funcion_ime');
+		$this->setTransaccion('SEG_FUNCIO_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_actividad','id_actividad','integer');
@@ -71,14 +71,14 @@ class MODFuncion extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarFuncion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_funcion_ime';
-		$this->transaccion='SEG_FUNCIO_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_funcion_ime');
+		$this->setTransaccion('SEG_FUNCIO_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_funcion','id_funcion','integer');
@@ -87,15 +87,15 @@ class MODFuncion extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	
 	function sincFunciones(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_funcion_ime';
-		$this->transaccion='SEG_SINCFUN_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_funcion_ime');
+		$this->setTransaccion('SEG_SINCFUN_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 		
 		
@@ -106,7 +106,7 @@ class MODFuncion extends MODbase{
 		$consulta=$this->getConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;	
+		return $this->getRespuesta();	
 	}
 }
 ?>

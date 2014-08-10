@@ -15,9 +15,9 @@ class MODPersona extends MODbase{
 	
 	function listarPersona(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_persona_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PERSON_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_persona_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PERSON_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('id_persona','integer');
@@ -41,15 +41,15 @@ class MODPersona extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function listarPersonaFoto(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_persona_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PERSONMIN_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_persona_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PERSONMIN_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 	
 		//Definicion de la lista del resultado del query
@@ -83,15 +83,15 @@ class MODPersona extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function obtenerPersonaFoto(){
         //Definicion de variables para ejecucion del procedimiento
-        $this->procedimiento='segu.ft_persona_sel';// nombre procedimiento almacenado
-        $this->transaccion='SEG_OPERFOT_SEL';//nombre de la transaccion
-        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setProcedimiento('segu.ft_persona_sel');// nombre procedimiento almacenado
+        $this->setTransaccion('SEG_OPERFOT_SEL');//nombre de la transaccion
+        $this->setTipoProcedimiento('SEL');//tipo de transaccion
         $this->setCount(false);
         
         
@@ -109,7 +109,7 @@ class MODPersona extends MODbase{
         $this->armarConsulta();
         $this->ejecutarConsulta();
 
-        return $this->respuesta;
+        return $this->getRespuesta();
 
     }
 	
@@ -117,9 +117,9 @@ class MODPersona extends MODbase{
 	function insertarPersona(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_persona_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PERSON_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_persona_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PERSON_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		
 		
@@ -139,15 +139,15 @@ class MODPersona extends MODbase{
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarPersona(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_persona_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PERSON_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_persona_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PERSON_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		
 		//apartir del tipo  del archivo obtiene la extencion
@@ -172,14 +172,14 @@ class MODPersona extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarPersona(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_persona_ime';
-		$this->transaccion='SEG_PERSON_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_persona_ime');
+		$this->setTransaccion('SEG_PERSON_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_persona','id_persona','integer');
@@ -187,15 +187,15 @@ class MODPersona extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function subirFotoPersona(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_persona_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_UPFOTOPER_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_persona_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_UPFOTOPER_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//apartir del tipo  del archivo obtiene la extencion
 		$ext = pathinfo($this->arregloFiles['foto']['name']);
@@ -212,7 +212,7 @@ class MODPersona extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

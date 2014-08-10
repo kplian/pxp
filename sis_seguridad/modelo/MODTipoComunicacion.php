@@ -15,9 +15,9 @@ class MODTipoComunicacion extends MODbase{
 			
 	function listarTipoComunicacion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.f_tipo_comunicacion_sel';
-		$this->transaccion='SG_TICOM_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.f_tipo_comunicacion_sel');
+		$this->setTransaccion('SG_TICOM_SEL');
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_tipo_comunicacion','int4');
@@ -35,14 +35,14 @@ class MODTipoComunicacion extends MODbase{
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function insertarTipoComunicacion(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.f_tipo_comunicacion_ime';
-		$this->transaccion='SG_TICOM_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.f_tipo_comunicacion_ime');
+		$this->setTransaccion('SG_TICOM_INS');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('estado_reg','estado_reg','varchar');
@@ -53,14 +53,14 @@ class MODTipoComunicacion extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function modificarTipoComunicacion(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.f_tipo_comunicacion_ime';
-		$this->transaccion='SG_TICOM_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.f_tipo_comunicacion_ime');
+		$this->setTransaccion('SG_TICOM_MOD');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_tipo_comunicacion','id_tipo_comunicacion','int4');
@@ -72,14 +72,14 @@ class MODTipoComunicacion extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function eliminarTipoComunicacion(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.f_tipo_comunicacion_ime';
-		$this->transaccion='SG_TICOM_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.f_tipo_comunicacion_ime');
+		$this->setTransaccion('SG_TICOM_ELI');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_tipo_comunicacion','id_tipo_comunicacion','int4');
@@ -89,7 +89,7 @@ class MODTipoComunicacion extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 }

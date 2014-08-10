@@ -18,9 +18,9 @@ class MODTipoDocumento extends MODbase{
 				
 			
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_tipo_documento_sel';
-		$this->transaccion='SEG_TIPDOC_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_tipo_documento_sel');
+		$this->setTransaccion('SEG_TIPDOC_SEL');
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		//Definicion de la lista del resultado del query
 	
@@ -35,15 +35,15 @@ class MODTipoDocumento extends MODbase{
 
 		$consulta=$this->getConsulta();	
 		$this->ejecutarConsulta();
-		return $this->respuesta;		
+		return $this->getRespuesta();		
 	
 	}
 	
 	function insertarTipoDocumento(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_tipo_documento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_TIPODOC_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_tipo_documento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_TIPODOC_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		$this->setParametro('id_tipo_documento','integer');
 		$this->setParametro('nombre','varchar');
@@ -54,14 +54,14 @@ class MODTipoDocumento extends MODbase{
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarTipoDocumento(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_tipo_documento_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_TIPODOC_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_tipo_documento_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_TIPODOC_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		$this->setParametro('id_tipo_documento','integer');
 		$this->setParametro('nombre','varchar');
@@ -72,14 +72,14 @@ class MODTipoDocumento extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarTipoDocumento(){
 		//echo $parametro->getOrdenacion;
-		$this->procedimiento='segu.ft_tipo_documento_ime';
-		$this->transaccion='SEG_TIPODOC_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_tipo_documento_ime');
+		$this->setTransaccion('SEG_TIPODOC_ELI');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_tipo_documento','id_tipo_documento','integer');
@@ -87,7 +87,7 @@ class MODTipoDocumento extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

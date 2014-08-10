@@ -18,9 +18,9 @@ class MODEstructuraDato extends MODbase{
 	function listarEstructuraDato(){
 		//echo $parametro->getOrdenacion;
 		
-		$this->procedimiento='segu.ft_estructura_dato_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ESTDAT_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_estructura_dato_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ESTDAT_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 				
 		
@@ -37,15 +37,15 @@ class MODEstructuraDato extends MODbase{
 		
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function insertarEstructuraDato(){
 		
 		
-		$this->procedimiento='segu.ft_estructura_dato_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ESTDAT_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion		
+		$this->setProcedimiento('segu.ft_estructura_dato_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ESTDAT_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion		
 		
 		$this->setparametro('id_subsistema',$arreglo['id_subsistema'],'integer');
 		
@@ -59,14 +59,14 @@ class MODEstructuraDato extends MODbase{
 		
 		$this->ejecutarConsulta();
 				
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarEstructuraDato(){
 		
-		$this->procedimiento='segu.ft_estructura_dato_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ESTDAT_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_estructura_dato_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ESTDAT_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 				
 		$this->setparametro('id_estructura_dato','id_estructura_dato','integer');
 		$this->setparametro('id_subsistema',$arreglo['id_subsistema'],'integer');
@@ -81,14 +81,14 @@ class MODEstructuraDato extends MODbase{
 		
 		$this->ejecutarConsulta();
 				
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarEstructuraDato(){
 		
-		$this->procedimiento='segu.ft_estructura_dato_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_ESTDAT_ELI';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_estructura_dato_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_ESTDAT_ELI');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 				
 		$this->setparametro('id_estructura_dato','id_estructura_dato','integer');
 				
@@ -96,7 +96,7 @@ class MODEstructuraDato extends MODbase{
 		
 		$this->ejecutarConsulta();
 				
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

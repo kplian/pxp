@@ -15,9 +15,9 @@ class MODVideo extends MODbase{
 			
 	function listarVideo(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_video_sel';
-		$this->transaccion='SG_TUTO_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_video_sel');
+		$this->setTransaccion('SG_TUTO_SEL');
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_video','int4');
@@ -38,14 +38,14 @@ class MODVideo extends MODbase{
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function insertarVideo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_video_ime';
-		$this->transaccion='SG_TUTO_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_video_ime');
+		$this->setTransaccion('SG_TUTO_INS');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_subsistema','id_subsistema','int4');
@@ -59,14 +59,14 @@ class MODVideo extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function modificarVideo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_video_ime';
-		$this->transaccion='SG_TUTO_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_video_ime');
+		$this->setTransaccion('SG_TUTO_MOD');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_video','id_video','int4');
@@ -81,14 +81,14 @@ class MODVideo extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function eliminarVideo(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_video_ime';
-		$this->transaccion='SG_TUTO_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_video_ime');
+		$this->setTransaccion('SG_TUTO_ELI');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_video','id_video','int4');
@@ -98,7 +98,7 @@ class MODVideo extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 }

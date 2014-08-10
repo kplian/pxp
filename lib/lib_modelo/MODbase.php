@@ -1,5 +1,4 @@
 <?php
-//include '../lib_modelo/driver.php';
 class MODbase extends driver
 {
 	protected $aParam;
@@ -8,33 +7,38 @@ class MODbase extends driver
 	protected $arreglo_consultas;
 	protected $validacion;
 	protected $nombre_archivo;
-	protected $objParam;
-	
-
+	//protected $objParam;
 
 	//Constructor que obtiene los datos de parametros e inicializa el driver
 	function __construct($pParam){
-		
 		$this->objParam=$pParam;
 		$this->nombre_archivo='MODbase.php';
-		parent::__construct();
+		
+		//Verifica que motor de base de datos se utilizará. Por defecto Postgres (pg)		
+		$bd='pg'; 
+		if($pParam!=null){
+			if($pParam->getParametro('motorBD')!=null){
+				$bd=$pParam->getParametro('motorBD');		
+			}
+		}
+		
+		//Instanciación de la clase padre
+		parent::__construct($bd);
+		
 		//Guarda los parametros en variable local
 		$this->validacion=new MODValidacion();
-		
 
 		if($this->objParam==null){
-			$this->esMatriz=false;
-				
-		}
-		else{
-				
+			//$this->esMatriz=false;
+			$this->setEsMatriz(false);
+			//echo 'aaaa';exit;
+		} else {
+			//var_dump($this->objParam);exit;
+			//echo 'bbb';exit;
 			$this->aParam=$this->objParam;
 			//recibe los parametros pasados desde la vista
 			$this->arreglo=$this->aParam->getArregloParametros();
-			
 			$this->arregloFiles=$this->aParam->getArregloFiles();
-			
-		
 			
 			//oprine parametros de consulta como los filtros, etc
 			$this->arreglo_consultas=$this->aParam->getParametrosConsulta();
@@ -49,56 +53,74 @@ class MODbase extends driver
 			if(isset($this->Tipo)){
 			   $this->aParam->setTipotran($this->Tipo);
 			}
-			//son datos devueltos en formato matriz, ejem desde la grilla
-			$this->esMatriz=$this->aParam->esMatriz();
-			if(!$this->esMatriz){
+			//Son datos devueltos en formato matriz, ejem desde la grilla
+			//$this->esMatriz=$this->aParam->esMatriz();
+			//echo 'FASS->'.$this->aParam->esMatriz();exit;
+			/*if($this->getTransaccion()=='BJ_DEPTO_ELI'){
+				echo 'FASS RK->'.$this->aParam->esMatriz();exit;
+			} else{
+				echo 'FASS CL->'.$this->getTransaccion();exit;
+			}*/
+			
+			$this->setEsMatriz($this->aParam->esMatriz());
+			//if(!$this->esMatriz){
+			if(!$this->getEsMatriz()){
 				$this->setParametrosConsulta();
-			}
-			else{
-				//si es matriz enumera todas lafilas
+			} else {
+				//si es matriz enumera todas la filas
 				$cont=0;
-				array_push($this->variables,'_fila');
-				array_push($this->tipos,'integer');
+				/*array_push($this->variables,'_fila');
+				array_push($this->tipos,'integer');*/
+				$this->arrayPushVariables('_fila');
+				$this->arrayPushTipos('integer');
 				foreach ($this->arreglo as $row){
-						
 					$this->validacion->validar('_fila',$row['_fila'],'integer',false,'',null,null);
-					        
-					
-					$this->valores[$cont]['_fila']=$row['_fila'];
+					//$this->valores[$cont]['_fila']=$row['_fila'];
+					$this->setValores($cont,'_fila',$row['_fila']);
 					$cont++;
 				}
 			}
-			$this->setUsuarioAi();
-			
-
 		}
-
 	}
 
 	function armarConsulta(){
-		
-
 		if(count($this->validacion->getRes())==0){
 			parent::armarConsulta();
 		}
 	}
+	
 	function ejecutarConsulta($res=null){
-	        
-	   try {
-		     
-		if(count($this->validacion->getRes())==0){
-			parent::ejecutarConsulta($res);
+		try {
+				/*ob_start();
+				$fb=FirePHP::getInstance(true);
+				$fb->log($this->getTransaccion(),"ejecutarConsulta");*/
+				
+				if($this->getTransaccion()=='BJ_DEPTO_INS'){
+					//var_dump($this->objParam);exit;
+				}
+			if(count($this->validacion->getRes())==0){
+				//echo '3';exit;
+				parent::ejecutarConsulta($res);
+
+				
+					//var_dump($this->getRespuesta());exit;
+				/*ob_start();
+				$fb=FirePHP::getInstance(true);
+				$fb->log($this->getTransaccion(),"ejecutarConsulta TRAN");
+				$fb->log(var_dump($this->getRespuesta()),"ejecutarConsulta RESP");*/
+				
+				
+				
+				//echo $this->getTransaccion();exit;
+			}
+			else{
+				$this->generaRespuestaParametros();
+			}
+			//echo '101';exit;
+		} catch (Exception $e){
+			   //TODO   DEBUG DE ERRORES  
+			  echo 'Error capturado -> '.$e->getMessage();
 		}
-		else{
-			$this->generaRespuestaParametros();
-		}
-		
-     }	 
-      catch (Exception $e){
-           //TODO   DEBUG DE ERRORES  
-          //echo 'Error capturado -> '.$e->getMessage();
-      }
-		
 
 	}
 
@@ -119,35 +141,34 @@ class MODbase extends driver
 	function setParametro($nombre,$valor,$tipo,$blank=true,$tamano='',$opciones=null,$tipo_archivo=null){
 		//obtenemos el tipo de la base de datos
 		//throw new exception('Desde donde llama pendejos');
-		
+		/*ob_start();
+		$fb=FirePHP::getInstance(true);
+		$fb->log($valor,"setParametros");*/
 		$tipo_base=$this->validacion->getTipo($tipo);
 
 		//anadimos el nombre y el tipo a los arreglos correspondientes
-		if($this->esMatriz || (!$this->esMatriz && (isset($this->arreglo_consultas[$valor])|| isset($this->arreglo[$valor])))){
+		if($this->getEsMatriz() || (!$this->getEsMatriz() && (isset($this->arreglo_consultas[$valor])|| isset($this->arreglo[$valor])))){
 			//rac 23092011 no define el tipo cuando es bytea en el array de definiciones
 			if($tipo!='bytea'){
-				array_push($this->variables,$nombre);
-				array_push($this->tipos,$tipo_base);
-			}else{
-				
+				/*array_push($this->variables,$nombre);
+				array_push($this->tipos,$tipo_base);*/
+				$this->arrayPushVariables($nombre);
+				$this->arrayPushTipos($tipo_base);
+			} else{
 				$this->variablesFiles="'$nombre'";
-				
 			}
 		}
 
-
-
-		if($this->esMatriz){
+		if($this->getEsMatriz()){
 				
 			$valor2=array();
 			$cont=0;
 			foreach ($this->arreglo as $row){
-				
-				
 				//rac 27/10/11 se escapa los valores entrantes para permitir almacenar comillas simples	
 			    $row[$valor]=pg_escape_string(pg_escape_string($row[$valor]));
 				$this->validacion->validar($nombre,$row[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-				$this->valores[$cont][$nombre]=$row[$valor];
+				//$this->valores[$cont][$nombre]=$row[$valor];
+				$this->setValores($cont,$nombre,$row[$valor]);
 				$cont++;
 			}
 				
@@ -157,7 +178,8 @@ class MODbase extends driver
 			if($nombre=='filtro'||$nombre=='ordenacion'||$nombre=='dir_ordenacion'||$nombre=='puntero'||$nombre=='cantidad')
 			{	if(isset($this->arreglo_consultas[$valor])){
 					$this->validacion->validar($nombre,$this->arreglo_consultas[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-					array_push($this->valores,$this->arreglo_consultas[$valor]);
+					//array_push($this->valores,$this->arreglo_consultas[$valor]);
+					$this->arrayPushValores($this->arreglo_consultas[$valor]);
 				}
 			}
 			else{
@@ -180,10 +202,11 @@ class MODbase extends driver
 					else{
 						
 					        
-					   $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
+						$this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
                             
-                       $this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-                       array_push($this->valores,$this->arreglo[$valor]);     
+						$this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
+						//array_push($this->valores,$this->arreglo[$valor]);  
+						$this->arrayPushValores($this->arreglo[$valor]);
     					
 					  
 					}
@@ -308,7 +331,7 @@ class MODbase extends driver
 	 * @param entero $cantidad
 	 */
 	function setParametrosConsulta(){
-			
+		//echo 'entra';exit;
 		$this->setParametro('filtro','filtro','filtro_sql');
 		$this->setParametro('ordenacion','ordenacion','varchar');
 		$this->setParametro('dir_ordenacion','dir_ordenacion','varchar');
@@ -317,73 +340,10 @@ class MODbase extends driver
 
 	}
 	
-	/**
-     * Nombre funcion:  addParametro
-     * Proposito:       Anade una parametro manual (que puede ser insertado directamente en el modelo)
-                        que se coloca en el arreglo de 
-     *                  parametros a ser enviados a un procedimeinto
-     * author:          RAC                 
-     * Fecha creacion:  12/05/2014
-     * @param $nombre El nombre del campo que se envia
-     * @param $valor  el valor del parametros
-     * @param $tipo Tipo del campoq ue se envia (todos los tipos de postges y otros definidos tb)
-     * @param $blank true o false si premite nulo o no)
-     * @param $tamano Tamaoo del campo definido si es nulo se aplica el amximo para el tipo de campo postgres sino hay moximo es ilimitado
-     */
-    function addParametro($nombre,$valor,$tipo,$blank=true,$tamano='',$opciones=null,$tipo_archivo=null){
-        //obtenemos el tipo de la base de datos
-        
-        $tipo_base=$this->validacion->getTipo($tipo);
-
-        
-        array_push($this->variables,$nombre);
-        array_push($this->tipos,$tipo);
-         
-
-        if($this->esMatriz){
-            $valor2=array();
-            $cont=0;
-            foreach ($this->arreglo as $row){
-                //rac 27/10/11 se escapa los valores entrantes para permitir almacenar comillas simples 
-                $row[$valor]=pg_escape_string(pg_escape_string($valor));
-                $this->validacion->validar($nombre,$valor,$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-                $this->valores[$cont][$nombre]=$valor;
-                $cont++;
-            }
-                
-        }
-        else{
-            
-           if(isset($valor)){
-               $this->arreglo[$valor]=pg_escape_string(pg_escape_string($valor));
-               $this->validacion->validar($nombre,$valor,$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-               array_push($this->valores,$valor);     
-                        
-           }
-                
-        }
-
-    }
-	
-	function setUsuarioAi(){
-	         
-	     if (isset($_SESSION["ss_id_usuario_ai"]))   {
-	         $id_usuario_ai = $_SESSION["ss_id_usuario_ai"];
-	         $nombre_usuario = $_SESSION["_NOM_USUARIO_AI"];
-	     }else{
-	         $id_usuario_ai = 'NULL';
-	         $nombre_usuario = 'NULL';
-	     }
-	         
-	    $this->addParametro('_id_usuario_ai',$id_usuario_ai,'int4');
-	    $this->addParametro('_nombre_usuario_ai',$nombre_usuario,'varchar');
-	    
-        
-
-    }
-	
-	
-	
+	public function getRespuesta1(){
+		var_dump(parent::getRespuesta());
+		return parent::getRespuesta();
+	}
 
 }
 ?>

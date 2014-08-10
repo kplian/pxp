@@ -14,14 +14,19 @@ class MODUsuario extends MODbase {
 	
 	function ValidaUsuario(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_validar_usuario_ime';
-		$this->transaccion='SEG_VALUSU_SEG';
+		/*$this->setProcedimiento('segu.ft_validar_usuario_ime');
+		$this->setTransaccion('SEG_VALUSU_SEG');*/
+		$this->setProcedimiento('segu.ft_validar_usuario_ime');
+		$this->setTransaccion('SEG_VALUSU_SEG');
 		
 		//definicion de variables
-		$this->tipo_conexion='seguridad';
+		//$this->setTipoConexion('seguridad');
+		$this->setTipoConexion('seguridad');
 		
-		$this->tipo_procedimiento='IME';
-		$this->count=false;
+		//$this->setTipoProcedimiento('IME');
+		$this->setTipoProcedimiento('IME');
+		//$this->setCount(false);
+		$this->setCount(false);
 		
 		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
 							 "contrasena"=>$this->arreglo['contrasena'],
@@ -36,13 +41,12 @@ class MODUsuario extends MODbase {
 		$_SESSION["_LOGIN"]=$this->arreglo['usuario'];
 		$_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->arreglo['contrasena']);
 		$_SESSION["_CONTRASENA_MD5"] = $this->arreglo['contrasena'];
-				
+
 		$this->armarConsulta();
-		
 		$this->ejecutarConsulta();
-		
-		 
-		return $this->respuesta;
+
+		//return $this->getRespuesta();
+		return $this->getRespuesta();
 	}
 	
 	
@@ -50,9 +54,9 @@ class MODUsuario extends MODbase {
 		
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_usuario_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_USUARI_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_usuario_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_USUARI_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		
 		
@@ -77,7 +81,7 @@ class MODUsuario extends MODbase {
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 
@@ -85,12 +89,12 @@ class MODUsuario extends MODbase {
 		
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_validar_usuario_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_LISTUSU_SEG';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_validar_usuario_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_LISTUSU_SEG');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//definicion de variables
-		$this->tipo_conexion='seguridad';		
+		$this->setTipoConexion('seguridad');		
 		
 		$this->setParametro('login','usuario','varchar');
 			
@@ -99,16 +103,16 @@ class MODUsuario extends MODbase {
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 function insertarUsuario(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_usuario_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_USUARI_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_usuario_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_USUARI_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		
 		
@@ -130,15 +134,15 @@ function insertarUsuario(){
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarUsuario(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_usuario_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_USUARI_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_usuario_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_USUARI_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//si la contrasena es distinta de la contrase;a anterior
 		//fue modificada y necesario encriptarla
@@ -161,15 +165,15 @@ function insertarUsuario(){
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarUsuario(){
 	
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_usuario_ime';
-		$this->transaccion='SEG_USUARI_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_usuario_ime');
+		$this->setTransaccion('SEG_USUARI_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los setParametros para la funcion
 		$this->setParametro('id_usuario','id_usuario','integer');
@@ -177,7 +181,7 @@ function insertarUsuario(){
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	

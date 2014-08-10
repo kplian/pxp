@@ -16,9 +16,9 @@ class MODRol extends MODbase{
 	
 	function listarRol(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_rol_sel';
-		$this->transaccion='SEG_ROL_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_rol_sel');
+		$this->setTransaccion('SEG_ROL_SEL');
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 	
 		//Definicion de la lista del resultado del query
@@ -38,15 +38,15 @@ class MODRol extends MODbase{
 		
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	} 
 	
 	function insertarRol(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_rol_ime';
-		$this->transaccion='SEG_ROL_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_rol_ime');
+		$this->setTransaccion('SEG_ROL_INS');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los Parametros para la funcion	
 		$this->setParametro('descripcion','descripcion','text');
@@ -57,14 +57,14 @@ class MODRol extends MODbase{
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarRol(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_rol_ime';
-		$this->transaccion='SEG_ROL_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_rol_ime');
+		$this->setTransaccion('SEG_ROL_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los setParametros para la funcion	
 		$this->setParametro('id_rol','id_rol','integer');		
@@ -76,14 +76,14 @@ class MODRol extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarRol(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_rol_ime';
-		$this->transaccion='SEG_ROL_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_rol_ime');
+		$this->setTransaccion('SEG_ROL_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los setParametros para la funcion
 		$this->setParametro('id_rol','id_rol','integer');
@@ -91,7 +91,7 @@ class MODRol extends MODbase{
 		$this->armarConsulta();
 			
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

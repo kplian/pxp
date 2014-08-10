@@ -39,10 +39,14 @@ class MODOficina extends MODbase{
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+		$consulta = $this->getConsulta();
+		//var_dump($consulta);exit;
 		$this->ejecutarConsulta();
-		
+
+		//var_dump(parent::getRespuesta1());
 		//Devuelve la respuesta
-		return $this->respuesta;
+		//var_dump($this->respuesta);exit;
+		return $this->getRespuesta1();
 	}
 			
 	function insertarOficina(){

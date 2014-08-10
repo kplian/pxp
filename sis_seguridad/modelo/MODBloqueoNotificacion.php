@@ -16,9 +16,9 @@ class MODBloqueoNotificacion extends MODbase{
 	
 	function listarNotificacion(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_bloqueo_notificacion_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_NOTI_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_bloqueo_notificacion_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_NOTI_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		$this->captura('id_bloqueo_notificacion','integer');
 		$this->captura('nombre_patron','varchar');
@@ -34,15 +34,15 @@ class MODBloqueoNotificacion extends MODbase{
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function listarBloqueo(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_bloqueo_notificacion_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_BLOQUE_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_bloqueo_notificacion_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_BLOQUE_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		$this->captura('id_bloqueo_notificacion','integer');
 		$this->captura('nombre_patron','varchar');
@@ -58,15 +58,15 @@ class MODBloqueoNotificacion extends MODbase{
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	function cambiarEstadoBloqueoNotificacion(){
 	
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_bloqueo_notificacion_ime';
-		$this->transaccion='SEG_ESBLONO_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_bloqueo_notificacion_ime');
+		$this->setTransaccion('SEG_ESBLONO_MOD');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los setParametros para la funcion
 		$this->setParametro('id_bloqueo_notificacion','id_bloqueo_notificacion','integer');
@@ -74,7 +74,7 @@ class MODBloqueoNotificacion extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	

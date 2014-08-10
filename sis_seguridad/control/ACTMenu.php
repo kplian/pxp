@@ -22,7 +22,6 @@ class ACTMenu extends ACTbase {
 	
 	//Genera las llaves publicas
 	function listarPermisoArb(){
-		
 		$node=$this->objParam->getParametro('node');
 		
 		if($node=='id')

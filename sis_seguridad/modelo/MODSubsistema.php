@@ -15,9 +15,9 @@ class MODSubsistema extends MODbase{
 	
 	function listarSubsistema(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_subsistema_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_SUBSIS_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_subsistema_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_SUBSIS_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		//Definicion de la lista del resultado del query
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('id_subsistema','integer');
@@ -30,15 +30,15 @@ class MODSubsistema extends MODbase{
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-    	return $this->respuesta;
+    	return $this->getRespuesta();
 
 	}
 	
 	function insertarSubsistema(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_subsistema_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_SUBSIS_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_subsistema_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_SUBSIS_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		//Define los parametros para la funcion	
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('prefijo','prefijo','varchar');
@@ -48,15 +48,15 @@ class MODSubsistema extends MODbase{
     	//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarSubsistema(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_subsistema_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_SUBSIS_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_subsistema_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_SUBSIS_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_subsistema','id_subsistema','integer');
@@ -69,14 +69,14 @@ class MODSubsistema extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarSubsistema(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_subsistema_ime';
-		$this->transaccion='SEG_SUBSIS_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_subsistema_ime');
+		$this->setTransaccion('SEG_SUBSIS_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_subsistema','id_subsistema','integer');
@@ -84,14 +84,14 @@ class MODSubsistema extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function exportarDatosSeguridad() {
 		
-		$this->procedimiento='segu.ft_gui_sel';
-			$this->transaccion='SEG_EXPGUI_SEL';
-			$this->tipo_procedimiento='SEL';
+		$this->setProcedimiento('segu.ft_gui_sel');
+			$this->setTransaccion('SEG_EXPGUI_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			
 			$this->setParametro('id_subsistema','id_subsistema','integer');
@@ -120,12 +120,12 @@ class MODSubsistema extends MODbase{
 		
 
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-		    $this->procedimiento='segu.ft_estructura_gui_sel';
-			$this->transaccion='SEG_EXPESTGUI_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_estructura_gui_sel');
+			$this->setTransaccion('SEG_EXPESTGUI_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -144,12 +144,12 @@ class MODSubsistema extends MODbase{
 		
 		
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-			$this->procedimiento='segu.ft_funcion_sel';
-			$this->transaccion='SEG_EXPFUN_SEL';
-			$this->tipo_procedimiento='SEL';
+			$this->setProcedimiento('segu.ft_funcion_sel');
+			$this->setTransaccion('SEG_EXPFUN_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);	
 			$this->resetCaptura();
 			$this->addConsulta();	
@@ -176,12 +176,12 @@ class MODSubsistema extends MODbase{
 		
 
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-		    $this->procedimiento='segu.ft_procedimiento_sel';
-			$this->transaccion='SEG_EXPPROC_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_procedimiento_sel');
+			$this->setTransaccion('SEG_EXPPROC_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -201,12 +201,12 @@ class MODSubsistema extends MODbase{
 		}
 		
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-		    $this->procedimiento='segu.ft_procedimiento_gui_sel';
-			$this->transaccion='SEG_EXPPROCGUI_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_procedimiento_gui_sel');
+			$this->setTransaccion('SEG_EXPPROCGUI_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -223,12 +223,12 @@ class MODSubsistema extends MODbase{
 		}
 		
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-		    $this->procedimiento='segu.ft_rol_sel';
-			$this->transaccion='SEG_EXPROL_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_rol_sel');
+			$this->setTransaccion('SEG_EXPROL_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -248,12 +248,12 @@ class MODSubsistema extends MODbase{
 		
 		
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-		    $this->procedimiento='segu.ft_gui_rol_sel';
-			$this->transaccion='SEG_EXPGUIROL_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_gui_rol_sel');
+			$this->setTransaccion('SEG_EXPGUIROL_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -271,12 +271,12 @@ class MODSubsistema extends MODbase{
 		
 
 		if($this->respuesta->getTipo()=='ERROR'){
-			return $this->respuesta;
+			return $this->getRespuesta();
 		}
 		else {
-		    $this->procedimiento='segu.ft_rol_procedimiento_gui_sel';
-			$this->transaccion='SEG_EXPROLPROGUI_SEL';
-			$this->tipo_procedimiento='SEL';
+		    $this->setProcedimiento('segu.ft_rol_procedimiento_gui_sel');
+			$this->setTransaccion('SEG_EXPROLPROGUI_SEL');
+			$this->setTipoProcedimiento('SEL');
 			$this->setCount(false);
 			$this->resetCaptura();
 			$this->addConsulta();
@@ -292,7 +292,7 @@ class MODSubsistema extends MODbase{
 			$this->ejecutarConsulta($this->respuesta);
 		}
         
-       return $this->respuesta;		
+       return $this->getRespuesta();		
 	
 	}
 	

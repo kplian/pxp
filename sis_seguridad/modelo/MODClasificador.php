@@ -16,9 +16,9 @@ class MODClasificador extends MODbase{
 	
 	function listarClasificador(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_clasificador_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_CLASIF_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_clasificador_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_CLASIF_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 	
 		//Definicion de la lista del resultado del query
@@ -36,15 +36,15 @@ class MODClasificador extends MODbase{
 				
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function insertarClasificador(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_clasificador_ime';
-		$this->transaccion='SEG_CLASIF_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_clasificador_ime');
+		$this->setTransaccion('SEG_CLASIF_INS');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los Parametros para la funcion	
 		$this->setParametro('id_clasificador','id_clasificador','integer');
@@ -56,14 +56,14 @@ class MODClasificador extends MODbase{
 		$this->armarConsulta();
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarClasificador(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_clasificador_ime';
-		$this->transaccion='SEG_CLASIF_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_clasificador_ime');
+		$this->setTransaccion('SEG_CLASIF_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 		//Define los setParametros para la funcion			
 		$this->setParametro('id_clasificador','id_clasificador','integer');
@@ -75,14 +75,14 @@ class MODClasificador extends MODbase{
 		$this->armarConsulta();
 				
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarClasificador(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_clasificador_ime';
-		$this->transaccion='SEG_CLASIF_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_clasificador_ime');
+		$this->setTransaccion('SEG_CLASIF_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los setParametros para la funcion
 		$this->setParametro('id_clasificador','id_clasificador','integer');
@@ -90,7 +90,7 @@ class MODClasificador extends MODbase{
 		$this->armarConsulta();
 			
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 }

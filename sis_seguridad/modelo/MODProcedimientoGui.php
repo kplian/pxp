@@ -15,9 +15,9 @@ class MODProcedimientoGui extends MODbase{
 	
 	function listarProcedimientoGui(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_gui_sel';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROGUI_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_gui_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROGUI_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		//parametro para filtrado
 		$this->setParametro('id_gui','id_gui','integer');
 		
@@ -37,15 +37,15 @@ class MODProcedimientoGui extends MODbase{
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-    	return $this->respuesta;
+    	return $this->getRespuesta();
 
 	}
 	
 	function insertarProcedimientoGui(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_gui_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROGUI_INS';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_gui_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROGUI_INS');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		//Define los parametros para la funcion	
 		
 		$this->setParametro('id_procedimiento','id_procedimiento','integer');
@@ -54,15 +54,15 @@ class MODProcedimientoGui extends MODbase{
     	//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function modificarProcedimientoGui(){
 	
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_gui_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROGUI_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_gui_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROGUI_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_procedimiento_gui','id_procedimiento_gui','integer');
@@ -73,29 +73,29 @@ class MODProcedimientoGui extends MODbase{
 		//Ejecuta la instruccion
 		$this->armarConsulta();	
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	function eliminarProcedimientoGui(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_procedimiento_gui_ime';
-		$this->transaccion='SEG_PROGUI_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_procedimiento_gui_ime');
+		$this->setTransaccion('SEG_PROGUI_ELI');
+		$this->setTipoProcedimiento('IME');
 			
 		//Define los parametros para la funcion
 		$this->setParametro('id_procedimiento_gui','id_procedimiento_gui','integer');
 		//Ejecuta la instruccion
 		$this->armarConsulta();	
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 
 	function guardarProcedimientoGuiSincronizacion(){
 		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_procedimiento_gui_ime';// nombre procedimiento almacenado
-		$this->transaccion='SEG_PROGUISINC_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_procedimiento_gui_ime');// nombre procedimiento almacenado
+		$this->setTransaccion('SEG_PROGUISINC_MOD');//nombre de la transaccion
+		$this->setTipoProcedimiento('IME');//tipo de transaccion
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('transaccion','transaccion','varchar');
@@ -106,7 +106,7 @@ class MODProcedimientoGui extends MODbase{
 		$this->armarConsulta();	
 		
 		$this->ejecutarConsulta();
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 
 	

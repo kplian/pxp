@@ -7,9 +7,9 @@ class MODEsquema extends MODbase{
 	
 	function listarEsquema(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='gen.ft_esquema_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_ESQUEM_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.ft_esquema_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_ESQUEM_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 	
 		//Definicion de la lista del resultado del query
 	
@@ -23,7 +23,7 @@ class MODEsquema extends MODbase{
 		exit();*/
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 	
 	

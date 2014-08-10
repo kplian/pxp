@@ -16,13 +16,16 @@ class MODPrimo extends MODbase
 		$this->resetParametros();
 		$this->resetCaptura();
 		//definicion de datos
-		$this->procedimiento='segu.ft_primo_sel';
-		$this->transaccion='SEG_OBTEPRI_SEL';
-		$this->tipo_procedimiento='SEL';
-
+		/*$this->setProcedimiento('segu.ft_primo_sel');
+		$this->setTransaccion('SEG_OBTEPRI_SEL');
+		$this->setTipoProcedimiento('SEL');*/
+		$this->setProcedimiento('segu.ft_primo_sel');
+		$this->setTransaccion('SEG_OBTEPRI_SEL');
+		$this->setTipoProcedimiento('SEL');
+		
 		//definicion de variables
-		$this->tipo_conexion='seguridad';
-		$this->count=false;
+		$this->setTipoConexion('seguridad');
+		$this->setCount(false);
 		
 		//obtiene el random del id_primo
 		$numer_ran=rand(1,1000);
@@ -32,11 +35,11 @@ class MODPrimo extends MODbase
 		//defino varialbes que se captran como retornod e la funcion
 		$this->captura('primo','integer');
 		$this->armarConsulta();
-		
 		//echo $this->consulta;exit;
 		$this->ejecutarConsulta();
 		//var_dump($this->respuesta);exit;
-		return $this->respuesta;
+		//return $this->getRespuesta();
+		return $this->getRespuesta();
 	}
 }
 ?>

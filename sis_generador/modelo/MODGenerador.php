@@ -16,9 +16,9 @@ class MODGenerador extends MODbase {
 	function listarColumnas(){
 		
 		//Definición de variables para ejecución del procedimiento
-		$this->procedimiento='gen.f_obtener_datos_tabla_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_COLUMN_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.f_obtener_datos_tabla_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_COLUMN_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		//Definición de columnas
 		$this->captura('id_usuario','integer');
@@ -42,16 +42,16 @@ class MODGenerador extends MODbase {
 		
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	
 	function listarDatosTabla(){
 		
 		//Definición de variables para ejecución del procedimiento
-		$this->procedimiento='gen.f_obtener_datos_tabla_sel';// nombre procedimiento almacenado
-		$this->transaccion='GEN_TABLA_SEL';//nombre de la transaccion
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('gen.f_obtener_datos_tabla_sel');// nombre procedimiento almacenado
+		$this->setTransaccion('GEN_TABLA_SEL');//nombre de la transaccion
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 		
 		//Definición de columnas
 		$this->captura('id_usuario','integer');
@@ -75,7 +75,7 @@ class MODGenerador extends MODbase {
 		
 		$this->ejecutarConsulta();
 
-		return $this->respuesta;
+		return $this->getRespuesta();
 
 	}
 	

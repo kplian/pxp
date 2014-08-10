@@ -15,9 +15,9 @@ class MODLibretaHer extends MODbase{
 			
 	function listarLibretaHer(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_libreta_her_sel';
-		$this->transaccion='SG_LIB_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_libreta_her_sel');
+		$this->setTransaccion('SG_LIB_SEL');
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_libreta_her','int4');
@@ -37,14 +37,14 @@ class MODLibretaHer extends MODbase{
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function insertarLibretaHer(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_libreta_her_ime';
-		$this->transaccion='SG_LIB_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_libreta_her_ime');
+		$this->setTransaccion('SG_LIB_INS');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('estado_reg','estado_reg','varchar');
@@ -57,14 +57,14 @@ class MODLibretaHer extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function modificarLibretaHer(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_libreta_her_ime';
-		$this->transaccion='SG_LIB_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_libreta_her_ime');
+		$this->setTransaccion('SG_LIB_MOD');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_libreta_her','id_libreta_her','int4');
@@ -78,14 +78,14 @@ class MODLibretaHer extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function eliminarLibretaHer(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_libreta_her_ime';
-		$this->transaccion='SG_LIB_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_libreta_her_ime');
+		$this->setTransaccion('SG_LIB_ELI');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_libreta_her','id_libreta_her','int4');
@@ -97,7 +97,7 @@ class MODLibretaHer extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 }

@@ -15,9 +15,9 @@ class MODUsuarioGrupoEp extends MODbase{
 			
 	function listarUsuarioGrupoEp(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='segu.ft_usuario_grupo_ep_sel';
-		$this->transaccion='SG_UEP_SEL';
-		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setProcedimiento('segu.ft_usuario_grupo_ep_sel');
+		$this->setTransaccion('SG_UEP_SEL');
+		$this->setTipoProcedimiento('SEL');//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_usuario_grupo_ep','int4');
@@ -37,14 +37,14 @@ class MODUsuarioGrupoEp extends MODbase{
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function insertarUsuarioGrupoEp(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_usuario_grupo_ep_ime';
-		$this->transaccion='SG_UEP_INS';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_usuario_grupo_ep_ime');
+		$this->setTransaccion('SG_UEP_INS');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('estado_reg','estado_reg','varchar');
@@ -56,14 +56,14 @@ class MODUsuarioGrupoEp extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function modificarUsuarioGrupoEp(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_usuario_grupo_ep_ime';
-		$this->transaccion='SG_UEP_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_usuario_grupo_ep_ime');
+		$this->setTransaccion('SG_UEP_MOD');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_usuario_grupo_ep','id_usuario_grupo_ep','int4');
@@ -76,14 +76,14 @@ class MODUsuarioGrupoEp extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 	function eliminarUsuarioGrupoEp(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_usuario_grupo_ep_ime';
-		$this->transaccion='SG_UEP_ELI';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_usuario_grupo_ep_ime');
+		$this->setTransaccion('SG_UEP_ELI');
+		$this->setTipoProcedimiento('IME');
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_usuario_grupo_ep','id_usuario_grupo_ep','int4');
@@ -93,7 +93,7 @@ class MODUsuarioGrupoEp extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}
 			
 }

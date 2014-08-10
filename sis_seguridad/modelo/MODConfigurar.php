@@ -17,9 +17,9 @@ class MODConfigurar extends MODbase
 	function configurar()
 	{		
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='segu.ft_configurar_ime';
-		$this->transaccion='SG_CONF_MOD';
-		$this->tipo_procedimiento='IME';
+		$this->setProcedimiento('segu.ft_configurar_ime');
+		$this->setTransaccion('SG_CONF_MOD');
+		$this->setTipoProcedimiento('IME');
 		
 				
 		//Define los parametros para la funcion
@@ -38,7 +38,7 @@ class MODConfigurar extends MODbase
 		$this->ejecutarConsulta();		
 
 		//Devuelve la respuesta
-		return $this->respuesta;
+		return $this->getRespuesta();
 	}				
 }
 ?>
