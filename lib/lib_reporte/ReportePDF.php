@@ -905,7 +905,8 @@ class ReportePDF extends MYPDF
 		        $this->SetFont('','B');        
 		        $this->Cell(170, $height/2, $this->titulo1, 1, 2, 'C', false, '', 1, false, 'T', 'C');        
 		        $this->setXY($x,$y+$height/2);
-		        $this->Cell(170, $height/2, '',1,0,'C',false,'',1,false,'T','C');
+				$this->SetFontSize(10);
+		        $this->Cell(170, $height/2, $this->objParam->getParametro('titulo2'),1,0,'C',false,'',1,false,'T','C');
 		                
 		        $this->setXY($x+170,$y);
 		        $this->SetFont('','');
@@ -1003,7 +1004,8 @@ class ReportePDF extends MYPDF
 		        $this->SetFontSize(14);
 		        $this->SetFont('','B');        
 		        $this->Cell(105, $height/2,$this->titulo1 , 1, 2, 'C', false, '', 0, false, 'T', 'C');        
-		        $this->Cell(105,$height/2, '',1,0,'C',false,'',0,false,'T','C');
+		        $this->SetFontSize(10);
+		        $this->Cell(105,$height/2, $this->objParam->getParametro('titulo2'),1,0,'C',false,'',1,false,'T','C');
 		        
 		        $this->setXY($x+105,$y);
 		        $this->SetFont('','');
