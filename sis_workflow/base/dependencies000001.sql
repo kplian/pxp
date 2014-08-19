@@ -453,3 +453,50 @@ ALTER TABLE wf.ttipo_proceso_origen
     NOT DEFERRABLE;
 
 /*******************************************F-DEP-RAC-WF-0-09/05/2014*************************************/
+
+/*******************************************I-DEP-JRR-WF-0-12/08/2014*************************************/
+CREATE TRIGGER trig_tproceso_macro BEFORE UPDATE 
+ON wf.tproceso_macro FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_tproceso_macro ();
+
+CREATE TRIGGER trig_ttipo_proceso BEFORE UPDATE 
+ON wf.ttipo_proceso FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_proceso ();
+
+CREATE TRIGGER trig_ttabla BEFORE UPDATE 
+ON wf.ttabla FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttabla ();
+
+CREATE TRIGGER trig_ttipo_estado BEFORE UPDATE 
+ON wf.ttipo_estado FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_estado ();
+
+CREATE TRIGGER trig_ttipo_columna BEFORE UPDATE 
+ON wf.ttipo_columna FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_columna ();
+
+CREATE TRIGGER trig_ttipo_documento BEFORE UPDATE 
+ON wf.ttipo_documento FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_documento ();
+
+CREATE TRIGGER trig_ttipo_documento_estado BEFORE UPDATE 
+ON wf.ttipo_documento_estado FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_documento_estado ();
+
+CREATE TRIGGER trig_tcolumna_estado BEFORE UPDATE 
+ON wf.tcolumna_estado FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_tcolumna_estado ();
+
+CREATE TRIGGER trig_testructura_estado BEFORE UPDATE 
+ON wf.testructura_estado FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_testructura_estado ();
+
+CREATE TRIGGER trig_tlabores_tipo_proceso BEFORE UPDATE 
+ON wf.tlabores_tipo_proceso FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_tlabores_tipo_proceso ();
+
+CREATE TRIGGER trig_ttipo_proceso_origen BEFORE UPDATE 
+ON wf.ttipo_proceso_origen FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_proceso_origen ();
+
+/*******************************************F-DEP-JRR-WF-0-12/08/2014*************************************/

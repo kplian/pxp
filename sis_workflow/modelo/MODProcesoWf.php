@@ -130,6 +130,32 @@ class MODProcesoWf extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+	/*
+	Author:      RAC
+	Date         14/08/2014
+	Description: Funcion cuenta los registros nuevos a partir de una fecha pivote
+	
+	*/
+	
+	function chequeaEstadosMobile(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='wf.f_proceso_wf_ime';
+        $this->transaccion='WF_CHECKVB_IME';
+        $this->tipo_procedimiento='IME';//tipo de transaccion
+        
+        $this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');
+        $this->setParametro('fecha_pivote','fecha_pivote','timestamp');
+       
+                
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    
 	
 	
 	
@@ -316,17 +342,35 @@ function listarGantWf(){
         $this->tipo_procedimiento='IME';
         
         
-         $this->arreglo['procesos'] =  stripslashes ($this->arreglo['procesos'] );
-        
-        
+        $this->arreglo['procesos'] =  stripslashes ($this->arreglo['procesos'] );
         //Define los parametros para la funcion
         
         $this->setParametro('id_proceso_wf_act','id_proceso_wf_act','int4');
+        $this->setParametro('id_estado_wf_act','id_proceso_wf_act','int4');
         $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
         $this->setParametro('id_funcionario_wf','id_funcionario_wf','int4');
         $this->setParametro('id_depto_wf','id_depto_wf','int4');
         $this->setParametro('obs','obs','text');
         $this->setParametro('json_procesos','json_procesos','text');
+       
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    
+    function siguienteEstadoProcesoWfMobile(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.f_proceso_wf_ime';
+        $this->transaccion='WF_SIGPRO_IME';
+        $this->tipo_procedimiento='IME';
+        
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+        $this->setParametro('id_estado_wf','id_estado_wf','int4');
+        $this->setParametro('obs','obs','text');
+        
        
         //Ejecuta la instruccion
         $this->armarConsulta();

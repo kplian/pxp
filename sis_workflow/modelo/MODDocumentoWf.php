@@ -52,6 +52,14 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('usr_upload','varchar');
         $this->captura('fecha_upload','timestamp');
         
+        $this->captura('tipo_documento','varchar');
+        
+        $this->captura('action','varchar');
+        
+        
+        
+        
+        
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -66,7 +64,7 @@ BEGIN
 						from wf.ttipo_documento tipdw
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod
-				        where  ';
+				        where tipdw.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -92,7 +90,7 @@ BEGIN
 					    from wf.ttipo_documento tipdw
 					    inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod
-					    where ';
+					    where  tipdw.estado_reg = ''activo'' and  ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -101,6 +99,38 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPTIPDW_SEL'
+ 	#DESCRIPCION:	Exportacion de Tipo documento
+ 	#AUTOR:		admin	
+ 	#FECHA:		14-01-2014 17:43:47
+	***********************************/
+
+	elsif(p_transaccion='WF_EXPTIPDW_SEL')then
+
+		BEGIN
+
+               v_consulta:='select  ''tipo_documento''::varchar,tdoc.codigo,tp.codigo,tdoc.nombre,tdoc.descripcion,
+                            tdoc.action,tdoc.tipo,tdoc.estado_reg
+                            from wf.ttipo_documento tdoc
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = tdoc.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro ='|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and tdoc.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by tdoc.id_tipo_documento ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
 					
 	else
 					     

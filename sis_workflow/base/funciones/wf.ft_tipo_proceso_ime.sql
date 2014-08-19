@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_proceso_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -167,7 +165,43 @@ BEGIN
 	elsif(p_transaccion='WF_TIPPROC_ELI')then
 
 		begin
-			
+		
+			if (exists (select 1 
+            			from wf.ttipo_estado t
+                        where t.id_tipo_proceso = v_parametros.id_tipo_proceso and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de Estado que depende(n) de este tipo de proceso';
+            end if;
+            
+            
+            if (exists (select 1 
+            			from wf.ttipo_documento t
+                        where t.id_tipo_proceso = v_parametros.id_tipo_proceso and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de Documento que depende(n) de este tipo de proceso';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.ttipo_proceso_origen t
+                        where t.id_tipo_proceso = v_parametros.id_tipo_proceso and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de Proceso Origen que depende(n) de este tipo de proceso';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.tlabores_tipo_proceso t
+                        where t.id_tipo_proceso = v_parametros.id_tipo_proceso and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Labores que depende(n) de este tipo de proceso';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.ttabla t
+                        where t.id_tipo_proceso = v_parametros.id_tipo_proceso and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tablas que depende(n) de este tipo de proceso';
+            end if;  
+                  	
             --Sentencia de la modificacion
 			update wf.ttipo_proceso set
 			estado_reg = 'inactivo'

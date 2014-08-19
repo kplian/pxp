@@ -89,8 +89,12 @@ BEGIN
                                     tde.regla
                                   FROM  wf.ttipo_documento_estado tde 
                                   INNER JOIN  wf.ttipo_documento  td 
-                                    on td.id_tipo_documento  = tde.id_tipo_documento
-                                    and (tde.momento = 'exigir'  or tde.momento = 'verificar' or tde.momento = 'hacer_exigible' or tde.momento = 'verificar_fisico' or tde.momento = 'exigir_fisico')
+                                    on td.id_tipo_documento  = tde.id_tipo_documento 
+                                    and td.estado_reg = 'activo' and tde.estado_reg = 'activo'
+                                    and (tde.momento = 'exigir'  or tde.momento = 'verificar' or 
+                                        tde.momento = 'hacer_exigible' or 
+                                        tde.momento = 'verificar_fisico' or 
+                                        tde.momento = 'exigir_fisico')
                                     and tde.id_tipo_estado = v_id_tipo_estado
                                     ) LOOP
        

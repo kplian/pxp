@@ -80,6 +80,7 @@ BEGIN
     tew.alerta,
     ew.id_depto,
     tew.id_tipo_estado,
+    tew.nombre_estado,
     tew.disparador
     into
     v_registros_ant
@@ -91,7 +92,7 @@ BEGIN
     --revisar que el estado se encuentre activo, en caso contrario puede
     --se una orden desde una pantalla desactualizada
     
-    IF (v_registros_ant.estado_reg ='inactivo') THEN
+    IF (v_registros_ant.estado_reg !='activo') THEN
        raise exception 'El estado se encuentra inactivo, actualice sus datos' ;
     END IF;
 
@@ -122,7 +123,12 @@ BEGIN
      te.plantilla_mensaje,
      te.plantilla_mensaje_asunto,
      te.disparador,
-     te.cargo_depto
+     te.cargo_depto,
+     te.titulo_alerta,
+     te.acceso_directo_alerta,
+     te.nombre_clase_alerta,
+     te.parametros_ad,
+     te.tipo_noti
     INTO
      v_registros
     FROM wf.ttipo_estado te
@@ -222,6 +228,20 @@ BEGIN
                   v_desc_alarma = v_plantilla_correo;
            
             END IF;
+            
+            --si no tenemos acceso directo como parametro p_acceso_directo,  buscamos en la configuracion del tipo estado
+            
+            IF p_acceso_directo = '' and  v_registros.acceso_directo_alerta is not NULL and v_registros.acceso_directo_alerta != '' THEN
+                 
+                 p_titulo = v_registros.titulo_alerta;
+                 p_acceso_directo = v_registros.acceso_directo_alerta;
+                 p_clase = v_registros.nombre_clase_alerta;
+                 p_parametros = v_registros.parametros_ad;
+                 p_tipo = v_registros.tipo_noti;
+            
+            END IF;
+            
+            
            
            IF p_id_funcionario is not NULL and (v_registros_ant.id_funcionario is null or v_registros_ant.id_funcionario != p_id_funcionario)  THEN
           

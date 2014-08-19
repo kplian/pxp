@@ -73,7 +73,7 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
 						left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
-				        where  ';
+				        where tipcol.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -100,7 +100,7 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
-					    where ';
+					    where tipcol.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -109,6 +109,44 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPTIPCOL_SEL'
+ 	#DESCRIPCION:	Exportacion de Tipo columna
+ 	#AUTOR:		admin	
+ 	#FECHA:		07-05-2014 21:41:15
+	***********************************/
+
+	elsif(p_transaccion='WF_EXPTIPCOL_SEL')then
+
+		BEGIN
+
+               v_consulta:='select  ''tipo_columna''::varchar,tcol.bd_nombre_columna, tab.bd_codigo_tabla, tp.codigo,tcol.bd_tipo_columna,	
+                            tcol.bd_descripcion_columna,tcol.bd_tamano_columna,tcol.bd_campos_adicionales,tcol.bd_joins_adicionales,
+                            tcol.bd_formula_calculo,tcol.grid_sobreescribe_filtro,tcol.grid_campos_adicionales,
+                            tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,	
+                            tcol.form_combo_rec, tcol.form_sobreescribe_config,tcol.estado_reg
+
+                            from wf.ttipo_columna tcol
+                            inner join wf.ttabla tab
+                            on tab.id_tabla = tcol.id_tabla
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = tab.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and tcol.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by tcol.id_tipo_columna ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
     
     /*********************************    
  	#TRANSACCION:  'WF_TIPCOLES_SEL'
@@ -156,7 +194,7 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
                         left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
-				        where  ';
+				        where tipcol.estado_reg = ''activo'' and   ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;

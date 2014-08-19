@@ -208,15 +208,16 @@ BEGIN
                   
                   
                   
-                  -- obtener usuario
-                  
-                  select 
+                  SELECT
                     u.desc_persona
                   into
                     v_USUARIO_PREVIO
+                  FROM  segu.vusuario u 
+                  where u.id_usuario = p_id_usuario;
                   
-                  from
-                  segu.vusuario u where u.id_usuario = p_id_usuario;
+                  
+                  
+                  
                   
                  ----------------------------------------------------------------------------
                  --  Obtener valores de las palabras clave que hacen referencia a latabla

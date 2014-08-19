@@ -62,7 +62,7 @@ BEGIN
             inner join segu.tusuario usu1 on usu1.id_usuario = labtproc.id_usuario_reg
             left join segu.tusuario usu2 on usu2.id_usuario = labtproc.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = labtproc.id_tipo_proceso
-                where  ';
+                where  labtproc.estado_reg = ''activo'' and ';
       
       --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
@@ -89,7 +89,7 @@ BEGIN
               inner join segu.tusuario usu1 on usu1.id_usuario = labtproc.id_usuario_reg
             left join segu.tusuario usu2 on usu2.id_usuario = labtproc.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = labtproc.id_tipo_proceso
-              where ';
+              where labtproc.estado_reg = ''activo'' and ';
       
       --Definicion de la respuesta        
       v_consulta:=v_consulta||v_parametros.filtro;
@@ -98,6 +98,38 @@ BEGIN
       return v_consulta;
 
     end;
+    
+  /*********************************    
+  #TRANSACCION:  'WF_EXPLABTPROC_SEL'
+  #DESCRIPCION: Exportacion de labores tipo proceso
+  #AUTOR:   admin 
+  #FECHA:   15-03-2013 16:08:41
+  ***********************************/
+
+  elsif(p_transaccion='WF_EXPLABTPROC_SEL')then
+
+  		BEGIN
+			v_consulta:='select  ''labores''::varchar,lab.codigo,tp.codigo,lab.nombre,lab.descripcion,lab.estado_reg
+                            from wf.tlabores_tipo_proceso lab
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = lab.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and  lab.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by lab.id_labores_tipo_proceso ASC';	
+                                                                       
+               return v_consulta;               
+
+
+         END;
+         
+         
           
   else
                

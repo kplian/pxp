@@ -144,7 +144,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:-5
+				maxLength:250
 			},
 				type:'TextField',
 				filters:{pfiltro:'tipdw.action',type:'string'},

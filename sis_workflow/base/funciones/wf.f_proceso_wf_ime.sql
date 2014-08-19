@@ -27,6 +27,8 @@ DECLARE
 
 	v_nro_requerimiento    	integer;
 	v_parametros           	record;
+    v_reg_tipo_estado   	record;
+    v_registro_estado_wf_ant  record;
 	v_id_requerimiento     	integer;
 	v_resp		            varchar;
 	v_nombre_funcion        text;
@@ -46,6 +48,9 @@ DECLARE
     va_disparador varchar [];
     va_regla varchar [];
     va_prioridad integer [];
+    va_id_depto integer [];
+    v_filtro  varchar;
+    v_consulta varchar;
     
     v_num_estados integer;
     v_num_funcionarios bigint;
@@ -81,6 +86,7 @@ DECLARE
      v_query		text;
      v_plantilla_correo   varchar;
      v_plantilla_asunto   varchar;
+     v_total_registros  integer;
    
 
 BEGIN
@@ -254,7 +260,8 @@ BEGIN
              te.id_tipo_estado,
              ew.id_estado_anterior,
              ew.obs,
-             ew.id_proceso_wf
+             ew.id_proceso_wf,
+             ew.id_usuario_reg
             INTO
              v_registros
             FROM wf.ttipo_estado te
@@ -265,8 +272,8 @@ BEGIN
             WHERE ew.id_estado_wf =  v_parametros.id_estado_wf;
             
             
-            v_plantilla_correo =  wf.f_procesar_plantilla(p_id_usuario, v_registros.id_proceso_wf, v_registros.plantilla_mensaje, v_registros.id_tipo_estado, v_registros.id_estado_anterior, v_registros.obs);
-            v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, v_registros.id_proceso_wf, v_registros.plantilla_mensaje_asunto,v_registros.id_tipo_estado, v_registros.id_estado_anterior, v_registros.obs);
+            v_plantilla_correo =  wf.f_procesar_plantilla(v_registros.id_usuario_reg, v_registros.id_proceso_wf, v_registros.plantilla_mensaje, v_registros.id_tipo_estado, v_registros.id_estado_anterior, v_registros.obs);
+            v_plantilla_asunto =  wf.f_procesar_plantilla(v_registros.id_usuario_reg, v_registros.id_proceso_wf, v_registros.plantilla_mensaje_asunto,v_registros.id_tipo_estado, v_registros.id_estado_anterior, v_registros.obs);
                   
                   
             --Definicion de la respuesta
@@ -280,214 +287,7 @@ BEGIN
 		end;    
         
          
-	/*********************************    
- 	#TRANSACCION:  'WF_SIGPRO_IME'
- 	#DESCRIPCION:	funcion que controla el cambio al Siguiente esado del tipo_proceso
- 	#AUTOR:		RAC	
- 	#FECHA:		19-02-2013 12:12:51
-	***********************************/
-
-	elseif(p_transaccion='WF_SIGPRO_IME')then   
-        begin
-        
-        --obtenermos datos basicos
-          
-          select
-            pw.id_proceso_wf,
-            ew.id_estado_wf,
-            te.codigo,
-            pw.fecha_ini,
-            te.id_tipo_estado,
-            te.pedir_obs
-          into 
-            v_registros
-            
-          from wf.tproceso_wf pw
-          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
-          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
-          where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
-          
-         
-        
-         --------------------------------------------- 
-         -- Verifica  los posibles estados sigueintes para que desde la interfaz se tome la decision si es necesario
-         --------------------------------------------------
-          IF  v_parametros.operacion = 'verificar' THEN
-          
-              --buscamos siguiente estado correpondiente al proceso del WF
-             
-              ----- variables de retorno------
-              
-              v_num_estados=0;
-              v_num_funcionarios=0;
-              v_num_deptos=0;
-              
-              --------------------------------- 
-              
-             SELECT  
-                 ps_id_tipo_estado,
-                 ps_codigo_estado,
-                 ps_disparador,
-                 ps_regla,
-                 ps_prioridad
-             into
-                va_id_tipo_estado,
-                va_codigo_estado,
-                va_disparador,
-                va_regla,
-                va_prioridad
-            
-            FROM wf.f_obtener_estado_wf(
-            v_registros.id_proceso_wf, 
-            NULL,
-            v_registros.id_tipo_estado,
-            'siguiente',
-            p_id_usuario); 
-          
-            raise notice 'verifica';
-            
-            v_num_estados= array_length(va_id_tipo_estado, 1);
-            
-          --  raise exception 'Estados...  %',v_registros.pedir_obs;
-           
-          IF v_registros.pedir_obs = 'no' THEN
-            
-                      
-                IF v_num_estados = 1 then
-                      -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
-                       raise notice ' si solo hay un estado';
-                         SELECT 
-                         *
-                          into
-                         v_num_funcionarios 
-                         FROM wf.f_funcionario_wf_sel(
-                             p_id_usuario, 
-                             va_id_tipo_estado[1], 
-                             v_fecha_ini,
-                             v_registros.id_estado_wf,
-                             TRUE) AS (total bigint);
-                             
-                        IF v_num_funcionarios = 1 THEN
-                        
-                          raise notice ' si solo es un funcionario, recuperamos el funcionario correspondiente';
-                        -- si solo es un funcionario, recuperamos el funcionario correspondiente
-                             SELECT 
-                                 id_funcionario
-                                   into
-                                 v_id_funcionario_estado
-                             FROM wf.f_funcionario_wf_sel(
-                                 p_id_usuario, 
-                                 va_id_tipo_estado[1], 
-                                 v_fecha_ini,
-                                 v_registros.id_estado_wf,
-                                 FALSE) 
-                                 AS (id_funcionario integer,
-                                   desc_funcionario text,
-                                   desc_funcionario_cargo text,
-                                   prioridad integer);
-                        END IF;    
-                             
-                      
-                      --verificamos el numero de deptos
-                       raise notice 'verificamos el numero de deptos';
-                       
-                      
-                        SELECT 
-                        *
-                        into
-                          v_num_deptos 
-                       FROM wf.f_depto_wf_sel(
-                           p_id_usuario, 
-                           va_id_tipo_estado[1], 
-                           v_fecha_ini,
-                           v_registros.id_estado_wf,
-                           TRUE) AS (total bigint);
-                           
-                       IF v_num_deptos = 1 THEN
-                          -- si solo es un funcionario, recuperamos el funcionario correspondiente
-                           raise notice 'si solo es un funcionario, recuperamos el funcionario correspondiente';
-                     
-                               SELECT 
-                                   id_depto
-                                     into
-                                   v_id_depto_estado
-                              FROM wf.f_depto_wf_sel(
-                                   p_id_usuario, 
-                                   va_id_tipo_estado[1], 
-                                   v_fecha_ini,
-                                   v_registros.id_estado_wf,
-                                   FALSE) 
-                                   AS (id_depto integer,
-                                     codigo_depto varchar,
-                                     nombre_corto_depto varchar,
-                                     nombre_depto varchar,
-                                     prioridad integer,
-                                     subsistema varchar);
-                      END IF;
-                  
-                END IF;
-            
-             
-             END IF;
-             raise notice 'si hay mas de un estado disponible  preguntamos al usuario';
-             
-            -- si hay mas de un estado disponible  preguntamos al usuario
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Verificacion para el siguiente estado)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'estados', array_to_string(va_id_tipo_estado, ','));
-            v_resp = pxp.f_agrega_clave(v_resp,'operacion','preguntar_todo');
-            v_resp = pxp.f_agrega_clave(v_resp,'num_estados',v_num_estados::varchar);
-            v_resp = pxp.f_agrega_clave(v_resp,'num_funcionarios',v_num_funcionarios::varchar);
-            v_resp = pxp.f_agrega_clave(v_resp,'num_deptos',v_num_deptos::varchar);
-            v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario_estado',v_id_funcionario_estado::varchar);
-            v_resp = pxp.f_agrega_clave(v_resp,'id_depto_estado',v_id_depto_estado::varchar);
-            v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado', va_id_tipo_estado[1]::varchar);
-            
-            
-           ----------------------------------------
-           --Se se solicita cambiar de estado a la solicitud
-           ------------------------------------------
-           ELSEIF  v_parametros.operacion = 'cambiar' THEN
-          		
-           		 -- obtener datos tipo estado
-                
-                select
-                 te.codigo
-                into
-                 v_codigo_estado
-                from wf.ttipo_estado te
-                where te.id_tipo_estado = v_parametros.id_tipo_estado;
-                
-                IF  pxp.f_existe_parametro('p_tabla','id_depto') THEN
-                 
-                 v_id_depto = v_parametros.id_depto;
-            
-            END IF;
-            
-           
-            
-            -- hay que recuperar el supervidor que seria el estado inmediato,...
-             v_id_estado_actual =  wf.f_registra_estado_wf(v_parametros.id_tipo_estado, 
-                                                           v_parametros.id_funcionario, 
-                                                           v_registros.id_estado_wf, 
-                                                           v_registros.id_proceso_wf,
-                                                           p_id_usuario,
-                                                           v_parametros._id_usuario_ai,
-                                                           v_parametros._nombre_usuario_ai,
-                                                           v_id_depto,
-                                                           v_parametros.obs);
-            
-           -- si hay mas de un estado disponible  preguntamos al usuario
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
-          
-          
-          END IF;
-
-        
-          --Devuelve la respuesta
-            return v_resp;
-        
-        end;
+	
         
      /*********************************    
  	#TRANSACCION:  'WF_VERSIGPRO_IME'
@@ -581,10 +381,7 @@ BEGIN
                        v_registros.id_estado_wf,
                        TRUE) AS (total bigint);
                                    
-                                 
-                                   
-                            
-                --verificamos el numero de deptos
+                 --verificamos el numero de deptos
                  raise notice 'verificamos el numero de deptos';
                              
                             
@@ -617,176 +414,7 @@ BEGIN
             return v_resp;
         
         end;   
-    
-    /*********************************    
- 	#TRANSACCION:  'WF_VERSIGPRO_BK'
- 	#DESCRIPCION:   Verificas los parametros necesriso para tomas la decision sobre el sisguiete estado
- 	#AUTOR:		RAC	
- 	#FECHA:		23-03-2014 12:12:51
-	***********************************/
-
-	elseif(p_transaccion='WF_VERSIGPRO_BK')then   
-        begin
-        
-        --obtenermos datos basicos
-          
-          select
-            pw.id_proceso_wf,
-            ew.id_estado_wf,
-            te.codigo,
-            pw.fecha_ini,
-            te.id_tipo_estado,
-            te.pedir_obs,
-            pw.nro_tramite
-          into 
-            v_registros
-            
-          from wf.tproceso_wf pw
-          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
-          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
-          where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
-          
-         
-        
-         ------------------------------------------------------------------------------------------------------- 
-         -- Verifica  los posibles estados sigueintes para que desde la interfaz se tome la decision si es necesario
-         ------------------------------------------------------------------------------------------------------
-          IF  v_parametros.operacion = 'verificar' THEN
-          
-                  --buscamos siguiente estado correpondiente al proceso del WF
-                 
-                  ----- variables de retorno------
-                  
-                  v_num_estados=0;
-                  v_num_funcionarios=0;
-                  v_num_deptos=0;
-                  
-                  --------------------------------- 
-              
-                 SELECT  
-                     ps_id_tipo_estado,
-                     ps_codigo_estado,
-                     ps_disparador,
-                     ps_regla,
-                     ps_prioridad
-                 into
-                    va_id_tipo_estado,
-                    va_codigo_estado,
-                    va_disparador,
-                    va_regla,
-                    va_prioridad
-                
-                FROM wf.f_obtener_estado_wf(
-                    v_registros.id_proceso_wf,
-                     NULL,
-                     v_registros.id_tipo_estado,
-                     'siguiente',
-                     p_id_usuario); 
-          
-                raise notice 'verifica';
-                
-                v_num_estados= array_length(va_id_tipo_estado, 1);
-            
-                 --  raise exception 'Estados...  %',v_registros.pedir_obs;
-           
-                IF v_registros.pedir_obs = 'no' THEN
-                  
-                            
-                      IF v_num_estados = 1 then
-                            -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
-                             raise notice ' si solo hay un estado';
-                               SELECT 
-                               *
-                                into
-                               v_num_funcionarios 
-                               FROM wf.f_funcionario_wf_sel(
-                                   p_id_usuario, 
-                                   va_id_tipo_estado[1], 
-                                   v_fecha_ini,
-                                   v_registros.id_estado_wf,
-                                   TRUE) AS (total bigint);
-                                   
-                              IF v_num_funcionarios = 1 THEN
-                              
-                                raise notice ' si solo es un funcionario, recuperamos el funcionario correspondiente';
-                              -- si solo es un funcionario, recuperamos el funcionario correspondiente
-                                   SELECT 
-                                       id_funcionario
-                                         into
-                                       v_id_funcionario_estado
-                                   FROM wf.f_funcionario_wf_sel(
-                                       p_id_usuario, 
-                                       va_id_tipo_estado[1], 
-                                       v_fecha_ini,
-                                       v_registros.id_estado_wf,
-                                       FALSE) 
-                                       AS (id_funcionario integer,
-                                         desc_funcionario text,
-                                         desc_funcionario_cargo text,
-                                         prioridad integer);
-                              END IF;    
-                                   
-                            
-                            --verificamos el numero de deptos
-                             raise notice 'verificamos el numero de deptos';
-                             
-                            
-                              SELECT 
-                              *
-                              into
-                                v_num_deptos 
-                             FROM wf.f_depto_wf_sel(
-                                 p_id_usuario, 
-                                 va_id_tipo_estado[1], 
-                                 v_fecha_ini,
-                                 v_registros.id_estado_wf,
-                                 TRUE) AS (total bigint);
-                                 
-                             IF v_num_deptos = 1 THEN
-                                -- si solo es un funcionario, recuperamos el funcionario correspondiente
-                                 raise notice 'si solo es un funcionario, recuperamos el funcionario correspondiente';
-                           
-                                     SELECT 
-                                         id_depto
-                                           into
-                                         v_id_depto_estado
-                                    FROM wf.f_depto_wf_sel(
-                                         p_id_usuario, 
-                                         va_id_tipo_estado[1], 
-                                         v_fecha_ini,
-                                         v_registros.id_estado_wf,
-                                         FALSE) 
-                                         AS (id_depto integer,
-                                           codigo_depto varchar,
-                                           nombre_corto_depto varchar,
-                                           nombre_depto varchar,
-                                           prioridad integer);
-                            END IF;
-                        
-                      END IF;
-                  
-                   
-                   END IF;
-                   raise notice 'si hay mas de un estado disponible  preguntamos al usuario';
-                   
-                  -- si hay mas de un estado disponible  preguntamos al usuario
-                  v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Verificacion para el siguiente estado)'); 
-                  v_resp = pxp.f_agrega_clave(v_resp,'estados', array_to_string(va_id_tipo_estado, ','));
-                  v_resp = pxp.f_agrega_clave(v_resp,'operacion','preguntar_todo');
-                  v_resp = pxp.f_agrega_clave(v_resp,'num_estados',v_num_estados::varchar);
-                  v_resp = pxp.f_agrega_clave(v_resp,'num_funcionarios',v_num_funcionarios::varchar);
-                  v_resp = pxp.f_agrega_clave(v_resp,'num_deptos',v_num_deptos::varchar);
-                  v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario_estado',v_id_funcionario_estado::varchar);
-                  v_resp = pxp.f_agrega_clave(v_resp,'id_depto_estado',v_id_depto_estado::varchar);
-                  v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado', va_id_tipo_estado[1]::varchar);
-                  
-           END IF;
-           
-          --Devuelve la respuesta
-            return v_resp;
-        
-        end;   
-        
+   
      
     /*********************************    
  	#TRANSACCION:  'WF_CHKSTA_IME'
@@ -952,35 +580,54 @@ BEGIN
                           p_id_usuario,
                           v_parametros._id_usuario_ai,
                           v_parametros._nombre_usuario_ai,
-                          v_id_depto);
-                      /*jrr: Actualizar la tabla del proceso si es que existe*/
-         select id_tabla
-         into v_id_tabla
-         from wf.tproceso_wf p
-         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = p.id_tipo_proceso
-         inner join wf.ttabla ta on tp.id_tipo_proceso = ta.id_tipo_proceso
-         where p.id_proceso_wf =  v_id_proceso_wf and ta.vista_tipo = 'maestro';
-         
-         if ( v_id_tabla is not null ) then
-         	select lower(s.codigo) as esquema, t.*
-            into v_tabla
-            from wf.ttabla t 
-            inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
-            inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
-            inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
-            where t.id_tabla = v_id_tabla;
-            
-            v_query = ' update  ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '  
-                    set estado = ''' || v_codigo_estado || ''',
-                    id_estado_wf = ' ||  v_id_estado_actual || ',
-                    id_usuario_mod = ' ||  p_id_usuario || ',
-                    fecha_mod=now()
-                    where id_proceso_wf=' || v_id_proceso_wf;
-                                                          
-            execute (v_query);           
-            
-         end if;
+                          v_id_depto,
+                          '[RETROCESO] '|| v_parametros.obs); 
+                          
                       
+                      
+                      /*jrr: Actualizar la tabla del proceso si es que existe*/
+                       select id_tabla
+                       into v_id_tabla
+                       from wf.tproceso_wf p
+                       inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = p.id_tipo_proceso
+                       inner join wf.ttabla ta on tp.id_tipo_proceso = ta.id_tipo_proceso
+                       where p.id_proceso_wf =  v_id_proceso_wf and ta.vista_tipo = 'maestro';
+                       
+                       if ( v_id_tabla is not null ) then
+                          select lower(s.codigo) as esquema, t.*
+                          into v_tabla
+                          from wf.ttabla t 
+                          inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
+                          inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
+                          inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
+                          where t.id_tabla = v_id_tabla;
+                          
+                          v_query = ' update  ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '  
+                                  set estado = ''' || v_codigo_estado || ''',
+                                  id_estado_wf = ' ||  v_id_estado_actual || ',
+                                  id_usuario_mod = ' ||  p_id_usuario || ',
+                                  fecha_mod=now()
+                                  where id_proceso_wf=' || v_id_proceso_wf;
+                                                                        
+                          execute (v_query);           
+                          
+                       end if;
+                      
+                      
+                        --RAC si el tipo_estado tiene funcion de retroceso la ejecuta
+                        
+                        select 
+                         te.funcion_regreso
+                        into 
+                          v_reg_tipo_estado
+                        from wf.ttipo_estado te 
+                        where te.id_tipo_estado = v_id_tipo_estado;
+                      
+                        IF  v_reg_tipo_estado.funcion_regreso is not NULL THEN
+                        	EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_regreso  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_id_proceso_wf::varchar||','||COALESCE(''''||v_codigo_estado||'''','NULL')||')');
+                        END IF;
+                        
+                       
                     
                         -- si hay mas de un estado disponible  preguntamos al usuario
                         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
@@ -1084,41 +731,33 @@ BEGIN
         begin
         
         
-        /*   PARAMETROS
-         
-        $this->setParametro('id_proceso_wf_act','id_proceso_wf_act','int4');
-        $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
-        $this->setParametro('id_funcionario_wf','id_funcionario_wf','int4');
-        $this->setParametro('id_depto_wf','id_depto_wf','int4');
-        $this->setParametro('obs','obs','text');
-        $this->setParametro('json_procesos','json_procesos','text');
-       
-       */
-         
          --captura datos basicos del estado actual del proceso WF
-         
-         select
-            pw.id_proceso_wf,
+        
+        
+          select 
+            ew.estado_reg,
             ew.id_estado_wf,
             te.codigo,
-            pw.fecha_ini,
             te.id_tipo_estado,
-            te.pedir_obs
+            te.pedir_obs 
           into 
-            v_registros
-            
-          from wf.tproceso_wf pw
-          inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
-          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
-          where pw.id_proceso_wf =  v_parametros.id_proceso_wf_act;
+            v_registro_estado_wf_ant
+          FROM wf.testado_wf ew
+          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado 
+          WHERE ew.id_estado_wf = v_parametros.id_estado_wf_act;           -- id_estado_wf donde estamos parados actualmente
+          
+       --validamos que el estado wf actual este activo
+          IF v_registro_estado_wf_ant.estado_reg = 'inactivo' THEN
+            raise exception 'Por favor actualice sus datos antes de continuar';
+          END IF;
           
           
           select
              te.codigo
             into
-             v_codigo_estado
+             v_codigo_estado    
           from wf.ttipo_estado te
-          where te.id_tipo_estado = v_parametros.id_tipo_estado;
+          where te.id_tipo_estado = v_parametros.id_tipo_estado;   --p_id_tipo_estado_siguiente
          
          -------------------------------------
          --cambia el estado de proceso actual
@@ -1127,20 +766,21 @@ BEGIN
          -- hay que recuperar el supervidor que seria el estado inmediato,...
          v_id_estado_actual =  wf.f_registra_estado_wf(v_parametros.id_tipo_estado,   --p_id_tipo_estado_siguiente
                                                        v_parametros.id_funcionario_wf, 
-                                                       v_registros.id_estado_wf,   --  p_id_estado_wf_anterior
+                                                       v_registro_estado_wf_ant.id_estado_wf,   --  p_id_estado_wf_anterior
                                                        v_parametros.id_proceso_wf_act,
                                                        p_id_usuario,
                                                        v_parametros._id_usuario_ai,
                                                        v_parametros._nombre_usuario_ai,
                                                        v_parametros.id_depto_wf,
                                                        v_parametros.obs);
+         
          /*jrr: Actualizar la tabla del proceso si es que existe*/
          select id_tabla
          into v_id_tabla
          from wf.tproceso_wf p
          inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = p.id_tipo_proceso
          inner join wf.ttabla ta on tp.id_tipo_proceso = ta.id_tipo_proceso
-         where p.id_proceso_wf =  v_registros.id_proceso_wf and ta.vista_tipo = 'maestro';
+         where p.id_proceso_wf =  v_parametros.id_proceso_wf_act and ta.vista_tipo = 'maestro';
          
          if ( v_id_tabla is not null ) then
          	select lower(s.codigo) as esquema, t.*
@@ -1156,7 +796,7 @@ BEGIN
                     id_estado_wf = ' ||  v_id_estado_actual || ',
                     id_usuario_mod = ' ||  p_id_usuario || ',
                     fecha_mod=now()
-                    where id_proceso_wf=' || v_registros.id_proceso_wf;
+                    where id_proceso_wf=' || v_parametros.id_proceso_wf_act;
                                                           
             execute (v_query);           
             
@@ -1199,25 +839,328 @@ BEGIN
                        v_registros_proc.obs_pro,
                        v_codigo_tipo_pro,    
                        v_codigo_tipo_pro);
+                       
+                       
+               --TODO ejecutar funcion personalizada para registro de procesos wf
+               --caso se quiera uan ejecucion de datos especiales
+               --  ejm al dispara obligacione sde pago desde la cotizacion es necesario copiar el detalle de la cotizacion adjudicada        
                      
                       
            END LOOP;
+           
+           
+            --RAC si el tipo_estado tiene funcion de retroceso la ejecuta
+                        
+            select 
+             te.funcion_inicial
+            into 
+              v_reg_tipo_estado
+            from wf.ttipo_estado te 
+            where te.id_tipo_estado = v_parametros.id_tipo_estado;
+                      
+            IF  v_reg_tipo_estado.funcion_inicial is not NULL THEN
+                EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_inicial  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_parametros.id_proceso_wf_act::varchar||','||COALESCE(''''||v_codigo_estado||'''','NULL')||')');
+            END IF;
           
-         
-        
-            
            -- si hay mas de un estado disponible  preguntamos al usuario
            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
            v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
           
           
-        
-        
           --Devuelve la respuesta
             return v_resp;
         
         end;
-    
+   
+ 
+    /*********************************    
+ 	#TRANSACCION:  'WF_SIGPRO_IME'
+ 	#DESCRIPCION:	funcion que controla el cambio al Siguiente esado del tipo_proceso, valido solo para mobile y estados simple, sin disparon sin varios funcionarios
+ 	#AUTOR:		RAC	
+ 	#FECHA:		19-02-2013 12:12:51
+	***********************************/
+
+	elseif(p_transaccion='WF_SIGPRO_IME')then   
+        begin
+        
+             
+         
+        --validamos que el estado wf actual este activo
+        
+        select 
+          ew.estado_reg,
+          ew.id_estado_wf,
+          te.codigo,
+          te.id_tipo_estado,
+          te.pedir_obs 
+        into 
+          v_registro_estado_wf_ant
+        FROM wf.testado_wf ew
+        inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado 
+        WHERE ew.id_estado_wf = v_parametros.id_estado_wf;
+        
+        IF v_registro_estado_wf_ant.estado_reg = 'inactivo' THEN
+          raise exception 'Por favor actualice sus datos antes de continuar';
+        END IF;
+        
+        --buscamos siguiente estado correpondiente al proceso del WF
+             
+        ----- variables de retorno------
+              
+          v_num_estados=0;
+          v_num_funcionarios=0;
+          v_num_deptos=0;
+              
+        --------------------------------- 
+              
+         SELECT  
+               ps_id_tipo_estado,
+               ps_codigo_estado,
+               ps_disparador,
+               ps_regla,
+               ps_prioridad
+         into
+              va_id_tipo_estado,
+              va_codigo_estado,
+              va_disparador,
+              va_regla,
+              va_prioridad
+            
+          FROM wf.f_obtener_estado_wf(
+          v_parametros.id_proceso_wf, 
+          NULL,
+          v_registro_estado_wf_ant.id_tipo_estado,
+          'siguiente',
+          p_id_usuario); 
+          
+         
+            
+          v_num_estados= array_length(va_id_tipo_estado, 1);
+            
+          
+           
+         IF v_num_estados = 1 then
+                     
+                    -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
+                                  
+                                   
+                   SELECT 
+                   *
+                    into
+                   v_num_funcionarios 
+                   FROM wf.f_funcionario_wf_sel(
+                       p_id_usuario, 
+                       va_id_tipo_estado[1], 
+                       v_fecha_ini,
+                       v_registro_estado_wf_ant.id_estado_wf,     --id_estado ef actual que llega desde la interface
+                       TRUE) AS (total bigint);
+                             
+                        
+                    IF v_num_funcionarios = 1 THEN
+                                    
+                      raise notice ' si solo es un funcionario, recuperamos el funcionario correspondiente';
+                    -- si solo es un funcionario, recuperamos el funcionario correspondiente
+                         SELECT 
+                             id_funcionario
+                               into
+                             v_id_funcionario_estado
+                         FROM wf.f_funcionario_wf_sel(
+                             p_id_usuario, 
+                             va_id_tipo_estado[1], 
+                             v_fecha_ini,
+                             v_registro_estado_wf_ant.id_estado_wf,
+                             FALSE) 
+                             AS (id_funcionario integer,
+                               desc_funcionario text,
+                               desc_funcionario_cargo text,
+                               prioridad integer);
+                                   
+                       
+                    ELSIF v_num_funcionarios  > 1 THEN
+                                    
+                       raise exception 'La version mobile no admite mas de un funcionario';
+                                    
+                    END IF;    
+                             
+                      
+                      --verificamos el numero de deptos
+                       raise notice 'verificamos el numero de deptos';
+                       
+                      
+                   SELECT 
+                    *
+                   into
+                      v_num_deptos 
+                   FROM wf.f_depto_wf_sel(
+                       p_id_usuario, 
+                       va_id_tipo_estado[1], 
+                       v_fecha_ini,
+                       v_registro_estado_wf_ant.id_estado_wf,
+                       TRUE) AS (total bigint);
+                                   
+                               
+                   IF v_num_deptos = 1 THEN
+                        -- si solo es un funcionario, recuperamos el funcionario correspondiente
+                         raise notice 'si solo es un funcionario, recuperamos el funcionario correspondiente';
+                               
+                             SELECT 
+                                 id_depto
+                                   into
+                                 v_id_depto_estado
+                            FROM wf.f_depto_wf_sel(
+                                 p_id_usuario, 
+                                 va_id_tipo_estado[1], 
+                                 v_fecha_ini,
+                                 v_registro_estado_wf_ant.id_estado_wf,
+                                 FALSE) 
+                                 AS (id_depto integer,
+                                   codigo_depto varchar,
+                                   nombre_corto_depto varchar,
+                                   nombre_depto varchar,
+                                   prioridad integer,
+                                   subsistema varchar);
+                                
+                    ELSIF v_num_deptos  > 1 THEN
+                                  
+                         raise exception 'La version mobile no admite mas de un departamento';
+                                
+                                
+                    END IF;
+                  
+             
+       ELSIF v_num_estados > 1 then
+            raise exception 'La version mobile no admite mas de un estado destino';
+       ELSE
+       
+           raise exception 'No se encontro ningun estado siguiente';
+       
+       END IF;
+        
+        -- obtener datos tipo estado al que pasamos 
+         select
+           te.codigo,
+           te.funcion_inicial
+         into
+           v_reg_tipo_estado
+        from wf.ttipo_estado te
+        where te.id_tipo_estado = va_id_tipo_estado[1];
+        
+        IF  pxp.f_existe_parametro('p_tabla','id_depto') THEN
+               v_id_depto = v_parametros.id_depto;
+        END IF;
+            
+        -- hay que recuperar el supervidor que seria el estado inmediato,...
+        v_id_estado_actual =  wf.f_registra_estado_wf(va_id_tipo_estado[1], 
+                                                       v_id_funcionario_estado, 
+                                                       v_registro_estado_wf_ant.id_estado_wf,   -- ojo
+                                                       v_parametros.id_proceso_wf,
+                                                       p_id_usuario,
+                                                       v_parametros._id_usuario_ai,
+                                                       v_parametros._nombre_usuario_ai,
+                                                       v_id_depto_estado,
+                                                       v_parametros.obs);
+            
+        
+        /*jrr: Actualizar la tabla del proceso si es que existe*/
+         select id_tabla
+         into v_id_tabla
+         from wf.tproceso_wf p
+         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = p.id_tipo_proceso
+         inner join wf.ttabla ta on tp.id_tipo_proceso = ta.id_tipo_proceso
+         where p.id_proceso_wf =  v_parametros.id_proceso_wf and ta.vista_tipo = 'maestro';
+         
+         if ( v_id_tabla is not null ) then
+         	select lower(s.codigo) as esquema, t.*
+            into v_tabla
+            from wf.ttabla t 
+            inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
+            inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
+            inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
+            where t.id_tabla = v_id_tabla;
+            
+            v_query = ' update  ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '  
+                    set estado = ''' || v_reg_tipo_estado.codigo || ''',
+                    id_estado_wf = ' ||  v_id_estado_actual || ',
+                    id_usuario_mod = ' ||  p_id_usuario || ',
+                    fecha_mod=now()
+                    where id_proceso_wf=' || v_parametros.id_proceso_wf;
+                                                          
+            execute (v_query);           
+            
+         end if;
+        
+         --RAC si el tipo_estado tiene funcion de inicial la ejecuta
+                       
+            IF  v_reg_tipo_estado.funcion_inicial is not NULL THEN
+                EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_inicial  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_parametros.id_proceso_wf::varchar||','||COALESCE(''''||v_reg_tipo_estado.codigo||'''','NULL')||')');
+            END IF;
+        
+          -- si hay mas de un estado disponible  preguntamos al usuario
+         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
+         v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
+         --Devuelve la respuesta
+          return v_resp;
+        
+      end;
+      
+       
+    /*********************************    
+ 	#TRANSACCION:  'WF_CHECKVB_IME'
+ 	#DESCRIPCION:	Chequea si existen nuevos registros desde la ultima consulta, se usa en la interface mobile para lanzar alertas sonora
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-04-2013 09:01:51
+	***********************************/
+
+	elsif(p_transaccion='WF_CHECKVB_IME')then
+
+		begin
+        
+              select  
+                   pxp.aggarray(depu.id_depto)
+               into 
+                     va_id_depto
+              from param.tdepto_usuario depu 
+              where depu.id_usuario =  p_id_usuario; 
+              
+             v_filtro='';
+              
+            --interface para visto de procesos simple, generalemte usado en mobile
+            
+            IF p_administrador !=1 THEN
+                    v_filtro = 'lower(te.mobile)=''si''  and (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||')))  ';
+            ELSE
+                     v_filtro = ' lower(te.mobile)=''si''  ';
+                    --v_filtro = '0=0 and ';
+            END IF;
+            
+            if v_parametros.fecha_pivote is not null THEN
+                   
+                 --Sentencia de la consulta de conteo de registros
+                 v_consulta:='select count(pwf.id_proceso_wf) as total_registros
+                              from wf.tproceso_wf pwf
+                                 inner join wf.ttipo_proceso tp on pwf.id_tipo_proceso = tp.id_tipo_proceso
+                                 inner join wf.testado_wf ew on ew.id_proceso_wf = pwf.id_proceso_wf and  ew.estado_reg = ''activo''
+                                 inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+                              where  ew.fecha_reg > '''||v_parametros.fecha_pivote ||''' and    '||v_filtro;
+      			
+                  --raise exception 'llega %',v_parametros.fecha_pivote;
+                  
+                  execute v_consulta into v_total_registros;
+             ELSE
+               v_total_registros = 0 ;
+             END If; 
+
+              -- agregamos variable  de retorno que llegan hasta la interface
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Chequeo de estados)'); 
+             v_resp = pxp.f_agrega_clave(v_resp,'total_registros',v_total_registros::varchar); 
+             v_resp = pxp.f_agrega_clave(v_resp,'fecha_pivote',to_char(now(), 'DD/MM/YY HH24:mi:ss')); 
+              
+              
+              
+             --Devuelve la respuesta
+             return v_resp;
+
+		end;    
     
     
     else

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -32,6 +30,7 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_tipo_documento_estado	integer;
+    v_id_tipo_estado		integer;
 			    
 BEGIN
 
@@ -96,16 +95,54 @@ BEGIN
 
 		begin
 			--Sentencia de la modificacion
-			update wf.ttipo_documento_estado set
-			id_tipo_estado = v_parametros.id_tipo_estado,
-			id_tipo_documento = v_parametros.id_tipo_documento,
-			id_tipo_proceso = v_parametros.id_tipo_proceso,
-			momento = v_parametros.momento,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-            tipo_busqueda = v_parametros.tipo_busqueda,
-            regla = v_parametros.regla
-			where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
+            select id_tipo_estado
+            into v_id_tipo_estado
+            from wf.ttipo_documento_estado
+            where id_tipo_documento_estado = v_parametros.id_tipo_documento_estado;
+            
+            if (v_id_tipo_estado = v_parametros.id_tipo_estado)then
+            	update wf.ttipo_documento_estado set			
+                momento = v_parametros.momento,
+                fecha_mod = now(),
+                id_usuario_mod = p_id_usuario,
+                tipo_busqueda = v_parametros.tipo_busqueda,
+                regla = v_parametros.regla
+                where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
+                v_id_tipo_documento_estado = v_parametros.id_tipo_documento_estado;
+			else
+            	update segu.ttipo_documento_estado set
+                        estado_reg = 'inactivo'
+                where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
+                
+				insert into wf.ttipo_documento_estado(
+                id_tipo_estado,
+                id_tipo_documento,
+                id_tipo_proceso,
+                estado_reg,
+                momento,
+                fecha_reg,
+                id_usuario_reg,
+                fecha_mod,
+                id_usuario_mod,
+                tipo_busqueda,
+                regla
+                ) values(
+                v_parametros.id_tipo_estado,
+                v_parametros.id_tipo_documento,
+                v_parametros.id_tipo_proceso,
+                'activo',
+                v_parametros.momento,
+                now(),
+                p_id_usuario,
+                null,
+                null,
+                v_parametros.tipo_busqueda,
+                v_parametros.regla
+    							
+                )RETURNING id_tipo_documento_estado into v_id_tipo_documento_estado;
+            
+            end if;   
+			
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Momentos por Estados  modificado(a)'); 
@@ -127,7 +164,8 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from wf.ttipo_documento_estado
+			update wf.ttipo_documento_estado
+            set estado_reg = 'inactivo'
             where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
                
             --Definicion de la respuesta

@@ -54,6 +54,7 @@ BEGIN
 ***********************************/
 	v_filtro_codigo = '';
     if(par_transaccion='SEG_MENU_SEL')then
+        
         if(v_parametros.id_padre='%')then
         	if (pxp.f_existe_parametro(par_tabla, 'busqueda')) then
             	v_nivel:='%';
@@ -123,28 +124,27 @@ BEGIN
                    g.parametros 
                    FROM segu.tgui g  
                    inner join segu.testructura_gui eg
-                   INNER JOIN segu.tgui padre
-                   ON padre.id_gui = eg.fk_id_gui
-                   on g.id_gui=eg.id_gui
-                   and g.estado_reg=''activo''
-                   and eg.estado_reg=''activo''
+                   INNER JOIN segu.tgui padre ON padre.id_gui = eg.fk_id_gui
+                      on g.id_gui=eg.id_gui
+                         and g.estado_reg=''activo''
+                         and eg.estado_reg=''activo''
                    inner join segu.tgui_rol gr
-                   on gr.id_gui=g.id_gui
-                   and gr.estado_reg=''activo''
+                      on gr.id_gui=g.id_gui
+                         and gr.estado_reg=''activo''
                    inner join segu.trol r
-                   on r.id_rol=gr.id_rol
-                   and r.estado_reg=''activo''
+                       on r.id_rol=gr.id_rol
+                         and r.estado_reg=''activo''
                    inner join segu.tusuario_rol ur
-                   on ur.id_rol=r.id_rol
-                   and ur.estado_reg=''activo''
+                      on ur.id_rol=r.id_rol
+                         and ur.estado_reg=''activo''
                    inner join segu.tusuario u
-                   on u.id_usuario=ur.id_usuario
-                   and u.estado_reg=''activo''
+                      on u.id_usuario=ur.id_usuario
+                        and u.estado_reg=''activo''
                    where g.visible=''si''
-				   AND g.estado_reg = ''activo''
-                   and padre.codigo_gui::text like '''||v_parametros.id_padre||'''
-                   AND g.nivel::text like '''||v_nivel|| '''' || v_filtro_codigo || '
-                   and u.id_usuario ='|| par_id_usuario||'
+				      AND g.estado_reg = ''activo''
+                      and padre.codigo_gui::text like '''||v_parametros.id_padre||'''
+                     AND g.nivel::text like '''||v_nivel|| '''' || v_filtro_codigo || '
+                     and u.id_usuario ='|| par_id_usuario||'
                    group by 
                    
                        g.id_gui,
@@ -197,17 +197,39 @@ BEGIN
              ELSE
                   
                   v_consulta =  'SELECT
-                                      g.id_gui,
-                                      g.codigo_gui,
-                                      g.nombre,
-                                      g.codigo_mobile,
-                                      sub.prefijo||'' ''||g.nombre as desc_mobile
-                                                           
-                                FROM segu.tgui g
-                                INNER JOIN segu.testructura_gui eg ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
-                                INNER JOIN segu.tsubsistema sub ON sub.id_subsistema = g.id_subsistema
-                                WHERE g.estado_reg=''activo''  and sw_mobile = ''si'' 
-                                ORDER BY desc_mobile, g.nombre';
+                                        g.id_gui,
+                                        g.codigo_gui,
+                                        g.nombre,
+                                        g.codigo_mobile,
+                                        g.nombre::text as desc_mobile
+                                                                                     
+                                  FROM segu.tgui g
+                                  INNER JOIN segu.testructura_gui eg ON g.id_gui=eg.id_gui and eg.estado_reg = ''activo''
+                                  INNER JOIN segu.tsubsistema sub ON sub.id_subsistema = g.id_subsistema
+                                  
+                                  
+                                   inner join segu.tgui_rol gr
+                                                on gr.id_gui=g.id_gui
+                                                   and gr.estado_reg=''activo''
+                                  
+                                  inner join segu.trol r
+                                                 on r.id_rol=gr.id_rol
+                                                   and r.estado_reg=''activo''
+                                  
+                                  inner join segu.tusuario_rol ur
+                                                on ur.id_rol=r.id_rol
+                                                   and ur.estado_reg=''activo''
+                                  WHERE g.estado_reg=''activo''  and sw_mobile = ''si''  and ur.id_usuario ='||par_id_usuario||'
+                                  group by 
+                                             
+                                                g.id_gui,
+                                                g.codigo_gui,
+                                                g.nombre,
+                                                g.codigo_mobile,
+                                                desc_mobile
+                                                 
+                                  
+                                  ORDER BY desc_mobile, g.nombre';
           
           
           END IF; 

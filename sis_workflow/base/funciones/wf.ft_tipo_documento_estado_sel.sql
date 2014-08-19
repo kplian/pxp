@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -69,7 +67,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = des.id_usuario_mod
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = des.id_tipo_proceso
                         inner join wf.ttipo_estado te on te.id_tipo_estado = des.id_tipo_estado
-				        where  ';
+				        where des.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -97,7 +95,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = des.id_usuario_mod
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = des.id_tipo_proceso
                         inner join wf.ttipo_estado te on te.id_tipo_estado = des.id_tipo_estado
-                        where ';
+                        where des.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -106,7 +104,44 @@ BEGIN
 			return v_consulta;
 
 		end;
-					
+	
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPDES_SEL'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		15-01-2014 03:12:38
+	***********************************/
+
+	elsif(p_transaccion='WF_EXPDES_SEL')then
+
+		BEGIN
+
+               v_consulta:='select  ''tipo_documento_estado''::varchar,tdoc.codigo,tp.codigo,tes.codigo,tdoces.momento,	
+                            tdoces.tipo_busqueda,tdoces.regla,tdoces.estado_reg
+
+                            from wf.ttipo_documento_estado tdoces
+                            inner join wf.ttipo_documento tdoc
+                            on tdoc.id_tipo_documento = tdoces.id_tipo_documento
+                            inner join wf.ttipo_estado tes
+                            on tes.id_tipo_estado = tdoces.id_tipo_estado
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = tdoc.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and tdoces.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by tdoces.id_tipo_documento_estado ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
+        					
 	else
 					     
 		raise exception 'Transaccion inexistente';

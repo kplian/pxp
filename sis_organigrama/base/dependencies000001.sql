@@ -368,3 +368,52 @@ select pxp.f_insert_tprocedimiento_gui ('OR_INT_SEL', 'ASIGINGEN', 'no');
 
 /*********************************F-DEP-RAC-ORGA-0-05/08/2014***********************************/
 
+
+/*********************************I-DEP-RAC-ORGA-0-19/08/2014***********************************/
+--------------- SQL ---------------
+CREATE OR REPLACE VIEW orga.vfuncionario_cargo(
+    id_uo_funcionario,
+    id_funcionario,
+    desc_funcionario1,
+    desc_funcionario2,
+    id_uo,
+    nombre_cargo,
+    fecha_asignacion,
+    fecha_finalizacion,
+    num_doc,
+    ci,
+    codigo,
+    email_empresa,
+    estado_reg_fun,
+    estado_reg_asi,
+    id_cargo,
+    descripcion_cargo,
+    cargo_codigo)
+AS
+  SELECT uof.id_uo_funcionario,
+         funcio.id_funcionario,
+         person.nombre_completo1 AS desc_funcionario1,
+         person.nombre_completo2 AS desc_funcionario2,
+         uo.id_uo,
+         uo.nombre_cargo,
+         uof.fecha_asignacion,
+         uof.fecha_finalizacion,
+         person.num_documento AS num_doc,
+         person.ci,
+         funcio.codigo,
+         funcio.email_empresa,
+         funcio.estado_reg AS estado_reg_fun,
+         uof.estado_reg AS estado_reg_asi,
+         car.id_cargo,
+         car.nombre AS descripcion_cargo,
+         car.codigo AS cargo_codigo,
+         uo.nombre_unidad
+  FROM orga.tfuncionario funcio
+       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
+       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
+        funcio.id_funcionario
+       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
+       JOIN orga.tcargo car ON car.id_cargo = uof.id_cargo
+  WHERE uof.estado_reg::text = 'activo' ::text;
+
+/*********************************F-DEP-RAC-ORGA-0-19/08/2014***********************************/

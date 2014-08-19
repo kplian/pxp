@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_proceso_macro_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION wf.ft_proceso_macro_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.f_proceso_macro_ime
@@ -115,8 +118,25 @@ BEGIN
 	elsif(p_transaccion='WF_PROMAC_ELI')then
 
 		begin
+        	
+            if (exists (select 1 
+            			from wf.ttipo_proceso t
+                        where t.id_proceso_macro = v_parametros.id_proceso_macro and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de Proceso que depende(n) de este proceso macro';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.ttipo_proceso_origen t
+                        where t.id_proceso_macro = v_parametros.id_proceso_macro and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de Proceso Origen que depende(n) de este proceso macro';
+            end if;
+            
+            
 			--Sentencia de la eliminacion
-			delete from wf.tproceso_macro
+			update  wf.tproceso_macro
+            set estado_reg = 'inactivo'
             where id_proceso_macro=v_parametros.id_proceso_macro;
                
             --Definicion de la respuesta
@@ -144,7 +164,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_proceso_macro_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

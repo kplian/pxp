@@ -706,3 +706,146 @@ IS 'si o no, se muestra en el la interface de vobowf,  solo es conveniente las i
   
 /***********************************F-SCP-RAC-WF-1-04/08/2014****************************************/
   
+ 
+ 
+  
+/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+ --------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN funcion_inicial VARCHAR(150); 
+  
+COMMENT ON COLUMN wf.ttipo_estado.funcion_inicial
+IS 'esta funcion correo cuando  el flujo continua sobre este estado';  
+  
+  --------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN funcion_regreso VARCHAR(200);
+
+COMMENT ON COLUMN wf.ttipo_estado.funcion_regreso
+IS 'esta funcion correo cuando  el flujo retrocede hacia este estado';
+
+/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+
+
+/***********************************I-SCP-RAC-WF-1-12/08/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN acceso_directo_alerta VARCHAR;
+
+COMMENT ON COLUMN wf.ttipo_estado.acceso_directo_alerta
+IS 'direccion de la interface que se manda dentro la alerta de este estado';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN nombre_clase_alerta VARCHAR(40);
+
+COMMENT ON COLUMN wf.ttipo_estado.nombre_clase_alerta
+IS 'nombre de la clase que se ejecuta en el acceso directo de la clase';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN parametros_ad VARCHAR DEFAULT '{}' NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_estado.parametros_ad
+IS 'parametros en formato JSON que se mandan al acceso directo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN tipo_noti VARCHAR(40) DEFAULT 'notificacion' NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_estado.tipo_noti
+IS 'tipo de alerta';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN titulo_alerta VARCHAR(50);
+
+ALTER TABLE wf.ttipo_estado
+  ALTER COLUMN titulo_alerta SET DEFAULT '';
+
+COMMENT ON COLUMN wf.ttipo_estado.titulo_alerta
+IS 'Titulo que se muestra en la alerta';
+
+/***********************************F-SCP-RAC-WF-1-12/08/2014****************************************/
+
+
+
+/***********************************I-SCP-JRR-WF-0-12/08/2014****************************************/
+
+ALTER TABLE wf.tproceso_macro
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttipo_proceso
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttabla
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttipo_documento_estado
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.tcolumna_estado
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.testructura_estado
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.tlabores_tipo_proceso
+  ADD COLUMN modificado INTEGER;
+
+
+ALTER TABLE wf.ttipo_proceso_origen
+  ADD COLUMN modificado INTEGER;
+  
+ALTER TABLE wf.tcolumna_estado
+  ADD COLUMN regla VARCHAR;
+  
+/***********************************F-SCP-JRR-WF-0-12/08/2014****************************************/
+
+
+
+
+
+/***********************************I-SCP-RAC-WF-0-14/08/2014****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_proceso
+  ADD COLUMN funcion_disparo_wf VARCHAR(100);
+
+COMMENT ON COLUMN wf.ttipo_proceso.funcion_disparo_wf
+IS 'Esta funcion sirve para colocar logija adicional depues de un disparo de proceso, ejemplo al dispara la obligacion de pago es necesario copiar el detalle de la cotizacion y copiarlo al detallle de la obligacion';
+
+/***********************************F-SCP-RAC-WF-0-14/08/2014****************************************/
+
+
+
+
+
+
+

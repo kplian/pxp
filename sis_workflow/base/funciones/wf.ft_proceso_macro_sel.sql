@@ -62,7 +62,7 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = promac.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = promac.id_usuario_mod
                         INNER JOIN segu.tsubsistema subs on subs.id_subsistema = promac.id_subsistema
-				        where  ';
+				        where  promac.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -80,20 +80,24 @@ BEGIN
  	#FECHA:		19-03-2013
 	***********************************/
     elsif(p_transaccion='WF_EXPPROMAC_SEL')then
-		begin
-        	--Definicion de la consulta
-            v_consulta:='select ''proceso_macro''::varchar,
-            			promac.codigo,
-                        promac.nombre,
-                        promac.inicio,
-                        promac.estado_reg,
-                        subs.nombre as subsistema
-            			from wf.tproceso_macro promac
-                        inner join segu.tsubsistema subs on subs.id_subsistema=promac.id_subsistema
-                        where promac.id_proceso_macro='||v_parametros.id_proceso_macro||
-                        ' order by promac.id_proceso_macro ASC';
-            return v_consulta;
-        end;
+		 BEGIN
+
+               v_consulta:='select ''proceso_macro''::varchar,pm.codigo, s.codigo as codigo_subsisitema,pm.nombre,	
+                                inicio,pm.estado_Reg
+                            from wf.tproceso_macro pm
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and pm.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by pm.id_proceso_macro ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
 
 	/*********************************    
  	#TRANSACCION:  'WF_PROMAC_CONT'
@@ -111,7 +115,7 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = promac.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = promac.id_usuario_mod
                         INNER JOIN segu.tsubsistema subs on subs.id_subsistema = promac.id_subsistema
-					    where ';
+					    where   promac.estado_reg = ''activo''  and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

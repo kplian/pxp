@@ -54,10 +54,31 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             },rec.data,this.idContenedor,'SubirArchivoWf')
         }     
             
-            
+       this.addButton('btnReporte',{
+            text :'Reporte Generado',
+            iconCls : 'bpdf32',
+            disabled: true,
+            handler : this.onButtonReporte,
+            tooltip : '<b>Reporte generado por sistema</b>'
+        });     
             
             
 	},
+	
+	onButtonReporte:function(){
+        var rec=this.sm.getSelected();
+        console.log(rec)
+        Ext.Ajax.request({
+                url:'../../'+rec.data.action,
+                params:{'id_proceso_wf':rec.data.id_proceso_wf},
+                success: this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });
+       
+          
+    },
 			
 	Atributos:[
 		{
@@ -430,6 +451,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'nombre_estado',
         'chequeado_fisico',
         'usr_upload',
+        'tipo_documento',
+        'action',
         {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'}
 		
 		
@@ -448,12 +471,22 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             this.getBoton('btnMomento').setIconClass('block')
         }
         
+        if(data['tipo_documento'] == 'generado'){
+            this.getBoton('btnReporte').enable();
+        }
+        else{
+            this.getBoton('btnReporte').disable();
+        }
+         
+        
+        
     },
     
     liberaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.liberaMenu.call(this,tb)
         this.getBoton('btnUpload').disable(); 
-        this.getBoton('btnMomento').disable();        
+        this.getBoton('btnMomento').disable();
+        this.getBoton('btnReporte').disable();        
     },
 	
 	sortInfo:{
@@ -490,6 +523,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
          this.reload();
        }
     },
+    
+    
+        
+        
          
 	bdel:false,
 	bnew:false,

@@ -47,6 +47,18 @@ class MODTipoEstado extends MODbase{
 		$this->captura('plantilla_mensaje','varchar');
 		$this->captura('cargo_depto','varchar');
 		
+		$this->captura('funcion_inicial','varchar');
+		$this->captura('funcion_regreso','varchar');
+		$this->captura('mobile','varchar');
+		
+		$this->captura('acceso_directo_alerta','varchar');
+		$this->captura('nombre_clase_alerta','varchar');
+		$this->captura('tipo_noti','varchar');
+		$this->captura('titulo_alerta','varchar');
+		$this->captura('parametros_ad','varchar');
+		
+		
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -135,6 +147,19 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('alerta','alerta','varchar');
 		$this->setParametro('pedir_obs','pedir_obs','varchar');
 		$this->setParametro('cargo_depto','cargo_depto','varchar');
+		
+		$this->setParametro('funcion_inicial','funcion_inicial','varchar');
+		$this->setParametro('funcion_regreso','funcion_regreso','varchar');
+		$this->setParametro('mobile','mobile','varchar');
+		
+		$this->setParametro('acceso_directo_alerta','acceso_directo_alerta','varchar');
+		$this->setParametro('nombre_clase_alerta','nombre_clase_alerta','varchar');
+		$this->setParametro('tipo_noti','tipo_noti','varchar');
+		$this->setParametro('titulo_alerta','titulo_alerta','varchar');
+		$this->setParametro('parametros_ad','parametros_ad','varchar');
+		
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -167,6 +192,16 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('alerta','alerta','varchar');
         $this->setParametro('pedir_obs','pedir_obs','varchar');
         $this->setParametro('cargo_depto','cargo_depto','varchar');
+        $this->setParametro('funcion_inicial','funcion_inicial','varchar');
+        $this->setParametro('funcion_regreso','funcion_regreso','varchar');
+        $this->setParametro('mobile','mobile','varchar');
+        
+        $this->setParametro('acceso_directo_alerta','acceso_directo_alerta','varchar');
+        $this->setParametro('nombre_clase_alerta','nombre_clase_alerta','varchar');
+        $this->setParametro('tipo_noti','tipo_noti','varchar');
+        $this->setParametro('titulo_alerta','titulo_alerta','varchar');
+        $this->setParametro('parametros_ad','parametros_ad','varchar');
+        
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

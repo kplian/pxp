@@ -232,13 +232,21 @@ BEGIN
                         tipes.plantilla_mensaje_asunto,
                         tipes.plantilla_mensaje,
                        -- tipes.cargo_depto::varchar
-                        array_to_string( tipes.cargo_depto,'','',''null'')::varchar
-                        
+                        array_to_string( tipes.cargo_depto,'','',''null'')::varchar,
+                        tipes.funcion_inicial,
+                        tipes.funcion_regreso,
+                        tipes.mobile,
+                        tipes.acceso_directo_alerta, 
+                        tipes.nombre_clase_alerta, 
+                        tipes.tipo_noti, 
+                        tipes.titulo_alerta, 
+                        tipes.parametros_ad	
+                                    
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
-				        where  ';
+				        where tipes.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -256,29 +264,32 @@ BEGIN
  	#FECHA:		19-03-2013 15:36:11
 	***********************************/
 
-    	begin
-        	v_consulta:='select ''tipo_estado''::varchar,
-	            		tipes.codigo,
-                        tipes.nombre_estado,
-						tipes.inicio,
-						tipes.disparador,
-                        tipes.fin,                        
-						tipes.tipo_asignacion,
-						tipes.nombre_func_list,
-                        tipes.depto_asignacion,
-						tipes.nombre_depto_func_list,
-                        tipes.obs,                        
-						tipes.estado_reg,
-						tp.codigo AS codigo_proceso,
-                        array_to_string(wf.f_obtener_tipos_procesos(tipes.nombre_estado),'','') as tipos_procesos
-						from wf.ttipo_estado tipes
-						inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso                        
-                        inner join wf.tproceso_macro pm on pm.id_proceso_macro =tp.id_proceso_macro
-                        where pm.id_proceso_macro='||v_parametros.id_proceso_macro||
-                        ' order by tipes.id_tipo_estado ASC';
-            return v_consulta;
-            
-        end;
+    	BEGIN
+
+               v_consulta:='select ''tipo_estado''::varchar,tes.codigo, tp.codigo, tes.nombre_estado ,tes.inicio, tes.disparador, tes.fin,
+                            tes.tipo_asignacion, tes.nombre_func_list , tes.depto_asignacion, tes.nombre_depto_func_list,
+                            tes.obs, tes.alerta, tes.pedir_obs,tes.descripcion,tes.plantilla_mensaje,tes.plantilla_mensaje_asunto,
+                            array_to_string(tes.cargo_depto,'',''),tes.mobile,tes.funcion_inicial,tes.funcion_regreso,tes.acceso_directo_alerta,
+                            tes.nombre_clase_alerta,tes.tipo_noti,tes.titulo_alerta,tes.parametros_ad,tes.estado_reg
+
+                            from wf.ttipo_estado tes
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = tes.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and tes.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by tes.id_tipo_estado ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
 
 	/*********************************    
  	#TRANSACCION:  'WF_TIPES_CONT'
@@ -296,7 +307,7 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
-					    where ';
+					    where  tipes.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

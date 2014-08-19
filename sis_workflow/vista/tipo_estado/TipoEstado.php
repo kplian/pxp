@@ -370,7 +370,149 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
-		{
+        {
+            config:{
+                name: 'mobile',
+                fieldLabel: 'Mobile',
+                qtip:'este estado es accesible desde la interface de visto bueno mobile?, si es asi posiblemente tambien necesite indicar la funcion de inicio y retroceso',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                emptyText:'si/no...',                   
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'inicio',                   
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipes.mobile',
+                         options: ['si','no'],  
+                    },
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'funcion_inicial',
+                fieldLabel: 'Funcion Inicial',
+                qtip:'Esta funcion se ejecuta cuando llega a este estado en flujo normal, solo corre en interface mobile o interface Visto bueno WF (generica) ejemplo tes.tes.f_fun_inicio_plan_pago_wf( p_id_usuario, v_parametros._id_usuario_ai, v_parametros._nombre_usuario_ai, v_parametros.id_estado_wf_act, v_parametros.id_proceso_wf_act, v_codigo_estado_siguiente)',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.funcion_inicial',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'funcion_regreso',
+                fieldLabel: 'Funcion Regreso',
+                qtip:'Esta funcion se ejecuta cuando en el flujo retrocede a este estado, solo corre en interface mobile o interface Visto bueno WF (generica) ejemplo tes.tes.f_fun_regeso_plan_pago_wf( p_id_usuario, v_parametros._id_usuario_ai, v_parametros._nombre_usuario_ai, v_parametros.id_estado_wf_act, v_parametros.id_proceso_wf_act, v_codigo_estado_siguiente)',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.funcion_regreso',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'acceso_directo_alerta',
+                fieldLabel: 'Acceso Directo',
+                qtip:'En el caso de tener alerta este es la direccion de la interface',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.acceso_directo_alerta',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'nombre_clase_alerta',
+                fieldLabel: 'Nmbre Cls AD',
+                qtip:'Nombre de clase de la interface indicada en el acceso directo',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.nombre_clase_alerta',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'tipo_noti',
+                fieldLabel: 'Tipo de alerta',
+                qtip:'Tipo de alerta, porde fecto notificacion',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.tipo_noti',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'titulo_alerta',
+                fieldLabel: 'Titulo alerta',
+                qtip:'Titulo de alerta',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.tipo_titulo_alertaoti',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        
+        
+        {
+            config:{
+                name: 'parametros_ad',
+                fieldLabel: 'Nombre Parametros AD',
+                qtip:'Nombre de la columna que se usa como  filtro en el acceso directo, ejm plapa.id_proceso_wf',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.titulo_alerta',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        
+        {
 			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
@@ -471,7 +613,9 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'desc_tipo_proceso', type: 'string'},
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
-		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto'
+		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
+		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
+        'titulo_alerta', 'parametros_ad'
 		
 	],
 	sortInfo:{

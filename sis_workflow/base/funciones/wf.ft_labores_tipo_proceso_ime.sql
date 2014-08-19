@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_labores_tipo_proceso_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION wf.ft_labores_tipo_proceso_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_labores_tipo_proceso_ime
@@ -116,7 +119,8 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from wf.tlabores_tipo_proceso
+			update wf.tlabores_tipo_proceso
+            set estado_reg = 'inactivo'
             where id_labores_tipo_proceso=v_parametros.id_labores_tipo_proceso;
                
             --Definicion de la respuesta
@@ -144,7 +148,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_labores_tipo_proceso_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

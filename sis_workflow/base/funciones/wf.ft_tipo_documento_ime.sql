@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -134,8 +132,17 @@ BEGIN
 	elsif(p_transaccion='WF_TIPDW_ELI')then
 
 		begin
+        
+        	if (exists (select 1 
+            			from wf.ttipo_documento_estado t
+                        where t.id_tipo_documento = v_parametros.id_tipo_documento and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Momentos de documento que depende(n) de este tipo documento';
+            end if;
+            
 			--Sentencia de la eliminacion
-			delete from wf.ttipo_documento
+			update wf.ttipo_documento
+            set estado_reg = 'inactivo'
             where id_tipo_documento=v_parametros.id_tipo_documento;
                
             --Definicion de la respuesta

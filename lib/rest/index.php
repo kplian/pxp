@@ -14,11 +14,6 @@ include_once(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_general/Errores.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_control/CTincludes.php');
 
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Allow-Headers: *');
-header('Access-Control-Max-Age: 1728000');
-
 
 $_SESSION["_OFUSCAR_ID"]='no'; 
 //estable aprametros ce la cookie de sesion
@@ -56,6 +51,13 @@ $app->error('exception_handler');
 $app->log->setEnabled(false);
 
 $app->response->headers->set('Content-Type', 'application/json');
+$headers = $app->request->headers;
+
+header('Access-Control-Allow-Origin: ' . $headers['Origin']);
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: pxp-user, content-type, Php-Auth-User, Php-Auth-Pw');
+header('Access-Control-Allow-Credentials: true');	
+header('Access-Control-Max-Age: 1728000');
 
  // get route
 
@@ -87,6 +89,7 @@ function get_func_argNames($funcName) {
 }
 
 function authPxp($headersArray) {
+	
 	$_SESSION["_SESION"]= new CTSesion();  
 	$mensaje = '';  
     //listar usuario con Pxp-User del header
@@ -295,11 +298,13 @@ $app->get(
 		$cookies = $app->request->cookies;
 		
 		//var_dump($app->request->cookies);
-    	if (isset($headers['Php-Auth-User'])) {
+    	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
+			
+		} else if (isset($headers['Php-Auth-User'])) {
     		authPxp($headers);
-		} else if (!isset($cookies['PHPSESSID']) || !isset($_SESSION['_SESION']) || $_SESSION["_SESION"]->getEstado()=='inactiva' || $_SESSION["_SESION"]->getEstado()=='preparada') {
+		} else {
 			$men=new Mensaje();
-			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 337','No hay una sesion activa para realizar esta peticion',
+			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 304','No hay una sesion activa para realizar esta peticion',
 			'Codigo de error: SESION',
 			'control','','','OTRO','');
 			
@@ -370,11 +375,12 @@ $app->get(
 $app->post(
 	 
     '/seguridad/Auten/verificarCredenciales',
-    function () use ($app) {
-    	
+    function () use ($app) {    	
     	$headers = $app->request->headers;
 		if (isset($headers['Php-Auth-User'])) {
+						
     		authPxp($headers);
+			
 		} else {	
 	    	$mensaje = '';
 	    	if ($app->request->post('usuario') == '') {
@@ -421,11 +427,13 @@ $app->post(
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		//var_dump($app->request->cookies);
-    	if (isset($headers['Php-Auth-User'])) {
+    	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
+			
+		} else if (isset($headers['Php-Auth-User'])) {
     		authPxp($headers);
-		} else if (!isset($cookies['PHPSESSID']) || $_SESSION["_SESION"]->getEstado()=='inactiva' || $_SESSION["_SESION"]->getEstado()=='preparada') {
+		} else {
 			$men=new Mensaje();
-			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 291','No hay una sesion activa para realizar esta peticion',
+			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 432','No hay una sesion activa para realizar esta peticion',
 			'Codigo de error: SESION',
 			'control','','','OTRO','');
 			
@@ -525,11 +533,14 @@ $app->delete(
         echo 'This is a DELETE route';
     }
 );
-
-$app->options('/:sistema/:clase_control/:metodo', function ($sistema,$clase_control,$metodo) {
-    header('Access-Control-Allow-Origin: *');
+  	
+$app->options('/:sistema/:clase_control/:metodo', function ($sistema,$clase_control,$metodo) use ($app) {
+	$headers = $app->request->headers;
+	
+    header('Access-Control-Allow-Origin: ' . $headers['Origin']);
 	header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 	header('Access-Control-Allow-Headers: pxp-user, content-type, Php-Auth-User, Php-Auth-Pw');
+	header('Access-Control-Allow-Credentials: true');	
 	header('Access-Control-Max-Age: 1728000');
 	
 	

@@ -301,10 +301,10 @@ BEGIN
             --interface para visto de procesos simple, generalemte usado en mobile
             IF  v_parametros.tipo_interfaz = 'VoBoProceso' THEN
                 IF p_administrador !=1 THEN
-                    v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
+                    v_filtro = 'lower(te.mobile)=''si''  and (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
                 ELSE
-                    -- v_filtro = '  ((lower(te.mobile)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
-                    v_filtro = '0=0 and ';
+                     v_filtro = ' lower(te.mobile)=''si''   and ';
+                    --v_filtro = '0=0 and ';
                 END IF;
             END IF;
             
@@ -409,7 +409,7 @@ BEGIN
 
 	/*********************************    
  	#TRANSACCION:  'WF_VOBOWF_CONT'
- 	#DESCRIPCION:	Conteo de registros de Vistos buenos para el proceso WF
+ 	#DESCRIPCION:	Conteo de registros de Vistos buenos para el proceso WF (este listado se usa en la interface de mobile)
  	#AUTOR:		rac	
  	#FECHA:		18-04-2013 09:01:51
 	***********************************/
@@ -430,10 +430,10 @@ BEGIN
               --interface para visto de procesos simple, generalemte usado en mobile
              IF  v_parametros.tipo_interfaz = 'VoBoProceso' THEN
                 IF p_administrador !=1 THEN
-                    v_filtro = ' (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
+                    v_filtro = 'lower(te.mobile)=''si''  and (ew.id_funcionario='||v_parametros.id_funcionario_usu::varchar||'   or  (ew.id_depto  in ('|| COALESCE(array_to_string(va_id_depto,','),'0')||'))) and ';
                 ELSE
-                    -- v_filtro = '  ((lower(te.mobile)=''si''  and lower(te.inicio)!=''si'')   or lower(tp.inicio)=''no'')  and ';
-                    v_filtro = '0=0 and ';
+                     v_filtro = ' lower(te.mobile)=''si''   and ';
+                    --v_filtro = '0=0 and ';
                 END IF;
              END IF;
           
@@ -500,6 +500,8 @@ BEGIN
               return v_consulta;
 
 		end; 
+         
+        
         
         
     /*********************************    

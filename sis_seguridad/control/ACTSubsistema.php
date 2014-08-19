@@ -174,6 +174,12 @@ class ACTSubsistema extends ACTbase{
 			}
 		}		
 		
+		
+		fwrite ($file,"----------------------------------\r\n".
+						  "--COPY LINES TO dependencies.sql FILE  \r\n".
+						  "---------------------------------\r\n".
+						  "\r\n" );
+		
 		foreach ($data as $row) {
 			if ($row['tipo'] == 'estructura_gui' ) {
 				if ($row['estado_reg'] == 'inactivo') {

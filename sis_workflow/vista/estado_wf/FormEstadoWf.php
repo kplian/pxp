@@ -803,6 +803,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     getValues:function(){
         var resp = {
                    id_proceso_wf_act:this.data.id_proceso_wf,
+                   id_estado_wf_act:this.data.id_estado_wf,
                    id_tipo_estado:this.Cmp.id_tipo_estado.getValue(),
                    id_funcionario_wf:this.Cmp.id_funcionario_wf.getValue(),
                    id_depto_wf:this.Cmp.id_depto_wf.getValue(),

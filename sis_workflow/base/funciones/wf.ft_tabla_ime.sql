@@ -168,8 +168,16 @@ BEGIN
 	elsif(p_transaccion='WF_tabla_ELI')then
 
 		begin
+        	if (exists (select 1 
+            			from wf.ttipo_columna t
+                        where t.id_tabla = v_parametros.id_tabla and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de columna que depende(n) de esta babla';
+            end if;
+            
 			--Sentencia de la eliminacion
-			delete from wf.ttabla
+			update wf.ttabla
+            set estado_reg = 'inactivo'
             where id_tabla=v_parametros.id_tabla;
                
             --Definicion de la respuesta

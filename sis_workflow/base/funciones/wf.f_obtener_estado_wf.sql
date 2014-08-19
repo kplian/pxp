@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_obtener_estado_wf (
   p_id_proceso_wf integer,
   p_id_estado_wf integer,
@@ -90,7 +88,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
             
           from wf.tproceso_wf pw
           inner join wf.testado_wf ew  on ew.id_proceso_wf = pw.id_proceso_wf and ew.estado_reg = 'activo'
-          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
+          inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado and te.estado_reg = 'activo'
           where pw.id_proceso_wf =  p_id_proceso_wf;
   ELSE
   
@@ -132,7 +130,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
                         inner join  wf.testructura_estado ee 
                               on ee.id_tipo_estado_hijo = te.id_tipo_estado
                         where      te.id_tipo_proceso = v_id_tipo_proceso  
-                              and  ee.id_tipo_estado_padre = v_id_tipo_estado
+                              and  ee.id_tipo_estado_padre = v_id_tipo_estado and te.estado_reg = 'activo' and ee.estado_reg = 'activo'
                         order by prioridad asc) LOOP
                         
                         
@@ -150,8 +148,8 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
                                       from  wf.ttipo_estado te 
                                       inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = te.id_tipo_estado
                                       where      te.id_tipo_proceso = v_id_tipo_proceso  
-                                            and  ee.id_tipo_estado_padre = v_id_tipo_estado
-                                            and  ee.prioridad = v_registros_prioridades.prioridad
+                                            and  ee.id_tipo_estado_padre = v_id_tipo_estado and ee.estado_reg = 'activo' 
+                                            and  ee.prioridad = v_registros_prioridades.prioridad and te.estado_reg = 'activo'
                                       order by ee.prioridad asc) LOOP        
                         
                            IF v_registros.regla is NULL or v_registros.regla = '' THEN
@@ -262,7 +260,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
              from  wf.ttipo_estado te 
              
         inner join  wf.testructura_estado ee 
-               on ee.id_tipo_estado_padre = te.id_tipo_estado
+               on ee.id_tipo_estado_padre = te.id_tipo_estado and ee.esta
         where te.id_tipo_proceso = v_id_tipo_proceso  
           and  ee.id_tipo_estado_hijo = v_id_tipo_estado;
    END IF;

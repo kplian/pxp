@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_estructura_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -34,6 +32,7 @@ DECLARE
 	v_id_estructura_estado	integer;
     v_disparador			varchar;
     v_fin varchar;
+    v_id_tipo_estado		integer;
 			    
 BEGIN
 
@@ -114,17 +113,52 @@ BEGIN
             IF v_disparador ilike 'si' THEN
                 RAISE EXCEPTION 'No puede definirse hijos para un Tipo Estado Padre seleccionado. Debido a que es un estado ''disparador''.';
             END IF;
+            --Sentencia de la modificacion
+            select id_tipo_estado_hijo
+            into v_id_tipo_estado
+            from wf.testructura_estado
+            where id_estructura_estado = v_parametros.id_estructura_estado;
             
-			--Sentencia de la modificacion
-			update wf.testructura_estado set
-			id_tipo_estado_padre = v_parametros.id_tipo_estado_padre,
-			id_tipo_estado_hijo = v_parametros.id_tipo_estado_hijo,
-			prioridad = v_parametros.prioridad,
-			regla = v_parametros.regla,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
-			where id_estructura_estado=v_parametros.id_estructura_estado;
-               
+            if (v_id_tipo_estado = v_parametros.id_tipo_estado_hijo)then
+            	--Sentencia de la modificacion
+                update wf.testructura_estado set
+                prioridad = v_parametros.prioridad,
+                regla = v_parametros.regla,
+                fecha_mod = now(),
+                id_usuario_mod = p_id_usuario
+                where id_estructura_estado=v_parametros.id_estructura_estado;
+                v_id_estructura_estado = v_parametros.id_estructura_estado;
+			else
+            	update segu.testructura_estado set
+                        estado_reg = 'inactivo'
+                where id_estructura_estado=v_parametros.id_estructura_estado;
+                
+				--Sentencia de la insercion
+                insert into wf.testructura_estado(
+                id_tipo_estado_padre,
+                id_tipo_estado_hijo,
+                prioridad,
+                regla,
+                estado_reg,
+                fecha_reg,
+                id_usuario_reg,
+                fecha_mod,
+                id_usuario_mod
+                ) values(
+                v_parametros.id_tipo_estado_padre,
+                v_parametros.id_tipo_estado_hijo,
+                v_parametros.prioridad,
+                v_parametros.regla,
+                'activo',
+                now(),
+                p_id_usuario,
+                null,
+                null
+    							
+                )RETURNING id_estructura_estado into v_id_estructura_estado;
+            
+            end if;  		
+			               
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Estrutura de estados modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_estructura_estado',v_parametros.id_estructura_estado::varchar);
@@ -145,7 +179,8 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from wf.testructura_estado
+			update wf.testructura_estado
+            set estado_reg = 'inactivo'
             where id_estructura_estado=v_parametros.id_estructura_estado;
                
             --Definicion de la respuesta

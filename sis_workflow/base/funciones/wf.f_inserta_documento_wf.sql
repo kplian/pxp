@@ -43,6 +43,8 @@ DECLARE
   
   v_registro_estado record;
   
+  v_check boolean;
+  
 BEGIN
 
      v_nombre_funcion = 'wf.f_inserta_documento_wf';
@@ -81,9 +83,11 @@ BEGIN
                                ted.momento,
                                ted.regla
                           from  wf.testado_wf ew 
-                              inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado
-                              inner join wf.ttipo_documento_estado ted on ted.id_tipo_estado   = te.id_tipo_estado and ted.momento = 'crear'
-                              inner join wf.ttipo_documento tdo  on tdo.id_tipo_documento = ted.id_tipo_documento 
+                              inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado and te.estado_reg = 'activo'
+                              inner join wf.ttipo_documento_estado ted 
+                                    on  ted.id_tipo_estado   = te.id_tipo_estado and ted.momento = 'crear' and ted.estado_reg = 'activo'
+                              inner join wf.ttipo_documento tdo  
+                                    on  tdo.id_tipo_documento = ted.id_tipo_documento and tdo.estado_reg = 'activo' 
                               where ew.id_estado_wf =  p_id_estado_wf) LOOP
                   
             --0)  verifica si no existe un documento del mismo tipo para el tipo proceso
@@ -98,14 +102,18 @@ BEGIN
                            
                ELSE
                
-               
-              IF  (wf.f_evaluar_regla_wf (p_id_usuario_reg,
+              
+               v_check  = wf.f_evaluar_regla_wf (p_id_usuario_reg,
                                           p_id_proceso_wf,
                                           v_registros.regla,
                                           v_registro_estado.id_tipo_estado,
-                                          v_registro_estado.id_estado_anterior))  THEN
+                                          v_registro_estado.id_estado_anterior);
                
-                     --crea el documento para este proceso y estado especifico
+               
+               
+              IF  (v_check)  THEN
+               
+              --crea el documento para este proceso y estado especifico
                      
                      INSERT INTO 
                             wf.tdocumento_wf

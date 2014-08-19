@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_tipo_columna_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_tipo_columna_ime
@@ -147,8 +150,17 @@ BEGIN
 	elsif(p_transaccion='WF_TIPCOL_ELI')then
 
 		begin
+        
+        	if (exists (select 1 
+            			from wf.tcolumna_estado t
+                        where t.id_tipo_columna = v_parametros.id_tipo_columna and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Columna Estado que depende(n) de este tipo columna';
+            end if;
+            
 			--Sentencia de la eliminacion
-			delete from wf.ttipo_columna
+			update wf.ttipo_columna
+            set estado_reg = 'inactivo'
             where id_tipo_columna=v_parametros.id_tipo_columna;
                
             --Definicion de la respuesta
@@ -176,7 +188,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_tipo_columna_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

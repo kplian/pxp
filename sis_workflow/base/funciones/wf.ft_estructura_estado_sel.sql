@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_estructura_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -66,7 +64,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = estes.id_usuario_mod
                         INNER JOIN wf.ttipo_estado tep on  tep.id_tipo_estado = estes.id_tipo_estado_padre
                         INNER JOIN wf.ttipo_estado teh on  teh.id_tipo_estado = estes.id_tipo_estado_hijo
-				        where  ';
+				        where  estes.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -78,30 +76,39 @@ BEGIN
 		end;
     
     /*********************************    
- 	#TRANSACCION:  'WF_EXPESTES_CONT'
+ 	#TRANSACCION:  'WF_EXPESTES_SEL'
  	#DESCRIPCION:	Listado de estructura de datos del proceso macro seleccionado para exportar
  	#AUTOR:		Gonzalo Sarmiento Sejas	
  	#FECHA:		19-03-2013
 	***********************************/
     elsif(p_transaccion='WF_EXPESTES_SEL')then
-    	begin
-        	v_consulta:='select ''estructura_estado''::varchar,
-						tep.codigo as codigo_estado_padre,
-                        tpp.codigo as codigo_proceso_estado_padre,
-						teh.codigo as codigo_estado_hijo,
-                        tph.codigo as codigo_proceso_estado_hijo,
-						estes.prioridad,
-						estes.regla,
-						estes.estado_reg
-						from wf.testructura_estado estes
-						inner join wf.ttipo_estado tep on  tep.id_tipo_estado = estes.id_tipo_estado_padre
-                        inner join wf.ttipo_proceso tpp on tpp.id_tipo_proceso = tep.id_tipo_proceso
-                        inner join wf.ttipo_estado teh on  teh.id_tipo_estado = estes.id_tipo_estado_hijo
-						inner join wf.ttipo_proceso tph on tph.id_tipo_proceso = teh.id_tipo_proceso
-                        where tpp.id_proceso_macro='||v_parametros.id_proceso_macro||
-                        ' order by estes.id_estructura_estado ASC';
-            return v_consulta;
-        end;  
+    	BEGIN
+
+               v_consulta:='select  ''estructura_estado''::varchar,padre.codigo, hijo.codigo, tp.codigo, estru.prioridad,estru.regla,
+               				estru.estado_reg
+
+                            from wf.testructura_estado estru
+                            inner join wf.ttipo_estado padre
+                            on padre.id_tipo_estado = estru.id_tipo_estado_padre
+                            inner join wf.ttipo_estado hijo
+                            on hijo.id_tipo_estado = estru.id_tipo_estado_hijo
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = padre.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and estru.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by estru.id_estructura_estado ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;     
 
 	/*********************************    
  	#TRANSACCION:  'WF_ESTES_CONT'
@@ -120,7 +127,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = estes.id_usuario_mod
                         INNER JOIN wf.ttipo_estado tep on  tep.id_tipo_estado = estes.id_tipo_estado_padre
                         INNER JOIN wf.ttipo_estado teh on  teh.id_tipo_estado = estes.id_tipo_estado_hijo
-					    where ';
+					    where estes.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -128,7 +135,9 @@ BEGIN
 			--Devuelve la respuesta
 			return v_consulta;
 
-		end;        
+		end;  
+        
+       
 					
 	else
 					     

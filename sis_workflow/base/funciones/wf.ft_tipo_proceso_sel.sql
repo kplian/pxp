@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_proceso_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -67,7 +65,7 @@ BEGIN
                         tipproc.tipo_disparo, 
                         tipproc.funcion_validacion_wf,
                         tipproc.descripcion,
-                        tipproc.codigo_llave		
+                        tipproc.codigo_llave	
 						from wf.ttipo_proceso tipproc
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipproc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipproc.id_usuario_mod
@@ -120,22 +118,29 @@ BEGIN
 
      elsif(p_transaccion='WF_EXPTIPPROC_SEL')then
 
-          BEGIN
-               v_consulta:= 'select ''tipo_proceso''::varchar,
-				                te.nombre_estado as nombre_tipo_estado,
-								tipproc.nombre,
-								tipproc.codigo,
-								tipproc.tabla,
-                                tipproc.columna_llave,
-                                tipproc.estado_reg,
-                                tipproc.inicio,
-                                pm.codigo AS cod_proceso_macro	                                
-                                from wf.ttipo_proceso tipproc
-                        		inner join wf.tproceso_macro pm on pm.id_proceso_macro = tipproc.id_proceso_macro
-                                left join wf.ttipo_estado te on te.id_tipo_estado=tipproc.id_tipo_estado
-                        		where tipproc.id_proceso_macro='|| v_parametros.id_proceso_macro ||
-                             ' order by tipproc.id_tipo_proceso ASC'; 
+     	BEGIN
+
+               v_consulta:='select ''tipo_proceso''::varchar,tp.codigo,te.codigo,pm.codigo,tp.nombre,tp.tabla,tp.columna_llave,
+                            tp.inicio,tp.funcion_validacion_wf,tp.tipo_disparo,	tp.descripcion,	tp.codigo_llave,
+                            tp.estado_reg,tp.funcion_disparo_wf
+
+                            from wf.ttipo_proceso tp
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            left join wf.ttipo_estado te
+                            on te.id_tipo_estado = tp.id_tipo_estado
+                            where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and tp.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by tp.id_tipo_proceso ASC';	
+                                                                       
                return v_consulta;
+
+
          END;
 	else
 					     

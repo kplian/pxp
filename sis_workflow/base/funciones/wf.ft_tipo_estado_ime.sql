@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -79,7 +77,17 @@ BEGIN
             fin,
             alerta,
             pedir_obs,
-            cargo_depto
+            cargo_depto,
+            funcion_inicial,
+            funcion_regreso,
+            mobile,
+            acceso_directo_alerta, 
+            nombre_clase_alerta, 
+            tipo_noti, 
+            titulo_alerta, 
+            parametros_ad
+            
+            
           	) values(
 			v_parametros.nombre_estado,
 			v_parametros.id_tipo_proceso,
@@ -99,7 +107,15 @@ BEGIN
             v_parametros.fin,
             v_parametros.alerta,
         	v_parametros.pedir_obs,
-            string_to_array(v_parametros.cargo_depto,',')
+            string_to_array(v_parametros.cargo_depto,','),
+            v_parametros.funcion_inicial,
+            v_parametros.funcion_regreso,
+            v_parametros.mobile,
+            v_parametros.acceso_directo_alerta, 
+            v_parametros.nombre_clase_alerta, 
+            v_parametros.tipo_noti, 
+            v_parametros.titulo_alerta, 
+            v_parametros.parametros_ad
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -140,8 +156,17 @@ BEGIN
             fin=v_parametros.fin,
             alerta=v_parametros.alerta,
         	pedir_obs=v_parametros.pedir_obs,
-            cargo_depto=string_to_array(v_parametros.cargo_depto,',')
-			where id_tipo_estado=v_parametros.id_tipo_estado;
+            cargo_depto=string_to_array(v_parametros.cargo_depto,','),
+			funcion_inicial = v_parametros.funcion_inicial,
+            funcion_regreso = v_parametros.funcion_regreso,
+            mobile = v_parametros.mobile,
+            acceso_directo_alerta=v_parametros.acceso_directo_alerta, 
+            nombre_clase_alerta=v_parametros.nombre_clase_alerta, 
+            tipo_noti=v_parametros.tipo_noti, 
+            titulo_alerta=v_parametros.titulo_alerta, 
+            parametros_ad=v_parametros.parametros_ad
+							
+            where id_tipo_estado=v_parametros.id_tipo_estado;
             
             --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '
         	SELECT count(id_tipo_estado)
@@ -183,6 +208,7 @@ BEGIN
 			where id_tipo_estado=v_parametros.id_tipo_estado;
             
             
+            
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modifico la plantilla de correodel tipo estado'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_parametros.id_tipo_estado::varchar);
@@ -203,8 +229,47 @@ BEGIN
 	elsif(p_transaccion='WF_TIPES_ELI')then
 
 		begin
+        
+        	if (exists (select 1 
+            			from wf.testructura_estado t
+                        where (t.id_tipo_estado_hijo = v_parametros.id_tipo_estado or 
+                        		t.id_tipo_estado_padre = v_parametros.id_tipo_estado) and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Otros Estados que depende(n) de este tipo estado';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.tfuncionario_tipo_estado t
+                        where t.id_tipo_estado = v_parametros.id_tipo_estado and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Asignacion a funcionarios que depende(n) de este tipo estado';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.ttipo_documento_estado t
+                        where t.id_tipo_estado = v_parametros.id_tipo_estado and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Momentos de Documentos que depende(n) de este tipo estado';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.tcolumna_estado t
+                        where t.id_tipo_estado = v_parametros.id_tipo_estado and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Estados de Columnas que depende(n) de este tipo estado';
+            end if;
+            
+            if (exists (select 1 
+            			from wf.ttipo_proceso_origen t
+                        where t.id_tipo_estado = v_parametros.id_tipo_estado and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Procesos Origen que depende(n) de este tipo estado';
+            end if;           
+            
+            
 			--Sentencia de la eliminacion
-			delete from wf.ttipo_estado
+			update wf.ttipo_estado
+            set estado_reg ='inactivo'
             where id_tipo_estado=v_parametros.id_tipo_estado;
                
             --Definicion de la respuesta
