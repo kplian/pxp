@@ -1,6 +1,10 @@
 PXP
 ===
 
+How to install
+
+https://github.com/kplian/instalador_framework.pxp
+
 Example
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
