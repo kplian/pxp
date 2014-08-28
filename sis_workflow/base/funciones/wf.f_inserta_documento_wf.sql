@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_inserta_documento_wf (
   p_id_usuario_reg integer,
   p_id_proceso_wf integer,
@@ -44,11 +42,12 @@ DECLARE
   v_registro_estado record;
   
   v_check boolean;
+  v_ultimo_codigo varchar;
   
 BEGIN
 
      v_nombre_funcion = 'wf.f_inserta_documento_wf';
-     
+     v_ultimo_codigo = 'NO SE PROCESARON DOCUMENTOS';
     
       select
         ewf.id_estado_anterior,
@@ -92,62 +91,62 @@ BEGIN
                   
             --0)  verifica si no existe un documento del mismo tipo para el tipo proceso
             /****considerando el caso de que el flujo ya paso por este estado***/ 
+               v_ultimo_codigo = v_registros.codigo;
             
-            
-               if exists( select 1 
+               IF exists( select 1 
                           from wf.tdocumento_wf dw 
                           where dw.id_proceso_wf = p_id_proceso_wf and  dw.id_tipo_documento =  v_registros.id_tipo_documento)   THEN
                           
-                       raise notice 'el documento ya existe para proceso' ;   
+                       	raise notice 'el documento ya existe para proceso' ;   
                            
                ELSE
                
               
-               v_check  = wf.f_evaluar_regla_wf (p_id_usuario_reg,
-                                          p_id_proceso_wf,
-                                          v_registros.regla,
-                                          v_registro_estado.id_tipo_estado,
-                                          v_registro_estado.id_estado_anterior);
+                       v_check  = wf.f_evaluar_regla_wf (p_id_usuario_reg,
+                                                  p_id_proceso_wf,
+                                                  v_registros.regla,
+                                                  v_registro_estado.id_tipo_estado,
+                                                  v_registro_estado.id_estado_anterior);
                
                
-               
-              IF  (v_check)  THEN
-               
-              --crea el documento para este proceso y estado especifico
-                     
-                     INSERT INTO 
-                            wf.tdocumento_wf
-                          (
-                            id_usuario_reg,
-                            fecha_reg,
-                            estado_reg,
-                            id_tipo_documento,
-                            id_proceso_wf,
-                            num_tramite,
-                            momento,
-                            chequeado,
-                            id_estado_ini
-                          ) 
-                          VALUES (
-                            p_id_usuario_reg,
-                            now(),
-                           'activo',
-                            v_registros.id_tipo_documento,
-                            p_id_proceso_wf,
-                            v_num_tramite,
-                            'verificar',
-                            'no',
-                            p_id_estado_wf
-                          );
-                    
-                    
-                    END IF; 
+                        
+                       IF  (v_check)  THEN
+                   
+                       --crea el documento para este proceso y estado especifico
+                         
+                         INSERT INTO 
+                                wf.tdocumento_wf
+                              (
+                                id_usuario_reg,
+                                fecha_reg,
+                                estado_reg,
+                                id_tipo_documento,
+                                id_proceso_wf,
+                                num_tramite,
+                                momento,
+                                chequeado,
+                                id_estado_ini
+                              ) 
+                              VALUES (
+                                p_id_usuario_reg,
+                                now(),
+                               'activo',
+                                v_registros.id_tipo_documento,
+                                p_id_proceso_wf,
+                                v_num_tramite,
+                                'verificar',
+                                'no',
+                                p_id_estado_wf
+                              );
+                        
+                        
+                      END IF; 
         
              END IF;
         
         END LOOP;
      
-     
+     --raise exception 'check %',v_check;
      
      
        RETURN TRUE;

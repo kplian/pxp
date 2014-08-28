@@ -84,7 +84,7 @@ BEGIN
 			if (pxp.f_existe_parametro(p_tabla, 'tipo') and
 				pxp.f_existe_parametro(p_tabla, 'fecha') and 
 				pxp.f_existe_parametro(p_tabla, 'id_uo')) then
-				if (v_parametros.tipo is not null and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
+				if (v_parametros.tipo is not null and v_parametros.tipo = 'oficial' and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
 					v_ids_cargo = orga.f_get_cargos_en_uso(v_parametros.id_uo, v_parametros.fecha);
 					v_consulta := v_consulta || ' and cargo.id_cargo not in (' || v_ids_cargo ||') ';
 				end if;

@@ -70,7 +70,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         console.log(rec)
         Ext.Ajax.request({
                 url:'../../'+rec.data.action,
-                params:{'id_proceso_wf':rec.data.id_proceso_wf},
+                params:{'id_proceso_wf':rec.data.id_proceso_wf, 'action':rec.data.action},
                 success: this.successExport,
                 failure: this.conexionFailure,
                 timeout:this.timeout,
@@ -91,6 +91,35 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+        {
+            config:{
+                fieldLabel: "Escaneado",
+                gwidth: 70,
+                inputType:'file',
+                name: 'archivo',
+                buttonText: '',   
+                maxLength:150,
+                anchor:'100%',
+                renderer:function (value, p, record){  
+                            if(record.data['extension'].length!=0) {
+                                var data = "id=" + record.data['id_documento_wf'];
+                                data += "&extension=" + record.data['extension'];
+                                data += "&sistema=sis_workflow";
+                                data += "&clase=DocumentoWf";
+                                data += "&url="+record.data['url'];
+                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
+                            }
+                        },  
+                buttonCfg: {
+                    iconCls: 'upload-icon'
+                }
+            },
+            type:'Field',
+            sortable:false,
+            id_grupo:0,
+            grid:true,
+            form:false
+        },
         {
             config:{
                 name: 'chequeado',
@@ -217,35 +246,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 id_grupo:1,
                 grid:true,
                 form:false
-        },
-        {
-            config:{
-                fieldLabel: "Enlace",
-                gwidth: 130,
-                inputType:'file',
-                name: 'archivo',
-                buttonText: '',   
-                maxLength:150,
-                anchor:'100%',
-                renderer:function (value, p, record){  
-                            if(record.data['extension'].length!=0) {
-                                var data = "id=" + record.data['id_documento_wf'];
-                                data += "&extension=" + record.data['extension'];
-                                data += "&sistema=sis_workflow";
-                                data += "&clase=DocumentoWf";
-                                data += "&url="+record.data['url'];
-                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir documento</a></div>");
-                            }
-                        },  
-                buttonCfg: {
-                    iconCls: 'upload-icon'
-                }
-            },
-            type:'Field',
-            sortable:false,
-            id_grupo:0,
-            grid:true,
-            form:false
         },
         {       
             config:{
@@ -493,11 +493,11 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_documento_wf',
 		direction: 'ASC'
 	},
-	tabeast:[
+	tabsouth:[
          {
           url:'../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstadoWF.php',
           title:'Estados por momento', 
-          width:400,
+          height:'40%',
           cls:'TipoDocumentoEstadoWF'
          }
     

@@ -18,6 +18,9 @@ class MODTipoProceso extends MODbase{
 		$this->procedimiento='wf.ft_tipo_proceso_sel';
 		$this->transaccion='WF_TIPPROC_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+		$this->setParametro('id_proceso_macro','id_proceso_macro','int4');
+		$this->setParametro('pm_relacionado','pm_relacionado','varchar');
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_tipo_proceso','int4');

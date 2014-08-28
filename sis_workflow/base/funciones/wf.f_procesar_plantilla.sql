@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_id_usuario integer,
   p_id_proceso_wf integer,
@@ -55,6 +53,7 @@ v_resp  varchar;
 v_i     integer;
 
 v_template_evaluado    varchar;
+v_validar_nulo boolean;
  
 BEGIN
    
@@ -83,6 +82,7 @@ BEGIN
                 v_tmp_plantilla = p_plantilla;
                 v_template_evaluado = p_plantilla;
                 v_nombre_funcion = 'wf.f_procesar_plantilla';
+                v_validar_nulo = TRUE;
                 
               
                 --obtenemos datos basicos
@@ -245,7 +245,9 @@ BEGIN
                        v_i = 1;
                        v_tabla_hstore =  hstore(v_tabla);
                        
-                       
+                       IF v_tabla is null  THEN
+                         v_validar_nulo = FALSE;
+                       END IF;
                        
                        --subsituye los nombre de variable encontradas en la plantilla por los valores obtenidos de la tabla
                        WHILE (v_i <= array_length(v_columna_nueva, 1)) LOOP
@@ -256,7 +258,16 @@ BEGIN
                       
                        END LOOP;
                        
-                END IF; 
+                END IF;
+                
+                
+                IF v_validar_nulo  THEN
+                
+                   IF v_template_evaluado is NULL THEN
+                       raise exception 'En el proceso (%)% ,revise la sintaxis de la regla %',v_registros.codigo,v_registros.nombre, p_plantilla;
+                   END IF;
+                
+                END IF;
                  
               --------------------------------------------------
               --  REMPLAZAR valores del dicionario

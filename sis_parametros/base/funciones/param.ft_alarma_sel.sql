@@ -67,7 +67,9 @@ BEGIN
                         alarm.tipo,
                         (alarm.fecha-now()::date)::integer as dias,
                         alarm.titulo_correo,
-						alarm.acceso_directo
+						alarm.acceso_directo,
+						alarm.correos,
+						alarm.documentos
                         from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario

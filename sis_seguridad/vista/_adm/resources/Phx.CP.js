@@ -1279,8 +1279,8 @@ Phx.CP=function(){
 		setEstiloVista:function(val){
 			Ext.util.CSS.removeStyleSheet('theme');
 			Ext.util.CSS.refreshCache();
-		//estilo_vista='xtheme-black.css'
-			Ext.util.CSS.swapStyleSheet('theme','../../../lib/ext3/resources/css/'+val);
+		    //estilo_vista='xtheme-black.css'
+		    Ext.util.CSS.swapStyleSheet('theme','../../../lib/ext3/resources/css/'+val);
         },
 		getMainPanel:function(){
 			return mainPanel;

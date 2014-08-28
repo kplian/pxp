@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION pxp.f_verifica_permisos (
   par_ip varchar,
   out po_administrador boolean,
   out po_habilitar_log integer,
-  out po_tiene_permisos boolean,
+  inout po_tiene_permisos boolean = false,
   out po_id_subsistema integer
 )
 RETURNS SETOF record AS
@@ -26,8 +26,8 @@ begin
   -- 1) iniciamos los parametro
     
      po_administrador =FALSE; -- no es usuario administrador
-     po_tiene_permisos = FALSE;  --los habilitado por defecto
-     
+     --po_tiene_permisos = FALSE;  --los habilitado por defecto
+
   --2) verifica si es un usuario administrador, el administrador
   --   tiene permiso para ejecutar todas las transacciones 
   

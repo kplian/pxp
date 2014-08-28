@@ -50,7 +50,7 @@ abstract class ACTbase
 		} else {
 			throw new Exception(__METHOD__.': No se pudo incluir el modelo '.$className);
 		}
-		
+		//var_dump($this->objParam->getParametro("codigo_tipo_documento")); exit;
 		return $modelObj;
 		
 	}

@@ -107,7 +107,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 listWidth:'280',
                 resizable:true,
                 minChars: 2,
-               tpl: '<tpl for="."><div class="x-combo-list-item"><p>{nombre}</p>Codigo: <strong>{codigo}</strong> </div></tpl>'
+               tpl: '<tpl for="."><div class="x-combo-list-item"><p><b>{nombre}</b></p>Codigo: <strong>{codigo}</strong> </div></tpl>'
             }),
 	
 			
@@ -150,7 +150,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'codigo_llave',
-                fieldLabel: 'Código llave',
+                fieldLabel: 'Código Llave',
                 allowBlank: false,
                 anchor: '60%',
                 gwidth: 100,
@@ -168,7 +168,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '60%',
-				gwidth: 150,
+				gwidth: 250,
 				maxLength:200
 			},
 			type:'TextField',
@@ -485,31 +485,31 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 		  {
     		  url:'../../../sis_workflow/vista/tipo_estado/TipoEstado.php',
     		  title:'Estados', 
-    		  width:450,
+    		  width:'60%',
     		  cls:'TipoEstado'
 		  },
 		  {
               url:'../../../sis_workflow/vista/tipo_documento/TipoDocumento.php',
               title:'Tipo Documento', 
-              width:450,
+              width:'60%',
               cls:'TipoDocumento'
           },
            {
               url:'../../../sis_workflow/vista/tipo_columna/TipoColumna.php',
               title:'Tipo Columna', 
-              width:450,
+              width:'60%',
               cls:'TipoColumna'
           },
            {
               url:'../../../sis_workflow/vista/tipo_proceso_origen/TipoProcesoOrigen.php',
               title:'Origenes', 
-              width:450,
+              width:'60%',
               cls:'TipoProcesoOrigen'
           },
 		  {
     		url:'../../../sis_workflow/vista/labores_tipo_proceso/LaboresTipoProceso.php',
             title:'Labores', 
-            width:450,
+            width:'60%',
             cls:'LaboresTipoProceso'    
 		  }
 		],

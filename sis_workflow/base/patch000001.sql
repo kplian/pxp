@@ -843,6 +843,20 @@ IS 'Esta funcion sirve para colocar logija adicional depues de un disparo de pro
 
 /***********************************F-SCP-RAC-WF-0-14/08/2014****************************************/
 
+/***********************************I-SCP-RAC-WF-0-20/08/2014****************************************/
+CREATE TABLE wf.tplantilla_correo (		
+id_plantilla_correo	serial not null,	
+id_tipo_estado	integer	not null,
+codigo_plantilla	varchar(50)	not null,
+plantilla	text,	
+correos	varchar[] not null,
+documentos	varchar[],
+regla	text,
+CONSTRAINT tplantilla_correo_pkey PRIMARY KEY(id_plantilla_correo)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/***********************************F-SCP-RAC-WF-0-20/08/2014****************************************/
 
 
 

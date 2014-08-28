@@ -132,8 +132,10 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 				queryDelay: 1000,
 				anchor: '80%',
 				gwidth: 150,
-				minChars: 2,
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo})- {nombre}</p><p>Proceso Macro: {desc_proceso_macro}</p></strong> </div></tpl>',
+				listWidth:'280',
+                resizable:true,
+                minChars: 2,
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p><b>({codigo})- {nombre}</b></p><p>Proceso Macro: {desc_proceso_macro}</p></strong> </div></tpl>',
                 renderer : function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_proceso']);
 				}
@@ -175,12 +177,14 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 pageSize: 20,
                 queryDelay: 200,
                 anchor: '80%',
+                listWidth:'280',
+                resizable:true,
                 minChars: 2,
                 gwidth: 200,
                 renderer: function(value, p, record) {
                     return String.format('{0}', record.data['desc_tipo_estado']);
                 },
-                tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo_estado})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
+                tpl: '<tpl for="."><div class="x-combo-list-item"><p><b>({codigo_estado})- {nombre_estado}</b></p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
             },
             type: 'ComboBox',
             id_grupo: 0,
@@ -203,7 +207,10 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 typeAhead: true,
                 triggerAction: 'all',
                 lazyRender:true,
+                listWidth:'280',
+                resizable:true,
                 mode: 'local',
+				
                 valueField: 'tipo_asignacion',                  
               store:['superior','inferior']
             },
@@ -216,6 +223,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                          options: ['superior','inferior'],   
                     },
             grid:true,
+			egrid:true,
             form:true
         },
         {
@@ -224,13 +232,16 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Regla (función a llamar)',
                 allowBlank: true,
                 anchor: '100%',
+                height:300,
                 gwidth: 300,
+				
                 maxLength:1000
             },
             type:'TextArea',
             filters:{pfiltro:'des.regla',type:'string'},
             id_grupo:1,
             grid:true,
+			egrid:true,
             form:true
         },
         
@@ -349,7 +360,10 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             }
             else{
                 this.Cmp.id_tipo_proceso.store.baseParams.id_tipo_proceso='';
+               
+                
             }
+            this.Cmp.id_tipo_proceso.store.baseParams.pm_relacionado = 'si';
             this.Cmp.id_tipo_proceso.modificado=true;
             this.Cmp.id_tipo_proceso.reset();
             

@@ -828,3 +828,14 @@ IS 'El documento requiere solictar porc_monto_excento_var,  se utiliza para fact
 /***********************************F-SCP-RAC-PARAM-0-11/02/2014****************************************/
 
 
+/***********************************I-SCP-JRR-PARAM-0-25/08/2014****************************************/
+
+ALTER TABLE param.talarma
+  ADD COLUMN correos TEXT;
+  
+ALTER TABLE param.talarma
+  ADD COLUMN documentos TEXT;
+  
+/***********************************F-SCP-JRR-PARAM-0-25/08/2014****************************************/
+
+

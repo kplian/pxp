@@ -97,7 +97,9 @@ function authPxp($headersArray) {
 	$objParam->addParametro('usuario', $headersArray['Pxp-User']);    
     include_once dirname(__FILE__).'/../../../sis_seguridad/modelo/MODUsuario.php';
 	$objFunSeguridad = new MODUsuario($objParam);
+	
     $res = $objFunSeguridad->listarUsuarioSeguridad($objParam);
+	
 	if ($res->datos['contrasena'] == '') {
 		$mensaje = "El Usuario no esta registrado en el sistema";
 	}
@@ -124,6 +126,7 @@ function authPxp($headersArray) {
 	}
 	
 	if (count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
+			
 		$reqArray['usuario'] = $headersArray['Pxp-User'];		
 		$reqArray['contrasena'] =  $md5Pass;	
 		$reqArray['_tipo'] = 'restAuten';
@@ -135,6 +138,7 @@ function authPxp($headersArray) {
 	    $objParam = new CTParametro($JSON,null,null,'../../sis_seguridad/control/Auten/verificarCredenciales');
 	    include_once dirname(__FILE__).'/../../../sis_seguridad/control/ACTAuten.php';    
 	    //Instancia la clase dinamica para ejecutar la accion requerida
+	    
 	    eval('$cad = new ACTAuten($objParam);');
 	    eval('$cad->verificarCredenciales();');
 	} else {

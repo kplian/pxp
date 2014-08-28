@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_id_funcionario integer,
   par_descripcion varchar,
@@ -12,7 +10,9 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_titulo varchar,
   par_parametros varchar,
   par_id_usuario_alarma integer,
-  par_titulo_correo varchar
+  par_titulo_correo varchar,
+  par_correos text = NULL::text,
+  par_documentos text = NULL::text
 )
 RETURNS integer AS
 $body$
@@ -61,7 +61,9 @@ BEGIN
             titulo,
             parametros,
             id_usuario,
-            titulo_correo
+            titulo_correo,
+            correos,
+            documentos
           	) values(
 			par_acceso_directo,
 			par_id_funcionario,
@@ -78,7 +80,9 @@ BEGIN
             par_titulo,
             par_parametros,
             par_id_usuario_alarma,
-            par_titulo_correo
+            par_titulo_correo,
+            par_correos,
+            par_documentos
 			)RETURNING id_alarma into v_id_alarma;
     
     return v_id_alarma;

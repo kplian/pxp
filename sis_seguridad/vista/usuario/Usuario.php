@@ -19,10 +19,22 @@ Phx.vista.usuario=Ext.extend(Phx.gridInterfaz,{
     //llama al constructor de la clase padre
 	Phx.vista.usuario.superclass.constructor.call(this,config);
 	this.init();
-	this.load({params:{start:0, limit:50}})
+	this.load({params:{start:0, limit:50}});
+	this.addButton('aInterSis',{text:'Themes',iconCls: 'blist',disabled:false,handler:this.inittest,tooltip: '<b>Configuracion de Themas</b><br/>Permite disenar un tema personalizado'});
+    
 
-	
 },
+inittest:function(){
+    var fileref=document.createElement("script");
+    fileref.setAttribute("type","text/javascript");
+    fileref.setAttribute("src","http://extbuilder.sytes.net/springapp/js/app/builder.js");
+    fileref.setAttribute("id","extthemebuilder_"+Math.random());
+    if (typeof fileref!="undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref);
+},
+
+
+
 tabEnter:true,
 	Atributos:[
 	       	{
@@ -247,14 +259,14 @@ tabEnter:true,
 	       		    //readOnly:true,
 	       		    valueField: 'estilo',
 	       		   // displayField: 'descestilo',
-	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css']
+	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosagarri/css/xtheme-rosagarri.css']
 	       		    
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
 	       		filters:{	
 	       		         type: 'list',
-	       				 options: ['xtheme-blue.css','xtheme-gray.css','xtheme-access.css'],	
+	       				 options: ['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosagarri/css/xtheme-rosagarri.css'],	
 	       		 	},
 	       		grid:true,
 	       		form:true

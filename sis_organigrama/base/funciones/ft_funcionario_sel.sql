@@ -88,7 +88,7 @@ BEGIN
 				pxp.f_existe_parametro(par_tabla, 'fecha') and 
 				pxp.f_existe_parametro(par_tabla, 'id_uo')) then
 				
-				if (v_parametros.tipo is not null and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
+				if (v_parametros.tipo is not null and v_parametros.tipo = 'oficial' and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
 					v_ids_funcionario = orga.f_get_funcionarios_con_asignacion_activa(v_parametros.id_uo, v_parametros.fecha);
 					v_consulta := v_consulta || ' and FUNCIO.id_funcionario not in (' || v_ids_funcionario ||') ';
 					

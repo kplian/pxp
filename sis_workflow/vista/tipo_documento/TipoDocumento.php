@@ -64,7 +64,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'codigo',
-                fieldLabel: 'codigo',
+                fieldLabel: 'Codigo',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -81,10 +81,10 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre',
-				fieldLabel: 'nombre',
+				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:255
 			},
 				type:'TextField',
@@ -96,7 +96,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion',
-				fieldLabel: 'descripcion',
+				fieldLabel: 'Descripcion',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -140,7 +140,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'action',
-				fieldLabel: 'action',
+				fieldLabel: 'Action',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -281,7 +281,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
     
 	
 	sortInfo:{
-		field: 'id_tipo_documento',
+		field: 'nombre',
 		direction: 'ASC'
 	},
 	bdel:true,

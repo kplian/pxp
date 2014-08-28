@@ -110,7 +110,7 @@ BEGIN
                 where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
                 v_id_tipo_documento_estado = v_parametros.id_tipo_documento_estado;
 			else
-            	update segu.ttipo_documento_estado set
+            	update wf.ttipo_documento_estado set
                         estado_reg = 'inactivo'
                 where id_tipo_documento_estado=v_parametros.id_tipo_documento_estado;
                 

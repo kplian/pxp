@@ -158,7 +158,7 @@ Phx.vista.Alarma=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 			type:'DateField',
 			filters:{pfiltro:'alarm.fecha_reg',type:'date'},
@@ -188,7 +188,7 @@ Phx.vista.Alarma=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 			type:'DateField',
 			filters:{pfiltro:'alarm.fecha_mod',type:'date'},
@@ -210,9 +210,8 @@ Phx.vista.Alarma=Ext.extend(Phx.gridInterfaz,{
 		{name:'estado_reg', type: 'string'},
 		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
-		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d'},
-		{name:'id_usuario_mod', type: 'numeric'},
-		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d'},
+		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d H:i:s'},
+		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d H:i:s'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'nombre_completo1', type: 'string'},

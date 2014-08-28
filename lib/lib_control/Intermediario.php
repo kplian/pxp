@@ -18,6 +18,21 @@ if($_SESSION["_FORSSL"]=='SI'){
 else{
 	session_set_cookie_params (0,$_SESSION["_FOLDER"], '' ,false ,false);
 }
+
+$_REQUEST['pxp_verificarPermisos'] = true;
+$rutaAction = explode('	',$_REQUEST["x"]);
+if(isset($_SESSION["permisos_temporales"])) {
+	if(count($rutaAction)>1){
+		if($_SESSION["permisos_temporales"][str_replace('../','',$rutaAction[1])]=='si'){		
+			$_REQUEST['pxp_verificarPermisos'] = false;		
+		}
+	}else{
+		if($_SESSION["permisos_temporales"][str_replace('../','',$rutaAction[0])]=='si'){		
+			$_REQUEST['pxp_verificarPermisos'] = false;		
+		}
+	}
+}
+
 register_shutdown_function('fatalErrorShutdownHandler');
 set_exception_handler('exception_handler');
 set_error_handler('error_handler');

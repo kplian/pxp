@@ -28,6 +28,15 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
                 tooltip: '<b>Plantilla de Correo</b><br/>Personaliza los correos enviados en alertas en tipo de estado seleccionado.'
             }
         ); 
+        
+        this.addButton('btnPlanCorreo',
+            {
+                iconCls: 'bemail',
+                disabled: true,
+                handler: this.gridPlantillaCorreo,
+                tooltip: '<b>Conf. Envio de Correos</b><br/>Personaliza los correos enviados a otras personas en el tipo de estado seleccionado.'
+            }
+        ); 
 		
 		
 		
@@ -671,9 +680,26 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
          
     },
     
+    gridPlantillaCorreo:function(wizard,resp){
+            var rec={maestro: this.sm.getSelected().data};
+            Phx.CP.loadWindows('../../../sis_workflow/vista/plantilla_correo/PlantillaCorreo.php',
+            'PlantillaCorreo',
+            {
+                modal:true,
+                width:'80%',
+                height:400
+            }, rec, 
+               this.idContenedor,
+               'PlantillaCorreo'
+            )
+         
+    },
+    
     preparaMenu:function(n){
       Phx.vista.TipoEstado.superclass.preparaMenu.call(this,n); 
       this.getBoton('btnPlaMen').enable();
+      this.getBoton('btnPlanCorreo').enable();     
+      
       return this.tbar;
     },
     
@@ -681,6 +707,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         var tb = Phx.vista.TipoEstado.superclass.liberaMenu.call(this);
         if(tb){
              this.getBoton('btnPlaMen').disable();
+             this.getBoton('btnPlanCorreo').disable();  
         }
         return tb
     },

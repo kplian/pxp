@@ -309,14 +309,14 @@ header("content-type: text/javascript; charset=UTF-8");
 		}, {
 			name : 'fecha_reg',
 			type : 'date',
-			dateFormat : 'Y-m-d'
+			dateFormat : 'Y-m-d H:i:s'
 		}, {
 			name : 'id_usuario_mod',
 			type : 'numeric'
 		}, {
 			name : 'fecha_mod',
 			type : 'date',
-			dateFormat : 'Y-m-d'
+			dateFormat : 'Y-m-d H:i:s'
 		}, {
 			name : 'usr_reg',
 			type : 'string'

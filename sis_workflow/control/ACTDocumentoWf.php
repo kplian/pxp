@@ -21,6 +21,11 @@ class ACTDocumentoWf extends ACTbase{
 			$this->objFunc=$this->create('MODDocumentoWf');
 			
 			$this->res=$this->objFunc->listarDocumentoWf($this->objParam);
+			foreach($this->res->getDatos() as $documento){
+				if($documento["tipo_documento"]=='generado'){					
+					$_SESSION["permisos_temporales"][trim(str_replace('../','',$documento["action"]))] = 'si';					
+				}
+			}
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

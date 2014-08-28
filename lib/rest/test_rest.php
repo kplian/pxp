@@ -8,7 +8,7 @@
 	$pass = md5('123');
 	$_pass = fnEncrypt($prefix . '$$' . $pass, $pass);
 	
-	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/');
+	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/')->setCredentialsPxp('admin','123');
 	
 					//->setCredentialsPxp('admin','123');
 	//echo $pxpRestClient->doGet('libre/tesoreria/CuentaDocumentadaEndesis/listarFondoAvance2',array("limit"=>'10'));
@@ -16,12 +16,12 @@
 	//echo $pxpRestClient->doGet('seguridad/Usuario/listarUsuario',array());
 	/*echo $pxpRestClient->doPost('organigrama/Interinato/asignarMiSuplente',
 	    array(	"id_interinato"=>'',"id_cargo_suplente"=>16,"fecha_ini"=>"01/07/2014",
-	    		"fecha_fin"=>"01/08/2014", "descripcion"=>"" ));
+	    		"fecha_fin"=>"01/08/2014", "descripcion"=>"" ));*/
 	    		
 	echo $pxpRestClient->doPost('seguridad/Gui/listarMenuMobile',
 	    array(	"_dc"=>'1406749352192',"start"=>0,"limit"=>25,
 	    		"page"=>1));
-				*/
+				
 				
 			/*	kerp_capacitacion/pxp/lib/rest/organigrama/Funcionario/listarFuncionarioCargo
 	echo $pxpRestClient->doGet('organigrama/Interinato/listarMisSuplentes',

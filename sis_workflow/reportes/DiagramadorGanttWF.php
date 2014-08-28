@@ -29,6 +29,8 @@ class DiagramadorGanttWF{
         $graph->SetBox();
 
         $dataset=$this->dataSource->getDataset();
+        
+        define('UTF-8',$locale_char_set);
 
         $tamanioDataset = count($dataset);
 
@@ -121,13 +123,13 @@ class DiagramadorGanttWF{
              //mostramos cuenta de usuario si existe
              
              if($dataset[$i]['nombre_usuario_ai']!=''&&$dataset[$i]['nombre_usuario_ai']!='NULL'){
-                 $desc_principal = $desc_principal.'(AI: '.$dataset[$i]['nombre_usuario_ai'].")" ; 
+                 $desc_principal = $desc_principal.' (AI: '.$dataset[$i]['nombre_usuario_ai'].")" ; 
              }
              elseif($dataset[$i]['cuenta']!=''){
-                $desc_principal = $desc_principal.'('.$dataset[$i]['cuenta'].")" ; 
+                $desc_principal = $desc_principal.' ('.$dataset[$i]['cuenta'].")" ; 
              }
              
-             $cabecera = array($desc_principal,
+             $cabecera = array(utf8_decode($desc_principal),
                          utf8_decode($resp),
                          $tiempo, 
                          $fini ,

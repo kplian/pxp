@@ -8,6 +8,7 @@
  Autor:	Kplian (RAC)
  Fecha:	19/07/2010
  */
+
 include_once(dirname(__FILE__)."/../../lib/lib_control/CTSesion.php");
 session_start();
 $_SESSION["_SESION"]= new CTSesion(); 
@@ -17,6 +18,8 @@ include_once(dirname(__FILE__).'/../../lib/lib_general/Errores.php');
 include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.phpmailer.php');
 include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.smtp.php');
 include_once(dirname(__FILE__).'/../../lib/lib_general/cls_correo_externo.php');
+include_once(dirname(__FILE__).'/../../lib/rest/PxpRestClient.php');
+
 
 
 include_once(dirname(__FILE__).'/../../lib/FirePHPCore-0.3.2/lib/FirePHPCore/FirePHP.class.php');
@@ -50,7 +53,7 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 
          $objPostData=new CTPostData();
         
-       
+        $arr_unlink=array();
         
         $aPostData=$objPostData->getData();
         //rac 22/09/2011 
@@ -76,24 +79,62 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 			exit;        
 		}
         
-        $correo=new CorreoExterno();
+        
 
 		foreach ($res2->datos as $d){
-       		echo   'correo -> '.$d['email_empresa'].'</BR>' ;
+       		$correo=new CorreoExterno();
 			if(isset($d['email_empresa'])){
-				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']);
-                $correo->setAsunto($d['tipo'].' '.$d['titulo_correo'].' '.$d['obs']);
-                $correo->setMensaje($d['descripcion']);
+				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']);  
                 
                 if ($d['acceso_directo'] !='' && $d['acceso_directo'] != NULL){
-                  $correo->setAccesoDirecto($d['id_alarma']);      
-                    
-                }
+                  $correo->setAccesoDirecto($d['id_alarma']);  
+                }                
                 
-                $correo->setTitulo($d['titulo_correo']);
-                $correo->setDefaultPlantilla();
-                $correo->enviarCorreo();
+            } else if (isset($d['correos'])) {
+            	$correo->addDestinatario($d['correos'],$d['correos']);
             }
+			
+			$correo->setAsunto(ucwords($d['tipo']).' '.$d['titulo_correo'].' '.$d['obs']);
+            $correo->setMensaje($d['descripcion']);
+			$correo->setTitulo($d['titulo_correo']);
+			
+			/*Anadir los adjuntos*/
+			$adjuntos = explode(',', $d['documentos']);
+			
+			foreach($adjuntos as $value) {
+				$url = explode('|', $value);
+				
+				if (count($url) > 2) {
+					//es un reporte generado (llamar un metodo para generar el reporte)
+					
+					$pxpRestClient = PxpRestClient::connect('127.0.0.1','kerp_capacitacion/pxp/lib/rest/')
+													->setCredentialsPxp($_GET['user'],$_GET['pw']);
+					
+					$url_final = str_replace('../../sis_', '', $url[0]);
+					$url_final = str_replace('sis_', '', $url_final);
+					
+					$url_final = str_replace('/control', '', $url_final);
+					
+					$res = $pxpRestClient->doPost($url_final,
+					    array("id_proceso_wf"=>$url[1]));
+					$res_json = json_decode($res);
+									
+					$correo->addAdjunto(dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado,$url[2]);
+					//poniendo la url para eliminar
+					//array_push($arr_unlink,dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado);
+					
+					
+				} else {
+					//es un archivo
+					$url_final = str_replace('./../../../', '/../../../', $url[0]);	
+									
+					$correo->addAdjunto(dirname(__FILE__) . $url_final, $url[1]);
+				}
+				
+			}
+			
+            $correo->setDefaultPlantilla();
+            $correo->enviarCorreo();
         }
 		
         $objFunc=new MODAlarma($objParam);
@@ -103,5 +144,10 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 			exit;        
 		}
         $res2->imprimirRespuesta($res2->generarJson());
+		
+		foreach ($arr_unlink as $value) {
+			unlink($value);
+		
+		}
  
 ?>

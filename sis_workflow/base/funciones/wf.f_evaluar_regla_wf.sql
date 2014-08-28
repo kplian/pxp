@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_evaluar_regla_wf (
   p_id_usuario integer,
   p_id_proceso_wf integer,
@@ -74,9 +72,13 @@ BEGIN
                    --   hay es conveniente llamar a las funciones de evaluacion de documentos e insercion de documentos
                    --   depues de insertado el tramite y la tabla correpondientes (ejm adq.tsolicitud_compra)
                    
-                   IF v_template_evaluado is not null THEN
-                   		execute (v_template_evaluado) into v_retorno;
+                   IF v_template_evaluado is not NULL THEN
+                   
+                       execute (v_template_evaluado) into v_retorno;
                    END IF;
+                   
+                  
+                  
             
             END IF;
             
@@ -88,8 +90,20 @@ BEGIN
            
 EXCEPTION
 WHEN OTHERS THEN
+              
+
+           select   
+              pwf.codigo_proceso,
+              tp.codigo
+           into 
+             v_registros
+           from wf.tproceso_wf pwf 
+           inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
+           where pwf.id_proceso_wf = p_id_proceso_wf;
+    
+
 			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM||'AL EVALUAR LA REGLA '||COALESCE(p_plantilla,'NULA')||' en proceso '||v_registros.codigo);
 			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;

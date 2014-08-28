@@ -500,3 +500,14 @@ ON wf.ttipo_proceso_origen FOR EACH ROW
 EXECUTE PROCEDURE wf.ftrig_ttipo_proceso_origen ();
 
 /*******************************************F-DEP-JRR-WF-0-12/08/2014*************************************/
+
+
+/*******************************************I-DEP-JRR-WF-0-20/08/2014*************************************/
+ALTER TABLE wf.tplantilla_correo
+  ADD CONSTRAINT tplantilla_correo__id_tipo_estado FOREIGN KEY (id_tipo_estado)
+    REFERENCES wf.ttipo_estado(id_tipo_estado)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/*******************************************F-DEP-JRR-WF-0-20/08/2014*************************************/

@@ -216,7 +216,7 @@ Phx.vista.Configurar = Ext.extend(Phx.frmInterfaz,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
 	       		    mode: 'local',
-	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css']	       		    
+	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosajaime/css/xtheme-rosajaime.css']	       		    
        		},
        		type:'ComboBox',
        		id_grupo:0,

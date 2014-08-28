@@ -261,5 +261,12 @@ class ACTAuten extends ACTbase {
 		}
 	}
 	
+	function cerrarSesion(){
+	    session_unset();
+        session_destroy(); // destruyo la sesion 
+        header("Location: /"); 
+        echo "{success:true}";
+    }
+	
 }
 ?>

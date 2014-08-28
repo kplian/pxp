@@ -38,6 +38,8 @@ class DiagramadorGanttTramite{
 																					'Unidad '.$this->dataSource->getParameter('desc_uo'));
 		$graph->title->SetFont(FF_ARIAL,FS_BOLD,6);
 		*/
+		define('UTF-8',$locale_char_set);
+		
 		// Setup some "very" nonstandard colors
 		$graph->SetMarginColor('lightgreen@0.8');
 		$graph->SetBox(true,'yellow:0.6',2);

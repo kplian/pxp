@@ -15,6 +15,7 @@ CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   variables varchar [],
   valores varchar [],
   tipos varchar [],
+  par_permiso boolean,
   tipo_retorno varchar = 'varchar'::character varying,
   datos_retorno varchar = NULL::character varying
 )
@@ -22,7 +23,7 @@ RETURNS SETOF record AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_sel
- DESCRIPCIÃ“N: 	Recibe las peticiones del servidor web y las encamina 
+ DESCRIPCIÓN: 	Recibe las peticiones del servidor web y las encamina 
   				hacia el procedimiento almacenado correspondiente
  AUTOR: 		KPLIAN (jrr)
  FECHA:			26/07/2010
@@ -98,9 +99,9 @@ BEGIN
        v_nivel_error=1;
        SELECT po_administrador,po_habilitar_log,po_tiene_permisos,po_id_subsistema
            into v_administrador_bool,v_habilitar_log,v_tiene_permisos,v_id_subsistema
-       FROM pxp.f_verifica_permisos( par_id_usuario, par_transaccion, ''::varchar,ip_admin,par_ip::varchar);
+       FROM pxp.f_verifica_permisos( par_id_usuario, par_transaccion, ''::varchar,ip_admin,par_ip::varchar, par_permiso);
        v_nivel_error=2;
-       --raise exception 'permisos ->  %,%,%',v_tiene_permisos,v_habilitar_log,v_administrador_bool;
+       --raise exception 'permisos ->  %,%,%,%',v_tiene_permisos,v_habilitar_log,v_administrador_bool,v_id_subsistema;
     
      
       if(v_administrador_bool) THEN
@@ -292,7 +293,7 @@ BEGIN
                 v_id_subsistema_cade||
                 ',1)';
 
-		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa funciÃ³n da el resultado,
+		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa función da el resultado,
         --por lo que se modifica para que devuelva un json direcamente
          v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log');
                 

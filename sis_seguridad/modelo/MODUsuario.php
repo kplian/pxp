@@ -97,6 +97,7 @@ class MODUsuario extends MODbase {
 		
 		//Ejecuta la funcion
 		$this->armarConsulta();
+		
 		$this->ejecutarConsulta();
 		
 		return $this->respuesta;

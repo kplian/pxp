@@ -65,8 +65,8 @@ class driver
 	
 	protected $tipo_retorno;//por dfecto varchar
 
-	
 
+	
 
 	var $consulta_armada;//para saber si la consulta ya fue armada ye sta lista para ser ejecutada
 	/**
@@ -110,6 +110,7 @@ class driver
 		//$this->tipo_conexion='persistente';
 		$this->error_parametro=false;
 		$this->count=true;
+		
 		//rac 19032012
 		$this->tipo_retorno = 'varchar';
 		
@@ -125,8 +126,9 @@ class driver
 		
 		//rac 23/09/2011 upload false apagado por defecto
 		$this->uploadFile=false;
-		
-
+		if (!isset($_REQUEST['pxp_verificarPermisos'])) {
+			$_REQUEST['pxp_verificarPermisos']=true;
+		}
 
 	}
 
@@ -148,9 +150,6 @@ class driver
 		$this->procedimiento=$procedimiento;
 
 	}
-
-	
-
 	
 
 
@@ -282,7 +281,7 @@ class driver
 		$this->count=$logico;
 
 	}
-
+	
 	/**
 	 * Nombre funcion:	setTipoConexion
 	 * Proposito:		establece el tipo de conexion por defecto persistente
@@ -327,7 +326,6 @@ class driver
 	function armarConsultaSel(){
 		
 		$this->consulta='select * from pxp.f_intermediario_sel(';
-		
 		
 		//agrega parametros fijos a la consulta intermediario sel
 		if($this->null($this->id_usuario)){
@@ -393,18 +391,18 @@ class driver
 			$this->consulta.$this->id_categoria.',';
 		}
 		
-		 if(!isset($_SESSION["_IP_ADMIN"])){
+		 if( !isset($_SESSION["_LOGIN"]) || !isset($_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]])){
 
 			$this->consulta.='NULL,';
 		}
 		else{
 			$this->consulta.='array[';
-			for($i=0;$i<count($_SESSION["_IP_ADMIN"]);$i++){
+			for($i=0;$i<count($_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]]);$i++){
 				if($i==0){
-					$this->consulta.="'".$_SESSION["_IP_ADMIN"][$i]."'";
+					$this->consulta.="'".$_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]][$i]."'";
 				}
 				else{
-					$this->consulta.=",'".$_SESSION["_IP_ADMIN"][$i]."'";
+					$this->consulta.=",'".$_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]][$i]."'";
 				}
 			}
 			$this->consulta.='],';
@@ -456,22 +454,26 @@ class driver
 		}
 
 		$tipo_retorno.=')';
-
+		
        //rac 19032012 aumenta tipo de retorno 
        if($this->tipo_retorno=='varchar')
-	   {
+	   {		
+		if($_REQUEST['pxp_verificarPermisos']==true)
+			$this->consulta.=",false";
+		else
+			$this->consulta.=",true";
         $this->consulta.=',\'varchar\',NULL)';
 		$this->consulta.=$tipo_retorno;
 	   }
-	   else{
-	   	
+	   else{	   
+		 if($_REQUEST['pxp_verificarPermisos']==true)
+			$this->consulta.=",false";
+		 else
+			$this->consulta.=",true"; 
 		 $this->consulta.=",'record','$tipo_retorno')";
 		 $this->consulta.=$tipo_retorno;
 		
 	   }
-		
-		
-		
 
 		
 
@@ -547,18 +549,18 @@ class driver
 			$this->consulta.$this->id_categoria.',';
 		}
 		
-		 if(!isset($_SESSION["_IP_ADMIN"])){
+		 if( !isset($_SESSION["_LOGIN"]) || !isset($_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]])){
 
 			$this->consulta.='NULL,';
 		}
 		else{
 			$this->consulta.='array[';
-			for($i=0;$i<count($_SESSION["_IP_ADMIN"]);$i++){
+			for($i=0;$i<count($_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]]);$i++){
 				if($i==0){
-					$this->consulta.="'".$_SESSION["_IP_ADMIN"][$i]."'";
+					$this->consulta.="'".$_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]][$i]."'";
 				}
 				else{
-					$this->consulta.=",'".$_SESSION["_IP_ADMIN"][$i]."'";
+					$this->consulta.=",'".$_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]][$i]."'";
 				}
 			}
 			$this->consulta.='],';
@@ -600,10 +602,10 @@ class driver
 		 //rac 19032012 aumenta tipo de retorno 
        if($this->tipo_retorno=='varchar')
 	   {
-        $this->consulta.=',\'varchar\',NULL)';
+        $this->consulta.=',NULL,\'varchar\',NULL)';
 	   }
 	   else{
-	   	$this->consulta.=",'record','as (total bigint)')";
+	   	$this->consulta.=",NULL,'record','as (total bigint)')";
 		}
 
 		$this->consulta.=' as (total bigint)';
@@ -688,18 +690,19 @@ class driver
 			$this->consulta.="'si',";
 		}
 		
-	    if(!isset($_SESSION["_IP_ADMIN"])){
-
+	    if( !isset($_SESSION["_LOGIN"]) || !isset($_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]])){
+			
 			$this->consulta.='NULL,';
 		}
 		else{
+			
 			$this->consulta.='array[';
-			for($i=0;$i<count($_SESSION["_IP_ADMIN"]);$i++){
+			for($i=0;$i<count($_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]]);$i++){
 				if($i==0){
-					$this->consulta.="'".$_SESSION["_IP_ADMIN"][$i]."'";
+					$this->consulta.="'".$_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]][$i]."'";
 				}
 				else{
-					$this->consulta.=",'".$_SESSION["_IP_ADMIN"][$i]."'";
+					$this->consulta.=",'".$_SESSION["_IP_ADMIN"][$_SESSION["_LOGIN"]][$i]."'";
 				}
 			}
 			$this->consulta.='],';

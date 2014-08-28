@@ -62,6 +62,7 @@ class ACTFuncionario extends ACTbase{
         }
         
         if($this->objParam->getParametro('fecha')!=''){
+            	
             $this->objParam->addFiltro(" ((FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  >= ''".$this->objParam->getParametro('fecha')."'') or (FUNCAR.fecha_asignacion  <= ''".$this->objParam->getParametro('fecha')."'' and FUNCAR.fecha_finalizacion  is NULL))");    
         }
 		

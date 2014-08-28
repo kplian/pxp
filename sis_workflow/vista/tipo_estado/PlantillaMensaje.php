@@ -21,7 +21,7 @@ Phx.vista.PlantillaMensaje=Ext.extend(Phx.frmInterfaz,{
                     autoScroll:true,
                     items: [
                            {id: config.idContenedor+'-card-0',
-                            width:'70%',
+                            width:'78%',
                             xtype: 'fieldset',
                             title: 'Datos principales',
                             autoHeight: true,
@@ -103,7 +103,7 @@ Phx.vista.PlantillaMensaje=Ext.extend(Phx.frmInterfaz,{
             config:{
                 name: 'plantilla_mensaje',
                 fieldLabel: 'Mensaje',
-                anchor: '90%'
+                anchor: '100%'
             },
             type:'HtmlEditor',
              id_grupo:1,
