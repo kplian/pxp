@@ -18,17 +18,17 @@ BEGIN
         
     select id_tipo_proceso,id_proceso_macro into v_id_tipo_proceso,v_id_proceso_macro
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso and tp.estado_reg = 'activo';
+    where tp.codigo = p_codigo_tipo_proceso ;
     
     select id_tipo_documento into v_id_tipo_documento
     from wf.ttipo_documento td    
-    where td.codigo = p_codigo and td.estado_reg = 'activo' and
+    where td.codigo = p_codigo and
     	td.id_tipo_proceso = v_id_tipo_proceso;    
         
     ALTER TABLE wf.ttipo_documento DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.ttipo_documento set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_tipo_documento = v_id_tipo_documento;
+    	where id_tipo_documento = v_id_tipo_documento;
     else
         if (v_id_tipo_documento is null)then
            INSERT INTO 

@@ -19,26 +19,25 @@ BEGIN
         
     select id_tipo_proceso into v_id_tipo_proceso_origen
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso and tp.estado_reg = 'activo';
+    where tp.codigo = p_codigo_tipo_proceso;
     
     select id_tipo_proceso,id_proceso_macro into v_id_tipo_proceso,v_id_proceso_macro
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso_origen and tp.estado_reg = 'activo';    
+    where tp.codigo = p_codigo_tipo_proceso_origen;    
         
     select id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te    
-    where te.codigo = p_codigo_tipo_estado and te.estado_reg = 'activo' and
+    where te.codigo = p_codigo_tipo_estado and
     	te.id_tipo_proceso = v_id_tipo_proceso_origen;          
           
     select tpo.id_tipo_proceso_origin into v_identificador
     from wf.ttipo_proceso_origen tpo
-    where tpo.id_tipo_proceso = v_id_tipo_proceso and tpo.id_tipo_estado = v_id_tipo_estado AND
-    ce.estado_reg = 'activo';      
+    where tpo.id_tipo_proceso = v_id_tipo_proceso and tpo.id_tipo_estado = v_id_tipo_estado;      
         
     ALTER TABLE wf.ttipo_proceso_origen DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.ttipo_proceso_origen set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_tipo_proceso_origin = v_identificador;
+    	where id_tipo_proceso_origin = v_identificador;
     else
         if (v_identificador is null)then
            INSERT INTO 

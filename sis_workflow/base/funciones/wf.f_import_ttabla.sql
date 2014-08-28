@@ -36,14 +36,14 @@ BEGIN
     from wf.ttabla ta
     inner join wf.ttipo_proceso tp
     	on tp.id_tipo_proceso = ta.id_tipo_proceso       
-    where ta.bd_codigo_tabla = p_codigo_tabla and ta.estado_reg = 'activo'
+    where ta.bd_codigo_tabla = p_codigo_tabla 
     and tp.codigo = p_codigo_tipo_proceso;
     
     select id_tabla into v_vista_id_tabla_maestro
     from wf.ttabla ta
     inner join wf.ttipo_proceso tp
     	on tp.id_tipo_proceso = ta.id_tipo_proceso    
-    where ta.bd_codigo_tabla = p_vista_codigo_tabla_maestro and ta.estado_reg = 'activo'
+    where ta.bd_codigo_tabla = p_vista_codigo_tabla_maestro 
     and tp.codigo = p_codigo_tipo_proceso;
     
     if (p_vista_estados_new is not null) then
@@ -57,7 +57,7 @@ BEGIN
     ALTER TABLE wf.ttabla DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.ttabla set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_tabla = v_id_tabla;
+    	where id_tabla = v_id_tabla;
     else
         if (v_id_tabla is null)then
            INSERT INTO wf.ttabla

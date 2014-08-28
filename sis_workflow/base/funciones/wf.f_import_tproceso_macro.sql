@@ -21,7 +21,7 @@ BEGIN
     ALTER TABLE wf.tproceso_macro DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.tproceso_macro set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_proceso_macro = v_id_proceso_macro;
+    	where id_proceso_macro = v_id_proceso_macro;
     else
         if (v_id_proceso_macro is null)then
             INSERT INTO wf.tproceso_macro

@@ -25,20 +25,20 @@ BEGIN
 	 
     select id_proceso_macro into v_id_proceso_macro
     from wf.tproceso_macro pm    
-    where pm.codigo = p_codigo_pm and pm.estado_reg = 'activo';
+    where pm.codigo = p_codigo_pm ;
     
     select id_tipo_proceso into v_id_tipo_proceso
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo and tp.estado_reg = 'activo';
+    where tp.codigo = p_codigo ;
     
     select id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te    
-    where te.codigo = p_codigo_tipo_estado and te.estado_reg = 'activo';
+    where te.codigo = p_codigo_tipo_estado ;
     
     ALTER TABLE wf.ttipo_proceso DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.ttipo_proceso set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_tipo_proceso = v_id_tipo_proceso;
+    	where id_tipo_proceso = v_id_tipo_proceso;
     else
         if (v_id_tipo_proceso is null)then
            INSERT INTO wf.ttipo_proceso

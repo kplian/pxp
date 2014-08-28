@@ -18,27 +18,26 @@ BEGIN
         
     select id_tipo_proceso into v_id_tipo_proceso
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso and tp.estado_reg = 'activo';    
+    where tp.codigo = p_codigo_tipo_proceso;    
         
     select id_tipo_estado into v_id_estado_padre
     from wf.ttipo_estado te    
-    where te.codigo = p_codigo_estado_padre and te.estado_reg = 'activo' and
+    where te.codigo = p_codigo_estado_padre and
     	te.id_tipo_proceso = v_id_tipo_proceso;   
         
     select id_tipo_estado into v_id_estado_hijo
     from wf.ttipo_estado te    
-    where te.codigo = p_codigo_estado_hijo and te.estado_reg = 'activo' and
+    where te.codigo = p_codigo_estado_hijo and
     	te.id_tipo_proceso = v_id_tipo_proceso;
         
     select ee.id_estructura_estado into v_id_estructura_estado
     from wf.testructura_estado ee
-    where ee.id_tipo_estado_padre = v_id_estado_padre and ee.id_tipo_estado_hijo = v_id_estado_hijo AND
-    ce.estado_reg = 'activo';      
+    where ee.id_tipo_estado_padre = v_id_estado_padre and ee.id_tipo_estado_hijo = v_id_estado_hijo;      
         
     ALTER TABLE wf.testructura_estado DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.testructura_estado set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_estructura_estado = v_id_estructura_estado;
+    	where id_estructura_estado = v_id_estructura_estado;
     else
         if (v_id_estructura_estado is null)then
            INSERT INTO 

@@ -37,13 +37,13 @@ BEGIN
         
     select id_tipo_proceso into v_id_tipo_proceso
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso and tp.estado_reg = 'activo';
+    where tp.codigo = p_codigo_tipo_proceso ;
     
     select te.id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te
     inner join wf.ttipo_proceso tp
     	on tp.id_tipo_proceso = te.id_tipo_proceso       
-    where te.codigo = p_codigo and te.estado_reg = 'activo'
+    where te.codigo = p_codigo 
     and tp.codigo = p_codigo_tipo_proceso;   
     
     
@@ -54,7 +54,7 @@ BEGIN
     ALTER TABLE wf.ttabla DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.ttipo_estado set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_tipo_estado = v_id_tipo_estado;
+    	where id_tipo_estado = v_id_tipo_estado;
     else
         if (v_id_tipo_estado is null)then
            INSERT INTO wf.ttipo_estado

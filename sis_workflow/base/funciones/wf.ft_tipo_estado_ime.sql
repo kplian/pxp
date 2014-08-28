@@ -264,6 +264,13 @@ BEGIN
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Procesos Origen que depende(n) de este tipo estado';
+            end if;   
+            
+            if (exists (select 1 
+            			from wf.tplantilla_correo t
+                        where t.id_tipo_estado = v_parametros.id_tipo_estado and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Plantillas de Correo que depende(n) de este tipo estado';
             end if;           
             
             

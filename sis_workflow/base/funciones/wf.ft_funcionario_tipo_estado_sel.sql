@@ -108,6 +108,45 @@ BEGIN
       return v_consulta;
 
     end;
+   
+   /*********************************    
+ 	#TRANSACCION:  'WF_EXPFUNTES_SEL'
+ 	#DESCRIPCION:	Exportacion de funcionarios tipo estado
+ 	#AUTOR:		admin	
+ 	#FECHA:		15-01-2014 03:12:38
+	***********************************/
+
+	elsif(p_transaccion='WF_EXPFUNTES_SEL')then
+
+		BEGIN
+
+               v_consulta:='select  ''funcionario_tipo_estado''::varchar,tes.codigo as codigo_estado,tp.codigo as codigo_proceso,fun.ci,dep.codigo,
+							funte.regla,funte.estado_reg
+
+                            from wf.tfuncionario_tipo_estado funte
+                            inner join wf.ttipo_estado tes
+                            on tes.id_tipo_estado = funte.id_tipo_estado                            
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = tes.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            left join orga.vfuncionario fun
+                            on fun.id_funcionario = funte.id_funcionario
+                            left join param.tdepto dep
+                            on dep.id_depto = funte.id_depto
+                            where pm.id_proceso_macro ='|| v_parametros.id_proceso_macro;
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and tdoces.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by funte.id_funcionario_tipo_estado ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
           
   else
                

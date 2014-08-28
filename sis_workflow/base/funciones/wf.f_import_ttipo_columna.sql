@@ -27,22 +27,22 @@ BEGIN
         
     select id_tipo_proceso into v_id_tipo_proceso
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso and tp.estado_reg = 'activo';
+    where tp.codigo = p_codigo_tipo_proceso;
     
     select id_tabla into v_id_tabla
     from wf.ttabla ta    
-    where ta.codigo = p_codigo_tabla and ta.estado_reg = 'activo' and
+    where ta.codigo = p_codigo_tabla and
     	ta.id_tipo_proceso = v_id_tipo_proceso;
     
     select id_tipo_columna into v_id_tipo_columna
     from wf.ttipo_columna tc        
-    where tc.bd_nombre_columna = p_nombre_columna and tc.estado_reg = 'activo'
+    where tc.bd_nombre_columna = p_nombre_columna 
     and tc.id_tabla = v_id_tabla;    
         
     ALTER TABLE wf.ttipo_columna DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.ttipo_columna set estado_reg = 'inactivo',modificado = 1 
-    	where estado_reg = 'activo' and id_tipo_columna = v_id_tipo_columna;
+    	where id_tipo_columna = v_id_tipo_columna;
     else
         if (v_id_tipo_columna is null)then
            INSERT INTO  wf.ttipo_columna

@@ -349,6 +349,29 @@ class ACTProcesoMacro extends ACTbase{
 			
 			}
 
+			else if ($row['tipo'] == 'funcionario_tipo_estado') {
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+					"select wf.f_import_tfuncionario_tipo_estado ('delete','".							 
+							$row['codigo_tipo_estado']."','".
+							$row['codigo_tipo_proceso']."','".
+							(is_null($row['ci'])?'NULL':"'".$row['ci']."'") ."," .	
+							(is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") .",NULL,NULL);\r\n");						
+					
+				} else {
+					
+					fwrite ($file, 
+					 "select wf.f_import_tfuncionario_tipo_estado ('insert',".
+							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .
+							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
+							 (is_null($row['ci'])?'NULL':"'".$row['ci']."'") ."," .							 
+							 (is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") ."," .						 						 
+							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") .");\r\n");
+							 				
+				}				
+			
+			}
+
 					 		
 			
 		}
