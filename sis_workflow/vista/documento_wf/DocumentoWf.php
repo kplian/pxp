@@ -93,35 +93,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		},
         {
             config:{
-                fieldLabel: "Escaneado",
-                gwidth: 70,
-                inputType:'file',
-                name: 'archivo',
-                buttonText: '',   
-                maxLength:150,
-                anchor:'100%',
-                renderer:function (value, p, record){  
-                            if(record.data['extension'].length!=0) {
-                                var data = "id=" + record.data['id_documento_wf'];
-                                data += "&extension=" + record.data['extension'];
-                                data += "&sistema=sis_workflow";
-                                data += "&clase=DocumentoWf";
-                                data += "&url="+record.data['url'];
-                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
-                            }
-                        },  
-                buttonCfg: {
-                    iconCls: 'upload-icon'
-                }
-            },
-            type:'Field',
-            sortable:false,
-            id_grupo:0,
-            grid:true,
-            form:false
-        },
-        {
-            config:{
                 name: 'chequeado',
                 fieldLabel: 'Escaneado',
                 allowBlank: true,
@@ -209,7 +180,15 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 150,
-                maxLength:200
+                maxLength:200,
+                renderer:function(value,p,record){
+                         if( record.data.nombre_estado.toLowerCase()=='anulada'||record.data.nombre_estado.toLowerCase()=='anulado'||record.data.nombre_estado.toLowerCase()=='cancelado'){
+                             return String.format('<b><font color="red">{0}</font></b>', value);
+                        }
+                        else{
+                            return String.format('{0}', value);
+                        }},
+                
             },
                 type:'TextField',
                 filters:{pfiltro:'td.nombre',type:'string'},
@@ -219,12 +198,48 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         },
         {
             config:{
+                fieldLabel: "Escaneado",
+                gwidth: 70,
+                inputType:'file',
+                name: 'archivo',
+                buttonText: '',   
+                maxLength:150,
+                anchor:'100%',
+                renderer:function (value, p, record){  
+                            if(record.data['extension'].length!=0) {
+                                var data = "id=" + record.data['id_documento_wf'];
+                                data += "&extension=" + record.data['extension'];
+                                data += "&sistema=sis_workflow";
+                                data += "&clase=DocumentoWf";
+                                data += "&url="+record.data['url'];
+                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
+                            }
+                        },  
+                buttonCfg: {
+                    iconCls: 'upload-icon'
+                }
+            },
+            type:'Field',
+            sortable:false,
+            id_grupo:0,
+            grid:true,
+            form:false
+        },
+        {
+            config:{
                 name: 'codigo_proceso',
                 fieldLabel: 'Codigo Proc.',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 150,
-                maxLength:200
+                maxLength:200,
+                renderer:function(value,p,record){
+                         if( record.data.nombre_estado.toLowerCase()=='anulada'||record.data.nombre_estado.toLowerCase()=='anulado'||record.data.nombre_estado.toLowerCase()=='cancelado'){
+                             return String.format('<b><font color="red">{0}</font></b>', value);
+                        }
+                        else{
+                            return String.format('{0}', value);
+                        }},
             },
                 type:'TextField',
                 filters:{pfiltro:'pw.codigo_proceso',type:'string'},
@@ -239,7 +254,14 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
-                maxLength:10
+                maxLength:10,
+                renderer:function(value,p,record){
+                         if( record.data.nombre_estado.toLowerCase()=='anulada'||record.data.nombre_estado.toLowerCase()=='anulado'||record.data.nombre_estado.toLowerCase()=='cancelado'){
+                             return String.format('<b><font color="red">{0}</font></b>', value);
+                        }
+                        else{
+                            return String.format('{0}', value);
+                        }},
             },
                 type:'TextField',
                 filters:{pfiltro:'tewf.nombre_estado',type:'string'},
@@ -253,11 +275,26 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Desc Proc.',
                 allowBlank: true,
                 anchor: '80%',
-                gwidth: 150,
+                gwidth: 500,
                 maxLength:200
             },
                 type:'TextField',
                 filters:{pfiltro:'pw.descripcion',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
+        },
+        {
+            config:{
+                name:'extension' ,
+                fieldLabel: 'Extensión',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 40,
+                maxLength:5
+            },
+                type:'TextField',
+                filters:{pfiltro:'dwf.extension',type:'string'},
                 id_grupo:1,
                 grid:true,
                 form:false
@@ -276,21 +313,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:true
-		},
-		{
-			config:{
-				name:'extension' ,
-				fieldLabel: 'Extensión',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 40,
-				maxLength:5
-			},
-				type:'TextField',
-				filters:{pfiltro:'dwf.extension',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
 		},
 		{
 			config:{
@@ -476,6 +498,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         }
         else{
             this.getBoton('btnReporte').disable();
+        }
+        if( data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
+           this.getBoton('btnUpload').disable(); 
+           this.getBoton('btnMomento').disable()
         }
          
         
