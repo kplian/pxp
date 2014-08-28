@@ -23,3 +23,10 @@ CREATE AGGREGATE pxp.aggarray1 (anyelement) (
     SFUNC = pxp.aggregate_array,
     STYPE = anyarray
 );
+DROP AGGREGATE IF EXISTS pxp.html_rows (varchar);
+CREATE AGGREGATE pxp.html_rows (
+  varchar)
+(
+  SFUNC = pxp.html_rows,
+  STYPE = "varchar"
+);
