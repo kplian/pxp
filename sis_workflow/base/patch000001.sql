@@ -726,7 +726,7 @@ ALTER TABLE wf.ttipo_estado
 COMMENT ON COLUMN wf.ttipo_estado.funcion_regreso
 IS 'esta funcion correo cuando  el flujo retrocede hacia este estado';
 
-/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+/***********************************F-SCP-RAC-WF-1-04/08/2014****************************************/
 
 
 /***********************************I-SCP-RAC-WF-1-12/08/2014****************************************/

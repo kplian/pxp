@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
   par_id_usuario_ai integer,
@@ -23,7 +21,7 @@ RETURNS SETOF record AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_sel
- DESCRIPCIÓN: 	Recibe las peticiones del servidor web y las encamina 
+ DESCRIPCIÃ“N: 	Recibe las peticiones del servidor web y las encamina 
   				hacia el procedimiento almacenado correspondiente
  AUTOR: 		KPLIAN (jrr)
  FECHA:			26/07/2010
@@ -293,7 +291,7 @@ BEGIN
                 v_id_subsistema_cade||
                 ',1)';
 
-		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa función da el resultado,
+		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa funciÃ³n da el resultado,
         --por lo que se modifica para que devuelva un json direcamente
          v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log');
                 
