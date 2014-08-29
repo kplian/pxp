@@ -1,11 +1,11 @@
 CREATE OR REPLACE FUNCTION wf.f_import_ttipo_proceso_origen (
-p_accion varchar,	
-p_codigo_tipo_proceso varchar,	
-p_codigo_pm varchar,	
-p_codigo_tipo_proceso_origen varchar,	
-p_codigo_tipo_estado varchar,	
-p_tipo_disparo varchar,		
-p_funcion_validacion_wf text
+  p_accion varchar,
+  p_codigo_tipo_proceso varchar,
+  p_codigo_pm varchar,
+  p_codigo_tipo_proceso_origen varchar,
+  p_codigo_tipo_estado varchar,
+  p_tipo_disparo varchar,
+  p_funcion_validacion_wf text
 )
 RETURNS varchar AS
 $body$
@@ -19,16 +19,17 @@ BEGIN
         
     select id_tipo_proceso into v_id_tipo_proceso_origen
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso;
-    
+    where tp.codigo = p_codigo_tipo_proceso_origen;
+    --raise exception '%',v_id_tipo_proceso_origen;
     select id_tipo_proceso,id_proceso_macro into v_id_tipo_proceso,v_id_proceso_macro
     from wf.ttipo_proceso tp    
-    where tp.codigo = p_codigo_tipo_proceso_origen;    
+    where tp.codigo = p_codigo_tipo_proceso;    
         
     select id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te    
     where te.codigo = p_codigo_tipo_estado and
-    	te.id_tipo_proceso = v_id_tipo_proceso_origen;          
+    	te.id_tipo_proceso = v_id_tipo_proceso_origen; 
+       
           
     select tpo.id_tipo_proceso_origin into v_identificador
     from wf.ttipo_proceso_origen tpo
@@ -40,6 +41,7 @@ BEGIN
     	where id_tipo_proceso_origin = v_identificador;
     else
         if (v_identificador is null)then
+        
            INSERT INTO 
               wf.ttipo_proceso_origen
             (
@@ -82,4 +84,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-

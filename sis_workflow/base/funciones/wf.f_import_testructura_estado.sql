@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION wf.f_import_testructura_estado (
-p_accion varchar,	
-p_codigo_estado_padre varchar,		
-p_codigo_estado_hijo varchar,		
-p_codigo_tipo_proceso varchar,	
-p_prioridad integer,	
-p_regla  varchar
-
+  p_accion varchar,
+  p_codigo_estado_padre varchar,
+  p_codigo_estado_hijo varchar,
+  p_codigo_tipo_proceso varchar,
+  p_prioridad integer,
+  p_regla varchar
 )
 RETURNS varchar AS
 $body$
@@ -61,7 +60,7 @@ BEGIN
         else            
            UPDATE wf.testructura_estado  
             SET               
-              id_tipo_estado_hijo = p_id_tipo_estado_hijo,
+              id_tipo_estado_hijo = v_id_estado_hijo,
               prioridad = p_prioridad,
               regla = p_regla,
               modificado = 1             
@@ -79,4 +78,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
