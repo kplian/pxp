@@ -18,6 +18,10 @@ BEGIN
     from wf.tproceso_macro pm    
     where pm.codigo = p_codigo;
     
+    select id_subsistema into v_id_subsistema
+    from segu.tsubsistema sub    
+    where sub.codigo = p_codigo_subsistema;
+    
     ALTER TABLE wf.tproceso_macro DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.tproceso_macro set estado_reg = 'inactivo',modificado = 1 
