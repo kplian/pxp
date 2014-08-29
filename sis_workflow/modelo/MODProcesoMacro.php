@@ -467,6 +467,32 @@ class MODProcesoMacro extends MODbase{
 	  
 			$this->ejecutarConsulta($this->respuesta);
 		}
+		
+		if($this->respuesta->getTipo()=='ERROR'){
+			return $this->respuesta;
+		}
+		else {
+		    $this->procedimiento='wf.ft_plantilla_correo_sel';
+			$this->transaccion='WF_EXPCORREO_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			$this->resetCaptura();
+			$this->addConsulta();			
+			
+			$this->captura('tipo','varchar');
+			$this->captura('codigo','varchar');
+			$this->captura('codigo_tipo_estado','varchar');	
+			$this->captura('codigo_tipo_proceso','varchar');
+			$this->captura('regla','text');
+			$this->captura('plantilla','text');
+			$this->captura('correos','text');			
+			$this->captura('estado_reg','varchar');
+						
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
         
        return $this->respuesta;		
 	

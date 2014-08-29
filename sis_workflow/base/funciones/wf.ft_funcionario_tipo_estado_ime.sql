@@ -32,6 +32,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_funcionario_tipo_estado	integer;
+	v_id_funcionario		integer;
+	v_id_depto				integer;
 			    
 BEGIN
 
@@ -93,16 +95,52 @@ BEGIN
 	elsif(p_transaccion='WF_FUNCTEST_MOD')then
 
 		begin
-			--Sentencia de la modificacion
-			update wf.tfuncionario_tipo_estado set
-			id_labores_tipo_proceso = v_parametros.id_labores_tipo_proceso,
-			id_tipo_estado = v_parametros.id_tipo_estado,
-			id_funcionario = v_parametros.id_funcionario,
-			id_depto = v_parametros.id_depto,
-			id_usuario_mod = p_id_usuario,
-			fecha_mod = now(),
-            regla = v_parametros.regla
-			where id_funcionario_tipo_estado=v_parametros.id_funcionario_tipo_estado;
+		
+			select coalesce(id_funcionario,0),coalesce(id_depto,0) into v_id_funcionario,v_id_depto 
+			from wf.tfuncionario_tipo_estado
+			where id_funcionario_tipo_estado = v_parametros.id_funcionario_tipo_estado;
+			
+			if (v_id_funcionario = coalesce(v_parametros.id_funcionario, 0) and v_id_depto = coalesce(v_parametros.id_depto, 0))then
+            	--Sentencia de la modificacion
+				update wf.tfuncionario_tipo_estado set
+				id_labores_tipo_proceso = v_parametros.id_labores_tipo_proceso,				
+				id_usuario_mod = p_id_usuario,
+				fecha_mod = now(),
+	            regla = v_parametros.regla
+				where id_funcionario_tipo_estado=v_parametros.id_funcionario_tipo_estado;
+			else
+				update segu.tfuncionario_tipo_estado set
+                        estado_reg = 'inactivo'
+                where id_funcionario_tipo_estado=v_parametros.id_funcionario_tipo_estado;
+                
+				--Sentencia de la insercion
+	        	insert into wf.tfuncionario_tipo_estado(
+				id_labores_tipo_proceso,
+				id_tipo_estado,
+				id_funcionario,
+				id_depto,
+				estado_reg,
+				fecha_reg,
+				id_usuario_reg,
+				id_usuario_mod,
+				fecha_mod,
+	            regla
+	          	) values(
+				v_parametros.id_labores_tipo_proceso,
+				v_parametros.id_tipo_estado,
+				v_parametros.id_funcionario,
+				v_parametros.id_depto,
+				'activo',
+				now(),
+				p_id_usuario,
+				null,
+				null,
+	            v_parametros.regla
+								
+				)RETURNING id_funcionario_tipo_estado into v_id_funcionario_tipo_estado;
+			
+			end if;
+			
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionarios x Tipo Estado modificado(a)'); 

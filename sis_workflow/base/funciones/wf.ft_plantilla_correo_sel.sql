@@ -99,6 +99,41 @@ BEGIN
 			return v_consulta;
 
 		end;
+		
+	/*********************************    
+ 	#TRANSACCION:  'WF_EXPCORREO_SEL'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		15-01-2014 03:12:38
+	***********************************/
+
+	elsif(p_transaccion='WF_EXPCORREO_SEL')then
+
+		BEGIN
+
+               v_consulta:='select  ''plantilla_correo''::varchar,pcorreo.codigo,tes.codigo,tp.codigo,pcorreo.regla,
+               				pcorreo.plantilla,array_to_string(pcorreo.correos),pcorreo.estado_reg               				
+                            from wf.tplantilla_correo pcorreo
+                            inner join wf.ttipo_estado tes
+                            on tes.id_tipo_estado = pcorreo.id_tipo_estado                                        
+                            inner join wf.ttipo_proceso tp 
+                            on tp.id_tipo_proceso = pcorreo.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                            on pm.id_proceso_macro = tp.id_proceso_macro
+                            inner join segu.tsubsistema s
+                            on s.id_subsistema = pm.id_subsistema
+                            where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
+
+			   if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and pcorreo.modificado is null ';
+               end if;
+               
+               v_consulta = v_consulta || ' order by pcorreo.id_plantilla_correo ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
 					
 	else
 					     
