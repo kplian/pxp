@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_inserta_documento_wf (
   p_id_usuario_reg integer,
   p_id_proceso_wf integer,
@@ -74,6 +76,8 @@ BEGIN
         -- recupero los documento condifurados para el tipo de estado
       
         
+         
+         
         FOR  v_registros in (
                          select
                                tdo.id_tipo_documento,
@@ -102,13 +106,14 @@ BEGIN
                ELSE
                
               
+           
                        v_check  = wf.f_evaluar_regla_wf (p_id_usuario_reg,
                                                   p_id_proceso_wf,
                                                   v_registros.regla,
                                                   v_registro_estado.id_tipo_estado,
                                                   v_registro_estado.id_estado_anterior);
                
-               
+                
                         
                        IF  (v_check)  THEN
                    
@@ -155,7 +160,9 @@ BEGIN
 				
 	WHEN OTHERS THEN
 		v_resp='';
+		--v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM||' en el documento '|| COALESCE(v_ultimo_codigo,'S/D') );
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje', 'en el documento '|| COALESCE(v_ultimo_codigo,'S/D'),'unir' );
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;  

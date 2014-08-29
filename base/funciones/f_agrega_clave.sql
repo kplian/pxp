@@ -1,10 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_agrega_clave (
-  p_cad character varying,
-  p_clave character varying,
-  p_valor character varying
+  p_cad varchar,
+  p_clave varchar,
+  p_valor varchar,
+  p_tipo varchar = 'cambiar'::character varying
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_agrega_clave
@@ -58,10 +60,19 @@ v_cad_ini = '<';
 
     --Verifica si la clave es mensaje y si ya fue serializada para no volver a serializar
     if v_clave = 'mensaje' then
-    --raise notice 'substr: %     v_cad_ini: %  v_valor: %',substr(ltrim(v_cadena),1,1),v_cad_ini,v_valor;
-     if substr(ltrim(v_valor),1,1) = v_cad_ini then
-         return v_valor;
+    
+      IF p_tipo = 'cambiar'  then
+          --raise notice 'substr: %     v_cad_ini: %  v_valor: %',substr(ltrim(v_cadena),1,1),v_cad_ini,v_valor;
+         if substr(ltrim(v_valor),1,1) = v_cad_ini then
+            return v_valor;
+          end if;
+      ELSE
+         if pxp.f_obtiene_clave_valor(v_cadena,v_clave,'','','valor') <> '' then
+           v_aux =pxp.f_obtiene_clave_valor(v_cadena,v_clave,v_valor,'unir','');
+           return v_aux;
         end if;
+        
+      END IF;
     end if;
     
     --Verifica si ya esta registrado el 'codigo_error'
@@ -73,9 +84,9 @@ v_cad_ini = '<';
     
     --Verifica si ya se registro el codigo procedimiento
     if v_clave = 'procedimientos' then
-     if pxp.f_obtiene_clave_valor(v_cadena,v_clave,'','','valor') <> '' then
-         v_aux =pxp.f_obtiene_clave_valor(v_cadena,v_clave,v_valor,'unir','');
-         return v_aux;
+         if pxp.f_obtiene_clave_valor(v_cadena,v_clave,'','','valor') <> '' then
+           v_aux =pxp.f_obtiene_clave_valor(v_cadena,v_clave,v_valor,'unir','');
+           return v_aux;
         end if;
     end if;
     
@@ -89,7 +100,8 @@ v_cad_ini = '<';
   
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_agrega_clave_multiple (OID = 304216) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

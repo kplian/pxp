@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_evaluar_regla_wf (
   p_id_usuario integer,
   p_id_proceso_wf integer,
@@ -20,6 +22,7 @@ v_registros			 record;
 
 
 v_nombre_funcion  varchar;
+v_nombre_funcion_exe  varchar;
 v_resp  varchar;
 v_i     integer;
 
@@ -41,7 +44,7 @@ BEGIN
             
             --para determina si es funcion (primeo suponemos que lo es)
             --si es funcion obtenmos el nombre
-            v_nombre_funcion = split_part(p_plantilla, '.', 2);
+            v_nombre_funcion_exe = split_part(p_plantilla, '.', 2);
             
             IF EXISTS( SELECT proname FROM pg_proc WHERE proname = v_nombre_funcion) THEN
                
@@ -103,8 +106,9 @@ WHEN OTHERS THEN
     
 
 			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM||'AL EVALUAR LA REGLA '||COALESCE(p_plantilla,'NULA')||' en proceso '||v_registros.codigo);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','AL EVALUAR LA REGLA '||COALESCE(p_plantilla,'NULA')||' en proceso '||COALESCE(v_registros.codigo,'S/P'));
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM,'unir');
+            v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 
