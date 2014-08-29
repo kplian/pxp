@@ -47,7 +47,7 @@ DECLARE
   v_ultimo_codigo varchar;
   
 BEGIN
-
+  
      v_nombre_funcion = 'wf.f_inserta_documento_wf';
      v_ultimo_codigo = 'NO SE PROCESARON DOCUMENTOS';
     
@@ -114,7 +114,7 @@ BEGIN
                                                   v_registro_estado.id_estado_anterior);
                
                 
-                        
+                         
                        IF  (v_check)  THEN
                    
                        --crea el documento para este proceso y estado especifico
@@ -160,7 +160,6 @@ BEGIN
 				
 	WHEN OTHERS THEN
 		v_resp='';
-		--v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM||' en el documento '|| COALESCE(v_ultimo_codigo,'S/D') );
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
         v_resp = pxp.f_agrega_clave(v_resp,'mensaje', 'en el documento '|| COALESCE(v_ultimo_codigo,'S/D'),'unir' );
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);

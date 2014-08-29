@@ -32,7 +32,7 @@ v_retorno boolean;
 BEGIN
             v_nombre_funcion = 'f_evaluar_regla_wf';
             
-                      
+                 
             
             v_retorno = FALSE;
             
@@ -46,14 +46,17 @@ BEGIN
             --si es funcion obtenmos el nombre
             v_nombre_funcion_exe = split_part(p_plantilla, '.', 2);
             
-            IF EXISTS( SELECT proname FROM pg_proc WHERE proname = v_nombre_funcion) THEN
+             
+            
+            IF EXISTS( SELECT proname FROM pg_proc WHERE proname = v_nombre_funcion_exe) THEN
                
                --si es funcion la ejecutamos y retornamos el valor  falso o verdadero
                EXECUTE ('select ' || p_plantilla  ||'('||p_id_usuario::varchar||','|| p_id_proceso_wf::varchar||','||p_id_estado_anterior::varchar||','||p_id_tipo_estado_actual::varchar||')') into v_retorno;
                              
 		    ELSE
             
-           
+                
+               
             
                    --si es una regla procesamos la plantilla para replazar los valroes correspondientes
                    v_template_evaluado =  wf.f_procesar_plantilla( 

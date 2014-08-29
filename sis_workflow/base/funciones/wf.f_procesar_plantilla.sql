@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_id_usuario integer,
   p_id_proceso_wf integer,
@@ -84,7 +86,7 @@ BEGIN
                 v_nombre_funcion = 'wf.f_procesar_plantilla';
                 v_validar_nulo = TRUE;
                 
-              
+            
                 --obtenemos datos basicos
                 
                  select 
@@ -259,6 +261,7 @@ BEGIN
                        END LOOP;
                        
                 END IF;
+                
                 
                 
                 IF v_validar_nulo  THEN

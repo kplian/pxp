@@ -100,7 +100,7 @@ BEGIN
       from wf.ttipo_proceso tp
       where id_tipo_estado = v_id_tipo_estado_prev;
      
-     
+   
     
     -- si solo tiene un proceso disparado
     if v_cantidad_disparos = 1 then
@@ -142,7 +142,7 @@ BEGIN
           where   tp.id_tipo_estado=v_id_tipo_estado_prev
           and tp.codigo = ANY (v_array_codigo_tipo_proceso);
           
-         
+        
           --si no existe un camino oese a tener codigo se lanza un error
           if  v_id_tipo_proceso_next is NULL then
              
@@ -170,7 +170,7 @@ BEGIN
         
     
     
-    
+  
      
     
     IF v_id_tipo_proceso_next is NULL THEN 
@@ -236,7 +236,7 @@ BEGIN
           p_usuario_ai
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
-  
+
       
       -- inserta el primer estado del proceso 
          INSERT INTO 
@@ -266,10 +266,17 @@ BEGIN
           p_usuario_ai
         )RETURNING id_estado_wf into ps_id_estado_wf;  
         
+        
+          
+        
        ps_codigo_estado  = v_codigo_estado_next;
         
+      
        -- inserta documentos en estado borrador si estan configurados
        v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario_reg, ps_id_proceso_wf, ps_id_estado_wf);
+       
+       
+         
        -- verificar documentos
        v_resp_doc = wf.f_verifica_documento(p_id_usuario_reg, ps_id_estado_wf);
         
