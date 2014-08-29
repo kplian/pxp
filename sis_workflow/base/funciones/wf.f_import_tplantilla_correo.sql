@@ -41,7 +41,7 @@ BEGIN
             (
               id_usuario_reg,              
               id_tipo_estado,
-              codigo,             
+              codigo_plantilla,             
               regla,
               plantilla,
               correos,

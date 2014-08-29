@@ -111,13 +111,13 @@ BEGIN
 
 		BEGIN
 
-               v_consulta:='select  ''plantilla_correo''::varchar,pcorreo.codigo,tes.codigo,tp.codigo,pcorreo.regla,
-               				pcorreo.plantilla,array_to_string(pcorreo.correos),pcorreo.estado_reg               				
+               v_consulta:='select  ''plantilla_correo''::varchar,pcorreo.codigo_plantilla,tes.codigo,tp.codigo,pcorreo.regla,
+               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg               				
                             from wf.tplantilla_correo pcorreo
                             inner join wf.ttipo_estado tes
                             on tes.id_tipo_estado = pcorreo.id_tipo_estado                                        
                             inner join wf.ttipo_proceso tp 
-                            on tp.id_tipo_proceso = pcorreo.id_tipo_proceso
+                            on tp.id_tipo_proceso = tes.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
                             inner join segu.tsubsistema s
