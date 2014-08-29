@@ -28,15 +28,15 @@ BEGIN
         
     select pco.id_plantilla_correo into v_id_plantilla_correo
     from wf.tplantilla_correo pco
-    where pco.id_tipo_estado = v_id_tipo_estado and pco.codigo = p_codigo;
+    where pco.id_tipo_estado = v_id_tipo_estado and pco.codigo_plantilla = p_codigo;
       
         
     ALTER TABLE wf.tplantilla_correo DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
     	update wf.tplantilla_correo set estado_reg = 'inactivo',modificado = 1 
-    	where id_plantilla_correo = v_id_pantilla_correo;
+    	where id_plantilla_correo = v_id_plantilla_correo;
     else
-        if (v_id_pantilla_correo is null)then
+        if (v_id_plantilla_correo is null)then
            INSERT INTO wf.tplantilla_correo
             (
               id_usuario_reg,              
@@ -53,7 +53,7 @@ BEGIN
               p_codigo,
               p_regla,
               p_plantilla,
-              p_correos,
+              string_to_array(p_correos,','),
               1
             );
         else            
@@ -62,7 +62,7 @@ BEGIN
               id_tipo_estado = v_id_tipo_estado,
               regla = p_regla,
               pantilla = p_plantilla,
-              correos = p_correos,
+              correos = string_to_array(p_correos,','),
               modificado = 1             
             WHERE id_plantilla_correo = v_id_plantilla_correo;
         end if;
