@@ -13,8 +13,7 @@ $body$
 DECLARE	   
     v_id_tipo_proceso			integer;    
     v_id_tipo_estado			integer;
-    v_id_plantilla_correo		integer; 
-    v_id_tipo_proceso_externo	integer;   
+    v_id_plantilla_correo		integer;       
 BEGIN	 
         
     select id_tipo_proceso into v_id_tipo_proceso
@@ -27,7 +26,7 @@ BEGIN
     where te.codigo = p_codigo_tipo_estado and
     	te.id_tipo_proceso = v_id_tipo_proceso;   
         
-    select tde.id_tipo_documento_estado into v_id_tipo_documento_estado
+    select pco.id_plantilla_correo into v_id_plantilla_correo
     from wf.tplantilla_correo pco
     where pco.id_tipo_estado = v_id_tipo_estado and pco.codigo = p_codigo;
       
