@@ -331,9 +331,9 @@ class ACTProcesoMacro extends ACTbase{
 					fwrite ($file, 
 					"select wf.f_import_tfuncionario_tipo_estado ('delete','".							 
 							$row['codigo_tipo_estado']."','".
-							$row['codigo_tipo_proceso']."','".
+							$row['codigo_tipo_proceso']."',".
 							(is_null($row['ci'])?'NULL':"'".$row['ci']."'") ."," .	
-							(is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") .",NULL,NULL);\r\n");						
+							(is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") .",NULL);\r\n");						
 					
 				} else {
 					
