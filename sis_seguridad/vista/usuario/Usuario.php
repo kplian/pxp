@@ -259,14 +259,14 @@ tabEnter:true,
 	       		    //readOnly:true,
 	       		    valueField: 'estilo',
 	       		   // displayField: 'descestilo',
-	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosagarri/css/xtheme-rosagarri.css']
+	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosaguy/css/xtheme-rosaguy.css']
 	       		    
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
 	       		filters:{	
 	       		         type: 'list',
-	       				 options: ['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosagarri/css/xtheme-rosagarri.css'],	
+	       				 options: ['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosaguy/css/xtheme-rosaguy.css'],	
 	       		 	},
 	       		grid:true,
 	       		form:true
