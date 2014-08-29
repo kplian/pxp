@@ -355,6 +355,7 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('codigo_tipo_documento','varchar');	
 			$this->captura('codigo_tipo_proceso','varchar');
 			$this->captura('codigo_tipo_estado','varchar');
+			$this->captura('codigo_tipo_proceso_externo','varchar');
 			$this->captura('momento','varchar');
 			$this->captura('tipo_busqueda','varchar');
 			$this->captura('regla','varchar');

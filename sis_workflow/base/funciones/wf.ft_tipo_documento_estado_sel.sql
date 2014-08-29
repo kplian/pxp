@@ -116,7 +116,7 @@ BEGIN
 
 		BEGIN
 
-               v_consulta:='select  ''tipo_documento_estado''::varchar,tdoc.codigo,tp.codigo,tes.codigo,tdoces.momento,	
+               v_consulta:='select  ''tipo_documento_estado''::varchar,tdoc.codigo,tp.codigo,tes.codigo,tpex.codigo,tdoces.momento,	
                             tdoces.tipo_busqueda,tdoces.regla,tdoces.estado_reg
 
                             from wf.ttipo_documento_estado tdoces
@@ -124,6 +124,8 @@ BEGIN
                             on tdoc.id_tipo_documento = tdoces.id_tipo_documento
                             inner join wf.ttipo_estado tes
                             on tes.id_tipo_estado = tdoces.id_tipo_estado
+                            inner join wf.ttipo_proceso tpex
+                            on tpex.id_tipo_proceso = tes.id_tipo_proceso
                             inner join wf.ttipo_proceso tp 
                             on tp.id_tipo_proceso = tdoc.id_tipo_proceso
                             inner join wf.tproceso_macro pm

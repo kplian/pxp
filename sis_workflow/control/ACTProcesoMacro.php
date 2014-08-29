@@ -280,29 +280,6 @@ class ACTProcesoMacro extends ACTbase{
 			
 			} 
 
-			else if ($row['tipo'] == 'tipo_documento_estado') {
-				if ($row['estado_reg'] == 'inactivo') {
-					fwrite ($file, 
-					"select wf.f_import_ttipo_documento_estado ('delete','".							 
-							$row['codigo_tipo_documento']."','".
-							$row['codigo_tipo_proceso']."','".
-							$row['codigo_tipo_estado']."',NULL,NULL,NULL);\r\n");	
-					
-				} else {
-					
-					fwrite ($file, 
-					 "select wf.f_import_ttipo_documento_estado ('insert',".
-							 (is_null($row['codigo_tipo_documento'])?'NULL':"'".$row['codigo_tipo_documento']."'") ."," .
-							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
-							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .	
-							 (is_null($row['momento'])?'NULL':"'".$row['momento']."'") ."," .
-							 (is_null($row['tipo_busqueda'])?'NULL':"'".$row['tipo_busqueda']."'") ."," .						 						 
-							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") .");\r\n");
-							 				
-				}				
-			
-			}	
-
 			else if ($row['tipo'] == 'columna_estado') {
 				if ($row['estado_reg'] == 'inactivo') {
 					fwrite ($file, 
@@ -400,6 +377,31 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .	
 							 (is_null($row['tipo_disparo'])?'NULL':"'".$row['tipo_disparo']."'") ."," .						 						 
 							 (is_null($row['funcion_validacion_wf'])?'NULL':"'".$row['funcion_validacion_wf']."'") .");\r\n");
+							 				
+				}				
+			
+			}
+			else if ($row['tipo'] == 'tipo_documento_estado') {
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+					"select wf.f_import_ttipo_documento_estado ('delete','".							 
+							$row['codigo_tipo_documento']."','".
+							$row['codigo_tipo_proceso']."','".
+							$row['codigo_tipo_estado']."','".
+							$row['codigo_tipo_proceso_externo']."',".							
+							"NULL,NULL,NULL);\r\n");	
+					
+				} else {
+					
+					fwrite ($file, 
+					 "select wf.f_import_ttipo_documento_estado ('insert',".
+							 (is_null($row['codigo_tipo_documento'])?'NULL':"'".$row['codigo_tipo_documento']."'") ."," .
+							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
+							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .	
+							 (is_null($row['codigo_tipo_proceso_externo'])?'NULL':"'".$row['codigo_tipo_proceso_externo']."'") ."," .	
+							 (is_null($row['momento'])?'NULL':"'".$row['momento']."'") ."," .
+							 (is_null($row['tipo_busqueda'])?'NULL':"'".$row['tipo_busqueda']."'") ."," .						 						 
+							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") .");\r\n");
 							 				
 				}				
 			
