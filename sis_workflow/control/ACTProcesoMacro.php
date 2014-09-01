@@ -107,7 +107,7 @@ class ACTProcesoMacro extends ACTbase{
 				if ($row['estado_reg'] == 'inactivo') {
 					fwrite ($file, 
 					"select wf.f_import_ttipo_proceso ('delete','".							 
-							$row['codigo']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");
+							$row['codigo']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -115,6 +115,7 @@ class ACTProcesoMacro extends ACTbase{
 					 "select wf.f_import_ttipo_proceso ('insert',".
 							 (is_null($row['codigo'])?'NULL':"'".$row['codigo']."'") ."," .
 							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .
+							 (is_null($row['codigo_tipo_proceso_estado'])?'NULL':"'".$row['codigo_tipo_proceso_estado']."'") ."," .
 							 (is_null($row['codigo_pm'])?'NULL':"'".$row['codigo_pm']."'") ."," .
 							 (is_null($row['nombre'])?'NULL':"'".$row['nombre']."'") ."," .
 							 (is_null($row['tabla'])?'NULL':"'".$row['tabla']."'") ."," .

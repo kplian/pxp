@@ -84,7 +84,7 @@ BEGIN
                             INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
-                            WHERE ';
+                            WHERE DEPPTO.estado_reg =''activo'' and ';
               
                v_consulta:=v_consulta||v_parametros.filtro;
                
@@ -121,7 +121,7 @@ BEGIN
                             INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
-                            WHERE ';
+                            WHERE DEPPTO.estado_reg =''activo'' and ';
                v_consulta:=v_consulta||v_parametros.filtro;
                
                if pxp.f_existe_parametro(par_tabla,'codigo_subsistema') then
@@ -182,7 +182,7 @@ BEGIN
                             INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
-                            WHERE '||v_filadd;
+                            WHERE DEPPTO.estado_reg =''activo'' and '||v_filadd;
                
              
           
@@ -227,7 +227,7 @@ BEGIN
                             INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
                             LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
-                            WHERE '||v_filadd;
+                            WHERE DEPPTO.estado_reg =''activo'' and '||v_filadd;
                v_consulta:=v_consulta||v_parametros.filtro;
                
                 raise notice '%',v_consulta;

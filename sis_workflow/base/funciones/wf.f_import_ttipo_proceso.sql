@@ -1,25 +1,25 @@
 CREATE OR REPLACE FUNCTION wf.f_import_ttipo_proceso (
-  p_accion	varchar,
+  p_accion varchar,
   p_codigo varchar,
-  p_codigo_tipo_estado varchar,		
-  p_codigo_pm varchar,	
+  p_codigo_tipo_estado varchar,
+  p_codigo_tipo_proceso_estado varchar,
+  p_codigo_pm varchar,
   p_nombre varchar,
-  p_tabla varchar,	
-  p_columna_llave varchar,	
-  p_inicio varchar,	
-  p_funcion_validacion varchar,	
+  p_tabla varchar,
+  p_columna_llave varchar,
+  p_inicio varchar,
+  p_funcion_validacion varchar,
   p_tipo_disparo varchar,
   p_descripcion varchar,
   p_codigo_llave varchar,
   p_funcion_disparo_wf varchar
-
-
 )
 RETURNS varchar AS
 $body$
 DECLARE
 	v_id_proceso_macro 	integer;    
     v_id_tipo_proceso		integer;
+    v_id_tipo_proceso_estado		integer;
     v_id_tipo_estado	integer;
 BEGIN
 	 
@@ -31,9 +31,13 @@ BEGIN
     from wf.ttipo_proceso tp    
     where tp.codigo = p_codigo ;
     
+    select id_tipo_proceso into v_id_tipo_proceso_estado
+    from wf.ttipo_proceso tp    
+    where tp.codigo = p_codigo_tipo_proceso_estado ;
+    
     select id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te    
-    where te.codigo = p_codigo_tipo_estado ;
+    where te.codigo = p_codigo_tipo_estado and te.id_tipo_proceso = v_id_tipo_proceso_estado;
     
     ALTER TABLE wf.ttipo_proceso DISABLE TRIGGER USER;
     if (p_accion = 'delete') then

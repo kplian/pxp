@@ -235,7 +235,7 @@ BEGIN
 
      	BEGIN
 
-               v_consulta:='select ''tipo_proceso''::varchar,tp.codigo,te.codigo,pm.codigo,tp.nombre,tp.tabla,tp.columna_llave,
+               v_consulta:='select ''tipo_proceso''::varchar,tp.codigo,te.codigo,tpe.codigo,pm.codigo,tp.nombre,tp.tabla,tp.columna_llave,
                             tp.inicio,tp.funcion_validacion_wf,tp.tipo_disparo,	tp.descripcion,	tp.codigo_llave,
                             tp.estado_reg,tp.funcion_disparo_wf
 
@@ -246,6 +246,8 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             left join wf.ttipo_estado te
                             on te.id_tipo_estado = tp.id_tipo_estado
+                            left join wf.ttipo_proceso tpe
+                            on tpe.id_tipo_proceso = te.id_tipo_proceso
                             where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
 
 				if (v_parametros.todo = 'no') then                   

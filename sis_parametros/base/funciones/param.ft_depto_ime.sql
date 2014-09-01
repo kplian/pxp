@@ -98,7 +98,7 @@ BEGIN
         BEGIN
 
          --inactivacion de la depto
-               update param.tdepto set estado_reg='eliminado'
+               update param.tdepto set estado_reg='inactivo'
                where id_depto=v_parametros.id_depto;
                return 'depto eliminado con exito';
 
