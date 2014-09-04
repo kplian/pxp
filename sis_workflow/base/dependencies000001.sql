@@ -511,3 +511,34 @@ ALTER TABLE wf.tplantilla_correo
     NOT DEFERRABLE;
 
 /*******************************************F-DEP-JRR-WF-0-20/08/2014*************************************/
+
+
+/*******************************************I-DEP-JRR-WF-0-03/09/2014*************************************/
+ALTER TABLE wf.ttipo_estado_rol
+  ADD CONSTRAINT ttipo_estado_rol__id_tipo_estado FOREIGN KEY (id_tipo_estado)
+    REFERENCES wf.ttipo_estado(id_tipo_estado)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+ALTER TABLE wf.ttipo_estado_rol
+  ADD CONSTRAINT ttipo_estado_rol__id_rol FOREIGN KEY (id_rol)
+    REFERENCES segu.trol(id_rol)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+CREATE TRIGGER trig_tplantilla_correo BEFORE UPDATE 
+ON wf.tplantilla_correo FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_tplantilla_correo ();
+
+CREATE TRIGGER trig_tfuncionario_tipo_estado BEFORE UPDATE 
+ON wf.tfuncionario_tipo_estado FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_tfuncionario_tipo_estado ();
+
+CREATE TRIGGER trig_ttipo_estado_rol BEFORE UPDATE 
+ON wf.ttipo_estado_rol FOR EACH ROW 
+EXECUTE PROCEDURE wf.ftrig_ttipo_estado_rol ();
+
+
+/*******************************************F-DEP-JRR-WF-0-03/09/2014*************************************/

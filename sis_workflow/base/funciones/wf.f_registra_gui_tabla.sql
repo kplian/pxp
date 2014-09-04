@@ -2,7 +2,8 @@ CREATE OR REPLACE FUNCTION wf.f_registra_gui_tabla (
   p_codigo_proceso varchar,
   p_nombre_proceso varchar,
   p_codigo_estado varchar,
-  p_nombre_estado varchar
+  p_nombre_estado varchar,
+  p_roles text
 )
 RETURNS integer AS
 $body$
@@ -18,6 +19,10 @@ DECLARE
   v_nivel			integer;
   v_resp			varchar;
   v_nombre_funcion	varchar;
+  v_id_rol			integer;
+  v_i				integer;
+  v_tamano			integer;
+  v_roles			integer[];
 BEGIN
 	v_nombre_funcion = 'wf.f_registra_gui_tabla';
 	select pm.id_subsistema into v_id_subsistema
@@ -70,16 +75,23 @@ BEGIN
         	( 	nombre, 			descripcion, 	codigo_gui, visible, 
             	orden_logico, 		ruta_archivo, 	nivel, 		icono, 
                 id_subsistema, 		clase_vista, 	modificado, combo_trigger, 
-                imagen, 			parametros, 	sw_mobile, 	orden_mobile, codigo_mobile)
+                imagen, 			parametros, 	sw_mobile, 	orden_mobile, codigo_mobile, temporal)
         VALUES (p_nombre_proceso || v_nombre_estado,p_nombre_proceso || v_nombre_estado , 'WF.'||p_codigo_proceso ||v_codigo_estado, 'si',
         		1, 					v_ruta_archivo, v_nivel,	'', 
                 v_id_subsistema,	v_clase_vista, 	NULL, 		NULL, 
-                NULL, 				v_parametros, 	'no', 		0, 				NULL) RETURNING id_gui into v_id_gui;
+                NULL, 				v_parametros, 	'no', 		0, 				NULL, 1) RETURNING id_gui into v_id_gui;
         
         /*Insertar estructura_gui*/
         INSERT INTO segu.testructura_gui
-        	(	id_gui,			fk_id_gui) VALUES
-            (	v_id_gui,		v_id_gui_padre);
+        	(	id_gui,			fk_id_gui, temporal) VALUES
+            (	v_id_gui,		v_id_gui_padre, 1);
+        v_roles = string_to_array(p_roles,',');
+        v_tamano = coalesce(array_length(v_roles, 1),0);
+        FOR v_i IN 1..v_tamano LOOP
+        	raise exception 'llega%',v_roles;
+        	insert into segu.tgui_rol (id_gui,id_rol,temporal)values(v_id_gui,v_roles[v_i],1);
+            
+    	END LOOP;
                 
     end if;
     return v_id_gui;

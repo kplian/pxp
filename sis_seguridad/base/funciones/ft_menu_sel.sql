@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_menu_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -32,6 +30,9 @@ DECLARE
     v_nivel             varchar;
     v_resp				varchar;
     v_filtro_codigo		varchar;
+    v_registros			record;
+    v_respuesta			integer;
+    v_tabla_menu		varchar;
 
 /*
 
@@ -54,9 +55,29 @@ BEGIN
 ***********************************/
 	v_filtro_codigo = '';
     if(par_transaccion='SEG_MENU_SEL')then
-        
+    	BEGIN
+    	v_tabla_menu = '';
+        for v_registros in (select tp.codigo as codigo_proceso, ta.menu_nombre,te.codigo,te.nombre_estado,
+        						pxp.list(terol.id_rol::text) as roles
+                            from wf.ttabla ta
+                            inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = ta.id_tipo_proceso
+                            inner join wf.ttipo_estado te on te.id_tipo_proceso = tp.id_tipo_proceso
+                            left join wf.ttipo_estado_rol terol on terol.id_tipo_estado = te.id_tipo_estado
+                            where ta.estado_reg = 'activo' and ta.menu_codigo is not null
+                            group by tp.codigo, ta.menu_nombre,te.codigo,te.nombre_estado) loop
+            	
+                --registra la carpeta
+                if (v_tabla_menu != v_registros.menu_nombre)then
+                	v_respuesta = wf.f_registra_gui_tabla(v_registros.codigo_proceso,v_registros.menu_nombre, NULL, NULL,NULL);
+                	v_tabla_menu = v_registros.menu_nombre;
+                end if;                
+            	
+                --registr los guis
+                v_respuesta = wf.f_registra_gui_tabla(	v_registros.codigo_proceso,v_registros.menu_nombre, 
+                										v_registros.codigo,v_registros.nombre_estado, v_registros.roles);	
+        end loop;
         if(v_parametros.id_padre='%')then
-        	if (pxp.f_existe_parametro(par_tabla, 'busqueda')) then
+        	if (pxp.f_existe_parametro(par_tabla, 'busqueda')) then            	
             	v_nivel:='%';
             	v_filtro_codigo = ' and g.codigo_gui = ''' || v_parametros.codigo || ''' ';
             else
@@ -67,7 +88,7 @@ BEGIN
         end if;
 
         IF(par_administrador=1) THEN
-           BEGIN
+           
               v_consulta:= 'SELECT
                                         g.id_gui,
                                         g.nombre,
@@ -100,10 +121,9 @@ BEGIN
                                   raise notice 'adm: %',v_consulta;
               
               return v_consulta;
-           END;
-        ELSE
-           BEGIN
            
+        ELSE
+                      
               v_consulta:=
                    'SELECT 
                    g.id_gui,
@@ -161,9 +181,11 @@ BEGIN
                    raise notice 'pueblo: %',v_consulta;
                   
               return v_consulta;
-           END;
+           	  delete from segu.testructura_gui where temporal = 1;
+              delete from segu.tgui_rol where temporal = 1;
+              delete from segu.tgui where temporal = 1;
         END IF;
-    
+    	END;
 /*******************************    
  #TRANSACCION:  SEG_GUIMOB_SEL
  #DESCRIPCION:	Listado de GUI para mobile 

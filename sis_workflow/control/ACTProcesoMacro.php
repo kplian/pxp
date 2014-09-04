@@ -427,6 +427,26 @@ class ACTProcesoMacro extends ACTbase{
 				}				
 			
 			}
+
+			else if ($row['tipo'] == 'tipo_estado_rol') {
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+					"select wf.f_import_ttipo_estado_rol ('delete','".							 
+							$row['codigo_tipo_proceso']."','".
+							$row['codigo_tipo_estado']."','".
+							$row['codigo_rol']."');\r\n");	
+					
+				} else {
+					
+					fwrite ($file, 
+					"select wf.f_import_ttipo_estado_rol ('insert','".							 
+							$row['codigo_tipo_proceso']."','".
+							$row['codigo_tipo_estado']."','".
+							$row['codigo_rol']."');\r\n");
+							 				
+				}				
+			
+			}
 		}
 		
 		return $fileName;

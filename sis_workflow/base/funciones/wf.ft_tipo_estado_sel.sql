@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -240,16 +238,52 @@ BEGIN
                         tipes.nombre_clase_alerta, 
                         tipes.tipo_noti, 
                         tipes.titulo_alerta, 
-                        tipes.parametros_ad	
-                                    
+                        tipes.parametros_ad	,
+                        pxp.text_concat(terol.id_rol::text) as id_roles           
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
+                        LEFT JOIN wf.ttipo_estado_rol terol on terol.id_tipo_estado = tipes.id_tipo_estado 
+                        	and terol.estado_reg = ''activo''
 				        where tipes.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
+            
+            v_consulta:=v_consulta|| ' group by tipes.id_tipo_estado,
+						tipes.nombre_estado,
+						tipes.id_tipo_proceso,
+						tipes.inicio,
+						tipes.disparador,
+						tipes.tipo_asignacion,
+						tipes.nombre_func_list,
+						tipes.estado_reg,
+						tipes.fecha_reg,
+						tipes.id_usuario_reg,
+						tipes.fecha_mod,
+						tipes.id_usuario_mod,
+						usu1.cuenta,
+						usu2.cuenta,
+                        tp.nombre,
+                        tipes.codigo,
+                        tipes.obs,
+                        tipes.depto_asignacion,
+						tipes.nombre_depto_func_list,
+                        tipes.fin,
+                        tipes.alerta,
+                        tipes.pedir_obs,
+                        tipes.plantilla_mensaje_asunto,
+                        tipes.plantilla_mensaje,                      
+                        tipes.cargo_depto,
+                        tipes.funcion_inicial,
+                        tipes.funcion_regreso,
+                        tipes.mobile,
+                        tipes.acceso_directo_alerta, 
+                        tipes.nombre_clase_alerta, 
+                        tipes.tipo_noti, 
+                        tipes.titulo_alerta, 
+                        tipes.parametros_ad	';
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta

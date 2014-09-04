@@ -15,7 +15,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		constructor:function(config) {
 			
 			this.config = config;
-			
+			console.log(this.config);
 			//configuraciones iniciales
 			this.maestro=config.maestro;
 			this.configProceso = config.configProceso;
@@ -526,7 +526,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	        this.reload();
 	     },
 	     
-	     penFormEstadoWf:function() {
+	     openFormEstadoWf:function() {
         
 	        var rec=this.sm.getSelected();	        
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',

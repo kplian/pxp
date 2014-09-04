@@ -999,5 +999,17 @@ ALTER TABLE segu.tgui
 
 /*****************************F-SCP-RAC-SEGU-0-16/06/2014*************/
 
+/*****************************I-SCP-JRR-SEGU-0-03/09/2014*************/
+ALTER TABLE segu.tgui
+  ADD COLUMN temporal INTEGER;
+  
+ALTER TABLE segu.testructura_gui
+  ADD COLUMN temporal INTEGER;
+  
+ALTER TABLE segu.tgui_rol
+  ADD COLUMN temporal INTEGER;  
+
+/*****************************F-SCP-JRR-SEGU-0-03/09/2014*************/
+
 
 

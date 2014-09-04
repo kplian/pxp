@@ -1328,6 +1328,7 @@ Phx.CP=function(){
 	        var clase_generada = o.arguments.params.proceso + '_' + o.arguments.params.estado;
 	        
 		  	o.arguments.params.indice = 0;
+		  	o.arguments.params.clase_generada = clase_generada;
 		  	o.arguments.params.configProceso = objRes;
 		  	
 			Phx.vista[clase_generada] = {};

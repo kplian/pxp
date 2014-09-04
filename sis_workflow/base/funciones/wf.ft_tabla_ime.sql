@@ -213,14 +213,14 @@ BEGIN
             inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
             where t.id_tabla = v_parametros.id_tabla;
             
-            v_respuesta = wf.f_registra_gui_tabla(v_tabla.codigo_proceso,v_tabla.menu_nombre, NULL, NULL);
-            /*Para cada estado del tipo_proceso*/
+            /*v_respuesta = wf.f_registra_gui_tabla(v_tabla.codigo_proceso,v_tabla.menu_nombre, NULL, NULL);
+            
             for v_registros in (select *
             					from wf.ttipo_estado  te
                                 where te.id_tipo_proceso = v_tabla.id_tipo_proceso and te.fin='no') loop
             
             	v_respuesta = wf.f_registra_gui_tabla(v_tabla.codigo_proceso,v_tabla.menu_nombre, v_registros.codigo,v_registros.nombre_estado);	
-            end loop;
+            end loop;*/
             
             if (v_tabla.ejecutado = 'no')then
             

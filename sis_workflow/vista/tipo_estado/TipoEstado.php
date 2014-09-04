@@ -597,7 +597,49 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:false,
 			form:false
-		}
+		},
+		{
+       			config:{
+       				name:'id_roles',
+       				fieldLabel:'Roles',
+       				allowBlank:true,
+       				emptyText:'Roles...',
+       				store: new Ext.data.JsonStore({
+              			url: '../../sis_seguridad/control/Rol/listarRol',
+       					id: 'id_rol',
+       					root: 'datos',
+       					sortInfo:{
+       						field: 'rol',
+       						direction: 'ASC'
+       					},
+       					totalProperty: 'total',
+       					fields: ['id_rol','rol','descripcion'],
+       					// turn on remote sorting
+       					remoteSort: true,
+       					baseParams:{par_filtro:'rol'}
+       					
+       				}),
+       				valueField: 'id_rol',
+       				displayField: 'rol',
+       				forceSelection:true,
+       				typeAhead: true,
+           			triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:10,
+       				queryDelay:1000,
+       				width:250,
+       				minChars:2,
+	       			enableMultiSelect:true,
+       			
+       				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+
+       			},
+       			type:'AwesomeCombo',
+       			id_grupo:0,
+       			grid:false,
+       			form:true
+       	}
 	],
 	
 	title:'Tipo Estado',
@@ -624,7 +666,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad'
+        'titulo_alerta', 'parametros_ad','id_roles'
 		
 	],
 	sortInfo:{

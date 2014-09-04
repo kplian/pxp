@@ -85,7 +85,7 @@ BEGIN
 			v_joins_adicionales = '';
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
-            					where id_tabla = v_parametros.id_tabla order by id_tipo_columna asc) loop
+            					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo' order by id_tipo_columna asc) loop
             	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ';
             	
             	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then                	
@@ -172,7 +172,7 @@ BEGIN
 			
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
-            					where id_tabla = v_parametros.id_tabla) loop            	
+            					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo') loop            	
             	if (v_columnas.bd_joins_adicionales is not null and v_columnas.bd_joins_adicionales != '')then
             		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ', ';
             	end if;  	

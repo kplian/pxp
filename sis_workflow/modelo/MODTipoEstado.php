@@ -56,6 +56,7 @@ class MODTipoEstado extends MODbase{
 		$this->captura('tipo_noti','varchar');
 		$this->captura('titulo_alerta','varchar');
 		$this->captura('parametros_ad','varchar');
+		$this->captura('id_roles','text');
 		
 		
 		
@@ -157,6 +158,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('tipo_noti','tipo_noti','varchar');
 		$this->setParametro('titulo_alerta','titulo_alerta','varchar');
 		$this->setParametro('parametros_ad','parametros_ad','varchar');
+		$this->setParametro('id_roles','id_roles','varchar');
 		
 		
 		
@@ -201,6 +203,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('tipo_noti','tipo_noti','varchar');
         $this->setParametro('titulo_alerta','titulo_alerta','varchar');
         $this->setParametro('parametros_ad','parametros_ad','varchar');
+		$this->setParametro('id_roles','id_roles','varchar');
         
 
 		//Ejecuta la instruccion

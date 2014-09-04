@@ -31,6 +31,9 @@ DECLARE
 	v_mensaje_error         text;
 	v_id_tipo_estado	integer;
     v_cont_estados_ini integer;
+    v_id_roles			varchar[];
+    v_tamano			integer;
+    v_i					integer;
 			    
 BEGIN
 
@@ -119,6 +122,25 @@ BEGIN
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
+            v_id_roles= string_to_array(v_parametros.id_roles,',');
+             v_tamano = coalesce(array_length(v_id_roles, 1),0);
+             
+
+            
+             FOR v_i IN 1..v_tamano LOOP
+         
+              --insertamos  registro si no esta presente como activo
+                  insert into wf.ttipo_estado_rol 
+                     (id_tipo_estado, 
+                     id_rol, 
+                     estado_reg) 
+                  values(
+                  v_id_tipo_estado,
+                  v_id_roles[v_i]::integer,
+                  'activo'); 
+             
+             END LOOP;
+            
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado almacenado(a) con exito (id_tipo_estado'||v_id_tipo_estado||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_id_tipo_estado::varchar);
@@ -177,6 +199,41 @@ BEGIN
             IF v_cont_estados_ini > 1 THEN
                 RAISE EXCEPTION 'Ya esta resgistrado un Tipo Estado ''inicio''.Solo puede haber un estado (nodo) inicio.';
             END IF;
+            
+            v_id_roles= string_to_array(v_parametros.id_roles,',');
+             v_tamano = coalesce(array_length(v_id_roles, 1),0);
+             
+             
+             
+             -- inactivamos todos los roles que no estan hay
+             
+             update wf.ttipo_estado_rol 
+             set estado_reg='inactivo'
+             where 
+             id_tipo_estado = v_parametros.id_tipo_estado
+             and 
+             (id_rol::varchar != ANY(v_id_roles) or v_tamano=0);
+            --insertamos los que faltan
+  
+            
+            FOR v_i IN 1..v_tamano LOOP
+                         
+              --preguntamos si el id_rol ya se encuentra asignado si no insertamos
+            IF  (NOT EXISTS (select 1 from wf.ttipo_estado_rol 
+                        where id_tipo_estado = v_parametros.id_tipo_estado
+                        and id_rol = v_id_roles[v_i]::integer 
+                        and estado_reg='activo')) THEN
+              --insertamos  registro si no esta presente como activo
+                  insert into wf.ttipo_estado_rol 
+                     (id_tipo_estado, 
+                     id_rol, 
+                     estado_reg) 
+                  values(
+                  v_parametros.id_tipo_estado,
+                  v_id_roles[v_i]::integer,
+                  'activo'); 
+              END IF;
+            END LOOP;
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado modificado(a)'); 
@@ -271,6 +328,13 @@ BEGIN
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Plantillas de Correo que depende(n) de este tipo estado';
+            end if;   
+            
+            if (exists (select 1 
+            			from wf.ttipo_estado_rol t
+                        where t.id_tipo_estado = v_parametros.id_tipo_estado and
+                        t.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Roles asociados a este tipo estado';
             end if;           
             
             

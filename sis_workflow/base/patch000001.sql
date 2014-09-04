@@ -871,3 +871,15 @@ ALTER TABLE wf.tplantilla_correo
   ADD COLUMN modificado INTEGER;
 
 /***********************************F-SCP-JRR-WF-1-29/08/2014****************************************/
+
+/***********************************I-SCP-JRR-WF-1-03/09/2014****************************************/
+
+CREATE TABLE wf.ttipo_estado_rol (
+  id_tipo_estado_rol SERIAL NOT NULL,
+  id_tipo_estado INTEGER NOT NULL,
+  id_rol INTEGER NOT NULL,      
+  PRIMARY KEY(id_tipo_estado_rol)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/***********************************F-SCP-JRR-WF-1-03/09/2014****************************************/
