@@ -1,7 +1,9 @@
 CREATE OR REPLACE FUNCTION wf.f_valida_cambio_estado (
-  p_id_estado_wf integer
+  p_id_estado_wf integer,
+  p_momento varchar = NULL::character varying,
+  p_id_tipo_estado integer = NULL::integer
 )
-RETURNS boolean AS
+RETURNS text AS
 $body$
 DECLARE
   v_id_tipo_proceso		integer;
@@ -17,9 +19,11 @@ DECLARE
   v_nombre_funcion		varchar;
   v_id_proceso_wf		integer;
   v_id_tabla_instancia	integer;
+  v_columna_bool		boolean;
+  v_res_array			text[];
 BEGIN
-	v_nombre_funcion = 'wf.ft_tabla_sel';
-       
+	v_nombre_funcion = 'wf.f_valida_cambio_estado';
+      
   	select pwf.id_tipo_proceso,tab.id_tabla,tab.bd_nombre_tabla,
     		s.codigo,te.id_tipo_estado,pwf.id_proceso_wf
     into v_id_tipo_proceso,v_id_tabla,v_nombre_tabla,
@@ -35,7 +39,10 @@ BEGIN
     where ewf.id_estado_wf = p_id_estado_wf;
     
     if (v_id_tabla is null) then
-    	return true;
+    	return NULL;
+    end if;
+    if (p_id_tipo_estado is not null) then
+    	v_id_tipo_estado = p_id_tipo_estado;
     end if;
     
     execute 'select id_' || v_nombre_tabla || '
@@ -45,23 +52,27 @@ BEGIN
     
     v_condiciones = ' 0=0 ';
     for v_columnas in (	select tc.* from wf.ttipo_columna tc
-        						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento in ('exigir')
+        						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento = coalesce(p_momento,'exigir')
         						inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
-            					where id_tabla = v_id_tabla and te.id_tipo_estado = v_id_tipo_estado) loop 
-    	v_condiciones = v_condiciones || ' and  ' || v_columnas.bd_nombre_columna || ' IS NOT NULL';                     
+            					where tc.estado_reg = 'activo' and id_tabla = v_id_tabla and te.id_tipo_estado = v_id_tipo_estado) loop 
+    	
+        v_consulta = 'select 
+                     (case when (' || v_columnas.bd_nombre_columna || ' IS NOT NULL) then
+                          true
+                     else
+                          false
+                     end)
+                     from ' || v_esquema || '.t' || v_nombre_tabla || '
+                     where id_' || v_nombre_tabla || ' = ' || v_id_tabla_instancia;
+                 
+        execute v_consulta into v_columna_bool;
+         
+        if (v_columna_bool = FALSE) then
+        	v_res_array = v_res_array || v_columnas.form_label::text;
+        end if;                     
     end loop;
-    --raise exception 'llega%', v_condiciones;
-    v_consulta = 'select 
-       (case when (' || v_condiciones || ') then
-       		true
-       else
-       		false
-       end)
-       from ' || v_esquema || '.t' || v_nombre_tabla || '
-       where id_' || v_nombre_tabla || ' = ' || v_id_tabla_instancia;
-       
-    execute v_consulta into v_res;
-    return v_res;
+    
+    return array_to_string(v_res_array,',');
         
 EXCEPTION
 					

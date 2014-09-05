@@ -243,7 +243,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				//configuracion del componente
 				config:{
 	                name: 'obs',
-	                fieldLabel: 'Observaciones de Estado',	                
+	                fieldLabel: 'Observaciones del Estado Anterior',	                
 	                gwidth: 170,
 	                anchor:'80%',
 	                readOnly:true,
@@ -598,6 +598,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            params:{
 	                
 	                id_proceso_wf_act:  resp.id_proceso_wf_act,
+	                id_estado_wf_act:  resp.id_estado_wf_act,
 	                id_tipo_estado:     resp.id_tipo_estado,
 	                id_funcionario_wf:  resp.id_funcionario_wf,
 	                id_depto_wf:        resp.id_depto_wf,

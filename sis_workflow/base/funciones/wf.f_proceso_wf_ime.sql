@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -87,6 +85,7 @@ DECLARE
      v_plantilla_correo   varchar;
      v_plantilla_asunto   varchar;
      v_total_registros  integer;
+     v_res_validacion	text;
    
 
 BEGIN
@@ -317,10 +316,10 @@ BEGIN
           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
+          v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf);
+          IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
           
-          IF NOT wf.f_valida_cambio_estado(v_registros.id_estado_wf) THEN
-          
-              raise exception 'Faltan parametros obligatorios para el estado actual';
+              raise exception 'Es necesario registrar los siguientes campos en el formulario: %',v_res_validacion;
           
           END IF;
           
@@ -748,7 +747,7 @@ BEGIN
           
        --validamos que el estado wf actual este activo
           IF v_registro_estado_wf_ant.estado_reg = 'inactivo' THEN
-            raise exception 'Por favor actualice sus datos antes de continuar';
+            raise exception 'Por favor actualice sus datos antes de continuar%',v_parametros.id_estado_wf_act;
           END IF;
           
           

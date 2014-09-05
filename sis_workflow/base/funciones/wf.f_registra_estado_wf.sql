@@ -66,6 +66,7 @@ DECLARE
     v_mensaje_error    varchar;
     v_alarma		integer;
     v_documentos	text;
+    v_res_validacion	text;
 	
     
 BEGIN
@@ -434,6 +435,14 @@ BEGIN
     
     -- verificar documentos
     v_resp_doc = wf.f_verifica_documento(p_id_usuario, v_id_estado_actual);
+    
+    --valida datos de los formularios
+    v_res_validacion = wf.f_valida_cambio_estado(p_id_estado_wf_anterior,'preregistro',p_id_tipo_estado_siguiente);
+    IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
+          
+        raise exception 'Es necesario registrar los siguientes campos en el formulario: % . Antes de pasar al estado : %',v_res_validacion,v_registros.nombre_Estado;
+          
+    END IF;
     
     return v_id_estado_actual;
   

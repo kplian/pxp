@@ -103,7 +103,7 @@ Phx.vista.ColumnaEstado=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 mode: 'local',
                 valueField: 'momento',                  
-                store:['registrar','exigir','mostrar_formulario','calcular','ninguno']
+                store:['registrar','exigir','mostrar_formulario','calcular','preregistro','ninguno']
             },
             type:'ComboBox',
             //filters:{pfiltro:'des.momento',type:'string'},
@@ -111,7 +111,7 @@ Phx.vista.ColumnaEstado=Ext.extend(Phx.gridInterfaz,{
             filters:{   
                          type: 'list',
                          pfiltro:'colest.momento',
-                         options: ['registrar','exigir','mostrar_formulario','calcular','ninguno'],   
+                         options: ['registrar','exigir','mostrar_formulario','calcular','preregistro','ninguno'],   
                     },
             grid:true,
             form:true
