@@ -1,21 +1,21 @@
 CREATE OR REPLACE FUNCTION wf.f_import_ttipo_columna (
- p_accion varchar,	
- p_nombre_columna varchar, 	
- p_codigo_tabla varchar, 	
- p_codigo_tipo_proceso varchar, 	
- p_tipo_columna varchar, 	
- p_descripcion text, 	
- p_tamano varchar, 	
- p_campos_adicionales text, 	
- p_joins_adicionales text,	
- p_formula_calculo text, 	
- p_grid_sobreescribe_filtro text, 	
- p_grid_campos_adicionales text, 	
- p_form_tipo_columna varchar, 	
- p_form_label varchar, 	
- p_form_es_combo varchar, 	
- p_form_combo_rec varchar, 	
- p_form_sobreescribe_config text 
+  p_accion varchar,
+  p_nombre_columna varchar,
+  p_codigo_tabla varchar,
+  p_codigo_tipo_proceso varchar,
+  p_tipo_columna varchar,
+  p_descripcion text,
+  p_tamano varchar,
+  p_campos_adicionales text,
+  p_joins_adicionales text,
+  p_formula_calculo text,
+  p_grid_sobreescribe_filtro text,
+  p_grid_campos_adicionales text,
+  p_form_tipo_columna varchar,
+  p_form_label varchar,
+  p_form_es_combo varchar,
+  p_form_combo_rec varchar,
+  p_form_sobreescribe_config text
 )
 RETURNS varchar AS
 $body$
@@ -31,7 +31,7 @@ BEGIN
     
     select id_tabla into v_id_tabla
     from wf.ttabla ta    
-    where ta.codigo = p_codigo_tabla and
+    where ta.bd_codigo_tabla = p_codigo_tabla and
     	ta.id_tipo_proceso = v_id_tipo_proceso;
     
     select id_tipo_columna into v_id_tipo_columna
@@ -117,4 +117,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-

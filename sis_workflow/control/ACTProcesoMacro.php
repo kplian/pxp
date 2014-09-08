@@ -157,8 +157,8 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['menu_icono'])?'NULL':"'".$row['menu_icono']."'") ."," .
 							 (is_null($row['menu_codigo'])?'NULL':"'".$row['menu_codigo']."'") ."," .
 							 (is_null($row['vista_estados_new'])?'NULL':"'".$row['vista_estados_new']."'") ."," .
-							 (is_null($row['vista_estados_delete'])?'NULL':"'".$row['vista_estados_delete']."'") ."," .
-							 (is_null($row['codigo_llave'])?'NULL':"'".$row['codigo_llave']."'") .");\r\n");
+							 (is_null($row['vista_estados_delete'])?'NULL':"'".$row['vista_estados_delete']."'") .");\r\n");
+							 
 							 						
 				}
 			} 

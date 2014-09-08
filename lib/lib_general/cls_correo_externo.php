@@ -53,7 +53,12 @@ class CorreoExterno
     }
     
     function addCC($dir_destinatario,$nom_destinatario=''){
-        $this->mail->AddCC($dir_destinatario, $nom_destinatario);
+    	if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
+    		$this->mail->AddCC($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
+    	} else {
+    		$this->mail->AddCC($dir_destinatario, $nom_destinatario); 
+    	}   
+        
     }
     
     
@@ -77,7 +82,7 @@ class CorreoExterno
                   } 
                   
                  //para cuando el visor no puede leer HTML en el cuerpo”; 
-                   $this->mail->AltBody =  $this->mail->mensaje;
+                   $this->mail->AltBody =  $this->mensaje;
                  // si el cuerpo del mensaje es HTML
                   $this->mail->MsgHTML($this->mensaje_html);
 				    
@@ -113,10 +118,9 @@ class CorreoExterno
     
     
      function setMensajeHtml ($mensaje)
-    {
-             $this->mensaje= $mensaje;
-             $this->mail->MsgHTML($this->mensaje_html);
-         
+    {             
+			 $this->mensaje_html= $mensaje;
+             $this->mail->MsgHTML($this->mensaje_html);         
     }
     
     function setAsunto ($asunto)
