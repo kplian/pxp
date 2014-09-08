@@ -109,7 +109,7 @@ BEGIN
 
 		BEGIN
 
-               v_consulta:='select  ''columa_estado''::varchar,tcol.bd_nombre_columna,tab.bd_codigo_tabla,tp.codigo,tes.codigo,
+               v_consulta:='select  ''columna_estado''::varchar,tcol.bd_nombre_columna,tab.bd_codigo_tabla,tp.codigo,tes.codigo,
                             coles.momento,coles.regla,coles.estado_reg
 
                             from wf.tcolumna_estado coles
