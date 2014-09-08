@@ -43,7 +43,7 @@ BEGIN
 	if(p_transaccion='WF_EXPTESROL_SEL')then
      				
     	begin
-    		v_consulta:='select  ''tipo_estado_rol''::varchar,tp.codigo,tes.codigo,r.codigo,tesrol.estado_reg
+    		v_consulta:='select  ''tipo_estado_rol''::varchar,tp.codigo,tes.codigo,r.rol,tesrol.estado_reg
 
                             from wf.ttipo_estado_rol tesrol
                             inner join wf.ttipo_estado tes

@@ -684,7 +684,17 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		        }
 		    }
 	        return tb
-	    }
+	    },
+	    onButtonNew:function(){
+			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.ocultarComponente(this.Cmp.obs);
+			Phx.vista.ProcesoInstancia.superclass.onButtonNew.call(this);
+		},
+		onButtonEdit:function(){
+			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.mostrarComponente(this.Cmp.obs);
+			Phx.vista.ProcesoInstancia.superclass.onButtonEdit.call(this);
+		}
 	}
 )
 </script>

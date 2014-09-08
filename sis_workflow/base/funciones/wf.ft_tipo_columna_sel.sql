@@ -189,7 +189,7 @@ BEGIN
                         inner join wf.ttipo_estado te
                         	on te.id_tipo_estado = coles.id_tipo_estado
                         where te.codigo = '''|| v_parametros.tipo_estado || ''' 
-                        	and coles.id_tipo_columna = tipcol.id_tipo_columna) as momento	
+                        	and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'') as momento	
 						from wf.ttipo_columna tipcol
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla

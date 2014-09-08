@@ -27,7 +27,7 @@ BEGIN
     	
     select id_rol into v_id_rol
     from segu.trol r
-    where  r.codigo = p_codigo_rol; 
+    where  r.rol = p_codigo_rol; 
         
     select tesrol.id_tipo_estado_rol into v_id_tipo_estado_rol
     from wf.ttipo_estado_rol tesrol
