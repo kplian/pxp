@@ -56,9 +56,24 @@ class ACTFuncionario extends ACTbase{
              if($this->objParam->getParametro('gerencia')!=''){
                  $gerencia = $this->objParam->getParametro('gerencia');
              } 
+			 
+			 //verifica si existe un lista de nivel organizacionales permitidos
+			 $lista_blanca = 'todos';    
+             if($this->objParam->getParametro('lista_blanca')!=''){
+                 $lista_blanca = $this->objParam->getParametro('lista_blanca');
+             } 
+			 
+			 //verifica si existe un lista de nivel organizacionales NO permitidos
+			 $lista_negra = 'ninguno';    
+             if($this->objParam->getParametro('lista_negra')!=''){
+                 $lista_negra = $this->objParam->getParametro('lista_negra');
+             } 
+			 
+			 
+			 
+			 
 		    
-            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "''," . $this->objParam->getParametro('id_funcionario_dependiente') . ",''".$presupuesto."'',''".$gerencia."'')
-            														 AS (id_funcionario INTEGER))");    
+            $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "'',". $this->objParam->getParametro('id_funcionario_dependiente'). ",''".$presupuesto."'',''".$gerencia."'',''".$lista_blanca."'',''".$lista_negra."'')	 AS (id_funcionario INTEGER))");    
         }
         
         if($this->objParam->getParametro('fecha')!=''){
@@ -71,6 +86,11 @@ class ACTFuncionario extends ACTbase{
 										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $this->objParam->getParametro('fecha') . "'', " .
 																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
 		}
+		
+		if( $this->objParam->getParametro('filter_rpc') == 'si' ) {
+			$this->objParam->addFiltro("FUNCAR.id_cargo NOT in (select rpc.id_cargo from adq.trpc rpc where rpc.estado_reg = ''activo'') ");
+		}
+		
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

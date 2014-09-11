@@ -4,7 +4,9 @@ CREATE OR REPLACE FUNCTION orga.f_get_aprobadores_x_funcionario (
   par_fecha date,
   par_id_funcionario integer,
   par_filtro_presupuesto varchar = 'si'::character varying,
-  par_filtro_gerencia varchar = 'todos'::character varying
+  par_filtro_gerencia varchar = 'todos'::character varying,
+  par_lista_blanca_nivel varchar = 'todos'::character varying,
+  par_lista_negra_nivel varchar = 'ninguno'::character varying
 )
 RETURNS SETOF record AS
 $body$
@@ -32,6 +34,8 @@ DECLARE
     v_id_funcionario		integer;
     v_filtro_pre			varchar;
     v_filtro_gerencia       varchar;
+    v_lista_blanca          varchar;
+    v_lista_negra           varchar;
 BEGIN
 
 
@@ -55,24 +59,48 @@ BEGIN
         END IF;
         
         
+        
+       
+        --chequea que niveles de organigrama entran en la lista, viene separados por comas ejm,..  0,1,2 ...  es el numero de la tabla nivel olrganizacion
+        IF par_lista_blanca_nivel = 'todos' THEN
+         v_lista_blanca = '';
+        ELSE
+          v_lista_blanca = ' and numero_nivel  in ('||par_lista_blanca_nivel||')  ';
+        END IF;
+        
+        --chequea que niveles de organizaci, viene septa n no entran en la lisarados por comas ejm,..  0,1,2 ...  es el numero de la tabla nivel olrganizacion
+        IF par_lista_negra_nivel = 'ninguno' THEN
+            v_lista_negra = '';
+        ELSE
+            v_lista_negra = '  and  numero_nivel not in ('||par_lista_negra_nivel||')  ';
+        END IF;
+        
+        
+        
+        
+        
     
         --Obtener todos los empleados de la asignacion
         v_consulta := '
-        WITH RECURSIVE path(id_funcionario,id_uo,presupuesta,gerencia) AS (
-                SELECT uofun.id_funcionario,uo.id_uo,uo.presupuesta,uo.gerencia
+        WITH RECURSIVE path(id_funcionario,id_uo,presupuesta,gerencia,numero_nivel) AS (
+                SELECT uofun.id_funcionario,uo.id_uo,uo.presupuesta,uo.gerencia, no.numero_nivel
         
         
            
                 from orga.tuo_funcionario uofun
                 inner join orga.tuo uo
                 	on uo.id_uo = uofun.id_uo
-                where uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
+                inner join orga.tnivel_organizacional no 
+                                    on no.id_nivel_organizacional = uo.id_nivel_organizacional
+                 where uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
                 and uofun.estado_reg = ''activo'' and uofun.id_funcionario = ' || par_id_funcionario || '
             UNION
-                SELECT uofun.id_funcionario,euo.id_uo_padre,uo.presupuesta,uo.gerencia
+                SELECT uofun.id_funcionario,euo.id_uo_padre,uo.presupuesta,uo.gerencia,no.numero_nivel
                 from orga.testructura_uo euo
                 inner join orga.tuo uo
                 	on uo.id_uo = euo.id_uo_padre
+                inner join orga.tnivel_organizacional no 
+                                    on no.id_nivel_organizacional = uo.id_nivel_organizacional
                 inner join path hijo
                     on hijo.id_uo = euo.id_uo_hijo
                 left join orga.tuo_funcionario uofun
@@ -80,7 +108,7 @@ BEGIN
                     	uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
                                 
             )
-            SELECT id_funcionario FROM path where id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' and id_funcionario != ' || par_id_funcionario;                
+            SELECT id_funcionario FROM path where id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' and id_funcionario != ' || par_id_funcionario||v_lista_blanca||v_lista_negra;                
              
         raise notice '%',v_consulta;
         return query execute (v_consulta);
