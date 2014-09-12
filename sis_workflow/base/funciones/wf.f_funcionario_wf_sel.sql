@@ -47,6 +47,8 @@ DECLARE
     v_nombre_funcion varchar;
     v_resp varchar;
     v_id_proceso_wf integer;
+    v_campos varchar;
+    v_as varchar;
 
 BEGIN
 
@@ -468,12 +470,45 @@ BEGIN
                  
                  END IF;
       
-    
-      
-      
       ELSE
+                 --  ejecutar funcion de listado 
+                 IF p_count=FALSE then
+                  
+                    v_campos = 'id_funcionario,
+                                desc_funcionario,
+                                desc_funcionario_cargo,
+                                prioridad';
+                                
+                    v_as = ' (id_funcionario integer,
+                                       desc_funcionario text,
+                                       desc_funcionario_cargo text,
+                                       prioridad integer)';
+                 else
+                    v_as = ' (total bigint)';
+                    v_campos = ' total  ';
+                 
+                 END IF;
+                  
+                  v_consulta:='SELECT 
+                                '||v_campos||'
+                               FROM '||v_nombre_func_list||'(
+                                 '||p_id_usuario::varchar||', 
+                                 '||p_id_tipo_estado::varchar||', 
+                                  '''|| COALESCE(p_fecha,now())::varchar||''',
+                                  '||p_id_estado_wf::varchar||',
+                                  '||p_count::varchar||',
+                                  '||p_limit||',
+                                  '||p_start||',
+                                  '||quote_literal(p_filtro)||'
+                                  
+                                 ) AS '||v_as;
+                                       
+                                      
+                  FOR g_registros in execute (v_consulta)LOOP  
+                    RETURN NEXT g_registros;
+                  END LOOP;
       
-        raise exception ' Funcion de listado no identificada (%)',v_nombre_func_list;
+      
       
       END IF;
      
@@ -494,6 +529,7 @@ EXCEPTION
 	WHEN OTHERS THEN
 		v_resp='';
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje', 'Error con el tipo de asignacion '||COALESCE(v_tipo_asignacion,'NAN'  )||' y funcion de listado ' ||COALESCE(v_nombre_func_list,'NAN'),'unir' );
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
