@@ -91,7 +91,10 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
                 }                
                 
             } else if (isset($d['correos'])) {
-            	$correo->addDestinatario($d['correos'],$d['correos']);
+            	$correos = explode(',', $d['correos']);
+				foreach($correos as $value) {
+            		$correo->addDestinatario($value,$value);
+				}
             }
 			
 			$correo->setAsunto(ucwords($d['tipo']).' '.$d['titulo_correo'].' '.$d['obs']);
