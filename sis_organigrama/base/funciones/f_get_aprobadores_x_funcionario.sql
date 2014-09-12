@@ -108,7 +108,12 @@ BEGIN
                     	uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
                                 
             )
-            SELECT id_funcionario FROM path where id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' and id_funcionario != ' || par_id_funcionario||v_lista_blanca||v_lista_negra;                
+             SELECT 
+                id_funcionario 
+             FROM path 
+             WHERE     id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' 
+                   and id_funcionario != ' || par_id_funcionario||v_lista_blanca||v_lista_negra||'
+             ORDER BY numero_nivel DESC';                
              
         raise notice '%',v_consulta;
         return query execute (v_consulta);
