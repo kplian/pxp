@@ -167,7 +167,8 @@ class MODDocumentoWf extends MODbase{
             
             if($this->respuesta->getTipo() == 'EXITO'){
                //mov file
-               $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png'));
+               $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp',
+               						'gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
             }
             
             return $this->respuesta;
