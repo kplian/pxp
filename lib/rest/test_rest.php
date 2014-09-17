@@ -8,7 +8,7 @@
 	$pass = md5('123');
 	$_pass = fnEncrypt($prefix . '$$' . $pass, $pass);
 	
-	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/')->setCredentialsPxp('admin','123');
+	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp/pxp/lib/rest/')->setCredentialsPxp('notificaciones','Mund0libre');
 	
 					//->setCredentialsPxp('admin','123');
 	//echo $pxpRestClient->doGet('libre/tesoreria/CuentaDocumentadaEndesis/listarFondoAvance2',array("limit"=>'10'));
@@ -37,9 +37,9 @@
         array(  "start"=>0,"limit"=>50
                 )); */
 	
-	echo $pxpRestClient->doPost('seguridad/Auten/verificarCredenciales',
+	/*echo $pxpRestClient->doPost('seguridad/Auten/verificarCredenciales',
         array(  "usuario"=>"jrivera","contrasena"=>$_pass
-                ));
+                ));*/
       
       
       function fnEncrypt($sValue, $sSecretKey)

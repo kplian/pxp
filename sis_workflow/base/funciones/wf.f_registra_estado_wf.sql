@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
   p_id_tipo_estado_siguiente integer,
   p_id_funcionario integer,
@@ -67,6 +69,10 @@ DECLARE
     v_alarma		integer;
     v_documentos	text;
     v_res_validacion	text;
+    
+    va_id_alarmas  INTEGER[];
+    
+    v_i integer;
 	
     
 BEGIN
@@ -422,6 +428,31 @@ BEGIN
        p_id_usuario_ai,
        p_usuario_ai) 
     RETURNING id_estado_wf INTO v_id_estado_actual;  
+    
+    --TODO recuperar  alarmas del estado anterior
+    
+    select 
+     ew.id_alarma
+    into
+     va_id_alarmas
+    from wf.testado_wf ew 
+    where ew.id_estado_wf = p_id_estado_wf_anterior;
+    
+    --eliminar alarmas del estado anterior
+    
+    IF va_id_alarmas is not null THEN
+     	 
+    
+      FOR v_i IN 1 .. array_upper(va_id_alarmas, 1)
+      LOOP
+        
+           delete  from param.talarma  a where a.id_alarma = va_id_alarmas[v_i]; 
+      
+      END LOOP;
+      
+    
+    END IF;
+    
             
     UPDATE wf.testado_wf 
     SET estado_reg = 'inactivo'
