@@ -110,7 +110,7 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 				if (count($url) > 2) {
 					//es un reporte generado (llamar un metodo para generar el reporte)
 					
-					$pxpRestClient = PxpRestClient::connect('127.0.0.1','kerp_capacitacion/pxp/lib/rest/')
+					$pxpRestClient = PxpRestClient::connect('127.0.0.1',substr($_SESSION["_FOLDER"], 1) . 'pxp/lib/rest/')
 													->setCredentialsPxp($_GET['user'],$_GET['pw']);
 					
 					$url_final = str_replace('../../sis_', '', $url[0]);
