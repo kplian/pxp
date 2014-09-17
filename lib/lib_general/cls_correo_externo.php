@@ -162,7 +162,7 @@ class CorreoExterno
     function setDefaultPlantilla(){
             $acceso='';
             if($this->acceso_directo!=''){
-                $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/../../../sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
+                $actual_link = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
                 $acceso = '<a href="'.$actual_link.'">Acceso directo</a>';   
             } 
             
