@@ -238,3 +238,11 @@
 .bexecdb {
     background-image:url(dibu_execdb.png) !important;
 }
+
+.bball_green {
+    background-image:url(../ball_green.png) !important;
+}
+
+.bball_white {
+    background-image:url(../ball_white.png) !important;
+}
