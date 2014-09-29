@@ -30,8 +30,7 @@ Phx.vista.AsignarInterino = {
 	   
 	  this.Atributos[this.getIndAtributo('id_cargo_titular')].form=false;
  
-	  Phx.vista.AsignarInterino.superclass.constructor.call(this,config);
-      this.load({params:{start:0, limit:this.tam_pag}})
+	  Phx.vista.AsignarInterino.superclass.constructor.call(this,config);      
         
     },
     

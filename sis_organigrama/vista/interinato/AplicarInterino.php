@@ -27,16 +27,12 @@ Phx.vista.AplicarInterino = {
 	 * */
 	
 	constructor: function(config) {
-	    
-	   Phx.vista.AplicarInterino.superclass.constructor.call(this,config);
-	   
-	   
 	   this.addButton('aplicar_int',{text:'Sincronizar',iconCls: 'blist',disabled:true,handler:this.onAplicarInterinato,tooltip: '<b>Aplicar Cargo de Interinato</b><br/>Sinc '});
         
 	   
-	   this.store.baseDarams = {id_cargo_suplente:Phx.CP.config_ini.id_cargo, estado_reg:'activo'}
-       this.load({params:{start:0, limit:this.tam_pag}})
-        
+	   this.store.baseDarams = {id_cargo_suplente:Phx.CP.config_ini.id_cargo, estado_reg:'activo'} 
+	   Phx.vista.AplicarInterino.superclass.constructor.call(this,config);	   
+	           
     },
     
     onAplicarInterinato:function(){
