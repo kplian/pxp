@@ -21,6 +21,7 @@ DECLARE
   v_suma					numeric;
   v_sql_tabla				varchar;
   v_factor					numeric;
+  v_tipo					varchar;
   
 BEGIN
 	
@@ -39,7 +40,14 @@ BEGIN
     where id_periodo = p_id_periodo;
     
     EXECUTE(v_sql_tabla);
-  	if (p_codigo_prorrateo = 'PCELULAR') then
+  	if (p_codigo_prorrateo = 'PCELULAR' or p_codigo_prorrateo = 'P4G'  or p_codigo_prorrateo = 'PFIJO') then
+  		v_tipo = 'celular';
+        if (p_codigo_prorrateo = 'P4G') then
+        	v_tipo = '4g';
+        elsif (p_codigo_prorrateo = 'PFIJO') then
+        	v_tipo = 'fijo';
+        end if;
+    	
     	v_suma = 0;
   		for v_registros in (
         	select * ,count(nc.id_numero_celular) OVER () as total,
@@ -47,7 +55,7 @@ BEGIN
             from gecom.tconsumo c
             inner join gecom.tnumero_celular nc
             	on c.id_numero_celular = nc.id_numero_celular            
-            where id_periodo = p_id_periodo) loop
+            where id_periodo = p_id_periodo  and nc.tipo = v_tipo) loop
         	
             v_factor = (p_monto / v_registros.suma_total);
             
