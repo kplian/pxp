@@ -23,6 +23,7 @@ DECLARE
   v_factor					numeric;
   v_tipo					varchar;
   
+  
 BEGIN
 	
   	v_nombre_funcion = 'orga.f_prorratear_x_empleado';
@@ -125,6 +126,9 @@ BEGIN
                     	v_suma = v_suma + round((p_monto/v_funcionarios.total),2);
                     end if;
             END LOOP;
+            if (v_suma = 0) then
+            	raise exception 'No existe ningun empleado asignado a la oficina';
+            end if;
             v_resp ='exito';      
         
   	elsif (p_codigo_prorrateo = 'PGLOBAL') then  		
