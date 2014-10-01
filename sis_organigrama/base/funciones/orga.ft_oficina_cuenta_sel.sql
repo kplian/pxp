@@ -90,6 +90,8 @@ BEGIN
 					    from orga.toficina_cuenta ofcu
 					    inner join segu.tusuario usu1 on usu1.id_usuario = ofcu.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ofcu.id_usuario_mod
+						inner join orga.toficina of on of.id_oficina = ofcu.id_oficina
+						inner join param.tlugar lug on lug.id_lugar = of.id_lugar
 					    where ';
 			
 			--Definicion de la respuesta		    
