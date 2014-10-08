@@ -240,19 +240,19 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-				store: ['string','numeric','date','time','boolean']
+				store: ['TextField','TextArea','NumberField','DateField','time','CheckBox']
 			},
 				type:'ComboBox',
 				filters:{   
                          type: 'list',
                          pfiltro:'tipcol.form_tipo_columna',
-                         options: ['string','numeric','date','time','boolean']  
+                         options:  ['TextField','TextArea','NumberField','DateField','time','CheckBox']
                     },
 				id_grupo:2,
 				grid:true,
 				form:true
 		},
-		
+				
 		{
 			config:{
 				name: 'form_label',
@@ -432,7 +432,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				form:false
 		}
 	],
-	tam_pag:50,	
+	tam_pag:10,	
 	title:'Tipo Columna',
 	ActSave:'../../sis_workflow/control/TipoColumna/insertarTipoColumna',
 	ActDel:'../../sis_workflow/control/TipoColumna/eliminarTipoColumna',
@@ -492,6 +492,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
     },
     
     onTipoColumnaSelect : function(com, rec, i) {
+    	
     	this.Cmp.form_tipo_columna.setValue(this.equivalencias[rec.data.field1]);
     },
     onButtonEdit : function () {

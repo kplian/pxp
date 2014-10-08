@@ -24,10 +24,20 @@ CREATE AGGREGATE pxp.aggarray1 (anyelement) (
     STYPE = anyarray
 );
 
---DROP AGGREGATE IF EXISTS pxp.html_rows (varchar);
---CREATE AGGREGATE pxp.html_rows (
---  varchar)
---(
---  SFUNC = pxp.html_rows,
---  STYPE = "varchar"
---);
+
+
+DROP AGGREGATE IF EXISTS pxp.html_rows (varchar);
+CREATE AGGREGATE pxp.html_rows (
+  varchar)
+(
+  SFUNC = pxp.html_rows,
+  STYPE = "varchar"
+);
+DROP AGGREGATE IF EXISTS pxp.list_unique (varchar);
+CREATE AGGREGATE pxp.list_unique (
+  text)
+(
+  SFUNC = pxp.list_unique,
+  STYPE = text
+);
+

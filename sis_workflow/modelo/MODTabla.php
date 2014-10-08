@@ -347,8 +347,18 @@ class MODTabla extends MODbase{
 		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
 			
 			$this->captura($value['bd_nombre_columna'],$value['bd_tipo_columna']);		
-			
-		}		
+			//campos adicionales
+			if ($value['bd_campos_adicionales'] != '' && $value['bd_campos_adicionales'] != null) {
+				$campos_adicionales =  explode(',', $value['bd_campos_adicionales']);
+				
+				foreach ($campos_adicionales as $campo_adicional) {
+					
+					$valores = explode(' ', $campo_adicional);
+					$this->captura($valores[1],$valores[2]);
+				}
+			}			
+		}
+		
 		
 		$this->captura('estado_reg','varchar');		
 		$this->captura('fecha_reg','timestamp');

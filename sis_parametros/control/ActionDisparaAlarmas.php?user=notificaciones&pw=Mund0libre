@@ -1,0 +1,18 @@
+object(stdClass)#7 (1) {
+  ["ROOT"]=>
+  object(stdClass)#12 (3) {
+    ["error"]=>
+    bool(false)
+    ["detalle"]=>
+    object(stdClass)#13 (2) {
+      ["mensaje"]=>
+      string(16) "Reporte generado"
+      ["archivo_generado"]=>
+      string(19) "SolicitudCompra.pdf"
+    }
+    ["datos"]=>
+    array(0) {
+    }
+  }
+}
+{"ROOT":{"error":false,"detalle":{"mensaje":"La transacci\u00f3n se ha ejecutado con \u00e9xito"},"datos":[]}}

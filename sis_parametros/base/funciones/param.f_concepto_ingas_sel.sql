@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -59,7 +61,10 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
 						conig.activo_fijo,
-						conig.almacenable	
+						conig.almacenable,
+                        array_to_string( conig.id_grupo_ots,'','',''null'')::varchar,
+                        conig.filtro_ot,
+                        conig.requiere_ot	
 						from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
@@ -125,7 +130,10 @@ BEGIN
                           usu2.cuenta as usr_mod,
                           conig.activo_fijo,
                           conig.almacenable,
-                          par.codigo||'' ''||par.nombre_partida as desc_partida	
+                          par.codigo||'' ''||par.nombre_partida as desc_partida,
+                          array_to_string( conig.id_grupo_ots,'','',''null'')::varchar,
+                          conig.filtro_ot,
+                          conig.requiere_ot
                           from param.tconcepto_ingas conig
                           inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas
                           inner join pre.tpartida par on par.id_partida = cp.id_partida

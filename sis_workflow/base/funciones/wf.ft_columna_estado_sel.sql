@@ -56,7 +56,8 @@ BEGIN
 						colest.id_usuario_mod,
 						colest.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+                        colest.regla	
 						from wf.tcolumna_estado colest
 						inner join segu.tusuario usu1 on usu1.id_usuario = colest.id_usuario_reg
 						inner join wf.ttipo_estado tes on tes.id_tipo_estado = colest.id_tipo_estado

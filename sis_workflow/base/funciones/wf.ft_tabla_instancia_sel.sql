@@ -33,6 +33,8 @@ DECLARE
     v_joins_wf			text;
     v_filtro			varchar;
     v_id_funcionario_usuario	integer;
+    var					text;
+    array_campos_adicionales text[];
     
 			    
 BEGIN
@@ -50,6 +52,7 @@ BEGIN
 	if(p_transaccion='WF_TABLAINS_SEL')then
      				
     	begin
+        	
         	select f.id_funcionario into v_id_funcionario_usuario
             from segu.tusuario u
             inner join orga.tfuncionario f 
@@ -88,12 +91,18 @@ BEGIN
             					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo' order by id_tipo_columna asc) loop
             	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ';
             	
-            	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then                	
-            		v_consulta = v_consulta || v_columnas.bd_campos_adicionales|| ', ';
+            	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then
+                	array_campos_adicionales = string_to_array(v_columnas.bd_campos_adicionales, ',');
+                    
+                    FOREACH var IN ARRAY array_campos_adicionales
+                    LOOP
+                        v_consulta = v_consulta || split_part(var,' ',1)|| ', ';
+                    END LOOP;                	
+            		
             	end if;
             	
             	if (v_columnas.bd_joins_adicionales is not null and v_columnas.bd_joins_adicionales != '')then
-            		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ', ';
+            		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ' ';
             	end if;           				 
             		
             end loop;
@@ -126,7 +135,7 @@ BEGIN
                 v_consulta = v_consulta || v_filtro;
             end if;			
 				        
-			
+			--raise exception '%',v_joins_adicionales;
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
@@ -174,7 +183,7 @@ BEGIN
 			for v_columnas in (	select * from wf.ttipo_columna 
             					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo') loop            	
             	if (v_columnas.bd_joins_adicionales is not null and v_columnas.bd_joins_adicionales != '')then
-            		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ', ';
+            		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| '  ';
             	end if;  	
             end loop;
 			

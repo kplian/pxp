@@ -50,12 +50,12 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
    				allowBlank:false,
                 gwidth:200,
    				valueField: 'id_funcionario',
-   			    gdisplayField: 'desc_funcionario',
-   			    renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario']);}
+   			    gdisplayField: 'desc_funcionario1',
+   			    renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
        	     },
    			type:'ComboRec',//ComboRec
    			id_grupo:0,
-   			filters:{pfiltro:'fun.desc_funcionario',type:'string'},
+   			filters:{pfiltro:'fun.desc_funcionario1',type:'string'},
    		    grid:true,
    			form:true
 		 },
@@ -218,7 +218,7 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_asistente', type: 'numeric'},
 		{name:'id_uo', type: 'numeric'},
 		{name:'id_funcionario', type: 'numeric'},
-		{name:'desc_funcionario', type: 'string'},
+		{name:'desc_funcionario1', type: 'string'},
 		{name:'desc_uo', type: 'string'},
 		{name:'estado_reg', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},

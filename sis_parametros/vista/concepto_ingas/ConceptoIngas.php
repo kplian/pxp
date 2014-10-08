@@ -17,7 +17,10 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.ConceptoIngas.superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		this.load({params:{start:0, limit:50}});
+		this.crearFormularioOt();
+		this.addButton('inserOT',{text:'Configurar OT',iconCls: 'blist',disabled:false,handler:this.mostarFormOt,tooltip: '<b>Configurar OT</b><br/>Permite añadir grupos de OT autorizados para el concepto de gasto'});
+    
 	},
 			
 	Atributos:[
@@ -242,6 +245,158 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	
+	
+	crearFormularioOt:function(){
+		  this.formOt = new Ext.form.FormPanel({
+            baseCls: 'x-plain',
+            autoDestroy: true,
+           
+            border: false,
+            layout: 'form',
+             autoHeight: true,
+           
+    
+            items: [
+                  {
+	       			name:'requiere_ot',
+	       			xtype:'combo',
+	       			qtip:'Configura si la OT es obligatoria u opcional para este concepto',
+	       			fieldLabel:'Requiere OT',
+	       			allowBlank:false,
+	       			typeAhead: false,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',
+	       		    gwidth: 100,
+	       		    store:['opcional','obligatorio']
+	       		},
+	       		
+	       		{
+	       			name:'filtro_ot',
+	       			xtype:'combo',
+	       			qtip:'Configura si aplica un filtro por el listado de los grupos selecionado (listado), o no aplica ningún filtro (todos)',
+	       			fieldLabel:'Filtro OT',
+	       			allowBlank:false,
+	       			typeAhead: false,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',
+	       		    gwidth: 100,
+	       		    store:['todos','listado']
+	       		},
+            
+                {
+       				name:'id_grupo_ots',
+       				xtype:"awesomecombo",
+       				fieldLabel:'Grupos de OT',
+       				allowBlank:true,
+       				emptyText:'Roles...',
+       				store: new Ext.data.JsonStore({
+              			url: '../../sis_contabilidad/control/GrupoOt/listarGrupoOt',
+       					id: 'id_grupo_ot',
+       					root: 'datos',
+       					sortInfo:{
+       						field: 'descripcion',
+       						direction: 'ASC'
+       					},
+       					totalProperty: 'total',
+       					fields: ['id_grupo_ot','descripcion'],
+       					// turn on remote sorting
+       					remoteSort: true,
+       					baseParams:{par_filtro:'descripcion'}
+       					
+       				}),
+       				valueField: 'id_grupo_ot',
+       				displayField: 'descripcion',
+       				forceSelection:true,
+       				typeAhead: true,
+           			triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:100,
+       				queryDelay:1000,
+       				width:250,
+       				minChars:2,
+	       			enableMultiSelect:true
+       			
+       				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
+
+       			}]
+        });
+        
+		
+		
+		this.wOt = new Ext.Window({
+            title: 'Estados',
+            collapsible: true,
+            maximizable: true,
+            autoDestroy: true,
+            width: 380,
+            height: 170,
+            layout: 'fit',
+            plain: true,
+            bodyStyle: 'padding:5px;',
+            buttonAlign: 'center',
+            items: this.formOt,
+            modal:true,
+             closeAction: 'hide',
+            buttons: [{
+                text: 'Guardar',
+                handler:this.saveOt,
+                scope:this
+                
+            },
+             {
+                text: 'Cancelar',
+                handler:function(){this.wOt.hide()},
+                scope:this
+            }]
+        });
+        
+         this.cmpOt=this.formOt.getForm().findField('id_grupo_ots');
+         this.cmpFiltroOt=this.formOt.getForm().findField('filtro_ot');
+         this.cmpRequiereOt=this.formOt.getForm().findField('requiere_ot');
+         
+         
+	},
+	mostarFormOt:function(){
+		var data = this.getSelectedData();
+		if(data){
+			this.cmpOt.setValue(data.id_grupo_ots);
+			this.cmpFiltroOt.setValue(data.filtro_ot);
+			this.cmpRequiereOt.setValue(data.requiere_ot);
+		    this.wOt.show();
+		}
+		
+	},
+	saveOt:function(){
+		    var d = this.getSelectedData();
+		    Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url: '../../sis_parametros/control/ConceptoIngas/editOt',
+                params: { 
+                	      id_grupo_ots: this.cmpOt.getValue(),
+                	      requiere_ot: this.cmpRequiereOt.getValue(), 
+                	      filtro_ot: this.cmpFiltroOt.getValue(),  
+                	      id_concepto_ingas: d.id_concepto_ingas
+                	    },
+                success: this.successSinc,
+                failure: this.conexionFailure,
+                timeout: this.timeout,
+                scope: this
+            });
+		
+	},
+	successSinc:function(resp){
+            Phx.CP.loadingHide();
+            var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+            if(!reg.ROOT.error){
+                this.wOt.hide(); 
+                this.reload();
+             }else{
+                alert('ocurrio un error durante el proceso')
+            }
+    },
 	title:'Conceptos de Ingreso/Gasto',
 	ActSave:'../../sis_parametros/control/ConceptoIngas/insertarConceptoIngas',
 	ActDel:'../../sis_parametros/control/ConceptoIngas/eliminarConceptoIngas',
@@ -262,7 +417,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'activo_fijo', type: 'string'},
-		{name:'almacenable', type: 'string'}
+		{name:'almacenable', type: 'string'},
+		'id_grupo_ots','filtro_ot','requiere_ot'
 		
 	],
 	sortInfo:{
@@ -272,7 +428,30 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
-	bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true
+	bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	
+	 preparaMenu:function(n){
+        var data = this.getSelectedData();
+        var tb =this.tbar;
+        
+        //this.getBoton('btnChequeoDocumentos').setDisabled(false);
+        this.getBoton('inserOT').setDisabled(false);
+        Phx.vista.ConceptoIngas.superclass.preparaMenu.call(this,n);
+        
+        
+        
+        
+        return tb 
+     }, 
+     liberaMenu:function(){
+        var tb = Phx.vista.ConceptoIngas.superclass.liberaMenu.call(this);
+        if(tb){
+            this.getBoton('inserOT').disable();
+        }
+       return tb
+    }
+      
+	
 	}
 )
 </script>

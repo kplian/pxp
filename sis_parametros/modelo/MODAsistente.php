@@ -30,7 +30,7 @@ class MODAsistente extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		$this->captura('desc_funcionario','text');
+		$this->captura('desc_funcionario1','text');
 		$this->captura('desc_uo','text');
 		$this->captura('recursivo','varchar');
 		

@@ -53,6 +53,8 @@ class MODProcesoWf extends MODbase{
 		
 		
 		
+		
+		
                               
 		
 		//Ejecuta la instruccion
@@ -113,6 +115,9 @@ class MODProcesoWf extends MODbase{
         
         $this->captura('nombre_subsistema','varchar');
         $this->captura('codigo_subsistema','varchar');
+		
+		$this->captura('prioridad','integer');
+		$this->captura('revisado_asistente','varchar');
         
         
         

@@ -35,6 +35,12 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('activo_fijo','varchar');
 		$this->captura('almacenable','varchar');
+		$this->captura('id_grupo_ots','varchar');
+		$this->captura('filtro_ot','varchar');
+		$this->captura('requiere_ot','varchar');
+		
+		
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -73,6 +79,9 @@ class MODConceptoIngas extends MODbase{
         $this->captura('activo_fijo','varchar');
         $this->captura('almacenable','varchar');
         $this->captura('desc_partida','text');
+		$this->captura('id_grupo_ots','varchar');
+		$this->captura('filtro_ot','varchar');
+		$this->captura('requiere_ot','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -180,6 +189,29 @@ class MODConceptoIngas extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function editOt(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.f_concepto_ingas_ime';
+		$this->transaccion='PM_CONEDOT_IME';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_concepto_ingas','id_concepto_ingas','int4');
+		$this->setParametro('id_grupo_ots','id_grupo_ots','varchar');
+		$this->setParametro('requiere_ot','requiere_ot','varchar');
+		$this->setParametro('filtro_ot','filtro_ot','varchar');
+		
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
+	
 			
 }
 ?>

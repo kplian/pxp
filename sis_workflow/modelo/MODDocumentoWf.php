@@ -19,7 +19,8 @@ class MODDocumentoWf extends MODbase{
 		$this->transaccion='WF_DWF_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
-		$this->setParametro('id_proceso_wf','id_proceso_wf','int4');		
+		$this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+		$this->setParametro('todos_documentos','todos_documentos','varchar');		
 		//Definicion de la lista del resultado del query
 		$this->captura('id_documento_wf','int4');
 		$this->captura('url','varchar');

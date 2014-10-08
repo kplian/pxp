@@ -140,15 +140,16 @@ BEGIN
         	for v_columnas in (	select tc.* from wf.ttipo_columna tc
         						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento in ('registrar', 'exigir')
         						inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
-            					where id_tabla = json_extract_path_text(v_parametros,'id_tabla')::integer and tc.estado_reg = 'activo' 
+            					where id_tabla = json_extract_path_text(v_parametros,'id_tabla')::integer and tc.estado_reg = 'activo' and ce.estado_reg = 'activo'
                                 and te.codigo = json_extract_path_text(v_parametros,'tipo_estado')::varchar) loop
             		
                 v_fields = v_fields || ',' || v_columnas.bd_nombre_columna;
             	if (v_columnas.bd_tipo_columna in ('integer', 'bigint', 'boolean', 'numeric')) then
-            		v_values = v_values || ',' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna);
+            		v_values = v_values || ',' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
             	else                	
-            		v_values = v_values || ',''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna)|| '''';                    
-            	end if;	
+            		v_values = v_values || ',' || coalesce ('''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''','NULL');                    
+            	end if;
+               
             end loop;
         	
         	v_fields = v_fields || ')';
@@ -193,13 +194,13 @@ BEGIN
             for v_columnas in (	select tc.* from wf.ttipo_columna tc
         						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento in ('registrar', 'exigir')
                                 inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
-        						where id_tabla = json_extract_path_text(v_parametros,'id_tabla')::integer and tc.estado_reg = 'activo' 
+        						where id_tabla = json_extract_path_text(v_parametros,'id_tabla')::integer and tc.estado_reg = 'activo' and ce.estado_reg = 'activo'
                                 and te.codigo = json_extract_path_text(v_parametros,'tipo_estado')::varchar) loop
             	
             	if (v_columnas.bd_tipo_columna in ('integer', 'bigint', 'boolean', 'numeric')) then
-            		v_query = v_query || ',' || v_columnas.bd_nombre_columna  || '=' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna);
-            	else
-            		v_query = v_query || ',' || v_columnas.bd_nombre_columna  || '=''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''';
+            		v_values = v_values || ',' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
+            	else                	
+            		v_values = v_values || ',' || coalesce ('''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''','NULL');                    
             	end if;	
             end loop;
             
