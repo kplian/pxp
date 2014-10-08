@@ -56,7 +56,8 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            regla
           	) values(
 			v_parametros.id_tipo_estado,
 			v_parametros.id_tipo_columna,
@@ -65,7 +66,8 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+			v_parametros.regla
 							
 			)RETURNING id_columna_estado into v_id_columna_estado;
 			
@@ -97,6 +99,7 @@ BEGIN
             if (v_id_tipo_estado = v_parametros.id_tipo_estado)then
             	update wf.tcolumna_estado set			
                 momento = v_parametros.momento,
+                momento = v_parametros.regla,
                 id_usuario_mod = p_id_usuario,
                 fecha_mod = now()
                 where id_columna_estado=v_parametros.id_columna_estado;
@@ -114,7 +117,8 @@ BEGIN
                 id_usuario_reg,
                 fecha_reg,
                 id_usuario_mod,
-                fecha_mod
+                fecha_mod,
+                regla
                 ) values(
                 v_parametros.id_tipo_estado,
                 v_parametros.id_tipo_columna,
@@ -123,7 +127,8 @@ BEGIN
                 p_id_usuario,
                 now(),
                 null,
-                null
+                null,
+                v_parametros.regla
     							
                 )RETURNING id_columna_estado into v_id_columna_estado;
             

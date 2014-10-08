@@ -31,6 +31,7 @@ DECLARE
 	v_resp				varchar;
     v_nro_tramite varchar;
     v_id_proceso_macro integer;
+    v_filtro			varchar;
 			    
 BEGIN
 
@@ -48,16 +49,23 @@ BEGIN
      				
     	begin
            
-           select 
-             pw.nro_tramite,
-             tp.id_proceso_macro
-           into 
-             v_nro_tramite,
-             v_id_proceso_macro
-           
-           from wf.tproceso_wf pw
-           inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
-           where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+           if (v_parametros.todos_documentos = 'si') then
+	           select 
+	             pw.nro_tramite,
+	             tp.id_proceso_macro
+	           into 
+	             v_nro_tramite,
+	             v_id_proceso_macro
+	           
+	           from wf.tproceso_wf pw
+	           inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
+	           where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+	           
+	           v_filtro = ' pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and  ';
+	       else
+	       		v_filtro = ' pw.id_proceso_wf = ' || v_parametros.id_proceso_wf || ' and ';
+	       
+	       end if;
         
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -102,7 +110,7 @@ BEGIN
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
-				        where  pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and ';
+				        where  ' || v_filtro;
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -128,16 +136,23 @@ BEGIN
 		begin
             
         
-            select 
-             pw.nro_tramite,
-             tp.id_proceso_macro
-           into 
-             v_nro_tramite,
-             v_id_proceso_macro
-           
-           from wf.tproceso_wf pw
-           inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
-           where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+            if (v_parametros.todos_documentos = 'si') then
+	           select 
+	             pw.nro_tramite,
+	             tp.id_proceso_macro
+	           into 
+	             v_nro_tramite,
+	             v_id_proceso_macro
+	           
+	           from wf.tproceso_wf pw
+	           inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
+	           where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+	           
+	           v_filtro = ' pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and  ';
+	       else
+	       		v_filtro = ' pw.id_proceso_wf = ' || v_parametros.id_proceso_wf || ' and ';
+	       
+	       end if;
         
         
 			--Sentencia de la consulta de conteo de registros
@@ -151,7 +166,7 @@ BEGIN
                         inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
-				        where  pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||'''  and ';
+				        where ' || v_filtro;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

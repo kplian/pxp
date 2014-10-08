@@ -323,8 +323,23 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                     this.wizardLast.setDisabled(true);
           }
           else{
-              alert('Error al idetificar siguientes pasos')
+              alert('Error al identificar siguientes pasos')
           }  
+    },
+    
+    /////////////////Adiciona Tarjeta con los items enviados/////////////
+    addTarjetaItems:function(items_to_add){
+       	var cont = this.contadorTarjetas;
+    	var cont = this.contadorTarjetas;
+    	
+        this.addCardWizart({
+                           id: this.idContenedor+'-card-'+cont,
+                           layout:'form',
+                           autoScroll:true,
+                           items : items_to_add });
+        this.contadorTarjetas = this.contadorTarjetas + 1;
+       	alert('llega1');
+        this.maxCount = this.maxCount + 1;
     },
     
     /////////////////////////////////////
@@ -572,7 +587,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            
        },this)
                            
-       this.contadorTarjetas = this.contadorTarjetas + 1
+       this.contadorTarjetas = this.contadorTarjetas + 1;
        
        //carga inicial de valores en los procesos de la tarjeta
        //carga valores por defecto si los combos tiene una sola opcion

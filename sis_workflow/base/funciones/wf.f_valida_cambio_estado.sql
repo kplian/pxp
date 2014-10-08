@@ -54,7 +54,7 @@ BEGIN
     for v_columnas in (	select tc.* from wf.ttipo_columna tc
         						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento = coalesce(p_momento,'exigir')
         						inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
-            					where tc.estado_reg = 'activo' and id_tabla = v_id_tabla and te.id_tipo_estado = v_id_tipo_estado) loop 
+            					where ce.estado_reg = 'activo' and tc.estado_reg = 'activo' and id_tabla = v_id_tabla and te.id_tipo_estado = v_id_tipo_estado) loop 
     	
         v_consulta = 'select 
                      (case when (' || v_columnas.bd_nombre_columna || ' IS NOT NULL) then

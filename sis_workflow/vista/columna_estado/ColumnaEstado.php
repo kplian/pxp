@@ -13,6 +13,34 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.ColumnaEstado=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
+		
+		this.Grupos= [
+                   {
+                    layout:'column',
+                    width:'100%',
+                    autoScroll:true,
+                    items: [
+                           {id: config.idContenedor+'-card-0',
+                            width:'45%',
+                            xtype: 'fieldset',
+                            title: 'Datos principales',
+                            autoHeight: true,
+                            border:false,
+                            margin:'5 5 5 5',
+                            items: [],
+                            id_grupo:0
+                           },
+                           {
+                               xtype:'panel',
+                               //margin:'5 5 5 5',
+                               width:'45%',
+                               html:'Es posible hacer una llamada a una funcion con las siguientes variables:<br/>wf.f_mi_funcion(p_id_usuario, p_id_proceso_wf, p_id_estado_anterior, p_id_tipo_estado_actual) El retorno debe ser FALSE o TRUE<br/>---------<b><h2>Variables WF, para las reglas</h2></b> <br> PROCESO_MACRO<br>TIPO_PROCESO<br>NUM_TRAMITE<br>USUARIO_PREVIO<br>ESTADO_ANTERIOR<br>OBS<br>ESTADO_ACTUAL<br>CODIGO_ANTERIOR<br><br>CODIGO_ACTUAL<br>FUNCIONARIO_PREVIO<br>DEPTO_PREVIO<br><br>** Verificar que las variables que referencian a la tabla existan  EJM {$tabla.desc_proveedor}'
+                               
+                           }]
+                }
+            
+            ];
+            
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.ColumnaEstado.superclass.constructor.call(this,config);
@@ -115,7 +143,22 @@ Phx.vista.ColumnaEstado=Ext.extend(Phx.gridInterfaz,{
                     },
             grid:true,
             form:true
-        },        
+        },  
+        {
+			config:{
+				name: 'regla',
+				fieldLabel: 'Regla (función a llamar)',
+				allowBlank: true,
+				anchor: '100%',
+				gwidth: 300,
+				maxLength:1000
+			},
+			type:'TextArea',
+			filters:{pfiltro:'estes.regla',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},      
 		
 		{
 			config:{
@@ -209,6 +252,7 @@ Phx.vista.ColumnaEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_tipo_columna', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
 		{name:'momento', type: 'string'},
+		{name:'regla', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},

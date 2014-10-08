@@ -15,7 +15,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		constructor:function(config) {
 			
 			this.config = config;
-			console.log(this.config);
+			
 			//configuraciones iniciales
 			this.maestro=config.maestro;
 			this.configProceso = config.configProceso;
@@ -58,6 +58,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			if (this.configProceso[this.config.indice].atributos.vista_tipo != 'detalle') {
 				this.load({params:{start:0, limit:50}}); 
 			}
+			
 			 
 		},	
 		
@@ -284,30 +285,20 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            config_columna.config.fieldLabel = this.configProceso[this.config.indice].columnas[i].form_label;
 		            config_columna.type = this.configProceso[this.config.indice].columnas[i].form_tipo_columna;
 		            
-		            //verificar si entra al formulario y si es obligatorio
-		            if (this.configProceso[this.config.indice].columnas[i].momento == 'registrar') {
-		            	config_columna.form = true; 
-		            } else if (this.configProceso[this.config.indice].columnas[i].momento == 'exigir') {
-		            	config_columna.form = true;
-		            	config_columna.config.allowBlank = false;
-		            } else if (this.configProceso[this.config.indice].columnas[i].momento == 'mostrar_formulario') {
-		            	config_columna.form = true;
-		            	config_columna.config.readOnly = true;
-		            }
-		            
+		            		            
 		            //validar el tamaño del campo en caso de que sea varchar, numeric o integer
-		            if (this.configProceso[this.config.indice].columnas[i].form_tipo_columna == 'varchar') {
+		            if (this.configProceso[this.config.indice].columnas[i].bd_tipo_columna == 'varchar') {
 		            	if (this.configProceso[this.config.indice].columnas[i].bd_tamano_columna != '' && 
 		            		this.configProceso[this.config.indice].columnas[i].bd_tamano_columna != undefined
 		            		&& this.configProceso[this.config.indice].columnas[i].bd_tamano_columna != null) {
 		            			config_columna.config.maxLength = this.configProceso[this.config.indice].columnas[i].bd_tamano_columna;
 		            		
 		            	}
-		            } else if (this.configProceso[this.config.indice].columnas[i].form_tipo_columna == 'integer') {
+		            } else if (this.configProceso[this.config.indice].columnas[i].bd_tipo_columna == 'integer') {
 		            	config_columna.config.maxLength = 9;
-		            } else if (this.configProceso[this.config.indice].columnas[i].form_tipo_columna == 'bigint') {
+		            } else if (this.configProceso[this.config.indice].columnas[i].bd_tipo_columna == 'bigint') {
 		            	config_columna.config.maxLength = 18;
-		            } else if (this.configProceso[this.config.indice].columnas[i].form_tipo_columna == 'numeric') {
+		            } else if (this.configProceso[this.config.indice].columnas[i].bd_tipo_columna == 'numeric') {
 		            	if (this.configProceso[this.config.indice].columnas[i].bd_tamano_columna != '' && 
 		            		this.configProceso[this.config.indice].columnas[i].bd_tamano_columna != undefined &&
 		            		this.configProceso[this.config.indice].columnas[i].bd_tamano_columna != null) {
@@ -323,13 +314,16 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            //Verificar si se trata de un comborec o un combobox
 		            if (this.configProceso[this.config.indice].columnas[i].form_es_combo == 'si') {
 		            	config_columna.type = 'ComboBox';
+		            	config_columna.config.maxLength = 500;
 		            }
 		            
-		            if (this.configProceso[this.config.indice].columnas[i].form_comborec != '' && 
-		            	this.configProceso[this.config.indice].columnas[i].form_comborec != undefined &&
-		            	this.configProceso[this.config.indice].columnas[i].form_comborec != null) {
+		            if (this.configProceso[this.config.indice].columnas[i].form_combo_rec != '' && 
+		            	this.configProceso[this.config.indice].columnas[i].form_combo_rec != undefined &&
+		            	this.configProceso[this.config.indice].columnas[i].form_combo_rec != null) {
+		            		
 		            	config_columna.config.origen = this.configProceso[this.config.indice].columnas[i].form_comborec;
 		            	config_columna.type = 'ComboRec';
+		            	config_columna.config.maxLength = 500;
 		            }
 		            
 		            
@@ -338,7 +332,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != undefined &&
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != null) {
 			            var custom_config = Ext.util.JSON.decode(Ext.util.Format.trim(this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config));
-			            Ext.applyIf(config_columna.config,custom_config);
+			            Ext.apply(config_columna.config,custom_config);
 			        }
 			        if (this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != '' && 
 		            	this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != undefined &&
@@ -346,6 +340,17 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			            var custom_filter = Ext.util.JSON.decode(Ext.util.Format.trim(this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro));
 			            Ext.apply(config_columna.filters,custom_filter);
 			        }
+			        //verificar si entra al formulario y si es obligatorio
+		            if (this.configProceso[this.config.indice].columnas[i].momento == 'registrar') {
+		            	config_columna.form = true; 
+		            } else if (this.configProceso[this.config.indice].columnas[i].momento == 'exigir') {
+		            	config_columna.form = true;
+		            	config_columna.config.allowBlank = false;
+		            } else if (this.configProceso[this.config.indice].columnas[i].momento == 'mostrar_formulario') {
+		            	config_columna.form = true;
+		            	config_columna.config.readOnly = true;
+		            }
+		            
 			        this.Atributos.push(config_columna);			        
 			    }
 	            	            
@@ -460,7 +465,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		        config_columna.grid_campos_adicionales != null) {
 				var aux_extra_fields = config_columna.grid_campos_adicionales.split(',');
 				
-				for (var i = 0; i < aux_extra_fields; i++) {
+				for (var i = 0; i < aux_extra_fields.length; i++) {
 					var aux_extra_fields_definition = aux_extra_fields[i].split(' ');
 					if (aux_extra_fields_definition[1] == 'date') {
 						this.fields.push({name: aux_extra_fields_definition[0],

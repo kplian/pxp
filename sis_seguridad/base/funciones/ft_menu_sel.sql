@@ -57,6 +57,10 @@ BEGIN
     if(par_transaccion='SEG_MENU_SEL')then
     	BEGIN
     	v_tabla_menu = '';
+        
+        delete from segu.tgui_rol where temporal = 1; 
+        delete from segu.testructura_gui where temporal = 1; 
+        delete from segu.tgui where temporal = 1;        
         for v_registros in (select tp.codigo as codigo_proceso, ta.menu_nombre,te.codigo,te.nombre_estado,
         						pxp.list(terol.id_rol::text) as roles
                             from wf.ttabla ta
@@ -181,9 +185,7 @@ BEGIN
                    raise notice 'pueblo: %',v_consulta;
                   
               return v_consulta;
-           	  delete from segu.testructura_gui where temporal = 1;
-              delete from segu.tgui_rol where temporal = 1;
-              delete from segu.tgui where temporal = 1;
+           	  
         END IF;
     	END;
 /*******************************    

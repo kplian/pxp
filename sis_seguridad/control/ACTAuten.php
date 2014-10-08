@@ -240,8 +240,17 @@ class ACTAuten extends ACTbase {
             }
 			
 			
+			if(isset($_SESSION["ss_id_cargo"]) && $_SESSION["ss_id_cargo"] !=''){
+				
+				$id_cargo = $_SESSION["ss_id_cargo"];
+			}
+			else{
+				$id_cargo = 0;
+			}
+			
 		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
 				echo "{success:true,
+				id_cargo:".$id_cargo.",
 				cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
 				cont_interino:".$_SESSION["_CONT_INTERINO"].",
 				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',

@@ -376,7 +376,9 @@ BEGIN
                              usu3.cuenta as usu_reg_ew,
                              te.nombre_estado as nombre_tipo_estado,
                              sub.nombre as nombre_subsistema,
-                             sub.codigo as codigo_subsistema
+                             sub.codigo as codigo_subsistema,
+                             pwf.prioridad,
+                             pwf.revisado_asistente
                         from wf.tproceso_wf pwf
                            inner join wf.ttipo_proceso tp on pwf.id_tipo_proceso = tp.id_tipo_proceso
                            inner join segu.tusuario usu1 on usu1.id_usuario = pwf.id_usuario_reg

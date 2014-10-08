@@ -883,3 +883,26 @@ CREATE TABLE wf.ttipo_estado_rol (
 WITHOUT OIDS;
 
 /***********************************F-SCP-JRR-WF-1-03/09/2014****************************************/
+
+/***********************************I-SCP-RAC-WF-1-23/09/2014****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_wf
+  ADD COLUMN revisado_asistente VARCHAR(4);
+
+ALTER TABLE wf.tproceso_wf
+  ALTER COLUMN revisado_asistente SET DEFAULT 'no';
+  
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_wf
+  ADD COLUMN prioridad INTEGER DEFAULT 2 NOT NULL;
+
+COMMENT ON COLUMN wf.tproceso_wf.prioridad
+IS 'los numeros mas bajos representan prioridades mayores';
+ 
+/***********************************F-SCP-RAC-WF-1-23/09/2014****************************************/
+

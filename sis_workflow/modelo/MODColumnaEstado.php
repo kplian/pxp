@@ -32,6 +32,7 @@ class MODColumnaEstado extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('regla','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -52,7 +53,8 @@ class MODColumnaEstado extends MODbase{
 		$this->setParametro('id_tipo_columna','id_tipo_columna','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('momento','momento','varchar');
-
+		$this->setParametro('regla','regla','varchar');
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -73,6 +75,7 @@ class MODColumnaEstado extends MODbase{
 		$this->setParametro('id_tipo_columna','id_tipo_columna','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('momento','momento','varchar');
+		$this->setParametro('regla','regla','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

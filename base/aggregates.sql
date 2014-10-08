@@ -30,3 +30,10 @@ CREATE AGGREGATE pxp.html_rows (
   SFUNC = pxp.html_rows,
   STYPE = "varchar"
 );
+DROP AGGREGATE IF EXISTS pxp.list_unique (varchar);
+CREATE AGGREGATE pxp.list_unique (
+  text)
+(
+  SFUNC = pxp.list_unique,
+  STYPE = text
+);
