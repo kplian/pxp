@@ -69,11 +69,18 @@ else{
 
 //abre el archivo si existe
 if (file_exists($ruta_archivo)){
-	if ($_GET['extension'] == 'pdf') {
+	if (strtolower($_GET['extension']) == 'pdf') {
 		header('Content-type: application/pdf');
 		readfile($ruta_archivo);
 	} else {
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="downloaded.' . $_GET['extension']);
+		header('Content-Transfer-Encoding: binary');
+		header('Connection: Keep-Alive');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
 		readfile($ruta_archivo);
 	}
 	

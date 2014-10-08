@@ -122,10 +122,18 @@ class ACTConceptoIngas extends ACTbase{
 	}
 						
 	function eliminarConceptoIngas(){
-			$this->objFunc=$this->create('MODConceptoIngas');	
+		$this->objFunc=$this->create('MODConceptoIngas');	
 		$this->res=$this->objFunc->eliminarConceptoIngas($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function editOt(){
+		$this->objFunc=$this->create('MODConceptoIngas');	
+		$this->res=$this->objFunc->editOt($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	
 			
 }
 

@@ -32,6 +32,7 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_concepto_ingas	integer;
+    v_dim integer;
 			    
 BEGIN
 
@@ -131,6 +132,8 @@ BEGIN
 			--Sentencia de la eliminacion
 			delete from param.tconcepto_ingas
             where id_concepto_ingas=v_parametros.id_concepto_ingas;
+            
+            
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Conceptos de Ingreso/Gasto eliminado(a)'); 
@@ -140,6 +143,47 @@ BEGIN
             return v_resp;
 
 		end;
+     
+    /*********************************    
+ 	#TRANSACCION:  'PM_CONEDOT_IME'
+ 	#DESCRIPCION:	Permite adicionar o quitar la grupos de OT autorizados para este concepto de gasto
+ 	#AUTOR:		admin	
+ 	#FECHA:		25-02-2013 19:49:23
+	***********************************/
+
+	elsif(p_transaccion='PM_CONEDOT_IME')then
+
+		begin
+        
+        
+             v_dim = array_upper(string_to_array(v_parametros.id_grupo_ots,',')::integer[], 1);
+             IF v_parametros.filtro_ot = 'listado'  THEN
+                --si el filtro es de tipo listado preguntamos si tiene un listado de grupos
+                IF v_dim < 1 or v_dim is null THEN
+                  raise exception  'No definio nigún grupo de OTs';
+                END IF;
+             
+             END IF;
+        
+        
+			update param.tconcepto_ingas set
+			id_grupo_ots = string_to_array(v_parametros.id_grupo_ots,',')::integer[],
+            filtro_ot = v_parametros.filtro_ot ,
+            requiere_ot = v_parametros.requiere_ot
+            where id_concepto_ingas=v_parametros.id_concepto_ingas;
+               
+            
+            
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modificaron las OT del concepto de gasto(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_concepto_ingas',v_parametros.id_concepto_ingas::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;   
+        
+
          
 	else
      
