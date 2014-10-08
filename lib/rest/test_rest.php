@@ -8,7 +8,7 @@
 	$pass = md5('123');
 	$_pass = fnEncrypt($prefix . '$$' . $pass, $pass);
 	
-	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp/pxp/lib/rest/')->setCredentialsPxp('notificaciones','Mund0libre');
+	$pxpRestClient = PxpRestClient::connect('127.0.0.1','kerp/pxp/lib/rest/')->setCredentialsPxp('jrivera','jrivera');
 	
 					//->setCredentialsPxp('admin','123');
 	//echo $pxpRestClient->doGet('libre/tesoreria/CuentaDocumentadaEndesis/listarFondoAvance2',array("limit"=>'10'));
@@ -18,9 +18,8 @@
 	    array(	"id_interinato"=>'',"id_cargo_suplente"=>16,"fecha_ini"=>"01/07/2014",
 	    		"fecha_fin"=>"01/08/2014", "descripcion"=>"" ));*/
 	    		
-	echo $pxpRestClient->doPost('seguridad/Gui/listarMenuMobile',
-	    array(	"_dc"=>'1406749352192',"start"=>0,"limit"=>25,
-	    		"page"=>1));
+	echo $pxpRestClient->doPost('adquisiciones/Solicitud/reporteSolicitud',
+	    array("id_proceso_wf"=>'4032'));
 				
 				
 			/*	kerp_capacitacion/pxp/lib/rest/organigrama/Funcionario/listarFuncionarioCargo

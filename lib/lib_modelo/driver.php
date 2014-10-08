@@ -751,7 +751,7 @@ class driver
 			
 		}
 		else{
-		  $this->consulta.=",'".str_replace("'","''",$this->consulta).")',NULL,NULL)";
+		  $this->consulta.=",'".str_replace("'","''",$this->consulta).",NULL,NULL,NULL)',NULL,NULL)";
 		}
 
 

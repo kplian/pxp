@@ -246,3 +246,9 @@
 .bball_white {
     background-image:url(../ball_white.png) !important;
 }
+
+.x-action-col-cell img.bsearch {
+    background-image:url(dibu_search.png);
+    height: 20px;
+    width: 20px;
+}
