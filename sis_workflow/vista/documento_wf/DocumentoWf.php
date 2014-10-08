@@ -590,7 +590,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	
 	preparaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
-        if(this.todos_documentos == 'no'){
+       // if(this.todos_documentos == 'no'){
 	        this.getBoton('btnUpload').enable();
 	        this.getBoton('btnMomento').enable(); 
 	        
@@ -606,9 +606,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	           this.getBoton('btnUpload').disable(); 
 	           this.getBoton('btnMomento').disable()
 	        }
-	    } else {
-	    	this.desBotonesTodo();
-	    }      
+	   // } else {
+	   // 	this.desBotonesTodo();
+	   // }      
     },
     
     desBotonesTodo:function(){
