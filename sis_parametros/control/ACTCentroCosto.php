@@ -57,6 +57,10 @@ class ACTCentroCosto extends ACTbase{
 	
 	function listarCentroCostoFiltradoXUsuaio(){
         $this->objParam->defecto('ordenacion','id_centro_costo');
+		
+		if($this->objParam->getParametro('tipo_pres')!=''){
+            $this->objParam->addFiltro("cec.tipo_pres = ''".$this->objParam->getParametro('tipo_pres')."''");    
+        }
 
         $this->objParam->defecto('dir_ordenacion','asc');
         if($this->objParam->getParametro('id_gestion')!=''){
@@ -77,6 +81,12 @@ class ACTCentroCosto extends ACTbase{
         $this->objParam->defecto('ordenacion','id_centro_costo');
 
         $this->objParam->defecto('dir_ordenacion','asc');
+		
+		
+		if($this->objParam->getParametro('tipo_pres')!=''){
+            $this->objParam->addFiltro("cec.tipo_pres = ''".$this->objParam->getParametro('tipo_pres')."''");    
+        }
+		
         if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
         }

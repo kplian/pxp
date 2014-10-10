@@ -139,7 +139,7 @@ BEGIN
           into 
             v_id_tipo_proceso_next
           from wf.ttipo_proceso tp 
-          where   tp.id_tipo_estado=v_id_tipo_estado_prev
+          where   tp.id_tipo_estado=v_id_tipo_estado_prev and tp.estado_reg = 'activo'
           and tp.codigo = ANY (v_array_codigo_tipo_proceso);
           
         
@@ -152,9 +152,10 @@ BEGIN
                 into 
                   v_id_tipo_proceso_next
                 from wf.ttipo_proceso_origen tpo 
-                inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tpo.id_tipo_proceso
+                inner join wf.ttipo_proceso tp on  tp.id_tipo_proceso = tpo.id_tipo_proceso   and tp.estado_reg = 'activo' 
+                                                    
                 where   tpo.id_tipo_estado=v_id_tipo_estado_prev
-                and tp.codigo = ANY (v_array_codigo_tipo_proceso);
+                and tp.codigo = ANY (v_array_codigo_tipo_proceso) and tpo.estado_reg = 'activo';
               
               if  v_id_tipo_proceso_next is NULL then
                    raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %',v_cantidad_disparos, p_codigo_tipo_proceso;
@@ -187,7 +188,7 @@ BEGIN
        v_id_tipo_estado_next,
        v_codigo_estado_next
      from wf.ttipo_estado te
-     where te.id_tipo_proceso = v_id_tipo_proceso_next and te.inicio ='si'; 
+     where te.id_tipo_proceso = v_id_tipo_proceso_next and te.inicio ='si' and te.estado_reg = 'activo'; 
      
      if v_id_tipo_estado_next is NULL THEN
            raise exception 'El WF esta mal parametrizado verifique a que tipo_proceso apunto el tipo_estado previo';

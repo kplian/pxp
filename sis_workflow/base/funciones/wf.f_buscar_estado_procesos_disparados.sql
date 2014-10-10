@@ -47,7 +47,7 @@ BEGIN
                                              te.codigo,
                                              te.id_tipo_estado
                                       from wf.testado_wf ew
-                                      inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado
+                                      inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado and te.estado_reg = 'activo'
                                       where ew.id_estado_wf = p_id_estado_wf_act
                                       UNION ALL
                                       SELECT ewp.id_estado_wf,
@@ -57,7 +57,7 @@ BEGIN
                                       FROM estados a
                                            INNER JOIN wf.testado_wf ewp on
                                             ewp.id_estado_wf = a.id_estado_anterior
-                                           INNER JOIN wf.ttipo_estado tep on tep.id_tipo_estado = ewp.id_tipo_estado)  
+                                           INNER JOIN wf.ttipo_estado tep on tep.id_tipo_estado = ewp.id_tipo_estado  and tep.estado_reg = 'activo')  
                                        
                                        SELECT 
                                          pxp.aggarray(id_estado_wf)
@@ -80,7 +80,7 @@ BEGIN
                  FROM   wf.tproceso_wf pwf   
                  inner join wf.testado_wf ewf  on  ewf.id_proceso_wf = pwf.id_proceso_wf and  ewf.estado_reg = 'activo'
            		 inner join  wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
-                 inner join  wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
+                 inner join  wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado and te.estado_reg = 'activo'
                  where   pwf.id_estado_wf_prev = ANY(va_id_estado_wf)) LOOP
                  
                  

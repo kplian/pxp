@@ -71,7 +71,7 @@ BEGIN
          					nombre_actividad,
          					nombre_financiador,
          					nombre_regional
-						from param.vcentro_costo cec
+						from pre.vpresupuesto_cc cec
 						 where  ';
 			
 			--Definicion de la respuesta
@@ -95,7 +95,7 @@ BEGIN
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_centro_costo)
-					    from param.vcentro_costo cec
+					    from pre.vpresupuesto_cc cec
                         where ';
 			
 			--Definicion de la respuesta		    
@@ -157,7 +157,7 @@ BEGIN
          				  cec.nombre_actividad,
          				  cec.nombre_financiador,
          				  cec.nombre_regional
-						from param.vcentro_costo cec
+						from pre.vpresupuesto_cc cec
 						 WHERE '||v_filadd;
 			
 			--Definicion de la respuesta
@@ -189,7 +189,7 @@ BEGIN
           END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_centro_costo)
-					    from param.vcentro_costo cec
+					    from pre.vpresupuesto_cc cec
                         WHERE '||v_filadd;
 			
 			--Definicion de la respuesta		    
@@ -265,7 +265,7 @@ BEGIN
          				  cec.nombre_actividad,
          				  cec.nombre_financiador,
          				  cec.nombre_regional
-						from param.vcentro_costo cec
+						from pre.vpresupuesto_cc cec
                         '||v_inner||'
 						 WHERE ';
 			
@@ -314,7 +314,7 @@ BEGIN
           END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_centro_costo)
-					    from param.vcentro_costo cec
+					    from pre.vpresupuesto_cc cec
                          '||v_inner||'
                         WHERE ';
 			
@@ -407,7 +407,7 @@ BEGIN
          				  cec.nombre_actividad,
          				  cec.nombre_financiador,
          				  cec.nombre_regional
-						from param.vcentro_costo cec
+						from pre.vpresupuesto_cc cec
                         inner join param.tdepto_uo_ep due on due.estado_reg = ''activo'' and
                             
                                  ((due.id_uo = cec.id_uo  and due.id_ep = cec.id_ep )
@@ -472,7 +472,7 @@ BEGIN
         
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(DISTINCT id_centro_costo)
-					    from param.vcentro_costo cec
+					    from pre.vpresupuesto_cc cec
                         inner join param.tdepto_uo_ep due on due.estado_reg = ''activo'' and
                             
                                  ((due.id_uo = cec.id_uo  and due.id_ep = cec.id_ep )

@@ -839,3 +839,14 @@ ALTER TABLE param.talarma
 /***********************************F-SCP-JRR-PARAM-0-25/08/2014****************************************/
 
 
+/***********************************I-SCP-RAC-PARAM-09/10/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN pago_automatico VARCHAR(5) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tconcepto_ingas.pago_automatico
+IS 'cuando un concepto de gasto tiene habilitado el pago automatico, es considerado en el sistema de pagos directos para envio y alertas automatica segun fecha tentativa';
+
+/***********************************F-SCP-RAC-PARAM-09/10/2014****************************************/

@@ -417,3 +417,32 @@ AS
   WHERE uof.estado_reg::text = 'activo' ::text;
 
 /*********************************F-DEP-RAC-ORGA-0-19/08/2014***********************************/
+
+
+
+
+/*********************************I-DEP-RAC-ORGA-0-09/10/2014***********************************/
+
+
+CREATE OR REPLACE VIEW orga.vfuncionario_persona
+AS
+  SELECT funcio.id_funcionario,
+         person.nombre_completo1 AS desc_funcionario1,
+         person.nombre_completo2 AS desc_funcionario2,
+         person.num_documento AS num_doc,
+         person.ci,
+         funcio.codigo,
+         funcio.estado_reg,
+         funcio.email_empresa,
+         funcio.interno,
+         funcio.telefono_ofi,
+         person.celular1,
+         person.celular2,
+         person.telefono1,
+         person.telefono2,
+  		 person.correo,
+         person.id_persona
+  FROM orga.tfuncionario funcio
+       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona;
+       
+/*********************************F-DEP-RAC-ORGA-0-09/10/2014***********************************/

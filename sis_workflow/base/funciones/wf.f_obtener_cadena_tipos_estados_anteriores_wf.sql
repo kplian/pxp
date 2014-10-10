@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_obtener_cadena_tipos_estados_anteriores_wf (
   p_id_tipo_estado integer,
   out ps_id_tipo_estado integer [],
@@ -51,7 +49,7 @@ v_nombre_funcion = 'wf.f_obtener_cadena_estados_anteriores_wf';
                                       inner join wf.testructura_estado ee 
                                            on te.id_tipo_estado= ee.id_tipo_estado_padre 
                                            and ee.id_tipo_estado_hijo != ee.id_tipo_estado_padre
-                                      where ee.id_tipo_estado_hijo  = p_id_tipo_estado
+                                      where ee.id_tipo_estado_hijo  = p_id_tipo_estado and ee.estado_reg = 'activo'
                                       UNION ALL
                                       SELECT  te2.id_tipo_estado,
                                             
@@ -59,7 +57,7 @@ v_nombre_funcion = 'wf.f_obtener_cadena_estados_anteriores_wf';
                                       FROM estados a
                                           INNER JOIN wf.testructura_estado ee2 on ee2.id_tipo_estado_hijo = a.id_tipo_estado
                                            INNER JOIN wf.ttipo_estado te2 on te2.id_tipo_estado = ee2.id_tipo_estado_padre
-                                           and ee2.id_tipo_estado_hijo != ee2.id_tipo_estado_padre
+                                           and ee2.id_tipo_estado_hijo != ee2.id_tipo_estado_padre and ee2.estado_reg = 'activo'
                                           
                                            )  
                                        

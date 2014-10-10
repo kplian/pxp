@@ -73,7 +73,7 @@ v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
                                              te.id_tipo_estado
                                       
                                       from wf.testado_wf ew
-                                      inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado
+                                      inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado and te.estado_reg = 'activo'
                                       where ew.id_estado_wf = p_id_estado_wf
                                       UNION ALL
                                       SELECT ewp.id_estado_wf,
@@ -83,7 +83,7 @@ v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
                                       FROM estados a
                                            INNER JOIN wf.testado_wf ewp on
                                             ewp.id_estado_wf = a.id_estado_anterior
-                                           INNER JOIN wf.ttipo_estado tep on tep.id_tipo_estado = ewp.id_tipo_estado)  
+                                           INNER JOIN wf.ttipo_estado tep on tep.id_tipo_estado = ewp.id_tipo_estado and tep.estado_reg = 'activo')  
                                        
                                        
                                        SELECT id_estado_wf,
