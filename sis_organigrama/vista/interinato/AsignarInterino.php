@@ -31,8 +31,7 @@ Phx.vista.AsignarInterino = {
 	  this.Atributos[this.getIndAtributo('id_cargo_titular')].form=false;
  
 	  Phx.vista.AsignarInterino.superclass.constructor.call(this,config); 
-	  this.store.baseParams = {id_cargo_suplente:Phx.CP.config_ini.id_cargo, estado_reg:'activo'}      
-      this.load({params:{start:0, limit:this.tam_pag}});  
+	   
     },
     
     ActSave:'../../sis_organigrama/control/Interinato/asignarMiSuplente',

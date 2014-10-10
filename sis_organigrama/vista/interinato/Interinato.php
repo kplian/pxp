@@ -17,8 +17,8 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Interinato.superclass.constructor.call(this,config);
 		this.init();
-		
-		
+		this.store.baseParams = {id_cargo_suplente:Phx.CP.config_ini.id_cargo, estado_reg:'activo'}      
+      	this.load({params:{start:0, limit:this.tam_pag}}); 
 	},
 			
 	Atributos:[
