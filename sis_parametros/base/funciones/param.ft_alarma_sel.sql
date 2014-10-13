@@ -73,9 +73,10 @@ BEGIN
                         from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
+                        left join segu.tusuario_rol urol on urol.id_usuario =usu.id_usuario and urol.estado_reg = ''activo'' and urol.id_rol = 1
                         left join segu.tpersona per on per.id_persona = usu.id_persona
                         left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
-                        where alarm.sw_correo = 0';
+                        where alarm.sw_correo = 0 and urol.id_rol is null';
                         
              --modificar correpondencia
            /*  update param.talarma 
