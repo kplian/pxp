@@ -19,6 +19,7 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.store.baseParams = {id_cargo_suplente:Phx.CP.config_ini.id_cargo, estado_reg:'activo'}      
       	this.load({params:{start:0, limit:this.tam_pag}}); 
+      	this.iniciarEventos();
 	},
 			
 	Atributos:[
