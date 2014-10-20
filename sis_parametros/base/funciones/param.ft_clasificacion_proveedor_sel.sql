@@ -30,32 +30,32 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_clapro_SEL'
+ 	#TRANSACCION:  'PM_CLAPRO_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		gsarmiento	
  	#FECHA:		06-10-2014 13:31:43
 	***********************************/
 
-	if(p_transaccion='PM_clapro_SEL')then
+	if(p_transaccion='PM_CLAPRO_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						clapro.id_clasificacion_proveedor,
-						clapro.nombre_clasificacion,
-						clapro.estado_reg,
-						clapro.descripcion,
-						clapro.id_usuario_reg,
-						clapro.usuario_ai,
-						clapro.fecha_reg,
-						clapro.id_usuario_ai,
-						clapro.fecha_mod,
-						clapro.id_usuario_mod,
+						CLAPRO.id_clasificacion_proveedor,
+						CLAPRO.nombre_clasificacion,
+						CLAPRO.estado_reg,
+						CLAPRO.descripcion,
+						CLAPRO.id_usuario_reg,
+						CLAPRO.usuario_ai,
+						CLAPRO.fecha_reg,
+						CLAPRO.id_usuario_ai,
+						CLAPRO.fecha_mod,
+						CLAPRO.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod	
-						from param.tclasificacion_proveedor clapro
-						inner join segu.tusuario usu1 on usu1.id_usuario = clapro.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = clapro.id_usuario_mod
+						from param.tclasificacion_proveedor CLAPRO
+						inner join segu.tusuario usu1 on usu1.id_usuario = CLAPRO.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = CLAPRO.id_usuario_mod
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -68,20 +68,20 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_clapro_CONT'
+ 	#TRANSACCION:  'PM_CLAPRO_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		gsarmiento	
  	#FECHA:		06-10-2014 13:31:43
 	***********************************/
 
-	elsif(p_transaccion='PM_clapro_CONT')then
+	elsif(p_transaccion='PM_CLAPRO_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_clasificacion_proveedor)
-					    from param.tclasificacion_proveedor clapro
-					    inner join segu.tusuario usu1 on usu1.id_usuario = clapro.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = clapro.id_usuario_mod
+					    from param.tclasificacion_proveedor CLAPRO
+					    inner join segu.tusuario usu1 on usu1.id_usuario = CLAPRO.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = CLAPRO.id_usuario_mod
 					    where ';
 			
 			--Definicion de la respuesta		    

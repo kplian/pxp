@@ -17,6 +17,7 @@ class CTIntermediario{
 	private $objParametro;
 	private $objSesion;
 	private $objMensaje;
+	private $paramMetodo;
 	private $objPostData;
 	private $rutaArchivo;
 	private $metodoEjecutar;
@@ -37,6 +38,7 @@ class CTIntermediario{
 		//exit;
      	//Obtencion de los datos enviados por la vista
 		$this->objPostData=new CTPostData();
+		$this->paramMetodo = array();
 		$this->aPostData=$this->objPostData->getData();
 		
 		//var_dump($this->aPostData);exit;
@@ -120,22 +122,26 @@ class CTIntermediario{
 		}
 
 		//Verifica que los dos no sean vacios
-		if($aAux[count($aAux)-1]==''){
+		if($aAux[4]==''){
 			throw new Exception(__METHOD__.': Ruta no valida2');
 		}
-		if($aAux[count($aAux)-2]==''){
+		if($aAux[5]==''){
 			throw new Exception(__METHOD__.': Ruta no valida3');
 		}
 
 		//La ultima posicion se refiere al metodo a ejecutar
-		$this->metodoEjecutar=$aAux[count($aAux)-1];
+		$this->metodoEjecutar=$aAux[5];
 
 		//La penultima se refiere al nombre de la clase
-		$this->nombreClase=$aAux[count($aAux)-2];
+		$this->nombreClase=$aAux[4];
 
 		//De la posicion cero hasta la antepenultima es la ruta
-		for($i=0;$i<count($aAux)-2;$i++){
+		for($i=0;$i<4;$i++){
 			$this->rutaArchivo.=$aAux[$i].'/';
+		}
+		//obtenemos todos los parametros para el metodo a ejecutar
+		for($i=6;$i<count($aAux);$i++){
+			array_push($this->paramMetodo,$aAux[$i]);
 		}
 	}
 
@@ -152,7 +158,15 @@ class CTIntermediario{
 		eval('$cad = new $this->nombreClase($this->objParametro);');
 		//Ejecuta el metodo solicitado
 		//var_dump($this->objParametro);exit;
-		eval('$cad->'.$this->metodoEjecutar.'();');
+		//se obtienen los parametros para el metodo
+		$parametros = '';
+		for($i=0;$i<count($this->paramMetodo);$i++){
+			$parametros .=  '$this->paramMetodo[' . $i . '],';
+		}
+		//se elimina la ultima coma de los parametros
+		$parametros = rtrim($parametros, ",");
+		
+		eval('$cad->'.$this->metodoEjecutar.'(' . $parametros . ');');
 		
 	}
 

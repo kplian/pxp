@@ -34,13 +34,13 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'PM_clapro_INS'
+ 	#TRANSACCION:  'PM_CLAPRO_INS'
  	#DESCRIPCION:	Insercion de registros
  	#AUTOR:		gsarmiento	
  	#FECHA:		06-10-2014 13:31:43
 	***********************************/
 
-	if(p_transaccion='PM_clapro_INS')then
+	if(p_transaccion='PM_CLAPRO_INS')then
 					
         begin
         	--Sentencia de la insercion
@@ -79,13 +79,13 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_clapro_MOD'
+ 	#TRANSACCION:  'PM_CLAPRO_MOD'
  	#DESCRIPCION:	Modificacion de registros
  	#AUTOR:		gsarmiento	
  	#FECHA:		06-10-2014 13:31:43
 	***********************************/
 
-	elsif(p_transaccion='PM_clapro_MOD')then
+	elsif(p_transaccion='PM_CLAPRO_MOD')then
 
 		begin
 			--Sentencia de la modificacion
@@ -108,13 +108,13 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_clapro_ELI'
+ 	#TRANSACCION:  'PM_CLAPRO_ELI'
  	#DESCRIPCION:	Eliminacion de registros
  	#AUTOR:		gsarmiento	
  	#FECHA:		06-10-2014 13:31:43
 	***********************************/
 
-	elsif(p_transaccion='PM_clapro_ELI')then
+	elsif(p_transaccion='PM_CLAPRO_ELI')then
 
 		begin
 			--Sentencia de la eliminacion

@@ -21,7 +21,9 @@ Ext.override(Ext.form.Field,
 		        title: '',
 		        text: qt,
 		        enabled: true,
-		        showDelay: 20
+		        showDelay: 20,
+		        dismissDelay:20000,
+		        draggable:true
 		    	});
 		    }
 		})

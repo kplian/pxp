@@ -260,7 +260,7 @@ v_nombre_funcion = 'wf.f_obtener_estado_wf';
              from  wf.ttipo_estado te 
              
         inner join  wf.testructura_estado ee 
-               on ee.id_tipo_estado_padre = te.id_tipo_estado and ee.esta
+               on ee.id_tipo_estado_padre = te.id_tipo_estado and ee.estado_reg = 'activo'
         where te.id_tipo_proceso = v_id_tipo_proceso  
           and  ee.id_tipo_estado_hijo = v_id_tipo_estado;
    END IF;
