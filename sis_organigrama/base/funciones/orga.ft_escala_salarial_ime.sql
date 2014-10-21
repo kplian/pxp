@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_escala_salarial_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION orga.ft_escala_salarial_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_escala_salarial_ime
@@ -104,10 +107,10 @@ BEGIN
 				insert into orga.tescala_salarial (
 						aprobado , 			haber_basico,			nombre,
 						nro_casos,			codigo,					id_categoria_salarial,
-						fecha_ini,			fecha_fin,				estado_reg) 
+						fecha_ini,			fecha_fin,				estado_reg,id_escala_padre) 
 				values (v_reg_old.aprobado ,v_reg_old.haber_basico,	v_reg_old.nombre,
 						v_reg_old.nro_casos,v_reg_old.codigo,		v_reg_old.id_categoria_salarial,
-						v_reg_old.fecha_ini,(v_parametros.fecha_ini - interval '1 day'), 'inactivo');
+						v_reg_old.fecha_ini,(v_parametros.fecha_ini - interval '1 day'), 'inactivo',v_parametros.id_escala_salarial);
 			end if;
 			--Sentencia de la modificacion
 			update orga.tescala_salarial set
@@ -178,7 +181,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_escala_salarial_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

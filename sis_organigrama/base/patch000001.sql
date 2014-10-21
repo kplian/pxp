@@ -527,4 +527,10 @@ CREATE TYPE wf.cuenta_form AS (
 
 /*****************************F-SCP-JRR-ORGA-0-01/08/2014*************/
 
+/*****************************I-SCP-JRR-ORGA-0-21/10/2014*************/
+ALTER TABLE orga.tescala_salarial
+  ADD COLUMN id_escala_padre INTEGER;
+
+/*****************************F-SCP-JRR-ORGA-0-21/10/2014*************/
+
 
