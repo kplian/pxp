@@ -1,6 +1,6 @@
-CREATE OR REPLACE FUNCTION "param"."f_obtener_padre_lugar" (
-  "p_id_lugar" integer,
-  "p_tipo" varchar
+CREATE OR REPLACE FUNCTION param.f_obtener_padre_lugar (
+  p_id_lugar integer,
+  p_tipo varchar
 )
 RETURNS varchar AS
 $body$
@@ -29,6 +29,7 @@ BEGIN
 END;
 $body$
 LANGUAGE 'plpgsql'
-VOLATILE
+STABLE
 CALLED ON NULL INPUT
-SECURITY INVOKER;
+SECURITY INVOKER
+COST 100;

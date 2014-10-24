@@ -1,10 +1,9 @@
 CREATE OR REPLACE FUNCTION pxp.f_iif (
   condicion boolean,
-  op1 character varying,
-  op2 character varying
+  op1 varchar,
+  op2 varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_iif
@@ -27,7 +26,8 @@ return op2;
 end if;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_intermediario_ime (OID = 304235) : 
---
+LANGUAGE 'plpgsql'
+STABLE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

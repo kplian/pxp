@@ -869,10 +869,6 @@ ALTER TABLE param.tproveedor
 CREATE INDEX tpersona_idx ON segu.tpersona
   USING btree (nombre, apellido_paterno, apellido_materno);
 
---------------- SQL ---------------
-
-CREATE INDEX tproveedor_idx2 ON param.tproveedor
-  USING btree (id_persona);
 
 /***********************************F-DEP-RAC-PARAM-0-04/06/2013*****************************************/
 
@@ -1559,7 +1555,6 @@ ALTER TABLE param.tproveedor
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 
-
 ALTER TABLE param.tproveedor
   ADD CONSTRAINT fk__tproveedor__id_institucion FOREIGN KEY (id_institucion)
     REFERENCES param.tinstitucion(id_institucion)
@@ -1567,13 +1562,16 @@ ALTER TABLE param.tproveedor
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 
-
-
 ALTER TABLE param.tproveedor
   ADD CONSTRAINT fk__tproveedor__id_lugar FOREIGN KEY id_lugar
     REFERENCES param.tlugar(id_lugar)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
+    
+
+CREATE INDEX tproveedor_id_lugar ON param.tproveedor USING btree (id_lugar);
+CREATE INDEX tlugar_id_lugar_fk ON param.tlugar USING btree (id_lugar_fk);
+
     
 /***********************************F-DEP-JRR-PARAM-0-23/10/2014****************************************/
