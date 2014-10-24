@@ -1550,3 +1550,30 @@ AS
   WHERE provee.estado_reg::text = 'activo'::text;
 
 /***********************************F-DEP-RAC-PARAM-0-29/05/2014****************************************/
+
+/***********************************I-DEP-JRR-PARAM-0-23/10/2014****************************************/
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT fk__tproveedor__id_persona FOREIGN KEY (id_persona)
+    REFERENCES segu.tpersona(id_persona)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT fk__tproveedor__id_institucion FOREIGN KEY (id_institucion)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+
+ALTER TABLE param.tproveedor
+  ADD CONSTRAINT fk__tproveedor__id_lugar FOREIGN KEY id_lugar
+    REFERENCES param.tlugar(id_lugar)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+    
+/***********************************F-DEP-JRR-PARAM-0-23/10/2014****************************************/

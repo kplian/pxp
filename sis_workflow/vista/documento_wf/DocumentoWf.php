@@ -621,12 +621,11 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     
     liberaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.liberaMenu.call(this,tb);
-        if(this.todos_documentos == 'no'){
+       // if(this.todos_documentos == 'no'){
 	        this.getBoton('btnUpload').disable(); 
 	        this.getBoton('btnMomento').disable();
-	   } else {
-	   		this.desBotonesTodo();
-	   }
+	   //		this.desBotonesTodo();
+	   //}
              
     },
 	
