@@ -190,7 +190,9 @@ BEGIN
             v_query = ' update ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' set 
             			id_usuario_mod = ' || p_id_usuario || ',
 						fecha_mod = ''' || now()::date  || '''';
+                        
             
+            v_values = ''; 
             for v_columnas in (	select tc.* from wf.ttipo_columna tc
         						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento in ('registrar', 'exigir')
                                 inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
@@ -198,14 +200,15 @@ BEGIN
                                 and te.codigo = json_extract_path_text(v_parametros,'tipo_estado')::varchar) loop
             	
             	if (v_columnas.bd_tipo_columna in ('integer', 'bigint', 'boolean', 'numeric')) then
-            		v_values = v_values || ',' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
+            		v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
             	else                	
-            		v_values = v_values || ',' || coalesce ('''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''','NULL');                    
-            	end if;	
+            		v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=' || coalesce ('''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''','NULL');                    
+            	end if;	                
+                
             end loop;
             
-            v_query = v_query || ' where id_' || v_tabla.bd_nombre_tabla || '=' || json_extract_path_text(v_parametros,'id_' ||v_tabla.bd_nombre_tabla);			
-            --raise exception '%',v_query;
+            v_query = v_query || v_values|| ' where id_' || v_tabla.bd_nombre_tabla || '=' || json_extract_path_text(v_parametros,'id_' ||v_tabla.bd_nombre_tabla);			
+            
             execute (v_query);
                
 			--Definicion de la respuesta

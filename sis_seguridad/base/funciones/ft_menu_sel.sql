@@ -58,7 +58,7 @@ BEGIN
     	BEGIN
     	v_tabla_menu = '';
         
-        /*delete from segu.tgui_rol where temporal = 1; 
+        delete from segu.tgui_rol where temporal = 1; 
         delete from segu.testructura_gui where temporal = 1; 
         delete from segu.tgui where temporal = 1;        
         for v_registros in (select tp.codigo as codigo_proceso, ta.menu_nombre,te.codigo,te.nombre_estado,
@@ -79,7 +79,7 @@ BEGIN
                 --registr los guis
                 v_respuesta = wf.f_registra_gui_tabla(	v_registros.codigo_proceso,v_registros.menu_nombre, 
                 										v_registros.codigo,v_registros.nombre_estado, v_registros.roles);	
-        end loop;*/
+        end loop;
         if(v_parametros.id_padre='%')then
         	if (pxp.f_existe_parametro(par_tabla, 'busqueda')) then            	
             	v_nivel:='%';

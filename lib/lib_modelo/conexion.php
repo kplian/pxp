@@ -169,6 +169,7 @@ class conexion
 	function conectarSegu(){
 		    
 		$cadena="host=".$_SESSION['_HOST']." port=".$_SESSION["_PUERTO"]." dbname=".$_SESSION['_BASE_DATOS']." user=".$_SESSION['_BASE_DATOS']."_".$_SESSION['_USUARIO_CONEXION']." password=".$_SESSION['_CONTRASENA_CONEXION'];
+		
 		//echo $cadena;exit;
 		if($conexion = pg_connect($cadena))
 		{
