@@ -137,6 +137,12 @@ class ACTConceptoIngas extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 	
+	function editAuto(){
+		$this->objFunc=$this->create('MODConceptoIngas');	
+		$this->res=$this->objFunc->editAuto($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
 	
 			
 }

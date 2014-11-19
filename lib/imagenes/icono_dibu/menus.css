@@ -127,6 +127,15 @@
 .bexcel {
 	background-image:url(dibu_excel.png) !important;
 }
+
+.bprintcheck {
+    background-image:url(dibu_print_check.png) !important;
+}
+
+.bword {
+    background-image:url(dibu_word.jpg) !important;
+}
+
 .bpdf {
 	background-image:url(dibu_pdf.png) !important;
 }

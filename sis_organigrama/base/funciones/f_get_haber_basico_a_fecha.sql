@@ -15,8 +15,8 @@ BEGIN
   select es.haber_basico into v_haber_basico
   from orga.tescala_salarial es
   where (id_escala_padre = p_id_escala_salarial or id_escala_salarial = p_id_escala_salarial) and 
-  (es.fecha_ini is null and es.estado_reg = 'activo') or 
-  (es.fecha_ini is not null  and p_fecha between es.fecha_ini and coalesce(es.fecha_fin,now()::date));
+  ((es.fecha_ini is null and es.estado_reg = 'activo') or 
+  (es.fecha_ini is not null  and p_fecha between es.fecha_ini and coalesce(es.fecha_fin,now()::date)));
     
   return v_haber_basico;  
   

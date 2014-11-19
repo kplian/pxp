@@ -1094,6 +1094,7 @@ class driver
 			{
 				
 				$resp_procedimiento=$this->divRespuesta(str_replace('ERROR:  ','', pg_last_error($link)));
+				$this->respuesta->setDatos($resp_procedimiento['datos']);
 				  if($this->uploadFile){
 					
 					$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->parConsulta);

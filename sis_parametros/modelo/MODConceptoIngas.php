@@ -38,6 +38,7 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('id_grupo_ots','varchar');
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
+		$this->captura('sw_autorizacion','varchar');
 		
 		
 		
@@ -61,7 +62,8 @@ class MODConceptoIngas extends MODbase{
         $this->procedimiento='param.f_concepto_ingas_sel';
         $this->transaccion='PM_CONIGPAR_SEL';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
-                
+        
+        $this->setParametro('autorizacion','autorizacion','varchar');        
         //Definicion de la lista del resultado del query
         $this->captura('id_concepto_ingas','int4');
         $this->captura('desc_ingas','varchar');
@@ -82,6 +84,7 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('id_grupo_ots','varchar');
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
+		$this->captura('sw_autorizacion','varchar');
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -202,6 +205,24 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('requiere_ot','requiere_ot','varchar');
 		$this->setParametro('filtro_ot','filtro_ot','varchar');
 		
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+    function editAuto(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.f_concepto_ingas_ime';
+		$this->transaccion='PM_COAUTO_IME';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_concepto_ingas','id_concepto_ingas','int4');
+		$this->setParametro('sw_autorizacion','sw_autorizacion','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

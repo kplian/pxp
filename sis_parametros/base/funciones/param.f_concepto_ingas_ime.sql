@@ -27,12 +27,15 @@ DECLARE
 
 	v_nro_requerimiento    	integer;
 	v_parametros           	record;
+    v_registros				record;
 	v_id_requerimiento     	integer;
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_concepto_ingas	integer;
-    v_dim integer;
+	v_id_concepto_ingas		integer;
+    v_dim 					integer;
+    v_consulta				varchar;
+    v_nombre_conexion		varchar;
 			    
 BEGIN
 
@@ -46,7 +49,7 @@ BEGIN
  	#FECHA:		25-02-2013 19:49:23
 	***********************************/
 
-	if(p_transaccion='PM_CONIG_INS')then
+	if (p_transaccion='PM_CONIG_INS') then
 					
         begin
         	--Sentencia de la insercion
@@ -183,7 +186,57 @@ BEGIN
 
 		end;   
         
+    /*********************************    
+ 	#TRANSACCION:  'PM_COAUTO_IME'
+ 	#DESCRIPCION:	Permite configurar las autorizaciones para los conceptos de gastos (adquisiciones, caja, fondos en avances, pago directo)
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-11-2014 19:49:23
+	***********************************/
 
+	elsif(p_transaccion='PM_COAUTO_IME')then
+
+		begin
+        
+        
+             update param.tconcepto_ingas set
+			  sw_autorizacion = string_to_array(v_parametros.sw_autorizacion,',')::varchar[]
+             where id_concepto_ingas=v_parametros.id_concepto_ingas;
+             
+             --si se integra con endesis actualizamos la tabla conceptoingas  
+             if (pxp.f_get_variable_global('sincronizar') = 'true') then
+             
+                select * into v_nombre_conexion from migra.f_crear_conexion(); 
+                
+                --recupera datos del concepto ... 
+                select 
+                   ci.desc_ingas 
+                 into 
+                   v_registros   
+                from param.tconcepto_ingas ci 
+                where ci.id_concepto_ingas = v_parametros.id_concepto_ingas; 
+                 
+                
+                 v_consulta = 'UPDATE 
+                                  presto.tpr_concepto_ingas 
+                                SET 
+                                  sw_autorizacion = string_to_array('''||v_parametros.sw_autorizacion||''','','')::varchar[]
+                                WHERE 
+                                  lower(desc_ingas) = lower('''|| v_registros.desc_ingas ||''')';
+                 
+                 perform  dblink(v_nombre_conexion, v_consulta, true);
+                 
+                 
+                 select * into v_resp from migra.f_cerrar_conexion(v_nombre_conexion,'exito');
+             
+             end if;
+             --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modificaron las OT del concepto de gasto(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_concepto_ingas',v_parametros.id_concepto_ingas::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end; 
          
 	else
      

@@ -533,4 +533,9 @@ ALTER TABLE orga.tescala_salarial
 
 /*****************************F-SCP-JRR-ORGA-0-21/10/2014*************/
 
+/*****************************I-SCP-JRR-ORGA-0-04/11/2014*************/
+ALTER TABLE orga.tescala_salarial
+  ALTER COLUMN fecha_ini DROP NOT NULL;
+  
+/*****************************F-SCP-JRR-ORGA-0-04/11/2014*************/
 

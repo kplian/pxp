@@ -25,9 +25,9 @@ $body$
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:			
+ DESCRIPCION:	Se considera la configuracion de la tablas wf.ttipo_procesos_origen
+ AUTOR:			RAC
+ FECHA:			17/11/2014
 
 ***************************************************************************/
 DECLARE
@@ -48,6 +48,7 @@ DECLARE
    v_resp_doc  boolean;
    
    v_array_codigo_tipo_proceso varchar[];
+   v_cantidad_disparos_origenes integer;
  
   
 BEGIN
@@ -98,10 +99,19 @@ BEGIN
       into 
       v_cantidad_disparos
       from wf.ttipo_proceso tp
-      where id_tipo_estado = v_id_tipo_estado_prev;
+      where id_tipo_estado = v_id_tipo_estado_prev and tp.estado_reg = 'activo';
      
+      
+      
+      select 
+       count(tpo.id_tipo_proceso_origin)    
+      into 
+      v_cantidad_disparos_origenes
+      from wf.ttipo_proceso_origen tpo
+      where tpo.id_tipo_estado = v_id_tipo_estado_prev and tpo.estado_reg = 'activo'; 
    
-    
+    v_cantidad_disparos = v_cantidad_disparos + COALESCE(v_cantidad_disparos_origenes,0);
+   
     -- si solo tiene un proceso disparado
     if v_cantidad_disparos = 1 then
     	
@@ -111,14 +121,22 @@ BEGIN
           v_id_tipo_proceso_next
         from wf.ttipo_proceso tp 
         where   tp.id_tipo_estado=v_id_tipo_estado_prev;
+        
+        
+        if  v_id_tipo_proceso_next is NULL then
+          select
+           tp.id_tipo_proceso
+          into 
+            v_id_tipo_proceso_next
+          from wf.ttipo_proceso_origen tp 
+          where   tp.id_tipo_estado=v_id_tipo_estado_prev;
+        end if;
     
-    -- si el proceso ni apunta a ningun lado
+    -- si el proceso no apunta a ningun lado
     elsif v_cantidad_disparos = 0 then
     
     
-     raise exception 'El estado %, no apunta  a ningun proceso',v_codigo_prev;
-    
-    
+        raise exception 'El estado %, no apunta  a ningun proceso',v_codigo_prev;
     
     --si tiene mas de uno se busca el camino segun el codigo
     else

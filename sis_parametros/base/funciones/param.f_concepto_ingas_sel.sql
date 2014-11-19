@@ -29,6 +29,7 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
+    v_filtro 			varchar;
 			    
 BEGIN
 
@@ -64,7 +65,8 @@ BEGIN
 						conig.almacenable,
                         array_to_string( conig.id_grupo_ots,'','',''null'')::varchar,
                         conig.filtro_ot,
-                        conig.requiere_ot	
+                        conig.requiere_ot,
+                        array_to_string( conig.sw_autorizacion, '','',''null'')::varchar	
 						from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
@@ -113,7 +115,13 @@ BEGIN
 	elsif(p_transaccion='PM_CONIGPAR_SEL')then
      				
     	begin
-    		--Sentencia de la consulta
+    		
+            v_filtro = '';
+            IF  p_administrador != 1 THEN
+               v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+            END IF;
+            
+            --Sentencia de la consulta
 			v_consulta:='select
                           conig.id_concepto_ingas,
                           conig.desc_ingas,
@@ -133,13 +141,14 @@ BEGIN
                           par.codigo||'' ''||par.nombre_partida as desc_partida,
                           array_to_string( conig.id_grupo_ots,'','',''null'')::varchar,
                           conig.filtro_ot,
-                          conig.requiere_ot
+                          conig.requiere_ot,
+                          array_to_string( conig.sw_autorizacion, '','',''null'')::varchar
                           from param.tconcepto_ingas conig
                           inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas
                           inner join pre.tpartida par on par.id_partida = cp.id_partida
                           inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                           left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where  conig.estado_reg = ''activo'' and ';
+				        where  conig.estado_reg = ''activo'' and '||v_filtro;
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -160,6 +169,11 @@ BEGIN
 	elsif(p_transaccion='PM_CONIGPAR_CONT')then
 
 		begin
+        
+            v_filtro = '';
+            IF  p_administrador != 1 THEN
+               v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+            END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(conig.id_concepto_ingas)
 					      from param.tconcepto_ingas conig
@@ -167,7 +181,7 @@ BEGIN
                           inner join pre.tpartida par on par.id_partida = cp.id_partida
                           inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                           left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where conig.estado_reg = ''activo'' and ';
+				        where conig.estado_reg = ''activo'' and '||v_filtro;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

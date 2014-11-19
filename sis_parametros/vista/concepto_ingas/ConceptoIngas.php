@@ -19,7 +19,9 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.load({params:{start:0, limit:50}});
 		this.crearFormularioOt();
-		this.addButton('inserOT',{text:'Configurar OT',iconCls: 'blist',disabled:false,handler:this.mostarFormOt,tooltip: '<b>Configurar OT</b><br/>Permite añadir grupos de OT autorizados para el concepto de gasto'});
+		this.crearFormAuto();
+		this.addButton('inserOT',{ text: 'Configurar OT', iconCls: 'blist',disabled: false, handler: this.mostarFormOt, tooltip: '<b>Configurar OT</b><br/>Permite añadir grupos de OT autorizados para el concepto de gasto'});
+        this.addButton('inserAuto',{ text: 'Configurar Autorizaciones', iconCls: 'blist', disabled: false, handler: this.mostarFormAuto, tooltip: '<b>Configurar autorizaciones</b><br/>Permite seleccionar desde que modulos  puede selecionarse el concepto'});
     
 	},
 			
@@ -120,7 +122,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	       		 	},
 	       		grid:true,
 	       		form:true
-	       	},
+	       },
 	     {
 			config: {
 				name: 'activo_fijo',
@@ -141,7 +143,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			id_grupo: 0,
 			filters:{pfiltro:'conig.activo_fijo',type:'string'},
 			grid: true,
-			form: true
+			form: false
 		},  
 		{
 			config: {
@@ -164,7 +166,23 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'conig.almacenable',type:'string'},
 			grid: true,
 			form: true
-		},  	
+		},
+	    {
+			config:{
+				name: 'sw_autorizacion',
+				fieldLabel: 'Autorizaciones',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 200,
+				maxLength:500
+			},
+			type:'TextArea',
+			filters: {pfiltro:'conig.sw_autorizacion', type:'string'},
+			
+			id_grupo:1,
+			grid:true,
+			form:true
+		 },	
 	     
 		{
 			config:{
@@ -290,7 +308,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
        				xtype:"awesomecombo",
        				fieldLabel:'Grupos de OT',
        				allowBlank:true,
-       				emptyText:'Roles...',
+       				emptyText:'OTs...',
        				store: new Ext.data.JsonStore({
               			url: '../../sis_contabilidad/control/GrupoOt/listarGrupoOt',
        					id: 'id_grupo_ot',
@@ -387,11 +405,115 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
             });
 		
 	},
+	//formulario de autorizaciones
+	crearFormAuto:function(){
+		  this.formAuto = new Ext.form.FormPanel({
+            baseCls: 'x-plain',
+            autoDestroy: true,
+           
+            border: false,
+            layout: 'form',
+             autoHeight: true,
+           
+    
+            items: [
+                 {
+       				name:'sw_autorizacion',
+       				xtype:"awesomecombo",
+       				fieldLabel:'Autorizaciones',
+       				allowBlank: true,
+       				emptyText:'Autorizaciones...',
+       				store: new Ext.data.ArrayStore({
+                        fields: ['variable', 'valor'],
+                        data : [ ['adquisiciones', 'Adquisiciones'],
+                                 ['pago_directo', 'Pago Directo'],
+                                 ['caja_chica', 'Caja Chica'],
+                                 ['fondo_avance', 'Fondo en Avance']
+                               ]
+                        }),
+       				valueField: 'variable',
+				    displayField: 'valor',
+				    mode: 'local',
+	       		    forceSelection:true,
+       				typeAhead: true,
+           			triggerAction: 'all',
+           			lazyRender: true,
+       				queryDelay: 1000,
+       				width: 250,
+       				minChars: 2 ,
+	       			enableMultiSelect: true
+       			}]
+        });
+        
+		
+		
+		this.wAuto = new Ext.Window({
+            title: 'Configuracion',
+            collapsible: true,
+            maximizable: true,
+            autoDestroy: true,
+            width: 380,
+            height: 170,
+            layout: 'fit',
+            plain: true,
+            bodyStyle: 'padding:5px;',
+            buttonAlign: 'center',
+            items: this.formAuto,
+            modal:true,
+             closeAction: 'hide',
+            buttons: [{
+                text: 'Guardar',
+                handler: this.saveAuto,
+                scope: this
+                
+            },
+             {
+                text: 'Cancelar',
+                handler: function(){ this.wAuto.hide() },
+                scope: this
+            }]
+        });
+        
+         this.cmpAuto = this.formAuto.getForm().findField('sw_autorizacion');
+         
+         
+	},
+	
+	mostarFormAuto:function(){
+		var data = this.getSelectedData();
+		if(data){
+			this.cmpAuto.setValue(data.sw_autorizacion);
+			this.wAuto.show();
+		}
+		
+	},
+	saveAuto: function(){
+		    var d = this.getSelectedData();
+		    Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url: '../../sis_parametros/control/ConceptoIngas/editAuto',
+                params: { 
+                	      sw_autorizacion: this.cmpAuto.getValue(),
+                	      id_concepto_ingas: d.id_concepto_ingas
+                	    },
+                success: this.successSinc,
+                failure: this.conexionFailure,
+                timeout: this.timeout,
+                scope: this
+            });
+		
+	},
 	successSinc:function(resp){
             Phx.CP.loadingHide();
             var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
             if(!reg.ROOT.error){
-                this.wOt.hide(); 
+            	if(this.wOt){
+            		this.wOt.hide(); 
+            	}
+            	if(this.wAuto){
+            		this.wAuto.hide(); 
+            	}
+                
                 this.reload();
              }else{
                 alert('ocurrio un error durante el proceso')
@@ -418,7 +540,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'activo_fijo', type: 'string'},
 		{name:'almacenable', type: 'string'},
-		'id_grupo_ots','filtro_ot','requiere_ot'
+		'id_grupo_ots','filtro_ot','requiere_ot','sw_autorizacion'
 		
 	],
 	sortInfo:{
@@ -436,6 +558,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
         
         //this.getBoton('btnChequeoDocumentos').setDisabled(false);
         this.getBoton('inserOT').setDisabled(false);
+        this.getBoton('inserAuto').setDisabled(false);
         Phx.vista.ConceptoIngas.superclass.preparaMenu.call(this,n);
         
         
@@ -447,6 +570,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
         var tb = Phx.vista.ConceptoIngas.superclass.liberaMenu.call(this);
         if(tb){
             this.getBoton('inserOT').disable();
+            this.getBoton('inserAuto').disable();
         }
        return tb
     }
