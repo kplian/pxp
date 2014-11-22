@@ -98,4 +98,6 @@ select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'INITRAHP.5.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INITRAHP.5.1', 'no');
 select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'INITRAHP.5.1.1', 'no');
 
+select pxp.f_insert_testructura_gui ('ASINT', 'SISTEMA');
+
 /****************************F-SCP-JRR-PXP-0-25/04/2014********************************/

@@ -1563,7 +1563,7 @@ ALTER TABLE param.tproveedor
     NOT DEFERRABLE;
 
 ALTER TABLE param.tproveedor
-  ADD CONSTRAINT fk__tproveedor__id_lugar FOREIGN KEY id_lugar
+  ADD CONSTRAINT fk__tproveedor__id_lugar FOREIGN KEY (id_lugar)
     REFERENCES param.tlugar(id_lugar)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
