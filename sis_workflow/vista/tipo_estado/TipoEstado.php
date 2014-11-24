@@ -230,6 +230,33 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
+        {
+            config:{
+                name: 'admite_obs',
+                fieldLabel: 'Admite Observaciones',
+                qtip: 'permite el registros de observaciones en el estado',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                emptyText:'si/no...',                   
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'alerta',          
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipes.admite_obs',
+                         options: ['si','no'],  
+                    },
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'tipo_asignacion',
@@ -666,7 +693,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad','id_roles'
+        'titulo_alerta', 'parametros_ad','id_roles','admite_obs'
 		
 	],
 	sortInfo:{

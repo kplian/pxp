@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -239,7 +241,8 @@ BEGIN
                         tipes.tipo_noti, 
                         tipes.titulo_alerta, 
                         tipes.parametros_ad	,
-                        pxp.text_concat(terol.id_rol::text) as id_roles           
+                        pxp.text_concat(terol.id_rol::text) as id_roles,
+                        tipes.admite_obs          
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
@@ -415,14 +418,14 @@ BEGIN
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(tipes.id_tipo_estado)
-					    from wf.ttipo_estado tipes
-						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
-                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
-                        inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = tipes.id_tipo_estado
-						where tipes.id_tipo_proceso = ' || v_parametros.id_tipo_proceso || '   
-						and  ee.id_tipo_estado_padre = ' || v_parametros.id_tipo_estado_padre || '
-				        and ';
+                          from wf.ttipo_estado tipes
+                          inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
+                          left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
+                          inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
+                          inner join  wf.testructura_estado ee on ee.id_tipo_estado_hijo = tipes.id_tipo_estado
+                          where tipes.id_tipo_proceso = ' || v_parametros.id_tipo_proceso || '   
+                          and  ee.id_tipo_estado_padre = ' || v_parametros.id_tipo_estado_padre || '
+                          and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

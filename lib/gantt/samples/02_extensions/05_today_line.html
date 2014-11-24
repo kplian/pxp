@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Today and Status lines in Gantt</title>
+</head>
+<script src="../../codebase/dhtmlxgantt.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../codebase/ext/dhtmlxgantt_marker.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="../../codebase/dhtmlxgantt.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+<script type="text/javascript" src="../common/testdata.js"></script>
+<body>
+<style type="text/css">
+	html, body{ padding:0px; margin:0px; height:100%; }
+
+	.status_line{
+		background-color: #0ca30a;
+	}
+
+</style>
+<div id="gantt_here" style='width:100%; height:100%;'></div>
+<script type="text/javascript">
+
+	var date_to_str = gantt.date.date_to_str(gantt.config.task_date);
+
+	var id = gantt.addMarker({ start_date: new Date(), css: "today", title:date_to_str( new Date())});
+	setInterval(function(){
+		var today = gantt.getMarker(id);
+		today.start_date = new Date();
+		today.title = date_to_str(today.start_date);
+		gantt.updateMarker(id);
+	}, 1000*60);
+
+
+
+
+	var today = new Date();
+	var start = new Date(today.getFullYear(), today.getMonth() - 1, 0);
+	gantt.addMarker({
+		start_date: start,
+		css: "status_line",
+		text: "Start project",
+		title:"Start project: "+ date_to_str(start)
+	});
+
+	gantt.config.scale_unit = "month";
+	gantt.config.date_scale = "%F, %Y";
+
+	gantt.config.scale_height = 50;
+
+	gantt.config.subscales = [
+		{unit:"day", step:1, date:"%j, %D" }
+	];
+
+	gantt.config.xml_date = "%Y-%m-%d %H:%i:%s";
+	gantt.init("gantt_here");
+
+
+	var prepare_data = function(template){
+		var year = new Date().getFullYear();
+		var month = new Date().getMonth();
+		for(var i =0; i< template.data.length; i++){
+			var task = template.data[i];
+			task.start_date = new Date(year, getRandom(month - 1, month + 1), task.start_date.split("-")[0]);
+		}
+		return template;
+	};
+	function getRandom(min, max) {
+		return Math.random() * (max - min) + min;
+	}
+
+
+	var data = prepare_data(demo_tasks);
+	gantt.parse(data);
+	gantt.showDate(start);
+	
+
+
+</script>
+</body>

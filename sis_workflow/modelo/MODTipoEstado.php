@@ -57,6 +57,7 @@ class MODTipoEstado extends MODbase{
 		$this->captura('titulo_alerta','varchar');
 		$this->captura('parametros_ad','varchar');
 		$this->captura('id_roles','text');
+		$this->captura('admite_obs','varchar');
 		
 		
 		
@@ -159,6 +160,8 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('titulo_alerta','titulo_alerta','varchar');
 		$this->setParametro('parametros_ad','parametros_ad','varchar');
 		$this->setParametro('id_roles','id_roles','varchar');
+		$this->setParametro('admite_obs','admite_obs','varchar');
+		
 		
 		
 		
@@ -204,6 +207,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('titulo_alerta','titulo_alerta','varchar');
         $this->setParametro('parametros_ad','parametros_ad','varchar');
 		$this->setParametro('id_roles','id_roles','varchar');
+		$this->setParametro('admite_obs','admite_obs','varchar');
         
 
 		//Ejecuta la instruccion

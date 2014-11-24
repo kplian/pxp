@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -88,7 +90,8 @@ BEGIN
             nombre_clase_alerta, 
             tipo_noti, 
             titulo_alerta, 
-            parametros_ad
+            parametros_ad,
+            admite_obs
             
             
           	) values(
@@ -118,7 +121,8 @@ BEGIN
             v_parametros.nombre_clase_alerta, 
             v_parametros.tipo_noti, 
             v_parametros.titulo_alerta, 
-            v_parametros.parametros_ad
+            v_parametros.parametros_ad,
+            v_parametros.admite_obs
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -186,7 +190,8 @@ BEGIN
             nombre_clase_alerta=v_parametros.nombre_clase_alerta, 
             tipo_noti=v_parametros.tipo_noti, 
             titulo_alerta=v_parametros.titulo_alerta, 
-            parametros_ad=v_parametros.parametros_ad
+            parametros_ad=v_parametros.parametros_ad,
+            admite_obs = v_parametros.admite_obs
 							
             where id_tipo_estado=v_parametros.id_tipo_estado;
             

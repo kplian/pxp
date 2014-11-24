@@ -903,6 +903,16 @@ ALTER TABLE wf.tproceso_wf
 
 COMMENT ON COLUMN wf.tproceso_wf.prioridad
 IS 'los numeros mas bajos representan prioridades mayores';
- 
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tobs
+  ADD COLUMN num_tramite VARCHAR(500) NOT NULL;
+  
+  --------------- SQL ---------------
+
+ALTER TABLE wf.tobs
+  ADD COLUMN id_estado_wf INTEGER NOT NULL;
 /***********************************F-SCP-RAC-WF-1-23/09/2014****************************************/
 
