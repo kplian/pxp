@@ -138,4 +138,12 @@ ALTER TABLE pxp.tbase
   
 /****************************F-SCP-RAC-PXP-0-21/05/2014*************/
 
+/****************************I-SCP-JRR-PXP-0-21/11/2014*************/
+
+CREATE TABLE pxp.tprueba1 (
+    campo1 varchar
+) WITHOUT OIDS;
+
+/****************************F-SCP-JRR-PXP-0-21/11/2014*************/
+
 

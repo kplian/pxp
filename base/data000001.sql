@@ -77,9 +77,9 @@ select pxp.f_insert_tgui ('Aplicar Interinato', 'Aplicar interinato, asume lor r
 --COPY LINES TO data.sql FILE  
 ---------------------------------
 
-select pxp.f_insert_tgui ('Help Desk', 'Help Desk', 'INITRAHP', 'si', 100, 'sis_workflow/vista/proceso_wf/ProcesoWfIniHelpDesk.php', 1, '../../../lib/imagenes/help_desk.png', 'ProcesoWfIniHD', 'PXP');
-select pxp.f_insert_tgui ('Asignar interino', 'Asigna interinos', 'ASINT', 'si', 105, 'sis_organigrama/vista/interinato/AsignarInterino.php', 1, '', 'AsignarInterino', 'PXP');
-select pxp.f_insert_testructura_gui ('ASINT', 'SISTEMA');
+ select pxp.f_insert_tgui ('Help Desk', 'Help Desk', 'INITRAHP', 'si', 100, 'sis_workflow/vista/proceso_wf/ProcesoWfIniHelpDesk.php', 1, '../../../lib/imagenes/help_desk.png', 'ProcesoWfIniHD', 'PXP');
+ select pxp.f_insert_tgui ('Asignar interino', 'Asigna interinos', 'ASINT', 'si', 105, 'sis_organigrama/vista/interinato/AsignarInterino.php', 1, '', 'AsignarInterino', 'PXP');
+
 
 /****************************F-DAT-RAC-PXP-0-05/06/2014******************/
 
