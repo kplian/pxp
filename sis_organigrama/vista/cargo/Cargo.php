@@ -52,6 +52,17 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 			form:true 
 		},
 		{
+			//configuracion del componente
+			config:{
+					fieldLabel: 'Identificador',	
+					name: 'identificador'
+			},
+			type:'Field',
+			form:false,
+			filters:{pfiltro:'cargo.id_cargo',type:'numeric'},
+			grid:true 
+		},
+		{
 			config:{
 				name: 'acefalo',
 				fieldLabel: 'ACEFALO',				
@@ -394,6 +405,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'acefalo', type: 'string'},
+		{name:'identificador', type: 'numeric'},
 		
 	],
 	sortInfo:{
