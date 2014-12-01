@@ -5,7 +5,7 @@ How to install
 
 https://github.com/kplian/instalador_framework.pxp
 
-Example
+Example 
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
@@ -18,7 +18,11 @@ Framework PXP for agile web development
 
 https://www.youtube.com/watch?v=uUVevOzYDy4
 
-TO USE IT BY FIRST TIME:
+TO USE IT BY FIRST TIME use :
+
+https://github.com/kplian/instalador_framework.pxp for centos 6.x
+
+or:
 
 1. Create folder for your project
 2. Inside the folder of your project clone this repository (This will create the pxp folder)
