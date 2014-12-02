@@ -904,6 +904,17 @@ ALTER TABLE wf.tproceso_wf
 COMMENT ON COLUMN wf.tproceso_wf.prioridad
 IS 'los numeros mas bajos representan prioridades mayores';
 
+CREATE TABLE wf.tobs (
+  id_obs SERIAL, 
+  titulo VARCHAR NOT NULL, 
+  descripcion VARCHAR NOT NULL, 
+  id_funcionario_resp INTEGER, 
+  estado VARCHAR(20) DEFAULT 'abierto'::character varying, 
+  fecha_fin TIMESTAMP(6) WITHOUT TIME ZONE, 
+  desc_fin VARCHAR
+  CONSTRAINT tobs_pkey PRIMARY KEY(id_obs)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
 
 --------------- SQL ---------------
 
