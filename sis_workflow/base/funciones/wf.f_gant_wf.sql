@@ -124,12 +124,16 @@ BEGIN
                                       cuenta varchar,
                                       id_depto integer,
                                       depto varchar,
-                                      nombre_usuario_ai varchar
+                                      nombre_usuario_ai varchar,
+                                      id_padre integer,
+                                      arbol varchar,
+                                      id_obs integer,
+                                      id_anterior integer
                                      ) ON COMMIT DROP;
     
     
                  
-      IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario)) THEN
+      IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
                 
         raise exception 'Error al recuperar los datos del diagrama gant';
                 
@@ -156,7 +160,11 @@ BEGIN
                         cuenta ,
                         COALESCE(id_depto,0),
                         depto,
-                        COALESCE(nombre_usuario_ai,'')
+                        COALESCE(nombre_usuario_ai,''),
+                        arbol,
+                        id_padre,
+                        id_obs,
+                        id_anterior
                       FROM temp_gant_wf 
                       order by id) LOOP
      RETURN NEXT v_registros;

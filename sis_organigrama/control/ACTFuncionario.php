@@ -16,7 +16,12 @@ class ACTFuncionario extends ACTbase{
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");		
-				
+	
+	   
+        //si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
+        if($this->objParam->getParametro('tipo_filtro')=='usuario'){
+            $this->objParam->addFiltro("FUNCIO.id_funcionario= ".$_SESSION["_ID_FUNCIOANRIO_OFUS"]);    
+        }	
 			
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -75,6 +80,9 @@ class ACTFuncionario extends ACTbase{
 		    
             $this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * from orga.f_get_aprobadores_x_funcionario(''" . $this->objParam->getParametro('fecha') . "'',". $this->objParam->getParametro('id_funcionario_dependiente'). ",''".$presupuesto."'',''".$gerencia."'',''".$lista_blanca."'',''".$lista_negra."'')	 AS (id_funcionario INTEGER))");    
         }
+
+      
+		
         
         if($this->objParam->getParametro('fecha')!=''){
             	

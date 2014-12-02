@@ -916,3 +916,14 @@ ALTER TABLE wf.tobs
   ADD COLUMN id_estado_wf INTEGER NOT NULL;
 /***********************************F-SCP-RAC-WF-1-23/09/2014****************************************/
 
+
+/***********************************I-SCP-RAC-WF-1-25/11/2014****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN adminte_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_estado.adminte_obs
+IS 'no o si, define si permite registrar observaciones en este estado';
+
+/***********************************F-SCP-RAC-WF-1-25/11/2014****************************************/

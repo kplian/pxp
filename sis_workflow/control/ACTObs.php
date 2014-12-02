@@ -39,6 +39,13 @@ class ACTObs extends ACTbase{
 		$this->res=$this->objFunc->eliminarObs($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function cerrarObs(){
+		$this->objFunc=$this->create('MODObs');	
+		$this->res=$this->objFunc->cerrarObs($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
 			
 }
 

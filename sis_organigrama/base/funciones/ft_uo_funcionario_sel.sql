@@ -66,7 +66,7 @@ BEGIN
                                   PERREG.nombre_completo2 AS USUREG,
                                   PERMOD.nombre_completo2 AS USUMOD,
                                   cargo.id_cargo,
-                                  (coalesce(cargo.codigo, ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
+                                  (coalesce(''Cod: '' || cargo.codigo || ''---Id: '' || cargo.id_cargo,  ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
                                   UOFUNC.observaciones_finalizacion,
                                   UOFUNC.nro_documento_asignacion,
                                   UOFUNC.fecha_documento_asignacion,

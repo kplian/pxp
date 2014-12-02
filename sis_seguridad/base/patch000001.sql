@@ -1012,4 +1012,13 @@ ALTER TABLE segu.tgui_rol
 /*****************************F-SCP-JRR-SEGU-0-03/09/2014*************/
 
 
+/*****************************I-SCP-RAC-SEGU-0-24/11/2014*************/
+--------------- SQL ---------------
 
+ALTER TABLE wf.tobs
+  ADD COLUMN id_alarma INTEGER;
+
+COMMENT ON COLUMN wf.tobs.id_alarma
+IS 'referencia a la alarma creada por la observacion';
+
+/*****************************F-SCP-RAC-SEGU-0-24/11/2014*************/

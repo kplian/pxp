@@ -37,6 +37,16 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Obs.superclass.constructor.call(this, config);
 		this.init();
+		this.addButton('btnCerrar', {
+                text : 'Cerrar',
+                iconCls : 'block',
+                disabled : true,
+                handler : this.cerrarObs,
+                tooltip : '<b>Cerrar</b><br>Si la obligación ha sido resuelta es necesario cerrarla para continuar con el trámite'
+        });
+        
+        
+		
 		this.store.baseParams = {  todos: 0, id_proceso_wf: config.id_proceso_wf, id_estado_wf: config.id_estado_wf, num_tramite: config.num_tramite}; 
         this.load({params: { start:0, limit: this.tam_pag } })
 	},
@@ -81,16 +91,16 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name:'id_funcionario_resp',
                 origen:'FUNCIONARIO',
-                tinit:true,
+                tinit: false,
                 qtip: 'Funcionario responsable  de cumplir o hacer cumplir la observación',
                 fieldLabel:'Funcionario Resp.',
-                allowBlank:true,
-                gwidth:200,
+                allowBlank: true,
+                gwidth: 200,
                 valueField: 'id_funcionario',
                 gdisplayField:'desc_funcionario',//mapea al store del grid
                 anchor: '100%',
-                gwidth:200,
-                 renderer:function (value, p, record){return String.format('{0}', record.data['desc_funcionario']);}
+                gwidth: 200,
+                renderer: function (value, p, record){return String.format('{0}', record.data['desc_funcionario']);}
              },
             type:'ComboRec',
             id_grupo:0,
@@ -164,8 +174,24 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'fecha_reg',
+				fieldLabel: 'Fecha Ini',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'obs.fecha_reg',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:false
+		},
+		{
+			config:{
 				name: 'fecha_fin',
-				fieldLabel: 'Fecha Cierre',
+				fieldLabel: 'Fecha Fin',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -182,16 +208,16 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'desc_fin',
-				fieldLabel: 'desc_fin',
+				fieldLabel: 'Desc fin',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:-5
+				maxLength:-100
 			},
 				type: 'TextField',
 				filters: { pfiltro: 'obs.desc_fin', type: 'string' },
 				id_grupo: 1,
-				grid: true,
+				grid: false,
 				form: false
 		},
 		{
@@ -220,22 +246,6 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 			},
 				type:'Field',
 				filters:{pfiltro:'usu1.cuenta',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
-		},
-		{
-			config:{
-				name: 'fecha_reg',
-				fieldLabel: 'Fecha creación',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'obs.fecha_reg',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -333,11 +343,18 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 	 	
 	 	      
             Phx.vista.Obs.superclass.onButtonNew.call(this);
-            
-            
+            //agrega un filtro para que se liste el funcionario del usuario y sea el primero que se cargue
+            this.Cmp.id_funcionario_resp.store.load({params:{start:0,limit:this.tam_pag, tipo_filtro: 'usuario' }, 
+		       callback : function (r) {
+		       		if (r.length == 1 ) {	       				
+		    			this.Cmp.id_funcionario_resp.setValue(r[0].data.id_funcionario);
+		    		}    
+		    			    		
+		    	}, scope : this
+		    });
+	            
             
             this.Cmp.id_estado_wf.setValue( this.id_estado_wf );
-            //this.getComponente('id_proceso_compra').setValue(this.id_proceso_compra); 
 
         
     },
@@ -346,11 +363,61 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
     	
     	     //todo validar ...solo de pueden editar observaciones del mismo proceso y estado seleccionado   
             Phx.vista.Obs.superclass.onButtonEdit.call(this);
+            this.Cmp.id_funcionario_resp.disable()
             
             
      
     },
+     preparaMenu:function(n){
+      var data = this.getSelectedData();
+      var tb =this.tbar;
+       
+        Phx.vista.Obs.superclass.preparaMenu.call(this,n);
+        
+        if(this.store.baseParams.todos == 1){
+        	
+        	this.getBoton('new').disable();
+        	this.getBoton('edit').disable();
+        	this.getBoton('del').disable();
+        	this.getBoton('btnCerrar').disable();
+        }
+        else{
+        	if(data.estado == 'abierto'){
+        	   this.getBoton('btnCerrar').enable();	
+        	}
+        	else{
+        	   this.getBoton('btnCerrar').disable();	
+        	}
+        }
+        return tb 
+     }, 
+     liberaMenu:function(){
+        var tb = Phx.vista.Obs.superclass.liberaMenu.call(this);
+        this.getBoton('btnCerrar').disable();
+        return tb
+    },
     
+    
+    cerrarObs: function(){
+	    Phx.CP.loadingShow();
+	    var d = this.sm.getSelected().data;
+        Ext.Ajax.request({
+            url:'../../sis_workflow/control/Obs/cerrarObs',
+            params: { id_obs: d.id_obs },
+            success: this.successObs,
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        }); 
+	    
+	},
+	successObs: function(resp){
+       Phx.CP.loadingHide();
+       var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+       if(!reg.ROOT.error){
+         this.reload();
+       }
+    },
 	
 	
 	sortInfo:{

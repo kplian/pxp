@@ -32,9 +32,8 @@ if(!isset($_SESSION["_SESION"])){
 	<meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />	
 	<meta name="language" content="es"/>
 	<meta name="author" content="Rensi Arteaga Copari" />
-	<meta name="subject" content="rensi4rn@gmail.com" />
-<meta name="application-name" content="TI Capacitación - Diplomado: Fundamentos de HTML5"/>
-<meta name="msapplication-window" content="width=1024; height=768"/>
+	<meta name="subject" content="rensi@kplian.com" />
+	<meta name="application-name" content="KERP - KPLIAN"/>
 <link rel="icon" type="image/x-icon" href="<?php echo $_SESSION['_DIR_FAV_ICON'] ?>" />
 
 	  <!-- overrides to base library  -->
@@ -59,8 +58,16 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/Portal.css" />
 
    <link rel="stylesheet" type="text/css" href="../../../lib/ext3/resources/css/ext-all.css"/>
+  
    <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/<?php echo $_SESSION['_ESTILO_MENU'];?>/menus.css"/>
-
+   <style type="text/css" media="screen">
+		    html, body{
+		        margin:0px;
+		        padding:0px;
+		        height:100%;
+		        overflow:hidden;
+		    }   
+    </style>
 
 	<!-- GC -->
 </head>
@@ -142,13 +149,16 @@ if(!isset($_SESSION["_SESION"])){
     <?php
      echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";  
 	?>
+	 
+	 
 	 <!-- tipo de interfaces -->
-     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/baseInterfaz.js'></script>
+	 <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/baseInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gridInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/grafInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/arbInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/frmInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gmapInterfaz.js'></script>
+      
      
      
      <script type="text/javascript" src="../../../lib/ux/ColumnHeaderGroup.js"></script>

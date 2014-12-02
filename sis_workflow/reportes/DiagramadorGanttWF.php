@@ -72,6 +72,10 @@ class DiagramadorGanttWF{
                  $tipo = ACTYPE_NORMAL;
                  $prefijo ='  ';
              }
+			 if ($dataset[$i]['tipo']=='obs'){
+                 $tipo = ACTYPE_NORMAL;
+                 $prefijo ='  ';
+             }
              if ($dataset[$i]['tipo']=='estado_final'){
                  $tipo = ACTYPE_MILESTONE; 
                  $prefijo ='  '; 
@@ -101,9 +105,16 @@ class DiagramadorGanttWF{
               $start = strtotime($dataset[$i]['fecha_ini']);
               $end = strtotime($dataset[$i]['fecha_fin']);
               $days_between = round(($end - $start) / 86400);
-              $desc_principal=utf8_decode($prefijo.$dataset[$i]['nombre']);
+			  
+			  if($dataset[$i]['tipo']=='obs'){
+			  	$desc_principal=utf8_decode($prefijo.'  -> OBS: '.$dataset[$i]['nombre']);
+			  }
+			  else{
+			  	$desc_principal=utf8_decode($prefijo.$dataset[$i]['nombre']);
+			  }
               
-              if ($dataset[$i]['tipo']=='estado'){
+              
+              if ($dataset[$i]['tipo']=='estado' || $dataset[$i]['tipo']=='obs'){
                   $tiempo = $days_between.' dias';
                }  
               else{

@@ -467,6 +467,9 @@ BEGIN
     -- verificar documentos
     v_resp_doc = wf.f_verifica_documento(p_id_usuario, v_id_estado_actual);
     
+     -- verificar observaciones abiertas
+    v_resp_doc = wf.f_verifica_observaciones(p_id_usuario, p_id_estado_wf_anterior);
+    
     --valida datos de los formularios
     v_res_validacion = wf.f_valida_cambio_estado(p_id_estado_wf_anterior,'preregistro',p_id_tipo_estado_siguiente);
     IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN

@@ -3,7 +3,9 @@
 CREATE OR REPLACE FUNCTION wf.f_gant_wf_recursiva (
   p_id_proceso_wf integer,
   p_id_estado_wf integer,
-  p_id_usuario integer
+  p_id_usuario integer,
+  p_id_padre integer,
+  p_id_anterior integer
 )
 RETURNS boolean AS
 $body$
@@ -42,6 +44,9 @@ v_id_proceso_ant integer;
 
 v_i integer;
 v_temp_fin varchar;
+v_registros_obs record;
+v_id_obs integer;
+v_id_anterior integer;
  
 
 BEGIN
@@ -82,7 +87,9 @@ BEGIN
                     descripcion, 
                     id_siguiente,
                     tramite,
-                    codigo
+                    codigo,
+                    id_padre,
+                    id_anterior
                    )
                    VALUES(
                    
@@ -95,13 +102,16 @@ BEGIN
                     COALESCE(v_registro_proceso_wf.descripcion,''), 
                     NULL,-- id_siguiente,
                     v_registro_proceso_wf.nro_tramite,
-                    v_registro_proceso_wf.codigo
+                    v_registro_proceso_wf.codigo,
+                    p_id_padre,
+                    p_id_anterior
                    ) RETURNING id into v_id_proceso;
        
          raise notice 'inicio ';
        
            v_sw = 0;
            v_i =1;
+           v_id_anterior = v_id_proceso;
           FOR  v_registros in (
            	           SELECT  
                          ewf.id_estado_wf,
@@ -155,9 +165,9 @@ BEGIN
                               cuenta,
                               id_depto,
                               depto,
-                              nombre_usuario_ai
-                              
-                               
+                              nombre_usuario_ai,
+                              id_padre,
+                              id_anterior
                              )
                              VALUES(
                                        
@@ -170,18 +180,19 @@ BEGIN
                               COALESCE(v_registros.descripcion,''), 
                               NULL,-- id_siguiente, no lo conocemos todavia
                               v_registro_proceso_wf.nro_tramite,
-                              v_registro_proceso_wf.codigo,
-                              
+                              v_registro_proceso_wf.codigo,                              
                               v_registros.id_funcionario,
                               v_registros.funcionario,
                               v_registros.id_usuario,
                               v_registros.cuenta,
                               v_registros.id_depto,
                               v_registros.departamento,
-                              v_registros.usuario_ai 
+                              v_registros.usuario_ai,
+                              v_id_proceso,
+                              v_id_anterior
                              ) RETURNING id into v_id_estado;
                       
-                       
+                          v_id_anterior = v_id_estado;
                        --si es un nodo disparador buscamos almacenamos la referencia
                        
                          IF v_registros.disparador = 'si' THEN
@@ -216,6 +227,85 @@ BEGIN
                          --almacena variable temporales para el siguiente ciclo
                       v_id_proceso_ant =  v_id_estado;
                       v_temp_fin = v_registros.fin;
+                      
+                      --------------------------------------------
+                      -- registro de observaciones por estado
+                      -----------------------------------------
+                       FOR  v_registros_obs in (
+                                           SELECT  
+                                             o.id_obs,
+                                             o.id_estado_wf,
+                                             o.descripcion as descripcion,
+                                             o.titulo,
+                                             o.fecha_reg as fecha_ini,
+                                             o.fecha_fin,
+                                             o.id_usuario_reg,
+                                             usu.cuenta,
+                                             fun.id_funcionario,
+                                             fun.desc_funcionario1  as funcionario,
+                                             o.usuario_ai,
+                                             o.estado,
+                                             o.num_tramite
+                                           
+                                           FROM  wf.tobs o
+                                           INNER JOIN  orga.vfuncionario fun on fun.id_funcionario = o.id_funcionario_resp
+                                           INNER JOIN   segu.tusuario usu on usu.id_usuario = o.id_usuario_reg
+                                         
+                                           WHERE 
+                                                   o.id_estado_wf = v_registros.id_estado_wf
+                                              AND  o.estado_reg = 'activo'
+                                           ORDER BY o.fecha_reg) LOOP
+                                           
+                       
+                                INSERT INTO      
+                                           temp_gant_wf (
+                                                    id_proceso_wf,
+                                                    id_estado_wf,
+                                                    tipo, 
+                                                    nombre, 
+                                                    fecha_ini, 
+                                                    fecha_fin, 
+                                                    descripcion, 
+                                                    id_siguiente,
+                                                    tramite ,
+                                                    codigo,
+                                                    id_funcionario,
+                                                    funcionario,
+                                                    id_usuario,
+                                                    cuenta,
+                                                    id_depto,
+                                                    depto,
+                                                    nombre_usuario_ai,
+                                                    id_padre,
+                                                    arbol,
+                                                    id_anterior
+                                                   )
+                                                   VALUES(
+                                                             
+                                                    NULL,
+                                                    NULL,
+                                                    'obs', 
+                                                    v_registros_obs.titulo, 
+                                                    v_registros_obs.fecha_ini, 
+                                                    COALESCE(v_registros_obs.fecha_fin, now()),--fecha_fin, 
+                                                    COALESCE(v_registros_obs.descripcion,'')||' ['||v_registros_obs.estado||']', 
+                                                    0,-- id_siguiente, no lo conocemos todavia
+                                                    v_registros_obs.num_tramite,
+                                                    'obs',                              
+                                                    v_registros_obs.id_funcionario,
+                                                    v_registros_obs.funcionario,
+                                                    v_registros_obs.id_usuario_reg,
+                                                    v_registros_obs.cuenta,
+                                                    NULL,
+                                                    NULL,
+                                                    v_registros_obs.usuario_ai,
+                                                    v_id_estado,   -- el padre es el estado observado
+                                                    'close',
+                                                    v_id_estado
+                                                   ) RETURNING id into v_id_obs;
+                       
+                       
+                       END LOOP;
        
        
           END LOOP;
@@ -260,20 +350,25 @@ BEGIN
           
            raise notice 'inicia recursividad';
           
-          FOR  v_registros in (
+         FOR  v_registros in (
                        SELECT
                           pwf.id_proceso_wf,
                           pwf.id_estado_wf_prev
                        FROM wf.tproceso_wf  pwf
                        WHERE pwf.id_estado_wf_prev =ANY (v_id_almacenado)
                        ORDER BY pwf.fecha_reg ) LOOP
-             
+                       
+                     select
+                      id
+                     INTO
+                      v_id_anterior
+                     from  temp_gant_wf
+                     where id_estado_wf =  v_registros.id_estado_wf_prev; 
                  --llamada recursiva
                  
                    raise notice 'llamada recursiva %',v_registros.id_proceso_wf ;
                  
-                IF not ( wf.f_gant_wf_recursiva(v_registros.id_proceso_wf, v_registros.id_estado_wf_prev ,p_id_usuario)) THEN
-                
+                IF not ( wf.f_gant_wf_recursiva(v_registros.id_proceso_wf, v_registros.id_estado_wf_prev ,p_id_usuario, v_id_proceso, v_id_anterior)) THEN
                 
                   raise exception 'Error al recuperar los datos del diagrama gant';
                 

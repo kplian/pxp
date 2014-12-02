@@ -69,7 +69,7 @@ BEGIN
 						end)::varchar as acefalo,
 						cargo.id_oficina,
 						cargo.id_cargo as identificador,
-						tipcon.codigo as codigo_tipo_contrato		
+						tipcon.codigo as codigo_tipo_contrato
 						from orga.tcargo cargo
 						inner join segu.tusuario usu1 on usu1.id_usuario = cargo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = cargo.id_usuario_mod

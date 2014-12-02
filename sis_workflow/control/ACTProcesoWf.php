@@ -126,6 +126,21 @@ class ACTProcesoWf extends ACTbase{
         $this->res=$this->objFunc->anteriorEstadoProcesoWf($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+	
+	function listarGantWf(){
+		$this->objParam->defecto('ordenacion','id_proceso_wf');
+        $this->objParam->defecto('dir_ordenacion','asc');
+		 
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODProcesoWf','listarGantWf');
+		} else{
+			$this->objFunc=$this->create('MODProcesoWf');
+			
+			$this->res=$this->objFunc->listarGantWf($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
     
 	function diagramaGanttTramite(){
 					

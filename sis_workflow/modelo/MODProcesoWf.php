@@ -197,6 +197,12 @@ function listarGantWf(){
         $this->captura('id_depto','integer');
         $this->captura('depto','varchar');
         $this->captura('nombre_usuario_ai','varchar');
+		$this->captura('arbol','varchar');
+		$this->captura('id_padre','integer');
+		$this->captura('id_obs','integer');
+		$this->captura('id_anterior','integer');
+		
+		
         
         
         //$this->captura('id_estructura_uo','integer');

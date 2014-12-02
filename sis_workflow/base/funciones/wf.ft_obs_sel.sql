@@ -83,7 +83,7 @@ BEGIN
                          inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
                          inner join wf.tproceso_wf pwf on pwf.id_proceso_wf = ewf.id_proceso_wf
                          inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
-                      where  '||v_filtro;
+                      where  obs.estado_reg = ''activo'' and '||v_filtro;
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -120,7 +120,7 @@ BEGIN
                          inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
                          inner join wf.tproceso_wf pwf on pwf.id_proceso_wf = ewf.id_proceso_wf
                          inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
-                      where '||v_filtro;
+                      where obs.estado_reg = ''activo'' and '||v_filtro;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

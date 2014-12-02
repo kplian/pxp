@@ -75,7 +75,7 @@ class MODValidacion
         }
 		elseif ($tipo=='consulta_select'){								
 				$this->validarSelect($nombre,$valor,$blank,$tamano);				
-			 $this->validartext($nombre,$valor,$blank,$tamano);
+			    $this->validartext($nombre,$valor,$blank,$tamano);
 		}
 		
 		elseif ($tipo=='json_text'){								

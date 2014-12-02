@@ -48,12 +48,6 @@ class MODObs extends MODbase{
 		$this->captura('nombre_tipo_estado','varchar');
 		$this->captura('nombre_tipo_proceso','varchar');
 		
-		
-		
-		
-		
-		
-		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -117,6 +111,23 @@ class MODObs extends MODbase{
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='wf.ft_obs_ime';
 		$this->transaccion='WF_OBS_ELI';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_obs','id_obs','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+    function cerrarObs(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='wf.ft_obs_ime';
+		$this->transaccion='WF_CERRAROBS_MOD';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
