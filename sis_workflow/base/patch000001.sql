@@ -927,3 +927,14 @@ COMMENT ON COLUMN wf.ttipo_estado.adminte_obs
 IS 'no o si, define si permite registrar observaciones en este estado';
 
 /***********************************F-SCP-RAC-WF-1-25/11/2014****************************************/
+
+/*****************************I-SCP-RAC-WF-0-24/11/2014*************/
+--------------- SQL ---------------
+
+ALTER TABLE wf.tobs
+  ADD COLUMN id_alarma INTEGER;
+
+COMMENT ON COLUMN wf.tobs.id_alarma
+IS 'referencia a la alarma creada por la observacion';
+
+/*****************************F-SCP-RAC-WF-0-24/11/2014*************/
