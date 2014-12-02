@@ -911,7 +911,7 @@ CREATE TABLE wf.tobs (
   id_funcionario_resp INTEGER, 
   estado VARCHAR(20) DEFAULT 'abierto'::character varying, 
   fecha_fin TIMESTAMP(6) WITHOUT TIME ZONE, 
-  desc_fin VARCHAR
+  desc_fin VARCHAR,
   CONSTRAINT tobs_pkey PRIMARY KEY(id_obs)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
