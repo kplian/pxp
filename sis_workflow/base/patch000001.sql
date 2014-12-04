@@ -949,3 +949,46 @@ COMMENT ON COLUMN wf.tobs.id_alarma
 IS 'referencia a la alarma creada por la observacion';
 
 /*****************************F-SCP-RAC-WF-0-24/11/2014*************/
+
+
+/*****************************I-SCP-RAC-WF-0-04/12/2014*************/
+
+--------------- SQL ---------------
+
+CREATE TABLE wf.ttdocumento_historico_wf (
+  id_documento_historico_wf SERIAL,
+  id_documento INTEGER,
+  version INTEGER,
+  PRIMARY KEY(id_documento_historico_wf)
+) INHERITS (pxp.tbase)
+;
+
+ALTER TABLE wf.ttdocumento_historico_wf
+  OWNER TO postgres;
+  
+ --------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN vigente VARCHAR(4) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_historico_wf.vigente
+IS 'si o no, lo no vigentes son versiones anteriores';
+  
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN url_old VARCHAR;
+  
+  --------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN url VARCHAR;
+  
+  --------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN extension VARCHAR(5);
+  
+
+ 
+/*****************************F-SCP-RAC-WF-0-04/12/2014*************/

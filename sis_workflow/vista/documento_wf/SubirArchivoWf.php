@@ -57,10 +57,11 @@ Phx.vista.SubirArchivoWf=Ext.extend(Phx.frmInterfaz,{
             config:{
                 fieldLabel: "Documento (archivo Pdf,Word)",
                 gwidth: 130,
-                inputType:'file',
+                inputType: 'file',
                 name: 'archivo',
+                allowBlank: false,
                 buttonText: '', 
-                maxLength:150,
+                maxLength: 150,
                 anchor:'100%'                   
             },
             type:'Field',

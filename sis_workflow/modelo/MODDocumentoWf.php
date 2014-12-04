@@ -142,37 +142,102 @@ class MODDocumentoWf extends MODbase{
 		return $this->respuesta;
 	}
 	
-	function subirDocumentoWfArchivo(){
+	function subirDocumentoWfArchivo(){ 
                     
-           
-            $this->procedimiento='wf.ft_documento_wf_ime';
-            $this->transaccion='WF_DOCWFAR_MOD';
-            $this->tipo_procedimiento='IME';
-            
-            $ext = pathinfo($this->arregloFiles['archivo']['name']);
-            $this->arreglo['extension']= $ext['extension'];
-            
-            //Define los parametros para la funcion 
-            $this->setParametro('id_documento_wf','id_documento_wf','integer');   
-            $this->setParametro('extension','extension','varchar');
-            $file_name = $this->getFileName('archivo','id_documento_wf');
-            
-            //manda como parametro el nombre del arhivo 
-            $this->aParam->addParametro('file_name',$file_name);
-            $this->arreglo['file_name']= $file_name;
-            $this->setParametro('file_name','file_name','varchar');       
-            //Ejecuta la instruccion
-            $this->armarConsulta();
-                    
-            $this->ejecutarConsulta();
-            
-            if($this->respuesta->getTipo() == 'EXITO'){
-               //mov file
-               $this->setFile('archivo','id_documento_wf', false,$this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp',
-               						'gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
-            }
-            
-            return $this->respuesta;
+            $cone = new conexion();
+			$link = $cone->conectarpdo();
+			
+			try {
+				
+				$link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
+		  	    $link->beginTransaction();
+				
+				if ($this->arregloFiles['archivo']['name'] == "") {
+					throw new Exception("El archivo no puede estar vacio");
+				}
+				
+	            $this->procedimiento='wf.ft_documento_wf_ime';
+	            $this->transaccion='WF_DOCWFAR_MOD';
+	            $this->tipo_procedimiento='IME';
+	            
+	            $ext = pathinfo($this->arregloFiles['archivo']['name']);
+	            $this->arreglo['extension'] = $ext['extension'];
+	            
+				//validar que no sea un arhvio en blanco
+				$file_name = $this->getFileName2('archivo', 'id_documento_wf', '', false);
+				
+	            //Define los parametros para la funcion 
+	            $this->setParametro('id_documento_wf','id_documento_wf','integer');   
+	            $this->setParametro('extension','extension','varchar');
+	            
+	            
+	            
+	            //manda como parametro la url completa del archivo 
+	            $this->aParam->addParametro('file_name', $file_name[2]);
+	            $this->arreglo['file_name'] = $file_name[2];
+	            $this->setParametro('file_name','file_name','varchar'); 
+				
+				//manda como parametro el folder del arhivo 
+	            $this->aParam->addParametro('folder', $file_name[1]);
+	            $this->arreglo['folder'] = $file_name[1];
+	            $this->setParametro('folder','folder','varchar'); 
+				
+				//manda como parametro el solo el nombre del arhivo  sin extencion
+	            $this->aParam->addParametro('only_file', $file_name[0]);
+	            $this->arreglo['only_file'] = $file_name[0];
+	            $this->setParametro('only_file','only_file','varchar'); 
+				
+				      
+	            //Ejecuta la instruccion
+	            $this->armarConsulta();
+				$stmt = $link->prepare($this->consulta);		  
+			  	$stmt->execute();
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);				
+				$resp_procedimiento = $this->divRespuesta($result['f_intermediario_ime']);
+				
+				
+				if ($resp_procedimiento['tipo_respuesta']=='ERROR') {
+					throw new Exception("Error al ejecutar en la bd", 3);
+				}
+	             
+				  
+	            
+	            
+				 if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
+	              
+				   //revisamos si ya existe el archivo la verison anterior sera mayor a cero
+				   $respuesta = $resp_procedimiento['datos'];
+				   //var_dump($respuesta);
+				   if($respuesta['max_version'] != '0' && $respuesta['url_destino'] != ''){
+				   	 
+	                      $this->copyFile($respuesta['url_origen'], $respuesta['url_destino'],  $folder = 'historico');
+				   	
+				   }
+				   
+				   //cipiamos el nuevo archivo 
+	               $this->setFile('archivo','id_documento_wf', false, $this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
+	            }
+				
+				$link->commit();
+				$this->respuesta=new Mensaje();
+				$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
+				$this->respuesta->setDatos($respuesta);
+	        } 
+	        
+	        catch (Exception $e) {			
+		    	$link->rollBack();
+		    	$this->respuesta=new Mensaje();
+				if ($e->getCode() == 3) {//es un error de un procedimiento almacenado de pxp
+					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
+				} else if ($e->getCode() == 2) {//es un error en bd de una consulta
+					$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$e->getMessage(),$e->getMessage(),'modelo','','','','');
+				} else {//es un error lanzado con throw exception
+					throw new Exception($e->getMessage(), 2);
+				}
+		}    
+	    
+	    return $this->respuesta;
+	      
     }
     
     function cambiarMomento(){

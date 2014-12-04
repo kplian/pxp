@@ -633,26 +633,36 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_documento_wf',
 		direction: 'ASC'
 	},
-	tabsouth:[
+	
+	east:
          {
-          url:'../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstadoWF.php',
-          title:'Estados por momento', 
-          height:'40%',
-          cls:'TipoDocumentoEstadoWF'
-         }
-    
-       ],
+          url:'../../../sis_workflow/vista/documento_historico_wf/DocumentoHistoricoWf.php',
+          title:'Histórico', 
+          width: '30%',
+          collapsed: true,
+          cls:'DocumentoHistoricoWf'
+         },
+         
+	south:
+         {
+          url: '../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstadoWF.php',
+          title: 'Estados por momento', 
+          width: 400,
+           height:'40%',
+           collapsed:true,
+          cls: 'TipoDocumentoEstadoWF'
+         },
 	
 	cambiarMomento:function(){
 	    Phx.CP.loadingShow();
 	    var d = this.sm.getSelected().data;
         Ext.Ajax.request({
             url:'../../sis_workflow/control/DocumentoWf/cambiarMomento',
-            params:{id_documento_wf:d.id_documento_wf},
-            success:this.successMomento,
+            params:{ id_documento_wf: d.id_documento_wf},
+            success: this.successMomento,
             failure: this.conexionFailure,
-            timeout:this.timeout,
-            scope:this
+            timeout: this.timeout,
+            scope: this
         }); 
 	    
 	},
