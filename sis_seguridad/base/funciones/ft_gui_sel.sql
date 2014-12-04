@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_gui_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -200,7 +198,7 @@ BEGIN
                                   from segu.tgui g
                                   inner join segu.tsubsistema s
                                       on s.id_subsistema = g.id_subsistema
-                                  where g.id_subsistema = '|| v_parametros.id_subsistema;
+                                  where g.temporal is null and g.id_subsistema = '|| v_parametros.id_subsistema;
                if (v_parametros.todo = 'no') then                   
                		v_consulta = v_consulta || ' and g.modificado is null ';
                end if;
@@ -229,7 +227,7 @@ BEGIN
                                     g.clase_vista,
                                     g.parametros
                                   from segu.tgui g
-                                  where estado_reg = ''activo'' and ruta_archivo is not null and visible = ''si'' 
+                                  where g.temporal is null and estado_reg = ''activo'' and ruta_archivo is not null and visible = ''si'' 
                                   	and clase_vista is not null and ((nivel > 1) or (nivel = 1 and id_subsistema = 0)) and trim(both '' '' from ruta_archivo) != '''' and  trim(both '' '' from clase_vista) !=''''
                                   	and g.id_subsistema = '|| v_parametros.id_subsistema ||
                             ' order by g.id_gui ASC';
