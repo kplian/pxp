@@ -955,7 +955,7 @@ IS 'referencia a la alarma creada por la observacion';
 
 --------------- SQL ---------------
 
-CREATE TABLE wf.ttdocumento_historico_wf (
+CREATE TABLE wf.tdocumento_historico_wf (
   id_documento_historico_wf SERIAL,
   id_documento INTEGER,
   version INTEGER,
