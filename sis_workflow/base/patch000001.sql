@@ -963,7 +963,7 @@ CREATE TABLE wf.tdocumento_historico_wf (
 ) INHERITS (pxp.tbase)
 ;
 
-ALTER TABLE wf.ttdocumento_historico_wf
+ALTER TABLE wf.tdocumento_historico_wf
   OWNER TO postgres;
   
  --------------- SQL ---------------
