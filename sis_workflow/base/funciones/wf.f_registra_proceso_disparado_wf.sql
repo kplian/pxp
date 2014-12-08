@@ -111,6 +111,8 @@ BEGIN
       where tpo.id_tipo_estado = v_id_tipo_estado_prev and tpo.estado_reg = 'activo'; 
    
     v_cantidad_disparos = v_cantidad_disparos + COALESCE(v_cantidad_disparos_origenes,0);
+    
+ 
    
     -- si solo tiene un proceso disparado
     if v_cantidad_disparos = 1 then
@@ -120,7 +122,7 @@ BEGIN
         into 
           v_id_tipo_proceso_next
         from wf.ttipo_proceso tp 
-        where   tp.id_tipo_estado=v_id_tipo_estado_prev;
+        where   tp.estado_reg = 'activo'  and  tp.id_tipo_estado=v_id_tipo_estado_prev;
         
         
         if  v_id_tipo_proceso_next is NULL then
@@ -129,7 +131,7 @@ BEGIN
           into 
             v_id_tipo_proceso_next
           from wf.ttipo_proceso_origen tp 
-          where   tp.id_tipo_estado=v_id_tipo_estado_prev;
+          where  tp.estado_reg = 'activo' and   tp.id_tipo_estado=v_id_tipo_estado_prev;
         end if;
     
     -- si el proceso no apunta a ningun lado
@@ -186,12 +188,8 @@ BEGIN
     
     
     end if;
-        
-    
-    
-  
-     
-    
+            
+   
     IF v_id_tipo_proceso_next is NULL THEN 
     
       raise exception 'El estado (- % -) no apunta a ningun proceso ',v_codigo_prev;
@@ -206,7 +204,7 @@ BEGIN
        v_id_tipo_estado_next,
        v_codigo_estado_next
      from wf.ttipo_estado te
-     where te.id_tipo_proceso = v_id_tipo_proceso_next and te.inicio ='si' and te.estado_reg = 'activo'; 
+     where te.id_tipo_proceso = v_id_tipo_proceso_next and te.inicio = 'si' and te.estado_reg = 'activo'; 
      
      if v_id_tipo_estado_next is NULL THEN
            raise exception 'El WF esta mal parametrizado verifique a que tipo_proceso apunto el tipo_estado previo';
