@@ -182,7 +182,7 @@ class DiagramadorGanttWF{
                  $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH );
                  $graph->scale->week->SetStyle(HOURSTYLE_HM24);
                  $sw =1;
-                  $fechaFin=$fechaFin->add(new DateInterval('PT1200H'));
+                  $fechaFin=$fechaFin->add(new DateInterval('PT4000H'));
 
          }
          elseif ($diferencia->format('%m') >  1){
@@ -190,14 +190,14 @@ class DiagramadorGanttWF{
                $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK   );
                 $graph->scale->week->SetStyle(HOURSTYLE_HM24); 
                 $sw =2; 
-                $fechaFin=$fechaFin->add(new DateInterval('PT1000H'));    
+                $fechaFin=$fechaFin->add(new DateInterval('PT7000H'));    
         }
         elseif ($diferencia->format('%m') > 0 ){
               //escala de dias
               $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK | GANTT_HDAY  );
               $graph->scale->week->SetStyle(HOURSTYLE_HM24);
               $sw =3; 
-              $fechaFin=$fechaFin->add(new DateInterval('PT800H'));        
+              $fechaFin=$fechaFin->add(new DateInterval('PT4600H'));        
         }
         elseif ($diferencia->format('%m') == 0 && $diferencia->format('%d') > 1){
               //escala de dias 
@@ -205,14 +205,14 @@ class DiagramadorGanttWF{
               $graph->scale->week->SetStyle(HOURSTYLE_HM24);
               $graph->scale->hour->SetInterval(12);
               $sw =4; 
-              $fechaFin=$fechaFin->add(new DateInterval('PT300H')); 
+              $fechaFin=$fechaFin->add(new DateInterval('PT400H')); 
                
         }
         else{
            //escala de horas 
            $graph->ShowHeaders( GANTT_HDAY | GANTT_HHOUR ); 
             $graph->scale->week->SetStyle(HOURSTYLE_HM24);
-            $fechaFin=$fechaFin->add(new DateInterval('PT100H'));
+            $fechaFin=$fechaFin->add(new DateInterval('PT250H'));
             $sw =5;      
         }
 

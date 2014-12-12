@@ -1,18 +1,20 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_convertir_moneda (
   p_id_moneda_1 integer,
   p_id_moneda_2 integer,
   p_importe numeric,
   p_fecha date,
-  p_tipo character varying,
-  p_num_decimales integer
+  p_tipo varchar,
+  p_num_decimales integer,
+  p_tipo_cambio_custom numeric = 1
 )
-RETURNS numeric
-AS 
+RETURNS numeric AS
 $body$
 /**************************************************************************
  FUNCION: 		param.f_convertir_moneda
  DESCRIPCION:   Convierte el importe de la moneda1 a la moneda2 con el tipo
-                de cambio "O" Oficial "C" Compra y "V" venta por defecto "O" y con el redondeo
+                de cambio "O" Oficial, "C" Compra,   "V" venta o "C" custom,  por defecto "O" y con el redondeo
                 p_num_decimales por defecto 2
  AUTOR: 	    KPLIAN (jrr)	
  FECHA:	
@@ -85,10 +87,14 @@ BEGIN
 
     /*Si la moneda base es la moneda 1 se divide por el tipo de cambio*/
     if(v_id_moneda_base=v_id_moneda_1)then
-        select tc.oficial as tipo_cambio,
-        (v_res/tc.oficial)as oficial ,
-        (v_res/tc.compra) as compra,(v_res/tc.venta) as venta
-        into v_registro
+        select 
+           tc.oficial as tipo_cambio,
+          (v_res/tc.oficial) as oficial ,
+          (v_res/tc.compra) as compra,
+          (v_res/tc.venta) as venta,
+          (v_res/p_tipo_cambio_custom) as custom
+         into 
+           v_registro
         from param.ttipo_cambio tc
         where   tc.id_moneda=v_id_moneda_2 and
                 tc.fecha=p_fecha;
@@ -96,10 +102,14 @@ BEGIN
     /*Si la moneda base es la moneda 2 se multiplica por el tipo de cambio*/
     elsif(v_id_moneda_base=v_id_moneda_2)then
         
-        select tc.oficial as tipo_cambio,
-        (v_res*tc.oficial) as oficial,
-        (v_res*tc.compra) as compra,(v_res*tc.venta)as venta
-        into v_registro
+        select 
+          tc.oficial as tipo_cambio,
+         (v_res*tc.oficial) as oficial,
+         (v_res*tc.compra) as compra,
+         (v_res*tc.venta)as venta,
+         (v_res*p_tipo_cambio_custom) as custom 
+        into 
+          v_registro
         from param.ttipo_cambio tc
         where   tc.id_moneda=v_id_moneda_1 and
                 tc.fecha=p_fecha;
@@ -124,20 +134,28 @@ BEGIN
         if(v_num_decimales=-1)then
             return v_registro.oficial;
         else
-            return round(v_registro.oficial,v_num_decimales);
+            return round(v_registro.oficial, v_num_decimales);
         end if;
     elsif(v_tipo='C')then
         if(v_num_decimales=-1)then
             return v_registro.compra;
         else
-            return round(v_registro.compra,v_num_decimales);
+            return round(v_registro.compra, v_num_decimales);
         end if;
     elsif(v_tipo='V')then
         if(v_num_decimales=-1)then
-            return round(v_registro.venta,v_num_decimales);
+            return round(v_registro.venta, v_num_decimales);
         else
             return v_registro.venta;
         end if;
+   
+   elsif(v_tipo='C')then
+        if(v_num_decimales=-1)then
+            return round(v_registro.custom, v_num_decimales);
+        else
+            return v_registro.custom;
+        end if;
+    
     ELSE
         raise exception 'No existe el tipo % para convertir las monedas',v_tipo;
     end if;
@@ -152,7 +170,8 @@ EXCEPTION
 		raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_get_moneda_base (OID = 304011) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

@@ -862,3 +862,16 @@ ALTER TABLE param.tconcepto_ingas
   
 /***********************************F-SCP-RAC-PARAM-18/11/2014****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-11/12/2014****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN contabilidad VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tmoneda.contabilidad
+IS 'se utiliza para contabilizar en diferentes moendas si o no';
+
+/***********************************F-SCP-RAC-PARAM-11/12/2014****************************************/
+
