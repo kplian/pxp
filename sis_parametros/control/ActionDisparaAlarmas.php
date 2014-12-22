@@ -14,7 +14,6 @@ session_start();
 $_SESSION["_SESION"]= new CTSesion(); 
 include(dirname(__FILE__).'/../../lib/DatosGenerales.php');
 include_once(dirname(__FILE__).'/../../lib/lib_general/Errores.php');
-
 include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.phpmailer.php');
 include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.smtp.php');
 include_once(dirname(__FILE__).'/../../lib/lib_general/cls_correo_externo.php');
@@ -51,10 +50,8 @@ include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
 include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 
 
-         $objPostData=new CTPostData();
-        
-        $arr_unlink=array();
-        
+       $objPostData=new CTPostData();
+       $arr_unlink=array();
         $aPostData=$objPostData->getData();
         //rac 22/09/2011 
         //$aPostFiles=$objPostData->getFiles();

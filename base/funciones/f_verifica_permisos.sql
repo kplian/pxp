@@ -66,7 +66,7 @@ begin
    
      -- po_habilitar_log  = true;
   
-    
+    --TODO,  crear un array en variable gloabl para que los procedimientos bsaicos sean parametrizables
     
     --  4) si no es administrador verificamos si no es una trasaccion basica
          -- (todos tienen permisos para ejecutar las basicas)
@@ -90,8 +90,9 @@ begin
              'PM_GETALA_SEL',
              'OR_INT_SEL',
              'OR_INT_CONT',
-             'SEG_GUIMOB_SEL',     --listado menu mobile
-             'OR_APLINT_IME'      --aplica interinato      
+             'SEG_GUIMOB_SEL',     -- listado menu mobile
+             'OR_APLINT_IME' ,     -- aplica interinato  
+             'TES_PPPREV_INS'      -- pagos pendientes de tesoreria    
              ))) THEN
             po_tiene_permisos = true;
          

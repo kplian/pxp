@@ -343,7 +343,7 @@ tabEnter:true,
        				queryDelay:1000,
        				width:250,
        				minChars:2,
-	       			enableMultiSelect:true,
+	       			enableMultiSelect:true
        			
        				//renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);}
 

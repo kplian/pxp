@@ -83,13 +83,13 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '70%',
 				gwidth: 200,
-				maxLength:150
+				maxLength: 150
 			},
 			type:'TextField',
-			filters:{pfiltro:'tipes.nombre_estado',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
+			filters: { pfiltro: 'tipes.nombre_estado', type: 'string'},
+			id_grupo: 1,
+			grid: true,
+			form: true
 		},
 		{
 			config:{
