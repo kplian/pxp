@@ -5,6 +5,21 @@
 	border: 1px solid #fff;
 	white-space: nowrap;
 }
+.awesomecombo-2item {
+	height: 32px;
+	padding: 2px 2px 2px 20px;
+	color: #333;
+	border: 1px solid #fff;
+	white-space: nowrap;
+}
+
+.awesomecombo-3item {
+	height: 48px;
+	padding: 2px 2px 2px 20px;
+	color: #333;
+	border: 1px solid #fff;
+	white-space: nowrap;
+}
 
 .unchecked {
 	font-weight: normal;
