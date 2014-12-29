@@ -1,0 +1,15 @@
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+composer.phar
+phpunit.xml
+phpword.ini
+/.buildpath
+/.idea
+/.project
+/.settings
+/build
+/vendor

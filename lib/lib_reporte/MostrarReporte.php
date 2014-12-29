@@ -12,7 +12,9 @@ class MostrarReporte
                 header('Content-type: application/pdf');
             } else if($fileExtension == 'xls'){
                 header("Content-type: application/xls");
-            } else if ($fileExtension == 'png') {
+            } else if($fileExtension == 'docx'){
+                header("Content-type: application/docx");
+            }else if ($fileExtension == 'png') {
                 header("Content-type: image/png");
             }  else if ($fileExtension == 'sql') {
                 header("Content-type: text/plain");
