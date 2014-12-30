@@ -209,10 +209,10 @@ BEGIN
                 
                 --recupera datos del concepto ... 
                 select 
-                   ci.desc_ingas 
-                 into 
-                   v_registros   
+                   COALESCE(pxp.list(cid.id_concepto_ingas::text),'0') as listado
+                into v_registros
                 from param.tconcepto_ingas ci 
+                inner join migra.tconcepto_ids cid on cid.id_concepto_ingas_pxp = ci.id_concepto_ingas
                 where ci.id_concepto_ingas = v_parametros.id_concepto_ingas; 
                  
                 
@@ -221,7 +221,7 @@ BEGIN
                                 SET 
                                   sw_autorizacion = string_to_array('''||v_parametros.sw_autorizacion||''','','')::varchar[]
                                 WHERE 
-                                  lower(desc_ingas) = lower('''|| v_registros.desc_ingas ||''')';
+                                  id_concepto_ingas in ('|| v_registros.listado ||')';
                  
                  perform  dblink(v_nombre_conexion, v_consulta, true);
                  
