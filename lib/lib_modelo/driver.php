@@ -18,9 +18,11 @@ class driver
 	protected $consulta;
 	protected $variables=array();
 	protected $valores=array();
-	
-	
 	protected $tipos=array();
+	//RAC 31/12/2014 para gregar parametros al count
+	protected $captura_count=array();
+	protected $captura_tipo_count=array();
+	
 
 	protected $captura=array();
 	protected $captura_tipo=array();
@@ -157,9 +159,9 @@ class driver
 	 * Nombre funcion:	captura
 	 * Proposito:		Aoade una variable que se recibira de un procedimiento de tipo sel
 	 * Fecha creacion:	12/04/2009
-	 * Autor: Jaime Rivera Rojas
+	 * Autor: Jaiminha Rivera Rojas
 	 * Fecah Modificacion: 2/09/2011
-	 * Autor Mod: Rensinha Arteaga Copari
+	 * Autor Mod: Rensi Arteaga Copari
 	 * Desc Mod: Aumenta un parametro para identificar varialbes de regreso boleanas
 	 *           para traducri f -> false para compatibilizar con javaScript 
 	 * @param $nombre Sera el nombre del campo
@@ -194,13 +196,23 @@ class driver
 			
 		}
 		
-		
-		
-		
-		
-		
 		array_push($this->captura,$nombre);
 		array_push($this->captura_tipo,$tipo);
+	}
+	
+	/**
+	 * Nombre funcion:	capturaCount
+	 * Proposito:		Captura valores del count, no se admite bytea ni archiso
+	 * Fecha creacion:	12/04/2009
+	 * Autor: RAC
+	 *
+	 * @param $nombre Sera el nombre del campo
+	 * @param $tipo Sera el tipo del campo
+	 */
+	function capturaCount($nombre,$tipo){
+		
+		array_push($this->captura_count,$nombre);
+		array_push($this->captura_tipo_count,$tipo);
 	}
 	
 
@@ -243,6 +255,9 @@ class driver
 		$this->captura_tipo=array();
 		//rac
 		$this->nombres_booleanos=array();
+		//Rac 31/12/2014 agregar variables para que el count tenga la opcion de retornar  mas valores
+		$this->captura_count=array();
+		$this->captura_tipo_count=array();
 	}
 	/**
 	 * Nombre funcion:	resetCaptura
@@ -253,7 +268,9 @@ class driver
 	function resetParametros(){
 		$this->variables=array();
 		$this->tipos=array();
-		$this->valores=array();		
+		$this->valores=array();	
+		
+			
 	}
 	
 	/**
@@ -607,10 +624,32 @@ class driver
 	   else{
 	   	$this->consulta.=",NULL,'record','as (total bigint)')";
 		}
-
-		$this->consulta.=' as (total bigint)';
-
+        //
+		$this->consulta.= $this->armaRetornoCount();
+		
 	}
+
+    /**
+	 * Nombre funcion:	armaRetornoCount
+	 * Proposito:		prepra el string para las variable de retorno del count, por defecto si no hay datos de captura coloca el total bogint
+	 * Fecha creacion:	12/04/2014
+	 * 
+	 */
+
+    function armaRetornoCount(){
+    	
+		$tipo_retorno=' as (total bigint';
+
+		for($i=0;$i<count($this->captura_count);$i++){
+			$tipo_retorno.=",".$this->captura_count[$i]." ".$this->captura_tipo_count[$i];
+			
+		}
+
+		$tipo_retorno.=')';
+		
+		return  $tipo_retorno;
+    }
+
 
 	/**
 	 * Nombre funcion:	armarConsulta
@@ -984,6 +1023,10 @@ class driver
 				$array=Array();
 
 				if($this->count){
+						
+					//TODO ,...agegar parametros de suma a la consulta del  count ....
+							
+						
 					
 					//Hago la consulta de count
 					if($res = pg_query($link,$this->consulta))
@@ -999,6 +1042,15 @@ class driver
 
 						//EXITO en la transaccion
 						$this->respuesta->setTotal($array[0]['total']);
+						
+						//RAC 31/12/2014  add extra param from count query
+						$extra_data = array();
+						
+						for($i=0;$i<count($this->captura_count);$i++){
+							$extra_data[$this->captura_count[$i]] = $array[0][$this->captura_count[$i]];
+							
+						}
+						$this->respuesta->setExtraData($extra_data);
 
 						//armo la consulta original
 						$this->armarConsultaSel();

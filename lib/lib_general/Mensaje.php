@@ -9,6 +9,7 @@ class Mensaje
 	private $mensaje_tec;
 	private $capa;
 	private $total;
+	private $extraData=array();
 	private $tipo_transaccion;//SEL || IME || OTRO
 	public $datos=array();//RAC 18/11/11 se hace publica esta propiedad
 	private $consulta;
@@ -78,7 +79,18 @@ class Mensaje
 		$this->total=$total;
 
 	}
-	
+	/**
+	 * Nombre funcion:	setTotal
+	 * Proposito:		Registra el valor de la cantidad de registros en una consulta de seleccion
+	 * Fecha creacion:	12/04/2009
+	 *
+	 * @param array $total
+	 *
+	 */
+	function setExtraData($extraData){
+		$this->extraData = $extraData;
+
+	}
 	/**
 	 * Nombre funcion:	setArchivoGenerado
 	 * Proposito:		Registra el archivo generado por un reporte
@@ -331,7 +343,15 @@ class Mensaje
                 if($_SESSION["_OFUSCAR_ID"]=='si'){
                     $this->ofuscarIdentificadores();
                 }
-				return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
+				//RAC 31/12/2014 array de datos extra para retornar en la consulta sel
+				if(count($this->extraData) > 0 ){
+					return '{"total":"' . $this->total . '","countData":' . json_encode($this->extraData) . ',"datos":' . json_encode($this->datos) . '}';
+			
+				}else {
+					return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
+			    }
+				
+				
 			}
 			else{
 				if(count($this->nivel_arbol)==0){
