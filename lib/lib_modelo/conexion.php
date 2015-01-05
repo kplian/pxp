@@ -59,6 +59,37 @@ class conexion
 
 	}
 
+
+	function conectarPDOInformix(){
+		
+		
+		
+		#Only needed if INFORMIXDIR is not already set
+		
+			
+		/*$hostname = '172.17.45.7';
+
+		$database = 'ingresos';
+		
+		$login = 'conexinf';
+		
+		$password = 'conexinf123';
+		
+		$informixserver = 'sai1';
+		*/
+		#Only needed if INFORMIXDIR is not already set
+		
+		putenv("INFORMIXDIR=/opt/informix");
+		$dbh = "informix:host=".$_SESSION['_HOST_INFORMIX'].";service=informixport;database=".$_SESSION['_DATABASE_INFORMIX'].";server=".$_SESSION['_SERVER_INFORMIX']."; protocol=onsoctcp;";
+		
+		
+		
+		$conexion = new PDO($dbh,$_SESSION['_USER_INFORMIX'],$_SESSION['_PASS_INFORMIX']);
+		return $conexion;
+
+		
+	}
+
 	function conectarpdo($externo=''){
 
 		if ($externo != '') {

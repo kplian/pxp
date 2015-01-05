@@ -8,8 +8,8 @@ class Mensaje
 	private $mensaje;
 	private $mensaje_tec;
 	private $capa;
-	private $total;
-	private $extraData=array();
+	public $total;
+	public $extraData=array();
 	private $tipo_transaccion;//SEL || IME || OTRO
 	public $datos=array();//RAC 18/11/11 se hace publica esta propiedad
 	private $consulta;
@@ -40,6 +40,19 @@ class Mensaje
 	
 	function addRecDatos($arr){
 		array_unshift($this->datos,$arr);
+	}
+	
+	/**
+	 * Nombre funcion:	addLastRecDatos
+	 * Proposito:		Adiciona un registro al final de la respuesta
+	 * Fecha creacion:	05/01/2015
+	 * Author:			RAC
+	 * @param array $arreglo
+	 *
+	 */
+	
+	function addLastRecDatos($arr){
+		array_push($this->datos,$arr);
 	}
 
 	/**
