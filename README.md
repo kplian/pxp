@@ -9,9 +9,9 @@ Example
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
-	user:      angela.correa
+	user:     admin
 	 
-	password:  angela.correa
+	password:  admin
 
 Framework PXP for agile web development
 
