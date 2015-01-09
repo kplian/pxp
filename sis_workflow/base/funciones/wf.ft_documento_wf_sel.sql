@@ -101,7 +101,10 @@ BEGIN
                         dwf.fecha_upload,
                         td.tipo as tipo_documento,
                         td.action,
-                        td.solo_lectura
+                        td.solo_lectura,
+                        dwf.id_documento_wf_ori,
+                        dwf.id_proceso_wf_ori,
+                        dwf.nro_tramite_ori
 						from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
