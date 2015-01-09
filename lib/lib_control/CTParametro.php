@@ -69,30 +69,24 @@ class CTParametro{
 
 
         //si existe el parametros query la consulta viene de un filtro
-        
+        $this->parametros_consulta['filtro'] = '';
 		if(isset($this->arreglo_parametros['query'])){
 			//FILTRO PARA COMBO
 			$this->parametros_consulta['filtro']=$this->armarFiltro($this->arreglo_parametros['query'],'CLASICO',$this->arreglo_parametros['par_filtro']);
 				
 		}
-		else{
-		//elseif(isset($this->arreglo_parametros['filter'])){
-	
-			//FILTRO PARA GRILLAS
-			//RAC  26/10/11 validacion de varialbes en filtro
-			
-			if(isset($this->arreglo_parametros['filter'])){
+		
+		if(isset($this->arreglo_parametros['filter'])){
 				
-			$this->parametros_consulta['filtro']=$this->armarFiltro($this->_json_decode($this->arreglo_parametros['filter']));
-			}
-			else{
-				
-				$this->parametros_consulta['filtro']=" 0 = 0 ";
-
-			}
-				
-		  
+			$this->parametros_consulta['filtro']= $this->parametros_consulta['filtro'] . ' and ' . $this->armarFiltro($this->_json_decode($this->arreglo_parametros['filter']));
 		}
+		//si no hay query ni filtro el filtro es 0=0
+		if(!isset($this->arreglo_parametros['filter']) && !isset($this->arreglo_parametros['query'])){
+			
+			$this->parametros_consulta['filtro']=" 0 = 0 ";
+
+		}
+		
 
 
 
@@ -404,9 +398,7 @@ class CTParametro{
 		$qs='';
 
 		if($tipo=='JSON'){
-		        /*echo '<pre>';  
-		        var_dump($filter);
-		         echo '</pre>'; */
+		        
 		    
 			//decodifica filtro JSON usado en grillas
 			

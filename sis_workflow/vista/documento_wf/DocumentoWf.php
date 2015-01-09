@@ -6,7 +6,6 @@
 *@date 15-01-2014 13:52:19
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -309,6 +308,26 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:false
         },
+        {
+            config:{
+                name: 'nro_tramite_ori',
+                fieldLabel: 'Documentos Previos',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 120,
+                maxLength:200,
+                renderer:function (value, p, record){  
+                            if(record.data['id_proceso_wf_ori']) {                                
+                                return  String.format("<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>{0}</a></div>",record.data['nro_tramite_ori']);
+                            }
+                        },
+            },
+                type:'TextField',
+                filters:{pfiltro:'dwf.nro_tramite_ori',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
+        },
 		{
 			config:{
 				name: 'obs',
@@ -514,9 +533,28 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 timeout:this.timeout,
                 scope:this
             });
+	    } else if (fieldName == 'nro_tramite_ori') {
+	    	//open documentos de origen
+       		this.loadCheckDocumentosSolWf(record);
 	    }
 		
 	},
+	
+	loadCheckDocumentosSolWf:function(rec) {
+           
+            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
+                    'Documentos de Origen',
+                    {
+                        width:'90%',
+                        height:500
+                    },
+                    { id_proceso_wf: rec.data.id_proceso_wf_ori,
+                      nro_tramite: rec.data.nro_tramite_ori,
+                      nombreVista: 'Documentos de Origen' },
+                    this.idContenedor,
+                    'DocumentoWf'
+        )
+    },
 	
 	onDblClik : function (grid,index) {
 		record = this.store.getAt(index);
@@ -582,7 +620,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'chequeado_fisico',
         'usr_upload',
         'tipo_documento',
-        'action',
+        'action','solo_lectura','id_documento_wf_ori','id_proceso_wf_ori','nro_tramite_ori',
         {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'}
 		
 		
@@ -602,7 +640,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	            this.getBoton('btnMomento').setIconClass('block')
 	        }        
 	        
-	        if( data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
+	        if(data.solo_lectura.toLowerCase() == 'solo_lectura' || data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
 	           this.getBoton('btnUpload').disable(); 
 	           this.getBoton('btnMomento').disable()
 	        }

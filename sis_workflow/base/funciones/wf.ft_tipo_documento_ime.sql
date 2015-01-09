@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -64,7 +66,8 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            solo_lectura
           	) values(
 			v_parametros.nombre,
 			v_parametros.id_proceso_macro,
@@ -77,7 +80,8 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+            v_parametros.solo_lectura
 							
 			)RETURNING id_tipo_documento into v_id_tipo_documento;
 			
@@ -110,7 +114,8 @@ BEGIN
 			id_tipo_proceso = v_parametros.id_tipo_proceso,
 			action = v_parametros.action,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+            solo_lectura =  v_parametros.solo_lectura
 			where id_tipo_documento=v_parametros.id_tipo_documento;
                
 			--Definicion de la respuesta

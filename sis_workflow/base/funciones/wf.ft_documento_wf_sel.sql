@@ -100,7 +100,8 @@ BEGIN
                         usu3.cuenta as usr_upload,
                         dwf.fecha_upload,
                         td.tipo as tipo_documento,
-                        td.action
+                        td.action,
+                        td.solo_lectura
 						from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
@@ -116,7 +117,7 @@ BEGIN
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-            --raise exception '%',v_consulta;
+            raise notice '%',v_consulta;
 
 --raise exception 'xxx';
 			--Devuelve la respuesta

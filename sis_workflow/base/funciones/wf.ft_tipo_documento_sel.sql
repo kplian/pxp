@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -60,7 +62,8 @@ BEGIN
 						tipdw.id_usuario_mod,
 						tipdw.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+                        tipdw.solo_lectura
 						from wf.ttipo_documento tipdw
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod

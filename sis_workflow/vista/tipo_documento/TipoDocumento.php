@@ -137,6 +137,34 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
             form:true
         },
 		
+        {
+            config:{
+                name: 'solo_lectura',
+                fieldLabel: 'Solo Llectura ',
+                allowBlank: false,
+                anchor: '70%',
+                gwidth: 150,
+                maxLength:50,
+                emptyText:'Tipo...',                
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'solo_lectura',                  
+              store:['si','no']
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'tipdw.tipo',type:'string'},
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'tipdw.solo_lectura',
+                         options: ['si','no'],   
+                    },
+            grid:true,
+            form:true
+        },
+		
 		{
 			config:{
 				name: 'action',
@@ -253,7 +281,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'solo_lectura'
 		
 	],
 	

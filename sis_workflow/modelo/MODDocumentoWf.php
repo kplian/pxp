@@ -56,11 +56,13 @@ class MODDocumentoWf extends MODbase{
         $this->captura('tipo_documento','varchar');
         
         $this->captura('action','varchar');
-        
-        
-        
-        
-        
+		$this->captura('solo_lectura','varchar');
+		
+		$this->captura('id_documento_wf_ori','integer');
+		$this->captura('id_proceso_wf_ori','integer');
+		$this->captura('nro_tramite_ori','varchar');
+		
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

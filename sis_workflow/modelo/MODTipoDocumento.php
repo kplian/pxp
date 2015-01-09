@@ -35,6 +35,7 @@ class MODTipoDocumento extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('solo_lectura','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -60,6 +61,9 @@ class MODTipoDocumento extends MODbase{
 		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
 		
 		$this->setParametro('action','action','varchar');
+		$this->setParametro('solo_lectura','solo_lectura','varchar');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -85,6 +89,7 @@ class MODTipoDocumento extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('id_tipo_proceso','id_tipo_proceso','int4');
 		$this->setParametro('action','action','varchar');
+		$this->setParametro('solo_lectura','solo_lectura','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

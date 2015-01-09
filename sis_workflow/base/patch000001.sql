@@ -992,3 +992,37 @@ ALTER TABLE wf.tdocumento_historico_wf
 
  
 /*****************************F-SCP-RAC-WF-0-04/12/2014*************/
+
+
+/*****************************I-SCP-RAC-WF-0-09/01/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN solo_lectura VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+
+COMMENT ON COLUMN wf.ttipo_documento.solo_lectura
+IS 'los campos  de solo lectura se copia por base de datos,  y no deben ser cambiados por los usuarios';
+
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN id_proceso_wf_ori INTEGER;
+
+COMMENT ON COLUMN wf.tdocumento_wf.id_proceso_wf_ori
+IS 'para alguno documentos copiados, como los contratos en OP, toma el pvalor del proceso wf original para que nos sirva para direccionar a los otros documentos del tramite original';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN nro_tramite_ori VARCHAR;
+
+COMMENT ON COLUMN wf.tdocumento_wf.nro_tramite_ori
+IS 'por rendimiento copiamos el nro_tramite';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN id_documento_wf_ori INTEGER;
+/*****************************F-SCP-RAC-WF-0-09/01/2015*************/
