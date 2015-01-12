@@ -108,7 +108,8 @@ TO CREATE A NEW SYSTEM:
 
 TO UPDATE THE DATABASE ON PULL OR MERGE:
 
-* After pull the code is updated, the database changes are  not updated yet, but it's possible update executing:
+* After pull the code is updated, the database changes are  not updated yet, but it's possible update executing 
+  (execute the command as user postgres):
 
   pxp/utilidades/restaurar_db/restaurar_todo.py
 
