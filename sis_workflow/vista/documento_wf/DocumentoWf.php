@@ -640,12 +640,15 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	            this.getBoton('btnMomento').setIconClass('block')
 	        }        
 	        
-	        if(data.solo_lectura.toLowerCase() == 'solo_lectura' || data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
+	        if(data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
 	           this.getBoton('btnUpload').disable(); 
 	           this.getBoton('btnMomento').disable()
 	        }
+	        if(data.solo_lectura.toLowerCase() == 'si'){
+	        	this.desBotonesTodo();
+	        }
 	   // } else {
-	   // 	this.desBotonesTodo();
+	   // 	
 	   // }      
     },
     

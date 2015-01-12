@@ -73,13 +73,21 @@ class CTParametro{
 		if(isset($this->arreglo_parametros['query'])){
 			//FILTRO PARA COMBO
 			$this->parametros_consulta['filtro']=$this->armarFiltro($this->arreglo_parametros['query'],'CLASICO',$this->arreglo_parametros['par_filtro']);
-				
+			if(isset($this->arreglo_parametros['filter'])){
+				$this->parametros_consulta['filtro'] = $this->parametros_consulta['filtro'] . ' and ' . $this->armarFiltro($this->_json_decode($this->arreglo_parametros['filter']));
+		    }	
+		}
+		else{
+			if(isset($this->arreglo_parametros['filter'])){
+				$this->parametros_consulta['filtro'] = $this->armarFiltro($this->_json_decode($this->arreglo_parametros['filter']));
+		    }
+			
 		}
 		
-		if(isset($this->arreglo_parametros['filter'])){
-				
-			$this->parametros_consulta['filtro']= $this->parametros_consulta['filtro'] . ' and ' . $this->armarFiltro($this->_json_decode($this->arreglo_parametros['filter']));
-		}
+		
+		
+		
+		
 		//si no hay query ni filtro el filtro es 0=0
 		if(!isset($this->arreglo_parametros['filter']) && !isset($this->arreglo_parametros['query'])){
 			
