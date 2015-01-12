@@ -98,10 +98,9 @@ TO CREATE A NEW SYSTEM:
       * test_data.sql
 
   The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
-  for the system. All the patch files contains the scripts to generate the database objects for the system. for example "schema.sql"
+  for the system. All the patch files contains the scripts to generate the database objects for the system. for example "schema.sql" (onlyename of schema)
   
-          DROP SCHEMA IF EXISTS nut CASCADE;
-          CREATE SCHEMA nut AUTHORIZATION postgres;
+          nut
 
 2. Create or update a file named "sistemas.txt" inside your project root folder wich contains the path for every system of your project.Eg:
   "../../../sis_mantenimiento/"
@@ -109,7 +108,8 @@ TO CREATE A NEW SYSTEM:
 
 TO UPDATE THE DATABASE ON PULL OR MERGE:
 
-* After pull the code is updated, the database changes are  not updated yet, but it's possible update executing:
+* After pull the code is updated, the database changes are  not updated yet, but it's possible update executing 
+  (execute the command as user postgres):
 
   pxp/utilidades/restaurar_db/restaurar_todo.py
 
