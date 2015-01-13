@@ -67,7 +67,8 @@ begin
      -- po_habilitar_log  = true;
   
     --TODO,  crear un array en variable gloabl para que los procedimientos bsaicos sean parametrizables
-    
+       
+      
     --  4) si no es administrador verificamos si no es una trasaccion basica
          -- (todos tienen permisos para ejecutar las basicas)
          IF ((not po_tiene_permisos) and  (par_transaccion in  (
@@ -96,7 +97,10 @@ begin
              'WF_TABLACMB_SEL',     -- consulta de tablas instaciadas para combos   
              'WF_TABLACMB_CONT',     -- consulta de tablas instaciadas para combos 
              'WF_TABLAINS_SEL',     --consulta para tablas instacias de wf
-             'WF_TABLAINS_CONT'     --consulta para tablas instacias de wf
+             'WF_TABLAINS_CONT',     --consulta para tablas instacias de wf,
+             'WF_tabla_SEL',
+             'WF_tabla_CONT',
+             'WF_TIPCOLES_SEL'
              
              ))) THEN
             po_tiene_permisos = true;
