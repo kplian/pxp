@@ -82,7 +82,7 @@ BEGIN
                 v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
                 v_joins_wf = v_joins_wf ||  'inner join wf.tproceso_wf pw on pw.id_proceso_wf = ' || v_tabla.bd_codigo_tabla || '.id_proceso_wf ';
                 IF p_administrador !=1  then                	
-                    v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
+                    v_filtro = ' (ew.id_funcionario='||coalesce(v_id_funcionario_usuario::varchar,'0')||' )   and ';
                 END IF;
 			end if;			 	 
 			v_joins_adicionales = '';
@@ -155,7 +155,13 @@ BEGIN
 	elsif(p_transaccion='WF_TABLAINS_CONT')then
 
 		begin
-			--Obtener esquema, datos de tabla            
+			select f.id_funcionario into v_id_funcionario_usuario
+            from segu.tusuario u
+            inner join orga.tfuncionario f 
+            	on f.id_persona = u.id_persona
+            where u.id_usuario = p_id_usuario;
+            
+            --Obtener esquema, datos de tabla            
             select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 
@@ -173,7 +179,7 @@ BEGIN
                 v_joins_wf = v_joins_wf ||  'inner join wf.tproceso_wf pw on pw.id_proceso_wf = ' || v_tabla.bd_codigo_tabla || '.id_proceso_wf ';            
                 IF p_administrador !=1  then
                 	--v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
-                    v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
+                    v_filtro = ' (ew.id_funcionario='||coalesce(v_id_funcionario_usuario::varchar,'0')||' )   and ';
                 END IF;
 			end if;
             
