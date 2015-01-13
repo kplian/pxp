@@ -7,7 +7,29 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
-class ACTTabla extends ACTbase{    
+class ACTTabla extends ACTbase{
+	
+	
+	function listarTablaCombo(){
+		//obtiene la posicion de la tabla instanciada
+		$_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')] = $this->obtenerTablaInstancia();
+		$id_maestro = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_campo_maestro'];
+		$codigo_tabla = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_codigo_tabla'];
+		
+		//si existe como parametro el id del maestro se anade el filtro
+		if ($this->objParam->getParametro($id_maestro) != '') {			
+			$this->objParam->addFiltro($codigo_tabla . "." . $id_maestro  . " = ". $this->objParam->getParametro($id_maestro));
+		}
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODTabla','listarTablaCombo');
+		} else{
+			$this->objFunc=$this->create('MODTabla');			
+			$this->res=$this->objFunc->listarTablaCombo($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}    
 			
 	function listarTablaInstancia(){
 		//obtiene la posicion de la tabla instanciada

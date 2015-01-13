@@ -322,6 +322,62 @@ class MODTabla extends MODbase{
 		}
 	}
 
+    function listarTablaCombo(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_tabla_instancia_sel';
+		$this->transaccion='WF_TABLACMB_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+		$this->setParametro('id_tabla','id_tabla','integer');
+		$this->setParametro('historico','historico','varchar');
+		$this->setParametro('tipo_estado','tipo_estado','varchar');
+		
+		//Definicion de la lista del resultado del query
+		$this->captura('id_' . $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'],'int4');
+		
+		if ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_tipo'] == 'maestro') {
+				
+			$this->captura('estado','varchar');
+			$this->captura('id_estado_wf','int4');
+			$this->captura('id_proceso_wf','int4');
+			$this->captura('obs','text');
+			$this->captura('nro_tramite','varchar');
+		}
+		
+		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
+			
+			$this->captura($value['bd_nombre_columna'],$value['bd_tipo_columna']);		
+			//campos adicionales
+			if ($value['bd_campos_adicionales'] != '' && $value['bd_campos_adicionales'] != null) {
+				$campos_adicionales =  explode(',', $value['bd_campos_adicionales']);
+				
+				foreach ($campos_adicionales as $campo_adicional) {
+					
+					$valores = explode(' ', $campo_adicional);
+					$this->captura($valores[1],$valores[2]);
+				}
+			}			
+		}
+		
+		
+		$this->captura('estado_reg','varchar');		
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+
 	function listarTablaInstancia(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='wf.ft_tabla_instancia_sel';

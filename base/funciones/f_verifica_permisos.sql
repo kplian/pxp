@@ -92,7 +92,12 @@ begin
              'OR_INT_CONT',
              'SEG_GUIMOB_SEL',     -- listado menu mobile
              'OR_APLINT_IME' ,     -- aplica interinato  
-             'TES_PPPREV_INS'      -- pagos pendientes de tesoreria    
+             'TES_PPPREV_INS',      -- pagos pendientes de tesoreria 
+             'WF_TABLACMB_SEL',     -- consulta de tablas instaciadas para combos   
+             'WF_TABLACMB_CONT',     -- consulta de tablas instaciadas para combos 
+             'WF_TABLAINS_SEL',     --consulta para tablas instacias de wf
+             'WF_TABLAINS_CONT'     --consulta para tablas instacias de wf
+             
              ))) THEN
             po_tiene_permisos = true;
          
