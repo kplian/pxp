@@ -99,7 +99,7 @@ BEGIN
             if (v_id_tipo_estado = v_parametros.id_tipo_estado)then
             	update wf.tcolumna_estado set			
                 momento = v_parametros.momento,
-                momento = v_parametros.regla,
+                regla = v_parametros.regla,
                 id_usuario_mod = p_id_usuario,
                 fecha_mod = now()
                 where id_columna_estado=v_parametros.id_columna_estado;
