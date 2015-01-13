@@ -175,7 +175,9 @@ class ACTFuncion extends ACTbase{
 					
 					//if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
 						$newGui = $this->saveGui($newGui, $gui['id_gui']);
-						array_push($relaciones, $newGui);
+						if ($newGui['id_gui'] != $gui['id_gui']) {
+							array_push($relaciones, $newGui);
+						}
 					//}				
 					
 					$turl = '';
@@ -194,7 +196,9 @@ class ACTFuncion extends ACTbase{
 					$cadenaLoad = '';
 					//if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
 						$newGui = $this->saveGui($newGui, $gui['id_gui']);
-						array_push($relaciones, $newGui);
+						if ($newGui['id_gui'] != $gui['id_gui']) {
+							array_push($relaciones, $newGui);
+						}
 					//}
 					
 			    } else if ($cadenaLoad != '') {
@@ -224,7 +228,9 @@ class ACTFuncion extends ACTbase{
 					//if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
 						//guardar datos de newgui y actualizar el id de newgui
 						$newGui = $this->saveGui($newGui, $gui['id_gui']);
-						array_push($relaciones, $newGui);
+						if ($newGui['id_gui'] != $gui['id_gui']) {
+							array_push($relaciones, $newGui);
+						}
 					//}
 					
 			    }else if (strpos($line, ']')!== FALSE && $cadenaMD != '') {
