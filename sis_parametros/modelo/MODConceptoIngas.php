@@ -63,7 +63,10 @@ class MODConceptoIngas extends MODbase{
         $this->transaccion='PM_CONIGPAR_SEL';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
         
-        $this->setParametro('autorizacion','autorizacion','varchar');        
+        $this->setParametro('autorizacion','autorizacion','varchar');
+		$this->setParametro('autorizacion_nulos','autorizacion_nulos','varchar');
+		
+		        
         //Definicion de la lista del resultado del query
         $this->captura('id_concepto_ingas','int4');
         $this->captura('desc_ingas','varchar');

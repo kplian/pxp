@@ -30,6 +30,7 @@ DECLARE
 	v_nombre_funcion   	text;
 	v_resp				varchar;
     v_filtro 			varchar;
+    v_autorizacion_nulos	varchar;
 			    
 BEGIN
 
@@ -107,7 +108,7 @@ BEGIN
 		end;
      /*********************************    
  	#TRANSACCION:  'PM_CONIGPAR_SEL'
- 	#DESCRIPCION:	istado de conceptos de gatos con partidas prespeustaria
+ 	#DESCRIPCION:	listado de conceptos de gatos con partidas prespeustaria
  	#AUTOR:		rac	
  	#FECHA:		20-06-2014 19:49:23
 	***********************************/
@@ -117,9 +118,23 @@ BEGIN
     	begin
     		
             v_filtro = '';
-            IF  p_administrador != 1 THEN
-               v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+            
+            IF  pxp.f_existe_parametro(p_tabla,'autorizacion_nulos') THEN
+               v_autorizacion_nulos =  v_parametros.autorizacion_nulos;
+            ELSE
+               v_autorizacion_nulos = 'si';
             END IF;
+            
+            
+            IF  p_administrador != 1 THEN
+               
+               IF v_autorizacion_nulos = 'si' THEN
+                v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+               ELSE
+                 v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
+               END IF;
+                
+             END IF;
             
             --Sentencia de la consulta
 			v_consulta:='select
@@ -171,9 +186,24 @@ BEGIN
 		begin
         
             v_filtro = '';
-            IF  p_administrador != 1 THEN
-               v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+            
+            --admite autorizaciones nulas, por defecto SI
+            IF  pxp.f_existe_parametro(p_tabla,'autorizacion_nulos') THEN
+               v_autorizacion_nulos =  v_parametros.autorizacion_nulos;
+            ELSE
+               v_autorizacion_nulos = 'si';
             END IF;
+            
+            
+            IF  p_administrador != 1 THEN
+               
+               IF v_autorizacion_nulos = 'si' THEN
+                v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+               ELSE
+                 v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
+               END IF;
+                
+             END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(conig.id_concepto_ingas)
 					      from param.tconcepto_ingas conig
