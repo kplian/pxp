@@ -234,8 +234,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                gwidth: 130
 	            },
 	            type:'TextField',
-	            filters:{pfiltro:'pw.nro_tramite',type:'string'},
-	            id_grupo:0,
+	            filters:{pfiltro:'pw.nro_tramite',type:'string'},	            
 	            grid:true,
 	            form:false 
 				});
@@ -252,7 +251,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            },
 	            type:'TextArea',
 	            filters:{pfiltro:'ew.obs',type:'string'},
-	            id_grupo:0,
+	            id_grupo:1,
 	            grid:true,
 	            form:true 
 				});
@@ -272,11 +271,18 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		                	gwidth: 100,
 		                	allowBlank: true
 		                },
-		                id_grupo : 0,
+		                id_grupo : 1,
 		                grid : true,
 		                filters : {pfiltro : filter_name , type:'string'},
 		                form: false};
 		            config_columna.config.name = this.configProceso[this.config.indice].columnas[i].bd_nombre_columna;
+		            
+		            
+		            if (this.configProceso[this.config.indice].columnas[i].form_grupo != '' && 
+		            this.configProceso[this.config.indice].columnas[i].form_grupo != null &&
+		            this.configProceso[this.config.indice].columnas[i].form_grupo != undefined) {		            	
+		            	config_columna.id_grupo = this.configProceso[this.config.indice].columnas[i].form_grupo;
+		            }
 		            if (this.configProceso[this.config.indice].columnas[i].bd_descripcion_columna != '' && 
 		            		this.configProceso[this.config.indice].columnas[i].bd_descripcion_columna != undefined &&
 		            		this.configProceso[this.config.indice].columnas[i].bd_descripcion_columna != null) {

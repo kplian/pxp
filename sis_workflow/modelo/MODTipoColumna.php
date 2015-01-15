@@ -44,6 +44,8 @@ class MODTipoColumna extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('bd_prioridad','integer');
+		$this->captura('form_grupo','integer');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -76,6 +78,8 @@ class MODTipoColumna extends MODbase{
 		$this->setParametro('bd_formula_calculo','bd_formula_calculo','text');
 		$this->setParametro('bd_tamano_columna','bd_tamano_columna','varchar');
 		$this->setParametro('form_label','form_label','varchar');
+		$this->setParametro('bd_prioridad','bd_prioridad','integer');
+		$this->setParametro('form_grupo','form_grupo','integer');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -109,6 +113,8 @@ class MODTipoColumna extends MODbase{
 		$this->setParametro('bd_formula_calculo','bd_formula_calculo','text');
 		$this->setParametro('bd_tamano_columna','bd_tamano_columna','varchar');
 		$this->setParametro('form_label','form_label','varchar');
+		$this->setParametro('bd_prioridad','bd_prioridad','integer');
+		$this->setParametro('form_grupo','form_grupo','integer');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

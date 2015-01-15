@@ -167,6 +167,21 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 		
 		{
 			config:{
+				name: 'bd_prioridad',
+				fieldLabel: 'Prioridad',
+				allowBlank: true,
+				anchor: '100%',
+				qtip : 'Orden en el que se mostrara este campo en el formulario',
+				gwidth: 150
+			},
+				type:'NumberField',
+				filters:{pfiltro:'tipcol.bd_prioridad',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
 				name: 'bd_descripcion_columna',
 				fieldLabel: 'Descripción',
 				allowBlank: true,
@@ -322,7 +337,23 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:2,
 				grid:true,
 				form:true
-		},				
+		},	
+		
+		{
+			config:{
+				name: 'form_grupo',
+				fieldLabel: 'Grupo',
+				allowBlank: true,
+				anchor: '100%',
+				qtip : 'El id_grupo del campo en caso que haya varios grupos dentro del formulario',
+				gwidth: 150
+			},
+				type:'NumberField',
+				filters:{pfiltro:'tipcol.form_grupo',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},			
 		
 		{
 			config:{
@@ -445,8 +476,10 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_tipo_proceso', type: 'numeric'},
 		{name:'bd_campos_adicionales', type: 'string'},
 		{name:'bd_tamano_columna', type: 'string'},
+		{name:'bd_prioridad', type: 'numeric'},
 		{name:'form_combo_rec', type: 'string'},
 		{name:'form_label', type: 'string'},
+		{name:'form_grupo', type: 'numeric'},
 		{name:'bd_joins_adicionales', type: 'string'},
 		{name:'bd_formula_calculo', type: 'string'},
 		{name:'bd_descripcion_columna', type: 'string'},

@@ -68,7 +68,9 @@ BEGIN
 						tipcol.id_usuario_mod,
 						tipcol.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						tipcol.bd_prioridad,
+						tipcol.form_grupo	
 						from wf.ttipo_columna tipcol
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
@@ -125,7 +127,8 @@ BEGIN
                             tcol.bd_descripcion_columna,tcol.bd_tamano_columna,tcol.bd_campos_adicionales,tcol.bd_joins_adicionales,
                             tcol.bd_formula_calculo,tcol.grid_sobreescribe_filtro,tcol.grid_campos_adicionales,
                             tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,	
-                            tcol.form_combo_rec, tcol.form_sobreescribe_config,tcol.estado_reg
+                            tcol.form_combo_rec, tcol.form_sobreescribe_config,tcol.estado_reg,
+                            tcol.bd_prioridad,tcol.form_grupo
 
                             from wf.ttipo_columna tcol
                             inner join wf.ttabla tab
@@ -189,17 +192,18 @@ BEGIN
                         inner join wf.ttipo_estado te
                         	on te.id_tipo_estado = coles.id_tipo_estado
                         where te.codigo = '''|| v_parametros.tipo_estado || ''' 
-                        	and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'') as momento	
+                        	and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'') as momento,
+                        tipcol.form_grupo	
 						from wf.ttipo_columna tipcol
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
 						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
                         left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
-				        where tipcol.estado_reg = ''activo'' and   ';
+				        where tipcol.estado_reg = ''activo'' and  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
             --v_consulta:=v_consulta||' and (te.codigo = '''|| v_parametros.tipo_estado || ''' or te.codigo is null) ';
-			v_consulta:=v_consulta||' order by tipcol.id_tipo_columna asc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			v_consulta:=v_consulta||' order by tipcol.bd_prioridad, tipcol.id_tipo_columna asc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;

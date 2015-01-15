@@ -233,8 +233,9 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['form_label'])?'NULL':"'".$row['form_label']."'") ."," .
 							 (is_null($row['form_es_combo'])?'NULL':"'".$row['form_es_combo']."'") ."," .
 							 (is_null($row['form_combo_rec'])?'NULL':"'".$row['form_combo_rec']."'") ."," .
-							 (is_null($row['form_sobreescribe_config'])?'NULL':"'".$row['form_sobreescribe_config']."'") .");\r\n");
-							 						
+							 (is_null($row['form_sobreescribe_config'])?'NULL':"'".$row['form_sobreescribe_config']."'") . "," .
+							 (is_null($row['bd_prioridad'])?'NULL':$row['bd_prioridad']) . "," .
+							 (is_null($row['form_grupo'])?'NULL':$row['form_grupo']) . ");\r\n");							 						
 				}				
 			
 			} 

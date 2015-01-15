@@ -1026,3 +1026,14 @@ IS 'por rendimiento copiamos el nro_tramite';
 ALTER TABLE wf.tdocumento_wf
   ADD COLUMN id_documento_wf_ori INTEGER;
 /*****************************F-SCP-RAC-WF-0-09/01/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-15/01/2015*************/
+
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN bd_prioridad INTEGER;
+  
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN form_grupo INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-15/01/2015*************/

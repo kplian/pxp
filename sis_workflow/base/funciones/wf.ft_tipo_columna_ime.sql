@@ -67,7 +67,9 @@ BEGIN
 			id_usuario_mod,
 			fecha_mod,
 			bd_tamano_columna,
-			form_label
+			form_label,
+			bd_prioridad,
+			form_grupo
           	) values(
 			v_parametros.id_tabla,
 			v_parametros.bd_campos_adicionales,
@@ -88,7 +90,9 @@ BEGIN
 			null,
 			null,
 			v_parametros.bd_tamano_columna,
-			v_parametros.form_label							
+			v_parametros.form_label,
+			v_parametros.bd_prioridad,
+			v_parametros.form_grupo							
 			)RETURNING id_tipo_columna into v_id_tipo_columna;
 			
 			--Definicion de la respuesta
@@ -128,7 +132,9 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			bd_tamano_columna = v_parametros.bd_tamano_columna,
-			form_label = v_parametros.form_label
+			form_label = v_parametros.form_label,
+			bd_prioridad = v_parametros.bd_prioridad,
+			form_grupo = v_parametros.form_grupo	
 			where id_tipo_columna=v_parametros.id_tipo_columna;
                
 			--Definicion de la respuesta

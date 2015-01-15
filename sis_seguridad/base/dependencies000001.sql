@@ -594,8 +594,40 @@ ALTER TABLE segu.vlog
 
 
 
+/*******************************************I-DEP-RAC-SEGU-0-15/01/2015**********************************************/
 
 
 
+CREATE OR REPLACE VIEW segu.vpersona2
+AS
+  SELECT p.id_persona,
+         p.apellido_materno AS ap_materno,
+         p.apellido_paterno AS ap_paterno,
+         p.nombre,
+         (((COALESCE(p.nombre, ''::character varying)::text || ' '::text) ||
+           COALESCE(p.apellido_paterno, ''::character varying)::text) || ' '::
+           text) || COALESCE(p.apellido_materno, ''::character varying)::text AS
+           nombre_completo1,
+         (((COALESCE(p.apellido_paterno, ''::character varying)::text || ' '::
+           text) || COALESCE(p.apellido_materno, ''::character varying)::text)
+           || ' '::text) || COALESCE(p.nombre, ''::character varying)::text AS
+           nombre_completo2,
+         p.ci,
+         p.correo,
+         p.correo2,
+         p.celular1,
+         p.celular2,
+         p.num_documento,
+         p.telefono1,
+         p.telefono2,
+         p.direccion,
+         p.extension,
+         p.fecha_nacimiento,
+         p.genero
+         
+         
+  FROM segu.tpersona p;
+
+/*******************************************F-DEP-RAC-SEGU-0-15/01/2015**********************************************/
 
 

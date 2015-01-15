@@ -302,6 +302,7 @@ class MODTabla extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('momento','varchar');
+		$this->captura('form_grupo','integer');
 		
 		$this->armarConsulta();	
 				
