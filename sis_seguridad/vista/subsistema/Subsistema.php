@@ -143,7 +143,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 
 		this.init();
 		
-		this.addButton('aInterSis',{text:'Interfaces',iconCls: 'blist',disabled:true,handler: InterSis, tooltip: '<b>Interfaces del Sistema</b><br/>Permite configurar transacciones por interfaz '});
+		this.addButton('aInterSis',{text:'Interfaces',iconCls: 'blist',disabled:true,handler: aInterSis, tooltip: '<b>Interfaces del Sistema</b><br/>Permite configurar transacciones por interfaz '});
 		this.addButton('sinc_func',{text:'Sincronizar',iconCls: 'blist',disabled:true,handler: sinc_func, tooltip: '<b>Sincronizar Funciones</b><br/>Sinc '});
 		this.addButton('exp_menu',{text:'Exportar Datos Seguridad',iconCls: 'blist',disabled:true,tooltip: '<b>Permite exportar los datos de seguridad del subsistema</b>',
                 		menu:{
