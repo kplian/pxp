@@ -68,6 +68,9 @@ if(!isset($_SESSION["_SESION"])){
 		        overflow:hidden;
 		    }   
     </style>
+    
+    <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/font-awesome-4.2.0/css/font-awesome.css"/>
+
 
 	<!-- GC -->
 </head>
