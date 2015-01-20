@@ -443,6 +443,7 @@ class MODTabla extends MODbase{
 		$this->setParametro('id_tabla','id_tabla','integer');
 		$this->setParametro('tipo_estado','tipo_estado','varchar');
 		$this->setParametro('tipo_proceso','tipo_proceso','varchar');
+		$this->setParametro('nro_tramite','nro_tramite','varchar');
 		//si es detalle se añade un parametro para el id del maestro
 		if ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_tipo'] != 'maestro') {
 			

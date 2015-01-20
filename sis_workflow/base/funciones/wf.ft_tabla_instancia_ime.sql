@@ -64,7 +64,7 @@ BEGIN
 	if(p_transaccion='WF_TABLAINS_INS')then
 					
         begin
-        
+        	
         	select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 
@@ -119,7 +119,7 @@ BEGIN
                        te.codigo
                      into
                        v_id_tipo_estado_next,
-                       v_codigo_estado_next
+                       v_codigo_estado
                      from wf.ttipo_estado te
                      where te.id_tipo_proceso = v_id_tipo_proceso and te.inicio = 'si' and te.estado_reg = 'activo'; 
         			 
@@ -146,10 +146,10 @@ BEGIN
                       now(),
                       'activo',
                       v_id_tipo_proceso,
-                      v_parametros.nro_tramite,
+                      json_extract_path_text(v_parametros,'nro_tramite')::varchar,                       
                       v_codigo_tipo_proceso,
-                      p_id_usuario_ai,
-                      p_usuario_ai
+                      NULL,
+                      NULL
                     ) RETURNING id_proceso_wf into v_id_proceso_wf;
         
 
@@ -170,7 +170,7 @@ BEGIN
                         usuario_ai
                       ) 
                       VALUES (
-                        p_id_usuario_reg,
+                        p_id_usuario,
                         now(),
                         'activo',
                         NULL,
@@ -219,7 +219,7 @@ BEGIN
             else
             	v_values =	v_values || json_extract_path_text(v_parametros,v_columnas.vista_campo_maestro);							
             end if;			
-        			
+        		
         	for v_columnas in (	select tc.* from wf.ttipo_columna tc
         						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento in ('registrar', 'exigir')
         						inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
@@ -238,9 +238,10 @@ BEGIN
         	v_fields = v_fields || ')';
         	
         	v_values = v_values || ') returning id_' || v_tabla.bd_nombre_tabla;
-        	--raise exception '% %',v_fields,v_values;
+        	 
+            --raise exception '% %',v_fields,v_values;
         	execute (v_fields || v_values) into v_id_tabla;
-        	        	
+        	       	
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',v_tabla.bd_nombre_tabla  || ' almacenado(a) con exito (id_'||v_tabla.bd_nombre_tabla || v_id_tabla||')'); 
