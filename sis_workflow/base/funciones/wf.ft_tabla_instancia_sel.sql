@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tabla_instancia_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -71,7 +69,8 @@ BEGIN
             where t.id_tabla = v_parametros.id_tabla;
     		
     		--Sentencia de la consulta
-			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ';
+			v_consulta = 'select ' || v_tabla.bd_codigo_tabla  || '.id_' || v_tabla.bd_nombre_tabla || ', ';
+            
             v_joins_wf = '';
             v_filtro = ' 0 = 0 and ';
             if (v_tabla.vista_tipo = 'maestro') then
@@ -90,7 +89,7 @@ BEGIN
 			v_joins_adicionales = '';
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
-            					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo' order by id_tipo_columna asc) loop
+            					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo' order by bd_prioridad,id_tipo_columna asc) loop
             	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ';
             	
             	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then
@@ -137,13 +136,14 @@ BEGIN
                 v_consulta = v_consulta || v_filtro;
             end if;			
 				        
-			--raise exception '%',v_joins_adicionales;
+			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+			--raise notice '%',v_consulta;
 			--Devuelve la respuesta
-			return v_consulta;
+			raise notice 'llega%',v_consulta;
+            return v_consulta;
 						
 		end;
 
@@ -157,6 +157,7 @@ BEGIN
 	elsif(p_transaccion='WF_TABLAINS_CONT')then
 
 		begin
+        	
 			select f.id_funcionario into v_id_funcionario_usuario
             from segu.tusuario u
             inner join orga.tfuncionario f 
@@ -173,7 +174,8 @@ BEGIN
             where t.id_tabla = v_parametros.id_tabla;
             
 			--Sentencia de la consulta de conteo de registros
-			v_consulta = 'select count(id_' || v_tabla.bd_nombre_tabla || ') ';
+			v_consulta = 'select count(' || v_tabla.bd_codigo_tabla  || '.id_' || v_tabla.bd_nombre_tabla || ') ';
+            
             v_joins_wf = '';
             v_filtro = ' 0 = 0 and ';
             if (v_tabla.vista_tipo = 'maestro') then
@@ -194,12 +196,12 @@ BEGIN
             		v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| '  ';
             	end if;  	
             end loop;
-			
+			  
 			v_consulta = v_consulta || ' from ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
 						inner join segu.tusuario usu1 on usu1.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_reg
                         left join segu.tusuario usu2 on usu2.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_mod ' ||
 						v_joins_adicionales || v_joins_wf || ' where  ' || v_tabla.bd_codigo_tabla || '.estado_reg !=''inactivo'' and ';
-                        
+                     
             if (v_tabla.vista_tipo = 'maestro') then            				 
             	v_consulta = v_consulta || v_tabla.bd_codigo_tabla || '.estado != ''anulado'' and ';
                 
@@ -217,7 +219,7 @@ BEGIN
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
-			--raise exception '%',v_consulta;
+			
 			--Devuelve la respuesta
 			return v_consulta;
 
@@ -250,7 +252,7 @@ BEGIN
             where t.id_tabla = v_parametros.id_tabla;
     		
     		--Sentencia de la consulta
-			v_consulta = 'select id_' || v_tabla.bd_nombre_tabla || ', ';
+			v_consulta = 'select  ' || v_tabla.bd_codigo_tabla  || '.id_' || v_tabla.bd_nombre_tabla || ', ';
             v_joins_wf = '';
             v_filtro = ' 0 = 0 and ';
             if (v_tabla.vista_tipo = 'maestro') then
@@ -267,7 +269,7 @@ BEGIN
 			v_joins_adicionales = '';
 			--campos y campos adicionales
 			for v_columnas in (	select * from wf.ttipo_columna 
-            					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo' order by id_tipo_columna asc) loop
+            					where id_tabla = v_parametros.id_tabla and estado_reg = 'activo' order by bd_prioridad,id_tipo_columna asc) loop
             	v_consulta = v_consulta || 	v_tabla.bd_codigo_tabla || '.' || v_columnas.bd_nombre_columna || ', ';
             	
             	if (v_columnas.bd_campos_adicionales is not null and v_columnas.bd_campos_adicionales != '')then
@@ -350,7 +352,7 @@ BEGIN
             where t.id_tabla = v_parametros.id_tabla;
             
 			--Sentencia de la consulta de conteo de registros
-			v_consulta = 'select count(id_' || v_tabla.bd_nombre_tabla || ') ';
+			v_consulta = 'select count(' || v_tabla.bd_codigo_tabla  || '.id_' || v_tabla.bd_nombre_tabla || ') ';
             v_joins_wf = '';
             v_filtro = ' 0 = 0 and ';
             if (v_tabla.vista_tipo = 'maestro') then

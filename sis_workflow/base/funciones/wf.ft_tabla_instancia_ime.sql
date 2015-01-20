@@ -44,6 +44,10 @@ DECLARE
     v_id_tabla				integer;
     v_id_tipo_estado		integer;
     v_id_estado_actual		integer;
+    v_id_tipo_proceso		integer;
+    v_id_tipo_estado_next	integer;
+    v_codigo_estado_next	varchar;
+    v_resp_doc 				boolean;
 			    
 BEGIN
 
@@ -73,8 +77,8 @@ BEGIN
                 
                 -- obtener el codigo del tipo_proceso
            
-                select   tp.codigo, tp.id_proceso_macro 
-                    into v_codigo_tipo_proceso, v_id_proceso_macro
+                select   tp.id_tipo_proceso, tp.codigo, tp.id_proceso_macro 
+                    into v_id_tipo_proceso, v_codigo_tipo_proceso, v_id_proceso_macro
                 from  wf.ttabla tabla
                 inner join wf.ttipo_proceso tp
                     on tabla.id_tipo_proceso =  tp.id_tipo_proceso
@@ -84,29 +88,108 @@ BEGIN
                 IF v_codigo_tipo_proceso is NULL THEN	        
                    raise exception 'No existe un proceso inicial para la tabla (Revise la configuración)';	        
                 END IF;
-    	        
-                 -- inciiar el tramite en el sistema de WF
-               SELECT 
-                     ps_num_tramite ,
-                     ps_id_proceso_wf ,
-                     ps_id_estado_wf ,
-                     ps_codigo_estado 
-                  into
-                     v_num_tramite,
-                     v_id_proceso_wf,
-                     v_id_estado_wf,
-                     v_codigo_estado   
-    	              
-                FROM wf.f_inicia_tramite(
-                     p_id_usuario,
-                     json_extract_path_text(v_parametros,'_id_usuario_ai')::integer,
-                     json_extract_path_text(v_parametros,'_nombre_usuario_ai')::varchar,                 
-                     v_id_gestion, 
-                     v_codigo_tipo_proceso, 
-                     NULL,
-                     NULL,
-                     NULL,
-                     ' ');
+    	    	--si existe el nro de tramite entonces
+                if (pxp.f_existe_parametro(p_tabla,'nro_tramite')) then                
+             
+                       -- inciiar el tramite en el sistema de WF
+                     SELECT 
+                           ps_num_tramite ,
+                           ps_id_proceso_wf ,
+                           ps_id_estado_wf ,
+                           ps_codigo_estado 
+                        into
+                           v_num_tramite,
+                           v_id_proceso_wf,
+                           v_id_estado_wf,
+                           v_codigo_estado   
+          	              
+                      FROM wf.f_inicia_tramite(
+                           p_id_usuario,
+                           json_extract_path_text(v_parametros,'_id_usuario_ai')::integer,
+                           json_extract_path_text(v_parametros,'_nombre_usuario_ai')::varchar,                 
+                           v_id_gestion, 
+                           v_codigo_tipo_proceso, 
+                           NULL,
+                           NULL,
+                           NULL,
+                           ' ');
+                else
+                	select 
+                       te.id_tipo_estado,
+                       te.codigo
+                     into
+                       v_id_tipo_estado_next,
+                       v_codigo_estado_next
+                     from wf.ttipo_estado te
+                     where te.id_tipo_proceso = v_id_tipo_proceso and te.inicio = 'si' and te.estado_reg = 'activo'; 
+        			 
+                     if v_id_tipo_estado_next is NULL THEN
+                           raise exception 'El WF esta mal parametrizado verifique a que tipo_proceso apunto el tipo_estado previo';
+                     END IF;
+                     
+                     -- inserta el proceso con el numero de tramite
+                     INSERT INTO 
+                      wf.tproceso_wf
+                    (
+                      id_usuario_reg,
+                      fecha_reg,
+                      estado_reg,
+                      id_tipo_proceso,
+                      nro_tramite, 
+                      codigo_proceso,
+                      id_usuario_ai,
+                      usuario_ai
+                      
+                    ) 
+                    VALUES (
+                      p_id_usuario,
+                      now(),
+                      'activo',
+                      v_id_tipo_proceso,
+                      v_parametros.nro_tramite,
+                      v_codigo_tipo_proceso,
+                      p_id_usuario_ai,
+                      p_usuario_ai
+                    ) RETURNING id_proceso_wf into v_id_proceso_wf;
+        
+
+      
+                    -- inserta el primer estado del proceso 
+                       INSERT INTO 
+                        wf.testado_wf
+                      (
+                        id_usuario_reg,
+                        fecha_reg,
+                        estado_reg,
+                        id_estado_anterior,
+                        id_tipo_estado,
+                        id_proceso_wf,
+                        id_funcionario,
+                        id_depto,
+                        id_usuario_ai,
+                        usuario_ai
+                      ) 
+                      VALUES (
+                        p_id_usuario_reg,
+                        now(),
+                        'activo',
+                        NULL,
+                        v_id_tipo_estado_next,
+                        v_id_proceso_wf,
+                        NULL,
+                        NULL,
+                        NULL,
+                        NULL
+                      )RETURNING id_estado_wf into v_id_estado_wf;  
+      
+                       -- inserta documentos en estado borrador si estan configurados
+                       v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario, v_id_proceso_wf, v_id_estado_wf);
+                       
+                       
+                         
+                       -- verificar documentos
+                       v_resp_doc = wf.f_verifica_documento(p_id_usuario, v_id_estado_wf);
+                end if;
             end if;
            
         	v_fields = 'insert into ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || '(
