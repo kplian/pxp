@@ -89,7 +89,7 @@ BEGIN
                    raise exception 'No existe un proceso inicial para la tabla (Revise la configuración)';	        
                 END IF;
     	    	--si existe el nro de tramite entonces
-                if (pxp.f_existe_parametro(p_tabla,'nro_tramite')) then                
+                if (not pxp.f_existe_parametro(p_tabla,'nro_tramite')) then                
              
                        -- inciiar el tramite en el sistema de WF
                      SELECT 
