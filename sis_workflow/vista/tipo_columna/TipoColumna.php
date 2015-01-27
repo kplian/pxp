@@ -134,7 +134,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-				store:['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean']
+				store:['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean','integer[]','varchar[]']
 			},
 				type:'ComboBox',
 				filters:{pfiltro:'tipcol.bd_tipo_columna',type:'string'},
@@ -142,7 +142,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				filters:{   
                          type: 'list',
                          pfiltro:'tipcol.bd_tipo_columna',
-                         options: ['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean']  
+                         options: ['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean','integer[]','varchar[]']  
                     },
 				grid:true,
 				form:true

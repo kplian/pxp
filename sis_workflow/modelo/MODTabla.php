@@ -49,6 +49,7 @@ class MODTabla extends MODbase{
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+        //echo $this->consulta;exit;
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
@@ -253,7 +254,6 @@ class MODTabla extends MODbase{
 			$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
 			return $this->respuesta;
 		}
-		
 		if ($primera_vez == 0) {
 			
 			$this->respuesta=new Mensaje();
@@ -282,17 +282,22 @@ class MODTabla extends MODbase{
 		$this->captura('id_tipo_proceso','int4');
 		$this->captura('bd_campos_adicionales','text');
 		$this->captura('form_combo_rec','varchar');
+        
 		$this->captura('bd_joins_adicionales','text');
 		$this->captura('bd_descripcion_columna','text');
 		$this->captura('bd_tamano_columna','varchar');
 		$this->captura('bd_formula_calculo','text');
+        
 		$this->captura('form_sobreescribe_config','text');
 		$this->captura('form_tipo_columna','varchar');
+        
 		$this->captura('grid_sobreescribe_filtro','text');
 		$this->captura('estado_reg','varchar');
+        
 		$this->captura('bd_nombre_columna','varchar');
 		$this->captura('form_es_combo','varchar');
 		$this->captura('form_label','varchar');
+        
 		$this->captura('grid_campos_adicionales','text');
 		$this->captura('bd_tipo_columna','varchar');
 		$this->captura('id_usuario_reg','int4');
@@ -302,7 +307,7 @@ class MODTabla extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('momento','varchar');
-		$this->captura('form_grupo','integer');
+        $this->captura('bd_tipo_columna_comp','varchar');
 		
 		$this->armarConsulta();	
 				
@@ -346,7 +351,7 @@ class MODTabla extends MODbase{
 		}
 		
 		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
-			
+			//echo '<br>'.$value['bd_nombre_columna'].'---'.$value['bd_tipo_columna'];
 			$this->captura($value['bd_nombre_columna'],$value['bd_tipo_columna']);		
 			//campos adicionales
 			if ($value['bd_campos_adicionales'] != '' && $value['bd_campos_adicionales'] != null) {
@@ -391,7 +396,7 @@ class MODTabla extends MODbase{
 		
 		//Definicion de la lista del resultado del query
 		$this->captura('id_' . $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'],'int4');
-		
+
 		if ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['vista_tipo'] == 'maestro') {
 				
 			$this->captura('estado','varchar');
@@ -400,9 +405,12 @@ class MODTabla extends MODbase{
 			$this->captura('obs','text');
 			$this->captura('nro_tramite','varchar');
 		}
-		
-		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
-			
+		//$this->armarConsulta();
+        //echo 'FFFFF: '. $this->consulta;exit;
+        $Cols = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'];
+        //var_dump($Cols);exit;
+		foreach ($Cols as $value) {
+			//echo '<br>'.$value['bd_nombre_columna'].'---'.$value['bd_tipo_columna'];
 			$this->captura($value['bd_nombre_columna'],$value['bd_tipo_columna']);		
 			//campos adicionales
 			if ($value['bd_campos_adicionales'] != '' && $value['bd_campos_adicionales'] != null) {
@@ -415,8 +423,7 @@ class MODTabla extends MODbase{
 				}
 			}			
 		}
-		
-		
+        
 		$this->captura('estado_reg','varchar');		
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_reg','int4');
@@ -428,6 +435,7 @@ class MODTabla extends MODbase{
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+        //echo $this->consulta;exit;
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
@@ -473,9 +481,10 @@ class MODTabla extends MODbase{
 		$this->setParametro('tipo_proceso','tipo_proceso','varchar');
 		$bd_nombre_tabla = $_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['atributos']['bd_nombre_tabla'];
 		$this->setParametro('id_'.$bd_nombre_tabla,'id_'.$bd_nombre_tabla,'integer');
+		
 		//Define los parametros para la funcion		
 		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
-			$this->setParametro($value['bd_nombre_columna'],$value['bd_nombre_columna'],$value['bd_tipo_columna']);			
+			$this->setParametro($value['bd_nombre_columna'],$value['bd_nombre_columna'],$value['bd_tipo_columna_comp']);			
 		}	
 
 		//Ejecuta la instruccion

@@ -331,6 +331,12 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	config_columna.type = 'ComboRec';
 		            	config_columna.config.maxLength = 500;
 		            }
+
+		            //RCM: verifica si es un combo con tipo de dato array para predefinir el componente a AwsomeCombo
+		            var tipoDato = this.configProceso[this.config.indice].columnas[i].bd_tipo_columna_comp;
+		            if(this.configProceso[this.config.indice].columnas[i].form_es_combo == 'si'&&(tipoDato=='integer[]'||tipoDato=='varchar[]')){
+		                config_columna.type = 'AwesomeCombo';
+		            } 
 		            
 		            
 		            //Añadir la sobreescritura de config y filtro
