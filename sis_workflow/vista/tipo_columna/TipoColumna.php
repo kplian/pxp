@@ -134,7 +134,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-				store:['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean']
+				store:['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean','integer[]','varchar[]']
 			},
 				type:'ComboBox',
 				filters:{pfiltro:'tipcol.bd_tipo_columna',type:'string'},
@@ -142,7 +142,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				filters:{   
                          type: 'list',
                          pfiltro:'tipcol.bd_tipo_columna',
-                         options: ['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean']  
+                         options: ['varchar','text','numeric','integer','bigint','date','timestamp','time','boolean','integer[]','varchar[]']  
                     },
 				grid:true,
 				form:true
@@ -243,6 +243,21 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+		{
+            config:{
+                name: 'bd_campos_subconsulta',
+                fieldLabel: 'Campos Subconsultas',
+                allowBlank: true,
+                anchor: '100%',
+                qtip : 'El formato es : "(select campo from tabla where id = t.id) as campo text" separados por punto y comas por cada campo subconsulta',
+                gwidth: 100
+            },
+                type:'TextArea',
+                filters:{pfiltro:'tipcol.bd_campos_subconsulta',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+        },
 		
 		{
 			config:{
@@ -497,6 +512,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'bd_campos_subconsulta', type: 'string'}
 		
 	],
 	sortInfo:{

@@ -312,7 +312,7 @@ class MODbase extends driver
 	 * @param $tamano Tamano maximo del archivo
 	 * @param $tipo_archivo array conteniendo los tipos de archivos permitidos
 	 */
-	function copyFile($originen, $destino,  $folder = ''){
+	function copyFile($originen, $destino,  $folder = '', $deshacer = false){
 		//obtenemos el tipo de la base de datos
 		$temp_array = explode('/', $destino);
 		unset($temp_array[count($temp_array) - 1]);
@@ -335,17 +335,33 @@ class MODbase extends driver
 			}
 		
 		}
-			
-		// Passed verification
-	    if ( rename($originen, $destino)) {
-	        	
-			 // Success
-	        chmod($destino, 0644);
-	        
-	        return $destino;
-	    } else {
-	    	throw new Exception("No se puede subir el archivo " . $destino);
-	    }				
+
+		
+		IF(!$deshacer){
+			// Passed verification
+		    if ( rename($originen, $destino)) {
+		        	
+				 // Success
+		        chmod($destino, 0644);
+		        
+		        return $destino;
+		    } else {
+		    	throw new Exception("No se puede subir el archivo " . $destino);
+		    }		
+		}
+		else{
+			// Passed verification
+		    if ( rename( $destino, $originen)) {
+		        	
+				 // Success
+		        chmod($originen, 0644);
+		        
+		        return $destino;
+		    } else {
+		    	throw new Exception("No se puede reverti la copia  " . $destino);
+		    }	
+		}	
+	
 
 	}
 

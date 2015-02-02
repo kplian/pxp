@@ -12,13 +12,18 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
-		this.maestro=config.maestro;
+
 		this.check_fisico = 'no';
 		if (config.hasOwnProperty('check_fisico')) {
 			if (config.check_fisico == 'si') {
 				this.check_fisico = 'si';
 			}
 		}
+		
+		 //declaracion de eventos
+        this.addEvents('finalizarsol');
+        this.maestro = config;
+        
 		this.todos_documentos = 'si';
         this.tbarItems = ['-',{
             text: 'Mostrar solo los documentos del proceso actual',
@@ -497,8 +502,28 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	        });
 	    }
         
+
         this.grid.addListener('celldblclick',this.oncelldblclick,this);
-        
+
+        //si viene del formulario de solicitud agregamos un botono de finalizar
+        if(config.tipo === 'solcom'){
+        	this.tbar.add('->');
+        	this.addButton('fin_requerimiento',{ text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
+									        	 handler: function(){
+									        	 	this.fireEvent('finalizarsol', this, this.maestro, true);
+									        	 	this.panel.destroy();
+									        	 }, 
+									        	 tooltip: '<b>Finalizar</b><br>Finaliza la solicitud y la manda para aprobación'});
+        	 
+        	this.addButton('fin_solcom',{ text:'Solo Guardar', iconCls: 'bok', disabled: false,
+							        	  handler: function(){
+							        	 	 this.panel.destroy();
+							        	  }, 
+							        	  tooltip: '<b>Solo guardar</b><br>Deja la sollicitud en borrador, permite continuar despues'});
+            
+        	
+        }
+            
        
         
        this.init();
@@ -734,10 +759,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
        }
     },
     
-    
-        
-        
-         
+      
 	bdel:false,
 	bnew:false,
 	bsave:true

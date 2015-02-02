@@ -88,7 +88,7 @@ Menu=function(config){
 		varLog:false,
 	
 		split:true,
-		width: 300,
+		width: 295,
 		
 		maxSize: 500,
 		collapsible: true,

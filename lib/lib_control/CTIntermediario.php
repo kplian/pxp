@@ -100,6 +100,7 @@ class CTIntermediario{
 
 	//Verifica la existencia de los parametros de direccionamiento
 	private function verificaParametrosDirec(){
+		
 		if(!isset($this->aPostData["x"])){
 			throw new Exception(__METHOD__.': Ruta no definida');
 		}

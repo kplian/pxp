@@ -129,14 +129,13 @@ class ACTTabla extends ACTbase{
 		$this->objFunc=$this->create('MODTabla');
 			
 		$this->res=$this->objFunc->cargarDatosTablaProceso();
-		
+		//var_dump($this->res->getDatos());exit;
 		$_SESSION['_wf_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')] = $this->res->getDatos();
 		
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 	
 	function obtenerTablaInstancia ($prof=array()) {
-		
 		if ($this->objParam->esMatriz()) {
 			$aux = $this->objParam->getParametro('0');
 			$cadena = '$_SESSION["_wf_' . $aux['tipo_proceso'] . "_" . $aux['tipo_estado'] . '"][0]';			
@@ -147,14 +146,15 @@ class ACTTabla extends ACTbase{
 		}
 		
 		$res = 0 ;
-			
+
 		foreach ($prof as $value) {
 			$cadena .=  "[detalles][$value]";
 		}
-			
 		eval('$variable = '. $cadena . ';');		
 						
 		if ($variable['atributos']['id_tabla'] == $id_tabla) {
+		    //echo 'FUCK';
+		    //var_dump($variable);exit;
 			return $variable;
 		} else {
 			for ($i = 0; $i < count($variable['detalles']);$i++ ) {
