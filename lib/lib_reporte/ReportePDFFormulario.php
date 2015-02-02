@@ -11,7 +11,7 @@ class ReportePDFFormulario extends MYPDF {
 	
 	var $fecha_rep = '';
 	var $usuario_firma = '';		
-	var $firma;
+	public $firma;
 	var $firmar;
 	var $nombre_archivo;
 	var $titulo;

@@ -87,7 +87,8 @@ BEGIN
                                     tde.momento,
                                     tde.tipo_busqueda,
                                     tde.regla,
-                                    td.action
+                                    td.action,
+                                    td.tipo
                                   FROM  wf.ttipo_documento_estado tde 
                                   INNER JOIN  wf.ttipo_documento  td 
                                     on td.id_tipo_documento  = tde.id_tipo_documento 
@@ -147,7 +148,8 @@ BEGIN
                            
                                --marcamos el documento como no escaneado
                                v_sw=TRUE;
-                               if v_registros.action is not null then
+                               if v_registros.action is not null and v_registros.tipo = 'generado' then
+                               		
                                		v_resp_cadena_firma=v_resp_cadena_firma||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
                                else
                                		v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
@@ -156,7 +158,7 @@ BEGIN
                            ELSEIF v_registros.momento = 'verificar' and  v_registros_doc.momento = 'exigir' and  v_registros_doc.chequeado = 'no'  THEN
                                --marcamos el documento como no escaneado
                                v_sw=TRUE;
-                               if v_registros.action is not null then
+                               if v_registros.action is not null and v_registros.tipo = 'generado' then
                                		v_resp_cadena_firma=v_resp_cadena_firma||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
                                else
                                		v_resp_cadena=v_resp_cadena||'Doc. ["'||COALESCE(v_registros.nombre,'S/N')  ||'"] del proc. '||COALESCE(v_registros_doc.codigo_proceso,'NaN')||'(' ||COALESCE(v_registros_doc.descripcion,'NaN')||')<br>';   
@@ -239,7 +241,7 @@ BEGIN
             END IF;
         
         
-            raise exception '%',v_resp_cadena;
+            raise exception '%', v_resp_cadena;
         
         END IF;
         

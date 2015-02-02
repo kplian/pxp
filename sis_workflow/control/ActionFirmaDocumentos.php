@@ -83,6 +83,7 @@ include_once(dirname(__FILE__).'/../../sis_workflow/modelo/MODDocumentoWf.php');
 				//y actualizamos los datos del documento firmado dentro de un pdo
 				$objFunc=new MODDocumentoWf($objParam);
         		$res=$objFunc->firmarDocumento();
+				
 								
 				
        		} else if ($d['accion_pendiente'] == 'eliminar_firma') {
