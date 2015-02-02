@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -178,6 +176,41 @@ BEGIN
 			--Devuelve la respuesta
 			return v_consulta;
 
+		end;
+    elsif(p_transaccion='WF_DWFFIRMA_SEL')then
+     				
+    	begin           
+          
+    		--Sentencia de la consulta
+			v_consulta:='select
+						dwf.id_documento_wf,
+						dwf.url,
+						dwf.num_tramite,
+						dwf.id_tipo_documento,
+						dwf.obs,
+						dwf.id_proceso_wf,
+						dwf.extension,
+						dwf.chequeado,
+						dwf.estado_reg,
+						dwf.nombre_tipo_doc,
+						dwf.nombre_doc,
+						dwf.momento,
+                        dwf.accion_pendiente,
+                        dwf.fecha_firma,
+                        dwf.usuario_firma,
+                        td.action				
+						from wf.tdocumento_wf dwf
+                        inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
+                        inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf                        
+				        where  dwf.accion_pendiente is not null ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion;
+
+            
+			--Devuelve la respuesta
+			return v_consulta;
+						
 		end;
 					
 	else

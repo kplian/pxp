@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -174,12 +172,88 @@ BEGIN
             id_usuario_upload = p_id_usuario
             where id_documento_wf = v_parametros.id_documento_wf;
             
+            if (pxp.f_existe_parametro(p_tabla,'hash_firma')) then
+            
+            	update wf.tdocumento_wf set
+                --archivo=v_parametros.archivo,
+                hash_firma=v_parametros.hash_firma,
+                datos_firma = v_parametros.datos_firma::json,
+                accion_pendiente = NULL                
+                where id_documento_wf = v_parametros.id_documento_wf; 
+            end if;
+            
              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo modificado con exito '||v_parametros.id_documento_wf); 
              v_resp = pxp.f_agrega_clave(v_resp,'id_documento_wf',v_parametros.id_documento_wf::varchar);
              -- retorna el numero de la ultima version para renombar archivo viejo
              v_resp = pxp.f_agrega_clave(v_resp,'max_version',COALESCE(v_max_version,0)::varchar);
              -- retorna las urls
              v_resp = pxp.f_agrega_clave(v_resp,'url_origen',v_registros_his.url_old);
+             v_resp = pxp.f_agrega_clave(v_resp,'url_destino',v_registros_his.url);
+             
+             return v_resp;
+        end;
+   /*********************************    
+  #TRANSACCION:  'WF_DOCWELIAR_MOD'
+  #DESCRIPCION: Elimina archivo de DW
+  #AUTOR:   admin 
+  #FECHA:   08-02-2013 19:01:00
+  ***********************************/
+    
+     elsif(p_transaccion='WF_DOCWELIAR_MOD')then
+      begin
+          	select 
+              max(dh.version)
+            into
+              v_max_version
+            from wf.tdocumento_historico_wf dh
+            where dh.id_documento = v_parametros.id_documento_wf;        
+            
+            -- optine la version maxima del historico
+            select 
+             dh.url,
+             dh.url_old,
+             dh.version,
+             dh.id_documento_historico_wf,
+             dw.fecha_firma,
+             dw.datos_firma,
+             dw.hash_firma
+             into
+              v_registros_his
+            from wf.tdocumento_historico_wf dh 
+            inner join wf.tdocumento_wf dw on dw.id_documento_wf = dh.id_documento
+            where dh.id_documento = v_parametros.id_documento_wf and version = v_max_version;
+            
+            -- cambiamos el estado de las versiones anterior
+            
+            UPDATE wf.tdocumento_historico_wf  SET vigente = 'no',
+            fecha_firma = v_registros_his.fecha_firma,
+            datos_firma = v_registros_his.datos_firma,
+            hash_firma = v_registros_his.hash_firma
+            WHERE  id_documento = v_parametros.id_documento_wf;
+            
+           -- raise exception '--- %',COALESCE(v_max_version,0);
+            --actualiza el archivo
+            update wf.tdocumento_wf set
+            --archivo=v_parametros.archivo,
+            accion_pendiente = NULL,
+            fecha_firma = NULL,
+            datos_firma = NULL,
+            hash_firma = NULL,
+            extension=NULL,
+            chequeado = 'no',
+            url = NULL,
+            fecha_mod = now(),
+            id_usuario_mod = p_id_usuario,
+            fecha_upload = NULL,
+            id_usuario_upload = NULL
+            where id_documento_wf = v_parametros.id_documento_wf;
+                        
+            
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo modificado con exito '||v_parametros.id_documento_wf); 
+             v_resp = pxp.f_agrega_clave(v_resp,'id_documento_wf',v_parametros.id_documento_wf::varchar);
+             -- retorna el numero de la ultima version para renombar archivo viejo
+             v_resp = pxp.f_agrega_clave(v_resp,'max_version',COALESCE(v_max_version,0)::varchar);
+             -- retorna las urls             
              v_resp = pxp.f_agrega_clave(v_resp,'url_destino',v_registros_his.url);
              
              return v_resp;

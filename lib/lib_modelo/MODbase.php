@@ -314,25 +314,24 @@ class MODbase extends driver
 	 */
 	function copyFile($originen, $destino,  $folder = ''){
 		//obtenemos el tipo de la base de datos
+		$temp_array = explode('/', $destino);
+		unset($temp_array[count($temp_array) - 1]);
 		
+		$upload_folder = implode ('/' , $temp_array);
 		
-		$upload_folder =  './../../../uploaded_files/' . $this->objParam->getSistema() . '/' .$this->objParam->getClase() . '/' ;
-		if ($folder != '') {
-			$upload_folder .= $folder . '/';
-		}
 		
 		
 		if (!file_exists($upload_folder)) {
-			//echo $upload_folder;
-			//exit;
+			
 			if (!mkdir($upload_folder,0744,true)) {
-				throw new Exception("No se puede crear el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
-									$this->objParam->getClase() . " para escribir el archivo " . $destino);
+				throw new Exception("No se puede crear el directorio $upload_folder para escribir el archivo " . $destino);
+				
 			}	
 		} else {
 			if (!is_writable($upload_folder)) {
-				throw new Exception("No tiene permisos o no existe el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
-									$this->objParam->getClase() . " para escribir el archivo " . $destino);
+				
+				throw new Exception("No tiene permisos o no existe el directorio $upload_folder para escribir el archivo " . $destino);
+								
 			}
 		
 		}
@@ -345,7 +344,7 @@ class MODbase extends driver
 	        
 	        return $destino;
 	    } else {
-	    	throw new Exception("No se puede subir el archivo " . $filename);
+	    	throw new Exception("No se puede subir el archivo " . $destino);
 	    }				
 
 	}

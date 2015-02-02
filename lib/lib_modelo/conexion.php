@@ -89,8 +89,8 @@ class conexion
 
 		
 	}
-
-	function conectarpdo($externo=''){
+	//mandar valor "segu" en el segund parametro para que tome la conexion de seguridad con pdo
+	function conectarpdo($externo='', $segu= ''){
 
 		if ($externo != '') {
 			$ext = "_" . $externo;
@@ -127,6 +127,11 @@ class conexion
              } else if(isset($_SESSION['_CONTRASENA'])){
              	$_password= $_SESSION['_CONTRASENA'];
              } 
+			 
+			 if ($segu = 'segu') {
+			 	$_user = $_SESSION['_BASE_DATOS']."_".$_SESSION['_USUARIO_CONEXION'];
+				$_password = $_SESSION['_CONTRASENA_CONEXION'];
+			 }
     		
     		$cadena="pgsql:host=". $_host.";port=".$_port.";dbname=".$_dbname.";user=".$_user.";password=".$_password;
     		
