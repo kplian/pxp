@@ -41,7 +41,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 }
                 
                 this.store.baseParams.todos_documentos = this.todos_documentos;
-                console.log();
                 this.onButtonAct();
              },
             scope: this
@@ -80,8 +79,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                     },
                    //icon   : '../../../lib/imagenes/icono_dibu/dibu_search.png',  // Use a URL in the icon config
                    handler: function(grid, rowIndex, colIndex) {
-                    	console.log(me);
-                        me.onDblClik(grid,rowIndex);
+                    	me.onDblClik(grid,rowIndex);
                    },
                    scope:me
                 }],
@@ -511,7 +509,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         	this.addButton('fin_requerimiento',{ text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
 									        	 handler: function(){
 									        	 	this.fireEvent('finalizarsol', this, this.maestro, true);
-									        	 	this.panel.destroy();
+									        	 
 									        	 }, 
 									        	 tooltip: '<b>Finalizar</b><br>Finaliza la solicitud y la manda para aprobación'});
         	 
