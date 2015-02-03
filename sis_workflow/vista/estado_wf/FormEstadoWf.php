@@ -30,14 +30,14 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         //llamada ajax para cargar los caminos posible de flujo
         Phx.CP.loadingShow();
         Ext.Ajax.request({
-                url:this.url_verificacion,
-                params:{id_proceso_wf:config.data.id_proceso_wf,
-                        operacion:'verificar'},
-                argument:{'config':config},
-                success:this.successSinc,
+                url: this.url_verificacion,
+                params: { id_proceso_wf: config.data.id_proceso_wf,
+                          operacion: 'verificar'},
+                argument: { 'config': config },
+                success: this.successSinc,
                 failure: this.meConexionFailure,
-                timeout:this.timeout,
-                scope:this
+                timeout: this.timeout,
+                scope: this
             });
         
      },
