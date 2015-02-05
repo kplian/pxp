@@ -1037,3 +1037,10 @@ ALTER TABLE wf.ttipo_columna
   ADD COLUMN form_grupo INTEGER;
 
 /*****************************F-SCP-JRR-WF-0-15/01/2015*************/
+
+/*****************************I-SCP-RCM-WF-0-08/02/2015*************/
+
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN bd_campos_subconsulta TEXT;
+
+/*****************************F-SCP-RCM-WF-0-08/02/2015*************/

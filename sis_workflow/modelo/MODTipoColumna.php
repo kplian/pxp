@@ -46,6 +46,7 @@ class MODTipoColumna extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('bd_prioridad','integer');
 		$this->captura('form_grupo','integer');
+        $this->captura('bd_campos_subconsulta','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,6 +81,7 @@ class MODTipoColumna extends MODbase{
 		$this->setParametro('form_label','form_label','varchar');
 		$this->setParametro('bd_prioridad','bd_prioridad','integer');
 		$this->setParametro('form_grupo','form_grupo','integer');
+        $this->setParametro('bd_campos_subconsulta','bd_campos_subconsulta','text');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -115,6 +117,7 @@ class MODTipoColumna extends MODbase{
 		$this->setParametro('form_label','form_label','varchar');
 		$this->setParametro('bd_prioridad','bd_prioridad','integer');
 		$this->setParametro('form_grupo','form_grupo','integer');
+        $this->setParametro('bd_campos_subconsulta','bd_campos_subconsulta','text');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

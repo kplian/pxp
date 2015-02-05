@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION wf.ft_tabla_instancia_sel (
 )
 RETURNS varchar AS
 $body$
-/**************************************************************************
+    /**************************************************************************
  SISTEMA:       Work Flow
  FUNCION:       wf.ft_tabla_instancia_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttabla_instancia'
@@ -35,6 +35,8 @@ DECLARE
     v_id_funcionario_usuario    integer;
     var                 text;
     array_campos_adicionales text[];
+    array_campos_subconsultas text[];
+    v_aux               varchar;
     
                 
 BEGIN
@@ -111,6 +113,21 @@ BEGIN
                 if (v_columnas.bd_joins_adicionales is not null and v_columnas.bd_joins_adicionales != '')then
                     v_joins_adicionales = v_joins_adicionales || v_columnas.bd_joins_adicionales|| ' ';
                 end if;                          
+                
+                --RCM: aumentar aqui
+                if (v_columnas.bd_campos_subconsulta is not null and v_columnas.bd_campos_subconsulta != '')then
+                    --Separa las subconsultas, que deben estar separadas por ';'
+                    array_campos_adicionales = string_to_array(v_columnas.bd_campos_subconsulta, ';');
+                    
+                    FOREACH var IN ARRAY array_campos_adicionales LOOP
+                        --Separa la subconsulta en dos partes separados por ' as '
+                        v_aux = substring(var,1,length(var) - position(' ' in reverse(var)) + 1);
+                        v_consulta = v_consulta || v_aux || ', ';
+                    END LOOP;                   
+
+                end if;
+                
+                
                     
             end loop;
 
@@ -217,7 +234,7 @@ BEGIN
             
             --Definicion de la respuesta            
             v_consulta:=v_consulta||v_parametros.filtro;
-            --raise exception '%',v_consulta;
+
             --Devuelve la respuesta
             return v_consulta;
 

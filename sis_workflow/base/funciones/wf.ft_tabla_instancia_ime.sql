@@ -243,7 +243,6 @@ BEGIN
             
             v_values = v_values || ') returning id_' || v_tabla.bd_nombre_tabla;
              
-            --raise exception '% %',v_fields,v_values;
             execute (v_fields || v_values) into v_id_tabla;
                     
             
@@ -266,7 +265,7 @@ BEGIN
     elsif(p_transaccion='WF_TABLAINS_MOD')then
 
         begin
-            --raise exception 'llega';
+
             select lower(s.codigo) as esquema, t.*
             into v_tabla
             from wf.ttabla t 
@@ -298,7 +297,7 @@ BEGIN
             end loop;
             
             v_query = v_query || v_values|| ' where id_' || v_tabla.bd_nombre_tabla || '=' || json_extract_path_text(v_parametros,'id_' ||v_tabla.bd_nombre_tabla);         
-            --raise exception '%',v_query;
+
             execute (v_query);
                
             --Definicion de la respuesta

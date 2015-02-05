@@ -7,129 +7,130 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
 RETURNS varchar AS
 $body$
 /**************************************************************************
- SISTEMA:		Work Flow
- FUNCION: 		wf.ft_tipo_columna_sel
+ SISTEMA:       Work Flow
+ FUNCION:       wf.ft_tipo_columna_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttipo_columna'
- AUTOR: 		 (admin)
- FECHA:	        07-05-2014 21:41:15
- COMENTARIOS:	
+ AUTOR:          (admin)
+ FECHA:         07-05-2014 21:41:15
+ COMENTARIOS:   
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:   
+ AUTOR:         
+ FECHA:     
 ***************************************************************************/
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-	v_resp				varchar;
-			    
+    v_consulta          varchar;
+    v_parametros        record;
+    v_nombre_funcion    text;
+    v_resp              varchar;
+                
 BEGIN
 
-	v_nombre_funcion = 'wf.ft_tipo_columna_sel';
+    v_nombre_funcion = 'wf.ft_tipo_columna_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'WF_TIPCOL_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
- 	#FECHA:		07-05-2014 21:41:15
-	***********************************/
+    /*********************************    
+    #TRANSACCION:  'WF_TIPCOL_SEL'
+    #DESCRIPCION:   Consulta de datos
+    #AUTOR:     admin   
+    #FECHA:     07-05-2014 21:41:15
+    ***********************************/
 
-	if(p_transaccion='WF_TIPCOL_SEL')then
-     				
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='select
-						tipcol.id_tipo_columna,
-						tipcol.id_tabla,
-						tabla.id_tipo_proceso,
-						tipcol.bd_campos_adicionales,
-						tipcol.form_combo_rec,
-						tipcol.bd_joins_adicionales,
-						tipcol.bd_descripcion_columna,
-						tipcol.bd_tamano_columna,
-						tipcol.bd_formula_calculo,
-						tipcol.form_sobreescribe_config,
-						tipcol.form_tipo_columna,
-						tipcol.grid_sobreescribe_filtro,
-						tipcol.estado_reg,
-						tipcol.bd_nombre_columna,
-						tipcol.form_es_combo,
-						tipcol.form_label,
-						tipcol.grid_campos_adicionales,
-						tipcol.bd_tipo_columna,
-						tipcol.id_usuario_reg,
-						tipcol.fecha_reg,
-						tipcol.id_usuario_mod,
-						tipcol.fecha_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-						tipcol.bd_prioridad,
-						tipcol.form_grupo	
-						from wf.ttipo_columna tipcol
-						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
-						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
-						left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
-				        where tipcol.estado_reg = ''activo'' and ';
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+    if(p_transaccion='WF_TIPCOL_SEL')then
+                    
+        begin
+            --Sentencia de la consulta
+            v_consulta:='select
+                        tipcol.id_tipo_columna,
+                        tipcol.id_tabla,
+                        tabla.id_tipo_proceso,
+                        tipcol.bd_campos_adicionales,
+                        tipcol.form_combo_rec,
+                        tipcol.bd_joins_adicionales,
+                        tipcol.bd_descripcion_columna,
+                        tipcol.bd_tamano_columna,
+                        tipcol.bd_formula_calculo,
+                        tipcol.form_sobreescribe_config,
+                        tipcol.form_tipo_columna,
+                        tipcol.grid_sobreescribe_filtro,
+                        tipcol.estado_reg,
+                        tipcol.bd_nombre_columna,
+                        tipcol.form_es_combo,
+                        tipcol.form_label,
+                        tipcol.grid_campos_adicionales,
+                        tipcol.bd_tipo_columna,
+                        tipcol.id_usuario_reg,
+                        tipcol.fecha_reg,
+                        tipcol.id_usuario_mod,
+                        tipcol.fecha_mod,
+                        usu1.cuenta as usr_reg,
+                        usu2.cuenta as usr_mod,
+                        tipcol.bd_prioridad,
+                        tipcol.form_grupo,
+                        tipcol.bd_campos_subconsulta    
+                        from wf.ttipo_columna tipcol
+                        inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
+                        inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
+                        left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
+                        where tipcol.estado_reg = ''activo'' and ';
+            
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
+            --Devuelve la respuesta
+            return v_consulta;
+                        
+        end;
 
-	/*********************************    
- 	#TRANSACCION:  'WF_TIPCOL_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
- 	#FECHA:		07-05-2014 21:41:15
-	***********************************/
+    /*********************************    
+    #TRANSACCION:  'WF_TIPCOL_CONT'
+    #DESCRIPCION:   Conteo de registros
+    #AUTOR:     admin   
+    #FECHA:     07-05-2014 21:41:15
+    ***********************************/
 
-	elsif(p_transaccion='WF_TIPCOL_CONT')then
+    elsif(p_transaccion='WF_TIPCOL_CONT')then
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_tipo_columna)
-					    from wf.ttipo_columna tipcol
-					    inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
-						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
-					    where tipcol.estado_reg = ''activo'' and ';
-			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='select count(id_tipo_columna)
+                        from wf.ttipo_columna tipcol
+                        inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
+                        left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
+                        inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
+                        where tipcol.estado_reg = ''activo'' and ';
+            
+            --Definicion de la respuesta            
+            v_consulta:=v_consulta||v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
 
-		end;
+        end;
         
     /*********************************    
- 	#TRANSACCION:  'WF_EXPTIPCOL_SEL'
- 	#DESCRIPCION:	Exportacion de Tipo columna
- 	#AUTOR:		admin	
- 	#FECHA:		07-05-2014 21:41:15
-	***********************************/
+    #TRANSACCION:  'WF_EXPTIPCOL_SEL'
+    #DESCRIPCION:   Exportacion de Tipo columna
+    #AUTOR:     admin   
+    #FECHA:     07-05-2014 21:41:15
+    ***********************************/
 
-	elsif(p_transaccion='WF_EXPTIPCOL_SEL')then
+    elsif(p_transaccion='WF_EXPTIPCOL_SEL')then
 
-		BEGIN
+        BEGIN
 
-               v_consulta:='select  ''tipo_columna''::varchar,tcol.bd_nombre_columna, tab.bd_codigo_tabla, tp.codigo,tcol.bd_tipo_columna,	
+               v_consulta:='select  ''tipo_columna''::varchar,tcol.bd_nombre_columna, tab.bd_codigo_tabla, tp.codigo,tcol.bd_tipo_columna,  
                             tcol.bd_descripcion_columna,tcol.bd_tamano_columna,tcol.bd_campos_adicionales,tcol.bd_joins_adicionales,
                             tcol.bd_formula_calculo,tcol.grid_sobreescribe_filtro,tcol.grid_campos_adicionales,
-                            tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,	
+                            tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,  
                             tcol.form_combo_rec, tcol.form_sobreescribe_config,tcol.estado_reg,
-                            tcol.bd_prioridad,tcol.form_grupo
-
+                            tcol.bd_prioridad,tcol.form_grupo,
+                            tcol.bd_campos_subconsulta
                             from wf.ttipo_columna tcol
                             inner join wf.ttabla tab
                             on tab.id_tabla = tcol.id_tabla
@@ -141,10 +142,10 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
 
-				if (v_parametros.todo = 'no') then                   
-               		v_consulta = v_consulta || ' and tcol.modificado is null ';
+                if (v_parametros.todo = 'no') then                   
+                    v_consulta = v_consulta || ' and tcol.modificado is null ';
                end if;
-               v_consulta = v_consulta || ' order by tcol.id_tipo_columna ASC';	
+               v_consulta = v_consulta || ' order by tcol.id_tipo_columna ASC'; 
                                                                        
                return v_consulta;
 
@@ -152,79 +153,83 @@ BEGIN
          END;
     
     /*********************************    
- 	#TRANSACCION:  'WF_TIPCOLES_SEL'
- 	#DESCRIPCION:	Consulta de datos por estado
- 	#AUTOR:		admin	
- 	#FECHA:		07-05-2014 21:41:15
-	***********************************/
+    #TRANSACCION:  'WF_TIPCOLES_SEL'
+    #DESCRIPCION:   Consulta de datos por estado
+    #AUTOR:     admin   
+    #FECHA:     07-05-2014 21:41:15
+    ***********************************/
 
-	elsif(p_transaccion='WF_TIPCOLES_SEL')then
-     				
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='select
-						tipcol.id_tipo_columna,
-						tipcol.id_tabla,
-						tabla.id_tipo_proceso,
-						tipcol.bd_campos_adicionales,
-						tipcol.form_combo_rec,
-						tipcol.bd_joins_adicionales,
-						tipcol.bd_descripcion_columna,
-						tipcol.bd_tamano_columna,
-						tipcol.bd_formula_calculo,
-						tipcol.form_sobreescribe_config,
-						tipcol.form_tipo_columna,
-						tipcol.grid_sobreescribe_filtro,
-						tipcol.estado_reg,
-						tipcol.bd_nombre_columna,
-						tipcol.form_es_combo,
-						tipcol.form_label,
-						tipcol.grid_campos_adicionales,
-						tipcol.bd_tipo_columna,
-						tipcol.id_usuario_reg,
-						tipcol.fecha_reg,
-						tipcol.id_usuario_mod,
-						tipcol.fecha_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
+    elsif(p_transaccion='WF_TIPCOLES_SEL')then
+                    
+        begin
+            --Sentencia de la consulta
+            v_consulta:='select
+                        tipcol.id_tipo_columna,
+                        tipcol.id_tabla,
+                        tabla.id_tipo_proceso,
+                        tipcol.bd_campos_adicionales,
+                        tipcol.form_combo_rec,
+                        tipcol.bd_joins_adicionales,
+                        tipcol.bd_descripcion_columna,
+                        tipcol.bd_tamano_columna,
+                        tipcol.bd_formula_calculo,
+                        tipcol.form_sobreescribe_config,
+                        tipcol.form_tipo_columna,
+                        tipcol.grid_sobreescribe_filtro,
+                        tipcol.estado_reg,
+                        tipcol.bd_nombre_columna,
+                        tipcol.form_es_combo,
+                        tipcol.form_label,
+                        tipcol.grid_campos_adicionales,
+                        case tipcol.bd_tipo_columna
+                            when ''integer[]'' then ''text''::varchar
+                            when ''varchar[]'' then ''text''::varchar
+                            else tipcol.bd_tipo_columna::varchar
+                        end as bd_tipo_columna,
+                        tipcol.id_usuario_reg,
+                        tipcol.fecha_reg,
+                        tipcol.id_usuario_mod,
+                        tipcol.fecha_mod,
+                        usu1.cuenta as usr_reg,
+                        usu2.cuenta as usr_mod,
                         (select coles.momento
                         from wf.tcolumna_estado coles
                         inner join wf.ttipo_estado te
-                        	on te.id_tipo_estado = coles.id_tipo_estado
+                            on te.id_tipo_estado = coles.id_tipo_estado
                         where te.codigo = '''|| v_parametros.tipo_estado || ''' 
-                        	and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'') as momento,
-                        tipcol.form_grupo,
-                        tipcol.bd_tipo_columna as bd_tipo_columna_comp
-						from wf.ttipo_columna tipcol
-						inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
-						inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
+                            and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'') as momento,
+                        tipcol.bd_tipo_columna as bd_tipo_columna_comp,
+                        tipcol.bd_campos_subconsulta
+                        from wf.ttipo_columna tipcol
+                        inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
+                        inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
                         left join segu.tusuario usu2 on usu2.id_usuario = tipcol.id_usuario_mod
-				        where tipcol.estado_reg = ''activo'' and  ';
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+                        where tipcol.estado_reg = ''activo'' and  ';
+            
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
             --v_consulta:=v_consulta||' and (te.codigo = '''|| v_parametros.tipo_estado || ''' or te.codigo is null) ';
-			v_consulta:=v_consulta||' order by tipcol.bd_prioridad, tipcol.id_tipo_columna asc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            v_consulta:=v_consulta||' order by tipcol.bd_prioridad, tipcol.id_tipo_columna asc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
-					
-	else
-					     
-		raise exception 'Transaccion inexistente';
-					         
-	end if;
-					
+            --Devuelve la respuesta
+            return v_consulta;
+                        
+        end;
+                    
+    else
+                         
+        raise exception 'Transaccion inexistente';
+                             
+    end if;
+                    
 EXCEPTION
-					
-	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
+                    
+    WHEN OTHERS THEN
+            v_resp='';
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            raise exception '%',v_resp;
 END;
 $body$
 LANGUAGE 'plpgsql'
