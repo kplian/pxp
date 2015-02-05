@@ -148,7 +148,7 @@ class MODDocumentoWf extends MODbase{
                     
             $cone = new conexion();
 			$link = $cone->conectarpdo();
-			
+			$copiado = false;			
 			try {
 				
 				$link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
@@ -213,11 +213,11 @@ class MODDocumentoWf extends MODbase{
 				   if($respuesta['max_version'] != '0' && $respuesta['url_destino'] != ''){
 				   	 
 	                      $this->copyFile($respuesta['url_origen'], $respuesta['url_destino'],  $folder = 'historico');
-				   	
+				   	      $copiado = true;
 				   }
 				   
 				   //cipiamos el nuevo archivo 
-	               $this->setFile('archivo','id_documento_wf', false, $this->arreglo['num_tramite'],array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
+	               $this->setFile('archivo','id_documento_wf', false,25600 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
 	            }
 				
 				$link->commit();
@@ -228,6 +228,10 @@ class MODDocumentoWf extends MODbase{
 	        
 	        catch (Exception $e) {			
 		    	$link->rollBack();
+				
+				if($copiado){
+				   	 $this->copyFile($respuesta['url_origen'], $respuesta['url_destino'],  $folder = 'historico', true);
+				}
 		    	$this->respuesta=new Mensaje();
 				if ($e->getCode() == 3) {//es un error de un procedimiento almacenado de pxp
 					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);

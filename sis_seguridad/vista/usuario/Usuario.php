@@ -68,7 +68,7 @@ tabEnter:true,
 	    					fields: ['id_persona','nombre_completo1','ci'],
 	    					// turn on remote sorting
 	    					remoteSort: true,
-	    					baseParams:{par_filtro:'nombre_completo1#ci'}
+	    					baseParams:{par_filtro:'p.nombre_completo1#p.ci'}
 	    				}),
 	       				valueField: 'id_persona',
 	       				displayField: 'nombre_completo1',
