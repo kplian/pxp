@@ -59,12 +59,10 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				this.load({params:{start:0, limit:50}}); 
 			}
 			
-			 
 		},	
 		
 		armaDetalles : function() {
 			var detalles = this.configProceso[this.config.indice].detalles
-			//console.log(this.configProceso[this.config.indice].detalles);
 			for (var i = 0 ; i<detalles.length; i++ ) {
 				
 				if (detalles[i].atributos.vista_tipo == 'detalle') {
@@ -255,7 +253,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            grid:true,
 	            form:true 
 				});
-									
+						
 			for (var i = 0 ;i < this.configProceso[this.config.indice].columnas.length; i++) {
 				
 				if (this.configProceso[this.config.indice].columnas[i].momento != 'ninguno') {
@@ -331,6 +329,12 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	config_columna.type = 'ComboRec';
 		            	config_columna.config.maxLength = 500;
 		            }
+
+		            //RCM: verifica si es un combo con tipo de dato array para predefinir el componente a AwsomeCombo
+		            var tipoDato = this.configProceso[this.config.indice].columnas[i].bd_tipo_columna_comp;
+		            if(this.configProceso[this.config.indice].columnas[i].form_es_combo == 'si'&&(tipoDato=='integer[]'||tipoDato=='varchar[]')){
+		                config_columna.type = 'AwesomeCombo';
+		            } 
 		            
 		            
 		            //Añadir la sobreescritura de config y filtro
@@ -361,7 +365,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			    }
 	            	            
 	            
-			}
+			} //termina for de columnas
 			
 			this.Atributos.push({
 				//configuracion del componente
@@ -482,6 +486,33 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 					}
 				}
 			}
+			
+			//add subquerys fields
+            if (config_columna.bd_campos_subconsulta != '' && 
+                config_columna.bd_campos_subconsulta != undefined &&
+                config_columna.bd_campos_subconsulta != null) {
+                var aux_subquery_fields = config_columna.bd_campos_subconsulta.split(';');
+                
+                for (var i = 0; i < aux_subquery_fields.length; i++) {
+                    var ind = aux_subquery_fields[i].lastIndexOf(' ');
+                    var aux_extra_fields_definition = new Array();
+                    
+                    //Obtiene la cadena del tipo de dato, desde el indice encontrado hasta el final de la cadena
+                    var aux = aux_subquery_fields[i].substring(0,ind);
+                    aux_extra_fields_definition[1] = aux_subquery_fields[i].substring(ind+1,aux_subquery_fields[i].length)
+                    //Obtiene la cadena del medio con el nombre de la columna
+                    ind = aux.lastIndexOf(' ');
+                    aux_extra_fields_definition[0] = aux.substring(ind+1,aux.length);
+                    
+                    if (aux_extra_fields_definition[1] == 'date') {
+                        this.fields.push({name: aux_extra_fields_definition[0],
+                                type: aux_extra_fields_definition[1], dateFormat:aux_extra_fields_definition[2]});
+                    } else {
+                        this.fields.push({name: aux_extra_fields_definition[0],
+                                type: aux_extra_fields_definition[1]});
+                    }
+                }
+            }
 		},
 		
 	    diagramGantt:function (){         
