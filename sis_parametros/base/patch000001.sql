@@ -875,3 +875,15 @@ IS 'se utiliza para contabilizar en diferentes moendas si o no';
 
 /***********************************F-SCP-RAC-PARAM-11/12/2014****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-09/02/2015****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tdepto
+  ADD COLUMN id_lugares INTEGER[];
+
+COMMENT ON COLUMN param.tdepto.id_lugares
+IS 'lugares que atiende el departamento, nulosigifica todo';
+
+/***********************************F-SCP-RAC-PARAM-09/02/2015****************************************/
