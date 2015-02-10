@@ -70,6 +70,48 @@ class MODDocumentoWf extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function listaDocumentosFirma(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_documento_wf_sel';
+		$this->transaccion='WF_DWFFIRMA_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->tipo_conexion='seguridad';
+		
+		$this->count=false;
+		
+		//$this->count=false;	
+		$this->id_usuario = 1;
+						
+		//Definicion de la lista del resultado del query
+		$this->captura('id_documento_wf','int4');
+		$this->captura('url','varchar');
+		$this->captura('num_tramite','varchar');
+		$this->captura('id_tipo_documento','int4');
+		$this->captura('obs','text');
+		$this->captura('id_proceso_wf','int4');
+		$this->captura('extension','varchar');
+		$this->captura('chequeado','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('nombre_tipo_doc','varchar');
+		$this->captura('nombre_doc','varchar');
+		$this->captura('momento','varchar');
+		
+		$this->captura('accion_pendiente','varchar');
+		$this->captura('fecha_firma','varchar');
+		$this->captura('usuario_firma','varchar');
+		$this->captura('action','varchar');
+		
+		
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 	function insertarDocumentoWf(){
 		//Definicion de variables para ejecucion del procedimiento
@@ -232,6 +274,150 @@ class MODDocumentoWf extends MODbase{
 				if($copiado){
 				   	 $this->copyFile($respuesta['url_origen'], $respuesta['url_destino'],  $folder = 'historico', true);
 				}
+		    	$this->respuesta=new Mensaje();
+				if ($e->getCode() == 3) {//es un error de un procedimiento almacenado de pxp
+					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
+				} else if ($e->getCode() == 2) {//es un error en bd de una consulta
+					$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$e->getMessage(),$e->getMessage(),'modelo','','','','');
+				} else {//es un error lanzado con throw exception
+					throw new Exception($e->getMessage(), 2);
+				}
+		}    
+	    
+	    return $this->respuesta;
+	      
+    }
+
+	function firmarDocumento(){ 
+                    
+            $cone = new conexion();
+			$link = $cone->conectarpdo('','segu');
+			
+			try {
+				
+				$link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
+		  	    $link->beginTransaction();
+				
+								
+	            $this->procedimiento='wf.ft_documento_wf_ime';
+	            $this->transaccion='WF_DOCWFAR_MOD';
+	            $this->tipo_procedimiento='IME';	            
+	            $this->id_usuario = 1;
+	            $this->arreglo['extension'] = "pdf";
+	            
+				
+				
+	            //Define los parametros para la funcion 
+	            $this->setParametro('id_documento_wf','id_documento_wf','integer');   
+	            $this->setParametro('extension','extension','varchar');
+	            
+	            
+	            
+	            //manda como parametro la url completa del archivo 
+	            $this->arreglo['file_name'] = './../../../uploaded_files/sis_workflow/DocumentoWf/'.$this->objParam->getParametro('archivo_generado');
+	            $this->setParametro('file_name','file_name','varchar');
+				
+				
+				$this->arreglo['folder'] = './../../../uploaded_files/sis_workflow/DocumentoWf/';
+	            $this->setParametro('folder','folder','varchar');
+				
+				$this->arreglo['only_file'] = str_replace('.pdf', '', $this->objParam->getParametro('archivo_generado'));
+	            $this->setParametro('only_file','only_file','varchar');
+				
+				$this->setParametro('hash_firma','hash_firma','varchar');  
+	            $this->setParametro('datos_firma','datos_firma','text');  
+				
+								
+				      
+	            //Ejecuta la instruccion
+	            $this->armarConsulta();
+				
+				$stmt = $link->prepare($this->consulta);		  
+			  	$stmt->execute();
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);				
+				$resp_procedimiento = $this->divRespuesta($result['f_intermediario_ime']);
+				
+				
+				if ($resp_procedimiento['tipo_respuesta']=='ERROR') {
+					throw new Exception("Error al ejecutar en la bd", 3);
+				}
+	             
+				  
+	            
+	            
+				 if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
+								   
+				   $this->copyFile('./../../../reportes_generados/'.$this->objParam->getParametro('archivo_generado'), './../../../uploaded_files/sis_workflow/DocumentoWf/'.$this->objParam->getParametro('archivo_generado'));
+	            }
+				
+				$link->commit();
+				$this->respuesta=new Mensaje();
+				$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
+				$this->respuesta->setDatos($respuesta);
+	        } 
+	        
+	        catch (Exception $e) {			
+		    	$link->rollBack();
+		    	$this->respuesta=new Mensaje();
+				if ($e->getCode() == 3) {//es un error de un procedimiento almacenado de pxp
+					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
+				} else if ($e->getCode() == 2) {//es un error en bd de una consulta
+					$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$e->getMessage(),$e->getMessage(),'modelo','','','','');
+				} else {//es un error lanzado con throw exception
+					throw new Exception($e->getMessage(), 2);
+				}
+		}    
+	    
+	    return $this->respuesta;
+	      
+    }
+
+	function eliminarArchivo(){ 
+                    
+            $cone = new conexion();
+			$link = $cone->conectarpdo('','segu');
+			
+			try {
+				
+				$link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
+		  	    $link->beginTransaction();				
+								
+	            $this->procedimiento='wf.ft_documento_wf_ime';
+	            $this->transaccion='WF_DOCWELIAR_MOD';
+	            $this->tipo_procedimiento='IME';     
+	            
+	            $this->id_usuario = 1;
+	            //Define los parametros para la funcion 
+	            $this->setParametro('id_documento_wf','id_documento_wf','integer');   
+	            $this->setParametro('url','url','varchar');  
+				      
+	            //Ejecuta la instruccion
+	            $this->armarConsulta();
+				$stmt = $link->prepare($this->consulta);		  
+			  	$stmt->execute();
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);				
+				$resp_procedimiento = $this->divRespuesta($result['f_intermediario_ime']);
+				
+				
+				if ($resp_procedimiento['tipo_respuesta']=='ERROR') {
+					throw new Exception("Error al ejecutar en la bd", 3);
+				}    
+				  
+	            
+	            
+				if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
+					$respuesta = $resp_procedimiento['datos'];				   
+				   	$this->copyFile($this->objParam->getParametro('url'), $respuesta['url_destino']);
+	            }
+				
+				$link->commit();
+				$this->respuesta=new Mensaje();
+				$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
+				$this->respuesta->setDatos($respuesta);
+	        } 
+	        
+	        catch (Exception $e) {			
+		    	$link->rollBack();
 		    	$this->respuesta=new Mensaje();
 				if ($e->getCode() == 3) {//es un error de un procedimiento almacenado de pxp
 					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);

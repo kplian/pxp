@@ -86,7 +86,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 mode: 'local',
                 valueField: 'momento',                  
-                store:['crear','verificar','exigir','hacer_exigible','exigir_fisico','verificar_fisico']
+                store:['crear','verificar','exigir','hacer_exigible','exigir_fisico','verificar_fisico','firmar','eliminar_firma']
             },
             type:'ComboBox',
             //filters:{pfiltro:'des.momento',type:'string'},
@@ -94,7 +94,7 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
             filters:{   
                          type: 'list',
                          pfiltro:'tipdw.tipo',
-                         options: ['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico'],   
+                         options: ['crear','verificar','exigir','hacer_exigible','exigir_fisico','virificar_fisico','firmar','eliminar_firma'],   
                     },
             grid:true,
             form:true

@@ -78,7 +78,7 @@ class ReportePDF extends MYPDF
 	 */
 	function __construct(CTParametro $objParam){
 		$this->objParam=$objParam;
-		$this->url_archivo = "../../../reportes_generados/".$this->objParam->getParametro('nombre_archivo');
+		$this->url_archivo = dirname(__FILE__) . "/../../../reportes_generados/".$this->objParam->getParametro('nombre_archivo');
 		$this->nombre_archivo=$this->objParam->getParametro('nombre_archivo');
 		$this->titulo=$this->objParam->getParametro('titulo_archivo');
 		$this->orientacion=$this->objParam->getParametro('orientacion');
@@ -703,7 +703,9 @@ class ReportePDF extends MYPDF
 			}
 			$this->renderDetalle();
 		}
+		
 		parent::output($this->url_archivo,'F');
+		
 	}
 	
 	//RCM 22-11-2011 (funciones nuevas desde aqui)
