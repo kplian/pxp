@@ -30,8 +30,7 @@ class MODDepto extends MODbase{
 		$this->captura('codigo','varchar');
 		$this->captura('nombre','varchar');
 		$this->captura('nombre_corto','varchar');
-		$this->captura('id_subsistema','integer');
-		
+		$this->captura('id_subsistema','integer');		
 		$this->captura('estado_reg','varchar');
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_reg','integer');
@@ -40,6 +39,8 @@ class MODDepto extends MODbase{
 		$this->captura('usureg','text');
 		$this->captura('usumod','text');
 		$this->captura('desc_subsistema','text');
+		$this->captura('id_lugares','varchar');
+		$this->captura('prioridad','integer');
 		
 		
 		//Ejecuta la funcion
@@ -194,13 +195,13 @@ class MODDepto extends MODbase{
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		//Define los parametros para la funcion	
-			
 		$this->setParametro('id_depto','id_depto','integer');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
-		$this->setParametro('nombre_corto','nombre_corto','varchar');
-		
+		$this->setParametro('nombre_corto','nombre_corto','varchar');		
 		$this->setParametro('id_subsistema','id_subsistema','integer');
+		$this->setParametro('id_lugares','id_lugares','varchar');
+		$this->setParametro('prioridad','prioridad','integer');
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -224,6 +225,8 @@ class MODDepto extends MODbase{
 		$this->setParametro('nombre_corto','nombre_corto','varchar');
 	
 		$this->setParametro('id_subsistema','id_subsistema','integer');
+		$this->setParametro('id_lugares','id_lugares','varchar');
+		$this->setParametro('prioridad','prioridad','integer');
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();

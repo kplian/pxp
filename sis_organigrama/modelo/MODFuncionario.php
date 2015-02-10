@@ -87,6 +87,14 @@ class MODFuncionario extends MODbase{
 		$this->captura('cargo_codigo','varchar');
 		
 		
+		$this->captura('id_lugar','integer');
+		$this->captura('id_oficina','integer');
+		$this->captura('lugar_nombre','varchar');
+		$this->captura('oficina_nombre','varchar');
+		
+		
+		
+		
 		
 		
 		
