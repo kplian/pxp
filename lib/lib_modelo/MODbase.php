@@ -163,7 +163,7 @@ class MODbase extends driver
 			else{
 				if(isset($this->arreglo[$valor])){
 					
-					
+
 					//rac 22092011  verifica si es del tipo bytea 
 					if($tipo=='bytea'){
 						
@@ -183,9 +183,13 @@ class MODbase extends driver
 					   $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
                             
                        $this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-                       array_push($this->valores,$this->arreglo[$valor]);     
-    					
-					  
+                       
+                       if($tipo=='integer[]'||$tipo=='varchar[]'){
+                           array_push($this->valores,'{'.$this->arreglo[$valor].'}');
+                       } else {
+                            array_push($this->valores,$this->arreglo[$valor]);    
+                       }
+                            
 					}
 				}elseif(isset($this->arregloFiles[$valor])){
 					

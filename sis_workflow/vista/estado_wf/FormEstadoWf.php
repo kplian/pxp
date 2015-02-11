@@ -16,11 +16,13 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     maxCount:0,
     url_verificacion:'../../sis_workflow/control/ProcesoWf/verficarSigEstProcesoWf',
     url_check_state:'../../sis_workflow/control/ProcesoWf/checkNextState',
+    reclaim: false,
     constructor:function(config)
-    {   
+    {
         //declaracion de eventos
         this.addEvents('beforesave');
         this.addEvents('successsave');
+        console.log(config);
         
         if(config.data.url_verificacion){
            this.url_verificacion =  config.data.url_verificacion;
@@ -39,6 +41,12 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                 timeout: this.timeout,
                 scope: this
             });
+            
+        //Setea bandera de autoasignacion
+        if(config.data.reclaim){
+            this.reclaim = config.data.reclaim;    
+        }
+        
         
      },
      
@@ -57,7 +65,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
               this.iniciarInterfaz(resp.argument.config,reg.ROOT.datos);
         }
         else{
-            alert('Error al idetificar siguientes pasos')
+            alert('Error al identificar siguientes pasos')
         }
     },
     
@@ -140,16 +148,35 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                     
                     this.Cmp.id_tipo_estado.setValue(r[0].data.id_tipo_estado);
                     this.Cmp.id_tipo_estado.fireEvent('select',this.Cmp.id_tipo_estado, r[0], 0)
-                    //caga valores para el combo funcionario
+
                     if(r[0].data.tipo_asignacion != 'ninguno'){
-                         this.Cmp.id_funcionario_wf.store.load({params:{start:0,limit:50}, 
-                           callback : function (r) {
-                                if (r.length == 1 ) {                       
-                                    this.Cmp.id_funcionario_wf.setValue(r[0].data.id_funcionario);
-                                } 
-                            }, scope : this
-                        });
+                        //Verifica si es caso de autoasignación para cargar valores para el combo funcionario
+                        if(this.reclaim==true){
+                            //Carga al funcionario que envíe el funcionario
+                            var recTem = new Array();
+                            recTem['id_funcionario'] = Phx.CP.config_ini.id_funcionario;
+                            recTem['desc_funcionario'] = Phx.CP.config_ini.nombre_usuario;
+                            recTem['prioridad'] = 1;
+                            
+                            this.Cmp.id_funcionario_wf.store.add(new Ext.data.Record(recTem, Phx.CP.config_ini.id_funcionario));
+                            this.Cmp.id_funcionario_wf.store.commitChanges();
+                            this.Cmp.id_funcionario_wf.setValue(Phx.CP.config_ini.id_funcionario);
+                            this.Cmp.id_funcionario_wf.disable();
+    
+                            
+                        } else {                        
+                            this.Cmp.id_funcionario_wf.store.load({params:{start:0,limit:50}, 
+                               callback : function (r) {
+                                    if (r.length == 1 ) {                       
+                                        this.Cmp.id_funcionario_wf.setValue(r[0].data.id_funcionario);
+                                    } 
+                                }, scope : this
+                            });
+                        }
+
                     }
+   
+                    
                     //carga valores para el combo depto
                      if(r[0].data.depto_asignacion != 'ninguno'){
                     
@@ -329,16 +356,16 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     
     /////////////////Adiciona Tarjeta con los items enviados/////////////
     addTarjetaItems:function(items_to_add){
-       	var cont = this.contadorTarjetas;
-    	var cont = this.contadorTarjetas;
-    	
+        var cont = this.contadorTarjetas;
+        var cont = this.contadorTarjetas;
+        
         this.addCardWizart({
                            id: this.idContenedor+'-card-'+cont,
                            layout:'form',
                            autoScroll:true,
                            items : items_to_add });
         this.contadorTarjetas = this.contadorTarjetas + 1;
-       	alert('llega1');
+        alert('llega1');
         this.maxCount = this.maxCount + 1;
     },
     
