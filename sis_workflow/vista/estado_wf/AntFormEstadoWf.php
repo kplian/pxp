@@ -17,6 +17,7 @@ Phx.vista.AntFormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         Phx.vista.AntFormEstadoWf.superclass.constructor.call(this,config);
         this.init(); 
         this.loadValoresIniciales();
+        
     },
    
     Atributos:[
@@ -48,14 +49,16 @@ Phx.vista.AntFormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     onSubmit:function(){
        //TODO passar los datos obtenidos del wizard y pasar  el evento save 
        if (this.form.getForm().isValid()) {
-           this.fireEvent('beforesave',this,this.getValues());
+           this.fireEvent('beforesave', this, this.getValues());
        }
     },
     getValues:function(){
-        var resp = {
-                   id_proceso_wf:this.data.id_proceso_wf,
-                   id_estado_wf:this.data.id_estado_wf,
-                   obs:this.Cmp.obs.getValue()
+    	console.log('this.estado_destino',this.estado_destino)
+    	 var resp = {
+                   id_proceso_wf: this.data.id_proceso_wf,
+                   id_estado_wf: this.data.id_estado_wf,
+                   obs:this.Cmp.obs.getValue(),
+                   estado_destino:  this.estado_destino
             }
             
          return resp;   
