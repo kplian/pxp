@@ -429,7 +429,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
                                  ['pago_directo', 'Pago Directo'],
                                  ['caja_chica', 'Caja Chica'],
                                  ['fondo_avance', 'Fondo en Avance'],
-                                 ['contrato', 'Contratos']
+                                 ['contrato', 'Contratos'],
+                                 ['pago_unico', 'Pago Único'],
                                ]
                         }),
        				valueField: 'variable',
