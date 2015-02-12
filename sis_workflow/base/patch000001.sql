@@ -709,7 +709,7 @@ IS 'si o no, se muestra en el la interface de vobowf,  solo es conveniente las i
  
  
   
-/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+/***********************************I-SCP-RAC-WF-2-04/08/2014****************************************/
  --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
