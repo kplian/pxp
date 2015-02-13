@@ -1,0 +1,142 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("flaticon.eot");
+	src: url("flaticon.eot#iefix") format("embedded-opentype"),
+	url("flaticon.woff") format("woff"),
+	url("flaticon.ttf") format("truetype"),
+	url("flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}.flaticon-accept6:before {
+	content: "\e000";
+}
+.flaticon-add98:before {
+	content: "\e001";
+}
+.flaticon-affiliate:before {
+	content: "\e002";
+}
+.flaticon-android2:before {
+	content: "\e003";
+}
+.flaticon-code3:before {
+	content: "\e004";
+}
+.flaticon-bills3:before {
+	content: "\e005";
+}
+.flaticon-broken37:before {
+	content: "\e006";
+}
+.flaticon-calendar65:before {
+	content: "\e007";
+}
+.flaticon-chart12:before {
+	content: "\e008";
+}
+.flaticon-client:before {
+	content: "\e009";
+}
+.flaticon-contract2:before {
+	content: "\e00a";
+}
+.flaticon-custom1:before {
+	content: "\e00b";
+}
+.flaticon-database3:before {
+	content: "\e00c";
+}
+.flaticon-document158:before {
+	content: "\e00d";
+}
+.flaticon-document17:before {
+	content: "\e00e";
+}
+.flaticon-document193:before {
+	content: "\e00f";
+}
+.flaticon-document93:before {
+	content: "\e010";
+}
+.flaticon-finances1:before {
+	content: "\e011";
+}
+.flaticon-hand132:before {
+	content: "\e012";
+}
+.flaticon-html23:before {
+	content: "\e013";
+}
+.flaticon-male70:before {
+	content: "\e014";
+}
+.flaticon-microsoft-excel:before {
+	content: "\e015";
+}
+.flaticon-pdf18:before {
+	content: "\e016";
+}
+.flaticon-photo219:before {
+	content: "\e017";
+}
+.flaticon-php3:before {
+	content: "\e018";
+}
+.flaticon-qr2:before {
+	content: "\e019";
+}
+.flaticon-responsive:before {
+	content: "\e01a";
+}
+.flaticon-responsive16:before {
+	content: "\e01b";
+}
+.flaticon-sitemap1:before {
+	content: "\e01c";
+}
+.flaticon-smartphone:before {
+	content: "\e01d";
+}
+.flaticon-spreadsheet2:before {
+	content: "\e01e";
+}
+.flaticon-tag56:before {
+	content: "\e01f";
+}
+.flaticon-tag59:before {
+	content: "\e020";
+}
+.flaticon-technical:before {
+	content: "\e021";
+}
+.flaticon-telephone37:before {
+	content: "\e022";
+}
+.flaticon-text33:before {
+	content: "\e023";
+}
+.flaticon-undo22:before {
+	content: "\e024";
+}
+.flaticon-up34:before {
+	content: "\e025";
+}
+.flaticon-upload133:before {
+	content: "\e026";
+}
+.flaticon-user62:before {
+	content: "\e027";
+}
+.flaticon-view1:before {
+	content: "\e028";
+}
+.flaticon-website8:before {
+	content: "\e029";
+}

@@ -902,3 +902,17 @@ IS 'prioridad del departameto donde 0 es la mas importante';
 
 /***********************************F-SCP-RAC-PARAM-0-11/02/2015****************************************/
 
+
+
+/***********************************I-SCP-RAC-PARAM-0-03/03/2015****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tdepto
+  ADD COLUMN modulo VARCHAR(100);
+
+COMMENT ON COLUMN param.tdepto.modulo
+IS 'Este campo se agrega para poder subdividir los deptos de un sistema en modulo, caso libro de banco y obligaciones de pago en tesoreria';
+
+/***********************************F-SCP-RAC-PARAM-0-03/03/2015****************************************/
+

@@ -81,7 +81,8 @@ BEGIN
                             PERMOD.nombre_completo1 as usumod,
                             SUBSIS.codigo || '' - '' || SUBSIS.nombre as desc_subsistema,
     						array_to_string(DEPPTO.id_lugares,'','')::varchar as id_lugares,
-                            prioridad
+                            DEPPTO.prioridad,
+                            DEPPTO.modulo
                             FROM param.tdepto DEPPTO
                             INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
                             INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg

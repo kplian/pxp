@@ -12,7 +12,7 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
-
+		console.log(config);
 		this.check_fisico = 'no';
 		if (config.hasOwnProperty('check_fisico')) {
 			if (config.check_fisico == 'si') {
@@ -197,7 +197,23 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 
             },
                 type:'TextField',
-                filters:{pfiltro:'td.nombre',type:'string'},
+                filters:{pfiltro:'t.descripcion_tipo_documento',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
+        },
+        
+        {
+            config:{
+                name: 'descripcion_proceso_wf',
+                fieldLabel: 'Descripcion Proceso',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 150
+                
+            },
+                type:'TextField',
+                filters:{pfiltro:'pw.descripcion',type:'string'},
                 id_grupo:1,
                 grid:true,
                 form:false
