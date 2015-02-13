@@ -60,8 +60,8 @@ include_once(dirname(__FILE__).'/../../sis_workflow/modelo/MODDocumentoWf.php');
        		if ($d['accion_pendiente'] == 'firmar') {
        			
        			//Generamos el documento con REST
-				$pxpRestClient = PxpRestClient::connect('127.0.0.1','kerp/pxp/lib/rest/')
-													->setCredentialsPxp($_GET['user'],$_GET['pw']);
+				$pxpRestClient = PxpRestClient::connect('127.0.0.1',substr($_SESSION["_FOLDER"], 1) .'pxp/lib/rest/')
+                                                                                                        ->setCredentialsPxp($_GET['user'],$_GET['pw']);
 					
 				$url_final = str_replace('sis_', '', $d['action']);
 				

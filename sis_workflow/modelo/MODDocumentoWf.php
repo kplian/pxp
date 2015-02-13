@@ -61,6 +61,7 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('id_documento_wf_ori','integer');
 		$this->captura('id_proceso_wf_ori','integer');
 		$this->captura('nro_tramite_ori','varchar');
+		$this->captura('priorizacion','integer');
 		
 		
 		//Ejecuta la instruccion

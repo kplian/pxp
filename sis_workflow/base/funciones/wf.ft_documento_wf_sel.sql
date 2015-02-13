@@ -30,6 +30,10 @@ DECLARE
     v_nro_tramite varchar;
     v_id_proceso_macro integer;
     v_filtro			varchar;
+    v_id_tipo_estado_actual		integer; 
+    v_id_estado_actual		integer; 
+    v_id_tipo_estado_siguiente	integer[]; 
+    v_cantidad_siguiente		integer;
 			    
 BEGIN
 
@@ -64,7 +68,26 @@ BEGIN
 	       		v_filtro = ' pw.id_proceso_wf = ' || v_parametros.id_proceso_wf || ' and ';
 	       
 	       end if;
-        
+           
+           SELECT ewf.id_tipo_estado,ewf.id_estado_wf into v_id_tipo_estado_actual,v_id_estado_actual
+           from wf.testado_wf ewf
+           where ewf.id_proceso_wf = v_parametros.id_proceso_wf and ewf.estado_reg='activo';
+           
+           
+				SELECT  
+                     ps_id_tipo_estado
+                into
+                	
+                 	v_id_tipo_estado_siguiente
+                
+                FROM wf.f_obtener_estado_wf(
+                v_parametros.id_proceso_wf,
+                 NULL,
+                 v_id_tipo_estado_actual,
+                 'siguiente',
+                 p_id_usuario); 
+            --raise exception '%',v_id_estado_actual;
+           
     		--Sentencia de la consulta
 			v_consulta:='select
 						dwf.id_documento_wf,
@@ -102,7 +125,10 @@ BEGIN
                         td.solo_lectura,
                         dwf.id_documento_wf_ori,
                         dwf.id_proceso_wf_ori,
-                        dwf.nro_tramite_ori
+                        dwf.nro_tramite_ori,
+                        wf.f_priorizar_documento(' || array_length(v_id_tipo_estado_siguiente, 1) || ',' || v_id_tipo_estado_siguiente[1] || ',' 
+                        || v_id_estado_actual ||  ',' || v_parametros.id_proceso_wf ||',' || p_id_usuario ||
+                         ',td.id_tipo_documento,''' || v_parametros.dir_ordenacion ||''' ) as priorizacion
 						from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
@@ -116,7 +142,7 @@ BEGIN
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			v_consulta:=v_consulta||' order by priorizacion ' || v_parametros.dir_ordenacion || ', ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
             raise notice '%',v_consulta;
 

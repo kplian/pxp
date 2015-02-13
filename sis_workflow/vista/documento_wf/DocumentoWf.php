@@ -25,6 +25,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         this.maestro = config;
         
 		this.todos_documentos = 'si';
+		this.anulados = 'no';
         this.tbarItems = ['-',{
             text: 'Mostrar solo los documentos del proceso actual',
             enableToggle: true,
@@ -44,6 +45,26 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 this.onButtonAct();
              },
             scope: this
+           },
+           {
+            text: 'Mostrar los documentos anulados',
+            enableToggle: true,
+            pressed: false,
+            toggleHandler: function(btn, pressed) {
+               
+                if(pressed){
+                	
+                    this.anulados = 'si';
+                    this.desBotonesTodo();
+                }
+                else{
+                   this.anulados = 'no' 
+                }
+                
+                this.store.baseParams.anulados = this.anulados;
+                this.onButtonAct();
+             },
+            scope: this
            }];
            
            
@@ -58,37 +79,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
-		},
-		{    config: {
-                xtype: 'actioncolumn',
-                name: 'actioncolumn',
-                gwidth: 30,
-                
-                items: [{
-                	//iconCls :'blist',
-                    getClass: function(v, meta, rec) {                    	
-                    	         // Or return a class from a function
-                        if (rec.data['extension'].length!=0 || rec.data['tipo_documento'] == 'generado') {
-                        	
-                            //this.items[0].tooltip = 'Ver archivo';
-                            return 'bsearch';
-                            
-                        } else {                            
-                            return '';
-                        }
-                    },
-                   //icon   : '../../../lib/imagenes/icono_dibu/dibu_search.png',  // Use a URL in the icon config
-                   handler: function(grid, rowIndex, colIndex) {
-                    	me.onDblClik(grid,rowIndex);
-                   },
-                   scope:me
-                }],
-                scope:me
-             },
-             type:'Field',
-			 form:false,
-			 grid:true 
-        },
+		},		
         {
             config:{
                 name: 'chequeado',
@@ -159,20 +150,34 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 form:false
         },
 		
-		{
+		
+        {
             config:{
-                name: 'codigo_tipo_documento',
-                fieldLabel: 'Codigo Doc',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-                maxLength:200
+                fieldLabel: "Subir",
+                gwidth: 110,
+                inputType:'file',
+                name: 'upload',
+                buttonText: '',   
+                maxLength:150,
+                anchor:'100%',
+                renderer:function (value, p, record){
+                		if (record.data['tipo_documento'] == 'escaneado') {  
+                            if(record.data['extension'].length!=0) {                                
+                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Reemplazar Archivo</a></div>");
+                            } else {
+                            	return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Subir Archivo</a></div>");
+                            }
+                        }
+                        },  
+                buttonCfg: {
+                    iconCls: 'upload-icon'
+                }
             },
-                type:'TextField',
-                filters:{pfiltro:'td.codigo',type:'string'},
-                id_grupo:1,
-                grid:false,
-                form:false
+            type:'Field',
+            sortable:false,
+            id_grupo:0,
+            grid:true,
+            form:false
         },
         {
             config:{
@@ -183,8 +188,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 gwidth: 150,
                 maxLength:200,
                 renderer:function(value,p,record){
-                         if( record.data.nombre_estado.toLowerCase()=='anulada'||record.data.nombre_estado.toLowerCase()=='anulado'||record.data.nombre_estado.toLowerCase()=='cancelado'){
-                             return String.format('<b><font color="red">{0}</font></b>', value);
+                         if( record.data.priorizacion==0||record.data.priorizacion==9){
+                             return String.format('<b><font color="red">{0}***</font></b>', value);
                         }
                         else{
                             return String.format('{0}', value);
@@ -197,129 +202,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:false
         },
-        /*{
-            config:{
-                fieldLabel: "Guardado",
-                gwidth: 60,
-                inputType:'file',
-                name: 'archivo',
-                buttonText: '',   
-                maxLength:150,
-                anchor:'100%',
-                renderer:function (value, p, record){  
-                            if(record.data['extension'].length!=0) {                                
-                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Abrir</a></div>");
-                            }
-                        },  
-                buttonCfg: {
-                    iconCls: 'upload-icon'
-                }
-            },
-            type:'Field',
-            sortable:false,
-            id_grupo:0,
-            grid:true,
-            form:false
-        },
         
-        {
-            config:{
-                fieldLabel: "Generado",
-                gwidth: 60,
-                inputType:'file',
-                name: 'generado',
-                buttonText: '',   
-                maxLength:150,
-                anchor:'100%',
-                renderer:function (value, p, record){  
-                            if(record.data['tipo_documento'] == 'generado') {                                
-                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Abrir</a></div>");
-                            }
-                        },  
-                buttonCfg: {
-                    iconCls: 'upload-icon'
-                }
-            },
-            type:'Field',
-            sortable:false,
-            id_grupo:0,
-            grid:true,
-            form:false
-        },*/
-        {
-            config:{
-                name: 'codigo_proceso',
-                fieldLabel: 'Codigo Proc.',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 150,
-                maxLength:200,
-                renderer:function(value,p,record){
-                         if( record.data.nombre_estado.toLowerCase()=='anulada'||record.data.nombre_estado.toLowerCase()=='anulado'||record.data.nombre_estado.toLowerCase()=='cancelado'){
-                             return String.format('<b><font color="red">{0}</font></b>', value);
-                        }
-                        else{
-                            return String.format('{0}', value);
-                        }},
-            },
-                type:'TextField',
-                filters:{pfiltro:'pw.codigo_proceso',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:false
-        },
-        {
-            config:{
-                name: 'nombre_estado',
-                fieldLabel: 'Estado',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-                maxLength:10,
-                renderer:function(value,p,record){
-                         if( record.data.nombre_estado.toLowerCase()=='anulada'||record.data.nombre_estado.toLowerCase()=='anulado'||record.data.nombre_estado.toLowerCase()=='cancelado'){
-                             return String.format('<b><font color="red">{0}</font></b>', value);
-                        }
-                        else{
-                            return String.format('{0}', value);
-                        }},
-            },
-                type:'TextField',
-                filters:{pfiltro:'tewf.nombre_estado',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:false
-        },
-        {       
-            config:{
-                name: 'descripcion_proceso_wf',
-                fieldLabel: 'Desc Proc.',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 300,
-                maxLength:200
-            },
-                type:'TextField',
-                filters:{pfiltro:'pw.descripcion',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:false
-        },
-        {
-            config:{
-                name:'extension' ,
-                fieldLabel: 'Extensión',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 40,
-                maxLength:5
-            },
-                type:'TextField',
-                filters:{pfiltro:'dwf.extension',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:false
-        },
         {
             config:{
                 name: 'nro_tramite_ori',
@@ -340,36 +223,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:false
         },
-		{
-			config:{
-				name: 'obs',
-				fieldLabel: 'obs',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 250,
-				maxLength:300
-			},
-				type:'TextArea',
-				filters:{pfiltro:'dwf.obs',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
-				name: 'momento',
-				fieldLabel: 'momento',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:255
-			},
-				type:'TextField',
-				filters:{pfiltro:'dwf.momento',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
-		},
+		
 		{
 			config:{
 				name: 'fecha_reg',
@@ -482,13 +336,13 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.DocumentoWf.superclass.constructor.call(this,config);
 		
-		this.addButton('btnUpload', {
+		/*this.addButton('btnUpload', {
                 text : 'Subir Documento',
                 iconCls : 'bupload1',
                 disabled : true,
                 handler : SubirArchivo,
                 tooltip : '<b>Cargar Documento</b><br/>Al subir el archivo, el registro sera marcado como Chequeado OK'
-        });
+        });*/
         
         if (this.check_fisico == 'si') {
 	        this.addButton('btnMomento', {
@@ -502,10 +356,17 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         
 
         this.grid.addListener('celldblclick',this.oncelldblclick,this);
+        this.grid.addListener('cellclick',this.oncellclick,this);
 
         //si viene del formulario de solicitud agregamos un botono de finalizar
         if(config.tipo === 'solcom'){
         	this.tbar.add('->');
+        	this.addButton('fin_solcom',{ text:'Solo Guardar', iconCls: 'bok', disabled: false,
+							        	  handler: function(){
+							        	 	 this.panel.destroy();
+							        	  }, 
+							        	  tooltip: '<b>Solo guardar</b><br>Deja la sollicitud en borrador, permite continuar despues'});
+            
         	this.addButton('fin_requerimiento',{ text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
 									        	 handler: function(){
 									        	 	this.fireEvent('finalizarsol', this, this.maestro, true);
@@ -513,12 +374,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 									        	 }, 
 									        	 tooltip: '<b>Finalizar</b><br>Finaliza la solicitud y la manda para aprobación'});
         	 
-        	this.addButton('fin_solcom',{ text:'Solo Guardar', iconCls: 'bok', disabled: false,
-							        	  handler: function(){
-							        	 	 this.panel.destroy();
-							        	  }, 
-							        	  tooltip: '<b>Solo guardar</b><br>Deja la sollicitud en borrador, permite continuar despues'});
-            
+        	
         	
         }
             
@@ -527,49 +383,50 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
        this.init();
        
        cm = this.grid.getColumnModel();
-       cm.setHidden(1,true);
+       
        
        if (this.check_fisico == 'no') {
+       		cm.setHidden(2,true);
        		cm.setHidden(3,true);
-       		cm.setHidden(4,true);
        }
-       cm.setHidden(6,true);
-       cm.setHidden(7,true);
-       cm.setHidden(9,true);
-       cm.setHidden(11,true);
-       cm.setHidden(12,true);
-       cm.setHidden(14,true);
+       
        this.store.baseParams.todos_documentos = this.todos_documentos;
+       this.store.baseParams.anulados = this.anulados;
         this.load({params:{
             start:0, 
             limit:50,
             id_proceso_wf: this.id_proceso_wf            
             }});
             
-        function SubirArchivo()
-        {                   
-            var rec=this.sm.getSelected();
-            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/SubirArchivoWf.php',
-            'Subir Archivo',
-            {
-                modal:true,
-                width:450,
-                height:150
-            },rec.data,this.idContenedor,'SubirArchivoWf')
-        }        
+                
        
        
        
 	},
+	SubirArchivo : function(rec)
+    {                   
+        
+        Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/SubirArchivoWf.php',
+        'Subir Archivo',
+        {
+            modal:true,
+            width:450,
+            height:150
+        },rec.data,this.idContenedor,'SubirArchivoWf')
+    },
 	
 	oncellclick : function(grid, rowIndex, columnIndex, e) {
 	    var record = this.store.getAt(rowIndex);  // Get the Record
 	    var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
 	    
-	    if (fieldName == 'nro_tramite_ori') {
+	    if (fieldName == 'nro_tramite_ori' && record.data.id_proceso_wf_ori) {
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
-	    }
+	    } else if (fieldName == 'upload') {
+	    	if (record.data.tipo_documento == 'escaneado') {
+	    		this.SubirArchivo(record);
+	    	}
+	    } 
 		
 	},
 	
@@ -640,6 +497,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
+		{name:'priorizacion', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		'codigo_tipo_proceso',
@@ -663,7 +521,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
         var data = this.getSelectedData();
        // if(this.todos_documentos == 'no'){
-	        this.getBoton('btnUpload').enable();
+	        //this.getBoton('btnUpload').enable();
 	        if (this.check_fisico == 'si') {
 		        this.getBoton('btnMomento').enable(); 
 		        
@@ -677,7 +535,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		    }        
 	        
 	        if(data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
-	           this.getBoton('btnUpload').disable();
+	           //this.getBoton('btnUpload').disable();
 	           if (this.check_fisico == 'si') { 
 	           	this.getBoton('btnMomento').disable();
 	           }
@@ -694,7 +552,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
           if (this.check_fisico == 'si') {
           	this.getBoton('btnMomento').disable();
           }
-          this.getBoton('btnUpload').disable();
+          //this.getBoton('btnUpload').disable();
           this.getBoton('edit').disable();
           this.getBoton('save').disable();
     },
