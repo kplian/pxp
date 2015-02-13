@@ -491,6 +491,7 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('plantilla','text');
 			$this->captura('correos','text');			
 			$this->captura('estado_reg','varchar');
+			$this->captura('asunto','varchar');
 						
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			

@@ -36,6 +36,7 @@ class MODPlantillaCorreo extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('asunto','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -59,6 +60,8 @@ class MODPlantillaCorreo extends MODbase{
 		$this->setParametro('codigo_plantilla','codigo_plantilla','varchar');
 		$this->setParametro('documentos','documentos','text');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('asunto','asunto','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -83,6 +86,7 @@ class MODPlantillaCorreo extends MODbase{
 		$this->setParametro('codigo_plantilla','codigo_plantilla','varchar');
 		$this->setParametro('documentos','documentos','text');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('asunto','asunto','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
