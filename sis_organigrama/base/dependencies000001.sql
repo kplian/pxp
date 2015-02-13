@@ -499,12 +499,12 @@ AS
 
 /*********************************I-DEP-JRR-ORGA-0-05/03/2015***********************************/
 
-CREATE TRIGGER ttemporal_cargo_tr BEFORE UPDATE 
+CREATE TRIGGER ttemporal_cargo_tr AFTER UPDATE 
 ON orga.ttemporal_cargo FOR EACH ROW 
 EXECUTE PROCEDURE orga.f_tr_temporal_cargo();
 
 
-CREATE TRIGGER tcargo_tr BEFORE UPDATE 
+CREATE TRIGGER tcargo_tr AFTER UPDATE 
 ON orga.tcargo FOR EACH ROW 
 EXECUTE PROCEDURE orga.f_tr_cargo();
 
