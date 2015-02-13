@@ -64,6 +64,8 @@ BEGIN
 
      if(par_transaccion='PM_DEPPTO_SEL')then
      	BEGIN
+        
+       
                v_consulta:='SELECT 
                             DEPPTO.id_depto,
                             DEPPTO.codigo,
@@ -77,7 +79,9 @@ BEGIN
                             DEPPTO.id_usuario_mod,
                             PERREG.nombre_completo1 as usureg,
                             PERMOD.nombre_completo1 as usumod,
-                            SUBSIS.codigo||'' - ''||SUBSIS.nombre as desc_subsistema
+                            SUBSIS.codigo || '' - '' || SUBSIS.nombre as desc_subsistema,
+    						array_to_string(DEPPTO.id_lugares,'','')::varchar as id_lugares,
+                            prioridad
                             FROM param.tdepto DEPPTO
                             INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
                             INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
@@ -87,6 +91,9 @@ BEGIN
                             WHERE DEPPTO.estado_reg =''activo'' and ';
               
                v_consulta:=v_consulta||v_parametros.filtro;
+               
+               
+               
                
                if pxp.f_existe_parametro(par_tabla,'codigo_subsistema') then
 		          	v_consulta =  v_consulta || ' AND SUBSIS.codigo = ''' ||v_parametros.codigo_subsistema||'''';

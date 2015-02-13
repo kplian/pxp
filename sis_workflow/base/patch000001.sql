@@ -709,7 +709,7 @@ IS 'si o no, se muestra en el la interface de vobowf,  solo es conveniente las i
  
  
   
-/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+/***********************************I-SCP-RAC-WF-2-04/08/2014****************************************/
  --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
@@ -932,7 +932,7 @@ ALTER TABLE wf.tobs
 --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
-  ADD COLUMN adminte_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
+  ADD COLUMN admite_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
 
 COMMENT ON COLUMN wf.ttipo_estado.adminte_obs
 IS 'no o si, define si permite registrar observaciones en este estado';

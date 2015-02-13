@@ -887,3 +887,18 @@ COMMENT ON COLUMN param.tdepto.id_lugares
 IS 'lugares que atiende el departamento, nulosigifica todo';
 
 /***********************************F-SCP-RAC-PARAM-09/02/2015****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-11/02/2015****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tdepto
+  ADD COLUMN prioridad INTEGER DEFAULT 1 NOT NULL;
+
+COMMENT ON COLUMN param.tdepto.prioridad
+IS 'prioridad del departameto donde 0 es la mas importante';
+
+/***********************************F-SCP-RAC-PARAM-0-11/02/2015****************************************/
+

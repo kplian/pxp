@@ -157,9 +157,13 @@ BEGIN
                             FUNCAR.estado_reg_asi,
                             FUNCAR.id_cargo,
                             FUNCAR.descripcion_cargo,
-                            FUNCAR.cargo_codigo
+                            FUNCAR.cargo_codigo,
+                            FUNCAR.id_lugar,
+                            FUNCAR.id_oficina,
+                            FUNCAR.lugar_nombre,
+                            FUNCAR.oficina_nombre
                             
-                            FROM orga.vfuncionario_cargo FUNCAR 
+                            FROM orga.vfuncionario_cargo_lugar FUNCAR 
                             WHERE '||v_filadd;
                
                
@@ -191,7 +195,7 @@ BEGIN
 
                v_consulta:='SELECT
                                   count(id_uo_funcionario)
-                            FROM orga.vfuncionario_cargo FUNCAR 
+                            FROM orga.vfuncionario_cargo_lugar FUNCAR 
                             WHERE '||v_filadd;
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;

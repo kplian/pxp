@@ -12,6 +12,7 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		Atributos : [],
 		nombreVista : 'ProcesoInstancia',
+		btnReclamar: false,
 		constructor:function(config) {
 			
 			this.config = config;
@@ -157,6 +158,19 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		                    disabled:true,
 		                    handler:this.openFormEstadoWf,
 		                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+                
+                if(this.btnReclamar) {
+                    this.addButton('btnReclamar',
+                        {
+                            text: 'Reclamar Caso',
+                            iconCls: 'bchecklist',
+                            disabled: true,
+                            handler: this.ReclamarCaso,
+                            tooltip: '<b>Reclamar caso</b><br/>Autoasignarse la realización de la tarea seleccionada.'
+                        }
+                    ); 
+                }
+                		                 
 			}
 		},
 		
@@ -176,7 +190,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},				
 				{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 				{name:'usr_reg', type: 'string'},
-				{name:'usr_mod', type: 'string'}];
+				{name:'usr_mod', type: 'string'},
+				{name:'desc_funcionario', type: 'string'}];
 			
 			this.Atributos = [];			
 			this.Atributos.push({
@@ -236,6 +251,20 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            grid:true,
 	            form:false 
 				});
+			
+			this.Atributos.push({
+                //configuracion del componente
+                config:{
+                    name: 'desc_funcionario',
+                    fieldLabel: 'Asignado a',                   
+                    gwidth: 100
+                },
+                type:'TextField',
+                filters:{pfiltro:'fun.desc_funcionario2',type:'string'},
+                id_grupo:0,
+                grid:true,
+                form:false 
+                }); 
 			
 			this.Atributos.push({
 				//configuracion del componente
@@ -570,7 +599,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	     
 	     openFormEstadoWf:function() {
         
-	        var rec=this.sm.getSelected();	        
+	        var rec=this.sm.getSelected();	
+     
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
 	            'Estado de Wf',
 	            {
@@ -695,7 +725,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		       if(this.historico == 'no'){
 		          
 		          this.getBoton('sig_estado').enable();
-		          this.getBoton('ant_estado').enable();          
+		          this.getBoton('ant_estado').enable(); 
+		          this.getBoton('btnReclamar').enable();         
 		          
 		          if(data.codigo_estado == 'borrador' ){ 
 		             this.getBoton('ant_estado').disable();
@@ -704,6 +735,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		          if(data.codigo_estado == 'finalizado' || data.codigo_estado =='anulado'){
 		               this.getBoton('sig_estado').disable();
 		               this.getBoton('ant_estado').disable();
+		               this.getBoton('btnReclamar').disable();
 		          }
 		       }   
 		      else{
@@ -722,6 +754,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            this.getBoton('sig_estado').disable();
 		            this.getBoton('ant_estado').disable();
 		            this.getBoton('diagrama_gantt').disable();
+		            this.getBoton('btnReclamar').disable();
 		           
 		        }
 		    }
@@ -736,6 +769,32 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
 			this.mostrarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonEdit.call(this);
+		},
+		
+		ReclamarCaso: function(){
+		    var rec=this.sm.getSelected();
+		    rec.data.reclaim= true;
+		             
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:700,
+                height:450
+            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
+            {
+                config:[{
+                          event:'beforesave',
+                          delegate: this.onSaveWizard,
+                          
+                        }],
+                scope:this
+             });     
+		},
+		
+		successReclamar: function(){
+		    Phx.CP.loadingHide();
+            this.reload();
 		}
 	}
 )
