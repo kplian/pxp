@@ -133,11 +133,11 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			if (this.configProceso[this.config.indice].atributos.vista_tipo == 'maestro') {
 				this.addButton('btnChequeoDocumentosWf',
 		            {
-		                text: 'Chequear Documentos',
+		                text: 'Documentos del Proceso',
 		                iconCls: 'bchecklist',
 		                disabled: true,
 		                handler: this.loadCheckDocumentosWf,
-		                tooltip: '<b>Documentos del Proceso</b><br/>Subir los documetos requeridos en el proceso seleccionada.'
+		                tooltip: '<b>Documentos del Proceso</b><br/>Subir los documetos requeridos en el proceso seleccionado.'
 		            }
 		        ); 
 		        

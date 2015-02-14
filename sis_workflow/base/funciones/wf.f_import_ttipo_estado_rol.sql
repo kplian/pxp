@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION wf.f_import_ttipo_estado_rol (
-p_accion varchar,		
-p_codigo_tipo_proceso varchar,	
-p_codigo_tipo_estado varchar,	
-p_codigo_rol varchar
+  p_accion varchar,
+  p_codigo_tipo_proceso varchar,
+  p_codigo_tipo_estado varchar,
+  p_codigo_rol varchar
 )
 RETURNS varchar AS
 $body$
@@ -39,20 +39,22 @@ BEGIN
     	update wf.ttipo_estado_rol set estado_reg = 'inactivo',modificado = 1 
     	where id_tipo_estado_rol = v_id_tipo_estado_rol;
     else
-        if (v_id_tipo_documento_estado is null)then
-           INSERT INTO wf.ttipo_estado_rol
-            (
-              id_usuario_reg,              
-              id_tipo_estado,
-              id_rol,              
-              modificado
-            ) 
-            VALUES (
-              1,              
-              v_id_tipo_estado,
-              v_id_rol,              
-              1
-            );
+        if (v_id_tipo_estado_rol is null)then
+        	if (v_id_rol is not null) then
+               INSERT INTO wf.ttipo_estado_rol
+                (
+                  id_usuario_reg,              
+                  id_tipo_estado,
+                  id_rol,              
+                  modificado
+                ) 
+                VALUES (
+                  1,              
+                  v_id_tipo_estado,
+                  v_id_rol,              
+                  1
+                );
+            end if;
         else            
            UPDATE wf.ttipo_estado_rol  
             SET               
@@ -73,4 +75,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
