@@ -8,6 +8,10 @@
  * @author Rensi Arteaga Copari
  * @version 0.1
  */
+
+
+
+
 Ext.BLANK_IMAGE_URL = 'resources/s.gif';
 Ext.FORMATO_MONETARIO = '0.000,00/i';
 
@@ -464,6 +468,13 @@ Phx.CP=function(){
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
 	var contNodo = 0;
+	
+	this.cookieProvider = new Ext.state.CookieProvider({
+	       path: "/",
+	       expires: undefined //30 days
+	   });
+   
+	Ext.state.Manager.setProvider(this.cookieProvider);
     return{
         
         evaluateHash:function(action,token_inicio){
