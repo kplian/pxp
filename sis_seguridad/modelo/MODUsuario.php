@@ -44,6 +44,36 @@ class MODUsuario extends MODbase {
 		 
 		return $this->respuesta;
 	}
+
+    function recuperarLlavesUsuario(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_validar_usuario_ime';
+		$this->transaccion='SEG_GETKEY_SEG';
+		
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		
+		$this->tipo_procedimiento='IME';
+		$this->count=false;
+		
+		$this->arreglo=array("usuario" =>$this->arreglo['usuario']);
+				
+		//Define los parametros para ejecucion de la funcion
+		$this->setParametro('login','usuario','varchar');
+		
+		
+		//Se definen los datos para las variables de sesion
+		$_SESSION["_LOGIN"]=$this->arreglo['usuario'];
+		$_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->arreglo['contrasena']);
+		$_SESSION["_CONTRASENA_MD5"] = $this->arreglo['contrasena'];
+				
+		$this->armarConsulta();
+		
+		$this->ejecutarConsulta();
+		
+		 
+		return $this->respuesta;
+	}
 	
 	
 	function listarUsuario(){

@@ -72,7 +72,7 @@ begin
     --  4) si no es administrador verificamos si no es una trasaccion basica
          -- (todos tienen permisos para ejecutar las basicas)
          IF ((not po_tiene_permisos) and  (par_transaccion in  (
-            'SEG_SESION_INS',
+            'SEG_SESION_INS',   --inserta sesion
              'SEG_SESION_SEL',
              'SEG_SESION_CONT',
              'SEG_VALUSU_SEG',
@@ -100,7 +100,8 @@ begin
              'WF_TABLAINS_CONT',     --consulta para tablas instacias de wf,
              'WF_tabla_SEL',
              'WF_tabla_CONT',
-             'WF_TIPCOLES_SEL'
+             'WF_TIPCOLES_SEL',
+             'SEG_ACTKEYS_UPD'    --actuliza llaves en la tabla de sesion
              
              ))) THEN
             po_tiene_permisos = true;

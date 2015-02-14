@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_sesion_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
 
@@ -77,7 +78,13 @@ BEGIN
                             id_usuario,
                             variable,
                             ip,
-                            datos
+                            datos,
+                            m,
+                            e,
+                            k,
+                            p,
+                            x,
+                            z
                         from segu.tsesion 
                         where estado_reg=''activo'' 
                         and id_sesion= ';
@@ -126,7 +133,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
---
--- Definition for function ft_subsistema_ime (OID = 305095) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100;
