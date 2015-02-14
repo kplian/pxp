@@ -1190,8 +1190,12 @@ Phx.CP=function(){
 				if(reg.ROOT.detalle.mensaje == 'sesion no iniciada'){
 					
 					//consulta para preparar lalve seugn el sid perdido
-					Phx.CP.prepararLlavesSession();
-					return;
+					if(Phx.CP.contador == 0){
+						Phx.CP.prepararLlavesSession();
+						Phx.CP.contador = Phx.CP.contador + 1;
+						return;	
+					}
+					
 				}
 				
 				if(Phx.CP.config_ini.mensaje_tec==1){
