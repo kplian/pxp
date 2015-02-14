@@ -101,7 +101,8 @@ begin
              'WF_tabla_SEL',
              'WF_tabla_CONT',
              'WF_TIPCOLES_SEL',
-             'SEG_ACTKEYS_UPD'    --actuliza llaves en la tabla de sesion
+             'SEG_ACTKEYS_UPD',    --actuliza llaves en la tabla de sesion
+             'SEG_RECLLAVES_SEL'   --restauracion de llaves de sesion
              
              ))) THEN
             po_tiene_permisos = true;

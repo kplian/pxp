@@ -96,6 +96,37 @@ BEGIN
 
          END;
 
+
+/*******************************    
+ #TRANSACCION:  SEG_RECLLAVES_SEL
+ #DESCRIPCION:	recupera llaves seugn el dis proporcionado
+ #AUTOR:		KPLIAN(rac)	
+ #FECHA:		13/03/2015
+***********************************/
+     elseif(par_transaccion='SEG_RECLLAVES_SEL')then
+
+          --consulta:=';
+          BEGIN
+                
+               v_consulta:='select
+                            m,
+                            e,
+                            k,
+                            p,
+                            x,
+                            z
+                        from segu.tsesion 
+                        where estado_reg=''activo'' 
+                        and variable= ''';
+                        
+               v_consulta:=v_consulta||v_parametros.sessionid||''' ';
+               v_consulta:=v_consulta||'  order by  id_sesion desc LIMIT 1 OFFSET 0';
+	
+               return v_consulta;
+
+
+         END;
+
 /*******************************    
  #TRANSACCION:  SEG_SESION_CONT
  #DESCRIPCION:	Contar  las sesiones activas en el sistema
