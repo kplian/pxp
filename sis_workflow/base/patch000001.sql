@@ -1084,3 +1084,11 @@ ALTER TABLE wf.tplantilla_correo
 
 /*****************************F-SCP-JRR-WF-0-24/02/2015*************/
 
+/*****************************I-SCP-JRR-WF-0-25/02/2015*************/
+ALTER TABLE wf.ttipo_estado_rol
+  ADD COLUMN modificado INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-25/02/2015*************/
+
+
+
