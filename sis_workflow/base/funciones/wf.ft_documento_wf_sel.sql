@@ -126,7 +126,7 @@ BEGIN
                         dwf.id_documento_wf_ori,
                         dwf.id_proceso_wf_ori,
                         dwf.nro_tramite_ori,
-                        wf.f_priorizar_documento(' || array_length(v_id_tipo_estado_siguiente, 1) || ',' || v_id_tipo_estado_siguiente[1] || ',' 
+                        wf.f_priorizar_documento(' || COALESCE(array_length(v_id_tipo_estado_siguiente, 1),0) || ',' || COALESCE(v_id_tipo_estado_siguiente[1],0) || ',' 
                         || v_id_estado_actual ||  ',' || v_parametros.id_proceso_wf ||',' || p_id_usuario ||
                          ',td.id_tipo_documento,''' || v_parametros.dir_ordenacion ||''' ) as priorizacion
 						from wf.tdocumento_wf dwf
@@ -139,12 +139,12 @@ BEGIN
                         inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
                         inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
 				        where  ' || v_filtro;
-			
+			raise notice 'zzzzz %',array_length(v_id_tipo_estado_siguiente, 1);
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by priorizacion ' || v_parametros.dir_ordenacion || ', ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-            raise notice '%',v_consulta;
+            
 
 --raise exception 'xxx';
 			--Devuelve la respuesta
