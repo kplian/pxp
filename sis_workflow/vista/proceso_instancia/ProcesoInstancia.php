@@ -389,7 +389,9 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	config_columna.form = true;
 		            	config_columna.config.readOnly = true;
 		            }
-		            
+		            if (this.configProceso[this.config.indice].columnas[i].bd_nombre_columna == 'id_contrato_fk'){
+		            	console.log(config_columna);
+		            }
 			        this.Atributos.push(config_columna);			        
 			    }
 	            	            
