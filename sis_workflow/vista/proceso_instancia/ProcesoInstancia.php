@@ -564,7 +564,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            var rec=this.sm.getSelected();
 	            rec.data.nombreVista = this.nombreVista;
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
-	                    'Chequear documento del WF',
+	                    'Documentos del Proceso',
 	                    {
 	                        width:'90%',
 	                        height:500

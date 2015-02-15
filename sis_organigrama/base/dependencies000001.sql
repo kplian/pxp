@@ -496,3 +496,18 @@ AS
        JOIN segu.vpersona person ON funcio.id_persona = person.id_persona;
        
 /*********************************F-DEP-RAC-ORGA-0-09/10/2014***********************************/
+
+/*********************************I-DEP-JRR-ORGA-0-05/03/2015***********************************/
+
+CREATE TRIGGER ttemporal_cargo_tr BEFORE UPDATE 
+ON orga.ttemporal_cargo FOR EACH ROW 
+EXECUTE PROCEDURE orga.f_tr_temporal_cargo();
+
+
+CREATE TRIGGER tcargo_tr BEFORE UPDATE 
+ON orga.tcargo FOR EACH ROW 
+EXECUTE PROCEDURE orga.f_tr_cargo();
+
+
+
+/*********************************F-DEP-JRR-ORGA-0-05/03/2015***********************************/
