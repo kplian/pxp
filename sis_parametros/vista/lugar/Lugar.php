@@ -20,7 +20,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 		this.init();
 		
 		//de inicio bloqueamos el botono nuevo
-		this.tbar.items.get('b-new-'+this.idContenedor).disable()
+		//this.tbar.items.get('b-new-'+this.idContenedor).enable()
 		//this.init();
 		//this.loaderTree.baseParams={id_subsistema:this.id_subsistema};
 		//this.load({params:{start:0, limit:50}})
