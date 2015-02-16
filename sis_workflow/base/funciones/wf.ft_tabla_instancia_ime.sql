@@ -49,6 +49,7 @@ DECLARE
     v_codigo_estado_next    varchar;
     v_resp_doc              boolean;
     v_id_funcionario_usuario    integer;
+    v_cadena                varchar;
                 
 BEGIN
 
@@ -100,7 +101,7 @@ BEGIN
                 --si existe el nro de tramite entonces
                 if (not pxp.f_existe_parametro(p_tabla,'nro_tramite')) then                
              
-                       -- inciiar el tramite en el sistema de WF
+                       -- iniciar el tramite en el sistema de WF
                      SELECT 
                            ps_num_tramite ,
                            ps_id_proceso_wf ,
@@ -185,7 +186,7 @@ BEGIN
                         NULL,
                         v_id_tipo_estado_next,
                         v_id_proceso_wf,
-                        NULL,
+                        v_id_funcionario_usuario,
                         NULL,
                         NULL,
                         NULL
@@ -229,7 +230,7 @@ BEGIN
             /*************/
                 v_values =  v_values || json_extract_path_text(v_parametros,v_tabla.vista_campo_maestro);                           
             end if;         
-                
+
             for v_columnas in ( select tc.* from wf.ttipo_columna tc
                                 inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento in ('registrar', 'exigir')
                                 inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
@@ -240,17 +241,24 @@ BEGIN
                 if (v_columnas.bd_tipo_columna in ('integer', 'bigint', 'boolean', 'numeric')) then
                     v_values = v_values || ',' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
                 elsif (v_columnas.bd_tipo_columna in ('integer[]', 'bigint[]', 'numeric[]','varchar[]')) then                   
-                    v_values = v_values || ',array[' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL')||']';
+                    --Obtiene el valor del array en una variable temporal, para verificar si es array vacío y mandar null en ese caso
+                    v_cadena = 'array[' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL')||']';
+                    if v_cadena = 'array[]' then
+                        v_values = v_values || ',NULL';
+                    else
+                        v_values = v_values || ',' || v_cadena;
+                    end if;
+                    
                 else
                     v_values = v_values || ',' || coalesce ('''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''','NULL');                    
                 end if;
                
             end loop;
-            
+
             v_fields = v_fields || ')';
             
             v_values = v_values || ') returning id_' || v_tabla.bd_nombre_tabla;
-             
+--raise exception 'ddddd:::: % %',v_fields, v_values;
             execute (v_fields || v_values) into v_id_tabla;
                     
             
