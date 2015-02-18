@@ -182,7 +182,14 @@ class ACTProcesoWf extends ACTbase{
                      $resultSolicitud->imprimirRespuesta($resultSolicitud->generarJson());
                 
 				} 
-		} 
+		}
+
+    function reclamarCaso(){
+        $this->objFunc=$this->create('MODProcesoWf');  
+        $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+        $this->res=$this->objFunc->reclamarCaso($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    } 
 			
 }
 

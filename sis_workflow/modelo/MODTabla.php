@@ -332,7 +332,6 @@ class MODTabla extends MODbase{
 	}
 
     function listarTablaCombo(){
-        echo 'YESSSSS';exit;
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='wf.ft_tabla_instancia_sel';
 		$this->transaccion='WF_TABLACMB_SEL';
@@ -352,6 +351,7 @@ class MODTabla extends MODbase{
 			$this->captura('id_proceso_wf','int4');
 			$this->captura('obs','text');
 			$this->captura('nro_tramite','varchar');
+            $this->captura('desc_funcionario','text');
 		}
 		
 		foreach ($_SESSION['_wf_ins_'.$this->objParam->getParametro('tipo_proceso').'_'.$this->objParam->getParametro('tipo_estado')]['columnas'] as $value) {
@@ -408,6 +408,7 @@ class MODTabla extends MODbase{
 			$this->captura('id_proceso_wf','int4');
 			$this->captura('obs','text');
 			$this->captura('nro_tramite','varchar');
+            $this->captura('desc_funcionario','text');
 		}
 		//$this->armarConsulta();
         //echo 'FFFFF: '. $this->consulta;exit;
@@ -454,7 +455,6 @@ class MODTabla extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

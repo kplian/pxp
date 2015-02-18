@@ -48,6 +48,7 @@ DECLARE
     v_id_tipo_estado_next   integer;
     v_codigo_estado_next    varchar;
     v_resp_doc              boolean;
+    v_id_funcionario_usuario    integer;
                 
 BEGIN
 
@@ -64,6 +65,13 @@ BEGIN
     if(p_transaccion='WF_TABLAINS_INS')then
                     
         begin
+            --RCM: Obtiene el funcionario a partir del usuario que ejecuta la función
+            select f.id_funcionario
+            into v_id_funcionario_usuario
+            from segu.tusuario u
+            inner join orga.tfuncionario f 
+            on f.id_persona = u.id_persona
+            where u.id_usuario = p_id_usuario;
 
             select lower(s.codigo) as esquema, t.*
             into v_tabla
@@ -110,7 +118,7 @@ BEGIN
                            json_extract_path_text(v_parametros,'_nombre_usuario_ai')::varchar,                 
                            v_id_gestion, 
                            v_codigo_tipo_proceso, 
-                           NULL,
+                           v_id_funcionario_usuario,
                            NULL,
                            NULL,
                            ' ');
@@ -152,7 +160,7 @@ BEGIN
                       NULL,
                       NULL
                     ) RETURNING id_proceso_wf into v_id_proceso_wf;
-        
+
 
       
                     -- inserta el primer estado del proceso 
