@@ -28,8 +28,13 @@ Class ReportWriter {
 		return $this->fileName;
 	}
 	
-	function writeReport($reportType) {
-		$this->report->write($this->fileName);
+	function writeReport($reportType, $firmar = 'no',$fecha_firma = '',$usuario_firma ='') {
+		if ($firmar == 'si') {
+			return $this->report->write($this->fileName, $firmar,$fecha_firma,$usuario_firma);
+			
+		} else {
+			$this->report->write($this->fileName, $firmar);
+		}
 	}
 }
 ?>

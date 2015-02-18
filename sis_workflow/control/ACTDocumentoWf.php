@@ -13,6 +13,8 @@ class ACTDocumentoWf extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_documento_wf');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		$this->objParam->addFiltro("tewf.nombre_estado != ''anulado''");
+		$this->objParam->addFiltro("tewf.nombre_estado != ''cancelado''");
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

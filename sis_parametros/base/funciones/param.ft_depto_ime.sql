@@ -53,8 +53,27 @@ BEGIN
                    raise exception 'Insercion no realizada. Codigo% en uso para subsistema%', upper(v_parametros.codigo),  (select nombre from segu.tsubsistema where id_subsistema=v_parametros.id_subsistema) ;
                end if;
                --insercion de nuevo depto
-               INSERT INTO param.tdepto(codigo, id_subsistema, nombre, nombre_corto, estado_reg,fecha_reg, id_usuario_reg)
-               values(v_parametros.codigo,v_parametros.id_subsistema, v_parametros.nombre, v_parametros.nombre_corto,'activo',now()::date, par_id_usuario);
+               INSERT INTO param.tdepto(
+               codigo, 
+               id_subsistema, 
+               nombre, 
+               nombre_corto, 
+               estado_reg,
+               fecha_reg, 
+               id_usuario_reg,
+               id_lugares,
+               prioridad)
+               values(
+               v_parametros.codigo,
+               v_parametros.id_subsistema, 
+               v_parametros.nombre, 
+               v_parametros.nombre_corto,
+               'activo',
+               now()::date, 
+               par_id_usuario,
+               string_to_array(v_parametros.id_lugares,',')::integer[],
+               v_parametros.prioridad
+               );
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','depto insertado con exito '||v_parametros.nombre_corto || 'para Subsis.' || (select nombre from segu.tsubsistema where id_subsistema=v_parametros.id_subsistema));
                v_resp = pxp.f_agrega_clave(v_resp,'id_depto',v_id_funcion::varchar);
@@ -78,7 +97,9 @@ BEGIN
                nombre=v_parametros.nombre,
                id_subsistema=v_parametros.id_subsistema,
                id_usuario_mod=par_id_usuario,
-               fecha_mod=now()
+               fecha_mod=now(),
+               id_lugares = string_to_array(v_parametros.id_lugares,',')::integer[],
+               prioridad = v_parametros.prioridad
                where id_depto=v_parametros.id_depto;
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','depto modificado con exito '||v_parametros.codigo);

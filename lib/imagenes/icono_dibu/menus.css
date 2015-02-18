@@ -252,6 +252,10 @@
     background-image:url(dibu_mail.png) !important;
 }
 
+.btransfer{
+    background-image:url(dibu_transfer.png) !important;
+}
+
 .bball_green {
     background-image:url(../ball_green.png) !important;
 }

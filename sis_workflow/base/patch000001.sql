@@ -709,7 +709,7 @@ IS 'si o no, se muestra en el la interface de vobowf,  solo es conveniente las i
  
  
   
-/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+/***********************************I-SCP-RAC-WF-2-04/08/2014****************************************/
  --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
@@ -932,7 +932,7 @@ ALTER TABLE wf.tobs
 --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
-  ADD COLUMN adminte_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
+  ADD COLUMN admite_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
 
 COMMENT ON COLUMN wf.ttipo_estado.adminte_obs
 IS 'no o si, define si permite registrar observaciones en este estado';
@@ -1038,9 +1038,43 @@ ALTER TABLE wf.ttipo_columna
 
 /*****************************F-SCP-JRR-WF-0-15/01/2015*************/
 
+
+/*****************************I-SCP-JRR-WF-0-29/01/2015*************/
+
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN accion_pendiente VARCHAR(15);
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN fecha_firma VARCHAR(25);
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN usuario_firma VARCHAR(50);
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN datos_firma JSON;
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN hash_firma varchar(50);
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN fecha_firma VARCHAR(25);
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN usuario_firma VARCHAR(50);
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN datos_firma JSON;
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN hash_firma varchar(50);
+
+/*****************************F-SCP-JRR-WF-0-29/01/2015*************/
+
 /*****************************I-SCP-RCM-WF-0-08/02/2015*************/
 
 ALTER TABLE wf.ttipo_columna
   ADD COLUMN bd_campos_subconsulta TEXT;
 
 /*****************************F-SCP-RCM-WF-0-08/02/2015*************/
+

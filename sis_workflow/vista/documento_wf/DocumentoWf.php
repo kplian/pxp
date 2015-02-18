@@ -12,10 +12,18 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
+
+		this.check_fisico = 'no';
+		if (config.hasOwnProperty('check_fisico')) {
+			if (config.check_fisico == 'si') {
+				this.check_fisico = 'si';
+			}
+		}
 		
 		 //declaracion de eventos
         this.addEvents('finalizarsol');
         this.maestro = config;
+        
 		this.todos_documentos = 'si';
         this.tbarItems = ['-',{
             text: 'Mostrar solo los documentos del proceso actual',
@@ -33,7 +41,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 }
                 
                 this.store.baseParams.todos_documentos = this.todos_documentos;
-                console.log();
                 this.onButtonAct();
              },
             scope: this
@@ -72,8 +79,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                     },
                    //icon   : '../../../lib/imagenes/icono_dibu/dibu_search.png',  // Use a URL in the icon config
                    handler: function(grid, rowIndex, colIndex) {
-                    	console.log(me);
-                        me.onDblClik(grid,rowIndex);
+                    	me.onDblClik(grid,rowIndex);
                    },
                    scope:me
                 }],
@@ -91,10 +97,13 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 anchor: '80%',
                 gwidth: 65,
                 renderer:function (value, p, record){  
-                            if(record.data['chequeado'] == 'si')
+                            if(record.data['chequeado'] == 'si') {
                                 return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_ok.png' align='center' width='45' height='45'/></div>");
-                            else
-                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_eli.png' align='center' width='45' height='45'/></div>");
+                            } else if  (record.data['action'] != '') {
+                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_preview.png' align='center' width='45' height='45'/></div>");
+                            } else{ 
+                            	return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_eli.png' align='center' width='45' height='45'/></div>");  
+                            }
                         },
             },
             type:'Checkbox',
@@ -188,7 +197,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:false
         },
-        {
+        /*{
             config:{
                 fieldLabel: "Guardado",
                 gwidth: 60,
@@ -236,7 +245,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             id_grupo:0,
             grid:true,
             form:false
-        },
+        },*/
         {
             config:{
                 name: 'codigo_proceso',
@@ -287,7 +296,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Desc Proc.',
                 allowBlank: true,
                 anchor: '80%',
-                gwidth: 500,
+                gwidth: 300,
                 maxLength:200
             },
                 type:'TextField',
@@ -481,21 +490,26 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 tooltip : '<b>Cargar Documento</b><br/>Al subir el archivo, el registro sera marcado como Chequeado OK'
         });
         
-        this.addButton('btnMomento', {
-                text : 'Cambiar Modo',
-                iconCls : 'bunlock',
-                disabled : true,
-                handler : this.cambiarMomento,
-                tooltip : '<b>Hacer Obligatorio/Quitar axigencia</b><br/>Se verifica este estado si el documento  tiene al menos un estado de verificacón'
-        });
+        if (this.check_fisico == 'si') {
+	        this.addButton('btnMomento', {
+	                text : 'Cambiar Modo',
+	                iconCls : 'bunlock',
+	                disabled : true,
+	                handler : this.cambiarMomento,
+	                tooltip : '<b>Hacer Obligatorio/Quitar axigencia</b><br/>Se verifica este estado si el documento  tiene al menos un estado de verificacón'
+	        });
+	    }
         
+
+        this.grid.addListener('celldblclick',this.oncelldblclick,this);
+
         //si viene del formulario de solicitud agregamos un botono de finalizar
         if(config.tipo === 'solcom'){
         	this.tbar.add('->');
         	this.addButton('fin_requerimiento',{ text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
 									        	 handler: function(){
 									        	 	this.fireEvent('finalizarsol', this, this.maestro, true);
-									        	 	this.panel.destroy();
+									        	 
 									        	 }, 
 									        	 tooltip: '<b>Finalizar</b><br>Finaliza la solicitud y la manda para aprobación'});
         	 
@@ -507,10 +521,24 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             
         	
         }
-        
-        
+            
+       
         
        this.init();
+       
+       cm = this.grid.getColumnModel();
+       cm.setHidden(1,true);
+       
+       if (this.check_fisico == 'no') {
+       		cm.setHidden(3,true);
+       		cm.setHidden(4,true);
+       }
+       cm.setHidden(6,true);
+       cm.setHidden(7,true);
+       cm.setHidden(9,true);
+       cm.setHidden(11,true);
+       cm.setHidden(12,true);
+       cm.setHidden(14,true);
        this.store.baseParams.todos_documentos = this.todos_documentos;
         this.load({params:{
             start:0, 
@@ -529,7 +557,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 height:150
             },rec.data,this.idContenedor,'SubirArchivoWf')
         }        
-       this.grid.addListener('cellclick',this.oncellclick,this);   
+       
+       
        
 	},
 	
@@ -537,25 +566,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	    var record = this.store.getAt(rowIndex);  // Get the Record
 	    var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
 	    
-	    if (fieldName == 'archivo' && record.data['extension'].length!=0) {
-	    	var data = "id=" + record.data['id_documento_wf'];
-            data += "&extension=" + record.data['extension'];
-            data += "&sistema=sis_workflow";
-            data += "&clase=DocumentoWf";
-            data += "&url="+record.data['url'];
-            //return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
-            window.open('../../../lib/lib_control/CTOpenFile.php?' + data);
-	    } else if (fieldName == 'generado' && record.data['tipo_documento'] == 'generado') {
-	    	Phx.CP.loadingShow();
-       		Ext.Ajax.request({
-                url:'../../'+record.data.action,
-                params:{'id_proceso_wf':record.data.id_proceso_wf, 'action':record.data.action},
-                success: this.successExport,
-                failure: this.conexionFailure,
-                timeout:this.timeout,
-                scope:this
-            });
-	    } else if (fieldName == 'nro_tramite_ori') {
+	    if (fieldName == 'nro_tramite_ori') {
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
 	    }
@@ -578,7 +589,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         )
     },
 	
-	onDblClik : function (grid,index) {
+	oncelldblclick : function (grid,index) {
 		record = this.store.getAt(index);
 		if(record.data['extension'].length!=0) {
             var data = "id=" + record.data['id_documento_wf'];
@@ -650,21 +661,26 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	
 	preparaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
+        var data = this.getSelectedData();
        // if(this.todos_documentos == 'no'){
 	        this.getBoton('btnUpload').enable();
-	        this.getBoton('btnMomento').enable(); 
-	        
-	        var data = this.getSelectedData();
-	        if(data['momento']== 'exigir'){
-	            this.getBoton('btnMomento').setIconClass('bunlock')
-	        }
-	        else{
-	            this.getBoton('btnMomento').setIconClass('block')
-	        }        
+	        if (this.check_fisico == 'si') {
+		        this.getBoton('btnMomento').enable(); 
+		        
+		        
+		        if(data['momento']== 'exigir'){
+		            this.getBoton('btnMomento').setIconClass('bunlock')
+		        }
+		        else{
+		            this.getBoton('btnMomento').setIconClass('block')
+		        }
+		    }        
 	        
 	        if(data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
-	           this.getBoton('btnUpload').disable(); 
-	           this.getBoton('btnMomento').disable()
+	           this.getBoton('btnUpload').disable();
+	           if (this.check_fisico == 'si') { 
+	           	this.getBoton('btnMomento').disable();
+	           }
 	        }
 	        if(data.solo_lectura.toLowerCase() == 'si'){
 	        	this.desBotonesTodo();
@@ -675,8 +691,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     },
     
     desBotonesTodo:function(){
-          
-          this.getBoton('btnMomento').disable();
+          if (this.check_fisico == 'si') {
+          	this.getBoton('btnMomento').disable();
+          }
           this.getBoton('btnUpload').disable();
           this.getBoton('edit').disable();
           this.getBoton('save').disable();
@@ -685,8 +702,11 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     liberaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.liberaMenu.call(this,tb);
        // if(this.todos_documentos == 'no'){
-	        this.getBoton('btnUpload').disable(); 
-	        this.getBoton('btnMomento').disable();
+	        if (this.check_fisico == 'si') {
+	          	this.getBoton('btnMomento').disable();
+	          
+	        	this.getBoton('btnMomento').disable();
+	        }
 	   //		this.desBotonesTodo();
 	   //}
              
