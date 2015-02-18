@@ -282,6 +282,7 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('estado_reg','varchar');
 			$this->captura('bd_prioridad','integer');
 			$this->captura('form_grupo','integer');
+            $this->captura('bd_campos_subconsulta','text');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
