@@ -60,7 +60,8 @@ BEGIN
 			fecha_reg,
 			usuario_ai,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+			asunto
           	) values(
 			v_parametros.id_tipo_estado,
 			v_parametros.regla,
@@ -74,7 +75,8 @@ BEGIN
 			now(),
 			v_parametros._nombre_usuario_ai,
 			null,
-			null
+			null,
+			asunto
 							
 			
 			
@@ -108,7 +110,8 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+			asunto = v_parametros.asunto
 			where id_plantilla_correo=v_parametros.id_plantilla_correo;
                
 			--Definicion de la respuesta

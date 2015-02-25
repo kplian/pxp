@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
   p_id_tipo_estado_siguiente integer,
   p_id_funcionario integer,
@@ -368,7 +366,9 @@ BEGIN
                                     where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros.documentos::int[]) and td.estado_reg = 'activo' and
                                     dwf.estado_reg = 'activo' and ((td.tipo = 'escaneado' and dwf.url is not null and dwf.url != '') or 
                                     td.tipo = 'generado');
-                    	
+                    if (v_registros.asunto is not null) then
+                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                    end if;	
                     v_alarma = param.f_inserta_alarma(
                                                       NULL,
                                                       v_desc_alarma,

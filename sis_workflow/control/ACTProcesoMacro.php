@@ -357,7 +357,7 @@ class ACTProcesoMacro extends ACTbase{
 					"select wf.f_import_tplantilla_correo ('delete','".
 							$row['codigo']."','".							 
 							$row['codigo_tipo_estado']."','".
-							$row['codigo_tipo_proceso']."',NULL,NULL,NULL);\r\n");													
+							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL);\r\n");													
 					
 				} else {
 					
@@ -367,8 +367,9 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .
 							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
 							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") ."," .							 
-							 (is_null($row['plantilla'])?'NULL':"'".$row['plantilla']."'") ."," .						 						 
-							 (is_null($row['correos'])?'NULL':"'".$row['correos']."'") .");\r\n");
+							 (is_null($row['plantilla'])?'NULL':"'".$row['plantilla']."'") ."," .
+							 (is_null($row['correos'])?'NULL':"'".$row['correos']."'") ."," .						 						 
+							 (is_null($row['asunto'])?'NULL':"'".$row['asunto']."'") .");\r\n");
 							 				
 				}		
 			}		 		

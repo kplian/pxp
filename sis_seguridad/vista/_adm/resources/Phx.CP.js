@@ -255,7 +255,7 @@ MainPanel = function(config){
 		
 		region:'center',
        // margins:'0 5 5 0',
-        resizeTabs: true,
+        resizeTabs: false,
         //minTabWidth: 135,
         //tabWidth: 135,
         plugins: new Ext.ux.TabCloseMenu(),

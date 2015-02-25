@@ -60,7 +60,8 @@ BEGIN
 						pcorreo.fecha_mod,
 						pcorreo.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						pcorreo.asunto	
 						from wf.tplantilla_correo pcorreo
 						inner join segu.tusuario usu1 on usu1.id_usuario = pcorreo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pcorreo.id_usuario_mod
@@ -112,7 +113,7 @@ BEGIN
 		BEGIN
 
                v_consulta:='select  ''plantilla_correo''::varchar,pcorreo.codigo_plantilla,tes.codigo,tp.codigo,pcorreo.regla,
-               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg               				
+               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg,pcorreo.asunto               				
                             from wf.tplantilla_correo pcorreo
                             inner join wf.ttipo_estado tes
                             on tes.id_tipo_estado = pcorreo.id_tipo_estado                                        

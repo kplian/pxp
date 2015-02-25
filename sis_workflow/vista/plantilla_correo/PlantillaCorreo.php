@@ -94,6 +94,20 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		{
+            config:{
+                name: 'asunto',
+                fieldLabel: 'Asunto',
+                allowBlank: true,
+                anchor: '90%',
+                gwidth: 100,
+                maxLength: 255
+            },
+            type:'TextField',
+            id_grupo:2,
+            form:true,
+            grid:true,
+        },
+		{
 			config:{
 				name: 'regla',
 				fieldLabel: 'Regla',
@@ -312,6 +326,7 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'asunto', type: 'string'},
 		
 	],
 	sortInfo:{

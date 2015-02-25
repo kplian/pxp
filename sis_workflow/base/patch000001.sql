@@ -1078,3 +1078,9 @@ ALTER TABLE wf.ttipo_columna
 
 /*****************************F-SCP-RCM-WF-0-08/02/2015*************/
 
+/*****************************I-SCP-JRR-WF-0-24/02/2015*************/
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN asunto VARCHAR(255);
+
+/*****************************F-SCP-JRR-WF-0-24/02/2015*************/
+
