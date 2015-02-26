@@ -442,7 +442,7 @@ class ReportePDF extends MYPDF
 		$fb=FirePHP::getInstance(true);
 		$fb->log('sssss',"count(pArrayDatos)");*/
 		
-		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1"  style="font-size:16px">';
+		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1"  style="font-size:6px">';
 		$cont=1;
 
 		foreach($datas AS $data) {
