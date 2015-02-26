@@ -101,6 +101,7 @@ if(!isset($_SESSION["_SESION"])){
 	 <script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
      <!-- status bar -->
       <script type="text/javascript" src="../../../lib/ux/statusbar/StatusBar.js"></script>
+      <script type="text/javascript" src="../../../lib/ux/SearchField.js"></script>
 	
     
      <!-- para filtro en grillas -->
