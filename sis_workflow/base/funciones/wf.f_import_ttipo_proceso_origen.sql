@@ -9,13 +9,13 @@ CREATE OR REPLACE FUNCTION wf.f_import_ttipo_proceso_origen (
 )
 RETURNS varchar AS
 $body$
-DECLARE	   
-    v_id_proceso_macro			integer;    
-    v_id_tipo_proceso			integer;
-    v_id_tipo_proceso_origen	integer;
-    v_identificador 			integer;
-    v_id_tipo_estado			integer;   
-BEGIN	 
+DECLARE    
+    v_id_proceso_macro          integer;    
+    v_id_tipo_proceso           integer;
+    v_id_tipo_proceso_origen    integer;
+    v_identificador             integer;
+    v_id_tipo_estado            integer;   
+BEGIN    
         
     select id_tipo_proceso into v_id_tipo_proceso_origen
     from wf.ttipo_proceso tp    
@@ -28,7 +28,7 @@ BEGIN
     select id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te    
     where te.codigo = p_codigo_tipo_estado and
-    	te.id_tipo_proceso = v_id_tipo_proceso_origen; 
+        te.id_tipo_proceso = v_id_tipo_proceso_origen; 
        
           
     select tpo.id_tipo_proceso_origin into v_identificador
@@ -37,8 +37,8 @@ BEGIN
         
     ALTER TABLE wf.ttipo_proceso_origen DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
-    	update wf.ttipo_proceso_origen set estado_reg = 'inactivo',modificado = 1 
-    	where id_tipo_proceso_origin = v_identificador;
+        update wf.ttipo_proceso_origen set estado_reg = 'inactivo',modificado = 1 
+        where id_tipo_proceso_origin = v_identificador;
     else
         if (v_identificador is null)then
         
@@ -70,10 +70,10 @@ BEGIN
               funcion_validacion_wf = p_funcion_validacion_wf,
               id_proceso_macro = v_id_proceso_macro,
               modificado = 1             
-            WHERE id_tipo_proceso_origin = v_id_tipo_proceso_origin;
+            WHERE id_tipo_proceso_origin = v_id_tipo_proceso_origen;
         end if;
     
-	end if; 
+    end if; 
     
     ALTER TABLE wf.ttipo_proceso_origen ENABLE TRIGGER USER;   
     return 'exito';
