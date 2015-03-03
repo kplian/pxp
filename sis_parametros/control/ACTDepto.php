@@ -15,7 +15,7 @@ class ACTDepto extends ACTbase{
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		if( $this->objParam->getParametro('modulo') != '' ) {
-			$this->objParam->addFiltro("DEPPTO.modulo = ".$this->objParam->getParametro('modulo'));
+			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
 		}
 		
 		
@@ -46,7 +46,7 @@ class ACTDepto extends ACTbase{
 		}
 		
 		if( $this->objParam->getParametro('modulo') != '' ) {
-			$this->objParam->addFiltro("DEPPTO.modulo = ".$this->objParam->getParametro('modulo'));
+			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
 		}
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -76,7 +76,7 @@ class ACTDepto extends ACTbase{
 		}
 		
 		if( $this->objParam->getParametro('modulo') != '' ) {
-			$this->objParam->addFiltro("DEPPTO.modulo = ".$this->objParam->getParametro('modulo'));
+			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
 		}
 		
 		
