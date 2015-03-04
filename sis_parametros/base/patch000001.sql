@@ -915,3 +915,4 @@ COMMENT ON COLUMN param.tdepto.modulo
 IS 'Este campo se agrega para poder subdividir los deptos de un sistema en modulo, caso libro de banco y obligaciones de pago en tesoreria';
 
 /***********************************F-SCP-RAC-PARAM-0-03/03/2015****************************************/
+

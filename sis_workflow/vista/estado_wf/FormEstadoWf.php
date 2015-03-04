@@ -17,18 +17,19 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     url_verificacion:'../../sis_workflow/control/ProcesoWf/verficarSigEstProcesoWf',
     url_check_state:'../../sis_workflow/control/ProcesoWf/checkNextState',
     reclaim: false,
+    configExtra:[],
     constructor:function(config)
     {
         //declaracion de eventos
         this.addEvents('beforesave');
         this.addEvents('successsave');
-        console.log(config);
-        
+        if(config.configExtra){
+        	 this.Atributos = this.Atributos.concat(config.configExtra);
+        }
+       
         if(config.data.url_verificacion){
            this.url_verificacion =  config.data.url_verificacion;
         }
-        
-        
         //llamada ajax para cargar los caminos posible de flujo
         Phx.CP.loadingShow();
         Ext.Ajax.request({
@@ -843,15 +844,22 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
        }
     },
     getValues:function(){
-        var resp = {
-                   id_proceso_wf_act:this.data.id_proceso_wf,
-                   id_estado_wf_act:this.data.id_estado_wf,
-                   id_tipo_estado:this.Cmp.id_tipo_estado.getValue(),
-                   id_funcionario_wf:this.Cmp.id_funcionario_wf.getValue(),
-                   id_depto_wf:this.Cmp.id_depto_wf.getValue(),
-                   obs:this.Cmp.obs.getValue(),
-                   procesos:[]
-            }
+	        var resp = {
+	                   id_proceso_wf_act: this.data.id_proceso_wf,
+	                   id_estado_wf_act: this.data.id_estado_wf,
+	                   id_tipo_estado: this.Cmp.id_tipo_estado.getValue(),
+	                   id_funcionario_wf: this.Cmp.id_funcionario_wf.getValue(),
+	                   id_depto_wf: this.Cmp.id_depto_wf.getValue(),
+	                   obs: this.Cmp.obs.getValue(),
+	                   procesos: []
+	            }
+	        
+	        for (var obj = 0; obj < this.configExtra.length; obj++) { 
+	             var nameatr = this.configExtra[obj].config.name;
+	             resp[nameatr] = this.Cmp[nameatr].getValue();	
+	        }
+        
+        
             
             for (var i=1;i<this.contadorTarjetas;i++){
                 
@@ -875,8 +883,5 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
             
          return resp;   
      }
-    
-    
-}
-)    
+})    
 </script>

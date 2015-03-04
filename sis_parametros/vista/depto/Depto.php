@@ -68,7 +68,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
           cls:'Firma'
          },
 		 {
-          url:'../../../sis_parametros/vista/depto_cuenta_bancaria/DeptoCuentaBancaria.php',
+          url:'../../../sis_tesoreria/vista/depto_cuenta_bancaria/DeptoCuentaBancaria.php',
           title:'Depto - Cuenta Bancaria', 
           height:'50%',
           cls:'DeptoCuentaBancaria'
