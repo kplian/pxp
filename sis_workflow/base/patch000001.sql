@@ -934,7 +934,7 @@ ALTER TABLE wf.tobs
 ALTER TABLE wf.ttipo_estado
   ADD COLUMN admite_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
 
-COMMENT ON COLUMN wf.ttipo_estado.adminte_obs
+COMMENT ON COLUMN wf.ttipo_estado.admite_obs
 IS 'no o si, define si permite registrar observaciones en este estado';
 
 /***********************************F-SCP-RAC-WF-1-25/11/2014****************************************/
