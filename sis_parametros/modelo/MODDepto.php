@@ -41,6 +41,7 @@ class MODDepto extends MODbase{
 		$this->captura('desc_subsistema','text');
 		$this->captura('id_lugares','varchar');
 		$this->captura('prioridad','integer');
+		$this->captura('modulo','varchar');
 		
 		
 		//Ejecuta la funcion
@@ -202,6 +203,7 @@ class MODDepto extends MODbase{
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('id_lugares','id_lugares','varchar');
 		$this->setParametro('prioridad','prioridad','integer');
+		$this->setParametro('modulo','modulo','varchar');
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -222,11 +224,11 @@ class MODDepto extends MODbase{
 		$this->setParametro('id_depto','id_depto','integer');	
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
-		$this->setParametro('nombre_corto','nombre_corto','varchar');
-	
+		$this->setParametro('nombre_corto','nombre_corto','varchar');	
 		$this->setParametro('id_subsistema','id_subsistema','integer');
 		$this->setParametro('id_lugares','id_lugares','varchar');
 		$this->setParametro('prioridad','prioridad','integer');
+		$this->setParametro('modulo','modulo','varchar');
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -66,6 +66,12 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
           title:'Firmas Documentos', 
           height:'50%',
           cls:'Firma'
+         },
+		 {
+          url:'../../../sis_tesoreria/vista/depto_cuenta_bancaria/DeptoCuentaBancaria.php',
+          title:'Depto - Cuenta Bancaria', 
+          height:'50%',
+          cls:'DeptoCuentaBancaria'
          }]	,
 	Atributos:[
 		{
@@ -127,6 +133,21 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
    			grid:true,
    			form:true
        	},
+		{
+			config:{
+				name: 'modulo',
+				fieldLabel: 'Módulo',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength: 90
+			},
+			type:'TextField',
+			filters:{pfiltro:'deppto.modulo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
 		
 		{
 			config:{
@@ -328,7 +349,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{name:'desc_subsistema', type: 'string'},
 		{name:'codigo', type: 'string'},
 		{name:'nombre_corto', type: 'string'},
-		'id_lugares', 'prioridad'
+		'id_lugares', 'prioridad','modulo'
 		
 	],
 	sortInfo:{

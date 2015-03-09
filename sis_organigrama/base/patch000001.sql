@@ -491,3 +491,18 @@ ALTER TABLE orga.tescala_salarial
   
 /*****************************F-SCP-JRR-ORGA-0-04/11/2014*************/
 
+
+/*****************************I-SCP-JRR-ORGA-0-05/03/2015*************/
+ALTER TABLE orga.ttemporal_cargo
+  ADD COLUMN fecha_ini DATE;
+  
+ALTER TABLE orga.ttemporal_cargo
+  ADD COLUMN fecha_fin DATE;
+  
+ALTER TABLE orga.ttemporal_cargo
+  ADD COLUMN id_cargo_padre  INTEGER;
+  
+ALTER TABLE orga.tcargo
+  ADD COLUMN id_cargo_padre  INTEGER;
+  
+/*****************************F-SCP-JRR-ORGA-0-05/03/2015*************/
