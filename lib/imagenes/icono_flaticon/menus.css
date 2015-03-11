@@ -38,7 +38,7 @@
 	content: "\f133 "; margin-right:5px; margin-left:5px;
 }
 .blist:before {
-	position: static;
+	position: fixed;
 	font: normal normal normal 2em/1 FontAwesome;
 	top: 0;
 	left: auto;
@@ -58,7 +58,7 @@
 }
 
 .bnew:before {
-	position: static;
+	position: fixed;
 	font: normal normal normal 2em/1 FontAwesome;
 	top: 0;
 	left: auto;
@@ -69,7 +69,7 @@
 }
 
 .bdel:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
 	top: 0;
 	left: auto;
