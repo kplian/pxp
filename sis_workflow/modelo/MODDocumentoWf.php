@@ -217,7 +217,7 @@ class MODDocumentoWf extends MODbase{
 				   }
 				   
 				   //cipiamos el nuevo archivo 
-	               $this->setFile('archivo','id_documento_wf', false,25600 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
+	               $this->setFile('archivo','id_documento_wf', false,51200 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
 	            }
 				
 				$link->commit();

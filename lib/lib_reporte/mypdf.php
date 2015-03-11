@@ -35,7 +35,7 @@ class MYPDF extends TCPDF {
 			$index++;
 			
         }
-		
+		$this->CheckPageBreak($height_aux);
 		$index = 0;
 		foreach ($row as $data) {
 			
@@ -58,9 +58,9 @@ class MYPDF extends TCPDF {
         }
 		
 		$this->ln();
-		$this->setPage($page_aux);		
+		//$this->setPage($page_aux);		
 		
-        $this->SetXY($this->getX(),$y_pos_aux); 
+        //$this->SetXY($this->getX(),$y_pos_aux); 
     }
 
 	public function UniRow($row, $fill = false, $border = 1, $textcolor = array(0,0,0)) {    	
