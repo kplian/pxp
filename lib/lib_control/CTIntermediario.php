@@ -35,7 +35,9 @@ class CTIntermediario{
 	///////////////////////////////////
 	function __construct(){
 		//echo  server_port;
-		//exit;
+		//verifica si la sesion esta activa .... antes de procesar;
+     	
+     	
      	//Obtencion de los datos enviados por la vista
 		$this->objPostData=new CTPostData();
 		$this->paramMetodo = array();
@@ -112,13 +114,14 @@ class CTIntermediario{
 	//Obtiene la ruta, archivo y metodo a ejecutar de la _ruta
 	private function obtenerRutaArchivoMetodo(){
 		$aAux=explode('/',$this->aPostData["x"]);
-
+		
 		//Verifica que al menos tenga dos '/'
 		if(count($aAux)<2){
-			/*echo '<pre>';
-				print_r($this->aPostData["x"]);
-				echo '</pre>';
-				exit;*/
+			//si la sesion no esta activa no podemos desncriptar las llaves y la ruta sera invalida
+		    if(!isset($_SESSION["_SESION"])){
+		 		session_destroy();
+				throw new Exception('sesion no iniciada',2);
+		 	}
 			throw new Exception(__METHOD__.': Ruta no valida1');
 		}
 
@@ -264,13 +267,8 @@ class CTIntermediario{
 								          $tiempo=$tiempo+3;
 								        }
 								      }
-								        	
-						        	
-						        }
+								 }
 						   } 
-		        		
-		        		
-		        		
 		        	}
 		        }	
 		   } 
@@ -331,6 +329,18 @@ class CTIntermediario{
 		//exit;
 
 		if($this->objPostData->getVerificarSesion()){
+		   
+		    //TODO verifica la variable de restaruar sesion y dejarla preparada		
+			/*if(!isset($_SESSION["_SESION"]) && $this->metodoEjecutar=='verificarCredenciales'){
+							
+				//Recuperamos el sid que nos mando desde el cliente		
+					
+				$_SESSION["_SESION"]= new CTSesion();
+				//recupera llavez  de  la ultima sesion activa de este usuario
+				
+				$_SESSION["_SESION"]->setEstado("preparada");
+			}	*/
+				
 			if(isset($_SESSION["_SESION"])){
 				if(!$_SESSION["_SESION"] instanceof CTSesion) {
 					throw new Exception('sesion no valida',2);
@@ -342,7 +352,7 @@ class CTIntermediario{
 					
 					if($_SESSION["_SESION"]->getEstado()=='inactiva' or $_SESSION["_SESION"]->getEstado()=='preparada'){
 
-						if(!(($this->metodoEjecutar=='getPublicKey' AND $this->nombreClase=='Auten')or ($this->metodoEjecutar=='verificarCredenciales' AND $this->nombreClase=='Auten'))){
+						if(!(($this->metodoEjecutar=='prepararLlavesSession' AND$this->metodoEjecutar=='getPublicKey' AND $this->nombreClase=='Auten')or ($this->metodoEjecutar=='verificarCredenciales' AND $this->nombreClase=='Auten'))){
 								
 							throw new Exception('La sesion no esta activa',2);
 						}

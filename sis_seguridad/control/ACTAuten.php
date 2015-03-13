@@ -30,10 +30,45 @@ class ACTAuten extends ACTbase {
 		
 	}
 
-	/////////
-	//Metodos
-	/////////
+	////////////////
+	//   Metodos
+	////////////////
 	
+	function prepararLlavesSession(){
+		//Se obtiene el primer primo
+		$this->funciones= $this->create('MODSesion');
+		$this->res=$this->funciones->prepararLlavesSession();
+		
+		//echo 'resp:'.$this->res;exit;
+		if($this->res->getTipo()=='ERROR'){
+			$this->res->imprimirRespuesta($this->res->generarJson());
+			exit;
+		}
+
+		$this->datos=array();
+		$this->datos=$this->res->getDatos();
+		$this->primo1=$this->datos[0]['primo'];  
+		//setea las llaves en variables de session ....	
+		$_SESSION['key_k']=$this->datos[0]['m'];
+		$_SESSION['key_p']=$this->datos[0]['e'];
+		$_SESSION['key_p_inv']=$this->datos[0]['k'];
+		$_SESSION['key_m']=$this->datos[0]['p'];
+		$_SESSION['key_d']=$this->datos[0]['x'];
+		$_SESSION['key_e']=$this->datos[0]['z'];
+		
+		$_SESSION["_SESION"]= new CTSesion();
+		//Se obtiene los feistel
+		$this->fei=new feistel();
+		$_SESSION["_SESION"]->setEstado("preparada");	
+		$_SESSION['_p']=$this->fei->aumenta1($_SESSION['key_p']);
+		
+		
+
+		//Devuelve la respuesta
+		echo "{success:true}";
+		exit;
+
+	}
 	//Genera las llaves publicas
 	function getPublicKey(){
 		//Se obtiene el primer primo
@@ -77,22 +112,7 @@ class ACTAuten extends ACTbase {
 		$_SESSION['key_m']=$this->llaves[0];
 		$_SESSION['key_d']=$this->llaves[2];
 		$_SESSION['key_e']=$this->llaves[1];
-		//echo 'asdasd';exit;
 		
-		/*
-		echo 'key_k '.$_SESSION['key_k'].' #';
-		echo 'key_p '.$_SESSION['key_p'].' #';
-		echo 'key_p_inv '.$_SESSION['key_p_inv'].' #';
-		echo 'key_m '.$_SESSION['key_m'].' #';
-		echo 'key_d '.$_SESSION['key_d'].' #';
-		echo 'key_e '.$_SESSION['key_e'].' #';*/
-		
-		
-		/*if($_SESSION["_SESION"] instanceof CTSesion){
-
-		} else{
-		throw new Exception('no es sesion',1);
-		}*/
 		$_SESSION["_SESION"]->setEstado("preparada");
 		
 		
@@ -101,6 +121,8 @@ class ACTAuten extends ACTbase {
 	    	$x=1;
 	    }
 		$_SESSION['_p']=$this->fei->aumenta1($_SESSION['key_p']);
+		
+		
 
 		//Devuelve la respuesta
 		echo "{success:true,
@@ -247,6 +269,10 @@ class ACTAuten extends ACTbase {
 			else{
 				$id_cargo = 0;
 			}
+			
+			//almacena llave ....
+			$_SESSION["_SESION"]->actualizarLlaves($_SESSION['key_k'], $_SESSION['key_p'], $_SESSION['key_p_inv'], $_SESSION['key_m'], $_SESSION['key_d'], $_SESSION['key_e']);
+			
 			
 		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
 				echo "{success:true,

@@ -87,8 +87,12 @@ class CTSesion {
 	function getIdUsuario() {
 		return $this->id_usuario;
 	}
+	
+	function actualizarLlaves($m,$e,$k,$p,$x,$z){
+		$this->funSeguridad->actualizarLlaves($this->id_usuario, $m,$e,$k,$p,$x,$z);
+	}
 
-	function setEstado($est) {
+	function setEstado($est){
 		$this->funSeguridad = new MODSesion();
 		if ($est == 'activa') {			
 			$this->rotarSid ();
@@ -137,10 +141,10 @@ class CTSesion {
              //en un entorno de internet esta valiacion no es util debido a NAT
 
 			//if ($this->sid_base == session_id () && $this->ip_base == $this->getIP ()) {
-
+            if ($this->sid_base == session_id ()) {
 				return true;
 					
-			//}
+			}
 		}
 
 		return false;

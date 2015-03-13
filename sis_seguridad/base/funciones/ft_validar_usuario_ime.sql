@@ -28,6 +28,7 @@ DECLARE
 v_count integer;
 v_consulta    varchar;
 v_parametros  record;
+v_registros		record;
 v_resp          varchar;
 v_nombre_funcion   text;
 v_mensaje_error    text;
@@ -259,6 +260,45 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'contrasena',v_contrasena::varchar);
                return v_resp;
      	END;       
+     
+     /*******************************    
+     #TRANSACCION:  SEG_GETKEY_SEG
+     #DESCRIPCION:	recupera las llaves de encriptacion de la ultima sesion vlaida del usuario
+     #AUTOR:		KPLIAN(rac)	
+     #FECHA:		12/03/2015
+    ***********************************/          
+     elseif (par_transaccion='SEG_GETKEY_SEG')then      
+          BEGIN
+          
+               SELECT 
+                ses.m,
+                ses.e,
+                ses.k,
+                ses.p,
+                ses.x,
+                ses.z
+               into
+                 v_registros
+                    
+              FROM segu.tusuario u 
+              INNER JOIN segu.tsesion ses on ses.id_usuario = u.id_usuario
+              WHERE u.cuenta=v_parametros.login AND u.estado_reg='activo';
+                          
+              
+              
+              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','llaves actualizadas'); 
+              v_resp = pxp.f_agrega_clave(v_resp,'m',v_registros.m::varchar);
+              v_resp = pxp.f_agrega_clave(v_resp,'e',v_registros.e::varchar); 
+              v_resp = pxp.f_agrega_clave(v_resp,'k',v_registros.k::varchar); 
+              v_resp = pxp.f_agrega_clave(v_resp,'p',v_registros.p::varchar); 
+              v_resp = pxp.f_agrega_clave(v_resp,'x',v_registros.x::varchar);
+              v_resp = pxp.f_agrega_clave(v_resp,'z',v_registros.z::varchar);     		        
+             
+     
+            return v_resp;
+
+         END; 
+     
      else
          raise exception 'No existe la opcion';
       

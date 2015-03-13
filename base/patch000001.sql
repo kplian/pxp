@@ -147,3 +147,39 @@ CREATE TABLE pxp.tprueba1 (
 /****************************F-SCP-JRR-PXP-0-21/11/2014*************/
 
 
+
+/****************************I-SCP-RAC-PXP-0-12/03/2013*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN m VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN e VARCHAR;
+  
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN k VARCHAR;
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN p VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN x VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN z VARCHAR;
+
+/****************************F-SCP-RAC-PXP-0-12/03/2013*************/
+
