@@ -325,21 +325,15 @@ class CTIntermediario{
 	//Verifica si la sesion esta activa
 	private function verificarSesion(){
 		//Verifica la sesion excepto cuando sea GetPublicKey
-		// var_dump($_SESSION["_SESION"]);
-		//exit;
-
 		if($this->objPostData->getVerificarSesion()){
 		   
 		    //TODO verifica la variable de restaruar sesion y dejarla preparada		
-			/*if(!isset($_SESSION["_SESION"]) && $this->metodoEjecutar=='verificarCredenciales'){
+			if(!isset($_SESSION["_SESION"]) and $this->metodoEjecutar=='prepararLlavesSession'){
 							
 				//Recuperamos el sid que nos mando desde el cliente		
-					
 				$_SESSION["_SESION"]= new CTSesion();
-				//recupera llavez  de  la ultima sesion activa de este usuario
 				
-				$_SESSION["_SESION"]->setEstado("preparada");
-			}	*/
+			}
 				
 			if(isset($_SESSION["_SESION"])){
 				if(!$_SESSION["_SESION"] instanceof CTSesion) {
@@ -352,7 +346,8 @@ class CTIntermediario{
 					
 					if($_SESSION["_SESION"]->getEstado()=='inactiva' or $_SESSION["_SESION"]->getEstado()=='preparada'){
 
-						if(!(($this->metodoEjecutar=='prepararLlavesSession' AND$this->metodoEjecutar=='getPublicKey' AND $this->nombreClase=='Auten')or ($this->metodoEjecutar=='verificarCredenciales' AND $this->nombreClase=='Auten'))){
+						if($this->metodoEjecutar!='verificarCredenciales' AND $this->metodoEjecutar!='prepararLlavesSession' AND $this->metodoEjecutar!='getPublicKey' AND $this->nombreClase!='Auten'){
+		
 								
 							throw new Exception('La sesion no esta activa',2);
 						}
