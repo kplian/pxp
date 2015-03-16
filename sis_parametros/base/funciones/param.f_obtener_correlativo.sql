@@ -1,4 +1,9 @@
-CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
+--------------- SQL ---------------
+
+ -- object recreation
+DROP FUNCTION param.f_obtener_correlativo(par_codigo_documento varchar, par_id integer, par_id_uo integer, par_id_depto integer, par_id_usuario integer, par_codigo_subsistema varchar, par_formato varchar, par_digitos_periodo integer, par_digitos_correlativo integer, par_tabla varchar, par_id_tabla integer, par_cod_tabla varchar);
+
+CREATE FUNCTION param.f_obtener_correlativo (
   par_codigo_documento varchar,
   par_id integer,
   par_id_uo integer,
@@ -10,7 +15,8 @@ CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
   par_digitos_correlativo integer = 0,
   par_tabla varchar = 'no_aplica'::character varying,
   par_id_tabla integer = 0,
-  par_cod_tabla varchar = 'no_aplica'::character varying
+  par_cod_tabla varchar = 'no_aplica'::character varying,
+  par_id_empresa integer = 1
 )
 RETURNS varchar AS
 $body$
@@ -269,6 +275,7 @@ BEGIN
     
        -- 5.1) obtiene el id de la gestion 
          IF(par_id is null) then
+               
                select g.id_gestion , g.gestion
                into v_id, v_num_gestion
                from param.tgestion g
@@ -476,3 +483,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION "param"."f_obtener_correlativo"(par_codigo_documento varchar, par_id integer, par_id_uo integer, par_id_depto integer, par_id_usuario integer, par_codigo_subsistema varchar, par_formato varchar, par_digitos_periodo integer, par_digitos_correlativo integer, par_tabla varchar, par_id_tabla integer, par_cod_tabla varchar, par_id_empresa integer)
+  OWNER TO postgres;

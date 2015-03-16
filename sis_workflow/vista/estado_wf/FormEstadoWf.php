@@ -566,7 +566,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                                             xtype: 'textarea',
                                             name: 'obs_pro['+cont+']',
                                             itemId: this.idContenedor+'-obs_pro['+cont+']',
-                                            fieldLabel: 'Obs',
+                                            fieldLabel: 'Proveido',
                                             allowBlank: false,
                                             anchor: '80%',
                                             maxLength:500
@@ -825,7 +825,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         {
             config: {
                 name: 'obs',
-                fieldLabel: 'Obs',
+                fieldLabel: 'Proveido',
                 allowBlank: false,
                 anchor: '80%',
                 maxLength:500
