@@ -217,10 +217,10 @@ BEGIN
        raise exception  'El proceso macro no esta relacionado con ningun sistema';
     
     END IF;
-    
+   
      --verificamos si requiere manejo de alerta
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
-        
+        	 
            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
            v_cont_alarma = 1;
            v_plantilla_asunto = p_titulo;
@@ -331,72 +331,74 @@ BEGIN
                   
              
              END IF;
-             /*Se registra las alarmas que se encuentran en plantilla correo que cumplan con la regla*/
              
-             for v_registros in (select pc.*,sub.nombre as nombre_subsistema,sub.codigo as codigo_subsistema 
-             					from wf.tplantilla_correo pc
-                                inner join wf.ttipo_estado te
-                                	on te.id_tipo_estado = pc.id_tipo_estado
-                                inner join wf.ttipo_proceso tp
-                                	on tp.id_tipo_proceso = te.id_tipo_proceso
-                                inner join wf.tproceso_macro pm
-                                	on tp.id_proceso_macro = pm.id_proceso_macro
-                                inner join segu.tsubsistema sub
-                                	on pm.id_subsistema = sub.id_subsistema                                 
-             					 where pc.id_tipo_estado = p_id_tipo_estado_siguiente and pc.estado_reg = 'activo') loop
-             	
-                if (wf.f_evaluar_regla_wf(p_id_usuario,p_id_proceso_wf,v_registros.regla,
-                		p_id_tipo_estado_siguiente,v_registros_ant.id_tipo_estado)) then	
-                    
-                    if (v_registros.plantilla is not null and v_registros.plantilla != '') then
-                        v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
-                    end if;
-                    /*Se obtiene los documentos a colocar como adjuntos en el siguiente formato:
-                    	url|id_proceso_wf,url,url,url|id_proceso_wf
-                      Donde las comas separan las urls de los documentos y un documento generado ademas de la url contiene el id_proceso_wf separado por |
-                    */
-                    select pxp.list((case when td.tipo = 'escaneado' then
-                                            dwf.url || '|' ||td.codigo || '.' || dwf.extension
-                                            else
-                                            td.action || '|' || dwf.id_proceso_wf || '|' ||td.codigo || '.pdf'
-                                            end)::varchar) into v_documentos
-                                    from wf.tdocumento_wf dwf 
-                                    inner join wf.ttipo_documento td 
-                                    on dwf.id_tipo_documento = td.id_tipo_documento
-                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros.documentos::int[]) and td.estado_reg = 'activo' and
-                                    dwf.estado_reg = 'activo' and ((td.tipo = 'escaneado' and dwf.url is not null and dwf.url != '') or 
-                                    td.tipo = 'generado');
-                    if (v_registros.asunto is not null) then
-                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
-                    end if;	
-                    v_alarma = param.f_inserta_alarma(
-                                                      NULL,
-                                                      v_desc_alarma,
-                                                      NULL,--acceso directo
-                                                      now()::date,
-                                                      'notificacion',
-                                                      '',
-                                                      p_id_usuario,
-                                                      NULL,
-                                                      p_titulo,--titulo
-                                                      p_parametros::varchar,
-                                                      NULL,
-                                                      v_plantilla_asunto,
-                                                      wf.f_procesar_plantilla( 
-                                                         p_id_usuario, 
-                                                         p_id_proceso_wf, 
-                                                         array_to_string(v_registros.correos, ',')::text, 
-                                                         p_id_tipo_estado_siguiente, 
-                                                         p_id_estado_wf_anterior, 
-                                                         p_obs),
-                                                      v_documentos                                          
-                                                          
-                                                     );
-                end if;
-                 
-             end loop;
               
     END IF;
+    
+    /*Se registra las alarmas que se encuentran en plantilla correo que cumplan con la regla*/
+             
+    for v_registros in (select pc.*,sub.nombre as nombre_subsistema,sub.codigo as codigo_subsistema 
+                            from wf.tplantilla_correo pc
+                            inner join wf.ttipo_estado te
+                                on te.id_tipo_estado = pc.id_tipo_estado
+                            inner join wf.ttipo_proceso tp
+                                on tp.id_tipo_proceso = te.id_tipo_proceso
+                            inner join wf.tproceso_macro pm
+                                on tp.id_proceso_macro = pm.id_proceso_macro
+                            inner join segu.tsubsistema sub
+                                on pm.id_subsistema = sub.id_subsistema                                 
+                             where pc.id_tipo_estado = p_id_tipo_estado_siguiente and pc.estado_reg = 'activo') loop
+             	
+            if (wf.f_evaluar_regla_wf(p_id_usuario,p_id_proceso_wf,v_registros.regla,
+                    p_id_tipo_estado_siguiente,v_registros_ant.id_tipo_estado)) then	
+                    
+                if (v_registros.plantilla is not null and v_registros.plantilla != '') then
+                    v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                end if;
+                /*Se obtiene los documentos a colocar como adjuntos en el siguiente formato:
+                    url|id_proceso_wf,url,url,url|id_proceso_wf
+                  Donde las comas separan las urls de los documentos y un documento generado ademas de la url contiene el id_proceso_wf separado por |
+                */
+                select pxp.list((case when td.tipo = 'escaneado' then
+                                        dwf.url || '|' ||td.codigo || '.' || dwf.extension
+                                        else
+                                        td.action || '|' || dwf.id_proceso_wf || '|' ||td.codigo || '.pdf'
+                                        end)::varchar) into v_documentos
+                                from wf.tdocumento_wf dwf 
+                                inner join wf.ttipo_documento td 
+                                on dwf.id_tipo_documento = td.id_tipo_documento
+                                where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros.documentos::int[]) and td.estado_reg = 'activo' and
+                                dwf.estado_reg = 'activo' and ((td.tipo = 'escaneado' and dwf.url is not null and dwf.url != '') or 
+                                td.tipo = 'generado');
+                if (v_registros.asunto is not null) then
+                    v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                end if;	
+                v_alarma = param.f_inserta_alarma(
+                                                  NULL,
+                                                  v_desc_alarma,
+                                                  NULL,--acceso directo
+                                                  now()::date,
+                                                  'notificacion',
+                                                  '',
+                                                  p_id_usuario,
+                                                  NULL,
+                                                  p_titulo,--titulo
+                                                  p_parametros::varchar,
+                                                  NULL,
+                                                  v_plantilla_asunto,
+                                                  wf.f_procesar_plantilla( 
+                                                     p_id_usuario, 
+                                                     p_id_proceso_wf, 
+                                                     array_to_string(v_registros.correos, ',')::text, 
+                                                     p_id_tipo_estado_siguiente, 
+                                                     p_id_estado_wf_anterior, 
+                                                     p_obs),
+                                                  v_documentos                                          
+                                                          
+                                                 );
+            end if;
+                 
+         end loop;
     
     
      

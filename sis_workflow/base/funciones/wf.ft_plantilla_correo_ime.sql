@@ -76,7 +76,7 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			null,
 			null,
-			asunto
+			v_parametros.asunto
 							
 			
 			
