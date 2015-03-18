@@ -141,10 +141,10 @@ class CTSesion {
              //en un entorno de internet esta valiacion no es util debido a NAT
 
 			//if ($this->sid_base == session_id () && $this->ip_base == $this->getIP ()) {
-            if ($this->sid_base == session_id ()) {
+            //if ($this->sid_base == session_id ()) {
 				return true;
 					
-			}
+			//}
 		}
 
 		return false;

@@ -19,6 +19,9 @@ Phx.vista.TipoDocumentoEstadoWF = {
     bdel:false,
     require:'../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstado.php',
     requireclase:'Phx.vista.TipoDocumentoEstado',
-    title:'Estados...'
+    title:'Estados...',
+    constructor: function(config) {
+    	Phx.vista.TipoDocumentoEstadoWF.superclass.constructor.call(this,config);
+    }
   };
 </script>  	

@@ -8,10 +8,6 @@
  * @author Rensi Arteaga Copari
  * @version 0.1
  */
-
-
-
-
 Ext.BLANK_IMAGE_URL = 'resources/s.gif';
 Ext.FORMATO_MONETARIO = '0.000,00/i';
 
@@ -307,9 +303,11 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	    	 
 			 var p = this.add(new Ext.Panel({
 	                id: id,
-	                layout:'fit',
-	                title:title,
+	                layout: 'fit',
+	                title: title,
 	                closable: true,
+	                autoScroll: false,
+	                autoHeight : false,
 	                cclass : cls,
 	                //stateful:true,
 	                //allowDomMove:false,
