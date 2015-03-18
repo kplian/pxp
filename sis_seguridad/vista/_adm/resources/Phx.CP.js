@@ -1,3 +1,52 @@
+
+Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
+    
+    constructor : function(config){
+        Ext.state.LocalProvider.superclass.constructor.call(this);
+        this.state = this.readLocal();
+    },
+    
+    // private
+    set : function(name, value){
+        if(typeof value == "undefined" || value === null){
+            this.clear(name);
+            return;
+        }
+        this.setLocal(name, value);
+        Ext.state.LocalProvider.superclass.set.call(this, name, value);
+    },
+
+    // private
+    clear : function(name){
+        this.clearLocal(name);
+        Ext.state.LocalProvider.superclass.clear.call(this, name);
+    },
+
+    // private
+    readLocal : function(){
+        var status = {},
+            name,
+            value;
+         
+        for (var i = 0; i < localStorage.length; i++){
+			    value = localStorage.getItem(localStorage.key(i));
+			    status[localStorage.key(i)] = this.decodeValue(value);
+		} 
+        return status;
+    },
+
+    // private
+    setLocal : function(name, value){ 
+    	
+    	 localStorage.setItem(name, this.encodeValue(value));
+    },
+
+    // private
+    clearLocal : function(name){
+    	localStorage.removeItem(name);        
+    }
+});
+
 ///////////////////////////////
 //		CLASE MENU		  	//
 //////////////////////////////
@@ -466,13 +515,12 @@ Phx.CP=function(){
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
 	var contNodo = 0;
+    if (typeof window.localStorage != "undefined") {
+		this.localProvider = new Ext.state.LocalProvider();   
+		Ext.state.Manager.setProvider(this.localProvider);
+	}
 	
-	this.cookieProvider = new Ext.state.CookieProvider({
-	       path: "/",
-	       expires: undefined //30 days
-	   });
-   
-	Ext.state.Manager.setProvider(this.cookieProvider);
+	
     return{
         
         evaluateHash:function(action,token_inicio){
