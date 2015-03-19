@@ -371,7 +371,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                },
 	                autoLoad: {
 	  				  url: href,
-	  				  params:{idContenedor:id,_tipo:'direc'},
+	  				  params:{idContenedor:id,_tipo:'direc', mycls:clase},
 	  				  showLoadIndicator: "Cargando...",
 	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
@@ -399,7 +399,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			                         //var inter = Phx.vista[clase];
 				  				       u.update(
 				  				      	 {url:Phx.vista[clase].require, 
-				  				      	  params:{idContenedor:id,_tipo:'direc'},
+				  				      	  params:{idContenedor:id,_tipo:'direc', mycls: clase},
 				  				      	  arguments:objConfig,
 				  				      	  scripts :true,
 				  				      	  showLoadIndicator: "Cargando...2",

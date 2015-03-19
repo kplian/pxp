@@ -12,7 +12,7 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
-		console.log(config);
+		
 		this.check_fisico = 'no';
 		if (config.hasOwnProperty('check_fisico')) {
 			if (config.check_fisico == 'si') {

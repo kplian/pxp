@@ -436,8 +436,5 @@ Phx.vista.TipoDocumentoEstado=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true
-	}
-)
+})
 </script>
-		
-		
