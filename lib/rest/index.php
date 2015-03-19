@@ -90,7 +90,8 @@ function get_func_argNames($funcName) {
 
 function authPxp($headersArray) {
 	
-	$_SESSION["_SESION"]= new CTSesion();  
+	$_SESSION["_SESION"]= new CTSesion(); 
+	$_SESSION["_tipo_aute"] = 'REST'; 
 	$mensaje = '';  
     //listar usuario con Pxp-User del header
     $objParam = new CTParametro('',null,null,'../../sis_seguridad/control/Usuario/listarUsuario');
