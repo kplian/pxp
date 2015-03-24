@@ -128,7 +128,8 @@ BEGIN
                                       id_padre integer,
                                       arbol varchar,
                                       id_obs integer,
-                                      id_anterior integer
+                                      id_anterior integer,
+                                      etapa		varchar
                                      ) ON COMMIT DROP;
     
     
@@ -164,7 +165,8 @@ BEGIN
                         arbol,
                         id_padre,
                         id_obs,
-                        id_anterior
+                        id_anterior,
+                        etapa
                       FROM temp_gant_wf 
                       order by id) LOOP
      RETURN NEXT v_registros;

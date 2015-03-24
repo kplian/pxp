@@ -201,6 +201,7 @@ function listarGantWf(){
 		$this->captura('id_padre','integer');
 		$this->captura('id_obs','integer');
 		$this->captura('id_anterior','integer');
+		$this->captura('etapa','varchar');
 		
 		
         

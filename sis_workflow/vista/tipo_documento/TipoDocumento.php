@@ -182,6 +182,49 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		},
         {
             config:{
+                    name:'categoria_documento',
+                    fieldLabel:'Categoria',
+                    qtip:'sir para clasificar las cateogiras del documento',
+                    tinit:false,
+                    resizable:true,
+                    tasignacion:false,
+                    allowBlank:true,
+                    store: new Ext.data.JsonStore({
+                            url: '../../sis_workflow/control/CategoriaDocumento/listarCategoriaDocumento',
+                            id: 'id_categoria_documento',
+                            root: 'datos',
+                            sortInfo:{
+                                field: 'nombre',
+                                direction: 'ASC'
+                            },
+                            totalProperty: 'total',
+                            fields: ['id_categoria_documento','codigo','nombre'],
+                            // turn on remote sorting
+                            remoteSort: true
+                        }),
+                    
+                    valueField: 'codigo',
+                    displayField: 'nombre',
+                    gdisplayField: 'categoria_documento',
+                    hiddenName: 'codigo',
+                    forceSelection:true,
+                    typeAhead: false,
+                    triggerAction: 'all',
+                    lazyRender:true,
+                    mode:'remote',
+                    pageSize:10,
+                    queryDelay:1000,
+                    width:250,
+                    enableMultiSelect:true,
+                    minChars:2
+                },
+                type:'AwesomeCombo',
+                id_grupo:0,
+                grid:true,
+                form:true
+        },
+        {
+            config:{
                 name: 'estado_reg',
                 fieldLabel: 'Estado Reg.',
                 allowBlank: true,
@@ -281,7 +324,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'solo_lectura'
+		{name:'usr_mod', type: 'string'},'solo_lectura','categoria_documento'
 		
 	],
 	

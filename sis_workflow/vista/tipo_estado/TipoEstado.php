@@ -93,6 +93,22 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'etapa',
+				fieldLabel: 'Etapa',
+				qtip: 'Sirve para clasificar los estados,  se muestra en el diagrama gantt, la finalidad es reducir la complejidad de los nombre de estado',
+				allowBlank: false,
+				anchor: '70%',
+				gwidth: 200,
+				maxLength: 150
+			},
+			type:'TextField',
+			filters: { pfiltro: 'tipes.estapa', type: 'string'},
+			id_grupo: 1,
+			grid: true,
+			form: true
+		},
+		{
+			config:{
 				name: 'inicio',
 				fieldLabel: 'Inicio (raiz)?',
 				allowBlank: false,
@@ -693,7 +709,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad','id_roles','admite_obs'
+        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa'
 		
 	],
 	sortInfo:{

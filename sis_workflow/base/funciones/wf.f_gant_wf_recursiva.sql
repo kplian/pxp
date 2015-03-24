@@ -127,7 +127,8 @@ BEGIN
                          fun.desc_funcionario1  as funcionario,
                          depto.id_depto,
                          depto.codigo as departamento,
-                         ewf.usuario_ai
+                         ewf.usuario_ai,
+                         te.etapa
                          
                          
                        FROM  wf.testado_wf ewf
@@ -167,7 +168,8 @@ BEGIN
                               depto,
                               nombre_usuario_ai,
                               id_padre,
-                              id_anterior
+                              id_anterior,
+                              etapa
                              )
                              VALUES(
                                        
@@ -189,7 +191,8 @@ BEGIN
                               v_registros.departamento,
                               v_registros.usuario_ai,
                               v_id_proceso,
-                              v_id_anterior
+                              v_id_anterior,
+                              v_registros.etapa
                              ) RETURNING id into v_id_estado;
                       
                           v_id_anterior = v_id_estado;
@@ -278,7 +281,8 @@ BEGIN
                                                     nombre_usuario_ai,
                                                     id_padre,
                                                     arbol,
-                                                    id_anterior
+                                                    id_anterior,
+                                                    etapa
                                                    )
                                                    VALUES(
                                                              
@@ -301,7 +305,8 @@ BEGIN
                                                     v_registros_obs.usuario_ai,
                                                     v_id_estado,   -- el padre es el estado observado
                                                     'close',
-                                                    v_id_estado
+                                                    v_id_estado,
+                                                    v_registros.etapa
                                                    ) RETURNING id into v_id_obs;
                        
                        

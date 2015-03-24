@@ -58,6 +58,7 @@ class MODTipoEstado extends MODbase{
 		$this->captura('parametros_ad','varchar');
 		$this->captura('id_roles','text');
 		$this->captura('admite_obs','varchar');
+		$this->captura('etapa','varchar');
 		
 		
 		
@@ -161,6 +162,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('parametros_ad','parametros_ad','varchar');
 		$this->setParametro('id_roles','id_roles','varchar');
 		$this->setParametro('admite_obs','admite_obs','varchar');
+		$this->setParametro('etapa','etapa','varchar');
 		
 		
 		
@@ -199,8 +201,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('cargo_depto','cargo_depto','varchar');
         $this->setParametro('funcion_inicial','funcion_inicial','varchar');
         $this->setParametro('funcion_regreso','funcion_regreso','varchar');
-        $this->setParametro('mobile','mobile','varchar');
-        
+        $this->setParametro('mobile','mobile','varchar');        
         $this->setParametro('acceso_directo_alerta','acceso_directo_alerta','varchar');
         $this->setParametro('nombre_clase_alerta','nombre_clase_alerta','varchar');
         $this->setParametro('tipo_noti','tipo_noti','varchar');
@@ -208,7 +209,8 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('parametros_ad','parametros_ad','varchar');
 		$this->setParametro('id_roles','id_roles','varchar');
 		$this->setParametro('admite_obs','admite_obs','varchar');
-        
+        $this->setParametro('etapa','etapa','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

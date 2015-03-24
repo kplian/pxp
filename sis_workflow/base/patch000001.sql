@@ -1091,4 +1091,51 @@ ALTER TABLE wf.ttipo_estado_rol
 /*****************************F-SCP-JRR-WF-0-25/02/2015*************/
 
 
+/*****************************I-SCP-RAC-WF-0-20/03/2015*************/
 
+--------------- SQL ---------------
+
+CREATE TABLE wf.tcategoria_documento (
+  id_categoria_documento INTEGER NOT NULL,
+  codigo VARCHAR(50) NOT NULL UNIQUE,
+  nombre VARCHAR,
+  PRIMARY KEY(id_categoria_documento)
+) INHERITS (pxp.tbase)
+;
+
+ALTER TABLE wf.tcategoria_documento
+  OWNER TO postgres;
+
+COMMENT ON COLUMN wf.tcategoria_documento.codigo
+IS 'identifica el documento y se almacenes en el array  categoria_documento en la interface de tipo_documento_wf';
+
+
+--------------- SQL ---------------
+
+CREATE SEQUENCE wf.tcategoria_documento_id_categoria_documento_seq
+MAXVALUE 2147483647;
+
+ALTER TABLE wf.tcategoria_documento
+  ALTER COLUMN id_categoria_documento TYPE INTEGER;
+
+ALTER TABLE wf.tcategoria_documento
+  ALTER COLUMN id_categoria_documento SET DEFAULT nextval('wf.tcategoria_documento_id_categoria_documento_seq'::text);
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN categoria_documento VARCHAR(60)[];
+
+COMMENT ON COLUMN wf.ttipo_documento.categoria_documento
+IS 'este campo sirve para idetoficar a que caterorias pertenece un tipo de documento';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN etapa VARCHAR(150);
+
+COMMENT ON COLUMN wf.ttipo_estado.etapa
+IS 'Este es un texto que sirve hacer menos abstrato el nombre de los estados,  por lo general barrios estado pueden pertener a una misma etapa, este cmapo tiene que aprece en el diagrama gantt y en grilla';
+
+/*****************************F-SCP-RAC-WF-0-20/03/2015*************/

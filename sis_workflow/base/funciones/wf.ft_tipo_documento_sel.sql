@@ -63,7 +63,8 @@ BEGIN
 						tipdw.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        tipdw.solo_lectura
+                        tipdw.solo_lectura,
+                        array_to_string( tipdw.categoria_documento,'','',''null'')::varchar as categoria_documento
 						from wf.ttipo_documento tipdw
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod

@@ -67,7 +67,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_mod,
 			fecha_mod,
-            solo_lectura
+            solo_lectura,
+            categoria_documento
           	) values(
 			v_parametros.nombre,
 			v_parametros.id_proceso_macro,
@@ -81,7 +82,8 @@ BEGIN
 			now(),
 			null,
 			null,
-            v_parametros.solo_lectura
+            v_parametros.solo_lectura,
+            string_to_array(v_parametros.categoria_documento,',')
 							
 			)RETURNING id_tipo_documento into v_id_tipo_documento;
 			
@@ -115,7 +117,8 @@ BEGIN
 			action = v_parametros.action,
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
-            solo_lectura =  v_parametros.solo_lectura
+            solo_lectura =  v_parametros.solo_lectura,
+            categoria_documento = string_to_array(v_parametros.categoria_documento,',')
 			where id_tipo_documento=v_parametros.id_tipo_documento;
                
 			--Definicion de la respuesta
