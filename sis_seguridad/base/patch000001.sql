@@ -1011,5 +1011,12 @@ ALTER TABLE segu.tgui_rol
 
 /*****************************F-SCP-JRR-SEGU-0-03/09/2014*************/
 
+/*****************************I-SCP-JRR-SEGU-0-25/03/2015*************/
+ALTER TABLE segu.tpersona
+  ADD COLUMN id_tipo_doc_identificacion INTEGER;
 
+ALTER TABLE segu.tpersona
+  ADD COLUMN nacionalidad VARCHAR(100);
+
+/*****************************F-SCP-JRR-SEGU-0-25/03/2015*************/
 

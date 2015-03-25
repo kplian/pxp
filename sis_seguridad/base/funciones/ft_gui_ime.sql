@@ -216,7 +216,8 @@ BEGIN
                        visible=v_parametros.visible,
                        nombre=v_parametros.nombre,
                        descripcion=v_parametros.descripcion,
-                       orden_logico=v_parametros.orden_logico
+                       orden_logico=v_parametros.orden_logico,
+                       icono=v_parametros.icono
                        --id_subsistema=v_parametros.id_subsistema
 
                  where id_gui=v_parametros.id_gui;
