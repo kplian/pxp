@@ -1139,3 +1139,16 @@ COMMENT ON COLUMN wf.ttipo_estado.etapa
 IS 'Este es un texto que sirve hacer menos abstrato el nombre de los estados,  por lo general barrios estado pueden pertener a una misma etapa, este cmapo tiene que aprece en el diagrama gantt y en grilla';
 
 /*****************************F-SCP-RAC-WF-0-20/03/2015*************/
+
+
+/*****************************I-SCP-RAC-WF-0-26/03/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN orden NUMERIC DEFAULT 1 NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_documento.orden
+IS 'numero para ordenar los documentos por importancion los mas importantes necesitan numeros mas bajos';
+
+/*****************************F-SCP-RAC-WF-0-26/03/2015*************/

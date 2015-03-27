@@ -68,7 +68,8 @@ BEGIN
 			id_usuario_mod,
 			fecha_mod,
             solo_lectura,
-            categoria_documento
+            categoria_documento,
+            orden
           	) values(
 			v_parametros.nombre,
 			v_parametros.id_proceso_macro,
@@ -83,7 +84,8 @@ BEGIN
 			null,
 			null,
             v_parametros.solo_lectura,
-            string_to_array(v_parametros.categoria_documento,',')
+            string_to_array(v_parametros.categoria_documento,','),
+            v_parametros.orden
 							
 			)RETURNING id_tipo_documento into v_id_tipo_documento;
 			
@@ -108,17 +110,18 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update wf.ttipo_documento set
-			nombre = v_parametros.nombre,
-			id_proceso_macro = v_parametros.id_proceso_macro,
-			codigo = v_parametros.codigo,
-			descripcion = v_parametros.descripcion,
-			tipo = v_parametros.tipo,
-			id_tipo_proceso = v_parametros.id_tipo_proceso,
-			action = v_parametros.action,
-			id_usuario_mod = p_id_usuario,
-			fecha_mod = now(),
-            solo_lectura =  v_parametros.solo_lectura,
-            categoria_documento = string_to_array(v_parametros.categoria_documento,',')
+              nombre = v_parametros.nombre,
+              id_proceso_macro = v_parametros.id_proceso_macro,
+              codigo = v_parametros.codigo,
+              descripcion = v_parametros.descripcion,
+              tipo = v_parametros.tipo,
+              id_tipo_proceso = v_parametros.id_tipo_proceso,
+              action = v_parametros.action,
+              id_usuario_mod = p_id_usuario,
+              fecha_mod = now(),
+              solo_lectura =  v_parametros.solo_lectura,
+              categoria_documento = string_to_array(v_parametros.categoria_documento,','),
+              orden = v_parametros.orden
 			where id_tipo_documento=v_parametros.id_tipo_documento;
                
 			--Definicion de la respuesta

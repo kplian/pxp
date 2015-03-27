@@ -36,14 +36,16 @@ Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
     },
 
     // private
-    setLocal : function(name, value){ 
-    	
+    setLocal : function(name, value){     	
     	 localStorage.setItem(name, this.encodeValue(value));
     },
 
     // private
     clearLocal : function(name){
     	localStorage.removeItem(name);        
+    },
+    clearAll: function(){
+    	localStorage.clear();
     }
 });
 
@@ -820,14 +822,21 @@ Phx.CP=function(){
 				  
 				    
 				    html:'<div id="2rn" align="right"><img src="../../../lib/imagenes/NoPerfilImage.jpg" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/></div>'
+				   },
+				   {
+				            tooltip: 'Deja el estado de la interfaz con los valores por defecto <br>borra los filtros y restaura columnas visibles',
+				            text: '<i class="fa fa-cogs"></i>',
+				            handler: function() {
+				                 localStorage.clear();
+				                 location.reload();
+				             }
 				   },'-',
 				   {
 				            text: 'Cerrar sesion',
 				            icon: '../../../lib/images/exit.png',
-				            toolTip:'Cerrar sesion',
-				        
-				                handler: function() {
-				            window.location = '../../control/auten/cerrar.php';
+				            tooltip:'Cerrar sesion',
+				            handler: function() {
+				                 window.location = '../../control/auten/cerrar.php';
 				             }
 				   }
 				   

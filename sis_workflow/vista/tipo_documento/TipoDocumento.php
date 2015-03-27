@@ -109,6 +109,25 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		
+		{
+			config:{
+				name: 'orden',
+				fieldLabel: 'Orden',
+				qtip: 'Posición en la Ordenación ',
+				allowBlank: false,
+				allowDecimals: true,
+				anchor: '80%',
+				gwidth: 70
+			},
+				type:'NumberField',
+				filters: { pfiltro:'tipdw.ordenacion', type:'numeric' },
+				valorInicial: 1.00,
+				id_grupo:1,
+				egrid: true,
+				grid:true,
+				form:true
+		},
+		
         {
             config:{
                 name: 'tipo',
@@ -324,7 +343,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'solo_lectura','categoria_documento'
+		{name:'usr_mod', type: 'string'},'solo_lectura','categoria_documento','orden'
 		
 	],
 	

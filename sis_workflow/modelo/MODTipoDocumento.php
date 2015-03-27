@@ -37,6 +37,7 @@ class MODTipoDocumento extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('solo_lectura','varchar');
 		$this->captura('categoria_documento','varchar');
+		$this->captura('orden','numeric');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -64,6 +65,7 @@ class MODTipoDocumento extends MODbase{
 		$this->setParametro('action','action','varchar');
 		$this->setParametro('solo_lectura','solo_lectura','varchar');
 		$this->setParametro('categoria_documento','categoria_documento','varchar');
+		$this->setParametro('orden','orden','numeric');
 		
 		
 
@@ -93,6 +95,7 @@ class MODTipoDocumento extends MODbase{
 		$this->setParametro('action','action','varchar');
 		$this->setParametro('solo_lectura','solo_lectura','varchar');
         $this->setParametro('categoria_documento','categoria_documento','varchar');
+		$this->setParametro('orden','orden','numeric');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
