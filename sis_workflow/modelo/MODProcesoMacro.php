@@ -123,6 +123,29 @@ class MODProcesoMacro extends MODbase{
 		
         $this->ejecutarConsulta();  		
 		////////////////////////////
+		
+		
+		if($this->respuesta->getTipo()=='ERROR'){
+			return $this->respuesta;
+		}
+		else {
+		    $this->procedimiento='wf.ft_categoria_documento_sel';
+			$this->transaccion='WF_EXPCATDOC_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			$this->resetCaptura();
+			$this->addConsulta();		
+			
+			$this->captura('tipo','varchar');
+			$this->captura('codigo','varchar');
+			$this->captura('nombre','varchar');			
+			$this->captura('estado_reg','varchar');			
+			
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
 
 		if($this->respuesta->getTipo()=='ERROR'){
 			return $this->respuesta;
@@ -154,7 +177,7 @@ class MODProcesoMacro extends MODbase{
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
-	  
+	  		
 			$this->ejecutarConsulta($this->respuesta);
 		}
 		
@@ -309,6 +332,8 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('action','varchar');
 			$this->captura('tipo_documento','varchar');
 			$this->captura('estado_reg','varchar');
+			$this->captura('orden','numeric');
+			$this->captura('categoria_documento','varchar[]');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();

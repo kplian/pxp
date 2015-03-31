@@ -1152,3 +1152,10 @@ COMMENT ON COLUMN wf.ttipo_documento.orden
 IS 'numero para ordenar los documentos por importancion los mas importantes necesitan numeros mas bajos';
 
 /*****************************F-SCP-RAC-WF-0-26/03/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-27/03/2015*************/
+
+ALTER TABLE wf.tcategoria_documento
+  ADD COLUMN modificado INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-27/03/2015*************/

@@ -17,7 +17,6 @@ Phx.vista.SubirArchivoWf=Ext.extend(Phx.frmInterfaz,{
         Phx.vista.SubirArchivoWf.superclass.constructor.call(this,config);
         this.init();    
         this.loadValoresIniciales();
-        alert('test')
     },
     
     loadValoresIniciales:function()

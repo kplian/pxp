@@ -26,6 +26,7 @@ class Mensaje
 	 *
 	 */
 	function setDatos($arreglo){
+		
 		$this->datos=$arreglo;
 	}
 	
@@ -509,7 +510,7 @@ class Mensaje
 	    //$cuerpo_array
 	    //array_unshift($cuerpo_array,$this->datos);
 		$cuerpo_array['datos']=$this->datos;
-	
+		
 	    $root_array['ROOT']=$cuerpo_array;
 		
 

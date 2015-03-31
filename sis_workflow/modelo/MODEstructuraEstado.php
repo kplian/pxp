@@ -37,11 +37,8 @@ class MODEstructuraEstado extends MODbase{
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
-		//echo new Date();
 		$this->ejecutarConsulta();
-		//echo date();
-		//exit;
-		//Devuelve la respuesta
+		
 		return $this->respuesta;
 	}
 			

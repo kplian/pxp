@@ -16,7 +16,9 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		constructor:function(config) {
 			
 			this.config = config;
-			
+			this.formulario_wizard = 'no';
+			//si se pone si mostrara los documentos al hacer siguiente en el wizard
+			this.mostrar_documentos = 'no';
 			//configuraciones iniciales
 			this.maestro=config.maestro;
 			this.configProceso = config.configProceso;
@@ -59,7 +61,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			if (this.configProceso[this.config.indice].atributos.vista_tipo != 'detalle') {
 				this.load({params:{start:0, limit:50}}); 
 			}
-			
+						
 		},	
 		
 		armaDetalles : function() {
@@ -96,6 +98,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			}
 			
 		},
+		
 		loadValoresIniciales:function()
 	    {
 	    	
@@ -639,25 +642,76 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	             })
 	   },
 	   
-	   openFormEstadoWf:function() {       
+	   openFormEstadoWf:function() {
+	   		//validar campos del formulario
+	   		var rec=this.sm.getSelected();	
+	   		Phx.CP.loadingShow();
+		   	Ext.Ajax.request({
+	                url: '../../sis_workflow/control/ProcesoWf/verficarSigEstProcesoWf',
+	                params: { id_proceso_wf: rec.data.id_proceso_wf,
+	                          operacion: 'verificar'},
+	                success: this.successSinc,
+	                failure: this.meConexionFailure,
+	                timeout: this.timeout,
+	                scope: this
+	            });       
         
-	        var rec=this.sm.getSelected();	        
-	            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
-	            'Estado de Wf',
-	            {
-	                modal:true,
-	                width:700,
-	                height:450
-	            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
-	            {
-	                config:[{
-	                          event:'beforesave',
-	                          delegate: this.onSaveWizard,
-	                          
-	                        }],	                
-	                scope:this
-	             });	        
+	        	        
 	    },
+	    
+	    successSinc:function(resp){
+	        Phx.CP.loadingHide();
+	        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+	        
+	        if(!reg.ROOT.error && reg.ROOT.datos.error_validacion_campos == 'no'){
+	              //abre interfaz del wizard
+	              if (this.mostrar_documentos == 'si') {
+	              	 this.loadCheckDocumentosWf()
+	              } else {
+	              	 this.openWizard();	
+	              }
+	              
+	              
+	        } else if (reg.ROOT.datos.error_validacion_campos == 'si'){
+	        	this.onButtonEdit();
+	        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
+	        	this.formulario_wizard = 'si';
+	        	
+	        } else{
+	            alert('Error al identificar siguientes pasos')
+	        }
+	    },
+	    openWizard : function () {
+	    	var rec=this.sm.getSelected();	        
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:700,
+                height:450
+            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
+            {
+                config:[{
+                          event:'beforesave',
+                          delegate: this.onSaveWizard,
+                          
+                        }],	                
+                scope:this
+             });
+	    },
+	    successSave : function(resp){
+	    	Phx.vista.ProcesoInstancia.superclass.successSave.call(this,resp);
+	    	if (this.formulario_wizard == 'si') {
+	    		if (this.mostrar_documentos == 'si') {
+	              	this.loadCheckDocumentosWf()
+	            } else {
+	    			this.openWizard();
+	    		}
+	    		this.formulario_wizard = 'no';	    		
+	    	}
+	    	
+	    },
+	    
 	   
 	    successWizard:function(resp){
 	        Phx.CP.loadingHide();
@@ -764,11 +818,13 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	    },
 	    onButtonNew:function(){
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.window.setTitle(this.configProceso[this.config.indice].atributos.menu_nombre);
 			this.ocultarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonNew.call(this);
 		},
 		onButtonEdit:function(){
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.window.setTitle(this.configProceso[this.config.indice].atributos.menu_nombre);
 			this.mostrarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonEdit.call(this);
 		},

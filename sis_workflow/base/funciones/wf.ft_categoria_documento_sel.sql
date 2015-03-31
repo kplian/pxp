@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_categoria_documento_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION wf.ft_categoria_documento_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_categoria_documento_sel
@@ -66,6 +70,29 @@ BEGIN
 			return v_consulta;
 						
 		end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'WF_EXPPROMAC_SEL'
+ 	#DESCRIPCION:	Listado de los datos del la categoria de documento seleccionado para exportar
+ 	#AUTOR:		Gonzalo Sarmiento Sejas
+ 	#FECHA:		19-03-2013
+	***********************************/
+    elsif(p_transaccion='WF_EXPCATDOC_SEL')then
+		 BEGIN
+
+               v_consulta:='select ''categoria_documento''::varchar,cd.codigo, cd.nombre,	
+                                cd.estado_reg
+                            from wf.tcategoria_documento cd ';
+
+				if (v_parametros.todo = 'no') then                   
+               		v_consulta = v_consulta || ' and pm.modificado is null ';
+               end if;
+               v_consulta = v_consulta || ' order by pm.id_proceso_macro ASC';	
+                                                                       
+               return v_consulta;
+
+
+         END;
 
 	/*********************************    
  	#TRANSACCION:  'WF_CATDOC_CONT'
@@ -107,7 +134,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_categoria_documento_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

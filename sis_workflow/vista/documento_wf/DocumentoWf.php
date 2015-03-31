@@ -10,8 +10,18 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
-
-	constructor:function(config){
+    
+     //soporte para cuatro categorias
+     bsaveGroups:[0,1,2,3],
+     beditGroups:[0,1,2,3],
+	 bdelGroups:[0,1,2,3],
+	 bactGroups:[0,1,2,3],
+	 btestGroups:[0,1,2,3],
+	 bexcelGroups:[0,1,2,3],
+	 constructor:function(config){
+		
+		
+		
 		
 		this.check_fisico = 'no';
 		if (config.hasOwnProperty('check_fisico')) {
@@ -363,6 +373,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         if (this.check_fisico == 'si') {
 	        this.addButton('btnMomento', {
 	                text : 'Cambiar Modo',
+	                grupo:[0,1,2,3],
 	                iconCls : 'bunlock',
 	                disabled : true,
 	                handler : this.cambiarMomento,
@@ -371,19 +382,19 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	    }
         
 
-        this.grid.addListener('celldblclick',this.oncelldblclick,this);
-        this.grid.addListener('cellclick',this.oncellclick,this);
+        this.grid.addListener('celldblclick', this.oncelldblclick, this);
+        this.grid.addListener('cellclick', this.oncellclick,this);
 
         //si viene del formulario de solicitud agregamos un botono de finalizar
         if(config.tipo === 'solcom'){
         	this.tbar.add('->');
-        	this.addButton('fin_solcom',{ text:'Solo Guardar', iconCls: 'bok', disabled: false,
+        	this.addButton('fin_solcom',{ grupo:[0,1,2,3], text:'Solo Guardar', iconCls: 'bok', disabled: false,
 							        	  handler: function(){
 							        	 	 this.panel.destroy();
 							        	  }, 
 							        	  tooltip: '<b>Solo guardar</b><br>Deja la sollicitud en borrador, permite continuar despues'});
             
-        	this.addButton('fin_requerimiento',{ text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
+        	this.addButton('fin_requerimiento',{ grupo:[0,1,2,3], text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
 									        	 handler: function(){
 									        	 	this.fireEvent('finalizarsol', this, this.maestro, true);
 									        	 
@@ -406,24 +417,39 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
        		cm.setHidden(3,true);
        }
        
-       this.store.baseParams.todos_documentos = this.todos_documentos;
-       this.store.baseParams.anulados = this.anulados;
+       
+       
+            
+        if(this.gruposBarraTareas && this.gruposBarraTareas.length == 0){
+         	this.actualizarBasicos();
+        } 
+       
+       
+       
+	},
+	
+	actualizarBasicos:function(){
+		
+		this.store.baseParams.todos_documentos = this.todos_documentos;
+        this.store.baseParams.anulados = this.anulados;
         this.load({params:{
             start:0, 
             limit:50,
             id_proceso_wf: this.id_proceso_wf            
             }});
-            
-                
-       
-       
-       
 	},
+	
+	actualizarSegunTab: function(name, indice){
+    	this.store.baseParams.categoria = name;
+    	this.actualizarBasicos();
+    },
+    
+    
 	SubirArchivo : function(rec)
     {                   
         
         Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/SubirArchivoWf.php',
-        'Subir Archivo',
+        'Subir ' + rec.data.nombre_tipo_documento,
         {
             modal:true,
             width:450,

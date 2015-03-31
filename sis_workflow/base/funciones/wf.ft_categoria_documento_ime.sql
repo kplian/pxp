@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "wf"."ft_categoria_documento_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION wf.ft_categoria_documento_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_categoria_documento_ime
@@ -27,6 +30,7 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_categoria_documento	integer;
+    v_codigo_categoria			varchar;
 			    
 BEGIN
 
@@ -88,6 +92,14 @@ BEGIN
 	elsif(p_transaccion='WF_CATDOC_MOD')then
 
 		begin
+        	select cd.codigo into v_codigo_categoria
+            from wf.tcategoria_documento cd
+            where id_categoria_documento = id_categoria_documento;
+            
+            if (v_codigo_categoria != v_parametros.codigo) then
+            	raise exception 'No es posible modificar el codigo de la categoria, elimine esta categoria y cree una nueva';
+            end if;
+            
 			--Sentencia de la modificacion
 			update wf.tcategoria_documento set
 			codigo = v_parametros.codigo,
@@ -117,10 +129,23 @@ BEGIN
 	elsif(p_transaccion='WF_CATDOC_ELI')then
 
 		begin
+        	select cd.codigo into v_codigo_categoria
+            from wf.tcategoria_documento cd
+            where id_categoria_documento = id_categoria_documento;
+            
+        	if (exists (select 1 
+            			from wf.ttipo_documento td
+                        where  v_codigo_documento = ANY(t.categoria_documento) and
+                        td.estado_reg = 'activo'))then
+            	raise exception 'Existe(n) Tipos de documento que depende(n) de esta categoria';
+            end if;
+            
+            
 			--Sentencia de la eliminacion
-			delete from wf.tcategoria_documento
+			update  wf.tcategoria_documento
+            set estado_reg = 'inactivo'
             where id_categoria_documento=v_parametros.id_categoria_documento;
-               
+			 
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Caterogiras de Documento eliminado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_categoria_documento',v_parametros.id_categoria_documento::varchar);
@@ -146,7 +171,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "wf"."ft_categoria_documento_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

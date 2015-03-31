@@ -86,10 +86,11 @@ DECLARE
      v_plantilla_asunto   varchar;
      v_total_registros  integer;
      v_res_validacion	text;
+     v_valid_campos		boolean;
    
 
 BEGIN
-
+	v_valid_campos = false;
     v_nombre_funcion = 'wf.f_proceso_wf_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
@@ -317,10 +318,15 @@ BEGIN
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
           v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf);
+          
           IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
-          
-              raise exception 'Es necesario registrar los siguientes campos en el formulario: %',v_res_validacion;
-          
+          		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          	  v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','si');
+              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Es necesario registrar los siguientes campos en el formulario: '|| v_res_validacion);
+              return v_resp;
+          ELSE
+          		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          		v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','no');
           END IF;
           
          
@@ -729,10 +735,19 @@ BEGIN
 	elseif(p_transaccion='WF_SESPRO_IME')then   
         begin
         
+           /*
+                    PARAMETROS:
+               v_parametros.id_estado_wf_act      -- id_estado_wf donde estamos parados actualmente
+               v_parametros.id_tipo_estado,       --  tipo de estado siguiente 
+               v_parametros.id_funcionario_wf, 
+               v_parametros.id_proceso_wf_act,     --id de procesowf actual
+               v_parametros.id_depto_wf,
+               v_parametros.obs,           
+               v_parametros.json_procesos           -- procesos disparados
+           
+           */
         
-         --captura datos basicos del estado actual del proceso WF
-        
-        
+        --  captura datos basicos del estado actual del proceso WF       
           select 
             ew.estado_reg,
             ew.id_estado_wf,
@@ -745,7 +760,7 @@ BEGIN
           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado 
           WHERE ew.id_estado_wf = v_parametros.id_estado_wf_act;           -- id_estado_wf donde estamos parados actualmente
           
-       --validamos que el estado wf actual este activo
+       --  validamos que el estado wf actual este activo
           IF v_registro_estado_wf_ant.estado_reg = 'inactivo' THEN
             raise exception 'Por favor actualice sus datos antes de continuar%',v_parametros.id_estado_wf_act;
           END IF;
@@ -848,7 +863,7 @@ BEGIN
            END LOOP;
            
            
-            --RAC si el tipo_estado tiene funcion de retroceso la ejecuta
+            --RAC si el tipo_estado tiene funcion de inicial la ejecuta
                         
             select 
              te.funcion_inicial
@@ -1160,7 +1175,7 @@ BEGIN
              return v_resp;
 
 		end;    
-    
+   
     
     else
      
@@ -1172,7 +1187,7 @@ EXCEPTION
 				
 	WHEN OTHERS THEN
 		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
