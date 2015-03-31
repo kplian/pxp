@@ -134,7 +134,7 @@ class CTSesion {
 	function validarSesion() {
 		if ($this->estado == 'activa') {
 
-			$this->recuparaSidBase();
+			//$this->recuparaSidBase();
 
 			//echo "$this->sid_base =".session_id (). " !!!!!  $this->ip_base =".$this->getIP ();
 			//exit;

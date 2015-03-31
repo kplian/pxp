@@ -542,3 +542,12 @@ EXECUTE PROCEDURE wf.ftrig_ttipo_estado_rol ();
 
 
 /*******************************************F-DEP-JRR-WF-0-03/09/2014*************************************/
+
+/*******************************************I-DEP-JRR-WF-0-27/03/2014*************************************/
+
+CREATE TRIGGER trig_tcategoria_documento
+  BEFORE UPDATE 
+  ON wf.tcategoria_documento FOR EACH ROW 
+  EXECUTE PROCEDURE wf.ftrig_tcategoria_documento();
+
+/*******************************************I-DEP-JRR-WF-0-27/03/2014*************************************/
