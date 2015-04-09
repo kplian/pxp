@@ -5,6 +5,24 @@
  * http://www.extjs.com/license
  */
 
+.ext-gecko .x-btn button, .ext-webkit .x-btn button {
+  padding-left: 0;
+  width: 100%;
+  padding-right: 0;
+}
+
+.x-menu-item-icon {
+  border: 0 none;
+  height: 16px;
+  padding: 0;
+  vertical-align: top;
+  width: 16px !important;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  margin: 0;
+  background-position: left;
+}
 
 
 .bven1 {
@@ -217,8 +235,10 @@
 }
 .bgantt {
     background-image:url(awe_gantt.png) !important;
-    width: 100% !important;
 }
+
+
+
 .bemail {
     background-image:url(awe_email.png) !important;
 }
@@ -267,6 +287,11 @@
 
 .bball_white {
     background-image:url(../ball_white.png) !important;
+}
+
+.bprint_good {
+	background-image:url(awe_print_good.png) !important;
+
 }
 
 .x-action-col-cell img.bsearch {

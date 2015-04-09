@@ -87,10 +87,11 @@ DECLARE
      v_total_registros  integer;
      v_res_validacion	text;
      v_valid_campos		boolean;
+     v_documentos		record;
    
 
 BEGIN
-	v_valid_campos = false;
+	
     v_nombre_funcion = 'wf.f_proceso_wf_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
@@ -328,6 +329,29 @@ BEGIN
           		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
           		v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','no');
           END IF;
+          
+          --validacion de documentos
+          
+          for v_documentos in (
+          		select
+                    dwf.id_documento_wf,                    
+                    dwf.id_tipo_documento,
+                    wf.f_priorizar_documento(v_parametros.id_proceso_wf , p_id_usuario
+                         ,dwf.id_tipo_documento,'ASC' ) as priorizacion
+                from wf.tdocumento_wf dwf
+                inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
+                where  pw.nro_tramite = COALESCE(v_registros.nro_tramite,'--')) loop
+                
+                if (v_documentos.priorizacion in (0,9)) then
+                	v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          	  		v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_documentos','si');
+              		v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Es necesario subir algun(os) documento(s) antes de pasar al siguiente estado');
+                    return v_resp;
+                end if;
+          
+          end loop;
+          v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_documentos','no'); 
           
          
         
