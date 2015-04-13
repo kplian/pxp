@@ -159,7 +159,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 			form:false
 		}
 	],
-	
+	 
 	title:'Centro de Costos',
 	ActSave:'../../sis_parametros/control/CentroCosto/insertarCentroCosto',
 	ActDel:'../../sis_parametros/control/CentroCosto/eliminarCentroCosto',

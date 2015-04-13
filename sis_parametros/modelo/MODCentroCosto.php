@@ -12,7 +12,7 @@ class MODCentroCosto extends MODbase{
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
 	}
-	
+	 
 	function listarCentroCostoGrid(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='param.f_centro_costo_sel';

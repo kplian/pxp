@@ -64,7 +64,7 @@ class ACTCentroCosto extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
-		
+		 
 		if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
         }
