@@ -52,13 +52,18 @@ class ACTSubsistema extends ACTbase{
 
 	}
 			
-	function eliminarSubsistema(){
-		
+	function eliminarSubsistema(){		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=$this->create('MODSubsistema');	
 		$this->res=$this->objFunSeguridad->eliminarSubsistema($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
-
+	}
+	
+	function obtenerVariableGlobal(){		
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODSubsistema');	
+		$this->res=$this->objFunSeguridad->obtenerVariableGlobal($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 	
 	function exportarDatosSeguridad(){

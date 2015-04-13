@@ -1,5 +1,4 @@
-/*
- 
+
 DROP AGGREGATE IF EXISTS pxp.list (text);
 CREATE AGGREGATE pxp.list (text) (
     SFUNC = pxp.comma_cat,
@@ -43,5 +42,5 @@ CREATE AGGREGATE pxp.list_unique (
   STYPE = text
 
 );
-*/
+
 

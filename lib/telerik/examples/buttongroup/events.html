@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-role="view" id="buttongroup-events" data-init="mobileButtonGroupEventsInit" data-title="Player">
+    <div class="photo">
+    </div>
+    <ul id="button-group" data-role="buttongroup" data-index="3" data-select="selectButton">
+       <li data-icon="rewind">
+       </li>
+       <li data-icon="play">
+       </li>
+       <li data-icon="pause">
+       </li>
+       <li data-icon="stop">
+       </li>
+       <li data-icon="fastforward">
+       </li>
+    </ul>
+    <div class="console"></div>
+</div>
+
+<script>
+    function selectButton() {
+        kendoConsole.log("Selected button: " + this.current().index(), false, "#buttongroup-events");
+    }
+</script>
+
+<style>
+    #buttongroup-events .km-button:not(.km-back) {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+    #buttongroup-events .photo {
+        width: 277px;
+        margin: 1em auto;
+        height: 120px;
+        background: url("../content/mobile/shared/player.jpg") no-repeat center center;
+        -webkit-background-size: auto 100%;
+        background-size: auto 100%;
+    }
+    #button-group {
+        margin: 1em auto;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

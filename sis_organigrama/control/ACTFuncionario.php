@@ -22,6 +22,12 @@ class ACTFuncionario extends ACTbase{
         if($this->objParam->getParametro('tipo_filtro')=='usuario'){
             $this->objParam->addFiltro("FUNCIO.id_funcionario= ".$_SESSION["_ID_FUNCIOANRIO_OFUS"]);    
         }	
+		
+		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
+			$this->objParam->addFiltro("FUNCIO.id_funcionario IN (select * 
+										FROM orga.f_get_funcionarios_x_usuario_asistente(now()::date, " .
+																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
+		}
 			
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

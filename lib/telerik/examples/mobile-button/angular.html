@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <kendo-mobile-application k-layout="'default'" ng-app="kendoDemo">
+
+<kendo-mobile-view id="button-home" k-title="'Sports Academy'">
+    <div class="home head">&nbsp;</div>
+
+    <a class="button selected-button" kendo-mobile-button>Home</a><a class="button" kendo-mobile-button href="#facility">Facility</a>
+
+    <kendo-mobile-list-view k-style="'inset'">
+        <li>
+            <p>Our Sports Academy provides a venue for outdoor and indoor sports and activities for children and adults of all ages.</p>
+        </li>
+    </kendo-mobile-list-view>
+</kendo-mobile-view>
+
+<kendo-mobile-view id="facility" k-title="'Facility'">
+    <div class="facility head">&nbsp;</div>
+
+    <a class="button" kendo-mobile-button href="#:back">Home</a><a class="button selected-button" kendo-mobile-button href="#facility">Facility</a>
+
+    <kendo-mobile-list-view k-style="'inset'">
+        <li>
+            <p>The facility has two indoor basketball fields, olympic size swimming pool, outdoor soccer field, baseball field, golf club and more.</p>
+        </li>
+    </kendo-mobile-list-view>
+</kendo-mobile-view>
+
+<kendo-mobile-layout k-id="'default'">
+    <kendo-mobile-header>
+        <kendo-mobile-nav-bar>
+            <kendo-view-title></kendo-view-title>
+        </kendo-mobile-nav-bar>
+    </kendo-mobile-header>
+</kendo-mobile-layout>
+
+</kendo-mobile-application>
+
+<script>
+    angular.module('kendoDemo', ['kendo.directives']);
+</script>
+
+<style>
+.button {
+    margin-left: .5em;
+    text-align: center;
+}
+.km-root .selected-button
+{
+    color: #fff;
+    background-color: #f60;
+}
+/* solid filled buttons in iOS7 should override the border-color */
+.km-ios7 .selected-button
+{
+    border-color: transparent;
+}
+.button:first-of-type {
+    margin-left: 1em;
+}
+.home {
+    background: url(../content/mobile/shared/sports-home.jpg) no-repeat center center;
+}
+.facility {
+    background: url(../content/mobile/shared/sports-facility.jpg) no-repeat center center;
+}
+.sports {
+    background: url(../content/mobile/shared/sports.jpg) no-repeat center center;
+}
+#button-home .head,
+#facility .head,
+#sports .head {
+	display: block;
+	margin: 1em;
+	height: 120px;
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+}
+.km-ios .head,
+.km-blackberry .head {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+</style>
+
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

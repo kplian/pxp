@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtualization of local data</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <script src="../content/shared/js/people.js"></script>
+
+<div id="example">
+    <div id="message" class="demo-section k-header" style="text-align:center"></div>
+
+    <div id="grid"></div>
+
+    <script>
+        $(function() {
+            var count = 500000;
+
+            if (kendo.support.browser.msie) {
+                if (kendo.support.browser.version < 10) {
+                    count = 100000;
+                } else {
+                    count = 200000;
+                }
+            }
+
+            $("#message").text(kendo.format("Generating {0} items", count));
+
+            generatePeople(count, function(data) {
+                var initStart;
+                var renderStart;
+
+                $("#message").text("");
+
+                setTimeout(function() {
+                    initStart = new Date();
+
+                    $("#grid").kendoGrid({
+                        dataSource: {
+                            data: data,
+                            pageSize: 20
+                        },
+                        height: 543,
+                        scrollable: {
+                            virtual: true
+                        },
+                        pageable: {
+                            info: true,
+                            numeric: false,
+                            previousNext: false
+                        },
+                        columns: [
+                            { field: "Id", title: "ID", width: "110px" },
+                            { field: "FirstName", title: "First Name", width: "130px" },
+                            { field: "LastName", title: "Last Name", width: "130px" },
+                            { field: "City", title: "City", width: "130px" },
+                            { field: "Title" }
+                        ]
+                    });
+
+                    initEnd = new Date();
+
+                    $("#message").text(kendo.format("Kendo UI Grid bound to {0} items in {1} milliseconds", count, initEnd - initStart));
+                });
+            });
+        });
+    </script>
+</div>
+
+
+    
+    
+</body>
+</html>

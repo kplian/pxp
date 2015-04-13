@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Binding to remote data</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+
+    <script src="mcrypt.js"></script>
+    <script src="rijndael.js"></script>
+    <script src="base64.js"></script>
+    <script src="clientRestPxp.js"></script>
+
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    
+        <div id="example">
+            <div id="grid"></div>
+
+
+            <input type="button" value="previous" onclick="previous();" />
+            <script>
+
+
+
+
+                clientRestPxp._url('kerp_capacitacion/pxp/lib/rest/seguridad/Persona/listarPersonaFoto');
+                clientRestPxp.setCredentialsPxp('admin','202cb962ac59075b964b07152d234b70');
+                clientRestPxp.genHeaders();
+                console.log(clientRestPxp._headers);
+
+
+
+                var selected = [];
+                $("#grid").kendoGrid({
+                    dataSource: {
+
+                        transport: {
+                            read: {
+                                url: clientRestPxp._url('kerp_capacitacion/pxp/lib/rest/seguridad/Persona/listarPersonaFoto'),
+                                dataType: "json",
+                                type:"POST",
+                                headers: clientRestPxp._headers,
+                                data: {/* start: "0",limit:"50",*/sort:"id_persona",dir:"ASC" }
+                            }
+                        },
+                        schema: {
+                            data: function (response) {
+                               // var json = $.parseJSON(response.datos);
+                                console.log(response)
+                                return response.datos;
+                            },
+                            total:function(response){
+                              return response.total;
+                            },
+                            model: {
+                                id: "id_persona",
+                                fields: {
+                                    id_persona: { type: "number" },
+                                    ap_materno: { type: "string" }
+
+                                }
+                            }
+                        },
+                        pageSize: 50,
+                        serverPaging: true,
+                        serverFiltering: true,
+                        serverSorting: true
+                    },
+                    height: 440,
+                    selectable: true,
+                    pageable: true,
+                    columns: [{
+                        field:"id_persona",
+                        filterable: false
+                    },
+                        "ap_materno"
+                        ],
+                    change: function (e) {
+                        var selectedItem = this.dataItem(this.select()),
+                                currentPage = this.dataSource.page();
+
+                        selected[currentPage] = selectedItem.OrderID;
+                    },
+                    dataBound: function () {
+                        var currentPage = this.dataSource.page();
+                        if(selected[currentPage] !== undefined) {
+                            var uid = this.dataSource.get(selected[currentPage]).uid;
+                            this.tbody.find("tr[data-uid='" + uid + "']").addClass("k-state-selected");
+                        }
+                    }
+                });
+
+                function previous() {
+                    var grid = $("#grid").data("kendoGrid");
+                    grid.dataSource.prev();
+                }
+            </script>
+
+
+    
+    
+</body>
+</html>

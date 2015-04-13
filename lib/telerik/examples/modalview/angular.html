@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div kendo-mobile-application ng-app="kendoDemo">
+<kendo-mobile-view id="modalview-camera" k-title="'HTML5 Camera'">
+    <img src="../content/mobile/modalview/lens.png" class="camera-image" /><br />
+    <kendo-mobile-button k-rel="'modalview'" href="#modalview-login" id="modalview-open-button">Login</kendo-mobile-button>
+</kendo-mobile-view>
+
+<kendo-mobile-modal-view id="modalview-login" style="width: 90%;" ng-controller="modalViewController">
+    <kendo-mobile-header>
+        <kendo-mobile-nav-bar>
+            <span>Login</span>
+            <kendo-mobile-button k-on-click="closeModalViewLogin()" k-align="'right'">Cancel</kendo-mobile-button>
+        </kendo-mobile-nav-bar>
+    </kendo-mobile-header>
+
+    <kendo-mobile-list-view k-style="'inset'">
+        <li><label for="username">Username: <input type="text" id="username" /></label></li>
+        <li><label for="password">Password: <input type="password" id="password" /></label></li>
+    </kendo-mobile-list-view>
+
+    <kendo-mobile-button k-on-click="closeModalViewLogin()" id="modalview-login-button">Login</kendo-mobile-button>
+    <kendo-mobile-button k-on-click="closeModalViewLogin()" id="modalview-reg-button">Register</kendo-mobile-button>
+</kendo-mobile-modal-view>
+
+<script>
+    angular.module("kendoDemo", [ 'kendo.directives' ])
+        .controller("modalViewController", function($scope) {
+            $scope.closeModalViewLogin = function() {
+                $("#modalview-login").kendoMobileModalView("close");
+            };
+        });
+</script>
+
+<style>
+    #modalview-login-button,
+    #modalview-reg-button,
+    #modalview-open-button {
+        display: block;
+        text-align: center;
+        margin: .6em .8em;
+        font-size: 1.2em;
+    }
+
+    #modalview-open-button {
+        margin: 0 3em;
+        padding: .5em;
+    }
+    .km-flat #modalview-open-button {
+        color: #fff;
+    }
+
+    #modalview-camera {
+        text-align: center;
+    }
+
+    #modalview-camera img {
+        display: block;
+        margin: 30px auto;
+    }
+
+    #modalview-camera .km-content,
+    .km-ios #modalview-login .km-content {
+        background: url(../content/shared/images/patterns/pattern1.png) repeat 0 0;
+    }
+
+    #modalview-login label {
+        display: inline-block;
+        width: 100%;
+    }
+    .km-ios #modalview-camera .km-button,
+    .km-ios #modalview-login .km-button,
+    .km-ios #modalview-camera .km-navbar,
+    .km-ios #modalview-login .km-header,
+    .km-blackberry #modalview-camera .km-navbar,
+    .km-blackberry #modalview-login .km-navbar
+    {
+        background-color: #000;
+    }
+
+    .km-blackberry #modalview-camera .km-button
+    {
+        color: #fff;
+    }
+
+    .km-ios #modalview-camera .km-button:active,
+    .km-ios #modalview-camera .km-state-active,
+    .km-ios #modalview-login .km-button:active,
+    .km-ios #modalview-login .km-state-active {
+        background-color: #2e2e2e;
+    }
+
+    .km-ios #modalview-login #modalview-login-button,
+    .km-flat #modalview-login #modalview-login-button {
+        background-color: Green;
+        color: #fff;
+    }
+
+    .km-tablet .km-ios #modalview-camera .km-view-title,
+    .km-tablet .km-ios #modalview-login .km-view-title {
+        color: #fff;
+        text-shadow: 0 -1px rgba(0,0,0,.5);
+    }
+
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

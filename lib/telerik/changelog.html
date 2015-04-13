@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Changelog for Kendo UI v2015.1.408</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font: .75em/1.5 Tahoma, sans-serif;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-size: normal;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: normal;
+
+            margin: 1.2em 0 .3em;
+            padding-bottom: .2em;
+        }
+
+        #page {
+            width: 50em;
+            margin: 0 auto 2em;
+            border-radius: 0 0 1em 1em;
+            box-shadow: 0 0 10px #ccc;
+            padding: 1em 2em 2em;
+        }
+
+        .poBoxIcon {
+            float: left;
+            font-size: 2em;
+            margin: 1.2em .5em 0 0;
+        }
+
+        .poTopLine {
+            border-top: 2px solid #e1e1e1;
+            margin: 17px 0 40px 0;
+        }
+    </style>
+
+    <base href="http://www.telerik.com/support/whats-new/kendo-ui-web/release-history">
+</head>
+<body>
+    <div id="page">
+        <h1 class="title">Release notes for Kendo UI v2015.1.408</h1>
+
+        <h1>Components</h1>
+        <div class="tClear poTopLine">
+            <div class="poBoxIconText">
+                
+                <p><strong>What's fixed</strong></p><ul><li>Multiple selection should not prevent click on `button.k-button` elements</li><li>Multi-header columns are not rendered correctly when using locked columns and MVVM data-source binding with DataSource instance</li><li>plotAreaClick is not fired if no background is set on the plot area</li></ul>
+            </div>
+        </div>
+
+
+        <div class="tClear poTopLine">
+            <h2>AngularJS</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>k-ng-disabled directive not evaluated correctly when used as expression</li><li>Widget throws an exception when optionLabel is selected and valuePrimitive is set to false</li><li>kendo.angular.js makes use of AngularJS debugging features</li><li>Widget does not clear model value when option label is selected</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>AutoComplete</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Virtual list always renders last received data</li><li>Height of the virtualized list is incorrect</li><li>Problem with reverting to blank state</li><li>Virtualized list shows 'null' in IE when data source is not grouped</li><li>Broken List grouping feature styling</li><li>Keyboard navigating Virtual List to not yet loaded items leaves different focused and selected items</li><li>Virtual List selected and focused items are additionally padded in</li><li>Virtual List doesn't have hovers</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Chart</h2>
+            <p><strong>What's new</strong></p><ul><li>Ignore axis labels step if it is 0 to avoid hanging</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>No data is shown if the first category date is not defined</li><li>Category axis label templates refer to invalid data item for date series</li><li>The categories are not bound from the series data when the setOptions method is used</li><li>Incorrect stacked bar display in firefox for small bars</li><li>ColorField does not work for bullet series</li><li>Stacked chart valueAxis is incorrect when stack contains negative values and missing values</li><li>ChartArea width / height are wrong when canvas rendering is used</li><li>CategoryAxis labels left / right margin does not work when labels rotation is set</li><li>Chart shrinks with long CategoryAxis field name</li><li>PlotBands are not rendered when start / end values exceed the axes range</li><li>Notes are placed incorrectly for stacked series when value is 0</li><li>Labels are placed incorrectly for stacked series when value is 0</li><li>Chart tooltips are incorrectly positioned in a mobile view with zoom</li><li>categoryAxis setting is ignored for series of the same type </li><li>Percentage value in series.labels.template displays Nan when there is only one item and its value is 0</li><li>Hiding the yAxis in polar charts also hides the 90 degree major grid line on the xAxis</li><li>labels.skip/step are not working for polar axes</li><li>skip/step options are not applied on polar and radar axes</li><li>CategoryAxis.crosshair.visible option cannot be set to true via setOptions method</li><li>Bar chart with grouped dataSource and no data in it is converted to a column chart</li><li>missingValues is not applied to polarArea series</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>ComboBox</h2>
+            <p><strong>What's new</strong></p><ul><li>Copy 'title' attribute from the origin input element</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>IE: Cannot scroll in virtualization popup </li><li>Virtual list always renders last received data</li><li>Height of the virtualized list is incorrect</li><li>Widget suggests first item on open even when initial value is empty string</li><li>Widget selects first item on UP instead of the previous item when popup is closed</li><li>Cannot set new value</li><li>Cascading issue when option label is empty</li><li>Virtualized list shows 'null' in IE when data source is not grouped</li><li>Broken List grouping feature styling</li><li>Keyboard navigating Virtual List to not yet loaded items leaves different focused and selected items</li><li>Virtual List selected and focused items are additionally padded in</li><li>Virtual List doesn't have hovers</li><li>Widget does not select first focused item after filtration</li><li>Widget does not raise cascade event after custom value is entered</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>DataSource</h2>
+            <p><strong>What's new</strong></p><ul><li>Breaking change: aggregates returns empty aggregate object as a result.</li></ul>
+            
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Diagram</h2>
+            <p><strong>What's new</strong></p><ul><li>Improve connection routing for tree layouts</li></ul>
+            
+        </div>
+        <div class="tClear poTopLine">
+            <h2>DropDownList</h2>
+            <p><strong>What's new</strong></p><ul><li>Open popup if optionLabel is defined</li><li>Dropdownlist: Support for removing autofocus of filter text input.</li><li>Copy 'title' attribute from the origin input element</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>Virtualization is broken when option label is enabled and try to select -1</li><li>IE: Cannot scroll in virtualization popup </li><li>Virtual list always renders last received data</li><li>Height of the virtualized list is incorrect</li><li>Widget does not display optionLabel on load</li><li>Widget throws an exception when optionLabel is selected and valuePrimitive is set to false</li><li>Widget does not navigate using LEFT/RIGHT arrows when filtering is enabled</li><li>Widget does not clear model value when option label is selected</li><li>Widget returns data items with offset by 1 when option label is defined</li><li>Cannot filter second time for the same value</li><li>DropDownList scrolls the page on opening if the filtering textbox is present</li><li>Widget does not display the selected item after filter is cleared/changed</li><li>DropDownList does not allow to set optionLabel via setOptions method</li><li>DropDownList throw error in IE8 when select index is -1</li><li>Not able to change options starting with the same letter using the keyboard</li><li>Widget does not de-select items when set selected value using value method</li><li>Virtualized list shows 'null' in IE when data source is not grouped</li><li>Previous item selected when filtering is used</li><li>Widget does not trigger change event on item selection when initial value is an empty string</li><li>Broken List grouping feature styling</li><li>Keyboard navigating Virtual List to not yet loaded items leaves different focused and selected items</li><li>Virtual List selected and focused items are additionally padded in</li><li>Virtual List doesn't have hovers</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Editor</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>JS error may occur when adding column to a pasted table</li><li>Editor should disable all tools in readonly mode</li><li>Pasting tables from MS Word sequentially may insert table at wrong position</li><li>Change in font makes list not clearable when enter is pressed</li><li>CleanFormatting does not clear strikethrough, sub/superscript, lists and quotation formats</li><li>Dropping text into Editor breaks selection</li><li>Cursor position is incorrect after inserting tables in Firefox</li><li>Spell corrections are not pushed into the undo/redo stack</li><li>Backspace in empty list item does not always remove bullet</li><li>Image size is not retained when image inserted for a second time</li><li>Backspace + typing at beginning of paragraph creates unneeded line break in Firefox</li><li>Deleting newline characters breaks font size</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Excel Export</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Excel displays [Group] in the title when multiple sheets are created</li><li>Invalid excel file when filterable is set to true and the grid has more than 26 columns</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Gantt</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Js error in IE 8 when rendering dependencies</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Grid</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Grid PDF Export feature is missing its dependency on ProgressBar</li><li>PDF export hangs if the grid is not pageable and allPages is set</li><li>A grid with set width might not be exported fully to PDF</li><li>Grid footer template is not correctly compiled with angular when grid is grouped</li><li>Invalid excel file when filterable is set to true and the grid has more than 26 columns</li><li>Grid getOptions method is defining as returning void in TypeScript</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>MVVM</h2>
+            <p><strong>What's new</strong></p><ul><li>DropDownList auto-selects first option, but does not update MVVM binding.</li></ul>
+            
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Map</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Map is not exported correctly after pan or zoom</li><li>Bing layer might remain visible after calling hide()</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Menu</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Widget renders first item with a bottom border</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>MultiSelect</h2>
+            <p><strong>What's new</strong></p><ul><li>Copy 'title' attribute from the origin input element</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>VirtualList does not allow to select item when source is filtered</li><li>Virtual list always renders last received data</li><li>Height of the virtualized list is incorrect</li><li>Not able to remove selected value</li><li>Widget does not post correctly selected options when it is filtered</li><li>Widget does not select/deselect correct tag when list is filtered</li><li>Widget does not delete the focused tag on BACKSPACE</li><li>Virtualized list shows 'null' in IE when data source is not grouped</li><li>MultiSelect setDataSource appends old selected values</li><li>Broken List grouping feature styling</li><li>Keyboard navigating Virtual List to not yet loaded items leaves different focused and selected items</li><li>Virtual List selected and focused items are additionally padded in</li><li>Virtual List doesn't have hovers</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>NumericTextBox</h2>
+            <p><strong>What's new</strong></p><ul><li>Copy 'title' attribute from the origin input element</li></ul>
+            
+        </div>
+        <div class="tClear poTopLine">
+            <h2>PDF Export</h2>
+            <p><strong>What's new</strong></p><ul><li>Render &lt;input&gt;, &lt;textarea&gt; and &lt;select&gt; in drawDOM</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>Map is not exported correctly after pan or zoom</li><li>IE10 does not display CORS images</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>Scheduler</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Recurring events cannot be edited or deleted if editRecurringMode options is not explicitly set</li><li>Scheduler not completely localized</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>StockChart</h2>
+            <p><strong>What's new</strong></p><ul><li>Ignore axis labels step if it is 0 to avoid hanging</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>No data is shown if the first category date is not defined</li><li>Initial series.labels are not hidden when navigator range is changed</li><li>Chart tooltips are incorrectly positioned in a mobile view with zoom</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>ToolBar</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>Text in template that is not wrapped in an HTML element is not rendered</li><li>Disabled Toolbar Button Fires Click Event</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>TreeList</h2>
+            <p><strong>What's new</strong></p><ul><li>Add columnResize event</li></ul>
+            <p><strong>What's fixed</strong></p><ul><li>Passing objects to TreeListDataSource.add ignores their data</li></ul>
+        </div>
+        <div class="tClear poTopLine">
+            <h2>TreeView</h2>
+            
+            <p><strong>What's fixed</strong></p><ul><li>JS error on TreeView expand</li><li>Child items are not bound correctly when using MVVM source binding</li><li>Calling the node load method in the select event will cause a JavaScript error when the previously selected element is a child of the node</li><li>Appending items during expand breaks subgroup height</li></ul>
+        </div>
+    </div>
+</body>
+</html>

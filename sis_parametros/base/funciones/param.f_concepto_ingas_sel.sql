@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -157,7 +159,7 @@ BEGIN
                           conig.filtro_ot,
                           conig.requiere_ot,
                           array_to_string( conig.sw_autorizacion, '','',''null'')::varchar
-                          from param.tconcepto_ingas conig
+                        from param.tconcepto_ingas conig
                           inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas
                           inner join pre.tpartida par on par.id_partida = cp.id_partida
                           inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
@@ -167,7 +169,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+            --raise notice 'consulta >>>> % <<<<',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -186,7 +188,6 @@ BEGIN
         
             v_filtro = '';
             
-            --admite autorizaciones nulas, por defecto SI
             IF  pxp.f_existe_parametro(p_tabla,'autorizacion_nulos') THEN
                v_autorizacion_nulos =  v_parametros.autorizacion_nulos;
             ELSE
@@ -210,7 +211,7 @@ BEGIN
                           inner join pre.tpartida par on par.id_partida = cp.id_partida
                           inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                           left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where conig.estado_reg = ''activo'' and '||v_filtro;
+				        where  conig.estado_reg = ''activo'' and '||v_filtro;
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
