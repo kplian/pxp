@@ -1023,3 +1023,39 @@ ALTER TABLE segu.tpersona
 
 /*****************************F-SCP-JRR-SEGU-0-25/03/2015*************/
 
+
+/****************************I-SCP-RAC-PXP-0-12/03/2013*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN m VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN e VARCHAR;
+  
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN k VARCHAR;
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN p VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN x VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN z VARCHAR;
+
+/****************************F-SCP-RAC-PXP-0-12/03/2013*************/
+
