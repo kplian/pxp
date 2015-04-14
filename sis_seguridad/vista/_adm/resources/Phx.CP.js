@@ -1376,6 +1376,46 @@ Phx.CP=function(){
 		getMainPanel:function(){
 			return mainPanel;
 		},
+		merge :function(target, src) {
+		    var array = Array.isArray(src);
+		    var dst = array && [] || {};
+			var that = this;
+		    if (array) {
+		        target = target || [];
+		        dst = dst.concat(target);
+		        src.forEach(function(e, i) {
+		            if (typeof dst[i] === 'undefined') {
+		                dst[i] = e;
+		            } else if (typeof e === 'object') {
+		                dst[i] = that.merge(target[i], e);
+		            } else {
+		                if (target.indexOf(e) === -1) {
+		                    dst.push(e);
+		                }
+		            }
+		        });
+		    } else {
+		        if (target && typeof target === 'object') {
+		            Object.keys(target).forEach(function (key) {
+		                dst[key] = target[key];
+		            })
+		        }
+		        Object.keys(src).forEach(function (key) {
+		            if (typeof src[key] !== 'object' || !src[key]) {
+		                dst[key] = src[key];
+		            }
+		            else {
+		                if (!target[key]) {
+		                    dst[key] = src[key];
+		                } else {
+		                    dst[key] = that.merge(target[key], src[key]);
+		                }
+		            }
+		        });
+		    }
+		
+		    return dst;
+		},
 		
 		/*getWindowManager:function(){
 			return windowManager;
@@ -1534,9 +1574,10 @@ Phx.CP=function(){
   				     var owid= Ext.id();
 				  	 Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
 				  				    
-  				     var el = Ext.get(owid); // este div esta quemado en el codigo html
-                     var u = el.getUpdater();
-                     var inter = Phx.vista[mycls];
+  				     var el = Ext.get(owid), // este div esta quemado en el codigo html
+                         u = el.getUpdater(),
+                         inter = Phx.vista[mycls];
+                         
   				       u.update(
   				      	 {url:inter.require, 
   				      	  params:o.argument.params,
@@ -1569,10 +1610,20 @@ Phx.CP=function(){
 				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){
-					var ev = o.argument.options.listeners;
-					for (var i = 0; i < ev.config.length; i++) {
-						obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+					if(obj.esperarEventos === true){
+						
+						obj.setListeners(o.argument.options.listeners);
+					
+							
+						
 					}
+					else{
+						var ev = o.argument.options.listeners;
+						for (var i = 0; i < ev.config.length; i++) {
+							obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+						}	
+					}
+					
 				}
 		    }  
 		},
@@ -1642,7 +1693,7 @@ Phx.CP=function(){
 					          text: "Cargando...", 
 					          showLoadIndicator: "Cargando...",
 					          scripts :true,
-					          listeners:listeners,
+					          listeners: listeners,
 					          callback:this.callbackWindows
 					} 
 				}));

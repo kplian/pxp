@@ -426,7 +426,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
        				store: new Ext.data.ArrayStore({
                         fields: ['variable', 'valor'],
                         data : [ ['adquisiciones', 'Adquisiciones'],
-                                 ['pago_directo', 'Pago Directo'],
+                                 ['pago_directo', 'Pago Recurrente'],
                                  ['caja_chica', 'Caja Chica'],
                                  ['fondo_avance', 'Fondo en Avance'],
                                  ['contrato', 'Contratos'],

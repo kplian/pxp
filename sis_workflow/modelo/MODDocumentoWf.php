@@ -62,6 +62,8 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('id_proceso_wf_ori','integer');
 		$this->captura('nro_tramite_ori','varchar');
 		$this->captura('priorizacion','integer');
+		$this->captura('modificar','varchar');
+		$this->captura('insertar','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -442,6 +444,27 @@ class MODDocumentoWf extends MODbase{
                 
         //Define los parametros para la funcion
         $this->setParametro('id_documento_wf','id_documento_wf','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+
+
+
+
+   function verificarConfiguracion(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.ft_documento_wf_ime';
+        $this->transaccion='WF_VERDOC_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

@@ -13,12 +13,11 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		Atributos : [],
 		nombreVista : 'ProcesoInstancia',
 		btnReclamar: false,
-		constructor:function(config) {
-			
+		
+		constructor:function(config) {			
 			this.config = config;
 			this.formulario_wizard = 'no';
-			//si se pone si mostrara los documentos al hacer siguiente en el wizard
-			this.mostrar_documentos = 'no';
+			
 			//configuraciones iniciales
 			this.maestro=config.maestro;
 			this.configProceso = config.configProceso;
@@ -144,7 +143,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            }
 		        ); 
 		        
-		       this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+		       this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
 		  
 		     
 		        this.addButton('ant_estado',{
@@ -252,7 +251,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            type:'TextField',
 	            filters:{pfiltro:'pw.nro_tramite',type:'string'},	            
 	            grid:true,
-	            form:false 
+	            form:false,
+	            bottom_filter: true 
 				});
 			
 			this.Atributos.push({
@@ -260,7 +260,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 config:{
                     name: 'desc_funcionario',
                     fieldLabel: 'Asignado a',                   
-                    gwidth: 100
+                    gwidth: 130
                 },
                 type:'TextField',
                 filters:{pfiltro:'fun.desc_funcionario2',type:'string'},
@@ -374,7 +374,9 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != undefined &&
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != null) {
 			            var custom_config = Ext.util.JSON.decode(Ext.util.Format.trim(this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config));
-			            Ext.apply(config_columna.config,custom_config);
+			            config_columna = Phx.CP.merge(config_columna,custom_config);
+			            console.log(config_columna.config);
+			            //Ext.apply(config_columna.config,custom_config);
 			        }
 			        if (this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != '' && 
 		            	this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != undefined &&
@@ -568,6 +570,14 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		loadCheckDocumentosWf:function() {
 	            var rec=this.sm.getSelected();
 	            rec.data.nombreVista = this.nombreVista;
+	            
+	            if ('gruposBarraTareasDocumento' in this) {	            	
+	            	rec.data.gruposBarraTareas = this.gruposBarraTareasDocumento;
+	            }
+	            
+	            if (this.formulario_wizard == 'si') {
+	            	rec.data.tipo = 'proins'
+	            } 
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
 	                    'Documentos del Proceso',
 	                    {
@@ -576,8 +586,18 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                    },
 	                    rec.data,
 	                    this.idContenedor,
-	                    'DocumentoWf'
-	        )
+	                    'DocumentoWf',
+	                    {
+	                        config:[{
+	                                  event:'sigestado',
+	                                  delegate: this.openFormEstadoWf,
+	                                  
+	                                }],
+	                        
+	                        scope:this
+	                     }
+	       );
+	       this.formulario_wizard = 'no';
 	    },
 	    onAntEstado:function(wizard,resp){
 	            Phx.CP.loadingShow();
@@ -588,7 +608,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                        operacion: 'cambiar',
 	                        obs:resp.obs},
 	                argument:{wizard:wizard},        
-	                success:this.successSinc,
+	                success:this.successSincAnt,
 	                failure: this.conexionFailure,
 	                timeout:this.timeout,
 	                scope:this
@@ -596,7 +616,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	     },
 	    
 	    
-	    successSinc:function(resp){
+	    successSincAnt:function(resp){
 	        Phx.CP.loadingHide();
 	        resp.argument.wizard.panel.destroy()
 	        this.reload();
@@ -662,27 +682,27 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	    successSinc:function(resp){
 	        Phx.CP.loadingHide();
 	        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-	        
-	        if(!reg.ROOT.error && reg.ROOT.datos.error_validacion_campos == 'no'){
-	              //abre interfaz del wizard
-	              if (this.mostrar_documentos == 'si') {
-	              	 this.loadCheckDocumentosWf()
-	              } else {
-	              	 this.openWizard();	
-	              }
-	              
-	              
-	        } else if (reg.ROOT.datos.error_validacion_campos == 'si'){
-	        	this.onButtonEdit();
-	        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
-	        	this.formulario_wizard = 'si';
-	        	
-	        } else{
+	        if (!reg.ROOT.error ) {
+		        if(reg.ROOT.datos.error_validacion_campos == 'no'){
+		              //abre interfaz del wizard
+		              this.openWizard();	
+		              	              
+		        } else if (reg.ROOT.datos.error_validacion_campos == 'si'){
+		        	this.onButtonEdit();
+		        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
+		        	this.formulario_wizard = 'si';
+		        	
+		        }
+		    }
+	        else{
 	            alert('Error al identificar siguientes pasos')
 	        }
 	    },
 	    openWizard : function () {
-	    	var rec=this.sm.getSelected();	        
+	    	var rec=this.sm.getSelected();	 
+	    	if ('gruposBarraTareasDocumento' in this) {	            	
+	        	rec.data.gruposBarraTareas = this.gruposBarraTareasDocumento;
+	        }       
             Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
             'Estado de Wf',
             {
@@ -702,11 +722,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	    successSave : function(resp){
 	    	Phx.vista.ProcesoInstancia.superclass.successSave.call(this,resp);
 	    	if (this.formulario_wizard == 'si') {
-	    		if (this.mostrar_documentos == 'si') {
-	              	this.loadCheckDocumentosWf()
-	            } else {
-	    			this.openWizard();
-	    		}
+	    		this.openFormEstadoWf();	    		
 	    		this.formulario_wizard = 'no';	    		
 	    	}
 	    	
@@ -784,11 +800,13 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		          this.getBoton('ant_estado').enable(); 
 		          this.getBoton('btnReclamar').enable();         
 		          
-		          if(data.codigo_estado == 'borrador' ){ 
+		          if(data.estado == 'borrador' ){ 
 		             this.getBoton('ant_estado').disable();
 		           
 		          }
-		          if(data.codigo_estado == 'finalizado' || data.codigo_estado =='anulado'){
+		          
+		          if(data.estado == 'finalizado' || data.estado =='anulado'){
+		          	
 		               this.getBoton('sig_estado').disable();
 		               this.getBoton('ant_estado').disable();
 		               this.getBoton('btnReclamar').disable();

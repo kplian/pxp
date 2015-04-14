@@ -11,7 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     ActSave:'../../sis_workflow/control/DocumentoWf/subirArchivoWf',
-    
+    banderaCerrar :true ,
     layout:'fit',
     maxCount:0,
     url_verificacion:'../../sis_workflow/control/ProcesoWf/verficarSigEstProcesoWf',
@@ -19,7 +19,13 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     reclaim: false,
     configExtra:[],
     constructor:function(config)
-    {
+    {    	
+    	this.forzar_documentos = 'no';
+		if (config.data.hasOwnProperty('forzar_documentos')) {
+			if (config.data.forzar_documentos == 'si') {
+				this.forzar_documentos = 'si';
+			}
+		}
         //declaracion de eventos
         this.addEvents('beforesave');
         this.addEvents('successsave');
@@ -30,19 +36,10 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         if(config.data.url_verificacion){
            this.url_verificacion =  config.data.url_verificacion;
         }
+        this.config = config; 
         //llamada ajax para cargar los caminos posible de flujo
-        Phx.CP.loadingShow();
-        Ext.Ajax.request({
-                url: this.url_verificacion,
-                params: { id_proceso_wf: config.data.id_proceso_wf,
-                          operacion: 'verificar'},
-                argument: { 'config': config },
-                success: this.successSinc,
-                failure: this.meConexionFailure,
-                timeout: this.timeout,
-                scope: this
-            });
-            
+        this.verificar();
+           
         //Setea bandera de autoasignacion
         if(config.data.reclaim){
             this.reclaim = config.data.reclaim;    
@@ -50,24 +47,83 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         
         
      },
+     siguienteDocumento : function () {
+     	this.banderaCerrar = false;
+     	
+     	this.verificar();
+     },
+     verificar : function() {
+     	
+     	Phx.CP.loadingShow();
+        Ext.Ajax.request({
+                url: this.url_verificacion,
+                params: { id_proceso_wf: this.config.data.id_proceso_wf,
+                          operacion: 'verificar'},
+                argument: { 'config': this.config },
+                success: this.successSinc,
+                failure: this.meConexionFailure,
+                timeout: this.timeout,
+                scope: this
+            });
+     },
      
      meConexionFailure:function(resp){
          this.conexionFailure(resp);
-         this.close();
+         this.close();    	
          this.destroy();
     },
-     
+    
+    cerrar : function () {  
+    	
+    	if (this.banderaCerrar) { 	
+    		Ext.getCmp(this.config.idContenedor).close();
+    	}    	
+    },     
      
     successSinc:function(resp){
         Phx.CP.loadingHide();
         var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-        if(!reg.ROOT.error){
+        if(!reg.ROOT.error && reg.ROOT.datos.error_validacion_campos == 'no' && 
+        	reg.ROOT.datos.error_validacion_documentos == 'no' && this.forzar_documentos == 'no'){
               //inicia el proceso de dibjar la interface
               this.iniciarInterfaz(resp.argument.config,reg.ROOT.datos);
+        } else if (reg.ROOT.datos.error_validacion_documentos == 'si' || this.forzar_documentos == 'si') {
+        	this.forzar_documentos = 'no';
+        	this.banderaCerrar = true;
+        	this.loadCheckDocumentosWf();
         }
         else{
             alert('Error al identificar siguientes pasos')
         }
+    },
+    
+    loadCheckDocumentosWf:function() {	            
+        this.config.data.tipo = 'wizard'    
+        Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
+                'Documentos del Proceso',
+                {
+                    width:'90%',
+                    height:500
+                },
+                this.config.data,
+                this.idContenedor,
+                'DocumentoWf',
+                {
+                    config:[{
+                              event:'loadWizard',
+                              delegate: this.siguienteDocumento,
+                              
+                            },
+                            {
+                              event:'closepanel',
+                              delegate: this.cerrar
+                              
+                            }],
+                    
+                    scope:this
+                 }
+       );
+       
     },
     
     
@@ -76,6 +132,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         //contruir los grupos y formualrio con los datos obtenidos
         this.armarGrupos(config);
         Phx.vista.FormEstadoWf.superclass.constructor.call(this,config);
+       
         this.init(); 
         
         // CONFIGURA ESTADOS INICIALES DE LOS ATRIBUTOS BASICOS   
@@ -366,7 +423,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                            autoScroll:true,
                            items : items_to_add });
         this.contadorTarjetas = this.contadorTarjetas + 1;
-        alert('llega1');
+        
         this.maxCount = this.maxCount + 1;
     },
     
@@ -843,6 +900,8 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            this.fireEvent('beforesave',this,this.getValues());
        }
     },
+    
+    
     getValues:function(){
 	        var resp = {
 	                   id_proceso_wf_act: this.data.id_proceso_wf,

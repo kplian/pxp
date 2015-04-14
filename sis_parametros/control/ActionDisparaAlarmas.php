@@ -82,7 +82,8 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 		foreach ($res2->datos as $d){
        		$correo=new CorreoExterno();
 			if(isset($d['email_empresa'])){
-				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']);  
+				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']); 
+				$correo->addCC($_SESSION["_MAIL_PRUEBAS"],'Correo de Pruebas');  
                 
                 if ($d['acceso_directo'] !='' && $d['acceso_directo'] != NULL){
                   $correo->setAccesoDirecto($d['id_alarma']);  

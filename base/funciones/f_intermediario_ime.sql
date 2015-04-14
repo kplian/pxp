@@ -414,6 +414,9 @@ BEGIN
     
     v_resp = pxp.f_agrega_clave_multiple(v_resp,v_retorno);
     
+    v_resp =  replace(v_resp,'\#*#','''');
+    v_resp =  replace(v_resp,'#*#','\"');
+    raise notice 'respuesta ......  %' , v_resp;
     return pxp.f_resp_to_json(v_resp);
 
 EXCEPTION

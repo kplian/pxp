@@ -1159,3 +1159,38 @@ ALTER TABLE wf.tcategoria_documento
   ADD COLUMN modificado INTEGER;
 
 /*****************************F-SCP-JRR-WF-0-27/03/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-06/04/2015*************/
+ALTER TABLE wf.ttipo_documento
+  ALTER COLUMN orden TYPE NUMERIC(4,2);
+
+/*****************************F-SCP-JRR-WF-0-06/04/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-08/04/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.testructura_estado
+  ADD COLUMN bucle VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.testructura_estado.bucle
+IS 'identifica si la arista ocaciona un bucle, este campo se registra de manera automatica el momento de insetar la arista';
+
+
+/*****************************F-SCP-JRR-WF-0-08/04/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-10/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN grupo_doc VARCHAR;
+
+COMMENT ON COLUMN wf.ttipo_estado.grupo_doc
+IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface de documentos para definir que categorias pueden verse desde esta interface.';
+
+/*****************************F-SCP-JRR-WF-0-10/04/2015*************/
+

@@ -564,6 +564,24 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             form:true
         },
         
+        
+        {
+            config:{
+                name: 'grupo_doc',
+                fieldLabel:  'Agrupadores Doc',
+                qtip:  'Aca se configura que pestañas aparecen el la interface de coumentos, (se intorduce código javascript), no usar comilla simple',
+                allowBlank:  true,
+                anchor:  '70%',
+                gwidth:  200,
+                maxLength:  1000
+            },
+            type: 'TextArea',
+            filters: { pfiltro: 'tipes.obs', type: 'string' },
+            id_grupo: 1,
+            grid: true,
+            form: true
+        },
+        
         {
 			config:{
 				name: 'estado_reg',
@@ -709,7 +727,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa'
+        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc'
 		
 	],
 	sortInfo:{

@@ -59,6 +59,7 @@ class MODTipoEstado extends MODbase{
 		$this->captura('id_roles','text');
 		$this->captura('admite_obs','varchar');
 		$this->captura('etapa','varchar');
+		$this->captura('grupo_doc','varchar');
 		
 		
 		
@@ -163,6 +164,9 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('id_roles','id_roles','varchar');
 		$this->setParametro('admite_obs','admite_obs','varchar');
 		$this->setParametro('etapa','etapa','varchar');
+		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
+		
+		
 		
 		
 		
@@ -210,6 +214,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('id_roles','id_roles','varchar');
 		$this->setParametro('admite_obs','admite_obs','varchar');
         $this->setParametro('etapa','etapa','varchar');
+		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 		
 
 		//Ejecuta la instruccion

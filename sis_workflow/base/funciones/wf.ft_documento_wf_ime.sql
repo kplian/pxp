@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -35,6 +37,14 @@ DECLARE
     v_id_documento_historico_wf integer;
     v_new_url				varchar;
     v_registros_his			record;
+    v_sw_tiene_fisico		varchar;
+    v_sw_tiene_modificar 	varchar;
+    v_sw_tiene_insertar 	varchar;
+    v_config_grupo_doc 		varchar;
+    v_registros_pwf 		record;
+    v_registros				record;
+    v_registros_fisicos 	record;
+    va_id_tipo_estado_siguiente		integer[];
 			    
 BEGIN
 
@@ -53,7 +63,7 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update wf.tdocumento_wf set
-			obs = v_parametros.obs,
+			--obs = v_parametros.obs,
             chequeado_fisico = v_parametros.chequeado_fisico,
             fecha_mod = now(),
             id_usuario_mod = p_id_usuario
@@ -293,7 +303,125 @@ BEGIN
              
              return v_resp;
         end;
-  
+  /*********************************    
+  #TRANSACCION:  'WF_VERDOC_IME'
+  #DESCRIPCION: verifica configuracion del documentos por estado
+  #AUTOR:   admin 
+  #FECHA:   08-02-2013 19:01:00
+  ***********************************/
+    
+     elsif(p_transaccion='WF_VERDOC_IME')then
+      begin
+          
+           v_sw_tiene_modificar = 'no';
+           v_sw_tiene_insertar = 'no';
+           v_sw_tiene_fisico = 'no';
+           v_config_grupo_doc = '';      
+      
+            
+            select
+              pw.id_tipo_proceso,
+              pw.id_proceso_wf,
+              ewf.id_estado_wf,
+              ewf.id_estado_anterior,
+              ewf.id_tipo_estado,
+              tew.grupo_doc
+            into
+              v_registros_pwf
+            from wf.tproceso_wf pw
+            inner join wf.testado_wf ewf on ewf.id_proceso_wf = pw.id_proceso_wf and ewf.estado_reg = 'activo'
+            inner join wf.ttipo_estado tew on tew.id_tipo_estado = ewf.id_tipo_estado
+            where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+            
+            IF v_registros_pwf.grupo_doc is not null THEN
+              v_config_grupo_doc = v_registros_pwf.grupo_doc;
+            END IF;
+            
+            
+            --chequea si en el estado actual tiene la opcion de modificar o insertar algun documentos 
+            FOR v_registros in (select 
+                                 tde.momento,
+                                 tde.regla
+                              from wf.tdocumento_wf  dwf 
+                              inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento
+                              where  dwf.id_proceso_wf = v_parametros.id_proceso_wf)  LOOP
+                
+                --solo revisa las reglas de lo momenstos que nos interesa
+                IF  (v_registros.momento  = 'modificar'  and v_sw_tiene_modificar = 'no') or 
+                    (v_registros.momento  = 'insertar'   and v_sw_tiene_insertar = 'no') THEN
+                     -- si la regla es verdadera ...
+                    IF  (wf.f_evaluar_regla_wf ( p_id_usuario,
+                                                 v_registros_pwf.id_proceso_wf,
+                                                 v_registros.regla,
+                                                 v_registros_pwf.id_tipo_estado,
+                                                 v_registros_pwf.id_estado_wf))  THEN
+                                                 
+                         IF v_registros.momento = 'modificar'  THEN
+                           v_sw_tiene_modificar = 'si';
+                         ELSIF  v_registros.momento = 'insertar' THEN
+                           v_sw_tiene_insertar = 'si';
+                         END IF;
+                    
+                    END IF;
+                END IF;
+            
+            END LOOP;   
+            
+            --chequea si para los posibles estados siguientes se verifica o exige un fisico
+            
+              SELECT  
+                   ps_id_tipo_estado
+              into
+                          	
+                  va_id_tipo_estado_siguiente
+                          
+              FROM wf.f_obtener_estado_wf(
+                   v_parametros.id_proceso_wf,
+                   NULL,
+                   v_registros_pwf.id_tipo_estado,
+                   'siguiente',
+                    p_id_usuario);
+             
+                FOR v_registros_fisicos in (
+                                select 
+                                   tde.momento,
+                                   tde.regla,
+                                   tde.id_tipo_estado
+                                from wf.tdocumento_wf  dwf 
+                                inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento
+                                where    tde.id_tipo_estado = ANY(va_id_tipo_estado_siguiente))  LOOP
+                  
+                  --solo revisa las reglas de lo momenstos que nos interesa
+                  IF  (v_registros.momento  = 'exigir_fisico'  and v_sw_tiene_fisico = 'no') or 
+                      (v_registros.momento  = 'verificar_fisico'   and v_sw_tiene_fisico = 'no') THEN
+                       -- si la regla es verdadera ...
+                      IF  (wf.f_evaluar_regla_wf ( p_id_usuario,
+                                                   v_registros_pwf.id_proceso_wf,
+                                                   v_registros_fisicos.regla,
+                                                   v_registros_fisicos.id_tipo_estado,
+                                                   v_registros_pwf.id_estado_wf))  THEN
+                                                   
+                           IF v_registros.momento = 'exigir_fisico'  THEN
+                             v_sw_tiene_fisico = 'si';
+                           ELSIF  v_registros.momento = 'verificar_fisico' THEN
+                             v_sw_tiene_fisico = 'si';
+                           END IF;
+                      
+                      END IF;
+                  END IF;
+              
+              END LOOP;
+            
+            
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','momentos verificados'); 
+             v_resp = pxp.f_agrega_clave(v_resp,'id_proceso_wf',v_parametros.id_proceso_wf::varchar); 
+             v_resp = pxp.f_agrega_clave(v_resp,'sw_tiene_modificar', v_sw_tiene_modificar::varchar);
+             v_resp = pxp.f_agrega_clave(v_resp,'sw_tiene_insertar', v_sw_tiene_insertar::varchar);
+             v_resp = pxp.f_agrega_clave(v_resp,'sw_tiene_fisico', v_sw_tiene_fisico::varchar);
+             v_resp = pxp.f_agrega_clave(v_resp,'json_grupo_doc', v_config_grupo_doc);
+             
+             return v_resp;
+        end;
        
  
         
