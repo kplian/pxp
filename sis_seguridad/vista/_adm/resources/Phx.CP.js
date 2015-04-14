@@ -1611,11 +1611,7 @@ Phx.CP=function(){
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){
 					if(obj.esperarEventos === true){
-						
 						obj.setListeners(o.argument.options.listeners);
-					
-							
-						
 					}
 					else{
 						var ev = o.argument.options.listeners;
