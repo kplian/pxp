@@ -1159,3 +1159,15 @@ ALTER TABLE wf.tcategoria_documento
   ADD COLUMN modificado INTEGER;
 
 /*****************************F-SCP-JRR-WF-0-27/03/2015*************/
+
+/*****************************I-SCP-RCM-WF-0-16/03/2015*************/
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN nombre_vista varchar(70);
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN nombre_archivo_plantilla text;  
+  
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN esquema_vista VARCHAR(10);  
+/*****************************F-SCP-RCM-WF-0-16/03/2015*************/
+
