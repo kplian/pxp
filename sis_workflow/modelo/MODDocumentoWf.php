@@ -124,18 +124,9 @@ class MODDocumentoWf extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('url','url','varchar');
-		$this->setParametro('num_tramite','num_tramite','varchar');
 		$this->setParametro('id_tipo_documento','id_tipo_documento','int4');
-		$this->setParametro('obs','obs','text');
 		$this->setParametro('id_proceso_wf','id_proceso_wf','int4');
-		$this->setParametro('extencion','extencion','varchar');
-		$this->setParametro('chequeado','chequeado','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('nombre_tipo_doc','nombre_tipo_doc','varchar');
-		$this->setParametro('nombre_doc','nombre_doc','varchar');
-		$this->setParametro('momento','momento','varchar');
-
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

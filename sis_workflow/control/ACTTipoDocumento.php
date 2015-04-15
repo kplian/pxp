@@ -18,6 +18,10 @@ class ACTTipoDocumento extends ACTbase{
         if($this->objParam->getParametro('id_tipo_proceso')!=''){
             $this->objParam->addFiltro("tipdw.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));    
         }
+		
+		if($this->objParam->getParametro('id_tipo_documentos')!=''){
+            $this->objParam->addFiltro("tipdw.id_tipo_documento in (".$this->objParam->getParametro('id_tipo_documentos').')');    
+        }
         
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

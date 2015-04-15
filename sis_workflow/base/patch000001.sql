@@ -1209,3 +1209,12 @@ ALTER TABLE wf.ttipo_documento
 /*****************************F-SCP-RCM-WF-0-16/03/2015*************/
 
 
+/*****************************I-SCP-RCM-WF-0-15/04/2015*************/
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN demanda VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.demanda
+IS 'documento insertado por demanda si o no, por defecto es no';
+
+/*****************************F-SCP-RCM-WF-0-15/04/2015*************/
+

@@ -52,11 +52,19 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 			
 	 	 
 	 	 if(reg.ROOT.datos.sw_tiene_fisico == 'no'){
-	 	 	 this.arrayDefaultColumHidden.push('chequeado_fisico');
+	 	 	  this.arrayDefaultColumHidden.push('chequeado_fisico');
 	 	 	  this.bedit = false;
 	 	 }  
 	 	 else{
 	 	 	 this.bedit = true;
+	 	 }
+	 	 
+	 	 if(reg.ROOT.datos.sw_tiene_insertar == 'no'){
+	 	 	 this.bnew = false;
+	 	 }  
+	 	 else{
+	 	 	 this.bnew = true;
+	 	 	 this.documentos_insertables = reg.ROOT.datos.id_tipo_documentos;
 	 	 }
 	 	 
 	 	 if(reg.ROOT.datos.sw_tiene_modificar == 'no'){
@@ -128,7 +136,56 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
-		},		
+		},
+		{
+			//configuracion del componente
+			config:{
+					labelSeparator:'',
+					inputType:'hidden',
+					name: 'id_proceso_wf'
+			},
+			type:'Field',
+			form:true 
+		},
+		{
+       			config:{
+       				name:'id_tipo_documento',
+       				fieldLabel:'Documentos',
+       				allowBlank:true,
+       				emptyText:'documentos...',
+       				store: new Ext.data.JsonStore({
+	                    url: '../../sis_workflow/control/TipoDocumento/listarTipoDocumento',
+	                    id: 'id_tipo_documento',
+	                    root: 'datos',
+	                    sortInfo: {
+	                        field: 'tipdw.codigo',
+	                        direction: 'ASC'
+	                    },
+	                    totalProperty: 'total',
+	                    fields: ['id_tipo_documento', 'codigo', 'nombre','descripcion'],
+	                    // turn on remote sorting
+	                    remoteSort: true,
+	                    baseParams: {par_filtro: 'tipdw.nombre#tipdw.codigo'}
+	                }),
+       				valueField: 'id_tipo_documento',
+       				displayField: 'nombre',
+       				gdysplayfield: 'descripcion_tipo_documento',
+       				forceSelection:true,
+       				typeAhead: false,
+           			triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:100,
+       				queryDelay:1000,
+       				width:250,
+       				minChars:2,
+       				qtip:'Muestra una lista de documentos que peude insertar en este estado'
+       			},
+       			type:'ComboBox',
+       			id_grupo:2,
+       			grid:false,
+       			form:true
+       	},		
         {
             config:{
                 name: 'modificar',
@@ -715,9 +772,33 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
        }
     },
     
+    onButtonNew:function(){
+    	Phx.vista.DocumentoWf.superclass.onButtonNew.call(this); 
+    	console.log('documentos insertables....', this.documentos_insertables)
+    	this.Cmp.id_tipo_documento.store.baseParams.id_tipo_documentos = this.documentos_insertables;
+    	this.Cmp.id_tipo_documento.enable();
+    	this.Cmp.id_tipo_documento.show();
+    	this.Cmp.chequeado_fisico.disable()
+    	this.Cmp.chequeado_fisico.hide()
+    	
+    },
+    onButtonEdit:function(){
+    	Phx.vista.DocumentoWf.superclass.onButtonEdit.call(this); 
+    	console.log('documentos insertables....', this.documentos_insertables)
+    	this.Cmp.id_tipo_documento.disable();
+    	this.Cmp.id_tipo_documento.hide();
+    	this.Cmp.chequeado_fisico.enable()
+    	this.Cmp.chequeado_fisico.show()
+    	
+    },
+    loadValoresIniciales:function(){
+        this.Cmp.id_proceso_wf.setValue(this.id_proceso_wf);
+        Phx.vista.DocumentoWf.superclass.loadValoresIniciales.call(this);
+        
+    },
+    
       
 	bdel:false,
-	bnew:false,
 	bsave:false
 	}
 )

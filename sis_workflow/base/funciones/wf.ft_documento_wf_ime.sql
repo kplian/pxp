@@ -45,11 +45,56 @@ DECLARE
     v_registros				record;
     v_registros_fisicos 	record;
     va_id_tipo_estado_siguiente		integer[];
+    v_id_tipo_documentos 		varchar;
 			    
 BEGIN
 
     v_nombre_funcion = 'wf.ft_documento_wf_ime';
     v_parametros = pxp.f_get_record(p_tabla);
+    
+    
+    /*********************************    
+ 	#TRANSACCION:  'WF_DWF_INS'
+ 	#DESCRIPCION:	Insertar doucmentos por demanda 
+ 	#AUTOR:		rac	
+ 	#FECHA:		15-04-2015 13:52:19
+	***********************************/
+
+	if(p_transaccion='WF_DWF_INS')then
+
+		begin
+			
+            INSERT INTO 
+                          wf.tdocumento_wf
+                        (
+                          id_usuario_reg,
+                          fecha_reg,
+                          estado_reg,                         
+                          id_tipo_documento,
+                          id_proceso_wf,
+                          demanda,
+                          obs
+                          
+                        )
+                        VALUES (
+                           p_id_usuario,
+                           now(),
+                           'activo',
+                           v_parametros.id_tipo_documento,
+                           v_parametros.id_proceso_wf,
+                           'si',
+                           'insertado manualmente'
+                        );
+            
+               
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','nuevo Documento'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_documento',v_parametros.id_tipo_documento::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
 
 	/*********************************    
  	#TRANSACCION:  'WF_DWF_MOD'
@@ -58,7 +103,7 @@ BEGIN
  	#FECHA:		15-01-2014 13:52:19
 	***********************************/
 
-	if(p_transaccion='WF_DWF_MOD')then
+	elsif(p_transaccion='WF_DWF_MOD')then
 
 		begin
 			--Sentencia de la modificacion
@@ -316,7 +361,8 @@ BEGIN
            v_sw_tiene_modificar = 'no';
            v_sw_tiene_insertar = 'no';
            v_sw_tiene_fisico = 'no';
-           v_config_grupo_doc = '';      
+           v_config_grupo_doc = '';
+           v_id_tipo_documentos = '';    
       
             
             select
@@ -338,17 +384,17 @@ BEGIN
             END IF;
             
             
-            --chequea si en el estado actual tiene la opcion de modificar o insertar algun documentos 
+            --chequea si en el estado actual tiene la opcion de modificar   algun documento
             FOR v_registros in (select 
                                  tde.momento,
-                                 tde.regla
+                                 tde.regla,
+                                 tde.id_tipo_documento
                               from wf.tdocumento_wf  dwf 
                               inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento
                               where  dwf.id_proceso_wf = v_parametros.id_proceso_wf)  LOOP
                 
                 --solo revisa las reglas de lo momenstos que nos interesa
-                IF  (v_registros.momento  = 'modificar'  and v_sw_tiene_modificar = 'no') or 
-                    (v_registros.momento  = 'insertar'   and v_sw_tiene_insertar = 'no') THEN
+                IF  (v_registros.momento  = 'modificar'  and v_sw_tiene_modificar = 'no') THEN
                      -- si la regla es verdadera ...
                     IF  (wf.f_evaluar_regla_wf ( p_id_usuario,
                                                  v_registros_pwf.id_proceso_wf,
@@ -356,16 +402,50 @@ BEGIN
                                                  v_registros_pwf.id_tipo_estado,
                                                  v_registros_pwf.id_estado_wf))  THEN
                                                  
-                         IF v_registros.momento = 'modificar'  THEN
-                           v_sw_tiene_modificar = 'si';
-                         ELSIF  v_registros.momento = 'insertar' THEN
-                           v_sw_tiene_insertar = 'si';
-                         END IF;
+                         v_sw_tiene_modificar = 'si';
+                         
                     
                     END IF;
                 END IF;
             
             END LOOP;   
+            
+            --chequea que tipo de documentos se pueden insertar ...
+            
+            
+            
+            FOR v_registros in (select 
+                                 tde.momento,
+                                 tde.regla,
+                                 tde.id_tipo_documento
+                              from wf.ttipo_documento_estado  tde
+                              where  tde.id_tipo_estado = v_registros_pwf.id_tipo_estado)  LOOP
+                
+                  --solo revisa las reglas de lo momenstos que nos interesa
+                  IF  (v_registros.momento  = 'insertar') THEN
+                         -- si la regla es verdadera ...
+                        IF  (wf.f_evaluar_regla_wf ( p_id_usuario,
+                                                     v_registros_pwf.id_proceso_wf,
+                                                     v_registros.regla,
+                                                     v_registros_pwf.id_tipo_estado,
+                                                     v_registros_pwf.id_estado_wf))  THEN
+                                                     
+                             
+                                
+                               IF v_sw_tiene_insertar = 'no'  THEN
+                                   v_id_tipo_documentos = v_registros.id_tipo_documento::varchar;
+                               ELSE
+                                   v_id_tipo_documentos = v_id_tipo_documentos||','||v_registros.id_tipo_documento::varchar;
+                               END IF;
+                             
+                               v_sw_tiene_insertar = 'si';
+                              
+                             
+                        
+                        END IF;
+                  END IF;
+            
+            END LOOP;  
             
             --chequea si para los posibles estados siguientes se verifica o exige un fisico
             
@@ -413,12 +493,14 @@ BEGIN
               END LOOP;
             
             
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','momentos verificados'); 
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','momentos verificados'); 
              v_resp = pxp.f_agrega_clave(v_resp,'id_proceso_wf',v_parametros.id_proceso_wf::varchar); 
              v_resp = pxp.f_agrega_clave(v_resp,'sw_tiene_modificar', v_sw_tiene_modificar::varchar);
              v_resp = pxp.f_agrega_clave(v_resp,'sw_tiene_insertar', v_sw_tiene_insertar::varchar);
              v_resp = pxp.f_agrega_clave(v_resp,'sw_tiene_fisico', v_sw_tiene_fisico::varchar);
              v_resp = pxp.f_agrega_clave(v_resp,'json_grupo_doc', v_config_grupo_doc);
+             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_documentos', v_id_tipo_documentos);
+             
              
              return v_resp;
         end;
