@@ -132,6 +132,23 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+		
+		{
+            config:{
+                name: 'grupo_doc',
+                fieldLabel:  'Agrupadores Doc',
+                qtip:  'Aca se configura que pestañas aparecen el la interface de coumentos, (se intorduce código javascript), no usar comilla simple',
+                allowBlank:  true,
+                anchor:  '70%',
+                gwidth:  200,
+                maxLength:  1000
+            },
+            type: 'TextArea',
+            filters: { pfiltro: 'tipes.obs', type: 'string' },
+            id_grupo: 1,
+            grid: true,
+            form: true
+        },
 		{
 			config:{
 				name: 'estado_reg',
@@ -229,7 +246,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_subsistema', type: 'string'},
+		{name:'desc_subsistema', type: 'string'},'grupo_doc'
 		
 	],
 	sortInfo:{

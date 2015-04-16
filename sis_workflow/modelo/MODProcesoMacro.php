@@ -33,6 +33,7 @@ class MODProcesoMacro extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_subsistema','varchar');
+		$this->captura('grupo_doc','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -54,6 +55,7 @@ class MODProcesoMacro extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('inicio','inicio','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -76,6 +78,7 @@ class MODProcesoMacro extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('inicio','inicio','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

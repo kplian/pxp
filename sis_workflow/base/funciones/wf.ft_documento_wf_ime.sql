@@ -46,6 +46,9 @@ DECLARE
     v_registros_fisicos 	record;
     va_id_tipo_estado_siguiente		integer[];
     v_id_tipo_documentos 		varchar;
+    va_id_tipo_documentos		VARCHAR[];
+    v_tamano					integer;
+    v_i							integer;
 			    
 BEGIN
 
@@ -63,33 +66,41 @@ BEGIN
 	if(p_transaccion='WF_DWF_INS')then
 
 		begin
-			
-            INSERT INTO 
-                          wf.tdocumento_wf
-                        (
-                          id_usuario_reg,
-                          fecha_reg,
-                          estado_reg,                         
-                          id_tipo_documento,
-                          id_proceso_wf,
-                          demanda,
-                          obs
-                          
-                        )
-                        VALUES (
-                           p_id_usuario,
-                           now(),
-                           'activo',
-                           v_parametros.id_tipo_documento,
-                           v_parametros.id_proceso_wf,
-                           'si',
-                           'insertado manualmente'
-                        );
+        
+        
+            va_id_tipo_documentos = string_to_array(v_parametros.id_tipo_documentos,',');
+		    v_tamano = coalesce(array_length(va_id_tipo_documentos, 1),0);
+             
+
             
-               
+            FOR v_i IN 1..v_tamano LOOP	
+        
+              INSERT INTO 
+                            wf.tdocumento_wf
+                          (
+                            id_usuario_reg,
+                            fecha_reg,
+                            estado_reg,   
+                            id_tipo_documento,                      
+                            id_proceso_wf,
+                            demanda,
+                            obs
+                            
+                          )
+                          VALUES (
+                             p_id_usuario,
+                             now(),
+                             'activo',
+                             (va_id_tipo_documentos[v_i])::integer,
+                             v_parametros.id_proceso_wf,
+                             'si',
+                             'insertado manualmente'
+                          );
+            
+             END LOOP ; 
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','nuevo Documento'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_documento',v_parametros.id_tipo_documento::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_documentos',v_parametros.id_tipo_documentos::varchar);
                
             --Devuelve la respuesta
             return v_resp;
@@ -371,16 +382,23 @@ BEGIN
               ewf.id_estado_wf,
               ewf.id_estado_anterior,
               ewf.id_tipo_estado,
-              tew.grupo_doc
+              tew.grupo_doc,
+              COALESCE(pm.grupo_doc,'') as grupo_doc_def
             into
               v_registros_pwf
             from wf.tproceso_wf pw
+            inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
+            inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
             inner join wf.testado_wf ewf on ewf.id_proceso_wf = pw.id_proceso_wf and ewf.estado_reg = 'activo'
             inner join wf.ttipo_estado tew on tew.id_tipo_estado = ewf.id_tipo_estado
             where pw.id_proceso_wf = v_parametros.id_proceso_wf;
             
+            
+            -- si no tiene una grupacion de pestañas definida para el estado recuepra la del proceso macro
             IF v_registros_pwf.grupo_doc is not null THEN
               v_config_grupo_doc = v_registros_pwf.grupo_doc;
+            ELSE
+              v_config_grupo_doc = v_registros_pwf.grupo_doc_def;
             END IF;
             
             

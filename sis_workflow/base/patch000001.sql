@@ -1218,3 +1218,18 @@ IS 'documento insertado por demanda si o no, por defecto es no';
 
 /*****************************F-SCP-RCM-WF-0-15/04/2015*************/
 
+
+
+/*****************************I-SCP-RCM-WF-0-16/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_macro
+  ADD COLUMN grupo_doc VARCHAR;
+
+COMMENT ON COLUMN wf.tproceso_macro.grupo_doc
+IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface de documentos para definir que categorias pueden verse desde esta interface.';
+
+/*****************************F-SCP-RCM-WF-0-16/04/2015*************/
+

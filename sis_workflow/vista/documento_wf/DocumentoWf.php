@@ -149,7 +149,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
        			config:{
-       				name:'id_tipo_documento',
+       				name:'id_tipo_documentos',
        				fieldLabel:'Documentos',
        				allowBlank:true,
        				emptyText:'documentos...',
@@ -179,9 +179,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
        				queryDelay:1000,
        				width:250,
        				minChars:2,
-       				qtip:'Muestra una lista de documentos que peude insertar en este estado'
+       				qtip:'Muestra una lista de documentos que peude insertar en este estado',
+	       			enableMultiSelect:true
        			},
-       			type:'ComboBox',
+       			type:'AwesomeCombo',
        			id_grupo:2,
        			grid:false,
        			form:true
@@ -348,6 +349,14 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 400,
+                renderer:function(value,p,record){
+                         if( record.data.demanda == 'si'){
+                             return String.format('<b><font color="green">{0}</font></b>', value);
+                        }
+                        else{
+                            return String.format('{0}', value);
+                        }
+                 }
                 
             },
                 type:'TextField',
@@ -692,15 +701,49 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'usr_upload',
         'tipo_documento',
         'action','solo_lectura','id_documento_wf_ori','id_proceso_wf_ori','nro_tramite_ori',
-        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'modificar','insertar'
+        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'modificar','insertar','eliminar','demanda'
 		
 		
 	],
 	
-	preparaMenu:function(tb){
-        Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
-        var data = this.getSelectedData(); 
-	        
+	
+    
+    onButtonDel: function(){
+    	if(confirm('¿Está seguro de eliminar estos documentos?')){
+			//recupera los registros seleccionados
+			var filas=this.sm.getSelections();
+			var data= {},aux={};
+			//console.log(filas,i)
+			
+            //arma una matriz de los identificadores de registros que se van a eliminar
+            this.agregarArgsExtraSubmit();
+            
+			for(var i=0;i<this.sm.getCount();i++){
+				if(filas[i].data['eliminar'] == 'si'){
+					aux={};
+					aux[this.id_store]=filas[i].data[this.id_store];
+					data[i]=aux;
+					data[i]._fila=this.store.indexOf(filas[i])+1
+					//rac 22032012
+					
+					Ext.apply(data[i],this.argumentExtraSubmit);
+				}
+				
+				
+				
+			}
+			
+	        Phx.CP.loadingShow();
+			//llama el metodo en la capa de control para eliminación
+			Ext.Ajax.request({
+				url:this.ActDel,
+				success:this.successDel,
+				failure:this.conexionFailure,
+				params:{_tipo:'matriz','row':Ext.util.JSON.encode(data)},
+				timeout:this.timeout,
+				scope:this
+			})
+		}
     },
     
     desBotonesTodo:function(){
@@ -708,6 +751,18 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
           //this.getBoton('btnUpload').disable();
           this.getBoton('edit').disable();
           
+    },
+    preparaMenu:function(tb){
+        Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
+        var data = this.getSelectedData();
+        if(data['eliminar'] ==  'si' ){
+            this.getBoton('del').enable();
+         
+         }
+         else{
+              this.getBoton('del').disable();
+         } 
+	        
     },
     
     liberaMenu:function(tb){
@@ -775,9 +830,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     onButtonNew:function(){
     	Phx.vista.DocumentoWf.superclass.onButtonNew.call(this); 
     	console.log('documentos insertables....', this.documentos_insertables)
-    	this.Cmp.id_tipo_documento.store.baseParams.id_tipo_documentos = this.documentos_insertables;
-    	this.Cmp.id_tipo_documento.enable();
-    	this.Cmp.id_tipo_documento.show();
+    	this.Cmp.id_tipo_documentos.store.baseParams.id_tipo_documentos = this.documentos_insertables;
+    	this.Cmp.id_tipo_documentos.enable();
+    	this.Cmp.id_tipo_documentos.show();
     	this.Cmp.chequeado_fisico.disable()
     	this.Cmp.chequeado_fisico.hide()
     	
@@ -785,8 +840,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     onButtonEdit:function(){
     	Phx.vista.DocumentoWf.superclass.onButtonEdit.call(this); 
     	console.log('documentos insertables....', this.documentos_insertables)
-    	this.Cmp.id_tipo_documento.disable();
-    	this.Cmp.id_tipo_documento.hide();
+    	this.Cmp.id_tipo_documentos.disable();
+    	this.Cmp.id_tipo_documentos.hide();
     	this.Cmp.chequeado_fisico.enable()
     	this.Cmp.chequeado_fisico.show()
     	
@@ -798,7 +853,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     },
     
       
-	bdel:false,
+	bdel:true,
 	bsave:false
 	}
 )

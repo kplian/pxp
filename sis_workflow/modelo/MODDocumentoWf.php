@@ -64,6 +64,8 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('priorizacion','integer');
 		$this->captura('modificar','varchar');
 		$this->captura('insertar','varchar');
+		$this->captura('eliminar','varchar');
+		$this->captura('demanda','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -124,7 +126,7 @@ class MODDocumentoWf extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_tipo_documento','id_tipo_documento','int4');
+		$this->setParametro('id_tipo_documentos','id_tipo_documentos','varchar');
 		$this->setParametro('id_proceso_wf','id_proceso_wf','int4');
 		
 		//Ejecuta la instruccion
