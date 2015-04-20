@@ -597,3 +597,9 @@ select pxp.f_insert_trol_procedimiento_gui ('WF - VoBo', 'WF_CHECKVB_IME', 'VOBO
 /******************************************F-DAT-RAC-WF-0-18/08/2014**********************************************/
 
 
+/******************************************I-DAT-RAC-WF-0-20/03/2014**********************************************/
+
+select pxp.f_insert_tgui ('Categoria Documento', 'Categorias de Documento', 'CATDOC', 'si', 1, 'sis_workflow/vista/categoria_documento/CategoriaDocumento.php', 2, '', 'CategoriaDocumento', 'WF');
+select pxp.f_insert_testructura_gui ('CATDOC', 'WF');
+
+/******************************************F-DAT-RAC-WF-0-20/03/2014**********************************************/

@@ -201,6 +201,7 @@ function listarGantWf(){
 		$this->captura('id_padre','integer');
 		$this->captura('id_obs','integer');
 		$this->captura('id_anterior','integer');
+		$this->captura('etapa','varchar');
 		
 		
         
@@ -352,8 +353,14 @@ function listarGantWf(){
         $this->transaccion='WF_SESPRO_IME';
         $this->tipo_procedimiento='IME';
         
+        if (isset($this->arreglo['procesos'])){
+        	$this->arreglo['procesos'] =  stripslashes ($this->arreglo['procesos'] );
+        }
+		else{
+			$this->arreglo['procesos'] = '[]';
+		}
+		
         
-        $this->arreglo['procesos'] =  stripslashes ($this->arreglo['procesos'] );
         //Define los parametros para la funcion
         
         $this->setParametro('id_proceso_wf_act','id_proceso_wf_act','int4');

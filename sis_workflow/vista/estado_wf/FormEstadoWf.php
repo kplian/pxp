@@ -11,7 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     ActSave:'../../sis_workflow/control/DocumentoWf/subirArchivoWf',
-    
+    banderaCerrar :true ,
     layout:'fit',
     maxCount:0,
     url_verificacion:'../../sis_workflow/control/ProcesoWf/verficarSigEstProcesoWf',
@@ -19,10 +19,17 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     reclaim: false,
     configExtra:[],
     constructor:function(config)
-    {
+    {    	
+    	this.forzar_documentos = 'no';
+		if (config.data.hasOwnProperty('forzar_documentos')) {
+			if (config.data.forzar_documentos == 'si') {
+				this.forzar_documentos = 'si';
+			}
+		}
         //declaracion de eventos
         this.addEvents('beforesave');
         this.addEvents('successsave');
+        this.addEvents('requirefields');
         if(config.configExtra){
         	 this.Atributos = this.Atributos.concat(config.configExtra);
         }
@@ -30,19 +37,10 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         if(config.data.url_verificacion){
            this.url_verificacion =  config.data.url_verificacion;
         }
+        this.config = config; 
         //llamada ajax para cargar los caminos posible de flujo
-        Phx.CP.loadingShow();
-        Ext.Ajax.request({
-                url: this.url_verificacion,
-                params: { id_proceso_wf: config.data.id_proceso_wf,
-                          operacion: 'verificar'},
-                argument: { 'config': config },
-                success: this.successSinc,
-                failure: this.meConexionFailure,
-                timeout: this.timeout,
-                scope: this
-            });
-            
+        this.verificar();
+           
         //Setea bandera de autoasignacion
         if(config.data.reclaim){
             this.reclaim = config.data.reclaim;    
@@ -50,24 +48,87 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         
         
      },
+     siguienteDocumento : function () {
+     	this.banderaCerrar = false;
+     	
+     	this.verificar();
+     },
+     verificar : function() {
+     	
+     	Phx.CP.loadingShow();
+        Ext.Ajax.request({
+                url: this.url_verificacion,
+                params: { id_proceso_wf: this.config.data.id_proceso_wf,
+                          operacion: 'verificar'},
+                argument: { 'config': this.config },
+                success: this.successSinc,
+                failure: this.meConexionFailure,
+                timeout: this.timeout,
+                scope: this
+            });
+     },
      
      meConexionFailure:function(resp){
          this.conexionFailure(resp);
-         this.close();
+         this.close();    	
          this.destroy();
     },
-     
+    
+    cerrar : function () {  
+    	
+    	if (this.banderaCerrar) { 	
+    		Ext.getCmp(this.config.idContenedor).close();
+    	}    	
+    },     
      
     successSinc:function(resp){
         Phx.CP.loadingHide();
         var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-        if(!reg.ROOT.error){
+        if(!reg.ROOT.error && reg.ROOT.datos.error_validacion_campos == 'no' && 
+        	reg.ROOT.datos.error_validacion_documentos == 'no' && this.forzar_documentos == 'no'){
               //inicia el proceso de dibjar la interface
               this.iniciarInterfaz(resp.argument.config,reg.ROOT.datos);
+        } else if (reg.ROOT.datos.error_validacion_campos == 'si') {
+        	this.fireEvent('requirefields',this);
+        	Ext.getCmp(this.config.idContenedor).close();
+        
+        } else if (reg.ROOT.datos.error_validacion_documentos == 'si' || this.forzar_documentos == 'si') {
+        	this.forzar_documentos = 'no';
+        	this.banderaCerrar = true;
+        	this.loadCheckDocumentosWf();
         }
         else{
             alert('Error al identificar siguientes pasos')
         }
+    },
+    
+    loadCheckDocumentosWf:function() {	            
+        this.config.data.tipo = 'wizard'    
+        Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
+                'Documentos del Proceso',
+                {
+                    width:'90%',
+                    height:500
+                },
+                this.config.data,
+                this.idContenedor,
+                'DocumentoWf',
+                {
+                    config:[{
+                              event:'loadWizard',
+                              delegate: this.siguienteDocumento,
+                              
+                            },
+                            {
+                              event:'closepanel',
+                              delegate: this.cerrar
+                              
+                            }],
+                    
+                    scope:this
+                 }
+       );
+       
     },
     
     
@@ -76,6 +137,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         //contruir los grupos y formualrio con los datos obtenidos
         this.armarGrupos(config);
         Phx.vista.FormEstadoWf.superclass.constructor.call(this,config);
+       
         this.init(); 
         
         // CONFIGURA ESTADOS INICIALES DE LOS ATRIBUTOS BASICOS   
@@ -139,57 +201,89 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                
                
         },this);
-        this.loadValoresIniciales();
         
+        
+        this.Cmp.id_depto_wf.on('select',function(combo, record, index){
+               
+               
+               this.Cmp.id_funcionario_wf.reset(); 
+               this.Cmp.id_funcionario_wf.store.baseParams.id_depto_wf=record.data.id_depto;
+               this.Cmp.id_funcionario_wf.modificado=true;
+               
+               
+               
+               
+               
+        },this);
+        
+        
+        
+        this.loadValoresIniciales();
+        console.log('antes de iniciar')
         //carga valores por defecto si los combos tiene una sola opcion
         this.Cmp.id_tipo_estado.store.load({params:{start:0,limit:50}, 
            callback : function (r) {
                 //si solo tenemos un estado cargamos valores pro defecto
                 if (r.length == 1 ) {                       
-                    
                     this.Cmp.id_tipo_estado.setValue(r[0].data.id_tipo_estado);
                     this.Cmp.id_tipo_estado.fireEvent('select',this.Cmp.id_tipo_estado, r[0], 0)
 
-                    if(r[0].data.tipo_asignacion != 'ninguno'){
-                        //Verifica si es caso de autoasignación para cargar valores para el combo funcionario
-                        if(this.reclaim==true){
-                            //Carga al funcionario que envíe el funcionario
-                            var recTem = new Array();
-                            recTem['id_funcionario'] = Phx.CP.config_ini.id_funcionario;
-                            recTem['desc_funcionario'] = Phx.CP.config_ini.nombre_usuario;
-                            recTem['prioridad'] = 1;
-                            
-                            this.Cmp.id_funcionario_wf.store.add(new Ext.data.Record(recTem, Phx.CP.config_ini.id_funcionario));
-                            this.Cmp.id_funcionario_wf.store.commitChanges();
-                            this.Cmp.id_funcionario_wf.setValue(Phx.CP.config_ini.id_funcionario);
-                            this.Cmp.id_funcionario_wf.disable();
-    
-                            
-                        } else {                        
-                            this.Cmp.id_funcionario_wf.store.load({params:{start:0,limit:50}, 
-                               callback : function (r) {
-                                    if (r.length == 1 ) {                       
-                                        this.Cmp.id_funcionario_wf.setValue(r[0].data.id_funcionario);
-                                    } 
-                                }, scope : this
-                            });
-                        }
-
-                    }
-   
-                    
                     //carga valores para el combo depto
                      if(r[0].data.depto_asignacion != 'ninguno'){
-                    
+                       var ttasig =  r[0].data.tipo_asignacion
                         this.Cmp.id_depto_wf.store.load({params:{start:0,limit:50}, 
                                callback : function (r) {
                                     if (r.length == 1 ) {                       
                                         this.Cmp.id_depto_wf.setValue(r[0].data.id_depto);
+                                        console.log('asignacion del funcionario...', ttasig)
+                                        if(ttasig == 'segun_depto'){
+                                        	//si la signacion del funcionario es segun depto disparamos ...
+                                        	this.Cmp.id_funcionario_wf.store.baseParams.id_depto_wf = r[0].data.id_depto;
+                                        	this.Cmp.id_funcionario_wf.store.load({params:{start:0,limit:50}, 
+													                               callback : function (r) {
+													                                    if (r.length == 1 ) {                       
+													                                        this.Cmp.id_funcionario_wf.setValue(r[0].data.id_funcionario);
+													                                    } 
+													                                }, scope : this
+													                            });
+                                        }
+                                        
                                     }    
                                                     
                                 }, scope : this
                         });
                       }
+                    if(r[0].data.tipo_asignacion != 'segun_depto'){
+		                    //carga el combo de funcionario si es que tiene asignacion
+		                    if(r[0].data.tipo_asignacion != 'ninguno'){
+		                        //Verifica si es caso de autoasignación para cargar valores para el combo funcionario
+		                        if(this.reclaim==true){
+		                            //Carga al funcionario que envíe el funcionario
+		                            var recTem = new Array();
+		                            recTem['id_funcionario'] = Phx.CP.config_ini.id_funcionario;
+		                            recTem['desc_funcionario'] = Phx.CP.config_ini.nombre_usuario;
+		                            recTem['prioridad'] = 1;
+		                            
+		                            this.Cmp.id_funcionario_wf.store.add(new Ext.data.Record(recTem, Phx.CP.config_ini.id_funcionario));
+		                            this.Cmp.id_funcionario_wf.store.commitChanges();
+		                            this.Cmp.id_funcionario_wf.setValue(Phx.CP.config_ini.id_funcionario);
+		                            this.Cmp.id_funcionario_wf.disable();
+		    
+		                            
+		                        } else {                        
+		                            this.Cmp.id_funcionario_wf.store.load({params:{start:0,limit:50}, 
+		                               callback : function (r) {
+		                                    if (r.length == 1 ) {                       
+		                                        this.Cmp.id_funcionario_wf.setValue(r[0].data.id_funcionario);
+		                                    } 
+		                                }, scope : this
+		                            });
+		                        }
+		
+		                    }
+                    }
+                    
+                    
                  }   
                                 
             }, scope : this
@@ -366,7 +460,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                            autoScroll:true,
                            items : items_to_add });
         this.contadorTarjetas = this.contadorTarjetas + 1;
-        alert('llega1');
+        
         this.maxCount = this.maxCount + 1;
     },
     
@@ -484,6 +578,55 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                                         },
                                         {
                                             xtype: 'combo',
+                                            name: 'id_depto_wf_pro['+cont+']',
+                                            itemId: this.idContenedor+'-id_depto_wf_pro['+cont+']',
+                                            fieldLabel: 'Depto Resp.',
+                                            allowBlank: false,
+                                            disabled:true,
+                                            emptyText:'Elija un depto',
+                                            listWidth:280,
+                                            store: new Ext.data.JsonStore(
+                                            {
+                                                url: '../../sis_workflow/control/TipoEstado/listarDeptoWf',
+                                                id: 'id_depto',
+                                                root:'datos',
+                                                sortInfo:{
+                                                    field:'prioridad',
+                                                    direction:'ASC'
+                                                },
+                                                totalProperty:'total',
+                                                fields: ['id_depto','nombre_depto','subsistema','codigo','nombre_corto_depto','prioridad'],
+                                                // turn on remote sorting
+                                                remoteSort: true,
+                                                baseParams:{par_filtro:'dep.nombre#dep.codigo#dep.nombre_corto'}
+                                            }),
+                                            valueField: 'id_depto',
+                                            displayField: 'nombre_corto_depto',
+                                            forceSelection:true,
+                                            typeAhead: false,
+                                            triggerAction: 'all',
+                                            lazyRender:true,
+                                            mode:'remote',
+                                            pageSize:50,
+                                            queryDelay:500,
+                                            width:210,
+                                            gwidth:220,
+                                            listWidth:'280',
+                                            minChars:2,
+                                            tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo}-{nombre_depto}</p><p>{subsistema}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>',
+                                            listeners: {
+                                                scope: this,
+                                                'select': function(combo, record, index ){
+                                                   var func = this.form.getForm().findField('id_funcionario_wf_pro['+cont+']');                                                   
+                                                       func.reset();                                                       
+                                                       func.store.baseParams.id_depto_wf = combo.getValue();
+                                                       func.modificado=true;                                                  
+                                                 }
+                                            }
+                                
+                                        },
+                                        {
+                                            xtype: 'combo',
                                             name: 'id_funcionario_wf_pro['+cont+']',
                                             itemId: this.idContenedor+'-id_funcionario_wf_pro['+cont+']',
                                             fieldLabel: 'Funcionario Resp.',
@@ -523,50 +666,10 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                                         
                                         },
                                         {
-                                            xtype: 'combo',
-                                            name: 'id_depto_wf_pro['+cont+']',
-                                            itemId: this.idContenedor+'-id_depto_wf_pro['+cont+']',
-                                            fieldLabel: 'Depto Resp.',
-                                            allowBlank: false,
-                                            disabled:true,
-                                            emptyText:'Elija un depto',
-                                            listWidth:280,
-                                            store:new Ext.data.JsonStore(
-                                            {
-                                                url: '../../sis_workflow/control/TipoEstado/listarDeptoWf',
-                                                id: 'id_depto',
-                                                root:'datos',
-                                                sortInfo:{
-                                                    field:'prioridad',
-                                                    direction:'ASC'
-                                                },
-                                                totalProperty:'total',
-                                                fields: ['id_depto','nombre_depto','subsistema','codigo','nombre_corto_depto','prioridad'],
-                                                // turn on remote sorting
-                                                remoteSort: true,
-                                                baseParams:{par_filtro:'dep.nombre#dep.codigo#dep.nombre_corto'}
-                                            }),
-                                            valueField: 'id_depto',
-                                            displayField: 'nombre_corto_depto',
-                                            forceSelection:true,
-                                            typeAhead: false,
-                                            triggerAction: 'all',
-                                            lazyRender:true,
-                                            mode:'remote',
-                                            pageSize:50,
-                                            queryDelay:500,
-                                            width:210,
-                                            gwidth:220,
-                                            listWidth:'280',
-                                            minChars:2,
-                                            tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo}-{nombre_depto}</p><p>{subsistema}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
-                                
-                                        },
-                                        {
                                             xtype: 'textarea',
                                             name: 'obs_pro['+cont+']',
                                             itemId: this.idContenedor+'-obs_pro['+cont+']',
-                                            fieldLabel: 'Obs',
+                                            fieldLabel: 'Proveido',
                                             allowBlank: false,
                                             anchor: '80%',
                                             maxLength:500
@@ -623,7 +726,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
        var cmpEstado = this.form.getForm().findField('id_tipo_estado_pro['+cont+']');
        var cmpFun = this.form.getForm().findField('id_funcionario_wf_pro['+cont+']');
        var cmpDep = this.form.getForm().findField('id_depto_wf_pro['+cont+']')
-       cmpEstado.store.load({params:{start:0,limit:50}, 
+       cmpEstado.store.load( { params: { start:0, limit:50 }, 
            callback : function (r) {
                 Phx.CP.loadingHide();
                 //si solo tenemos un estado cargamos valores pordefecto
@@ -631,27 +734,45 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                     
                     cmpEstado.setValue(r[0].data.id_tipo_estado);
                     cmpEstado.fireEvent('select',cmpEstado, r[0], 0)
-                    //caga valores para el combo funcionario
-                    if(r[0].data.tipo_asignacion != 'ninguno'){
-                         cmpFun.store.load({params:{start:0,limit:50}, 
-                           callback : function (r) {
-                                if (r.length == 1 ) {                       
-                                    cmpFun.setValue(r[0].data.id_funcionario);
-                                } 
-                            }, scope : this
-                        });
-                    }
+                    var tipo_asignacion = r[0].data.tipo_asignacion;
+                    
                     //carga valores para el combo depto
-                     if(r[0].data.depto_asignacion != 'ninguno'){
+                    if(r[0].data.depto_asignacion != 'ninguno'){
                     
                         cmpDep.store.load({params:{start:0,limit:50}, 
                                callback : function (r) {
-                                    if (r.length == 1 ) {                       
+                                     if (r.length == 1 ) {                       
                                         cmpDep.setValue(r[0].data.id_depto);
-                                    }    
+                                     } 
+                                    
+                                     if(tipo_asignacion == 'segun_depto'){
+                                     	cmpFun.store.baseParams.id_depto_wf = r[0].data.id_depto;
+                                     	cmpFun.store.load( { params: { start:0, limit:50 }, 
+				                           callback : function (r) {
+				                                if (r.length == 1 ) {                       
+				                                    cmpFun.setValue(r[0].data.id_funcionario);
+				                                } 
+				                            }, scope : this
+				                        });
+                                     }	   
                               }, scope : this
                         });
-                      }
+                     }
+                    
+                    if(tipo_asignacion != 'segun_depto'){
+	                    //caga valores para el combo funcionario
+	                    if(tipo_asignacion != 'ninguno'){
+	                         cmpFun.store.load( { params: { start:0, limit:50 }, 
+	                           callback : function (r) {
+	                                if (r.length == 1 ) {                       
+	                                    cmpFun.setValue(r[0].data.id_funcionario);
+	                                } 
+	                            }, scope : this
+	                        });
+	                    }	
+                    }
+                    
+                    
                  }   
             }, scope : this
         });
@@ -741,47 +862,6 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         },
         {
             config:{
-                        name: 'id_funcionario_wf',
-                        hiddenName: 'id_funcionario_wf',
-                        fieldLabel: 'Funcionario Resp.',
-                        allowBlank: false,
-                        emptyText:'Elija un funcionario',
-                        listWidth:280,
-                        store:new Ext.data.JsonStore(
-                        {
-                            url: '../../sis_workflow/control/TipoEstado/listarFuncionarioWf',
-                            id: 'id_funcionario',
-                            root:'datos',
-                            sortInfo:{
-                                field:'prioridad',
-                                direction:'ASC'
-                            },
-                            totalProperty:'total',
-                            fields: ['id_funcionario','desc_funcionario','prioridad'],
-                            // turn on remote sorting
-                            remoteSort: true,
-                            baseParams:{par_filtro:'fun.desc_funcionario1'}
-                        }),
-                        valueField: 'id_funcionario',
-                        displayField: 'desc_funcionario',
-                        forceSelection:true,
-                        typeAhead: false,
-                        triggerAction: 'all',
-                        lazyRender:true,
-                        mode:'remote',
-                        pageSize:50,
-                        queryDelay:500,
-                        width:210,
-                        gwidth:220,
-                        minChars:2,
-                        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{desc_funcionario}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
-                    
-             },
-            type:'ComboBox',
-            form:true
-        },
-        {
-            config:{
                         name: 'id_depto_wf',
                         hiddenName: 'id_depto_wf',
                         fieldLabel: 'Depto',
@@ -821,11 +901,52 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
             type:'ComboBox',
             form:true
         },
+        {
+            config:{
+                        name: 'id_funcionario_wf',
+                        hiddenName: 'id_funcionario_wf',
+                        fieldLabel: 'Funcionario Resp.',
+                        allowBlank: false,
+                        emptyText:'Elija un funcionario',
+                        listWidth:280,
+                        store:new Ext.data.JsonStore(
+                        {
+                            url: '../../sis_workflow/control/TipoEstado/listarFuncionarioWf',
+                            id: 'id_funcionario',
+                            root:'datos',
+                            sortInfo:{
+                                field:'prioridad',
+                                direction:'ASC'
+                            },
+                            totalProperty:'total',
+                            fields: ['id_funcionario','desc_funcionario','prioridad'],
+                            // turn on remote sorting
+                            remoteSort: true,
+                            baseParams:{par_filtro:'fun.desc_funcionario1'}
+                        }),
+                        valueField: 'id_funcionario',
+                        displayField: 'desc_funcionario',
+                        forceSelection:true,
+                        typeAhead: false,
+                        triggerAction: 'all',
+                        lazyRender:true,
+                        mode:'remote',
+                        pageSize:50,
+                        queryDelay:500,
+                        width:210,
+                        gwidth:220,
+                        minChars:2,
+                        tpl: '<tpl for="."><div class="x-combo-list-item"><p>{desc_funcionario}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
+                    
+             },
+            type:'ComboBox',
+            form:true
+        },
         
         {
             config: {
                 name: 'obs',
-                fieldLabel: 'Obs',
+                fieldLabel: 'Proveido',
                 allowBlank: false,
                 anchor: '80%',
                 maxLength:500
@@ -843,6 +964,8 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            this.fireEvent('beforesave',this,this.getValues());
        }
     },
+    
+    
     getValues:function(){
 	        var resp = {
 	                   id_proceso_wf_act: this.data.id_proceso_wf,

@@ -15,7 +15,7 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
 		
 		this.tbarItems = ['-',{
-            text: 'Ver todas las boservaciones',
+            text: 'Ver todas las observaciones',
             enableToggle: true,
             pressed: false,
             toggleHandler: function(btn, pressed) {

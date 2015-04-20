@@ -8,7 +8,8 @@ CREATE OR REPLACE FUNCTION wf.f_funcionario_wf_sel (
   p_count boolean = false,
   p_limit integer = 1,
   p_start integer = 0,
-  p_filtro varchar = '0=0'::character varying
+  p_filtro varchar = '0=0'::character varying,
+  p_id_depto_wf integer = 0
 )
 RETURNS SETOF record AS
 $body$
@@ -192,8 +193,9 @@ BEGIN
             
             
             END IF ;
-
-  
+            
+            
+            
     elseif v_tipo_asignacion = 'listado' then
     
         select 
@@ -249,6 +251,52 @@ BEGIN
                                                      '||COALESCE(p_id_estado_wf::varchar,'NULL')||'))';
                   
                 
+                  
+                 -- listado de todos los funcionarios en la tabla 
+                 FOR g_registros in execute (v_consulta)LOOP     
+                   RETURN NEXT g_registros;
+                 END LOOP;
+          
+          
+          END IF;
+  
+    elseif v_tipo_asignacion = 'segun_depto' then
+          
+          IF p_id_depto_wf = 0 THEN
+              RAISE exception 'El tipo de aginacion segun depto necesita de referencia un depto';
+          END IF;
+          
+          IF p_count=FALSE then
+           
+                 v_consulta='select
+                            fun.id_funcionario,
+                            fun.desc_funcionario1 as desc_funcionario,
+                            ''---''::text  as desc_funcionario_cargo,
+                            1 as prioridad
+                            
+                          from param.tdepto_usuario du
+                          inner join segu.tusuario  usu on usu.id_usuario = du.id_usuario
+                          inner join orga.vfuncionario_persona fun on usu.id_persona = fun.id_persona
+
+                          where   du.id_depto = '||COALESCE(p_id_depto_wf,0)::varchar ||'  and '||p_filtro||'
+                            order by fun.desc_funcionario1
+                            limit '|| p_limit::varchar||' offset '||p_start::varchar;
+                  
+    
+                 -- listado de todos los funcionarios en la tabla 
+                 FOR g_registros in execute (v_consulta)LOOP     
+                   RETURN NEXT g_registros;
+                 END LOOP;
+       
+          ELSE
+          
+            	v_consulta='select 
+                    COUNT(DISTINCT(fun.id_funcionario))
+                    from param.tdepto_usuario du
+                          inner join segu.tusuario  usu on usu.id_usuario = du.id_usuario
+                          inner join orga.vfuncionario_persona fun on usu.id_persona = fun.id_persona
+
+                          where   du.id_depto = '||COALESCE(p_id_depto_wf,0)::varchar ||' and ('||p_filtro||')';
                   
                  -- listado de todos los funcionarios en la tabla 
                  FOR g_registros in execute (v_consulta)LOOP     

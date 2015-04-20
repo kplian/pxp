@@ -91,7 +91,7 @@ v_cad_ini = '<';
     end if;
     
     --Arma la rama
-    v_aux = v_cad_ini || v_clave ||v_cad_fin || replace(v_valor,'"','') || v_cad_ini_fin || v_cad_fin_fin;
+    v_aux = v_cad_ini || v_clave ||v_cad_fin || replace(v_valor,'"','#*#') || v_cad_ini_fin || v_cad_fin_fin;
     
     --Agregar la rama
     v_cadena = v_cadena || v_aux;

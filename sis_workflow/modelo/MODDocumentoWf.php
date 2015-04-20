@@ -62,11 +62,16 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('id_proceso_wf_ori','integer');
 		$this->captura('nro_tramite_ori','varchar');
 		$this->captura('priorizacion','integer');
+		$this->captura('modificar','varchar');
+		$this->captura('insertar','varchar');
+		$this->captura('eliminar','varchar');
+		$this->captura('demanda','varchar');
 		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
+		
 		
 		//Devuelve la respuesta
 		return $this->respuesta;
@@ -121,18 +126,9 @@ class MODDocumentoWf extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('url','url','varchar');
-		$this->setParametro('num_tramite','num_tramite','varchar');
-		$this->setParametro('id_tipo_documento','id_tipo_documento','int4');
-		$this->setParametro('obs','obs','text');
+		$this->setParametro('id_tipo_documentos','id_tipo_documentos','varchar');
 		$this->setParametro('id_proceso_wf','id_proceso_wf','int4');
-		$this->setParametro('extencion','extencion','varchar');
-		$this->setParametro('chequeado','chequeado','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('nombre_tipo_doc','nombre_tipo_doc','varchar');
-		$this->setParametro('nombre_doc','nombre_doc','varchar');
-		$this->setParametro('momento','momento','varchar');
-
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -441,6 +437,27 @@ class MODDocumentoWf extends MODbase{
                 
         //Define los parametros para la funcion
         $this->setParametro('id_documento_wf','id_documento_wf','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+
+
+
+
+   function verificarConfiguracion(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='wf.ft_documento_wf_ime';
+        $this->transaccion='WF_VERDOC_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

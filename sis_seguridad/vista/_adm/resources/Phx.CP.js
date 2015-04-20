@@ -1,3 +1,54 @@
+
+Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
+    
+    constructor : function(config){
+        Ext.state.LocalProvider.superclass.constructor.call(this);
+        this.state = this.readLocal();
+    },
+    
+    // private
+    set : function(name, value){
+        if(typeof value == "undefined" || value === null){
+            this.clear(name);
+            return;
+        }
+        this.setLocal(name, value);
+        Ext.state.LocalProvider.superclass.set.call(this, name, value);
+    },
+
+    // private
+    clear : function(name){
+        this.clearLocal(name);
+        Ext.state.LocalProvider.superclass.clear.call(this, name);
+    },
+
+    // private
+    readLocal : function(){
+        var status = {},
+            name,
+            value;
+         
+        for (var i = 0; i < localStorage.length; i++){
+			    value = localStorage.getItem(localStorage.key(i));
+			    status[localStorage.key(i)] = this.decodeValue(value);
+		} 
+        return status;
+    },
+
+    // private
+    setLocal : function(name, value){     	
+    	 localStorage.setItem(name, this.encodeValue(value));
+    },
+
+    // private
+    clearLocal : function(name){
+    	localStorage.removeItem(name);        
+    },
+    clearAll: function(){
+    	localStorage.clear();
+    }
+});
+
 ///////////////////////////////
 //		CLASE MENU		  	//
 //////////////////////////////
@@ -92,7 +143,7 @@ Menu=function(config){
 		
 		maxSize: 500,
 		collapsible: true,
-		//collapseMode:'mini',
+		collapseMode:'mini',
 		// floatable:true,
 		animCollapse:true,
         animate: true,
@@ -303,9 +354,11 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	    	 
 			 var p = this.add(new Ext.Panel({
 	                id: id,
-	                layout:'fit',
-	                title:title,
+	                layout: 'fit',
+	                title: title,
 	                closable: true,
+	                autoScroll: false,
+	                autoHeight : false,
 	                cclass : cls,
 	                //stateful:true,
 	                //allowDomMove:false,
@@ -320,7 +373,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                },
 	                autoLoad: {
 	  				  url: href,
-	  				  params:{idContenedor:id,_tipo:'direc'},
+	  				  params:{idContenedor:id,_tipo:'direc', mycls:clase},
 	  				  showLoadIndicator: "Cargando...",
 	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
@@ -348,7 +401,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			                         //var inter = Phx.vista[clase];
 				  				       u.update(
 				  				      	 {url:Phx.vista[clase].require, 
-				  				      	  params:{idContenedor:id,_tipo:'direc'},
+				  				      	  params:{idContenedor:id,_tipo:'direc', mycls: clase},
 				  				      	  arguments:objConfig,
 				  				      	  scripts :true,
 				  				      	  showLoadIndicator: "Cargando...2",
@@ -464,6 +517,12 @@ Phx.CP=function(){
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
 	var contNodo = 0;
+    if (typeof window.localStorage != "undefined") {
+		this.localProvider = new Ext.state.LocalProvider();   
+		Ext.state.Manager.setProvider(this.localProvider);
+	}
+	
+	
     return{
         
         evaluateHash:function(action,token_inicio){
@@ -763,14 +822,21 @@ Phx.CP=function(){
 				  
 				    
 				    html:'<div id="2rn" align="right"><img src="../../../lib/imagenes/NoPerfilImage.jpg" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/></div>'
+				   },
+				   {
+				            tooltip: 'Deja el estado de la interfaz con los valores por defecto <br>borra los filtros y restaura columnas visibles',
+				            text: '<i class="fa fa-cogs"></i>',
+				            handler: function() {
+				                 localStorage.clear();
+				                 location.reload();
+				             }
 				   },'-',
 				   {
 				            text: 'Cerrar sesion',
 				            icon: '../../../lib/images/exit.png',
-				            toolTip:'Cerrar sesion',
-				        
-				                handler: function() {
-				            window.location = '../../control/auten/cerrar.php';
+				            tooltip:'Cerrar sesion',
+				            handler: function() {
+				                 window.location = '../../control/auten/cerrar.php';
 				             }
 				   }
 				   
@@ -1310,6 +1376,46 @@ Phx.CP=function(){
 		getMainPanel:function(){
 			return mainPanel;
 		},
+		merge :function(target, src) {
+		    var array = Array.isArray(src);
+		    var dst = array && [] || {};
+			var that = this;
+		    if (array) {
+		        target = target || [];
+		        dst = dst.concat(target);
+		        src.forEach(function(e, i) {
+		            if (typeof dst[i] === 'undefined') {
+		                dst[i] = e;
+		            } else if (typeof e === 'object') {
+		                dst[i] = that.merge(target[i], e);
+		            } else {
+		                if (target.indexOf(e) === -1) {
+		                    dst.push(e);
+		                }
+		            }
+		        });
+		    } else {
+		        if (target && typeof target === 'object') {
+		            Object.keys(target).forEach(function (key) {
+		                dst[key] = target[key];
+		            })
+		        }
+		        Object.keys(src).forEach(function (key) {
+		            if (typeof src[key] !== 'object' || !src[key]) {
+		                dst[key] = src[key];
+		            }
+		            else {
+		                if (!target[key]) {
+		                    dst[key] = src[key];
+		                } else {
+		                    dst[key] = that.merge(target[key], src[key]);
+		                }
+		            }
+		        });
+		    }
+		
+		    return dst;
+		},
 		
 		/*getWindowManager:function(){
 			return windowManager;
@@ -1468,9 +1574,10 @@ Phx.CP=function(){
   				     var owid= Ext.id();
 				  	 Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
 				  				    
-  				     var el = Ext.get(owid); // este div esta quemado en el codigo html
-                     var u = el.getUpdater();
-                     var inter = Phx.vista[mycls];
+  				     var el = Ext.get(owid), // este div esta quemado en el codigo html
+                         u = el.getUpdater(),
+                         inter = Phx.vista[mycls];
+                         
   				       u.update(
   				      	 {url:inter.require, 
   				      	  params:o.argument.params,
@@ -1503,14 +1610,30 @@ Phx.CP=function(){
 				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){
-					var ev = o.argument.options.listeners;
-					for (var i = 0; i < ev.config.length; i++) {
-						obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+					if(obj.esperarEventos === true){
+						obj.setListeners(o.argument.options.listeners);
 					}
+					else{
+						var ev = o.argument.options.listeners;
+						for (var i = 0; i < ev.config.length; i++) {
+							obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+						}	
+					}
+					
 				}
 		    }  
 		},
-		
+		setValueCombo: function(cmb, id_combo, value_combo){
+		    	if (!cmb.store.getById(id_combo)) {
+		            var recTem = new Array();
+		            recTem[cmb.valueField] = id_combo;
+		            recTem[cmb.displayField] = value_combo;
+		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
+		            cmb.store.commitChanges();
+		        }
+		        cmb.setValue(id_combo);
+    	
+   		 },
 		
 		
 		// para cargar ventanas hijo
@@ -1576,7 +1699,7 @@ Phx.CP=function(){
 					          text: "Cargando...", 
 					          showLoadIndicator: "Cargando...",
 					          scripts :true,
-					          listeners:listeners,
+					          listeners: listeners,
 					          callback:this.callbackWindows
 					} 
 				}));

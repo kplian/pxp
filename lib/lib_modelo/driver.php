@@ -1212,7 +1212,7 @@ class driver
 		
 					
 		$res['datos']=$res;
-		//var_dump($res['datos']);exit;
+		
 		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
@@ -1225,7 +1225,7 @@ class driver
 		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
-
+		
 		//var_dump($aux);exit;
 		
 		if($res['tipo_respuesta']=='EXITO'){

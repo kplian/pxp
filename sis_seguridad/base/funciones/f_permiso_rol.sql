@@ -2,11 +2,11 @@ CREATE OR REPLACE FUNCTION segu.f_permiso_rol (
   par_id_gui integer,
   par_id_procedimiento_gui integer,
   par_id_rol integer,
-  par_accion character varying,
-  par_direccion character varying
+  par_accion varchar,
+  par_direccion varchar,
+  par_temporal integer = NULL::integer
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
 
@@ -93,10 +93,12 @@ BEGIN
 
             insert into segu.tgui_rol (
                 id_rol,
-                id_gui)
+                id_gui,
+                temporal)
             values(
                 par_id_rol,
-                par_id_gui);
+                par_id_gui,
+                par_temporal);
             end if;
         end if;
     
@@ -155,7 +157,7 @@ BEGIN
 
         for v_registros in
         execute(v_consulta)loop
-            v_respuesta:= segu.f_permiso_rol(v_registros.id_gui,null,par_id_rol,par_accion,'subir');
+            v_respuesta:= segu.f_permiso_rol(v_registros.id_gui,null,par_id_rol,par_accion,'subir',par_temporal);
 
         end loop;
     end if;
@@ -170,7 +172,7 @@ BEGIN
                          
          for v_registros in
          execute(v_consulta)loop
-             v_respuesta:= segu.f_permiso_rol(null,v_registros.id_procedimiento_gui,par_id_rol,par_accion,'bajar');
+             v_respuesta:= segu.f_permiso_rol(null,v_registros.id_procedimiento_gui,par_id_rol,par_accion,'bajar',par_temporal);
 
          end loop;
 
@@ -182,7 +184,7 @@ BEGIN
         
         for v_registros in
          execute(v_consulta)loop
-             v_respuesta:= segu.f_permiso_rol(v_registros.id_gui,null,par_id_rol,par_accion,'bajar');
+             v_respuesta:= segu.f_permiso_rol(v_registros.id_gui,null,par_id_rol,par_accion,'bajar',par_temporal);
 
          end loop;
 
@@ -202,7 +204,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_sinc_funciones_subsistema (OID = 305037) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

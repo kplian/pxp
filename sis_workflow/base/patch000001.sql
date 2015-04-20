@@ -1091,4 +1091,158 @@ ALTER TABLE wf.ttipo_estado_rol
 /*****************************F-SCP-JRR-WF-0-25/02/2015*************/
 
 
+/*****************************I-SCP-RAC-WF-0-20/03/2015*************/
 
+--------------- SQL ---------------
+
+CREATE TABLE wf.tcategoria_documento (
+  id_categoria_documento INTEGER NOT NULL,
+  codigo VARCHAR(50) NOT NULL UNIQUE,
+  nombre VARCHAR,
+  PRIMARY KEY(id_categoria_documento)
+) INHERITS (pxp.tbase)
+;
+
+ALTER TABLE wf.tcategoria_documento
+  OWNER TO postgres;
+
+COMMENT ON COLUMN wf.tcategoria_documento.codigo
+IS 'identifica el documento y se almacenes en el array  categoria_documento en la interface de tipo_documento_wf';
+
+
+--------------- SQL ---------------
+
+CREATE SEQUENCE wf.tcategoria_documento_id_categoria_documento_seq
+MAXVALUE 2147483647;
+
+ALTER TABLE wf.tcategoria_documento
+  ALTER COLUMN id_categoria_documento TYPE INTEGER;
+
+ALTER TABLE wf.tcategoria_documento
+  ALTER COLUMN id_categoria_documento SET DEFAULT nextval('wf.tcategoria_documento_id_categoria_documento_seq'::text);
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN categoria_documento VARCHAR(60)[];
+
+COMMENT ON COLUMN wf.ttipo_documento.categoria_documento
+IS 'este campo sirve para idetoficar a que caterorias pertenece un tipo de documento';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN etapa VARCHAR(150);
+
+COMMENT ON COLUMN wf.ttipo_estado.etapa
+IS 'Este es un texto que sirve hacer menos abstrato el nombre de los estados,  por lo general barrios estado pueden pertener a una misma etapa, este cmapo tiene que aprece en el diagrama gantt y en grilla';
+
+/*****************************F-SCP-RAC-WF-0-20/03/2015*************/
+
+
+/*****************************I-SCP-RAC-WF-0-26/03/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN orden NUMERIC DEFAULT 1 NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_documento.orden
+IS 'numero para ordenar los documentos por importancion los mas importantes necesitan numeros mas bajos';
+
+/*****************************F-SCP-RAC-WF-0-26/03/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-27/03/2015*************/
+
+ALTER TABLE wf.tcategoria_documento
+  ADD COLUMN modificado INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-27/03/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-06/04/2015*************/
+ALTER TABLE wf.ttipo_documento
+  ALTER COLUMN orden TYPE NUMERIC(4,2);
+
+/*****************************F-SCP-JRR-WF-0-06/04/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-08/04/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.testructura_estado
+  ADD COLUMN bucle VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.testructura_estado.bucle
+IS 'identifica si la arista ocaciona un bucle, este campo se registra de manera automatica el momento de insetar la arista';
+
+
+/*****************************F-SCP-JRR-WF-0-08/04/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-10/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN grupo_doc VARCHAR;
+
+COMMENT ON COLUMN wf.ttipo_estado.grupo_doc
+IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface de documentos para definir que categorias pueden verse desde esta interface.';
+
+/*****************************F-SCP-JRR-WF-0-10/04/2015*************/
+
+
+
+/*****************************I-SCP-RCM-WF-0-16/03/2015*************/
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN nombre_vista varchar(70);
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN nombre_archivo_plantilla text;  
+  
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN esquema_vista VARCHAR(10);  
+/*****************************F-SCP-RCM-WF-0-16/03/2015*************/
+
+
+/*****************************I-SCP-RCM-WF-0-15/04/2015*************/
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN demanda VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.demanda
+IS 'documento insertado por demanda si o no, por defecto es no';
+
+/*****************************F-SCP-RCM-WF-0-15/04/2015*************/
+
+
+
+/*****************************I-SCP-RCM-WF-0-16/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_macro
+  ADD COLUMN grupo_doc VARCHAR;
+
+COMMENT ON COLUMN wf.tproceso_macro.grupo_doc
+IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface de documentos para definir que categorias pueden verse desde esta interface.';
+
+/*****************************F-SCP-RCM-WF-0-16/04/2015*************/
+
+
+/*****************************I-SCP-RCM-WF-0-17/04/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE tes.tplan_pago
+  ADD COLUMN id_depto_conta INTEGER;
+
+COMMENT ON COLUMN tes.tplan_pago.id_depto_conta
+IS 'define el depto de conta que contabiliza el pago, ...  no consideramos ep, cc (antes solo lo teneiamos en la obligacion de pago)';
+
+
+/*****************************F-SCP-RCM-WF-0-17/04/2015*************/

@@ -1011,5 +1011,58 @@ ALTER TABLE segu.tgui_rol
 
 /*****************************F-SCP-JRR-SEGU-0-03/09/2014*************/
 
+/*****************************I-SCP-JRR-SEGU-0-25/03/2015*************/
+ALTER TABLE segu.tpersona
+  ADD COLUMN id_tipo_doc_identificacion INTEGER;
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN nacionalidad VARCHAR(100);
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN expedicion VARCHAR(100);
+
+/*****************************F-SCP-JRR-SEGU-0-25/03/2015*************/
 
 
+/*****************************I-SCP-RAC-SEGU-0-30/03/2015*************/
+--------------- SQL ---------------
+
+ALTER TABLE segu.tgui
+  ALTER COLUMN nombre TYPE VARCHAR(200) COLLATE pg_catalog."default";
+
+/*****************************F-SCP-RAC-SEGU-0-30/03/2015*************/
+
+/****************************I-SCP-RAC-PXP-0-12/03/2013*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN m VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN e VARCHAR;
+  
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN k VARCHAR;
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN p VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN x VARCHAR;
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsesion
+  ADD COLUMN z VARCHAR;
+
+/****************************F-SCP-RAC-PXP-0-12/03/2013*************/

@@ -23,6 +23,7 @@ DECLARE
   v_i				integer;
   v_tamano			integer;
   v_roles			integer[];
+  v_respuesta		varchar;
 BEGIN
 	v_nombre_funcion = 'wf.f_registra_gui_tabla';
 	select pm.id_subsistema into v_id_subsistema
@@ -88,9 +89,9 @@ BEGIN
         v_roles = string_to_array(p_roles,',');
         v_tamano = coalesce(array_length(v_roles, 1),0);
         FOR v_i IN 1..v_tamano LOOP
-        	raise exception 'llega%',v_roles;
-        	insert into segu.tgui_rol (id_gui,id_rol,temporal)values(v_id_gui,v_roles[v_i],1);
-            
+        	--raise exception 'llega%',v_roles;
+        	--insert into segu.tgui_rol (id_gui,id_rol,temporal)values(v_id_gui,v_roles[v_i],1);
+            v_respuesta:=segu.f_permiso_rol(v_id_gui,null,v_roles[v_i],'dar','subir_bajar',1);
     	END LOOP;
                 
     end if;

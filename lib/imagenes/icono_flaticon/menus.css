@@ -27,20 +27,22 @@
 
 .x-btn-text-icon .x-btn-icon-large-left .x-btn-text {
 	padding-left: 0px;
+
+	
 }
 
 .bven1:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f133 "; margin-right:5px; margin-left:5px;
 }
 .blist:before {
-	position: fixed;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	margin-right:5px; margin-left:5px;
@@ -48,9 +50,9 @@
 	content: "\f108 "; margin-right:5px; margin-left:5px;
 }
 .bsave:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	margin-right:5px; margin-left:5px;
@@ -58,29 +60,29 @@
 }
 
 .bnew:before {
-	position: fixed;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	margin-right:5px; margin-left:5px;
 	content: "\f055"; margin-right:5px; margin-left:5px;
 	
 }
-
-.bdel:before {
+.bdel:before {
 	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
-	left: auto;
-	right: auto;
-	margin-right:5px; margin-left:5px;
+	vertical-align:middle;
+	top:20px;
+	
+
+	
 	content: "\f1f8"; margin-right:5px; margin-left:5px;
 }
 .bact:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f021";
@@ -88,26 +90,26 @@
 	
 }
 .bactfil:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f00e"; margin-right:5px; margin-left:5px;
 	
 }
 .bprint:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f02f"; margin-right:5px; margin-left:5px;
 }
 .bedit:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f044"; margin-right:5px; margin-left:5px;
@@ -115,63 +117,63 @@
 }
 
 .badelante:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f054"; margin-right:5px; margin-left:5px;
 
 }
 .batras:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f053"; margin-right:5px; margin-left:5px;
 	
 }
 .bbajar:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f054"; margin-right:5px; margin-left:5px;
 	
 }
 .bsubir:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e025"; margin-right:5px; margin-left:5px;
 
 }
 .bupload:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0ee"; margin-right:5px; margin-left:5px;
 
 }
 .bfolder:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f114"; margin-right:5px; margin-left:5px;
 	
 }
 .bok:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f058"; margin-right:5px; margin-left:5px;
@@ -185,87 +187,87 @@
  background-image:url(../iconos_generales/pdf.png) !important;
  }*/
 .bpagar:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0d6"; margin-right:5px; margin-left:5px;
 	
 }
 .breload:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f021"; margin-right:5px; margin-left:5px;
 	
 }
 .breload1:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f021"; margin-right:5px; margin-left:5px;
 }
 .breload2:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f021"; margin-right:5px; margin-left:5px;
 }
 
 .bundo:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0e2"; margin-right:5px; margin-left:5px;
 }
 
 .bredo:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f01e"; margin-right:5px; margin-left:5px;
 }
 
 .balert:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f071"; margin-right:5px; margin-left:5px;
 }
 
 .binfo:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f05a"; margin-right:5px; margin-left:5px;
 } 
 .bassign:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0c0"; margin-right:5px; margin-left:5px;
 }
 .bexport:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0f6"; margin-right:5px; margin-left:5px;
@@ -273,41 +275,41 @@
 
 /*otra fuente*/
 .brenew:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0c5"; margin-right:5px; margin-left:5px;
 }
 .bballot:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e010"; margin-right:5px; margin-left:5px;
 }
 .bupload1:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e025"; margin-right:5px; margin-left:5px;
 }
 .bend:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e000"; margin-right:5px; margin-left:5px;
 }
 .bsee:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e027"; margin-right:5px; margin-left:5px;
@@ -315,267 +317,267 @@
 
 /*bien*/
 .bgood:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f00c"; margin-right:5px; margin-left:5px;
 }
 
 .bwrong:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f00d"; margin-right:5px; margin-left:5px;
 }
 .bcharge:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f155"; margin-right:5px; margin-left:5px;
 }
 .bselect:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f112"; margin-right:5px; margin-left:5px;
 }
 
 .bexcel:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1c3"; margin-right:5px; margin-left:5px;
 }
 
 .bprintcheck:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f02f"; margin-right:5px; margin-left:5px;
 }
 .bword:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1c2"; margin-right:5px; margin-left:5px;
 }
 
 .bpdf:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1c1"; margin-right:5px; margin-left:5px;
 }
 .block:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 .bunlock:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f13e"; margin-right:5px; margin-left:5px;
 }
 .bstatistics:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1fe"; margin-right:5px; margin-left:5px;
 }
 .bgear:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f013"; margin-right:5px; margin-left:5px;
 }
 .bcalendar:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f073"; margin-right:5px; margin-left:5px;
 }
 .bpdf32:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1c1"; margin-right:5px; margin-left:5px;
 }
 .bchecklist:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f046"; margin-right:5px; margin-left:5px;
 }
 .baddphoto:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e017"; margin-right:5px; margin-left:5px;
 }
 .bmenuitems:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0c9"; margin-right:5px; margin-left:5px;
 }
 .bgraph:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f080"; margin-right:5px; margin-left:5px;
 }
 .bstats:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f080"; margin-right:5px; margin-left:5px;
 }
 .bengine:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f013"; margin-right:5px; margin-left:5px;
 }
 .bdocuments:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0c5"; margin-right:5px; margin-left:5px;
 }
 .bengineadd:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f085"; margin-right:5px; margin-left:5px;
 }
 .bengineremove:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 .bcalendaradd:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e001"; margin-right:5px; margin-left:5px;
 }
 .bcalendarremove:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e007"; margin-right:5px; margin-left:5px;
 }
 .bpause:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f04c"; margin-right:5px; margin-left:5px;
 }
 .bplay:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f04b"; margin-right:5px; margin-left:5px;
 }
 .bcancelfile:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e023"; margin-right:5px; margin-left:5px;
 }
 .btag_deny:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e020"; margin-right:5px; margin-left:5px;
 }
 .btag_accept:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e01f"; margin-right:5px; margin-left:5px;
 }
 .bzoom:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f00e"; margin-right:5px; margin-left:5px;
 }
 .btransfer:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 Flaticon;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\e012"; margin-right:5px; margin-left:5px;
 }
 .bgantt:before {
-	position: static;
+	position: absolute;
 	
 	font: normal normal normal 2em/1 Flaticon;
         font-size: 20px;
@@ -584,120 +586,120 @@ margin-left: 20px;
 	content: "\e008"; margin-right:5px; margin-left:5px;
 }
 .bemail:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0e0"; margin-right:5px; margin-left:5px;
 }
 .bsendmail:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1d8"; margin-right:5px; margin-left:5px;
 }
 .bcargo:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 .bincremento_salarial:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 .bclock:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f017"; margin-right:5px; margin-left:5px;
 }
 .bcalculator:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1ec"; margin-right:5px; margin-left:5px;
 }
 .bmoney:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f0d6"; margin-right:5px; margin-left:5px;
 }
 
 .badd:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f055"; margin-right:5px; margin-left:5px;
 }
 
 .bdelete:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f056"; margin-right:5px; margin-left:5px;
 }
 
 .bexecdb:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f1c0"; margin-right:5px; margin-left:5px;
 }
 
 .bdibu_mail:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 
 .btransferMoney:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 
 .bball_green:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
 }
 
 .bball_white:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f007"; margin-right:5px; margin-left:5px;
@@ -710,9 +712,9 @@ margin-left: 20px;
 }
 
 .search:before {
-	position: static;
+	position: absolute;
 	font: normal normal normal 2em/1 FontAwesome;
-	top: 0;
+	top: 20px;
 	left: auto;
 	right: auto;
 	content: "\f002"; margin-right:5px; margin-left:5px;

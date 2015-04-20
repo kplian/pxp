@@ -93,6 +93,22 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'etapa',
+				fieldLabel: 'Etapa',
+				qtip: 'Sirve para clasificar los estados,  se muestra en el diagrama gantt, la finalidad es reducir la complejidad de los nombre de estado',
+				allowBlank: false,
+				anchor: '70%',
+				gwidth: 200,
+				maxLength: 150
+			},
+			type:'TextField',
+			filters: { pfiltro: 'tipes.estapa', type: 'string'},
+			id_grupo: 1,
+			grid: true,
+			form: true
+		},
+		{
+			config:{
 				name: 'inicio',
 				fieldLabel: 'Inicio (raiz)?',
 				allowBlank: false,
@@ -257,49 +273,6 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
-		{
-			config:{
-				name: 'tipo_asignacion',
-				fieldLabel: 'Tipo Asignación',
-				allowBlank: false,
-				anchor: '70%',
-				gwidth: 150,
-				maxLength:50,
-				emptyText:'Tipo...',       			
-       			typeAhead: true,
-       		    triggerAction: 'all',
-       		    lazyRender:true,
-       		    mode: 'local',
-       		    valueField: 'tipo_asignacion',       		    
-       		   // displayField: 'descestilo',
-       		    store:['ninguno','anterior','listado','todos','funcion_listado']
-			},
-			type:'ComboBox',
-			//filters:{pfiltro:'promac.inicio',type:'string'},
-			id_grupo:1,
-			filters:{	
-	       		         type: 'list',
-	       				 pfiltro:'tipes.tipo_asignacion',
-	       				 options: ['ninguno','anterior','listado','todos','funcion_listado'],	
-	       		 	},
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'nombre_func_list',
-				fieldLabel: 'Nombre Función de Listado',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:255
-			},
-			type:'TextField',
-			filters:{pfiltro:'tipes.nombre_func_list',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
         {
             config:{
                 name: 'depto_asignacion',
@@ -343,6 +316,50 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
+		{
+			config:{
+				name: 'tipo_asignacion',
+				fieldLabel: 'Tipo Asignación',
+				qtip: 'define la forma de obtener el funcionario responsable, <br/> funcion_listadi: lo obtiene de lo funcionarios asignados al estado <br/>funcion_listado: funcion customizada ',
+				allowBlank: false,
+				anchor: '70%',
+				gwidth: 150,
+				maxLength:50,
+				emptyText:'Tipo...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'tipo_asignacion',       		    
+       		   // displayField: 'descestilo',
+       		    store:['ninguno','anterior','listado','todos','funcion_listado','segun_depto']
+			},
+			type:'ComboBox',
+			//filters:{pfiltro:'promac.inicio',type:'string'},
+			id_grupo:1,
+			filters:{	
+	       		         type: 'list',
+	       				 pfiltro:'tipes.tipo_asignacion',
+	       				 options: ['ninguno','anterior','listado','todos','funcion_listado','segun_depto'],	
+	       		 	},
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'nombre_func_list',
+				fieldLabel: 'Nombre Función de Listado',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:255
+			},
+			type:'TextField',
+			filters:{pfiltro:'tipes.nombre_func_list',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
         {
             config:{
                     name:'cargo_depto',
@@ -548,6 +565,24 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             form:true
         },
         
+        
+        {
+            config:{
+                name: 'grupo_doc',
+                fieldLabel:  'Agrupadores Doc',
+                qtip:  'Aca se configura que pestañas aparecen el la interface de coumentos, (se intorduce código javascript), no usar comilla simple',
+                allowBlank:  true,
+                anchor:  '70%',
+                gwidth:  200,
+                maxLength:  1000
+            },
+            type: 'TextArea',
+            filters: { pfiltro: 'tipes.obs', type: 'string' },
+            id_grupo: 1,
+            grid: true,
+            form: true
+        },
+        
         {
 			config:{
 				name: 'estado_reg',
@@ -693,7 +728,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad','id_roles','admite_obs'
+        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc'
 		
 	],
 	sortInfo:{

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_proceso_macro_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -10,7 +12,7 @@ $body$
  SISTEMA:		Work Flow
  FUNCION: 		wf.f_proceso_macro_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'wf.proceso_macro'
- AUTOR: 		 (admin)
+ AUTOR: 		 (rac)
  FECHA:	        19-02-2013 13:51:29
  COMENTARIOS:	
 ***************************************************************************
@@ -39,7 +41,7 @@ BEGIN
 	/*********************************    
  	#TRANSACCION:  'WF_PROMAC_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		rac	
  	#FECHA:		19-02-2013 13:51:29
 	***********************************/
 
@@ -48,25 +50,27 @@ BEGIN
         begin
         	--Sentencia de la insercion
         	insert into wf.tproceso_macro(
-			id_subsistema,
-			nombre,
-			codigo,
-			inicio,
-			estado_reg,
-			id_usuario_reg,
-			fecha_reg,
-			id_usuario_mod,
-			fecha_mod
-          	) values(
-			v_parametros.id_subsistema,
-			v_parametros.nombre,
-			v_parametros.codigo,
-			v_parametros.inicio,
-			'activo',
-			p_id_usuario,
-			now(),
-			null,
-			null
+              id_subsistema,
+              nombre,
+              codigo,
+              inicio,
+              estado_reg,
+              id_usuario_reg,
+              fecha_reg,
+              id_usuario_mod,
+              fecha_mod,
+              gripo_doc
+              ) values(
+              v_parametros.id_subsistema,
+              v_parametros.nombre,
+              v_parametros.codigo,
+              v_parametros.inicio,
+              'activo',
+              p_id_usuario,
+              now(),
+              null,
+              null,
+              v_parametros.grupo_doc
 							
 			)RETURNING id_proceso_macro into v_id_proceso_macro;
 			
@@ -96,6 +100,7 @@ BEGIN
 			codigo = v_parametros.codigo,
 			inicio = v_parametros.inicio,
 			id_usuario_mod = p_id_usuario,
+            grupo_doc = v_parametros.grupo_doc,
 			fecha_mod = now()
 			where id_proceso_macro=v_parametros.id_proceso_macro;
                

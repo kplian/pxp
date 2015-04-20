@@ -10,18 +10,76 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
-
-	constructor:function(config){
-		console.log(config);
-		this.check_fisico = 'no';
-		if (config.hasOwnProperty('check_fisico')) {
-			if (config.check_fisico == 'si') {
-				this.check_fisico = 'si';
-			}
-		}
+     
+     //soporte para cuatro categorias
+     bsaveGroups:[0,1,2,3],
+     beditGroups:[0,1,2,3],
+	 bdelGroups:[0,1,2,3],
+	 bactGroups:[0,1,2,3],
+	 btestGroups:[0,1,2,3],
+	 bexcelGroups:[0,1,2,3],
+	 stateful: false, 
+	 //CheckSelectionModel: true,
+	 //checkGrid: true,
+	 
+	 constructor: function(config){
+	 	this.esperarEventos = true;
+	 	//busca  la configuracion de la interface, si necesita documentos fisicos, si necesita modifica, insercion pestañas
+	 	Phx.CP.loadingShow();
+	 	  //bandera para hacer que espera la palicacion de eventos
+   		Ext.Ajax.request({
+            url:'../../sis_workflow/control/DocumentoWf/verificarConfiguracion',
+            params: { 'id_proceso_wf': config.id_proceso_wf},
+            argument: {config: config},
+            success: this.successInit,
+            failure: this.conexionFailure,
+            timeout:this.timeout,
+            scope:this
+        });
+	 	
+	 	
+	 },
+	 successInit:function(resp){
+	 	var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+	 	Phx.CP.loadingHide();
+	 	
+	 	
+	 	if(!resp.argument.config.gruposBarraTareas && reg.ROOT.datos.json_grupo_doc != ''){
+	 		resp.argument.config.gruposBarraTareas = Ext.util.JSON.decode(Ext.util.Format.trim(reg.ROOT.datos.json_grupo_doc));
+	 	 }
+	 	 
+	 	 this.arrayDefaultColumHidden = ['fecha_reg','fecha_mod','usr_reg','usr_mod','usr_upload','fecha_upload','estado_reg','fecha_reg'];
+			
+	 	 
+	 	 if(reg.ROOT.datos.sw_tiene_fisico == 'no'){
+	 	 	  this.arrayDefaultColumHidden.push('chequeado_fisico');
+	 	 	  this.bedit = false;
+	 	 }  
+	 	 else{
+	 	 	 this.bedit = true;
+	 	 }
+	 	 
+	 	 if(reg.ROOT.datos.sw_tiene_insertar == 'no'){
+	 	 	 this.bnew = false;
+	 	 }  
+	 	 else{
+	 	 	 this.bnew = true;
+	 	 	 this.documentos_insertables = reg.ROOT.datos.id_tipo_documentos;
+	 	 }
+	 	 
+	 	 if(reg.ROOT.datos.sw_tiene_modificar == 'no'){
+	 	 	 this.arrayDefaultColumHidden.push('modificar')
+	 	 }
+		
+		this.initconstructor(resp.argument.config);
+	 	
+	 },
+	 
+	 initconstructor:function(config){		
 		
 		 //declaracion de eventos
         this.addEvents('finalizarsol');
+        this.addEvents('sigestado');
         this.maestro = config;
         
 		this.todos_documentos = 'si';
@@ -53,8 +111,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             toggleHandler: function(btn, pressed) {
                
                 if(pressed){
-                	
-                    this.anulados = 'si';
+                	this.anulados = 'si';
                     this.desBotonesTodo();
                 }
                 else{
@@ -79,21 +136,104 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
-		},		
+		},
+		{
+			//configuracion del componente
+			config:{
+					labelSeparator:'',
+					inputType:'hidden',
+					name: 'id_proceso_wf'
+			},
+			type:'Field',
+			form:true 
+		},
+		{
+       			config:{
+       				name:'id_tipo_documentos',
+       				fieldLabel:'Documentos',
+       				allowBlank:true,
+       				emptyText:'documentos...',
+       				store: new Ext.data.JsonStore({
+	                    url: '../../sis_workflow/control/TipoDocumento/listarTipoDocumento',
+	                    id: 'id_tipo_documento',
+	                    root: 'datos',
+	                    sortInfo: {
+	                        field: 'tipdw.codigo',
+	                        direction: 'ASC'
+	                    },
+	                    totalProperty: 'total',
+	                    fields: ['id_tipo_documento', 'codigo', 'nombre','descripcion'],
+	                    // turn on remote sorting
+	                    remoteSort: true,
+	                    baseParams: {par_filtro: 'tipdw.nombre#tipdw.codigo'}
+	                }),
+       				valueField: 'id_tipo_documento',
+       				displayField: 'nombre',
+       				gdysplayfield: 'descripcion_tipo_documento',
+       				forceSelection:true,
+       				typeAhead: false,
+           			triggerAction: 'all',
+           			lazyRender:true,
+       				mode:'remote',
+       				pageSize:100,
+       				queryDelay:1000,
+       				width:250,
+       				minChars:2,
+       				qtip:'Muestra una lista de documentos que peude insertar en este estado',
+	       			enableMultiSelect:true
+       			},
+       			type:'AwesomeCombo',
+       			id_grupo:2,
+       			grid:false,
+       			form:true
+       	},		
         {
             config:{
-                name: 'chequeado',
-                fieldLabel: 'Escaneado',
+                name: 'modificar',
+                fieldLabel: 'Exigir',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 65,
-                renderer:function (value, p, record){  
-                            if(record.data['chequeado'] == 'si') {
-                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_ok.png' align='center' width='45' height='45'/></div>");
+                scope: this,
+                renderer:function (value, p, record, rowIndex, colIndex){  
+                	     
+                	       //check or un check row
+                	       var checked = '',
+                	       	    momento = 'no';
+	                	   if(record.data['momento'] == 'exigir'){
+	                	        	checked = 'checked';
+	                	        	momento = 'si';
+	                	   }
+                	       
+                	        if(record.data['modificar'] == 'si'){
+                	       	   return  String.format('<div style="vertical-align:middle;text-align:center;"><input style="height:37px;width:37px;" type="checkbox"  {0}></div>',checked);
+                	        }else{
+                	       	   return   String.format('<div style="vertical-align:middle;text-align:center;"><input style="height:35px;width:30px;vertical-align:middle;text-align:center;" type="checkbox"  {0} disabled></div>',checked);
+                	        }
+                 }
+            },
+            type:'Checkbox',
+            filters:{pfiltro:'dwf.modificar',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },		
+        {
+            config:{
+                name: 'chequeado',
+                fieldLabel: 'Doc. Digital',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 65,
+                scope: this,
+                renderer:function (value, p, record, rowIndex, colIndex){  
+                	     
+                	       if(record.data['chequeado'] == 'si') {
+                            	return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Abrir Documento' src = '../../../lib/imagenes/icono_awesome/awe_print_good.png' align='center' width='30' height='30'></div>";
                             } else if  (record.data['action'] != '') {
-                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_preview.png' align='center' width='45' height='45'/></div>");
+                                return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Vista Previa Documento Generado' src = '../../../lib/imagenes/icono_awesome/awe_print_good.png' align='center' width='30' height='30'></div>";
                             } else{ 
-                            	return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_eli.png' align='center' width='45' height='45'/></div>");  
+                            	return  String.format('{0}',"<div style='text-align:center'><img title='Documento No Escaneado' src = '../../../lib/imagenes/icono_awesome/awe_wrong.png' align='center' width='30' height='30'/></div>");  
                             }
                         },
             },
@@ -116,9 +256,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 lazyRender:true,
                 renderer:function (value, p, record){  
                             if(record.data['chequeado_fisico'] == 'si')
-                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_ok.png' align='center' width='45' height='45'/></div>");
+                                return  String.format('{0}',"<div style='text-align:center'><img title='Documento No Escaneado' src = '../../../lib/imagenes/icono_awesome/awe_ok.png' align='center' width='30' height='30'/></div>");
                             else
-                                return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/icono_dibu/dibu_eli.png' align='center' width='45' height='45'/></div>");
+                                return  String.format('{0}',"<div style='text-align:center'><img title='Documento No Escaneado' src = '../../../lib/imagenes/icono_awesome/awe_wrong.png' align='center' width='30' height='30'/></div>");
                         },
             },
             type:'ComboBox',
@@ -128,7 +268,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             egrid:true,
             form:true
         },
-        {
+        /*{
             config:{
                 name: 'momento',
                 fieldLabel: 'momento',
@@ -148,13 +288,13 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 id_grupo:1,
                 grid:true,
                 form:false
-        },
+        },*/
 		
 		
         {
             config:{
                 fieldLabel: "Subir",
-                gwidth: 110,
+                gwidth: 65,
                 inputType:'file',
                 name: 'upload',
                 buttonText: '',   
@@ -163,15 +303,13 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 renderer:function (value, p, record){
                 		if (record.data['tipo_documento'] == 'escaneado') {  
                             if(record.data['extension'].length!=0) {                                
-                                return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Reemplazar Archivo</a></div>");
+                                return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Reemplazar Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
                             } else {
-                            	return  String.format('{0}',"<div style='text-align:center'><a target=_blank align='center' width='70' height='70'>Subir Archivo</a></div>");
+                            	return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Subir Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
                             }
                         }
                         },  
-                buttonCfg: {
-                    iconCls: 'upload-icon'
-                }
+                
             },
             type:'Field',
             sortable:false,
@@ -185,8 +323,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Nombre Doc.',
                 allowBlank: true,
                 anchor: '80%',
-                gwidth: 150,
-                maxLength:200,
+                gwidth: 240,
+                maxLength:250,
                 renderer:function(value,p,record){
                          if( record.data.priorizacion==0||record.data.priorizacion==9){
                              return String.format('<b><font color="red">{0}***</font></b>', value);
@@ -197,10 +335,11 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 
             },
                 type:'TextField',
-                filters:{pfiltro:'t.descripcion_tipo_documento',type:'string'},
+                filters:{pfiltro:'td.nombre',type:'string'},
                 id_grupo:1,
                 grid:true,
-                form:false
+                form:false,
+				bottom_filter : true
         },
         
         {
@@ -209,14 +348,23 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: 'Descripcion Proceso',
                 allowBlank: true,
                 anchor: '80%',
-                gwidth: 150
+                gwidth: 400,
+                renderer:function(value,p,record){
+                         if( record.data.demanda == 'si'){
+                             return String.format('<b><font color="green">{0}</font></b>', value);
+                        }
+                        else{
+                            return String.format('{0}', value);
+                        }
+                 }
                 
             },
                 type:'TextField',
                 filters:{pfiltro:'pw.descripcion',type:'string'},
                 id_grupo:1,
                 grid:true,
-                form:false
+                form:false,
+				bottom_filter : true
         },
         
         {
@@ -349,41 +497,24 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 form:false
         }
 	];
+	
     	//llama al constructor de la clase padre
 		Phx.vista.DocumentoWf.superclass.constructor.call(this,config);
-		
-		/*this.addButton('btnUpload', {
-                text : 'Subir Documento',
-                iconCls : 'bupload1',
-                disabled : true,
-                handler : SubirArchivo,
-                tooltip : '<b>Cargar Documento</b><br/>Al subir el archivo, el registro sera marcado como Chequeado OK'
-        });*/
-        
-        if (this.check_fisico == 'si') {
-	        this.addButton('btnMomento', {
-	                text : 'Cambiar Modo',
-	                iconCls : 'bunlock',
-	                disabled : true,
-	                handler : this.cambiarMomento,
-	                tooltip : '<b>Hacer Obligatorio/Quitar axigencia</b><br/>Se verifica este estado si el documento  tiene al menos un estado de verificacón'
-	        });
-	    }
-        
+		this.esperarEventos = false;        
 
-        this.grid.addListener('celldblclick',this.oncelldblclick,this);
-        this.grid.addListener('cellclick',this.oncellclick,this);
+        //this.grid.addListener('celldblclick', this.oncelldblclick, this);
+        this.grid.addListener('cellclick', this.oncellclick,this);
 
         //si viene del formulario de solicitud agregamos un botono de finalizar
         if(config.tipo === 'solcom'){
         	this.tbar.add('->');
-        	this.addButton('fin_solcom',{ text:'Solo Guardar', iconCls: 'bok', disabled: false,
+        	this.addButton('fin_solcom',{ grupo:[0,1,2,3], text:'Solo Guardar', iconCls: 'bok', disabled: false,
 							        	  handler: function(){
 							        	 	 this.panel.destroy();
 							        	  }, 
 							        	  tooltip: '<b>Solo guardar</b><br>Deja la sollicitud en borrador, permite continuar despues'});
             
-        	this.addButton('fin_requerimiento',{ text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
+        	this.addButton('fin_requerimiento',{ grupo:[0,1,2,3],  text:'Finalizar Solicitud', iconCls: 'badelante', disabled: false,
 									        	 handler: function(){
 									        	 	this.fireEvent('finalizarsol', this, this.maestro, true);
 									        	 
@@ -393,37 +524,77 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         	
         	
         }
-            
-       
+        if(config.tipo === 'proins'){
+        	this.tbar.add('->');        	
+        	this.addButton('siguiente_estado',{ grupo:[0,1,2,3], text:'Siguiente Etapa', iconCls: 'badelante', disabled: false,
+									        	 handler: function(){
+									        	 	this.fireEvent('sigestado', this, this.maestro, true);
+									        	 	this.panel.destroy();
+									        	 }, 
+									        	 tooltip: '<b>Siguiente</b><br>Pasa el proceso a la siguiente etapa'});
+        	    	
+        	
+        }
         
-       this.init();
+        if(config.tipo === 'wizard'){
+        	this.tbar.add('->');        	
+        	this.addButton('siguiente_estado',{ grupo:[0,1,2,3], text:'Siguiente Etapa', iconCls: 'badelante', disabled: false,
+									        	 handler: function(){
+									        	 	this.fireEvent('loadWizard', this, this.maestro, true);
+									        	 	this.panel.destroy();
+									        	 }, 
+									        	 tooltip: '<b>Siguiente</b><br>Pasa el proceso a la siguiente etapa'});
+        	    	
+        	
+        }
+          
+        this.init(); 
+                
+        cm = this.grid.getColumnModel();       
+        if(this.gruposBarraTareas && this.gruposBarraTareas.length == 0){
+         	this.actualizarBasicos();
+        } 
        
-       cm = this.grid.getColumnModel();
-       
-       
-       if (this.check_fisico == 'no') {
-       		cm.setHidden(2,true);
-       		cm.setHidden(3,true);
-       }
-       
-       this.store.baseParams.todos_documentos = this.todos_documentos;
-       this.store.baseParams.anulados = this.anulados;
+    },
+	
+	actualizarBasicos:function(){
+		
+		this.store.baseParams.todos_documentos = this.todos_documentos;
+        this.store.baseParams.anulados = this.anulados;
         this.load({params:{
-            start:0, 
-            limit:50,
+            start: 0, 
+            limit: 50,
             id_proceso_wf: this.id_proceso_wf            
             }});
-            
-                
-       
-       
-       
 	},
+	
+	actualizarSegunTab: function(name, indice){
+    	this.store.baseParams.categoria = name;
+    	this.actualizarBasicos();
+    },
+    rowExpander: new Ext.ux.grid.RowExpander({
+	        tpl : new Ext.Template(
+	            '<br>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Fecha de Registro:&nbsp;&nbsp;</b> {fecha_reg:date("d/m/Y")}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Usuario de Registro:&nbsp;&nbsp;</b> {usr_reg}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Estado:&nbsp;&nbsp;</b> {estado_reg}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Fecha Ult. Modificacion:&nbsp;&nbsp;</b> {fecha_mod:date("d/m/Y")}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Usuario Ult. Modificacion:&nbsp;&nbsp;</b> {usr_mod}</p>',	            
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Fecha Subida:&nbsp;&nbsp;</b> {fecha_upload:date("d/m/Y")}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Usuario Subida:&nbsp;&nbsp;</b> {usr_upload}</p><br>'
+	        )
+    }),
+    
+    arrayDefaultColumHidden:['fecha_reg','fecha_mod','usr_reg','usr_mod','usr_upload','fecha_upload',
+							'estado_reg','fecha_reg'],
+
+    
+    
 	SubirArchivo : function(rec)
     {                   
         
         Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/SubirArchivoWf.php',
-        'Subir Archivo',
+        'Subir ' + rec.data.nombre_tipo_documento,
         {
             modal:true,
             width:450,
@@ -432,9 +603,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     },
 	
 	oncellclick : function(grid, rowIndex, columnIndex, e) {
-	    var record = this.store.getAt(rowIndex);  // Get the Record
-	    var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
-	    
+		
+	    var record = this.store.getAt(rowIndex),
+	        fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
 	    if (fieldName == 'nro_tramite_ori' && record.data.id_proceso_wf_ori) {
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
@@ -442,7 +613,37 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	    	if (record.data.tipo_documento == 'escaneado') {
 	    		this.SubirArchivo(record);
 	    	}
+	    } else if(fieldName == 'modificar') {
+	       	if(record.data['modificar'] == 'si'){
+	       	
+	       	   this.cambiarMomentoClick(record);
+	       	   		
+	       	}
 	    } 
+	    else if (fieldName == 'chequeado') {
+	    	if(record.data['extension'].length!=0) {
+	            var data = "id=" + record.data['id_documento_wf'];
+	            data += "&extension=" + record.data['extension'];
+	            data += "&sistema=sis_workflow";
+	            data += "&clase=DocumentoWf";
+	            data += "&url="+record.data['url'];
+	            //return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
+	            window.open('../../../lib/lib_control/CTOpenFile.php?' + data);
+	        } else if (record.data['tipo_documento'] == 'generado') {
+	        	
+	        	Phx.CP.loadingShow();
+	       		Ext.Ajax.request({
+	                url:'../../'+record.data.action,
+	                params:{'id_proceso_wf':record.data.id_proceso_wf, 'action':record.data.action},
+	                success: this.successExport,
+	                failure: this.conexionFailure,
+	                timeout:this.timeout,
+	                scope:this
+	            });
+	       	} else {
+	       		alert('No se ha subido ningun archivo para este documento');
+	       	} 
+	    }
 		
 	},
 	
@@ -461,34 +662,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                     'DocumentoWf'
         )
     },
-	
-	oncelldblclick : function (grid,index) {
-		record = this.store.getAt(index);
-		if(record.data['extension'].length!=0) {
-            var data = "id=" + record.data['id_documento_wf'];
-            data += "&extension=" + record.data['extension'];
-            data += "&sistema=sis_workflow";
-            data += "&clase=DocumentoWf";
-            data += "&url="+record.data['url'];
-            //return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
-            window.open('../../../lib/lib_control/CTOpenFile.php?' + data);
-        } else if (record.data['tipo_documento'] == 'generado') {
-        	
-        	Phx.CP.loadingShow();
-       		Ext.Ajax.request({
-                url:'../../'+record.data.action,
-                params:{'id_proceso_wf':record.data.id_proceso_wf, 'action':record.data.action},
-                success: this.successExport,
-                failure: this.conexionFailure,
-                timeout:this.timeout,
-                scope:this
-            });
-       	} else {
-       		alert('No se ha subido ningun archivo para este documento');
-       	}
-	},
-		
-			
 	
 	tam_pag:50,	
 	title:'Documento',
@@ -528,62 +701,73 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'usr_upload',
         'tipo_documento',
         'action','solo_lectura','id_documento_wf_ori','id_proceso_wf_ori','nro_tramite_ori',
-        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'}
+        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'modificar','insertar','eliminar','demanda'
 		
 		
 	],
 	
-	preparaMenu:function(tb){
-        Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
-        var data = this.getSelectedData();
-       // if(this.todos_documentos == 'no'){
-	        //this.getBoton('btnUpload').enable();
-	        if (this.check_fisico == 'si') {
-		        this.getBoton('btnMomento').enable(); 
-		        
-		        
-		        if(data['momento']== 'exigir'){
-		            this.getBoton('btnMomento').setIconClass('bunlock')
-		        }
-		        else{
-		            this.getBoton('btnMomento').setIconClass('block')
-		        }
-		    }        
-	        
-	        if(data.nombre_estado.toLowerCase()=='anulada'||data.nombre_estado.toLowerCase()=='anulado'||data.nombre_estado.toLowerCase()=='cancelado'){
-	           //this.getBoton('btnUpload').disable();
-	           if (this.check_fisico == 'si') { 
-	           	this.getBoton('btnMomento').disable();
-	           }
-	        }
-	        if(data.solo_lectura.toLowerCase() == 'si'){
-	        	this.desBotonesTodo();
-	        }
-	   // } else {
-	   // 	
-	   // }      
+	
+    
+    onButtonDel: function(){
+    	if(confirm('¿Está seguro de eliminar estos documentos?')){
+			//recupera los registros seleccionados
+			var filas=this.sm.getSelections();
+			var data= {},aux={};
+			//console.log(filas,i)
+			
+            //arma una matriz de los identificadores de registros que se van a eliminar
+            this.agregarArgsExtraSubmit();
+            
+			for(var i=0;i<this.sm.getCount();i++){
+				if(filas[i].data['eliminar'] == 'si'){
+					aux={};
+					aux[this.id_store]=filas[i].data[this.id_store];
+					data[i]=aux;
+					data[i]._fila=this.store.indexOf(filas[i])+1
+					//rac 22032012
+					
+					Ext.apply(data[i],this.argumentExtraSubmit);
+				}
+				
+				
+				
+			}
+			
+	        Phx.CP.loadingShow();
+			//llama el metodo en la capa de control para eliminación
+			Ext.Ajax.request({
+				url:this.ActDel,
+				success:this.successDel,
+				failure:this.conexionFailure,
+				params:{_tipo:'matriz','row':Ext.util.JSON.encode(data)},
+				timeout:this.timeout,
+				scope:this
+			})
+		}
     },
     
     desBotonesTodo:function(){
-          if (this.check_fisico == 'si') {
-          	this.getBoton('btnMomento').disable();
-          }
+          
           //this.getBoton('btnUpload').disable();
           this.getBoton('edit').disable();
-          this.getBoton('save').disable();
+          
+    },
+    preparaMenu:function(tb){
+        Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
+        var data = this.getSelectedData();
+        if(data['eliminar'] ==  'si' ){
+            this.getBoton('del').enable();
+         
+         }
+         else{
+              this.getBoton('del').disable();
+         } 
+	        
     },
     
     liberaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.liberaMenu.call(this,tb);
-       // if(this.todos_documentos == 'no'){
-	        if (this.check_fisico == 'si') {
-	          	this.getBoton('btnMomento').disable();
-	          
-	        	this.getBoton('btnMomento').disable();
-	        }
-	   //		this.desBotonesTodo();
-	   //}
-             
+                    
     },
 	
 	sortInfo:{
@@ -623,6 +807,18 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         }); 
 	    
 	},
+	cambiarMomentoClick: function(record){
+		Phx.CP.loadingShow();
+	    var d = record.data
+        Ext.Ajax.request({
+            url:'../../sis_workflow/control/DocumentoWf/cambiarMomento',
+            params:{ id_documento_wf: d.id_documento_wf},
+            success: this.successMomento,
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        }); 
+	},
 	successMomento:function(resp){
        Phx.CP.loadingHide();
        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
@@ -631,10 +827,34 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
        }
     },
     
+    onButtonNew:function(){
+    	Phx.vista.DocumentoWf.superclass.onButtonNew.call(this); 
+    	console.log('documentos insertables....', this.documentos_insertables)
+    	this.Cmp.id_tipo_documentos.store.baseParams.id_tipo_documentos = this.documentos_insertables;
+    	this.Cmp.id_tipo_documentos.enable();
+    	this.Cmp.id_tipo_documentos.show();
+    	this.Cmp.chequeado_fisico.disable()
+    	this.Cmp.chequeado_fisico.hide()
+    	
+    },
+    onButtonEdit:function(){
+    	Phx.vista.DocumentoWf.superclass.onButtonEdit.call(this); 
+    	console.log('documentos insertables....', this.documentos_insertables)
+    	this.Cmp.id_tipo_documentos.disable();
+    	this.Cmp.id_tipo_documentos.hide();
+    	this.Cmp.chequeado_fisico.enable()
+    	this.Cmp.chequeado_fisico.show()
+    	
+    },
+    loadValoresIniciales:function(){
+        this.Cmp.id_proceso_wf.setValue(this.id_proceso_wf);
+        Phx.vista.DocumentoWf.superclass.loadValoresIniciales.call(this);
+        
+    },
+    
       
-	bdel:false,
-	bnew:false,
-	bsave:true
+	bdel:true,
+	bsave:false
 	}
 )
 </script>

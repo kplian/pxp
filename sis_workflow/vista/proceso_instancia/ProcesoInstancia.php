@@ -13,9 +13,10 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		Atributos : [],
 		nombreVista : 'ProcesoInstancia',
 		btnReclamar: false,
-		constructor:function(config) {
-			
+		
+		constructor:function(config) {			
 			this.config = config;
+			this.formulario_wizard = 'no';
 			
 			//configuraciones iniciales
 			this.maestro=config.maestro;
@@ -59,7 +60,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			if (this.configProceso[this.config.indice].atributos.vista_tipo != 'detalle') {
 				this.load({params:{start:0, limit:50}}); 
 			}
-			
+						
 		},	
 		
 		armaDetalles : function() {
@@ -96,6 +97,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			}
 			
 		},
+		
 		loadValoresIniciales:function()
 	    {
 	    	
@@ -141,7 +143,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            }
 		        ); 
 		        
-		       this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+		       this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
 		  
 		     
 		        this.addButton('ant_estado',{
@@ -249,7 +251,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            type:'TextField',
 	            filters:{pfiltro:'pw.nro_tramite',type:'string'},	            
 	            grid:true,
-	            form:false 
+	            form:false,
+	            bottom_filter: true 
 				});
 			
 			this.Atributos.push({
@@ -257,7 +260,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 config:{
                     name: 'desc_funcionario',
                     fieldLabel: 'Asignado a',                   
-                    gwidth: 100
+                    gwidth: 130
                 },
                 type:'TextField',
                 filters:{pfiltro:'fun.desc_funcionario2',type:'string'},
@@ -371,7 +374,9 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != undefined &&
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != null) {
 			            var custom_config = Ext.util.JSON.decode(Ext.util.Format.trim(this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config));
-			            Ext.apply(config_columna.config,custom_config);
+			            config_columna = Phx.CP.merge(config_columna,custom_config);
+			            console.log(config_columna.config);
+			            //Ext.apply(config_columna.config,custom_config);
 			        }
 			        if (this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != '' && 
 		            	this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != undefined &&
@@ -565,6 +570,14 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		loadCheckDocumentosWf:function() {
 	            var rec=this.sm.getSelected();
 	            rec.data.nombreVista = this.nombreVista;
+	            
+	            if ('gruposBarraTareasDocumento' in this) {	            	
+	            	rec.data.gruposBarraTareas = this.gruposBarraTareasDocumento;
+	            }
+	            
+	            if (this.formulario_wizard == 'si') {
+	            	rec.data.tipo = 'proins'
+	            } 
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
 	                    'Documentos del Proceso',
 	                    {
@@ -573,8 +586,18 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                    },
 	                    rec.data,
 	                    this.idContenedor,
-	                    'DocumentoWf'
-	        )
+	                    'DocumentoWf',
+	                    {
+	                        config:[{
+	                                  event:'sigestado',
+	                                  delegate: this.openFormEstadoWf,
+	                                  
+	                                }],
+	                        
+	                        scope:this
+	                     }
+	       );
+	       this.formulario_wizard = 'no';
 	    },
 	    onAntEstado:function(wizard,resp){
 	            Phx.CP.loadingShow();
@@ -585,7 +608,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                        operacion: 'cambiar',
 	                        obs:resp.obs},
 	                argument:{wizard:wizard},        
-	                success:this.successSinc,
+	                success:this.successSincAnt,
 	                failure: this.conexionFailure,
 	                timeout:this.timeout,
 	                scope:this
@@ -593,7 +616,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	     },
 	    
 	    
-	    successSinc:function(resp){
+	    successSincAnt:function(resp){
 	        Phx.CP.loadingHide();
 	        resp.argument.wizard.panel.destroy()
 	        this.reload();
@@ -614,6 +637,15 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                config:[{
 	                          event:'beforesave',
 	                          delegate: this.onSaveWizard,
+	                          
+	                        },
+	                        {
+	                          event:'requirefields',
+	                          delegate: function () {
+		                          	this.onButtonEdit();
+						        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
+						        	this.formulario_wizard = 'si';
+	                          },
 	                          
 	                        }],
 	                
@@ -639,25 +671,16 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	             })
 	   },
 	   
-	   openFormEstadoWf:function() {       
-        
-	        var rec=this.sm.getSelected();	        
-	            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
-	            'Estado de Wf',
-	            {
-	                modal:true,
-	                width:700,
-	                height:450
-	            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
-	            {
-	                config:[{
-	                          event:'beforesave',
-	                          delegate: this.onSaveWizard,
-	                          
-	                        }],	                
-	                scope:this
-	             });	        
+	   
+	   successSave : function(resp){
+	    	Phx.vista.ProcesoInstancia.superclass.successSave.call(this,resp);
+	    	if (this.formulario_wizard == 'si') {
+	    		this.openFormEstadoWf();	    		
+	    		this.formulario_wizard = 'no';	    		
+	    	}
+	    	
 	    },
+	    
 	   
 	    successWizard:function(resp){
 	        Phx.CP.loadingHide();
@@ -730,11 +753,13 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		          this.getBoton('ant_estado').enable(); 
 		          this.getBoton('btnReclamar').enable();         
 		          
-		          if(data.codigo_estado == 'borrador' ){ 
+		          if(data.estado == 'borrador' ){ 
 		             this.getBoton('ant_estado').disable();
 		           
 		          }
-		          if(data.codigo_estado == 'finalizado' || data.codigo_estado =='anulado'){
+		          
+		          if(data.estado == 'finalizado' || data.estado =='anulado'){
+		          	
 		               this.getBoton('sig_estado').disable();
 		               this.getBoton('ant_estado').disable();
 		               this.getBoton('btnReclamar').disable();
@@ -764,11 +789,13 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	    },
 	    onButtonNew:function(){
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.window.setTitle(this.configProceso[this.config.indice].atributos.menu_nombre);
 			this.ocultarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonNew.call(this);
 		},
 		onButtonEdit:function(){
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.window.setTitle(this.configProceso[this.config.indice].atributos.menu_nombre);
 			this.mostrarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonEdit.call(this);
 		},
