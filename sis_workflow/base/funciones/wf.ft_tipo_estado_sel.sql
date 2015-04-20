@@ -32,6 +32,7 @@ DECLARE
     
     v_tipo_asignacion  varchar;
     v_nombre_func_list varchar;
+    v_id_depto_wf      integer; 
     
     
 			    
@@ -54,7 +55,9 @@ BEGIN
      				
     	begin
         
-    
+             IF   pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+               v_id_depto_wf =  COALESCE(v_parametros.id_depto_wf,0);
+             END IF;
      
              v_consulta:=' 
                    SELECT 
@@ -70,7 +73,8 @@ BEGIN
                       FALSE,
                       '||v_parametros.cantidad||',
                       '||v_parametros.puntero||',
-                      '||quote_literal(v_parametros.filtro)||'
+                      '||quote_literal(v_parametros.filtro)||',
+                      '||COALESCE(v_id_depto_wf,0)::varchar||'
                       
                      ) AS (id_funcionario integer,
                            desc_funcionario text,
@@ -95,7 +99,9 @@ BEGIN
      				
     	begin
        
-        
+             IF   pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+               v_id_depto_wf =  COALESCE(v_parametros.id_depto_wf,0);
+             END IF;
     
              v_consulta:=' 
                    SELECT 
@@ -108,7 +114,8 @@ BEGIN
                       TRUE,
                       '||v_parametros.cantidad||',
                       '||v_parametros.puntero||',
-                      '||quote_literal(v_parametros.filtro)||'
+                      '||quote_literal(v_parametros.filtro)||',
+                      '||COALESCE(v_id_depto_wf,0)::varchar||'
                       
                      ) AS (total bigint)';
                       

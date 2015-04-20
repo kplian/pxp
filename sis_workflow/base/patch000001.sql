@@ -1233,3 +1233,16 @@ IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface d
 
 /*****************************F-SCP-RCM-WF-0-16/04/2015*************/
 
+
+/*****************************I-SCP-RCM-WF-0-17/04/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE tes.tplan_pago
+  ADD COLUMN id_depto_conta INTEGER;
+
+COMMENT ON COLUMN tes.tplan_pago.id_depto_conta
+IS 'define el depto de conta que contabiliza el pago, ...  no consideramos ep, cc (antes solo lo teneiamos en la obligacion de pago)';
+
+
+/*****************************F-SCP-RCM-WF-0-17/04/2015*************/

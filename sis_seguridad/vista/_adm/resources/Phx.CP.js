@@ -1623,7 +1623,17 @@ Phx.CP=function(){
 				}
 		    }  
 		},
-		
+		setValueCombo: function(cmb, id_combo, value_combo){
+		    	if (!cmb.store.getById(id_combo)) {
+		            var recTem = new Array();
+		            recTem[cmb.valueField] = id_combo;
+		            recTem[cmb.displayField] = value_combo;
+		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
+		            cmb.store.commitChanges();
+		        }
+		        cmb.setValue(id_combo);
+    	
+   		 },
 		
 		
 		// para cargar ventanas hijo

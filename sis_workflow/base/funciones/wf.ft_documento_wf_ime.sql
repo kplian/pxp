@@ -394,8 +394,10 @@ BEGIN
             where pw.id_proceso_wf = v_parametros.id_proceso_wf;
             
             
+           
+            
             -- si no tiene una grupacion de pestañas definida para el estado recuepra la del proceso macro
-            IF v_registros_pwf.grupo_doc is not null THEN
+            IF v_registros_pwf.grupo_doc is not null and  v_registros_pwf.grupo_doc != '' THEN
               v_config_grupo_doc = v_registros_pwf.grupo_doc;
             ELSE
               v_config_grupo_doc = v_registros_pwf.grupo_doc_def;

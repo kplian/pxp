@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -397,18 +399,6 @@ BEGIN
                  --  raise exception 'Estados...  %',v_registros.pedir_obs;
            
               
-                -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
-                 raise notice ' si solo hay un estado';
-                   SELECT 
-                   *
-                    into
-                   v_num_funcionarios 
-                   FROM wf.f_funcionario_wf_sel(
-                       p_id_usuario, 
-                       va_id_tipo_estado[1], 
-                       v_registros.fecha_ini,
-                       v_registros.id_estado_wf,
-                       TRUE) AS (total bigint);
                                    
                  --verificamos el numero de deptos
                  raise notice 'verificamos el numero de deptos';
@@ -424,7 +414,41 @@ BEGIN
                      v_registros.fecha_ini,
                      v_registros.id_estado_wf,
                      TRUE) AS (total bigint);
-                                 
+                
+                
+                --recupera el depto   
+                IF v_num_deptos >= 1 THEN
+                  
+                  SELECT 
+                       id_depto
+                         into
+                       v_id_depto_estado
+                  FROM wf.f_depto_wf_sel(
+                       p_id_usuario, 
+                       va_id_tipo_estado[1], 
+                       v_registros.fecha_ini,
+                       v_registros.id_estado_wf,
+                       FALSE) 
+                       AS (id_depto integer,
+                         codigo_depto varchar,
+                         nombre_corto_depto varchar,
+                         nombre_depto varchar,
+                         prioridad integer,
+                         subsistema varchar);
+               
+                END IF;
+                -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
+                 raise notice ' si solo hay un estado';
+                   SELECT 
+                   *
+                    into
+                   v_num_funcionarios 
+                   FROM wf.f_funcionario_wf_sel(
+                       p_id_usuario, 
+                       va_id_tipo_estado[1], 
+                       v_registros.fecha_ini,
+                       v_registros.id_estado_wf,
+                       TRUE,1,0,'0=0', COALESCE(v_id_depto_estado,0)) AS (total bigint);              
                              
                   -- si hay mas de un estado disponible  preguntamos al usuario
                   v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Verificacion para el siguiente estado)'); 
@@ -895,7 +919,7 @@ BEGIN
               v_reg_tipo_estado
             from wf.ttipo_estado te 
             where te.id_tipo_estado = v_parametros.id_tipo_estado;
-                      
+            --raise exception 'gonzalo %',v_parametros.id_tipo_estado;          
             IF  v_reg_tipo_estado.funcion_inicial is not NULL THEN
                 EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_inicial  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_parametros.id_proceso_wf_act::varchar||','||COALESCE(''''||v_codigo_estado||'''','NULL')||')');
             END IF;

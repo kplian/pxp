@@ -92,7 +92,7 @@ BEGIN
             titulo_alerta, 
             parametros_ad,
             admite_obs,
-            estapa,
+            etapa,
             grupo_doc
             
             
@@ -125,7 +125,7 @@ BEGIN
             v_parametros.titulo_alerta, 
             v_parametros.parametros_ad,
             v_parametros.admite_obs,
-            v_parametros.estapa,
+            v_parametros.etapa,
             v_parametros.grupo_doc
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;

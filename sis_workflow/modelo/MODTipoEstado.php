@@ -85,6 +85,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('id_tipo_estado','id_tipo_estado','integer');
         $this->setParametro('fecha','fecha','date');
         $this->setParametro('id_estado_wf','id_estado_wf','integer');
+		$this->setParametro('id_depto_wf','id_depto_wf','integer');
         
         //Definicion de la lista del resultado del query
         $this->captura('id_funcionario','int4');
