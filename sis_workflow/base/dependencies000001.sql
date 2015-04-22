@@ -395,3 +395,14 @@ CREATE TRIGGER trig_tcategoria_documento
   EXECUTE PROCEDURE wf.ftrig_tcategoria_documento();
 
 /*******************************************F-DEP-JRR-WF-0-27/03/2014*************************************/
+
+
+/*******************************************I-DEP-JRR-WF-0-22/04/2015*************************************/
+
+CREATE TRIGGER trig_tobs
+  AFTER INSERT OR UPDATE 
+  ON wf.tobs FOR EACH ROW 
+  EXECUTE PROCEDURE wf.ftrig_tobs);
+  
+/*******************************************F-DEP-JRR-WF-0-22/04/2015*************************************/
+  

@@ -29,6 +29,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         //declaracion de eventos
         this.addEvents('beforesave');
         this.addEvents('successsave');
+        this.addEvents('requirefields');
         if(config.configExtra){
         	 this.Atributos = this.Atributos.concat(config.configExtra);
         }
@@ -87,6 +88,10 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         	reg.ROOT.datos.error_validacion_documentos == 'no' && this.forzar_documentos == 'no'){
               //inicia el proceso de dibjar la interface
               this.iniciarInterfaz(resp.argument.config,reg.ROOT.datos);
+        } else if (reg.ROOT.datos.error_validacion_campos == 'si') {
+        	this.fireEvent('requirefields',this);
+        	Ext.getCmp(this.config.idContenedor).close();
+        
         } else if (reg.ROOT.datos.error_validacion_documentos == 'si' || this.forzar_documentos == 'si') {
         	this.forzar_documentos = 'no';
         	this.banderaCerrar = true;

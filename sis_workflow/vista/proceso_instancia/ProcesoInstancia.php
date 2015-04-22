@@ -638,6 +638,15 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                          event:'beforesave',
 	                          delegate: this.onSaveWizard,
 	                          
+	                        },
+	                        {
+	                          event:'requirefields',
+	                          delegate: function () {
+		                          	this.onButtonEdit();
+						        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
+						        	this.formulario_wizard = 'si';
+	                          },
+	                          
 	                        }],
 	                
 	                scope:this
@@ -662,64 +671,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	             })
 	   },
 	   
-	   openFormEstadoWf:function() {
-	   		//validar campos del formulario
-	   		var rec=this.sm.getSelected();	
-	   		Phx.CP.loadingShow();
-		   	Ext.Ajax.request({
-	                url: '../../sis_workflow/control/ProcesoWf/verficarSigEstProcesoWf',
-	                params: { id_proceso_wf: rec.data.id_proceso_wf,
-	                          operacion: 'verificar'},
-	                success: this.successSinc,
-	                failure: this.meConexionFailure,
-	                timeout: this.timeout,
-	                scope: this
-	            });       
-        
-	        	        
-	    },
-	    
-	    successSinc:function(resp){
-	        Phx.CP.loadingHide();
-	        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-	        if (!reg.ROOT.error ) {
-		        if(reg.ROOT.datos.error_validacion_campos == 'no'){
-		              //abre interfaz del wizard
-		              this.openWizard();	
-		              	              
-		        } else if (reg.ROOT.datos.error_validacion_campos == 'si'){
-		        	this.onButtonEdit();
-		        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
-		        	this.formulario_wizard = 'si';
-		        	
-		        }
-		    }
-	        else{
-	            alert('Error al identificar siguientes pasos')
-	        }
-	    },
-	    openWizard : function () {
-	    	var rec=this.sm.getSelected();	 
-	    	if ('gruposBarraTareasDocumento' in this) {	            	
-	        	rec.data.gruposBarraTareas = this.gruposBarraTareasDocumento;
-	        }       
-            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
-            'Estado de Wf',
-            {
-                modal:true,
-                width:700,
-                height:450
-            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
-            {
-                config:[{
-                          event:'beforesave',
-                          delegate: this.onSaveWizard,
-                          
-                        }],	                
-                scope:this
-             });
-	    },
-	    successSave : function(resp){
+	   
+	   successSave : function(resp){
 	    	Phx.vista.ProcesoInstancia.superclass.successSave.call(this,resp);
 	    	if (this.formulario_wizard == 'si') {
 	    		this.openFormEstadoWf();	    		
