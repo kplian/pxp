@@ -115,7 +115,7 @@ BEGIN
             v_id_alarma :=  param.f_inserta_alarma(
                                                   v_parametros.id_funcionario_resp,
                                                   v_descripcion,    --descripcion alarmce
-                                                  '../../../sis_workflow/vista/Obs/ObsFuncionario.php',--acceso directo
+                                                  '../../../sis_workflow/vista/obs/ObsFuncionario.php',--acceso directo
                                                   now()::date,
                                                   'notificacion',
                                                   '',   -->
