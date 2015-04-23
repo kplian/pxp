@@ -402,7 +402,7 @@ CREATE TRIGGER trig_tcategoria_documento
 CREATE TRIGGER trig_tobs
   AFTER INSERT OR UPDATE 
   ON wf.tobs FOR EACH ROW 
-  EXECUTE PROCEDURE wf.ftrig_tobs);
+  EXECUTE PROCEDURE wf.ftrig_tobs();
   
 /*******************************************F-DEP-JRR-WF-0-22/04/2015*************************************/
   

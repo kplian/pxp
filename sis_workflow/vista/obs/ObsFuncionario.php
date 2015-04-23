@@ -10,7 +10,7 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.ObsFuncionario=Ext.extend(Phx.gridInterfaz,{
     constructor:function(config){
 		this.maestro=config.maestro;
 		
@@ -21,11 +21,11 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
             toggleHandler: function(btn, pressed) {
                
                 if(pressed){
-                    this.store.baseParams.todos = 1;
+                    this.store.baseParams.estado = 'todos';
                      
                 }
                 else{
-                   this.store.baseParams.todos = 0;
+                   this.store.baseParams.estado = 'abierto';
                 }
                 
                 this.onButtonAct();
@@ -35,19 +35,21 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
            
            
     	//llama al constructor de la clase padre
-		Phx.vista.Obs.superclass.constructor.call(this, config);
+		Phx.vista.ObsFuncionario.superclass.constructor.call(this, config);
+		
+		this.addButton('diagrama_gantt',{grupo:[0,1,2,3], text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+        this.addButton('btnChequeoDocumentos',{grupo:[0,1,2,3], text: 'Documentos',iconCls: 'bchecklist',disabled: true,handler: this.loadCheckDocumentosSol,tooltip: '<b>Documentos del Proceso</b><br/>Subir los documetos requeridos en el proceso seleccionada.'});
+        
+		
+		
 		this.init();
-		this.addButton('btnCerrar', {
-                text : 'Cerrar',
-                iconCls : 'block',
-                disabled : true,
-                handler : this.cerrarObs,
-                tooltip : '<b>Cerrar</b><br>Si la obligación ha sido resuelta es necesario cerrarla para continuar con el trámite'
-        });
+		
+		
+		
         
         
 		
-		this.store.baseParams = {  todos: 0, id_proceso_wf: config.id_proceso_wf, id_estado_wf: config.id_estado_wf, num_tramite: config.num_tramite}; 
+		this.store.baseParams = {  estado: 'abierto'}; 
         this.load({params: { start:0, limit: this.tam_pag } })
 	},
 			
@@ -71,11 +73,26 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'Field',
 			form:true 
+		},{
+			config:{
+				name: 'nro_tramite',
+				fieldLabel: 'Trámite',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 150,
+				maxLength:100
+			},
+				type:'TextField',
+				filters:{pfiltro:'pwf.nro_tramite',type:'string'},
+				bottom_filter: true,
+				id_grupo:1,
+				grid:true,
+				form:false
 		},
 		{
 			config:{
 				name: 'estado',
-				fieldLabel: 'Estado',
+				fieldLabel: 'Estado Obs',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -87,42 +104,19 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		{
-            config:{
-                name:'id_funcionario_resp',
-                origen:'FUNCIONARIO',
-                tinit: false,
-                qtip: 'Funcionario responsable  de cumplir o hacer cumplir la observación',
-                fieldLabel:'Funcionario Resp.',
-                allowBlank: true,
-                gwidth: 200,
-                valueField: 'id_funcionario',
-                gdisplayField:'desc_funcionario',//mapea al store del grid
-                anchor: '100%',
-                gwidth: 200,
-                renderer: function (value, p, record){return String.format('{0}', record.data['desc_funcionario']);}
-             },
-            type:'ComboRec',
-            id_grupo:0,
-            filters:{   
-                pfiltro:'FUN.desc_funcionario1::varchar',
-                type:'string'
-            },
-           
-            grid:true,
-            form:true
-        },
+		
 		{
 			config:{
 				name: 'titulo',
 				fieldLabel: 'Título',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 180,
 				maxLength:100
 			},
 				type:'TextField',
 				filters:{pfiltro:'obs.titulo',type:'string'},
+				bottom_filter: true,
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -138,9 +132,25 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 			},
 				type:'TextArea',
 				filters: { pfiltro: 'obs.descripcion', type:'string' },
+				bottom_filter: true,
 				id_grupo:1,
 				grid:true,
 				form:true
+		},
+		{
+			config:{
+				name: 'nombre_tipo_proceso',
+				fieldLabel: 'Proceso Wf',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 320,
+				maxLength: 300
+			},
+				type:'Field',
+				filters: { pfiltro: 'tp.nombre', type: 'string' },
+				id_grupo: 1,
+				grid: true,
+				form: false
 		},
 		{
 			config:{
@@ -154,23 +164,9 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 				type:'Field',
 				filters:{pfiltro:'te.nombre_estado',type:'string'},
 				id_grupo:1,
+				bottom_filter: true,
 				grid:true,
 				form:false
-		},
-		{
-			config:{
-				name: 'nombre_tipo_proceso',
-				fieldLabel: 'Proceso Wf',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 300,
-				maxLength: 300
-			},
-				type:'Field',
-				filters: { pfiltro: 'tp.nombre', type: 'string' },
-				id_grupo: 1,
-				grid: true,
-				form: false
 		},
 		{
 			config:{
@@ -178,7 +174,7 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Fecha Ini',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 125,
 							format: 'd/m/Y', 
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
@@ -194,9 +190,9 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Fecha Fin',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+				gwidth: 125,
+				format: 'd/m/Y', 
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
 				filters: { pfiltro: 'obs.fecha_fin', type: 'date' },
@@ -211,7 +207,7 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Desc fin',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 125,
 				maxLength:-100
 			},
 				type: 'TextField',
@@ -246,6 +242,7 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 			},
 				type:'Field',
 				filters:{pfiltro:'usu1.cuenta',type:'string'},
+				bottom_filter: true,
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -314,9 +311,7 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 	],
 	tam_pag:50,	
 	title:'Observaciones',
-	ActSave:'../../sis_workflow/control/Obs/insertarObs',
-	ActDel:'../../sis_workflow/control/Obs/eliminarObs',
-	ActList:'../../sis_workflow/control/Obs/listarObs',
+	ActList:'../../sis_workflow/control/Obs/listarObsFuncionario',
 	id_store:'id_obs',
 	fields: [
 		{name:'id_obs', type: 'numeric'},
@@ -335,14 +330,27 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		'desc_funcionario','codigo_tipo_estado','nombre_tipo_estado','nombre_tipo_proceso'
+		'desc_funcionario','codigo_tipo_estado',
+		'nombre_tipo_estado','nombre_tipo_proceso','nro_tramite',
+		'id_estado_wf','id_proceso_wf'
 		
 	],
+	
+	rowExpander: new Ext.ux.grid.RowExpander({
+	        tpl : new Ext.Template(
+	            '<br>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Título:&nbsp;&nbsp;</b> {titulo}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Descripción:&nbsp;&nbsp;</b> {descripcion}</p>',
+	            '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Creado por:&nbsp;&nbsp;</b> {usr_reg}</p><br><br>'
+	        )
+    }),
+    
+    arrayDefaultColumHidden:['fecha_mod','usr_reg','usr_mod','descripcion','usuario_ai','estado_reg'],
 	
 	 onButtonNew:function(){  
 	 	
 	 	      
-            Phx.vista.Obs.superclass.onButtonNew.call(this);
+            Phx.vista.ObsFuncionario.superclass.onButtonNew.call(this);
             //agrega un filtro para que se liste el funcionario del usuario y sea el primero que se cargue
             this.Cmp.id_funcionario_resp.store.load({params:{start:0,limit:this.tam_pag, tipo_filtro: 'usuario' }, 
 		       callback : function (r) {
@@ -362,38 +370,54 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
     onButtonEdit:function(){ 
     	
     	     //todo validar ...solo de pueden editar observaciones del mismo proceso y estado seleccionado   
-            Phx.vista.Obs.superclass.onButtonEdit.call(this);
+            Phx.vista.ObsFuncionario.superclass.onButtonEdit.call(this);
             this.Cmp.id_funcionario_resp.disable()
             
             
      
     },
+    
+     loadCheckDocumentosSol:function() {
+            var rec=this.sm.getSelected();
+            Phx.CP.loadWindows(
+            	     '../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
+                    'Documentos del trámite '+rec.data.nro_tramite,
+                    {
+                        width:'90%',
+                        height:500
+                       
+                    },
+                    rec.data,
+                    this.idContenedor,
+                    'DocumentoWf');
+    },
+    
+    diagramGantt:function(){  
+		
+		  Phx.CP.loadingShow();
+            var data = this.sm.getSelected().data.id_proceso_wf;
+            Ext.Ajax.request({
+                url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
+                params:{'id_proceso_wf':data},
+                success:this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });  
+     },
      preparaMenu:function(n){
       var data = this.getSelectedData();
       var tb =this.tbar;
        
-        Phx.vista.Obs.superclass.preparaMenu.call(this,n);
-        
-        if(this.store.baseParams.todos == 1){
-        	
-        	this.getBoton('new').disable();
-        	this.getBoton('edit').disable();
-        	this.getBoton('del').disable();
-        	this.getBoton('btnCerrar').disable();
-        }
-        else{
-        	if(data.estado == 'abierto'){
-        	   this.getBoton('btnCerrar').enable();	
-        	}
-        	else{
-        	   this.getBoton('btnCerrar').disable();	
-        	}
-        }
+        Phx.vista.ObsFuncionario.superclass.preparaMenu.call(this,n);
+        this.getBoton('btnChequeoDocumentos').enable();	
+        this.getBoton('diagrama_gantt').enable();	
         return tb 
      }, 
      liberaMenu:function(){
-        var tb = Phx.vista.Obs.superclass.liberaMenu.call(this);
-        this.getBoton('btnCerrar').disable();
+        var tb = Phx.vista.ObsFuncionario.superclass.liberaMenu.call(this);
+        this.getBoton('btnChequeoDocumentos').disable();
+        this.getBoton('diagrama_gantt').disable();
         return tb
     },
     
@@ -424,7 +448,9 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_obs',
 		direction: 'ASC'
 	},
-	bdel: true,
+	bedit: false,
+	bnew:  false,
+	bdel:  false,
 	bsave: false
 	}
 )

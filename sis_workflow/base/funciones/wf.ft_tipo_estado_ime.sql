@@ -271,8 +271,7 @@ BEGIN
             plantilla_mensaje_asunto = v_parametros.plantilla_mensaje_asunto,
             plantilla_mensaje = v_parametros.plantilla_mensaje,
             id_usuario_mod = p_id_usuario,
-            fecha_mod = now(),
-            etapa = v_parametros.etapa
+            fecha_mod = now()
 			
 			where id_tipo_estado=v_parametros.id_tipo_estado;
             

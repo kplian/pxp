@@ -64,7 +64,7 @@ BEGIN
             SET               
               id_tipo_estado = v_id_tipo_estado,
               regla = p_regla,
-              pantilla = p_plantilla,
+              plantilla = p_plantilla,
               correos = string_to_array(p_correos,','),
               modificado = 1 ,
               asunto = p_asunto            

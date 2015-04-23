@@ -143,7 +143,7 @@ Menu=function(config){
 		
 		maxSize: 500,
 		collapsible: true,
-		//collapseMode:'mini',
+		collapseMode:'mini',
 		// floatable:true,
 		animCollapse:true,
         animate: true,
