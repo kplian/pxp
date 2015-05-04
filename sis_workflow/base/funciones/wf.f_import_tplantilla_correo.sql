@@ -1,13 +1,12 @@
 CREATE OR REPLACE FUNCTION wf.f_import_tplantilla_correo (
-p_accion varchar,
-p_codigo varchar,
-p_codigo_tipo_estado varchar,		
-p_codigo_tipo_proceso varchar,	
-p_regla text,
-p_plantilla text,	
-p_correos text,
-p_asunto varchar	
-
+  p_accion varchar,
+  p_codigo varchar,
+  p_codigo_tipo_estado varchar,
+  p_codigo_tipo_proceso varchar,
+  p_regla text,
+  p_plantilla text,
+  p_correos text,
+  p_asunto varchar
 )
 RETURNS varchar AS
 $body$
@@ -82,4 +81,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-

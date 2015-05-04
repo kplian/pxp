@@ -83,12 +83,14 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			null,
 			null,
+
 			v_parametros.asunto,
             v_parametros.requiere_acuse,
             v_parametros.url_acuse,
             v_parametros.mensaje_acuse,
             v_parametros.mensaje_link_acuse,
             v_parametros.mandar_automaticamente
+
 							
 			
 			

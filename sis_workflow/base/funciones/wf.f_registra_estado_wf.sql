@@ -219,10 +219,10 @@ BEGIN
        raise exception  'El proceso macro no esta relacionado con ningun sistema';
     
     END IF;
-    
+   
      --verificamos si requiere manejo de alerta
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
-        
+        	 
            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
            v_cont_alarma = 1;
            v_plantilla_asunto = p_titulo;
@@ -336,7 +336,7 @@ BEGIN
              
               
     END IF;
-    
+
     
      
    
