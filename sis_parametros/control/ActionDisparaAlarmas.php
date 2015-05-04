@@ -83,23 +83,33 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 		$errores_msg = '';
         
 		foreach ($res2->datos as $d){
-	       		$correo = new CorreoExterno();
+	       		
 				try {	
-			       		
+			       		$correo = new CorreoExterno();
 						if(isset($d['email_empresa'])){
 							$correo->addDestinatario($d['email_empresa'],$d['email_empresa']); 
 							$correo->addCC($_SESSION["_MAIL_PRUEBAS"],'Correo de Pruebas');  
 			                
 			                if ($d['acceso_directo'] !='' && $d['acceso_directo'] != NULL){
 			                  $correo->setAccesoDirecto($d['id_alarma']);  
-			                }                
+			                } 
+							
+							if (!PHPMailer::validateAddress($d['email_empresa'])) {
+					            throw new phpmailerAppException("Email address " . $d['email_empresa'] . " is invalid -- aborting!");
+					        }               
 			                
 			            } else if (isset($d['correos'])) {
 			            	$correos = explode(',', $d['correos']);
 							foreach($correos as $value) {
 			            		$correo->addDestinatario($value,$value);
+								if (!PHPMailer::validateAddress($value)) {
+						            throw new phpmailerAppException("Email address " . $value . " is invalid -- aborting!");
+						        }
 							}
+							
 			            }
+						
+						
 						
 						if(isset($d['requiere_acuse'])){
 							if($d['requiere_acuse'] == 'si'){
