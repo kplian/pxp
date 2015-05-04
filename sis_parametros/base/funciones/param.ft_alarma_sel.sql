@@ -69,14 +69,19 @@ BEGIN
                         alarm.titulo_correo,
 						alarm.acceso_directo,
 						alarm.correos,
-						alarm.documentos
+						alarm.documentos,
+                        alarm.id_plantilla_correo,
+                        pc.url_acuse,
+                        pc.requiere_acuse,
+                        pc.mensaje_link_acuse
                         from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
                         left join segu.tusuario_rol urol on urol.id_usuario =usu.id_usuario and urol.estado_reg = ''activo'' and urol.id_rol = 1
                         left join segu.tpersona per on per.id_persona = usu.id_persona
                         left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
-                        where alarm.sw_correo = 0 and urol.id_rol is null';
+                        left join wf.tplantilla_correo pc on pc.id_plantilla_correo = alarm.id_plantilla_correo
+                        where alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
                         
              --modificar correpondencia
            /*  update param.talarma 
@@ -248,7 +253,71 @@ BEGIN
             
 
 		end;    
-        			
+    /*********************************    
+ 	#TRANSACCION:  'PM_ALARMWF_SEL'
+ 	#DESCRIPCION:	consulta par ala interface de correos, para ver acuses de recibo, fallar y permitir el reenvio de correos
+ 	#AUTOR:		rac	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
+
+	elseif(p_transaccion='PM_ALARMWF_SEL')then
+     				
+    	begin
+        
+        	--raise exception 'dddddddddddddddddd';
+    		--Sentencia de la consulta
+			v_consulta:='SELECT
+                     	alarm.id_alarma,
+                        alarm.sw_correo,
+                        alarm.correos,
+                        alarm.descripcion,
+                        alarm.recibido,
+                        alarm.fecha_recibido,
+                        alarm.estado_envio,
+                        alarm.desc_falla,
+                        alarm.titulo_correo,
+                        (alarm.fecha-now()::date)::integer as dias
+						from param.talarma alarm
+						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
+				        where ';
+				       
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			raise notice '%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_ALARMWF_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		rac	
+ 	#FECHA:		18-11-2015 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_ALARMWF_CONT')then
+
+		begin
+        	
+            
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(id_alarma)
+					    from param.talarma alarm
+						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
+				        where ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;    			
 	else
 					     
 		raise exception 'Transaccion inexistente';

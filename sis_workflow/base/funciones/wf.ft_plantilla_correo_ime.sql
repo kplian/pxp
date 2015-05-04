@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_plantilla_correo_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -61,7 +63,12 @@ BEGIN
 			usuario_ai,
 			fecha_mod,
 			id_usuario_mod,
-			asunto
+			asunto,
+            requiere_acuse,
+            url_acuse,
+            mensaje_acuse,
+            mensaje_link_acuse,
+            mandar_automaticamente
           	) values(
 			v_parametros.id_tipo_estado,
 			v_parametros.regla,
@@ -76,7 +83,12 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			null,
 			null,
-			asunto
+			v_parametros.asunto,
+            v_parametros.requiere_acuse,
+            v_parametros.url_acuse,
+            v_parametros.mensaje_acuse,
+            v_parametros.mensaje_link_acuse,
+            v_parametros.mandar_automaticamente
 							
 			
 			
@@ -111,7 +123,12 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai,
-			asunto = v_parametros.asunto
+			asunto = v_parametros.asunto,
+            requiere_acuse = v_parametros.requiere_acuse,
+            url_acuse = v_parametros.url_acuse,
+            mensaje_acuse = v_parametros.mensaje_acuse,
+            mensaje_link_acuse = v_parametros.mensaje_link_acuse,
+            mandar_automaticamente = v_parametros.mandar_automaticamente
 			where id_plantilla_correo=v_parametros.id_plantilla_correo;
                
 			--Definicion de la respuesta

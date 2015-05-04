@@ -13,16 +13,7 @@ class ACTAlarma extends ACTbase{
 		//$this->objParam->defecto('ordenacion','id_alarma');
 
 		$this->objParam->defecto('alarm.fecha','desc');
-		/*
-		if($this->objParam->getParametro('id_usuario')!='')
-		{
-			$this->objParam->addFiltro("alarm.id_funcionario in (Select fun.id_funcionario
-            													 from orga.tfuncionario fun
-            													 inner join segu.tusuario usu on usu.id_persona=fun.id_persona
-                                                                 where usu.id_usuario=".$this->objParam->getParametro('id_usuario').")");	
-		}
 		
-		*/
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -30,6 +21,26 @@ class ACTAlarma extends ACTbase{
 		} else{
 			$this->objFunc=$this->create('MODAlarma');	
 			$this->res=$this->objFunc->listarAlarma();
+		}	
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+	}
+	
+	function listarAlarmaWF(){
+		//$this->objParam->defecto('ordenacion','id_alarma');
+
+		$this->objParam->defecto('alarm.fecha','desc');		
+		if($this->objParam->getParametro('id_proceso_wf')!='')
+		{
+			$this->objParam->addFiltro("alarm.id_proceso_wf=".$this->objParam->getParametro('id_proceso_wf'));	
+		}
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODAlarma','listarAlarmaWF');
+		} else{
+			$this->objFunc=$this->create('MODAlarma');	
+			$this->res=$this->objFunc->listarAlarmaWF();
 		}	
 		$this->res->imprimirRespuesta($this->res->generarJson());
 		
@@ -65,6 +76,27 @@ class ACTAlarma extends ACTbase{
         $this->res=$this->objFunc->getAlarma();
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+	
+	function reenviarCorreo(){
+		$this->objFunc=$this->create('MODAlarma');		
+		$this->res=$this->objFunc->reenviarCorreo();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function alterarDestino(){
+		$this->objFunc=$this->create('MODAlarma');		
+		$this->res=$this->objFunc->alterarDestino();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+   function confirmarAcuseRecibo(){
+		$this->objFunc=$this->create('MODAlarma');		
+		$this->res=$this->objFunc->confirmarAcuseRecibo();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+
+
 			
 }
 

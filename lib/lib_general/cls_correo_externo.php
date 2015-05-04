@@ -14,35 +14,40 @@ class CorreoExterno
     protected $autentificacion;
     protected $SMTPSecure;
     protected $acceso_directo;
+	protected $acuse_recibo;
+	protected $mensaje_acuse;
+	protected $url_acuse;
+	protected $token_acuse;
   
     protected $mail;
     
     function __construct(){
             
-        $this->autentificacion=$_SESSION['_MAIL_AUTENTIFICACION'];        
-        $this->mail_usuario=$_SESSION['_MAIL_USUARIO'];
-        $this->mail_password=$_SESSION['_MAIL_PASSWORD'];
-        $this->mail_servidor=$_SESSION['_MAIL_SERVIDOR'];
-        $this->mail_puerto=$_SESSION['_MAIL_PUERTO'];
-        
-        $this->remitente=$_SESSION['_MAIL_REMITENTE'];
-        $this->nombre_remitente=$_SESSION['_NOMBER_REMITENTE'];  
-        $this->SMTPSecure=$_SESSION['_SMTPSecure'];
-        $this->acceso_directo='';
-        
-        
-             
-         $this->mail= new PHPMailer();
+         $this->autentificacion = $_SESSION['_MAIL_AUTENTIFICACION'];        
+         $this->mail_usuario = $_SESSION['_MAIL_USUARIO'];
+         $this->mail_password = $_SESSION['_MAIL_PASSWORD'];
+         $this->mail_servidor = $_SESSION['_MAIL_SERVIDOR'];
+         $this->mail_puerto = $_SESSION['_MAIL_PUERTO'];        
+         $this->remitente = $_SESSION['_MAIL_REMITENTE'];
+         $this->nombre_remitente = $_SESSION['_NOMBER_REMITENTE'];  
+         $this->SMTPSecure = $_SESSION['_SMTPSecure'];
+         $this->acceso_directo = '';
+		 $this->acuse_recibo = False;
+		 
+         $this->mail = new PHPMailer();
+         
          $this->mail->IsSMTP();
-         $this->mail->CharSet='UTF-8';
+         $this->mail->CharSet = 'UTF-8';
          $this->mail->Host = $this->mail_servidor;
          $this->mail->Port = $this->mail_puerto;
          $this->mail->From = $this->remitente;
          $this->mail->FromName = $this->nombre_remitente;
          $this->mail->Subject = $this->asunto;
+		 $this->mail->SMTPDebug = false;
           
        
    }
+
     
     function addDestinatario($dir_destinatario,$nom_destinatario=''){
     	if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
@@ -115,8 +120,20 @@ class CorreoExterno
              
          
     }
-    
-    
+	function enableAcuseRecibo(){
+		$this->acuse_recibo = True;		
+	}
+	
+	function setMensajeAcuse($mensaje_acuse){
+		$this->mensaje_acuse = $mensaje_acuse;		
+	}
+	function setUrlAcuse($url_acuse){
+		$this->url_acuse = $url_acuse;		
+	}
+	function setTokenAcuse($id){
+		$this->token_acuse = md5('llave'.$id);	
+	}
+	
      function setMensajeHtml ($mensaje)
     {             
 			 $this->mensaje_html= $mensaje;
@@ -165,10 +182,25 @@ class CorreoExterno
                 $actual_link = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
                 $acceso = '<a href="'.$actual_link.'">Acceso directo</a>';   
             } 
-            
-            
-            
-            $this->mensaje_html=$cuerpo = "
+			$acuse='';
+			if($this->acuse_recibo){
+                 
+				
+				$mensaje_acuse = "Por  favor confirme la recepción  de este mensaje haciendo click en el siguiente link, para continuar con el trámite. (Si su cliente de correo no interpreta código HTML, copie el link y péguelo en una pestaña del navegador web de su preferencia)";
+				$url_acuse = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_parametros/vista/alarma/acuse/acuserecibo.php";
+				
+				if(!isset($this->mensaje_acuse) ||  trim($this->mensaje_acuse) ==''){
+					$this->mensaje_acuse = $mensaje_acuse;
+				}
+				
+				if(!isset($this->url_acuse) || trim($this->url_acuse) ==''){
+					$this->url_acuse = $url_acuse;
+				}
+				$acuse = $this->mensaje_acuse.'<BR/><a href="'.$this->url_acuse.'?token='.$this->token_acuse.'">'.$this->url_acuse.'?token='.$this->token_acuse.'</a>';
+				
+            }
+			
+			 $this->mensaje_html=$cuerpo = "
                     <html>
                     <head>
                     <title>".$this->titulo."</title>
@@ -196,6 +228,9 @@ class CorreoExterno
                     <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
                     <br/>
                     ".$acceso."
+                    <br/>
+                    <br/>
+                    ".$acuse."
                     <br/>
                     <p>-------------------------------------------</p>
                     <br/>

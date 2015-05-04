@@ -32,9 +32,10 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         this.addButton('btnPlanCorreo',
             {
                 iconCls: 'bemail',
+                text: 'Correos extra',
                 disabled: true,
                 handler: this.gridPlantillaCorreo,
-                tooltip: '<b>Conf. Envio de Correos</b><br/>Personaliza los correos enviados a otras personas en el tipo de estado seleccionado.'
+                tooltip: '<b>Conf. Envio de Correos</b><br/>Personaliza los correos enviados a otras personas fuera del flujo en el tipo de estado seleccionado. (Es independiente de que las alertas esten activada o no)'
             }
         ); 
 		

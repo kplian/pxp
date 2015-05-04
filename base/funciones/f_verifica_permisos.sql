@@ -102,7 +102,8 @@ begin
              'WF_tabla_CONT',
              'WF_TIPCOLES_SEL',
              'SEG_ACTKEYS_UPD',    --actuliza llaves en la tabla de sesion
-             'SEG_RECLLAVES_SEL'   --restauracion de llaves de sesion
+             'SEG_RECLLAVES_SEL',   --restauracion de llaves de sesion
+             'PM_CONACUSE_MOD'   -- actualiza el acuse de recibo de alarma en el wf
              
              ))) THEN
             po_tiene_permisos = true;

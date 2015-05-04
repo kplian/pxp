@@ -34,6 +34,7 @@ DECLARE
 	v_id_alarma	integer;  
     v_registros_config		record;
     v_registros_detalle		record;
+    v_registros				record;
     v_dif_dias				integer;
     v_id_funcionario		integer;
     v_id_subsistema			integer;
@@ -44,7 +45,11 @@ DECLARE
     v_id_sup    			integer;
     v_id_rep_legal			integer; 
     v_id_sup_boleta			integer;
-			    
+    va_mensajes				varchar[];
+    va_id_alarmas			varchar[];
+    v_i						integer;
+    v_fecha_acuse			timestamp;
+    v_modificado 			varchar;
 BEGIN           
 
     v_nombre_funcion = 'param.ft_alarma_ime';
@@ -124,18 +129,37 @@ BEGIN
 
 	/*********************************    
  	#TRANSACCION:  'PM_DESCCOR_MOD'
- 	#DESCRIPCION:	DEsactiva envio de correos
+ 	#DESCRIPCION:	Desactiva el envio de correo
  	#AUTOR:		rarteaga	
- 	#FECHA:		8-3-2012 11:59:10
+ 	#FECHA:		29-04-2015 11:59:10
 	***********************************/
 
 	elsif(p_transaccion='PM_DESCCOR_MOD')then
 
 		begin
-			--Sentencia de la modificacion
-			 update param.talarma 
-             set sw_correo = 1
-             where sw_correo = 0;
+			
+             
+        
+             va_mensajes =  string_to_array(v_parametros.errores_msg, '###+###');
+            
+             --raise exception 'va_mensajes %',va_mensajes;
+             --primero marcamos los errores
+             
+             FOR v_i IN 1 .. COALESCE(array_length(va_mensajes, 1),0) LOOP
+                   va_id_alarmas =  string_to_array(va_mensajes[v_i], '<oo#oo>');
+                   
+                   update param.talarma set 
+                     estado_envio = 'falla',
+                     desc_falla = va_id_alarmas[2]
+                   where id_alarma = va_id_alarmas[1]::integer;
+                  
+              
+              END LOOP;
+            
+             -- modifica al estado enviado a todos los ceorreos sin falla
+			 update param.talarma set 
+                sw_correo = 1
+             where sw_correo = 0 and estado_envio = 'exito';
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Desactiva envio de correo para alarmas'); 
                
@@ -143,7 +167,65 @@ BEGIN
             return v_resp;
             
 		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'PM_RECVORR_MOD'
+ 	#DESCRIPCION:	marca el correo para reenviar
+ 	#AUTOR:		rarteaga	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
 
+	elsif(p_transaccion='PM_RECVORR_MOD')then
+
+		begin
+			
+             
+              update param.talarma set 
+               estado_envio = 'exito',
+               sw_correo = 0,
+               id_usuario_mod = p_id_usuario,
+               fecha_mod = now()
+             where id_alarma =v_parametros.id_alarma;
+                  
+              
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','cambiar alamar para reenviar el correo'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_parametros.id_alarma::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+     /*********************************    
+ 	#TRANSACCION:  'PM_CAMDESTINO_MOD'
+ 	#DESCRIPCION:	Cambiar el destino del correo
+ 	#AUTOR:		rarteaga	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_CAMDESTINO_MOD')then
+
+		begin
+			
+             
+              update param.talarma set 
+               correos = v_parametros.correos,
+               estado_envio = 'exito',
+               sw_correo = 0,
+               id_usuario_mod = p_id_usuario,
+               fecha_mod = now()
+             where id_alarma =v_parametros.id_alarma;
+                  
+              
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Alarmas modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_parametros.id_alarma::varchar);
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+        
+        
 	/*********************************    
  	#TRANSACCION:  'PM_ALARM_ELI'
  	#DESCRIPCION:	Eliminacion de registros
@@ -166,6 +248,60 @@ BEGIN
             return v_resp;
 
 		end;
+    
+    
+    /*********************************    
+ 	#TRANSACCION:  'PM_CONACUSE_MOD'
+ 	#DESCRIPCION:	confirma el acuse de recibo para la alerta indicada
+ 	#AUTOR:		rarteaga	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_CONACUSE_MOD')then
+
+		begin
+             
+        
+             select  
+               ala.id_alarma,
+               pc.mensaje_acuse,
+               ala.recibido,
+               ala.fecha_recibido
+            into
+              v_registros   
+  			from param.talarma ala 
+            inner join wf.tplantilla_correo pc on pc.id_plantilla_correo = ala.id_plantilla_correo  
+  			where    md5('llave'||id_alarma::text)  =   v_parametros.alarma;
+         
+            IF v_registros.recibido = '--'  or v_registros.recibido = 'no' THEN
+            
+            
+                v_fecha_acuse = now();
+                update param.talarma a set 
+                 recibido = 'si',
+                 fecha_recibido = v_fecha_acuse
+               where id_alarma = v_registros.id_alarma;
+               
+               v_modificado = 'si';
+             
+             
+            ELSE
+                v_modificado = 'no';
+                v_fecha_acuse = v_registros.fecha_recibido;
+            END IF;      
+              
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','cambiar alamar para reenviar el correo'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'alarma',v_parametros.alarma);
+            v_resp = pxp.f_agrega_clave(v_resp,'modificado',v_modificado);
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje_acuse',v_registros.mensaje_acuse);
+            v_resp = pxp.f_agrega_clave(v_resp,'fecha_acuse',v_fecha_acuse::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;    
+        
         
 	else
      

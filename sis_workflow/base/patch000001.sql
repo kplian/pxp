@@ -1234,15 +1234,50 @@ IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface d
 /*****************************F-SCP-RCM-WF-0-16/04/2015*************/
 
 
-/*****************************I-SCP-RCM-WF-0-17/04/2015*************/
+
+/*****************************I-SCP-RCM-WF-0-30/04/2015*************/
+
 
 --------------- SQL ---------------
 
-ALTER TABLE tes.tplan_pago
-  ADD COLUMN id_depto_conta INTEGER;
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN requiere_acuse VARCHAR(4) DEFAULT 'no' NOT NULL;
 
-COMMENT ON COLUMN tes.tplan_pago.id_depto_conta
-IS 'define el depto de conta que contabiliza el pago, ...  no consideramos ep, cc (antes solo lo teneiamos en la obligacion de pago)';
+COMMENT ON COLUMN wf.tplantilla_correo.requiere_acuse
+IS 'si l aplantilla requiere acuse el correo se manda con un link donde la persona que recibe tendra que confirma su aceptación';
 
 
-/*****************************F-SCP-RCM-WF-0-17/04/2015*************/
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN url_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.url_acuse
+IS 'indeitifca la URL que se coloca en el link del correo para que la persona que recibe acepte,   puede ser un servidor dintinto, en un dmz';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mensaje_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mensaje_acuse
+IS 'depues de precinar el link del acuse se muestra este mensaje,';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mensaje_link_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mensaje_link_acuse
+IS 'mensjae que a antes del link de acuse de recibo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mandar_automaticamente VARCHAR(5) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mandar_automaticamente
+IS 'se manda el correo de manera automatica al llegar a este estado o espera la confirmación para enviar';
+/*****************************F-SCP-RCM-WF-0-30/04/2015*************/
+
