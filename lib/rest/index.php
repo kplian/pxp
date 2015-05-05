@@ -49,7 +49,7 @@ set_error_handler('error_handler');
 
 $app->error('exception_handler');
 $app->log->setEnabled(false);
-
+error_reporting(~E_NOTICE);
 $app->response->headers->set('Content-Type', 'application/json');
 $headers = $app->request->headers;
 
@@ -567,3 +567,4 @@ $app->options('/:sistema/:clase_control/:metodo', function ($sistema,$clase_cont
  * and returns the HTTP response to the HTTP client.
  */
 $app->run();
+error_reporting(-1);

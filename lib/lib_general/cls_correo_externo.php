@@ -186,8 +186,10 @@ class CorreoExterno
 			if($this->acuse_recibo){
                  
 				
-				$mensaje_acuse = "Por  favor confirme la recepción  de este mensaje haciendo click en el siguiente link, para continuar con el trámite. (Si su cliente de correo no interpreta código HTML, copie el link y péguelo en una pestaña del navegador web de su preferencia)";
+				$mensaje_acuse = "Por  favor para confirmar la recepción  de este mensaje y continuar con el trámite,  haga clic en el botón de abajo: <br><br>";
 				$url_acuse = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_parametros/vista/alarma/acuse/acuserecibo.php";
+				
+				
 				
 				if(!isset($this->mensaje_acuse) ||  trim($this->mensaje_acuse) ==''){
 					$this->mensaje_acuse = $mensaje_acuse;
@@ -196,7 +198,20 @@ class CorreoExterno
 				if(!isset($this->url_acuse) || trim($this->url_acuse) ==''){
 					$this->url_acuse = $url_acuse;
 				}
-				$acuse = $this->mensaje_acuse.'<BR/><a href="'.$this->url_acuse.'?token='.$this->token_acuse.'">'.$this->url_acuse.'?token='.$this->token_acuse.'</a>';
+				
+				$this->url_acuse = $this->url_acuse."?token=".$this->token_acuse;
+				
+				
+				//$boton_acuse = '<td style="background:#ff4800; padding:12px 10px; border:6px solid rgb(239,239,239);"><a href="'.$this->url_acuse.'" style="text-decoration:none; font-family:Arial, Helvetica, sans-serif; color:#fff; background:#ff4800; text-align:center;"><span class="btn-inner" style="text-decoration:none !important; color:#fff; font-size:16px; line-height:28px; text-align:center; display:block;">&nbsp;&nbsp; Confirmar &nbsp;&nbsp;</span></a></td>'
+				
+				$boton_acuse = $this->mensaje_acuse.'<BR><BR><BR><form method="get" action="'.$this->url_acuse.'">
+								<input type="hidden" name="token" value="'.$this->token_acuse.'">
+								<input type="submit" value="Enviar acuse" />
+								</form><br>(Si  no funciona, por favor copie y pegue el enlace completo en su navegador) <br>'.$this->url_acuse.'<br>';
+				
+				
+				
+				//$acuse = $this->mensaje_acuse.'<BR/><a href="'.$this->url_acuse.'">'.$this->url_acuse.'</a>';
 				
             }
 			
@@ -230,7 +245,7 @@ class CorreoExterno
                     ".$acceso."
                     <br/>
                     <br/>
-                    ".$acuse."
+                    ".$boton_acuse."
                     <br/>
                     <p>-------------------------------------------</p>
                     <br/>
@@ -241,7 +256,19 @@ class CorreoExterno
         
     }
       
-                                                               
+    function validateEmail($email){
+    		list($userName, $mailDomain) = split("@", $email);
+    	    if (checkdnsrr($mailDomain, "MX")) { 
+			   return true;
+			} 
+			else { 
+			   return false;
+			} 
+    }
+	
+	
+	 
+                                                          
           
 }
 ?>

@@ -1281,3 +1281,12 @@ COMMENT ON COLUMN wf.tplantilla_correo.mandar_automaticamente
 IS 'se manda el correo de manera automatica al llegar a este estado o espera la confirmación para enviar';
 /*****************************F-SCP-RCM-WF-0-30/04/2015*************/
 
+/*****************************I-SCP-GSS-WF-0-05/05/2015*************/
+
+ALTER TABLE wf.testado_wf
+  ADD COLUMN verifica_documento VARCHAR(2);
+
+ALTER TABLE wf.testado_wf
+  ALTER COLUMN verifica_documento SET DEFAULT 'si';
+  
+/*****************************F-SCP-GSS-WF-0-05/05/2015*************/

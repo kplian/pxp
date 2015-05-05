@@ -8,7 +8,6 @@
  Autor:	Kplian (RAC)
  Fecha:	19/07/2010
  */
-
 include_once(dirname(__FILE__)."/../../lib/lib_control/CTSesion.php");
 session_start();
 $_SESSION["_SESION"]= new CTSesion(); 
@@ -81,11 +80,11 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
         
         $errores_id = '';
 		$errores_msg = '';
-        
+        error_reporting(-1);//captura todos los tipos de errores ...
 		foreach ($res2->datos as $d){
-	       		
+	       		$correo = new CorreoExterno();
 				try {	
-			       		$correo = new CorreoExterno();
+			       		
 						if(isset($d['email_empresa'])){
 							$correo->addDestinatario($d['email_empresa'],$d['email_empresa']); 
 							$correo->addCC($_SESSION["_MAIL_PRUEBAS"],'Correo de Pruebas');  
@@ -95,15 +94,29 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 			                } 
 							
 							if (!PHPMailer::validateAddress($d['email_empresa'])) {
-					            throw new phpmailerAppException("Email address " . $d['email_empresa'] . " is invalid -- aborting!");
-					        }               
+					            throw new phpmailerException("Email address " . $d['email_empresa'] . " is invalid -- aborting!");
+					        }
+							
+							if (!$correo->validateEmail($d['email_empresa'])) {
+					            throw new phpmailerException("Domain Email address " . $d['email_empresa'] . " is invalid -- aborting!");
+					        }   
+							
+							            
 			                
 			            } else if (isset($d['correos'])) {
 			            	$correos = explode(',', $d['correos']);
 							foreach($correos as $value) {
+								echo 'ssss <br>';
+								echo $value;
+								echo '--------';
+								
+								$value = trim($value);
 			            		$correo->addDestinatario($value,$value);
 								if (!PHPMailer::validateAddress($value)) {
-						            throw new phpmailerAppException("Email address " . $value . " is invalid -- aborting!");
+						            throw new phpmailerException("Email address " . $value . " is invalid -- aborting!");
+						        }
+								if (!$correo->validateEmail($value)) {
+						            throw new phpmailerException("Domain Email address " . $value . " is invalid -- aborting!");
 						        }
 							}
 							
@@ -144,9 +157,8 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 								$url_final = str_replace('/control', '', $url_final);
 								
 								$res = $pxpRestClient->doPost($url_final,
-								    array("id_proceso_wf"=>$url[1]));
+								array("id_proceso_wf"=>$url[1]));
 								$res_json = json_decode($res);
-								echo "<BR>".$res."<BR>";				
 								$correo->addAdjunto(dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado,$url[2]);
 								//poniendo la url para eliminar
 								//array_push($arr_unlink,dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado);
