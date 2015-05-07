@@ -304,6 +304,44 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
        	
 		{
 			config:{
+				name: 'funcion_acuse_recibo',
+				fieldLabel: 'Funcion acuse',
+				qtip: 'Esta función se ejecuta al recibir el acuse de recibo, ejem  adq.f_acuse_orden_compra, recibe como parametro el (id_alarma, id_proceso_wf, id_estado_wf)',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:200
+			},
+				type:'TextField',
+				filters:{pfiltro:'pcorreo.funcion_acuse_recibo',type:'string'},
+				id_grupo:2,
+				grid:true,
+				form:true
+		},
+       	
+       	
+       	
+		{
+			config:{
+				name: 'funcion_creacion_correo',
+				fieldLabel: 'Funcion creación',
+				qtip: 'Esta función se ejecuta al insertar la alarma , o al modificar el estado de envio, ejem  adq.f_orden_compra_pendiente_envio, recibe como parametro el (id_alarma, id_proceso_wf, id_estado_wf)',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength: 200
+			},
+				type: 'TextField',
+				filters: { pfiltro:'pcorreo.funcion_creacion_correo', type:'string' },
+				id_grupo: 2,
+				grid: true,
+				form: true
+		},
+       	
+       	
+       	
+		{
+			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
@@ -433,7 +471,9 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'asunto', type: 'string'},'requiere_acuse','url_acuse','mensaje_acuse','mensaje_link_acuse','mandar_automaticamente'
+		{name:'asunto', type: 'string'},'requiere_acuse',
+		'url_acuse','mensaje_acuse','mensaje_link_acuse',
+		'mandar_automaticamente','funcion_acuse_recibo','funcion_creacion_correo'
 		
 	],
 	sortInfo:{

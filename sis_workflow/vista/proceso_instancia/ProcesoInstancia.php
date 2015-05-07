@@ -144,6 +144,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		        ); 
 		        
 		       this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+		       this.addButton('imprimir_tramite',{text:'Imprimir #',iconCls: 'bpdf32',disabled:true,handler:this.imprimirTramite,tooltip: '<b>Imprime el # de Trámite</b>'});
 		  
 		     
 		        this.addButton('ant_estado',{
@@ -563,6 +564,19 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 scope:this
             });         
 		},
+		
+		imprimirTramite:function (){         
+            var data=this.sm.getSelected().data;
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_workflow/control/ProcesoWf/imprimirNumeroTramite',
+                params:{'id_proceso_wf':data.id_proceso_wf, 'nro_tramite' : data.nro_tramite},
+                success:this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });         
+		},
 		tam_pag:50,
 		ActSave:'../../sis_workflow/control/Tabla/insertarTablaInstancia',
 		ActDel:'../../sis_workflow/control/Tabla/eliminarTablaInstancia',
@@ -747,6 +761,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	      if (this.configProceso[this.config.indice].atributos.vista_tipo == 'maestro') {
 		     this.getBoton('btnChequeoDocumentosWf').setDisabled(false);
 		     this.getBoton('diagrama_gantt').enable();
+		     this.getBoton('imprimir_tramite').enable();
 		       if(this.historico == 'no'){
 		          
 		          this.getBoton('sig_estado').enable();
@@ -781,6 +796,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            this.getBoton('sig_estado').disable();
 		            this.getBoton('ant_estado').disable();
 		            this.getBoton('diagrama_gantt').disable();
+		            this.getBoton('imprimir_tramite').disable();
 		            this.getBoton('btnReclamar').disable();
 		           
 		        }

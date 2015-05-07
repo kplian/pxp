@@ -308,7 +308,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                             	return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Subir Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
                             }
                         }
-                        },  
+               },  
                 
             },
             type:'Field',
@@ -749,7 +749,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     desBotonesTodo:function(){
           
           //this.getBoton('btnUpload').disable();
-          this.getBoton('edit').disable();
+          //this.getBoton('edit').disable();
           
     },
     preparaMenu:function(tb){

@@ -44,6 +44,9 @@ class MODPlantillaCorreo extends MODbase{
 		$this->captura('mensaje_link_acuse','varchar');
 		$this->captura('mandar_automaticamente','varchar');
 		
+		$this->captura('funcion_acuse_recibo','varchar');
+		$this->captura('funcion_creacion_correo','varchar');
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -72,6 +75,8 @@ class MODPlantillaCorreo extends MODbase{
 		$this->setParametro('url_acuse','url_acuse','codigo_html');	
 		$this->setParametro('mensaje_link_acuse','mensaje_link_acuse','varchar');
 		$this->setParametro('mandar_automaticamente','mandar_automaticamente','varchar');
+		$this->setParametro('funcion_acuse_recibo','funcion_acuse_recibo','varchar');
+		$this->setParametro('funcion_creacion_correo','funcion_creacion_correo','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -102,6 +107,9 @@ class MODPlantillaCorreo extends MODbase{
 		$this->setParametro('url_acuse','url_acuse','varchar');	
 		$this->setParametro('mensaje_link_acuse','mensaje_link_acuse','varchar');
 		$this->setParametro('mandar_automaticamente','mandar_automaticamente','varchar');
+		$this->setParametro('funcion_acuse_recibo','funcion_acuse_recibo','varchar');
+		$this->setParametro('funcion_creacion_correo','funcion_creacion_correo','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

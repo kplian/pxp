@@ -7,6 +7,7 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 require_once(dirname(__FILE__).'/../reportes/DiagramadorGanttWF.php');
+require_once(dirname(__FILE__).'/../reportes/RNumeroTramite.php');
 require_once(dirname(__FILE__).'/../../pxpReport/DataSource.php');
 
 class ACTProcesoWf extends ACTbase{    
@@ -183,13 +184,27 @@ class ACTProcesoWf extends ACTbase{
                 
 				} 
 		}
-
+ 
     function reclamarCaso(){
         $this->objFunc=$this->create('MODProcesoWf');  
         $this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
         $this->res=$this->objFunc->reclamarCaso($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
-    } 
+    }
+	function imprimirNumeroTramite() {
+		$nombreArchivo=uniqid(md5(session_id()).'numero_tramite') . '.pdf';
+		
+		$url_archivo = dirname(__FILE__) . "/../../../reportes_generados/".$nombreArchivo;		
+		//Instancia la clase de excel
+		$this->objReporteFormato=new RNumeroTramite($this->objParam);		
+		$this->objReporteFormato->generarReporte();
+		$this->objReporteFormato->output($url_archivo,'F');
+		$this->mensajeExito=new Mensaje();
+		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado',
+										'Se generó con éxito el reporte: '.$nombreArchivo,'control');
+		$this->mensajeExito->setArchivoGenerado($nombreArchivo);
+		$this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+	}
 			
 }
 

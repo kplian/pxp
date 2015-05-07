@@ -1,6 +1,6 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
+CREATE OR REPLACE FUNCTION param.ft_alarma_ime (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -10,11 +10,11 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
- FUNCION: 		param.ft_alarma_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.talarma'
+ FUNCION: 		param.ft_alarma_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.talarma'
  AUTOR: 		 (fprudencio)
  FECHA:	        18-11-2011 11:59:10
- COMENTARIOS:	
+ COMENTARIOS:	         
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
@@ -25,313 +25,346 @@ $body$
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-	v_resp				varchar;
-    v_id_funcionario 	integer;
-    v_filtro 			varchar;
-    v_cond				varchar;
-			    
-BEGIN
-                                                    
-	v_nombre_funcion = 'param.ft_alarma_sel';
+	v_nro_requerimiento    	integer;
+	v_parametros           	record;
+	v_id_requerimiento     	integer;
+	v_resp		            varchar;
+	v_nombre_funcion        text;
+	v_mensaje_error         text;
+	v_id_alarma	integer;  
+    v_registros_config		record;
+    v_registros_detalle		record;
+    v_registros				record;
+    v_dif_dias				integer;
+    v_id_funcionario		integer;
+    v_id_subsistema			integer;
+    v_consulta_config	    text;
+    v_consulta_detalle		text;
+    --Ids que se necesitan para  SAJ
+    v_id_rpc				integer;
+    v_id_sup    			integer;
+    v_id_rep_legal			integer; 
+    v_id_sup_boleta			integer;
+    va_mensajes				varchar[];
+    va_id_alarmas			varchar[];
+    v_i						integer;
+    v_fecha_acuse			timestamp;
+    v_modificado 			varchar;
+BEGIN           
+
+    v_nombre_funcion = 'param.ft_alarma_ime';
     v_parametros = pxp.f_get_record(p_tabla);
-    
-   -- v_filtro = '';
-   
-   /*********************************    
- 	#TRANSACCION:  'PM_ALARMCOR_SEL'
- 	#DESCRIPCION:	Consulta de alarmas pendientes de envio de correo no se utiliza con pagiancion
- 	#AUTOR:		rarteaga	
- 	#FECHA:		7-03-2012 11:59:10
-	***********************************/
-
-	if(p_transaccion='PM_ALARMCOR_SEL')then
-     				
-    	begin
-            
-           --Sentencia de la consulta
-			v_consulta:='
-                        select
-						alarm.id_alarma,
-                        
-                         pxp.f_iif(funcio.id_funcionario is NULL, pxp.f_iif(fnciousu.id_funcionario is NULL,per.correo, fnciousu.email_empresa  )  ,funcio.email_empresa)
-                        AS email_empresa,
-                        
-                        alarm.fecha,
-						alarm.descripcion,
-					    alarm.clase,
-                        alarm.titulo,
-                        alarm.obs,
-                        alarm.tipo,
-                        (alarm.fecha-now()::date)::integer as dias,
-                        alarm.titulo_correo,
-						alarm.acceso_directo,
-						alarm.correos,
-						alarm.documentos,
-                        alarm.id_plantilla_correo,
-                        pc.url_acuse,
-                        pc.requiere_acuse,
-                        pc.mensaje_link_acuse
-                        from param.talarma alarm
-						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
-                        left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
-                        left join segu.tusuario_rol urol on urol.id_usuario =usu.id_usuario and urol.estado_reg = ''activo'' and urol.id_rol = 1
-                        left join segu.tpersona per on per.id_persona = usu.id_persona
-                        left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
-                        left join wf.tplantilla_correo pc on pc.id_plantilla_correo = alarm.id_plantilla_correo
-                        where alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
-                        
-             --modificar correpondencia
-           /*  update param.talarma 
-             set sw_correo = 1
-             where sw_correo = 0;*/
-			
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
 
 	/*********************************    
- 	#TRANSACCION:  'PM_ALARM_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		rac	
- 	#FECHA:		18-11-2012 11:59:10
+ 	#TRANSACCION:  'PM_ALARM_INS'
+ 	#DESCRIPCION:	Insercion de registros
+ 	#AUTOR:		fprudencio	
+ 	#FECHA:		18-11-2011 11:59:10
 	***********************************/
 
-	elseif(p_transaccion='PM_ALARM_SEL')then
-     				
-    	begin
-        
-        	if p_administrador != 1 then
-            	v_cond = '(usua.id_usuario =  '||v_parametros.id_usuario||'
-                		or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and ';
-            else
-            	v_cond = '0=0 and ';
-            end if;
-         
-         
-    		--Sentencia de la consulta
-			v_consulta:='SELECT
-                     	alarm.id_alarma,
-						alarm.acceso_directo,
-						alarm.id_funcionario,
-						alarm.fecha,
-						alarm.estado_reg,
-						alarm.descripcion,
-						alarm.id_usuario_reg,
-						alarm.fecha_reg,
-						alarm.id_usuario_mod,
-						alarm.fecha_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-                        alarm.clase,
-                        alarm.titulo,
-                        alarm.parametros,
-                        alarm.obs,
-                        alarm.tipo,
-                        (alarm.fecha-now()::date)::integer as dias
-						from param.talarma alarm
-						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-                        left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
-                        left join segu.tusuario usua  on  usua.id_usuario = alarm.id_usuario
-				        where ';
-            v_consulta = v_consulta || v_cond;
-				       
-			
+	if(p_transaccion='PM_ALARM_INS')then
+					
+        begin
+        	--Sentencia de la insercion
+        	insert into param.talarma(
+			acceso_directo,
+			id_funcionario,
+			fecha,
+			estado_reg,
+			descripcion,
+			id_usuario_reg,
+			fecha_reg,
+			id_usuario_mod,
+			fecha_mod
+          	) values(
+			v_parametros.acceso_directo,
+			v_parametros.id_funcionario,
+			v_parametros.fecha,
+			'activo',
+			v_parametros.descripcion,
+			p_id_usuario,
+			now()::date,
+			null,
+			null
+			)RETURNING id_alarma into v_id_alarma;
+               
 			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-			raise notice '%',v_consulta;
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Alarmas almacenado(a) con exito (id_alarma'||v_id_alarma||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_id_alarma::varchar);
 
-	/*********************************    
- 	#TRANSACCION:  'PM_ALARM_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		fprudencio	
- 	#FECHA:		18-11-2011 11:59:10
-	***********************************/
-
-	elsif(p_transaccion='PM_ALARM_CONT')then
-
-		begin
-        	if p_administrador != 1 then
-            	v_cond = '(usua.id_usuario =  '||v_parametros.id_usuario||'
-                		or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and ';
-            else
-            	v_cond = '0=0 and ';
-            end if;
-            
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_alarma)
-					    from param.talarma alarm
-					    inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-                        left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
-                        left join segu.tusuario usua  on  usua.id_usuario = alarm.id_usuario
-				        where ';
-            v_consulta = v_consulta || v_cond;
-			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
-
-			--Devuelve la respuesta
-			return v_consulta;
-
-		end;
-	/*********************************    
- 	#TRANSACCION:  'PM_ALARM_PEND'
- 	#DESCRIPCION:	Cuenta cuantas alarmas tiene pendientes el funcionario
- 	#AUTOR:		fprudencio	
- 	#FECHA:		18-11-2011 11:59:10
-	***********************************/
-
-	elsif(p_transaccion='PM_ALARM_PEND')then
-
-		begin
-          
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_alarma) as total
-					    from param.talarma alarm
-					    inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-                        inner join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
-                        inner join segu.vpersona person on person.id_persona=funcio.id_persona
-				        where  alarm.estado_reg=''activo'' AND alarm.id_funcionario in(Select fun.id_funcionario
-            																	      from orga.tfuncionario fun
-            																		  inner join segu.tusuario usu on usu.id_persona=fun.id_persona
-                                                                                      where usu.id_usuario='||p_id_usuario||') AND ';
-			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
-
-			--Devuelve la respuesta
-			return v_consulta;
-
-		end;	
-        
-     /*********************************    
- 	#TRANSACCION:  'PM_GETALA_SEL'
- 	#DESCRIPCION:	recupera datos de la alerta especificada
- 	#AUTOR:		rensi	
- 	#FECHA:		21-04-2014 11:59:10
-	***********************************/
-
-	elsif(p_transaccion='PM_GETALA_SEL')then
-
-		begin
-			--Sentencia de la eliminacion
-            
-           v_consulta =  'SELECT
-                     	alarm.id_alarma,
-						alarm.acceso_directo,
-						alarm.id_funcionario,
-						alarm.fecha,
-						alarm.estado_reg,
-						alarm.descripcion,
-						alarm.id_usuario_reg,
-						alarm.fecha_reg,
-						alarm.id_usuario_mod,
-						alarm.fecha_mod,
-						alarm.clase,
-                        alarm.titulo,
-                        alarm.parametros,
-                        alarm.obs,
-                        alarm.tipo,
-                        (alarm.fecha-now()::date)::integer as dias
-						from param.talarma alarm
-						where alarm.id_alarma='||v_parametros.id_alarma;
-            
             --Devuelve la respuesta
-			return v_consulta;
-			
-            
+            return v_resp;
 
-		end;    
-    /*********************************    
- 	#TRANSACCION:  'PM_ALARMWF_SEL'
- 	#DESCRIPCION:	consulta par ala interface de correos, para ver acuses de recibo, fallar y permitir el reenvio de correos
- 	#AUTOR:		rac	
+		end;
+        
+        	/*********************************    
+ 	#TRANSACCION:  'PM_ALARM_MOD'
+ 	#DESCRIPCION:	Modificacion de registros
+ 	#AUTOR:		fprudencio	
+ 	#FECHA:		18-11-2011 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_ALARM_MOD')then
+
+		begin
+			--Sentencia de la modificacion
+			update param.talarma set
+			acceso_directo = v_parametros.acceso_directo,
+			id_funcionario = v_parametros.id_funcionario,
+			fecha = v_parametros.fecha,
+			descripcion = v_parametros.descripcion,
+			id_usuario_mod = p_id_usuario,
+			fecha_mod = now()
+			where id_alarma=v_parametros.id_alarma;
+               
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Alarmas modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_parametros.id_alarma::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_DESCCOR_MOD'
+ 	#DESCRIPCION:	Desactiva el envio de correo
+ 	#AUTOR:		rarteaga	
  	#FECHA:		29-04-2015 11:59:10
 	***********************************/
 
-	elseif(p_transaccion='PM_ALARMWF_SEL')then
-     				
-    	begin
-        
-        	--raise exception 'dddddddddddddddddd';
-    		--Sentencia de la consulta
-			v_consulta:='SELECT
-                     	alarm.id_alarma,
-                        alarm.sw_correo,
-                        alarm.correos,
-                        alarm.descripcion,
-                        alarm.recibido,
-                        alarm.fecha_recibido,
-                        alarm.estado_envio,
-                        alarm.desc_falla,
-                        alarm.titulo_correo,
-                        (alarm.fecha-now()::date)::integer as dias
-						from param.talarma alarm
-						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-				        where ';
-				       
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-			raise notice '%',v_consulta;
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
-
-	/*********************************    
- 	#TRANSACCION:  'PM_ALARMWF_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		rac	
- 	#FECHA:		18-11-2015 11:59:10
-	***********************************/
-
-	elsif(p_transaccion='PM_ALARMWF_CONT')then
+	elsif(p_transaccion='PM_DESCCOR_MOD')then
 
 		begin
-        	
-            
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_alarma)
-					    from param.talarma alarm
-						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
-				        where ';
 			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
+             
+        
+             va_mensajes =  string_to_array(v_parametros.errores_msg, '###+###');
+            
+             --raise exception 'va_mensajes %',va_mensajes;
+             --primero marcamos los errores
+             
+             FOR v_i IN 1 .. COALESCE(array_length(va_mensajes, 1),0) LOOP
+                   va_id_alarmas =  string_to_array(va_mensajes[v_i], '<oo#oo>');
+                   
+                   update param.talarma set 
+                     estado_envio = 'falla',
+                     desc_falla = va_id_alarmas[2]
+                   where id_alarma = va_id_alarmas[1]::integer;
+                  
+              
+              END LOOP;
+            
+             -- modifica al estado enviado a todos los ceorreos sin falla
+			 update param.talarma set 
+                sw_correo = 1
+             where sw_correo = 0 and estado_envio = 'exito';
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Desactiva envio de correo para alarmas'); 
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'PM_RECVORR_MOD'
+ 	#DESCRIPCION:	marca el correo para reenviar
+ 	#AUTOR:		rarteaga	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
 
-			--Devuelve la respuesta
-			return v_consulta;
+	elsif(p_transaccion='PM_RECVORR_MOD')then
 
-		end;    			
+		begin
+			
+             
+             
+             select
+               ala.id_proceso_wf,
+               ala.id_estado_wf,
+               pc.funcion_creacion_correo
+             into
+               v_registros
+             from param.talarma ala
+             inner join wf.tplantilla_correo pc on pc.id_plantilla_correo = ala.id_plantilla_correo
+             where ala.id_alarma = v_parametros.id_alarma;
+             
+              update param.talarma set 
+               estado_envio = 'exito',
+               sw_correo = 0,
+               id_usuario_mod = p_id_usuario,
+               fecha_mod = now()
+             where id_alarma =v_parametros.id_alarma;
+              
+             
+             --si teiene funcion de acuse parametrizada la ejecuta            
+             IF  v_registros.funcion_creacion_correo is not NULL THEN
+                   EXECUTE ( 'select ' || v_registros.funcion_creacion_correo  ||'('||v_parametros.id_alarma::varchar||','||COALESCE(v_registros.id_proceso_wf::varchar,'NULL')||','||COALESCE(v_registros.id_estado_wf::varchar,'NULL')||')');
+             END IF;
+                  
+              
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','cambiar alamar para reenviar el correo'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_parametros.id_alarma::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+     /*********************************    
+ 	#TRANSACCION:  'PM_CAMDESTINO_MOD'
+ 	#DESCRIPCION:	Cambiar el destino del correo
+ 	#AUTOR:		rarteaga	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_CAMDESTINO_MOD')then
+
+		begin
+			  select
+               ala.id_proceso_wf,
+               ala.id_estado_wf,
+               pc.funcion_creacion_correo
+             into
+               v_registros
+             from param.talarma ala
+             inner join wf.tplantilla_correo pc on pc.id_plantilla_correo = ala.id_plantilla_correo
+             where ala.id_alarma = v_parametros.id_alarma;
+             
+              update param.talarma set 
+               correos = v_parametros.correos,
+               estado_envio = 'exito',
+               sw_correo = 0,
+               id_usuario_mod = p_id_usuario,
+               fecha_mod = now()
+             where id_alarma =v_parametros.id_alarma;
+              
+             
+             --si teiene funcion de acuse parametrizada la ejecuta            
+             IF  v_registros.funcion_creacion_correo is not NULL THEN
+                   EXECUTE ( 'select ' || v_registros.funcion_creacion_correo  ||'('||v_parametros.id_alarma::varchar||','||COALESCE(v_registros.id_proceso_wf::varchar,'NULL')||','||COALESCE(v_registros.id_estado_wf::varchar,'NULL')||')');
+             END IF;  
+              
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Alarmas modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_parametros.id_alarma::varchar);
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+        
+        
+	/*********************************    
+ 	#TRANSACCION:  'PM_ALARM_ELI'
+ 	#DESCRIPCION:	Eliminacion de registros
+ 	#AUTOR:		fprudencio	
+ 	#FECHA:		18-11-2011 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_ALARM_ELI')then
+
+		begin
+			--Sentencia de la eliminacion
+			delete from param.talarma
+            where id_alarma=v_parametros.id_alarma;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Alarmas eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_alarma',v_parametros.id_alarma::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+    
+    
+    /*********************************    
+ 	#TRANSACCION:  'PM_CONACUSE_MOD'
+ 	#DESCRIPCION:	confirma el acuse de recibo para la alerta indicada
+ 	#AUTOR:		rarteaga	
+ 	#FECHA:		29-04-2015 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_CONACUSE_MOD')then
+
+		begin
+             
+        
+             select  
+               ala.id_alarma,
+               pc.mensaje_acuse,
+               ala.recibido,
+               ala.fecha_recibido,
+               pc.funcion_acuse_recibo,
+               ala.id_proceso_wf,
+               ala.id_estado_wf
+            into
+              v_registros   
+  			from param.talarma ala 
+            inner join wf.tplantilla_correo pc on pc.id_plantilla_correo = ala.id_plantilla_correo  
+  			where    md5('llave'||id_alarma::text)  =   v_parametros.alarma;
+         
+            
+            
+           
+            
+            
+            
+            IF v_registros.recibido = '--'  or v_registros.recibido = 'no' THEN
+            
+            
+                v_fecha_acuse = now();
+                update param.talarma a set 
+                 recibido = 'si',
+                 fecha_recibido = v_fecha_acuse
+               where id_alarma = v_registros.id_alarma;
+               
+               v_modificado = 'si';
+             
+             
+            ELSE
+                v_modificado = 'no';
+                v_fecha_acuse = v_registros.fecha_recibido;
+            END IF;
+            
+            
+            --si teiene funcion de acuse parametrizada la ejecuta
+            
+            IF  v_registros.funcion_acuse_recibo is not NULL THEN
+                 EXECUTE ( 'select ' || v_registros.funcion_acuse_recibo  ||'('||v_registros.id_alarma::varchar||','||COALESCE(v_registros.id_proceso_wf::varchar,'NULL')||','||COALESCE(v_registros.id_estado_wf::varchar,'NULL')||')');
+           
+            END IF;      
+              
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','cambiar alamar para reenviar el correo'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'alarma',v_parametros.alarma);
+            v_resp = pxp.f_agrega_clave(v_resp,'modificado',v_modificado);
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje_acuse',v_registros.mensaje_acuse);
+            v_resp = pxp.f_agrega_clave(v_resp,'fecha_acuse',v_fecha_acuse::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;    
+        
+        
 	else
-					     
-		raise exception 'Transaccion inexistente';
-					         
+     
+    	raise exception 'Transaccion inexistente: %',p_transaccion;
+
 	end if;
-					
+
 EXCEPTION
-					
+				
 	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
+		v_resp='';
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		raise exception '%',v_resp;
+				        
 END;
 $body$
 LANGUAGE 'plpgsql'

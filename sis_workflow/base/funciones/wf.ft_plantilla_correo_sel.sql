@@ -68,7 +68,9 @@ BEGIN
                         pcorreo.mensaje_acuse,
                         pcorreo.url_acuse,
                         pcorreo.mensaje_link_acuse,
-                        pcorreo.mandar_automaticamente
+                        pcorreo.mandar_automaticamente,
+                        pcorreo.funcion_acuse_recibo,
+                        pcorreo.funcion_creacion_correo
 						from wf.tplantilla_correo pcorreo
 						inner join segu.tusuario usu1 on usu1.id_usuario = pcorreo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pcorreo.id_usuario_mod

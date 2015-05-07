@@ -68,7 +68,9 @@ BEGIN
             url_acuse,
             mensaje_acuse,
             mensaje_link_acuse,
-            mandar_automaticamente
+            mandar_automaticamente,
+            funcion_creacion_correo,
+            funcion_acuse_recibo
           	) values(
 			v_parametros.id_tipo_estado,
 			v_parametros.regla,
@@ -83,14 +85,14 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			null,
 			null,
-
 			v_parametros.asunto,
             v_parametros.requiere_acuse,
             v_parametros.url_acuse,
             v_parametros.mensaje_acuse,
             v_parametros.mensaje_link_acuse,
-            v_parametros.mandar_automaticamente
-
+            v_parametros.mandar_automaticamente,
+            v_parametros.funcion_acuse_recibo,
+            v_parametros.funcion_creacion_correo
 							
 			
 			
@@ -130,7 +132,9 @@ BEGIN
             url_acuse = v_parametros.url_acuse,
             mensaje_acuse = v_parametros.mensaje_acuse,
             mensaje_link_acuse = v_parametros.mensaje_link_acuse,
-            mandar_automaticamente = v_parametros.mandar_automaticamente
+            mandar_automaticamente = v_parametros.mandar_automaticamente,
+            funcion_acuse_recibo = v_parametros.funcion_acuse_recibo,
+            funcion_creacion_correo = v_parametros.funcion_creacion_correo
 			where id_plantilla_correo=v_parametros.id_plantilla_correo;
                
 			--Definicion de la respuesta

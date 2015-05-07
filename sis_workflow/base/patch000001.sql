@@ -1290,3 +1290,25 @@ ALTER TABLE wf.testado_wf
   ALTER COLUMN verifica_documento SET DEFAULT 'si';
   
 /*****************************F-SCP-GSS-WF-0-05/05/2015*************/
+
+
+
+/*****************************I-SCP-RAC-WF-0-07/05/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN funcion_acuse_recibo VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.funcion_acuse_recibo
+IS 'esta funcion se ejecuta cuando se recibe el acuse de recibo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN funcion_creacion_correo VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.funcion_creacion_correo
+IS 'esta funcion se ejecuta despude se insertar la alerta';
+
+/*****************************F-SCP-RAC-WF-0-07/05/2015*************/

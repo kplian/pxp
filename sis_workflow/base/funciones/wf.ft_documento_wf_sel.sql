@@ -54,8 +54,7 @@ BEGIN
      				
     	begin
            
-           if (v_parametros.todos_documentos = 'si') then
-	           select 
+           select 
 	             pw.nro_tramite,
 	             tp.id_proceso_macro,
                  ew.id_tipo_estado
@@ -66,18 +65,22 @@ BEGIN
 	           
 	           from wf.tproceso_wf pw
                inner join wf.testado_wf ew on ew.id_proceso_wf = pw.id_proceso_wf and 
-               							ew.estado_reg= 'activo'
+               							ew.estado_reg= 'activo'                                        
 	           inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
 	           where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+               
+           if (v_parametros.todos_documentos = 'si') then	           
 	           
 	           v_filtro = ' pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and  ';
 	       else
-	       		v_filtro = ' pw.id_proceso_wf = ' || v_parametros.id_proceso_wf || ' and ';
+	       		v_filtro = ' pw.id_proceso_wf = ' || v_parametros.id_proceso_wf::varchar || ' and  ';
 	       
 	       end if;
            
            
-            --raise exception '%',v_id_tipo_estado;
+            raise notice '>>>>>>>>>>>  % - % - %<<<<<<<<<<<<<<<<<', v_nro_tramite,
+	             v_id_proceso_macro,
+                 v_id_tipo_estado;
            
     		--Sentencia de la consulta
 			v_consulta:='
