@@ -227,7 +227,7 @@ class ACTProcesoMacro extends ACTbase{
 							$row['nombre_columna']."','".
 							$row['codigo_tabla']."','".
 							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-							NULL,NULL,NULL,NULL,NULL);\r\n");							
+							NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");							
 					
 				} else {
 					
