@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -36,6 +34,7 @@ DECLARE
     v_dim 					integer;
     v_consulta				varchar;
     v_nombre_conexion		varchar;
+    v_id_concepto_endesis	integer;
 			    
 BEGIN
 
@@ -70,8 +69,7 @@ BEGIN
 			v_parametros.desc_ingas,
 			v_parametros.tipo,
 			v_parametros.movimiento,
-			v_parametros.sw_tes,
-		
+			v_parametros.sw_tes,		
 			'activo',
 			p_id_usuario,
 			now(),
@@ -100,6 +98,7 @@ BEGIN
 	elsif(p_transaccion='PM_CONIG_MOD')then
 
 		begin
+       
 			--Sentencia de la modificacion
 			update param.tconcepto_ingas set
 			desc_ingas = v_parametros.desc_ingas,
@@ -112,7 +111,30 @@ BEGIN
 			activo_fijo=v_parametros.activo_fijo,
 			almacenable =v_parametros.almacenable
 			where id_concepto_ingas=v_parametros.id_concepto_ingas;
-               
+            --si se integra con endesis actualizamos la tabla conceptoingas  
+            if (pxp.f_get_variable_global('sincronizar') = 'true') then
+             
+                select * into v_nombre_conexion from migra.f_crear_conexion();
+                
+                for v_registros in (select id_concepto_ingas 
+                                    from migra.tconcepto_ids ci 
+                                    where id_concepto_ingas_pxp = v_parametros.id_concepto_ingas) loop
+                                   -- raise exception 'llega%',v_registros.id_concepto_ingas;
+                    select * FROM dblink(v_nombre_conexion,'
+                        select migracion.f_mig_concepto_ingas__tpr_concepto_ingas(' || v_registros.id_concepto_ingas || 
+                        ',''UPD'',''' || v_parametros.desc_ingas || 
+                        ''',NULL,' || v_parametros.sw_tes ||
+                        ',NULL,'''|| v_parametros.tipo ||
+                        ''','''|| v_parametros.activo_fijo ||
+                        ''','''|| v_parametros.almacenable ||
+                        ''','|| p_id_usuario ||                    
+                    ')',true) AS (id_concepto_endesis integer) into v_id_concepto_endesis;
+                
+                end loop;
+            	select * into v_resp from migra.f_cerrar_conexion(v_nombre_conexion,'exito');
+             
+             end if;
+                   
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Conceptos de Ingreso/Gasto modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_concepto_ingas',v_parametros.id_concepto_ingas::varchar);
@@ -133,10 +155,19 @@ BEGIN
 
 		begin
 			--Sentencia de la eliminacion
-			delete from param.tconcepto_ingas
+			update param.tconcepto_ingas
+            set estado_reg = 'inactivo'
             where id_concepto_ingas=v_parametros.id_concepto_ingas;
             
-            
+            --si se integra con endesis actualizamos la tabla conceptoingas  
+            if (pxp.f_get_variable_global('sincronizar') = 'true') then
+            	if (EXISTS(select 1 from pre.tconcepto_partida cp 
+                		   where cp.id_concepto_ingas = v_parametros.id_concepto_ingas and
+                           cp.estado_reg = 'activo')) then
+                	raise exception 'Existen partidas asociadas a este concepto, Eliminelas antes de eliminar este concepto';
+                
+                end if;
+            end if;
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Conceptos de Ingreso/Gasto eliminado(a)'); 
