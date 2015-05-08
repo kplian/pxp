@@ -54,8 +54,7 @@ BEGIN
 						tipdw.descripcion,
 						tipdw.estado_reg,
 						tipdw.tipo,
-						tipdw.id_tipo_proceso,
-						
+						tipdw.id_tipo_proceso,						
 						tipdw.action,
 						tipdw.id_usuario_reg,
 						tipdw.fecha_reg,
@@ -63,7 +62,9 @@ BEGIN
 						tipdw.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        tipdw.solo_lectura
+                        tipdw.solo_lectura,
+                        array_to_string( tipdw.categoria_documento,'','',''null'')::varchar as categoria_documento,
+                        tipdw.orden
 						from wf.ttipo_documento tipdw
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod
@@ -115,7 +116,7 @@ BEGIN
 		BEGIN
 
                v_consulta:='select  ''tipo_documento''::varchar,tdoc.codigo,tp.codigo,tdoc.nombre,tdoc.descripcion,
-                            tdoc.action,tdoc.tipo,tdoc.estado_reg
+                            tdoc.action,tdoc.tipo,tdoc.estado_reg,tdoc.orden,tdoc.categoria_documento
                             from wf.ttipo_documento tdoc
                             inner join wf.ttipo_proceso tp 
                             on tp.id_tipo_proceso = tdoc.id_tipo_proceso

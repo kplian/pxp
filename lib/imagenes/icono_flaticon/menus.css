@@ -1,0 +1,721 @@
+/*!
+ * Ext JS Library 3.3.0
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ * favio figueroa peñarrieta
+ */
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../font-awesome-4.2.0/fonts/fontawesome-webfont.eot?v=4.2.0');
+	src: url('../font-awesome-4.2.0/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../font-awesome-4.2.0/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('../font-awesome-4.2.0/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('../font-awesome-4.2.0/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Flaticon";
+	src: url("../flaticon/flaticon.eot");
+	src: url("../flaticon/flaticon.eot#iefix") format("embedded-opentype"),
+	url("../flaticon/flaticon.woff") format("woff"),
+	url("../flaticon/flaticon.ttf") format("truetype"),
+	url("../flaticon/flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+
+.x-btn-text-icon .x-btn-icon-large-left .x-btn-text {
+	padding-left: 0px;
+
+	
+}
+
+.bven1:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f133 "; margin-right:5px; margin-left:5px;
+}
+.blist:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	margin-right:5px; margin-left:5px;
+	
+	content: "\f108 "; margin-right:5px; margin-left:5px;
+}
+.bsave:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	margin-right:5px; margin-left:5px;
+	content: "\f0c7"; margin-right:5px; margin-left:5px;
+}
+
+.bnew:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	margin-right:5px; margin-left:5px;
+	content: "\f055"; margin-right:5px; margin-left:5px;
+	
+}
+.bdel:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	vertical-align:middle;
+	top:20px;
+	
+
+	
+	content: "\f1f8"; margin-right:5px; margin-left:5px;
+}
+.bact:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f021";
+	margin-right:5px; margin-left:5px;
+	
+}
+.bactfil:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f00e"; margin-right:5px; margin-left:5px;
+	
+}
+.bprint:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f02f"; margin-right:5px; margin-left:5px;
+}
+.bedit:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f044"; margin-right:5px; margin-left:5px;
+	
+}
+
+.badelante:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f054"; margin-right:5px; margin-left:5px;
+
+}
+.batras:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f053"; margin-right:5px; margin-left:5px;
+	
+}
+.bbajar:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f054"; margin-right:5px; margin-left:5px;
+	
+}
+.bsubir:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e025"; margin-right:5px; margin-left:5px;
+
+}
+.bupload:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0ee"; margin-right:5px; margin-left:5px;
+
+}
+.bfolder:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f114"; margin-right:5px; margin-left:5px;
+	
+}
+.bok:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f058"; margin-right:5px; margin-left:5px;
+	
+}
+
+/*.bexcel {
+ background-image:url(../iconos_generales/excel.png) !important;
+ }
+ .bpdf {
+ background-image:url(../iconos_generales/pdf.png) !important;
+ }*/
+.bpagar:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0d6"; margin-right:5px; margin-left:5px;
+	
+}
+.breload:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f021"; margin-right:5px; margin-left:5px;
+	
+}
+.breload1:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f021"; margin-right:5px; margin-left:5px;
+}
+.breload2:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f021"; margin-right:5px; margin-left:5px;
+}
+
+.bundo:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0e2"; margin-right:5px; margin-left:5px;
+}
+
+.bredo:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f01e"; margin-right:5px; margin-left:5px;
+}
+
+.balert:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f071"; margin-right:5px; margin-left:5px;
+}
+
+.binfo:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f05a"; margin-right:5px; margin-left:5px;
+} 
+.bassign:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0c0"; margin-right:5px; margin-left:5px;
+}
+.bexport:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0f6"; margin-right:5px; margin-left:5px;
+}
+
+/*otra fuente*/
+.brenew:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0c5"; margin-right:5px; margin-left:5px;
+}
+.bballot:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e010"; margin-right:5px; margin-left:5px;
+}
+.bupload1:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e025"; margin-right:5px; margin-left:5px;
+}
+.bend:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e000"; margin-right:5px; margin-left:5px;
+}
+.bsee:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e027"; margin-right:5px; margin-left:5px;
+}
+
+/*bien*/
+.bgood:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f00c"; margin-right:5px; margin-left:5px;
+}
+
+.bwrong:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f00d"; margin-right:5px; margin-left:5px;
+}
+.bcharge:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f155"; margin-right:5px; margin-left:5px;
+}
+.bselect:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f112"; margin-right:5px; margin-left:5px;
+}
+
+.bexcel:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1c3"; margin-right:5px; margin-left:5px;
+}
+
+.bprintcheck:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f02f"; margin-right:5px; margin-left:5px;
+}
+.bword:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1c2"; margin-right:5px; margin-left:5px;
+}
+
+.bpdf:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1c1"; margin-right:5px; margin-left:5px;
+}
+.block:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+.bunlock:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f13e"; margin-right:5px; margin-left:5px;
+}
+.bstatistics:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1fe"; margin-right:5px; margin-left:5px;
+}
+.bgear:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f013"; margin-right:5px; margin-left:5px;
+}
+.bcalendar:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f073"; margin-right:5px; margin-left:5px;
+}
+.bpdf32:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1c1"; margin-right:5px; margin-left:5px;
+}
+.bchecklist:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f046"; margin-right:5px; margin-left:5px;
+}
+.baddphoto:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e017"; margin-right:5px; margin-left:5px;
+}
+.bmenuitems:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0c9"; margin-right:5px; margin-left:5px;
+}
+.bgraph:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f080"; margin-right:5px; margin-left:5px;
+}
+.bstats:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f080"; margin-right:5px; margin-left:5px;
+}
+.bengine:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f013"; margin-right:5px; margin-left:5px;
+}
+.bdocuments:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0c5"; margin-right:5px; margin-left:5px;
+}
+.bengineadd:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f085"; margin-right:5px; margin-left:5px;
+}
+.bengineremove:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+.bcalendaradd:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e001"; margin-right:5px; margin-left:5px;
+}
+.bcalendarremove:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e007"; margin-right:5px; margin-left:5px;
+}
+.bpause:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f04c"; margin-right:5px; margin-left:5px;
+}
+.bplay:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f04b"; margin-right:5px; margin-left:5px;
+}
+.bcancelfile:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e023"; margin-right:5px; margin-left:5px;
+}
+.btag_deny:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e020"; margin-right:5px; margin-left:5px;
+}
+.btag_accept:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e01f"; margin-right:5px; margin-left:5px;
+}
+.bzoom:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f00e"; margin-right:5px; margin-left:5px;
+}
+.btransfer:before {
+	position: absolute;
+	font: normal normal normal 2em/1 Flaticon;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\e012"; margin-right:5px; margin-left:5px;
+}
+.bgantt:before {
+	position: absolute;
+	
+	font: normal normal normal 2em/1 Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+	content: "\e008"; margin-right:5px; margin-left:5px;
+}
+.bemail:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0e0"; margin-right:5px; margin-left:5px;
+}
+.bsendmail:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1d8"; margin-right:5px; margin-left:5px;
+}
+.bcargo:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+.bincremento_salarial:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+.bclock:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f017"; margin-right:5px; margin-left:5px;
+}
+.bcalculator:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1ec"; margin-right:5px; margin-left:5px;
+}
+.bmoney:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f0d6"; margin-right:5px; margin-left:5px;
+}
+
+.badd:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f055"; margin-right:5px; margin-left:5px;
+}
+
+.bdelete:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f056"; margin-right:5px; margin-left:5px;
+}
+
+.bexecdb:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f1c0"; margin-right:5px; margin-left:5px;
+}
+
+.bdibu_mail:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+
+.btransferMoney:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+
+.bball_green:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+
+.bball_white:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f007"; margin-right:5px; margin-left:5px;
+}
+
+.x-action-col-cell img.bsearch {
+	background-image: url(dibu_search.png);
+	height: 20px;
+	width: 20px;
+}
+
+.search:before {
+	position: absolute;
+	font: normal normal normal 2em/1 FontAwesome;
+	top: 20px;
+	left: auto;
+	right: auto;
+	content: "\f002"; margin-right:5px; margin-left:5px;
+}

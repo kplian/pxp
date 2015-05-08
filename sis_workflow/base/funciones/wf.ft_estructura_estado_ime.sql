@@ -33,8 +33,12 @@ DECLARE
 	v_mensaje_error         text;
 	v_id_estructura_estado	integer;
     v_disparador			varchar;
-    v_fin varchar;
+    v_fin 					varchar;
     v_id_tipo_estado		integer;
+    v_bucle 				varchar;
+    va_id_tipo_estado 		integer[];
+	va_codigo_estado 		varchar[];
+    
 			    
 BEGIN
 
@@ -62,6 +66,24 @@ BEGIN
                 RAISE EXCEPTION 'No puede definirse hijos es un estado ''fin''.';
             END IF;
             
+            v_bucle = 'no';
+             --revisa si el nuevo hijo ocaciona un bucle
+             SELECT 
+              oe.ps_id_tipo_estado,
+              oe.ps_codigo_estado
+             into 
+               va_id_tipo_estado,
+               va_codigo_estado
+              FROM wf.f_obtener_cadena_tipos_estados_anteriores_wf(v_parametros.id_tipo_estado_padre) oe;
+            
+            IF v_parametros.id_tipo_estado_hijo = ANY (va_id_tipo_estado) THEN
+            
+              v_bucle = 'si';
+              
+            END IF;
+            
+            
+   
         	--Sentencia de la insercion
         	insert into wf.testructura_estado(
 			id_tipo_estado_padre,
@@ -72,7 +94,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            bucle
           	) values(
 			v_parametros.id_tipo_estado_padre,
 			v_parametros.id_tipo_estado_hijo,
@@ -82,7 +105,8 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_bucle
 							
 			)RETURNING id_estructura_estado into v_id_estructura_estado;
 			
@@ -115,6 +139,8 @@ BEGIN
             IF v_fin ilike 'si' THEN
                 RAISE EXCEPTION 'No puede definirse hijos para un Tipo Estado Padre seleccionado. Debido a que es un estado ''disparador''.';
             END IF;
+            
+            
             --Sentencia de la modificacion
             select id_tipo_estado_hijo
             into v_id_tipo_estado
@@ -131,9 +157,26 @@ BEGIN
                 where id_estructura_estado=v_parametros.id_estructura_estado;
                 v_id_estructura_estado = v_parametros.id_estructura_estado;
 			else
-            	update segu.testructura_estado set
+            	update wf.testructura_estado set
                         estado_reg = 'inactivo'
                 where id_estructura_estado=v_parametros.id_estructura_estado;
+                
+                v_bucle = 'no';
+               --revisa si el nuevo hijo ocaciona un bucle
+                SELECT 
+                  oe.ps_id_tipo_estado,
+                  oe.ps_codigo_estado
+                into 
+                  va_id_tipo_estado,
+                  va_codigo_estado
+                FROM wf.f_obtener_cadena_tipos_estados_anteriores_wf(v_parametros.id_tipo_estado_padre) oe;
+              
+                IF v_parametros.id_tipo_estado_hijo = ANY (va_id_tipo_estado) THEN
+                
+                  v_bucle = 'si';
+                  
+                END IF;
+                
                 
 				--Sentencia de la insercion
                 insert into wf.testructura_estado(
@@ -145,7 +188,8 @@ BEGIN
                 fecha_reg,
                 id_usuario_reg,
                 fecha_mod,
-                id_usuario_mod
+                id_usuario_mod,
+                bucle
                 ) values(
                 v_parametros.id_tipo_estado_padre,
                 v_parametros.id_tipo_estado_hijo,
@@ -155,7 +199,8 @@ BEGIN
                 now(),
                 p_id_usuario,
                 null,
-                null
+                null,
+                v_bucle
     							
                 )RETURNING id_estructura_estado into v_id_estructura_estado;
             

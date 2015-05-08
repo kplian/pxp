@@ -709,7 +709,7 @@ IS 'si o no, se muestra en el la interface de vobowf,  solo es conveniente las i
  
  
   
-/***********************************I-SCP-RAC-WF-1-04/08/2014****************************************/
+/***********************************I-SCP-RAC-WF-2-04/08/2014****************************************/
  --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
@@ -932,9 +932,9 @@ ALTER TABLE wf.tobs
 --------------- SQL ---------------
 
 ALTER TABLE wf.ttipo_estado
-  ADD COLUMN adminte_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
+  ADD COLUMN admite_obs VARCHAR(30) DEFAULT 'no' NOT NULL;
 
-COMMENT ON COLUMN wf.ttipo_estado.adminte_obs
+COMMENT ON COLUMN wf.ttipo_estado.admite_obs
 IS 'no o si, define si permite registrar observaciones en este estado';
 
 /***********************************F-SCP-RAC-WF-1-25/11/2014****************************************/
@@ -1037,3 +1037,278 @@ ALTER TABLE wf.ttipo_columna
   ADD COLUMN form_grupo INTEGER;
 
 /*****************************F-SCP-JRR-WF-0-15/01/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-29/01/2015*************/
+
+
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN accion_pendiente VARCHAR(15);
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN fecha_firma VARCHAR(25);
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN usuario_firma VARCHAR(50);
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN datos_firma JSON;
+  
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN hash_firma varchar(50);
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN fecha_firma VARCHAR(25);
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN usuario_firma VARCHAR(50);
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN datos_firma JSON;
+  
+ALTER TABLE wf.tdocumento_historico_wf
+  ADD COLUMN hash_firma varchar(50);
+
+/*****************************F-SCP-JRR-WF-0-29/01/2015*************/
+
+/*****************************I-SCP-RCM-WF-0-08/02/2015*************/
+
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN bd_campos_subconsulta TEXT;
+
+/*****************************F-SCP-RCM-WF-0-08/02/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-24/02/2015*************/
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN asunto VARCHAR(255);
+
+/*****************************F-SCP-JRR-WF-0-24/02/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-25/02/2015*************/
+ALTER TABLE wf.ttipo_estado_rol
+  ADD COLUMN modificado INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-25/02/2015*************/
+
+
+/*****************************I-SCP-RAC-WF-0-20/03/2015*************/
+
+--------------- SQL ---------------
+
+CREATE TABLE wf.tcategoria_documento (
+  id_categoria_documento INTEGER NOT NULL,
+  codigo VARCHAR(50) NOT NULL UNIQUE,
+  nombre VARCHAR,
+  PRIMARY KEY(id_categoria_documento)
+) INHERITS (pxp.tbase)
+;
+
+ALTER TABLE wf.tcategoria_documento
+  OWNER TO postgres;
+
+COMMENT ON COLUMN wf.tcategoria_documento.codigo
+IS 'identifica el documento y se almacenes en el array  categoria_documento en la interface de tipo_documento_wf';
+
+
+--------------- SQL ---------------
+
+CREATE SEQUENCE wf.tcategoria_documento_id_categoria_documento_seq
+MAXVALUE 2147483647;
+
+ALTER TABLE wf.tcategoria_documento
+  ALTER COLUMN id_categoria_documento TYPE INTEGER;
+
+ALTER TABLE wf.tcategoria_documento
+  ALTER COLUMN id_categoria_documento SET DEFAULT nextval('wf.tcategoria_documento_id_categoria_documento_seq'::text);
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN categoria_documento VARCHAR(60)[];
+
+COMMENT ON COLUMN wf.ttipo_documento.categoria_documento
+IS 'este campo sirve para idetoficar a que caterorias pertenece un tipo de documento';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN etapa VARCHAR(150);
+
+COMMENT ON COLUMN wf.ttipo_estado.etapa
+IS 'Este es un texto que sirve hacer menos abstrato el nombre de los estados,  por lo general barrios estado pueden pertener a una misma etapa, este cmapo tiene que aprece en el diagrama gantt y en grilla';
+
+/*****************************F-SCP-RAC-WF-0-20/03/2015*************/
+
+
+/*****************************I-SCP-RAC-WF-0-26/03/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN orden NUMERIC DEFAULT 1 NOT NULL;
+
+COMMENT ON COLUMN wf.ttipo_documento.orden
+IS 'numero para ordenar los documentos por importancion los mas importantes necesitan numeros mas bajos';
+
+/*****************************F-SCP-RAC-WF-0-26/03/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-27/03/2015*************/
+
+ALTER TABLE wf.tcategoria_documento
+  ADD COLUMN modificado INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-27/03/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-06/04/2015*************/
+ALTER TABLE wf.ttipo_documento
+  ALTER COLUMN orden TYPE NUMERIC(4,2);
+
+/*****************************F-SCP-JRR-WF-0-06/04/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-08/04/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.testructura_estado
+  ADD COLUMN bucle VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.testructura_estado.bucle
+IS 'identifica si la arista ocaciona un bucle, este campo se registra de manera automatica el momento de insetar la arista';
+
+
+/*****************************F-SCP-JRR-WF-0-08/04/2015*************/
+
+
+/*****************************I-SCP-JRR-WF-0-10/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN grupo_doc VARCHAR;
+
+COMMENT ON COLUMN wf.ttipo_estado.grupo_doc
+IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface de documentos para definir que categorias pueden verse desde esta interface.';
+
+/*****************************F-SCP-JRR-WF-0-10/04/2015*************/
+
+
+
+/*****************************I-SCP-RCM-WF-0-16/03/2015*************/
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN nombre_vista varchar(70);
+
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN nombre_archivo_plantilla text;  
+  
+ALTER TABLE wf.ttipo_documento
+  ADD COLUMN esquema_vista VARCHAR(10);  
+/*****************************F-SCP-RCM-WF-0-16/03/2015*************/
+
+
+/*****************************I-SCP-RCM-WF-0-15/04/2015*************/
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN demanda VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.tdocumento_wf.demanda
+IS 'documento insertado por demanda si o no, por defecto es no';
+
+/*****************************F-SCP-RCM-WF-0-15/04/2015*************/
+
+
+
+/*****************************I-SCP-RCM-WF-0-16/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_macro
+  ADD COLUMN grupo_doc VARCHAR;
+
+COMMENT ON COLUMN wf.tproceso_macro.grupo_doc
+IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface de documentos para definir que categorias pueden verse desde esta interface.';
+
+/*****************************F-SCP-RCM-WF-0-16/04/2015*************/
+
+
+
+/*****************************I-SCP-RCM-WF-0-30/04/2015*************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN requiere_acuse VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN wf.tplantilla_correo.requiere_acuse
+IS 'si l aplantilla requiere acuse el correo se manda con un link donde la persona que recibe tendra que confirma su aceptación';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN url_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.url_acuse
+IS 'indeitifca la URL que se coloca en el link del correo para que la persona que recibe acepte,   puede ser un servidor dintinto, en un dmz';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mensaje_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mensaje_acuse
+IS 'depues de precinar el link del acuse se muestra este mensaje,';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mensaje_link_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mensaje_link_acuse
+IS 'mensjae que a antes del link de acuse de recibo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mandar_automaticamente VARCHAR(5) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mandar_automaticamente
+IS 'se manda el correo de manera automatica al llegar a este estado o espera la confirmación para enviar';
+/*****************************F-SCP-RCM-WF-0-30/04/2015*************/
+
+/*****************************I-SCP-GSS-WF-0-05/05/2015*************/
+
+ALTER TABLE wf.testado_wf
+  ADD COLUMN verifica_documento VARCHAR(2);
+
+ALTER TABLE wf.testado_wf
+  ALTER COLUMN verifica_documento SET DEFAULT 'si';
+  
+/*****************************F-SCP-GSS-WF-0-05/05/2015*************/
+
+
+
+/*****************************I-SCP-RAC-WF-0-07/05/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN funcion_acuse_recibo VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.funcion_acuse_recibo
+IS 'esta funcion se ejecuta cuando se recibe el acuse de recibo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN funcion_creacion_correo VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.funcion_creacion_correo
+IS 'esta funcion se ejecuta despude se insertar la alerta';
+
+/*****************************F-SCP-RAC-WF-0-07/05/2015*************/

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -86,10 +88,12 @@ DECLARE
      v_plantilla_asunto   varchar;
      v_total_registros  integer;
      v_res_validacion	text;
+     v_valid_campos		boolean;
+     v_documentos		record;
    
 
 BEGIN
-
+	
     v_nombre_funcion = 'wf.f_proceso_wf_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
@@ -317,11 +321,39 @@ BEGIN
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
           v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf);
+          
           IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
-          
-              raise exception 'Es necesario registrar los siguientes campos en el formulario: %',v_res_validacion;
-          
+          		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          	  v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','si');
+              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Es necesario registrar los siguientes campos en el formulario: '|| v_res_validacion);
+              return v_resp;
+          ELSE
+          		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          		v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','no');
           END IF;
+          
+          --validacion de documentos
+          
+          for v_documentos in (
+          		select
+                    dwf.id_documento_wf,                    
+                    dwf.id_tipo_documento,
+                    wf.f_priorizar_documento(v_parametros.id_proceso_wf , p_id_usuario
+                         ,dwf.id_tipo_documento,'ASC' ) as priorizacion
+                from wf.tdocumento_wf dwf
+                inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
+                where  pw.nro_tramite = COALESCE(v_registros.nro_tramite,'--')) loop
+                
+                if (v_documentos.priorizacion in (0,9)) then
+                	v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          	  		v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_documentos','si');
+              		v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Es necesario subir algun(os) documento(s) antes de pasar al siguiente estado');
+                    return v_resp;
+                end if;
+          
+          end loop;
+          v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
+          v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_documentos','no'); 
           
          
         
@@ -367,18 +399,6 @@ BEGIN
                  --  raise exception 'Estados...  %',v_registros.pedir_obs;
            
               
-                -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
-                 raise notice ' si solo hay un estado';
-                   SELECT 
-                   *
-                    into
-                   v_num_funcionarios 
-                   FROM wf.f_funcionario_wf_sel(
-                       p_id_usuario, 
-                       va_id_tipo_estado[1], 
-                       v_registros.fecha_ini,
-                       v_registros.id_estado_wf,
-                       TRUE) AS (total bigint);
                                    
                  --verificamos el numero de deptos
                  raise notice 'verificamos el numero de deptos';
@@ -394,7 +414,41 @@ BEGIN
                      v_registros.fecha_ini,
                      v_registros.id_estado_wf,
                      TRUE) AS (total bigint);
-                                 
+                
+                
+                --recupera el depto   
+                IF v_num_deptos >= 1 THEN
+                  
+                  SELECT 
+                       id_depto
+                         into
+                       v_id_depto_estado
+                  FROM wf.f_depto_wf_sel(
+                       p_id_usuario, 
+                       va_id_tipo_estado[1], 
+                       v_registros.fecha_ini,
+                       v_registros.id_estado_wf,
+                       FALSE) 
+                       AS (id_depto integer,
+                         codigo_depto varchar,
+                         nombre_corto_depto varchar,
+                         nombre_depto varchar,
+                         prioridad integer,
+                         subsistema varchar);
+               
+                END IF;
+                -- si solo hay un estado,  verificamos si tiene mas de un funcionario por este estado
+                 raise notice ' si solo hay un estado';
+                   SELECT 
+                   *
+                    into
+                   v_num_funcionarios 
+                   FROM wf.f_funcionario_wf_sel(
+                       p_id_usuario, 
+                       va_id_tipo_estado[1], 
+                       v_registros.fecha_ini,
+                       v_registros.id_estado_wf,
+                       TRUE,1,0,'0=0', COALESCE(v_id_depto_estado,0)) AS (total bigint);              
                              
                   -- si hay mas de un estado disponible  preguntamos al usuario
                   v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Verificacion para el siguiente estado)'); 
@@ -729,10 +783,19 @@ BEGIN
 	elseif(p_transaccion='WF_SESPRO_IME')then   
         begin
         
+           /*
+                    PARAMETROS:
+               v_parametros.id_estado_wf_act      -- id_estado_wf donde estamos parados actualmente
+               v_parametros.id_tipo_estado,       --  tipo de estado siguiente 
+               v_parametros.id_funcionario_wf, 
+               v_parametros.id_proceso_wf_act,     --id de procesowf actual
+               v_parametros.id_depto_wf,
+               v_parametros.obs,           
+               v_parametros.json_procesos           -- procesos disparados
+           
+           */
         
-         --captura datos basicos del estado actual del proceso WF
-        
-        
+        --  captura datos basicos del estado actual del proceso WF       
           select 
             ew.estado_reg,
             ew.id_estado_wf,
@@ -745,7 +808,7 @@ BEGIN
           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado 
           WHERE ew.id_estado_wf = v_parametros.id_estado_wf_act;           -- id_estado_wf donde estamos parados actualmente
           
-       --validamos que el estado wf actual este activo
+       --  validamos que el estado wf actual este activo
           IF v_registro_estado_wf_ant.estado_reg = 'inactivo' THEN
             raise exception 'Por favor actualice sus datos antes de continuar%',v_parametros.id_estado_wf_act;
           END IF;
@@ -848,7 +911,7 @@ BEGIN
            END LOOP;
            
            
-            --RAC si el tipo_estado tiene funcion de retroceso la ejecuta
+            --RAC si el tipo_estado tiene funcion de inicial la ejecuta
                         
             select 
              te.funcion_inicial
@@ -856,7 +919,7 @@ BEGIN
               v_reg_tipo_estado
             from wf.ttipo_estado te 
             where te.id_tipo_estado = v_parametros.id_tipo_estado;
-                      
+            --raise exception 'gonzalo %',v_parametros.id_tipo_estado;          
             IF  v_reg_tipo_estado.funcion_inicial is not NULL THEN
                 EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_inicial  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_parametros.id_proceso_wf_act::varchar||','||COALESCE(''''||v_codigo_estado||'''','NULL')||')');
             END IF;
@@ -1160,7 +1223,7 @@ BEGIN
              return v_resp;
 
 		end;    
-    
+   
     
     else
      
@@ -1172,7 +1235,7 @@ EXCEPTION
 				
 	WHEN OTHERS THEN
 		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;

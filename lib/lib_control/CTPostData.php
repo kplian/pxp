@@ -21,6 +21,7 @@ class CTPostData{
 
 		//Ejecuta la funcion para obtener todos los datos por POST o GET
 		array_push($this->aNoEncrip,'../../sis_seguridad/control/Auten/getPublicKey');
+		array_push($this->aNoEncrip,'../../sis_seguridad/control/Auten/prepararLlavesSession');
 		$this->obtenerPostData();
 		
 	}
@@ -43,8 +44,9 @@ class CTPostData{
 
 				//DESENCRIPTACION: Verifica si lo enviado es encriptado
 				if($_SESSION["encriptar_data"]=='si'){
+				
+				    
 					//Esta encriptado; recorre el array y desencripta uno a uno
-					
 					$i=0;
 					foreach($this->aVariablesEncryp as $row){
 						//Verifica que no sea la sesion para no desencriptarla

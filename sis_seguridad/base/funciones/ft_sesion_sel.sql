@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_sesion_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
 
@@ -77,11 +78,48 @@ BEGIN
                             id_usuario,
                             variable,
                             ip,
-                            datos
+                            datos,
+                            m,
+                            e,
+                            k,
+                            p,
+                            x,
+                            z
                         from segu.tsesion 
                         where estado_reg=''activo'' 
                         and id_sesion= ';
                v_consulta:=v_consulta||v_id_sesion;
+               v_consulta:=v_consulta||'  order by  id_sesion desc LIMIT 1 OFFSET 0';
+	
+               return v_consulta;
+
+
+         END;
+
+
+/*******************************    
+ #TRANSACCION:  SEG_RECLLAVES_SEL
+ #DESCRIPCION:	recupera llaves seugn el dis proporcionado
+ #AUTOR:		KPLIAN(rac)	
+ #FECHA:		13/03/2015
+***********************************/
+     elseif(par_transaccion='SEG_RECLLAVES_SEL')then
+
+          --consulta:=';
+          BEGIN
+                
+               v_consulta:='select
+                            m,
+                            e,
+                            k,
+                            p,
+                            x,
+                            z
+                        from segu.tsesion 
+                        where estado_reg=''activo'' 
+                        and variable= ''';
+                        
+               v_consulta:=v_consulta||v_parametros.sessionid||''' ';
                v_consulta:=v_consulta||'  order by  id_sesion desc LIMIT 1 OFFSET 0';
 	
                return v_consulta;
@@ -126,7 +164,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
---
--- Definition for function ft_subsistema_ime (OID = 305095) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100;

@@ -630,4 +630,44 @@ AS
 
 /*******************************************F-DEP-RAC-SEGU-0-15/01/2015**********************************************/
 
+/*******************************************I-DEP-RAC-SEGU-0-11/02/2015**********************************************/
+
+CREATE OR REPLACE VIEW segu.vusuario(
+    id_usuario,
+    id_clasificador,
+    cuenta,
+    contrasena,
+    fecha_caducidad,
+    fecha_reg,
+    estilo,
+    contrasena_anterior,
+    id_persona,
+    estado_reg,
+    autentificacion,
+    desc_persona,
+    ci,
+    correo)
+AS
+  SELECT usu.id_usuario,
+         usu.id_clasificador,
+         usu.cuenta,
+         usu.contrasena,
+         usu.fecha_caducidad,
+         usu.fecha_reg,
+         usu.estilo,
+         usu.contrasena_anterior,
+         usu.id_persona,
+         usu.estado_reg,
+         usu.autentificacion,
+         (((COALESCE(per.nombre, '' ::character varying) ::text || ' ' ::text)
+          || COALESCE(per.apellido_paterno, '' ::character varying) ::text) ||
+           ' ' ::text) || COALESCE(per.apellido_materno, '' ::character varying)
+            ::text AS desc_persona,
+         per.ci,
+         per.correo2::character varying (50) AS correo
+  FROM segu.tusuario usu
+       JOIN segu.tpersona per ON per.id_persona = usu.id_persona;
+       
+/*******************************************F-DEP-RAC-SEGU-0-11/02/2015**********************************************/
+
 

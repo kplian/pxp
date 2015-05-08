@@ -12,9 +12,11 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		Atributos : [],
 		nombreVista : 'ProcesoInstancia',
-		constructor:function(config) {
-			
+		btnReclamar: false,
+		
+		constructor:function(config) {			
 			this.config = config;
+			this.formulario_wizard = 'no';
 			
 			//configuraciones iniciales
 			this.maestro=config.maestro;
@@ -58,13 +60,11 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			if (this.configProceso[this.config.indice].atributos.vista_tipo != 'detalle') {
 				this.load({params:{start:0, limit:50}}); 
 			}
-			
-			 
+						
 		},	
 		
 		armaDetalles : function() {
 			var detalles = this.configProceso[this.config.indice].detalles
-			//console.log(this.configProceso[this.config.indice].detalles);
 			for (var i = 0 ; i<detalles.length; i++ ) {
 				
 				if (detalles[i].atributos.vista_tipo == 'detalle') {
@@ -97,6 +97,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			}
 			
 		},
+		
 		loadValoresIniciales:function()
 	    {
 	    	
@@ -134,15 +135,16 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 			if (this.configProceso[this.config.indice].atributos.vista_tipo == 'maestro') {
 				this.addButton('btnChequeoDocumentosWf',
 		            {
-		                text: 'Chequear Documentos',
+		                text: 'Documentos del Proceso',
 		                iconCls: 'bchecklist',
 		                disabled: true,
 		                handler: this.loadCheckDocumentosWf,
-		                tooltip: '<b>Documentos del Proceso</b><br/>Subir los documetos requeridos en el proceso seleccionada.'
+		                tooltip: '<b>Documentos del Proceso</b><br/>Subir los documetos requeridos en el proceso seleccionado.'
 		            }
 		        ); 
 		        
-		       this.addButton('diagrama_gantt',{text:'',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+		       this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+		       this.addButton('imprimir_tramite',{text:'Imprimir #',iconCls: 'bpdf32',disabled:true,handler:this.imprimirTramite,tooltip: '<b>Imprime el # de Trámite</b>'});
 		  
 		     
 		        this.addButton('ant_estado',{
@@ -159,6 +161,19 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		                    disabled:true,
 		                    handler:this.openFormEstadoWf,
 		                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+                
+                if(this.btnReclamar) {
+                    this.addButton('btnReclamar',
+                        {
+                            text: 'Reclamar Caso',
+                            iconCls: 'bchecklist',
+                            disabled: true,
+                            handler: this.ReclamarCaso,
+                            tooltip: '<b>Reclamar caso</b><br/>Autoasignarse la realización de la tarea seleccionada.'
+                        }
+                    ); 
+                }
+                		                 
 			}
 		},
 		
@@ -178,7 +193,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},				
 				{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 				{name:'usr_reg', type: 'string'},
-				{name:'usr_mod', type: 'string'}];
+				{name:'usr_mod', type: 'string'},
+				{name:'desc_funcionario', type: 'string'}];
 			
 			this.Atributos = [];			
 			this.Atributos.push({
@@ -236,8 +252,23 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            type:'TextField',
 	            filters:{pfiltro:'pw.nro_tramite',type:'string'},	            
 	            grid:true,
-	            form:false 
+	            form:false,
+	            bottom_filter: true 
 				});
+			
+			this.Atributos.push({
+                //configuracion del componente
+                config:{
+                    name: 'desc_funcionario',
+                    fieldLabel: 'Asignado a',                   
+                    gwidth: 130
+                },
+                type:'TextField',
+                filters:{pfiltro:'fun.desc_funcionario2',type:'string'},
+                id_grupo:0,
+                grid:true,
+                form:false 
+                }); 
 			
 			this.Atributos.push({
 				//configuracion del componente
@@ -255,7 +286,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	            grid:true,
 	            form:true 
 				});
-									
+						
 			for (var i = 0 ;i < this.configProceso[this.config.indice].columnas.length; i++) {
 				
 				if (this.configProceso[this.config.indice].columnas[i].momento != 'ninguno') {
@@ -331,6 +362,12 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	config_columna.type = 'ComboRec';
 		            	config_columna.config.maxLength = 500;
 		            }
+
+		            //RCM: verifica si es un combo con tipo de dato array para predefinir el componente a AwsomeCombo
+		            var tipoDato = this.configProceso[this.config.indice].columnas[i].bd_tipo_columna_comp;
+		            if(this.configProceso[this.config.indice].columnas[i].form_es_combo == 'si'&&(tipoDato=='integer[]'||tipoDato=='varchar[]')){
+		                config_columna.type = 'AwesomeCombo';
+		            } 
 		            
 		            
 		            //Añadir la sobreescritura de config y filtro
@@ -338,7 +375,9 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != undefined &&
 		            	this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config != null) {
 			            var custom_config = Ext.util.JSON.decode(Ext.util.Format.trim(this.configProceso[this.config.indice].columnas[i].form_sobreescribe_config));
-			            Ext.apply(config_columna.config,custom_config);
+			            config_columna = Phx.CP.merge(config_columna,custom_config);
+			            console.log(config_columna.config);
+			            //Ext.apply(config_columna.config,custom_config);
 			        }
 			        if (this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != '' && 
 		            	this.configProceso[this.config.indice].columnas[i].grid_sobreescribe_filtro != undefined &&
@@ -356,12 +395,14 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	config_columna.form = true;
 		            	config_columna.config.readOnly = true;
 		            }
-		            
+		            if (this.configProceso[this.config.indice].columnas[i].bd_nombre_columna == 'id_contrato_fk'){
+		            	console.log(config_columna);
+		            }
 			        this.Atributos.push(config_columna);			        
 			    }
 	            	            
 	            
-			}
+			} //termina for de columnas
 			
 			this.Atributos.push({
 				//configuracion del componente
@@ -482,6 +523,33 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 					}
 				}
 			}
+			
+			//add subquerys fields
+            if (config_columna.bd_campos_subconsulta != '' && 
+                config_columna.bd_campos_subconsulta != undefined &&
+                config_columna.bd_campos_subconsulta != null) {
+                var aux_subquery_fields = config_columna.bd_campos_subconsulta.split(';');
+                
+                for (var i = 0; i < aux_subquery_fields.length; i++) {
+                    var ind = aux_subquery_fields[i].lastIndexOf(' ');
+                    var aux_extra_fields_definition = new Array();
+                    
+                    //Obtiene la cadena del tipo de dato, desde el indice encontrado hasta el final de la cadena
+                    var aux = aux_subquery_fields[i].substring(0,ind);
+                    aux_extra_fields_definition[1] = aux_subquery_fields[i].substring(ind+1,aux_subquery_fields[i].length)
+                    //Obtiene la cadena del medio con el nombre de la columna
+                    ind = aux.lastIndexOf(' ');
+                    aux_extra_fields_definition[0] = aux.substring(ind+1,aux.length);
+                    
+                    if (aux_extra_fields_definition[1] == 'date') {
+                        this.fields.push({name: aux_extra_fields_definition[0],
+                                type: aux_extra_fields_definition[1], dateFormat:aux_extra_fields_definition[2]});
+                    } else {
+                        this.fields.push({name: aux_extra_fields_definition[0],
+                                type: aux_extra_fields_definition[1]});
+                    }
+                }
+            }
 		},
 		
 	    diagramGantt:function (){         
@@ -496,6 +564,19 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 scope:this
             });         
 		},
+		
+		imprimirTramite:function (){         
+            var data=this.sm.getSelected().data;
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_workflow/control/ProcesoWf/imprimirNumeroTramite',
+                params:{'id_proceso_wf':data.id_proceso_wf, 'nro_tramite' : data.nro_tramite},
+                success:this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });         
+		},
 		tam_pag:50,
 		ActSave:'../../sis_workflow/control/Tabla/insertarTablaInstancia',
 		ActDel:'../../sis_workflow/control/Tabla/eliminarTablaInstancia',
@@ -503,16 +584,34 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		loadCheckDocumentosWf:function() {
 	            var rec=this.sm.getSelected();
 	            rec.data.nombreVista = this.nombreVista;
+	            
+	            if ('gruposBarraTareasDocumento' in this) {	            	
+	            	rec.data.gruposBarraTareas = this.gruposBarraTareasDocumento;
+	            }
+	            
+	            if (this.formulario_wizard == 'si') {
+	            	rec.data.tipo = 'proins'
+	            } 
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
-	                    'Chequear documento del WF',
+	                    'Documentos del Proceso',
 	                    {
 	                        width:'90%',
 	                        height:500
 	                    },
 	                    rec.data,
 	                    this.idContenedor,
-	                    'DocumentoWf'
-	        )
+	                    'DocumentoWf',
+	                    {
+	                        config:[{
+	                                  event:'sigestado',
+	                                  delegate: this.openFormEstadoWf,
+	                                  
+	                                }],
+	                        
+	                        scope:this
+	                     }
+	       );
+	       this.formulario_wizard = 'no';
 	    },
 	    onAntEstado:function(wizard,resp){
 	            Phx.CP.loadingShow();
@@ -523,7 +622,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                        operacion: 'cambiar',
 	                        obs:resp.obs},
 	                argument:{wizard:wizard},        
-	                success:this.successSinc,
+	                success:this.successSincAnt,
 	                failure: this.conexionFailure,
 	                timeout:this.timeout,
 	                scope:this
@@ -531,7 +630,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	     },
 	    
 	    
-	    successSinc:function(resp){
+	    successSincAnt:function(resp){
 	        Phx.CP.loadingHide();
 	        resp.argument.wizard.panel.destroy()
 	        this.reload();
@@ -539,7 +638,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	     
 	     openFormEstadoWf:function() {
         
-	        var rec=this.sm.getSelected();	        
+	        var rec=this.sm.getSelected();	
+     
 	            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
 	            'Estado de Wf',
 	            {
@@ -551,6 +651,15 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	                config:[{
 	                          event:'beforesave',
 	                          delegate: this.onSaveWizard,
+	                          
+	                        },
+	                        {
+	                          event:'requirefields',
+	                          delegate: function () {
+		                          	this.onButtonEdit();
+						        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
+						        	this.formulario_wizard = 'si';
+	                          },
 	                          
 	                        }],
 	                
@@ -576,25 +685,16 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	             })
 	   },
 	   
-	   openFormEstadoWf:function() {       
-        
-	        var rec=this.sm.getSelected();	        
-	            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
-	            'Estado de Wf',
-	            {
-	                modal:true,
-	                width:700,
-	                height:450
-	            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
-	            {
-	                config:[{
-	                          event:'beforesave',
-	                          delegate: this.onSaveWizard,
-	                          
-	                        }],	                
-	                scope:this
-	             });	        
+	   
+	   successSave : function(resp){
+	    	Phx.vista.ProcesoInstancia.superclass.successSave.call(this,resp);
+	    	if (this.formulario_wizard == 'si') {
+	    		this.openFormEstadoWf();	    		
+	    		this.formulario_wizard = 'no';	    		
+	    	}
+	    	
 	    },
+	    
 	   
 	    successWizard:function(resp){
 	        Phx.CP.loadingHide();
@@ -661,18 +761,23 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	      if (this.configProceso[this.config.indice].atributos.vista_tipo == 'maestro') {
 		     this.getBoton('btnChequeoDocumentosWf').setDisabled(false);
 		     this.getBoton('diagrama_gantt').enable();
+		     this.getBoton('imprimir_tramite').enable();
 		       if(this.historico == 'no'){
 		          
 		          this.getBoton('sig_estado').enable();
-		          this.getBoton('ant_estado').enable();          
+		          this.getBoton('ant_estado').enable(); 
+		          this.getBoton('btnReclamar').enable();         
 		          
-		          if(data.codigo_estado == 'borrador' ){ 
+		          if(data.estado == 'borrador' ){ 
 		             this.getBoton('ant_estado').disable();
 		           
 		          }
-		          if(data.codigo_estado == 'finalizado' || data.codigo_estado =='anulado'){
+		          
+		          if(data.estado == 'finalizado' || data.estado =='anulado'){
+		          	
 		               this.getBoton('sig_estado').disable();
 		               this.getBoton('ant_estado').disable();
+		               this.getBoton('btnReclamar').disable();
 		          }
 		       }   
 		      else{
@@ -691,6 +796,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            this.getBoton('sig_estado').disable();
 		            this.getBoton('ant_estado').disable();
 		            this.getBoton('diagrama_gantt').disable();
+		            this.getBoton('imprimir_tramite').disable();
+		            this.getBoton('btnReclamar').disable();
 		           
 		        }
 		    }
@@ -698,13 +805,41 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	    },
 	    onButtonNew:function(){
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.window.setTitle(this.configProceso[this.config.indice].atributos.menu_nombre);
 			this.ocultarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonNew.call(this);
 		},
 		onButtonEdit:function(){
 			//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
+			this.window.setTitle(this.configProceso[this.config.indice].atributos.menu_nombre);
 			this.mostrarComponente(this.Cmp.obs);
 			Phx.vista.ProcesoInstancia.superclass.onButtonEdit.call(this);
+		},
+		
+		ReclamarCaso: function(){
+		    var rec=this.sm.getSelected();
+		    rec.data.reclaim= true;
+		             
+            Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:700,
+                height:450
+            }, {data:rec.data}, this.idContenedor,'FormEstadoWf',
+            {
+                config:[{
+                          event:'beforesave',
+                          delegate: this.onSaveWizard,
+                          
+                        }],
+                scope:this
+             });     
+		},
+		
+		successReclamar: function(){
+		    Phx.CP.loadingHide();
+            this.reload();
 		}
 	}
 )

@@ -82,6 +82,7 @@ BEGIN
     v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
+	SET datestyle = "ISO, DMY";
     v_retorno='';
     v_resp_error=pxp.f_ejecutar_dblink('('||pg_backend_pid()::varchar||',
             '''||par_sid_web||''','||par_pid_web||','''||par_transaccion||''','''||par_procedimiento||''')'

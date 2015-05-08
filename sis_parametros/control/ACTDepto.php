@@ -14,6 +14,11 @@ class ACTDepto extends ACTbase{
 		$this->objParam->defecto('ordenacion','depto');
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
+		if( $this->objParam->getParametro('modulo') != '' ) {
+			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
+		}
+		
+		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);
 			$this->res=$this->objReporte->generarReporteListado('MODDepto','listarDepto');
@@ -35,6 +40,14 @@ class ACTDepto extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','depto');
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		if( $this->objParam->getParametro('id_lugar') != '' ) {
+			$this->objParam->addFiltro( '('.$this->objParam->getParametro('id_lugar')."::integer =ANY(DEPPTO.id_lugares)  or prioridad = 0)");
+		}
+		
+		if( $this->objParam->getParametro('modulo') != '' ) {
+			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
+		}
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);
@@ -58,6 +71,15 @@ class ACTDepto extends ACTbase{
         $this->objParam->defecto('ordenacion','depto');
         $this->objParam->defecto('dir_ordenacion','asc');
         
+        if( $this->objParam->getParametro('id_lugar') != '' ) {
+			$this->objParam->addFiltro( '('.$this->objParam->getParametro('id_lugar')."::integer =ANY(DEPPTO.id_lugares)  or prioridad = 0)");
+		}
+		
+		if( $this->objParam->getParametro('modulo') != '' ) {
+			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
+		}
+		
+		
         if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
             $this->objReporte=new Reporte($this->objParam, $this);
             $this->res=$this->objReporte->generarReporteListado('MODDepto','listarDeptoFiltradoXUsuario');

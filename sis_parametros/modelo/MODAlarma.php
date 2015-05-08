@@ -36,6 +36,7 @@ class MODAlarma extends MODbase{
 		
 				
 		$this->armarConsulta();
+		
 		$this->ejecutarConsulta();
 		
 		 
@@ -55,11 +56,12 @@ class MODAlarma extends MODbase{
 		$this->count=false;
 				
 		//$this->count=false;	
-		$this->arreglo=array("id_usuario" =>1,
-							 "tipo"=>'TODOS');
+		
 		
 		$this->setParametro('id_usuario','id_usuario','integer');
 		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('errores_id','errores_id','varchar');
+		$this->setParametro('errores_msg','errores_msg','codigo_html');
 				
 		//Define los parametros para la funcion
 		//$this->setParametro('id_alarma','id_alarma','int4');
@@ -102,8 +104,16 @@ class MODAlarma extends MODbase{
 		$this->captura('correos','text');
 		$this->captura('documentos','text');
 		
+		$this->captura('id_plantilla_correo','integer');
+		$this->captura('url_acuse','varchar');
+		$this->captura('requiere_acuse','varchar');
+		$this->captura('mensaje_link_acuse','varchar');
+		
+		
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+		//echo $this->getConsulta();exit;
 		$this->ejecutarConsulta();
 		
 		//Devuelve la respuesta
@@ -268,6 +278,86 @@ class MODAlarma extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+	
+	function listarAlarmaWF(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_alarma_sel';
+		$this->transaccion='PM_ALARMWF_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('id_alarma','int4');
+		$this->captura('sw_correo','integer');
+		$this->captura('correos','text');
+		$this->captura('descripcion','varchar');
+		$this->captura('recibido','varchar');
+		$this->captura('fecha_recibido','timestamp');
+		$this->captura('estado_envio','varchar');
+		$this->captura('desc_falla','text');
+		$this->captura('titulo_correo','varchar');		
+		$this->captura('dias','integer');
+		
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		//echo $this->consulta;exit;
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
+	function reenviarCorreo(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'param.ft_alarma_ime';
+        $this->transaccion = 'PM_RECVORR_MOD';
+        $this->tipo_procedimiento = 'IME';
+
+        //Define los parametros para la funcion
+        $this->setParametro('id_alarma','id_alarma','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function alterarDestino(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'param.ft_alarma_ime';
+        $this->transaccion = 'PM_CAMDESTINO_MOD';
+        $this->tipo_procedimiento = 'IME';
+
+        //Define los parametros para la funcion
+        $this->setParametro('id_alarma','id_alarma','int4');
+		$this->setParametro('correos','correos','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
+	function confirmarAcuseRecibo(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento = 'param.ft_alarma_ime';
+        $this->transaccion = 'PM_CONACUSE_MOD';
+        $this->tipo_procedimiento = 'IME';		
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		$this->setParametro('alarma','alarma','varchar'); 
+		
+					
+		$this->armarConsulta();		
+		$this->ejecutarConsulta();		
+		 
+		return $this->respuesta;
+	}
 			
 }
 ?>

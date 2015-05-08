@@ -91,7 +91,9 @@ BEGIN
             tipo_noti, 
             titulo_alerta, 
             parametros_ad,
-            admite_obs
+            admite_obs,
+            etapa,
+            grupo_doc
             
             
           	) values(
@@ -122,7 +124,9 @@ BEGIN
             v_parametros.tipo_noti, 
             v_parametros.titulo_alerta, 
             v_parametros.parametros_ad,
-            v_parametros.admite_obs
+            v_parametros.admite_obs,
+            v_parametros.etapa,
+            v_parametros.grupo_doc
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -191,7 +195,9 @@ BEGIN
             tipo_noti=v_parametros.tipo_noti, 
             titulo_alerta=v_parametros.titulo_alerta, 
             parametros_ad=v_parametros.parametros_ad,
-            admite_obs = v_parametros.admite_obs
+            admite_obs = v_parametros.admite_obs,
+            etapa = v_parametros.etapa,
+            grupo_doc = v_parametros.grupo_doc
 							
             where id_tipo_estado=v_parametros.id_tipo_estado;
             

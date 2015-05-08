@@ -66,6 +66,12 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
           title:'Firmas Documentos', 
           height:'50%',
           cls:'Firma'
+         },
+		 {
+          url:'../../../sis_tesoreria/vista/depto_cuenta_bancaria/DeptoCuentaBancaria.php',
+          title:'Depto - Cuenta Bancaria', 
+          height:'50%',
+          cls:'DeptoCuentaBancaria'
          }]	,
 	Atributos:[
 		{
@@ -127,6 +133,21 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
    			grid:true,
    			form:true
        	},
+		{
+			config:{
+				name: 'modulo',
+				fieldLabel: 'Módulo',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength: 90
+			},
+			type:'TextField',
+			filters:{pfiltro:'deppto.modulo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
 		
 		{
 			config:{
@@ -138,7 +159,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:10
 			},
 			type:'TextField',
-			filters:{pfiltro:'depto.estado_reg',type:'string'},
+			filters:{pfiltro:'deppto.estado_reg',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -153,7 +174,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:200
 			},
 			type:'TextField',
-			filters:{pfiltro:'depto.codigo',type:'string'},
+			filters:{pfiltro:'deppto.codigo',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -168,7 +189,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:200
 			},
 			type:'TextField',
-			filters:{pfiltro:'depto.nombre',type:'string'},
+			filters:{pfiltro:'deppto.nombre',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -183,7 +204,67 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:200
 			},
 			type:'TextField',
-			filters:{pfiltro:'depto.nombre_corto',type:'string'},
+			filters:{pfiltro:'deppto.nombre_corto',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		
+		{
+			config:{
+				name: 'id_lugares',
+				fieldLabel: 'Lugar',
+				allowBlank: false,
+				emptyText:'Lugar...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_parametros/control/Lugar/listarLugar',
+					id: 'id_lugar',
+					root: 'datos',
+					sortInfo:{
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams:{par_filtro:'lug.nombre',tipo:'departamento'}
+				}),
+				valueField: 'id_lugar',
+				displayField: 'nombre',
+				gdisplayField:'nombre_lugar',
+				hiddenName: 'id_lugar',
+    			triggerAction: 'all',
+    			lazyRender:true,
+				mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				anchor:"90%",
+				gwidth:150,
+				minChars:2,
+				renderer:function (value, p, record){return String.format('{0}', record.data['nombre_lugar']);},
+			    enableMultiSelect:true
+
+       		},
+       		type:'AwesomeCombo',
+			filters:{pfiltro:'lug.nombre',type:'string'},
+			id_grupo:0,
+			grid:false,
+			form:true
+		},
+		{
+			config:{
+				name: 'prioridad',
+				fieldLabel: 'Prioridad',
+				allowBlank: true,
+				allowDacimals: false,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:200
+			},
+			type:'NumberField',
+			filters:{pfiltro:'DEPPTO.prioridad',type:'numeric'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -198,7 +279,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:4
 			},
 			type:'NumberField',
-			filters:{pfiltro:'usu1.cuenta',type:'string'},
+			filters:{pfiltro:'USUREG.cuenta',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -213,7 +294,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 			type:'DateField',
-			filters:{pfiltro:'depto.fecha_reg',type:'date'},
+			filters:{pfiltro:'deppto.fecha_reg',type:'date'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -228,7 +309,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:4
 			},
 			type:'NumberField',
-			filters:{pfiltro:'usu2.cuenta',type:'string'},
+			filters:{pfiltro:'USUMOD.cuenta',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -243,7 +324,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 			type:'DateField',
-			filters:{pfiltro:'depto.fecha_mod',type:'date'},
+			filters:{pfiltro:'deppto.fecha_mod',type:'date'},
 			id_grupo:1,
 			grid:true,
 			form:false
@@ -267,7 +348,8 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_subsistema', type: 'numeric'},
 		{name:'desc_subsistema', type: 'string'},
 		{name:'codigo', type: 'string'},
-		{name:'nombre_corto', type: 'string'}
+		{name:'nombre_corto', type: 'string'},
+		'id_lugares', 'prioridad','modulo'
 		
 	],
 	sortInfo:{

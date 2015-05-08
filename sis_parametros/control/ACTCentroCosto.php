@@ -31,8 +31,32 @@ class ACTCentroCosto extends ACTbase{
 			
 			$this->res=$this->objFunc->listarCentroCosto($this->objParam);
 		}
+		
+		if($this->objParam->getParametro('_adicionar')!=''){
+		    
+			$respuesta = $this->res->getDatos();
+			
+										
+		    array_unshift ( $respuesta, array(  'id_centro_costo'=>'0',
+		                                'codigo_cc'=>'Todos',
+									    'codigo_uo'=>'Todos',
+										'nombre_uo'=>'Todos',
+										'ep'=>'Todos',
+										'gestion'=>'Todos',
+										'codigo_cc'=>'Todos',
+										'nombre_programa'=>'Todos',
+										'nombre_proyecto'=>'Todos',
+										'nombre_actividad'=>'Todos',
+										'nombre_financiador'=>'Todos',
+										'nombre_regional'=>'Todos') );
+		    //var_dump($respuesta);
+			$this->res->setDatos($respuesta);
+		}
+		
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	
 	
 	function listarCentroCostoCombo(){
 		$this->objParam->defecto('ordenacion','id_centro_costo');

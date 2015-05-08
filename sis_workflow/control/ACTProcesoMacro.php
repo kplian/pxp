@@ -101,7 +101,22 @@ class ACTProcesoMacro extends ACTbase{
 							 $row['codigo_subsistema']."', '" . 
 							 $row['nombre']."'," . 
 							 (is_null($row['inicio'])?'NULL':"'".$row['inicio']."'").");\r\n");			
+				}
+			 } else if ($row['tipo'] == 'categoria_documento' ) {
+			 	
+				if ($row['estado_reg'] == 'inactivo') {
+					fwrite ($file, 
+					"select wf.f_import_tcategoria_documento ('delete','".							 
+							$row['codigo']."',NULL,NULL,NULL);\r\n");
+					
+				} else {
+					fwrite ($file, 
+					 "select wf.f_import_tcategoria_documento ('insert','".
+								$row['codigo']."', '" .							 
+							 $row['nombre']."');\r\n");			
 				}				
+				
+						
 				
 			} else if ($row['tipo'] == 'tipo_proceso') {
 				if ($row['estado_reg'] == 'inactivo') {
@@ -245,7 +260,7 @@ class ACTProcesoMacro extends ACTbase{
 					fwrite ($file, 
 					"select wf.f_import_ttipo_documento ('delete','".							 
 							$row['codigo']."','".
-							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL);\r\n");	
+							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL);\r\n");	
 					
 				} else {
 					
@@ -255,8 +270,10 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
 							 (is_null($row['nombre'])?'NULL':"'".$row['nombre']."'") ."," .
 							 (is_null($row['descripcion'])?'NULL':"'".$row['descripcion']."'") ."," .
-							 (is_null($row['action'])?'NULL':"'".$row['action']."'") ."," .							 
-							 (is_null($row['tipo_documento'])?'NULL':"'".$row['tipo_documento']."'") .");\r\n");
+							 (is_null($row['action'])?'NULL':"'".$row['action']."'") ."," .	
+							 (is_null($row['tipo_documento'])?'NULL':"'".$row['tipo_documento']."'") ."," .	
+							 (is_null($row['orden'])?'NULL':$row['orden']) ."," .							 						 
+							 (is_null($row['categoria_documento'])?'NULL':"'".$row['categoria_documento']."'") .");\r\n");
 							 					
 				}				
 			
@@ -357,7 +374,7 @@ class ACTProcesoMacro extends ACTbase{
 					"select wf.f_import_tplantilla_correo ('delete','".
 							$row['codigo']."','".							 
 							$row['codigo_tipo_estado']."','".
-							$row['codigo_tipo_proceso']."',NULL,NULL,NULL);\r\n");													
+							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL);\r\n");													
 					
 				} else {
 					
@@ -367,8 +384,9 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .
 							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
 							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") ."," .							 
-							 (is_null($row['plantilla'])?'NULL':"'".$row['plantilla']."'") ."," .						 						 
-							 (is_null($row['correos'])?'NULL':"'".$row['correos']."'") .");\r\n");
+							 (is_null($row['plantilla'])?'NULL':"'".$row['plantilla']."'") ."," .
+							 (is_null($row['correos'])?'NULL':"'".$row['correos']."'") ."," .						 						 
+							 (is_null($row['asunto'])?'NULL':"'".$row['asunto']."'") .");\r\n");
 							 				
 				}		
 			}		 		

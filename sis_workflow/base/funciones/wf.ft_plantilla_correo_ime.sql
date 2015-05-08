@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_plantilla_correo_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -60,7 +62,15 @@ BEGIN
 			fecha_reg,
 			usuario_ai,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+			asunto,
+            requiere_acuse,
+            url_acuse,
+            mensaje_acuse,
+            mensaje_link_acuse,
+            mandar_automaticamente,
+            funcion_creacion_correo,
+            funcion_acuse_recibo
           	) values(
 			v_parametros.id_tipo_estado,
 			v_parametros.regla,
@@ -74,7 +84,15 @@ BEGIN
 			now(),
 			v_parametros._nombre_usuario_ai,
 			null,
-			null
+			null,
+			v_parametros.asunto,
+            v_parametros.requiere_acuse,
+            v_parametros.url_acuse,
+            v_parametros.mensaje_acuse,
+            v_parametros.mensaje_link_acuse,
+            v_parametros.mandar_automaticamente,
+            v_parametros.funcion_acuse_recibo,
+            v_parametros.funcion_creacion_correo
 							
 			
 			
@@ -108,7 +126,15 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+			asunto = v_parametros.asunto,
+            requiere_acuse = v_parametros.requiere_acuse,
+            url_acuse = v_parametros.url_acuse,
+            mensaje_acuse = v_parametros.mensaje_acuse,
+            mensaje_link_acuse = v_parametros.mensaje_link_acuse,
+            mandar_automaticamente = v_parametros.mandar_automaticamente,
+            funcion_acuse_recibo = v_parametros.funcion_acuse_recibo,
+            funcion_creacion_correo = v_parametros.funcion_creacion_correo
 			where id_plantilla_correo=v_parametros.id_plantilla_correo;
                
 			--Definicion de la respuesta

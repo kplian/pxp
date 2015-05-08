@@ -20,6 +20,8 @@ $body$
 ***************************************************************************/
 declare
     v_descripcion   varchar;
+    v_lista_blanca	varchar;
+    va_lista_blanca varchar[];
 begin
 
 
@@ -72,7 +74,7 @@ begin
     --  4) si no es administrador verificamos si no es una trasaccion basica
          -- (todos tienen permisos para ejecutar las basicas)
          IF ((not po_tiene_permisos) and  (par_transaccion in  (
-            'SEG_SESION_INS',
+            'SEG_SESION_INS',   --inserta sesion
              'SEG_SESION_SEL',
              'SEG_SESION_CONT',
              'SEG_VALUSU_SEG',
@@ -100,14 +102,28 @@ begin
              'WF_TABLAINS_CONT',     --consulta para tablas instacias de wf,
              'WF_tabla_SEL',
              'WF_tabla_CONT',
-             'WF_TIPCOLES_SEL'
+             'WF_TIPCOLES_SEL',
+             'SEG_ACTKEYS_UPD',    --actuliza llaves en la tabla de sesion
+             'SEG_RECLLAVES_SEL'  --restauracion de llaves de sesion
+             
              
              ))) THEN
             po_tiene_permisos = true;
          
          END IF; 
          
- 
+         --verifica array de permisos en la configuracion global
+         v_lista_blanca = pxp.f_get_variable_global('pxp_array_lista_blanca');
+         IF  v_lista_blanca is NULL THEN
+           raise exception 'la lista blanca es nula';
+         END IF;
+         
+         
+         va_lista_blanca= string_to_array(v_lista_blanca, ',');
+         
+         IF (not po_tiene_permisos) and  par_transaccion =ANY(va_lista_blanca) THEN
+            po_tiene_permisos = true;
+         END IF;
     
     --5)  verifica si el usuario tiene permiso para ejecutar la transaccion
    

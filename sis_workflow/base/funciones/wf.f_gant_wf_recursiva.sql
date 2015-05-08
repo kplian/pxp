@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_gant_wf_recursiva (
   p_id_proceso_wf integer,
   p_id_estado_wf integer,
@@ -65,14 +63,20 @@ BEGIN
         pwf.id_estado_wf_prev,
         pwf.id_tipo_proceso,
         tp.codigo,
-        tp.nombre
+        tp.nombre,
+        te.codigo as codigo_estado
        
        into
          v_registro_proceso_wf
        from wf.tproceso_wf pwf
+       inner join wf.testado_wf ewf on ewf.id_proceso_wf = pwf.id_proceso_wf and ewf.estado_reg = 'activo'
+       inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
        where  pwf.id_proceso_wf = p_id_proceso_wf;
        
+       if (v_registro_proceso_wf.codigo_estado in('anulado','anulada','cancelado','cancelada', 'eliminado', 'eliminada')) then
+       	return true;
+       end if;
        
        raise notice 'antes del insert';
        
@@ -127,7 +131,8 @@ BEGIN
                          fun.desc_funcionario1  as funcionario,
                          depto.id_depto,
                          depto.codigo as departamento,
-                         ewf.usuario_ai
+                         ewf.usuario_ai,
+                         te.etapa
                          
                          
                        FROM  wf.testado_wf ewf
@@ -139,7 +144,7 @@ BEGIN
                        WHERE 
                           ewf.id_proceso_wf = v_registro_proceso_wf.id_proceso_wf
                       
-                          ORDER BY ewf.fecha_reg) LOOP
+                          ORDER BY ewf.fecha_reg,ewf.id_estado_wf) LOOP
                           
                         raise notice 'loop  v_sw %,  v_i % ',v_sw,v_i;
        
@@ -167,7 +172,8 @@ BEGIN
                               depto,
                               nombre_usuario_ai,
                               id_padre,
-                              id_anterior
+                              id_anterior,
+                              etapa
                              )
                              VALUES(
                                        
@@ -189,7 +195,8 @@ BEGIN
                               v_registros.departamento,
                               v_registros.usuario_ai,
                               v_id_proceso,
-                              v_id_anterior
+                              v_id_anterior,
+                              v_registros.etapa
                              ) RETURNING id into v_id_estado;
                       
                           v_id_anterior = v_id_estado;
@@ -278,7 +285,8 @@ BEGIN
                                                     nombre_usuario_ai,
                                                     id_padre,
                                                     arbol,
-                                                    id_anterior
+                                                    id_anterior,
+                                                    etapa
                                                    )
                                                    VALUES(
                                                              
@@ -301,7 +309,8 @@ BEGIN
                                                     v_registros_obs.usuario_ai,
                                                     v_id_estado,   -- el padre es el estado observado
                                                     'close',
-                                                    v_id_estado
+                                                    v_id_estado,
+                                                    v_registros.etapa
                                                    ) RETURNING id into v_id_obs;
                        
                        

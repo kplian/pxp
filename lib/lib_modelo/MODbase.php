@@ -163,7 +163,7 @@ class MODbase extends driver
 			else{
 				if(isset($this->arreglo[$valor])){
 					
-					
+
 					//rac 22092011  verifica si es del tipo bytea 
 					if($tipo=='bytea'){
 						
@@ -183,9 +183,13 @@ class MODbase extends driver
 					   $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
                             
                        $this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-                       array_push($this->valores,$this->arreglo[$valor]);     
-    					
-					  
+                       
+                       if($tipo=='integer[]'||$tipo=='varchar[]'){
+                           array_push($this->valores,'{'.$this->arreglo[$valor].'}');
+                       } else {
+                            array_push($this->valores,$this->arreglo[$valor]);    
+                       }
+                            
 					}
 				}elseif(isset($this->arregloFiles[$valor])){
 					
@@ -314,28 +318,28 @@ class MODbase extends driver
 	 */
 	function copyFile($originen, $destino,  $folder = '', $deshacer = false){
 		//obtenemos el tipo de la base de datos
+		$temp_array = explode('/', $destino);
+		unset($temp_array[count($temp_array) - 1]);
 		
+		$upload_folder = implode ('/' , $temp_array);
 		
-		$upload_folder =  './../../../uploaded_files/' . $this->objParam->getSistema() . '/' .$this->objParam->getClase() . '/' ;
-		if ($folder != '') {
-			$upload_folder .= $folder . '/';
-		}
 		
 		
 		if (!file_exists($upload_folder)) {
-			//echo $upload_folder;
-			//exit;
+			
 			if (!mkdir($upload_folder,0744,true)) {
-				throw new Exception("No se puede crear el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
-									$this->objParam->getClase() . " para escribir el archivo " . $destino);
+				throw new Exception("No se puede crear el directorio $upload_folder para escribir el archivo " . $destino);
+				
 			}	
 		} else {
 			if (!is_writable($upload_folder)) {
-				throw new Exception("No tiene permisos o no existe el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
-									$this->objParam->getClase() . " para escribir el archivo " . $destino);
+				
+				throw new Exception("No tiene permisos o no existe el directorio $upload_folder para escribir el archivo " . $destino);
+								
 			}
 		
 		}
+
 		
 		IF(!$deshacer){
 			// Passed verification
@@ -346,7 +350,7 @@ class MODbase extends driver
 		        
 		        return $destino;
 		    } else {
-		    	throw new Exception("No se puede subir el archivo " . $filename);
+		    	throw new Exception("No se puede subir el archivo " . $destino);
 		    }		
 		}
 		else{
@@ -358,10 +362,10 @@ class MODbase extends driver
 		        
 		        return $destino;
 		    } else {
-		    	throw new Exception("No se puede reverti la copia  " . $filename);
+		    	throw new Exception("No se puede reverti la copia  " . $destino);
 		    }	
 		}	
-					
+	
 
 	}
 

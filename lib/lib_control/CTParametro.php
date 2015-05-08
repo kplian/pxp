@@ -2,6 +2,7 @@
 /**
  Revision: RCM
  Fecha: 29-06-2010
+ 
  **/
 class CTParametro{
 	
@@ -94,10 +95,28 @@ class CTParametro{
 			$this->parametros_consulta['filtro']=" 0 = 0 ";
 
 		}
+		$this->aplicaFiltroRapido();
 		
 
 
 
+	}
+
+	function aplicaFiltroRapido() {
+		if ($this->getParametro('bottom_filter_value') != '' && $this->getParametro('bottom_filter_fields')) {
+			$fields = explode(',', $this->getParametro('bottom_filter_fields'));
+			$value = $this->getParametro('bottom_filter_value');
+			
+			$query .= "((".$fields[0]."::varchar ILIKE ''%".$value."%'')"; 
+ 			$query .= " OR to_tsvector(".$fields[0]."::varchar) @@ plainto_tsquery(''spanish'',''".$value."''))";
+								 
+			for ($i=1 ; $i < count($fields); $i++) {
+				$query .= " OR ((".$fields[$i]."::varchar ILIKE ''%".$value."%'')"; 
+ 				$query .= " OR to_tsvector(".$fields[$i]."::varchar) @@ plainto_tsquery(''spanish'',''".$value."''))";
+			}
+			$this->addFiltro("($query)");
+			
+		}
 	}
 
 

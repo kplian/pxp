@@ -1,12 +1,13 @@
 CREATE OR REPLACE FUNCTION wf.f_import_ttipo_documento (
- p_accion varchar,	
- p_codigo varchar,	
- p_codigo_tipo_proceso varchar,
- p_nombre varchar,
- p_descripcion text,	
- p_action varchar,
- p_tipo_documento varchar
-
+  p_accion varchar,
+  p_codigo varchar,
+  p_codigo_tipo_proceso varchar,
+  p_nombre varchar,
+  p_descripcion text,
+  p_action varchar,
+  p_tipo_documento varchar,
+  p_orden numeric,
+  p_categoria_documento varchar []
 )
 RETURNS varchar AS
 $body$
@@ -15,7 +16,7 @@ DECLARE
     v_id_tipo_proceso			integer;
     v_id_proceso_macro			integer;
 BEGIN	 
-        
+	
     select id_tipo_proceso,id_proceso_macro into v_id_tipo_proceso,v_id_proceso_macro
     from wf.ttipo_proceso tp    
     where tp.codigo = p_codigo_tipo_proceso ;
@@ -42,7 +43,9 @@ BEGIN
               descripcion,
               action,
               tipo,
-              modificado
+              modificado,
+              orden,
+              categoria_documento
             ) 
             VALUES (
               1,              
@@ -53,7 +56,9 @@ BEGIN
               p_descripcion,
               p_action,
               p_tipo_documento,
-              1
+              1,
+              p_orden,
+              p_categoria_documento
             );
         else            
             UPDATE wf.ttipo_documento  
@@ -65,7 +70,9 @@ BEGIN
               descripcion = p_descripcion,
               action = p_action,
               tipo = p_tipo_documento,
-              modificado = 1             
+              modificado = 1,
+              orden = p_orden,
+              categoria_documento = p_categoria_documento             
             WHERE 
               id_tipo_documento = v_id_tipo_documento;
         end if;
@@ -81,4 +88,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-

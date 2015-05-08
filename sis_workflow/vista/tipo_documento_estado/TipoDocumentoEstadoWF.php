@@ -13,12 +13,15 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.TipoDocumentoEstadoWF = {
-    bedit:false,
-    bnew:false,
-    bsave:false,
-    bdel:false,
-    require:'../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstado.php',
-    requireclase:'Phx.vista.TipoDocumentoEstado',
-    title:'Estados...'
+    bedit: false,
+    bnew:  false,
+    bsave: false,
+    bdel:  false,
+    require: '../../../sis_workflow/vista/tipo_documento_estado/TipoDocumentoEstado.php',
+    requireclase: 'Phx.vista.TipoDocumentoEstado',
+    title: 'Estados...',
+    constructor: function(config) {
+    	Phx.vista.TipoDocumentoEstadoWF.superclass.constructor.call(this,config);
+    }
   };
 </script>  	

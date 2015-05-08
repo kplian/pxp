@@ -130,14 +130,20 @@ class DiagramadorGanttWF{
                   }
                  
               }
+			  
+			  // si el estado tiene configurado el nombre de estapa damos preferencia a este campo
+			  
+			 if( isset($dataset[$i]['etapa']) && $dataset[$i]['etapa']!= ''){
+			 	 $desc_principal = '  '.$dataset[$i]['etapa'].' ['.trim($desc_principal).']';
+			 }
                
              //mostramos cuenta de usuario si existe
              
              if($dataset[$i]['nombre_usuario_ai']!=''&&$dataset[$i]['nombre_usuario_ai']!='NULL'){
-                 $desc_principal = $desc_principal.' (AI: '.$dataset[$i]['nombre_usuario_ai'].")" ; 
+                 $desc_principal = $desc_principal.' (por AI: '.$dataset[$i]['nombre_usuario_ai'].")" ; 
              }
              elseif($dataset[$i]['cuenta']!=''){
-                $desc_principal = $desc_principal.' ('.$dataset[$i]['cuenta'].")" ; 
+                $desc_principal = $desc_principal.' (por: '.$dataset[$i]['cuenta'].")" ; 
              }
              
              $cabecera = array(utf8_decode($desc_principal),

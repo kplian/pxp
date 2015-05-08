@@ -703,7 +703,9 @@ class ReportePDF extends MYPDF
 			}
 			$this->renderDetalle();
 		}
+		
 		parent::output($this->url_archivo,'F');
+		
 	}
 	
 	//RCM 22-11-2011 (funciones nuevas desde aqui)

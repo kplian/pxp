@@ -93,7 +93,7 @@ Phx.vista.PlantillaMensaje=Ext.extend(Phx.frmInterfaz,{
                 allowBlank: true,
                 anchor: '90%',
                 gwidth: 100,
-                maxLength: 100
+                maxLength: 255
             },
             type:'TextField',
             id_grupo:1,

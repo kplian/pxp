@@ -37,6 +37,7 @@ class MYPDF extends TCPDF {
         }
 		$this->CheckPageBreak($height_aux);
 		$index = 0;
+		//var_dump($row); exit;
 		foreach ($row as $data) {
 			
 		

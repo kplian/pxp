@@ -20,8 +20,8 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 		this.load({params:{start:0, limit:this.tam_pag,id_tipo_estado:this.maestro.id_tipo_estado}});
 		this.Cmp.documentos.store.baseParams.id_tipo_proceso = this.maestro.id_tipo_proceso;
 	},
-	fwidth: '70%',
-	fheight:'80%',
+	fwidth: '80%',
+	fheight:'90%',
 	Grupos : [{ 
 				layout: 'column',
 				xtype: 'panel',
@@ -94,6 +94,20 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		{
+            config:{
+                name: 'asunto',
+                fieldLabel: 'Asunto',
+                allowBlank: true,
+                anchor: '90%',
+                gwidth: 100,
+                maxLength: 255
+            },
+            type:'TextField',
+            id_grupo:2,
+            form:true,
+            grid:true,
+        },
+		{
 			config:{
 				name: 'regla',
 				fieldLabel: 'Regla',
@@ -112,7 +126,7 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'plantilla',				
 				allowBlank: true,
-				anchor: '90%',
+				anchor: '98%',
 				qtip:'Si no se define esta plantilla se utilizará la plantilla del estado',
 				gwidth: 100
 			},
@@ -181,6 +195,151 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
        			grid:false,
        			form:true
        	},
+		{
+			config:{
+				name: 'mandar_automaticamente',
+				fieldLabel: 'Env. Aut.',
+				qtip: 'Mandar el correo automaticamente cuando llegue al estado correpondiente, o, espera confirmación para el envio',
+				allowBlank: false,
+				anchor: '40%',
+				gwidth: 50,
+				maxLength:2,
+				emptyText:'si/no...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio',       		    
+       		    store:['si','no']
+			},
+			type:'ComboBox',
+			id_grupo:2,
+			valorInicial: 'no',
+			filters:{	
+	       		         type: 'list',
+	       				 pfiltro:'pcorreo.reuiere_acuse',
+	       				 options: ['si','no'],	
+	       		 	},
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'requiere_acuse',
+				fieldLabel: 'Acuse?',
+				qtip: 'incluir o no , el link para acuse recibo en el correo',
+				allowBlank: false,
+				anchor: '40%',
+				gwidth: 50,
+				maxLength:2,
+				emptyText:'si/no...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio',       		    
+       		    store:['si','no']
+			},
+			type:'ComboBox',
+			id_grupo:2,
+			valorInicial: 'no',
+			filters:{	
+	       		         type: 'list',
+	       				 pfiltro:'pcorreo.mandar_automaticamente',
+	       				 options: ['si','no'],	
+	       		 	},
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'url_acuse',
+				fieldLabel: 'URL Acuse',
+				allowBlank: true,
+				anchor: '80%',
+				qtip:'dirección donde apuntare el lin de acuse, se manda como parametro get el id_alarma',
+				gwidth: 100,
+				maxLength:255
+			},
+				type:'TextArea',
+				filters:{pfiltro:'pcorreo.url_acuse',type:'string'},
+				id_grupo:2,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'mensaje_link_acuse',
+				fieldLabel: 'Mensaje link ',
+				allowBlank: true,
+				anchor: '80%',
+				qtip:'Este es el mensaje que va por encima del linl de acuse de recibo en el correo electrónico',
+				gwidth: 100,
+				maxLength:255
+			},
+				type:'TextArea',
+				filters:{pfiltro:'pcorreo.mensaje_link_acuse',type:'string'},
+				id_grupo:2,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'mensaje_acuse',
+				fieldLabel: 'Mensaje Acuse',
+				allowBlank: true,
+				anchor: '80%',
+				qtip:'Una vez que acepta el acuse se le muestre este mensaje, acepta html',
+				gwidth: 100,
+				maxLength:255
+			},
+				type:'TextArea',
+				filters:{pfiltro:'pcorreo.mensaje_acuse',type:'string'},
+				id_grupo:2,
+				grid:true,
+				form:true
+		},
+       	
+       	
+       	
+		{
+			config:{
+				name: 'funcion_acuse_recibo',
+				fieldLabel: 'Funcion acuse',
+				qtip: 'Esta función se ejecuta al recibir el acuse de recibo, ejem  adq.f_acuse_orden_compra, recibe como parametro el (id_alarma, id_proceso_wf, id_estado_wf)',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:200
+			},
+				type:'TextField',
+				filters:{pfiltro:'pcorreo.funcion_acuse_recibo',type:'string'},
+				id_grupo:2,
+				grid:true,
+				form:true
+		},
+       	
+       	
+       	
+		{
+			config:{
+				name: 'funcion_creacion_correo',
+				fieldLabel: 'Funcion creación',
+				qtip: 'Esta función se ejecuta al insertar la alarma , o al modificar el estado de envio, ejem  adq.f_orden_compra_pendiente_envio, recibe como parametro el (id_alarma, id_proceso_wf, id_estado_wf)',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength: 200
+			},
+				type: 'TextField',
+				filters: { pfiltro:'pcorreo.funcion_creacion_correo', type:'string' },
+				id_grupo: 2,
+				grid: true,
+				form: true
+		},
+       	
+       	
+       	
 		{
 			config:{
 				name: 'estado_reg',
@@ -312,6 +471,9 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'asunto', type: 'string'},'requiere_acuse',
+		'url_acuse','mensaje_acuse','mensaje_link_acuse',
+		'mandar_automaticamente','funcion_acuse_recibo','funcion_creacion_correo'
 		
 	],
 	sortInfo:{

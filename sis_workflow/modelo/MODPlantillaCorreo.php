@@ -36,6 +36,16 @@ class MODPlantillaCorreo extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('asunto','varchar');
+				
+		$this->captura('requiere_acuse','varchar');
+		$this->captura('mensaje_acuse','varchar');
+		$this->captura('url_acuse','varchar');
+		$this->captura('mensaje_link_acuse','varchar');
+		$this->captura('mandar_automaticamente','varchar');
+		
+		$this->captura('funcion_acuse_recibo','varchar');
+		$this->captura('funcion_creacion_correo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -59,6 +69,14 @@ class MODPlantillaCorreo extends MODbase{
 		$this->setParametro('codigo_plantilla','codigo_plantilla','varchar');
 		$this->setParametro('documentos','documentos','text');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('asunto','asunto','varchar');
+		$this->setParametro('requiere_acuse','requiere_acuse','varchar');
+		$this->setParametro('mensaje_acuse','mensaje_acuse','varchar');
+		$this->setParametro('url_acuse','url_acuse','codigo_html');	
+		$this->setParametro('mensaje_link_acuse','mensaje_link_acuse','varchar');
+		$this->setParametro('mandar_automaticamente','mandar_automaticamente','varchar');
+		$this->setParametro('funcion_acuse_recibo','funcion_acuse_recibo','varchar');
+		$this->setParametro('funcion_creacion_correo','funcion_creacion_correo','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -83,6 +101,15 @@ class MODPlantillaCorreo extends MODbase{
 		$this->setParametro('codigo_plantilla','codigo_plantilla','varchar');
 		$this->setParametro('documentos','documentos','text');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('asunto','asunto','varchar');
+		$this->setParametro('requiere_acuse','requiere_acuse','varchar');
+		$this->setParametro('mensaje_acuse','mensaje_acuse','varchar');
+		$this->setParametro('url_acuse','url_acuse','varchar');	
+		$this->setParametro('mensaje_link_acuse','mensaje_link_acuse','varchar');
+		$this->setParametro('mandar_automaticamente','mandar_automaticamente','varchar');
+		$this->setParametro('funcion_acuse_recibo','funcion_acuse_recibo','varchar');
+		$this->setParametro('funcion_creacion_correo','funcion_creacion_correo','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

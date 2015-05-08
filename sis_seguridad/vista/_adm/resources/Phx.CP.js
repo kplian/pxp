@@ -1,3 +1,54 @@
+
+Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
+    
+    constructor : function(config){
+        Ext.state.LocalProvider.superclass.constructor.call(this);
+        this.state = this.readLocal();
+    },
+    
+    // private
+    set : function(name, value){
+        if(typeof value == "undefined" || value === null){
+            this.clear(name);
+            return;
+        }
+        this.setLocal(name, value);
+        Ext.state.LocalProvider.superclass.set.call(this, name, value);
+    },
+
+    // private
+    clear : function(name){
+        this.clearLocal(name);
+        Ext.state.LocalProvider.superclass.clear.call(this, name);
+    },
+
+    // private
+    readLocal : function(){
+        var status = {},
+            name,
+            value;
+         
+        for (var i = 0; i < localStorage.length; i++){
+			    value = localStorage.getItem(localStorage.key(i));
+			    status[localStorage.key(i)] = this.decodeValue(value);
+		} 
+        return status;
+    },
+
+    // private
+    setLocal : function(name, value){     	
+    	 localStorage.setItem(name, this.encodeValue(value));
+    },
+
+    // private
+    clearLocal : function(name){
+    	localStorage.removeItem(name);        
+    },
+    clearAll: function(){
+    	localStorage.clear();
+    }
+});
+
 ///////////////////////////////
 //		CLASE MENU		  	//
 //////////////////////////////
@@ -92,7 +143,7 @@ Menu=function(config){
 		
 		maxSize: 500,
 		collapsible: true,
-		//collapseMode:'mini',
+		collapseMode:'mini',
 		// floatable:true,
 		animCollapse:true,
         animate: true,
@@ -255,7 +306,7 @@ MainPanel = function(config){
 		
 		region:'center',
        // margins:'0 5 5 0',
-        resizeTabs: true,
+        resizeTabs: false,
         //minTabWidth: 135,
         //tabWidth: 135,
         plugins: new Ext.ux.TabCloseMenu(),
@@ -303,9 +354,11 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	    	 
 			 var p = this.add(new Ext.Panel({
 	                id: id,
-	                layout:'fit',
-	                title:title,
+	                layout: 'fit',
+	                title: title,
 	                closable: true,
+	                autoScroll: false,
+	                autoHeight : false,
 	                cclass : cls,
 	                //stateful:true,
 	                //allowDomMove:false,
@@ -320,7 +373,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	                },
 	                autoLoad: {
 	  				  url: href,
-	  				  params:{idContenedor:id,_tipo:'direc'},
+	  				  params:{idContenedor:id,_tipo:'direc', mycls:clase},
 	  				  showLoadIndicator: "Cargando...",
 	  				  arguments:objConfig,
 	  				  callback:function(r,a,o){
@@ -348,7 +401,7 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 			                         //var inter = Phx.vista[clase];
 				  				       u.update(
 				  				      	 {url:Phx.vista[clase].require, 
-				  				      	  params:{idContenedor:id,_tipo:'direc'},
+				  				      	  params:{idContenedor:id,_tipo:'direc', mycls: clase},
 				  				      	  arguments:objConfig,
 				  				      	  scripts :true,
 				  				      	  showLoadIndicator: "Cargando...2",
@@ -464,6 +517,12 @@ Phx.CP=function(){
     // para el filtro del menu
 	var filter,hiddenPkgs=[];
 	var contNodo = 0;
+    if (typeof window.localStorage != "undefined") {
+		this.localProvider = new Ext.state.LocalProvider();   
+		Ext.state.Manager.setProvider(this.localProvider);
+	}
+	
+	
     return{
         
         evaluateHash:function(action,token_inicio){
@@ -763,14 +822,21 @@ Phx.CP=function(){
 				  
 				    
 				    html:'<div id="2rn" align="right"><img src="../../../lib/imagenes/NoPerfilImage.jpg" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/></div>'
+				   },
+				   {
+				            tooltip: 'Deja el estado de la interfaz con los valores por defecto <br>borra los filtros y restaura columnas visibles',
+				            text: '<i class="fa fa-cogs"></i>',
+				            handler: function() {
+				                 localStorage.clear();
+				                 location.reload();
+				             }
 				   },'-',
 				   {
 				            text: 'Cerrar sesion',
 				            icon: '../../../lib/images/exit.png',
-				            toolTip:'Cerrar sesion',
-				        
-				                handler: function() {
-				            window.location = '../../control/auten/cerrar.php';
+				            tooltip:'Cerrar sesion',
+				            handler: function() {
+				                 window.location = '../../control/auten/cerrar.php';
 				             }
 				   }
 				   
@@ -926,6 +992,8 @@ Phx.CP=function(){
 				}],
 				keys:[{key:Ext.EventObject.ENTER,handler:Phx.CP.entrar}]
 			});
+			
+			this.win_login = win_login; 
 
 			// win_login.show();
 			
@@ -950,6 +1018,8 @@ Phx.CP=function(){
 			        		   Phx.CP.init();
 							   sw_auten=true;
 			        	   }
+			        	   //recuperamos la variable de sesion
+						   Phx.CP.session = Ext.util.Cookies.get('PHPSESSID');
 			        	 }	
 			
 			 //return true;
@@ -986,15 +1056,16 @@ Phx.CP=function(){
 		
 
 		getPlublicKey:function(){
-
-			Ext.Ajax.request({				
+             
+            Ext.Ajax.request({				
 				url:'../../sis_seguridad/control/Auten/getPublicKey',
 			    params:{_tipo:'inter' },		
 				success:function(resp){
 					var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
 					if(regreso.success==true){
 						// crea la clase de encriptacion
-						Phx.CP.CRIPT=new Phx.Encriptacion({encryptionExponent:regreso.e,
+						Phx.CP.CRIPT=new Phx.Encriptacion({
+							encryptionExponent:regreso.e,
 							modulus:regreso.m,
 							permutacion:regreso.p,
 							k:regreso.k});
@@ -1008,6 +1079,28 @@ Phx.CP=function(){
 					}else{
 
 						alert("error al optener llave pública")
+					}
+				},
+				failure:Phx.CP.conexionFailure
+			});
+
+
+		},
+		
+		prepararLlavesSession:function(){
+            
+            Phx.CP.config_ini.xtmp = Phx.CP.config_ini.x;
+            Phx.CP.config_ini.x = 0;
+            Ext.Ajax.request({				
+				url:'../../sis_seguridad/control/Auten/prepararLlavesSession',
+			    params:{_tipo:'inter',sessionid:Phx.CP.session },		
+				success:function(resp){
+					var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+					if(regreso.success==true){
+						Phx.CP.config_ini.x = Phx.CP.config_ini.xtmp;
+						Phx.CP.win_login.show();
+					}else{
+                       alert("error al optener llave pública")
 					}
 				},
 				failure:Phx.CP.conexionFailure
@@ -1041,6 +1134,9 @@ Phx.CP=function(){
 								Ext.util.Cookies.set('usuario',Phx.CP.config_ini.nombre_usuario);
 							}
 							
+							//recuperamos la variable de sesion
+							Phx.CP.session = Ext.util.Cookies.get('PHPSESSID');
+							
 							
 							//si s la primera vez inicia el entorno
 							if(!sw_auten){
@@ -1049,6 +1145,8 @@ Phx.CP=function(){
 			        	   }
 			        	    
 			        	    form_login.setTitle("LOGIN");
+			        	    form_login.getForm().findField('usuario').disable();
+			        	    form_login.getForm().findField('contrasena').reset();
 							Phx.CP.loadingHide();
 							
 							
@@ -1114,9 +1212,8 @@ Phx.CP=function(){
 					sw_auten_veri=false;
 				}
 			}
-		}
+		},
 		// manejo de errores
-		,
 		conexionFailure:function(resp1,resp2,resp3,resp4,resp5){
 		 
 			Phx.CP.loadingHide();
@@ -1133,10 +1230,10 @@ Phx.CP=function(){
 			
 			
 			var mensaje;
-			if(resp.status==777){
+			if(resp.status == 777){
 				// usuario no autentificado
 				// No existe el archivo requerido
-				mensaje="<p><br/> Status: " + resp.statusText +"<br/> Error de el Navegador</p>"
+				mensaje="<p><br/> Status: " + resp.statusText +"<br/> Error del Navegador</p>"
 			
 				return
 			}
@@ -1155,6 +1252,17 @@ Phx.CP=function(){
 			
 				// No aceptable
 				var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+				
+				if(reg.ROOT.detalle.mensaje == 'sesion no iniciada'){
+					
+					//consulta para preparar lalve seugn el sid perdido
+					if(Phx.CP.contador == 0){
+						Phx.CP.prepararLlavesSession();
+						Phx.CP.contador = Phx.CP.contador + 1;
+						return;	
+					}
+					
+				}
 				
 				if(Phx.CP.config_ini.mensaje_tec==1){
 				  mensaje="<p><br/> <b>Mensaje:</b> " + reg.ROOT.detalle.mensaje +"<br/><b>Capa:</b> " + reg.ROOT.detalle.capa +"<br/><b>Origen:</b> " + reg.ROOT.detalle.origen +"<br/><b>Procedimiento:</b> " + reg.ROOT.detalle.procedimiento +"<br/><b>Transacción:</b> " + reg.ROOT.detalle.transaccion+"<br/><b>Consulta:</b> " + reg.ROOT.detalle.consulta +"<br/><b>Mensaje Técnico:</b> " + reg.ROOT.detalle.mensaje_tec +"</p>";
@@ -1194,7 +1302,7 @@ Phx.CP=function(){
 				
 			}
 		},
-		
+		contador: 0,
 		obtenerFotoPersona:function(id_usu,callback){
 			Ext.Ajax.request({
                     url:'../../sis_seguridad/control/Persona/obtenerPersonaFoto',
@@ -1248,33 +1356,14 @@ Phx.CP=function(){
        },
        
       
-		
-		//loadMask: new Ext.LoadMask(Ext.get('3rn'), {msg:"Espere por favor ...",modal:true,removeMask :true}),
-		// loadMask: new Ext.LoadMask('Phx.CP', {msg:"Espere por favor ..."}),
 		loadMask:new Ext.LoadMask(Ext.getBody(), { msg: "Espere por favor ..." }),
-		///loadMask:Ext.getBody().mask(),
-      
-		loadingShow:function(){
 		
-			/* Ext.MessageBox.show({ 
-			 	title: 'Espere Por Favor...', 
-			   msg:"<div><img src='../../../lib/ext3/resources/images/default/grid/loading.gif'/> Cargando ...</div>", 
-			  // msg:"<div><img src='../../../lib/imagenes/gti_3.gif'/>
-				// Cargando ...</div>",
-			  animEl:Ext.getBody(),
-			  width:200,
-			  minHeight:100,
-			  closable:false });*/
-			 
-              Ext.getBody().mask('Loading...', 'x-mask-loading').dom.style.zIndex = '9999';
-            
-		},
+		loadingShow:function(){
+		   Ext.getBody().mask('Loading...', 'x-mask-loading').dom.style.zIndex = '9999';
+        },
 		
 		loadingHide:function(){
-			
-			//Ext.MessageBox.hide();
-			//Phx.CP.loadMask.hide();
-		     Ext.getBody().unmask();
+			Ext.getBody().unmask();
 		},
 
 		// Para cambiar el estilo de la vista
@@ -1286,6 +1375,46 @@ Phx.CP=function(){
         },
 		getMainPanel:function(){
 			return mainPanel;
+		},
+		merge :function(target, src) {
+		    var array = Array.isArray(src);
+		    var dst = array && [] || {};
+			var that = this;
+		    if (array) {
+		        target = target || [];
+		        dst = dst.concat(target);
+		        src.forEach(function(e, i) {
+		            if (typeof dst[i] === 'undefined') {
+		                dst[i] = e;
+		            } else if (typeof e === 'object') {
+		                dst[i] = that.merge(target[i], e);
+		            } else {
+		                if (target.indexOf(e) === -1) {
+		                    dst.push(e);
+		                }
+		            }
+		        });
+		    } else {
+		        if (target && typeof target === 'object') {
+		            Object.keys(target).forEach(function (key) {
+		                dst[key] = target[key];
+		            })
+		        }
+		        Object.keys(src).forEach(function (key) {
+		            if (typeof src[key] !== 'object' || !src[key]) {
+		                dst[key] = src[key];
+		            }
+		            else {
+		                if (!target[key]) {
+		                    dst[key] = src[key];
+		                } else {
+		                    dst[key] = that.merge(target[key], src[key]);
+		                }
+		            }
+		        });
+		    }
+		
+		    return dst;
 		},
 		
 		/*getWindowManager:function(){
@@ -1445,9 +1574,10 @@ Phx.CP=function(){
   				     var owid= Ext.id();
 				  	 Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
 				  				    
-  				     var el = Ext.get(owid); // este div esta quemado en el codigo html
-                     var u = el.getUpdater();
-                     var inter = Phx.vista[mycls];
+  				     var el = Ext.get(owid), // este div esta quemado en el codigo html
+                         u = el.getUpdater(),
+                         inter = Phx.vista[mycls];
+                         
   				       u.update(
   				      	 {url:inter.require, 
   				      	  params:o.argument.params,
@@ -1480,14 +1610,30 @@ Phx.CP=function(){
 				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){
-					var ev = o.argument.options.listeners;
-					for (var i = 0; i < ev.config.length; i++) {
-						obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+					if(obj.esperarEventos === true){
+						obj.setListeners(o.argument.options.listeners);
 					}
+					else{
+						var ev = o.argument.options.listeners;
+						for (var i = 0; i < ev.config.length; i++) {
+							obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
+						}	
+					}
+					
 				}
 		    }  
 		},
-		
+		setValueCombo: function(cmb, id_combo, value_combo){
+		    	if (!cmb.store.getById(id_combo)) {
+		            var recTem = new Array();
+		            recTem[cmb.valueField] = id_combo;
+		            recTem[cmb.displayField] = value_combo;
+		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
+		            cmb.store.commitChanges();
+		        }
+		        cmb.setValue(id_combo);
+    	
+   		 },
 		
 		
 		// para cargar ventanas hijo
@@ -1553,7 +1699,7 @@ Phx.CP=function(){
 					          text: "Cargando...", 
 					          showLoadIndicator: "Cargando...",
 					          scripts :true,
-					          listeners:listeners,
+					          listeners: listeners,
 					          callback:this.callbackWindows
 					} 
 				}));

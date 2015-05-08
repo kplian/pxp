@@ -1,12 +1,12 @@
 CREATE OR REPLACE FUNCTION wf.f_import_tplantilla_correo (
-p_accion varchar,
-p_codigo varchar,
-p_codigo_tipo_estado varchar,		
-p_codigo_tipo_proceso varchar,	
-p_regla text,
-p_plantilla text,	
-p_correos text	
-
+  p_accion varchar,
+  p_codigo varchar,
+  p_codigo_tipo_estado varchar,
+  p_codigo_tipo_proceso varchar,
+  p_regla text,
+  p_plantilla text,
+  p_correos text,
+  p_asunto varchar
 )
 RETURNS varchar AS
 $body$
@@ -45,7 +45,8 @@ BEGIN
               regla,
               plantilla,
               correos,
-              modificado
+              modificado,
+              asunto
             ) 
             VALUES (
               1, 
@@ -54,16 +55,18 @@ BEGIN
               p_regla,
               p_plantilla,
               string_to_array(p_correos,','),
-              1
+              1,
+              p_asunto
             );
         else            
            UPDATE wf.tplantilla_correo  
             SET               
               id_tipo_estado = v_id_tipo_estado,
               regla = p_regla,
-              pantilla = p_plantilla,
+              plantilla = p_plantilla,
               correos = string_to_array(p_correos,','),
-              modificado = 1             
+              modificado = 1 ,
+              asunto = p_asunto            
             WHERE id_plantilla_correo = v_id_plantilla_correo;
         end if;
     
@@ -78,4 +81,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-

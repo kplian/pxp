@@ -269,3 +269,7 @@
     height: 20px;
     width: 20px;
 }
+
+.search {
+    background-image:url(dibu_search.png) !important;
+}

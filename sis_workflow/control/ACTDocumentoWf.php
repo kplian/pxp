@@ -13,6 +13,16 @@ class ACTDocumentoWf extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_documento_wf');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		/*$this->objParam->addFiltro("tewf.nombre_estado != ''anulado''");
+		$this->objParam->addFiltro("tewf.nombre_estado != ''cancelado''");*/
+		
+		if ($this->objParam->getParametro('anulados') == 'no') {
+			$this->objParam->addFiltro("tewf.codigo not in (''anulada'',''anulado'',''cancelado'')");
+		}
+		
+		if ($this->objParam->getParametro('categoria') != '') {
+			$this->objParam->addFiltro("(''".$this->objParam->getParametro('categoria')."'' =ANY(td.categoria_documento) or td.categoria_documento is NULL)" );
+		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -55,6 +65,12 @@ class ACTDocumentoWf extends ACTbase{
     function cambiarMomento(){
         $this->objFunc=$this->create('MODDocumentoWf'); 
         $this->res=$this->objFunc->cambiarMomento($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+	
+	function verificarConfiguracion(){
+        $this->objFunc=$this->create('MODDocumentoWf'); 
+        $this->res=$this->objFunc->verificarConfiguracion($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
     

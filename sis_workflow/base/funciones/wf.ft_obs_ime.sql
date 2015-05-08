@@ -72,25 +72,9 @@ BEGIN
             from orga.vfuncionario_persona  fun
             where  fun.id_funcionario = v_parametros.id_funcionario_resp;
             
-            -- TODO, insertar alarma  para el funcionario responsable
             
-            v_descripcion =  'Estimado, '|| v_registros_fun.desc_funcionario1||'<br>'||'tiene una observación para el trámite #'||v_registros.nro_tramite||'<br>con las siguiente descripción:<br><b>'||  v_parametros.descripcion ||'</b><br> (Tiene que resolver o hacer resolver la observación para continuar con el trámite)';
             
-            v_id_alarma :=  param.f_inserta_alarma(
-                                                  v_parametros.id_funcionario_resp,
-                                                  v_descripcion,    --descripcion alarmce
-                                                  NULL,--acceso directo
-                                                  now()::date,
-                                                  'notificacion',
-                                                  '',   -->
-                                                  p_id_usuario,
-                                                  NULL,
-                                                  'Observación trámite #'||v_registros.nro_tramite,--titulo
-                                                  '{}',
-                                                  NULL::integer,
-                                                  'Observacion #'||v_registros.nro_tramite
-                                                     );
-            -- Sentencia de la insercion
+             -- Sentencia de la insercion
         	
             insert into wf.tobs(
               estado_reg,
@@ -105,8 +89,7 @@ BEGIN
               id_usuario_mod,
               fecha_mod,
               id_estado_wf,
-              num_tramite,
-              id_alarma
+              num_tramite
           	) 
             values(
 			  'activo',
@@ -121,9 +104,42 @@ BEGIN
               null,
               null,
               v_parametros.id_estado_wf,
-              v_registros.nro_tramite,
-              v_id_alarma
+              v_registros.nro_tramite
 			)RETURNING id_obs into v_id_obs;
+            
+            -- TODO, insertar alarma  para el funcionario responsable
+            
+            v_descripcion =  'Estimado, '|| v_registros_fun.desc_funcionario1||'<br>'||'tiene una observación para el trámite #'||v_registros.nro_tramite||'<br>con las siguiente descripción:<br><b>'||  v_parametros.descripcion ||'</b><br> (Tiene que resolver o hacer resolver la observación para continuar con el trámite)';
+            
+           
+            v_id_alarma :=  param.f_inserta_alarma(
+                                                  v_parametros.id_funcionario_resp,
+                                                  v_descripcion,    --descripcion alarmce
+                                                  '../../../sis_workflow/vista/obs/ObsFuncionario.php',--acceso directo
+                                                  now()::date,
+                                                  'notificacion',
+                                                  '',   -->
+                                                  p_id_usuario,
+                                                  'ObsFuncionario',
+                                                  'Observación trámite #'||v_registros.nro_tramite,--titulo
+                                                  '{filtro_directo:{campo:"id_obs",valor:"'||v_id_obs::varchar||'"}}',
+                                                  NULL::integer,
+                                                  'Observacion #'||v_registros.nro_tramite
+                                                     );
+            
+                
+            
+            update wf.tobs set
+              id_alarma = v_id_alarma
+			where id_obs=v_id_obs;
+            
+            --marca el proceso como observado
+            
+            --obtiene el proceso inicial
+            
+            --marca el proceso inicial como observado
+            
+           
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Observaciones almacenado(a) con exito (id_obs'||v_id_obs||')'); 

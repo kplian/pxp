@@ -5,9 +5,9 @@ $body$
 DECLARE
   
 BEGIN
-  	IF (TG_OP='UPDATE')then
-	BEGIN
-    	NEW.modificado = NULL;
+    IF (TG_OP='UPDATE')then
+    BEGIN
+        --NEW.modificado = NULL;
         return NEW;
     END;
     END IF;

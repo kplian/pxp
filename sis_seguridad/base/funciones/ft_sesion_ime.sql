@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_sesion_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_sesion_ime
@@ -92,7 +93,7 @@ BEGIN
         
           BEGIN
               UPDATE segu.tsesion
-              SET datos = v_parametros.datos
+              SET datos = v_parametros.datos 
               WHERE variable = v_parametros.variable
               and ip = v_parametros.ip;
               
@@ -102,8 +103,35 @@ BEGIN
             return 'Sesion  insertada con exito';
 
          END;         
-         	v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Sesion modificada con exito '||v_id_sesion); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_funcion',v_id_sesion::varchar);
+         	
+     /*******************************    
+     #TRANSACCION:  SEG_ACTKEYS_UPD
+     #DESCRIPCION:	acutliza las llavez de la sesion activa para el susuario
+     #AUTOR:		KPLIAN(rac)	
+     #FECHA:		12/03/2015
+    ***********************************/          
+     elseif (par_transaccion='SEG_ACTKEYS_UPD')then      
+          BEGIN
+                          
+              
+              UPDATE segu.tsesion  SET 
+                 m = v_parametros.m,
+                 e = v_parametros.e,
+                 k = v_parametros.k,
+                 p = v_parametros.p,
+                 x = v_parametros.x,
+                 z = v_parametros.z
+              WHERE  id_usuario = par_id_usuario and estado_reg = 'activo';
+              
+              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','llaves actualizadas'); 
+              v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_parametros.id_usuario::varchar);  		        
+             
+     
+            return 'Sesion  insertada con exito';
+
+         END;         
+         	
+     
      else
 
          raise exception 'No existe la transaccion: %',par_transaccion;
@@ -119,7 +147,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql SECURITY DEFINER;
---
--- Definition for function ft_sesion_sel (OID = 305094) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY DEFINER
+COST 100;

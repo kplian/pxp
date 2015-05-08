@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_proceso_ime (
   p_administrador integer,
   p_id_usuario integer,

@@ -58,6 +58,8 @@ class MODTipoEstado extends MODbase{
 		$this->captura('parametros_ad','varchar');
 		$this->captura('id_roles','text');
 		$this->captura('admite_obs','varchar');
+		$this->captura('etapa','varchar');
+		$this->captura('grupo_doc','varchar');
 		
 		
 		
@@ -83,6 +85,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('id_tipo_estado','id_tipo_estado','integer');
         $this->setParametro('fecha','fecha','date');
         $this->setParametro('id_estado_wf','id_estado_wf','integer');
+		$this->setParametro('id_depto_wf','id_depto_wf','integer');
         
         //Definicion de la lista del resultado del query
         $this->captura('id_funcionario','int4');
@@ -161,6 +164,10 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('parametros_ad','parametros_ad','varchar');
 		$this->setParametro('id_roles','id_roles','varchar');
 		$this->setParametro('admite_obs','admite_obs','varchar');
+		$this->setParametro('etapa','etapa','varchar');
+		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
+		
+		
 		
 		
 		
@@ -199,8 +206,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('cargo_depto','cargo_depto','varchar');
         $this->setParametro('funcion_inicial','funcion_inicial','varchar');
         $this->setParametro('funcion_regreso','funcion_regreso','varchar');
-        $this->setParametro('mobile','mobile','varchar');
-        
+        $this->setParametro('mobile','mobile','varchar');        
         $this->setParametro('acceso_directo_alerta','acceso_directo_alerta','varchar');
         $this->setParametro('nombre_clase_alerta','nombre_clase_alerta','varchar');
         $this->setParametro('tipo_noti','tipo_noti','varchar');
@@ -208,7 +214,9 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('parametros_ad','parametros_ad','varchar');
 		$this->setParametro('id_roles','id_roles','varchar');
 		$this->setParametro('admite_obs','admite_obs','varchar');
-        
+        $this->setParametro('etapa','etapa','varchar');
+		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_tproveedor_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -116,8 +118,7 @@ raise notice '%',v_consulta;
     
     /*********************************    
   #TRANSACCION:  'PM_PROVEEV_SEL'
-  #DESCRIPCION: Consulta de datos de proveedores a partir de una vista de base
-                    de datos
+  #DESCRIPCION: Consulta de datos de proveedores a partir de una vista de base de datos
   #AUTOR:   rac 
   #FECHA:   08-12-2011 10:44:58
   ***********************************/    
@@ -141,7 +142,8 @@ raise notice '%',v_consulta;
                         id_lugar,
                         lugar,
                         pais,
-                        rotulo_comercial
+                        rotulo_comercial,
+                        (COALESCE(email,''''))::varchar as email
             from param.vproveedor provee
             where  ';
             

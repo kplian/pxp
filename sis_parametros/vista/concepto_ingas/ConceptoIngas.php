@@ -96,7 +96,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'conig.desc_ingas',type:'string'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:true,
+			bottom_filter : true
 		},
 	
 	     	{
@@ -111,15 +112,17 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	       		    mode: 'local',
 	       		    valueField: 'estilo',
 	       		    gwidth: 100,
-	       		    store:['si','no']
+	       		    store:new Ext.data.ArrayStore({
+		        	fields: ['ID', 'valor'],
+		        	data :	[[1,'si'],	
+		        			[2,'no']]
+		        				
+		    		}),
+					valueField:'ID',
+					displayField:'valor'
 	       		},
 	       		type:'ComboBox',
-	       		id_grupo:0,
-	       		filters:{	
-	       		         type: 'list',
-	       		         pfiltro:'conig.sw_tes',
-	       				 options: ['si','no'],	
-	       		 	},
+	       		id_grupo:0,	       		
 	       		grid:true,
 	       		form:true
 	       },
@@ -143,7 +146,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			id_grupo: 0,
 			filters:{pfiltro:'conig.activo_fijo',type:'string'},
 			grid: true,
-			form: false
+			form: true
 		},  
 		{
 			config: {
@@ -181,7 +184,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:false
 		 },	
 	     
 		{
@@ -426,10 +429,11 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
        				store: new Ext.data.ArrayStore({
                         fields: ['variable', 'valor'],
                         data : [ ['adquisiciones', 'Adquisiciones'],
-                                 ['pago_directo', 'Pago Directo'],
+                                 ['pago_directo', 'Pago Recurrente'],
                                  ['caja_chica', 'Caja Chica'],
                                  ['fondo_avance', 'Fondo en Avance'],
-                                 ['contrato', 'Contratos']
+                                 ['contrato', 'Contratos'],
+                                 ['pago_unico', 'Pago Único'],
                                ]
                         }),
        				valueField: 'variable',
