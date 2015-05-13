@@ -161,6 +161,13 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		                    disabled:true,
 		                    handler:this.openFormEstadoWf,
 		                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+		         this.addButton('btnObs',{
+                    text :'Observaciones al Trámite',
+                    iconCls : 'bchecklist',
+                    disabled: true,
+                    handler : this.onOpenObs,
+                    tooltip : '<b>Observaciones</b><br/><b>Observaciones del WF</b>'
+                });
                 
                 if(this.btnReclamar) {
                     this.addButton('btnReclamar',
@@ -760,6 +767,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		     this.getBoton('btnChequeoDocumentosWf').setDisabled(false);
 		     this.getBoton('diagrama_gantt').enable();
 		     this.getBoton('imprimir_tramite').enable();
+		     this.getBoton('btnObs').enable();  
 		       if(this.historico == 'no'){
 		          
 		          this.getBoton('sig_estado').enable();
@@ -792,6 +800,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		        this.getBoton('btnChequeoDocumentosWf').setDisabled(true);
 		        if(tb){
 		            this.getBoton('sig_estado').disable();
+		            this.getBoton('btnObs').disable();  
 		            this.getBoton('ant_estado').disable();
 		            this.getBoton('diagrama_gantt').disable();
 		            this.getBoton('imprimir_tramite').disable();
@@ -834,6 +843,28 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 scope:this
              });     
 		},
+		
+		onOpenObs:function() {
+            var rec=this.sm.getSelected();
+            
+            var data = {
+                id_proceso_wf: rec.data.id_proceso_wf,
+                id_estado_wf: rec.data.id_estado_wf,
+                num_tramite: rec.data.num_tramite
+            }
+            
+            
+            Phx.CP.loadWindows('../../../sis_workflow/vista/obs/Obs.php',
+                    'Observaciones del WF',
+                    {
+                        width:'80%',
+                        height:'70%'
+                    },
+                    data,
+                    this.idContenedor,
+                    'Obs'
+            )
+        },
 		
 		successReclamar: function(){
 		    Phx.CP.loadingHide();
