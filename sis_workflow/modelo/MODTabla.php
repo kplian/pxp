@@ -408,6 +408,7 @@ class MODTabla extends MODbase{
 			$this->captura('id_proceso_wf','int4');
 			$this->captura('obs','text');
 			$this->captura('nro_tramite','varchar');
+            $this->captura('tiene_observaciones','integer');
             $this->captura('desc_funcionario','text');
 		}
 		//$this->armarConsulta();

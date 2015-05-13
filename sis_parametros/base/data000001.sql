@@ -804,5 +804,3 @@ select pxp.f_add_catalog('PARAM','tdepto_usuario_cargo','auxiliar');
 
 
 
-
-

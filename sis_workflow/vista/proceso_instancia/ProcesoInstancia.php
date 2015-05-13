@@ -201,6 +201,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 				{name:'usr_reg', type: 'string'},
 				{name:'usr_mod', type: 'string'},
+				{name:'tiene_observaciones', type: 'numeric'},
 				{name:'desc_funcionario', type: 'string'}];
 			
 			this.Atributos = [];			
@@ -254,7 +255,14 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				config:{
 	                name: 'nro_tramite',
 	                fieldLabel: 'Nro Trámite',	                
-	                gwidth: 130
+	                gwidth: 130,
+	                renderer:function (value,p,record){
+	                   if (record.data.tiene_observaciones == 1) {
+	                        return String.format('<div title="Tiene observaciones abiertas para este tramite"><b><font color="red">{0}</font></b></div>', value);
+	                   } else {
+	                       return  value;
+	                   } 
+	               }
 	            },
 	            type:'TextField',
 	            filters:{pfiltro:'pw.nro_tramite',type:'string'},	            
