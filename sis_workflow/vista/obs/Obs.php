@@ -13,7 +13,12 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
     constructor:function(config){
 		this.maestro=config.maestro;
-		
+		if(config.hasOwnProperty('idContenedorPadre')){
+            this.paginaMaestro = Phx.CP.getPagina(config.idContenedorPadre);
+        } else {
+            this.paginaMaestro = undefined;
+        }
+         
 		this.tbarItems = ['-',{
             text: 'Ver todas las observaciones',
             enableToggle: true,
@@ -46,7 +51,9 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
         });
         
         
-		
+		this.on('closepanel',function () {
+		    this.paginaMaestro.reload();
+		}, this);
 		this.store.baseParams = {  todos: 0, id_proceso_wf: config.id_proceso_wf, id_estado_wf: config.id_estado_wf, num_tramite: config.num_tramite}; 
         this.load({params: { start:0, limit: this.tam_pag } })
 	},

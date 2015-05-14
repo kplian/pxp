@@ -111,6 +111,7 @@ BEGIN
                             v_tabla.bd_codigo_tabla || '.id_proceso_wf,
                             ew.obs,
                             pw.nro_tramite, 
+                            wf.f_tiene_observaciones(ew.id_estado_wf),
                             fun.desc_funcionario2 as desc_funcionario, ';
                             
                 v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
@@ -124,11 +125,11 @@ BEGIN
                     end if;
                     
                     --Verifica si el usuario tiene el rol del tipo de estado para levantar restricción de funcionario para visualización de datos
-                    if v_sw_usuario_rol then
-                        v_filtro = ' 0=0  and ';
-                    else
+                    --if v_sw_usuario_rol then
+                    --    v_filtro = ' 0=0  and ';
+                    --else
                         v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
-                    end if;
+                   -- end if;
                     
                 END IF;
                 
