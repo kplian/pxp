@@ -351,14 +351,15 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 	 	      
             Phx.vista.Obs.superclass.onButtonNew.call(this);
             //agrega un filtro para que se liste el funcionario del usuario y sea el primero que se cargue
-            this.Cmp.id_funcionario_resp.store.load({params:{start:0,limit:this.tam_pag, tipo_filtro: 'usuario' }, 
+            
+            /*this.Cmp.id_funcionario_resp.store.load({params:{start:0,limit:this.tam_pag, tipo_filtro: 'usuario' }, 
 		       callback : function (r) {
 		       		if (r.length == 1 ) {	       				
 		    			this.Cmp.id_funcionario_resp.setValue(r[0].data.id_funcionario);
 		    		}    
 		    			    		
 		    	}, scope : this
-		    });
+		    });*/
 	            
             
             this.Cmp.id_estado_wf.setValue( this.id_estado_wf );
