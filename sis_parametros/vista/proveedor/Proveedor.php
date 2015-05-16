@@ -159,7 +159,8 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
    			id_grupo:0,
    			filters:{pfiltro:'person.nombre_completo1',type:'string'},
    		    grid:true,
-   			form:true
+   			form:true,
+            bottom_filter : true
 	   	},{
 	   		config:{
 	   				name:'id_institucion',
@@ -177,7 +178,8 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
    			id_grupo:0,
    			filters:{pfiltro:'instit.nombre',type:'string'},
    			grid:true,
-   			form:true
+   			form:true,
+            bottom_filter : true
 	   	},	
 		{
 			config:{
@@ -192,7 +194,8 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'provee.codigo',type:'string'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:true,
+            bottom_filter : true
 		},
 		{
 			config:{
@@ -207,7 +210,8 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'provee.nit',type:'string'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:true,
+            bottom_filter : true
 		},
 		{
 			config:{
