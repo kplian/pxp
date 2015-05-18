@@ -13,7 +13,7 @@ td    { vertical-align: top; }
             <td style="width: 75%;">
             </td>
             <td style="width: 25%; color: #444444;">
-                <img style="width: 100%;" src="./res/logo.gif" alt="Logo"><br>
+                <img width=150 src="./res/logo.gif" alt="Logo"><br>
                 RELATION CLIENT
             </td>
         </tr>
