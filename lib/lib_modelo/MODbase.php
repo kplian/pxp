@@ -169,7 +169,8 @@ class MODbase extends driver
 						
 						
 						$this->validacion->validar($nombre,$this->arregloFiles[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-						//echo "MODBase";
+						//echo "MODBase:".$valor;
+						//var_dump($this->arregloFiles);exit;
 						
 						$this->uploadFile=true;
 						

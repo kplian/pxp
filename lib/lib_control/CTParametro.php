@@ -751,6 +751,10 @@ class CTParametro{
     {
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
+	
+	public function getFiles(){
+		return $this->aPostFiles;
+	}
 
 
 }
