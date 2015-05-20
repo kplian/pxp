@@ -372,7 +372,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            if (this.configProceso[this.config.indice].columnas[i].form_combo_rec != '' && 
 		            	this.configProceso[this.config.indice].columnas[i].form_combo_rec != undefined &&
 		            	this.configProceso[this.config.indice].columnas[i].form_combo_rec != null) {
-		            		
+		            	
+		            	console.log('asas 2',this.configProceso[this.config.indice].columnas[i])
 		            	config_columna.config.origen = this.configProceso[this.config.indice].columnas[i].form_comborec;
 		            	config_columna.type = 'ComboRec';
 		            	config_columna.config.maxLength = 500;
@@ -813,7 +814,6 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            this.getBoton('diagrama_gantt').disable();
 		            this.getBoton('imprimir_tramite').disable();
 		            this.getBoton('btnReclamar').disable();
-		           
 		        }
 		    }
 	        return tb

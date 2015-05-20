@@ -66,7 +66,9 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('insertar','varchar');
 		$this->captura('eliminar','varchar');
 		$this->captura('demanda','varchar');
-		
+		$this->captura('nombre_vista','varchar');
+		$this->captura('esquema_vista','varchar');
+		$this->captura('nombre_archivo_plantilla','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

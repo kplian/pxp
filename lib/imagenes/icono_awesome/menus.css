@@ -303,3 +303,20 @@
 .search {
     background-image:url(awe_search.png) !important;
 }
+
+.btemplate {
+	background-image:url(awe_template.png) !important;
+
+}
+.bright {
+	background-image:url(awe_rigth_arrow.png) !important;
+
+}
+.bright-all {
+	background-image:url(awe_rigth_arrow_all.png) !important;
+
+}
+.bleft-all {
+	background-image:url(awe_left_arrow_all.png) !important;
+
+}

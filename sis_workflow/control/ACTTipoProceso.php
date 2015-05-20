@@ -48,8 +48,14 @@ class ACTTipoProceso extends ACTbase{
 	}
 						
 	function eliminarTipoProceso(){
-			$this->objFunc=$this->create('MODTipoProceso');	
+		$this->objFunc=$this->create('MODTipoProceso');	
 		$this->res=$this->objFunc->eliminarTipoProceso($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+	function obtenerSubsistemaTipoProceso(){
+		$this->objFunc=$this->create('MODTipoProceso');	
+		$this->res=$this->objFunc->obtenerSubsistemaTipoProceso($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

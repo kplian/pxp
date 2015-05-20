@@ -230,7 +230,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 	     
                 	       if(record.data['chequeado'] == 'si') {
                             	return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Abrir Documento' src = '../../../lib/imagenes/icono_awesome/awe_print_good.png' align='center' width='30' height='30'></div>";
-                            } else if  (record.data['action'] != '') {
+                            } else if(record.data.nombre_vista) {
+                            	return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Generar Plantilla' src = '../../../lib/imagenes/icono_awesome/awe_template.png' align='center' width='30' height='30'></div>";
+                            } 
+                            else if (record.data['action'] != '') {
                                 return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Vista Previa Documento Generado' src = '../../../lib/imagenes/icono_awesome/awe_print_good.png' align='center' width='30' height='30'></div>";
                             } else{ 
                             	return  String.format('{0}',"<div style='text-align:center'><img title='Documento No Escaneado' src = '../../../lib/imagenes/icono_awesome/awe_wrong.png' align='center' width='30' height='30'/></div>");  
@@ -606,6 +609,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		
 	    var record = this.store.getAt(rowIndex),
 	        fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
+	        console.log(record);
 	    if (fieldName == 'nro_tramite_ori' && record.data.id_proceso_wf_ori) {
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
@@ -622,6 +626,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	    } 
 	    else if (fieldName == 'chequeado') {
 	    	if(record.data['extension'].length!=0) {
+	    		//Escaneados
 	            var data = "id=" + record.data['id_documento_wf'];
 	            data += "&extension=" + record.data['extension'];
 	            data += "&sistema=sis_workflow";
@@ -629,8 +634,27 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	            data += "&url="+record.data['url'];
 	            //return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
 	            window.open('../../../lib/lib_control/CTOpenFile.php?' + data);
-	        } else if (record.data['tipo_documento'] == 'generado') {
+	        } else if(record.data.nombre_vista){
+	        	//Plantillas
+	        	Phx.CP.loadingShow();
+				Ext.Ajax.request({
+					url : '../../sis_workflow/control/TipoDocumento/generarDocumento',
+					params : {
+						id_proceso_wf    		: record.data.id_proceso_wf,
+						id_tipo_documento		: record.data.id_tipo_documento,
+						nombre_vista	 		: record.data.nombre_vista,
+						esquema_vista    		: record.data.esquema_vista,
+						nombre_archivo_plantilla: record.data.nombre_archivo_plantilla
+					},
+					success : this.successExport,
+					failure : this.conexionFailure,
+					timeout : this.timeout,
+					scope : this
+				});
 	        	
+	        	
+	        } else if (record.data['tipo_documento'] == 'generado') {
+	        	//Reportes/Formularios
 	        	Phx.CP.loadingShow();
 	       		Ext.Ajax.request({
 	                url:'../../'+record.data.action,
@@ -701,13 +725,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'usr_upload',
         'tipo_documento',
         'action','solo_lectura','id_documento_wf_ori','id_proceso_wf_ori','nro_tramite_ori',
-        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'modificar','insertar','eliminar','demanda'
-		
-		
+        {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'modificar','insertar','eliminar','demanda',
+        'nombre_vista','esquema_vista','nombre_archivo_plantilla'
 	],
 	
-	
-    
     onButtonDel: function(){
     	if(confirm('¿Está seguro de eliminar estos documentos?')){
 			//recupera los registros seleccionados
