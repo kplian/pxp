@@ -38,6 +38,9 @@ class MODTipoDocumento extends MODbase{
 		$this->captura('solo_lectura','varchar');
 		$this->captura('categoria_documento','varchar');
 		$this->captura('orden','numeric');
+		$this->captura('nombre_vista','varchar');
+		$this->captura('nombre_archivo_plantilla','text');
+		$this->captura('esquema_vista','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

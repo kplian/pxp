@@ -13,24 +13,21 @@ Phx.vista.SubirPlantilla=Ext.extend(Phx.frmInterfaz,{
     ActSave:'../../sis_workflow/control/TipoDocumento/subirPlantilla',
     maestro: {},
 
-    constructor:function(config)
-    {   
+    constructor: function(config){   
     	this.maestro=config;
         Phx.vista.SubirPlantilla.superclass.constructor.call(this,config);
         this.init();    
         this.loadValoresIniciales();
     },
     
-    loadValoresIniciales:function()
-    {        
+    loadValoresIniciales: function(){        
         Phx.vista.SubirPlantilla.superclass.loadValoresIniciales.call(this);
         this.getComponente('id_tipo_documento').setValue(this.id_tipo_documento); 
         this.Cmp.nombre_vista.setValue(this.maestro.nombre_vista);
         this.Cmp.esquema_vista.setValue(this.maestro.esquema_vista);
     },
     
-    successSave:function(resp)
-    {
+    successSave: function(resp){
         Phx.CP.loadingHide();
         this.panel.close();
     },
