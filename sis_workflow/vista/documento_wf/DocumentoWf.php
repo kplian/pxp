@@ -13,6 +13,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
      
      //soporte para cuatro categorias
      bsaveGroups:[0,1,2,3],
+     bnewGroups:[0,1,2,3],
      beditGroups:[0,1,2,3],
 	 bdelGroups:[0,1,2,3],
 	 bactGroups:[0,1,2,3],
@@ -557,7 +558,12 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         if(this.gruposBarraTareas && this.gruposBarraTareas.length == 0){
          	this.actualizarBasicos();
         } 
-       
+        else{
+        	this.store.baseParams.categoria = this.gruposBarraTareas[0].name;
+    	    this.actualizarBasicos();
+        }
+        
+       this.finCons = true;
     },
 	
 	actualizarBasicos:function(){
@@ -572,8 +578,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	},
 	
 	actualizarSegunTab: function(name, indice){
-    	this.store.baseParams.categoria = name;
-    	this.actualizarBasicos();
+		if(this.finCons) {
+			 this.store.baseParams.categoria = name;
+    	     this.actualizarBasicos();
+		}
     },
     rowExpander: new Ext.ux.grid.RowExpander({
 	        tpl : new Ext.Template(

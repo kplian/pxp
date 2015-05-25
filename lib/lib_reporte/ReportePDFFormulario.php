@@ -81,6 +81,26 @@ class ReportePDFFormulario extends MYPDF {
 		imagedestroy($QR);
 	}
 	
+	function crearFirma2 () {
+		if ($this->firmar == 'si') {
+			$this->firma['fecha_firma'] = $this->fecha_rep;
+			$this->firma['usuario_firma'] = $this->usuario_firma;
+			$this->firma['hash'] = md5(json_encode($this->firma));
+			
+			$data = json_encode($this->firma);
+			$barcodeobj = new TCPDF2DBarcode($data, 'QRCODE,H');
+			
+			$QR = imagecreatefromstring($barcodeobj->getBarcodePngData(3, 3, array(0,0,0)));
+			//$QR = imagecreatefrompng('https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs='.$size.'&chl='.urlencode($data));
+			$url = "/tmp/" . $this->firma['hash'] . ".png";
+			imagepng($QR,$url);
+			imagedestroy($QR);
+		} else {
+			$url = "";
+		}
+		return $url;
+	}
+	
 	/////////
 	//Metodos
 	/////////
@@ -152,7 +172,7 @@ class ReportePDFFormulario extends MYPDF {
 		if ($this->usuario_firma == '') {
 			$this->Cell($ancho, 0, 'Usuario: '.$_SESSION['_LOGIN'], '', 0, 'L');
 		} else {
-			$this->Cell($ancho, 0, 'Usuario: '.$this->usuario_firma, '', 0, 'L');
+			$this->Cell($ancho, 0, 'Usuario Firma: '.$this->usuario_firma, '', 0, 'L');
 		}
 		$pagenumtxt = 'Página'.' '.$this->getAliasNumPage().' de '.$this->getAliasNbPages();
 		$this->Cell($ancho, 0, $pagenumtxt, '', 0, 'C');
@@ -161,7 +181,7 @@ class ReportePDFFormulario extends MYPDF {
 		if ($this->fecha_rep == '') {			
 			$this->Cell($ancho, 0, "Fecha : " . date("d-m-Y H:i:s"), '', 0, 'L');
 		} else {
-			$this->Cell($ancho, 0, "Fecha : " . $this->fecha_rep, '', 0, 'L');
+			$this->Cell($ancho, 0, "Fecha Firma: " . $this->fecha_rep, '', 0, 'L');
 		}	
 		
 	}	
