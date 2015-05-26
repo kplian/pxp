@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-role="view" id="button-events" data-title="Button Events">
+    <a id="mobile-button1" data-click="logClick" data-role="button" style="display: block; margin: 2em; text-align: center;">Trigger Event 1</a>
+    <a id="mobile-button2" data-click="logClick" data-role="button" style="display: block; margin: 2em; text-align: center;">Trigger Event 2</a>
+    <a id="mobile-button3" data-click="logClick" data-role="button" style="display: block; margin: 2em; text-align: center;">Trigger Event 3</a>
+    <div class="console"></div>
+</div>
+
+<script>
+    function logClick(e) {
+        kendoConsole.log(this.element.prop("id") + " was clicked!", false, "#button-events");
+    }
+</script>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

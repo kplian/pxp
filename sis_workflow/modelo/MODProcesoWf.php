@@ -118,6 +118,9 @@ class MODProcesoWf extends MODbase{
 		
 		$this->captura('prioridad','integer');
 		$this->captura('revisado_asistente','varchar');
+		$this->captura('contador_estados','bigint');
+		
+		
         
         
         
@@ -130,6 +133,7 @@ class MODProcesoWf extends MODbase{
         
         //Ejecuta la instruccion
         $this->armarConsulta();
+		//echo $this->getConsulta();
         $this->ejecutarConsulta();
         
         //Devuelve la respuesta

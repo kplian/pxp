@@ -40,6 +40,8 @@ DECLARE
     v_sw_usuario_rol    boolean;
     v_id_tipo_estado    integer;
     v_fin				varchar;
+    v_depto_asignacion	varchar;
+    v_deptos			varchar;
     
 BEGIN
 
@@ -77,8 +79,8 @@ BEGIN
             --Obtiene los roles del usuario
             -------------------------------
             --Obtiene el id_tipo_esta,do a partir del id de la tabla
-            select c.id_tipo_estado,c.fin
-            into v_id_tipo_estado,v_fin
+            select c.id_tipo_estado,c.fin,c.depto_asignacion
+            into v_id_tipo_estado,v_fin,v_depto_asignacion
             from wf.ttabla a
             inner join wf.ttipo_proceso b
             on b.id_tipo_proceso = a.id_tipo_proceso
@@ -128,6 +130,16 @@ BEGIN
                     --Verifica si el usuario tiene el rol del tipo de estado para levantar restricción de funcionario para visualización de datos
                     if v_sw_usuario_rol and v_fin = 'si' then
                         v_filtro = ' 0=0  and ';
+                    elsif(v_depto_asignacion != 'ninguno') then
+                    	--obtenemos los deptos asignados al usuario
+                        select pxp.list(du.id_depto::text) into v_deptos
+                        from param.tdepto_usuario du
+                        where du.id_usuario = p_id_usuario and 
+                        du.estado_reg = 'activo';
+                        
+                        
+                    	v_filtro = ' (ew.id_depto in ('||v_deptos::varchar||') )   and ';
+                    	
                     else
                         v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
                     end if;
@@ -249,8 +261,8 @@ BEGIN
             --Obtiene los roles del usuario
             -------------------------------
             --Obtiene el id_tipo_esta,do a partir del id de la tabla
-            select c.id_tipo_estado,c.fin
-            into v_id_tipo_estado,v_fin
+            select c.id_tipo_estado,c.fin,c.depto_asignacion
+            into v_id_tipo_estado,v_fin,v_depto_asignacion
             from wf.ttabla a
             inner join wf.ttipo_proceso b
             on b.id_tipo_proceso = a.id_tipo_proceso
@@ -288,6 +300,16 @@ BEGIN
                     --Verifica si el usuario tiene el rol del tipo de estado para levantar restricción de funcionario para visualización de datos
                     if v_sw_usuario_rol and v_fin = 'si' then
                         v_filtro = ' 0=0  and ';
+                    elsif(v_depto_asignacion != 'ninguno') then
+                    	--obtenemos los deptos asignados al usuario
+                        select pxp.list(du.id_depto::text) into v_deptos
+                        from param.tdepto_usuario du
+                        where du.id_usuario = p_id_usuario and 
+                        du.estado_reg = 'activo';
+                        
+                        
+                    	v_filtro = ' (ew.id_depto in ('||v_deptos::varchar||') ) and ';
+                        
                     else
                         v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
                     end if;

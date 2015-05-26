@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div id="example" ng-app="KendoDemos">
+    <div class="demo-section k-content" ng-controller="MyCtrl">
+  <div class="box-col">
+    <h4>Static data</h4>
+    <select kendo-drop-down-list  style="width: 200px">
+      <option>Albania</option>
+      <option>Andorra</option>
+      <option>Armenia</option>
+      <option>Austria</option>
+      <option>Azerbaijan</option>
+      <option>Belarus</option>
+      <option>Belgium</option>
+      <option>Bosnia & Herzegovina</option>
+      <option>Bulgaria</option>
+      <option>Croatia</option>
+      <option>Cyprus</option>
+      <option>Czech Republic</option>
+      <option>Denmark</option>
+      <option>Estonia</option>
+      <option>Finland</option>
+      <option>France</option>
+      <option>Georgia</option>
+      <option>Germany</option>
+      <option>Greece</option>
+      <option>Hungary</option>
+      <option>Iceland</option>
+      <option>Ireland</option>
+      <option>Italy</option>
+      <option>Kosovo</option>
+      <option>Latvia</option>
+      <option>Liechtenstein</option>
+      <option>Lithuania</option>
+      <option>Luxembourg</option>
+      <option>Macedonia</option>
+      <option>Malta</option>
+      <option>Moldova</option>
+      <option>Monaco</option>
+      <option>Montenegro</option>
+      <option>Netherlands</option>
+      <option>Norway</option>
+      <option>Poland</option>
+      <option>Portugal</option>
+      <option>Romania</option>
+      <option>Russia</option>
+      <option>San Marino</option>
+      <option>Serbia</option>
+      <option>Slovakia</option>
+      <option>Slovenia</option>
+      <option>Spain</option>
+      <option>Sweden</option>
+      <option>Switzerland</option>
+      <option>Turkey</option>
+      <option>Ukraine</option>
+      <option>United Kingdom</option>
+      <option>Vatican City</option>
+    </select>
+  </div>
+
+  <div class="box-col">
+    <h4>Remote data</h4>
+    <select kendo-drop-down-list
+            k-data-text-field="'ProductName'"
+            k-data-value-field="'ProductID'"
+            k-data-source="productsDataSource"
+            style="width: 200px"></select>
+  </div>
+
+  <div class="box-col">
+    <h4>Custom item template</h4>
+    <select id="customers"
+            kendo-drop-down-list style="width: 450px"
+            k-options="customOptions"></select>
+  </div>
+
+  <style>
+    .dropdown-header {
+      font-size: 1.2em;
+    }
+
+    .dropdown-header > span {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      text-align: left;
+      display: inline-block;
+      border-style: solid;
+      border-width: 0 0 1px 1px;
+      padding: .3em .6em;
+      width: 362px;
+    }
+
+    .dropdown-header > span:first-child {
+      width: 82px;
+      border-left-width: 0;
+    }
+
+    .selected-value {
+      float: left;
+      width: 20px;
+      margin: 0 4px;
+    }
+
+    #customers-list .k-item > span{
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      display: inline-block;
+      border-style: solid;
+      border-width: 0 0 1px 1px;
+      vertical-align: top;
+      min-height: 95px;
+      width: 79%;
+      padding: .6em 0 0 .6em;
+    }
+
+    #customers-list .k-item > span:first-child{
+      width: 77px;
+      border-left-width: 0;
+      padding: .6em 0 0 0;
+    }
+
+    #customers-list img {
+      -moz-box-shadow: 0 0 2px rgba(0,0,0,.4);
+      -webkit-box-shadow: 0 0 2px rgba(0,0,0,.4);
+      box-shadow: 0 0 2px rgba(0,0,0,.4);
+      width: 70px;
+      height: 70px;
+    }
+
+    #customers-list h3 {
+      font-size: 1.6em;
+      margin: 0;
+      padding: 0;
+    }
+
+    #customers-list p {
+      margin: 0;
+      padding: 0;
+    }
+    
+    html.k-material .selected-value {
+      margin: 6px 0 0 10px;
+    }
+    
+    html.k-material .dropdown-header > span {
+      border: 0;
+    }
+    html.k-material .dropdown-header > span {
+      width: 354px;
+    }
+    html.k-material .dropdown-header > span:first-child {
+      width: 90px;
+    }
+    html.k-material #customers-list .k-item > span{
+      min-height: 80px;
+      border-width: 0 0 1px 0;
+    }
+    html.k-material #customers-list img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+    html.k-material #customers-list h3 {
+      font-size: 1.2em;
+      line-height: 1em;
+      margin-top: .5em;
+    }
+  </style>
+</div>
+</div>
+
+<script>
+  angular.module("KendoDemos", [ "kendo.directives" ])
+      .controller("MyCtrl", function($scope){
+          $scope.productsDataSource = {
+            type: "odata",
+            serverFiltering: true,
+            transport: {
+                read: {
+                    url: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Products",
+                }
+            }
+        };
+    
+        $scope.customersDataSource = {
+            transport: {
+                read: {
+                    dataType: "jsonp",
+                    url: "http://demos.telerik.com/kendo-ui/service/Customers",
+                }
+            }
+        };
+    
+        $scope.customOptions = {
+            dataSource: $scope.customersDataSource,
+            dataTextField: "ContactName",
+            dataValueField: "CustomerID",
+    
+            headerTemplate: '<div class="dropdown-header">' +
+                '<span class="k-widget k-header">Photo</span>' +
+                '<span class="k-widget k-header">Contact info</span>' +
+                '</div>',
+    
+            // using {{angular}} templates:
+            valueTemplate: '<img class="selected-value" src=\"http://demos.telerik.com/kendo-ui/content/web/Customers/{{dataItem.CustomerID}}.jpg\" alt=\"{{dataItem.CustomerID}}\" /><span>{{dataItem.ContactName}}</span>',
+    
+            template: '<span class="k-state-default"><img src=\"http://demos.telerik.com/kendo-ui/content/web/Customers/{{dataItem.CustomerID}}.jpg\" alt=\"{{dataItem.CustomerID}}\" /></span>' +
+                '<span class="k-state-default"><h3>{{dataItem.ContactName}}</h3><p>{{dataItem.CompanyName}}</p></span>'
+        };    
+      })
+</script>
+
+
+    
+    
+</body>
+</html>

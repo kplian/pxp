@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_subsistema_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -31,6 +33,7 @@ v_id                        integer;
 v_esquema                   varchar;
 v_resp 						varchar;
 v_id_gui  					varchar;
+v_valor						varchar;
 
 BEGIN
 
@@ -145,11 +148,32 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'id_subsistema',v_parametros.id_subsistema::varchar);
 
          END;
+     
+    /*******************************    
+     #TRANSACCION:   SEG_OBTVARGLO_MOD
+     #DESCRIPCION:	obtiene variables globales
+     #AUTOR:		KPLIAN(rac)	
+     #FECHA:		
+    ***********************************/
+    
+    elsif(par_transaccion = 'SEG_OBTVARGLO_MOD')then
+
+         
+          BEGIN
+               
+               v_valor = pxp.f_get_variable_global(v_parametros.codigo);
+               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','variable global');
+               v_resp = pxp.f_agrega_clave(v_resp,'codigo',v_parametros.codigo::varchar); 
+               v_resp = pxp.f_agrega_clave(v_resp,'valor',v_valor::varchar);
+
+         END;
 
      else
 
          raise exception 'No existe la transaccion: %',par_transaccion;
-     end if;
+     end if;  
+     
+     
  
 --retorna respuesta en formato JSON    
  return v_resp;      
