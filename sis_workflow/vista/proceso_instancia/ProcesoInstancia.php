@@ -791,7 +791,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		          if(data.estado == 'finalizado' || data.estado =='anulado'){
 		          	
 		               this.getBoton('sig_estado').disable();
-		               this.getBoton('ant_estado').disable();
+		               //this.getBoton('ant_estado').disable();
 		               this.getBoton('btnReclamar').disable();
 		          }
 		       }   
