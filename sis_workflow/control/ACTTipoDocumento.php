@@ -141,7 +141,7 @@ class ACTTipoDocumento extends ACTbase{
 		//var_dump($this->aPostFiles);
 		$ruta_archivo = '../../../sis_'.$this->res->datos[nombre_carpeta].'/reportes/plantillas/'.$this->arregloFiles['archivo']['name'];
 		//$this->objParam->addParametro('nombre_archivo_plantilla',$ruta_archivo);
-		//var_dump($this->objParam);
+		//var_dump($ruta_archivo);exit;
 		
 		$this->objFunc=$this->create('MODTipoDocumento');
 		   

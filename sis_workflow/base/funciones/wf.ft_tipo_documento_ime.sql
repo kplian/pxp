@@ -108,6 +108,8 @@ BEGIN
   elsif(p_transaccion='WF_TIPDW_MOD')then
 
     begin
+    
+      --raise exception '%  %',v_parametros.nombre_vista,v_parametros.id_tipo_documento;
             --Sentencia de la modificacion
             update wf.ttipo_documento set
                   nombre = v_parametros.nombre,
@@ -123,7 +125,6 @@ BEGIN
                   categoria_documento = string_to_array(v_parametros.categoria_documento,','),
                   orden = v_parametros.orden,
                   nombre_vista = v_parametros.nombre_vista,
-                  nombre_archivo_plantilla = v_parametros.nombre_archivo_plantilla,
                   esquema_vista = v_parametros.esquema_vista
             where id_tipo_documento=v_parametros.id_tipo_documento;
                
@@ -181,8 +182,8 @@ BEGIN
             --Sentencia de la modificacion
                 
             update wf.ttipo_documento set
-            nombre_archivo_plantilla = 'nombre generadi',
-        nombre_vista = v_parametros.nombre_vista,
+            nombre_archivo_plantilla = v_parametros.nombre_archivo_plantilla,
+          nombre_vista = v_parametros.nombre_vista,
             esquema_vista = v_parametros.esquema_vista
             where id_tipo_documento=v_parametros.id_tipo_documento;
                
