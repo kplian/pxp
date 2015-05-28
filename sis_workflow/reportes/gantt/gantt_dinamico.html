@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MVVM</title>
+    <title>GantDinamico</title>
     <meta charset="utf-8">
-    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
-    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
-    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
-    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
-    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
-    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles/kendo.silver.min.css" />
+    <link href="../../../lib/telerik/examples/content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../lib/telerik/styles/kendo.silver.min.css" />
      
     
     
-    <script src="../../js/jquery.min.js"></script>
-    <script src="../../js/kendo.all.min.js"></script>
-    <script src="../content/shared/js/console.js"></script>
     
     
-<script src="../../js/messages/kendo.messages.es-ES.min.js"></script>
-<script src="../../js/cultures/kendo.culture.es-ES.min.js"></script>
+    
+    <script src="../../../lib/telerik/js/jquery.min.js"></script>
+    <script src="../../../lib/telerik/js/kendo.all.min.js"></script>
+    <script src="../../../lib/telerik/examples/content/shared/js/console.js"></script>
+    
+    
+<script src="../../../lib/telerik/js/messages/kendo.messages.es-ES.min.js"></script>
+<script src="../../../lib/telerik/js/cultures/kendo.culture.es-ES.min.js"></script>
 
 
-<script src="../../../moment/moment-with-locales.js"></script>
+<script src="../../../lib/moment/moment-with-locales.js"></script>
 
     <script>
+    
+    
+    
+
         
     </script>
     
@@ -45,6 +52,19 @@
        
        <div id="gantt"></div>
 	<script>
+	
+	function getUrlVars() {
+	var vars = {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+	vars[key] = value;
+	});
+	return vars;
+	}
+	
+	var id_proceso_wf = getUrlVars()["id_proceso_wf"];
+
+	
+	
 	var arra_dependencias = new Array();
 	var json_dep;
 	$("#gantt").kendoGantt({
@@ -52,12 +72,12 @@
                 transport: {
                     read: function(options) {
                         $.ajax( {
-	                            url:'../../../lib_control/Intermediario.php',
+	                            url:'../../../lib/lib_control/Intermediario.php',
 	                            dataType: "json",
 	                            type:"POST",
 	                            async: false,
 	                          
-	                            data:'p={"id_proceso_wf":"12270"}'
+	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'"}'
 	                            +'&x=../../sis_workflow/control/ProcesoWf/diagramaGanttTramite_kendo',
 	                            success: function(result) {
 	                                options.success(result);
