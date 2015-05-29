@@ -145,6 +145,9 @@ class DiagramadorGanttWF{
              elseif($dataset[$i]['cuenta']!=''){
                 $desc_principal = $desc_principal.' (por: '.$dataset[$i]['cuenta'].")" ; 
              }
+			 if(($dataset[$i]['disparador'] == 'no' && $dataset[$i]['estado_reg'] == 'activo') || $dataset[$i]['tipo']=='estado_final'){
+			 	$desc_principal = $desc_principal.' *****';
+			 }
              
              $cabecera = array(utf8_decode($desc_principal),
                          utf8_decode($resp),

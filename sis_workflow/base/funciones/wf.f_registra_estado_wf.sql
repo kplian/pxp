@@ -368,7 +368,15 @@ BEGIN
        p_usuario_ai) 
     RETURNING id_estado_wf INTO v_id_estado_actual;  
     
-    --TODO recuperar  alarmas del estado anterior
+    
+    --inserta log de estado en el proceso_wf
+    update wf.tproceso_wf SET
+    id_tipo_estado_wfs =  array_append(id_tipo_estado_wfs, p_id_tipo_estado_siguiente)
+    where id_proceso_wf = p_id_proceso_wf;
+    
+    
+    
+    --recuperar  alarmas del estado anterior
     
     select 
      ew.id_alarma

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adaptive Usage</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div id="example">
+
+    <div class="demo-section k-header">
+    <button type="button" id="modalview-trigger">Open ModalView</button>
+    </div>
+
+    <div data-role="modalview" id="modalview-login" style="width: 50%;">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span>Login</span>
+            </div>
+        </div>
+
+        <ul>
+            <li><label for="username">Username: </label><input type="text" id="username" /></li>
+            <li><label for="password">Password: </label><input type="password" id="password" /></li>
+        </ul>
+        <a onclick="closeModalViewLogin()" id="modalview-login-button" type="button">Login</a>
+        <a onclick="closeModalViewLogin()" id="modalview-reg-button" type="button">Register</a>
+    </div>
+
+    <style>
+        .demo-section {
+            width: 400px;
+            margin-top: 50px;
+            padding: 30px 10px;
+            text-align: center;
+        }
+
+        #modalview-login ul {
+            width: 90%;
+            margin: 30px auto 20px;
+            padding: 0;
+            list-style-type: none;
+        }
+        #modalview-login ul label {
+            display: block;
+            width: 50%px;
+            padding: 0 5px 0 0;
+        }
+        #modalview-login ul input {
+            display: block;
+            width: 100%;
+            height: 36px;
+            line-height: 26px;
+            vertical-align: middle;
+            border: 1px solid #e7e7e7;
+            padding: 5px;
+            margin: 5px 0 10px;
+        }
+        #modalview-login-button,
+        #modalview-reg-button {
+            display: block;
+            margin: 0 auto 20px;
+            text-align: center;
+            font-weight: bold;
+            width: 90%;
+            height: 36px;
+            line-height: 36px;
+            vertical-align: middle;
+            background-color: #015991;
+            color: #ffffff;
+        }
+        #modalview-reg-button {
+            margin-bottom: 30px;
+            background-color: #929394;
+        }
+        #modalview-login-button:hover ,
+        #modalview-reg-button:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#modalview-trigger").kendoButton();
+    });
+    
+    function closeModalViewLogin() {
+        $("#modalview-login").kendoMobileModalView("close");
+    }
+
+    $(function() {
+        $("#modalview-login").kendoMobileModalView();
+
+        $("#modalview-trigger").click(function() {
+            $("#modalview-login").kendoMobileModalView("open");
+        });
+    });
+</script>
+
+
+    
+    
+</body>
+</html>

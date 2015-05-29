@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nested collapsibles</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-role="view">
+    <header data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title">Collapsible</span>
+        </div>
+    </header>
+
+    <div id="collapsible" data-role="collapsible" data-animation="false" data-collapsed="false">
+        <h2>Header</h2>
+        <div id="collapsible" data-role="collapsible">
+            <h3>Scrollable ListView</h3>
+            <div data-role="scroller" style="height: 150px;">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tincidunt faucibus mauris at pellentesque. Aenean vel est eu ante bibendum faucibus. Praesent pharetra nibh est, vitae scelerisque odio porta vel. Nunc in sagittis ipsum. Vivamus sit amet faucibus ex. Donec nec nisl cursus, consectetur odio et, vehicula est. Quisque sollicitudin ultricies imperdiet. Aenean et felis ante. Fusce ligula urna, maximus ac feugiat vel, placerat in nibh. Suspendisse leo neque, scelerisque ut mattis quis, imperdiet vel orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer ut accumsan ante, at fermentum nunc. Suspendisse posuere diam sit amet mauris pulvinar, eget porttitor augue sagittis.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tincidunt faucibus mauris at pellentesque. Aenean vel est eu ante bibendum faucibus. Praesent pharetra nibh est, vitae scelerisque odio porta vel. Nunc in sagittis ipsum. Vivamus sit amet faucibus ex. Donec nec nisl cursus, consectetur odio et, vehicula est. Quisque sollicitudin ultricies imperdiet. Aenean et felis ante. Fusce ligula urna, maximus ac feugiat vel, placerat in nibh. Suspendisse leo neque, scelerisque ut mattis quis, imperdiet vel orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer ut accumsan ante, at fermentum nunc. Suspendisse posuere diam sit amet mauris pulvinar, eget porttitor augue sagittis.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tincidunt faucibus mauris at pellentesque. Aenean vel est eu ante bibendum faucibus. Praesent pharetra nibh est, vitae scelerisque odio porta vel. Nunc in sagittis ipsum. Vivamus sit amet faucibus ex. Donec nec nisl cursus, consectetur odio et, vehicula est. Quisque sollicitudin ultricies imperdiet. Aenean et felis ante. Fusce ligula urna, maximus ac feugiat vel, placerat in nibh. Suspendisse leo neque, scelerisque ut mattis quis, imperdiet vel orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer ut accumsan ante, at fermentum nunc. Suspendisse posuere diam sit amet mauris pulvinar, eget porttitor augue sagittis.</p>
+            </div>
+        </div>
+
+        <div id="collapsible" data-role="collapsible">
+            <h3>Form elements</h3>
+            <ul data-role="listview" data-style="inset">
+                <li>
+                    <label>Type text
+                        <input type="text" value="Text" />
+                    </label>
+                </li>
+                <li>
+                    <label> Type password
+                        <input type="password" value="password" />
+                    </label>
+                </li>
+                <li>
+                    <label> Type email
+                        <input type="email" value="kendoui@telerik.com" />
+                    </label>
+                </li>
+                <li>
+                    <label> Textarea
+                        <textarea style="resize: none">Multiline Text</textarea>
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MVVM</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-model="viewModel" data-role="view" id="button-mvvm" data-title="Button MVVM">
+    <ul data-role="listview" data-style="inset" data-type="group">
+        <li>
+            Button
+            <ul>
+                <li>
+                <span><a data-role="button"
+                       data-bind="enabled: isEnabled,
+                                  visible: isVisible,
+                                  events: { click: onClick }"
+                                  style="display: block; margin: 2em; text-align: center;">Click me</a></span>
+                </li>
+                <li>
+                    <div class="console"></div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Configuration
+            <ul>
+                <li>Enable <input type="checkbox" data-role="switch" data-bind="checked: isEnabled"></li>
+                <li>Visible <input type="checkbox" data-role="switch" data-bind="checked: isVisible"></li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>
+        Kendo UI Mobile Button supports the
+        <a href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/enabled">enabled</a>,
+        <a href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/events">events</a> and
+        <a href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/visible">visible</a> bindings.
+    </p>
+</div>
+
+<script>
+    var viewModel = kendo.observable({
+        isEnabled: true,
+        isVisible: true,
+        onClick: function(e) {
+            kendoConsole.log("event :: click", false, "#button-mvvm");
+        }
+    });
+</script>
+
+<style>
+    .km-root .console {
+        background-color: transparent;
+        border: 0;
+        margin: 1.4em 1em;
+        overflow: hidden;
+        height: auto;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

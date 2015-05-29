@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_gant_wf_recursiva (
   p_id_proceso_wf integer,
   p_id_estado_wf integer,
@@ -132,7 +134,9 @@ BEGIN
                          depto.id_depto,
                          depto.codigo as departamento,
                          ewf.usuario_ai,
-                         te.etapa
+                         te.etapa,
+                         te.disparador,
+                         ewf.estado_reg
                          
                          
                        FROM  wf.testado_wf ewf
@@ -173,7 +177,9 @@ BEGIN
                               nombre_usuario_ai,
                               id_padre,
                               id_anterior,
-                              etapa
+                              etapa,
+                              estado_reg,
+                              disparador
                              )
                              VALUES(
                                        
@@ -196,7 +202,9 @@ BEGIN
                               v_registros.usuario_ai,
                               v_id_proceso,
                               v_id_anterior,
-                              v_registros.etapa
+                              v_registros.etapa,
+                              v_registros.estado_reg,
+                              v_registros.disparador
                              ) RETURNING id into v_id_estado;
                       
                           v_id_anterior = v_id_estado;

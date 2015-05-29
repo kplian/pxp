@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div kendo-mobile-application ng-app="kendoDemo" ng-controller="appController" k-options="appOptions">
+    <kendo-mobile-view k-layout="'layout'" id="layoutView">
+        <p>
+            This examples shows the platform specific layouts. Change the OS and reload the page to see how the header and footer changes.
+        </p>
+    </kendo-mobile-view>
+
+    <kendo-mobile-layout k-id="'layout'" k-platform="'ios'">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-view-title>iOS Platform</kendo-view-title>
+            </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+        <kendo-mobile-footer>
+            <kendo-mobile-tab-strip>
+                <a k-icon="'contacts'">Profile
+                </a><a k-icon="'settings'">Settings</a>
+            </kendo-mobile-tab-strip>
+        </kendo-mobile-footer>
+    </kendo-mobile-layout>
+
+    <kendo-mobile-layout k-id="'layout'" k-platform="'android'">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-view-title>Android  Platform</kendo-view-title>
+            </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+
+        <kendo-mobile-footer>
+            <kendo-mobile-tab-strip>
+                <a k-icon="history">Sales</a>
+                <a k-icon="settings">Settings</a>
+            </kendo-mobile-tab-strip>
+        </kendo-mobile-footer>
+    </kendo-mobile-layout>
+
+    <kendo-mobile-layout k-id="'layout'" k-platform="'blackberry'">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-view-title>BlackBerry platform</kendo-view-title>
+                </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+
+        <kendo-mobile-footer>
+            <kendo-mobile-tab-strip>
+                <a k-icon="'favorites'">Rating</a>
+                <a k-icon="'settings'">Settings</a>
+            </kendo-mobile-tab-strip>
+        </kendo-mobile-footer>
+    </kendo-mobile-layout>
+
+    <kendo-mobile-layout k-id="'layout'" k-platform="'wp'">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-view-title>Windows Phone platform</kendo-view-title>
+            </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+
+        <kendo-mobile-footer>
+            <kendo-mobile-tab-strip>
+                <a k-icon="'home'">Home</a>
+                <a k-icon="'globe'">Global</a>
+            </kendo-mobile-tab-strip>
+        </kendo-mobile-footer>
+    </kendo-mobile-layout>
+</div>
+
+<script>
+    angular.module("kendoDemo", [ 'kendo.directives' ]).controller("appController", function($scope) {
+        var mobileTheme = window.kendoMobileTheme;
+
+        var options = { hideAddressBar: false };
+
+        if (mobileTheme === "flat") {
+            options.skin = "flat";
+            } else {
+            options.platform = mobileTheme;
+        }
+
+        $scope.appOptions = options;
+    });
+</script>
+
+<style>
+    #layoutView .km-view-title
+    {
+        visibility: inherit;
+    }
+
+    .km-android #layoutView .km-view-title
+    {
+        display: block;
+        position: static;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>
