@@ -25,7 +25,7 @@ class ACTFuncionario extends ACTbase{
 		
 		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
 			$this->objParam->addFiltro("FUNCIO.id_funcionario IN (select * 
-										FROM orga.f_get_funcionarios_x_usuario_asistente(now(), " .
+										FROM orga.f_get_funcionarios_x_usuario_asistente(now()::date, " .
 																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
 		}
 			
