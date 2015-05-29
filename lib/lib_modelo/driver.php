@@ -1212,7 +1212,7 @@ class driver
 		
 					
 		$res['datos']=$res;
-		//var_dump($res['datos']);exit;
+		
 		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
@@ -1225,7 +1225,7 @@ class driver
 		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
-
+		
 		//var_dump($aux);exit;
 		
 		if($res['tipo_respuesta']=='EXITO'){
@@ -1233,11 +1233,14 @@ class driver
 			$res['mensaje_tec']="La transacción se ha ejecutado con éxito";
 		}
 		else
-		{
+		{		    
+		    $mensaje_array = explode('**##$$##$$##**', $res['mensaje']);
+            $res['mensaje_tec'] = $mensaje_array[1];
+            $res['mensaje'] = $mensaje_array[0];
 			if($res['codigo_error']!='P0001' && $_SESSION["_ESTADO_SISTEMA"] != "desarrollo"){
 				$res['mensaje']="Ha ocurrido un incidente. Comunique el registro (".$res['id_log'].")";
 			}
-			$res['mensaje_tec']=$res['mensaje']."   Procedimientos: ".$res['procedimientos'];
+			
 		}
 		
 		return $res;

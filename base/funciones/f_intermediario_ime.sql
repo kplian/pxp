@@ -103,7 +103,7 @@ BEGIN
     v_nombre_funcion:='pxp.f_intermediario_ime';
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
-    
+    SET datestyle = "ISO, DMY";
     v_linea=null;
     v_secuencia:=(nextval('pxp.parametro'));
     v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
@@ -414,6 +414,9 @@ BEGIN
     
     v_resp = pxp.f_agrega_clave_multiple(v_resp,v_retorno);
     
+    v_resp =  replace(v_resp,'\#*#','''');
+    v_resp =  replace(v_resp,'#*#','\"');
+    raise notice 'respuesta ......  %' , v_resp;
     return pxp.f_resp_to_json(v_resp);
 
 EXCEPTION

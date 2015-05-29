@@ -916,3 +916,75 @@ IS 'Este campo se agrega para poder subdividir los deptos de un sistema en modul
 
 /***********************************F-SCP-RAC-PARAM-0-03/03/2015****************************************/
 
+
+
+/***********************************I-SCP-RAC-PARAM-0-29/04/2015****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN estado_envio VARCHAR(15) DEFAULT 'exito' NOT NULL;
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN desc_falla TEXT;
+
+COMMENT ON COLUMN param.talarma.desc_falla
+IS 'descripcion de la falla si existe';
+
+/***********************************F-SCP-RAC-PARAM-0-29/04/2015****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-1-29/04/2015****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_estado_wf INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_estado_wf
+IS 'indetifica el estado del wf, solo apra los correos hecho con plantilla, (especiales)';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_proceso_wf INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_proceso_wf
+IS 'identifica el proceso wf que manda el correo (solo para plantillas)';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN recibido VARCHAR(4) DEFAULT '--' NOT NULL;
+
+COMMENT ON COLUMN param.talarma.recibido
+IS 'alerta sobre el acuse de recibo, solo para plantilla preconfiguradas para recibir acuses';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_plantilla_correo INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_plantilla_correo
+IS 'identifica desde que plantilla se origino el correo';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN fecha_recibido TIMESTAMP(0) WITHOUT TIME ZONE;
+
+COMMENT ON COLUMN param.talarma.fecha_recibido
+IS 'para marcar la fecha y hora del acuse de recibo';
+
+
+
+
+/***********************************F-SCP-RAC-PARAM-1-29/04/2015****************************************/
+

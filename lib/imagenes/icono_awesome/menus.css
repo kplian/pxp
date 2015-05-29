@@ -1,0 +1,322 @@
+/*!
+ * Ext JS Library 3.3.0
+ * Copyright(c) 2006-2014 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+
+.ext-gecko .x-btn button, .ext-webkit .x-btn button {
+  padding-left: 0;
+  width: 100%;
+  padding-right: 0;
+}
+
+.x-menu-item-icon {
+  border: 0 none;
+  height: 16px;
+  padding: 0;
+  vertical-align: top;
+  width: 16px !important;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  margin: 0;
+  background-position: left;
+}
+
+
+.bven1 {
+	background-image:url(awe_ven.png) !important;
+
+}
+.blist {
+	background-image:url(awe_list.png) !important;  
+	
+}
+.bsave {
+	background-image:url(awe_save.png) !important;
+  
+}
+.bnew {
+	background-image:url(awe_new.png) !important;  
+}
+.bdel {
+	background-image:url(awe_eli.png) !important;  
+}
+.bact {
+	background-image:url(awe_act.png) !important;
+}
+.bactfil {
+	background-image:url(awe_actfil.png) !important;
+}
+.bprint {
+	background-image:url(awe_printer.png) !important; 
+}
+.bedit {
+	background-image:url(awe_edit.png) !important;
+}
+
+.badelante {
+	background-image:url(awe_adelante.png) !important;
+}
+.batras {
+	background-image:url(awe_atras.png) !important;
+}
+.bbajar {
+	background-image:url(awe_bajar.png) !important;
+}
+.bsubir {
+	background-image:url(awe_subir.png) !important;
+}
+.bupload {
+	background-image:url(awe_upload.png) !important;
+}
+.bfolder {
+	background-image:url(awe_folder.png) !important;
+}
+.bok {
+	background-image:url(awe_ok.png) !important;
+}
+
+/*.bexcel {
+	background-image:url(../iconos_generales/excel.png) !important;
+}
+.bpdf {
+	background-image:url(../iconos_generales/pdf.png) !important;
+}*/
+.bpagar {
+	background-image:url(awe_pagar.png) !important;
+}
+.breload {
+	background-image:url(awe_reload1.png) !important;
+}
+.breload1 {
+	background-image:url(awe_reload1.png) !important;
+}
+.breload2 {
+	background-image:url(awe_reload1.png) !important;
+}
+
+.bundo {
+	background-image:url(awe_undo.png) !important;
+}
+
+.bredo {
+	background-image:url(awe_redo.png) !important;
+}
+
+.balert {
+	background-image:url(awe_alert.png) !important;
+}
+
+.binfo{
+	background-image:url(awe_info.png) !important;
+}
+.bassign{
+	background-image:url(awe_assign.png) !important;
+}
+.bexport{
+	background-image:url(awe_export.png) !important;
+}
+.brenew{
+	background-image:url(awe_renew.png) !important;
+}
+.bballot {
+	background-image:url(awe_ballot.png) !important;
+}
+.bupload1 {
+	background-image:url(awe_upload.png) !important;
+}
+.bend {
+	background-image:url(awe_end.png) !important;
+}
+.bsee {
+	background-image:url(awe_see.png) !important;
+}
+.bgood {
+	background-image:url(awe_ok.png) !important;
+}
+.bwrong {
+	background-image:url(awe_wrong.png) !important;
+}
+.bcharge {
+	background-image:url(awe_charge.png) !important;
+}
+.bselect {
+	background-image:url(awe_select.png) !important;
+}
+
+.bexcel {
+	background-image:url(awe_excel.png) !important;
+}
+
+.bprintcheck {
+    background-image:url(awe_printer.png) !important;
+}
+
+.bword {
+    background-image:url(awe_word.png) !important;
+}
+
+.bpdf {
+	background-image:url(awe_pdf.png) !important;
+}
+.block {
+	background-image:url(awe_lock.png) !important;
+}
+.bunlock {
+	background-image:url(awe_unlock.png) !important;
+}
+.bstatistics {
+	background-image:url(awe_statistics.png) !important;
+}
+.bgear {
+	background-image:url(awe_gear.png) !important;
+} 
+.bcalendar {
+	background-image:url(awe_calendar.png) !important;
+}
+.bpdf32 {
+	background-image:url(awe_pdf.png) !important;
+}
+.bchecklist {
+	background-image:url(awe_checklist.png) !important;
+}
+.baddphoto {
+	background-image:url(awe_add_photo.png) !important;
+}
+.bmenuitems {
+	background-image:url(awe_menu_items.png) !important;
+}
+.bgraph {
+	background-image:url(awe_graph.png) !important;
+}
+.bstats {
+	background-image:url(awe_stats.png) !important;
+}
+.bengine {
+	background-image:url(awe_engine.png) !important;
+}
+.bdocuments {
+	background-image:url(awe_documents.png) !important;
+}
+.bengineadd {
+	background-image:url(awe_engine_add.png) !important;
+}
+.bengineremove {
+	background-image:url(awe_engine_remove.png) !important;
+}
+.bcalendaradd {
+	background-image:url(awe_calendar_add.png) !important;
+}
+.bcalendarremove {
+	background-image:url(awe_calendar_remove.png) !important;
+}
+.bpause {
+	background-image:url(awe_pause.png) !important;
+}
+.bplay {
+	background-image:url(awe_play.png) !important;
+}
+.bcancelfile {
+	background-image:url(awe_cancel_file.png) !important;
+}
+.btag_deny {
+	background-image:url(awe_tag_deny.png) !important;
+}
+.btag_accept {
+	background-image:url(awe_tag_accept.png) !important;
+}
+.bzoom {
+	background-image:url(awe_zoom.png) !important;
+}
+.btransfer {
+    background-image:url(awe_transferDB.png) !important;
+}
+.bgantt {
+    background-image:url(awe_gantt.png) !important;
+}
+
+
+
+.bemail {
+    background-image:url(awe_email.png) !important;
+}
+.bsendmail {
+    background-image:url(awe_send_mail.png) !important;
+}
+.bcargo {
+    background-image:url(awe_cargo.png) !important;
+}
+.bincremento_salarial {
+    background-image:url(awe_incremento.png) !important;
+}
+.bclock {
+    background-image:url(awe_clock.png) !important;
+}
+.bcalculator {
+    background-image:url(awe_calculator.png) !important;
+}
+.bmoney {
+    background-image:url(awe_money.png) !important;
+}
+
+.badd {
+    background-image:url(awe_add.png) !important;
+}
+
+.bdelete {
+    background-image:url(awe_delete.png) !important;
+}
+
+.bexecdb {
+    background-image:url(awe_execdb.png) !important;
+}
+
+.bawe_mail{
+    background-image:url(awe_mail.png) !important;
+}
+
+.btransferMoney{
+    background-image:url(awe_transfer.png) !important;
+}
+
+.bball_green {
+    background-image:url(../ball_green.png) !important;
+}
+
+.bball_white {
+    background-image:url(../ball_white.png) !important;
+}
+
+.bprint_good {
+	background-image:url(awe_print_good.png) !important;
+
+}
+
+.x-action-col-cell img.bsearch {
+    background-image:url(awe_search.png);
+    height: 20px;
+    width: 20px;
+}
+
+.search {
+    background-image:url(awe_search.png) !important;
+}
+
+.btemplate {
+	background-image:url(awe_template.png) !important;
+
+}
+.bright {
+	background-image:url(awe_rigth_arrow.png) !important;
+
+}
+.bright-all {
+	background-image:url(awe_rigth_arrow_all.png) !important;
+
+}
+.bleft-all {
+	background-image:url(awe_left_arrow_all.png) !important;
+
+}

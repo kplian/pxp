@@ -49,7 +49,7 @@ set_error_handler('error_handler');
 
 $app->error('exception_handler');
 $app->log->setEnabled(false);
-
+error_reporting(~E_NOTICE);
 $app->response->headers->set('Content-Type', 'application/json');
 $headers = $app->request->headers;
 
@@ -90,8 +90,9 @@ function get_func_argNames($funcName) {
 
 function authPxp($headersArray) {
 	
-	$_SESSION["_SESION"]= new CTSesion(); 
-	$_SESSION["_tipo_aute"] = 'REST'; 
+	$_SESSION["_SESION"]= new CTSesion();
+	$_SESSION["_tipo_aute"] = 'REST';   
+
 	$mensaje = '';  
     //listar usuario con Pxp-User del header
     $objParam = new CTParametro('',null,null,'../../sis_seguridad/control/Usuario/listarUsuario');
@@ -302,11 +303,16 @@ $app->get(
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		
+		$psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;
+		
+		
 		//var_dump($app->request->cookies);
     	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
 			
 		} else if (isset($headers['Php-Auth-User'])) {
     		authPxp($headers);
+		}else if (in_array($psudourl, $_SESSION['_REST_NO_CHECK'])) {
+    		
 		} else {
 			$men=new Mensaje();
 			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 304','No hay una sesion activa para realizar esta peticion',
@@ -431,11 +437,14 @@ $app->post(
     function ($sistema,$clase_control,$metodo) use ($app) {    		
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
+		$psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;
 		//var_dump($app->request->cookies);
     	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
 			
 		} else if (isset($headers['Php-Auth-User'])) {
     		authPxp($headers);
+		}else if (in_array($psudourl, $_SESSION['_REST_NO_CHECK'])) {
+    		
 		} else {
 			$men=new Mensaje();
 			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 432','No hay una sesion activa para realizar esta peticion',
@@ -559,3 +568,4 @@ $app->options('/:sistema/:clase_control/:metodo', function ($sistema,$clase_cont
  * and returns the HTTP response to the HTTP client.
  */
 $app->run();
+error_reporting(-1);

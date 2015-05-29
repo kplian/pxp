@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -53,7 +51,8 @@ BEGIN
 						conig.desc_ingas,
 						conig.tipo,
 						conig.movimiento,
-						conig.sw_tes,
+                        conig.sw_tes,
+						--(case when conig.sw_tes = ''1'' then ''si'' else ''no'' end)::varchar as sw_tes,
 						conig.id_oec,
 						conig.estado_reg,
 						conig.id_usuario_reg,

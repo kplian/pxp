@@ -27,7 +27,8 @@ Phx.vista.bitacora_sistema=function(config){
 		form:true,
 		filters:{	pfiltro:'logg.id_log',
 					type:'numeric'},
-		grid:true 
+		grid:true ,
+        bottom_filter : true
 		
 	},	
 	 {
@@ -40,7 +41,8 @@ Phx.vista.bitacora_sistema=function(config){
 		type:'TextField',
 		filters:{type:'string'},
 		grid:true,
-		form:false
+		form:false,
+        bottom_filter : true
 	},
 	
 	{
@@ -53,7 +55,8 @@ Phx.vista.bitacora_sistema=function(config){
 		type:'TextField',
 		filters:{type:'string'},
 		grid:true,
-		form:false
+		form:false,
+        bottom_filter : true
 	},
 	
 	{
@@ -152,7 +155,8 @@ Phx.vista.bitacora_sistema=function(config){
 		type:'TextField',
 		filters:{type:'string'},
 		grid:true,
-		form:false
+		form:false,
+        bottom_filter : true
 	},
 	{
 		config:{
@@ -161,10 +165,11 @@ Phx.vista.bitacora_sistema=function(config){
 			name: 'descripcion'
 			
 		},
-		type:'TextField',
+		type:'TextArea',
 		filters:{type:'string'},
 		grid:true,
-		form:false
+		form:false,
+        egrid:true
 	},
 	{
 		config:{

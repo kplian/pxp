@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_gui_rol_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
 
@@ -79,12 +80,13 @@ EXCEPTION
        	v_resp='';
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
     	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_gui_rol_sel (OID = 305061) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

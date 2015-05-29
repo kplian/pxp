@@ -235,7 +235,7 @@
 		$this->setParametro('id_gui','id_gui','integer');
 		$this->setParametro('id_gui_padre','id_gui_padre','integer');
 		$this->setParametro('codigo_gui','codigo_gui','varchar');
-		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('nombre','nombre','codigo_html');
 		$this->setParametro('descripcion','descripcion','text');
 		$this->setParametro('visible','visible','varchar');
 		$this->setParametro('orden_logico','orden_logico','integer');

@@ -47,7 +47,7 @@ BEGIN
     if(p_tipo is null)then
         v_tipo='O';
     else
-        v_tipo='O';
+        v_tipo=p_tipo;
     end if;
     if(p_num_decimales is null)then
         v_num_decimales=2;
@@ -149,7 +149,9 @@ BEGIN
             return v_registro.venta;
         end if;
    
-   elsif(v_tipo='C')then
+   elsif(v_tipo='CUS')then
+   
+   
         if(v_num_decimales=-1)then
             return round(v_registro.custom, v_num_decimales);
         else

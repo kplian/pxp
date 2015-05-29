@@ -1,7 +1,4 @@
 CREATE OR REPLACE FUNCTION wf.f_priorizar_documento (
-  p_cantidad integer,
-  p_id_tipo_estado integer,
-  p_id_estado_actual integer,
   p_id_proceso_wf integer,
   p_id_usuario integer,
   p_id_tipo_documento integer,
@@ -38,13 +35,39 @@ v_pririzacion		integer;
 v_registros			record;
 v_registros_doc		record;
 v_id_proceso_wf_ini integer[]; 
+v_id_tipo_estado	 integer;
+v_id_tipo_estado_siguiente integer[];
+v_id_estado_actual		integer;
+v_id_tipo_estado_actual	 integer;
+v_cantidad			integer;
 
 BEGIN
 
 
     v_nombre_funcion = 'wf.f_priorizar_documento';
+    
+    SELECT ewf.id_tipo_estado,ewf.id_estado_wf into v_id_tipo_estado_actual,v_id_estado_actual
+     from wf.testado_wf ewf
+     where ewf.id_proceso_wf = p_id_proceso_wf and ewf.estado_reg='activo';
+           
+           
+    SELECT  
+         ps_id_tipo_estado
+    into
+                	
+        v_id_tipo_estado_siguiente
+                
+    FROM wf.f_obtener_estado_wf(
+    p_id_proceso_wf,
+     NULL,
+     v_id_tipo_estado_actual,
+     'siguiente',
+     p_id_usuario); 
+     
+     v_id_tipo_estado = COALESCE(v_id_tipo_estado_siguiente[1],0);
+    v_cantidad=  COALESCE(array_length(v_id_tipo_estado_siguiente, 1),0);
     --si no corresponde priorizar
-    if (p_cantidad != 1) then
+    if (v_cantidad != 1) then
     	if (p_direccion = 'ASC') then
            	return 1;
         else 
@@ -69,7 +92,7 @@ BEGIN
                                     on td.id_tipo_documento  = tde.id_tipo_documento 
                                     and td.estado_reg = 'activo' and tde.estado_reg = 'activo'
                                     and (tde.momento = 'exigir'  or tde.momento = 'verificar')
-                                    and tde.id_tipo_estado = p_id_tipo_estado and 
+                                    and tde.id_tipo_estado = v_id_tipo_estado and 
                                     td.id_tipo_documento = p_id_tipo_documento
                                     ) LOOP
        
@@ -78,12 +101,12 @@ BEGIN
                 IF  (wf.f_evaluar_regla_wf ( p_id_usuario,
                                              p_id_proceso_wf,
                                              v_registros.regla,
-                                             p_id_tipo_estado,
-                                             p_id_estado_actual))  THEN
+                                             v_id_tipo_estado,
+                                             v_id_estado_actual))  THEN
                
                        -- recuriva mente encontra el proceso_wf correspondiente a los tipo_proceso identificados
                         
-                       v_id_proceso_wf_ini = wf.f_encontrar_proceso_wf(v_registros.id_tipo_proceso, p_id_estado_actual,v_registros.tipo_busqueda);
+                       v_id_proceso_wf_ini = wf.f_encontrar_proceso_wf(v_registros.id_tipo_proceso, v_id_estado_actual,v_registros.tipo_busqueda);
                        
                       
                       

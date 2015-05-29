@@ -118,6 +118,7 @@ if(!isset($_SESSION["_SESION"])){
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/NumericFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/BooleanFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/RowEditor.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/RowExpander.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/GridSummary.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/GroupSummary.js"></script>
 	

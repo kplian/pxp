@@ -83,3 +83,12 @@ select pxp.f_insert_tgui ('Aplicar Interinato', 'Aplicar interinato, asume lor r
 
 /****************************F-DAT-RAC-PXP-0-05/06/2014******************/
 
+
+/****************************I-DAT-RAC-PXP-0-04/05/2015******************/
+
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES (E'pxp_array_lista_blanca', E'PM_CONACUSE_MOD', E'separa por comas sin espacion, los nombres de las transacciones que se omiten en la verificacion de permisos');
+
+/****************************F-DAT-RAC-PXP-0-04/05/2015******************/
+

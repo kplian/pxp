@@ -39,6 +39,7 @@ DECLARE
     v_aux               varchar;
     v_sw_usuario_rol    boolean;
     v_id_tipo_estado    integer;
+    v_fin				varchar;
     
 BEGIN
 
@@ -75,9 +76,9 @@ BEGIN
             -------------------------------
             --Obtiene los roles del usuario
             -------------------------------
-            --Obtiene el id_tipo_estado a partir del id de la tabla
-            select c.id_tipo_estado
-            into v_id_tipo_estado
+            --Obtiene el id_tipo_esta,do a partir del id de la tabla
+            select c.id_tipo_estado,c.fin
+            into v_id_tipo_estado,v_fin
             from wf.ttabla a
             inner join wf.ttipo_proceso b
             on b.id_tipo_proceso = a.id_tipo_proceso
@@ -111,6 +112,7 @@ BEGIN
                             v_tabla.bd_codigo_tabla || '.id_proceso_wf,
                             ew.obs,
                             pw.nro_tramite, 
+                            wf.f_tiene_observaciones(ew.id_estado_wf),
                             fun.desc_funcionario2 as desc_funcionario, ';
                             
                 v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
@@ -124,7 +126,7 @@ BEGIN
                     end if;
                     
                     --Verifica si el usuario tiene el rol del tipo de estado para levantar restricción de funcionario para visualización de datos
-                    if v_sw_usuario_rol then
+                    if v_sw_usuario_rol and v_fin = 'si' then
                         v_filtro = ' 0=0  and ';
                     else
                         v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
@@ -243,6 +245,33 @@ BEGIN
             inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
             where t.id_tabla = v_parametros.id_tabla;
             
+            -------------------------------
+            --Obtiene los roles del usuario
+            -------------------------------
+            --Obtiene el id_tipo_esta,do a partir del id de la tabla
+            select c.id_tipo_estado,c.fin
+            into v_id_tipo_estado,v_fin
+            from wf.ttabla a
+            inner join wf.ttipo_proceso b
+            on b.id_tipo_proceso = a.id_tipo_proceso
+            inner join wf.ttipo_estado c
+            on c.id_tipo_proceso = b.id_tipo_proceso
+            where a.id_tabla = v_parametros.id_tabla
+            and c.codigo = v_parametros.tipo_estado;
+            
+            v_sw_usuario_rol = false;
+            if exists(select 1
+                      from wf.ttipo_estado_rol terol
+                      inner join segu.trol rol
+                      on rol.id_rol = terol.id_rol
+                      inner join segu.tusuario_rol urol
+                      on urol.id_rol = rol.id_rol
+                      and urol.estado_reg = 'activo'
+                      where terol.id_tipo_estado = v_id_tipo_estado
+                      and urol.id_usuario = p_id_usuario) then
+                v_sw_usuario_rol = true;
+            end if;
+            
             --Sentencia de la consulta de conteo de registros
             v_consulta = 'select count('||v_tabla.bd_codigo_tabla||'.id_' || v_tabla.bd_nombre_tabla || ') ';
             v_joins_wf = '';
@@ -256,7 +285,13 @@ BEGIN
                     if v_id_funcionario_usuario is null then
                         raise exception 'No se puede generar el listado porque el usuario no tiene registro como Funcionario';
                     end if;
-                    v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
+                    --Verifica si el usuario tiene el rol del tipo de estado para levantar restricción de funcionario para visualización de datos
+                    if v_sw_usuario_rol and v_fin = 'si' then
+                        v_filtro = ' 0=0  and ';
+                    else
+                        v_filtro = ' (ew.id_funcionario='||v_id_funcionario_usuario::varchar||' )   and ';
+                    end if;
+                    
                 END IF;
             end if;
             

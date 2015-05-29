@@ -96,7 +96,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'conig.desc_ingas',type:'string'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:true,
+			bottom_filter : true
 		},
 	
 	     	{
@@ -108,18 +109,20 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    mode: 'local',
-	       		    valueField: 'estilo',
+	       		    mode: 'local',	       		    
 	       		    gwidth: 100,
-	       		    store:['si','no']
+	       		    store:new Ext.data.ArrayStore({
+		        	fields: ['ID', 'valor'],
+		        	data :	[[1,'si'],	
+		        			[2,'no']]
+		        				
+		    		}),
+					valueField:'ID',
+					displayField:'valor',
+					renderer:function (value, p, record){if (value == 1) {return 'si'} else {return 'no'}}
 	       		},
 	       		type:'ComboBox',
-	       		id_grupo:0,
-	       		filters:{	
-	       		         type: 'list',
-	       		         pfiltro:'conig.sw_tes',
-	       				 options: ['si','no'],	
-	       		 	},
+	       		id_grupo:0,	       		
 	       		grid:true,
 	       		form:true
 	       },
@@ -143,7 +146,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			id_grupo: 0,
 			filters:{pfiltro:'conig.activo_fijo',type:'string'},
 			grid: true,
-			form: false
+			form: true
 		},  
 		{
 			config: {
@@ -181,7 +184,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:false
 		 },	
 	     
 		{
@@ -426,7 +429,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
        				store: new Ext.data.ArrayStore({
                         fields: ['variable', 'valor'],
                         data : [ ['adquisiciones', 'Adquisiciones'],
-                                 ['pago_directo', 'Pago Directo'],
+                                 ['pago_directo', 'Pago Recurrente'],
                                  ['caja_chica', 'Caja Chica'],
                                  ['fondo_avance', 'Fondo en Avance'],
                                  ['contrato', 'Contratos'],
@@ -531,7 +534,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'desc_ingas', type: 'string'},
 		{name:'tipo', type: 'string'},
 		{name:'movimiento', type: 'string'},
-		{name:'sw_tes', type: 'string'},
+		{name:'sw_tes', type: 'numeric'},
 		{name:'id_oec', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},

@@ -32,6 +32,7 @@ DECLARE
     
     v_tipo_asignacion  varchar;
     v_nombre_func_list varchar;
+    v_id_depto_wf      integer; 
     
     
 			    
@@ -54,7 +55,9 @@ BEGIN
      				
     	begin
         
-    
+             IF   pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+               v_id_depto_wf =  COALESCE(v_parametros.id_depto_wf,0);
+             END IF;
      
              v_consulta:=' 
                    SELECT 
@@ -70,7 +73,8 @@ BEGIN
                       FALSE,
                       '||v_parametros.cantidad||',
                       '||v_parametros.puntero||',
-                      '||quote_literal(v_parametros.filtro)||'
+                      '||quote_literal(v_parametros.filtro)||',
+                      '||COALESCE(v_id_depto_wf,0)::varchar||'
                       
                      ) AS (id_funcionario integer,
                            desc_funcionario text,
@@ -95,7 +99,9 @@ BEGIN
      				
     	begin
        
-        
+             IF   pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+               v_id_depto_wf =  COALESCE(v_parametros.id_depto_wf,0);
+             END IF;
     
              v_consulta:=' 
                    SELECT 
@@ -108,7 +114,8 @@ BEGIN
                       TRUE,
                       '||v_parametros.cantidad||',
                       '||v_parametros.puntero||',
-                      '||quote_literal(v_parametros.filtro)||'
+                      '||quote_literal(v_parametros.filtro)||',
+                      '||COALESCE(v_id_depto_wf,0)::varchar||'
                       
                      ) AS (total bigint)';
                       
@@ -205,6 +212,8 @@ BEGIN
 	elseif(p_transaccion='WF_TIPES_SEL')then
      				
     	begin
+        
+       -- raise exception 'llega';
     		--Sentencia de la consulta
 			v_consulta:='select
 						tipes.id_tipo_estado,
@@ -242,7 +251,9 @@ BEGIN
                         tipes.titulo_alerta, 
                         tipes.parametros_ad	,
                         pxp.text_concat(terol.id_rol::text) as id_roles,
-                        tipes.admite_obs          
+                        tipes.admite_obs  ,
+                        tipes.etapa,
+                        tipes.grupo_doc
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
@@ -286,7 +297,10 @@ BEGIN
                         tipes.nombre_clase_alerta, 
                         tipes.tipo_noti, 
                         tipes.titulo_alerta, 
-                        tipes.parametros_ad	';
+                        tipes.parametros_ad,
+                        tipes.admite_obs  ,
+                        tipes.etapa,
+                        tipes.grupo_doc	';
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta

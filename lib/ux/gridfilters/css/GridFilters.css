@@ -24,6 +24,7 @@
 .x-grid3-hd-row td.ux-filtered-column {   
     font-style: italic;  
     font-weight: bold;
+    font-size: 1.0em;
 }		
 
 .ux-filtered-column.sort-asc .x-grid3-sort-icon {

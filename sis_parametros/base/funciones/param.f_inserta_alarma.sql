@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_id_funcionario integer,
   par_descripcion varchar,
@@ -12,7 +14,11 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_id_usuario_alarma integer,
   par_titulo_correo varchar,
   par_correos text = NULL::text,
-  par_documentos text = NULL::text
+  par_documentos text = NULL::text,
+  p_id_proceso_wf integer = NULL::integer,
+  p_id_estado_wf integer = NULL::integer,
+  p_id_plantilla_correo integer = NULL::integer,
+  p_automatizado varchar = 'si'::character varying
 )
 RETURNS integer AS
 $body$
@@ -39,50 +45,66 @@ DECLARE
     v_id_alarma                             integer;
     v_nombre_funcion						text;  
     v_resp                                  varchar;
+	v_estado_envio 							varchar;
     
 BEGIN
 
 	v_nombre_funcion:='param.f_inserta_alarma';
-   
+    
+    IF  p_automatizado = 'si' THEN
+        v_estado_envio = 'exito';
+    ELSE
+        v_estado_envio = 'bloqueado';
+    END IF;
+    
+    
    --Realizamos la insercion de datos en alarma
    insert into param.talarma(
-			acceso_directo,
-			id_funcionario,
-			fecha,
-			estado_reg,
-			descripcion,
-			id_usuario_reg,
-			fecha_reg,
-			id_usuario_mod,
-			fecha_mod,
-            tipo,
-            obs,
-            clase,
-            titulo,
-            parametros,
-            id_usuario,
-            titulo_correo,
-            correos,
-            documentos
-          	) values(
-			par_acceso_directo,
-			par_id_funcionario,
-			par_fecha,
-			'activo',
-			par_descripcion,
-			par_id_usuario,
-			now()::date,
-			null,
-			null,
-            par_tipo,
-            par_obs,
-            par_clase,
-            par_titulo,
-            par_parametros,
-            par_id_usuario_alarma,
-            par_titulo_correo,
-            par_correos,
-            par_documentos
+              acceso_directo,
+              id_funcionario,
+              fecha,
+              estado_reg,
+              descripcion,
+              id_usuario_reg,
+              fecha_reg,
+              id_usuario_mod,
+              fecha_mod,
+              tipo,
+              obs,
+              clase,
+              titulo,
+              parametros,
+              id_usuario,
+              titulo_correo,
+              correos,
+              documentos,
+              id_proceso_wf,
+              id_estado_wf,
+              id_plantilla_correo,
+              estado_envio
+              ) values(
+              par_acceso_directo,
+              par_id_funcionario,
+              par_fecha,
+              'activo',
+              par_descripcion,
+              par_id_usuario,
+              now()::date,
+              null,
+              null,
+              par_tipo,
+              par_obs,
+              par_clase,
+              par_titulo,
+              par_parametros,
+              par_id_usuario_alarma,
+              par_titulo_correo,
+              par_correos,
+              par_documentos,
+              p_id_proceso_wf,
+              p_id_estado_wf,
+              p_id_plantilla_correo,
+              v_estado_envio
 			)RETURNING id_alarma into v_id_alarma;
     
     return v_id_alarma;

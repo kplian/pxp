@@ -5,6 +5,8 @@ How to install
 
 https://github.com/kplian/instalador_framework.pxp
 
+Youtube chanel (https://www.youtube.com/channel/UCSk4IfCR6swJYu3zPOEiGuw)
+
 Example 
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php

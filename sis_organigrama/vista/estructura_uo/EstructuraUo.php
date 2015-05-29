@@ -482,12 +482,25 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 	 * title:'Representante', height:200 },
 	 */	
 		
-          south:{
-		  url:'../../../sis_organigrama/vista/uo_funcionario/UOFuncionario.php',
-		  title:'Asignacion de Funcionarios a Unidad', 
-		  height:'50%',
-		  cls:'uo_funcionario'
-		 },
+     
+	tabsouth:[
+            {
+			  url:'../../../sis_organigrama/vista/uo_funcionario/UOFuncionario.php',
+			  title:'Asignacion de Funcionarios a Unidad', 
+			  height:'50%',
+			  cls:'uo_funcionario'
+			 },
+            {
+              url:'../../../sis_organigrama/vista/uo_funcionario_ope/UoFuncionarioOpe.php',
+			  title:'Asignaciones Operativas', 
+			  qtip: 'Cuando el funcionario funcionalmente tiene otra dependencia diferente a la jerárquica',
+              height:'50%',
+              cls:'UoFuncionarioOpe'
+            }
+    
+       ],	
+		
+		
 		bdel:true,// boton para eliminar
 		bsave:false,// boton para eliminar
 		

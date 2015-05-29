@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_proceso_macro_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -10,7 +12,7 @@ $body$
  SISTEMA:		Work Flow
  FUNCION: 		wf.f_proceso_macro_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.proceso_macro'
- AUTOR: 		 (admin)
+ AUTOR: 		 (rac)
  FECHA:	        19-02-2013 13:51:29
  COMENTARIOS:	
 ***************************************************************************
@@ -36,7 +38,7 @@ BEGIN
 	/*********************************    
  	#TRANSACCION:  'WF_PROMAC_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		rac	
  	#FECHA:		19-02-2013 13:51:29
 	***********************************/
 
@@ -57,7 +59,8 @@ BEGIN
 						promac.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        subs.nombre AS desc_subsistema	
+                        subs.nombre AS desc_subsistema,
+                        promac.grupo_doc
 						from wf.tproceso_macro promac
 						inner join segu.tusuario usu1 on usu1.id_usuario = promac.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = promac.id_usuario_mod

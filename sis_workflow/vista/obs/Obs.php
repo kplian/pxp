@@ -13,9 +13,14 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
     constructor:function(config){
 		this.maestro=config.maestro;
-		
+		if(config.hasOwnProperty('idContenedorPadre')){
+            this.paginaMaestro = Phx.CP.getPagina(config.idContenedorPadre);
+        } else {
+            this.paginaMaestro = undefined;
+        }
+         
 		this.tbarItems = ['-',{
-            text: 'Ver todas las boservaciones',
+            text: 'Ver todas las observaciones',
             enableToggle: true,
             pressed: false,
             toggleHandler: function(btn, pressed) {
@@ -46,7 +51,9 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
         });
         
         
-		
+		this.on('closepanel',function () {
+		    this.paginaMaestro.reload();
+		}, this);
 		this.store.baseParams = {  todos: 0, id_proceso_wf: config.id_proceso_wf, id_estado_wf: config.id_estado_wf, num_tramite: config.num_tramite}; 
         this.load({params: { start:0, limit: this.tam_pag } })
 	},
@@ -344,14 +351,15 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
 	 	      
             Phx.vista.Obs.superclass.onButtonNew.call(this);
             //agrega un filtro para que se liste el funcionario del usuario y sea el primero que se cargue
-            this.Cmp.id_funcionario_resp.store.load({params:{start:0,limit:this.tam_pag, tipo_filtro: 'usuario' }, 
+            
+            /*this.Cmp.id_funcionario_resp.store.load({params:{start:0,limit:this.tam_pag, tipo_filtro: 'usuario' }, 
 		       callback : function (r) {
 		       		if (r.length == 1 ) {	       				
 		    			this.Cmp.id_funcionario_resp.setValue(r[0].data.id_funcionario);
 		    		}    
 		    			    		
 		    	}, scope : this
-		    });
+		    });*/
 	            
             
             this.Cmp.id_estado_wf.setValue( this.id_estado_wf );
