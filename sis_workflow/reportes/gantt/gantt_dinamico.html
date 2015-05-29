@@ -76,8 +76,8 @@
 	                            dataType: "json",
 	                            type:"POST",
 	                            async: false,
-	                          
-	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'"}'
+	                         
+	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'" , "orden":"fecha"}'
 	                            +'&x=../../sis_workflow/control/ProcesoWf/diagramaGanttTramite_kendo',
 	                            success: function(result) {
 	                                options.success(result);
@@ -124,29 +124,38 @@
 								var hours = Math.floor(d.asHours()- days * 24);
 								//var mins = Math.floor(d.asMinutes() - hours * 60);
 								var dias_res = +days+"D " + hours+"H " ;
+								
+								
+								
+								
 							   
 							  
 							   console.log('days',days);
 							   console.log('res',hours);
-                  
-                 				array.push({
-                 				"id" : k+1,
-	                            //"tipo" : v.tipo,
-	                            "title" : v.nombre,
-	                            "start" : v.fecha_ini,
-	                            "end" : v.fecha_fin,
-	                            "orderId" : v.id,
-	                            "parentId" : id_padre,
-	                            "Summary":Summary,
-								"Expanded":false,
-								"PercentComplete":"",
-								"funcionario":(v.funcionario != null)? v.funcionario:v.depto,
-								"color":"#111",
-								"dias":dias_res,
-								"diasNum":days,
-								"descripcion":v.descripcion
-								
-                 				});
+							   
+							   if(v.disparador != 'si'){
+							 
+	                 				array.push({
+	                 				"id" : k+1,
+		                            //"tipo" : v.tipo,
+		                            "title" : v.nombre,
+		                            "start" : v.fecha_ini,
+		                            "end" : v.fecha_fin,
+		                            "orderId" : v.id,
+		                            "parentId" : id_padre,
+		                            "Summary":Summary,
+									"Expanded":false,
+									"PercentComplete":"",
+									"funcionario":(v.funcionario != null)? v.funcionario:v.depto,
+									"color":"#111",
+									"dias":dias_res,
+									"diasNum":days,
+									"descripcion":v.descripcion,
+									"estado_reg":v.estado_reg
+									
+	                 				});
+                 				
+                 				}
 	                            //datos = new Object();
 	                            
 	                            
@@ -185,6 +194,7 @@
                                 color: { from: "color", type: "string"},
                                 dias: { from: "dias", type: "string"},
                                 descripcion: { from: "descripcion", type: "string"},
+                                estado_reg: { from: "estado_reg", type: "string"},
                                 
                             }
                         }
@@ -289,11 +299,21 @@
 		gantt.dependencies.add(v);
 	});
 	
+	$.each(gantt.dataSource._data, function (k, v) {
+		if(v.estado_reg == 'activo' ){
+			console.log(v.uid)
+			$("tr").find("[data-uid='" + v.uid + "']").css({"backgroud-color","#fff"});
+		}
+	});
+	
+	
+	
 	
 	
 	function onDataBound() {
 		//console.log('llega bound')
         var gantt = this;
+        
         
         
 
@@ -307,8 +327,38 @@
             //this.style.backgroundColor = "#9f9";
           }
           
+          if (dataItem.estado_reg == 'activo') {
+            this.style.backgroundColor = "#4E5A73";
+            this.style.color = "#fff";
+          } else {
+            //this.style.backgroundColor = "#9f9";
+          }
+          
+          
           //console.log(gantt)
         });
+        
+        
+        
+        /*gantt.element.find(".k-treelist").each(function(e) {
+         console.log(this)
+         console.log($(this).find("table"))
+         var datos = "";
+         datos = gantt.dataSource.getByUid($(this).attr("data-uid"));
+         //console.log(datos.estado_reg)
+         if(datos == undefined){
+ 
+         }else{
+         	if(datos.estado_reg == 'activo'){
+	         	this.style.backgroundColor="#4E5A73";
+	         	this.style.color = "#fff";
+	         }
+         }
+         
+          
+          
+          //console.log(gantt)
+        });*/
         
         
         /*gantt.element.find(".k-task").each(function(e) {
