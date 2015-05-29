@@ -299,12 +299,7 @@
 		gantt.dependencies.add(v);
 	});
 	
-	$.each(gantt.dataSource._data, function (k, v) {
-		if(v.estado_reg == 'activo' ){
-			console.log(v.uid)
-			$("tr").find("[data-uid='" + v.uid + "']").css({"backgroud-color","#fff"});
-		}
-	});
+	
 	
 	
 	
@@ -334,6 +329,13 @@
             //this.style.backgroundColor = "#9f9";
           }
           
+          $.each(gantt.dataSource._data, function (k, v) {
+				if(v.estado_reg == 'activo' ){
+					console.log(v.uid)
+					$("tr").find("[data-uid='" + v.uid + "']").css({"backgroud-color" : "#fff"});
+				}
+			});
+		          
           
           //console.log(gantt)
         });
