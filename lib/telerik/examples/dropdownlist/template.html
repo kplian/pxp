@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customizing templates</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    
+        <div id="example">
+
+            <div class="demo-section k-header">
+                <h4>Customers</h4>
+                <input id="customers" style="width: 450px;"/>
+                <p class="demo-hint">
+                    Open the DropDownList to see the customized appearance.
+                </p>
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    $("#customers").kendoDropDownList({
+                        dataTextField: "ContactName",
+                        dataValueField: "CustomerID",
+                        headerTemplate: '<div class="dropdown-header">' +
+                                '<span class="k-widget k-header">Photo</span>' +
+                                '<span class="k-widget k-header">Contact info</span>' +
+                            '</div>',
+                        valueTemplate: '<img class="selected-value" src=\"../content/web/Customers/#:data.CustomerID#.jpg\" alt=\"#:data.CustomerID#\" /><span>#:data.ContactName#</span>',
+                        template: '<span class="k-state-default"><img src=\"../content/web/Customers/#:data.CustomerID#.jpg\" alt=\"#:data.CustomerID#\" /></span>' +
+                                  '<span class="k-state-default"><h3>#: data.ContactName #</h3><p>#: data.CompanyName #</p></span>',
+                        dataSource: {
+                            transport: {
+                                read: {
+                                    dataType: "jsonp",
+                                    url: "http://demos.telerik.com/kendo-ui/service/Customers",
+                                }
+                            }
+                        }
+                    });
+
+                    var dropdownlist = $("#customers").data("kendoDropDownList");
+                });
+            </script>
+
+            <style>
+                .dropdown-header {
+                    font-size: 1.2em;
+                }
+
+                .dropdown-header > span {
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    text-align: left;
+                    display: inline-block;
+                    border-style: solid;
+                    border-width: 0 0 1px 1px;
+                    padding: .3em .6em;
+                    width: 362px;
+                }
+
+                .dropdown-header > span:first-child {
+                    width: 82px;
+                    border-left-width: 0;
+                }
+
+                .demo-section {
+                    width: 450px;
+                }
+                .demo-section h2 {
+                    text-transform: uppercase;
+                    font-size: 1.2em;
+                    margin-bottom: 10px;
+                }
+
+                .selected-value {
+                    float: left;
+                    width: 16px;
+                    margin: 3px 4px;
+                }
+
+                #customers-list .k-item > span{
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    display: inline-block;
+                    border-style: solid;
+                    border-width: 0 0 1px 1px;
+                    vertical-align: top;
+                    min-height: 95px;
+                    width: 79%;
+                    padding: .6em 0 0 .6em;
+                }
+
+                #customers-list .k-item > span:first-child{
+                    width: 77px;
+                    border-left-width: 0;
+                    padding: .6em 0 0 0;
+                }
+
+                #customers-list img {
+                    -moz-box-shadow: 0 0 2px rgba(0,0,0,.4);
+                    -webkit-box-shadow: 0 0 2px rgba(0,0,0,.4);
+                    box-shadow: 0 0 2px rgba(0,0,0,.4);
+                    width: 70px;
+                    height: 77px;
+                }
+
+                #customers-list h3 {
+                    font-size: 1.6em;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                #customers-list p {
+                    margin: 0;
+                    padding: 0;
+                }
+                
+                html.k-material .selected-value {
+                    margin: 6px 0 0 10px;
+                }
+                
+                html.k-material .dropdown-header > span {
+                    border: 0;
+                }
+                html.k-material .dropdown-header > span {
+                    width: 354px;
+                }
+                html.k-material .dropdown-header > span:first-child {
+                    width: 90px;
+                }
+                html.k-material #customers-list .k-item > span{
+                    min-height: 80px;
+                    border-width: 0 0 1px 0;
+                }
+                html.k-material #customers-list img {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                }
+                html.k-material #customers-list h3 {
+                    font-size: 1.2em;
+                    line-height: 1em;
+                    margin-top: .5em;
+                }
+            </style>
+        </div>
+
+
+    
+    
+</body>
+</html>

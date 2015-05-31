@@ -1312,3 +1312,17 @@ COMMENT ON COLUMN wf.tplantilla_correo.funcion_creacion_correo
 IS 'esta funcion se ejecuta despude se insertar la alerta';
 
 /*****************************F-SCP-RAC-WF-0-07/05/2015*************/
+
+
+
+*****************************I-SCP-RAC-WF-0-25/05/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_wf
+  ADD COLUMN id_tipo_estado_wfs INTEGER[];
+
+COMMENT ON COLUMN wf.tproceso_wf.id_tipo_estado_wfs
+IS 'almacenes el historico de tipo de estado por lo que va pansado el flujo, se utiliza para saber cuanto veces paso por un mismo estado';
+
+/*****************************F-SCP-RAC-WF-0-25/05/2015*************/

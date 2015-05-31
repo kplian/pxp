@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pull to refresh + Endless scrolling</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-role="view" data-init="mobileListViewPullWithEndless" data-title="Pull to refresh">
+    <header data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title"></span>
+            <a data-align="left" data-icon="add" data-role="button"  data-rel="modalview" href="#modalview-add"></a>
+            <a data-align="right" data-role="button" class="nav-button" href="#/">Index</a>
+        </div>
+    </header>
+    <ul id="pull-with-endless-listview"></ul>
+</div>
+
+<div data-role="modalview" id="modalview-add" style="width: 95%; height: 12em;" >
+    <div data-role="header">
+        <div data-role="navbar">
+            <span>Add Product</span>
+            <a data-click="closeModalViewAdd" data-role="button" data-align="right">Cancel</a>
+        </div>
+    </div>
+
+    <ul data-role="listview" data-style="inset">
+        <li><label for="username">Product Name:</label> <input type="text" id="name" /></li>
+    </ul>
+    <a data-click="addNew" class="addNew" type="button" data-role="button">Add New Product</a>
+</div>
+
+<script type="text/x-kendo-tmpl" id="pull-with-endless-template">
+    <div class="product-item">
+        <h3>#:ProductName#</h3>
+        <p>#:kendo.toString(UnitPrice, "c")#</p>
+    </div>
+</script>
+
+<script>
+    function mobileListViewPullWithEndless(e) {
+        var dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "http://demos.telerik.com/kendo-ui/service/Products/Read",
+                    dataType: "jsonp"
+                }
+            },
+            schema: {
+                total: function () { return 77; }
+            },
+            serverPaging: true,
+            pageSize: 50
+        });
+
+        $("#pull-with-endless-listview").kendoMobileListView({
+            dataSource: dataSource,
+            template: $("#pull-with-endless-template").text(),
+            pullToRefresh: true,
+            endlessScroll: true
+        });
+
+        $("#addNew").click(function () {
+            loader.show();
+            addProductDataSource.add({
+                ProductName: $("#name").val(),
+                UnitPrice: Math.floor((Math.random() * 10) + 1)
+            });
+        });
+    }
+
+    function closeModalViewAdd() {
+        $("#modalview-add").kendoMobileModalView("close");
+    }
+
+    function addNew() {
+        addProductDataSource.add({
+            ProductName: $("#name").val(),
+            UnitPrice: Math.floor((Math.random() * 10) + 1)
+        });
+
+        closeModalViewAdd();
+    }
+
+    var addProductDataSource = new kendo.data.DataSource({
+        transport: {
+            create: {
+                url: "http://demos.telerik.com/kendo-ui/service/Products/Create",
+                dataType: "jsonp"
+            },
+            parameterMap: function (options, operation) {
+                if (operation !== "read" && options.models) {
+                    return { models: kendo.stringify(options.models) };
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "ProductID",
+                fields: {
+                    ProductID: { editable: false, nullable: true },
+                    ProductName: { type: "string" }
+                }
+            }
+        },
+        autoSync: true,
+        batch: true,
+        requestEnd: function () {
+            $("#name").val("");
+        }
+    });
+</script>
+
+<style>
+    .product-item {
+        font-size: 1.2;
+    }
+    .product-item h3 {
+        float: left;
+        margin: 0;
+        height: 1.3em;
+        width: 170px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: normal;
+    }
+    .product-item p {
+        float: right;
+        margin: 0;
+        padding: 0;
+    }
+    .pullImage {
+        width: 64px;
+        height: 64px;
+        border-radius: 3px;
+        float: left;
+        margin-right: 10px;
+    }
+    .addNew {
+        display: block;
+        text-align: center;
+        margin: 0 3em;
+        padding: .5em;
+        font-size: 1.2em;
+    }
+    #pull-with-endless-listview li:not(.km-load-more)
+    {
+        padding: 2em;
+    }
+    .km-tablet #pull-with-endless-listview li:not(.km-load-more)
+    {
+        padding: 2em;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

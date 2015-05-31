@@ -71,6 +71,23 @@ class MODSubsistema extends MODbase{
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}
+
+   function obtenerVariableGlobal(){
+	
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='segu.ft_subsistema_ime';// nombre procedimiento almacenado
+		$this->transaccion='SEG_OBTVARGLO_MOD';//nombre de la transaccion
+		$this->tipo_procedimiento='IME';//tipo de transaccion
+		
+		//Define los parametros para la funcion	
+		$this->setParametro('codigo','codigo','varchar');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+				
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
 	
 	function eliminarSubsistema(){
 		//Definicion de variables para ejecucion del procedimientp

@@ -1,4 +1,3 @@
-/*
 
 DROP AGGREGATE IF EXISTS pxp.list (text);
 CREATE AGGREGATE pxp.list (text) (
@@ -43,5 +42,5 @@ CREATE AGGREGATE pxp.list_unique (
   STYPE = text
 
 );
-*/
+
 

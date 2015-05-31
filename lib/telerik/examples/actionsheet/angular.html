@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div kendo-mobile-application ng-app="kendoDemo">
+    <kendo-mobile-view k-title="'Inbox'" id="actionsheet-view" ng-controller="main">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-view-title></kendo-view-title>
+            </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+
+        <h3 id="actionResult"></h3>
+        <kendo-mobile-list-view k-data-source="inbox" k-template="inboxItem" class="inboxList"></kendo-mobile-list-view>
+
+        <kendo-mobile-action-sheet id="inboxActions" k-on-open="onOpen(kendoEvent)" k-popup='{"direction": "left"}'>
+            <li class="km-actionsheet-title">Monday Meeting:</li>
+            <li><a href="#" k-action="reply">Reply</a></li>
+            <li><a href="#" k-action="replyAll">Reply All</a></li>
+            <li><a href="#" k-action="archive">Archive</a></li>
+        </kendo-mobile-action-sheet>
+    </kendo-mobile-view>
+</div>
+
+<script type="script/x-kendo-template" id="inboxItem">
+    <h3 class="time">{{dataItem.Time}}</h3><h3>{{dataItem.From}}</h3>
+    <a class="reply"
+        kendo-mobile-button
+        k-rel="'actionsheet'"
+        href="\#inboxActions"
+        k-actionsheet-context="{{dataItem.ID}}">Reply</a>
+    <h2>{{dataItem.Subject}}</h2>
+    <p>{{dataItem.Text}}</p>
+</script>
+
+<script>
+    angular.module('kendoDemo', ['kendo.directives']).controller("main", function($scope) {
+        $scope.inboxItem = $("#inboxItem").html();
+        $scope.inbox = [
+            {
+                ID: 1,
+                From: "John Doe",
+                Subject: "Monday meeting",
+                Text: "Hi Tom, Since Monday I'll be out of office, I'm rescheduling the meeting for Tuesday.",
+                Time: "07:56"
+            },
+            {
+                ID: 2,
+                From: "Sarah Connor",
+                Subject: "Regarding org chart changes",
+                Text: "Tom, I checked the new org chart last night and I have some reservations about it...",
+                Time: "08:22"
+            },
+            {
+                ID: 3,
+                From: "Jane Parker",
+                Subject: "Your Costume is ready",
+                Text: "Hi mr. Sawyer, I'm sorry for the delay, your Halloween costume is ready. The bears...",
+                Time: "10:14"
+            },
+            {
+                ID: 4,
+                From: "Joe Harper",
+                Subject: "I'm sorry, Tom",
+                Text: "Hi Tom, my aunt comes for a visit this Saturday, so I can't come back to St. Pete...",
+                Time: "10:14"
+            },
+            {
+                ID: 5,
+                From: "Becky Thatcher",
+                Subject: "Out tonight?",
+                Text: "Honey, wanna go out tonight to grab some chicken? My weekly vouchers for cooking...",
+                Time: "10:14"
+            }
+        ];
+
+        $scope.onOpen = function(e) {
+            e.sender.element.find(".km-actionsheet-title").text(e.target.next().text());
+        }
+
+        $scope.reply = function(e) {
+            $("#actionResult").html("Replying to message #" + e.context);
+        }
+
+        $scope.replyAll = function(e) {
+            $("#actionResult").html("Replying to all in message #" + e.context);
+        }
+
+        $scope.archive = function(e) {
+            $("#actionResult").html("Archiving message #" + e.context);
+        }
+    });
+
+
+</script>
+
+<style>
+    .reply {
+        float: right;
+    }
+
+    .inboxList
+    {
+        font-size: .8em;
+    }
+
+    .km-ios #actionsheet-view .km-listview
+    {
+        background: url(../content/shared/images/patterns/pattern8.png);
+    }
+
+    .inboxList p,
+    .inboxList h2,
+    .inboxList h3
+    {
+        margin: 5px 2px;
+    }
+
+    .inboxList p,
+    .inboxList h3
+    {
+        color: #777;
+    }
+
+    .inboxList h3.time
+    {
+        color: #369;
+        float: left;
+        margin-right: 10px;
+    }
+
+    #actionResult
+    {
+        padding: 10px;
+        background: rgba(127,127,127,.5);
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        margin: 0;
+    }
+
+    .km-ios #actionsheet-view .km-navbar
+    {
+        background: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0, rgba(255, 255, 255, 0.5)), color-stop(0.06, rgba(255, 255, 255, 0.45)), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(1, rgba(100, 100, 100, 0))), url(../content/shared/images/patterns/pattern7.png);
+        background: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.45) 6%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(100, 100, 100, 0)), url(../content/shared/images/patterns/pattern7.png);
+	}
+
+    .km-ios #actionsheet-view .km-navbar .km-button
+    {
+        background-color: #4A88B5;
+    }
+
+	.km-ios #actionsheet-view .km-content .km-button {
+        background: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0, rgba(255, 255, 255, 0.5)), color-stop(0.06, rgba(255, 255, 255, 0.45)), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(1, rgba(100, 100, 100, 0))), url(../content/shared/images/patterns/pattern1.png);
+        background: -moz-linear-gradient(center top , rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.45) 6%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(100, 100, 100, 0)), url(../content/shared/images/patterns/pattern1.png);
+	}
+	.km-tablet .km-ios #actionsheet-view .km-view-title {
+        color: #fff;
+        text-shadow: 0 -1px rgba(0,0,0,.5);
+    }
+</style>
+
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

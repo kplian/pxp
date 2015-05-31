@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div kendo-mobile-application ng-app="kendoDemo">
+<kendo-mobile-view id="two-drawer-home" k-title="'Friends'">
+    <kendo-mobile-header>
+        <kendo-mobile-nav-bar>
+            <kendo-mobile-back-button id="back-button" class="nav-button" k-align="'left'">Back</kendo-mobile-back-button>
+            <kendo-view-title></kendo-view-title>
+            <kendo-mobile-button k-rel="'drawer'" href="#right-drawer" k-icon="'share'" k-align="'right'" ></a>
+        </kendo-mobile-nav-bar>
+    </kendo-mobile-header>
+
+    <kendo-mobile-list-view k-type="'group'">
+        <li>
+            A
+            <ul>
+                <li><h2>Ann Devon</h2><img src="../content/mobile/overview/ann.jpg" /></li>
+                <li><h2>Annette Roulet</h2><img src="../content/mobile/overview/annette.jpg" /></li>
+                <li><h2>Antonio Moreno</h2><img src="../content/mobile/overview/antonio.jpg" /></li>
+            </ul>
+        </li>
+        <li>
+            C
+            <ul>
+                <li><h2>Carine Schmitt</h2><img src="../content/mobile/overview/carine.jpg" /></li>
+                <li><h2>Catherine Dewey</h2><img src="../content/mobile/overview/catherine.jpg" /></li>
+            </ul>
+        </li>
+        <li>
+           D
+            <ul>
+                <li><h2>Daniel Tonini</h2><img src="../content/mobile/overview/daniel.jpg" /></li>
+                <li><h2>Diego Roel</h2><img src="../content/mobile/overview/diego.jpg" /></li>
+            </ul>
+        </li>
+        <li>
+            E
+            <ul>
+                <li><h2>Eduardo Saavedra</h2><img src="../content/mobile/overview/eduardo.jpg" /></li>
+                <li><h2>Elizabeth Brown</h2><img src="../content/mobile/overview/elizabeth.jpg" /></li>
+            </ul>
+        </li>
+        <li>
+            F
+            <ul>
+                <li><h2>Felipe Izquierdo</h2><img src="../content/mobile/overview/felipe.jpg" /></li>
+                <li><h2>Fran Wilson</h2><img src="../content/mobile/overview/fran.jpg" /></li>
+                <li><h2>Francisco Chang</h2><img src="../content/mobile/overview/francisco.jpg" /></li>
+            </ul>
+        </li>
+    </kendo-mobile-list-view>
+</kendo-mobile-view>
+
+
+<kendo-mobile-drawer id="right-drawer" style="width: 80px" k-title="'Share'" k-position="'right'" k-views="['two-drawer-home']">
+    <kendo-mobile-header>
+        <kendo-mobile-nav-bar>
+            <kendo-view-title></kendo-view-title>
+        </kendo-mobile-nav-bar>
+    </kendo-mobile-header>
+
+    <img src="../content/mobile/shared/share.png" width="100%"/>
+</kendo-mobile-drawer>
+
+<script>
+    angular.module("kendoDemo", [ "kendo.directives" ]);
+</script>
+
+<style>
+    .km-root .left-btn
+    {
+        position: absolute;
+        z-index: 9999;
+        top: 7em;
+        left: -1em;
+        padding-right: 0;
+        padding-left: 0;
+        width: 5em;
+        line-height: 4em;
+        border-radius: 10em;
+        -webkit-border-radius: 10em;
+        border: 1px solid rgba(255,255,255,.8);
+        background: rgba(0,0,0,.8);
+        color: #fff;
+        box-shadow: 0 0 .5em #000;
+        -webkit-box-shadow: 0 0 .6em #222;
+    }
+
+    .mobileExample .km-wp-light .km-button.left-btn
+    {
+        background: rgba(0,0,0,.8);
+        text-align: center;
+    }
+
+    .km-root .left-btn .km-icon.km-notext
+    {
+        display: block;
+        margin: 1em auto;
+    }
+
+    .km-ios #left-drawer .km-content, .km-ios7 #left-drawer .km-content, .km-android #left-drawer .km-content, .km-blackberry #left-drawer .km-content,
+    .km-ios #left-drawer .km-list > li, .km-ios7 #left-drawer .km-list > li, .km-android #left-drawer .km-list > li, .km-blackberry #left-drawer .km-list > li,
+    .km-ios #left-drawer .km-listview-link > .km-icon, .km-ios7 #left-drawer .km-listview-link > .km-icon, .km-android #left-drawer .km-listview-link > .km-icon, .km-blackberry #left-drawer .km-listview-link > .km-icon,
+    .km-ios #left-drawer .km-list li > .km-icon, .km-ios7 #left-drawer .km-list li > .km-icon, .km-android #left-drawer .km-list li > .km-icon, .km-blackberry #left-drawer .km-list li > .km-icon,
+    #right-drawer .km-content
+    {
+        background-color: #4e4e4e;
+        color: #fff;
+    }
+
+    .km-ios #left-drawer .km-group-title,
+    .km-ios7 #left-drawer .km-group-title,
+    .km-blackberry #left-drawer .km-group-title
+    {
+        background-color: #6e6e6e;
+        color: #fff;
+    }
+
+    #left-drawer .km-navbar, #right-drawer .km-navbar,
+    .km-tablet .km-ios #left-drawer .km-view-title,
+    .km-tablet .km-ios #right-drawer .km-view-title,
+    .km-ios7 #left-drawer .km-view-title,
+    .km-ios7 #right-drawer .km-view-title,
+    .km-tablet .km-ios7 #left-drawer .km-view-title,
+    .km-tablet .km-ios7 #right-drawer .km-view-title
+    {
+	background-color: #2e2e2e;
+        color: #fff;
+        text-shadow: 0 -1px rgba(0,0,0,.5);
+    }
+
+    .km-drawer-button:before, .km-drawer-button:after { content: "\E077"; }
+    .km-contacts:before, .km-contacts:after { content: "\E0E4"; }
+    .km-camera:before, .km-camera:after { content: "\E0D0"; }
+    .km-printer:before, .km-printer:after { content: "\E07E"; }
+    .km-comments:before, .km-comments:after { content: "\E093"; }
+    .km-graph:before, .km-graph:after { content: "\E04B"; }
+
+
+    #two-drawer-home h2
+    {
+        display: inline-block;
+        font-size: 1em;
+        line-height: 3em;
+        margin: 0 0 0 1em;
+    }
+
+    #two-drawer-home img
+    {
+        float: left;
+        width: 3em;
+        height: 3em;
+        margin: 0;
+        border: 1px solid rgba(0,0,0,.2);
+        -webkit-border-radius: 4em;
+        border-radius: 4em;
+    }
+
+    .km-ios #two-drawer-home .km-listview
+    {
+        background-color: #eaf1f5;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>
