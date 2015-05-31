@@ -65,7 +65,6 @@ BEGIN
           categoria_documento,
           orden,
           nombre_vista,
-          nombre_archivo_plantilla,
           esquema_vista
             ) values(
           v_parametros.nombre,
@@ -84,7 +83,6 @@ BEGIN
           string_to_array(v_parametros.categoria_documento,','),
           v_parametros.orden,
           v_parametros.nombre_vista,
-          v_parametros.nombre_archivo_plantilla,
           v_parametros.esquema_vista    
               
       )RETURNING id_tipo_documento into v_id_tipo_documento;
@@ -183,7 +181,7 @@ BEGIN
                 
             update wf.ttipo_documento set
             nombre_archivo_plantilla = v_parametros.nombre_archivo_plantilla,
-          nombre_vista = v_parametros.nombre_vista,
+            nombre_vista = v_parametros.nombre_vista,
             esquema_vista = v_parametros.esquema_vista
             where id_tipo_documento=v_parametros.id_tipo_documento;
                
