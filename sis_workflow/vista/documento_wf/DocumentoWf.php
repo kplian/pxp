@@ -617,7 +617,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		
 	    var record = this.store.getAt(rowIndex),
 	        fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
-	        console.log(record);
+
 	    if (fieldName == 'nro_tramite_ori' && record.data.id_proceso_wf_ori) {
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
@@ -858,7 +858,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     
     onButtonNew:function(){
     	Phx.vista.DocumentoWf.superclass.onButtonNew.call(this); 
-    	console.log('documentos insertables....', this.documentos_insertables)
     	this.Cmp.id_tipo_documentos.store.baseParams.id_tipo_documentos = this.documentos_insertables;
     	this.Cmp.id_tipo_documentos.enable();
     	this.Cmp.id_tipo_documentos.show();
@@ -868,7 +867,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     },
     onButtonEdit:function(){
     	Phx.vista.DocumentoWf.superclass.onButtonEdit.call(this); 
-    	console.log('documentos insertables....', this.documentos_insertables)
     	this.Cmp.id_tipo_documentos.disable();
     	this.Cmp.id_tipo_documentos.hide();
     	this.Cmp.chequeado_fisico.enable()

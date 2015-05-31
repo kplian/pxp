@@ -96,6 +96,7 @@ class ACTTipoDocumento extends ACTbase{
         
         //Obtiene los datos de la vista
         $datos=$this->res=$this->objFunc->generarDocumento($this->objParam);
+		//var_dump($datos);exit;
         
         //Setea los valores en el datasource
         $dataSource = new DataSource();
