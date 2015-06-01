@@ -1234,15 +1234,102 @@ IS 'aca se almacena la configuracion gruposBarraTareas  que va en la interface d
 /*****************************F-SCP-RCM-WF-0-16/04/2015*************/
 
 
-/*****************************I-SCP-RCM-WF-0-17/04/2015*************/
+
+/*****************************I-SCP-RCM-WF-0-30/04/2015*************/
+
 
 --------------- SQL ---------------
 
-ALTER TABLE tes.tplan_pago
-  ADD COLUMN id_depto_conta INTEGER;
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN requiere_acuse VARCHAR(4) DEFAULT 'no' NOT NULL;
 
-COMMENT ON COLUMN tes.tplan_pago.id_depto_conta
-IS 'define el depto de conta que contabiliza el pago, ...  no consideramos ep, cc (antes solo lo teneiamos en la obligacion de pago)';
+COMMENT ON COLUMN wf.tplantilla_correo.requiere_acuse
+IS 'si l aplantilla requiere acuse el correo se manda con un link donde la persona que recibe tendra que confirma su aceptación';
 
 
-/*****************************F-SCP-RCM-WF-0-17/04/2015*************/
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN url_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.url_acuse
+IS 'indeitifca la URL que se coloca en el link del correo para que la persona que recibe acepte,   puede ser un servidor dintinto, en un dmz';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mensaje_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mensaje_acuse
+IS 'depues de precinar el link del acuse se muestra este mensaje,';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mensaje_link_acuse VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mensaje_link_acuse
+IS 'mensjae que a antes del link de acuse de recibo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN mandar_automaticamente VARCHAR(5) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN wf.tplantilla_correo.mandar_automaticamente
+IS 'se manda el correo de manera automatica al llegar a este estado o espera la confirmación para enviar';
+/*****************************F-SCP-RCM-WF-0-30/04/2015*************/
+
+/*****************************I-SCP-GSS-WF-0-05/05/2015*************/
+
+ALTER TABLE wf.testado_wf
+  ADD COLUMN verifica_documento VARCHAR(2);
+
+ALTER TABLE wf.testado_wf
+  ALTER COLUMN verifica_documento SET DEFAULT 'si';
+  
+/*****************************F-SCP-GSS-WF-0-05/05/2015*************/
+
+
+
+/*****************************I-SCP-RAC-WF-0-07/05/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN funcion_acuse_recibo VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.funcion_acuse_recibo
+IS 'esta funcion se ejecuta cuando se recibe el acuse de recibo';
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN funcion_creacion_correo VARCHAR;
+
+COMMENT ON COLUMN wf.tplantilla_correo.funcion_creacion_correo
+IS 'esta funcion se ejecuta despude se insertar la alerta';
+
+/*****************************F-SCP-RAC-WF-0-07/05/2015*************/
+
+
+
+*****************************I-SCP-RAC-WF-0-25/05/2015*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE wf.tproceso_wf
+  ADD COLUMN id_tipo_estado_wfs INTEGER[];
+
+COMMENT ON COLUMN wf.tproceso_wf.id_tipo_estado_wfs
+IS 'almacenes el historico de tipo de estado por lo que va pansado el flujo, se utiliza para saber cuanto veces paso por un mismo estado';
+
+/*****************************F-SCP-RAC-WF-0-25/05/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-03/06/2015*************/
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN id_tipo_estado_anterior INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-03/06/2015*************/

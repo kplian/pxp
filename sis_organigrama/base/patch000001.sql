@@ -506,3 +506,32 @@ ALTER TABLE orga.tcargo
   ADD COLUMN id_cargo_padre  INTEGER;
   
 /*****************************F-SCP-JRR-ORGA-0-05/03/2015*************/
+
+/*****************************I-SCP-RAC-ORGA-0-05/03/2015*************/
+
+CREATE TABLE orga.tuo_funcionario_ope (
+  id_uo_funcionario_ope SERIAL,
+  id_uo INTEGER,
+  id_funcionario INTEGER,
+  fecha_asignacion DATE,
+  fecha_finalizacion DATE,
+  CONSTRAINT tuo_funcionario_ope_pkey PRIMARY KEY(id_uo_funcionario_ope),
+ 
+  CONSTRAINT fk_tuo_functionario__id_funcionario FOREIGN KEY (id_funcionario)
+    REFERENCES orga.tfuncionario(id_funcionario)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+    NOT DEFERRABLE,
+  CONSTRAINT fk_tuo_functionario__id_uo FOREIGN KEY (id_uo)
+    REFERENCES orga.tuo(id_uo)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+
+WITH (oids = true);
+
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN id_uo SET STATISTICS 0;
+  
+/*****************************F-SCP-RAC-ORGA-0-05/03/2015*************/

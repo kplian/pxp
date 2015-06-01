@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Binding to local data</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+            <script src="../content/shared/js/products.js"></script>
+
+        <div id="example">
+            <div id="grid"></div>
+
+            <script>
+                $(document).ready(function() {
+                    $("#grid").kendoGrid({
+                        dataSource: {
+                            data: products,
+                            schema: {
+                                model: {
+                                    fields: {
+                                        ProductName: { type: "string" },
+                                        UnitPrice: { type: "number" },
+                                        UnitsInStock: { type: "number" },
+                                        Discontinued: { type: "boolean" }
+                                    }
+                                }
+                            },
+                            pageSize: 20
+                        },
+                        height: 550,
+                        scrollable: true,
+                        sortable: true,
+                        filterable: true,
+                        pageable: {
+                            input: true,
+                            numeric: false
+                        },
+                        columns: [
+                            "ProductName",
+                            { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
+                            { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
+                            { field: "Discontinued", width: "130px" }
+                        ]
+                    });
+                });
+            </script>
+
+@if (ViewBag.ShowDescription)
+{
+    <div class="box">
+        <h4>Description</h4>
+        <p>The Kendo UI grid suppports data binding and you can command the widget to display data either from local or remote data storage. For local data binding you simply need to supply an array of JavaScript objects/JSON via the dataSource data property of the grid, or utilize the Kendo UI DataSource as a mediator between the grid and the underlying data. </p>
+        <br />
+        <p>In this example the grid fetches its data from a JavaScript file named products, registered via a script tag in the head section of the page. Note that in addition to the visualization, the grid provides built-in support for operations over data such as sorting, filtering and paging. </p>
+        <br />
+        <p>
+            There are two possible ways to instantiate a Kendo UI grid:
+        </p>
+        <ol>
+            <li>From an empty div element. In this case all the Grid settings are provided in the initialization script statement.</li>
+            <li>From an existing HTML table element. Thus some of the Grid settings can be inferred from the table structure and elements HTML attributes.</li>
+        </ol>
+        <br />
+        <p>In both cases the grid is registered as a standard jQuery plugin.</p>
+        <br />
+        <p>Additional information about how to utilize the data binding feature of the Kendo UI grid can be found in <a href="http://docs.telerik.com/kendo-ui/web/grid/walkthrough#data-binding---local" target="_blank">this section</a> of the product documentation.</p>
+    </div>
+}
+</div>
+
+
+    
+    
+</body>
+</html>

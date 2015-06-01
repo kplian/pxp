@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_plantilla_correo_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -61,7 +63,14 @@ BEGIN
 						pcorreo.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-						pcorreo.asunto	
+						pcorreo.asunto,
+                        pcorreo.requiere_acuse,
+                        pcorreo.mensaje_acuse,
+                        pcorreo.url_acuse,
+                        pcorreo.mensaje_link_acuse,
+                        pcorreo.mandar_automaticamente,
+                        pcorreo.funcion_acuse_recibo,
+                        pcorreo.funcion_creacion_correo
 						from wf.tplantilla_correo pcorreo
 						inner join segu.tusuario usu1 on usu1.id_usuario = pcorreo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pcorreo.id_usuario_mod

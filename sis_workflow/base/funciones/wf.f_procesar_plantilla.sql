@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_id_usuario integer,
   p_id_proceso_wf integer,
@@ -46,6 +44,9 @@ v_FUNCIONARIO_PREVIO  varchar;
 v_DEPTO_PREVIO  	 varchar;
 v_PROCESO_MACRO      varchar;
 v_CODIGO_ANTERIOR     varchar;  
+
+v_ID_FUNCIONARIO_PREVIO     integer;
+v_ID_DEPTO_PREVIO     integer;
 
 v_sw_busqueda  boolean;
 v_tabla					record;
@@ -186,12 +187,16 @@ BEGIN
                     tew.nombre_estado,
                     f.desc_funcionario1,
                     d.nombre,
-                    tew.codigo
+                    tew.codigo,
+                    f.id_funcionario,
+                    d.id_depto
                   into
                     v_ESTADO_ANTERIOR,
                     v_FUNCIONARIO_PREVIO,
                     v_DEPTO_PREVIO,
-                    v_CODIGO_ANTERIOR
+                    v_CODIGO_ANTERIOR,
+                    v_ID_FUNCIONARIO_PREVIO,
+                    v_ID_DEPTO_PREVIO
                   from  wf.testado_wf ew
                   inner join wf.ttipo_estado  tew on tew.id_tipo_estado = ew.id_tipo_estado
                   left join orga.vfuncionario f on f.id_funcionario = ew.id_funcionario
@@ -287,6 +292,8 @@ BEGIN
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ACTUAL}',COALESCE(v_ESTADO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ANTERIOR}',COALESCE(v_CODIGO_ANTERIOR,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ACTUAL}',COALESCE(v_CODIGO_ACTUAL,''));
+              v_template_evaluado = replace(v_template_evaluado, '{ID_FUNCIONARIO_PREVIO}',COALESCE(v_ID_FUNCIONARIO_PREVIO,-1)::varchar);
+              v_template_evaluado = replace(v_template_evaluado, '{ID_DEPTO_PREVIO}',COALESCE(v_ID_DEPTO_PREVIO,-1)::varchar);
               
               
               return  v_template_evaluado;

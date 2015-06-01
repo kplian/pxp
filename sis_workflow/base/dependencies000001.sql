@@ -405,4 +405,14 @@ CREATE TRIGGER trig_tobs
   EXECUTE PROCEDURE wf.ftrig_tobs();
   
 /*******************************************F-DEP-JRR-WF-0-22/04/2015*************************************/
-  
+
+/*****************************I-DEP-JRR-WF-0-03/06/2015*************/
+
+ALTER TABLE wf.ttipo_estado
+  ADD CONSTRAINT ttipo_estado__id_tipo_estado_anterior FOREIGN KEY (id_tipo_estado_anterior)
+    REFERENCES wf.ttipo_estado(id_tipo_estado)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/*****************************F-DEP-JRR-WF-0-03/06/2015*************/

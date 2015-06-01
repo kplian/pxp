@@ -32,9 +32,10 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         this.addButton('btnPlanCorreo',
             {
                 iconCls: 'bemail',
+                text: 'Correos extra',
                 disabled: true,
                 handler: this.gridPlantillaCorreo,
-                tooltip: '<b>Conf. Envio de Correos</b><br/>Personaliza los correos enviados a otras personas en el tipo de estado seleccionado.'
+                tooltip: '<b>Conf. Envio de Correos</b><br/>Personaliza los correos enviados a otras personas fuera del flujo en el tipo de estado seleccionado. (Es independiente de que las alertas esten activada o no)'
             }
         ); 
 		
@@ -701,7 +702,54 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
        			id_grupo:0,
        			grid:false,
        			form:true
-       	}
+       	},
+       	{
+			config: {
+				name: 'id_tipo_estado_anterior',
+				fieldLabel: 'Estado Anterior',
+				typeAhead: false,
+				forceSelection: false,
+				allowBlank: true,
+				emptyText: 'Estado Anterior...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_workflow/control/TipoEstado/listarTipoEstado',
+					id: 'id_tipo_estado',
+					root: 'datos',
+					sortInfo: {
+						field: 'tipes.codigo',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_tipo_estado', 'nombre_estado', 'inicio','codigo_estado','disparador','fin','desc_tipo_proceso'],
+                    // turn on remote sorting
+					remoteSort: true,
+					baseParams: {par_filtro: 'tipes.nombre_estado'}
+				}),
+				valueField: 'id_tipo_estado',
+				displayField: 'nombre_estado',
+				gdisplayField: 'desc_tipo_estado_anterior',
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 20,
+				queryDelay: 200,
+				anchor: '100%',
+				minChars: 2,
+				gwidth: 200,
+				renderer: function(value, p, record) {
+					return String.format('{0}', record.data['desc_tipo_estado_anterior']);
+				},
+			    tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo_estado})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
+            },
+			type: 'ComboBox',
+			id_grupo: 0,
+			filters: {
+				pfiltro: 'tea.nombre_estado',
+				type: 'string'
+			},
+			grid: true,
+			form: true
+		},
 	],
 	
 	title:'Tipo Estado',
@@ -713,6 +761,8 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_tipo_estado', type: 'numeric'},
 		{name:'nombre_estado', type: 'string'},
 		{name:'id_tipo_proceso', type: 'numeric'},
+		{name:'id_tipo_estado_anterior', type: 'numeric'},
+		{name:'desc_tipo_estado_anterior', type: 'string'},
 		{name:'inicio', type: 'string'},
 		{name:'disparador', type: 'string'},
 		{name:'tipo_asignacion', type: 'string'},
@@ -738,6 +788,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 	onReloadPage:function(m){
 		this.maestro=m;
 		this.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
+		this.Cmp.id_tipo_estado_anterior.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
 		this.load({params:{start:0, limit:50}})
 		
 	},

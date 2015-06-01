@@ -36,6 +36,7 @@ DECLARE
     v_filtro_gerencia       varchar;
     v_lista_blanca          varchar;
     v_lista_negra           varchar;
+    v_count_funcionario_ope	integer;
 BEGIN
 
 
@@ -43,6 +44,8 @@ BEGIN
 
   	v_nombre_funcion = 'orga.f_get_aprobadores_x_funcionario';
         
+    
+    --raise exception 'ssss';
     
         --chequea si es necsario agregar un filtr de presupuestos
         IF par_filtro_presupuesto = 'todos' THEN
@@ -75,45 +78,94 @@ BEGIN
             v_lista_negra = '  and  numero_nivel not in ('||par_lista_negra_nivel||')  ';
         END IF;
         
+        select
+          count(ufo.id_uo_funcionario_ope)
+        into
+          v_count_funcionario_ope
+        FROM  orga.tuo_funcionario_ope ufo
+        WHERE id_funcionario = par_id_funcionario 
+        and   par_fecha BETWEEN ufo.fecha_asignacion and ufo.fecha_finalizacion and ufo.estado_reg = 'activo';
         
         
+        IF  v_count_funcionario_ope > 1 THEN
+          raise exception 'el funcionario tiene mas de una asignacion de funcional en organigrama, consulte con el administrador de sistemas';
+        ELSIF v_count_funcionario_ope = 1 THEN
+             --si el funcioanrio tiene asginacion funcional
+             --Obtener todos los empleados de la asignacion
+              v_consulta := '
+              WITH RECURSIVE path(id_funcionario,id_uo,presupuesta,gerencia,numero_nivel) AS (
+                      SELECT 
+                          uofun.id_funcionario,
+                          uo.id_uo,
+                          uo.presupuesta,
+                          uo.gerencia, 
+                          0
+                      from orga.tuo_funcionario_ope uofun
+                      inner join orga.tuo uo
+                          on uo.id_uo = uofun.id_uo
+                       where uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
+                      and uofun.estado_reg = ''activo'' and uofun.id_funcionario = ' || par_id_funcionario || '
+                  UNION
+                      SELECT uofun.id_funcionario,euo.id_uo_padre,uo.presupuesta,uo.gerencia,no.numero_nivel
+                      from orga.testructura_uo euo
+                      inner join orga.tuo uo
+                          on uo.id_uo = euo.id_uo_padre
+                      inner join orga.tnivel_organizacional no 
+                                          on no.id_nivel_organizacional = uo.id_nivel_organizacional
+                      inner join path hijo
+                          on hijo.id_uo = euo.id_uo_hijo
+                      left join orga.tuo_funcionario uofun
+                          on uo.id_uo = uofun.id_uo and uofun.estado_reg = ''activo'' and
+                              uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
+                                      
+                  )
+                   SELECT 
+                      id_funcionario 
+                   FROM path 
+                   WHERE     id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' 
+                         and id_funcionario != ' || par_id_funcionario||v_lista_blanca||v_lista_negra||'
+             ORDER BY numero_nivel DESC';
+             
         
-        
-    
-        --Obtener todos los empleados de la asignacion
-        v_consulta := '
-        WITH RECURSIVE path(id_funcionario,id_uo,presupuesta,gerencia,numero_nivel) AS (
-                SELECT uofun.id_funcionario,uo.id_uo,uo.presupuesta,uo.gerencia, no.numero_nivel
-        
-        
-           
-                from orga.tuo_funcionario uofun
-                inner join orga.tuo uo
-                	on uo.id_uo = uofun.id_uo
-                inner join orga.tnivel_organizacional no 
-                                    on no.id_nivel_organizacional = uo.id_nivel_organizacional
-                 where uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
-                and uofun.estado_reg = ''activo'' and uofun.id_funcionario = ' || par_id_funcionario || '
-            UNION
-                SELECT uofun.id_funcionario,euo.id_uo_padre,uo.presupuesta,uo.gerencia,no.numero_nivel
-                from orga.testructura_uo euo
-                inner join orga.tuo uo
-                	on uo.id_uo = euo.id_uo_padre
-                inner join orga.tnivel_organizacional no 
-                                    on no.id_nivel_organizacional = uo.id_nivel_organizacional
-                inner join path hijo
-                    on hijo.id_uo = euo.id_uo_hijo
-                left join orga.tuo_funcionario uofun
-                    on uo.id_uo = uofun.id_uo and uofun.estado_reg = ''activo'' and
-                    	uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
-                                
-            )
-             SELECT 
-                id_funcionario 
-             FROM path 
-             WHERE     id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' 
-                   and id_funcionario != ' || par_id_funcionario||v_lista_blanca||v_lista_negra||'
-             ORDER BY numero_nivel DESC';                
+        ELSE
+              --si el funcioanrio no tiene asginacion funcional busca segun jerarquia
+          
+              --Obtener todos los empleados de la asignacion
+              v_consulta := '
+              WITH RECURSIVE path(id_funcionario,id_uo,presupuesta,gerencia,numero_nivel) AS (
+                      SELECT uofun.id_funcionario,uo.id_uo,uo.presupuesta,uo.gerencia, no.numero_nivel
+              
+              
+                 
+                      from orga.tuo_funcionario uofun
+                      inner join orga.tuo uo
+                          on uo.id_uo = uofun.id_uo
+                      inner join orga.tnivel_organizacional no 
+                                          on no.id_nivel_organizacional = uo.id_nivel_organizacional
+                       where uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
+                      and uofun.estado_reg = ''activo'' and uofun.id_funcionario = ' || par_id_funcionario || '
+                  UNION
+                      SELECT uofun.id_funcionario,euo.id_uo_padre,uo.presupuesta,uo.gerencia,no.numero_nivel
+                      from orga.testructura_uo euo
+                      inner join orga.tuo uo
+                          on uo.id_uo = euo.id_uo_padre
+                      inner join orga.tnivel_organizacional no 
+                                          on no.id_nivel_organizacional = uo.id_nivel_organizacional
+                      inner join path hijo
+                          on hijo.id_uo = euo.id_uo_hijo
+                      left join orga.tuo_funcionario uofun
+                          on uo.id_uo = uofun.id_uo and uofun.estado_reg = ''activo'' and
+                              uofun.fecha_asignacion <= ''' || par_fecha || ''' and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= ''' || par_fecha || ''')
+                                      
+                  )
+                   SELECT 
+                      id_funcionario 
+                   FROM path 
+                   WHERE     id_funcionario is not null '||v_filtro_pre||' '||v_filtro_gerencia||' 
+                         and id_funcionario != ' || par_id_funcionario||v_lista_blanca||v_lista_negra||'
+             ORDER BY numero_nivel DESC';
+        END IF;     
+                             
              
         raise notice '%',v_consulta;
         return query execute (v_consulta);

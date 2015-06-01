@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GantDinamico</title>
+    <meta charset="utf-8">
+    <link href="../../../lib/telerik/examples/content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../../lib/telerik/styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../lib/telerik/styles/kendo.silver.min.css" />
+     
+    
+    
+    
+    
+    
+    <script src="../../../lib/telerik/js/jquery.min.js"></script>
+    <script src="../../../lib/telerik/js/kendo.all.min.js"></script>
+    <script src="../../../lib/telerik/examples/content/shared/js/console.js"></script>
+    
+    
+<script src="../../../lib/telerik/js/messages/kendo.messages.es-ES.min.js"></script>
+<script src="../../../lib/telerik/js/cultures/kendo.culture.es-ES.min.js"></script>
+
+
+<script src="../../../lib/moment/moment-with-locales.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+		
+	(function ($) {
+	   // $.tipo = '';
+	   // $.aurl = '';
+	    variables_dinamicas = {
+	
+	        arreglo:new Array()
+	
+	    }
+	})
+	(jQuery);
+	</script>
+    
+    <style type="text/css" media="screen">
+       .k-task-draghandle,
+.k-task-dot {
+    display: none !important;
+}
+
+
+.estado_reg_activo td{
+	color:"#fff" !important;
+}
+
+.activo_pxp{
+	color:#fff;
+	background-color:#80638E !important;
+}
+    </style>
+    
+    
+</head>
+<body>
+    <script type="text/javascript">
+     //set current to the "en-GB" culture script
+     kendo.culture("es-ES");
+</script>
+       
+       <div id="gantt"></div>
+	<script>
+	
+	function getUrlVars() {
+	var vars = {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+	vars[key] = value;
+	});
+	return vars;
+	}
+	
+	var id_proceso_wf = getUrlVars()["id_proceso_wf"];
+
+	
+	
+	var arra_dependencias = new Array();
+	var json_dep;
+	$("#gantt").kendoGantt({
+	   dataSource: {
+                transport: {
+                    read: function(options) {
+                        $.ajax( {
+	                            url:'../../../lib/lib_control/Intermediario.php',
+	                            dataType: "json",
+	                            type:"POST",
+	                            async: false,
+	                         
+	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'" ,"orden":"fecha" }'
+	                            +'&x=../../sis_workflow/control/ProcesoWf/diagramaGanttTramite_kendo',
+	                            success: function(result) {
+	                                options.success(result);
+	                            }
+	                        });
+                    },
+                    
+
+                },
+                batch: true,
+                
+                schema: {
+                    	data: function (response) {
+                        // var json = $.parseJSON(response.datos);
+                        //console.log(response)
+        				var array = new Array();
+                			$.each(response.datos, function (k, v) {
+                				//console.log(v.nombre)
+                				var Summary =  false;
+	                            if(v.id_proceso_wf || v.disparador == 'si'){
+	                            	 Summary = true;
+	                            }
+	                     
+							  	var inicio = moment(v.fecha_ini);
+							  	var fin = moment(v.fecha_fin);
+							    
+							    var duration = moment.duration(fin.diff(inicio));
+							   /* var hours = duration.asHours();
+							    var days = duration.asDays();*/
+							    
+								var d = moment.duration(duration, 'milliseconds');
+								var days = Math.floor(d.asDays());
+								var hours = Math.floor(d.asHours()- days * 24);
+								//var mins = Math.floor(d.asMinutes() - hours * 60);
+								var dias_res = +days+"D " + hours+"H " ;
+								
+								
+								var exp = false;
+								if(v.id == 1){
+									exp=true;
+								}
+								
+							   
+							  
+							   //console.log('days',days);
+							   //console.log('res',hours);
+							   
+							   //if(v.disparador != 'si'){
+							 
+	                 				array.push({
+	                 				"id" : v.id,
+		                            //"tipo" : v.tipo,
+		                            "title" :v.nombre,
+		                            "start" : v.fecha_ini,
+		                            "end" : v.fecha_fin,
+		                            "orderId" : v.id,
+		                            "parentId" : v.id_padre,
+		                            "Summary":Summary,
+									"Expanded":exp,
+									"PercentComplete":"",
+									"funcionario":(v.funcionario != null)? v.funcionario:v.depto,
+									"color":"#111",
+									"dias":dias_res,
+									"diasNum":days,
+									"descripcion":v.descripcion,
+									"estado_reg":v.estado_reg
+									
+	                 				});
+                 				
+                 				//}
+	                            //datos = new Object();
+	                            
+	                            
+	                             if(v.id_siguiente != null){
+	                            	arra_dependencias.push(
+		                            	{
+									      predecessorId: v.id,
+									      successorId: v.id_siguiente,
+									      type: 1
+									    }
+	                            	);
+	                            }
+	
+                          	})
+                          	
+                          //console.log(JSON.stringify(arra_dependencias))
+                          json_dep = JSON.stringify(arra_dependencias);
+                          	//console.log('array' , array)
+          
+                        return array;
+	                    },
+	                  
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: { from: "id", type: "number" },
+                                orderId: { from: "orderId", type: "number", validation: { required: true } },
+                                parentId: { from: "parentId", type: "number", defaultValue: null, validation: { required: true } },
+                                start: { from: "start", type: "date" },
+                                end: { from: "end", type: "date" },
+                                title: { from: "title", defaultValue: "", type: "string" },
+                                percentComplete: { from: "PercentComplete", type: "number" },
+                                summary: { from: "Summary", type: "boolean" },
+                                expanded: { from: "Expanded", type: "boolean", defaultValue: true },
+                                funcionario: { from: "funcionario", type: "string"},
+                                color: { from: "color", type: "string"},
+                                dias: { from: "dias", type: "string"},
+                                descripcion: { from: "descripcion", type: "string"},
+                                estado_reg: { from: "estado_reg", type: "string"},
+                                
+                            }
+                        }
+                    }
+                    
+              
+            },
+     
+	 
+	  editable: false,
+	  listWidth: 540,
+	  
+	  
+	   toolbar: ["pdf"],
+	    pdf: {
+        fileName: "gant.pdf"
+    	},
+    	//height:"750",
+    	
+    	/*resources: {
+	      dataSource: [
+	        { id: 2, name: "Resource 1", color: "green", format: "p0" },
+	        { id: 1, name: "Resource 2", color: "#32cd32", format: "p0" }
+	      ]
+	    },
+	     assignments: {
+		    dataResourceIdField: "resource",
+		    dataSource: [
+		      { taskId: 3, resource: 2, value: 1 },
+		      { taskId: 2, resource: 1, value: 1 },
+		      { taskId: 1, resource: 1, value: 1 }
+		    ]
+		  },
+		  */
+		  
+			  
+	  
+	  columns: [
+            { field: "id", title: "ID"},
+            { field: "title", title: "Titulo", editable: true,width: 500, resizable: true, sortable: true },
+            { field: "funcionario", title: "funcionario", editable: true,width: 250 },
+            { field: "start", title: "Fecha Inicio", format: "{0:dd/MM/yyyy HH:mm}", width: 130, editable: true, sortable: true },
+            { field: "end", title: "Fecha Fin", format: "{0:dd/MM/yyyy HH:mm}", width: 130, editable: true, sortable: true },
+        	{ field: "dias", title: "dias",width: 200},
+        
+        ],
+        views: [
+	        {type:"day"},
+	        { type: "week"},
+	        {
+	        	type:"month" , 
+	        	selected: true,
+	        	monthHeaderTemplate: "#=kendo.toString(start, 'MMMM, yyyy')#",
+	        },
+	        {
+		      type: "year",
+		      monthHeaderTemplate: "#=kendo.toString(start, 'MMMM, yyyy')#",
+		      
+		    }
+        ],
+        
+        messages: {
+		    views: {
+		      day: "Dia",
+		      month: "Mes",
+		      week: "Semana",
+		      year: "Año",
+		    }
+		    
+		  },
+		  
+		    tooltip: {
+		    visible: true,
+		    template: "<div><h3>#= task.title #</h3></div><br/><div><strong></strong> #= task.descripcion #</div>"
+		  },
+				 
+		  
+		  
+        
+         change: function (e) {
+
+                var selectedItem = this.dataItem(this.select()),
+                 currentPage = this.dataSource.page();
+                console.log(selectedItem)
+
+                //selected[currentPage] = selectedItem.OrderID;
+            },
+            dataBinding:function(){
+            	console.log('llega')
+            },
+            dataBound: onDataBound
+            
+          
+	});
+	
+	
+	var gantt = $("#gantt").data("kendoGantt");
+	//console.log(gantt)
+	console.log('json',json_dep)
+	$.each(arra_dependencias, function (k, v) {
+		gantt.dependencies.add(v);
+	});
+	
+	
+	
+	
+	
+	
+	
+	function onDataBound() {
+		var arra = new Array();
+		//console.log('llega bound')
+        var gantt = this;
+        
+        var t = gantt.element.find(".k-treelist").find("table");
+        
+        
+        gantt.element.find(".k-task").each(function(e) {
+          var dataItem = gantt.dataSource.getByUid($(this).attr("data-uid"));
+
+          // colorize task per business requirements
+          if (dataItem.diasNum > 30 && dataItem.summary != true) {
+            this.style.backgroundColor = "#f99";
+          } else {
+            //this.style.backgroundColor = "#9f9";
+          }
+          
+          if (dataItem.estado_reg == 'activo') {
+          	//console.log(dataItem)
+          	
+          	//console.log(this)
+            this.style.backgroundColor = "#80638E";
+            this.style.color = "#fff";
+            var ac = $(t[1]).children("tbody");
+           // console.log($(ac).children("td").children("span"))
+           //$(ac).removeAttr("style");
+           
+           //console.log('ac' , $(ac).find("[data-uid='" + dataItem.uid + "']"))
+           $(ac).find("[data-uid='" + dataItem.uid + "']").addClass('activo_pxp');
+           
+            /*$.each($(ac).children("td").children("span"), function (k, v) {
+            	
+            	
+				
+				if($(v).text() == dataItem.id ){
+					//alert($(v).text())
+					//variables_dinamicas.arreglo.push(dataItem.id); 
+					variables_dinamicas.arreglo = dataItem.id;
+					
+					$(v).parent().parent().css({"color":"#fff","background-color":"#80638E"});
+				}else{
+					//$(v).parent().parent().css({"color":"#fff","background-color":"#ccc"});
+				}
+				
+				
+			});*/
+			
+			
+	
+           // $(ac).css({"color":"#fff","background-color":"#80638E"});
+          } else {
+            //this.style.backgroundColor = "#9f9";
+          }
+          
+        
+        });
+        
+       // console.log('d' , variables_dinamicas.arreglo)
+        
+
+      }
+      
+     
+	</script>
+	
+	
+	
+	
+	
+	    
+</body>
+</html>

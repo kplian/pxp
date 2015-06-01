@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ftrig_tobs (
 )
 RETURNS trigger AS
@@ -27,3 +29,12 @@ BEGIN
         				'(' || NEW.id_obs || ')');
   end if;
   
+  RETURN NULL;
+
+END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

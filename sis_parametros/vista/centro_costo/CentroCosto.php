@@ -159,11 +159,11 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 			form:false
 		}
 	],
-	
+	 
 	title:'Centro de Costos',
 	ActSave:'../../sis_parametros/control/CentroCosto/insertarCentroCosto',
 	ActDel:'../../sis_parametros/control/CentroCosto/eliminarCentroCosto',
-	ActList:'../../sis_parametros/control/CentroCosto/listarCentroCosto',
+	ActList:'../../sis_parametros/control/CentroCosto/listarCentroCostoGrid',
 	id_store:'id_centro_costo',
 	fields: [
 		{name:'id_centro_costo', type: 'numeric'},

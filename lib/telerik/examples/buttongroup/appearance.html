@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customizing appearance</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-role="view" data-init="mobileButtonGroupInit" data-title="ButtonGroup Look" id="buttongroup-appearance">
+    <ul data-role="listview" data-style="inset" data-type="group">
+        <li>
+            Background color
+            <ul>
+                <li>
+                    <ul data-role="buttongroup" data-index="0" class="colorized">
+                        <li>Green</li>
+                        <li>Red</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Font Size Small
+            <ul>
+                <li>
+                    <ul data-role="buttongroup" data-index="0">
+                        <li style="font-size: 0.8em;">Flat View</li>
+                        <li style="font-size: 0.8em">Grouped View</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Font Size Normal
+            <ul>
+                <li>
+                    <ul data-role="buttongroup" data-index="1">
+                        <li>2011</li>
+                        <li>2012</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Font Size Large
+            <ul>
+                <li>
+                    <ul data-role="buttongroup" data-index="0">
+                        <li data-icon="toprated" style="font-size: 1.3em">Featured</li>
+                        <li data-icon="globe" style="font-size: 1.3em">Popular</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Button icons / check help for more
+            <ul>
+                <li>
+                    <ul data-role="buttongroup" data-index="1">
+                        <li data-icon="play"></li>
+                        <li data-icon="pause"></li>
+                        <li data-icon="rewind"></li>
+                        <li data-icon="fastforward"></li>
+                        <li data-icon="globe"></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<style>
+    #buttongroup-appearance .colorized .km-button
+    {
+        background-color: currentcolor;
+    }
+
+    .km-material #buttongroup-appearance .colorized .km-button
+    {
+        background-color: transparent;
+        border-color: currentcolor;
+    }
+
+    #buttongroup-appearance .colorized li:first-child
+    {
+        color: green;
+    }
+
+    #buttongroup-appearance .colorized li:last-child
+    {
+        color: red;
+    }
+
+    #buttongroup-appearance .colorized li.km-state-active
+    {
+        color: orange;
+    }
+
+    #buttongroup-appearance .colorized .km-text
+    {
+        color: white;
+    }
+
+    .km-material #buttongroup-appearance .colorized .km-text
+    {
+        color: inherit;
+    }
+
+    #buttongroup-appearance .km-button:not(.km-back)
+    {
+        padding-left: .5em;
+        padding-right: .5em;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

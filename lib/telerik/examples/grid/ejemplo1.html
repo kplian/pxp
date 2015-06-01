@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <!--Then paste the following for Kendo UI Web scripts-->
+    <script src="../../js/jquery.min.js" type="text/javascript"></script>
+    <script src="../../js/kendo.web.min.js" type="text/javascript"></script>
+</head>
+<body>
+<form id="form1" runat="server">
+    <script type="text/javascript">
+        /*$(document).ready(function () {
+
+            var ds = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "http://www.boa.bo/BoAServices/Common.svc/GetPaises",
+                        dataType: "json",
+                                type:"POST"
+                    }
+                }
+            });
+            console.log(ds);
+
+            $("#grid").kendoGrid({
+                dataSource: $.parseJSON(ds.GetPaisesResult),
+                columns: [
+                    {
+                        field: "IdPais",
+                        title: "IdPais"
+                    },
+                    {
+                        field: "Nombre",
+                        title: "Nombre"
+                    }]
+            });
+
+        });
+*/
+
+
+        var dataSource =  new kendo.data.DataSource({
+            serverFiltering: true,
+
+            filter: {
+                // leave data items which are "Food" or "Tea"
+                logic: "or",
+                filters: [
+                    { field: "Nombre", operator: "eq", value: "BOLIVIA" },
+                    { field: "Nombre", operator: "eq", value: "ARGENTINA" }
+                ]
+            },
+            transport: {
+                read: {
+                    url: "http://www.boa.bo/BoAServices/Common.svc/GetPaises",
+                            dataType: "json",
+                            type:"POST",
+                           // data: { q: "#" }
+                }
+            },
+
+            serverPaging: true,
+                    sort: { field: "Nombre", dir: "desc" },
+
+
+            schema: {
+                data: function (response) {
+                    var json = $.parseJSON(response.GetPaisesResult);
+                    return json;
+                },
+                /*fetch: function (response) {
+                 var data = this.data();
+                 console.log(data.length);
+                 },*/
+                total: function(data) {
+                    var json = $.parseJSON(data.GetPaisesResult);
+                    console.log(json)
+
+                    //return response.total; // total is returned in the "total" field of the response
+                }
+            }
+
+        });
+
+        $(document).ready(function () {
+            $("#grid").kendoGrid({
+
+                dataSource: dataSource,
+                pageSize: 10,
+                serverPaging: true,
+                serverFiltering: true,
+                serverSorting: true,
+
+                        height: 250,
+                columns: [
+                    { field: "IdPais" },
+                    { field: "Nombre" }
+                ]
+            });
+
+           /* dataSource.fetch(function(){
+                var data = dataSource.view();
+                console.log(data[0].age); // displays "33"
+            });*/
+
+            $("#myAutoComplete").click(function () {
+                console.log(dataSource.view())
+                dataSource.sort()[0].dir = 'asc';
+                console.log(dataSource.filter());
+
+                console.log(dataSource.sort())
+                dataSource.add( { IdPais: "7", Nombre : "peru"});
+
+                console.log(dataSource.transport.options);
+
+
+                dataSource.transport.options.read.data = {"hola":"hola"};
+
+
+               //para agregar y configurar la necesidad de los datos
+                dataSource.query({
+                    sort: { field: "Nombre", dir: "asc" },
+                    page: 3,
+                    pageSize: 20,
+                    x:"{'ho':'hola'}"
+                });
+
+                var optionalData = { foo: 42, bar: "baz" };
+
+                dataSource.read(optionalData);
+
+
+                console.log(dataSource.transport.options.read.data);
+
+                dataSource.fetch(function(){
+                    alert('llega');
+                });
+                dataSource.sync();
+
+            });
+
+
+
+        });
+    </script>
+    <div>
+        <input id="myAutoComplete" />
+    </div>
+    <!-- Define the HTML div that will hold the Grid -->
+    <div id="grid" style="width: 40%; margin: auto;">
+    </div>
+</form>
+</body>
+</html>

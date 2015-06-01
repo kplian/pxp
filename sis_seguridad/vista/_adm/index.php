@@ -161,6 +161,7 @@ if(!isset($_SESSION["_SESION"])){
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gridInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/grafInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/arbInterfaz.js'></script>
+     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/arbGridInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/frmInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gmapInterfaz.js'></script>
       

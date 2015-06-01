@@ -66,7 +66,9 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('insertar','varchar');
 		$this->captura('eliminar','varchar');
 		$this->captura('demanda','varchar');
-		
+		$this->captura('nombre_vista','varchar');
+		$this->captura('esquema_vista','varchar');
+		$this->captura('nombre_archivo_plantilla','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -256,7 +258,7 @@ class MODDocumentoWf extends MODbase{
 				   }
 				   
 				   //cipiamos el nuevo archivo 
-	               $this->setFile('archivo','id_documento_wf', false,25600 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
+	               $this->setFile('archivo','id_documento_wf', false,51200 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
 	            }
 				
 				$link->commit();

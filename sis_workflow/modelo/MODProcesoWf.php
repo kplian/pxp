@@ -118,6 +118,9 @@ class MODProcesoWf extends MODbase{
 		
 		$this->captura('prioridad','integer');
 		$this->captura('revisado_asistente','varchar');
+		$this->captura('contador_estados','bigint');
+		
+		
         
         
         
@@ -130,6 +133,7 @@ class MODProcesoWf extends MODbase{
         
         //Ejecuta la instruccion
         $this->armarConsulta();
+		//echo $this->getConsulta();
         $this->ejecutarConsulta();
         
         //Devuelve la respuesta
@@ -175,6 +179,7 @@ function listarGantWf(){
         $this->setTipoRetorno('record');
         
         $this->setParametro('id_proceso_wf','id_proceso_wf','integer');
+		$this->setParametro('orden','orden','varchar');
         
        //Definicion de la lista del resultado del query
         $this->captura('id','integer');                          
@@ -202,6 +207,8 @@ function listarGantWf(){
 		$this->captura('id_obs','integer');
 		$this->captura('id_anterior','integer');
 		$this->captura('etapa','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('disparador','varchar');
 		
 		
         

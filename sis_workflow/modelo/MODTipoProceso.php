@@ -137,6 +137,23 @@ class MODTipoProceso extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function obtenerSubsistemaTipoProceso(){
+        //Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='wf.ft_tipo_proceso_ime';
+		$this->transaccion='WF_TIPPROCSIS_GET';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_tipo_proceso','id_tipo_proceso','integer');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+    }
 			
 }
 ?>

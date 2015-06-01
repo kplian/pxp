@@ -144,6 +144,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		        ); 
 		        
 		       this.addButton('diagrama_gantt',{text:'Diagrama Gantt',iconCls: 'bgantt',disabled:true,handler:this.diagramGantt,tooltip: '<b>Diagrama Gantt de proceso macro</b>'});
+		       this.addButton('imprimir_tramite',{text:'Imprimir #',iconCls: 'bpdf32',disabled:true,handler:this.imprimirTramite,tooltip: '<b>Imprime el # de Trámite</b>'});
 		  
 		     
 		        this.addButton('ant_estado',{
@@ -160,6 +161,13 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		                    disabled:true,
 		                    handler:this.openFormEstadoWf,
 		                    tooltip: '<b>Cambiar al siguientes estado</b>'});
+		         this.addButton('btnObs',{
+                    text :'Observaciones al Trámite',
+                    iconCls : 'bchecklist',
+                    disabled: true,
+                    handler : this.onOpenObs,
+                    tooltip : '<b>Observaciones</b><br/><b>Observaciones del WF</b>'
+                });
                 
                 if(this.btnReclamar) {
                     this.addButton('btnReclamar',
@@ -193,6 +201,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 				{name:'usr_reg', type: 'string'},
 				{name:'usr_mod', type: 'string'},
+				{name:'tiene_observaciones', type: 'numeric'},
 				{name:'desc_funcionario', type: 'string'}];
 			
 			this.Atributos = [];			
@@ -246,7 +255,14 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 				config:{
 	                name: 'nro_tramite',
 	                fieldLabel: 'Nro Trámite',	                
-	                gwidth: 130
+	                gwidth: 130,
+	                renderer:function (value,p,record){
+	                   if (record.data.tiene_observaciones == 1) {
+	                        return String.format('<div title="Tiene observaciones abiertas para este tramite"><b><font color="red">{0}</font></b></div>', value);
+	                   } else {
+	                       return  value;
+	                   } 
+	               }
 	            },
 	            type:'TextField',
 	            filters:{pfiltro:'pw.nro_tramite',type:'string'},	            
@@ -356,7 +372,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            if (this.configProceso[this.config.indice].columnas[i].form_combo_rec != '' && 
 		            	this.configProceso[this.config.indice].columnas[i].form_combo_rec != undefined &&
 		            	this.configProceso[this.config.indice].columnas[i].form_combo_rec != null) {
-		            		
+		            	
+		            	console.log('asas 2',this.configProceso[this.config.indice].columnas[i])
 		            	config_columna.config.origen = this.configProceso[this.config.indice].columnas[i].form_comborec;
 		            	config_columna.type = 'ComboRec';
 		            	config_columna.config.maxLength = 500;
@@ -394,9 +411,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		            	config_columna.form = true;
 		            	config_columna.config.readOnly = true;
 		            }
-		            if (this.configProceso[this.config.indice].columnas[i].bd_nombre_columna == 'id_contrato_fk'){
-		            	console.log(config_columna);
-		            }
+		            
 			        this.Atributos.push(config_columna);			        
 			    }
 	            	            
@@ -557,6 +572,19 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
             Ext.Ajax.request({
                 url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
                 params:{'id_proceso_wf':data},
+                success:this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });         
+		},
+		
+		imprimirTramite:function (){         
+            var data=this.sm.getSelected().data;
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_workflow/control/ProcesoWf/imprimirNumeroTramite',
+                params:{'id_proceso_wf':data.id_proceso_wf, 'nro_tramite' : data.nro_tramite},
                 success:this.successExport,
                 failure: this.conexionFailure,
                 timeout:this.timeout,
@@ -747,6 +775,8 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 	      if (this.configProceso[this.config.indice].atributos.vista_tipo == 'maestro') {
 		     this.getBoton('btnChequeoDocumentosWf').setDisabled(false);
 		     this.getBoton('diagrama_gantt').enable();
+		     this.getBoton('imprimir_tramite').enable();
+		     this.getBoton('btnObs').enable();  
 		       if(this.historico == 'no'){
 		          
 		          this.getBoton('sig_estado').enable();
@@ -761,7 +791,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		          if(data.estado == 'finalizado' || data.estado =='anulado'){
 		          	
 		               this.getBoton('sig_estado').disable();
-		               this.getBoton('ant_estado').disable();
+		               //this.getBoton('ant_estado').disable();
 		               this.getBoton('btnReclamar').disable();
 		          }
 		       }   
@@ -779,10 +809,11 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
 		        this.getBoton('btnChequeoDocumentosWf').setDisabled(true);
 		        if(tb){
 		            this.getBoton('sig_estado').disable();
+		            this.getBoton('btnObs').disable();  
 		            this.getBoton('ant_estado').disable();
 		            this.getBoton('diagrama_gantt').disable();
+		            this.getBoton('imprimir_tramite').disable();
 		            this.getBoton('btnReclamar').disable();
-		           
 		        }
 		    }
 	        return tb
@@ -820,6 +851,28 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 scope:this
              });     
 		},
+		
+		onOpenObs:function() {
+            var rec=this.sm.getSelected();
+            
+            var data = {
+                id_proceso_wf: rec.data.id_proceso_wf,
+                id_estado_wf: rec.data.id_estado_wf,
+                num_tramite: rec.data.num_tramite
+            }
+            
+            
+            Phx.CP.loadWindows('../../../sis_workflow/vista/obs/Obs.php',
+                    'Observaciones del WF',
+                    {
+                        width:'80%',
+                        height:'70%'
+                    },
+                    data,
+                    this.idContenedor,
+                    'Obs'
+            )
+        },
 		
 		successReclamar: function(){
 		    Phx.CP.loadingHide();

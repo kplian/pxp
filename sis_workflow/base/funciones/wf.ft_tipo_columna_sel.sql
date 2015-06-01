@@ -197,7 +197,7 @@ BEGIN
                         inner join wf.ttipo_estado te
                             on te.id_tipo_estado = coles.id_tipo_estado
                         where te.codigo = '''|| v_parametros.tipo_estado || ''' 
-                            and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'') as momento,
+                            and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'' and coles.momento != ''preregistro'') as momento,
                         tipcol.bd_tipo_columna as bd_tipo_columna_comp,
                         tipcol.bd_campos_subconsulta
                         from wf.ttipo_columna tipcol

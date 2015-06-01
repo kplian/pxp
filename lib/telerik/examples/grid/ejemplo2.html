@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="../../styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="../../styles/kendo.default.min.css" />
+    <link rel="stylesheet" href="../../styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="../../styles/kendo.dataviz.default.min.css" />
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+</head>
+<body>
+
+<div id="example">
+    <div id="grid"></div>
+
+    <script>
+        $(document).ready(function () {
+            $("#grid").kendoGrid({
+                dataSource: {
+                    type: "odata",
+                    transport: {
+                        read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
+                    },
+                    pageSize: 20
+                },
+                height: 550,
+                groupable: true,
+                sortable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                columns: [{
+                    field: "ContactName",
+                    title: "Contact Name",
+                    width: 200
+                }, {
+                    field: "ContactTitle",
+                    title: "Contact Title"
+                }, {
+                    field: "CompanyName",
+                    title: "Company Name"
+                }, {
+                    field: "Country",
+                    width: 150
+                }]
+            });
+        });
+    </script>
+</div>
+
+
+</body>
+</html>

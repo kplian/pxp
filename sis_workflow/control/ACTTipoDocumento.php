@@ -96,6 +96,7 @@ class ACTTipoDocumento extends ACTbase{
         
         //Obtiene los datos de la vista
         $datos=$this->res=$this->objFunc->generarDocumento($this->objParam);
+		//var_dump($datos);exit;
         
         //Setea los valores en el datasource
         $dataSource = new DataSource();
@@ -129,6 +130,35 @@ class ACTTipoDocumento extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
 
     }
+
+	function subirPlantilla(){
+	
+		$this->objParam->addParametro('id_tipo_proceso',$this->objParam->getParametro('id_tipo_proceso'));
+		$this->objFunc=$this->create('MODTipoProceso');
+		
+		$this->res=$this->objFunc->obtenerSubsistemaTipoProceso($this->objParam);
+		//$ext = pathinfo($this->arregloFiles['archivo']['name']);
+		//var_dump($this->objParam->getFiles());exit;
+		//var_dump($this->aPostFiles);
+		$ruta_archivo = '../../../sis_'.$this->res->datos[nombre_carpeta].'/reportes/plantillas/'.$this->arregloFiles['archivo']['name'];
+		//$this->objParam->addParametro('nombre_archivo_plantilla',$ruta_archivo);
+		//var_dump($ruta_archivo);exit;
+		
+		$this->objFunc=$this->create('MODTipoDocumento');
+		   
+		
+		
+		
+		//var_dump($this->objParam);exit;
+		//Obtener la carpeta del sistema que sube la plantilla 
+		$this->res=$this->objFunc->subirPlantilla($this->objParam);
+		
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+		
+	}
+	
+	
 			
 }
 
