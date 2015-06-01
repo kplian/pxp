@@ -264,6 +264,10 @@
     background-image:url(../ball_white.png) !important;
 }
 
+.bduplicate {
+    background-image:url(dibu_duplicate.png) !important;
+}
+
 .x-action-col-cell img.bsearch {
     background-image:url(dibu_search.png);
     height: 20px;
