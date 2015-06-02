@@ -128,13 +128,13 @@ BEGIN
             
             
             IF  p_administrador != 1 THEN
-               
-               IF v_autorizacion_nulos = 'si' THEN
-                v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
-               ELSE
-                 v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
-               END IF;
-                
+               IF pxp.f_existe_parametro(p_tabla,'autorizacion')THEN
+                   IF v_autorizacion_nulos = 'si' THEN
+                    v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+                   ELSE
+                     v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
+                   END IF;
+                END IF;
              END IF;
             
             --Sentencia de la consulta
@@ -196,13 +196,13 @@ BEGIN
             
             
             IF  p_administrador != 1 THEN
-               
-               IF v_autorizacion_nulos = 'si' THEN
-                v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
-               ELSE
-                 v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
-               END IF;
-                
+               IF pxp.f_existe_parametro(p_tabla,'autorizacion')THEN
+                   IF v_autorizacion_nulos = 'si' THEN
+                    v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+                   ELSE
+                     v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
+                   END IF;
+                END IF;
              END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(conig.id_concepto_ingas)

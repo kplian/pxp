@@ -40,6 +40,11 @@
 .k-task-dot {
     display: none !important;
 }
+
+
+.estado_reg_activo td{
+	color:"#fff" !important;
+}
     </style>
     
     
@@ -77,7 +82,7 @@
 	                            type:"POST",
 	                            async: false,
 	                         
-	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'" , "orden":"fecha"}'
+	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'" }'
 	                            +'&x=../../sis_workflow/control/ProcesoWf/diagramaGanttTramite_kendo',
 	                            success: function(result) {
 	                                options.success(result);
@@ -93,7 +98,6 @@
                     	data: function (response) {
                         // var json = $.parseJSON(response.datos);
                         console.log(response)
-                        
         				var array = new Array();
                 			$.each(response.datos, function (k, v) {
                 				console.log(v.nombre)
@@ -269,7 +273,7 @@
 		  
 		    tooltip: {
 		    visible: true,
-		    template: "<div><h3>#= task.title #</h3></div><br/><div><strong>Descripcion:</strong> #= task.descripcion #</div>"
+		    template: "<div><h3>#= task.title #</h3></div><br/><div><strong></strong> #= task.descripcion #</div>"
 		  },
 				 
 		  
@@ -309,9 +313,9 @@
 		//console.log('llega bound')
         var gantt = this;
         
+        var t = gantt.element.find(".k-treelist").find("table");
         
         
-
         gantt.element.find(".k-task").each(function(e) {
           var dataItem = gantt.dataSource.getByUid($(this).attr("data-uid"));
 
@@ -323,48 +327,22 @@
           }
           
           if (dataItem.estado_reg == 'activo') {
-            this.style.backgroundColor = "#4E5A73";
+          	console.log(dataItem)
+            this.style.backgroundColor = "#80638E";
             this.style.color = "#fff";
+            var ac = $(t[1]).children("tbody").children("tr")[e];
+            $(ac).css({"color":"#fff","background-color":"#80638E"});
           } else {
             //this.style.backgroundColor = "#9f9";
           }
           
-          $.each(gantt.dataSource._data, function (k, v) {
-				if(v.estado_reg == 'activo' ){
-					console.log(v.uid)
-					$("tr").find("[data-uid='" + v.uid + "']").css({"backgroud-color" : "#fff"});
-				}
-			});
-		          
-          
-          //console.log(gantt)
+        
         });
         
         
-        
-        /*gantt.element.find(".k-treelist").each(function(e) {
-         console.log(this)
-         console.log($(this).find("table"))
-         var datos = "";
-         datos = gantt.dataSource.getByUid($(this).attr("data-uid"));
-         //console.log(datos.estado_reg)
-         if(datos == undefined){
- 
-         }else{
-         	if(datos.estado_reg == 'activo'){
-	         	this.style.backgroundColor="#4E5A73";
-	         	this.style.color = "#fff";
-	         }
-         }
-         
-          
-          
-          //console.log(gantt)
-        });*/
-        
-        
-        /*gantt.element.find(".k-task").each(function(e) {
-        });*/
+       
+       
+       
       }
 		
 	</script>
