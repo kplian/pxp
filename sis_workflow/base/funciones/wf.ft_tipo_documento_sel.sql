@@ -137,7 +137,7 @@ BEGIN
 
          END;
          
-  /*********************************    
+   /*********************************    
     #TRANSACCION:  'WF_TIDOCPLAN_SEL'
     #DESCRIPCION: Consulta de datos
     #AUTOR:       RCM 
@@ -160,14 +160,14 @@ BEGIN
                     where table_name = '''||v_parametros.nombre_vista || '''';
           
           --Definicion de la respuesta
-          v_consulta:=v_consulta||' order by 1';
+          --v_consulta:=v_consulta||' order by 1';
 
           --Devuelve la respuesta
           return v_consulta;
                 
         end;
         
-    /*********************************    
+  /*********************************    
   #TRANSACCION:  'WF_TIDOCPLAN_CONT'
   #DESCRIPCION: Conteo de registros
   #AUTOR:     RCM
@@ -189,7 +189,33 @@ BEGIN
       return v_consulta;
 
     end;
+    
+    
+  /*********************************    
+  #TRANSACCION:  'WF_VISTA_SEL'
+  #DESCRIPCION: Devuelve los datos dinámicos de la vista enviada
+  #AUTOR:       RCM 
+  #FECHA:       20/05/2015
+  ***********************************/
+
+    elsif(p_transaccion='WF_VISTA_SEL')then
+              
+        begin
+
+        if v_parametros.nombre_vista is null then
+          raise exception 'Parametro nombre_vista es nulo';
+        end if;
+        
+          --Sentencia de la consulta
+          v_consulta:='select *
+                       from ' || v_parametros.esquema_vista || '.' ||v_parametros.nombre_vista || '
+                       where id_proceso_wf = '||v_parametros.id_proceso_wf;
           
+          --Devuelve la respuesta
+          return v_consulta;
+                
+        end;
+         
   else
                
     raise exception 'Transaccion inexistente';

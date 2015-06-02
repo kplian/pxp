@@ -211,6 +211,7 @@ class MODTipoDocumento extends MODbase{
 
     function generarDocumento(){
         //Definicion de variables para ejecucion del procedimiento
+        //1. Se obtiene las columas de la vista de base de datos
         $this->procedimiento='wf.ft_tipo_documento_sel';
         $this->transaccion='WF_TIDOCPLAN_SEL';
         $this->tipo_procedimiento='SEL';
@@ -269,10 +270,10 @@ class MODTipoDocumento extends MODbase{
                     }
                     $i++;
                 }
-                //var_dump($arrDefCols);
+                //var_dump($arrDefCols);exit;
                 
                 ///////////////////////////////////////////////////////////
-                //Ejecución de consulta para obtener los datos de la vista
+                //2. Ejecución de consulta para obtener los datos de la vista de base de datos
                 ///////////////////////////////////////////////////////////
                 $this->procedimiento='wf.ft_tipo_documento_sel';
                 $this->transaccion='WF_VISTA_SEL';
@@ -334,7 +335,7 @@ class MODTipoDocumento extends MODbase{
         
         //$ext = pathinfo($this->arregloFiles['archivo']['name']);
         $rr=$this->objParam->getFiles();
-		var_dump($rr);
+		//var_dump($rr);
         //$ext = pathinfo($rr['archivo']['name']);
       	//$this->arreglo['nombre_archivo_plantilla']= $this->arreglo['nombre_archivo_plantilla'].$this->arreglo['archivo'];
 		

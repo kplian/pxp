@@ -153,7 +153,7 @@ class ReportePDFFormulario extends MYPDF {
 			$this->writeHTML($this->strHeaderHtml,true,false,true,false,'');
 		} else{
 			//Formato TCPDF
-			$this->renderHeaderTCPDF();
+			//$this->renderHeaderTCPDF();
 		}
 	}
 	

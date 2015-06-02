@@ -51,7 +51,7 @@ class ACTSubsistema extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
-			
+			 
 	function eliminarSubsistema(){		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		$this->objFunSeguridad=$this->create('MODSubsistema');	
