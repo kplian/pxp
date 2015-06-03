@@ -93,7 +93,8 @@ BEGIN
             parametros_ad,
             admite_obs,
             etapa,
-            grupo_doc
+            grupo_doc,
+            id_tipo_estado_anterior
             
             
           	) values(
@@ -126,7 +127,8 @@ BEGIN
             v_parametros.parametros_ad,
             v_parametros.admite_obs,
             v_parametros.etapa,
-            v_parametros.grupo_doc
+            v_parametros.grupo_doc,
+            v_parametros.id_tipo_estado_anterior
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -197,7 +199,8 @@ BEGIN
             parametros_ad=v_parametros.parametros_ad,
             admite_obs = v_parametros.admite_obs,
             etapa = v_parametros.etapa,
-            grupo_doc = v_parametros.grupo_doc
+            grupo_doc = v_parametros.grupo_doc,
+            id_tipo_estado_anterior = v_parametros.id_tipo_estado_anterior
 							
             where id_tipo_estado=v_parametros.id_tipo_estado;
             
