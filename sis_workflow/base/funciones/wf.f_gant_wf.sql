@@ -104,10 +104,7 @@ BEGIN
    
    -- 1) Crea una tabla temporal con los datos que se utilizaran 
 
- 
-   
-    
-        CREATE TEMPORARY TABLE temp_gant_wf (
+      CREATE TEMPORARY TABLE temp_gant_wf (
                                       id serial,
                                       id_proceso_wf integer,
                                       id_estado_wf integer,
@@ -141,18 +138,22 @@ BEGIN
       else
          v_orden = 'defecto';
       end if;
-                
-      IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
-                
-        raise exception 'Error al recuperar los datos del diagrama gant';
-                
+       
+      IF v_orden = 'defecto' then         
+        IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
+           raise exception 'Error al recuperar los datos del diagrama gant';
+        END IF;
+      ELSE
+        IF not ( wf.f_gant_wf_recursiva_dinamico(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
+          raise exception 'Error al recuperar los datos del diagrama gant';
+         END IF;
       END IF;
           
          
        raise notice 'consulta tabla temporal';   
   
   
-  IF v_orden = 'defecto' then
+  
              FOR v_registros in (SELECT                                   
                                   id ,
                                   id_proceso_wf ,
@@ -183,39 +184,7 @@ BEGIN
                                 order by id) LOOP
                RETURN NEXT v_registros;
              END LOOP;
-   ELSE
-            FOR v_registros in (SELECT                                   
-                                    id ,
-                                    id_proceso_wf ,
-                                    id_estado_wf ,
-                                    tipo , 
-                                    nombre , 
-                                    fecha_ini , 
-                                    fecha_fin , 
-                                    descripcion , 
-                                    id_siguiente ,
-                                    tramite ,
-                                    codigo ,
-                                    COALESCE(id_funcionario,0) ,
-                                    funcionario ,
-                                    COALESCE(id_usuario,0),
-                                    cuenta ,
-                                    COALESCE(id_depto,0),
-                                    depto,
-                                    COALESCE(nombre_usuario_ai,''),
-                                    arbol,
-                                    id_padre,
-                                    id_obs,
-                                    id_anterior,
-                                    etapa,
-                                    estado_reg,
-                                    disparador
-                                  FROM temp_gant_wf 
-                                  order by fecha_ini, id) LOOP
-                 RETURN NEXT v_registros;
-               END LOOP;
-   
-   END IF;
+  
 
 END IF;
 
