@@ -11,8 +11,8 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.AntFormEstadoWf=Ext.extend(Phx.frmInterfaz,{
     ActSave:'../../sis_workflow/control/DocumentoWf/subirArchivoWf',
-    layout:'fit',
-    maxCount:0,
+    layout: 'fit',
+    maxCount: 0,
     constructor:function(config){   
         Phx.vista.AntFormEstadoWf.superclass.constructor.call(this,config);
         this.init(); 
@@ -58,7 +58,8 @@ Phx.vista.AntFormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                    id_proceso_wf: this.data.id_proceso_wf,
                    id_estado_wf: this.data.id_estado_wf,
                    obs:this.Cmp.obs.getValue(),
-                   estado_destino:  this.estado_destino
+                   estado_destino:  this.estado_destino,
+                   data:	this.data
             }
             
          return resp;   
