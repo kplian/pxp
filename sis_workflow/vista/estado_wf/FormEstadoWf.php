@@ -287,7 +287,9 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                  }   
                                 
             }, scope : this
-        });        
+        });   
+        //carga vaor inicial de las observaciones si existe
+        this.Cmp.obs.setValue(this.obsValorInicial)     
     },
     
     ///////////////////////////////////////

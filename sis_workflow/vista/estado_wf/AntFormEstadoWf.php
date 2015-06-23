@@ -18,6 +18,9 @@ Phx.vista.AntFormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         this.init(); 
         this.loadValoresIniciales();
         
+        console.log('xxxxxxxxxxxxxxxxxx',this.obsValorInicial, config)
+        //carga vaor inicial de las observaciones si existe
+        this.Cmp.obs.setValue(this.obsValorInicial)  
     },
    
     Atributos:[
