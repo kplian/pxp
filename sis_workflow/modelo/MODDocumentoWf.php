@@ -109,6 +109,7 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('fecha_firma','varchar');
 		$this->captura('usuario_firma','varchar');
 		$this->captura('action','varchar');
+		$this->captura('nombre_usuario_firma','text');
 		
 		
 		
