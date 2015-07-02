@@ -318,7 +318,7 @@ BEGIN
           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
-          v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf);
+          v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf,NULL,NULL,p_id_usuario);
           
           IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
           		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
