@@ -126,8 +126,8 @@ BEGIN
                v_autorizacion_nulos = 'si';
             END IF;
             
-            
-            IF  p_administrador != 1 THEN
+           --RAC, 1/7/2015 solo por el tema de regularizaciones lso administradores no  tenian filtros 
+           -- IF  p_administrador != 1 THEN
                IF pxp.f_existe_parametro(p_tabla,'autorizacion')THEN
                    IF v_autorizacion_nulos = 'si' THEN
                     v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
@@ -135,7 +135,7 @@ BEGIN
                      v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
                    END IF;
                 END IF;
-             END IF;
+            -- END IF;
             
             --Sentencia de la consulta
 			v_consulta:='select
