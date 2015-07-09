@@ -21,13 +21,14 @@ DECLARE
 v_registros			 record;
 
 
-v_nombre_funcion  varchar;
-v_nombre_funcion_exe  varchar;
-v_resp  varchar;
-v_i     integer;
+v_nombre_funcion 		varchar;
+v_nombre_funcion_exe 	varchar;
+v_resp 					varchar;
+v_i     				integer;
 
-v_template_evaluado    varchar;
-v_retorno boolean;
+v_template_evaluado    	varchar;
+v_retorno 				boolean;
+v_prefijo				varchar;
  
 BEGIN
             v_nombre_funcion = 'f_evaluar_regla_wf';
@@ -42,7 +43,7 @@ BEGIN
              
             END IF;
             
-            --para determina si es funcion (primeo suponemos que lo es)
+            --para determina si es funcion (primero suponemos que lo es)
             --si es funcion obtenmos el nombre
             v_nombre_funcion_exe = split_part(p_plantilla, '.', 2);
             
@@ -50,9 +51,18 @@ BEGIN
             
             IF EXISTS( SELECT proname FROM pg_proc WHERE proname = v_nombre_funcion_exe) THEN
                
+               v_prefijo =  SUBSTRING(p_plantilla, 1, 4);
+               
+               IF upper(v_prefijo) =  'NOT!' THEN
+                 p_plantilla=replace(p_plantilla,'NOT!','');
+               END IF;
+               
                --si es funcion la ejecutamos y retornamos el valor  falso o verdadero
                EXECUTE ('select ' || p_plantilla  ||'('||p_id_usuario::varchar||','|| p_id_proceso_wf::varchar||','||p_id_estado_anterior::varchar||','||p_id_tipo_estado_actual::varchar||')') into v_retorno;
-                             
+               
+               IF upper(v_prefijo) =  'NOT!' THEN
+                 v_retorno = not v_retorno;
+               END IF;            
 		    ELSE
             
                 

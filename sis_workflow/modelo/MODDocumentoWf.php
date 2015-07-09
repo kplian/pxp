@@ -109,6 +109,7 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('fecha_firma','varchar');
 		$this->captura('usuario_firma','varchar');
 		$this->captura('action','varchar');
+		$this->captura('nombre_usuario_firma','text');
 		
 		
 		
@@ -258,7 +259,7 @@ class MODDocumentoWf extends MODbase{
 				   }
 				   
 				   //cipiamos el nuevo archivo 
-	               $this->setFile('archivo','id_documento_wf', false,51200 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
+	               $this->setFile('archivo','id_documento_wf', false,100000 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX'));
 	            }
 				
 				$link->commit();

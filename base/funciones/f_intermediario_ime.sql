@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_id_usuario_ai integer,
@@ -422,7 +420,7 @@ BEGIN
 EXCEPTION
 	WHEN OTHERS THEN
     
-		v_resp='';
+			v_resp='';
         v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
         v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
         v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','ERROR'::varchar);

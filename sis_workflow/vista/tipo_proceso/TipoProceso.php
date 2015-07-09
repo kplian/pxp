@@ -13,8 +13,8 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
-		this.maestro=config.maestro;
-		this.initButtons=[this.cmbProcesoMacro];
+		this.maestro = config.maestro;
+		this.initButtons= [this.cmbProcesoMacro];
     	//llama al constructor de la clase padre
 		Phx.vista.TipoProceso.superclass.constructor.call(this,config);
 		this.init();

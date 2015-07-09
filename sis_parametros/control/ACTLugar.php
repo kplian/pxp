@@ -13,6 +13,7 @@ class ACTLugar extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_lugar');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
 		if ($this->objParam->getParametro('tipo') != '') {
 			$this->objParam->addFiltro("lug.tipo  in (''". $this->objParam->getParametro('tipo') . "'')");
 		}

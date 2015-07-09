@@ -71,7 +71,8 @@ include_once(dirname(__FILE__).'/../../sis_workflow/modelo/MODDocumentoWf.php');
 				    array(	"id_proceso_wf"=>$d['id_proceso_wf'],
 				    		"firmar"=>'si',
 							"fecha_firma"=>$d["fecha_firma"],
-							"usuario_firma"=>$d["usuario_firma"]));
+							"usuario_firma"=>$d["usuario_firma"],
+							"nombre_usuario_firma"=>$d["nombre_usuario_firma"]));
 				
 				$res_json = json_decode($res);
 				
