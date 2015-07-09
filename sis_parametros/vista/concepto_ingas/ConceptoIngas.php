@@ -525,7 +525,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
                 alert('ocurrio un error durante el proceso')
             }
     },
-	title:'Conceptos de Ingreso/Gasto',
+	title:'Conceptos',
 	ActSave:'../../sis_parametros/control/ConceptoIngas/insertarConceptoIngas',
 	ActDel:'../../sis_parametros/control/ConceptoIngas/eliminarConceptoIngas',
 	ActList:'../../sis_parametros/control/ConceptoIngas/listarConceptoIngas',
