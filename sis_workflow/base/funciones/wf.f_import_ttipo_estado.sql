@@ -24,7 +24,8 @@ CREATE OR REPLACE FUNCTION wf.f_import_ttipo_estado (
  p_nombre_clase_alerta varchar,	
  p_tipo_noti varchar,	
  p_titulo_alerta varchar,	
- p_parametros_ad varchar
+ p_parametros_ad varchar,
+ p_codigo_estado_anterior varchar
 
 )
 RETURNS varchar AS
@@ -33,11 +34,16 @@ DECLARE
     v_id_tipo_proceso			integer;
     v_id_tipo_estado			integer;
     v_cargo_depto				varchar[];
+    v_id_tipo_estado_anterior	integer;
 BEGIN	 
         
     select id_tipo_proceso into v_id_tipo_proceso
     from wf.ttipo_proceso tp    
     where tp.codigo = p_codigo_tipo_proceso ;
+    
+    select id_tipo_estado into v_id_tipo_estado_anterior
+    from wf.ttipo_estado te   
+    where te.codigo = p_codigo_estado_anterior ;
     
     select te.id_tipo_estado into v_id_tipo_estado
     from wf.ttipo_estado te
@@ -85,7 +91,8 @@ BEGIN
               tipo_noti,
               titulo_alerta,
               parametros_ad,
-              modificado
+              modificado,
+              id_tipo_estado_anterior
             ) 
             VALUES (
               1,              
@@ -114,7 +121,8 @@ BEGIN
               p_tipo_noti,
               p_titulo_alerta,
               p_parametros_ad,
-              1
+              1,
+              v_id_tipo_estado_anterior
             );
         else            
             UPDATE wf.ttipo_estado  
@@ -143,7 +151,8 @@ BEGIN
                 tipo_noti = p_tipo_noti,
                 titulo_alerta = p_titulo_alerta,
                 parametros_ad = p_parametros_ad,
-                modificado = 1               
+                modificado = 1 ,
+                id_tipo_estado_anterior = v_id_tipo_estado_anterior              
               WHERE id_tipo_estado = v_id_tipo_estado;
         end if;
     

@@ -27,18 +27,34 @@
 
 <script src="../../../lib/moment/moment-with-locales.js"></script>
 
-    <script>
-    
-    
-    
-
-        
-    </script>
+    <script type="text/javascript" charset="utf-8">
+		
+	(function ($) {
+	   // $.tipo = '';
+	   // $.aurl = '';
+	    variables_dinamicas = {
+	
+	        arreglo:new Array()
+	
+	    }
+	})
+	(jQuery);
+	</script>
     
     <style type="text/css" media="screen">
        .k-task-draghandle,
 .k-task-dot {
     display: none !important;
+}
+
+
+.estado_reg_activo td{
+	color:"#fff" !important;
+}
+
+.activo_pxp{
+	color:#fff;
+	background-color:#80638E !important;
 }
     </style>
     
@@ -77,7 +93,7 @@
 	                            type:"POST",
 	                            async: false,
 	                         
-	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'" , "orden":"fecha"}'
+	                            data:'p={"id_proceso_wf":"'+id_proceso_wf+'" ,"orden":"fecha" }'
 	                            +'&x=../../sis_workflow/control/ProcesoWf/diagramaGanttTramite_kendo',
 	                            success: function(result) {
 	                                options.success(result);
@@ -92,24 +108,13 @@
                 schema: {
                     	data: function (response) {
                         // var json = $.parseJSON(response.datos);
-                        console.log(response)
-                        
+                        //console.log(response)
         				var array = new Array();
                 			$.each(response.datos, function (k, v) {
-                				console.log(v.nombre)
-                				if(v.id_padre == null){
-	                            	var id_padre = null;
-	                            }else{
-	                            	var id_padre =  v.id_padre;
-	                            }
-	                            if(v.id_proceso_wf == null){
-	                            	var Summary =  false;
-	                            	console.log('no es')
-	                            }else{
-	                            	
-	                            	var Summary = true;
-	                            	console.log('es')
-
+                				//console.log(v.nombre)
+                				var Summary =  false;
+	                            if(v.id_proceso_wf || v.disparador == 'si'){
+	                            	 Summary = true;
 	                            }
 	                     
 							  	var inicio = moment(v.fecha_ini);
@@ -126,25 +131,28 @@
 								var dias_res = +days+"D " + hours+"H " ;
 								
 								
-								
+								var exp = false;
+								if(v.id == 1){
+									exp=true;
+								}
 								
 							   
 							  
-							   console.log('days',days);
-							   console.log('res',hours);
+							   //console.log('days',days);
+							   //console.log('res',hours);
 							   
-							   if(v.disparador != 'si'){
+							   //if(v.disparador != 'si'){
 							 
 	                 				array.push({
-	                 				"id" : k+1,
+	                 				"id" : v.id,
 		                            //"tipo" : v.tipo,
-		                            "title" : v.nombre,
+		                            "title" :v.nombre,
 		                            "start" : v.fecha_ini,
 		                            "end" : v.fecha_fin,
 		                            "orderId" : v.id,
-		                            "parentId" : id_padre,
+		                            "parentId" : v.id_padre,
 		                            "Summary":Summary,
-									"Expanded":false,
+									"Expanded":exp,
 									"PercentComplete":"",
 									"funcionario":(v.funcionario != null)? v.funcionario:v.depto,
 									"color":"#111",
@@ -155,7 +163,7 @@
 									
 	                 				});
                  				
-                 				}
+                 				//}
 	                            //datos = new Object();
 	                            
 	                            
@@ -171,9 +179,9 @@
 	
                           	})
                           	
-                          console.log(JSON.stringify(arra_dependencias))
+                          //console.log(JSON.stringify(arra_dependencias))
                           json_dep = JSON.stringify(arra_dependencias);
-                          	console.log(array)
+                          	//console.log('array' , array)
           
                         return array;
 	                    },
@@ -232,10 +240,9 @@
 		  
 			  
 	  
-	  
 	  columns: [
             { field: "id", title: "ID"},
-            { field: "title", title: "Titulo", editable: true,width: 200, sortable: true },
+            { field: "title", title: "Titulo", editable: true,width: 500, resizable: true, sortable: true },
             { field: "funcionario", title: "funcionario", editable: true,width: 250 },
             { field: "start", title: "Fecha Inicio", format: "{0:dd/MM/yyyy HH:mm}", width: 130, editable: true, sortable: true },
             { field: "end", title: "Fecha Fin", format: "{0:dd/MM/yyyy HH:mm}", width: 130, editable: true, sortable: true },
@@ -269,7 +276,7 @@
 		  
 		    tooltip: {
 		    visible: true,
-		    template: "<div><h3>#= task.title #</h3></div><br/><div><strong>Descripcion:</strong> #= task.descripcion #</div>"
+		    template: "<div><h3>#= task.title #</h3></div><br/><div><strong></strong> #= task.descripcion #</div>"
 		  },
 				 
 		  
@@ -293,7 +300,7 @@
 	
 	
 	var gantt = $("#gantt").data("kendoGantt");
-	console.log(gantt)
+	//console.log(gantt)
 	console.log('json',json_dep)
 	$.each(arra_dependencias, function (k, v) {
 		gantt.dependencies.add(v);
@@ -306,12 +313,13 @@
 	
 	
 	function onDataBound() {
+		var arra = new Array();
 		//console.log('llega bound')
         var gantt = this;
         
+        var t = gantt.element.find(".k-treelist").find("table");
         
         
-
         gantt.element.find(".k-task").each(function(e) {
           var dataItem = gantt.dataSource.getByUid($(this).attr("data-uid"));
 
@@ -323,51 +331,57 @@
           }
           
           if (dataItem.estado_reg == 'activo') {
-            this.style.backgroundColor = "#4E5A73";
+          	//console.log(dataItem)
+          	
+          	//console.log(this)
+            this.style.backgroundColor = "#80638E";
             this.style.color = "#fff";
+            var ac = $(t[1]).children("tbody");
+           // console.log($(ac).children("td").children("span"))
+           //$(ac).removeAttr("style");
+           
+           //console.log('ac' , $(ac).find("[data-uid='" + dataItem.uid + "']"))
+           $(ac).find("[data-uid='" + dataItem.uid + "']").addClass('activo_pxp');
+           
+            /*$.each($(ac).children("td").children("span"), function (k, v) {
+            	
+            	
+				
+				if($(v).text() == dataItem.id ){
+					//alert($(v).text())
+					//variables_dinamicas.arreglo.push(dataItem.id); 
+					variables_dinamicas.arreglo = dataItem.id;
+					
+					$(v).parent().parent().css({"color":"#fff","background-color":"#80638E"});
+				}else{
+					//$(v).parent().parent().css({"color":"#fff","background-color":"#ccc"});
+				}
+				
+				
+			});*/
+			
+			
+	
+           // $(ac).css({"color":"#fff","background-color":"#80638E"});
           } else {
             //this.style.backgroundColor = "#9f9";
           }
           
-          $.each(gantt.dataSource._data, function (k, v) {
-				if(v.estado_reg == 'activo' ){
-					console.log(v.uid)
-					$("tr").find("[data-uid='" + v.uid + "']").css({"backgroud-color" : "#fff"});
-				}
-			});
-		          
-          
-          //console.log(gantt)
+        
         });
         
+       // console.log('d' , variables_dinamicas.arreglo)
         
-        
-        /*gantt.element.find(".k-treelist").each(function(e) {
-         console.log(this)
-         console.log($(this).find("table"))
-         var datos = "";
-         datos = gantt.dataSource.getByUid($(this).attr("data-uid"));
-         //console.log(datos.estado_reg)
-         if(datos == undefined){
- 
-         }else{
-         	if(datos.estado_reg == 'activo'){
-	         	this.style.backgroundColor="#4E5A73";
-	         	this.style.color = "#fff";
-	         }
-         }
-         
-          
-          
-          //console.log(gantt)
-        });*/
-        
-        
-        /*gantt.element.find(".k-task").each(function(e) {
-        });*/
+
       }
-		
+      
+     
 	</script>
+	
+	
+	
+	
+	
 	    
 </body>
 </html>

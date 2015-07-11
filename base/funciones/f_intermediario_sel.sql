@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
   par_id_usuario_ai integer,
@@ -255,23 +253,11 @@ BEGIN
        WHEN OTHERS THEN
        
         v_resp='';
-        GET STACKED DIAGNOSTICS                
-                v_exception_detail  = PG_EXCEPTION_DETAIL,
-                v_exception_context    = PG_EXCEPTION_CONTEXT;
-        --v_resp = pxp.f_agrega_clave(v_resp,'mensaje',pxp.f_obtiene_clave_valor(SQLERRM,'mensaje','','','valor') || '**##$$##$$##**DETALLE : ' || v_exception_detail || '  ------------ CONTEXTO : '|| v_exception_context);
-        
-        v_exception_detail =  replace(v_exception_detail,'''','');
-        v_exception_context =  replace(v_exception_context,'''','');
-        
-        raise notice '>>>>>>>>>>>%<<<<<<<<<<<<<',SQLERRM;
-        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM );
-        
-       -- v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM );
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
         v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
         v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','ERROR'::varchar);
   		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',pxp.f_obtiene_clave_valor(v_resp,'mensaje','','','valor') || '**##$$##$$##**DETALLE : ' || pxp.f_obtiene_clave_valor(v_resp,'procedimientos','','','valor'));
-       
+
         
          v_retorno:=replace(v_retorno,'''','''''');
          
@@ -290,22 +276,15 @@ BEGIN
             v_id_subsistema_cade=v_id_subsistema::varchar;
          end if;
 
- 
-  
- 
-  
          v_cadena_log='('||
-         		coalesce(par_id_usuario,0)::varchar||',''' ||
+         		coalesce(par_id_usuario,0)||',''' ||
                 par_ip::varchar||''','''||
              	par_mac::varchar||''','''||
              	v_tipo_error ||''','''||
-                --pxp.f_obtiene_clave_valor(SQLERRM,'mensaje','','','valor') || '**##$$##$$##**DETALLE : ' || v_exception_detail || '  ------------ CONTEXTO : '|| v_exception_context||''','''||
-               -- pxp.f_obtiene_clave_valor(SQLERRM,'mensaje','','','valor') || '**##$$##$$##**DETALLE : ' || v_exception_detail || '  ------------ CONTEXTO : '|| v_exception_context||''','''||
-                
                 pxp.f_obtiene_clave_valor(v_resp,'mensaje','','','valor')||''','''||
              	pxp.f_obtiene_clave_valor(v_resp,'procedimientos','','','valor')||''','''||
                 par_transaccion||''','''||
-                coalesce (v_retorno,' ')::varchar||''',NULL,''' ||
+                coalesce (v_retorno,' ')||''',NULL,''' ||
                 getpgusername()||''','''||
                 SQLSTATE||''','||
                 pg_backend_pid()||','''||
@@ -313,8 +292,7 @@ BEGIN
                 par_pid_web||','||
                 v_id_subsistema_cade||
                 ',1)';
-                
-        
+
 		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa función da el resultado,
         --por lo que se modifica para que devuelva un json direcamente
          v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log');

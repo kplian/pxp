@@ -15,7 +15,11 @@ vim cronAlarma.txt
 
 30 23 * * * /scripts/backup_dbkerp.sh
 */5 * * * * wget "http://172.17.45.229/kerp/sis_parametros/control/ActionDisparaAlarmas.php?user=notificaciones&pw=xxxxx"
+
+//revisa todos los dias laborables a media noche
 0 0 * * 1-5 wget "http://172.17.45.229/kerp/sis_tesoreria/control/ActionRevisaPagosPendientes.php?user=notificaciones&pw=xxxxx"
+
+
 
 
 #aplicar el cron con nuestra configuración

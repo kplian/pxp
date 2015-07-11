@@ -84,7 +84,9 @@ BEGIN
                             id_tipo_documento,                      
                             id_proceso_wf,
                             demanda,
-                            obs
+                            obs, 
+                            momento,
+                            chequeado
                             
                           )
                           VALUES (
@@ -94,7 +96,9 @@ BEGIN
                              (va_id_tipo_documentos[v_i])::integer,
                              v_parametros.id_proceso_wf,
                              'si',
-                             'insertado manualmente'
+                             'insertado manualmente',
+                             'exigir',
+                             'no'
                           );
             
              END LOOP ; 
@@ -109,7 +113,7 @@ BEGIN
 
 	/*********************************    
  	#TRANSACCION:  'WF_DWF_MOD'
- 	#DESCRIPCION:	Mofifica documentos, chequeo fisico y boservaciones
+ 	#DESCRIPCION:	Mofifica documentos, chequeo fisico y observaciones
  	#AUTOR:		admin	
  	#FECHA:		15-01-2014 13:52:19
 	***********************************/

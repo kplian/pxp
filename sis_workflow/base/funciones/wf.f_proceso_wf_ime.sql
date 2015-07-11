@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -320,7 +318,7 @@ BEGIN
           inner join wf.ttipo_estado te on ew.id_tipo_estado = te.id_tipo_estado
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
-          v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf);
+          v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf,NULL,NULL,p_id_usuario);
           
           IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
           		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
@@ -595,6 +593,17 @@ BEGIN
          IF  v_parametros.operacion = 'cambiar' THEN
                
                raise notice 'es_estaado_wf %',v_parametros.id_estado_wf;
+               
+               --verificar si existe un tipo_estado_wf anterior
+               
+               select te.id_tipo_estado_anterior,tea.codigo 
+               		into v_id_tipo_estado,v_codigo_estado
+               from wf.testado_wf ewf
+               inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
+               left join wf.ttipo_estado tea on tea.id_tipo_estado = te.id_tipo_estado_anterior
+               where ewf.id_estado_wf = v_parametros.id_estado_wf;
+         		
+               if (v_id_tipo_estado is null) then
               
                       --recuperaq estado anterior segun Log del WF
                         SELECT  
@@ -614,14 +623,28 @@ BEGIN
                            v_id_estado_wf_ant
                         FROM wf.f_obtener_estado_ant_log_wf(v_parametros.id_estado_wf);
                         
-                        
-                        --
+                         --
                       select 
                            ew.id_proceso_wf
                         into 
                            v_id_proceso_wf
                       from wf.testado_wf ew
                       where ew.id_estado_wf= v_id_estado_wf_ant;
+                 else
+                 		
+                 		select id_funcionario  into v_id_funcionario
+     					from wf.f_funcionario_wf_sel(p_id_usuario, v_id_tipo_estado,now()::date,NULL) as (id_funcionario integer,desc_funcionario text,desc_cargo text,prioridad integer);
+                     	
+                         --
+                        select 
+                             ew.id_proceso_wf
+                          into 
+                             v_id_proceso_wf
+                        from wf.testado_wf ew
+                        where ew.id_estado_wf= v_parametros.id_estado_wf;
+                 end if;       
+                        
+                       
                       
                       -- registra nuevo estado
                       
@@ -661,7 +684,7 @@ BEGIN
                                   id_usuario_mod = ' ||  p_id_usuario || ',
                                   fecha_mod=now()
                                   where id_proceso_wf=' || v_id_proceso_wf;
-                                                                        
+                                                                       
                           execute (v_query);           
                           
                        end if;

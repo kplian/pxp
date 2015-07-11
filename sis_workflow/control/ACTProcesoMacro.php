@@ -184,7 +184,7 @@ class ACTProcesoMacro extends ACTbase{
 					"select wf.f_import_ttipo_estado ('delete','".							 
 							$row['codigo']."','".
 							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-							NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");							
+							NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");							
 					
 				} else {
 					
@@ -214,7 +214,8 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['nombre_clase_alerta'])?'NULL':"'".$row['nombre_clase_alerta']."'") ."," .
 							 (is_null($row['tipo_noti'])?'NULL':"'".$row['tipo_noti']."'") ."," .
 							 (is_null($row['titulo_alerta'])?'NULL':"'".$row['titulo_alerta']."'") ."," .
-							 (is_null($row['parametros_ad'])?'NULL':"'".$row['parametros_ad']."'") .");\r\n");
+							 (is_null($row['parametros_ad'])?'NULL':"'".$row['parametros_ad']."'") ."," .
+							 (is_null($row['codigo_estado_anterior'])?'NULL':"'".$row['codigo_estado_anterior']."'") .");\r\n");
 							 						
 				}				
 			

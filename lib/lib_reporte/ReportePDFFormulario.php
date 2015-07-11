@@ -29,6 +29,7 @@ class ReportePDFFormulario extends MYPDF {
 		$this->firmar = $this->objParam->getParametro('firmar');
 		$this->fecha_rep = $this->objParam->getParametro('fecha_firma');
 		$this->usuario_firma = $this->objParam->getParametro('usuario_firma');
+		$this->nombre_usuario_firma = $this->objParam->getParametro('nombre_usuario_firma');
 		
 		$this->url_archivo = dirname(__FILE__) . "/../../../reportes_generados/".$this->objParam->getParametro('nombre_archivo');
 		$this->nombre_archivo=$this->objParam->getParametro('nombre_archivo');

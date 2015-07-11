@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -253,10 +251,12 @@ BEGIN
                         dwf.accion_pendiente,
                         dwf.fecha_firma,
                         dwf.usuario_firma,
-                        td.action       
+                        td.action,
+                        usu.desc_persona as nombre_usuario_firma       
             from wf.tdocumento_wf dwf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
-                        inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf                        
+                        inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf 
+                        inner join segu.vusuario usu on usu.cuenta = dwf.usuario_firma                       
                 where  dwf.accion_pendiente is not null ';
       
       --Definicion de la respuesta

@@ -1326,3 +1326,10 @@ COMMENT ON COLUMN wf.tproceso_wf.id_tipo_estado_wfs
 IS 'almacenes el historico de tipo de estado por lo que va pansado el flujo, se utiliza para saber cuanto veces paso por un mismo estado';
 
 /*****************************F-SCP-RAC-WF-0-25/05/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-03/06/2015*************/
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN id_tipo_estado_anterior INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-03/06/2015*************/

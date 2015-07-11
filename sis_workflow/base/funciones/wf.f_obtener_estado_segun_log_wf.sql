@@ -36,25 +36,26 @@ $body$
 ***************************************************************************/
 DECLARE
 
-v_nombre_funcion varchar;
-v_resp varchar;
+v_nombre_funcion 				varchar;
+v_resp 							varchar;
 
-v_id_tipo_proceso integer;
-v_id_tipo_estado integer;
-v_id_proceso_wf integer;
+v_id_tipo_proceso 				integer;
+v_id_tipo_estado 				integer;
+v_id_proceso_wf 				integer;
 
-va_id_tipo_estado integer[];
-va_codigo_estado varchar[];
-va_disparador varchar[];
-va_regla varchar[];
-va_prioridad integer[];
+va_id_tipo_estado 				integer[];
+va_codigo_estado 				varchar[];
+va_disparador 					varchar[];
+va_regla 						varchar[];
+va_prioridad 					integer[];
+v_id_tipo_estado_anterior		integer;
 
 	
 BEGIN
 
 v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
 
-    select 
+     select 
          ew.id_proceso_wf ,
          ew.id_tipo_estado
       into 
@@ -66,36 +67,37 @@ v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
 
    
    
-   WITH RECURSIVE estados (id_estado_wf,id_estado_anterior, codigo, id_tipo_estado) AS (  
-                                      select ew.id_estado_wf,
-                                             ew.id_estado_anterior,
-                                             te.codigo,
-                                             te.id_tipo_estado
-                                      
-                                      from wf.testado_wf ew
-                                      inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado and te.estado_reg = 'activo'
-                                      where ew.id_estado_wf = p_id_estado_wf
-                                      UNION ALL
-                                      SELECT ewp.id_estado_wf,
-                                             ewp.id_estado_anterior,
-                                             tep.codigo,
-                                             tep.id_tipo_estado
-                                      FROM estados a
-                                           INNER JOIN wf.testado_wf ewp on
-                                            ewp.id_estado_wf = a.id_estado_anterior
-                                           INNER JOIN wf.ttipo_estado tep on tep.id_tipo_estado = ewp.id_tipo_estado and tep.estado_reg = 'activo')  
-                                       
-                                       
-                                       SELECT id_estado_wf,
-                                              codigo
-                                          into 
-                                             ps_id_estado_wf_ant,
-                                             ps_codigo_estado
-                                       FROM estados 
-                                       WHERE id_tipo_estado = p_id_tipo_estado 
-                                       order by  id_estado_wf   desc
-                                       limit 1 offset 0;  
+       WITH RECURSIVE estados (id_estado_wf,id_estado_anterior, codigo, id_tipo_estado) AS (  
+                                          select ew.id_estado_wf,
+                                                 ew.id_estado_anterior,
+                                                 te.codigo,
+                                                 te.id_tipo_estado
+                                          
+                                          from wf.testado_wf ew
+                                          inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado and te.estado_reg = 'activo'
+                                          where ew.id_estado_wf = p_id_estado_wf
+                                          UNION ALL
+                                          SELECT ewp.id_estado_wf,
+                                                 ewp.id_estado_anterior,
+                                                 tep.codigo,
+                                                 tep.id_tipo_estado
+                                          FROM estados a
+                                               INNER JOIN wf.testado_wf ewp on
+                                                ewp.id_estado_wf = a.id_estado_anterior
+                                               INNER JOIN wf.ttipo_estado tep on tep.id_tipo_estado = ewp.id_tipo_estado and tep.estado_reg = 'activo')  
+                                           
+                                           
+                                           SELECT id_estado_wf,
+                                                  codigo
+                                              into 
+                                                 ps_id_estado_wf_ant,
+                                                 ps_codigo_estado
+                                           FROM estados 
+                                           WHERE id_tipo_estado = p_id_tipo_estado 
+                                           order by  id_estado_wf   desc
+                                           limit 1 offset 0;  
    
+      
 
   select
    ewp.id_funcionario,

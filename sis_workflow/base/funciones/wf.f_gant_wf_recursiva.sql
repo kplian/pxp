@@ -1,13 +1,12 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION wf.f_gant_wf_recursiva (
-  p_id_proceso_wf integer,
-  p_id_estado_wf integer,
+CREATE OR REPLACE FUNCTION wf.f_gant_wf (
+  p_administrador integer,
   p_id_usuario integer,
-  p_id_padre integer,
-  p_id_anterior integer
+  p_tabla varchar,
+  p_transaccion varchar
 )
-RETURNS boolean AS
+RETURNS SETOF record AS
 $body$
 DECLARE
 
@@ -43,359 +42,151 @@ v_id_estado integer;
 v_id_proceso_ant integer;
 
 v_i integer;
-v_temp_fin varchar;
-v_registros_obs record;
-v_id_obs integer;
-v_id_anterior integer;
+p_id_proceso_wf integer;
+v_id_proceso_wf_prev integer;
+v_orden				varchar;
  
 
 BEGIN
 
 
 
-    v_nombre_funcion = 'wf.f_gant_wf_recursiva';
+    v_nombre_funcion = 'wf.f_gant_wf';
+    
+    
+     v_parametros = pxp.f_get_record(p_tabla);
+    
+    
+    /*********************************    
+ 	#TRANSACCION:  'WF_GATNREP_SEL'
+ 	#DESCRIPCION:	Consulta del diagrama gant del WF
+ 	#AUTOR:		rac	
+ 	#FECHA:		16-03-2012 17:06:17
+	***********************************/
+
+	IF(p_transaccion='WF_GATNREP_SEL')then
+    
+    
+    p_id_proceso_wf = v_parametros.id_proceso_wf;
 
 
-       --recuperamos datos del proceso wf
-       select  
-        pwf.id_proceso_wf,
-        pwf.fecha_ini,
-        pwf.nro_tramite,
-        pwf.descripcion,
-        pwf.id_estado_wf_prev,
-        pwf.id_tipo_proceso,
-        tp.codigo,
-        tp.nombre,
-        te.codigo as codigo_estado
+   --0) recperar id_proceso_wf inicial
+	 WITH RECURSIVE path_rec(id_estado_wf_prev, id_proceso_wf_prev ) AS (
+	    SELECT  
+	      pwf.id_estado_wf_prev,
+	      ewf.id_proceso_wf as id_proceso_wf_prev
+	    FROM wf.tproceso_wf pwf
+	    inner join wf.testado_wf ewf on ewf.id_estado_wf = pwf.id_estado_wf_prev 
+	    WHERE pwf.id_proceso_wf = p_id_proceso_wf
+	
+	    UNION
+	    SELECT
+	    pwf2.id_estado_wf_prev, 
+	    ewf2.id_proceso_wf as id_proceso_wf_prev
+	    FROM wf.tproceso_wf pwf2
+	    inner join path_rec  pr on pwf2.id_proceso_wf = pr.id_proceso_wf_prev
+	    inner join wf.testado_wf ewf2 on ewf2.id_estado_wf = pwf2.id_estado_wf_prev 
+	     
+	)
+    SELECT 
+      id_proceso_wf_prev 
+    into
+      v_id_proceso_wf_prev
+    FROM path_rec order by id_proceso_wf_prev limit 1 offset 0;
+   
+   
+   IF v_id_proceso_wf_prev is NULL THEN
+   
+      v_id_proceso_wf_prev = p_id_proceso_wf;
+   
+   END IF;
+   
+   
+   -- 1) Crea una tabla temporal con los datos que se utilizaran 
+
+      CREATE TEMPORARY TABLE temp_gant_wf (
+                                      id serial,
+                                      id_proceso_wf integer,
+                                      id_estado_wf integer,
+                                      tipo varchar, 
+                                      nombre VARCHAR, 
+                                      fecha_ini TIMESTAMP, 
+                                      fecha_fin TIMESTAMP, 
+                                      descripcion VARCHAR, 
+                                      id_siguiente integer,
+                                      tramite varchar,
+                                      codigo varchar,
+                                      id_funcionario integer,
+                                      funcionario text,
+                                      id_usuario INTEGER,
+                                      cuenta varchar,
+                                      id_depto integer,
+                                      depto varchar,
+                                      nombre_usuario_ai varchar,
+                                      id_padre integer,
+                                      arbol varchar,
+                                      id_obs integer,
+                                      id_anterior integer,
+                                      etapa		varchar,
+                                      estado_reg varchar,
+                                      disparador varchar
+                                     ) ON COMMIT DROP;
+    
+      --resupera parametro de ordenacion
+      if  pxp.f_existe_parametro(p_tabla, 'orden' ) then
+         v_orden = v_parametros.orden;
+      else
+         v_orden = 'defecto';
+      end if;
        
-       into
-         v_registro_proceso_wf
-       from wf.tproceso_wf pwf
-       inner join wf.testado_wf ewf on ewf.id_proceso_wf = pwf.id_proceso_wf and ewf.estado_reg = 'activo'
-       inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
-       inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pwf.id_tipo_proceso
-       where  pwf.id_proceso_wf = p_id_proceso_wf;
-       
-       if (v_registro_proceso_wf.codigo_estado in('anulado','anulada','cancelado','cancelada', 'eliminado', 'eliminada')) then
-       	return true;
-       end if;
-       
-       raise notice 'antes del insert';
-       
-       INSERT INTO      
-           temp_gant_wf (
-                    id_proceso_wf,
-                    id_estado_wf,
-                    tipo, 
-                    nombre, 
-                    fecha_ini, 
-                    fecha_fin, 
-                    descripcion, 
-                    id_siguiente,
-                    tramite,
-                    codigo,
-                    id_padre,
-                    id_anterior
-                   )
-                   VALUES(
-                   
-                    v_registro_proceso_wf.id_proceso_wf,
-                    NULL,--id_estado_wf,
-                    'proceso', 
-                    v_registro_proceso_wf.nombre, 
-                    NULL,--fecha_ini, 
-                    NULL,--fecha_fin, 
-                    COALESCE(v_registro_proceso_wf.descripcion,''), 
-                    NULL,-- id_siguiente,
-                    v_registro_proceso_wf.nro_tramite,
-                    v_registro_proceso_wf.codigo,
-                    p_id_padre,
-                    p_id_anterior
-                   ) RETURNING id into v_id_proceso;
-       
-         raise notice 'inicio ';
-       
-           v_sw = 0;
-           v_i =1;
-           v_id_anterior = v_id_proceso;
-          FOR  v_registros in (
-           	           SELECT  
-                         ewf.id_estado_wf,
-                         ewf.obs as descripcion,
-                         te.codigo,
-                         te.disparador,
-                         te.fin,
-                         ewf.fecha_reg as fecha_ini,
-                         te.nombre_estado as nombre,
-                         usu.id_usuario,
-                         usu.cuenta,
-                         fun.id_funcionario,
-                         fun.desc_funcionario1  as funcionario,
-                         depto.id_depto,
-                         depto.codigo as departamento,
-                         ewf.usuario_ai,
-                         te.etapa,
-                         te.disparador,
-                         ewf.estado_reg
-                         
-                         
-                       FROM  wf.testado_wf ewf
-                       INNER JOIN  wf.ttipo_estado te on ewf.id_tipo_estado = te.id_tipo_estado
-                       LEFT JOIN   segu.tusuario usu on usu.id_usuario = ewf.id_usuario_reg
-                       LEFT JOIN  orga.vfuncionario fun on fun.id_funcionario = ewf.id_funcionario
-                       LEFT JOIN  param.tdepto depto on depto.id_depto = ewf.id_depto
-                     
-                       WHERE 
-                          ewf.id_proceso_wf = v_registro_proceso_wf.id_proceso_wf
-                      
-                          ORDER BY ewf.fecha_reg,ewf.id_estado_wf) LOOP
-                          
-                        raise notice 'loop  v_sw %,  v_i % ',v_sw,v_i;
-       
-                     
-                      
-                     
-                     INSERT INTO      
-                     temp_gant_wf (
-                              id_proceso_wf,
-                              id_estado_wf,
-                              tipo, 
-                              nombre, 
-                              fecha_ini, 
-                              fecha_fin, 
-                              descripcion, 
-                              id_siguiente,
-                              tramite ,
-                              codigo,
-                              
-                              id_funcionario,
-                              funcionario,
-                              id_usuario,
-                              cuenta,
-                              id_depto,
-                              depto,
-                              nombre_usuario_ai,
-                              id_padre,
-                              id_anterior,
-                              etapa,
-                              estado_reg,
-                              disparador
-                             )
-                             VALUES(
-                                       
-                              NULL,
-                              v_registros.id_estado_wf,
-                              'estado', 
-                              v_registros.nombre, 
-                              v_registros.fecha_ini, 
-                              NULL,--fecha_fin, 
-                              COALESCE(v_registros.descripcion,''), 
-                              NULL,-- id_siguiente, no lo conocemos todavia
-                              v_registro_proceso_wf.nro_tramite,
-                              v_registro_proceso_wf.codigo,                              
-                              v_registros.id_funcionario,
-                              v_registros.funcionario,
-                              v_registros.id_usuario,
-                              v_registros.cuenta,
-                              v_registros.id_depto,
-                              v_registros.departamento,
-                              v_registros.usuario_ai,
-                              v_id_proceso,
-                              v_id_anterior,
-                              v_registros.etapa,
-                              v_registros.estado_reg,
-                              v_registros.disparador
-                             ) RETURNING id into v_id_estado;
-                      
-                          v_id_anterior = v_id_estado;
-                       --si es un nodo disparador buscamos almacenamos la referencia
-                       
-                         IF v_registros.disparador = 'si' THEN
-                        	v_id_almacenado [v_i] = v_registros.id_estado_wf;
-                            v_i = v_i +1;
-                            
-                         END IF;
-                     
-                     
-                   
-                        IF v_sw = 1 THEN
-                        
-                           update temp_gant_wf set
-                             id_siguiente = v_id_estado,
-                             fecha_fin =  v_registros.fecha_ini
-                            
-                           where
-                           id = v_id_proceso_ant;
-                        
-                        END IF; 
-                        
-                         --definir las fecha del proceso
-                      IF v_sw = 0 THEN
-                        v_fecha_ini_proc = v_registros.fecha_ini;
-                        v_fecha_fin_proc = v_registros.fecha_ini;
-                        v_sw = 1;
-                      ELSE
-                       v_fecha_fin_proc = v_registros.fecha_ini;
-                      END IF;
-                        
-                        
-                         --almacena variable temporales para el siguiente ciclo
-                      v_id_proceso_ant =  v_id_estado;
-                      v_temp_fin = v_registros.fin;
-                      
-                      --------------------------------------------
-                      -- registro de observaciones por estado
-                      -----------------------------------------
-                       FOR  v_registros_obs in (
-                                           SELECT  
-                                             o.id_obs,
-                                             o.id_estado_wf,
-                                             o.descripcion as descripcion,
-                                             o.titulo,
-                                             o.fecha_reg as fecha_ini,
-                                             o.fecha_fin,
-                                             o.id_usuario_reg,
-                                             usu.cuenta,
-                                             fun.id_funcionario,
-                                             fun.desc_funcionario1  as funcionario,
-                                             o.usuario_ai,
-                                             o.estado,
-                                             o.num_tramite
-                                           
-                                           FROM  wf.tobs o
-                                           INNER JOIN  orga.vfuncionario fun on fun.id_funcionario = o.id_funcionario_resp
-                                           INNER JOIN   segu.tusuario usu on usu.id_usuario = o.id_usuario_reg
-                                         
-                                           WHERE 
-                                                   o.id_estado_wf = v_registros.id_estado_wf
-                                              AND  o.estado_reg = 'activo'
-                                           ORDER BY o.fecha_reg) LOOP
-                                           
-                       
-                                INSERT INTO      
-                                           temp_gant_wf (
-                                                    id_proceso_wf,
-                                                    id_estado_wf,
-                                                    tipo, 
-                                                    nombre, 
-                                                    fecha_ini, 
-                                                    fecha_fin, 
-                                                    descripcion, 
-                                                    id_siguiente,
-                                                    tramite ,
-                                                    codigo,
-                                                    id_funcionario,
-                                                    funcionario,
-                                                    id_usuario,
-                                                    cuenta,
-                                                    id_depto,
-                                                    depto,
-                                                    nombre_usuario_ai,
-                                                    id_padre,
-                                                    arbol,
-                                                    id_anterior,
-                                                    etapa
-                                                   )
-                                                   VALUES(
-                                                             
-                                                    NULL,
-                                                    NULL,
-                                                    'obs', 
-                                                    v_registros_obs.titulo, 
-                                                    v_registros_obs.fecha_ini, 
-                                                    COALESCE(v_registros_obs.fecha_fin, now()),--fecha_fin, 
-                                                    COALESCE(v_registros_obs.descripcion,'')||' ['||v_registros_obs.estado||']', 
-                                                    0,-- id_siguiente, no lo conocemos todavia
-                                                    v_registros_obs.num_tramite,
-                                                    'obs',                              
-                                                    v_registros_obs.id_funcionario,
-                                                    v_registros_obs.funcionario,
-                                                    v_registros_obs.id_usuario_reg,
-                                                    v_registros_obs.cuenta,
-                                                    NULL,
-                                                    NULL,
-                                                    v_registros_obs.usuario_ai,
-                                                    v_id_estado,   -- el padre es el estado observado
-                                                    'close',
-                                                    v_id_estado,
-                                                    v_registros.etapa
-                                                   ) RETURNING id into v_id_obs;
-                       
-                       
-                       END LOOP;
-       
-       
-          END LOOP;
+      IF v_orden = 'defecto' then         
+        IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
+           raise exception 'Error al recuperar los datos del diagrama gant';
+        END IF;
+      ELSE
+        IF not ( wf.f_gant_wf_recursiva_dinamico(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
+          raise exception 'Error al recuperar los datos del diagrama gant';
+         END IF;
+      END IF;
           
-          raise notice 'Sale del foor';
-          
-          --si es el ultimo ciclo, le cambia el tipo al ultimo estado
-          
-         IF  v_temp_fin = 'si' THEN
-          
-              update temp_gant_wf set
-               tipo = 'estado_final',
-               id_siguiente = 0,
-               fecha_fin = NULL
-                                
-              where
-               id = v_id_proceso_ant;
-       
-         ELSE 
-           
-              update temp_gant_wf set
-               fecha_fin = now(),
-               id_siguiente = 0
-                                
-              where
-               id = v_id_proceso_ant;
-               
-               v_fecha_fin_proc = now();
          
-          END IF;
-          
-          --modifica las fecha inicial y fin del proceso
-          
-             update temp_gant_wf set
-                fecha_ini = v_fecha_ini_proc,
-                fecha_fin = v_fecha_fin_proc
-                                
-             where
-             id = v_id_proceso;
-          
-          --llamada recursica de los procesos disparados
-          
-           raise notice 'inicia recursividad';
-          
-         FOR  v_registros in (
-                       SELECT
-                          pwf.id_proceso_wf,
-                          pwf.id_estado_wf_prev
-                       FROM wf.tproceso_wf  pwf
-                       WHERE pwf.id_estado_wf_prev =ANY (v_id_almacenado)
-                       ORDER BY pwf.fecha_reg ) LOOP
-                       
-                     select
-                      id
-                     INTO
-                      v_id_anterior
-                     from  temp_gant_wf
-                     where id_estado_wf =  v_registros.id_estado_wf_prev; 
-                 --llamada recursiva
-                 
-                   raise notice 'llamada recursiva %',v_registros.id_proceso_wf ;
-                 
-                IF not ( wf.f_gant_wf_recursiva(v_registros.id_proceso_wf, v_registros.id_estado_wf_prev ,p_id_usuario, v_id_proceso, v_id_anterior)) THEN
-                
-                  raise exception 'Error al recuperar los datos del diagrama gant';
-                
-                END IF;
-          
-          END LOOP;
-          
+       raise notice 'consulta tabla temporal';   
   
-   RETURN TRUE;
+  
+  
+             FOR v_registros in (SELECT                                   
+                                  id ,
+                                  id_proceso_wf ,
+                                  id_estado_wf ,
+                                  tipo , 
+                                  nombre , 
+                                  fecha_ini , 
+                                  fecha_fin , 
+                                  descripcion , 
+                                  id_siguiente ,
+                                  tramite ,
+                                  codigo ,
+                                  COALESCE(id_funcionario,0) ,
+                                  funcionario ,
+                                  COALESCE(id_usuario,0),
+                                  cuenta ,
+                                  COALESCE(id_depto,0),
+                                  depto,
+                                  COALESCE(nombre_usuario_ai,''),
+                                  arbol,
+                                  id_padre,
+                                  id_obs,
+                                  id_anterior,
+                                  etapa,
+                                  estado_reg,
+                                  disparador
+                                FROM temp_gant_wf 
+                                order by id) LOOP
+               RETURN NEXT v_registros;
+             END LOOP;
+  
 
+END IF;
 
 EXCEPTION
 				
@@ -412,4 +203,4 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
-COST 100;
+COST 100 ROWS 1000;
