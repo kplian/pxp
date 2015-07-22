@@ -570,10 +570,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		
 		this.store.baseParams.todos_documentos = this.todos_documentos;
         this.store.baseParams.anulados = this.anulados;
+        this.store.baseParams.id_proceso_wf = this.id_proceso_wf;
         this.load({params:{
             start: 0, 
-            limit: 50,
-            id_proceso_wf: this.id_proceso_wf            
+            limit: 50           
             }});
 	},
 	
