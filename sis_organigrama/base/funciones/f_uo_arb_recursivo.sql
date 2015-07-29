@@ -70,6 +70,7 @@ v_bool varchar;
 v_bool2 varchar;
 v_nivel varchar;
 v_select_funcionarios	varchar;
+v_select_cargos			varchar;
 BEGIN
 
 
@@ -95,6 +96,8 @@ BEGIN
           else
               v_select_funcionarios = '(orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo)) as funcionarios,';
           end if;
+          
+          v_select_cargos = '(orga.f_obtener_cargos_x_uo(UNIORG.id_uo)) as cargos,';
          v_consulta := 'SELECT
                            UNIORG.id_uo,
                            UNIORG.nombre_unidad,
@@ -104,7 +107,9 @@ BEGIN
                            ESTORG.id_estructura_uo,
                            ESTORG.id_uo_padre,
                            UNIORG.estado_reg,
-                           ' || v_select_funcionarios || '
+                           ' || v_select_funcionarios ||
+                           v_select_cargos ||
+                            '
                            UNIORG.presupuesta,
                            UNIORG.correspondencia,
                            UNIORG.codigo, 
@@ -142,6 +147,7 @@ BEGIN
                         correspondencia,
                         estado_reg,
                         funcionarios,
+                        cargos,
                         resaltar,
                         id_uo_padre,
                         id_nivel_organizacional,
@@ -162,6 +168,7 @@ BEGIN
                         g_registros.correspondencia,
                         g_registros.estado_reg,
                         g_registros.funcionarios,
+                        g_registros.cargos,
                         'no',
                         g_registros.id_uo_padre,
                         g_registros.id_nivel_organizacional,
@@ -200,6 +207,7 @@ BEGIN
                         correspondencia,
                         estado_reg,
                         funcionarios,
+                        cargos,
                         resaltar,
                         id_uo_padre,
                         id_nivel_organizacional,
@@ -221,6 +229,7 @@ BEGIN
                         g_registros.correspondencia,
                         g_registros.estado_reg,
                         g_registros.funcionarios,
+                        g_registros.cargos,
                         'no',
                         g_registros.id_uo_padre,
                         g_registros.id_nivel_organizacional,
