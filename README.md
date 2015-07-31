@@ -115,8 +115,6 @@ TO UPDATE THE DATABASE ON PULL OR MERGE:
 
   pxp/utilidades/restaurar_db/restaurar_todo.py
   
-  [dance](http://cdn.vanillaforums.com/dance.gif)
-
 
 
 
