@@ -7,6 +7,11 @@ https://github.com/kplian/instalador_framework.pxp
 
 Youtube chanel (https://www.youtube.com/channel/UCSk4IfCR6swJYu3zPOEiGuw)
 
+Support forum
+(request an invitation! to rensi@kplian.com  or  jaime@kplian.com)
+
+http://foro.kplian.com/
+
 Example 
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
