@@ -13,7 +13,9 @@ CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
   par_tabla varchar = 'no_aplica'::character varying,
   par_id_tabla integer = 0,
   par_cod_tabla varchar = 'no_aplica'::character varying,
-  par_id_empresa integer = 1
+  par_id_empresa integer = 1,
+  par_saltar_inicio varchar = 'no'::character varying,
+  par_forzar_inicio varchar = 'no'::character varying
 )
 RETURNS varchar AS
 $body$
@@ -340,8 +342,12 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
    -- 6) si no existe correlativo para el periodo o gestion se crea un registro
    
       if(v_correlativo is NULL) then
-      
-      v_correlativo=0;
+         
+         if par_saltar_inicio = 'si' then
+            v_correlativo=1;
+         else
+            v_correlativo=0;
+         end if;
 
          insert into param.tcorrelativo 
          (id_documento,	 
@@ -370,7 +376,7 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
             pxp.f_iif((v_tipo_numeracion in ('tabla')),par_tabla, NULL)::varchar,
             pxp.f_iif((v_tipo_numeracion in ('tabla')),par_id_tabla::varchar, NULL)::integer
             );
-         	v_correlativo:=1;
+         	v_correlativo:= v_correlativo + 1;
       else
       
          -- 7) si  existe correlativo se actualiza la numeracion para el registro
@@ -384,13 +390,19 @@ raise notice '>> % correlativo ini %',v_where,v_correlativo;
                                           FOR UPDATE
                                           ') LOOP
              
-              	update param.tcorrelativo
-         	 	set num_siguiente=g_registros.num_actual+2,
-          		num_actual=g_registros.num_actual+1
-         		where 
-            	id_correlativo=g_registros.id_correlativo;
-            
-               v_correlativo=g_registros.num_actual+1;
+              	 
+                
+                IF par_forzar_inicio = 'si' THEN
+                     v_correlativo = 1;
+                ELSE
+                      update param.tcorrelativo
+                      set num_siguiente=g_registros.num_actual+2,
+                      num_actual=g_registros.num_actual+1
+                      where 
+                      id_correlativo=g_registros.id_correlativo;
+                  
+                      v_correlativo=g_registros.num_actual+1;
+                 END IF;
              
              END LOOP;
         
@@ -480,6 +492,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
-ALTER FUNCTION "param"."f_obtener_correlativo"(par_codigo_documento varchar, par_id integer, par_id_uo integer, par_id_depto integer, par_id_usuario integer, par_codigo_subsistema varchar, par_formato varchar, par_digitos_periodo integer, par_digitos_correlativo integer, par_tabla varchar, par_id_tabla integer, par_cod_tabla varchar, par_id_empresa integer)
-  OWNER TO postgres;
