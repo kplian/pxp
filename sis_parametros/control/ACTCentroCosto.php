@@ -133,7 +133,7 @@ class ACTCentroCosto extends ACTbase{
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto'){
 				$tip_pres = "(''2'',''3'')"; 
-				$this->objParam->addFiltro("cec.tipo_pres = ".$tip_pres);   
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
 
         $this->objParam->defecto('dir_ordenacion','asc');
@@ -160,7 +160,7 @@ class ACTCentroCosto extends ACTbase{
 		if($this->objParam->getParametro('tipo_pres')!=''){
 			if($this->objParam->getParametro('tipo_pres') == 'gasto'){
 				$tip_pres = "(''2'',''3'')"; 
-				$this->objParam->addFiltro("cec.tipo_pres = ".$tip_pres);   
+				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
             
         }
