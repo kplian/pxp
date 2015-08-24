@@ -34,6 +34,10 @@ class MODPlantilla extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('sw_monto_excento','varchar');
+		$this->captura('sw_descuento','varchar');
+        $this->captura('sw_autorizacion','varchar');
+        $this->captura('sw_codigo_control','varchar');
+        $this->captura('tipo_plantilla','varchar');
 		
 
 		
@@ -59,6 +63,10 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('nro_linea','nro_linea','numeric');
 		$this->setParametro('tipo','tipo','numeric');
 		$this->setParametro('sw_monto_excento','sw_monto_excento','varchar');
+		$this->setParametro('sw_descuento','sw_descuento','varchar');
+        $this->setParametro('sw_autorizacion','sw_autorizacion','varchar');
+        $this->setParametro('sw_codigo_control','sw_codigo_control','varchar');
+        $this->setParametro('tipo_plantilla','tipo_plantilla','varchar');
 		
 		
 
@@ -85,6 +93,10 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('nro_linea','nro_linea','numeric');
 		$this->setParametro('tipo','tipo','numeric');
 		$this->setParametro('sw_monto_excento','sw_monto_excento','varchar');
+		$this->setParametro('sw_descuento','sw_descuento','varchar');
+        $this->setParametro('sw_autorizacion','sw_autorizacion','varchar');
+        $this->setParametro('sw_codigo_control','sw_codigo_control','varchar');
+        $this->setParametro('tipo_plantilla','tipo_plantilla','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

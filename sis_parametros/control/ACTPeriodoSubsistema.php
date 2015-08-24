@@ -16,6 +16,10 @@ class ACTPeriodoSubsistema extends ACTbase {
 			$this->objParam->addFiltro("pesu.id_periodo = ".$this->objParam->getParametro('id_periodo'));	
 		}
 		
+		if($this->objParam->getParametro('id_gestion')!=''){
+			$this->objParam->addFiltro("peri.id_gestion = ".$this->objParam->getParametro('id_gestion'));	
+		}
+		
 		if($this->objParam->getParametro('codSist')!=''){
 			$this->objParam->addFiltro("sis.codigo = ''".$this->objParam->getParametro('codSist')."''");	
 		}
