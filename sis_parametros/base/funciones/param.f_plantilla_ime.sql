@@ -48,6 +48,11 @@ BEGIN
 	if(p_transaccion='PM_PLT_INS')then
 					
         begin
+           
+           if v_parametros.sw_ic = 'si' and v_parametros.sw_monto_excento = 'no' then
+            raise exception 'Si tenemos IC es necesario habilitar el Excento';
+           end if;
+        
         	--Sentencia de la insercion
         	insert into param.tplantilla(
 			estado_reg,
@@ -64,7 +69,9 @@ BEGIN
             sw_descuento ,
             sw_autorizacion,
             sw_codigo_control,
-            tipo_plantilla
+            tipo_plantilla,
+            sw_nro_dui,
+            sw_ic
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -80,7 +87,9 @@ BEGIN
             v_parametros.sw_descuento ,
             v_parametros.sw_autorizacion,
             v_parametros.sw_codigo_control,
-            v_parametros.tipo_plantilla
+            v_parametros.tipo_plantilla,
+            v_parametros.sw_nro_dui,
+            v_parametros.sw_ic
 							
 			)RETURNING id_plantilla into v_id_plantilla;
 			
@@ -103,6 +112,11 @@ BEGIN
 	elsif(p_transaccion='PM_PLT_MOD')then
 
 		begin
+        
+        
+            if v_parametros.sw_ic = 'si' and v_parametros.sw_monto_excento = 'no' then
+            raise exception 'Si tenemos IC es necesario habilitar el Excento';
+           end if;
 			--Sentencia de la modificacion
 			update param.tplantilla set
 			desc_plantilla = v_parametros.desc_plantilla,
@@ -116,7 +130,9 @@ BEGIN
             sw_descuento=v_parametros.sw_descuento,
             sw_autorizacion=v_parametros.sw_autorizacion,
             sw_codigo_control=v_parametros.sw_codigo_control,
-            tipo_plantilla=v_parametros.tipo_plantilla
+            tipo_plantilla=v_parametros.tipo_plantilla, 
+            sw_nro_dui = v_parametros.sw_nro_dui,
+            sw_ic = v_parametros.sw_ic
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta

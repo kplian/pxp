@@ -17,12 +17,12 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.DeptoUsuario.superclass.constructor.call(this,config);
 		this.bloquearMenus();
 		this.init();
-		 if(Phx.CP.getPagina(this.idContenedorPadre)){
+		if(Phx.CP.getPagina(this.idContenedorPadre)){
       	 var dataMaestro=Phx.CP.getPagina(this.idContenedorPadre).getSelectedData();
 	 	 if(dataMaestro){ 
 	 	 	this.onEnablePanel(this,dataMaestro)
 	 	 }
-	  }
+	    }
 	  
 	  this.iniciarEventos();
 	  
@@ -286,8 +286,7 @@ Phx.vista.DeptoUsuario=Ext.extend(Phx.gridInterfaz,{
 
 	}
 	
-	}
-)
+})
 </script>
 		
 		

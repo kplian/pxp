@@ -47,51 +47,80 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        
+        {
+            config:{
+                name: 'sw_tesoro',
+                fieldLabel: 'Sw Tesoro',
+                qtip: 'Se admite en documentos de tesoreria',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_tesoro',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
 		{
-			config:{
-				name: 'sw_tesoro',
-				fieldLabel: 'Sw Tesoro',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:2
-			},
-			type:'TextField',
-			filters:{pfiltro:'plt.sw_tesoro',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
-		{
-			config:{
-				name: 'sw_compro',
-				fieldLabel: 'Sw Compro',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:2
-			},
-			type:'TextField',
-			filters:{pfiltro:'plt.sw_compro',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
+            config:{
+                name: 'sw_compro',
+                fieldLabel: 'Sw Compro',
+                qtip: 'Se admite en documentos de adquisiciones',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_compro',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+        
         {
             config:{
                 name: 'sw_monto_excento',
-                fieldLabel: 'Sw Excento',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-                maxLength:2
+                fieldLabel: 'Excento',
+                qtip: 'El documento admite monto excento',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
             },
-            type:'TextField',
-            filters:{pfiltro:'plt.sw_monto_excento',type:'string'},
+            type:'ComboBox',
             id_grupo:1,
+            filters:{   pfiltro:'plt.sw_monto_excento',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
             grid:true,
+            egrid: true,
             form:true
-        },
+       },
         
         {
             config:{
@@ -160,6 +189,56 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
             type:'ComboBox',
             id_grupo:1,
             filters:{   pfiltro:'plt.sw_codigo_control',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+        
+        {
+            config:{
+                name: 'sw_ic',
+                fieldLabel: 'ICE',
+                qtip: 'Impuesto ICE , si esta habilitado es necesario habilitar el monto excento',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_ic',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+        
+        {
+            config:{
+                name: 'sw_nro_dui',
+                fieldLabel: 'Nro DUI',
+                qtip: 'Para polizas de importación',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_nro_dui',
                         type: 'list',
                          options: ['si','no']  
                     },
@@ -321,7 +400,8 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},'sw_monto_excento',
-		 'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla'
+		'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla',
+		'sw_nro_dui','sw_ic'
 		
 	],
 	sortInfo:{
