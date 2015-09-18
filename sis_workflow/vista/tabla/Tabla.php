@@ -396,7 +396,7 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'menu_codigo',
 				fieldLabel: 'Código',
-				allowBlank: false,
+				allowBlank: true,
 				anchor: '100%',
 				gwidth: 100,
 				maxLength:25

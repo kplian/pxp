@@ -95,14 +95,33 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	 	
 	 },
 	 
+	 cmpCheckModo : new Ext.form.Checkbox({
+	 	        name: 'modo',
+	 	        grupo:[0,1,2,3],
+	 	        qtip: 'Tiqueado solo muestra los registros con documentos disponibles',
+	 	        text: 'Exigir',
+                allowBlank: true,
+                anchor: '80%',
+                style : {height:'37px', width:'37px'},
+                gwidth: 65
+	 	}),
+	 	
+	 
+	
 	 initconstructor:function(config){		
 		
 		 //declaracion de eventos
         this.addEvents('finalizarsol');
         this.addEvents('sigestado');
         this.maestro = config;
-        
-		
+        this.initButtons = [{  
+        	style: {
+                'marginLeft': '10px',
+                'marginRight': '10px',
+                'font-size': '30px'
+                
+            },xtype: 'label', grupo:[0,1,2,3], text: ' Modo Consulta: '},this.cmpCheckModo];
+          
 		this.anulados = 'no';
         this.tbarItems = ['-',
            {
@@ -126,6 +145,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
            
            
            var me = this;
+           
            this.Atributos = [
 		{
 			//configuracion del componente
@@ -500,7 +520,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 form:false
         }
 	];
-	
+	    
+	    
+	   
     	//llama al constructor de la clase padre
 		Phx.vista.DocumentoWf.superclass.constructor.call(this,config);
 		this.esperarEventos = false; 
@@ -515,6 +537,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 				handler : this.onDocProceso,
 				tooltip : '<b>Mostrar +/- Documentos</b> Aplica o quita el filtro de documentos del trámite'
 			});
+			
 		if(this.todos_documentos == 'no'){
 		   this.getBoton('btnDocProceso').toggle(true,true)	;
 		}
@@ -581,11 +604,9 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	            }
 	        );
 	        
-	        this.getBoton('btnDocProceso').hide();
-        	    	
-        	
-        }
-          
+	    }
+	    
+	    
         this.init(); 
         
         
@@ -600,6 +621,22 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         }
         
        this.finCons = true;
+       
+       
+       if(this.modoConsulta == 'si'){
+       	 this.cmpCheckModo.setValue(true);
+       	 this.cmpCheckModo.disable();
+       }
+       
+       this.cmpCheckModo.on('check',function(cmp,checked){
+       	
+	       	 this.modoConsulta = checked?'si':'no';
+	       	 this.actualizarBasicos();
+       	
+       },this);
+      
+          	
+          
     },
 	 onDocProceso: function(b,e){
 	 	  
@@ -642,6 +679,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             start: 0, 
             limit: 50           
             }});
+        
+       if(this.maestro.esconder_toogle == 'si'){  
+             this.getBoton('btnDocProceso').hide();
+       }     
 	},
 	
 	actualizarSegunTab: function(name, indice){
