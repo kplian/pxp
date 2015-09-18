@@ -588,7 +588,7 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
     	
     	this.mostrarGrupo(3);
     	this.Cmp.menu_nombre.allowBlank = false;
-    	this.Cmp.menu_codigo.allowBlank = false;
+    	//this.Cmp.menu_codigo.allowBlank = false;
     	this.Cmp.menu_icono.allowBlank = true;  
     },
     habilitaCamposDetalle : function (tipo_detalle) {
