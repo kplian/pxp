@@ -107,20 +107,21 @@ BEGIN
          (v_res*tc.oficial) as oficial,
          (v_res*tc.compra) as compra,
          (v_res*tc.venta)as venta,
-         (v_res*p_tipo_cambio_custom) as custom 
+         0::numeric as custom 
         into 
           v_registro
         from param.ttipo_cambio tc
         where   tc.id_moneda=v_id_moneda_1 and
                 tc.fecha=p_fecha;
         
+        v_registro.custom = v_res*p_tipo_cambio_custom;
                 
         v_id_moneda_2=v_id_moneda_1;
     else
         raise exception 'Ha ocurrido un error al realizar la conversion de monedas';
     end if;
     
-    if(v_registro.tipo_cambio is null)then
+    if(v_registro.tipo_cambio is null and  v_tipo != 'CUS')then
         select m.moneda
         into v_moneda
         from param.tmoneda m

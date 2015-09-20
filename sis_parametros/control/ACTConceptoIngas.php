@@ -68,6 +68,10 @@ class ACTConceptoIngas extends ACTbase{
 		 if($this->objParam->getParametro('requiere_ot')!=''){
               $this->objParam->addFiltro("conig.requiere_ot =''".$this->objParam->getParametro('requiere_ot')."''");    
          }
+		 
+		 if($this->objParam->getParametro('id_concepto_ingas')!=''){
+              $this->objParam->addFiltro("conig.id_concepto_ingas =''".$this->objParam->getParametro('id_concepto_ingas')."''");    
+         }
          
         
         

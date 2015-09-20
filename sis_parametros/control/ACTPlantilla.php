@@ -28,6 +28,10 @@ class ACTPlantilla extends ACTbase{
         if($this->objParam->getParametro('id_plantilla')!=''){
             $this->objParam->addFiltro("id_plantilla=".$this->objParam->getParametro('id_plantilla'));  
         }
+		
+		if($this->objParam->getParametro('tipo_plantilla')!=''){
+            $this->objParam->addFiltro("plt.tipo_plantilla=''".$this->objParam->getParametro('tipo_plantilla')."''");  
+        }
         
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

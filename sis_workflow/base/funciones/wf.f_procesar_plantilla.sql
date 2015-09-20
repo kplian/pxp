@@ -4,7 +4,9 @@ CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_plantilla text,
   p_id_tipo_estado_actual integer,
   p_id_estado_anterior integer,
-  p_obs text = ''::text
+  p_obs text = ''::text,
+  p_id_funcionario_actual integer = NULL::integer,
+  p_id_depto_actual integer = NULL::integer
 )
 RETURNS text AS
 $body$
@@ -57,6 +59,8 @@ v_i     integer;
 
 v_template_evaluado    varchar;
 v_validar_nulo boolean;
+v_FUNCIONARIO_ACTUAL  varchar;
+v_DEPTO_ACTUAL 	 varchar;
  
 BEGIN
    
@@ -75,6 +79,8 @@ BEGIN
   ESTADO_ACTUAL
   FUNCIONARIO_PREVIO
   DEPTO_PREVIO 
+  DEPTO_ACTUAL
+  FUNCIONARIO_ACTUAL
   
  
   
@@ -164,6 +170,8 @@ BEGIN
                   CODIGO_ACTUAL
                   FUNCIONARIO_PREVIO
                   DEPTO_PREVIO
+                  DEPTO_ACTUAL
+                  FUNCIONARIO_ACTUAL
                   
                   
                   
@@ -203,6 +211,20 @@ BEGIN
                   left join param.tdepto      d on d.id_depto = ew.id_depto
                   where ew.id_estado_wf = p_id_estado_anterior;
                   
+                  
+                  select                     
+                    f.desc_funcionario1                    
+                  into                   
+                    v_FUNCIONARIO_ACTUAL                    
+                  from  orga.vfuncionario f
+                  where f.id_funcionario = p_id_funcionario_actual;
+                  
+                  select                     
+                    d.nombre              
+                  into                   
+                    v_DEPTO_ACTUAL                    
+                  from  param.tdepto d
+                  where d.id_depto = p_id_depto_actual;
                   
                   select 
                   te.nombre_estado,
@@ -288,6 +310,8 @@ BEGIN
               v_template_evaluado = replace(v_template_evaluado, '{OBS}',v_OBS);
               v_template_evaluado = replace(v_template_evaluado, '{FUNCIONARIO_PREVIO}', COALESCE(v_FUNCIONARIO_PREVIO,''));
               v_template_evaluado = replace(v_template_evaluado, '{DEPTO_PREVIO}',COALESCE(v_DEPTO_PREVIO,''));
+              v_template_evaluado = replace(v_template_evaluado, '{FUNCIONARIO_ACTUAL}', COALESCE(v_FUNCIONARIO_ACTUAL,''));
+              v_template_evaluado = replace(v_template_evaluado, '{DEPTO_ACTUAL}',COALESCE(v_DEPTO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{PROCESO_MACRO}',COALESCE(v_PROCESO_MACRO,''));
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ACTUAL}',COALESCE(v_ESTADO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ANTERIOR}',COALESCE(v_CODIGO_ANTERIOR,''));

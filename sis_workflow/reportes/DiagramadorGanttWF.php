@@ -183,15 +183,33 @@ class DiagramadorGanttWF{
 
 
         $diferencia =  $fechaInicio->diff($fechaFin);
+		        
+         if ($diferencia->format('%m') >=  24){
+
+                 //escala de meses 
+                 $graph->ShowHeaders(GANTT_HYEAR );
+                 $sw =1;
+                 $fechaFin=$fechaFin->add(new DateInterval('PT9000H'));
+			
+         }
+        
+		 elseif ($diferencia->format('%m') >=  7){
+			 
+                 //escala de meses 
+                 $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH );
+                 $sw =1;
+                 $fechaFin=$fechaFin->add(new DateInterval('PT29000H'));
+
+         }
 
 
-        if ($diferencia->format('%m') >  6 ){
+	     elseif ($diferencia->format('%m') >  6 ){
 
                  //escala de meses 
                  $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH );
                  $graph->scale->week->SetStyle(HOURSTYLE_HM24);
                  $sw =1;
-                  $fechaFin=$fechaFin->add(new DateInterval('PT4000H'));
+                 $fechaFin=$fechaFin->add(new DateInterval('PT6000H'));
 
          }
          elseif ($diferencia->format('%m') >  1){
@@ -222,7 +240,7 @@ class DiagramadorGanttWF{
            $graph->ShowHeaders( GANTT_HDAY | GANTT_HHOUR ); 
             $graph->scale->week->SetStyle(HOURSTYLE_HM24);
             $fechaFin=$fechaFin->add(new DateInterval('PT250H'));
-            $sw =5;      
+            $sw = 5;      
         }
 
         $graph->scale->actinfo->SetColTitles(

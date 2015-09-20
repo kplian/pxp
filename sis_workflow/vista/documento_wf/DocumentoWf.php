@@ -10,7 +10,11 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
-     
+     lblDocProcCf:  'Solo del Proceso',
+     lblDocProcSf:  'Todo del Trámite',
+     todos_documentos: 'si',
+     modoConsulta: 'no',
+     pagos_relacionados: 'no', //solo para el caso de abrir ersta interface desde el plan de pagos
      //soporte para cuatro categorias
      bsaveGroups:[0,1,2,3],
      bnewGroups:[0,1,2,3],
@@ -24,6 +28,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	 //checkGrid: true,
 	 
 	 constructor: function(config){
+	 	
+	 	Ext.apply(this,config);
 	 	this.esperarEventos = true;
 	 	//busca  la configuracion de la interface, si necesita documentos fisicos, si necesita modifica, insercion pestañas
 	 	Phx.CP.loadingShow();
@@ -37,6 +43,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             timeout:this.timeout,
             scope:this
         });
+        
+        
 	 	
 	 	
 	 },
@@ -50,61 +58,72 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	 	 }
 	 	 
 	 	 this.arrayDefaultColumHidden = ['fecha_reg','fecha_mod','usr_reg','usr_mod','usr_upload','fecha_upload','estado_reg','fecha_reg'];
-			
+			 
+	 	 if(this.modoConsulta == 'no'){
 	 	 
-	 	 if(reg.ROOT.datos.sw_tiene_fisico == 'no'){
-	 	 	  this.arrayDefaultColumHidden.push('chequeado_fisico');
-	 	 	  this.bedit = false;
-	 	 }  
-	 	 else{
-	 	 	 this.bedit = true;
+		 	if(reg.ROOT.datos.sw_tiene_fisico == 'no'){
+		 	 	  this.arrayDefaultColumHidden.push('chequeado_fisico');
+		 	 	  this.bedit = false;
+		 	 }  
+		 	 else{
+		 	 	 this.bedit = true;
+		 	 }
+		 	 
+		 	 if(reg.ROOT.datos.sw_tiene_insertar == 'no'){
+		 	 	 this.bnew = false;
+		 	 }  
+		 	 else{
+		 	 	 this.bnew = true;
+		 	 	 this.documentos_insertables = reg.ROOT.datos.id_tipo_documentos;
+		 	 }
+		 	 
+		 	 if(reg.ROOT.datos.sw_tiene_modificar == 'no'){
+		 	 	 this.arrayDefaultColumHidden.push('modificar')
+		 	 }
+		 	 
 	 	 }
-	 	 
-	 	 if(reg.ROOT.datos.sw_tiene_insertar == 'no'){
+	 	 else{
 	 	 	 this.bnew = false;
-	 	 }  
-	 	 else{
-	 	 	 this.bnew = true;
-	 	 	 this.documentos_insertables = reg.ROOT.datos.id_tipo_documentos;
-	 	 }
-	 	 
-	 	 if(reg.ROOT.datos.sw_tiene_modificar == 'no'){
-	 	 	 this.arrayDefaultColumHidden.push('modificar')
+	 	 	 this.bedit = false;
+	 	 	 this.arrayDefaultColumHidden.push('chequeado_fisico');
+	 	 	 this.arrayDefaultColumHidden.push('modificar');
+	 	 	 this.arrayDefaultColumHidden.push('upload');
+		 	 
 	 	 }
 		
 		this.initconstructor(resp.argument.config);
 	 	
 	 },
 	 
+	 cmpCheckModo : new Ext.form.Checkbox({
+	 	        name: 'modo',
+	 	        grupo:[0,1,2,3],
+	 	        qtip: 'Tiqueado solo muestra los registros con documentos disponibles',
+	 	        text: 'Exigir',
+                allowBlank: true,
+                anchor: '80%',
+                style : {height:'37px', width:'37px'},
+                gwidth: 65
+	 	}),
+	 	
+	 
+	
 	 initconstructor:function(config){		
 		
 		 //declaracion de eventos
         this.addEvents('finalizarsol');
         this.addEvents('sigestado');
         this.maestro = config;
-        
-		this.todos_documentos = 'si';
-		this.anulados = 'no';
-        this.tbarItems = ['-',{
-            text: 'Mostrar solo los documentos del proceso actual',
-            enableToggle: true,
-            pressed: false,
-            toggleHandler: function(btn, pressed) {
-               
-                if(pressed){
-                	
-                    this.todos_documentos = 'no';
-                    this.desBotonesTodo();
-                }
-                else{
-                   this.todos_documentos = 'si' 
-                }
+        this.initButtons = [{  
+        	style: {
+                'marginLeft': '10px',
+                'marginRight': '10px',
+                'font-size': '30px'
                 
-                this.store.baseParams.todos_documentos = this.todos_documentos;
-                this.onButtonAct();
-             },
-            scope: this
-           },
+            },xtype: 'label', grupo:[0,1,2,3], text: ' Modo Consulta: '},this.cmpCheckModo];
+          
+		this.anulados = 'no';
+        this.tbarItems = ['-',
            {
             text: 'Mostrar los documentos anulados',
             enableToggle: true,
@@ -113,7 +132,6 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                
                 if(pressed){
                 	this.anulados = 'si';
-                    this.desBotonesTodo();
                 }
                 else{
                    this.anulados = 'no' 
@@ -127,6 +145,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
            
            
            var me = this;
+           
            this.Atributos = [
 		{
 			//configuracion del componente
@@ -501,10 +520,30 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 form:false
         }
 	];
-	
+	    
+	    
+	   
     	//llama al constructor de la clase padre
 		Phx.vista.DocumentoWf.superclass.constructor.call(this,config);
-		this.esperarEventos = false;        
+		this.esperarEventos = false; 
+		
+		//boton filtro del proceso
+		this.addButton('btnDocProceso', {
+				text : this.lblDocProcCf,
+				grupo:[0,1,2,3],
+				iconCls : 'bend',
+				disabled : false,
+				enableToggle : true,
+				handler : this.onDocProceso,
+				tooltip : '<b>Mostrar +/- Documentos</b> Aplica o quita el filtro de documentos del trámite'
+			});
+			
+		if(this.todos_documentos == 'no'){
+		   this.getBoton('btnDocProceso').toggle(true,true)	;
+		}
+			
+		this.cambiarIconoDocPro(); 
+               
 
         //this.grid.addListener('celldblclick', this.oncelldblclick, this);
         this.grid.addListener('cellclick', this.oncellclick,this);
@@ -551,8 +590,26 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         	    	
         	
         }
-          
+        
+        if(config.tipo === 'plan_pago'){
+        	this.tbar.add('->');        	
+        	this.addButton('btnPagoRel',
+	            {
+	                text: 'Pagos Relacionados',
+	                grupo:[0,1,2,3], 
+	                iconCls: 'binfo',
+	                disabled: false,
+	                handler: this.loadPagosRelacionados,
+	                tooltip: '<b>Pagos Relacionados</b><br/>Abre una venta con pagos similares o relacionados.'
+	            }
+	        );
+	        
+	    }
+	    
+	    
         this.init(); 
+        
+        
                 
         cm = this.grid.getColumnModel();       
         if(this.gruposBarraTareas && this.gruposBarraTareas.length == 0){
@@ -564,10 +621,57 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         }
         
        this.finCons = true;
+       
+       
+       if(this.modoConsulta == 'si'){
+       	 this.cmpCheckModo.setValue(true);
+       	 this.cmpCheckModo.disable();
+       }
+       
+       this.cmpCheckModo.on('check',function(cmp,checked){
+       	
+	       	 this.modoConsulta = checked?'si':'no';
+	       	 this.actualizarBasicos();
+       	
+       },this);
+      
+          	
+          
     },
+	 onDocProceso: function(b,e){
+	 	  
+	 	  
+	 	  if (this.todos_documentos == 'si'){
+	 	  	 this.todos_documentos = 'no';
+	 	  }
+	 	  else{
+	 	  	 this.todos_documentos = 'si' 
+	 	  }
+	 	  this.cambiarIconoDocPro();
+	 	  this.store.baseParams.todos_documentos = this.todos_documentos;
+          this.onButtonAct();
+	 	  
+	 	
+	 },
+	
+	cambiarIconoDocPro: function(){
+		var btnPro = this.getBoton('btnDocProceso');
+		if(this.todos_documentos == 'si'){
+		    btnPro.setIconClass('bdocuments');
+		    btnPro.setText(this.lblDocProcSf);
+			//btnSwitchEstado.setTooltip('<b>Cerrar Periodo</b>');
+		}
+		else{
+			
+			btnPro.setIconClass('bend');
+			btnPro.setText(this.lblDocProcCf) ;
+			//btnSwitchEstado.setTooltip('<b>Abrir Periodo</b>');
+		}
+		
+	},
 	
 	actualizarBasicos:function(){
-		
+		this.store.baseParams.modoConsulta = this.modoConsulta;
 		this.store.baseParams.todos_documentos = this.todos_documentos;
         this.store.baseParams.anulados = this.anulados;
         this.store.baseParams.id_proceso_wf = this.id_proceso_wf;
@@ -575,6 +679,10 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
             start: 0, 
             limit: 50           
             }});
+        
+       if(this.maestro.esconder_toogle == 'si'){  
+             this.getBoton('btnDocProceso').hide();
+       }     
 	},
 	
 	actualizarSegunTab: function(name, indice){
@@ -600,17 +708,20 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 							'estado_reg','fecha_reg'],
 
     
-    
 	SubirArchivo : function(rec)
     {                   
-        
-        Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/SubirArchivoWf.php',
-        'Subir ' + rec.data.nombre_tipo_documento,
-        {
-            modal:true,
-            width:450,
-            height:150
-        },rec.data,this.idContenedor,'SubirArchivoWf')
+        if(this.modoConsulta =='no'){
+        	Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/SubirArchivoWf.php',
+	        'Subir ' + rec.data.nombre_tipo_documento,
+	        {
+	            modal:true,
+	            width:450,
+	            height:150
+	        },rec.data,this.idContenedor,'SubirArchivoWf');
+	   }
+	   else{
+	   	  alert('en modo consulta no peude subir archivos');
+	   }
     },
 	
 	oncellclick : function(grid, rowIndex, columnIndex, e) {
@@ -775,12 +886,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 		}
     },
     
-    desBotonesTodo:function(){
-          
-          //this.getBoton('btnUpload').disable();
-          //this.getBoton('edit').disable();
-          
-    },
+   
     preparaMenu:function(tb){
         Phx.vista.DocumentoWf.superclass.preparaMenu.call(this,tb)
         var data = this.getSelectedData();
@@ -877,6 +983,19 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         this.Cmp.id_proceso_wf.setValue(this.id_proceso_wf);
         Phx.vista.DocumentoWf.superclass.loadValoresIniciales.call(this);
         
+    },
+    
+     loadPagosRelacionados:  function() {
+            Phx.CP.loadWindows('../../../sis_tesoreria/vista/plan_pago/RepFilPlanPago.php',
+                    'Pagos similares',
+                    {
+                        width:'90%',
+                        height:'90%'
+                    },
+                    this.tmp,
+                    this.idContenedor,
+                    'RepFilPlanPago'
+        )
     },
     
       

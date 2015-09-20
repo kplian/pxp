@@ -79,6 +79,7 @@ pm_criterio_filtro varchar;
 v_id integer;
 v_select_funcionarios	varchar;
 v_activos		varchar;
+v_select_cargos		varchar;
 
 BEGIN
 
@@ -115,8 +116,8 @@ raise notice '00000  RH_INIUOARB_SEL=%',p_transaccion;
     	v_activos = 'si';    	
     	v_select_funcionarios = '(orga.f_obtener_funcionarios_x_uo(UNIORG.id_uo)) as funcionarios,';
     end if;
-    
-raise notice '%',pm_criterio_filtro;
+    v_select_cargos = '(orga.f_obtener_cargos_x_uo(UNIORG.id_uo)) as cargos,';
+--raise exception '%',pm_criterio_filtro;
 	/*********************************    
  	#TRANSACCION:  'RH_INIUOARB_SEL'
  	#DESCRIPCION:	Filtro en organigrama
@@ -142,6 +143,7 @@ raise notice '11111111';
                                   "correspondencia" VARCHAR,
                                   estado_reg varchar,
                                   funcionarios varchar,
+                                  cargos VARCHAR[],
                                   resaltar varchar,
                                   id_uo_padre integer,
                                   id_nivel_organizacional integer,
@@ -163,6 +165,7 @@ raise notice '11111111';
                            ESTORG.id_uo_padre,
                            UNIORG.estado_reg,'
                            || v_select_funcionarios ||
+                            v_select_cargos ||
                            'UNIORG.presupuesta,
                            UNIORG.correspondencia,
                            UNIORG.codigo, 
@@ -175,9 +178,9 @@ raise notice '11111111';
                            ON UNIORG.id_uo = ESTORG.id_uo_hijo
                            INNER JOIN orga.tnivel_organizacional nivorg
                            	on nivorg.id_nivel_organizacional = UNIORG.id_nivel_organizacional
-                           WHERE UNIORG.estado_reg=''activo''  ORDER BY  UNIORG.id_uo asc) AS ORG WHERE  (codigo  ilike ''%'||pm_criterio_filtro||'%''  or funcionarios ilike ''%'||pm_criterio_filtro||'%'' or nombre_cargo ilike ''%'||pm_criterio_filtro||'%'' )  ';
+                           WHERE UNIORG.estado_reg=''activo''  ORDER BY  UNIORG.id_uo asc) AS ORG WHERE  (codigo  ilike ''%'||pm_criterio_filtro||'%''  or funcionarios ilike ''%'||pm_criterio_filtro||'%'' or nombre_cargo ilike ''%'||pm_criterio_filtro||'%'' or '''||pm_criterio_filtro||''' = any(cargos))  ';
                            
-                        
+          --raise exception '%',v_consulta;              
    
      --    1) FOR Lista los registros en la t_uotabla original que cumplen con el filtro 
 raise notice '2222222222';
@@ -238,6 +241,7 @@ raise notice '2222222222';
                         correspondencia,
                         estado_reg,
                         funcionarios,
+                        cargos,
                         resaltar,
                         id_uo_padre,
                         id_nivel_organizacional,
@@ -258,6 +262,7 @@ raise notice '2222222222';
                         g_registros.correspondencia,
                         g_registros.estado_reg,
                         g_registros.funcionarios,
+                        g_registros.cargos,
                         'si', --RESALTA LOS REGISTRO QUE COINCIDEN CON EL FILTRO DE LA BUSQUEDA
                         g_registros.id_uo_padre,
                         g_registros.id_nivel_organizacional,

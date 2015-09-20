@@ -11,7 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
-
+    tipo: 'Depto',
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
@@ -21,8 +21,10 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		
 		//this.store.baseParams.id_depto=this.getComponente('id_depto').getValue();
+		if(this.tipo == 'Depto'){
+			this.load({params:{start:0, limit:50}})
+		}
 		
-		this.load({params:{start:0, limit:50}})
 	},
 		 /*east:{
 		  url:'../../../sis_parametros/vista/depto_usuario/DeptoUsuario.php',
@@ -72,6 +74,12 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
           title:'Depto - Cuenta Bancaria', 
           height:'50%',
           cls:'DeptoCuentaBancaria'
+         },
+		 {
+          url:'../../../sis_parametros/vista/depto_depto/DeptoDepto.php',
+          title:'Depto Relacionados', 
+          height:'50%',
+          cls:'DeptoDepto'
          }]	,
 	Atributos:[
 		{
@@ -125,8 +133,9 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
    			//type:'TrigguerCombo',
    			type:'ComboBox',
    			id_grupo:0,
+   			bottom_filter: true,
    			filters:{	
-   				        pfiltro:'nombre',
+   				        pfiltro:'SUBSIS.nombre',
    						type:'string'
    					},
    		   
@@ -145,6 +154,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.modulo',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},
@@ -176,6 +186,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.codigo',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},
@@ -191,6 +202,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.nombre',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},
@@ -206,6 +218,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.nombre_corto',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},

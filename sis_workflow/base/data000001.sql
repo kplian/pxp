@@ -613,3 +613,5 @@ select pxp.f_insert_testructura_gui ('CATDOC', 'WF');
 select pxp.f_insert_tgui ('Observaciones', 'Observaciones del WF', 'OBSFUN', 'si', 106, 'sis_workflow/vista/obs/ObsFuncionario.php', 1, '', 'ObsFuncionario', 'PXP');
 select pxp.f_insert_testructura_gui ('OBSFUN', 'SISTEMA');
 /***********************************F-DAT-RAC-WF-0-13/0/2015*****************************************/
+
+
