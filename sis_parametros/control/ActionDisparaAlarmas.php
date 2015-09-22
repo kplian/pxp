@@ -135,7 +135,7 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 						    }	
 						}
 						
-						$correo->setAsunto(ucwords($d['tipo']).' '.$d['titulo_correo'].' '.$d['obs']);
+						$correo->setAsunto($d['titulo_correo'].' '.$d['obs']);
 			            $correo->setMensaje($d['descripcion']);
 						$correo->setTitulo($d['titulo_correo']);
 						
