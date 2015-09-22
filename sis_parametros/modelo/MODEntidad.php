@@ -20,9 +20,11 @@ class MODEntidad extends MODbase{
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
-		$this->captura('id_entidad','int4');
-		$this->captura('tipo_venta_producto','varchar');
+		$this->captura('id_entidad','int4');		
 		$this->captura('nit','varchar');
+        $this->captura('tipo_venta_producto','varchar');
+        $this->captura('estados_comprobante_venta','varchar');
+        $this->captura('estados_anulacion_venta','varchar');            
 		$this->captura('estado_reg','varchar');
 		$this->captura('nombre','varchar');
 		$this->captura('id_usuario_ai','int4');
@@ -50,6 +52,8 @@ class MODEntidad extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('tipo_venta_producto','tipo_venta_producto','varchar');
+        $this->setParametro('estados_comprobante_venta','estados_comprobante_venta','varchar');
+        $this->setParametro('estados_anulacion_venta','estados_anulacion_venta','varchar');
 		$this->setParametro('nit','nit','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('nombre','nombre','varchar');
@@ -70,7 +74,9 @@ class MODEntidad extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_entidad','id_entidad','int4');
-		$this->setParametro('tipo_venta_producto','tipo_venta_producto','varchar');
+        $this->setParametro('tipo_venta_producto','tipo_venta_producto','varchar');
+		$this->setParametro('estados_comprobante_venta','estados_comprobante_venta','varchar');
+        $this->setParametro('estados_anulacion_venta','estados_anulacion_venta','varchar');
 		$this->setParametro('nit','nit','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('nombre','nombre','varchar');

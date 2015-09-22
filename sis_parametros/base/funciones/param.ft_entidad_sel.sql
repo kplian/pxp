@@ -42,8 +42,10 @@ BEGIN
     		--Sentencia de la consulta
 			v_consulta:='select
 						ent.id_entidad,
-						ent.tipo_venta_producto,
 						ent.nit,
+						ent.tipo_venta_producto,
+						ent.estados_comprobante_venta,
+						ent.estados_anulacion_venta,
 						ent.estado_reg,
 						ent.nombre,
 						ent.id_usuario_ai,

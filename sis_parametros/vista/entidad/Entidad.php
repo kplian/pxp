@@ -61,13 +61,11 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-		
-		
 		{
-            config:{
+		    config:{
                 name: 'tipo_venta_producto',
                 fieldLabel: 'Integrar ventas con almacenes',
-                allowBlank: false,
+                allowBlank: true,
                 anchor: '50%',
                 gwidth: 200,
                 triggerAction: 'all',
@@ -81,6 +79,42 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:true
         },
+		
+		{
+            config:{
+                name: 'estados_comprobante_venta',
+                fieldLabel: 'Estados Comprobante Venta',
+                qtip:'Estados en los que se generara el comprobante de venta automaticamente(codigos separador por ,)',
+                allowBlank: true,
+                allowBlank: false,
+                anchor: '50%',
+                gwidth: 150,
+                maxLength:20
+            },
+                type:'TextField',                
+                id_grupo:1,
+                grid:true,
+                form:true
+        },
+        
+        {
+            config:{
+                name: 'estados_anulacion_venta',
+                fieldLabel: 'Estados Anulacion Venta',
+                qtip:'Estados en los que se habilitara el boton para anular la venta(codigos separador por ,)',
+                anchor: '50%',
+                allowBlank: true,
+                gwidth: 150,
+                maxLength:20
+            },
+                type:'TextField',                
+                id_grupo:1,
+                grid:true,
+                form:true
+        },
+		
+		
+		
         {
             config:{
                 name: 'estado_reg',
@@ -197,6 +231,9 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 	id_store:'id_entidad',
 	fields: [
 		{name:'id_entidad', type: 'numeric'},
+		{name:'tipo_venta_producto', type: 'string'},
+		{name:'estados_comprobante_venta', type: 'string'},
+		{name:'estados_anulacion_venta', type: 'string'},
 		{name:'tipo_venta_producto', type: 'string'},
 		{name:'nit', type: 'string'},
 		{name:'estado_reg', type: 'string'},
