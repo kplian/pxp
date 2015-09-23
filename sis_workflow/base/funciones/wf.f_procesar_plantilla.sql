@@ -1,12 +1,12 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_id_usuario integer,
   p_id_proceso_wf integer,
   p_plantilla text,
   p_id_tipo_estado_actual integer,
   p_id_estado_anterior integer,
-  p_obs text = ''::text
+  p_obs text = ''::text,
+  p_id_funcionario_actual integer = NULL::integer,
+  p_id_depto_actual integer = NULL::integer
 )
 RETURNS text AS
 $body$
@@ -47,6 +47,9 @@ v_DEPTO_PREVIO  	 varchar;
 v_PROCESO_MACRO      varchar;
 v_CODIGO_ANTERIOR     varchar;  
 
+v_ID_FUNCIONARIO_PREVIO     integer;
+v_ID_DEPTO_PREVIO     integer;
+
 v_sw_busqueda  boolean;
 v_tabla					record;
 v_tabla_hstore          hstore;
@@ -56,6 +59,8 @@ v_i     integer;
 
 v_template_evaluado    varchar;
 v_validar_nulo boolean;
+v_FUNCIONARIO_ACTUAL  varchar;
+v_DEPTO_ACTUAL 	 varchar;
  
 BEGIN
    
@@ -74,6 +79,8 @@ BEGIN
   ESTADO_ACTUAL
   FUNCIONARIO_PREVIO
   DEPTO_PREVIO 
+  DEPTO_ACTUAL
+  FUNCIONARIO_ACTUAL
   
  
   
@@ -163,6 +170,8 @@ BEGIN
                   CODIGO_ACTUAL
                   FUNCIONARIO_PREVIO
                   DEPTO_PREVIO
+                  DEPTO_ACTUAL
+                  FUNCIONARIO_ACTUAL
                   
                   
                   
@@ -186,18 +195,36 @@ BEGIN
                     tew.nombre_estado,
                     f.desc_funcionario1,
                     d.nombre,
-                    tew.codigo
+                    tew.codigo,
+                    f.id_funcionario,
+                    d.id_depto
                   into
                     v_ESTADO_ANTERIOR,
                     v_FUNCIONARIO_PREVIO,
                     v_DEPTO_PREVIO,
-                    v_CODIGO_ANTERIOR
+                    v_CODIGO_ANTERIOR,
+                    v_ID_FUNCIONARIO_PREVIO,
+                    v_ID_DEPTO_PREVIO
                   from  wf.testado_wf ew
                   inner join wf.ttipo_estado  tew on tew.id_tipo_estado = ew.id_tipo_estado
                   left join orga.vfuncionario f on f.id_funcionario = ew.id_funcionario
                   left join param.tdepto      d on d.id_depto = ew.id_depto
                   where ew.id_estado_wf = p_id_estado_anterior;
                   
+                  
+                  select                     
+                    f.desc_funcionario1                    
+                  into                   
+                    v_FUNCIONARIO_ACTUAL                    
+                  from  orga.vfuncionario f
+                  where f.id_funcionario = p_id_funcionario_actual;
+                  
+                  select                     
+                    d.nombre              
+                  into                   
+                    v_DEPTO_ACTUAL                    
+                  from  param.tdepto d
+                  where d.id_depto = p_id_depto_actual;
                   
                   select 
                   te.nombre_estado,
@@ -283,10 +310,14 @@ BEGIN
               v_template_evaluado = replace(v_template_evaluado, '{OBS}',v_OBS);
               v_template_evaluado = replace(v_template_evaluado, '{FUNCIONARIO_PREVIO}', COALESCE(v_FUNCIONARIO_PREVIO,''));
               v_template_evaluado = replace(v_template_evaluado, '{DEPTO_PREVIO}',COALESCE(v_DEPTO_PREVIO,''));
+              v_template_evaluado = replace(v_template_evaluado, '{FUNCIONARIO_ACTUAL}', COALESCE(v_FUNCIONARIO_ACTUAL,''));
+              v_template_evaluado = replace(v_template_evaluado, '{DEPTO_ACTUAL}',COALESCE(v_DEPTO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{PROCESO_MACRO}',COALESCE(v_PROCESO_MACRO,''));
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ACTUAL}',COALESCE(v_ESTADO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ANTERIOR}',COALESCE(v_CODIGO_ANTERIOR,''));
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ACTUAL}',COALESCE(v_CODIGO_ACTUAL,''));
+              v_template_evaluado = replace(v_template_evaluado, '{ID_FUNCIONARIO_PREVIO}',COALESCE(v_ID_FUNCIONARIO_PREVIO,-1)::varchar);
+              v_template_evaluado = replace(v_template_evaluado, '{ID_DEPTO_PREVIO}',COALESCE(v_ID_DEPTO_PREVIO,-1)::varchar);
               
               
               return  v_template_evaluado;

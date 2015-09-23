@@ -163,11 +163,11 @@
     $_SESSION['_MAIL_PASSWORD']='password...';
     $_SESSION['_MAIL_REMITENTE']='kplain@gmail.com';
     $_SESSION['_NOMBER_REMITENTE']='Sistema ERP';
-    
+	$_SESSION['_MAIL_PRUEBAS']='kplain@gmail.com';    
     $_SESSION['_MAIL_SERVIDOR']='smtp.gmail.com';
-    $_SESSION['_MAIL_PUERTO']=465;
+    $_SESSION['_MAIL_PUERTO']=587;
     $_SESSION['_MAIL_AUTENTIFICACION']=true;
-    $_SESSION['_SMTPSecure']='ssl';
+    $_SESSION['_SMTPSecure']='tls';
     
      //-----correos de notificaciones---------//
     $_SESSION['_MAIL_NITIFICACIONES_1']='dcastro@boa.bo';//se utiliza para enviar correo al area legal 
@@ -178,7 +178,9 @@
     //ENDESIS, NO, (SE PUEDEN ANHADIR SEGUN NECSIDAD)
     //tiene que estar sincronizado con la variable global en base de datos
     $_SESSION['_SIS_INTEGRACION']='NO'; 
-	
+	//REST clases que no necesitan la vaidacion de permisos de sesion
+	$_SESSION['_REST_NO_CHECK'] = array('/parametros/Alarma/confirmarAcuseRecibo',
+	                                    '/parametros/Alarma/otro');
 
 	
 ?>

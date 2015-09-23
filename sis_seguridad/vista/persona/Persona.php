@@ -10,7 +10,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
-    tabEnter:true,
+    //tabEnter:true,
 	Atributos:[
 	{
    	  config:{
@@ -213,7 +213,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	],
 
 
-    fileUpload:true,
+    //fileUpload:true,
 	title:'Persona',
 	ActSave:'../../sis_seguridad/control/Persona/guardarPersona',
 	ActDel:'../../sis_seguridad/control/Persona/eliminarPersona',

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MVVM</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles/kendo.silver.min.css" />
+     
+    
+    
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    
+    
+<script src="../../js/messages/kendo.messages.es-ES.min.js"></script>
+<script src="../../js/cultures/kendo.culture.es-ES.min.js"></script>
+
+
+<script src="../../../moment/moment-with-locales.js"></script>
+
+    <script>
+        
+    </script>
+    
+    <style type="text/css" media="screen">
+       .k-task-draghandle,
+.k-task-dot {
+    display: none !important;
+}
+    </style>
+    
+    
+</head>
+<body>
+    <script type="text/javascript">
+     //set current to the "en-GB" culture script
+     kendo.culture("es-ES");
+</script>
+       
+       <div id="gantt"></div>
+	<script>
+	var arra_dependencias = new Array();
+	var json_dep;
+	$("#gantt").kendoGantt({
+	   dataSource: {
+                transport: {
+                    read: function(options) {
+                        $.ajax( {
+	                            url:'../../../lib_control/Intermediario.php',
+	                            dataType: "json",
+	                            type:"POST",
+	                            async: false,
+	                          
+	                            data:'p={"id_proceso_wf":"12270"}'
+	                            +'&x=../../sis_workflow/control/ProcesoWf/diagramaGanttTramite_kendo',
+	                            success: function(result) {
+	                                options.success(result);
+	                            }
+	                        });
+                    },
+                    
+
+                },
+                batch: true,
+                
+                schema: {
+                    	data: function (response) {
+                        // var json = $.parseJSON(response.datos);
+                        console.log(response)
+                        
+        				var array = new Array();
+                			$.each(response.datos, function (k, v) {
+                				console.log(v.nombre)
+                				if(v.id_padre == null){
+	                            	var id_padre = null;
+	                            }else{
+	                            	var id_padre =  v.id_padre;
+	                            }
+	                            if(v.id_proceso_wf == null){
+	                            	var Summary =  false;
+	                            	console.log('no es')
+	                            }else{
+	                            	
+	                            	var Summary = true;
+	                            	console.log('es')
+
+	                            }
+	                     
+							  	var inicio = moment(v.fecha_ini);
+							  	var fin = moment(v.fecha_fin);
+							    
+							    var duration = moment.duration(fin.diff(inicio));
+							   /* var hours = duration.asHours();
+							    var days = duration.asDays();*/
+							    
+								var d = moment.duration(duration, 'milliseconds');
+								var days = Math.floor(d.asDays());
+								var hours = Math.floor(d.asHours()- days * 24);
+								//var mins = Math.floor(d.asMinutes() - hours * 60);
+								var dias_res = +days+"D " + hours+"H " ;
+							   
+							  
+							   console.log('days',days);
+							   console.log('res',hours);
+                  
+                 				array.push({
+                 				"id" : k+1,
+	                            //"tipo" : v.tipo,
+	                            "title" : v.nombre,
+	                            "start" : v.fecha_ini,
+	                            "end" : v.fecha_fin,
+	                            "orderId" : v.id,
+	                            "parentId" : id_padre,
+	                            "Summary":Summary,
+								"Expanded":false,
+								"PercentComplete":"",
+								"funcionario":(v.funcionario != null)? v.funcionario:v.depto,
+								"color":"#111",
+								"dias":dias_res,
+								"diasNum":days,
+								"descripcion":v.descripcion
+								
+                 				});
+	                            //datos = new Object();
+	                            
+	                            
+	                             if(v.id_siguiente != null){
+	                            	arra_dependencias.push(
+		                            	{
+									      predecessorId: v.id,
+									      successorId: v.id_siguiente,
+									      type: 1
+									    }
+	                            	);
+	                            }
+	
+                          	})
+                          	
+                          console.log(JSON.stringify(arra_dependencias))
+                          json_dep = JSON.stringify(arra_dependencias);
+                          	console.log(array)
+          
+                        return array;
+	                    },
+	                  
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: { from: "id", type: "number" },
+                                orderId: { from: "orderId", type: "number", validation: { required: true } },
+                                parentId: { from: "parentId", type: "number", defaultValue: null, validation: { required: true } },
+                                start: { from: "start", type: "date" },
+                                end: { from: "end", type: "date" },
+                                title: { from: "title", defaultValue: "", type: "string" },
+                                percentComplete: { from: "PercentComplete", type: "number" },
+                                summary: { from: "Summary", type: "boolean" },
+                                expanded: { from: "Expanded", type: "boolean", defaultValue: true },
+                                funcionario: { from: "funcionario", type: "string"},
+                                color: { from: "color", type: "string"},
+                                dias: { from: "dias", type: "string"},
+                                descripcion: { from: "descripcion", type: "string"},
+                                
+                            }
+                        }
+                    }
+                    
+              
+            },
+     
+	 
+	  editable: false,
+	  listWidth: 540,
+	  
+	  
+	   toolbar: ["pdf"],
+	    pdf: {
+        fileName: "gant.pdf"
+    	},
+    	//height:"750",
+    	
+    	/*resources: {
+	      dataSource: [
+	        { id: 2, name: "Resource 1", color: "green", format: "p0" },
+	        { id: 1, name: "Resource 2", color: "#32cd32", format: "p0" }
+	      ]
+	    },
+	     assignments: {
+		    dataResourceIdField: "resource",
+		    dataSource: [
+		      { taskId: 3, resource: 2, value: 1 },
+		      { taskId: 2, resource: 1, value: 1 },
+		      { taskId: 1, resource: 1, value: 1 }
+		    ]
+		  },
+		  */
+		  
+			  
+	  
+	  
+	  columns: [
+            { field: "id", title: "ID"},
+            { field: "title", title: "Titulo", editable: true,width: 200, sortable: true },
+            { field: "funcionario", title: "funcionario", editable: true,width: 250 },
+            { field: "start", title: "Fecha Inicio", format: "{0:dd/MM/yyyy HH:mm}", width: 130, editable: true, sortable: true },
+            { field: "end", title: "Fecha Fin", format: "{0:dd/MM/yyyy HH:mm}", width: 130, editable: true, sortable: true },
+        	{ field: "dias", title: "dias",width: 200},
+        
+        ],
+        views: [
+	        {type:"day"},
+	        { type: "week"},
+	        {
+	        	type:"month" , 
+	        	selected: true,
+	        	monthHeaderTemplate: "#=kendo.toString(start, 'MMMM, yyyy')#",
+	        },
+	        {
+		      type: "year",
+		      monthHeaderTemplate: "#=kendo.toString(start, 'MMMM, yyyy')#",
+		      
+		    }
+        ],
+        
+        messages: {
+		    views: {
+		      day: "Dia",
+		      month: "Mes",
+		      week: "Semana",
+		      year: "Año",
+		    }
+		    
+		  },
+		  
+		    tooltip: {
+		    visible: true,
+		    template: "<div><h3>#= task.title #</h3></div><br/><div><strong>Descripcion:</strong> #= task.descripcion #</div>"
+		  },
+				 
+		  
+		  
+        
+         change: function (e) {
+
+                var selectedItem = this.dataItem(this.select()),
+                 currentPage = this.dataSource.page();
+                console.log(selectedItem)
+
+                //selected[currentPage] = selectedItem.OrderID;
+            },
+            dataBinding:function(){
+            	console.log('llega')
+            },
+            dataBound: onDataBound
+            
+          
+	});
+	
+	
+	var gantt = $("#gantt").data("kendoGantt");
+	console.log(gantt)
+	console.log('json',json_dep)
+	$.each(arra_dependencias, function (k, v) {
+		gantt.dependencies.add(v);
+	});
+	
+	
+	
+	function onDataBound() {
+		//console.log('llega bound')
+        var gantt = this;
+        
+        
+
+        gantt.element.find(".k-task").each(function(e) {
+          var dataItem = gantt.dataSource.getByUid($(this).attr("data-uid"));
+
+          // colorize task per business requirements
+          if (dataItem.diasNum > 30 && dataItem.summary != true) {
+            this.style.backgroundColor = "#f99";
+          } else {
+            //this.style.backgroundColor = "#9f9";
+          }
+          
+          //console.log(gantt)
+        });
+        
+        
+        /*gantt.element.find(".k-task").each(function(e) {
+        });*/
+      }
+		
+	</script>
+	    
+</body>
+</html>

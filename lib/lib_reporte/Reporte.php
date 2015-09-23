@@ -93,7 +93,7 @@ class Reporte
 		$this->objParam->addParametroConsulta('cantidad',$_SESSION['cantidad_reportes']);
 		
 		if($this->objParam->getParametro('tipoReporte')=='pdf_grid')
-			$this->objReporteFormato->SetFont('helvetica', '', 8);
+			$this->objReporteFormato->SetFont('helvetica', '', 4);
 		$cad = $this->create($nombre_clase);
 		
 		//eval('$cad = new $nombre_clase();');

@@ -32,6 +32,7 @@ DECLARE
     
     v_tipo_asignacion  varchar;
     v_nombre_func_list varchar;
+    v_id_depto_wf      integer; 
     
     
 			    
@@ -54,7 +55,9 @@ BEGIN
      				
     	begin
         
-    
+             IF   pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+               v_id_depto_wf =  COALESCE(v_parametros.id_depto_wf,0);
+             END IF;
      
              v_consulta:=' 
                    SELECT 
@@ -70,7 +73,8 @@ BEGIN
                       FALSE,
                       '||v_parametros.cantidad||',
                       '||v_parametros.puntero||',
-                      '||quote_literal(v_parametros.filtro)||'
+                      '||quote_literal(v_parametros.filtro)||',
+                      '||COALESCE(v_id_depto_wf,0)::varchar||'
                       
                      ) AS (id_funcionario integer,
                            desc_funcionario text,
@@ -95,7 +99,9 @@ BEGIN
      				
     	begin
        
-        
+             IF   pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+               v_id_depto_wf =  COALESCE(v_parametros.id_depto_wf,0);
+             END IF;
     
              v_consulta:=' 
                    SELECT 
@@ -108,7 +114,8 @@ BEGIN
                       TRUE,
                       '||v_parametros.cantidad||',
                       '||v_parametros.puntero||',
-                      '||quote_literal(v_parametros.filtro)||'
+                      '||quote_literal(v_parametros.filtro)||',
+                      '||COALESCE(v_id_depto_wf,0)::varchar||'
                       
                      ) AS (total bigint)';
                       
@@ -246,13 +253,17 @@ BEGIN
                         pxp.text_concat(terol.id_rol::text) as id_roles,
                         tipes.admite_obs  ,
                         tipes.etapa,
-                        tipes.grupo_doc
+                        tipes.grupo_doc,
+                        tipes.id_tipo_estado_anterior,
+                        ''(''||tea.codigo||'') ''|| tea.nombre_estado AS desc_tipo_estado_anterior
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
-                        LEFT JOIN wf.ttipo_estado_rol terol on terol.id_tipo_estado = tipes.id_tipo_estado 
-                        	and terol.estado_reg = ''activo''
+                        LEFT JOIN wf.ttipo_estado_rol terol on terol.id_tipo_estado = tipes.id_tipo_estado
+                        	and terol.estado_reg = ''activo'' 
+                        LEFT JOIN wf.ttipo_estado tea on tea.id_tipo_estado = tipes.id_tipo_estado_anterior 
+                        	
 				        where tipes.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta
@@ -293,7 +304,10 @@ BEGIN
                         tipes.parametros_ad,
                         tipes.admite_obs  ,
                         tipes.etapa,
-                        tipes.grupo_doc	';
+                        tipes.grupo_doc,
+                        tipes.id_tipo_estado_anterior,
+                        tea.codigo,
+                        tea.nombre_estado	';
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
@@ -314,7 +328,7 @@ BEGIN
                             tes.tipo_asignacion, tes.nombre_func_list , tes.depto_asignacion, tes.nombre_depto_func_list,
                             tes.obs, tes.alerta, tes.pedir_obs,tes.descripcion,tes.plantilla_mensaje,tes.plantilla_mensaje_asunto,
                             array_to_string(tes.cargo_depto,'',''),tes.mobile,tes.funcion_inicial,tes.funcion_regreso,tes.acceso_directo_alerta,
-                            tes.nombre_clase_alerta,tes.tipo_noti,tes.titulo_alerta,tes.parametros_ad,tes.estado_reg
+                            tes.nombre_clase_alerta,tes.tipo_noti,tes.titulo_alerta,tes.parametros_ad,tes.estado_reg,tea.codigo
 
                             from wf.ttipo_estado tes
                             inner join wf.ttipo_proceso tp 
@@ -323,6 +337,8 @@ BEGIN
                             on pm.id_proceso_macro = tp.id_proceso_macro
                             inner join segu.tsubsistema s
                             on s.id_subsistema = pm.id_subsistema
+                            left join wf.ttipo_estado tea
+                            on tea.id_tipo_estado = tes.id_tipo_estado_anterior
                             where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
 
 				if (v_parametros.todo = 'no') then                   
@@ -350,6 +366,7 @@ BEGIN
 					    from wf.ttipo_estado tipes
 					    inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
+						LEFT JOIN wf.ttipo_estado tea on tea.id_tipo_estado = tipes.id_tipo_estado_anterior
                         INNER JOIN wf.ttipo_proceso tp on tp.id_tipo_proceso = tipes.id_tipo_proceso
 					    where  tipes.estado_reg = ''activo'' and ';
 			

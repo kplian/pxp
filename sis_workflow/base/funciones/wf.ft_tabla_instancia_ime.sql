@@ -242,6 +242,7 @@ BEGIN
                     v_values = v_values || ',' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
                 elsif (v_columnas.bd_tipo_columna in ('integer[]', 'bigint[]', 'numeric[]','varchar[]')) then                   
                     --Obtiene el valor del array en una variable temporal, para verificar si es array vacío y mandar null en ese caso
+                    
                     v_cadena = 'array[' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL')||']';
                     if v_cadena = 'array[]' then
                         v_values = v_values || ',NULL';
@@ -305,7 +306,17 @@ BEGIN
                 if (v_columnas.bd_tipo_columna in ('integer', 'bigint', 'boolean', 'numeric')) then
                     v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL');
                 elsif (v_columnas.bd_tipo_columna in ('integer[]', 'bigint[]', 'numeric[]','varchar[]')) then                   
-                    v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=' || 'array[' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL')||']';
+                    
+                    v_cadena = 'array[' || coalesce (json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna),'NULL')||']';
+                    /*if (v_columnas.bd_nombre_columna = 'id_orden_trabajo') then
+                    	raise exception 'llega%',v_cadena;
+                    end if;*/
+                    if v_cadena = 'array[]' or v_cadena = 'array[[]]' then
+                        v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=NULL';
+                    else
+                        v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=' || v_cadena;
+                    end if;
+                    
                 else                    
                     v_values = v_values || ',' ||v_columnas.bd_nombre_columna || '=' || coalesce ('''' || json_extract_path_text(v_parametros,v_columnas.bd_nombre_columna) || '''','NULL');                    
                 end if;                 

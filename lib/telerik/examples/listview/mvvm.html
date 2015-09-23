@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MVVM</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div id="example">
+    <div class="demo-section k-header">
+        <div class="box-col" style="width: 420px;">
+            <h4>Update a record</h4>
+            <div data-role="listview"
+                 data-edit-template="edit-template"
+                 data-template="template"
+                 data-bind="source: products,
+                            visible: isVisible,
+                            events: {
+                              save: onSave
+                            }"
+                 style="width: 420px; height: 200px; overflow: auto"></div>
+        </div>
+        <div class="box-col console-section">
+            <h4>Console</h4>
+            <div class="console"></div>
+        </div>
+    </div>
+    <script type="text/x-kendo-tmpl" id="template">
+        <div class="product-view k-widget">
+            <div class="edit-buttons">
+                <a class="k-button k-edit-button" href="\\#"><span class="k-icon k-edit"></span></a>
+                <a class="k-button k-delete-button" href="\\#"><span class="k-icon k-delete"></span></a>
+            </div>
+            <dl>
+                <dt>Product Name</dt>
+                <dd>#:ProductName#</dd>
+                <dt>Unit Price</dt>
+                <dd>#:kendo.toString(UnitPrice, "c")#</dd>
+                <dt>Units In Stock</dt>
+                <dd>#:UnitsInStock#</dd>
+                <dt>Discontinued</dt>
+                <dd>#:Discontinued#</dd>
+            </dl>
+        </div>
+    </script>
+
+    <script type="text/x-kendo-tmpl" id="edit-template">
+        <div class="product-view k-widget">
+            <div class="edit-buttons">
+                <a class="k-button k-update-button" href="\\#"><span class="k-icon k-update"></span></a>
+                <a class="k-button k-cancel-button" href="\\#"><span class="k-icon k-cancel"></span></a>
+            </div>
+            <dl>
+                <dt>Product Name</dt>
+                <dd>
+                    <input type="text" class="k-textbox" data-bind="value:ProductName" name="ProductName" required="required" validationMessage="required" />
+                    <span data-for="ProductName" class="k-invalid-msg"></span>
+                </dd>
+                <dt>Unit Price</dt>
+                <dd>
+                    <input type="text" data-bind="value:UnitPrice" data-role="numerictextbox" data-type="number" name="UnitPrice" required="required" min="1" validationMessage="required" />
+                    <span data-for="UnitPrice" class="k-invalid-msg"></span>
+                </dd>
+                <dt>Units In Stock</dt>
+                <dd>
+                    <input type="text" data-bind="value:UnitsInStock" data-role="numerictextbox" name="UnitsInStock" required="required" data-type="number" min="0" validationMessage="required" />
+                    <span data-for="UnitsInStock" class="k-invalid-msg"></span>
+                </dd>
+                <dt>Discontinued</dt>
+                <dd><input type="checkbox" name="Discontinued" data-bind="checked:Discontinued"></dd>
+            </dl>
+        </div>
+    </script>
+    <div class="box">
+        <div class="box-col" style="width: 420px;">
+            <h4>Configuration</h4>
+            <div>
+                <label><input type="checkbox" data-bind="checked: isVisible">Visible</label>
+            </div>
+        </div>
+        <div class="box-col">
+            <h4>Information</h4>
+            Kendo UI ListView supports the
+            <a href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/events">events</a>,
+            <a href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/source">source</a> and
+            <a href="http://docs.telerik.com/kendo-ui/getting-started/framework/mvvm/bindings/visible">visible</a> bindings.
+        </div>
+    </div>
+<script>
+    var viewModel = kendo.observable({
+        isVisible: true,
+        onSave: function(e) {
+            kendoConsole.log("event :: save(" + kendo.stringify(e.model, null, 4) + ")");
+        },
+        products: new kendo.data.DataSource({
+            schema: {
+                model: {
+                    id: "ProductID"
+                }
+            },
+            batch: true,
+            transport: {
+                read: {
+                    url: "http://demos.telerik.com/kendo-ui/service/products",
+                    dataType: "jsonp"
+                },
+                update: {
+                    url: "http://demos.telerik.com/kendo-ui/service/products/update",
+                    dataType: "jsonp"
+                },
+                destroy: {
+                    url: "http://demos.telerik.com/kendo-ui/service/products/create",
+                    dataType: "jsonp"
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {models: kendo.stringify(options.models)};
+                    }
+                }
+            }
+        })
+    });
+    kendo.bind($("#example"), viewModel);
+</script>
+ <style>
+        .product-view
+        {
+            float: left;
+            position: relative;
+            width: 400px;
+            margin: -1px -1px 0 0;
+        }
+        .product-view dl
+        {
+            margin: 10px 0;
+            padding: 0;
+            min-width: 0;
+        }
+        .product-view dt, dd
+        {
+            float: left;
+            margin: 0;
+            padding: 3px;
+            height: 32px;
+            width: 180px;
+            line-height: 32px;
+            overflow: hidden;
+        }
+        .product-view dt
+        {
+            clear: left;
+            padding: 3px 5px 3px 0;
+            text-align: right;
+            opacity: 0.6;
+            width: 100px;
+        }
+        .product-view .k-textbox {
+            width: auto;
+        }
+        .edit-buttons
+        {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 160px;
+            padding: 2px 2px 0 3px;
+            background-color: rgba(0,0,0,0.1);
+        }
+        .edit-buttons .k-button
+        {
+            display: block;
+            clear: both;
+            margin-bottom: 3px;
+        }
+        .k-pager-wrap
+        {
+            border-top: 0;
+        }
+        span.k-invalid-msg
+        {
+            position: absolute;
+            margin-left: 6px;
+        }
+    </style>
+</div>
+
+
+    
+    
+</body>
+</html>

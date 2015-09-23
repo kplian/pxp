@@ -78,7 +78,7 @@ class ReportePDF extends MYPDF
 	 */
 	function __construct(CTParametro $objParam){
 		$this->objParam=$objParam;
-		$this->url_archivo = dirname(__FILE__) . "/../../../reportes_generados/".$this->objParam->getParametro('nombre_archivo');
+		$this->url_archivo = dirname(__FILE__)."/../../../reportes_generados/".$this->objParam->getParametro('nombre_archivo');
 		$this->nombre_archivo=$this->objParam->getParametro('nombre_archivo');
 		$this->titulo=$this->objParam->getParametro('titulo_archivo');
 		$this->orientacion=$this->objParam->getParametro('orientacion');
@@ -872,7 +872,7 @@ class ReportePDF extends MYPDF
 	}
 	
 	public function imprimirColsGrid(){
-		$this->SetFont('helvetica', 'B', 8);
+		$this->SetFont('helvetica', 'B', 4);
 		//var_dump(array($this->tablecolumns));
 		$this->addTabla(array($this->tablecolumns),1,1,1,1);
 		$this->SetFont('helvetica', 'N', 8);

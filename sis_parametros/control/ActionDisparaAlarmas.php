@@ -8,15 +8,16 @@
  Autor:	Kplian (RAC)
  Fecha:	19/07/2010
  */
-
 include_once(dirname(__FILE__)."/../../lib/lib_control/CTSesion.php");
 session_start();
 $_SESSION["_SESION"]= new CTSesion(); 
 
 include(dirname(__FILE__).'/../../lib/DatosGenerales.php');
 include_once(dirname(__FILE__).'/../../lib/lib_general/Errores.php');
-include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.phpmailer.php');
-include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.smtp.php');
+//include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.phpmailer.php');
+//include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.smtp.php');
+//include_once(dirname(__FILE__).'/../../lib/PHPMailer/class.pop3.php');
+require dirname(__FILE__).'/../../lib/PHPMailer/PHPMailerAutoload.php';
 include_once(dirname(__FILE__).'/../../lib/lib_general/cls_correo_externo.php');
 include_once(dirname(__FILE__).'/../../lib/rest/PxpRestClient.php');
 
@@ -43,17 +44,17 @@ else{
 
 
 //echo dirname(__FILE__).'LLEGA';
-register_shutdown_function('fatalErrorShutdownHandler');
-set_exception_handler('exception_handler');
-set_error_handler('error_handler');;
+//register_shutdown_function('fatalErrorShutdownHandler');
+//set_exception_handler('exception_handler');
+//set_error_handler('error_handler');;
 include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
 
 include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 
 
-       $objPostData=new CTPostData();
-       $arr_unlink=array();
-        $aPostData=$objPostData->getData();
+        $objPostData = new CTPostData();
+        $arr_unlink = array();
+        $aPostData = $objPostData->getData();
         //rac 22/09/2011 
         //$aPostFiles=$objPostData->getFiles();
         
@@ -77,69 +78,148 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 			exit;        
 		}
         
-        
-
+        $errores_id = '';
+		$errores_msg = '';
+        error_reporting(-1);//captura todos los tipos de errores ...
 		foreach ($res2->datos as $d){
-       		$correo=new CorreoExterno();
-			if(isset($d['email_empresa'])){
-				$correo->addDestinatario($d['email_empresa'],$d['email_empresa']); 
-				$correo->addCC($_SESSION["_MAIL_PRUEBAS"],'Correo de Pruebas');  
-                
-                if ($d['acceso_directo'] !='' && $d['acceso_directo'] != NULL){
-                  $correo->setAccesoDirecto($d['id_alarma']);  
-                }                
-                
-            } else if (isset($d['correos'])) {
-            	$correos = explode(',', $d['correos']);
-				foreach($correos as $value) {
-            		$correo->addDestinatario($value,$value);
+	       		$correo = new CorreoExterno();
+				try {	
+			       		
+						if(isset($d['email_empresa'])){
+							$correo->addDestinatario($d['email_empresa'],$d['email_empresa']); 
+							//$correo->addCC($_SESSION["_MAIL_PRUEBAS"],'Correo de Pruebas');  
+			                
+			                if ($d['acceso_directo'] !='' && $d['acceso_directo'] != NULL){
+			                  $correo->setAccesoDirecto($d['id_alarma']);  
+			                } 
+							
+							if (!PHPMailer::validateAddress($d['email_empresa'])) {
+					            throw new phpmailerException("Email address " . $d['email_empresa'] . " is invalid -- aborting!");
+					        }
+							
+							if (!$correo->validateEmail($d['email_empresa'])) {
+					            throw new phpmailerException("Domain Email address " . $d['email_empresa'] . " is invalid -- aborting!");
+					        }   
+							
+							            
+			                
+			            } else if (isset($d['correos'])) {
+			            	$correos = explode(',', $d['correos']);
+							foreach($correos as $value) {
+								echo 'ssss <br>';
+								echo $value;
+								echo '--------';
+								
+								$value = trim($value);
+			            		$correo->addDestinatario($value,$value);
+								if (!PHPMailer::validateAddress($value)) {
+						            throw new phpmailerException("Email address " . $value . " is invalid -- aborting!");
+						        }
+								if (!$correo->validateEmail($value)) {
+						            throw new phpmailerException("Domain Email address " . $value . " is invalid -- aborting!");
+						        }
+							}
+							
+			            }
+						
+						
+						
+						if(isset($d['requiere_acuse'])){
+							if($d['requiere_acuse'] == 'si'){
+								
+								 $correo->enableAcuseRecibo();
+								 $correo->setMensajeAcuse($d['mensaje_link_acuse']);
+								 $correo->setUrlAcuse($d['url_acuse']);
+								 $correo->setTokenAcuse($d['id_alarma']);     
+						    	 
+						    }	
+						}
+						
+						$correo->setAsunto(ucwords($d['tipo']).' '.$d['titulo_correo'].' '.$d['obs']);
+			            $correo->setMensaje($d['descripcion']);
+						$correo->setTitulo($d['titulo_correo']);
+						
+						//Anadir los adjuntos
+						$adjuntos = explode(',', $d['documentos']);
+						
+						foreach($adjuntos as $value) {
+							$url = explode('|', $value);
+							
+							if (count($url) > 2) {
+								//es un reporte generado (llamar un metodo para generar el reporte)
+								
+								$pxpRestClient = PxpRestClient::connect('127.0.0.1',substr($_SESSION["_FOLDER"], 1) . 'pxp/lib/rest/')
+																->setCredentialsPxp($_GET['user'],$_GET['pw']);
+								
+								$url_final = str_replace('../../sis_', '', $url[0]);
+								$url_final = str_replace('sis_', '', $url_final);
+								
+								$url_final = str_replace('/control', '', $url_final);
+								
+								$res = $pxpRestClient->doPost($url_final,
+								array("id_proceso_wf"=>$url[1]));
+								$res_json = json_decode($res);
+								$correo->addAdjunto(dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado,$url[2]);
+								//poniendo la url para eliminar
+								//array_push($arr_unlink,dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado);
+								
+								
+							} else {
+								//es un archivo
+								$url_final = str_replace('./../../../', '/../../../', $url[0]);	
+												
+								$correo->addAdjunto(dirname(__FILE__) . $url_final, $url[1]);
+							}
+							
+						}
+						
+						
+						
+			            $correo->setDefaultPlantilla();
+			            
+			            
+						
+						$respuesta_correo = $correo->enviarCorreo();	
+						if($respuesta_correo != "OK"){
+			            	if ($errores_id == ''){
+			            		$errores_id = ''. $d['id_alarma'];
+								$errores_msg = $d['id_alarma'].'<oo#oo>'.$respuesta_correo;
+			            	}	
+			            	$errores_id = $errores_id .','. $d['id_alarma'];
+							$errores_msg = $errores_msg.'###+###'.$d['id_alarma'].'<oo#oo>'.$respuesta_correo;
+					     };
+			        
+				} 
+				catch (phpmailerException $e) {
+					$respuesta_correo = $e->errorMessage();
+				 	if ($errores_id == ''){
+	            		$errores_id = ''. $d['id_alarma'];
+						$errores_msg = $d['id_alarma'].'<oo#oo>Php mailer error:'.$respuesta_correo;
+	            	}	
+	            	$errores_id = $errores_id .','. $d['id_alarma'];
+					$errores_msg = $errores_msg.'###+###'.$d['id_alarma'].'<oo#oo>'.$respuesta_correo;
+				} catch (Exception $e) {
+				     $respuesta_correo = $e->getMessage();
+				 	if ($errores_id == ''){
+	            		$errores_id = ''. $d['id_alarma'];
+						$errores_msg = $d['id_alarma'].'<oo#oo>'.$respuesta_correo;
+	            	}	
+	            	$errores_id = $errores_id .','. $d['id_alarma'];
+					$errores_msg = $errores_msg.'###+###'.$d['id_alarma'].'<oo#oo>'.$respuesta_correo;
 				}
-            }
-			
-			$correo->setAsunto(ucwords($d['tipo']).' '.$d['titulo_correo'].' '.$d['obs']);
-            $correo->setMensaje($d['descripcion']);
-			$correo->setTitulo($d['titulo_correo']);
-			
-			/*Anadir los adjuntos*/
-			$adjuntos = explode(',', $d['documentos']);
-			
-			foreach($adjuntos as $value) {
-				$url = explode('|', $value);
 				
-				if (count($url) > 2) {
-					//es un reporte generado (llamar un metodo para generar el reporte)
-					
-					$pxpRestClient = PxpRestClient::connect('127.0.0.1',substr($_SESSION["_FOLDER"], 1) . 'pxp/lib/rest/')
-													->setCredentialsPxp($_GET['user'],$_GET['pw']);
-					
-					$url_final = str_replace('../../sis_', '', $url[0]);
-					$url_final = str_replace('sis_', '', $url_final);
-					
-					$url_final = str_replace('/control', '', $url_final);
-					
-					$res = $pxpRestClient->doPost($url_final,
-					    array("id_proceso_wf"=>$url[1]));
-					$res_json = json_decode($res);
-									
-					$correo->addAdjunto(dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado,$url[2]);
-					//poniendo la url para eliminar
-					//array_push($arr_unlink,dirname(__FILE__) . '/../../../reportes_generados/' . $res_json->ROOT->detalle->archivo_generado);
-					
-					
-				} else {
-					//es un archivo
-					$url_final = str_replace('./../../../', '/../../../', $url[0]);	
-									
-					$correo->addAdjunto(dirname(__FILE__) . $url_final, $url[1]);
-				}
 				
-			}
-			
-            $correo->setDefaultPlantilla();
-            $correo->enviarCorreo();
+				
         }
 		
-        $objFunc=new MODAlarma($objParam);
+		//echo '------>   ';
+		//echo $errores_msg;
+		$objParam->addParametro('errores_id', $errores_id);
+		$objParam->addParametro('errores_msg', $errores_msg);
+		$objParam->addParametro('id_usuario', 1);
+		$objParam->addParametro('tipo', 'TODOS');		
+		
+        $objFunc=new MODAlarma($objParam);        
         $res2=$objFunc->modificarEnvioCorreo();
 		if($res2->getTipo()=='ERROR'){
 			echo 'Se ha producido un error-> Mensaje Técnico:'.$res2->getMensajeTec();

@@ -74,6 +74,8 @@ v_id_subsistema     integer;
 v_id_subsistema_cade varchar;
 v_cadena_log        varchar;
 v_retorno_record record;
+v_exception_detail			varchar;
+v_exception_context			varchar;
 
 
 

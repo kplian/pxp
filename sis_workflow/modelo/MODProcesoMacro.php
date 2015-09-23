@@ -269,7 +269,8 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('tipo_noti','varchar');
 			$this->captura('titulo_alerta','varchar');
 			$this->captura('parametros_ad','varchar');
-			$this->captura('estado_reg','varchar');			
+			$this->captura('estado_reg','varchar');	
+			$this->captura('codigo_estado_anterior','varchar');		
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			

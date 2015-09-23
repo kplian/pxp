@@ -59,7 +59,7 @@ BEGIN
               fecha_reg,
               id_usuario_mod,
               fecha_mod,
-              gripo_doc
+              grupo_doc
               ) values(
               v_parametros.id_subsistema,
               v_parametros.nombre,

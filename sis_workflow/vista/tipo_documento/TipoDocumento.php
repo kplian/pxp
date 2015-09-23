@@ -134,7 +134,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
 				type:'NumberField',
 				filters: { pfiltro:'tipdw.ordenacion', type:'numeric' },
 				valorInicial: 1.00,
-				id_grupo:1,
+				id_grupo:0,
 				egrid: true,
 				grid:true,
 				form:true
@@ -254,13 +254,13 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
             filters:{pfiltro:'tipdw.nombre_archivo_plantilla',type:'string'},
             id_grupo:1,
             grid:true,
-            form:true
+            form:false
         },
         {
             config:{
                     name:'categoria_documento',
                     fieldLabel:'Categoria',
-                    qtip:'sir para clasificar las cateogiras del documento',
+                    qtip:'Sirve para clasificar las categorías del documento',
                     tinit:false,
                     resizable:true,
                     tasignacion:false,
@@ -468,6 +468,7 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
     loadPlantilla: function(a,b,c,d){
         var data = this.getSelectedData();
         
+        
         var html = new Ext.form.HtmlEditor({
             region: 'center',
             margins:'3 3 3 0',
@@ -492,8 +493,6 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
            items      : html
         });
         
-        console.log(html)
-        console.log(Panel)
         var formPanelDropTargetEl =  Panel;
         
         /*var formPanelDropTarget = new Ext.dd.DropTarget(formPanelDropTargetEl, {
@@ -587,6 +586,47 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
             enableDragDrop: true
         });
         
+        var btnSubirPlantilla = new Ext.Button({
+        	text: 'Subir Plantilla',
+        	region: 'south',
+        	iconCls:'new-tab'
+        });
+        
+        var toolbar = new Ext.Toolbar({
+			items   : [
+            {
+               text: 'Subir Plantilla',
+               inputType:'file',
+	           handler : function(a,b,c){
+			        Phx.CP.loadWindows('../../../sis_workflow/vista/tipo_documento/SubirPlantilla.php',
+			        'Subir ',
+			        {
+			            modal:true,
+			            width:450,
+			            height:200
+			        },data,this.idContenedor,'SubirPlantilla')
+
+	           },
+	           tooltip : '<b>Plantilla</b><br/>Subir archivo'
+            },
+            {
+               text: 'Ver Plantilla',
+	           handler : function(a,b,c){
+					var data = "id=" + this.getSelectedData().id_tipo_documento;
+		            data += "&extension=doc";
+		            data += "&sistema=sis_workflow";
+		            data += "&clase=TipoDocumento";
+		            data += "&url="+this.getSelectedData().nombre_archivo_plantilla;
+		            //return  String.format('{0}',"<div style='text-align:center'><a target=_blank href = '../../../lib/lib_control/CTOpenFile.php?"+ data+"' align='center' width='70' height='70'>Abrir</a></div>");
+		            window.open('../../../lib/lib_control/CTOpenFile.php?' + data);
+	           },
+	           tooltip : '<b>Visualizar Plantilla</b><br/>Visualización de la plantilla subida',
+	           scope:this
+            }
+            ]
+		})
+		
+        
         // Panel for the west
         var nav = new Ext.Panel({
             title: 'Panel',
@@ -597,9 +637,12 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
             margins:'3 0 3 3',
             cmargins:'3 3 3 3',
             items: [listView],
-            autoScroll: true
+            autoScroll: true,
+            tbar: toolbar
         });
-
+        
+		
+		
         var win = new Ext.Window({
             title: 'Plantilla de Documentos',
             closable:true,

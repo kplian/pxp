@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_id_usuario_ai integer,
@@ -103,7 +101,7 @@ BEGIN
     v_nombre_funcion:='pxp.f_intermediario_ime';
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
-    
+    SET datestyle = "ISO, DMY";
     v_linea=null;
     v_secuencia:=(nextval('pxp.parametro'));
     v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
@@ -422,7 +420,7 @@ BEGIN
 EXCEPTION
 	WHEN OTHERS THEN
     
-		v_resp='';
+			v_resp='';
         v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
         v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
         v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','ERROR'::varchar);

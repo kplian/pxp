@@ -40,5 +40,7 @@ CREATE AGGREGATE pxp.list_unique (
 (
   SFUNC = pxp.list_unique,
   STYPE = text
+
 );
+
 

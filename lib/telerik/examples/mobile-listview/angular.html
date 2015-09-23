@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/angular.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div kendo-mobile-application ng-app="kendoDemo">
+    <kendo-mobile-view k-title="'My Menu'" ng-controller="Mine">
+        <kendo-mobile-header>
+            <kendo-mobile-nav-bar>
+                <kendo-view-title></kendo-view-title>
+            </kendo-mobile-nav-bar>
+        </kendo-mobile-header>
+    
+        <kendo-mobile-list-view k-load-more="true" k-data-source="source">
+            <div class="product" k-template>
+                <img src="../content/web/foods/{{dataItem.ProductID}}.jpg" alt="{{dataItem.ProductName}} image" class="pullImage"/>
+                <h3>{{dataItem.ProductName}}</h3>
+                <p>{{kendo.toString(dataItem.UnitPrice, "c")}}</p>
+            </div>
+        </kendo-mobile-list-view>
+    
+    </kendo-mobile-view>
+</div>
+
+<script>
+    angular.module("kendoDemo", [ 'kendo.directives' ])
+        .controller("Mine", function($scope) {
+            $scope.source = new kendo.data.DataSource({
+                type: "odata",
+                transport: {
+                    read: {
+                        url: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Products"
+                    }
+                },
+                serverPaging: true,
+                pageSize: 50
+            });
+        });
+</script>
+
+<style>
+    .product h3 {
+        font-size: 1.3em;
+        line-height: 1.4em;
+        margin: 0;
+        padding: 0;
+        height: 1.3em;
+        overflow: hidden;
+    }
+    .product p {
+        font-size: 1em;
+        margin: 0;
+        padding: .3em 0 0;
+    }
+    .pullImage {
+        width: 64px;
+        height: 64px;
+        border-radius: 3px;
+        float: left;
+        margin-right: 10px;
+    }
+</style>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

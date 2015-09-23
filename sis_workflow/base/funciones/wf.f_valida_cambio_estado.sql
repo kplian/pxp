@@ -1,7 +1,8 @@
 CREATE OR REPLACE FUNCTION wf.f_valida_cambio_estado (
   p_id_estado_wf integer,
   p_momento varchar = NULL::character varying,
-  p_id_tipo_estado integer = NULL::integer
+  p_id_tipo_estado integer = NULL::integer,
+  p_id_usuario integer = 1
 )
 RETURNS text AS
 $body$
@@ -51,25 +52,30 @@ BEGIN
              id_estado_wf = ' || p_id_estado_wf into v_id_tabla_instancia;    
     
     v_condiciones = ' 0=0 ';
-    for v_columnas in (	select tc.* from wf.ttipo_columna tc
+    for v_columnas in (	select tc.*,ce.regla from wf.ttipo_columna tc
         						inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna and ce.momento = coalesce(p_momento,'exigir')
         						inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
             					where ce.estado_reg = 'activo' and tc.estado_reg = 'activo' and id_tabla = v_id_tabla and te.id_tipo_estado = v_id_tipo_estado) loop 
-    	
-        v_consulta = 'select 
-                     (case when (' || v_columnas.bd_nombre_columna || ' IS NOT NULL) then
-                          true
-                     else
-                          false
-                     end)
-                     from ' || v_esquema || '.t' || v_nombre_tabla || '
-                     where id_' || v_nombre_tabla || ' = ' || v_id_tabla_instancia;
-                 
-        execute v_consulta into v_columna_bool;
-         
-        if (v_columna_bool = FALSE) then
-        	v_res_array = v_res_array || v_columnas.form_label::text;
-        end if;                     
+    	v_columna_bool = true;
+        IF  (wf.f_evaluar_regla_wf ( p_id_usuario,
+                                             v_id_proceso_wf,
+                                             v_columnas.regla,
+                                             v_id_tipo_estado,
+                                             p_id_estado_wf))  THEN
+            v_consulta = 'select 
+                         (case when (' || v_columnas.bd_nombre_columna || ' IS NOT NULL) then
+                              true
+                         else
+                              false
+                         end)
+                         from ' || v_esquema || '.t' || v_nombre_tabla || '
+                         where id_' || v_nombre_tabla || ' = ' || v_id_tabla_instancia;
+                     
+            execute v_consulta into v_columna_bool;
+        END IF;     
+            if (v_columna_bool = FALSE) then
+                v_res_array = v_res_array || v_columnas.form_label::text;
+            end if;                     
     end loop;
     
     return array_to_string(v_res_array,',');

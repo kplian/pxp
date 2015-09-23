@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customizing appearance</title>
+    <meta charset="utf-8">
+    <link href="../content/shared/styles/examples-offline.css" rel="stylesheet">
+    <link href="../../styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.dataviz.default.min.css" rel="stylesheet">
+    <link href="../../styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/kendo.all.min.js"></script>
+    <script src="../content/shared/js/console.js"></script>
+    <script>
+        
+    </script>
+    
+    
+</head>
+<body>
+    
+        <a class="offline-button" href="../index.html">Back</a>
+    
+    <div data-role="view" data-title="Button Appearance" class="buttonAppearance">
+    <ul data-role="listview" data-type="group" data-style="inset">
+        <li>
+            Background color
+            <ul>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true" style="background-color: green; color: white;">Green</a>
+                </li>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true" style="background-color: darkred; color: white;">Red</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Font Size
+            <ul>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true" style="font-size: 0.6em">Small</a>
+                </li>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true">Normal</a>
+                </li>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true" style="font-size: 1.2em">Large</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Button icons / check help for more
+            <ul>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true" data-icon="featured">Featured</a>
+                </li>
+                <li>
+                    <i></i> <a data-role="button" data-animated="true" data-icon="toprated">Top Rated</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <style>
+        .buttonAppearance .km-button:not(.km-back)
+        {
+            width: 90%;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+    </style>
+</div>
+
+
+    
+    <script>
+        window.kendoMobileApplication = new kendo.mobile.Application(document.body);
+    </script>
+    
+    
+</body>
+</html>

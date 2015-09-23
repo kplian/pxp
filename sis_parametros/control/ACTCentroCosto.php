@@ -58,6 +58,55 @@ class ACTCentroCosto extends ACTbase{
 	
 	
 	
+	
+	function listarCentroCostoGrid(){
+		$this->objParam->defecto('ordenacion','id_centro_costo');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		 
+		if($this->objParam->getParametro('id_gestion')!=''){
+            $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
+        }
+		
+		if($this->objParam->getParametro('id_partida')!=''){
+	    	$this->objParam->addFiltro("cec.id_centro_costo in (select id_presupuesto from pre.tpresup_partida where id_partida = " . $this->objParam->getParametro('id_partida') . ")");	
+		}		
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODCentroCosto','listarCentroCostoGrid');
+		} else{
+			$this->objFunc=$this->create('MODCentroCosto');
+			
+			$this->res=$this->objFunc->listarCentroCostoGrid($this->objParam);
+		}
+		
+		if($this->objParam->getParametro('_adicionar')!=''){
+		    
+			$respuesta = $this->res->getDatos();
+			
+										
+		    array_unshift ( $respuesta, array(  'id_centro_costo'=>'0',
+		                                'codigo_cc'=>'Todos',
+									    'codigo_uo'=>'Todos',
+										'nombre_uo'=>'Todos',
+										'ep'=>'Todos',
+										'gestion'=>'Todos',
+										'codigo_cc'=>'Todos',
+										'nombre_programa'=>'Todos',
+										'nombre_proyecto'=>'Todos',
+										'nombre_actividad'=>'Todos',
+										'nombre_financiador'=>'Todos',
+										'nombre_regional'=>'Todos') );
+		    //var_dump($respuesta);
+			$this->res->setDatos($respuesta);
+		}
+		
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	
 	function listarCentroCostoCombo(){
 		$this->objParam->defecto('ordenacion','id_centro_costo');
 
@@ -82,9 +131,10 @@ class ACTCentroCosto extends ACTbase{
 	function listarCentroCostoFiltradoXUsuaio(){
         $this->objParam->defecto('ordenacion','id_centro_costo');
 		
-		if($this->objParam->getParametro('tipo_pres')!=''){
-            $this->objParam->addFiltro("cec.tipo_pres = ''".$this->objParam->getParametro('tipo_pres')."''");    
-        }
+		if($this->objParam->getParametro('tipo_pres') == 'gasto'){
+				$tip_pres = "(''2'',''3'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
+		}
 
         $this->objParam->defecto('dir_ordenacion','asc');
         if($this->objParam->getParametro('id_gestion')!=''){
@@ -108,7 +158,11 @@ class ACTCentroCosto extends ACTbase{
 		
 		
 		if($this->objParam->getParametro('tipo_pres')!=''){
-            $this->objParam->addFiltro("cec.tipo_pres = ''".$this->objParam->getParametro('tipo_pres')."''");    
+			if($this->objParam->getParametro('tipo_pres') == 'gasto'){
+				$tip_pres = "(''2'',''3'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
+			}
+            
         }
 		
         if($this->objParam->getParametro('id_gestion')!=''){

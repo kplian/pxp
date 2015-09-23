@@ -18,6 +18,11 @@ class ACTDepto extends ACTbase{
 			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
 		}
 		
+		if( $this->objParam->getParametro('id_depto_origen') != '' ) {
+			$this->objParam->addFiltro("deppto.id_depto in (select dd.id_depto_destino  from param.tdepto_depto dd where dd.id_depto_origen  = ".$this->objParam->getParametro('id_depto_origen').")");
+		}
+		
+		
 		
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);

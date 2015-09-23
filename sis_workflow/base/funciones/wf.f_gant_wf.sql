@@ -44,6 +44,7 @@ v_id_proceso_ant integer;
 v_i integer;
 p_id_proceso_wf integer;
 v_id_proceso_wf_prev integer;
+v_orden				varchar;
  
 
 BEGIN
@@ -103,10 +104,7 @@ BEGIN
    
    -- 1) Crea una tabla temporal con los datos que se utilizaran 
 
- 
-   
-    
-        CREATE TEMPORARY TABLE temp_gant_wf (
+      CREATE TEMPORARY TABLE temp_gant_wf (
                                       id serial,
                                       id_proceso_wf integer,
                                       id_estado_wf integer,
@@ -129,49 +127,64 @@ BEGIN
                                       arbol varchar,
                                       id_obs integer,
                                       id_anterior integer,
-                                      etapa		varchar
+                                      etapa		varchar,
+                                      estado_reg varchar,
+                                      disparador varchar
                                      ) ON COMMIT DROP;
     
-    
-                 
-      IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
-                
-        raise exception 'Error al recuperar los datos del diagrama gant';
-                
+      --resupera parametro de ordenacion
+      if  pxp.f_existe_parametro(p_tabla, 'orden' ) then
+         v_orden = v_parametros.orden;
+      else
+         v_orden = 'defecto';
+      end if;
+       
+      IF v_orden = 'defecto' then         
+        IF not ( wf.f_gant_wf_recursiva(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
+           raise exception 'Error al recuperar los datos del diagrama gant';
+        END IF;
+      ELSE
+        IF not ( wf.f_gant_wf_recursiva_dinamico(v_id_proceso_wf_prev,NULL ,p_id_usuario, NULL, NULL)) THEN
+          raise exception 'Error al recuperar los datos del diagrama gant';
+         END IF;
       END IF;
           
          
        raise notice 'consulta tabla temporal';   
   
-   FOR v_registros in (SELECT                                   
-                        id ,
-                        id_proceso_wf ,
-                        id_estado_wf ,
-                        tipo , 
-                        nombre , 
-                        fecha_ini , 
-                        fecha_fin , 
-                        descripcion , 
-                        id_siguiente ,
-                        tramite ,
-                        codigo ,
-                        COALESCE(id_funcionario,0) ,
-                        funcionario ,
-                        COALESCE(id_usuario,0),
-                        cuenta ,
-                        COALESCE(id_depto,0),
-                        depto,
-                        COALESCE(nombre_usuario_ai,''),
-                        arbol,
-                        id_padre,
-                        id_obs,
-                        id_anterior,
-                        etapa
-                      FROM temp_gant_wf 
-                      order by id) LOOP
-     RETURN NEXT v_registros;
-   END LOOP;
-
+  
+  
+             FOR v_registros in (SELECT                                   
+                                  id ,
+                                  id_proceso_wf ,
+                                  id_estado_wf ,
+                                  tipo , 
+                                  nombre , 
+                                  fecha_ini , 
+                                  fecha_fin , 
+                                  descripcion , 
+                                  id_siguiente ,
+                                  tramite ,
+                                  codigo ,
+                                  COALESCE(id_funcionario,0) ,
+                                  funcionario ,
+                                  COALESCE(id_usuario,0),
+                                  cuenta ,
+                                  COALESCE(id_depto,0),
+                                  depto,
+                                  COALESCE(nombre_usuario_ai,''),
+                                  arbol,
+                                  id_padre,
+                                  id_obs,
+                                  id_anterior,
+                                  etapa,
+                                  estado_reg,
+                                  disparador
+                                FROM temp_gant_wf 
+                                order by id) LOOP
+               RETURN NEXT v_registros;
+             END LOOP;
+  
 
 END IF;
 

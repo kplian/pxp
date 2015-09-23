@@ -55,6 +55,49 @@ class MODObs extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+    function listarObsFuncionario(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_obs_sel';
+		$this->transaccion='WF_OBSFUN_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+		
+		 
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('id_obs','int4');
+		$this->captura('fecha_fin','timestamp');
+		$this->captura('estado_reg','varchar');
+		$this->captura('estado','varchar');
+		$this->captura('descripcion','varchar');
+		$this->captura('id_funcionario_resp','int4');
+		$this->captura('titulo','varchar');
+		$this->captura('desc_fin','varchar');
+		$this->captura('usuario_ai','varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('id_usuario_ai','int4');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('codigo_tipo_estado','varchar');
+		$this->captura('nombre_tipo_estado','varchar');
+		$this->captura('nombre_tipo_proceso','varchar');
+		$this->captura('nro_tramite','varchar');
+		$this->captura('id_estado_wf','int4');
+		$this->captura('id_proceso_wf','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+
 			
 	function insertarObs(){
 		//Definicion de variables para ejecucion del procedimiento

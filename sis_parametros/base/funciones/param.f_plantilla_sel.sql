@@ -60,7 +60,13 @@ BEGIN
 						plt.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        plt.sw_monto_excento	
+                        plt.sw_monto_excento,
+                        plt.sw_descuento ,
+                        plt.sw_autorizacion,
+                        plt.sw_codigo_control,
+                        plt.tipo_plantilla,
+                        plt.sw_ic,
+                        plt.sw_nro_dui
 						from param.tplantilla plt
 						inner join segu.tusuario usu1 on usu1.id_usuario = plt.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = plt.id_usuario_mod

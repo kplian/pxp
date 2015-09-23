@@ -916,3 +916,134 @@ IS 'Este campo se agrega para poder subdividir los deptos de un sistema en modul
 
 /***********************************F-SCP-RAC-PARAM-0-03/03/2015****************************************/
 
+
+
+/***********************************I-SCP-RAC-PARAM-0-29/04/2015****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN estado_envio VARCHAR(15) DEFAULT 'exito' NOT NULL;
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN desc_falla TEXT;
+
+COMMENT ON COLUMN param.talarma.desc_falla
+IS 'descripcion de la falla si existe';
+
+/***********************************F-SCP-RAC-PARAM-0-29/04/2015****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-1-29/04/2015****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_estado_wf INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_estado_wf
+IS 'indetifica el estado del wf, solo apra los correos hecho con plantilla, (especiales)';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_proceso_wf INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_proceso_wf
+IS 'identifica el proceso wf que manda el correo (solo para plantillas)';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN recibido VARCHAR(4) DEFAULT '--' NOT NULL;
+
+COMMENT ON COLUMN param.talarma.recibido
+IS 'alerta sobre el acuse de recibo, solo para plantilla preconfiguradas para recibir acuses';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_plantilla_correo INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_plantilla_correo
+IS 'identifica desde que plantilla se origino el correo';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN fecha_recibido TIMESTAMP(0) WITHOUT TIME ZONE;
+
+COMMENT ON COLUMN param.talarma.fecha_recibido
+IS 'para marcar la fecha y hora del acuse de recibo';
+
+
+
+
+/***********************************F-SCP-RAC-PARAM-1-29/04/2015****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-1-21/08/2015****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_descuento VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_descuento
+IS 'es para habilitar el libro de compras o ventas la la opcion deregistrar descuentos';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_autorizacion VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_autorizacion
+IS 'habilita o el campo autorizacion en libro de compra ventas';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_codigo_control VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_codigo_control
+IS 'habilita el campo codigo de control en libro de compra ventas';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN tipo_plantilla VARCHAR(15) DEFAULT 'compra' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.tipo_plantilla
+IS 'compra o venta';
+
+ 
+/***********************************F-SCP-RAC-PARAM-1-21/08/2015****************************************/
+
+/***********************************I-SCP-RAC-PARAM-1-08/09/2015****************************************/
+
+CREATE TABLE param.tdepto_depto (
+  id_depto_depto SERIAL,
+  id_depto_origen INTEGER NOT NULL,
+  id_depto_destino INTEGER NOT NULL,
+  obs TEXT,
+  CONSTRAINT tdepto_depto_pkey PRIMARY KEY(id_depto_depto)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tdepto_depto.id_depto_destino
+IS 'es el depto que puede trabajar con depto origen, (considerar que no es comuntativo)';
+/***********************************F-SCP-RAC-PARAM-1-08/09/2015****************************************/
+
+
+

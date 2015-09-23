@@ -20,8 +20,12 @@ class ACTDocumentoWf extends ACTbase{
 			$this->objParam->addFiltro("tewf.codigo not in (''anulada'',''anulado'',''cancelado'')");
 		}
 		
+		if ($this->objParam->getParametro('modoConsulta') == 'si') {
+			$this->objParam->addFiltro(" (dwf.chequeado = ''si'' or  td.action != '''') ");
+		}
+		
 		if ($this->objParam->getParametro('categoria') != '') {
-			$this->objParam->addFiltro("(''".$this->objParam->getParametro('categoria')."'' =ANY(td.categoria_documento) or td.categoria_documento is NULL)" );
+			$this->objParam->addFiltro("(''".$this->objParam->getParametro('categoria')."'' =ANY(td.categoria_documento) or td.categoria_documento is NULL or td.categoria_documento = ''{}'')" );
 		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

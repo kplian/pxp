@@ -92,8 +92,9 @@ BEGIN
             titulo_alerta, 
             parametros_ad,
             admite_obs,
-            estapa,
-            grupo_doc
+            etapa,
+            grupo_doc,
+            id_tipo_estado_anterior
             
             
           	) values(
@@ -125,8 +126,9 @@ BEGIN
             v_parametros.titulo_alerta, 
             v_parametros.parametros_ad,
             v_parametros.admite_obs,
-            v_parametros.estapa,
-            v_parametros.grupo_doc
+            v_parametros.etapa,
+            v_parametros.grupo_doc,
+            v_parametros.id_tipo_estado_anterior
 							
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
@@ -197,7 +199,8 @@ BEGIN
             parametros_ad=v_parametros.parametros_ad,
             admite_obs = v_parametros.admite_obs,
             etapa = v_parametros.etapa,
-            grupo_doc = v_parametros.grupo_doc
+            grupo_doc = v_parametros.grupo_doc,
+            id_tipo_estado_anterior = v_parametros.id_tipo_estado_anterior
 							
             where id_tipo_estado=v_parametros.id_tipo_estado;
             
@@ -271,8 +274,7 @@ BEGIN
             plantilla_mensaje_asunto = v_parametros.plantilla_mensaje_asunto,
             plantilla_mensaje = v_parametros.plantilla_mensaje,
             id_usuario_mod = p_id_usuario,
-            fecha_mod = now(),
-            etapa = v_parametros.etapa
+            fecha_mod = now()
 			
 			where id_tipo_estado=v_parametros.id_tipo_estado;
             

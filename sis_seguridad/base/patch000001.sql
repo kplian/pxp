@@ -1020,6 +1020,9 @@ ALTER TABLE segu.tpersona
 
 ALTER TABLE segu.tpersona
   ADD COLUMN expedicion VARCHAR(100);
+  
+ALTER TABLE segu.tpersona
+  ADD COLUMN discapacitado VARCHAR(2);
 
 /*****************************F-SCP-JRR-SEGU-0-25/03/2015*************/
 

@@ -396,7 +396,7 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'menu_codigo',
 				fieldLabel: 'Código',
-				allowBlank: false,
+				allowBlank: true,
 				anchor: '100%',
 				gwidth: 100,
 				maxLength:25
@@ -588,7 +588,7 @@ Phx.vista.Tabla=Ext.extend(Phx.gridInterfaz,{
     	
     	this.mostrarGrupo(3);
     	this.Cmp.menu_nombre.allowBlank = false;
-    	this.Cmp.menu_codigo.allowBlank = false;
+    	//this.Cmp.menu_codigo.allowBlank = false;
     	this.Cmp.menu_icono.allowBlank = true;  
     },
     habilitaCamposDetalle : function (tipo_detalle) {

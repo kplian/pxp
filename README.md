@@ -7,6 +7,11 @@ https://github.com/kplian/instalador_framework.pxp
 
 Youtube chanel (https://www.youtube.com/channel/UCSk4IfCR6swJYu3zPOEiGuw)
 
+Support forum
+(request an invitation! to rensi@kplian.com  or  jaime@kplian.com)
+
+http://foro.kplian.com/
+
 Example 
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
@@ -114,6 +119,37 @@ TO UPDATE THE DATABASE ON PULL OR MERGE:
   (execute the command as user postgres):
 
   pxp/utilidades/restaurar_db/restaurar_todo.py
+  
+  
+  
+  
+  Para restaurar el sistema tenemso dos opcion 
+  a)  restaurar todo,  elimina tablas y todas las funciones y las crea de cero
+  b)  retaurar parcialmente,  respeta los datos y solo aumenta los scrip faltantes ()mejor opcion si ya estas con datos en produccion
+  
+  
+  pasos
+  
+  1)  entrar en la carpeta de  utilitarios
+  
+  cd cd /var/www/html/kerp_capacitacion/pxp/utilidades/restaurar_bd/
+
+2) convertice en usuario postgres
+
+su postgres -   ##paso importante no olvidar el guion
+
+3) ejecutar la restauracion
+
+./restaurar_todo.py    ##  colocar el punto 
+
+4) con esto nos da un menu con 4 opcion
+
+   selecionas la que mas te convenga (por lo general la dos , sit itnes datos que no quieres perder)
+   
+   al final nos dara un archivo de log donde deberemos buscar los ERROR(es)  y resolver de ser necesario
+   se peude restaruar todas las veces necesarias hasta no tener ningun error
+   
+   
 
 
 

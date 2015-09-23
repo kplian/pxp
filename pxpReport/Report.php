@@ -35,5 +35,10 @@ require_once(dirname(__FILE__).'/DataSource.php');
 			$this->components[] = $component;
 		}
 		
+		public function includeTemplate(){
+			
+			
+		}
+		
     }
 ?>
