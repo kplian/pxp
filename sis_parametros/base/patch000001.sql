@@ -988,3 +988,45 @@ IS 'para marcar la fecha y hora del acuse de recibo';
 
 /***********************************F-SCP-RAC-PARAM-1-29/04/2015****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-1-21/08/2015****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_descuento VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_descuento
+IS 'es para habilitar el libro de compras o ventas la la opcion deregistrar descuentos';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_autorizacion VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_autorizacion
+IS 'habilita o el campo autorizacion en libro de compra ventas';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_codigo_control VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_codigo_control
+IS 'habilita el campo codigo de control en libro de compra ventas';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN tipo_plantilla VARCHAR(15) DEFAULT 'compra' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.tipo_plantilla
+IS 'compra o venta';
+
+
+/***********************************F-SCP-RAC-PARAM-1-21/08/2015****************************************/
+
+

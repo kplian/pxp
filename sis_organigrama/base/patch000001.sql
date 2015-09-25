@@ -535,3 +535,12 @@ ALTER TABLE orga.tuo_funcionario
   ALTER COLUMN id_uo SET STATISTICS 0;
   
 /*****************************F-SCP-RAC-ORGA-0-05/03/2015*************/
+
+/*****************************I-SCP-JRR-ORGA-0-14/08/2015*************/
+ALTER TABLE orga.tcargo
+  ALTER COLUMN id_oficina DROP NOT NULL;
+
+/*****************************F-SCP-JRR-ORGA-0-14/08/2015*************/
+
+
+

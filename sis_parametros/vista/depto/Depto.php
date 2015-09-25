@@ -11,7 +11,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
-
+    tipo: 'Depto',
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
@@ -21,8 +21,10 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		
 		//this.store.baseParams.id_depto=this.getComponente('id_depto').getValue();
+		if(this.tipo == 'Depto'){
+			this.load({params:{start:0, limit:50}})
+		}
 		
-		this.load({params:{start:0, limit:50}})
 	},
 		 /*east:{
 		  url:'../../../sis_parametros/vista/depto_usuario/DeptoUsuario.php',

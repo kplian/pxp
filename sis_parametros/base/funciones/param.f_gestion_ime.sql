@@ -269,7 +269,7 @@ BEGIN
 				id_periodo, id_subsistema, id_usuario_reg, fecha_reg, estado
 				)
 				select
-				v_rec.id_periodo, sis.id_subsistema,p_id_usuario, now(), 'activo'
+				v_rec.id_periodo, sis.id_subsistema,p_id_usuario, now(), 'abierto'
 				from segu.tsubsistema sis
 				where sis.id_subsistema not in (select id_subsistema
 												from param.tperiodo_subsistema

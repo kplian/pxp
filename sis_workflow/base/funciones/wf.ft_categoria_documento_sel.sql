@@ -85,9 +85,9 @@ BEGIN
                             from wf.tcategoria_documento cd ';
 
 				if (v_parametros.todo = 'no') then                   
-               		v_consulta = v_consulta || ' and pm.modificado is null ';
+               		v_consulta = v_consulta || ' and cd.modificado is null ';
                end if;
-               v_consulta = v_consulta || ' order by pm.id_proceso_macro ASC';	
+               v_consulta = v_consulta || ' order by cd.id_categoria_documento ASC';	
                                                                        
                return v_consulta;
 

@@ -92,6 +92,106 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
+        
+        {
+            config:{
+                name: 'sw_descuento',
+                fieldLabel: 'Decuento',
+                qtip: 'Incluye o no el campo descuento en libro de compras y ventas',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_descuento',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+        
+        {
+            config:{
+                name: 'sw_autorizacion',
+                fieldLabel: 'Autorización',
+                qtip: 'Incluye o no el campo autorización en libro de compras y ventas',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_autorizacion',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+        
+        {
+            config:{
+                name: 'sw_codigo_control',
+                fieldLabel: 'Código de Control',
+                qtip: 'Incluye o no el campo código de control en libro de compras y ventas',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_codigo_control',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+        
+        {
+            config:{
+                name: 'tipo_plantilla',
+                fieldLabel: 'Tipo Plantilla',
+                qtip: 'Se usa para compras o para ventas',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['compra','venta']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.tipo_plantilla',
+                        type: 'list',
+                         options: ['compra','venta']  
+                    },
+            grid: true,
+            egrid: true,
+            form: true
+       },
 		
 		{
 			config:{
@@ -220,7 +320,8 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'sw_monto_excento'
+		{name:'usr_mod', type: 'string'},'sw_monto_excento',
+		 'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla'
 		
 	],
 	sortInfo:{
@@ -229,8 +330,8 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
     bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
-    bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
-    bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    //bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+    //bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	
 })
 </script>

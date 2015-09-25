@@ -60,7 +60,11 @@ BEGIN
 			id_usuario_reg,
 			fecha_mod,
 			id_usuario_mod,
-            sw_monto_excento
+            sw_monto_excento,
+            sw_descuento ,
+            sw_autorizacion,
+            sw_codigo_control,
+            tipo_plantilla
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -72,7 +76,11 @@ BEGIN
 			p_id_usuario,
 			null,
 			null,
-            v_parametros.sw_monto_excento
+            v_parametros.sw_monto_excento,
+            v_parametros.sw_descuento ,
+            v_parametros.sw_autorizacion,
+            v_parametros.sw_codigo_control,
+            v_parametros.tipo_plantilla
 							
 			)RETURNING id_plantilla into v_id_plantilla;
 			
@@ -104,7 +112,11 @@ BEGIN
 			tipo = v_parametros.tipo,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
-            sw_monto_excento = v_parametros.sw_monto_excento
+            sw_monto_excento = v_parametros.sw_monto_excento,
+            sw_descuento=v_parametros.sw_descuento,
+            sw_autorizacion=v_parametros.sw_autorizacion,
+            sw_codigo_control=v_parametros.sw_codigo_control,
+            tipo_plantilla=v_parametros.tipo_plantilla
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta

@@ -14,8 +14,11 @@ header("content-type: text/javascript; charset=UTF-8");
 		codSist : 'PXP',
 		constructor : function(config) {
 			this.maestro = config.maestro;
+			this.initButtons=[this.cmbGestion];
 			Phx.vista.PeriodoSubsistema.superclass.constructor.call(this, config);
 			this.init();
+			
+			
 			this.addButton('btnSwitchEstadoPeriodo', {
 				text : '',
 				iconCls : 'bunlock',
@@ -23,9 +26,79 @@ header("content-type: text/javascript; charset=UTF-8");
 				handler : this.onBtnSwitchEstadoPeriodo,
 				tooltip : '<b>Abrir Periodo</b>'
 			});
+			
+			this.bloquearOrdenamientoGrid();
+			this.cmbGestion.on('select', function(){
+			    if(this.validarFiltros()){
+	                  this.capturaFiltros();
+	           }
+			},this);
+		
+		
 			//Setea el store del grid con el codigo del subsistema
 			Ext.apply(this.store.baseParams,{codSist:this.codSist});
 		},
+		
+		cmbGestion: new Ext.form.ComboBox({
+				fieldLabel: 'Gestion',
+				allowBlank: false,
+				emptyText:'Gestion...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_parametros/control/Gestion/listarGestion',
+					id: 'id_gestion',
+					root: 'datos',
+					sortInfo:{
+						field: 'gestion',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_gestion','gestion'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams:{par_filtro:'gestion'}
+				}),
+				valueField: 'id_gestion',
+				triggerAction: 'all',
+				displayField: 'gestion',
+			    hiddenName: 'id_gestion',
+    			mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				listWidth:'280',
+				width:80
+			}),
+			
+		
+		
+		capturaFiltros:function(combo, record, index){
+	        this.desbloquearOrdenamientoGrid();
+	        this.store.baseParams.id_gestion=this.cmbGestion.getValue();
+	        this.load(); 
+	            
+	        
+	    },	
+		
+		validarFiltros:function(){
+	        if(this.cmbGestion.isValid()){
+	            return true;
+	        }
+	        else{
+	            return false;
+	        }
+	        
+	    },
+	    
+	    onButtonAct:function(){
+	        if(!this.validarFiltros()){
+	            alert('Especifique los filtros antes')
+	         }
+	        else{
+	            this.store.baseParams.id_gestion=this.cmbGestion.getValue();
+	            Phx.vista.PeriodoSubsistema.superclass.onButtonAct.call(this);
+	        }
+	    },
+	    
 		Atributos : [{
 			config : {
 				labelSeparator : '',
