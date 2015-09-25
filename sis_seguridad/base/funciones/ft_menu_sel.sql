@@ -67,7 +67,7 @@ BEGIN
                             inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = ta.id_tipo_proceso
                             inner join wf.ttipo_estado te on te.id_tipo_proceso = tp.id_tipo_proceso
                             left join wf.ttipo_estado_rol terol on terol.id_tipo_estado = te.id_tipo_estado
-                            where ta.vista_id_tabla_maestro is null and tp.estado_reg= 'activo' and  ta.estado_reg = 'activo' and ta.menu_codigo is not null
+                            where ta.vista_id_tabla_maestro is null and tp.estado_reg= 'activo' and  ta.estado_reg = 'activo' and ta.menu_codigo is not null and ta.menu_codigo != ''
                             group by tp.codigo, ta.menu_nombre,te.codigo,te.nombre_estado) loop
             	
                 --registra la carpeta

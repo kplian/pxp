@@ -38,6 +38,8 @@ class MODPlantilla extends MODbase{
         $this->captura('sw_autorizacion','varchar');
         $this->captura('sw_codigo_control','varchar');
         $this->captura('tipo_plantilla','varchar');
+		$this->captura('sw_ic','varchar');
+		$this->captura('sw_nro_dui','varchar');
 		
 
 		
@@ -67,6 +69,8 @@ class MODPlantilla extends MODbase{
         $this->setParametro('sw_autorizacion','sw_autorizacion','varchar');
         $this->setParametro('sw_codigo_control','sw_codigo_control','varchar');
         $this->setParametro('tipo_plantilla','tipo_plantilla','varchar');
+		$this->setParametro('sw_nro_dui','sw_nro_dui','varchar');
+		$this->setParametro('sw_ic','sw_ic','varchar');
 		
 		
 
@@ -97,6 +101,8 @@ class MODPlantilla extends MODbase{
         $this->setParametro('sw_autorizacion','sw_autorizacion','varchar');
         $this->setParametro('sw_codigo_control','sw_codigo_control','varchar');
         $this->setParametro('tipo_plantilla','tipo_plantilla','varchar');
+		$this->setParametro('sw_nro_dui','sw_nro_dui','varchar');
+		$this->setParametro('sw_ic','sw_ic','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

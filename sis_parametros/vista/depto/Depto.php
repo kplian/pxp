@@ -74,6 +74,12 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
           title:'Depto - Cuenta Bancaria', 
           height:'50%',
           cls:'DeptoCuentaBancaria'
+         },
+		 {
+          url:'../../../sis_parametros/vista/depto_depto/DeptoDepto.php',
+          title:'Depto Relacionados', 
+          height:'50%',
+          cls:'DeptoDepto'
          }]	,
 	Atributos:[
 		{
@@ -127,8 +133,9 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
    			//type:'TrigguerCombo',
    			type:'ComboBox',
    			id_grupo:0,
+   			bottom_filter: true,
    			filters:{	
-   				        pfiltro:'nombre',
+   				        pfiltro:'SUBSIS.nombre',
    						type:'string'
    					},
    		   
@@ -147,6 +154,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.modulo',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},
@@ -178,6 +186,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.codigo',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},
@@ -193,6 +202,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.nombre',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},
@@ -208,6 +218,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'deppto.nombre_corto',type:'string'},
 			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},

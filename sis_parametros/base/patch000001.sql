@@ -1026,7 +1026,24 @@ ALTER TABLE param.tplantilla
 COMMENT ON COLUMN param.tplantilla.tipo_plantilla
 IS 'compra o venta';
 
-
+ 
 /***********************************F-SCP-RAC-PARAM-1-21/08/2015****************************************/
+
+/***********************************I-SCP-RAC-PARAM-1-08/09/2015****************************************/
+
+CREATE TABLE param.tdepto_depto (
+  id_depto_depto SERIAL,
+  id_depto_origen INTEGER NOT NULL,
+  id_depto_destino INTEGER NOT NULL,
+  obs TEXT,
+  CONSTRAINT tdepto_depto_pkey PRIMARY KEY(id_depto_depto)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tdepto_depto.id_depto_destino
+IS 'es el depto que puede trabajar con depto origen, (considerar que no es comuntativo)';
+/***********************************F-SCP-RAC-PARAM-1-08/09/2015****************************************/
+
 
 

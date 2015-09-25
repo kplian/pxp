@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
   p_id_tipo_estado_siguiente integer,
   p_id_funcionario integer,
@@ -230,8 +228,8 @@ BEGIN
             --  si tiene plantilla de correo la procesamos
             IF v_registros.plantilla_mensaje is not null and v_registros.plantilla_mensaje != '' THEN
              
-                  v_plantilla_correo =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla_mensaje, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
-                  v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla_mensaje_asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                  v_plantilla_correo =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla_mensaje, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                  v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla_mensaje_asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                   
                   v_desc_alarma = v_plantilla_correo;
            
@@ -430,7 +428,7 @@ BEGIN
                 		p_id_tipo_estado_siguiente,v_registros_ant.id_tipo_estado)) then	
                     
                     if (v_registros.plantilla is not null and v_registros.plantilla != '') then
-                        v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                        v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;
                     /*Se obtiene los documentos a colocar como adjuntos en el siguiente formato:
                     	url|id_proceso_wf,url,url,url|id_proceso_wf
@@ -449,7 +447,7 @@ BEGIN
                                     td.tipo = 'generado');
                     
                     if (v_registros.asunto is not null) then
-                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs);
+                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;	
                     --raise exception '%',p_id_proceso_wf;
                     v_alarma = param.f_inserta_alarma(
