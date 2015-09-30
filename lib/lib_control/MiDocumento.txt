@@ -1,0 +1,2 @@
+Hola estoy escribiendo en un archivo creado con PHP 
+Hola estoy escribiendo en un archivo creado con PHP 
