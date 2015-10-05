@@ -113,7 +113,7 @@ or
 ## TO UPDATE THE DATABASE ON PULL OR MERGE:<a name="update_db"></a>
 
 
-* After pull the code is updated, the database changes are  not updated yet, but it's possible update folowing these steps:
+After pull the code is updated,but the database changes are  not updated yet. It's possible to update folowing these steps:
   
 1. Go to /pxp/utilidades/restaurar_bd/ folder
 2. Change user to postgres: "su postgres -"  ##don't forget the score
