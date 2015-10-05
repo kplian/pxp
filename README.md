@@ -1,10 +1,7 @@
 PXP
 ===
 
-How to install
-
-https://github.com/kplian/instalador_framework.pxp
-
+## SUPPORT : <a name="support"></a>
 Youtube chanel (https://www.youtube.com/channel/UCSk4IfCR6swJYu3zPOEiGuw)
 
 Support forum
@@ -12,7 +9,7 @@ Support forum
 
 http://foro.kplian.com/
 
-Example 
+## DEMO : <a name="demo"></a>
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
@@ -22,10 +19,9 @@ http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
 Framework PXP for agile web development
 
-
 https://www.youtube.com/watch?v=uUVevOzYDy4
 
-TO USE IT BY FIRST TIME use :
+## INSTALLATION :<a name="installation"></a>
 
 https://github.com/kplian/instalador_framework.pxp for centos 6.x
 
@@ -73,22 +69,20 @@ or:
 	    $_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
         ...   
 
-7.1. Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
+  7.1. Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
 
 
         local	all		postgres, dbweb_conexion 		trust
 
 
-7.2. Restart postgres service
+  7.2. Restart postgres service
 	
         /etc/init.d/postgresql-9.1 restart
 or
-
-
-
         service postgresql-9.1 restart
 
 8. You can use the framework now!!! (user:admin, password:admin)
+
 
 ## TO CREATE A NEW SYSTEM:<a name="new_system"></a>
 
