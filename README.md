@@ -17,9 +17,6 @@ http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 	 
 	password:  rodrigo
 
-Framework PXP for agile web development
-
-https://www.youtube.com/watch?v=uUVevOzYDy4
 
 ## INSTALLATION :<a name="installation"></a>
 
@@ -117,3 +114,9 @@ After pull the code is updated,but the database changes are  not updated yet. It
 	* Option 2 Keeps tables with data, drop functions and restore them from scripts and execute new script ¡¡¡You don't lose information here!!!!
 	* Option 3 Generate a backup from the current database
 	* Option 4 Exit the application
+
+## CODE GENERATOR:<a name="code_generator"></a>
+
+This video explains to use code generator for PXP
+
+https://www.youtube.com/watch?v=uUVevOzYDy4
