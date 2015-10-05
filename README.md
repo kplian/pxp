@@ -90,7 +90,7 @@ or
 
 8. You can use the framework now!!! (user:admin, password:admin)
 
-TO CREATE A NEW SYSTEM:
+## TO CREATE A NEW SYSTEM:<a name="new_system"></a>
 
 1. Create a folder for the system. Inside it create this structure:
     * vista
@@ -98,16 +98,13 @@ TO CREATE A NEW SYSTEM:
     * modelo
     * base
       * funciones
-      * schema.sql
-      * data000001.sql
-      * dependencies000001.sql
-      * patch000001.sql
-      * test_data.sql
+      * schema.sql (name of database schema for the system)
+      * data000001.sql (Scripts with initial data )
+      * dependencies000001.sql (Scripts to create objects with dependency: create view, add foreing key constraints, etc.)
+      * patch000001.sql (Scripts to create objects with no dependency: create table, add columns, etc.)
+      * test_data.sql (Test data for the system)
 
-  The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
-  for the system. All the patch files contains the scripts to generate the database objects for the system. for example "schema.sql" (onlyename of schema)
-  
-          nut
+  The folder "funciones" must contain one file for every function in the system. 
 
 2. Create or update a file named "sistemas.txt" inside your project root folder wich contains the path for every system of your project.Eg:
   "../../../sis_mantenimiento/"
