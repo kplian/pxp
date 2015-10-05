@@ -104,9 +104,9 @@ or
 ## TO UPDATE THE DATABASE ON PULL OR MERGE:<a name="update_db"></a>
 
 
-After pull the code is updated,but the database changes are  not updated yet. It's possible to update folowing these steps:
+After pull, the code is updated,but database scripts are  not executed yet. It's possible to execute folowing these steps:
   
-1. Go to /pxp/utilidades/restaurar_bd/ folder
+1. Go to "/pxp/utilidades/restaurar_bd/" folder
 2. Change user to postgres: "su postgres -"  ##don't forget the score
 3. Execute the script: "./restaurar_todo.py"
 4. Now we have a menu with 4 options:
