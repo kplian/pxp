@@ -113,6 +113,7 @@ TO CREATE A NEW SYSTEM:
   "../../../sis_mantenimiento/"
   One path should be one line in the file
 
+## heading<a name="update_db"></a>
 TO UPDATE THE DATABASE ON PULL OR MERGE:
 
 * After pull the code is updated, the database changes are  not updated yet, but it's possible update folowing these steps:
