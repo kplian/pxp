@@ -23,7 +23,7 @@ https://www.youtube.com/watch?v=uUVevOzYDy4
 
 ## INSTALLATION :<a name="installation"></a>
 
-https://github.com/kplian/instalador_framework.pxp for centos 6.x
+https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
 
 or:
 
