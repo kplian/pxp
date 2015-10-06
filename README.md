@@ -1,10 +1,7 @@
 PXP
 ===
 
-How to install
-
-https://github.com/kplian/instalador_framework.pxp
-
+## SUPPORT : <a name="support"></a>
 Youtube chanel (https://www.youtube.com/channel/UCSk4IfCR6swJYu3zPOEiGuw)
 
 Support forum
@@ -12,7 +9,7 @@ Support forum
 
 http://foro.kplian.com/
 
-Example 
+## DEMO : <a name="demo"></a>
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
@@ -20,14 +17,10 @@ http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 	 
 	password:  rodrigo
 
-Framework PXP for agile web development
 
+## INSTALLATION :<a name="installation"></a>
 
-https://www.youtube.com/watch?v=uUVevOzYDy4
-
-TO USE IT BY FIRST TIME use :
-
-https://github.com/kplian/instalador_framework.pxp for centos 6.x
+https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
 
 or:
 
@@ -73,24 +66,22 @@ or:
 	    $_SESSION["_CONTRASENA_CONEXION"]	= "dbweb_conexion" ;
         ...   
 
-7.1. Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
+  7.1. Configure postgres file, pg_hba.conf in direccion /var/lib/pgsql/9.1/data/, add next line:
 
 
         local	all		postgres, dbweb_conexion 		trust
 
 
-7.2. Restart postgres service
+  7.2. Restart postgres service
 	
         /etc/init.d/postgresql-9.1 restart
 or
-
-
-
         service postgresql-9.1 restart
 
 8. You can use the framework now!!! (user:admin, password:admin)
 
-TO CREATE A NEW SYSTEM:
+
+## TO CREATE A NEW SYSTEM:<a name="new_system"></a>
 
 1. Create a folder for the system. Inside it create this structure:
     * vista
@@ -98,26 +89,24 @@ TO CREATE A NEW SYSTEM:
     * modelo
     * base
       * funciones
-      * schema.sql
-      * data000001.sql
-      * dependencies000001.sql
-      * patch000001.sql
-      * test_data.sql
+      * schema.sql (name of database schema for the system)
+      * data000001.sql (Scripts with initial data )
+      * dependencies000001.sql (Scripts to create objects with dependency: create view, add foreing key constraints, etc.)
+      * patch000001.sql (Scripts to create objects with no dependency: create table, add columns, etc.)
+      * test_data.sql (Test data for the system)
 
-  The folder "funciones" must contain one file for every function in the system. The file "schema.sql" should have the drop and create schema
-  for the system. All the patch files contains the scripts to generate the database objects for the system. for example "schema.sql" (onlyename of schema)
-  
-          nut
+  The folder "funciones" must contain one file for every function in the system. 
 
 2. Create or update a file named "sistemas.txt" inside your project root folder wich contains the path for every system of your project.Eg:
   "../../../sis_mantenimiento/"
   One path should be one line in the file
 
-TO UPDATE THE DATABASE ON PULL OR MERGE:
+## TO UPDATE THE DATABASE ON PULL OR MERGE:<a name="update_db"></a>
 
-* After pull the code is updated, the database changes are  not updated yet, but it's possible update folowing these steps:
+
+After pull, the code is updated,but database scripts are  not executed yet. It's possible to execute folowing these steps:
   
-1. Go to /pxp/utilidades/restaurar_bd/ folder
+1. Go to "/pxp/utilidades/restaurar_bd/" folder
 2. Change user to postgres: "su postgres -"  ##don't forget the score
 3. Execute the script: "./restaurar_todo.py"
 4. Now we have a menu with 4 options:
@@ -125,3 +114,9 @@ TO UPDATE THE DATABASE ON PULL OR MERGE:
 	* Option 2 Keeps tables with data, drop functions and restore them from scripts and execute new script ¡¡¡You don't lose information here!!!!
 	* Option 3 Generate a backup from the current database
 	* Option 4 Exit the application
+
+## CODE GENERATOR:<a name="code_generator"></a>
+
+This video explains to use code generator for PXP
+
+https://www.youtube.com/watch?v=uUVevOzYDy4
