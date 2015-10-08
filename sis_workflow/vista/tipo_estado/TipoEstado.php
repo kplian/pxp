@@ -86,7 +86,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 				gwidth: 200,
 				maxLength: 150,
 				renderer: function(val) {
-				         if (val != ''){return '<div class="normalwhite">'+val+'</div>';}
+				         if (val != ''){return '<div class="gridmultiline">'+val+'</div>';}
 				}
 			},
 			type:'TextField',
