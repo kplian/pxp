@@ -1074,6 +1074,9 @@ ALTER TABLE param.tconcepto_ingas
 
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN id_entidad INTEGER;
+  
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_actividad_economica INTEGER;
 
 
 /***********************************F-SCP-JRR-PARAM-0-03/10/2015****************************************/

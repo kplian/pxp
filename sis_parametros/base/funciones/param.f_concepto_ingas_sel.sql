@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -68,7 +66,9 @@ BEGIN
                         array_to_string( conig.id_grupo_ots,'','',''null'')::varchar,
                         conig.filtro_ot,
                         conig.requiere_ot,
-                        array_to_string( conig.sw_autorizacion, '','',''null'')::varchar	
+                        array_to_string( conig.sw_autorizacion, '','',''null'')::varchar,
+                        conig.id_entidad,
+                        conig.descripcion_larga	
 						from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
