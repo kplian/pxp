@@ -14,6 +14,7 @@ class MODEmpresa extends MODbase{
 	}
 			
 	function listarEmpresa(){
+		
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='param.f_empresa_sel';
 		$this->transaccion='PM_EMP_SEL';
@@ -35,7 +36,9 @@ class MODEmpresa extends MODbase{
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+		
 		$this->ejecutarConsulta();
+		
 		
 		//Devuelve la respuesta
 		return $this->respuesta;

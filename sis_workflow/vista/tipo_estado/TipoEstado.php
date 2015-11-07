@@ -84,7 +84,8 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '70%',
 				gwidth: 200,
-				maxLength: 150
+				maxLength: 150,
+				renderer: function(val){if (val != ''){return '<div class="gridmultiline">'+val+'</div>';}}
 			},
 			type:'TextField',
 			filters: { pfiltro: 'tipes.nombre_estado', type: 'string'},
@@ -585,83 +586,6 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         },
         
         {
-			config:{
-				name: 'estado_reg',
-				fieldLabel: 'Estado Reg.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
-			},
-			type:'TextField',
-			filters:{pfiltro:'tipes.estado_reg',type:'string'},
-			id_grupo:1,
-			grid:false,
-			form:false
-		},
-		{
-			config:{
-				name: 'fecha_reg',
-				fieldLabel: 'Fecha creación',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-						format: 'd/m/Y', 
-						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-			type:'DateField',
-			filters:{pfiltro:'tipes.fecha_reg',type:'date'},
-			id_grupo:1,
-			grid:false,
-			form:false
-		},
-		{
-			config:{
-				name: 'usr_reg',
-				fieldLabel: 'Creado por',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-			type:'NumberField',
-			filters:{pfiltro:'usu1.cuenta',type:'string'},
-			id_grupo:1,
-			grid:false,
-			form:false
-		},
-		{
-			config:{
-				name: 'fecha_mod',
-				fieldLabel: 'Fecha Modif.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-						format: 'd/m/Y', 
-						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-			type:'DateField',
-			filters:{pfiltro:'tipes.fecha_mod',type:'date'},
-			id_grupo:1,
-			grid:false,
-			form:false
-		},
-		{
-			config:{
-				name: 'usr_mod',
-				fieldLabel: 'Modificado por',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-			type:'NumberField',
-			filters:{pfiltro:'usu2.cuenta',type:'string'},
-			id_grupo:1,
-			grid:false,
-			form:false
-		},
-		{
        			config:{
        				name:'id_roles',
        				fieldLabel:'Roles',
@@ -750,6 +674,86 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid: true,
 			form: true
 		},
+		
+		{
+			config:{
+				name: 'estado_reg',
+				fieldLabel: 'Estado Reg.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:10
+			},
+			type:'TextField',
+			filters:{pfiltro:'tipes.estado_reg',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'fecha_reg',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+			type:'DateField',
+			filters:{pfiltro:'tipes.fecha_reg',type:'date'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'usr_reg',
+				fieldLabel: 'Creado por',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+			type:'NumberField',
+			filters:{pfiltro:'usu1.cuenta',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'fecha_mod',
+				fieldLabel: 'Fecha Modif.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+			type:'DateField',
+			filters:{pfiltro:'tipes.fecha_mod',type:'date'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'usr_mod',
+				fieldLabel: 'Modificado por',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+			type:'NumberField',
+			filters:{pfiltro:'usu2.cuenta',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
+		}
+		
+		
 	],
 	
 	title:'Tipo Estado',

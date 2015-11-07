@@ -47,14 +47,14 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	       		    lazyRender:true,
 	       		    mode: 'local',
 	       		    gwidth: 100,
-	       		    store:['ingreso','gasto']
+	       		    store:['recurso','gasto']
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
 	       		filters:{	
 	       		         type: 'list',
 	       		         pfiltro:'conig.movimiento',
-	       				 options: ['ingreso','gasto'],	
+	       				 options: ['recurso','gasto'],	
 	       		 	},
 	       		grid:true,
 	       		form:true
@@ -555,8 +555,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
-	bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
-	bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	//bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	//bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	
 	 preparaMenu:function(n){
         var data = this.getSelectedData();

@@ -1,8 +1,10 @@
 CREATE OR REPLACE FUNCTION orga.f_get_ultimo_centro_costo_funcionario (
   p_id_funcionario integer,
-  p_id_periodo integer
+  p_id_periodo integer,
+  out po_id_centro_costo integer,
+  out po_id_cargo integer
 )
-RETURNS integer AS
+RETURNS record AS
 $body$
 DECLARE
   	v_resp		            varchar;
@@ -21,7 +23,7 @@ BEGIN
     where id_periodo = p_id_periodo;
     
 
-    select carpre.id_centro_costo into v_id_centro_costo
+    select car.id_cargo,carpre.id_centro_costo into po_id_cargo,po_id_centro_costo
     from orga.tuo_funcionario uofun
     inner join orga.tcargo car
         on car.id_cargo = uofun.id_cargo
@@ -32,8 +34,7 @@ BEGIN
         (uofun.fecha_finalizacion >= v_periodo.fecha_ini or uofun.fecha_finalizacion is null)
         and carpre.fecha_ini<=v_periodo.fecha_fin
     order by uofun.fecha_asignacion,carpre.fecha_ini desc limit 1;   
-           
-    return v_id_centro_costo;                 
+                       
                
 EXCEPTION
 				

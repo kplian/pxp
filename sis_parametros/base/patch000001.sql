@@ -1046,4 +1046,37 @@ IS 'es el depto que puede trabajar con depto origen, (considerar que no es comun
 /***********************************F-SCP-RAC-PARAM-1-08/09/2015****************************************/
 
 
+/***********************************I-SCP-JRR-PARAM-0-20/09/2015****************************************/
 
+CREATE TABLE param.tentidad (
+    id_entidad serial NOT NULL,
+    nombre varchar(150) NOT NULL,
+    nit varchar(20) NOT NULL,   
+    tipo_venta_producto varchar(20), 
+    CONSTRAINT tentidad_pkey PRIMARY KEY(id_entidad)
+    
+) 
+INHERITS (pxp.tbase) WITH OIDS;
+
+/***********************************F-SCP-JRR-PARAM-0-20/09/2015****************************************/
+
+/***********************************I-SCP-JRR-PARAM-0-03/10/2015****************************************/
+
+
+ALTER TABLE param.tentidad
+  ADD COLUMN estados_comprobante_venta VARCHAR(100);
+  
+ALTER TABLE param.tentidad
+  ADD COLUMN estados_anulacion_venta VARCHAR(100);
+  
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN descripcion_larga TEXT;
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_entidad INTEGER;
+  
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_actividad_economica INTEGER;
+
+
+/***********************************F-SCP-JRR-PARAM-0-03/10/2015****************************************/
