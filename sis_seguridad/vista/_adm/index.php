@@ -171,6 +171,7 @@ if(!isset($_SESSION["_SESION"])){
       
       
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-lang-es.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="../../../lib/qrcode/qrcode.min.js"></script>
     
  	<?php 		
  		$dir = scandir(dirname(__FILE__) . "/../../../../");
