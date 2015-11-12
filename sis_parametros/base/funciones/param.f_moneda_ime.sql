@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_moneda_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_moneda_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_moneda_ime
@@ -55,7 +60,9 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            triangulacion,
+            contabilidad
           	) values(
 			v_parametros.prioridad,
 			v_parametros.origen,
@@ -67,12 +74,14 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+            v_parametros.triangulacion,
+            v_parametros.contabilidad
 							
 			)RETURNING id_moneda into v_id_moneda;
 			
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Moneda almacenado(a) con exito (id_moneda'||v_id_moneda||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Moneda almacenada con exito (id_moneda'||v_id_moneda||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_moneda',v_id_moneda::varchar);
 
             --Devuelve la respuesta
@@ -92,15 +101,17 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update param.tmoneda set
-			prioridad = v_parametros.prioridad,
-			origen = v_parametros.origen,
-			tipo_actualizacion = v_parametros.tipo_actualizacion,
-			codigo = v_parametros.codigo,
-			moneda = v_parametros.moneda,
-			tipo_moneda = v_parametros.tipo_moneda,
-			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
-			where id_moneda=v_parametros.id_moneda;
+              prioridad = v_parametros.prioridad,
+              origen = v_parametros.origen,
+              tipo_actualizacion = v_parametros.tipo_actualizacion,
+              codigo = v_parametros.codigo,
+              moneda = v_parametros.moneda,
+              tipo_moneda = v_parametros.tipo_moneda,
+              id_usuario_mod = p_id_usuario,
+              fecha_mod = now(),
+              triangulacion =  v_parametros.triangulacion,
+              contabilidad =  v_parametros.contabilidad
+			where id_moneda = v_parametros.id_moneda;
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Moneda modificado(a)'); 
@@ -150,7 +161,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_moneda_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

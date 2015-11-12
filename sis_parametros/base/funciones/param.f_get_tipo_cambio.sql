@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_get_tipo_cambio (
   p_id_moneda_1 integer,
   p_fecha date,
