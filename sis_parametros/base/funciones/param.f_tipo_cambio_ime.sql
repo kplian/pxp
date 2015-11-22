@@ -156,6 +156,7 @@ BEGIN
             
            v_tipo_cambio =  param.f_get_tipo_cambio(v_parametros.id_moneda,v_parametros.fecha, 'O');
            
+           
            IF v_tipo_cambio is NULL THEN
            
                raise exception 'No existe tipo de cambio para la fecha .... %',v_parametros.fecha ;
