@@ -21,7 +21,8 @@ http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 ## INSTALLATION :<a name="installation"></a>
 
 https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
-(https://www.youtube.com/watch?v=fIQbMXl5Jdg)
+
+(how to install ...   https://www.youtube.com/watch?v=fIQbMXl5Jdg)
 
 or:
 
