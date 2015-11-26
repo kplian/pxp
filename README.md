@@ -30,7 +30,7 @@ https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
 ## NEXT ...  (if you want another instance):<a name="new_system"></a>
 ## FOR CREATE A NEW INSTANCE:<a name="new_system"></a>
 
-1. Create folder for your project
+1. Create folder for your project  (example mypro)
 2. Inside the folder of your project clone this repository (This will create the pxp folder)
     #git  clone http://github.com/kplian/pxp.git
 
@@ -60,7 +60,8 @@ https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
    --  ejm Create user dbweb_conexion  in your database with superuser privileges
      $_SESSION["_BASE_DATOS"]= "dbweb";
      $_SESSION["_USUARIO_CONEXION"] = "conexion" ;
-	 $_SESSION["_CONTRASENA_CONEXION"]	= "pass_user_web_web_conexion" 
+     $_SESSION["_CONTRASENA_CONEXION"]	= "pass_user_web_web_conexion" 
+     $_SESSION["_FOLDER"] = "/mypro/";
 
 
 7. As postgres user execute "pxp/utilidades/restaurar_bd/restaurar_todo.py" (This will generate the database). Postgres user needs execution access
