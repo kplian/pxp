@@ -24,9 +24,11 @@ https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
 
 (how to install ...   https://www.youtube.com/watch?v=fIQbMXl5Jdg)
 
-NEXT ...  (if you want another instance)
 
-For create a new instance:
+
+
+## NEXT ...  (if you want another instance):<a name="new_system"></a>
+## FOR CREATE A NEW INSTANCE:<a name="new_system"></a>
 
 1. Create folder for your project
 2. Inside the folder of your project clone this repository (This will create the pxp folder)
