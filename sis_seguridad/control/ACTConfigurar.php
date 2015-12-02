@@ -117,7 +117,7 @@ class ACTConfigurar extends ACTbase
 		$this->res=$this->objFunc->configurar();
 		$this->datos=$this->res->getDatos();
 		
-		if($this->datos['autentificacion'] == 'local')
+		if($this->datos['autentificacion'] == 'local' && $this->datos['modificar_clave'] == 'SI')
 		{
 			$_SESSION["_CONTRASENA"] = md5($_SESSION["_SEMILLA"].$this->objParam->getParametro('clave_nueva'));
 			$_SESSION["_CONTRASENA_MD5"] = $this->datos['clave'];
