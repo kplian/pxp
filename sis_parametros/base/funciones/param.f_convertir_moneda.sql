@@ -7,14 +7,15 @@ CREATE OR REPLACE FUNCTION param.f_convertir_moneda (
   p_fecha date,
   p_tipo varchar,
   p_num_decimales integer,
-  p_tipo_cambio_custom numeric = 1
+  p_tipo_cambio_custom numeric = 1,
+  p_show_error varchar = 'si'::character varying
 )
 RETURNS numeric AS
 $body$
 /**************************************************************************
  FUNCION: 		param.f_convertir_moneda
  DESCRIPCION:   Convierte el importe de la moneda1 a la moneda2 con el tipo
-                de cambio "O" Oficial, "C" Compra,   "V" venta o "C" custom,  por defecto "O" y con el redondeo
+                de cambio "O" Oficial, "C" Compra,   "V" venta o "CUS" custom,  por defecto "O" y con el redondeo
                 p_num_decimales por defecto 2
  AUTOR: 	    KPLIAN (jrr)	
  FECHA:	
@@ -62,7 +63,7 @@ BEGIN
     /*Obtener la moneda base*/
     v_id_moneda_base=param.f_get_moneda_base();
 
-    /*Si la moneda 2 es null obtener la moneda base*/
+    /*Si la moneda 2 es null es igual  la moneda base*/
     if(p_id_moneda_2 is null)then
         v_id_moneda_2=v_id_moneda_base;
     else
@@ -74,12 +75,14 @@ BEGIN
         return p_importe;
     end if;
     
-    /*Si la moneda 1 y la moneda 2 no son la moneda base se convierte la moneda 1 a la moneda base*/
-    if(p_id_moneda_1!=v_id_moneda_base and v_id_moneda_2!=v_id_moneda_base)then
-        v_res=  param.f_convertir_moneda(p_id_moneda_1,v_id_moneda_base,
-                p_importe,p_fecha,v_tipo,-1);
+    /*Sino tenemos un tipo de cambio custom y Si la moneda 1 y la moneda 2 no son la moneda base,  
+    se convierte la moneda 1 a la moneda base*/
+    if( p_id_moneda_1 != v_id_moneda_base and v_id_moneda_2 != v_id_moneda_base and v_tipo != 'CUS') then
+        
+        v_res=  param.f_convertir_moneda(p_id_moneda_1, v_id_moneda_base, p_importe, p_fecha, v_tipo, -1, p_tipo_cambio_custom);
         
         v_id_moneda_1=v_id_moneda_base;
+    
     else
         v_id_moneda_1=p_id_moneda_1;
         v_res=p_importe;
@@ -92,12 +95,14 @@ BEGIN
           (v_res/tc.oficial) as oficial ,
           (v_res/tc.compra) as compra,
           (v_res/tc.venta) as venta,
-          (v_res/p_tipo_cambio_custom) as custom
+          0::numeric as custom
          into 
            v_registro
         from param.ttipo_cambio tc
         where   tc.id_moneda=v_id_moneda_2 and
                 tc.fecha=p_fecha;
+     
+     v_registro.custom = (v_res/p_tipo_cambio_custom);
                 
     /*Si la moneda base es la moneda 2 se multiplica por el tipo de cambio*/
     elsif(v_id_moneda_base=v_id_moneda_2)then
@@ -118,16 +123,38 @@ BEGIN
                 
         v_id_moneda_2=v_id_moneda_1;
     else
-        raise exception 'Ha ocurrido un error al realizar la conversion de monedas';
+         IF v_tipo = 'CUS' THEN
+            
+         -----------------------
+         --  OJO OJO OJO OJO
+         -----------------------
+            --09/11/"015, rac (kplian)
+            --OJO cuando con distintas moenda y tipo de cambio custom asumimos que es multiplicacion
+            -- 1 USD 1  BA    TC 6,96
+            --   1 BS a USD  TC 0,143678160
+            
+            
+            v_registro.custom = v_res*p_tipo_cambio_custom;
+           
+         ELSE 
+            raise exception 'Ha ocurrido un error al realizar la conversion de monedas';
+         END IF;
+        
     end if;
     
     if(v_registro.tipo_cambio is null and  v_tipo != 'CUS')then
+        
         select m.moneda
         into v_moneda
         from param.tmoneda m
         where id_moneda=v_id_moneda_2;
-        raise exception 'No existe tipo de cambio para la fecha: % y la moneda: % ',
-                        to_char(p_fecha,'DD/MM/YYYY'),v_moneda;
+        
+        IF p_show_error = 'si' THEN
+        	raise exception 'No existe tipo de cambio para la fecha: % y la moenda: % ', to_char(p_fecha,'DD/MM/YYYY'),v_moneda;
+        ELSE
+            return NULL;
+        END IF;
+        
     end if;
     
     /*Retorna el valor q corresponda segun sea oficial, compra o venta y con el redondeo*/

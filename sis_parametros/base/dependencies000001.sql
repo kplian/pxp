@@ -1626,3 +1626,21 @@ ALTER TABLE param.tconcepto_ingas
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 /***********************************F-DEP-JRR-PARAM-0-04/10/2015****************************************/
+
+/***********************************I-DEP-GSS-PARAM-0-04/11/2015****************************************/
+
+ALTER TABLE param.tproveedor_cta_bancaria
+  ADD CONSTRAINT fk_tproveedor_cta_bancaria__id_banco_beneficiario FOREIGN KEY (id_banco_beneficiario)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+	
+ALTER TABLE param.tproveedor_cta_bancaria
+  ADD CONSTRAINT fk_tproveedor_cta_bancaria__id_banco_intermediario FOREIGN KEY (id_banco_intermediario)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/***********************************F-DEP-GSS-PARAM-0-04/11/2015****************************************/

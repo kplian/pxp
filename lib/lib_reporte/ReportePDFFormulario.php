@@ -182,7 +182,7 @@ class ReportePDFFormulario extends MYPDF {
 		if ($this->fecha_rep == '') {			
 			$this->Cell($ancho, 0, "Fecha : " . date("d-m-Y H:i:s"), '', 0, 'L');
 		} else {
-			$this->Cell($ancho, 0, "Fecha Firma: " . $this->fecha_rep, '', 0, 'L');
+			//$this->Cell($ancho, 0, "Fecha Firma: " . $this->fecha_rep, '', 0, 'L');
 		}	
 		
 	}	
