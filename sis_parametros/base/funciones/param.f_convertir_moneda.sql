@@ -51,6 +51,13 @@ BEGIN
     else
         v_tipo=p_tipo;
     end if;
+    
+    if(p_tipo = 'CUS' and p_tipo_cambio_custom is NULL)then
+        v_tipo='O';
+    end if;    
+    
+    
+    
     if(p_num_decimales is null)then
         v_num_decimales=2;
     else

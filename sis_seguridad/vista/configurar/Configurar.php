@@ -280,25 +280,51 @@ Phx.vista.Configurar = Ext.extend(Phx.frmInterfaz,
             // arma json en cadena para enviar al servidor
             Ext.apply(this.argumentSave, o.argument);
             //console.log(this.argumentSave,o.argument)
-            Ext.Ajax.request({
-                    url: this.ActSave,
-                    //params:this.form.getForm().getValues(),
-                    params: {
-                        autentificacion:this.getComponente('autentificacion').getValue(),
-                        modificar_clave:this.getComponente('modificar_clave').getValue(),
-                        clave_anterior:md5(this.getComponente('clave_anterior').getValue()),
-                        clave_nueva:md5(this.getComponente('clave_nueva').getValue()),
-                        clave_confirmacion:md5(this.getComponente('clave_confirmacion').getValue()),
-                        clave_windows:md5(this.getComponente('clave_windows').getValue()),
-                        estilo:this.getComponente('estilo').getValue()
-                    },
-                    isUpload: this.fileUpload,
-                    success: this.successSave,
-                    argument: this.argumentSave,
-                    failure: this.conexionFailure,
-                    timeout: this.timeout,
-                    scope: this
-            });
+            
+            
+             if(this.getComponente('modificar_clave').getValue() == 'SI'){
+            	
+            	Ext.Ajax.request({
+	                    url: this.ActSave,
+	                    //params:this.form.getForm().getValues(),
+	                    params: {
+	                        autentificacion:this.getComponente('autentificacion').getValue(),
+	                        modificar_clave:this.getComponente('modificar_clave').getValue(),
+	                        clave_anterior: md5(this.getComponente('clave_anterior').getValue()),
+	                        clave_nueva: md5(this.getComponente('clave_nueva').getValue()),
+	                        clave_confirmacion: md5(this.getComponente('clave_confirmacion').getValue()),
+	                        clave_windows: md5(this.getComponente('clave_windows').getValue()),
+	                        estilo:this.getComponente('estilo').getValue()
+	                    },
+	                    isUpload: this.fileUpload,
+	                    success: this.successSave,
+	                    argument: this.argumentSave,
+	                    failure: this.conexionFailure,
+	                    timeout: this.timeout,
+	                    scope: this
+	            });
+            }
+            else{
+            	
+	            	Ext.Ajax.request({
+	                    url: this.ActSave,
+	                    //params:this.form.getForm().getValues(),
+	                    params: {
+	                        autentificacion:this.getComponente('autentificacion').getValue(),
+	                        modificar_clave:this.getComponente('modificar_clave').getValue(),
+	                        estilo:this.getComponente('estilo').getValue()
+	                    },
+	                    isUpload: this.fileUpload,
+	                    success: this.successSave,
+	                    argument: this.argumentSave,
+	                    failure: this.conexionFailure,
+	                    timeout: this.timeout,
+	                    scope: this
+	            });
+            	
+            	
+            }
+            
             
             
            
