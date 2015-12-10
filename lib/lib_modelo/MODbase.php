@@ -487,6 +487,145 @@ class MODbase extends driver
     }
 	
 	
+	// valida el tamaño de imagen
+	function validacionImagen($ruta_imagen,$extension,$ancho_validado){
+		$ruta_de_la_imagen = $this->arreglo[$ruta_imagen];
+		$extension_de_la_imagen = $this->arreglo[$extension];
+		
+	 	//vemos que tipo de extension es para ver que funcion usamos para crear la imagen
+		switch ($extension_de_la_imagen) {
+			case 'jpg' :
+				$img_origen = imagecreatefromjpeg($ruta_de_la_imagen);
+				break;
+			case 'png' :
+				$img_origen = imageCreateFromPng($ruta_de_la_imagen);
+				break;
+
+		}
+		
+		$ancho_origen = imagesx($img_origen);
+		if($ancho_origen == $ancho_validado){
+			return true;
+		}else{
+			return false;
+		}
+		
+		
+	}
+	
+	/**
+	 * Nombre funcion:	convertirTamanoImagen
+	 * Proposito:		convierte el tamaño de la imagen subida en proporcion del ancho
+	 * para la seleccion
+	 * Fecha creacion:	18/09/2015
+	 *
+	 * @param cadena $imagen
+	 * @param cadena $ruta
+	 * @param entero $ancho_minimo
+	 */
+	 
+	 function convertirTamanoImagen($ruta_imagen,$ancho_limite,$extension,$ruta_destino,$nombre_img){
+	 	
+		
+		
+		if (!file_exists($ruta_destino)) {
+			//echo $upload_folder;
+			//exit;
+			if (!mkdir($ruta_destino,0744,true)) {
+				throw new Exception("No se puede crear el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
+									$this->objParam->getClase() . " para escribir el archivo " . $nombre_img);
+			}	
+		} else {
+			if (!is_writable($ruta_destino)) {
+				throw new Exception("No tiene permisos o no existe el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
+									$this->objParam->getClase() . " para escribir el archivo " . $nombre_img);
+			}
+		
+		}
+		
+		
+		$ruta_de_la_imagen = $this->arreglo[$ruta_imagen];
+		$extension_de_la_imagen = $this->arreglo[$extension];
+		
+		
+		
+	 	//vemos que tipo de extension es para ver que funcion usamos para crear la imagen
+		switch ($extension_de_la_imagen) {
+			case 'jpg' :
+				$img_origen = imagecreatefromjpeg($ruta_de_la_imagen);
+				break;
+			case 'png' :
+				$img_origen = imageCreateFromPng($ruta_de_la_imagen);
+				break;
+
+		}
+		
+		$ancho_origen = imagesx($img_origen);
+		$alto_origen = imagesy($img_origen);
+		
+		
+
+		if($ancho_origen > $alto_origen){
+			$ancho_origen = $ancho_limite;
+			$alto_origen = $ancho_limite*imagesy($img_origen)/imagesx($img_origen);
+		}else{
+			$alto_origen = $ancho_limite;
+			$ancho_origen = $ancho_limite*imagesx($img_origen)/imagesy($img_origen);
+		}
+
+		$img_destino = imagecreatetruecolor($ancho_origen,$alto_origen);
+
+		imagecopyresized($img_destino,$img_origen,0,0,0,0,$ancho_origen,$alto_origen,imagesx($img_origen),imagesy($img_origen));
+		imagejpeg($img_destino,$ruta_destino.$nombre_img.'.'.$extension_de_la_imagen);
+		
+	 }
+
+
+	function setFileModificacion($sistema,$clase,$nombre, $variable_id, $blank = true, $tamano = '', $tipo_archivo = null, $folder = ''){
+		//obtenemos el tipo de la base de datos
+		
+		$this->validacion->validar($nombre, $this->arregloFiles[$nombre], 'bytea', $blank, $tamano, null, $tipo_archivo);
+		$upload_folder =  './../../../uploaded_files/' . $sistema . '/' .
+								 $clase . '/' ;
+		if ($folder != '') {
+			$upload_folder .= $folder . '/';
+		}
+		//nombre del archivo enviado por el cliente
+		$filename = $this->arregloFiles[$nombre]['name'];
+		//extension del archivo
+		$fileexte = substr($filename, strrpos($filename, '.')+1);
+		//nombre con el que se guarda en el servidor
+		$file_server_name = md5($this->arreglo[$variable_id] . $_SESSION["_SEMILLA"]) . ".$fileexte";
+		
+		if (!file_exists($upload_folder)) {
+			//echo $upload_folder;
+			//exit;
+			if (!mkdir($upload_folder,0744,true)) {
+				throw new Exception("No se puede crear el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
+									$this->objParam->getClase() . " para escribir el archivo " . $filename);
+			}	
+		} else {
+			if (!is_writable($upload_folder)) {
+				throw new Exception("No tiene permisos o no existe el directorio uploaded_files/" . $this->objParam->getSistema() . "/" . 
+									$this->objParam->getClase() . " para escribir el archivo " . $filename);
+			}
+		
+		}
+			
+		// Passed verification
+	    if (move_uploaded_file($this->arregloFiles[$nombre]['tmp_name'], "$upload_folder$file_server_name")) {
+	        // Success
+	        chmod("$upload_folder/$file_server_name", 0644);
+	        
+	        return "$upload_folder/$file_server_name";
+	    } else {
+	    	throw new Exception("No se puede subir el archivo " . $filename);
+	    }				
+
+	}
+	
+	
+	
 	
 
 }

@@ -22,6 +22,8 @@ DECLARE
   v_sql_tabla				varchar;
   v_factor					numeric;
   v_tipo					varchar;
+  v_id_ot					integer;
+  v_id_cargo				integer;
   
   
 BEGIN
@@ -33,7 +35,8 @@ BEGIN
             	id_funcionario INTEGER, 
                 id_centro_costo INTEGER, 
                 monto NUMERIC(18,2),
-                descripcion TEXT
+                descripcion TEXT,
+                id_orden_trabajo INTEGER
   			) ON COMMIT DROP';     
     
     select * into v_periodo 
@@ -65,14 +68,29 @@ BEGIN
             	raise exception 'No existe un funcionario asignado para el nro % en el periodo %',v_registros.numero,v_periodo.periodo;
             end if;
             v_id_centro_costo = null;
-            v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,p_id_periodo);
+            v_id_centro_costo = null;
+            
+            select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo 
+            from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,v_id_periodo);
+            
+            
             
             if (v_id_centro_costo is null) then
             	raise exception 'Existe un empleado que no tiene asignado centro de costo : %',v_id_funcionario;
             end if;
+            
+            select ofiot.id_orden_trabajo into v_id_ot
+            from orga.tcargo car
+            inner join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
+            where id_cargo = v_id_cargo;
+            
+            if (v_id_ot is null) then
+            	raise exception 'Existe una oficina que no tiene relacionado la orden de trabajo. Comuniquese con el area de costos';
+            end if;
+            
             if (v_registros.total = v_registros.conteo) then
-                insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
-                values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,p_monto - v_suma );
+                insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo) 
+                values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,p_monto - v_suma ,v_id_ot);
                 if (v_registros.suma_total != p_monto) then
                     v_resp ='El monto de la factura no iguala con la suma del consumo por numero. Monto Factura : ' || p_monto || ', Suma consumo por numero: ' || v_registros.suma_total || '. SE HA GENERADO EL PRORRATEO DE TODAS FORMAS!!!!';
                 	
@@ -81,8 +99,8 @@ BEGIN
                 end if;
                 v_suma = p_monto;
             else
-            	insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
-                values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,round((v_registros.consumo*v_factor),2));
+            	insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo) 
+                values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,round((v_registros.consumo*v_factor),2),v_id_ot);
                 
             	v_suma = v_suma + round((v_registros.consumo*v_factor),2);
             end if;
@@ -107,21 +125,32 @@ BEGIN
                     (uofun.fecha_finalizacion >= v_periodo.fecha_fin or uofun.fecha_finalizacion is NULL)
                     and uofun.estado_reg = 'activo' and car.id_oficina = v_id_oficina )loop
                 	v_id_centro_costo = null;
-                	v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
-                     
+                	
+                    select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo 
+            		from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,v_id_periodo);
+                    
                     if (v_id_centro_costo is null) then
                         raise exception 'Existe un empleado que no tiene asignado centro de costo: %',v_funcionarios.id_funcionario;
                     end if;
                     
+                    select ofiot.id_orden_trabajo into v_id_ot
+                    from orga.tcargo car
+                    inner join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
+                    where id_cargo = v_id_cargo;
+                    
+                    if (v_id_ot is null) then
+                        raise exception 'Existe una oficina que no tiene relacionado la orden de trabajo. Comuniquese con el area de costos';
+                    end if;
+                    
                     if (v_funcionarios.total = v_funcionarios.numero) then
                     	
-                        insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
-            			values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma );
+                        insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo) 
+            			values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma,v_id_ot );
                     	
                         v_suma = p_monto;
                     else
-                    	insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto) 
-            			values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,round((p_monto/v_funcionarios.total),2));
+                    	insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo) 
+            			values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,round((p_monto/v_funcionarios.total),2),v_id_ot);
                     
                     	v_suma = v_suma + round((p_monto/v_funcionarios.total),2);
                     end if;

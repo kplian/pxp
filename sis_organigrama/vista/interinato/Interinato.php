@@ -19,6 +19,7 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		 
       	this.iniciarEventos();
+		this.load({params:{start:0, limit:this.tam_pag}})
 	},
 			
 	Atributos:[

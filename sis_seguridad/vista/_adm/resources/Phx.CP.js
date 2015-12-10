@@ -320,7 +320,7 @@ MainPanel = function(config){
 };
 
 Ext.extend(MainPanel, Ext.TabPanel,{
-	loadClass : function(href, cls, title,icono,ruta,clase,params){
+	/*loadClass : function(href, cls, title,icono,ruta,clase,params){
 		
 		 var objConfig = {
 		  	               'href':href, 
@@ -420,25 +420,8 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 					  				    			} else {
 					  				    				
 					  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
-					  				    			}
+					  				    			}					  				      	 		
 					  				      	 		
-					  				      	 		/*if(objConfig.cookie && objConfig.indice > 0){
-		  				    		  
-							  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
-							  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
-							  				    		  	               obj.title,
-							  				    		  	               obj.icono,
-							  				    		  	               obj.ruta,
-							  				    		  	               obj.clase,
-							  				    		  	               true,
-							  				    		  	               objConfig.arrayInt,
-							  				    		  	               objConfig.indice -1
-							  				    		  	               );
-							  				    		  	               
-							  				    		 //Ext.get(Phx.vista[clase].idContenedor).doLayout()
-							  				    		 //Phx.CP.getPagina(id).panel.doLayout(); 	               
-							  				    		  	               
-							  				    		}*/
 					  				      	 	  }
 							  				       catch(err){
 							  				       	var resp = Array();
@@ -467,23 +450,6 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 		  				    			}
 		  				    		}
 		  				    		
-		  				    		/*if(objConfig.cookie && objConfig.indice > 0){
-		  				    		  
-		  				    		  var obj = objConfig.arrayInt[objConfig.indice-1]
-		  				    		  Phx.CP.getMainPanel().loadClass(obj.href,obj.cls, 
-		  				    		  	               obj.title,
-		  				    		  	               obj.icono,
-		  				    		  	               obj.ruta,
-		  				    		  	               obj.clase,
-		  				    		  	               true,
-		  				    		  	               objConfig.arrayInt,
-		  				    		  	               objConfig.indice -1
-		  				    		  	               );
-		  				    		  	               
-		  				    		  //Phx.CP.getPagina(id).panel.doLayout();	               
-		  				    		}*/
-		  				    		
-		  				    		
 		  				      	}
 		  				        catch(err){
 		  				       		var resp = Array();
@@ -501,11 +467,140 @@ Ext.extend(MainPanel, Ext.TabPanel,{
 	           }));
 	            this.setActiveTab(p);
 	      }
+	}*/
+	loadClass : function(href, cls, title,icono,ruta,clase,params){
+		
+		 var objConfig = {
+		  	               'href':href, 
+		  	               'cls':cls, 
+		  	               'title':title,
+		  	               'icono':icono,
+		  	               'ruta':ruta,
+		  	               'clase':clase,
+		  	               'params':params,
+		  	               'vaMyCls':[]
+		  	              };
+		 
+		 objConfig.vaMyCls.push(clase);
+		 
+		 //jrr si es uan vista autogenerada el id es diferente 	              
+		 if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
+		 	var id = 'docs-' + objConfig.params.proceso + '_' + objConfig.params.estado;
+		 } else {
+		 	var id = 'docs-' + cls;
+		 }
+		 var tab = this.getComponent(id);
+		 //si el tab existe toma el foco
+		 
+		 if(tab){
+	            this.setActiveTab(tab);
+	            
+	     }else{
+	    	 var iconCls='icon-folder';
+				if(icono){
+					Ext.util.CSS.createStyleSheet('.cls-'+cls+'{background: url('+icono+') no-repeat top left ;background-size:25px 25px!important;}');
+					iconCls='cls-'+cls;
+					
+		
+				}
+	    	 
+			 var p = this.add(new Ext.Panel({
+	                id: id,
+	                layout: 'fit',
+	                title: title,
+	                closable: true,
+	                autoScroll: false,
+	                autoHeight : false,
+	                cclass : cls,
+	                //stateful:true,
+	                //allowDomMove:false,
+	                //bufferResize:true,
+	                iconCls:iconCls,
+	                listeners:{
+	                	scope:this,
+	                	'close':function(){
+	                		Phx.CP.removeStateGui(clase)
+	                	}
+	                	
+	                },
+	                autoLoad: {
+	  				  url: href,
+	  				  params:{idContenedor:id,_tipo:'direc', mycls:clase},
+	  				  showLoadIndicator: "Cargando...",
+	  				  arguments:objConfig,
+	  				  callback: this.callbackTab,
+	  				  scope:this,
+	  				  scripts :true}
+	           }));
+	            this.setActiveTab(p);
+	      }
+	},
+	callbackTab : function (r,a,o) {
+		
+		var objConfig = o.argument.options.arguments;
+        var me = this;
+        var mycls = o.argument.params.mycls;         
+              ; 
+		if(Phx.vista[mycls]){	
+			if(Phx.vista[mycls].requireclase){
+				
+			     //trae la clase padre
+			     //en el callback ejecuta la rerencia 
+			     //e instanca la clase hijo			     
+			     var wid= Ext.id();
+			     Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});			    
+			  
+			     var el = Ext.get(wid); // Get Ext.Element object
+                 var u = el.getUpdater();
+                                  
+                 var inter = Phx.vista[mycls];
+                 objConfig.vaMyCls.push(inter.requireclase.split(".")[2]);  
+                 o.argument.params.mycls = inter.requireclase.split(".")[2]; 
+                 
+                 u.update(
+  				      	 {url:Phx.vista[mycls].require, 
+  				      	  params:o.argument.params,
+  				      	  arguments:objConfig,
+  				      	  scripts :true,
+  				      	  showLoadIndicator: "Cargando...2",
+  				      	  scope:this,
+  				      	  callback: this.callbackTab
+  				      	 });
+		
+			}
+			else {
+				//jrr 22/05/2014 se anade parametros
+	    		if (objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
+	    			objConfig.params = Ext.util.JSON.decode(Ext.util.Format.trim(objConfig.params));
+	    		}
+	    		//jrr 22/05/2014 para vistas autogeneradas si tiene como parametros el proceso y el estado
+	    		if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
+	    			Phx.CP.crearPaginaDinamica(Ext.apply(objConfig.params,o.argument.params),objConfig);
+	    			
+	    		} else {
+	    			if (objConfig.vaMyCls.length > 1) {	    				
+						for (var i = objConfig.vaMyCls.length-1; i >= 1; i--) {
+							var inter = Phx.vista[objConfig.vaMyCls[i-1]];
+							
+							eval('Phx.vista.'+objConfig.vaMyCls[i-1]+'= Ext.extend(Phx.vista.'+objConfig.vaMyCls[i]+',inter)')
+							
+						}
+					}
+	    			
+	    			
+	    			o.argument.params.mycls = objConfig.vaMyCls[0];
+	    			
+	    			
+	    			if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "" ) {
+	    				Phx.CP.setPagina(new Phx.vista[objConfig.vaMyCls[0]](Ext.apply(objConfig.params,o.argument.params)),objConfig);
+	    			} else {
+	    				Phx.CP.setPagina(new Phx.vista[objConfig.vaMyCls[0]](o.argument.params),objConfig);
+	    			}
+	    		}
+			}	
+		}
+	
 	}
-	
-	
-		  				      	
-	
 });
 
 // ////////////////////////////////////////
@@ -1556,6 +1651,8 @@ Phx.CP=function(){
 	        }
 	        return type;
 	    },
+	   
+	    
 	    /*RAC 20/01/2012
 	     * esta funcion ejecuta la clase cargada en los contenedores
 	     */
@@ -1564,10 +1661,12 @@ Phx.CP=function(){
 			
 			//si existe la variable mycls  (deherencia )la aplica
 			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
-			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
+			var me= this,
+			    mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
+			    
 		    if(Phx.vista[mycls].requireclase){
-		    	
-		    
+		    		
+		    		 o.argument.params.mycls = Phx.vista[mycls].requireclase.split(".")[2];
   				     //trae la clase padre
   				     //en el callback ejecuta la herencia 
   				     //e instanca la clase hijo
@@ -1578,36 +1677,36 @@ Phx.CP=function(){
                          u = el.getUpdater(),
                          inter = Phx.vista[mycls];
                          
+                         
+                         o.argument.params.vaMyCls.push(inter.requireclase.split(".")[2]);
+  				       
   				       u.update(
-  				      	 {url:inter.require, 
-  				      	  params:o.argument.params,
-  				      	  //params:{idContenedor:id,_tipo:'direc'},
-  				      	  scripts :true,
-  				      	  showLoadIndicator: "Cargando...2",
-  				      	  callback: function(r,a,o){
-  				      	 	//genera herencia 
-  				      	 	eval('Phx.vista.'+mycls+'= Ext.extend('+inter.requireclase+',inter)')
-  				      	 	//ejecuta la clase hijo
-  				      	 	eval('var obj = Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
-  				      	 	
-  				      	 	//adciona eventos al objeto interface si existen
-							if(o.argument.options.listeners){
-								var ev = o.argument.options.listeners;
-								for (var i = 0; i < ev.config.length; i++) {
-									obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
-								}
-								
-							}
-  				      	 
-  				      	 }
+  				      	 { url: inter.require, 
+  				      	   params: o.argument.params,
+  				      	   scripts : true,
+  				      	   showLoadIndicator: "Cargando...2",
+  				      	   callback: this.callbackWindows,
+  				      	   scope:this
   				     })
   				 }
 		    else{
+		    	
 		    	// Al retorno de de cargar la ventana
 				// ejecuta la clase que llega en el parametro
 				// cls
 				
-				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
+				if (o.argument.params.vaMyCls.length > 1) {
+					for (var i = o.argument.params.vaMyCls.length-1; i >= 1; i--) {
+						
+						var inter = Phx.vista[o.argument.params.vaMyCls[i-1]];
+						
+						eval('Phx.vista.'+o.argument.params.vaMyCls[i-1]+'= Ext.extend(Phx.vista.'+o.argument.params.vaMyCls[i]+',inter)')
+					}
+				}
+				
+				o.argument.params.mycls = o.argument.params.vaMyCls[0];
+				var obj = Phx.CP.setPagina(new Phx.vista[o.argument.params.mycls](o.argument.params));
+				console.log(obj);
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){
 					if(obj.esperarEventos === true){
@@ -1623,17 +1722,9 @@ Phx.CP=function(){
 				}
 		    }  
 		},
-		setValueCombo: function(cmb, id_combo, value_combo){
-		    	if (!cmb.store.getById(id_combo)) {
-		            var recTem = new Array();
-		            recTem[cmb.valueField] = id_combo;
-		            recTem[cmb.displayField] = value_combo;
-		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
-		            cmb.store.commitChanges();
-		        }
-		        cmb.setValue(id_combo);
-    	
-   		 },
+		
+		
+		
 		
 		
 		// para cargar ventanas hijo
@@ -1684,23 +1775,22 @@ Phx.CP=function(){
 				}
 				
 			
-	            var wid=Ext.id()
-				var Win=new Ext.Window(Ext.apply(Ventana,{
-					id:wid,// manager: this.windows,
-					// anchor: '100% 100%',  // anchor width and height
-					autoDestroy:true,
-					//manager : this.getWindowManager(),
-					//layout: 'border',
-					//height:screen.height,
-				   // width:'100%',
-					// autoShow:true,
-					autoLoad:{url: url,
-					          params:Ext.apply({_tipo:'direc',idContenedor:wid,idContenedorPadre:pid,mycls:mycls},params),
-					          text: "Cargando...", 
-					          showLoadIndicator: "Cargando...",
-					          scripts :true,
-					          listeners: listeners,
-					          callback:this.callbackWindows
+	            var wid = Ext.id();
+	                vaMyCls = [];
+  				       
+  				vaMyCls.push(mycls);
+				
+				var Win = new Ext.Window(Ext.apply(Ventana,{
+					id: wid,// manager: this.windows,
+					autoDestroy: true,
+					autoLoad:{ url: url,
+					           params:Ext.apply({_tipo:'direc','idContenedor':wid, 'idContenedorPadre': pid, 'mycls':mycls, 'vaMyCls': vaMyCls },params),
+					           text: "Cargando...", 
+					           showLoadIndicator: "Cargando...",
+					           scripts :true,
+					           listeners: listeners,
+					           callback: this.callbackWindows,
+					           scope:this
 					} 
 				}));
 				Win.show();
@@ -1714,7 +1804,35 @@ Phx.CP=function(){
 		    if( typeof window.console != 'undefined' ){
 		        console.log.apply(null,arguments); 
 		    }
+		},
+		
+		/***********************************************
+		 *  Funciones extra de proposito general
+ 		 ***************************************************/
+		
+		setValueCombo: function(cmb, id_combo, value_combo){
+		    	if (!cmb.store.getById(id_combo)) {
+		            var recTem = new Array();
+		            recTem[cmb.valueField] = id_combo;
+		            recTem[cmb.displayField] = value_combo;
+		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
+		            cmb.store.commitChanges();
+		        }
+		        cmb.setValue(id_combo);
+    	
+   		 },
+   		 
+   		 removeArray: function (arr) {
+		    var what, a = arguments, L = a.length, ax;
+		    while (L > 1 && arr.length) {
+		        what = a[--L];
+		        while ((ax= arr.indexOf(what)) !== -1) {
+		            arr.splice(ax, 1);
+		        }
+		    }
+		    return arr;
 		}
+		
 	}
 }();
 // al cargar el script ejecuta primero el metodo login

@@ -542,5 +542,12 @@ ALTER TABLE orga.tcargo
 
 /*****************************F-SCP-JRR-ORGA-0-14/08/2015*************/
 
+/*****************************I-SCP-JRR-ORGA-0-01/10/2015*************/
+
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN certificacion_presupuestaria  VARCHAR;
+  
+/*****************************F-SCP-JRR-ORGA-0-01/10/2015*************/
+
 
 

@@ -106,22 +106,84 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+		
 		{
-			config:{
-				name: 'tipo_moneda',
-				fieldLabel: 'tipo_moneda',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:25
-			},
-			type:'TextField',
-			filters:{pfiltro:'moneda.tipo_moneda',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
+            config:{
+                name:'tipo_moneda',
+                fieldLabel:'Tipo',
+                allowBlank: false,
+                anchor: '80%',
+                emptyText:'Tipo...',                   
+                typeAhead:true,
+                triggerAction:'all',
+                lazyRender:true,
+                mode:'local',
+                valueField:'inicio',                   
+                store:['base','intercambio','ref']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{type: 'list',
+                     pfiltro:'moneda.tipo_moneda',
+                     options: ['base','intercambio','ref']
+                    },
+            grid:true,
+            form:true
+        },
+		
 		{
+            config:{
+                name:'triangulacion',
+                fieldLabel:'triangulacion',
+                qtip: 'la moneda sirve para trigular valores con monedas extranjeras, solo podemos tener una moenda de triangulación',
+                allowBlank: false,
+                anchor: '80%',
+                emptyText:'Tipo...',                   
+                typeAhead:true,
+                triggerAction:'all',
+                lazyRender:true,
+                mode:'local',
+                valueField:'inicio',                   
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{type: 'list',
+                     pfiltro:'moneda.triangulacion',
+                     options: ['si','no']
+                    },
+            grid:true,
+            form:true
+        },
+        
+        {
+            config:{
+                name:'contabilidad',
+                fieldLabel:'contabilidad',
+                qtip: 'La moneda se utiliza en contabilidad',
+                allowBlank: false,
+                anchor: '80%',
+                emptyText:'Tipo...',                   
+                typeAhead:true,
+                triggerAction:'all',
+                lazyRender:true,
+                mode:'local',
+                valueField:'inicio',                   
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{type: 'list',
+                     pfiltro:'moneda.contabilidad',
+                     options: ['si','no']
+                    },
+            grid:true,
+            form:true
+        },
+        
+        
+		{
+			
 			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
@@ -219,7 +281,8 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'triangulacion','contabilidad'
+		
 		
 	],
 	sortInfo:{

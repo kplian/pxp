@@ -804,3 +804,11 @@ select pxp.f_add_catalog('PARAM','tdepto_usuario_cargo','auxiliar');
 
 
 
+/***********************************I-DAT-RAC-PARAM-0-28/10/2015*****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES (E'moneda_intercambio', E'false', E'el sistema maneja moneda de intercambio');
+
+/***********************************F-DAT-RAC-PARAM-0-28/10/2015*****************************************/
+
+

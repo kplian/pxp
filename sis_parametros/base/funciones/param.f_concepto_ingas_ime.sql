@@ -206,7 +206,32 @@ BEGIN
             requiere_ot = v_parametros.requiere_ot
             where id_concepto_ingas=v_parametros.id_concepto_ingas;
                
-            
+            if (pxp.f_get_variable_global('sincronizar') = 'true') then
+             
+                select * into v_nombre_conexion from migra.f_crear_conexion(); 
+                
+                --recupera datos del concepto ... 
+                select 
+                   COALESCE(pxp.list(cid.id_concepto_ingas::text),'0') as listado
+                into v_registros
+                from param.tconcepto_ingas ci 
+                inner join migra.tconcepto_ids cid on cid.id_concepto_ingas_pxp = ci.id_concepto_ingas
+                where ci.id_concepto_ingas = v_parametros.id_concepto_ingas; 
+                 
+                
+                 v_consulta = 'UPDATE 
+                                  presto.tpr_concepto_ingas 
+                                SET 
+                                  id_grupo_ots = string_to_array('''||v_parametros.id_grupo_ots||''','','')::integer[]
+                                WHERE 
+                                  id_concepto_ingas in ('|| v_registros.listado ||')';
+                 
+                 perform  dblink(v_nombre_conexion, v_consulta, true);
+                 
+                 
+                 select * into v_resp from migra.f_cerrar_conexion(v_nombre_conexion,'exito');
+             
+             end if;
             
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modificaron las OT del concepto de gasto(a)'); 

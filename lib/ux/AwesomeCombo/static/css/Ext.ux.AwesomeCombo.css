@@ -21,6 +21,22 @@
 	white-space: nowrap;
 }
 
+.awesomecombo-4item {
+	height: 64px;
+	padding: 2px 2px 2px 20px;
+	color: #333;
+	border: 1px solid #fff;
+	white-space: nowrap;
+}
+
+.awesomecombo-5item {
+	
+	padding: 2px 2px 2px 20px;
+	color: #333;
+	border: 1px solid #fff;
+	white-space: nowrap;
+}
+
 .unchecked {
 	font-weight: normal;
 }

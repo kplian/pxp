@@ -34,6 +34,9 @@ class MODMoneda extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('triangulacion','varchar');
+		$this->captura('contabilidad','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -57,6 +60,9 @@ class MODMoneda extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('moneda','moneda','varchar');
 		$this->setParametro('tipo_moneda','tipo_moneda','varchar');
+		$this->setParametro('triangulacion','triangulacion','varchar');
+		$this->setParametro('contabilidad','contabilidad','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -81,6 +87,10 @@ class MODMoneda extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('moneda','moneda','varchar');
 		$this->setParametro('tipo_moneda','tipo_moneda','varchar');
+		$this->setParametro('triangulacion','triangulacion','varchar');
+		$this->setParametro('contabilidad','contabilidad','varchar');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -6,7 +6,6 @@
 *@date 21-02-2013 15:52:52
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -363,7 +362,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			type:'DateField',
 			filters:{pfiltro:'tipproc.fecha_reg',type:'date'},
 			id_grupo:1,
-			grid:false,
+			grid:true,
 			form:false
 		},
 		{
@@ -378,8 +377,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'usu1.cuenta',type:'string'},
 			id_grupo:1,
-			grid:false,
-			form:false
+			grid: true,
+			form: false
 		},
 		{
 			config:{
@@ -394,8 +393,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			type:'DateField',
 			filters:{pfiltro:'tipproc.fecha_mod',type:'date'},
 			id_grupo:1,
-			grid:false,
-			form:false
+			grid: true,
+			form: false
 		},
 		{
 			config:{
@@ -409,8 +408,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'usu2.cuenta',type:'string'},
 			id_grupo:1,
-			grid:false,
-			form:false
+			grid: true,
+			form: false
 		}
 	],
 	
