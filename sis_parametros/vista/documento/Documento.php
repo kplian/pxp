@@ -120,8 +120,8 @@ Phx.vista.Documento=function(config){
 	        	fields: ['ID', 'valor'],
 	        	data :	[['depto','Departamento'],	
 	        			['uo','Unidad'],
-	        			['depto_uo','Depto-Unidad']]
-	        				
+	        			['depto_uo','Depto-Unidad'],
+						['tabla','Tabla']]	        				
 	    		}),
 				valueField:'ID',
 				displayField:'valor',

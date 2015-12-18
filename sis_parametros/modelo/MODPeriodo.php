@@ -11,6 +11,9 @@ class MODPeriodo extends MODbase{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
+		
+		$this->cone = new conexion();
+		$this->link = $this->cone->conectarpdo(); //conexion a pxp(postgres)
 	}
 			
 	function listarPeriodo(){
@@ -99,6 +102,22 @@ class MODPeriodo extends MODbase{
 
 		//Devuelve la respuesta
 		return $this->respuesta;
+	}
+	
+	function literalPeriodo(){
+		
+		$id_periodo = $this->objParam->getParametro('id_periodo');
+		$res = $this->link->prepare("select param.f_literal_periodo($id_periodo)");
+		$res->execute();
+		$result = $res->fetchAll(PDO::FETCH_ASSOC);
+		
+		$this -> respuesta = new Mensaje();
+		$this -> respuesta -> setMensaje('EXITO', $this -> nombre_archivo, 'La consulta se ejecuto con exito de insercion de nota', 'La consulta se ejecuto con exito', 'base', 'no tiene', 'no tiene', 'SEL', '$this->consulta', 'no tiene');
+		$this -> respuesta -> setTotal(1);
+		$this -> respuesta -> setDatos($result);
+		return $this -> respuesta;
+			
+
 	}
 			
 }
