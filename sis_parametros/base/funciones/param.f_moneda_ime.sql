@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_moneda_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -62,7 +60,8 @@ BEGIN
 			id_usuario_mod,
 			fecha_mod,
             triangulacion,
-            contabilidad
+            contabilidad,
+            codigo_internacional
           	) values(
 			v_parametros.prioridad,
 			v_parametros.origen,
@@ -76,7 +75,8 @@ BEGIN
 			null,
 			null,
             v_parametros.triangulacion,
-            v_parametros.contabilidad
+            v_parametros.contabilidad,
+            v_parametros.codigo_internacional
 							
 			)RETURNING id_moneda into v_id_moneda;
 			
@@ -110,7 +110,8 @@ BEGIN
               id_usuario_mod = p_id_usuario,
               fecha_mod = now(),
               triangulacion =  v_parametros.triangulacion,
-              contabilidad =  v_parametros.contabilidad
+              contabilidad =  v_parametros.contabilidad,
+              codigo_internacional = v_parametros.codigo_internacional
 			where id_moneda = v_parametros.id_moneda;
                
 			--Definicion de la respuesta

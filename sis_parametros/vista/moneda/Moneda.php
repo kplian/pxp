@@ -63,6 +63,21 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'codigo_internacional',
+				fieldLabel: 'Codigo Internacional',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+			type:'TextField',
+			filters:{pfiltro:'moneda.codigo_internacional',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
 				name: 'moneda',
 				fieldLabel: 'moneda',
 				allowBlank: true,
@@ -274,6 +289,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{name:'tipo_actualizacion', type: 'string'},
 		{name:'estado_reg', type: 'string'},
 		{name:'codigo', type: 'string'},
+		{name:'codigo_internacional', type: 'string'},
 		{name:'moneda', type: 'string'},
 		{name:'tipo_moneda', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},

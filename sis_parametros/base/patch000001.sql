@@ -1113,3 +1113,10 @@ COMMENT ON COLUMN param.tmoneda.triangulacion
 IS 'es moneda de triangulacion';
 
 /***********************************F-SCP-RAC-PARAM-0-03/12/2015****************************************/
+
+/***********************************I-SCP-RAC-PARAM-0-18/12/2015****************************************/
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN codigo_internacional VARCHAR(4);
+  
+/***********************************F-SCP-RAC-PARAM-0-18/12/2015****************************************/
