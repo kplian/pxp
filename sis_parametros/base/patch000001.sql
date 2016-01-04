@@ -1120,3 +1120,31 @@ ALTER TABLE param.tmoneda
   ADD COLUMN codigo_internacional VARCHAR(4);
   
 /***********************************F-SCP-RAC-PARAM-0-18/12/2015****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-21/12/2015****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgestion
+  ADD COLUMN fecha_ini DATE;
+  
+  --------------- SQL ---------------
+
+ALTER TABLE param.tgestion
+  ADD COLUMN fecha_fin DATE;
+
+/***********************************F-SCP-RAC-PARAM-0-21/12/2015****************************************/
+
+
+
+
+
+/***********************************I-SCP-FFP-PARAM-0-04/01/2016****************************************/
+
+ALTER TABLE param.tgestion
+  ADD COLUMN tipo VARCHAR(255);
+
+/***********************************F-SCP-FFP-PARAM-0-21/12/2015****************************************/

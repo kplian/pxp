@@ -36,6 +36,8 @@ class MODPeriodo extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		
+		$this->captura('literal','varchar');
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
