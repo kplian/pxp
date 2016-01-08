@@ -34,7 +34,11 @@ https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
 2. Inside the folder of your project clone this repository (This will create the pxp folder)
     #git  clone https://github.com/kplian/pxp.git
 
-3. Create a empty database for your project 
+3. Create a empty database for your project
+3.1 Create database user for connection:
+
+	Example: CREATE ROLE db_conexion NOINHERIT LOGIN PASSWORD 'db_conexion';
+
 4. You must create soft-links inside your project root folder to: 
     * lib                     
     ln -s pxp/lib lib  (execute inside your project root folder) 
