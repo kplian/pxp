@@ -32,7 +32,7 @@ https://github.com/kplian/instalador_framework.pxp for centos 6.x and 7.x
 
 1. Create folder for your project  (example mypro)
 2. Inside the folder of your project clone this repository (This will create the pxp folder)
-    #git  clone http://github.com/kplian/pxp.git
+    #git  clone https://github.com/kplian/pxp.git
 
 3. Create a empty database for your project 
 4. You must create soft-links inside your project root folder to: 
