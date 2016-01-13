@@ -168,7 +168,8 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 			},
 			type: 'ComboBox',
 			id_grupo: 1,
-			form: true
+			form: true,
+			grid:true
 		},
 		
 		{

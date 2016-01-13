@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_gestion_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -61,7 +59,8 @@ BEGIN
 						usu2.cuenta as usr_mod,
                         emp.nombre as desc_empresa,
                         mon.moneda,
-                        mon.codigo as codigo_moneda                         	
+                        mon.codigo as codigo_moneda,
+                        ges.tipo                         	
 						from param.tgestion ges
 						inner join segu.tusuario usu1 on usu1.id_usuario = ges.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ges.id_usuario_mod

@@ -96,7 +96,7 @@ BEGIN
             v_cont =1;
             
 			
-            if(v_parametros.tipo = 'MES')
+            if(v_parametros.tipo = 'MES' or v_parametros.tipo = '' or v_parametros.tipo = null)
                 THEN
                 
             while v_cont <= 12 loop
@@ -268,7 +268,8 @@ BEGIN
 			estado = v_parametros.estado,
 			gestion = v_parametros.gestion,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+            tipo = v_parametros.tipo
 			where id_gestion=v_parametros.id_gestion;
                
 			--Definicion de la respuesta
