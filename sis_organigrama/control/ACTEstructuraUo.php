@@ -20,7 +20,7 @@ class ACTEstructuraUo extends ACTbase {
 		$node = $this -> objParam -> getParametro('node');
 		$id_uo = $this -> objParam -> getParametro('id_uo');
 
-		if ($node == 'id') {
+		if ($node == 'id' || !is_numeric($node)) {
 			$this -> objParam -> addParametro('id_padre', '%');
 		} else {
 			$this -> objParam -> addParametro('id_padre', $id_uo);

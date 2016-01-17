@@ -152,6 +152,26 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 			grid: true,
 			form: true
 		},
+		
+		{
+			config: {
+				name: 'tipo',
+				fieldLabel: 'tipo',
+				allowBlank: true,
+				emptyText: 'tipo...',
+				typeAhead: true,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'local',
+				store: ['MES', 'QUINCENAL'],
+				width: 200
+			},
+			type: 'ComboBox',
+			id_grupo: 1,
+			form: true,
+			grid:true
+		},
+		
 		{
 			config:{
 				name: 'estado_reg',
@@ -248,7 +268,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_empresa','codigo_moneda','moneda'
+		{name:'usr_mod', type: 'string'},'desc_empresa','codigo_moneda','moneda','tipo'
 		
 	],
 	sortInfo:{

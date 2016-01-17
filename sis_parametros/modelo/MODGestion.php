@@ -35,6 +35,7 @@ class MODGestion extends MODbase{
 		$this->captura('desc_empresa','varchar');
 		$this->captura('moneda','varchar');
 		$this->captura('codigo_moneda','varchar');
+		$this->captura('tipo','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -56,6 +57,8 @@ class MODGestion extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('estado','estado','varchar');
 		$this->setParametro('gestion','gestion','int4');
+		
+		$this->setParametro('tipo','tipo','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -78,6 +81,7 @@ class MODGestion extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('estado','estado','varchar');
 		$this->setParametro('gestion','gestion','int4');
+		$this->setParametro('tipo','tipo','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

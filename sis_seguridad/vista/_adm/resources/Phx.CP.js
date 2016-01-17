@@ -1651,60 +1651,7 @@ Phx.CP=function(){
 	        }
 	        return type;
 	    },
-	    /*
-	     * PARA HERENCIA RECURSIVA
-	     * 13/10/2015
-	     * */
-	    
-	    /*
-	    loadCode: function(config){
-	    	
-	    	var owid= Ext.id(),
-	    	    me = this;
-			Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
-			
-			var el = Ext.get(owid), // este div esta quemado en el codigo html
-	                 u = el.getUpdater(),
-	                 inter = Phx.vista[obj.mycls];
-	        
-	        u.update(
-  				      	 {  url:    config.require, 
-  				      	    params: config.o.argument.params,
-  				      	    scripts : true,
-  				      	    showLoadIndicator: "Cargando...2",
-  				      	    callback: function(r,a,o){
-  				      	 	//genera herencia 
-  				      	 	
-  				      	 	var mycls = o.argument.params.mycls? o.argument.params.mycls: o.argument.params.cls;
-		                    if(Phx.vista[mycls].requireclase){
-		                   	
-		                   	   me.loadCode({
-		                   	   	
-		                   	   	
-		                   	        });
-		                   	
-		                    }
-  				      	 	
-  				      	 	
-  				      	 	
-  				      	 	eval('Phx.vista.'+config.mycls+'= Ext.extend('+config.requireclase +',inter)')
-  				      	 	//ejecuta la clase hijo
-  				      	 	eval('var obj = Phx.CP.setPagina(new Phx.vista.'+config.mycls+'(o.argument.params))')
-  				      	 	
-  				      	 	//adciona eventos al objeto interface si existen
-							if(o.argument.options.listeners){
-								var ev = o.argument.options.listeners;
-								for (var i = 0; i < ev.config.length; i++) {
-									obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
-								}
-								
-							}
-  				      	 
-  				      	 }
-  				     })         
-	    	
-	    	
-	    }*/
+	   
 	    
 	    /*RAC 20/01/2012
 	     * esta funcion ejecuta la clase cargada en los contenedores
@@ -1777,80 +1724,7 @@ Phx.CP=function(){
 		},
 		
 		
-		/*callbackWindows:function(r,a,o){
-			
-			//si existe la variable mycls  (deherencia )la aplica
-			//RAC 3-11-2012: bug al combinar arboles con openwindow, se solapan variables
-			var mycls = o.argument.params.mycls?o.argument.params.mycls:o.argument.params.cls;
-		    if(Phx.vista[mycls].requireclase){
-		    	
-		    
-  				     //trae la clase padre
-  				     //en el callback ejecuta la herencia 
-  				     //e instanca la clase hijo
-  				     var owid= Ext.id();
-				  	 Ext.DomHelper.append(document.body, {html:'<div id="'+owid+'"></div>'});
-				  				    
-  				     var el = Ext.get(owid), // este div esta quemado en el codigo html
-                         u = el.getUpdater(),
-                         inter = Phx.vista[mycls];
-                         
-  				       u.update(
-  				      	 { url: inter.require, 
-  				      	   params: o.argument.params,
-  				      	   //params:{idContenedor:id,_tipo:'direc'},
-  				      	   scripts : true,
-  				      	   showLoadIndicator: "Cargando...2",
-  				      	   callback: function(r,a,o){
-  				      	 	//genera herencia 
-  				      	 	eval('Phx.vista.'+mycls+'= Ext.extend('+inter.requireclase+',inter)')
-  				      	 	//ejecuta la clase hijo
-  				      	 	eval('var obj = Phx.CP.setPagina(new Phx.vista.'+mycls+'(o.argument.params))')
-  				      	 	
-  				      	 	//adciona eventos al objeto interface si existen
-							if(o.argument.options.listeners){
-								var ev = o.argument.options.listeners;
-								for (var i = 0; i < ev.config.length; i++) {
-									obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
-								}
-								
-							}
-  				      	 
-  				      	 }
-  				     })
-  				 }
-		    else{
-		    	// Al retorno de de cargar la ventana
-				// ejecuta la clase que llega en el parametro
-				// cls
-				
-				var obj = Phx.CP.setPagina(new Phx.vista[mycls](o.argument.params))
-				//adciona eventos al objeto interface si existen
-				if(o.argument.options.listeners){
-					if(obj.esperarEventos === true){
-						obj.setListeners(o.argument.options.listeners);
-					}
-					else{
-						var ev = o.argument.options.listeners;
-						for (var i = 0; i < ev.config.length; i++) {
-							obj.on(ev.config[i].event,ev.config[i].delegate,ev.scope)
-						}	
-					}
-					
-				}
-		    }  
-		},*/
-		setValueCombo: function(cmb, id_combo, value_combo){
-		    	if (!cmb.store.getById(id_combo)) {
-		            var recTem = new Array();
-		            recTem[cmb.valueField] = id_combo;
-		            recTem[cmb.displayField] = value_combo;
-		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
-		            cmb.store.commitChanges();
-		        }
-		        cmb.setValue(id_combo);
-    	
-   		 },
+		
 		
 		
 		// para cargar ventanas hijo
@@ -1930,7 +1804,35 @@ Phx.CP=function(){
 		    if( typeof window.console != 'undefined' ){
 		        console.log.apply(null,arguments); 
 		    }
+		},
+		
+		/***********************************************
+		 *  Funciones extra de proposito general
+ 		 ***************************************************/
+		
+		setValueCombo: function(cmb, id_combo, value_combo){
+		    	if (!cmb.store.getById(id_combo)) {
+		            var recTem = new Array();
+		            recTem[cmb.valueField] = id_combo;
+		            recTem[cmb.displayField] = value_combo;
+		            cmb.store.add(new Ext.data.Record(recTem, id_combo));
+		            cmb.store.commitChanges();
+		        }
+		        cmb.setValue(id_combo);
+    	
+   		 },
+   		 
+   		 removeArray: function (arr) {
+		    var what, a = arguments, L = a.length, ax;
+		    while (L > 1 && arr.length) {
+		        what = a[--L];
+		        while ((ax= arr.indexOf(what)) !== -1) {
+		            arr.splice(ax, 1);
+		        }
+		    }
+		    return arr;
 		}
+		
 	}
 }();
 // al cargar el script ejecuta primero el metodo login

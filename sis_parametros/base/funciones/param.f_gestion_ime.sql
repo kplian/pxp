@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_gestion_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -38,6 +36,14 @@ DECLARE
     v_anho 					integer;
     v_id_periodo 			integer;
     v_rec					record;
+    
+    
+    v_fecha_ini_quin DATE;
+    v_fecha_fin_quin DATE;
+
+    v_fecha_ini_quin_aux DATE;
+    v_fecha_fin_quin_aux DATE;
+    
 			    
 BEGIN
 
@@ -71,7 +77,8 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            tipo
           	) values(
 			v_parametros.id_moneda_base,
 			v_parametros.id_empresa,
@@ -81,13 +88,21 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+            v_parametros.tipo
 			) returning id_gestion into v_id_gestion;
             
             --(3) Generación de los Períodos y Períodos Subsistema
             v_cont =1;
             
-			while v_cont <= 12 loop
+			
+            if(v_parametros.tipo = 'MES' or v_parametros.tipo = '' or v_parametros.tipo = null)
+                THEN
+                
+            while v_cont <= 12 loop
+            
+            	
+                
 	            --Obtención del primer día del mes correspondiente a la fecha_ini
 	            v_fecha_ini= ('01-'||v_cont||'-'||v_parametros.gestion)::date;
 	            
@@ -136,11 +151,95 @@ BEGIN
                 	);
                 	
                 		
-                end loop;
+                end loop;     
             
                v_cont=v_cont+1;
             
             END LOOP;
+            
+            ELSIF(v_parametros.tipo = 'QUINCENAL')
+                THEN
+                
+                while v_cont <= 24 loop
+                
+                
+
+               
+            if(v_cont % 2 != 0)
+            then
+            if(v_cont = 1)
+            then
+              v_fecha_ini = ('01-' || v_cont || '-' || v_parametros.gestion) :: DATE;
+              else
+              v_fecha_ini = ('01-' || v_cont-(v_cont/2) || '-' || v_parametros.gestion) :: DATE;
+
+            end if;
+              v_fecha_fin =(date_trunc('DAY', v_fecha_ini) + INTERVAL ' + 14 day') :: DATE;
+
+              else
+               v_fecha_ini=(date_trunc('DAY', v_fecha_ini) + INTERVAL ' + 15 day') :: DATE;
+               v_fecha_fin=(date_trunc('MONTH', v_fecha_ini) + INTERVAL '1 MONTH - 1 day')::date;
+
+            end if;
+
+                
+                insert into param.tperiodo(
+                  id_usuario_reg,
+                  id_usuario_mod,
+                  fecha_reg,
+                  fecha_mod,
+                  estado_reg,
+                  periodo,
+                  id_gestion,
+                  fecha_ini,
+                  fecha_fin
+                ) VALUES (
+                  p_id_usuario,
+                  NULL,
+                  now(),
+                  NULL,
+                  'activo',
+                  v_cont,
+                  v_id_gestion,
+                  v_fecha_ini,
+                  v_fecha_fin
+                ) returning id_periodo into v_id_periodo;
+                
+                
+                for v_rec in (select id_subsistema
+                			from segu.tsubsistema
+                			where estado_reg = 'activo'
+                			and codigo not in ('PXP','GEN','SEGU','WF','PARAM','ORGA','MIGRA')) loop
+                	insert into param.tperiodo_subsistema(
+                	id_periodo,
+                	id_subsistema,
+                	estado,
+                	id_usuario_reg,
+                	fecha_reg
+                	) values(
+                	v_id_periodo,
+                	v_rec.id_subsistema,
+                	'cerrado',
+                	p_id_usuario,
+                	now()
+                	);
+                	
+                		
+                end loop; 
+                
+        
+                
+                
+                v_cont=v_cont+1;
+                
+                 end loop;     
+            
+               
+
+
+            
+            END IF;
+            
             
             
 			--Definicion de la respuesta
@@ -169,7 +268,8 @@ BEGIN
 			estado = v_parametros.estado,
 			gestion = v_parametros.gestion,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+            tipo = v_parametros.tipo
 			where id_gestion=v_parametros.id_gestion;
                
 			--Definicion de la respuesta
@@ -269,7 +369,7 @@ BEGIN
 				id_periodo, id_subsistema, id_usuario_reg, fecha_reg, estado
 				)
 				select
-				v_rec.id_periodo, sis.id_subsistema,p_id_usuario, now(), 'abierto'
+				v_rec.id_periodo, sis.id_subsistema,p_id_usuario, now(), 'activo'
 				from segu.tsubsistema sis
 				where sis.id_subsistema not in (select id_subsistema
 												from param.tperiodo_subsistema

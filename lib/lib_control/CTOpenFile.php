@@ -65,8 +65,6 @@ else{
 }
 
 
-
-
 //abre el archivo si existe
 if (file_exists($ruta_archivo)){
 	if (strtolower($_GET['extension']) == 'pdf') {

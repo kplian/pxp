@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_configurar_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -71,13 +73,23 @@ BEGIN
          IF (v_parametros.modificar_clave = 'SI' AND v_parametros.autentificacion = 'local') THEN         	      	
             
             --1.1) IF verifico si la contraseña actual es valida         
-			IF EXISTS(SELECT 1 FROM segu.tusuario usuari WHERE usuari.contrasena = v_parametros.clave_anterior
-            and usuari.id_usuario = p_id_usuario) THEN
 			
-            --  guarda nueva contraseña solo si coinciden la nueva y la confirmacion
+          
+            
+            IF EXISTS(SELECT 1 FROM segu.tusuario usuari 
+                      WHERE usuari.contrasena = v_parametros.clave_anterior
+                           and usuari.id_usuario = p_id_usuario) THEN
+                           
+                          
+			
+               --  guarda nueva contraseña solo si coinciden la nueva y la confirmacion
 				 
                 --1.1.1) IF si la contraseña nueva es igual a la confirmacion
 				IF (v_parametros.clave_nueva = v_parametros.clave_confirmacion) THEN
+                
+                
+                raise exception 'entra.11111111...';
+                  
 		
 		        --1.1.1.1) modifico contraseña
 	            -- se actualiza la clave  
@@ -98,13 +110,17 @@ BEGIN
                          into v_resp;
                                    
                 else
-                  UPDATE segu.tusuario SET
-                   		 contrasena_anterior = v_clave_anterior,
-			             contrasena = v_parametros.clave_nueva,
-                         estilo = v_parametros.estilo,
-                         autentificacion = v_parametros.autentificacion
-                         
-					WHERE segu.tusuario.id_usuario = p_id_usuario;
+                
+                 
+                   
+                    UPDATE segu.tusuario SET
+                           contrasena_anterior = v_clave_anterior,
+                           contrasena = v_parametros.clave_nueva,
+                           estilo = v_parametros.estilo,
+                           autentificacion = v_parametros.autentificacion
+                           
+                      WHERE segu.tusuario.id_usuario = p_id_usuario;
+               
                 end if;
                     
                     v_mod_exito = 1;

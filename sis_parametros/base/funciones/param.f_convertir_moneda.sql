@@ -41,6 +41,7 @@ DECLARE
     v_moneda                    varchar;
     v_tipo                      varchar;
     v_num_decimales             integer;
+    v_res_custom				numeric;
 BEGIN
     v_nombre_funcion:='param.f_convertir_moneda';
     
@@ -50,6 +51,13 @@ BEGIN
     else
         v_tipo=p_tipo;
     end if;
+    
+    if(p_tipo = 'CUS' and p_tipo_cambio_custom is NULL)then
+        v_tipo='O';
+    end if;    
+    
+    
+    
     if(p_num_decimales is null)then
         v_num_decimales=2;
     else
@@ -102,7 +110,7 @@ BEGIN
         where   tc.id_moneda=v_id_moneda_2 and
                 tc.fecha=p_fecha;
      
-     v_registro.custom = (v_res/p_tipo_cambio_custom);
+     v_res_custom = (v_res/p_tipo_cambio_custom);
                 
     /*Si la moneda base es la moneda 2 se multiplica por el tipo de cambio*/
     elsif(v_id_moneda_base=v_id_moneda_2)then
@@ -119,7 +127,7 @@ BEGIN
         where   tc.id_moneda=v_id_moneda_1 and
                 tc.fecha=p_fecha;
         
-        v_registro.custom = v_res*p_tipo_cambio_custom;
+       v_res_custom = v_res*p_tipo_cambio_custom;
                 
         v_id_moneda_2=v_id_moneda_1;
     else
@@ -129,12 +137,23 @@ BEGIN
          --  OJO OJO OJO OJO
          -----------------------
             --09/11/"015, rac (kplian)
-            --OJO cuando con distintas moenda y tipo de cambio custom asumimos que es multiplicacion
+            --OJO cuando con distintas moneda y tipo de cambio custom asumimos que es multiplicacion
             -- 1 USD 1  BA    TC 6,96
             --   1 BS a USD  TC 0,143678160
             
+             select 
+                0::numeric as tipo_cambio,
+                0::numeric as oficial,
+                0::numeric  as compra,
+                0::numeric as venta,
+                0::numeric as custom 
+              into 
+                v_registro
+              from param.ttipo_cambio tc
+              where   tc.id_moneda=0;
             
-            v_registro.custom = v_res*p_tipo_cambio_custom;
+            
+            v_res_custom = v_res*p_tipo_cambio_custom;
            
          ELSE 
             raise exception 'Ha ocurrido un error al realizar la conversion de monedas';
@@ -181,9 +200,9 @@ BEGIN
    
    
         if(v_num_decimales=-1)then
-            return round(v_registro.custom, v_num_decimales);
+            return round(v_res_custom, v_num_decimales);
         else
-            return v_registro.custom;
+            return v_res_custom;
         end if;
     
     ELSE
