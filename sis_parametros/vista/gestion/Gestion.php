@@ -93,7 +93,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config: {
 				name: 'gestion',
-				fieldLabel: 'Gestión',
+				fieldLabel: 'Año',
 				anchor: '60%',
 				allowBlank: false,
 				origen: 'CATALOGO',
@@ -115,7 +115,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 	   			config:{
 	       		    name:'id_moneda_base',
 	   				origen:'MONEDA',
-	   				fieldLabel:'Moneda',
+	   				fieldLabel:'Moneda Base',
 	   				gdisplayField:'moneda',//mapea al store del grid
 	   				gwidth:200,
 	   				allowBlank: false,
@@ -156,7 +156,7 @@ Phx.vista.Gestion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config: {
 				name: 'tipo',
-				fieldLabel: 'tipo',
+				fieldLabel: 'Tipo',
 				allowBlank: true,
 				emptyText: 'tipo...',
 				typeAhead: true,

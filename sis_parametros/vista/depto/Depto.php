@@ -96,7 +96,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
    			config:{
    				name:'id_subsistema',
    				fieldLabel:'Subsistema',
-   				allowBlank:true,
+   				allowBlank:false,
    				emptyText:'Subsistema...',
    				store: new Ext.data.JsonStore({
 
@@ -144,23 +144,6 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
        	},
 		{
 			config:{
-				name: 'modulo',
-				fieldLabel: 'Módulo',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength: 90
-			},
-			type:'TextField',
-			filters:{pfiltro:'deppto.modulo',type:'string'},
-			id_grupo:1,
-			bottom_filter: true,
-			grid:true,
-			form:true
-		},
-		
-		{
-			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
@@ -177,8 +160,8 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'Codigo',
-				allowBlank: true,
+				fieldLabel: 'Código',
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:200
@@ -193,8 +176,8 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre',
-				fieldLabel: 'nombre',
-				allowBlank: true,
+				fieldLabel: 'Nombre',
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:200
@@ -209,8 +192,8 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre_corto',
-				fieldLabel: 'nombre Corto',
-				allowBlank: true,
+				fieldLabel: 'Nombre Corto',
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:200
@@ -270,7 +253,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'prioridad',
 				fieldLabel: 'Prioridad',
-				allowBlank: true,
+				allowBlank: false,
 				allowDacimals: false,
 				anchor: '80%',
 				gwidth: 100,
@@ -279,6 +262,22 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			type:'NumberField',
 			filters:{pfiltro:'DEPPTO.prioridad',type:'numeric'},
 			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
+				name: 'modulo',
+				fieldLabel: 'Módulo',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength: 90
+			},
+			type:'TextField',
+			filters:{pfiltro:'deppto.modulo',type:'string'},
+			id_grupo:1,
+			bottom_filter: true,
 			grid:true,
 			form:true
 		},

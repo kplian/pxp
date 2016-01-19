@@ -79,7 +79,7 @@ Phx.vista.Empresa=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nit',
-				fieldLabel: 'nit',
+				fieldLabel: 'NIT',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
