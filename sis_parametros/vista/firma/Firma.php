@@ -70,7 +70,7 @@ Phx.vista.Firma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'desc_firma',
-				fieldLabel: 'Descrip.',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -85,7 +85,7 @@ Phx.vista.Firma=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'prioridad',
-                fieldLabel: 'prioridad',
+                fieldLabel: 'Prioridad',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -100,7 +100,7 @@ Phx.vista.Firma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'monto_min',
-				fieldLabel: 'Min',
+				fieldLabel: 'Monto Min.',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -115,7 +115,7 @@ Phx.vista.Firma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'monto_max',
-				fieldLabel: 'Max',
+				fieldLabel: 'Monto Max.',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,

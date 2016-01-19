@@ -145,8 +145,3 @@ CREATE TABLE pxp.tprueba1 (
 ) WITHOUT OIDS;
 
 /****************************F-SCP-JRR-PXP-0-21/11/2014*************/
-
-
-
-
-

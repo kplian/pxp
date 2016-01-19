@@ -1171,3 +1171,16 @@ ALTER TABLE param.tgestion
   ADD COLUMN tipo VARCHAR(255);
 
 /***********************************F-SCP-FFP-PARAM-0-21/12/2015****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-05/11/2013****************************************/
+CREATE TABLE param.tproveedor_item_servicio (  
+  id_proveedor_item serial NOT NULL,
+  id_proveedor integer NOT NULL,
+  id_item integer,
+  id_servicio integer,
+  CONSTRAINT pk_tproveedor_item_servicio___id_proveedor_item PRIMARY KEY (id_proveedor_item),
+  CONSTRAINT chk_tproveedor_item_servivio__id_item__id_servicio CHECK (id_item IS NULL AND id_servicio IS NOT NULL OR id_servicio IS NULL AND id_item IS NOT NULL)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ALTER TABLE param.tproveedor_item_servicio OWNER TO postgres;
+/***********************************F-SCP-RCM-PARAM-0-05/11/2013****************************************/
