@@ -221,9 +221,9 @@ for item in url:
     			  	for line in run_command(command):
                                     f_log.write(line)
 				#Ejecutar la creacion de la funcion
-            	command = 'psql -q -d ' + db + ' < ' + funciones_dir + f            	
-				for line in run_command(command):
-					f_log.write(line)
+            		command = 'psql -q -d ' + db + ' < ' + funciones_dir + f            	
+			for line in run_command(command):
+				f_log.write(line)
 
 #insertar datos de cada esquema
 execute_script(url,'data', f_log)
