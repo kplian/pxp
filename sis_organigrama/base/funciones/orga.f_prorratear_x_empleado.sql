@@ -71,7 +71,7 @@ BEGIN
             v_id_centro_costo = null;
             
             select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo 
-            from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,v_id_periodo);
+            from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,p_id_periodo);
             
             
             
@@ -127,7 +127,7 @@ BEGIN
                 	v_id_centro_costo = null;
                 	
                     select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo 
-            		from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,v_id_periodo);
+            		from orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
                     
                     if (v_id_centro_costo is null) then
                         raise exception 'Existe un empleado que no tiene asignado centro de costo: %',v_funcionarios.id_funcionario;

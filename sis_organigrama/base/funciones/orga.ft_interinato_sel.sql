@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_interinato_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -75,7 +73,7 @@ BEGIN
                         	
 						from orga.tinterinato int
                         inner join orga.tcargo ct on ct.id_cargo = int.id_cargo_titular
-                        inner join orga.tuo_funcionario uoft on uoft.id_cargo = ct.id_cargo and uoft.tipo = ''oficial''
+                        inner join orga.tuo_funcionario uoft on uoft.id_cargo = ct.id_cargo --and uoft.tipo = ''oficial''
                         inner join orga.vfuncionario ft on ft.id_funcionario = uoft.id_funcionario 
                         
                         inner join orga.tcargo cs on cs.id_cargo = int.id_cargo_suplente 
@@ -109,7 +107,7 @@ BEGIN
 			v_consulta:='select count(id_interinato)
 					    from orga.tinterinato int
                         inner join orga.tcargo ct on ct.id_cargo = int.id_cargo_titular
-                        inner join orga.tuo_funcionario uoft on uoft.id_cargo = ct.id_cargo and uoft.tipo = ''oficial''
+                        inner join orga.tuo_funcionario uoft on uoft.id_cargo = ct.id_cargo --and uoft.tipo = ''oficial''
                         inner join orga.vfuncionario ft on ft.id_funcionario = uoft.id_funcionario 
                         
                         inner join orga.tcargo cs on cs.id_cargo = int.id_cargo_suplente 

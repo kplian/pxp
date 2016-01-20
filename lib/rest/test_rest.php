@@ -2,10 +2,12 @@
 	
 	include 'PxpRestClient.php';	
 
-	$pxpRestClient = PxpRestClient::connect('127.0.0.1','kerp/pxp/lib/rest/')->setCredentialsPxp('jrivera','Mund0libre.');
+	$pxpRestClient = PxpRestClient::connect('172.17.45.229','kerp_capacitacion/pxp/lib/rest/')->setCredentialsPxp('jrivera','123');
 	
-	    		
-	echo $pxpRestClient->doPost('tesoreria/CuentaDocumentadaEndesis/enviarfondoAvanceCorreo', array("id_cuenta_documentada"=>'1711'));
+			
+	echo $pxpRestClient->doGet('organigrama/Funcionario/getDatosFuncionario', array("nombre_empleado"=>'priscil'));
 
-echo "llega";
-exit;  
+
+exit; 
+
+

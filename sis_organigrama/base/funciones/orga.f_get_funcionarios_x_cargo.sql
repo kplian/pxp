@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.f_get_funcionarios_x_cargo (
   p_id_cargo integer,
   p_fecha date
@@ -22,7 +20,7 @@ BEGIN
          asig.fecha_asignacion <= p_fecha 
      and coalesce(asig.fecha_finalizacion, p_fecha)>=p_fecha 
      and asig.estado_reg = 'activo' 
-     and asig.tipo = 'oficial'
+     and asig.tipo in ('oficial','funcional')
      and asig.id_cargo = p_id_cargo;
   
   

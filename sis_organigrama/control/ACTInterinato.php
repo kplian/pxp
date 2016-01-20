@@ -30,7 +30,8 @@ class ACTInterinato extends ACTbase{
         //if($this->objParam->getParametro('estado_reg')=='activo'){
                 
             $this->objParam->addFiltro(" now()::Date BETWEEN  int.fecha_ini  and int.fecha_fin "); 
-            $this->objParam->addFiltro(" now()::Date BETWEEN uofs.fecha_asignacion and COALESCE(uofs.fecha_finalizacion,now()::Date)");   
+            $this->objParam->addFiltro(" now()::Date BETWEEN uoft.fecha_asignacion and COALESCE(uoft.fecha_finalizacion,now()::Date)");
+			$this->objParam->addFiltro(" now()::Date BETWEEN uofs.fecha_asignacion and COALESCE(uofs.fecha_finalizacion,now()::Date)");
         //}
         
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -55,8 +56,8 @@ class ACTInterinato extends ACTbase{
         
        // if($this->objParam->getParametro('estado_reg')=='activo'){
             $this->objParam->addFiltro(" now()::Date BETWEEN  int.fecha_ini  and int.fecha_fin ");    
-            $this->objParam->addFiltro(" now()::Date BETWEEN uoft.fecha_asignacion and COALESCE(uoft.fecha_finalizacion,now()::Date)");
-			$this->objParam->addFiltro(" now()::Date BETWEEN uofs.fecha_asignacion and COALESCE(uofs.fecha_finalizacion,now()::Date)");   
+            $this->objParam->addFiltro(" now()::Date BETWEEN uoft.fecha_asignacion and COALESCE(uoft.fecha_finalizacion,now()::Date)");   
+			$this->objParam->addFiltro(" now()::Date BETWEEN uofs.fecha_asignacion and COALESCE(uofs.fecha_finalizacion,now()::Date)");
         
         //}
 		

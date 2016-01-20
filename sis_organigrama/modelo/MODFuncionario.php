@@ -55,6 +55,53 @@ class MODFuncionario extends MODbase{
 		return $this->respuesta;
 
 	}
+
+	function getDatosFuncionario(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_GETDAFUN_SEL';//nombre de la transaccion
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+			
+		//defino varialbes que se captran como retornod e la funcion
+		
+		$this->captura('id_funcionario','integer');
+		$this->captura('nombre_funcionario','varchar');
+		$this->captura('cargo','varchar');
+		$this->captura('telefonos_corporativos','varchar');
+		$this->captura('correo_corporativo','varchar');
+		
+		
+		//Ejecuta la funcion
+		$this->armarConsulta();		
+		//echo $this->getConsulta(); exit;
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+
+	}
+	
+	function getCumpleaneros(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_GETCUMPLEA_SEL';//nombre de la transaccion
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+			
+		//defino varialbes que se captran como retornod e la funcion
+		
+		$this->captura('id_funcionario','integer');
+		$this->captura('nombre_funcionario','varchar');
+		$this->captura('cargo','varchar');		
+		$this->captura('correo_corporativo','varchar');
+		
+		
+		//Ejecuta la funcion
+		$this->armarConsulta();		
+		//echo $this->getConsulta(); exit;
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+
+	}
 	
 	function listarFuncionarioCargo(){
 		//Definicion de variables para ejecucion del procedimiento
