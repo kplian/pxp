@@ -9,7 +9,7 @@ import datetime
 def restaurar_db(base):
 	print 'Iniciando backup de la BD :' + db
 	file_name = '/tmp/bk_' + base + '_' +datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-	command = 'pg_dump ' + base + ' -U postgres -F c -b -f ' + file_name
+	command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f ' + file_name
         for line in run_command(command):
         	print line
 	print 'Se ha generado el backup de la base de datos en : ' + file_name
@@ -129,7 +129,7 @@ print '**************UTILIDAD PARA RESTAURAR BD DEL FRAMEWORK PXP***************
 print 'Que desea hacer?'
 print '1. Restaurar la base de datos completamente (Esta opcion eliminara todos los objetos de la bd)'
 print '2. Actualizar los scripts faltantes en su base de datos (Solo eliminara las funciones y las volvera a crear)'
-print '3. Obtener un backup de la BD'
+print '3. Obtener un backup de la BD (sin el esquema log)'
 print '4. Salir del programa'
 opcion = raw_input('Ingrese una opcion (1,2,3 o 4): ')
 if (opcion != '1' and opcion != '2' and opcion != '3') :
@@ -199,7 +199,11 @@ execute_script(url, 'custom_type', f_log)
 #crear objetos de cada esquema
 execute_script(url, 'patch', f_log)
 
-
+#Crear funcion para eliminar funciones
+command = 'psql -q -d ' + db + ' < ' + url[0] +   'base/funciones/pxp.f_delfunc.sql'          	
+for line in run_command(command):
+	f_log.write(line)
+                                    
 #Crear funciones
 for item in url:
 	 #restaurar subsistema
@@ -209,10 +213,17 @@ for item in url:
     	funciones = os.listdir( funciones_dir )
     	for f in funciones:
     		if f.endswith('.sql'):
-            		command = 'psql -q -d ' + db + ' < ' + funciones_dir + f
-            		f_log.write('restaurando '+funciones_dir + f+'\n')
-                for line in run_command(command):
+    			f_log.write('restaurando '+funciones_dir + f+'\n')
+    			#solo eliminar si la funcion no es pxp.f_delfunc.sql
+    			if (f != 'pxp.f_delfunc.sql'):
+    				command = 'psql '+ db + ' -c  "select pxp.f_delfunc(\$\$' + f.replace('.sql','')  + '\$\$)"'
+    			 	
+    			  	for line in run_command(command):
                                     f_log.write(line)
+				#Ejecutar la creacion de la funcion
+            		command = 'psql -q -d ' + db + ' < ' + funciones_dir + f            	
+			for line in run_command(command):
+				f_log.write(line)
 
 #insertar datos de cada esquema
 execute_script(url,'data', f_log)
@@ -222,6 +233,7 @@ if (datos  == 's'):
     for item in url:
         if os.access(item + 'base/test_data.sql', os.R_OK):
 	    f_log.write("**************TEST DATA : " + item)
+	    	
             command = 'psql '+ db + ' < ' + item + 'base/test_data.sql'
             for line in run_command(command):
                 f_log.write(line)
