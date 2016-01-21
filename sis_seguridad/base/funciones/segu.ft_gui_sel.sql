@@ -187,7 +187,7 @@ BEGIN
                                     g.descripcion,
                                     g.codigo_gui,
                                     g.visible,
-                                    g.orden_logico,
+                                    coalesce(g.orden_logico,0),
                                     g.ruta_archivo,
                                     g.nivel,
                                     g.icono,
