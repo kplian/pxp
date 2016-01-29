@@ -76,9 +76,9 @@ Options are:
   ./analyze_new_cluster.sh
   ```
 
-12. **TEST EVERYTHING IS OK**
+12. **TEST IF EVERYTHING IS OK**
 
-  **IF EVERYHING IS OK**
+  **IF OK THEN...**
 
 13. Remove old cluster (As postgres user)
 
