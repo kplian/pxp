@@ -64,7 +64,7 @@ Options are:
   diff /var/lib/pgsql/9.3/data/postgresql.conf /var/lib/pgsql/9.5/data/postgresql.conf
   ```
 
-10.
+10. Start Service
 
   ```
   service postgresql-9.5 start
@@ -78,7 +78,7 @@ Options are:
 
 12. **TEST EVERYTHING IS OK**
 
-**IF EVERYHING IS OK**
+  **IF EVERYHING IS OK**
 
 13. Remove old cluster (As postgres user)
 
