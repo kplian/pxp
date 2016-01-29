@@ -23,7 +23,7 @@ PXP Postgres Upgrade (E.g.: Version 9.3 to 9.5 )
 4.  If all packages are available... install
 
   ```
-  yum install postgresql95-pltcl.x86_64 postgresql95-plperl.x86_64 postgresql95-docs.x86_64  postgresql95-server.x86_64      postgresql95-plpython.x86_64 postgresql95.x86_64 postgresql95-contrib.x86_64 postgresql95-devel.x86_64                     postgresql95-libs.x86_64 postgresql95-test.x86_64
+yum install postgresql95-pltcl.x86_64 postgresql95-plperl.x86_64 postgresql95-docs.x86_64  postgresql95-server.x86_64      postgresql95-plpython.x86_64 postgresql95.x86_64 postgresql95-contrib.x86_64 postgresql95-devel.x86_64                     postgresql95-libs.x86_64 postgresql95-test.x86_64
   ```
 5.
 
