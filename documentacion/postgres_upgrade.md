@@ -1,12 +1,12 @@
-PXP Postgres Upgrade (Eg: Version 9.3 to 9.5 )
+PXP Postgres Upgrade (E.g.: Version 9.3 to 9.5 )
 ==============================================
 
 1. Install postgres repository
 
-```
-wget http://yum.postgresql.org/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
-rpm -ivh ./pgdg-centos95-9.5-2.noarch.rpm
-```
+  ```
+  wget http://yum.postgresql.org/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
+  rpm -ivh ./pgdg-centos95-9.5-2.noarch.rpm
+  ```
 
 2. List currently installed packages for 9.3 version
 
