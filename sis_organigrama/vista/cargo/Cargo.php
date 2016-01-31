@@ -185,7 +185,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 				displayField: 'nombre',
 				gdisplayField: 'nombre',
 				hiddenName: 'id_temporal_cargo',
-				forceSelection: true,
+				forceSelection: false,
 				typeAhead: false,
 				triggerAction: 'all',
 				lazyRender: true,
