@@ -49,9 +49,15 @@ BEGIN
         	from orga.toficina
         	where id_oficina = v_parametros.id_oficina;
         	
-        	select nombre into v_nombre_cargo
-        	from orga.ttemporal_cargo 
-        	where id_temporal_cargo = v_parametros.id_temporal_cargo;
+        	if (pxp.f_is_positive_integer(v_parametros.id_temporal_cargo)) THEN
+	        	select nombre into v_nombre_cargo
+        		from orga.ttemporal_cargo 
+        		where id_temporal_cargo = v_parametros.id_temporal_cargo;
+	        else
+	        	v_nombre_cargo = v_parametros.id_temporal_cargo;
+	        end if;
+        	
+        	
         	--Sentencia de la insercion
         	insert into orga.tcargo(
 			id_tipo_contrato,
@@ -107,9 +113,13 @@ BEGIN
 	elsif(p_transaccion='OR_CARGO_MOD')then
 
 		begin
-			select nombre into v_nombre_cargo
-        	from orga.ttemporal_cargo 
-        	where id_temporal_cargo = v_parametros.id_temporal_cargo;
+		if (pxp.f_is_positive_integer(v_parametros.id_temporal_cargo)) THEN
+	        	select nombre into v_nombre_cargo
+        		from orga.ttemporal_cargo 
+        		where id_temporal_cargo = v_parametros.id_temporal_cargo;
+	        else
+	        	v_nombre_cargo = v_parametros.id_temporal_cargo;
+	        end if;
         	
         	select id_lugar into v_id_lugar
         	from orga.toficina
