@@ -34,7 +34,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'prioridad',
-				fieldLabel: 'prioridad',
+				fieldLabel: 'Prioridad',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -49,7 +49,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'codigo',
+				fieldLabel: 'Código',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -64,7 +64,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo_internacional',
-				fieldLabel: 'Codigo Internacional',
+				fieldLabel: 'Código Internacional',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -79,7 +79,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'moneda',
-				fieldLabel: 'moneda',
+				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -92,34 +92,48 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 			form:true
 		},
 		{
-			config:{
+			config: {
 				name: 'origen',
-				fieldLabel: 'origen',
-				allowBlank: true,
-				anchor: '80%',
+				fieldLabel: 'Origen',
+				anchor: '100%',
+				tinit: false,
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'origen',
 				gwidth: 100,
-				maxLength:30
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tmoneda__origen'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['origen']);}
 			},
-			type:'TextField',
+			type: 'ComboRec',
+			id_grupo: 1,
 			filters:{pfiltro:'moneda.origen',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
+			grid: true,
+			form: true
 		},
 		{
-			config:{
+			config: {
 				name: 'tipo_actualizacion',
-				fieldLabel: 'tipo_actualizacion',
-				allowBlank: true,
-				anchor: '80%',
+				fieldLabel: 'Tipo Actualización',
+				anchor: '100%',
+				tinit: false,
+				allowBlank: false,
+				origen: 'CATALOGO',
+				gdisplayField: 'tipo_actualizacion',
 				gwidth: 100,
-				maxLength:30
+				baseParams:{
+						cod_subsistema:'PARAM',
+						catalogo_tipo:'tmoneda__tipo_actualizacion'
+				},
+				renderer:function (value, p, record){return String.format('{0}', record.data['tipo_actualizacion']);}
 			},
-			type:'TextField',
+			type: 'ComboRec',
+			id_grupo: 1,
 			filters:{pfiltro:'moneda.tipo_actualizacion',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
+			grid: true,
+			form: true
 		},
 		
 		{
@@ -149,8 +163,8 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{
             config:{
                 name:'triangulacion',
-                fieldLabel:'triangulacion',
-                qtip: 'la moneda sirve para trigular valores con monedas extranjeras, solo podemos tener una moenda de triangulación',
+                fieldLabel:'Triangulación?',
+                qtip: 'la moneda sirve para trigular valores con monedas extranjeras, solo podemos tener una moneda para triangulación',
                 allowBlank: false,
                 anchor: '80%',
                 emptyText:'Tipo...',                   
@@ -174,8 +188,8 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name:'contabilidad',
-                fieldLabel:'contabilidad',
-                qtip: 'La moneda se utiliza en contabilidad',
+                fieldLabel:'Contabilidad',
+                qtip: 'La moneda se utilizará en contabilidad?',
                 allowBlank: false,
                 anchor: '80%',
                 emptyText:'Tipo...',                   

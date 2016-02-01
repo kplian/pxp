@@ -43,7 +43,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre',
-				fieldLabel: 'nombre',
+				fieldLabel: 'Nombre',
 				allowBlank: false,
 				width: '100%',
 				gwidth: 250,
@@ -140,7 +140,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo_banco',
-				fieldLabel: 'codigo_banco',
+				fieldLabel: 'Código Banco',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -155,7 +155,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'observaciones',
-				fieldLabel: 'observaciones',
+				fieldLabel: 'Observaciones',
 				allowBlank: true,
 				width: "100%",
 				heith: 250,
@@ -172,7 +172,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'casilla',
-				fieldLabel: 'casilla',
+				fieldLabel: 'Casilla',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -187,7 +187,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'telefono1',
-				fieldLabel: 'telefono1',
+				fieldLabel: 'Teléfono 1',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -203,7 +203,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'telefono2',
-				fieldLabel: 'telefono2',
+				fieldLabel: 'Teléfono 2',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -218,7 +218,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fax',
-				fieldLabel: 'fax',
+				fieldLabel: 'Fax',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -233,7 +233,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'email1',
-				fieldLabel: 'email1',
+				fieldLabel: 'Email 1',
 				allowBlank: true,
 				vtype:'email',
 				width: "100%",
@@ -249,7 +249,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'email2',
-				fieldLabel: 'email2',
+				fieldLabel: 'Email 2',
 				allowBlank: true,
 				vtype:'email',
 				width: "100%",
@@ -265,7 +265,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'celular1',
-				fieldLabel: 'celular1',
+				fieldLabel: 'Celular 1',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -280,7 +280,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'celular2',
-				fieldLabel: 'celular2',
+				fieldLabel: 'Celular 2',
 				allowBlank: true,
 				width: "100%",
 				gwidth: 100,
@@ -295,7 +295,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'pag_web',
-				fieldLabel: 'pag_web',
+				fieldLabel: 'Página Web',
 				allowBlank: true,
 				//vtype:'url',
 				width: "100%",

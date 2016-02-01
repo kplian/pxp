@@ -63,7 +63,7 @@ Phx.vista.subirLogo=Ext.extend(Phx.frmInterfaz,{
 						
 						extension = extension.toLowerCase();
 						
-						 if(extension!='.jpg' &&extension!='.pgn' && extension!='.gif' & extension!='.jpeg'){
+						 if(extension!='.jpg' &&extension!='.png' && extension!='.gif' & extension!='.jpeg'){
 								this.markInvalid('solo se admiten imagenes png, jpg, gif');
 								return false
 						}

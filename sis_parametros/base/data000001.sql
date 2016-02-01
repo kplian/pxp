@@ -812,3 +812,10 @@ VALUES (E'moneda_intercambio', E'false', E'el sistema maneja moneda de intercamb
 /***********************************F-DAT-RAC-PARAM-0-28/10/2015*****************************************/
 
 
+/***********************************I-DAT-RCM-PARAM-0-21/01/2016*****************************************/
+select pxp.f_add_catalog('PARAM','tmoneda__origen','nacional');
+select pxp.f_add_catalog('PARAM','tmoneda__origen','extranjera');
+select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','sin_actualizacion');
+select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_saldo');
+select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_transaccion');
+/***********************************F-DAT-RCM-PARAM-0-21/01/2016*****************************************/
