@@ -549,5 +549,9 @@ ALTER TABLE orga.tuo_funcionario
   
 /*****************************F-SCP-JRR-ORGA-0-01/10/2015*************/
 
+/*****************************I-SCP-JRR-ORGA-0-01/02/2016*************/
 
+ALTER TABLE orga.tcargo
+  ALTER COLUMN id_temporal_cargo DROP NOT NULL;
 
+/*****************************F-SCP-JRR-ORGA-0-01/02/2016*************/

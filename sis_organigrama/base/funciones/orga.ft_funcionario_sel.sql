@@ -123,6 +123,160 @@ BEGIN
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;
+ /*******************************
+ #TRANSACCION:  RH_GETDAFUN_SEL
+ #DESCRIPCION:	Obtener datos de funcionario a partir del nombre
+ #AUTOR:		
+ #FECHA:		23/05/11	
+***********************************/
+     elsif(par_transaccion='RH_GETDAFUN_SEL')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='SELECT 
+               				FUNCIO.id_funcionario,
+                            PERSON.nombre_completo1::varchar,
+                            CAR.nombre,
+                            pxp.list(nc.numero)::varchar,
+                            FUNCIO.email_empresa
+                            
+                            FROM orga.tfuncionario FUNCIO
+                            INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
+                            INNER JOIN orga.tuo_funcionario uofun on 
+                            	uofun.id_funcionario = FUNCIO.id_funcionario and uofun.estado_reg = ''activo'' and
+                                uofun.fecha_asignacion <= now()::date and 
+                                (uofun.fecha_finalizacion >= now()::date or uofun.fecha_finalizacion is null)
+                            INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo
+                            LEFT JOIN gecom.tfuncionario_celular fc on fc.id_funcionario = FUNCIO.id_funcionario
+                            	and fc.estado_reg = ''activo'' and fc.fecha_inicio <= now()::date and
+                                (fc.fecha_fin >= now()::date or fc.fecha_fin is null)
+                            LEFT JOIN gecom.tnumero_celular nc ON
+                            	nc.id_numero_celular = fc.id_numero_celular and nc.tipo = ''celular''
+                            WHERE ';
+               
+               
+               
+               v_consulta := v_consulta || v_parametros.filtro;
+               v_consulta := v_consulta ||  ' GROUP BY FUNCIO.id_funcionario,
+                            PERSON.nombre_completo1,
+                            CAR.nombre,                            
+                            FUNCIO.email_empresa';
+              
+               
+               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+
+               return v_consulta;
+
+
+         END;
+
+/*******************************
+ #TRANSACCION:  RH_GETDAFUN_CONT
+ #DESCRIPCION:	Conteo de registros al obtener datos de funcionario a partir del nombre
+ #AUTOR:		
+ #FECHA:		23/05/11	
+***********************************/
+     elsif(par_transaccion='RH_GETDAFUN_CONT')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='SELECT 
+               				count(FUNCIO.id_funcionario)
+                                                        
+                            FROM orga.tfuncionario FUNCIO
+                            INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
+                            INNER JOIN orga.tuo_funcionario uofun on 
+                            	uofun.id_funcionario = FUNCIO.id_funcionario and uofun.estado_reg = ''activo'' and
+                                uofun.fecha_asignacion <= now()::date and 
+                                (uofun.fecha_finalizacion >= now()::date or uofun.fecha_finalizacion is null)
+                            INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo
+                            
+                            WHERE ';
+               
+               
+               
+               v_consulta := v_consulta || v_parametros.filtro;
+               
+               return v_consulta;
+
+
+         END;
+
+/*******************************
+ #TRANSACCION:  RH_GETCUMPLEA_SEL
+ #DESCRIPCION:	Cumpleaneros a fecha sel
+ #AUTOR:		
+ #FECHA:		23/05/11	
+***********************************/
+     elsif(par_transaccion='RH_GETCUMPLEA_SEL')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='SELECT 
+               				FUNCIO.id_funcionario,
+                            FUNCIO.desc_funcionario1::varchar,
+                            CAR.nombre,                            
+                            F.email_empresa
+                            
+                            FROM orga.vfuncionario FUNCIO
+                            
+                            INNER JOIN orga.tfuncionario F ON F.id_funcionario=FUNCIO.id_funcionario
+                            INNER JOIN SEGU.tpersona PERSON ON PERSON.id_persona=F.id_persona
+                            INNER JOIN orga.tuo_funcionario uofun on 
+                            	uofun.id_funcionario = FUNCIO.id_funcionario and uofun.estado_reg = ''activo'' and
+                                uofun.fecha_asignacion <= now()::date and 
+                                (uofun.fecha_finalizacion >= now()::date or uofun.fecha_finalizacion is null)
+                            INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo                            
+                            WHERE ';
+               
+               
+               
+               v_consulta := v_consulta || v_parametros.filtro;
+                            
+               
+               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+
+               return v_consulta;
+
+
+         END;
+
+/*******************************
+ #TRANSACCION:  RH_GETCUMPLEA_CONT
+ #DESCRIPCION:	Conteo de empleados que cumplen anos a una fecha
+ #AUTOR:		
+ #FECHA:		23/05/11	
+***********************************/
+     elsif(par_transaccion='RH_GETCUMPLEA_CONT')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='SELECT 
+               				count(FUNCIO.id_funcionario)
+                                                        
+                            FROM orga.vfuncionario FUNCIO
+                            INNER JOIN orga.tfuncionario F ON F.id_funcionario=FUNCIO.id_funcionario
+                            INNER JOIN SEGU.tpersona PERSON ON PERSON.id_persona=F.id_persona
+                            INNER JOIN orga.tuo_funcionario uofun on 
+                            	uofun.id_funcionario = FUNCIO.id_funcionario and uofun.estado_reg = ''activo'' and
+                                uofun.fecha_asignacion <= now()::date and 
+                                (uofun.fecha_finalizacion >= now()::date or uofun.fecha_finalizacion is null)
+                            INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo      
+                            
+                            WHERE ';
+               
+               
+               
+               v_consulta := v_consulta || v_parametros.filtro;
+               
+               return v_consulta;
+
+
+         END;
     
     /*******************************
      #TRANSACCION:  RH_FUNCIOCAR_SEL

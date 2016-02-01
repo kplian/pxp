@@ -259,7 +259,11 @@ BEGIN
             inner join param.tgestion ges 
             on ges.id_gestion = p.id_gestion 
             and ges.estado_reg ='activo'
-            where  p.estado_reg='activo' and p.id_periodo = par_id;  
+            where  p.estado_reg='activo' and p.id_periodo = par_id;
+				
+			if(v_id is null) then
+               raise exception 'Periodo para el par_id % inexistente', par_id ;
+            end if;
     
          END IF; 
          
