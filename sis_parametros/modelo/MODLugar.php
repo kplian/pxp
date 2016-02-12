@@ -34,6 +34,7 @@ class MODLugar extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('es_regional','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -70,6 +71,7 @@ class MODLugar extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('tipo_nodo','varchar');
 		$this->captura('codigo_largo','varchar');
+		$this->captura('es_regional','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -94,6 +96,7 @@ class MODLugar extends MODbase{
 		$this->setParametro('sw_impuesto','sw_impuesto','varchar');
 		$this->setParametro('sw_municipio','sw_municipio','varchar');
 		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('es_regional','es_regional','varchar');
 	
 
 		//Ejecuta la instruccion
@@ -119,6 +122,7 @@ class MODLugar extends MODbase{
 		$this->setParametro('sw_impuesto','sw_impuesto','varchar');
 		$this->setParametro('sw_municipio','sw_municipio','varchar');
 		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('es_regional','es_regional','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

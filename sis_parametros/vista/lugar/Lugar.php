@@ -150,7 +150,23 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
 	       		    mode: 'local',
-	       		    store:['pais','departamento', 'provincia', 'localidad','Barrio']
+	       		    store:['pais','departamento', 'ciudad','provincia', 'localidad','Barrio']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		form:true
+	     },
+	     {
+	     config:{
+	       			name:'es_regional',
+	       		    fieldLabel: 'Es Regional',
+				    allowBlank: false,
+					typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',
+	       		    store:['si','no']
 	       		    
 	       		},
 	       		type:'ComboBox',
@@ -202,6 +218,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 		{name:'id_lugar_fk', type: 'numeric'},
 		{name:'codigo_largo', type: 'string'},
 		{name:'codigo', type: 'string'},
+		{name:'es_regional', type: 'string'},
 		{name:'estado_reg', type: 'string'},
 		
 		{name:'nombre', type: 'string'},
