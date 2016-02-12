@@ -34,7 +34,7 @@ Phx.vista.Alarma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'acceso_directo',
-				fieldLabel: 'acceso_directo',
+				fieldLabel: 'Acceso Directo',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -94,7 +94,7 @@ Phx.vista.Alarma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'fecha',
-				fieldLabel: 'fecha',
+				fieldLabel: 'Fecha',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -124,7 +124,7 @@ Phx.vista.Alarma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion',
-				fieldLabel: 'descripcion',
+				fieldLabel: 'Descripcion',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,

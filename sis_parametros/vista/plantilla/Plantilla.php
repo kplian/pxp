@@ -100,8 +100,8 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'sw_monto_excento',
-                fieldLabel: 'Excento',
-                qtip: 'El documento admite monto excento',
+                fieldLabel: 'Exento',
+                qtip: 'El documento admite monto exento',
                 allowBlank: false,
                 anchor: '40%',
                 gwidth: 80,
@@ -125,7 +125,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'sw_descuento',
-                fieldLabel: 'Decuento',
+                fieldLabel: 'Descuento',
                 qtip: 'Incluye o no el campo descuento en libro de compras y ventas',
                 allowBlank: false,
                 anchor: '40%',
@@ -201,7 +201,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'sw_ic',
                 fieldLabel: 'ICE',
-                qtip: 'Impuesto ICE , si esta habilitado es necesario habilitar el monto excento',
+                qtip: 'Impuesto ICE , si esta habilitado es necesario habilitar el monto exento',
                 allowBlank: false,
                 anchor: '40%',
                 gwidth: 80,

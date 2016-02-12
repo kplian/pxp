@@ -35,7 +35,7 @@ Phx.vista.GeneradorAlarma=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'funcion',
-				fieldLabel: 'funcion',
+				fieldLabel: 'Funcion',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 300,
@@ -126,7 +126,7 @@ Phx.vista.GeneradorAlarma=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	
-	title:'Generadoor Alarma',
+	title:'Generador Alarma',
 	ActSave:'../../sis_parametros/control/GeneradorAlarma/insertarGeneradorAlarma',
 	ActDel:'../../sis_parametros/control/GeneradorAlarma/eliminarGeneradorAlarma',
 	ActList:'../../sis_parametros/control/GeneradorAlarma/listarGeneradorAlarma',
