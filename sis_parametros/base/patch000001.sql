@@ -1184,3 +1184,10 @@ CREATE TABLE param.tproveedor_item_servicio (
 WITH OIDS;
 ALTER TABLE param.tproveedor_item_servicio OWNER TO postgres;
 /***********************************F-SCP-RCM-PARAM-0-05/11/2013****************************************/
+
+/***********************************I-SCP-JRR-PARAM-0-16/02/2016****************************************/
+
+ALTER TABLE param.tlugar
+  ADD COLUMN es_regional VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-JRR-PARAM-0-16/02/2016****************************************/
