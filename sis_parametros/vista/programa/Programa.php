@@ -34,10 +34,10 @@ Phx.vista.Programa=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo_programa',
-				fieldLabel: 'Codigo Programa',
+				fieldLabel: 'Código',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 120,
 				maxLength:10
 			},
 			type:'TextField',
@@ -49,10 +49,10 @@ Phx.vista.Programa=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre_programa',
-				fieldLabel: 'Nombre Programa',
+				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 240,
 				maxLength:100
 			},
 			type:'TextField',
@@ -64,10 +64,10 @@ Phx.vista.Programa=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion_programa',
-				fieldLabel: 'Descripcion Programa',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:15
 			},
 			type:'TextArea',
