@@ -66,7 +66,9 @@ BEGIN
                         plt.sw_codigo_control,
                         plt.tipo_plantilla,
                         plt.sw_ic,
-                        plt.sw_nro_dui
+                        plt.sw_nro_dui,
+             			plt.tipo_excento,
+            			plt.valor_excento
 						from param.tplantilla plt
 						inner join segu.tusuario usu1 on usu1.id_usuario = plt.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = plt.id_usuario_mod

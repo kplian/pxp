@@ -52,6 +52,17 @@ BEGIN
            if v_parametros.sw_ic = 'si' and v_parametros.sw_monto_excento = 'no' then
             raise exception 'Si tenemos IC es necesario habilitar el Excento';
            end if;
+           
+           v_parametros.valor_excento = COALESCE(v_parametros.valor_excento,0);
+           
+           IF v_parametros.tipo_excento != 'variable'  and  v_parametros.valor_excento <= 0 THEN
+             raise exception 'El valor Exento no puede ser menro a cero,  si el tipo no es variable';
+           END IF;
+           
+           IF  v_parametros.valor_excento < 0 THEN
+             raise exception 'El valor Exento no puede ser menor a cero';
+           END IF;
+           
         
         	--Sentencia de la insercion
         	insert into param.tplantilla(
@@ -71,7 +82,9 @@ BEGIN
             sw_codigo_control,
             tipo_plantilla,
             sw_nro_dui,
-            sw_ic
+            sw_ic,
+            tipo_excento,
+            valor_excento
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -89,7 +102,9 @@ BEGIN
             v_parametros.sw_codigo_control,
             v_parametros.tipo_plantilla,
             v_parametros.sw_nro_dui,
-            v_parametros.sw_ic
+            v_parametros.sw_ic,
+            v_parametros.tipo_excento,
+            v_parametros.valor_excento
 							
 			)RETURNING id_plantilla into v_id_plantilla;
 			
@@ -115,8 +130,20 @@ BEGIN
         
         
             if v_parametros.sw_ic = 'si' and v_parametros.sw_monto_excento = 'no' then
-            raise exception 'Si tenemos IC es necesario habilitar el Excento';
-           end if;
+               raise exception 'Si tenemos IC es necesario habilitar el Excento';
+            end if;
+           
+           v_parametros.valor_excento = COALESCE(v_parametros.valor_excento,0);
+           
+           IF v_parametros.tipo_excento != 'variable'  and  v_parametros.valor_excento <= 0 THEN
+             raise exception 'El valor Exento no puede ser menro a cero,  si el tipo no es variable';
+           END IF;
+           
+           IF  v_parametros.valor_excento < 0 THEN
+             raise exception 'El valor Exento no puede ser menor a cero';
+           END IF;
+           
+           
 			--Sentencia de la modificacion
 			update param.tplantilla set
 			desc_plantilla = v_parametros.desc_plantilla,
@@ -132,7 +159,9 @@ BEGIN
             sw_codigo_control=v_parametros.sw_codigo_control,
             tipo_plantilla=v_parametros.tipo_plantilla, 
             sw_nro_dui = v_parametros.sw_nro_dui,
-            sw_ic = v_parametros.sw_ic
+            sw_ic = v_parametros.sw_ic,
+            tipo_excento = v_parametros.tipo_excento,
+            valor_excento = v_parametros.valor_excento
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta
