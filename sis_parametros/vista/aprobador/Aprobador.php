@@ -250,7 +250,7 @@ Phx.vista.Aprobador=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'obs',
-				fieldLabel: 'obs',
+				fieldLabel: 'Observaciones',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 200,
