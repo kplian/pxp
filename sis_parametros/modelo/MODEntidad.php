@@ -105,6 +105,23 @@ class MODEntidad extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function getEntidadByDepto(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_entidad_ime';
+		$this->transaccion='PM_ENTGET_GET';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_depto','id_depto','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>

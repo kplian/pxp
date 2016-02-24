@@ -104,7 +104,9 @@ class CTParametro{
 
 	function aplicaFiltroRapido() {
 		if ($this->getParametro('bottom_filter_value') != '' && $this->getParametro('bottom_filter_fields')) {
-			$fields = explode(',', $this->getParametro('bottom_filter_fields'));
+			$fields = str_replace('#', ',', $this->getParametro('bottom_filter_fields'));	
+			$fields = explode(',', $fields);
+			
 			$value = $this->getParametro('bottom_filter_value');
 			
 			$query .= "((".$fields[0]."::varchar ILIKE ''%".$value."%'')"; 

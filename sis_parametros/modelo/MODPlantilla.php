@@ -42,6 +42,7 @@ class MODPlantilla extends MODbase{
 		$this->captura('sw_nro_dui','varchar');
 		$this->captura('tipo_excento','varchar');
 		$this->captura('valor_excento','numeric');
+		$this->captura('tipo_informe','varchar');
 		
 
 		
@@ -75,6 +76,7 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_ic','sw_ic','varchar');
 		$this->setParametro('tipo_excento','tipo_excento','varchar');
 		$this->setParametro('valor_excento','valor_excento','numeric');
+		$this->setParametro('tipo_informe','tipo_informe','varchar');
 		
 		
 
@@ -109,6 +111,7 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_ic','sw_ic','varchar');
 		$this->setParametro('tipo_excento','tipo_excento','varchar');
 		$this->setParametro('valor_excento','valor_excento','numeric');
+		$this->setParametro('tipo_informe','tipo_informe','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

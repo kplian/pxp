@@ -84,7 +84,8 @@ BEGIN
             sw_nro_dui,
             sw_ic,
             tipo_excento,
-            valor_excento
+            valor_excento,
+            tipo_informe
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -104,7 +105,8 @@ BEGIN
             v_parametros.sw_nro_dui,
             v_parametros.sw_ic,
             v_parametros.tipo_excento,
-            v_parametros.valor_excento
+            v_parametros.valor_excento,
+            v_parametros.tipo_informe
 							
 			)RETURNING id_plantilla into v_id_plantilla;
 			
@@ -146,22 +148,23 @@ BEGIN
            
 			--Sentencia de la modificacion
 			update param.tplantilla set
-			desc_plantilla = v_parametros.desc_plantilla,
-			sw_tesoro = v_parametros.sw_tesoro,
-			sw_compro = v_parametros.sw_compro,
-			nro_linea = v_parametros.nro_linea,
-			tipo = v_parametros.tipo,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-            sw_monto_excento = v_parametros.sw_monto_excento,
-            sw_descuento=v_parametros.sw_descuento,
-            sw_autorizacion=v_parametros.sw_autorizacion,
-            sw_codigo_control=v_parametros.sw_codigo_control,
-            tipo_plantilla=v_parametros.tipo_plantilla, 
-            sw_nro_dui = v_parametros.sw_nro_dui,
-            sw_ic = v_parametros.sw_ic,
-            tipo_excento = v_parametros.tipo_excento,
-            valor_excento = v_parametros.valor_excento
+              desc_plantilla = v_parametros.desc_plantilla,
+              sw_tesoro = v_parametros.sw_tesoro,
+              sw_compro = v_parametros.sw_compro,
+              nro_linea = v_parametros.nro_linea,
+              tipo = v_parametros.tipo,
+              fecha_mod = now(),
+              id_usuario_mod = p_id_usuario,
+              sw_monto_excento = v_parametros.sw_monto_excento,
+              sw_descuento=v_parametros.sw_descuento,
+              sw_autorizacion=v_parametros.sw_autorizacion,
+              sw_codigo_control=v_parametros.sw_codigo_control,
+              tipo_plantilla=v_parametros.tipo_plantilla, 
+              sw_nro_dui = v_parametros.sw_nro_dui,
+              sw_ic = v_parametros.sw_ic,
+              tipo_excento = v_parametros.tipo_excento,
+              valor_excento = v_parametros.valor_excento,
+              tipo_informe = v_parametros.tipo_informe
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta

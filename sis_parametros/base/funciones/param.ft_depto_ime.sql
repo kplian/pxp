@@ -54,27 +54,30 @@ BEGIN
                end if;
                --insercion de nuevo depto
                INSERT INTO param.tdepto(
-               codigo, 
-               id_subsistema, 
-               nombre, 
-               nombre_corto, 
-               estado_reg,
-               fecha_reg, 
-               id_usuario_reg,
-               id_lugares,
-               prioridad,
-               modulo)
+                   codigo, 
+                   id_subsistema, 
+                   nombre, 
+                   nombre_corto, 
+                   estado_reg,
+                   fecha_reg, 
+                   id_usuario_reg,
+                   id_lugares,
+                   prioridad,
+                   modulo,
+                   id_entidad
+                   )
                values(
-               v_parametros.codigo,
-               v_parametros.id_subsistema, 
-               v_parametros.nombre, 
-               v_parametros.nombre_corto,
-               'activo',
-               now()::date, 
-               par_id_usuario,
-               string_to_array(v_parametros.id_lugares,',')::integer[],
-               v_parametros.prioridad,
-               v_parametros.modulo
+                   v_parametros.codigo,
+                   v_parametros.id_subsistema, 
+                   v_parametros.nombre, 
+                   v_parametros.nombre_corto,
+                   'activo',
+                   now()::date, 
+                   par_id_usuario,
+                   string_to_array(v_parametros.id_lugares,',')::integer[],
+                   v_parametros.prioridad,
+                   v_parametros.modulo,
+                   v_parametros.id_entidad
                );
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','depto insertado con exito '||v_parametros.nombre_corto || 'para Subsis.' || (select nombre from segu.tsubsistema where id_subsistema=v_parametros.id_subsistema));
@@ -94,15 +97,16 @@ BEGIN
           BEGIN
                --modificacion de depto
                update param.tdepto set
-               codigo = v_parametros.codigo,
-               nombre_corto = v_parametros.nombre_corto,
-               nombre = v_parametros.nombre,
-               id_subsistema = v_parametros.id_subsistema,
-               id_usuario_mod = par_id_usuario,
-               fecha_mod = now(),
-               id_lugares = string_to_array(v_parametros.id_lugares,',')::integer[],
-               prioridad = v_parametros.prioridad,
-               modulo = v_parametros.modulo
+                 codigo = v_parametros.codigo,
+                 nombre_corto = v_parametros.nombre_corto,
+                 nombre = v_parametros.nombre,
+                 id_subsistema = v_parametros.id_subsistema,
+                 id_usuario_mod = par_id_usuario,
+                 fecha_mod = now(),
+                 id_lugares = string_to_array(v_parametros.id_lugares,',')::integer[],
+                 prioridad = v_parametros.prioridad,
+                 modulo = v_parametros.modulo,
+                 id_entidad = v_parametros.id_entidad
                where id_depto = v_parametros.id_depto;
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','depto modificado con exito '||v_parametros.codigo);

@@ -1191,3 +1191,35 @@ ALTER TABLE param.tlugar
   ADD COLUMN es_regional VARCHAR(2) DEFAULT 'no' NOT NULL;
 
 /***********************************F-SCP-JRR-PARAM-0-16/02/2016****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-22/02/2016****************************************/
+-------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN tipo_informe VARCHAR(30) DEFAULT 'lcv' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.tipo_informe
+IS 'lcv, libro de compras estandar
+retenciones,  retenciones de biene y servicios
+ncd, libro de compras notas de credito y debito
+otro,  otros';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tdepto
+  ADD COLUMN id_entidad INTEGER;
+
+COMMENT ON COLUMN param.tdepto.id_entidad
+IS 'identifica a que entidad corresponde este departamento';
+
+/***********************************F-SCP-RAC-PARAM-0-22/02/2016****************************************/
+
+
+
+
+
+
+
+

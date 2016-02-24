@@ -314,8 +314,32 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
             egrid: true,
             form: true
        },
-		
-		{
+        
+        {
+            config:{
+                name: 'tipo_informe',
+                fieldLabel: 'Tipo Informe',
+                qtip: 'Presenta los informes, lcv (libro de compras y ventas), retenciones, ncd (notas de credito debito) u otros',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['lcv','ncd','retenciones','otros']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.tipo_plantilla',
+                        type: 'list',
+                         options: ['lcv','ncd','retenciones','otros']  
+                    },
+            grid: true,
+            egrid: true,
+            form: true
+       },
+	   {
 			config:{
 				name: 'nro_linea',
 				fieldLabel: 'Nro Linea',
@@ -444,7 +468,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},'sw_monto_excento',
 		'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla',
-		'sw_nro_dui','sw_ic','tipo_excento','valor_excento'
+		'sw_nro_dui','sw_ic','tipo_excento','valor_excento','tipo_informe'
 		
 	],
 	sortInfo:{

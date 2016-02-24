@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_periodo_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_periodo_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_periodo_ime
@@ -26,7 +31,8 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_periodo	integer;
+	v_id_periodo			integer;
+    v_registros           	record;
 			    
 BEGIN
 
@@ -127,6 +133,44 @@ BEGIN
             return v_resp;
 
 		end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'PM_GETPER_GET'
+ 	#DESCRIPCION:	Recupera periodo y gestion segun el ID periodo
+ 	#AUTOR:		admin	
+ 	#FECHA:		20-02-2013 04:11:23
+	***********************************/
+
+	elsif(p_transaccion='PM_GETPER_GET')then
+
+		begin
+			--Sentencia de la eliminacion
+			
+            select
+              p.id_periodo,
+              p.id_gestion,
+              p.periodo,
+              g.gestion,
+              param.f_literal_periodo(p.id_periodo)as literal_periodo
+            into
+             v_registros
+            from param.tperiodo p
+            inner join param.tgestion g on g.id_gestion = p.id_gestion
+            where p.id_periodo = v_parametros.id_periodo;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Periodo recuperado)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_periodo',v_parametros.id_periodo::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_registros.id_gestion::varchar);
+        	v_resp = pxp.f_agrega_clave(v_resp,'periodo',v_registros.periodo::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'gestion',v_registros.gestion::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'literal_periodo',v_registros.literal_periodo::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+    
          
 	else
      
@@ -144,7 +188,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_periodo_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
