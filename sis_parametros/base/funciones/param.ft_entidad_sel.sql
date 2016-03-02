@@ -55,7 +55,8 @@ BEGIN
 						ent.id_usuario_mod,
 						ent.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						ent.pagina_entidad	
 						from param.tentidad ent
 						inner join segu.tusuario usu1 on usu1.id_usuario = ent.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ent.id_usuario_mod

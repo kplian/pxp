@@ -111,6 +111,20 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
                 id_grupo:1,
                 grid:true,
                 form:true
+        },{
+            config:{
+                name: 'pagina_entidad',
+                fieldLabel: 'Pagina Web',
+                allowBlank: false,
+                anchor: '100%',
+                gwidth: 250,
+                maxLength:150
+            },
+                type:'TextField',
+                filters:{pfiltro:'ent.pagina_entidad',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
         },
 		
 		
@@ -236,6 +250,7 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 		{name:'estados_anulacion_venta', type: 'string'},
 		{name:'tipo_venta_producto', type: 'string'},
 		{name:'nit', type: 'string'},
+		{name:'pagina_entidad', type: 'string'},
 		{name:'estado_reg', type: 'string'},
 		{name:'nombre', type: 'string'},
 		{name:'id_usuario_ai', type: 'numeric'},

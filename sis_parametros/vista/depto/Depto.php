@@ -110,8 +110,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 					totalProperty: 'total',
 					fields: ['id_subsistema','nombre'],
 					// turn on remote sorting
-					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
+					remoteSort: true
 				}),
    				valueField: 'id_subsistema',
    				displayField: 'nombre',
@@ -225,7 +224,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'lug.nombre',tipo:"departamento'',''localidad"}
+					baseParams:{par_filtro:'lug.nombre',es_regional:'si'}
 				}),
 				valueField: 'id_lugar',
 				displayField: 'nombre',

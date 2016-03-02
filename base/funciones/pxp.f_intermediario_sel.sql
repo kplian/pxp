@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
   par_id_usuario_ai integer,
@@ -128,7 +129,8 @@ BEGIN
     v_consulta:='insert into tt_parametros_'||v_secuencia||' values(';
     
     for i in 1..(v_tamano-1) loop
-        if(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4')then
+          tipos[i] = lower(tipos[i]); 
+         IF(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4' or tipos[i]='int8' or tipos[i]='bigint')then
             if(valores[i]='')then
                 v_consulta:=v_consulta || 'null' || ',';
             else
@@ -138,10 +140,10 @@ BEGIN
            
             --RAC 12/09/2011 validacion para campo date vacio 
             if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
-                 v_consulta:=v_consulta || 'null' || ',';
+                     v_consulta:=v_consulta || 'null' || ',';
             else
-                  --v_consulta:=v_consulta ||''''|| valores[i] || ''',';
-                  v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
+                  
+                v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
             end if;
             
             
@@ -150,7 +152,7 @@ BEGIN
 
     end loop;
 
-    if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4')then
+      IF(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8' or tipos[v_tamano]='bigint')then
         if(valores[v_tamano]='')then
             v_consulta:=v_consulta || 'null'|| ')';
         else
@@ -161,7 +163,7 @@ BEGIN
      
      --RAC 12/09/2011 validacion para campo date vacio 
             if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time' or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
-                 v_consulta:=v_consulta || 'null' || || ''')';
+                 v_consulta:=v_consulta || 'null' || ')';
             else
                   v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') || ''')';
             end if;
@@ -172,17 +174,9 @@ BEGIN
     execute v_consulta;
     
   
-    -- raise notice 'pasa';
-    
-   
-    --raise exception '%',v_retorno;
-    
-    --raise exception 'aaaaaa: %',v_consulta;
-   
-    -- raise exception 'ES  SEL ';
      
      v_id_log=0;
-    -- raise notice 'XXXXXXXXXXXXXXX  :%',v_consulta;
+   
   	
      v_mensaje:=pxp.f_get_mensaje_exi('Exito en la consulta',v_nombre_funcion,par_transaccion);
     
@@ -200,9 +194,6 @@ BEGIN
    -- raise notice 'prueba:%',v_consulta;
     execute v_consulta into v_retorno;
     
- 
-    
-     raise notice 'XXXXXXXXXXXXXXX  :%',v_consulta;
     
     --RAC  >>>> OJO me parece que este registro de LOG nunca se EJECUTA
     v_hora_fin=clock_timestamp();
@@ -233,12 +224,9 @@ BEGIN
      ELSE
      
      --en caso que el tipo de retorno sea un record
-     
-   -- execute v_consulta into v_retorno_record;
-   
      v_consulta:='select * from ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''') '||datos_retorno;
     
-      raise notice 'CONSULTA %  ',v_consulta;
+     
      
       for v_retorno_record in execute (v_consulta) LOOP
           RETURN NEXT v_retorno_record;
