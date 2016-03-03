@@ -320,154 +320,7 @@ MainPanel = function(config){
 };
 
 Ext.extend(MainPanel, Ext.TabPanel,{
-	/*loadClass : function(href, cls, title,icono,ruta,clase,params){
-		
-		 var objConfig = {
-		  	               'href':href, 
-		  	               'cls':cls, 
-		  	               'title':title,
-		  	               'icono':icono,
-		  	               'ruta':ruta,
-		  	               'clase':clase,
-		  	               'params':params
-		  	              };
-		 //jrr si es uan vista autogenerada el id es diferente 	              
-		 if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
-		 	var id = 'docs-' + objConfig.params.proceso + '_' + objConfig.params.estado;
-		 } else {
-		 	var id = 'docs-' + cls;
-		 }
-		 var tab = this.getComponent(id);
-		 //si el tab existe toma el foco
-		 
-		 if(tab){
-	            this.setActiveTab(tab);
-	            
-	     }else{
-	    	 var iconCls='icon-folder';
-				if(icono){
-					Ext.util.CSS.createStyleSheet('.cls-'+cls+'{background: url('+icono+') no-repeat top left ;background-size:25px 25px!important;}');
-					iconCls='cls-'+cls;
-					
-		
-				}
-	    	 
-			 var p = this.add(new Ext.Panel({
-	                id: id,
-	                layout: 'fit',
-	                title: title,
-	                closable: true,
-	                autoScroll: false,
-	                autoHeight : false,
-	                cclass : cls,
-	                //stateful:true,
-	                //allowDomMove:false,
-	                //bufferResize:true,
-	                iconCls:iconCls,
-	                listeners:{
-	                	scope:this,
-	                	'close':function(){
-	                		Phx.CP.removeStateGui(clase)
-	                	}
-	                	
-	                },
-	                autoLoad: {
-	  				  url: href,
-	  				  params:{idContenedor:id,_tipo:'direc', mycls:clase},
-	  				  showLoadIndicator: "Cargando...",
-	  				  arguments:objConfig,
-	  				  callback:function(r,a,o){
-	  				  	
-
-	  				  	  var objConfig = o.argument.options.arguments
-	  				  	
-	  					  // Al retorno de de cargar la ventana
-	  					  // ejecuta la clase que llega con el codigo de la url
-	  					  // el nombre de la clase viene en la variable cls que
-	  					  // se almacena originalmente en el descripcion de la
-	  						// tabla segu.gui
-	  					  if(Phx.vista[clase]){	
-		  						if(Phx.vista[clase].requireclase){
-				  				     //trae la clase padre
-				  				     //en el callback ejecuta la rerencia 
-				  				     //e instanca la clase hijo
-				  				     
-				  				    var wid= Ext.id();
-				  				    Ext.DomHelper.append(document.body, {html:'<div id="'+wid+'"></div>'});
-				  				    
-				  				  
-				  				     var el = Ext.get(wid); // Get Ext.Element object
-			                         var u = el.getUpdater();
-			                         //var inter = Phx.vista[clase];
-				  				       u.update(
-				  				      	 {url:Phx.vista[clase].require, 
-				  				      	  params:{idContenedor:id,_tipo:'direc', mycls: clase},
-				  				      	  arguments:objConfig,
-				  				      	  scripts :true,
-				  				      	  showLoadIndicator: "Cargando...2",
-				  				      	  callback: function(r,a,o){
-					  				      	 	 try{
-					  				      	 	 	
-					  				      	 	 	var objConfig = o.argument.options.arguments
-					  				      	 	 	//jrr 22/05/2014 se anade parametros
-						  				    		if (objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
-						  				    			objConfig.params = Ext.util.JSON.decode(Ext.util.Format.trim(objConfig.params));
-						  				    		}
-						  				    		//genera herencia 
-					  				      	 		eval('Phx.vista[clase]= Ext.extend('+Phx.vista[clase].requireclase+',Phx.vista[clase])')
-						  				    		if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
-					  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
-					  				    			} else {
-					  				    				
-					  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
-					  				    			}					  				      	 		
-					  				      	 		
-					  				      	 	  }
-							  				       catch(err){
-							  				       	var resp = Array();
-							  				       	resp.status=404;
-							  				       	resp.statusText=err;
-							  				       	Phx.CP.conexionFailure(resp);
-							  				       }
-								  		    }
-				  				      	 });
-			  				 }
-	  				    	else{
-		  				    	try{
-		  				    		//jrr 22/05/2014 se anade parametros
-		  				    		if (objConfig.params != undefined && objConfig.params != null && objConfig.params != "") {
-		  				    			objConfig.params = Ext.util.JSON.decode(Ext.util.Format.trim(objConfig.params));
-		  				    		}
-		  				    		//jrr 22/05/2014 para vistas autogeneradas si tiene como parametros el proceso y el estado
-		  				    		if (objConfig.params != undefined && objConfig.params.proceso != undefined && objConfig.params.estado != undefined) {
-		  				    			Phx.CP.crearPaginaDinamica(Ext.apply(objConfig.params,o.argument.params),objConfig);
-		  				    			
-		  				    		} else {
-		  				    			if ( objConfig.params != undefined && objConfig.params != null && objConfig.params != "" ) {
-		  				    				Phx.CP.setPagina(new Phx.vista[clase](Ext.apply(objConfig.params,o.argument.params)),objConfig);
-		  				    			} else {
-		  				    				Phx.CP.setPagina(new Phx.vista[clase](o.argument.params),objConfig);
-		  				    			}
-		  				    		}
-		  				    		
-		  				      	}
-		  				        catch(err){
-		  				       		var resp = Array();
-		  				       		resp.status=404;
-		  				       		resp.statusText=err;
-		  				       		Phx.CP.conexionFailure(resp);
-		  				       }
-	  				    	}  
-	  				   }
-	  				   else{
-	  				   	alert('no existe la clase '+clase)
-	  				   }
-	  				 },
-	  				  scripts :true}
-	           }));
-	            this.setActiveTab(p);
-	      }
-	}*/
+	
 	loadClass : function(href, cls, title,icono,ruta,clase,params){
 		
 		 var objConfig = {
@@ -694,14 +547,13 @@ Phx.CP=function(){
          	Ext.QuickTips.init();
          	Ext.History.init();
          	Ext.History.on('change', function(token){  
-         		   					
+         		
 		        if(token && token != 'null') {
 		        	
-		            var parts = token.split(':'),
+		           	 var parts = token.split(':'),
 		                tabId = 'docs-' + parts[1],
 		                action = parts[0],
-		                tab = mainPanel.getComponent(tabId);		            
-		            
+		                tab = mainPanel.getComponent(tabId);
 		            
 		            //cerramos todas las ventanas abiertas con loadWindows
 		            Ext.WindowMgr.each(function(w){
@@ -746,7 +598,8 @@ Phx.CP=function(){
 				   else{
 				   	 Phx.CP.evaluateHash(action,parts[1]);
 				   }	            
-		        }else{        	
+		        }
+		        else{        	
 		            mainPanel.loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');           
 		        }
 		    });
@@ -989,7 +842,11 @@ Phx.CP=function(){
 		    	action = arreglo_aux[0];
 		    } 
 			Phx.CP.evaluateHash(action,token_inicio);
-			
+			if(!token_inicio ){
+				 mainPanel.loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');           
+		       
+			}
+			 
 			Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario,Phx.CP.config_ini.id_funcionario);
 			Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
 						function(resp){
