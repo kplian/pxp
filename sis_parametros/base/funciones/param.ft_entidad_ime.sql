@@ -62,7 +62,8 @@ BEGIN
 			id_usuario_mod,
 			fecha_mod,
 			estados_comprobante_venta,
-			estados_anulacion_venta
+			estados_anulacion_venta,
+			pagina_entidad
           	) values(
 			v_parametros.tipo_venta_producto,
 			v_parametros.nit,
@@ -75,8 +76,8 @@ BEGIN
 			null,
 			null,
 			v_parametros.estados_comprobante_venta,
-			v_parametros.estados_anulacion_venta
-							
+			v_parametros.estados_anulacion_venta,
+			v_parametros.pagina_entidad				
 			
 			
 			)RETURNING id_entidad into v_id_entidad;
@@ -110,7 +111,8 @@ BEGIN
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai,
 			estados_comprobante_venta = v_parametros.estados_comprobante_venta,
-			estados_anulacion_venta = v_parametros.estados_anulacion_venta
+			estados_anulacion_venta = v_parametros.estados_anulacion_venta,
+			pagina_entidad = v_parametros.pagina_entidad
 			where id_entidad=v_parametros.id_entidad;
                
 			--Definicion de la respuesta
@@ -181,6 +183,42 @@ BEGIN
             return v_resp;
 
 		end;    
+    
+   /*********************************    
+ 	#TRANSACCION:  'PM_ENT_GET'
+ 	#DESCRIPCION:	Recupera los datos de la entidad 
+ 	#AUTOR:		admin	
+ 	#FECHA:		04-02-2013 16:03:19
+	***********************************/
+
+	elsif(p_transaccion='PM_ENT_GET')then
+
+		begin
+			--Sentencia de la eliminacion
+			
+            select
+             e.nit,
+             e.nombre,
+             e.id_entidad
+            into
+              v_registros
+            from param.tentidad e
+            where e.estado_reg = 'activo'
+                  AND e.id_entidad = v_parametros.id_entidad;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Empresa recuperada(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_entidad',v_registros.id_entidad::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nit',v_registros.nit::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_registros.nombre::varchar);
+             
+            
+            
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;  
          
 	else
      
