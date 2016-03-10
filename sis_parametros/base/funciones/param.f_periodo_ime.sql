@@ -51,25 +51,25 @@ BEGIN
         begin
         	--Sentencia de la insercion
         	insert into param.tperiodo(
-			id_gestion,
-			fecha_ini,
-			periodo,
-			estado_reg,
-			fecha_fin,
-			fecha_reg,
-			id_usuario_reg,
-			fecha_mod,
-			id_usuario_mod
+              id_gestion,
+              fecha_ini,
+              periodo,
+              estado_reg,
+              fecha_fin,
+              fecha_reg,
+              id_usuario_reg,
+              fecha_mod,
+              id_usuario_mod
           	) values(
-			v_parametros.id_gestion,
-			v_parametros.fecha_ini,
-			v_parametros.periodo,
-			'activo',
-			v_parametros.fecha_fin,
-			now(),
-			p_id_usuario,
-			null,
-			null
+              v_parametros.id_gestion,
+              v_parametros.fecha_ini,
+              v_parametros.periodo,
+              'activo',
+              v_parametros.fecha_fin,
+              now(),
+              p_id_usuario,
+              null,
+              null
 							
 			)RETURNING id_periodo into v_id_periodo;
 			
@@ -94,12 +94,12 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update param.tperiodo set
-			id_gestion = v_parametros.id_gestion,
-			fecha_ini = v_parametros.fecha_ini,
-			periodo = v_parametros.periodo,
-			fecha_fin = v_parametros.fecha_fin,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+              id_gestion = v_parametros.id_gestion,
+              fecha_ini = v_parametros.fecha_ini,
+              periodo = v_parametros.periodo,
+              fecha_fin = v_parametros.fecha_fin,
+              fecha_mod = now(),
+              id_usuario_mod = p_id_usuario
 			where id_periodo=v_parametros.id_periodo;
                
 			--Definicion de la respuesta
@@ -146,10 +146,11 @@ BEGIN
 		begin
 			--Sentencia de la eliminacion
 			
+           
             select
               p.id_periodo,
               p.id_gestion,
-              p.periodo,
+              pxp.f_rellena_cero(p.periodo::varchar) as periodo,
               g.gestion,
               param.f_literal_periodo(p.id_periodo)as literal_periodo
             into
