@@ -819,3 +819,16 @@ select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','sin_actualizacio
 select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_saldo');
 select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_transaccion');
 /***********************************F-DAT-RCM-PARAM-0-21/01/2016*****************************************/
+
+
+
+/***********************************I-DAT-RCM-PARAM-0-24/01/2016*****************************************/
+
+
+select pxp.f_insert_tgui ('Entidad', 'Entidad', 'ENT', 'si', 10, 'sis_parametros/vista/entidad/Entidad.php', 2, '', 'Entidad', 'PARAM');
+select pxp.f_insert_testructura_gui ('ENT', 'PARAM');
+
+/***********************************F-DAT-RCM-PARAM-0-24/01/2016*****************************************/
+
+
+

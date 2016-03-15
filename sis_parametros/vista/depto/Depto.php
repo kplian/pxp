@@ -110,8 +110,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 					totalProperty: 'total',
 					fields: ['id_subsistema','nombre'],
 					// turn on remote sorting
-					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
+					remoteSort: true
 				}),
    				valueField: 'id_subsistema',
    				displayField: 'nombre',
@@ -225,7 +224,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'lug.nombre',tipo:'departamento'}
+					baseParams:{par_filtro:'lug.nombre',es_regional:'si'}
 				}),
 				valueField: 'id_lugar',
 				displayField: 'nombre',
@@ -278,6 +277,52 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'deppto.modulo',type:'string'},
 			id_grupo:1,
 			bottom_filter: true,
+			grid:true,
+			form:true
+		},
+		
+		{
+			config:{
+				name: 'id_entidad',
+				fieldLabel: 'Entidad',
+				qtip: 'entidad a la que pertenese el depto, ',
+				allowBlank: false,
+				emptyText:'Entidad...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_parametros/control/Entidad/listarEntidad',
+					id: 'id_entidad',
+					root: 'datos',
+					sortInfo:{
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_entidad','nit','nombre'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams: { par_filtro:'nit#nombre' }
+				}),
+				valueField: 'id_entidad',
+				displayField: 'nombre',
+				gdisplayField:'desc_entidad',
+				hiddenName: 'id_entidad',
+    			triggerAction: 'all',
+    			lazyRender:true,
+				mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				anchor:"90%",
+				listWidth:280,
+				gwidth:150,
+				minChars:2,
+				renderer:function (value, p, record){return String.format('{0}', record.data['desc_entidad']);}
+
+       		},
+       		type:'ComboBox',
+			filters:{pfiltro:'ENT.nombre',type:'string'},
+			id_grupo:0,
+			egrid: true,
 			grid:true,
 			form:true
 		},
@@ -361,7 +406,7 @@ Phx.vista.Depto=Ext.extend(Phx.gridInterfaz,{
 		{name:'desc_subsistema', type: 'string'},
 		{name:'codigo', type: 'string'},
 		{name:'nombre_corto', type: 'string'},
-		'id_lugares', 'prioridad','modulo'
+		'id_lugares', 'prioridad','modulo','id_entidad','desc_entidad'
 		
 	],
 	sortInfo:{

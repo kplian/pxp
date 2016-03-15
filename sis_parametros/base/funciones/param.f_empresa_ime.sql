@@ -31,7 +31,8 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_empresa	integer;
+	v_id_empresa			integer;
+    v_registros				record;
 			    
 BEGIN
 
@@ -161,7 +162,45 @@ BEGIN
 
 		end;
          
-	else
+	
+    /*********************************    
+ 	#TRANSACCION:  'PM_EMPGET_GET'
+ 	#DESCRIPCION:	Recupera datos de la empresa
+ 	#AUTOR:		admin	
+ 	#FECHA:		04-02-2013 16:03:19
+	***********************************/
+
+	elsif(p_transaccion='PM_EMPGET_GET')then
+
+		begin
+			--Sentencia de la eliminacion
+			
+            select
+              e.id_empresa ,
+              e.nit,
+              e.nombre
+            into
+              v_registros
+            from param.tempresa e
+            where e.estado_reg = 'activo'
+            limit 1 OFFSET 0;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Empresa recuperada(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_empresa',v_registros.id_empresa::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nit',v_registros.nit::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_registros.nombre::varchar);
+             
+            
+            
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+    
+    
+    else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;
 

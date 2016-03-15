@@ -35,6 +35,7 @@ class MODEntidad extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('pagina_entidad','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -57,6 +58,7 @@ class MODEntidad extends MODbase{
 		$this->setParametro('nit','nit','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('pagina_entidad','pagina_entidad','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,6 +82,7 @@ class MODEntidad extends MODbase{
 		$this->setParametro('nit','nit','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('pagina_entidad','pagina_entidad','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -93,6 +96,40 @@ class MODEntidad extends MODbase{
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='param.ft_entidad_ime';
 		$this->transaccion='PM_ENT_ELI';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_entidad','id_entidad','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
+	function getEntidadByDepto(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_entidad_ime';
+		$this->transaccion='PM_ENTGET_GET';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_depto','id_depto','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
+	function getEntidad(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_entidad_ime';
+		$this->transaccion='PM_ENT_GET';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion

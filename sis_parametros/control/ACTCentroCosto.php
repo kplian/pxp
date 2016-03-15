@@ -135,6 +135,11 @@ class ACTCentroCosto extends ACTbase{
 				$tip_pres = "(''2'',''3'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
+		
+		if($this->objParam->getParametro('tipo_pres') == 'recurso'){
+				$tip_pres = "(''1'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
+		}
 
         $this->objParam->defecto('dir_ordenacion','asc');
         if($this->objParam->getParametro('id_gestion')!=''){

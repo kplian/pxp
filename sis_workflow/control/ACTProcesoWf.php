@@ -167,6 +167,7 @@ class ACTProcesoWf extends ACTbase{
         			    
         			    $diagramador = new DiagramadorGanttWF();
         				$diagramador->setDataSource($dataSource);
+						//var_dump($dataSource); exit;
         				$diagramador->graficar($nombreArchivo);
         							
         			    $mensajeExito = new Mensaje();

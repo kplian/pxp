@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."ft_entidad_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.ft_entidad_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_entidad_ime
@@ -26,7 +31,8 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_entidad	integer;
+	v_id_entidad			integer;
+    v_registros				record;
 			    
 BEGIN
 
@@ -56,7 +62,8 @@ BEGIN
 			id_usuario_mod,
 			fecha_mod,
 			estados_comprobante_venta,
-			estados_anulacion_venta
+			estados_anulacion_venta,
+			pagina_entidad
           	) values(
 			v_parametros.tipo_venta_producto,
 			v_parametros.nit,
@@ -69,8 +76,8 @@ BEGIN
 			null,
 			null,
 			v_parametros.estados_comprobante_venta,
-			v_parametros.estados_anulacion_venta
-							
+			v_parametros.estados_anulacion_venta,
+			v_parametros.pagina_entidad				
 			
 			
 			)RETURNING id_entidad into v_id_entidad;
@@ -104,7 +111,8 @@ BEGIN
 			id_usuario_ai = v_parametros._id_usuario_ai,
 			usuario_ai = v_parametros._nombre_usuario_ai,
 			estados_comprobante_venta = v_parametros.estados_comprobante_venta,
-			estados_anulacion_venta = v_parametros.estados_anulacion_venta
+			estados_anulacion_venta = v_parametros.estados_anulacion_venta,
+			pagina_entidad = v_parametros.pagina_entidad
 			where id_entidad=v_parametros.id_entidad;
                
 			--Definicion de la respuesta
@@ -138,6 +146,79 @@ BEGIN
             return v_resp;
 
 		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'PM_ENTGET_GET'
+ 	#DESCRIPCION:	Recupera los datos de la entidad a partir del depto
+ 	#AUTOR:		admin	
+ 	#FECHA:		04-02-2013 16:03:19
+	***********************************/
+
+	elsif(p_transaccion='PM_ENTGET_GET')then
+
+		begin
+			--Sentencia de la eliminacion
+			
+            select
+             e.nit,
+             e.nombre,
+             e.id_entidad
+            into
+              v_registros
+            from param.tentidad e
+            inner join param.tdepto d on d.id_entidad = e.id_entidad
+            where e.estado_reg = 'activo'
+                  AND d.id_depto = v_parametros.id_depto;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Empresa recuperada(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_entidad',v_registros.id_entidad::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nit',v_registros.nit::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_registros.nombre::varchar);
+             
+            
+            
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;    
+    
+   /*********************************    
+ 	#TRANSACCION:  'PM_ENT_GET'
+ 	#DESCRIPCION:	Recupera los datos de la entidad 
+ 	#AUTOR:		admin	
+ 	#FECHA:		04-02-2013 16:03:19
+	***********************************/
+
+	elsif(p_transaccion='PM_ENT_GET')then
+
+		begin
+			--Sentencia de la eliminacion
+			
+            select
+             e.nit,
+             e.nombre,
+             e.id_entidad
+            into
+              v_registros
+            from param.tentidad e
+            where e.estado_reg = 'activo'
+                  AND e.id_entidad = v_parametros.id_entidad;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Empresa recuperada(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_entidad',v_registros.id_entidad::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nit',v_registros.nit::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_registros.nombre::varchar);
+             
+            
+            
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;  
          
 	else
      
@@ -155,7 +236,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."ft_entidad_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

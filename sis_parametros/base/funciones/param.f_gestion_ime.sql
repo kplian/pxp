@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_gestion_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -336,6 +338,7 @@ BEGIN
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','id_gestion recuperado'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_id_gestion::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'anho',v_anho::varchar);
            
               
             --Devuelve la respuesta
