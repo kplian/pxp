@@ -171,8 +171,13 @@ class ACTFuncionario extends ACTbase{
         }
 		
 		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
+			if($this->objParam->getParametro('fecha')==''){
+				$date = date('d/m/Y');
+			} else {
+				$date = $this->objParam->getParametro('fecha');
+			}
 			$this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * 
-										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $this->objParam->getParametro('fecha') . "'', " .
+										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $date . "'', " .
 																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
 		}
 		
