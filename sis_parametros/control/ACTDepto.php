@@ -100,6 +100,10 @@ class ACTDepto extends ACTbase{
         
         
     }
+
+	function listarDeptoFiltradoXUO(){
+		
+	}
     
 	
 	
