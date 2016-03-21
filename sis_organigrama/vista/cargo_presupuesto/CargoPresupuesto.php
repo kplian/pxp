@@ -62,8 +62,7 @@ Phx.vista.CargoPresupuesto=Ext.extend(Phx.gridInterfaz,{
                     emptyText : 'Centro Costo...',
                     allowBlank:false,
                     gdisplayField:'desc_centro_costo',//mapea al store del grid
-                    gwidth:250,
-                    baseParams:{filtrar:'grupo_ep'},
+                    gwidth:250,                    
                     renderer:function (value, p, record){return String.format('{0}', record.data['desc_centro_costo']);}
                 },
             type:'ComboRec',
