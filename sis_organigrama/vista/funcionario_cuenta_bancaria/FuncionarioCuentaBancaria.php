@@ -51,7 +51,7 @@ Phx.vista.FuncionarioCuentaBancaria=Ext.extend(Phx.gridInterfaz,{
 	   				origen:'INSTITUCION',
 	   				gdisplayField:'nombre',
 	   			    gwidth:200,	
-	   			    baseParams: {es_banco:'SI'},
+	   			    baseParams: {es_banco:'si'}, 
 	   			   	renderer:function (value, p, record){return String.format('{0}', record.data['nombre']);}
    			
 	   			  },
