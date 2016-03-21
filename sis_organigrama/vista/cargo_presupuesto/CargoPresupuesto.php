@@ -21,13 +21,15 @@ Phx.vista.CargoPresupuesto=Ext.extend(Phx.gridInterfaz,{
 		this.cmbGestion.on('select',function () {
 					
 			this.load({params:{start:0, limit:this.tam_pag,id_cargo:this.maestro.id_cargo,id_gestion:this.cmbGestion.getValue()}});
-			this.Cmp.id_centro_costo.store.baseParams = Ext.apply({id_gestion:this.cmbGestion.getValue()}, this.Cmp.id_centro_costo.store.baseParams);
+			this.Cmp.id_centro_costo.store.baseParams.id_gestion = this.cmbGestion.getValue();
+			this.Cmp.id_centro_costo.modificado = true;
 		
 		},this);
 		
 		this.cmbGestion.store.load({params:{start:0, limit:this.tam_pag}, scope:this,callback: function (arr,op,suc) {
 			this.cmbGestion.setValue(arr[0].data.id_gestion);
-			this.Cmp.id_centro_costo.store.baseParams = Ext.apply({id_gestion:this.cmbGestion.getValue()}, this.Cmp.id_centro_costo.store.baseParams);			
+			this.Cmp.id_centro_costo.store.baseParams.id_gestion = this.cmbGestion.getValue();
+			this.Cmp.id_centro_costo.modificado = true;
 		}});
 			
 	},
