@@ -1193,6 +1193,30 @@ ALTER TABLE param.tlugar
 /***********************************F-SCP-JRR-PARAM-0-16/02/2016****************************************/
 
 
+
+/***********************************I-SCP-RAC-PARAM-0-19/02/2016****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN tipo_excento VARCHAR(20) DEFAULT 'variable' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.tipo_excento
+IS 'peuden ser variable, porcentual, constante. En caso de constante o porcentual toma el valor del campo valor_excento';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN valor_excento NUMERIC DEFAULT 0 NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.valor_excento
+IS 'valor que se aplica al excento cuando es  porcentual o constante';
+
+/***********************************F-SCP-RAC-PARAM-0-19/02/2016****************************************/
+
+
+
 /***********************************I-SCP-RAC-PARAM-0-22/02/2016****************************************/
 -------------- SQL ---------------
 
@@ -1215,14 +1239,37 @@ COMMENT ON COLUMN param.tdepto.id_entidad
 IS 'identifica a que entidad corresponde este departamento';
 
 /***********************************F-SCP-RAC-PARAM-0-22/02/2016****************************************/
-***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
+
+
+/***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
 
 ALTER TABLE param.tentidad
   ADD COLUMN pagina_entidad VARCHAR(200);
 
 /***********************************F-SCP-JRR-PARAM-0-10/03/2016****************************************/
 
+/***********************************I-SCP-JRR-PARAM-0-11/03/2016****************************************/
 
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN codigo VARCHAR(30);
+
+/***********************************F-SCP-JRR-PARAM-0-11/03/2016****************************************/
+
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-17/03/2016****************************************/
+
+
+ALTER TABLE param.tentidad
+  ADD COLUMN direccion_matriz VARCHAR;
+
+COMMENT ON COLUMN param.tentidad.direccion_matriz
+IS 'dirección fiscal que aprece en reprotes como LCV (direccion fiscal)';
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-17/03/2016****************************************/
 
 
 
