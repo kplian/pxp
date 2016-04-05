@@ -11,7 +11,8 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.Documento=function(config){
-
+	
+	
 	this.Atributos=[
 	       	{
 	       		// configuracion del componente
@@ -279,11 +280,21 @@ Phx.vista.Documento=function(config){
 	//this.getComponente('tipo_numeracion').on('select',onTipo);
 	this.iniciarEventos();
 	
+	this.addButton('addPlantilla', {
+				text : 'addPlantilla',
+				iconCls : 'bundo',
+				disabled : false,
+				handler : this.addPlantilla,
+				tooltip : ' <b>Agrega Plantilla</b>plantilla word'
+			});
 	
 	this.load({params:{start:0, limit:50}});
 }
 
 Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
+	
+	
+		
 	title:'Documentos',
 	ActSave:'../../sis_parametros/control/Documento/guardarDocumento',
 	ActDel:'../../sis_parametros/control/Documento/eliminarDocumento',
@@ -378,7 +389,31 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 
 	bdel:true,// boton para eliminar
 	bsave:true,// boton para eliminar
-	bedit:true
+	bedit:true,
+	
+	addPlantilla : function() {
+
+
+			var rec = this.sm.getSelected();
+			Phx.CP.loadWindows('../../../sis_parametros/vista/documento/subirPlantilla.php', 'Subir Plantilla', {
+				modal : true,
+				width : 500,
+				height : 250
+			}, rec.data, this.idContenedor, 'subirPlantilla')
+
+			/*Ext.Ajax.request({
+			 // form:this.form.getForm().getEl(),
+			 url : '../../sis_parametros/control/Depto/subirPlantilla',
+			 params : {
+			 id_depto : id_depto
+			 },
+			 success : this.successSubirPlantilla,
+			 failure : this.conexionFailure,
+			 timeout : this.timeout,
+			 scope : this
+			 });*/
+
+		}
 		  
 		 
 })

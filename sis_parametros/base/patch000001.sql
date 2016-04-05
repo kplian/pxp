@@ -1215,12 +1215,22 @@ COMMENT ON COLUMN param.tdepto.id_entidad
 IS 'identifica a que entidad corresponde este departamento';
 
 /***********************************F-SCP-RAC-PARAM-0-22/02/2016****************************************/
-***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
+/***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
 
 ALTER TABLE param.tentidad
   ADD COLUMN pagina_entidad VARCHAR(200);
 
 /***********************************F-SCP-JRR-PARAM-0-10/03/2016****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-28/03/2016****************************************/
+
+ALTER TABLE param.tdocumento
+  ADD COLUMN ruta_plantilla VARCHAR(255);
+
+/***********************************F-SCP-FFP-PARAM-0-28/03/2016****************************************/
+
+
 
 
 

@@ -67,6 +67,12 @@ class ACTDocumento extends ACTbase{
 
 	}
 	
+	function subirPlantilla(){
+		$this->objFunSeguridad=$this->create('MODDocumento');	
+		$this->res=$this->objFunSeguridad->subirPlantilla($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
 	
 
 }
