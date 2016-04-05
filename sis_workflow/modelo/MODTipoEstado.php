@@ -62,6 +62,7 @@ class MODTipoEstado extends MODbase{
 		$this->captura('grupo_doc','varchar');
 		$this->captura('id_tipo_estado_anterior','integer');
 		$this->captura('desc_tipo_estado_anterior','text');
+		$this->captura('icono','varchar');
 		
 		
 		
@@ -169,6 +170,7 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('etapa','etapa','varchar');
 		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 		$this->setParametro('id_tipo_estado_anterior','id_tipo_estado_anterior','integer');
+		$this->setParametro('icono','icono','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -215,6 +217,7 @@ class MODTipoEstado extends MODbase{
         $this->setParametro('etapa','etapa','varchar');
 		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 		$this->setParametro('id_tipo_estado_anterior','id_tipo_estado_anterior','integer');
+		$this->setParametro('icono','icono','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

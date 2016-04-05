@@ -141,6 +141,7 @@ BEGIN
      v_registros
     FROM wf.ttipo_estado te
     inner join wf.ttipo_proceso tp on tp.id_tipo_proceso  = te.id_tipo_proceso
+    left join wf.ttipo_documento td on td.id_tipo_proceso = tp.id_tipo_proceso
     inner join wf.tproceso_macro pm on tp.id_proceso_macro = pm.id_proceso_macro
     inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema 
     WHERE te.id_tipo_estado = p_id_tipo_estado_siguiente;
@@ -443,7 +444,7 @@ BEGIN
                                     from wf.tdocumento_wf dwf 
                                     inner join wf.ttipo_documento td 
                                     on dwf.id_tipo_documento = td.id_tipo_documento
-                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros.documentos::int[]) and td.estado_reg = 'activo' and
+                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros_correo.documentos::int[]) and td.estado_reg = 'activo' and
                                     dwf.estado_reg = 'activo' and ((td.tipo = 'escaneado' and dwf.url is not null and dwf.url != '') or 
                                     td.tipo = 'generado');
                     

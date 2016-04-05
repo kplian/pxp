@@ -88,7 +88,7 @@ Phx.vista.gui=function(config) {
     		emptyText:'Seleccione un tipo...',
     		selectOnFocus:true,
    			mode:'local',
-			store:['carpeta','interface'],
+			store:['carpeta','interface','reporte'],
 			valueField:'ID',
 			width:150,			
 				

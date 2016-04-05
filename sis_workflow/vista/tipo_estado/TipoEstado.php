@@ -674,6 +674,23 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			grid: true,
 			form: true
 		},
+
+        {
+            config:{
+                name: 'icono',
+                fieldLabel: 'Icono',
+                allowBlank: true,
+                anchor: '100%',
+                gwidth: 100,
+                maxLength:150,
+                qtip:  'Las imagenes deben estar en pxp/lib/imagenes/'
+            },
+            type:'TextField',
+            filters:{pfiltro:'tipes.icono',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		
 		{
 			config:{
@@ -782,7 +799,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc'
+        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc','icono'
 		
 	],
 	sortInfo:{
