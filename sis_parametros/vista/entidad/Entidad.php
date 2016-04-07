@@ -6,7 +6,6 @@
 *@date 20-09-2015 19:11:44
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -125,7 +124,24 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
                 id_grupo:1,
                 grid:true,
                 form:true
+        },{
+            config:{
+                name: 'direccion_matriz',
+                qtip: 'Dirección matriz o fiscal, este dato aparece en reporte como el LCV',
+                fieldLabel: 'Dirección Fiscal',
+                allowBlank: false,
+                anchor: '100%',
+                gwidth: 300,
+                maxLength:400
+            },
+                type:'TextArea',
+                filters:{pfiltro:'ent.direccion_matriz',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
         },
+        
+        
 		
 		
 		
@@ -260,7 +276,7 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'direccion_matriz'
 		
 	],
 	sortInfo:{

@@ -13,7 +13,10 @@ class ACTAlarma extends ACTbase{
 		//$this->objParam->defecto('ordenacion','id_alarma');
 
 		$this->objParam->defecto('alarm.fecha','desc');
-		
+		if($this->objParam->getParametro('minutos')!='')
+		{
+			$this->objParam->addFiltro("alarm.fecha_reg >= (now() - interval ''".$this->objParam->getParametro('minutos'). " minute'')");	
+		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
