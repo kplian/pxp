@@ -733,7 +733,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
 	    } else if (fieldName == 'upload') {
-	    	if (record.data.tipo_documento == 'escaneado') {
+	    	if (record.data.tipo_documento == 'escaneado' &&  !record.data.id_proceso_wf_ori) {
 	    		this.SubirArchivo(record);
 	    	}
 	    } else if(fieldName == 'modificar') {
