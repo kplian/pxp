@@ -94,8 +94,8 @@ BEGIN
             admite_obs,
             etapa,
             grupo_doc,
-            id_tipo_estado_anterior
-            
+            id_tipo_estado_anterior,
+            icono
             
           	) values(
 			v_parametros.nombre_estado,
@@ -128,8 +128,8 @@ BEGIN
             v_parametros.admite_obs,
             v_parametros.etapa,
             v_parametros.grupo_doc,
-            v_parametros.id_tipo_estado_anterior
-							
+            v_parametros.id_tipo_estado_anterior,
+			v_parametros.icono
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
 			
             v_id_roles= string_to_array(v_parametros.id_roles,',');
@@ -200,8 +200,8 @@ BEGIN
             admite_obs = v_parametros.admite_obs,
             etapa = v_parametros.etapa,
             grupo_doc = v_parametros.grupo_doc,
-            id_tipo_estado_anterior = v_parametros.id_tipo_estado_anterior
-							
+            id_tipo_estado_anterior = v_parametros.id_tipo_estado_anterior,
+			icono = v_parametros.icono
             where id_tipo_estado=v_parametros.id_tipo_estado;
             
             --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '

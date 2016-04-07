@@ -255,7 +255,8 @@ BEGIN
                         tipes.etapa,
                         tipes.grupo_doc,
                         tipes.id_tipo_estado_anterior,
-                        ''(''||tea.codigo||'') ''|| tea.nombre_estado AS desc_tipo_estado_anterior
+                        ''(''||tea.codigo||'') ''|| tea.nombre_estado AS desc_tipo_estado_anterior,
+                        tipes.icono
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod
