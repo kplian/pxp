@@ -64,7 +64,9 @@ BEGIN
 			estados_comprobante_venta,
 			estados_anulacion_venta,
 			pagina_entidad,
-            direccion_matriz
+            direccion_matriz,
+            identificador_min_trabajo,
+            identificador_caja_salud
           	) values(
 			v_parametros.tipo_venta_producto,
 			v_parametros.nit,
@@ -79,7 +81,9 @@ BEGIN
 			v_parametros.estados_comprobante_venta,
 			v_parametros.estados_anulacion_venta,
 			v_parametros.pagina_entidad	,
-            v_parametros.direccion_matriz			
+            v_parametros.direccion_matriz,
+            v_parametros.identificador_min_trabajo,
+            v_parametros.identificador_caja_salud			
 			
 			
 			)RETURNING id_entidad into v_id_entidad;
@@ -115,7 +119,9 @@ BEGIN
 			estados_comprobante_venta = v_parametros.estados_comprobante_venta,
 			estados_anulacion_venta = v_parametros.estados_anulacion_venta,
 			pagina_entidad = v_parametros.pagina_entidad,
-            direccion_matriz = v_parametros.direccion_matriz	
+            direccion_matriz = v_parametros.direccion_matriz,
+            identificador_min_trabajo = v_parametros.identificador_min_trabajo,
+            identificador_caja_salud = v_parametros.identificador_caja_salud		
 			where id_entidad = v_parametros.id_entidad;
                
 			--Definicion de la respuesta

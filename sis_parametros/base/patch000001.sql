@@ -1285,3 +1285,13 @@ ALTER TABLE param.tdocumento
 /***********************************F-SCP-FFP-PARAM-0-28/03/2016****************************************/
 
 
+/***********************************I-SCP-FFP-PARAM-0-11/04/2016****************************************/
+
+ALTER TABLE param.tentidad
+  ADD COLUMN identificador_min_trabajo VARCHAR(50);
+
+ALTER TABLE param.tentidad
+  ADD COLUMN identificador_caja_salud VARCHAR(50);
+/***********************************F-SCP-FFP-PARAM-0-11/04/2016****************************************/
+
+

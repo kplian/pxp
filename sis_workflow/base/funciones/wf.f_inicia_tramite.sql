@@ -10,6 +10,7 @@ CREATE OR REPLACE FUNCTION wf.f_inicia_tramite (
   p_id_depto integer = NULL::integer,
   p_descripcion varchar = ' ---'::character varying,
   p_codigo_proceso varchar = NULL::character varying,
+  p_nro_tramite_custom varchar = ''::character varying,
   out ps_num_tramite varchar,
   out ps_id_proceso_wf integer,
   out ps_id_estado_wf integer,
@@ -56,7 +57,6 @@ BEGIN
 
          -- si el tipo_proceso es de inicio genera numero de tramite
          
-         
          select    tp.id_proceso_macro, tp.inicio, tp.id_tipo_proceso
          into      v_id_proceso_macro, v_inicio, v_id_tipo_proceso
          from wf.ttipo_proceso  tp 
@@ -64,15 +64,22 @@ BEGIN
                 tp.codigo = p_codigo_tipo_proceso 
             and tp.estado_reg ='activo';
             
-            
+
          select pm.codigo into v_codigo_proceso_macro
          from wf.tproceso_macro pm 
          where pm.id_proceso_macro = v_id_proceso_macro; 
          
          
-         IF v_inicio = 'si' THEN
-            ps_num_tramite = wf.f_get_numero_tramite(v_codigo_proceso_macro, p_id_gestion, p_id_usuario_reg);
-         END IF ;
+         
+         
+         IF p_nro_tramite_custom != '' THEN
+             ps_num_tramite = p_nro_tramite_custom;
+         ELSE
+             IF v_inicio = 'si' THEN
+                ps_num_tramite = wf.f_get_numero_tramite(v_codigo_proceso_macro, p_id_gestion, p_id_usuario_reg);
+             END IF ;
+         END IF;
+         
          
          
          -- inserta el proceso con el numero de tramite
@@ -101,8 +108,7 @@ BEGIN
           p_usuario_ai
         ) RETURNING id_proceso_wf into ps_id_proceso_wf;
         
-   -- recupera el tipo_estado_inicial 
-   
+   -- recupera el tipo_estado_inicial    
     select 
     te.id_tipo_estado, te.codigo
     into 
@@ -110,8 +116,6 @@ BEGIN
     from wf.ttipo_estado te
     where te.id_tipo_proceso = v_id_tipo_proceso 
     and te.inicio ='si' ;   
-        
-        
  
  -- inserta el primer estado del proceso 
        INSERT INTO 
@@ -142,15 +146,13 @@ BEGIN
         p_usuario_ai
       
       )RETURNING id_estado_wf into ps_id_estado_wf;
-      
-      
+            
    -- inserta documentos en estado borrador si estan configurados
    v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario_reg, ps_id_proceso_wf, ps_id_estado_wf);
    
    -- verificar documentos
    v_resp_doc = wf.f_verifica_documento(p_id_usuario_reg, ps_id_estado_wf);
  
-      
       
     
  EXCEPTION

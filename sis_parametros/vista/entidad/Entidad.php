@@ -60,6 +60,38 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+		
+		{
+			config:{
+				name: 'identificador_min_trabajo',
+				fieldLabel: 'Identificador Ministerio de Trabajo',
+				allowBlank: true,
+				anchor: '50%',
+				gwidth: 120,
+				maxLength:20
+			},
+				type:'TextField',
+				filters:{pfiltro:'ent.identificador_min_trabajo',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		{
+			config:{
+				name: 'identificador_caja_salud',
+				fieldLabel: 'Identificador Caja Salud',
+				allowBlank: true,
+				anchor: '50%',
+				gwidth: 120,
+				maxLength:20
+			},
+				type:'TextField',
+				filters:{pfiltro:'ent.identificador_caja_salud',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
 		{
 		    config:{
                 name: 'tipo_venta_producto',
@@ -262,6 +294,10 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_entidad', type: 'numeric'},
 		{name:'tipo_venta_producto', type: 'string'},
+		
+		{name:'identificador_min_trabajo', type: 'string'},
+		{name:'identificador_caja_salud', type: 'string'},
+		
 		{name:'estados_comprobante_venta', type: 'string'},
 		{name:'estados_anulacion_venta', type: 'string'},
 		{name:'tipo_venta_producto', type: 'string'},

@@ -63,7 +63,9 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
 						ent.pagina_entidad,
-                        ent.direccion_matriz
+                        ent.direccion_matriz,
+                        ent.identificador_min_trabajo,
+                        ent.identificador_caja_salud
 						from param.tentidad ent
 						inner join segu.tusuario usu1 on usu1.id_usuario = ent.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ent.id_usuario_mod
