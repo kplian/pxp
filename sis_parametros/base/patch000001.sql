@@ -1295,3 +1295,52 @@ ALTER TABLE param.tentidad
 /***********************************F-SCP-FFP-PARAM-0-11/04/2016****************************************/
 
 
+
+
+/***********************************I-SCP-RAC-PARAM-0-11/04/2016****************************************/
+
+
+--------------- SQL ---------------
+
+ -- object recreation
+ALTER TABLE param.talarma
+  DROP CONSTRAINT chk_talarma__tipo RESTRICT;
+
+ALTER TABLE param.talarma
+  ADD CONSTRAINT chk_talarma__tipo CHECK ((tipo)::text = ANY (ARRAY[('comunicado'::character varying)::text,('alarma'::character varying)::text, ('notificacion'::character varying)::text]));
+
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_alarma_fk INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_alarma_fk
+IS 'solo para alertas del tipo comunicado hace referencia al registro original';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN estado_comunicado VARCHAR(30);
+
+ALTER TABLE param.talarma
+  ALTER COLUMN estado_comunicado SET DEFAULT 'borrador';
+
+COMMENT ON COLUMN param.talarma.estado_comunicado
+IS 'borrado o activado, cuando esta activado se registras las alertas individuales';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_uos INTEGER[];
+
+COMMENT ON COLUMN param.talarma.id_uos
+IS 'hace referencia a las UO a las que se debe entregar el comunicado, solo en el regitro origen (tipo = comunicado) id_alarma_fk = NULL';
+
+/***********************************F-SCP-RAC-PARAM-0-11/04/2016****************************************/
+
+
+

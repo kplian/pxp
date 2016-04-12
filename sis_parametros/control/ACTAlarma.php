@@ -48,6 +48,23 @@ class ACTAlarma extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 		
 	}
+	
+	function listarComunicado(){
+		//$this->objParam->defecto('ordenacion','id_alarma');
+
+		$this->objParam->defecto('alarm.fecha','desc');
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODAlarma','listarComunicado');
+		} else{
+			$this->objFunc=$this->create('MODAlarma');	
+			$this->res=$this->objFunc->listarComunicado();
+		}	
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+	}
+	
+	
 	function alarmaPendiente(){
 		$this->objParam->defecto('ordenacion','id_alarma');
 
@@ -95,6 +112,12 @@ class ACTAlarma extends ACTbase{
    function confirmarAcuseRecibo(){
 		$this->objFunc=$this->create('MODAlarma');		
 		$this->res=$this->objFunc->confirmarAcuseRecibo();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+   
+   function finalizarComunicado(){
+		$this->objFunc=$this->create('MODAlarma');		
+		$this->res=$this->objFunc->finalizarComunicado();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 

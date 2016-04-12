@@ -139,6 +139,8 @@ BEGIN
                 END IF;
             -- END IF;
             
+           
+            
             --Sentencia de la consulta
 			v_consulta:='select
                           conig.id_concepto_ingas,
@@ -171,7 +173,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-            --raise notice 'consulta >>>> % <<<<',v_consulta;
+            raise notice 'consulta >>>> % <<<<',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						

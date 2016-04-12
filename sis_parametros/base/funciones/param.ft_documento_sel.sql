@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_documento_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  documento: 	param.ft_documento_sel
@@ -37,6 +38,7 @@ BEGIN
 
      v_parametros:=pxp.f_get_record(par_tabla);
      v_nombre_funcion:='param.ft_documento_sel';
+     
 /*******************************
  #TRANSACCION:  PM_DOCUME_SEL
  #DESCRIPCION:	Listado de documentos
@@ -49,9 +51,10 @@ BEGIN
  #FECHA_MOD:		27/10/11
 ***********************************/
 
+
      if(par_transaccion='PM_DOCUME_SEL')then
 
-          --consulta:=';
+          -- consulta:=';
           BEGIN
           
            v_filadd = '';
@@ -120,6 +123,39 @@ BEGIN
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;
+     
+     
+     ELSEIF(par_transaccion='PM_EXPDCT_SEL')then
+
+          
+          BEGIN
+          
+                v_consulta:='SELECT 
+                                   DOCUME.id_documento,
+                                   DOCUME.codigo,
+                                   DOCUME.descripcion,
+                                   DOCUME.estado_reg,
+                                   DOCUME.id_subsistema,
+                                   SUBSIS.codigo  as codigo_subsis,
+                                   SUBSIS.nombre as nombre_subsis,
+                                   DOCUME.tipo_numeracion,
+                                   DOCUME.periodo_gestion,
+                                   DOCUME.tipo,
+                                   DOCUME.formato,
+   								   DOCUME.ruta_plantilla
+
+                            FROM param.tdocumento DOCUME
+                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema = DOCUME.id_subsistema
+                            
+                            WHERE id_documento = '||v_parametros.id_documento;
+               
+               
+               return v_consulta;
+
+
+         END;
+     
+     
      else
          raise exception 'No existe la opcion';
 
@@ -137,7 +173,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_gestion_ime (OID = 304035) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

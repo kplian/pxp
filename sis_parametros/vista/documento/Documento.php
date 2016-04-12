@@ -287,6 +287,17 @@ Phx.vista.Documento=function(config){
 				handler : this.addPlantilla,
 				tooltip : ' <b>Agrega Plantilla</b>plantilla word'
 			});
+			
+			
+	this.addButton('btnWizard',
+            {
+                text: 'Exportar Plantilla',
+                iconCls: 'bchecklist',
+                disabled: false,
+                handler: this.expProceso,
+                tooltip: '<b>Exportar</b><br/>Exporta a archivo SQL la plantilla de calculo'
+            }
+        );		
 	
 	this.load({params:{start:0, limit:50}});
 }
@@ -353,17 +364,9 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 				
 			}
                
-        		
-        		
-    			
-		},this);
+       },this);
  
-        
-        
-		
-		
-	
-	},
+    },
 
 
 
@@ -401,20 +404,24 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 				height : 250
 			}, rec.data, this.idContenedor, 'subirPlantilla')
 
-			/*Ext.Ajax.request({
-			 // form:this.form.getForm().getEl(),
-			 url : '../../sis_parametros/control/Depto/subirPlantilla',
-			 params : {
-			 id_depto : id_depto
-			 },
-			 success : this.successSubirPlantilla,
-			 failure : this.conexionFailure,
-			 timeout : this.timeout,
-			 scope : this
-			 });*/
+			
 
-		}
-		  
+	},
+		
+	
+	expProceso : function(resp){
+			var data=this.sm.getSelected().data;
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url: '../../sis_parametros/control/Documento/exportarDatos',
+				params: { 'id_documento' : data.id_documento },
+				success: this.successExport,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+			
+	},	  
 		 
 })
 </script>
