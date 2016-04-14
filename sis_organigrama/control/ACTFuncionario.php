@@ -63,7 +63,8 @@ class ACTFuncionario extends ACTbase{
         	$nombre_empleado = trim($this->objParam->getParametro('nombre_empleado'));
 			$nombre_empleado = str_replace(' ', '%', $nombre_empleado);
             $this->objParam->addFiltro("(lower(PERSON.nombre_completo1) like lower(''%" .  $nombre_empleado ."%'') or 
-            							lower(PERSON.nombre_completo2) like lower(''%" .  $nombre_empleado ."%''))");    
+            							lower(PERSON.nombre_completo2) like lower(''%" .  $nombre_empleado ."%'') or 
+            							lower(CAR.nombre) like lower(''%" .  $nombre_empleado ."%''))");    
         }	
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
