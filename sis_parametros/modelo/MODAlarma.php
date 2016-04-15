@@ -149,6 +149,7 @@ class MODAlarma extends MODbase{
 		$this->captura('obs','varchar');
 		$this->captura('tipo','varchar');
 		$this->captura('dias','integer');
+		$this->captura('titulo_correo','varchar');
 		
 		
 		//Ejecuta la instruccion

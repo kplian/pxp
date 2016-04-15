@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_id_funcionario integer,
   par_descripcion varchar,
@@ -89,7 +87,7 @@ BEGIN
               'activo',
               par_descripcion,
               par_id_usuario,
-              now()::date,
+              now(),
               null,
               null,
               par_tipo,

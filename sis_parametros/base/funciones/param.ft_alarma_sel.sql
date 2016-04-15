@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -131,7 +129,8 @@ BEGIN
                         alarm.parametros,
                         alarm.obs,
                         alarm.tipo,
-                        (alarm.fecha-now()::date)::integer as dias
+                        (alarm.fecha-now()::date)::integer as dias,
+                        alarm.titulo_correo
 						from param.talarma alarm
 						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
