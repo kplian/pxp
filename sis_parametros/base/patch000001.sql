@@ -1343,4 +1343,37 @@ IS 'hace referencia a las UO a las que se debe entregar el comunicado, solo en e
 /***********************************F-SCP-RAC-PARAM-0-11/04/2016****************************************/
 
 
+ 
+/***********************************I-SCP-RAC-PARAM-0-16/04/2016****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_grupo_ots INTEGER[];
+
+COMMENT ON COLUMN param.tconcepto_ingas.id_grupo_ots
+IS 'lamacena las ot que pueden relacionarce con este el concepto de gasto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_unidad_medida INTEGER;
+
+COMMENT ON COLUMN param.tconcepto_ingas.id_unidad_medida
+IS 'unidad de medida del concepto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN nandina VARCHAR(100);
+
+COMMENT ON COLUMN param.tconcepto_ingas.nandina
+IS 'coduigo partida de aduana para exportaciones';
+
+
+/***********************************F-SCP-RAC-PARAM-0-16/04/2016****************************************/
+
+
+
 

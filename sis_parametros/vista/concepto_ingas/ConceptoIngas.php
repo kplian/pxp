@@ -99,8 +99,48 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			form:true,
 			bottom_filter : true
 		},
-	
-	     	{
+		{
+   			config:{
+   				name:'id_unidad_medida',
+   				tipo: 'All',
+   				origen:'UNIDADMEDIDA',
+   				allowBlank:true,
+   				fieldLabel:'Unidad',
+   				gdisplayField:'desc_unidad_medida',//mapea al store del grid
+   				gwidth:200,
+   				width: 350,
+   				listWidth: 350,
+   				//anchor: '80%',
+	   			renderer:function (value, p, record){return String.format('{0}', record.data['desc_unidad_medida']);}
+       	     },
+   			type:'ComboRec',
+   			id_grupo:0,
+   			filters:{	
+		        pfiltro:'um.codigo#um.descripcion',
+				type:'string'
+			},
+   		   
+   			grid:true,
+   			form:true
+	   	},
+		{
+			config:{
+				name: 'nandina',
+				fieldLabel: 'Nandina',
+				qtip: 'Código de partida presupuestaria',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:100
+			},
+			type:'TextField',
+			filters:{pfiltro:'conig.nandina',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true,
+			bottom_filter : true
+		},
+	    {
 	       		config:{
 	       			name:'sw_tes',
 	       			fieldLabel:'Habilitar en Tesoreria',
@@ -546,7 +586,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'activo_fijo', type: 'string'},
 		{name:'almacenable', type: 'string'},
-		'id_grupo_ots','filtro_ot','requiere_ot','sw_autorizacion'
+		'id_grupo_ots','filtro_ot','requiere_ot',
+		'sw_autorizacion','desc_unidad_medida','id_unidad_medida','nandina'
 		
 	],
 	sortInfo:{
