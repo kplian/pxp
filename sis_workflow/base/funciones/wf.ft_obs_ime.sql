@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_obs_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -36,7 +34,8 @@ DECLARE
 	v_id_obs				integer;
     v_id_alarma   		 	integer;
     v_descripcion    		text;
-			    
+    v_desc_persona			varchar;
+    			    
 BEGIN
 
     v_nombre_funcion = 'wf.ft_obs_ime';
@@ -111,7 +110,10 @@ BEGIN
             
             v_descripcion =  'Estimado, '|| v_registros_fun.desc_funcionario1||'<br>'||'tiene una observación para el trámite #'||v_registros.nro_tramite||'<br>con las siguiente descripción:<br><b>'||  v_parametros.descripcion ||'</b><br> (Tiene que resolver o hacer resolver la observación para continuar con el trámite)';
             
-           
+            select u.desc_persona into v_desc_persona
+            from segu.vusuario u
+            where id_usuario  = p_id_usuario;
+            
             v_id_alarma :=  param.f_inserta_alarma(
                                                   v_parametros.id_funcionario_resp,
                                                   v_descripcion,    --descripcion alarmce
@@ -121,7 +123,7 @@ BEGIN
                                                   '',   -->
                                                   p_id_usuario,
                                                   'ObsFuncionario',
-                                                  'Observación trámite #'||v_registros.nro_tramite,--titulo
+                                                  v_desc_persona,--titulo
                                                   '{filtro_directo:{campo:"id_obs",valor:"'||v_id_obs::varchar||'"}}',
                                                   NULL::integer,
                                                   'Observacion #'||v_registros.nro_tramite
