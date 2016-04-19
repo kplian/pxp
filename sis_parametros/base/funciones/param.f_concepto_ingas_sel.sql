@@ -54,7 +54,6 @@ BEGIN
 						conig.tipo,
 						conig.movimiento,
                         conig.sw_tes,
-						--(case when conig.sw_tes = ''1'' then ''si'' else ''no'' end)::varchar as sw_tes,
 						conig.id_oec,
 						conig.estado_reg,
 						conig.id_usuario_reg,
@@ -70,16 +69,20 @@ BEGIN
                         conig.requiere_ot,
                         array_to_string( conig.sw_autorizacion, '','',''null'')::varchar,
                         conig.id_entidad,
-                        conig.descripcion_larga	
+                        conig.descripcion_larga,
+                        conig.id_unidad_medida,
+                        um.codigo as  desc_unidad_medida,
+                        conig.nandina
 						from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                        left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-				        where conig.estado_reg = ''activo'' and  ';
+				        where conig.estado_reg = ''activo''  and ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+            rAISE NOTICE '%', v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						
@@ -98,9 +101,10 @@ BEGIN
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_concepto_ingas)
 					    from param.tconcepto_ingas conig
-					    inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                        left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
-					    where conig.estado_reg = ''activo'' and ';
+				        where conig.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;

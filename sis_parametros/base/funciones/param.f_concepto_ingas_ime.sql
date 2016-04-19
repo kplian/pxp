@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -64,7 +66,9 @@ BEGIN
 			fecha_mod,
 			id_usuario_mod,
 			activo_fijo,
-			almacenable
+			almacenable,
+            id_unidad_medida,
+            nandina
           	) values(
 			v_parametros.desc_ingas,
 			v_parametros.tipo,
@@ -76,7 +80,9 @@ BEGIN
 			null,
 			null,
 			v_parametros.activo_fijo,
-			v_parametros.almacenable				
+			v_parametros.almacenable,
+            v_parametros.id_unidad_medida,
+            v_parametros.nandina				
 			)RETURNING id_concepto_ingas into v_id_concepto_ingas;
 			
 			--Definicion de la respuesta
@@ -105,6 +111,8 @@ BEGIN
 			tipo = v_parametros.tipo,
 			movimiento = v_parametros.movimiento,
 			sw_tes = v_parametros.sw_tes,
+            id_unidad_medida = v_parametros.id_unidad_medida,
+            nandina = v_parametros.nandina,
 			
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
