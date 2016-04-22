@@ -1373,16 +1373,16 @@ IS 'coduigo partida de aduana para exportaciones';
 
 
 /***********************************F-SCP-RAC-PARAM-0-16/04/2016****************************************/
-/***********************************I-SCP-RAC-PARAM-0-22/04/2016****************************************/
+/***********************************I-SCP-JRR-PARAM-0-22/04/2016****************************************/
 --------------- SQL ---------------
 
 ALTER TABLE param.talarma
-  ADD COLUMN pendiente varchar('30') DEFAULT 'no';
+  ADD COLUMN pendiente varchar(30) DEFAULT 'no';
 
 COMMENT ON COLUMN param.talarma.pendiente
 IS 'Si el mensaje esta en proceso de envio valores: no o hora en formato YYYYMMDD-HH24MISSMS la hora es la hora en la que se inicio el proceso de envio';
 
-/***********************************F-SCP-RAC-PARAM-0-22/04/2016****************************************/
+/***********************************F-SCP-JRR-PARAM-0-22/04/2016****************************************/
 
 
 
