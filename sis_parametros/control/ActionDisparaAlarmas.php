@@ -80,8 +80,13 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
         
         $errores_id = '';
 		$errores_msg = '';
+		$pendiente = '0';
+		var_dump($res2->datos);
         error_reporting(-1);//captura todos los tipos de errores ...
 		foreach ($res2->datos as $d){
+			
+				$pendiente = $d['pendiente'];
+			    
 	       		$correo = new CorreoExterno();
 				try {	
 			       		
@@ -217,7 +222,8 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 		$objParam->addParametro('errores_id', $errores_id);
 		$objParam->addParametro('errores_msg', $errores_msg);
 		$objParam->addParametro('id_usuario', 1);
-		$objParam->addParametro('tipo', 'TODOS');		
+		$objParam->addParametro('tipo', 'TODOS');
+		$objParam->addParametro('pendiente', $pendiente);		
 		
         $objFunc=new MODAlarma($objParam);        
         $res2=$objFunc->modificarEnvioCorreo();

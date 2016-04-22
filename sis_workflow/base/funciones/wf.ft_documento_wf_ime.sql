@@ -1,13 +1,3 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION wf.ft_documento_wf_ime (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
-)
-RETURNS varchar AS
-$body$
 /**************************************************************************
  SISTEMA:		Work Flow
  FUNCION: 		wf.ft_documento_wf_ime
@@ -414,7 +404,7 @@ BEGIN
                                  tde.regla,
                                  tde.id_tipo_documento
                               from wf.tdocumento_wf  dwf 
-                              inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento
+                              inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento and tde.estado_reg = 'activo'
                               where  dwf.id_proceso_wf = v_parametros.id_proceso_wf)  LOOP
                 
                 --solo revisa las reglas de lo momenstos que nos interesa
@@ -443,7 +433,7 @@ BEGIN
                                  tde.regla,
                                  tde.id_tipo_documento
                               from wf.ttipo_documento_estado  tde
-                              where  tde.id_tipo_estado = v_registros_pwf.id_tipo_estado)  LOOP
+                              where  tde.id_tipo_estado = v_registros_pwf.id_tipo_estado and tde.estado_reg = 'activo')  LOOP
                 
                   --solo revisa las reglas de lo momenstos que nos interesa
                   IF  (v_registros.momento  = 'insertar') THEN
@@ -492,7 +482,7 @@ BEGIN
                                    tde.regla,
                                    tde.id_tipo_estado
                                 from wf.tdocumento_wf  dwf 
-                                inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento
+                                inner join wf.ttipo_documento_estado  tde on tde.id_tipo_documento = dwf.id_tipo_documento and tde.estado_reg = 'activo'
                                 where    tde.id_tipo_estado = ANY(va_id_tipo_estado_siguiente))  LOOP
                   
                   --solo revisa las reglas de lo momenstos que nos interesa
@@ -547,9 +537,3 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;

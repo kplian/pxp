@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_alarma_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,7 +10,7 @@ $body$
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_alarma_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.talarma'
- AUTOR: 		 (rac)
+ AUTOR: 		 (fprudencio)
  FECHA:	        18-11-2011 11:59:10
  COMENTARIOS:	         
 ***************************************************************************
@@ -173,9 +171,12 @@ BEGIN
               END LOOP;
             
              -- modifica al estado enviado a todos los ceorreos sin falla
-			 update param.talarma set 
-                sw_correo = 1
-             where sw_correo = 0 and estado_envio = 'exito';
+             
+             update param.talarma set 
+                sw_correo = 1,
+                pendiente = 'no'
+             where sw_correo = 0 and estado_envio = 'exito' and pendiente = v_parametros.pendiente;
+             
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Desactiva envio de correo para alarmas'); 
                
