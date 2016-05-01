@@ -29,10 +29,21 @@ header("content-type: text/javascript; charset=UTF-8");
         else{
               $sis_integracion = $_SESSION["_SIS_INTEGRACION"];
         }
+		
+		if(isset($_SESSION["ss_id_cargo"]) && $_SESSION["ss_id_cargo"] !=''){
+				
+				$id_cargo = $_SESSION["ss_id_cargo"];
+			}
+			else{
+				$id_cargo = 0;
+			}
         
-		  
+		$logo = str_replace('../../../', '', $_SESSION['_MINI_LOGO']);
+			$logo = ($_SESSION["_FORSSL"]=="SI") ? 'https://' : 'http://' . $_SERVER['HTTP_HOST'] . $_SESSION["_FOLDER"] . $logo;
+			  
 		echo "var _PARAMETROS={
 			success:true,
+			id_cargo:".$id_cargo.",
 		    m:'".$_SESSION['key_m']."',
 			e:'".$_SESSION['key_e']."',
 			k:'".$_SESSION['key_k']."',
@@ -41,6 +52,7 @@ header("content-type: text/javascript; charset=UTF-8");
             parammetros:{cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
             nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
 			mini_logo:'".$_SESSION["_MINI_LOGO"]."',
+			icono_notificaciones:'" . $logo . "',		
 			nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
 			id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
 			id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',

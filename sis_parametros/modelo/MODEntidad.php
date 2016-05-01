@@ -36,6 +36,11 @@ class MODEntidad extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('pagina_entidad','varchar');
+		$this->captura('direccion_matriz','varchar');
+		
+		$this->captura('identificador_min_trabajo','varchar');
+		$this->captura('identificador_caja_salud','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -59,6 +64,11 @@ class MODEntidad extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('pagina_entidad','pagina_entidad','varchar');
+		$this->setParametro('direccion_matriz','direccion_matriz','varchar');
+		
+		$this->setParametro('identificador_min_trabajo','identificador_min_trabajo','varchar');
+		$this->setParametro('identificador_caja_salud','identificador_caja_salud','varchar');		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -83,6 +93,11 @@ class MODEntidad extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('pagina_entidad','pagina_entidad','varchar');
+		$this->setParametro('direccion_matriz','direccion_matriz','varchar');
+		
+		$this->setParametro('identificador_min_trabajo','identificador_min_trabajo','varchar');
+		$this->setParametro('identificador_caja_salud','identificador_caja_salud','varchar');	
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

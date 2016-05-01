@@ -128,7 +128,7 @@ class MODDocumento extends MODbase{
 		return $this->respuesta;
 	}
 
-function subirPlantilla(){
+  function subirPlantilla(){
 		
 		
 		 $cone = new conexion();
@@ -220,6 +220,35 @@ function subirPlantilla(){
 		
 
 	}
+
+
+     function exportarDatos() {
+		
+		    $this->procedimiento='param.ft_documento_sel';
+			$this->transaccion='PM_EXPDCT_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			
+			$this->setParametro('id_documento','id_documento','integer');
+			
+			$this->captura('id_documento','integer');
+            $this->captura('codigo','varchar');
+            $this->captura('descripcion','varchar');
+            $this->captura('estado_reg','varchar');
+            $this->captura('id_subsistema','integer');
+            $this->captura('codigo_subsis','varchar');
+            $this->captura('nombre_subsis','varchar');
+            $this->captura('tipo_numeracion','varchar');
+            $this->captura('periodo_gestion','varchar');
+            $this->captura('tipo','varchar');
+            $this->captura('formato','varchar');
+   			$this->captura('ruta_plantilla','varchar');
+			
+		$this->armarConsulta();	
+		$this->ejecutarConsulta(); 
+		return $this->respuesta;		
+	
+	}	
 	
 }
 ?>

@@ -111,11 +111,28 @@ class MODGestion extends MODbase{
 	function obtenerGestionByFecha(){
         //Definicion de variables para ejecucion del procedimiento
         $this->procedimiento='param.f_gestion_ime';
-        $this->transaccion='PM_GETGES_ELI';
+        $this->transaccion='PM_GETGES_GET';
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
         $this->setParametro('fecha','fecha','date');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
+	function obtenerGestionById(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.f_gestion_ime';
+        $this->transaccion='PM_GETGESID_GET';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_gestion','id_gestion','int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

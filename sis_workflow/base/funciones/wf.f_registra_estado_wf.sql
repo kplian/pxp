@@ -238,11 +238,18 @@ BEGIN
             END IF;
             
             --si no tenemos acceso directo como parametro p_acceso_directo,  buscamos en la configuracion del tipo estado
-            
+            p_titulo = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, '{DEPTO_PREVIO} {FUNCIONARIO_PREVIO}', p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                 
+           if (p_titulo = ' ') then
+              select u.desc_persona into p_titulo 
+              from segu.vusuario u 
+              where u.id_usuario = p_id_usuario ;
+           end if;
             IF p_acceso_directo = '' and  v_registros.acceso_directo_alerta is not NULL and v_registros.acceso_directo_alerta != '' THEN
                  
                  p_acceso_directo = v_registros.acceso_directo_alerta;
-                 p_titulo = v_registros.titulo_alerta;
+                 
+                 
                  p_clase = v_registros.nombre_clase_alerta;
                  p_parametros = v_registros.parametros_ad;
                  p_tipo = v_registros.tipo_noti;

@@ -41,6 +41,11 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('sw_autorizacion','varchar');
 		$this->captura('id_entidad','integer');
 		$this->captura('descripcion_larga','text');
+		$this->captura('id_unidad_medida','int4');
+		$this->captura('desc_unidad_medida','varchar');
+		$this->captura('nandina','varchar');
+		
+		
 		
 		
 		
@@ -90,6 +95,7 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
 		$this->captura('sw_autorizacion','varchar');
+		
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -194,6 +200,9 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
+		
+		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
+		$this->setParametro('nandina','nandina','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -219,6 +228,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
+		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
+		$this->setParametro('nandina','nandina','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

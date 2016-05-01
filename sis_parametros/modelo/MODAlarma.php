@@ -6,7 +6,6 @@
 *@date 18-11-2011 11:59:10
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
 class MODAlarma extends MODbase{
 	
 	function __construct(CTParametro $pParam){
@@ -62,6 +61,7 @@ class MODAlarma extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('errores_id','errores_id','varchar');
 		$this->setParametro('errores_msg','errores_msg','codigo_html');
+		$this->setParametro('pendiente','pendiente','varchar');
 				
 		//Define los parametros para la funcion
 		//$this->setParametro('id_alarma','id_alarma','int4');
@@ -108,6 +108,7 @@ class MODAlarma extends MODbase{
 		$this->captura('url_acuse','varchar');
 		$this->captura('requiere_acuse','varchar');
 		$this->captura('mensaje_link_acuse','varchar');
+		$this->captura('pendiente','varchar');
 		
 		
 		
@@ -150,6 +151,7 @@ class MODAlarma extends MODbase{
 		$this->captura('obs','varchar');
 		$this->captura('tipo','varchar');
 		$this->captura('dias','integer');
+		$this->captura('titulo_correo','varchar');
 		
 		
 		//Ejecuta la instruccion
@@ -189,11 +191,9 @@ class MODAlarma extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('acceso_directo','acceso_directo','varchar');
-		$this->setParametro('id_funcionario','id_funcionario','int4');
-		$this->setParametro('fecha','fecha','date');
-		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('descripcion','descripcion','varchar');
+		$this->setParametro('titulo','titulo','varchar');
+		$this->setParametro('descripcion','descripcion','codigo_html');
+		$this->setParametro('id_uos','id_uos','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -210,12 +210,10 @@ class MODAlarma extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_alarma','id_alarma','int4');
-		$this->setParametro('acceso_directo','acceso_directo','varchar');
-		$this->setParametro('id_funcionario','id_funcionario','int4');
-		$this->setParametro('fecha','fecha','date');
-		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('descripcion','descripcion','varchar');
+		$this->setParametro('id_alarma','id_alarma','integer');
+		$this->setParametro('titulo','titulo','varchar');
+		$this->setParametro('descripcion','descripcion','codigo_html');
+		$this->setParametro('id_uos','id_uos','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -358,6 +356,64 @@ class MODAlarma extends MODbase{
 		 
 		return $this->respuesta;
 	}
+	
+	function listarComunicado(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_alarma_sel';
+		$this->transaccion='PM_COMUN_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('id_alarma','int4');
+		$this->captura('acceso_directo','varchar');
+		$this->captura('id_funcionario','int4');
+		$this->captura('fecha','date');
+		$this->captura('estado_reg','varchar');
+		$this->captura('descripcion','varchar');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('clase','varchar');
+		$this->captura('titulo','varchar');
+		$this->captura('parametros','varchar');
+		$this->captura('obs','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('dias','integer');
+		$this->captura('id_alarma_fk','integer');
+		$this->captura('estado_comunicado','varchar');
+		$this->captura('id_uos','varchar');
+		
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		//echo $this->consulta;exit;
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+    function finalizarComunicado(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_alarma_ime';
+        $this->transaccion='PM_GENDETCOM_MOD';
+        $this->tipo_procedimiento='IME';
+
+        //Define los parametros para la funcion
+        $this->setParametro('id_alarma','id_alarma','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
 			
 }
 ?>

@@ -21,6 +21,10 @@ class ACTTabla extends ACTbase{
 			$this->objParam->addFiltro($codigo_tabla . "." . $id_maestro  . " = ". $this->objParam->getParametro($id_maestro));
 		}
 		
+		if ($this->objParam->getParametro('filtro_directo') != '') {			
+			$this->objParam->addFiltro($this->objParam->getParametro('filtro_directo'));
+		}
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODTabla','listarTablaCombo');

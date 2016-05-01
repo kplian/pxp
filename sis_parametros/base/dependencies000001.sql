@@ -1644,3 +1644,134 @@ ALTER TABLE param.tproveedor_cta_bancaria
     NOT DEFERRABLE;
 
 /***********************************F-DEP-GSS-PARAM-0-04/11/2015****************************************/
+
+/***********************************I-DEP-RAC-PARAM-0-12/11/2015****************************************/
+
+select pxp.f_insert_testructura_gui ('PARAM', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('CCOM', 'PARAM');
+select pxp.f_insert_testructura_gui ('CEP', 'PARAM');
+select pxp.f_delete_testructura_gui ('CONALA', 'PARAM');
+select pxp.f_delete_testructura_gui ('DOCUME', 'PARAM');
+select pxp.f_delete_testructura_gui ('DEPTO', 'PARAM');
+select pxp.f_delete_testructura_gui ('ALARM', 'PARAM');
+select pxp.f_delete_testructura_gui ('PROVEE', 'PARAM');
+select pxp.f_delete_testructura_gui ('INSTIT', 'PARAM');
+select pxp.f_delete_testructura_gui ('LUG', 'PARAM');
+select pxp.f_delete_testructura_gui ('MONPAR', 'PARAM');
+select pxp.f_delete_testructura_gui ('PERIOD', 'PARAM');
+select pxp.f_delete_testructura_gui ('CATA', 'PARAM');
+select pxp.f_delete_testructura_gui ('GESTIO', 'PARAM');
+select pxp.f_delete_testructura_gui ('UME', 'PARAM');
+select pxp.f_delete_testructura_gui ('PACATI', 'PARAM');
+select pxp.f_delete_testructura_gui ('SERVIC', 'PARAM');
+select pxp.f_insert_testructura_gui ('APROC', 'CCOM');
+select pxp.f_insert_testructura_gui ('PRO', 'CEP');
+select pxp.f_insert_testructura_gui ('FIN', 'CEP');
+select pxp.f_insert_testructura_gui ('REGIO', 'CEP');
+select pxp.f_insert_testructura_gui ('PROG', 'CEP');
+select pxp.f_insert_testructura_gui ('ACT', 'CEP');
+select pxp.f_insert_testructura_gui ('PPA', 'CEP');
+select pxp.f_insert_testructura_gui ('FRPP', 'CEP');
+select pxp.f_delete_testructura_gui ('EMP', 'PARAM');
+select pxp.f_insert_testructura_gui ('CONIG', 'CCOM');
+select pxp.f_delete_testructura_gui ('CCOST', 'PARAM');
+select pxp.f_delete_testructura_gui ('TCB', 'PARAM');
+select pxp.f_delete_testructura_gui ('ASI', 'PARAM');
+select pxp.f_delete_testructura_gui ('DF', 'PARAM');
+select pxp.f_delete_testructura_gui ('PLANT', 'PARAM');
+select pxp.f_delete_testructura_gui ('GAL', 'PARAM');
+select pxp.f_insert_testructura_gui ('GQP', 'CEP');
+select pxp.f_insert_testructura_gui ('DEPTO.1', 'DEPTO');
+select pxp.f_insert_testructura_gui ('DEPTO.1.1', 'DEPTO.1');
+select pxp.f_insert_testructura_gui ('DEPTO.1.1.1', 'DEPTO.1.1');
+select pxp.f_insert_testructura_gui ('DEPTO.1.1.2', 'DEPTO.1.1');
+select pxp.f_insert_testructura_gui ('DEPTO.1.1.1.1', 'DEPTO.1.1.1');
+select pxp.f_insert_testructura_gui ('LUG.1', 'LUG');
+select pxp.f_insert_testructura_gui ('PROVEE.1', 'PROVEE');
+select pxp.f_insert_testructura_gui ('GESTIO.1', 'GESTIO');
+select pxp.f_insert_testructura_gui ('EMP.1', 'EMP');
+select pxp.f_insert_testructura_gui ('DEPTO.2', 'DEPTO');
+select pxp.f_insert_testructura_gui ('DEPTO.3', 'DEPTO');
+select pxp.f_insert_testructura_gui ('DEPTO.4', 'DEPTO');
+select pxp.f_insert_testructura_gui ('DEPTO.5', 'DEPTO');
+select pxp.f_insert_testructura_gui ('DEPTO.6', 'DEPTO');
+select pxp.f_insert_testructura_gui ('DEPTO.1.1.3', 'DEPTO.1.1');
+select pxp.f_insert_testructura_gui ('INSTIT.1', 'INSTIT');
+select pxp.f_insert_testructura_gui ('INSTIT.1.1', 'INSTIT.1');
+select pxp.f_insert_testructura_gui ('PROVEE.2', 'PROVEE');
+select pxp.f_insert_testructura_gui ('PROVEE.3', 'PROVEE');
+select pxp.f_insert_testructura_gui ('PROVEE.2.1', 'PROVEE.2');
+select pxp.f_insert_testructura_gui ('PROVEE.3.1', 'PROVEE.3');
+select pxp.f_insert_testructura_gui ('UME.1', 'UME');
+select pxp.f_insert_testructura_gui ('GESTIO.2', 'GESTIO');
+select pxp.f_insert_testructura_gui ('GESTIO.1.1', 'GESTIO.1');
+select pxp.f_insert_testructura_gui ('PERIOD.1', 'PERIOD');
+select pxp.f_insert_testructura_gui ('APROC.1', 'APROC');
+select pxp.f_insert_testructura_gui ('APROC.1.1', 'APROC.1');
+select pxp.f_insert_testructura_gui ('APROC.1.2', 'APROC.1');
+select pxp.f_insert_testructura_gui ('APROC.1.1.1', 'APROC.1.1');
+select pxp.f_insert_testructura_gui ('APROC.1.1.1.1', 'APROC.1.1.1');
+select pxp.f_insert_testructura_gui ('APROC.1.1.1.1.1', 'APROC.1.1.1.1');
+select pxp.f_insert_testructura_gui ('CONIG.1', 'CONIG');
+select pxp.f_insert_testructura_gui ('ASI.1', 'ASI');
+select pxp.f_insert_testructura_gui ('ASI.2', 'ASI');
+select pxp.f_insert_testructura_gui ('ASI.3', 'ASI');
+select pxp.f_insert_testructura_gui ('ASI.1.1', 'ASI.1');
+select pxp.f_insert_testructura_gui ('ASI.1.2', 'ASI.1');
+select pxp.f_insert_testructura_gui ('ASI.1.1.1', 'ASI.1.1');
+select pxp.f_insert_testructura_gui ('ASI.1.1.2', 'ASI.1.1');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1', 'ASI.1.2');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1.1', 'ASI.1.2.1');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1.2', 'ASI.1.2.1');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1', 'ASI.1.2.1.1');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1.1', 'ASI.1.2.1.1.1');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1.1.1', 'ASI.1.2.1.1.1.1');
+select pxp.f_insert_testructura_gui ('DF.1', 'DF');
+select pxp.f_insert_testructura_gui ('GQP.1', 'GQP');
+select pxp.f_insert_testructura_gui ('DEPTO.1.2', 'DEPTO.1');
+select pxp.f_insert_testructura_gui ('PROVEE.3.1.1', 'PROVEE.3.1');
+select pxp.f_insert_testructura_gui ('APROC.1.2.1', 'APROC.1.2');
+select pxp.f_insert_testructura_gui ('ASI.1.2.1.2.1', 'ASI.1.2.1.2');
+select pxp.f_insert_testructura_gui ('ASI.2.1', 'ASI.2');
+select pxp.f_insert_testructura_gui ('ASI.2.2', 'ASI.2');
+select pxp.f_insert_testructura_gui ('ASI.2.1.1', 'ASI.2.1');
+select pxp.f_insert_testructura_gui ('ASI.2.1.1.1', 'ASI.2.1.1');
+select pxp.f_insert_testructura_gui ('ASI.2.1.1.1.1', 'ASI.2.1.1.1');
+select pxp.f_insert_testructura_gui ('ASI.2.2.1', 'ASI.2.2');
+select pxp.f_insert_testructura_gui ('DEPTO.7', 'DEPTO');
+select pxp.f_delete_testructura_gui ('ENT', 'PARAM');
+select pxp.f_insert_testructura_gui ('PROVEE', 'CCOM');
+select pxp.f_insert_testructura_gui ('ASI', 'CCOM');
+select pxp.f_insert_testructura_gui ('MNDS', 'PARAM');
+select pxp.f_insert_testructura_gui ('MONPAR', 'MNDS');
+select pxp.f_insert_testructura_gui ('TCB', 'MNDS');
+select pxp.f_insert_testructura_gui ('ALRMS', 'PARAM');
+select pxp.f_insert_testructura_gui ('ALARM', 'ALRMS');
+select pxp.f_insert_testructura_gui ('GAL', 'ALRMS');
+select pxp.f_insert_testructura_gui ('EMPS', 'PARAM');
+select pxp.f_insert_testructura_gui ('ENT', 'EMPS');
+select pxp.f_insert_testructura_gui ('EMP', 'EMPS');
+select pxp.f_insert_testructura_gui ('DEPTO', 'EMPS');
+select pxp.f_insert_testructura_gui ('GESTIO', 'EMPS');
+select pxp.f_insert_testructura_gui ('PERIOD', 'EMPS');
+select pxp.f_insert_testructura_gui ('CCOST', 'CEP');
+select pxp.f_insert_testructura_gui ('CONALA', 'ALRMS');
+select pxp.f_insert_testructura_gui ('CTLGS', 'PARAM');
+select pxp.f_insert_testructura_gui ('CATA', 'CTLGS');
+select pxp.f_insert_testructura_gui ('PACATI', 'CTLGS');
+select pxp.f_insert_testructura_gui ('OTROS', 'PARAM');
+select pxp.f_insert_testructura_gui ('PLANT', 'OTROS');
+select pxp.f_insert_testructura_gui ('DF', 'OTROS');
+select pxp.f_insert_testructura_gui ('UME', 'OTROS');
+select pxp.f_insert_testructura_gui ('INSTIT', 'OTROS');
+select pxp.f_insert_testructura_gui ('LUG', 'OTROS');
+select pxp.f_insert_testructura_gui ('DOCUME', 'OTROS');
+select pxp.f_insert_testructura_gui ('SERVIC', 'OTROS');
+select pxp.f_insert_testructura_gui ('COMAL', 'ALRMS');
+
+/***********************************F-DEP-RAC-PARAM-0-12/11/2015****************************************/
+
+
+
+
+
