@@ -25,6 +25,8 @@ Phx.vista.Documento=function(config){
 	       		form:true 
       		
 	       	},
+
+
 	       	
 	       	{
 	       			config:{
@@ -90,15 +92,27 @@ Phx.vista.Documento=function(config){
 	       		grid:true,
 	       		form:true
 	       	},
+
 	      	{
 	       		config:{
 	       			fieldLabel: "Nombre",
-	       			gwidth: 120,
+	       			gwidth: 150,
 	       			name: 'descripcion',
 	       			allowBlank:false,	
 	       			maxLength:200,
 	       			minLength:1,
-	       			anchor:'100%'
+	       			anchor:'100%',
+					renderer: function (value, meta, record) {
+						console.log('meta',meta)
+
+						var resp;
+						console.log('rec',record.data.ruta_plantilla)
+						/*meta.style=(record.data.ruta_plantilla)?'background:red; color:#fff;':'';*/
+						//meta.css = record.get('online') ? 'user-online' : 'user-offline';
+						resp=(record.data.ruta_plantilla != '')? value+' <i class="fa fa-file-word-o fa-2x"></i>': value;
+
+						return resp;
+					}
 	       		},
 	       		type:'TextField',
 	       		filters:{type:'string'},
@@ -287,6 +301,17 @@ Phx.vista.Documento=function(config){
 				handler : this.addPlantilla,
 				tooltip : ' <b>Agrega Plantilla</b>plantilla word'
 			});
+
+
+	this.addButton('VerPlantilla', {
+		text: 'VerPlantilla',
+		iconCls: 'bsee',
+		disabled: true,
+		handler: this.VerPlantilla,
+		tooltip: '<b>VerPlantilla</b><br/>Permite visualizar la plantilla'
+	});
+
+
 			
 			
 	this.addButton('btnWizard',
@@ -298,6 +323,7 @@ Phx.vista.Documento=function(config){
                 tooltip: '<b>Exportar</b><br/>Exporta a archivo SQL la plantilla de calculo'
             }
         );		
+
 	
 	this.load({params:{start:0, limit:50}});
 }
@@ -328,8 +354,9 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 	{name:'tipo_numeracion', type:'string'},
 	{name:'periodo_gestion', type:'string'},
 	{name:'tipo', type:'string'},
-	{name:'formato', type:'string'}
-	
+	{name:'formato', type:'string'},
+	{name:'ruta_plantilla', type:'string'}
+
 	],
 	sortInfo:{
 		field: 'DOCUME.codigo',
@@ -393,6 +420,18 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 	bdel:true,// boton para eliminar
 	bsave:true,// boton para eliminar
 	bedit:true,
+
+	preparaMenu: function (n) {
+
+		Phx.vista.Documento.superclass.preparaMenu.call(this, n);
+
+		var data = this.getSelectedData();
+		if(data.ruta_plantilla != ''){
+			this.getBoton('VerPlantilla').enable();
+		}else{
+			this.getBoton('VerPlantilla').disable();
+		}
+	},
 	
 	addPlantilla : function() {
 

@@ -38,6 +38,7 @@ Phx.vista.funcionario=function(config){
 	       	     },
 	   			type:'ComboRec',
 	   			id_grupo:0,
+	   			bottom_filter : true,
 	   			filters:{	
 			        pfiltro:'PERSON.nombre_completo1',
 					type:'string'
@@ -59,6 +60,172 @@ Phx.vista.funcionario=function(config){
 	       		},
 	       		type:'TextField',
 	       		filters:{type:'string'},
+	       		bottom_filter : true,
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+	       	{
+	       		config:{
+	       			name:'estado_civil',
+	       			fieldLabel:'Estado Civil',
+	       			allowBlank:true,
+	       			emptyText:'Estado...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['soltero','casado','divorciado','viudo']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options: ['soltero','casado','divorciado','viudo']
+	       		 	},
+	       		grid:true,	       		
+	       		form:true
+	       	},
+	       	
+	       	{
+	       		config:{
+	       			name:'genero',
+	       			fieldLabel:'Genero',
+	       			allowBlank:true,
+	       			emptyText:'Genero...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['masculino','femenino']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options: ['masculino','femenino']
+	       		 	},
+	       		grid:true,       		
+	       		form:true
+	       	},
+	       	
+	       	{
+	       		config:{
+	       			fieldLabel: "Fecha de Nacimiento",
+	       			gwidth: 120,
+	       			name: 'fecha_nacimiento',
+	       			allowBlank:false,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			format:'d/m/Y',
+	       			anchor:'100%',
+	       			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+	       		},
+	       		type:'DateField',
+	       		filters:{type:'date'},
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+	       	{
+			config:{
+				name: 'id_lugar',
+				fieldLabel: 'Lugar Nacimiento',
+				allowBlank: false,
+				emptyText:'Lugar...',
+				store:new Ext.data.JsonStore(
+				{
+					url: '../../sis_parametros/control/Lugar/listarLugar',
+					id: 'id_lugar',
+					root: 'datos',
+					sortInfo:{
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams:{par_filtro:'lug.nombre',es_regional:'si'}
+				}),
+				valueField: 'id_lugar',
+				displayField: 'nombre',
+				gdisplayField:'nombre_lugar',
+				hiddenName: 'id_lugar',
+    			triggerAction: 'all',
+    			lazyRender:true,
+				mode:'remote',
+				pageSize:50,
+				queryDelay:500,
+				anchor:"100%",
+				gwidth:150,
+				minChars:2,
+				renderer:function (value, p, record){return String.format('{0}', record.data['nombre_lugar']);}
+			},
+			type:'ComboBox',
+			filters:{pfiltro:'lug.nombre',type:'string'},
+			id_grupo:0,
+			grid:true,
+			form:true
+		},
+			{
+	       		config:{
+	       			fieldLabel: "Nacionalidad",
+	       			gwidth: 120,
+	       			name: 'nacionalidad',
+	       			allowBlank:false,	
+	       			maxLength:200,
+	       			minLength:1,
+	       			anchor:'100%'
+	       		},
+	       		type:'TextField',
+	       		filters:{type:'string'},
+	       		bottom_filter : true,
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+		{
+	       		config:{
+	       			name:'discapacitado',
+	       			fieldLabel:'Discapacitado',
+	       			allowBlank:true,
+	       			emptyText:'Discapacitado...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['no','si']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options:['no','si']
+	       		 	},
+	       		grid:true,       		
+	       		form:true
+	       	},
+	       	
+	       	{
+	       		config:{
+	       			fieldLabel: "Carnet Discapacitado",
+	       			gwidth: 120,
+	       			name: 'carnet_discapacitado',
+	       			allowBlank:false,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			anchor:'100%'
+	       		},
+	       		type:'TextField',
+	       		filters:{type:'string'},
+	       		bottom_filter : true,
 	       		id_grupo:0,
 	       		grid:true,
 	       		form:true
@@ -76,6 +243,7 @@ Phx.vista.funcionario=function(config){
 	       		type:'TextField',
 	       		filters:{type:'string'},
 	       		id_grupo:0,
+	       		bottom_filter : true,
 	       		grid:true,
 	       		form:false
 	       	},
@@ -125,6 +293,7 @@ Phx.vista.funcionario=function(config){
 	       		type:'TextField',
 	       		filters:{type:'string'},
 	       		id_grupo:0,
+	       		bottom_filter : true,
 	       		grid:true,
 	       		form:true
 	       	},
@@ -210,6 +379,7 @@ Phx.vista.funcionario=function(config){
 	       			type:'string'
 	       			},
 	       		id_grupo:0,
+	       		bottom_filter : true,
 	       		grid:true,
 	       		form:false
 	       	},
@@ -328,6 +498,16 @@ Phx.vista.funcionario=function(config){
 		txt_correo.setValue(r.data.correo);
 		txt_telefono.setValue(r.data.telefono);
 	}
+	if (config.fecha) {
+        this.store.baseParams.fecha = config.fecha;
+    } 
+    if (config.tipo) {
+        this.store.baseParams.tipo = config.tipo;
+    } 
+    
+    if (config.id_uo) {
+        this.store.baseParams.id_uo = config.id_uo;
+    }   
 	this.load({params:{start:0, limit:50}});	
 	
 }
@@ -341,7 +521,14 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	fields: [
 	{name:'id_funcionario'},
 	{name:'id_persona'},
+	{name:'id_lugar', type: 'numeric'},
 	{name:'desc_person',type:'string'},
+	{name:'genero',type:'string'},
+	{name:'estado_civil',type:'string'},
+	{name:'nombre_lugar',type:'string'},
+	{name:'nacionalidad',type:'string'},
+	{name:'discapacitado',type:'string'},
+	{name:'carnet_discapacitado',type:'string'},
 	{name:'codigo',type:'string'},
 	{name:'antiguedad_anterior',type:'numeric'},
 
@@ -355,7 +542,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'email_empresa'},
 	'interno',
 	{name:'fecha_ingreso', type: 'date', dateFormat:'Y-m-d'},
-
+	{name:'fecha_nacimiento', type: 'date', dateFormat:'Y-m-d'},
 	{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d'},
 	{name:'id_usuario_reg', type: 'numeric'},
 	{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d'},

@@ -84,6 +84,17 @@ BEGIN
                       v_parametros.telefono_ofi,
                       v_parametros.antiguedad_anterior)
                RETURNING id_funcionario into v_id_funcionario;
+               
+               update segu.tpersona 
+               	set estado_civil = v_parametros.estado_civil,
+               	genero = v_parametros.genero,
+               	fecha_nacimiento = v_parametros.fecha_nacimiento,
+               	id_lugar = v_parametros.id_lugar,
+               	nacionalidad = v_parametros.nacionalidad,
+               	discapacitado = v_parametros.discapacitado,
+               	carnet_discapacitado = v_parametros.carnet_discapacitado
+               where id_persona = v_parametros.id_persona;
+               	
                       
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','funcionario '||v_parametros.codigo ||' insertado con exito ');
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_id_funcion::varchar);
@@ -125,6 +136,16 @@ BEGIN
                     telefono_ofi= v_parametros.telefono_ofi,
                     antiguedad_anterior =  v_parametros.antiguedad_anterior
                 where id_funcionario=v_parametros.id_funcionario;
+                
+                update segu.tpersona 
+               	set estado_civil = v_parametros.estado_civil,
+               	genero = v_parametros.genero,
+               	fecha_nacimiento = v_parametros.fecha_nacimiento,
+               	id_lugar = v_parametros.id_lugar,
+               	nacionalidad = v_parametros.nacionalidad,
+               	discapacitado = v_parametros.discapacitado,
+               	carnet_discapacitado = v_parametros.carnet_discapacitado
+               where id_persona = v_parametros.id_persona;
                 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario modificado con exito '||v_parametros.id_funcionario);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);
