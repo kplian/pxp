@@ -73,7 +73,9 @@ BEGIN
                               p.celular2,
                               per.fecha_nacimiento,
                               per.genero,
-                              per.direccion
+                              per.direccion,
+                              per.tipo_documento,
+                              per.expedicion
                           FROM segu.vpersona p 
                           inner join segu.tpersona per on per.id_persona = p.id_persona 
                           WHERE ';
@@ -140,7 +142,10 @@ BEGIN
                              p.telefono2,
                              p.celular2,                             
                              p.extension,
+                             p.tipo_documento,
+                             p.expedicion,
                              p.foto
+                             
                           FROM segu.tpersona p WHERE ';
                           
                          

@@ -1069,3 +1069,20 @@ ALTER TABLE segu.tsesion
   ADD COLUMN z VARCHAR;
 
 /****************************F-SCP-RAC-PXP-0-12/03/2013*************/
+
+/*****************************I-SCP-JRR-SEGU-0-04/05/2016*************/
+--------------- SQL ---------------
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN tipo_documento VARCHAR(100);
+  
+ALTER TABLE segu.tpersona
+  ADD COLUMN estado_civil VARCHAR(100);
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN carnet_discapacitado VARCHAR(100);
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN id_lugar INTEGER;
+
+/*****************************F-SCP-JRR-SEGU-0-04/05/2016*************/
