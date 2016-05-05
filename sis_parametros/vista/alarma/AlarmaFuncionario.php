@@ -343,7 +343,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
 			var tb = Phx.vista.AlarmaFuncionario.superclass.preparaMenu.call(this, n);
 
-			if (data['tipo'] == 'notificacion') {
+			if (data['tipo'] == 'notificacion' || data['tipo'] == 'comunicado') {
 				this.getBoton('del').enable();
 			} else {
 				this.getBoton('del').disable();
