@@ -101,7 +101,7 @@ Phx.vista.Obs=Ext.extend(Phx.gridInterfaz,{
                 tinit: false,
                 qtip: 'Funcionario responsable  de cumplir o hacer cumplir la observación',
                 fieldLabel:'Funcionario Resp.',
-                allowBlank: true,
+                allowBlank: false,
                 gwidth: 200,
                 valueField: 'id_funcionario',
                 gdisplayField:'desc_funcionario',//mapea al store del grid
