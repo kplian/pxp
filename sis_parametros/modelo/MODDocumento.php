@@ -47,6 +47,8 @@ class MODDocumento extends MODbase{
 		$this->captura('periodo_gestion','varchar');
         $this->captura('tipo','varchar');
         $this->captura('formato','varchar');
+        $this->captura('ruta_plantilla','varchar');
+
 
 		
 		//Ejecuta la funcion

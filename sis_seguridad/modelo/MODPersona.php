@@ -36,6 +36,8 @@ class MODPersona extends MODbase{
 		$this->captura('fecha_nacimiento','date');
 		$this->captura('genero','varchar');
 		$this->captura('direccion','varchar');
+		$this->captura('tipo_documento','varchar');
+		$this->captura('expedicion','varchar');
 
 		//Ejecuta la funcion
 		$this->armarConsulta();
@@ -72,6 +74,8 @@ class MODPersona extends MODbase{
 		$this->captura('telefono2','varchar');
 		$this->captura('celular2','varchar');
 		$this->captura('extension','varchar');
+		$this->captura('tipo_documento','varchar');
+		$this->captura('expedicion','varchar');
 		//nombre varialbe de envio, tipo dato, columna que serra el nombre foto retorno, ruta para guardar archivo, crear miniatura, almacenar en sesion, nombre variale sesion			
 		
 		$this->captura('foto','bytea','id_persona','extension','sesion','foto');
@@ -135,6 +139,9 @@ class MODPersona extends MODbase{
 		$this->setParametro('telefono2','telefono2','varchar');
 		$this->setParametro('celular2','celular2','varchar');
 		
+		$this->setParametro('tipo_documento','tipo_documento','varchar');
+		$this->setParametro('expedicion','expedicion','varchar');
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		
@@ -165,6 +172,9 @@ class MODPersona extends MODbase{
 		$this->setParametro('telefono1','telefono1','varchar');
 		$this->setParametro('telefono2','telefono2','varchar');
 		$this->setParametro('celular2','celular2','varchar');
+		
+		$this->setParametro('tipo_documento','tipo_documento','varchar');
+		$this->setParametro('expedicion','expedicion','varchar');
 
 		
 		

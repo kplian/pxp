@@ -270,8 +270,9 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
 	bsave:true,
 	onReloadPage:function(m){
 			this.maestro=m;			
-			this.getBoton('act').enable();			
-			this.load({params:{start:0, limit:this.tam_pag,id_categoria_salarial:this.maestro.id_categoria_salarial}});			
+			this.getBoton('act').enable();
+			this.store.baseParams.id_categoria_salarial = 	this.maestro.id_categoria_salarial;	
+			this.load({params:{start:0, limit:this.tam_pag}});			
 	},
 	loadValoresIniciales:function()
     {

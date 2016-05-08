@@ -30,6 +30,7 @@ DECLARE
     v_id_funcionario 	integer;
     v_filtro 			varchar;
     v_cond				varchar;
+    v_registros			record;
 			    
 BEGIN
                                                     
@@ -71,7 +72,8 @@ BEGIN
                         alarm.id_plantilla_correo,
                         pc.url_acuse,
                         pc.requiere_acuse,
-                        pc.mensaje_link_acuse
+                        pc.mensaje_link_acuse,
+                        to_char(now(),''YYYYMMDD-HH24MISSMS'')::varchar as pendiente
                         from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
@@ -79,12 +81,15 @@ BEGIN
                         left join segu.tpersona per on per.id_persona = usu.id_persona
                         left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
                         left join wf.tplantilla_correo pc on pc.id_plantilla_correo = alarm.id_plantilla_correo
-                        where alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
+                        where alarm.pendiente = ''no'' and alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
                         
-             --modificar correpondencia
-           /*  update param.talarma 
-             set sw_correo = 1
-             where sw_correo = 0;*/
+                         
+             for v_registros in execute(v_consulta) loop
+             	update param.talarma set pendiente = v_registros.pendiente
+                where id_alarma = v_registros.id_alarma;                
+             end loop;
+             
+             v_consulta = replace(v_consulta, 'alarm.pendiente = ''no''', 'alarm.pendiente = ''' || v_registros.pendiente || '''');
 			
 			--Devuelve la respuesta
 			return v_consulta;

@@ -61,6 +61,7 @@ class MODAlarma extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('errores_id','errores_id','varchar');
 		$this->setParametro('errores_msg','errores_msg','codigo_html');
+		$this->setParametro('pendiente','pendiente','varchar');
 				
 		//Define los parametros para la funcion
 		//$this->setParametro('id_alarma','id_alarma','int4');
@@ -107,6 +108,7 @@ class MODAlarma extends MODbase{
 		$this->captura('url_acuse','varchar');
 		$this->captura('requiere_acuse','varchar');
 		$this->captura('mensaje_link_acuse','varchar');
+		$this->captura('pendiente','varchar');
 		
 		
 		

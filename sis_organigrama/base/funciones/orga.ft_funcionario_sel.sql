@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -9,7 +7,7 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
 RETURNS varchar AS
 $body$
 /**************************************************************************
- FUNCION: 		orga.ft_funcionario_sel
+ FUNCION: 		orga.ft_funcionario_sel 
  DESCRIPCIÓN:  listado de funcionario
  AUTOR: 	    KPLIAN (mzm)
  FECHA:	        
@@ -73,9 +71,19 @@ BEGIN
                             PERSON.celular1, 
                             PERSON.correo,
                             FUNCIO.telefono_ofi,
-                            FUNCIO.antiguedad_anterior
+                            FUNCIO.antiguedad_anterior,
+                            PERSON2.estado_civil,
+                            PERSON2.genero,
+                            PERSON2.fecha_nacimiento,
+                            PERSON2.id_lugar,
+                            LUG.nombre as nombre_lugar,
+                            PERSON2.nacionalidad,
+                            PERSON2.discapacitado,
+                            PERSON2.carnet_discapacitado
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
+                            INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
+                            LEFT JOIN param.tlugar LUG on LUG.id_lugar = PERSON2.id_lugar
                             inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
                             WHERE ';
@@ -117,10 +125,22 @@ BEGIN
                                   count(FUNCIO.id_funcionario)
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
+                            INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
+                            LEFT JOIN param.tlugar LUG on LUG.id_lugar = PERSON2.id_lugar
                             inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
                             WHERE ';
                v_consulta:=v_consulta||v_parametros.filtro;
+               if (pxp.f_existe_parametro(par_tabla, 'tipo') and
+				pxp.f_existe_parametro(par_tabla, 'fecha') and 
+				pxp.f_existe_parametro(par_tabla, 'id_uo')) then
+				
+				if (v_parametros.tipo is not null and v_parametros.tipo = 'oficial' and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
+					v_ids_funcionario = orga.f_get_funcionarios_con_asignacion_activa(v_parametros.id_uo, v_parametros.fecha);
+					v_consulta := v_consulta || ' and FUNCIO.id_funcionario not in (' || v_ids_funcionario ||') ';
+					
+				end if;
+			end if;
                return v_consulta;
          END;
  /*******************************
@@ -355,7 +375,7 @@ BEGIN
                return v_consulta;
          END;   
 
-      else
+      else 
          raise exception 'No existe la opcion';
 
      end if;
