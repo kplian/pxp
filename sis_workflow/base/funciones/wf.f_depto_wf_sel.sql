@@ -19,7 +19,7 @@ $body$
  DESCRIPCIÓN: 	funcion lista los funcioanriso que correponden al estado del work flow
  AUTOR: 		Rensi Arteaga Copari
  FECHA:			19/03/2013
- COMENTARIOS:	
+ COMENTARIOS:	    
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
@@ -346,7 +346,7 @@ BEGIN
       else
     
     
-      raise exception ' El tipo de Asignacion (%)  no es conocido',v_tipo_asignacion;
+      raise exception ' El tipo de Asignacion (%)  no es conocido',v_depto_asignacion;
     
     end if; 
 EXCEPTION

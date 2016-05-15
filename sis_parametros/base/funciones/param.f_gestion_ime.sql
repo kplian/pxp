@@ -309,13 +309,13 @@ BEGIN
         
         
         /*********************************    
- 	#TRANSACCION:  'PM_GETGES_ELI'
+ 	#TRANSACCION:  'PM_GETGES_GET'
  	#DESCRIPCION:	Recuepra el id_gestion segun la fecha
  	#AUTOR:		admin	
  	#FECHA:		05-02-2013 09:56:59
 	***********************************/
 
-	elsif(p_transaccion='PM_GETGES_ELI')then
+	elsif(p_transaccion='PM_GETGES_GET')then
 
 		begin
             --todavia no se considera la existencia de multiples empresas
@@ -390,9 +390,45 @@ BEGIN
             return v_resp;
 
 		end;
+    
+    /*********************************    
+ 	#TRANSACCION:  'PM_GETGESID_GET'
+ 	#DESCRIPCION:	Recupera el id_gestion segun id
+ 	#AUTOR:		rac	
+ 	#FECHA:		22-04-2016 09:56:59
+	***********************************/
+
+	elsif(p_transaccion='PM_GETGESID_GET')then
+
+		begin
+            --todavia no se considera la existencia de multiples empresas
         
          
-	else
+			
+            select 
+             ges.gestion
+             into v_anho
+            from param.tgestion ges
+            where ges.id_gestion = v_parametros.id_gestion;
+            
+            IF v_anho is null THEN            
+              raise exception 'No se tiene una gestion configurada para la fecha %',v_parametros.id_gestion;            
+            END IF;
+       
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','id_gestion recuperado'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_gestion',v_parametros.id_gestion::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'anho',v_anho::varchar);
+           
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;    
+         
+	
+    
+    else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;
 

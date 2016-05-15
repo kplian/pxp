@@ -293,5 +293,7 @@ class MODDepto extends MODbase{
 		return $this->respuesta;
 	}
 	
+	
+	
 }
 ?>

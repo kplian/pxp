@@ -87,14 +87,13 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/builds/ext-core.js"></script>
     -->
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-all-debug.js"></script>
-    <!--   
+      
+    <!-- descomentado -->  
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <!-- comentado 
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-     
-     	
-     	
-     	<script type="text/javascript" src="resources/TaskBar.js"></script> -->
-     
+    <script type="text/javascript" src="resources/TaskBar.js"></script> 
+     -->
      <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
 	 <script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
 	 <script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
@@ -196,7 +195,7 @@ if(!isset($_SESSION["_SESION"])){
   <div id="x-tab">
   <div id="x-tab-panel"></div>
   <div class="x-clear"></div>
-  
+  <audio id="notification_sound" src="../../../lib/media/notification_sound.mp3" preload="auto"></audio>
 	
 	
 </div>

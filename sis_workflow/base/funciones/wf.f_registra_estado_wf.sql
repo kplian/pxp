@@ -141,6 +141,7 @@ BEGIN
      v_registros
     FROM wf.ttipo_estado te
     inner join wf.ttipo_proceso tp on tp.id_tipo_proceso  = te.id_tipo_proceso
+    left join wf.ttipo_documento td on td.id_tipo_proceso = tp.id_tipo_proceso
     inner join wf.tproceso_macro pm on tp.id_proceso_macro = pm.id_proceso_macro
     inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema 
     WHERE te.id_tipo_estado = p_id_tipo_estado_siguiente;
@@ -237,11 +238,18 @@ BEGIN
             END IF;
             
             --si no tenemos acceso directo como parametro p_acceso_directo,  buscamos en la configuracion del tipo estado
-            
+            p_titulo = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, '{DEPTO_PREVIO} {FUNCIONARIO_PREVIO}', p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                 
+           if (p_titulo = ' ') then
+              select u.desc_persona into p_titulo 
+              from segu.vusuario u 
+              where u.id_usuario = p_id_usuario ;
+           end if;
             IF p_acceso_directo = '' and  v_registros.acceso_directo_alerta is not NULL and v_registros.acceso_directo_alerta != '' THEN
                  
                  p_acceso_directo = v_registros.acceso_directo_alerta;
-                 p_titulo = v_registros.titulo_alerta;
+                 
+                 
                  p_clase = v_registros.nombre_clase_alerta;
                  p_parametros = v_registros.parametros_ad;
                  p_tipo = v_registros.tipo_noti;
@@ -443,7 +451,7 @@ BEGIN
                                     from wf.tdocumento_wf dwf 
                                     inner join wf.ttipo_documento td 
                                     on dwf.id_tipo_documento = td.id_tipo_documento
-                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros.documentos::int[]) and td.estado_reg = 'activo' and
+                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros_correo.documentos::int[]) and td.estado_reg = 'activo' and
                                     dwf.estado_reg = 'activo' and ((td.tipo = 'escaneado' and dwf.url is not null and dwf.url != '') or 
                                     td.tipo = 'generado');
                     

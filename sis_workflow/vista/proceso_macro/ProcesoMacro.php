@@ -70,7 +70,8 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 				renderer:function (value, p, record){return String.format('{0}', record.data['desc_subsistema']);}
 			},
 			type:'ComboRec',
-			filters:{pfiltro:'subsis.nombre',type:'string'},
+			filters:{pfiltro:'subs.nombre',type:'string'},
+			bottom_filter: true,
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -86,6 +87,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'promac.nombre',type:'string'},
+			bottom_filter: true,
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -101,6 +103,7 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'promac.codigo',type:'string'},
+			bottom_filter: true,
 			id_grupo:1,
 			grid:true,
 			form:true

@@ -6,7 +6,6 @@
 *@date 20-09-2015 19:11:44
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -57,6 +56,38 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 			},
 				type:'TextField',
 				filters:{pfiltro:'ent.nit',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		{
+			config:{
+				name: 'identificador_min_trabajo',
+				fieldLabel: 'Identificador Ministerio de Trabajo',
+				allowBlank: true,
+				anchor: '50%',
+				gwidth: 120,
+				maxLength:20
+			},
+				type:'TextField',
+				filters:{pfiltro:'ent.identificador_min_trabajo',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		{
+			config:{
+				name: 'identificador_caja_salud',
+				fieldLabel: 'Identificador Caja Salud',
+				allowBlank: true,
+				anchor: '50%',
+				gwidth: 120,
+				maxLength:20
+			},
+				type:'TextField',
+				filters:{pfiltro:'ent.identificador_caja_salud',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -125,7 +156,24 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
                 id_grupo:1,
                 grid:true,
                 form:true
+        },{
+            config:{
+                name: 'direccion_matriz',
+                qtip: 'Dirección matriz o fiscal, este dato aparece en reporte como el LCV',
+                fieldLabel: 'Dirección Fiscal',
+                allowBlank: false,
+                anchor: '100%',
+                gwidth: 300,
+                maxLength:400
+            },
+                type:'TextArea',
+                filters:{pfiltro:'ent.direccion_matriz',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
         },
+        
+        
 		
 		
 		
@@ -246,6 +294,10 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_entidad', type: 'numeric'},
 		{name:'tipo_venta_producto', type: 'string'},
+		
+		{name:'identificador_min_trabajo', type: 'string'},
+		{name:'identificador_caja_salud', type: 'string'},
+		
 		{name:'estados_comprobante_venta', type: 'string'},
 		{name:'estados_anulacion_venta', type: 'string'},
 		{name:'tipo_venta_producto', type: 'string'},
@@ -260,7 +312,7 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'direccion_matriz'
 		
 	],
 	sortInfo:{

@@ -27,7 +27,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
             }
         );
 		
-		 this.bloquearOrdenamientoGrid();
+		this.bloquearOrdenamientoGrid();
 		this.cmbProcesoMacro.on('select', function(){
 		    
 		    if(this.validarFiltros()){

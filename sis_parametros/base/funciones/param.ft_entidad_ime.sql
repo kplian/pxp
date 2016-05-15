@@ -63,7 +63,10 @@ BEGIN
 			fecha_mod,
 			estados_comprobante_venta,
 			estados_anulacion_venta,
-			pagina_entidad
+			pagina_entidad,
+            direccion_matriz,
+            identificador_min_trabajo,
+            identificador_caja_salud
           	) values(
 			v_parametros.tipo_venta_producto,
 			v_parametros.nit,
@@ -77,7 +80,10 @@ BEGIN
 			null,
 			v_parametros.estados_comprobante_venta,
 			v_parametros.estados_anulacion_venta,
-			v_parametros.pagina_entidad				
+			v_parametros.pagina_entidad	,
+            v_parametros.direccion_matriz,
+            v_parametros.identificador_min_trabajo,
+            v_parametros.identificador_caja_salud			
 			
 			
 			)RETURNING id_entidad into v_id_entidad;
@@ -112,8 +118,11 @@ BEGIN
 			usuario_ai = v_parametros._nombre_usuario_ai,
 			estados_comprobante_venta = v_parametros.estados_comprobante_venta,
 			estados_anulacion_venta = v_parametros.estados_anulacion_venta,
-			pagina_entidad = v_parametros.pagina_entidad
-			where id_entidad=v_parametros.id_entidad;
+			pagina_entidad = v_parametros.pagina_entidad,
+            direccion_matriz = v_parametros.direccion_matriz,
+            identificador_min_trabajo = v_parametros.identificador_min_trabajo,
+            identificador_caja_salud = v_parametros.identificador_caja_salud		
+			where id_entidad = v_parametros.id_entidad;
                
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Entidad modificado(a)'); 
@@ -162,7 +171,8 @@ BEGIN
             select
              e.nit,
              e.nombre,
-             e.id_entidad
+             e.id_entidad,
+             e.direccion_matriz
             into
               v_registros
             from param.tentidad e
@@ -175,6 +185,8 @@ BEGIN
             v_resp = pxp.f_agrega_clave(v_resp,'id_entidad',v_registros.id_entidad::varchar);
             v_resp = pxp.f_agrega_clave(v_resp,'nit',v_registros.nit::varchar);
             v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_registros.nombre::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'direccion_matriz',v_registros.direccion_matriz::varchar);
+            
              
             
             
@@ -199,7 +211,8 @@ BEGIN
             select
              e.nit,
              e.nombre,
-             e.id_entidad
+             e.id_entidad,
+             e.direccion_matriz
             into
               v_registros
             from param.tentidad e
@@ -211,6 +224,7 @@ BEGIN
             v_resp = pxp.f_agrega_clave(v_resp,'id_entidad',v_registros.id_entidad::varchar);
             v_resp = pxp.f_agrega_clave(v_resp,'nit',v_registros.nit::varchar);
             v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_registros.nombre::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'direccion_matriz',v_registros.direccion_matriz::varchar);
              
             
             

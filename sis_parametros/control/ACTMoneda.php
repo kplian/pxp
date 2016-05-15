@@ -17,6 +17,10 @@ class ACTMoneda extends ACTbase{
 		if($this->objParam->getParametro('id_moneda')!=''){
               $this->objParam->addFiltro("id_moneda =".$this->objParam->getParametro('id_moneda'));    
          }
+		
+		if($this->objParam->getParametro('id_moneda_defecto')!='' && $this->objParam->getParametro('id_moneda_defecto') != 0){
+              $this->objParam->addFiltro("id_moneda =".$this->objParam->getParametro('id_moneda_defecto'));    
+         }
          
 		
 		

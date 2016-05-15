@@ -86,7 +86,9 @@ BEGIN
                                celular1,
                				   telefono1,
                                telefono2,
-                               celular2)
+                               celular2,
+                               tipo_documento,
+                               expedicion)
                values(
                       v_parametros.nombre,
                       v_parametros.ap_paterno,
@@ -96,7 +98,9 @@ BEGIN
                       v_parametros.celular1,
                       v_parametros.telefono1,
                       v_parametros.telefono2,
-                      v_parametros.celular2)  
+                      v_parametros.celular2,
+                      v_parametros.tipo_documento,
+                      v_parametros.expedicion)  
                         
                RETURNING id_persona INTO v_id_persona;
               
@@ -148,7 +152,9 @@ BEGIN
                celular1=v_parametros.celular1,
                telefono1=v_parametros.telefono1,
                telefono2=v_parametros.telefono2,
-               celular2=v_parametros.celular2
+               celular2=v_parametros.celular2,
+               tipo_documento	= v_parametros.tipo_documento,
+               expedicion = v_parametros.expedicion
                where id_persona=v_parametros.id_persona;
               
                --v_respuesta_sinc:= segu.f_sincroniza_persona_entre_bd(v_parametros.id_persona,'10.172.0.13','5432','db_link','db_link','dbendesis','UPDATE');

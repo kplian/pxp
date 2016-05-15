@@ -990,6 +990,7 @@ Phx.CP=function(){
 		    } 
 			Phx.CP.evaluateHash(action,token_inicio);
 			
+			Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario,Phx.CP.config_ini.id_funcionario);
 			Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
 						function(resp){
 							setTimeout(function(){
@@ -1002,6 +1003,7 @@ Phx.CP=function(){
 								 
 								},3000);
 						});
+			
 		   
 		   //get state interface from gui
 		   //Phx.CP.getStateGui()
@@ -1407,6 +1409,97 @@ Phx.CP=function(){
                     timeout:this.timeout,
                     scope:this
                 }); 
+		},
+		
+		generarAlarma:function(id_usu,id_fun){
+			var that = this;
+			var myTimer = setInterval(function() {				
+				Ext.Ajax.request({
+                    url:'../../sis_parametros/control/Alarma/listarAlarma',                    
+                    params : {start:0,limit:100,sort:'alarm.fecha_reg',dir:"ASC",id_usuario:id_usu,id_funcionario:id_fun,minutos:1},
+                    success:function(resp) {	                    						
+						var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+						for (var i = 0; i < reg.total;i++) {
+							if (reg.datos[i].titulo_correo != '') {
+								that.notificar(reg.datos[i].titulo,reg.datos[i].titulo_correo);
+							} else {
+								that.notificar('Notificacion ERP',reg.datos[i].titulo);
+							}
+						}	                            
+					},
+                    failure: function (resp1,resp2,resp3,resp4,resp5) {
+                    	clearInterval(myTimer);
+                    	that.conexionFailure(resp1,resp2,resp3,resp4,resp5);
+                    	alert('Ha ocurrido un error y las notificaciones automáticas del sistema han sido deshabilitadas, para volver a habilitarlas refresque el navegador.')
+                    }, 
+                    
+                    timeout:that.timeout,
+                    scope:that
+                }); 							 
+			}, 60000);
+			
+		},
+		notificar : function(titulo,mensaje) {
+		  // Let's check if the browser supports notifications
+		  if (!("Notification" in window)) {
+		    alert("This browser does not support desktop notification");
+		  }
+		
+		  // Let's check if the user is okay to get some notification
+		  else if (Notification.permission === "granted") {
+		    // If it's okay let's create a notification
+		    var notification = new Notification(titulo,{icon:Phx.CP.config_ini.icono_notificaciones ,body: mensaje} );
+		  	document.getElementById('notification_sound').play();
+		  	notification.onclick = function(event) {
+			  	// Show user the screen.
+	            window.focus();
+	 
+	            // Close notification.
+	            notification.close();
+			}
+			
+			notification.onshow = function(event) {
+			  	setTimeout(function(){
+						 notification.close();							 
+						}, 10800000);
+			}
+			
+		  }
+		
+		  // Otherwise, we need to ask the user for permission
+		  // Note, Chrome does not implement the permission static property
+		  // So we have to check for NOT 'denied' instead of 'default'
+		  else if (Notification.permission !== 'denied') {
+		    Notification.requestPermission(function (permission) {
+		
+		      // Whatever the user answers, we make sure we store the information
+		      if(!('permission' in Notification)) {
+		        Notification.permission = permission;
+		      }
+		
+		      // If the user is okay, let's create a notification
+		      if (permission === "granted") {
+		        var notification = new Notification(titulo,{icon:Phx.CP.config_ini.favicon ,body: mensaje});
+		      	document.getElementById('notification_sound').play();
+		      	notification.onclick = function(event) {
+				  	// Show user the screen.
+		            window.focus();
+		 
+		            // Close notification.
+		            notification.close();
+				}
+				
+				notification.onshow = function(event) {
+				  	setTimeout(function(){
+							 notification.close();							 
+							}, 10800000);
+				}
+		      }
+		    });
+		  }
+		
+		  // At last, if the user already denied any notification, and you 
+		  // want to be respectful there is no need to bother him any more.
 		},
 		
 		sleep:function (milliseconds) {

@@ -324,7 +324,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 maxLength:150,
                 anchor:'100%',
                 renderer:function (value, p, record){
-                		if (record.data['tipo_documento'] == 'escaneado') {  
+                		if (record.data['tipo_documento'] == 'escaneado' && !record.data['id_proceso_wf_ori']) {  
                             if(record.data['extension'].length!=0) {                                
                                 return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Reemplazar Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
                             } else {
@@ -733,7 +733,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	    	//open documentos de origen
        		this.loadCheckDocumentosSolWf(record);
 	    } else if (fieldName == 'upload') {
-	    	if (record.data.tipo_documento == 'escaneado') {
+	    	if (record.data.tipo_documento == 'escaneado' &&  !record.data.id_proceso_wf_ori) {
 	    		this.SubirArchivo(record);
 	    	}
 	    } else if(fieldName == 'modificar') {

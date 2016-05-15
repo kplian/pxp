@@ -61,7 +61,7 @@ Phx.vista.PlantillaMensaje=Ext.extend(Phx.frmInterfaz,{
         else{
             
             var CuerpoCorreo = '<font color="99CC00" size="5"><font size="4">{TIPO_PROCESO}</font></font><br><br><b>&nbsp;</b>Tramite:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <b>{NUM_TRAMITE}</b><br><b>&nbsp;</b>Usuario :<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {USUARIO_PREVIO} </b>en estado<b>&nbsp; {ESTADO_ANTERIOR}<br></b>&nbsp;<b>Responsable:&nbsp;&nbsp; &nbsp;&nbsp; </b><b>{FUNCIONARIO_PREVIO}&nbsp; {DEPTO_PREVIO}<br>&nbsp;</b>Estado Actual<b>: &nbsp; &nbsp;&nbsp; {ESTADO_ACTUAL}</b><br><br><br>&nbsp;{OBS}<br>';
-            this.Cmp.plantilla_mensaje_asunto.setValue('Aviso WF , {TIPO_PROCESO} ({NUM_TRAMITE})')
+            this.Cmp.plantilla_mensaje_asunto.setValue('Nuevo tramite {NUM_TRAMITE} en estado "{ESTADO_ACTUAL}"')
             this.Cmp.plantilla_mensaje.setValue(CuerpoCorreo);
             
         }

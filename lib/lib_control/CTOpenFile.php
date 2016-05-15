@@ -70,7 +70,22 @@ if (file_exists($ruta_archivo)){
 	if (strtolower($_GET['extension']) == 'pdf') {
 		header('Content-type: application/pdf');
 		readfile($ruta_archivo);
-	} else {
+	} 
+	
+    elseif (strtolower($_GET['extension']) == 'csv') {
+    	
+		header('Pragma: public');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Content-Description: File Transfer');
+		header('Content-Type: text/csv');
+		header('Content-Disposition: attachment; filename="downloaded.' . $_GET['extension']);
+		header('Content-Transfer-Encoding: binary'); 
+		readfile($ruta_archivo);
+	
+    }
+	
+	else {
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="downloaded.' . $_GET['extension']);

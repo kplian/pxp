@@ -30,6 +30,7 @@ DECLARE
     v_id_funcionario 	integer;
     v_filtro 			varchar;
     v_cond				varchar;
+    v_registros			record;
 			    
 BEGIN
                                                     
@@ -71,7 +72,8 @@ BEGIN
                         alarm.id_plantilla_correo,
                         pc.url_acuse,
                         pc.requiere_acuse,
-                        pc.mensaje_link_acuse
+                        pc.mensaje_link_acuse,
+                        to_char(now(),''YYYYMMDD-HH24MISSMS'')::varchar as pendiente
                         from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
@@ -79,12 +81,15 @@ BEGIN
                         left join segu.tpersona per on per.id_persona = usu.id_persona
                         left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
                         left join wf.tplantilla_correo pc on pc.id_plantilla_correo = alarm.id_plantilla_correo
-                        where alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
+                        where alarm.pendiente = ''no'' and alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
                         
-             --modificar correpondencia
-           /*  update param.talarma 
-             set sw_correo = 1
-             where sw_correo = 0;*/
+                         
+             for v_registros in execute(v_consulta) loop
+             	update param.talarma set pendiente = v_registros.pendiente
+                where id_alarma = v_registros.id_alarma;                
+             end loop;
+             
+             v_consulta = replace(v_consulta, 'alarm.pendiente = ''no''', 'alarm.pendiente = ''' || v_registros.pendiente || '''');
 			
 			--Devuelve la respuesta
 			return v_consulta;
@@ -129,7 +134,8 @@ BEGIN
                         alarm.parametros,
                         alarm.obs,
                         alarm.tipo,
-                        (alarm.fecha-now()::date)::integer as dias
+                        (alarm.fecha-now()::date)::integer as dias,
+                        alarm.titulo_correo
 						from param.talarma alarm
 						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
@@ -316,7 +322,90 @@ BEGIN
 			return v_consulta;
 
 		end;    			
-	else
+	
+    /*********************************    
+ 	#TRANSACCION:  'PM_COMUN_SEL'
+ 	#DESCRIPCION:	lista de alarmas del tipo comunicados
+ 	#AUTOR:		rac	
+ 	#FECHA:		11/04/2016  11:59:10
+	***********************************/
+
+	elseif(p_transaccion='PM_COMUN_SEL')then
+     				
+    	begin
+        
+        	-- Sentencia de la consulta
+			v_consulta:='SELECT
+                     	alarm.id_alarma,
+						alarm.acceso_directo,
+						alarm.id_funcionario,
+						alarm.fecha,
+						alarm.estado_reg,
+						alarm.descripcion,
+						alarm.id_usuario_reg,
+						alarm.fecha_reg,
+						alarm.id_usuario_mod,
+						alarm.fecha_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod,
+                        alarm.clase,
+                        alarm.titulo,
+                        alarm.parametros,
+                        alarm.obs,
+                        alarm.tipo,
+                        (alarm.fecha-now()::date)::integer as dias,
+                        alarm.id_alarma_fk,
+                        alarm.estado_comunicado,
+                        array_to_string( alarm.id_uos,'','',''null'')::varchar as id_uos
+						
+                        
+                        from param.talarma alarm
+                        
+						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
+				        where alarm.id_alarma_fk is null and alarm.tipo = ''comunicado''  and  ';
+           
+        
+				       
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			raise notice '%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_COMUN_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		rac	
+ 	#FECHA:		11/04/2016 11:59:10
+	***********************************/
+
+	elsif(p_transaccion='PM_COMUN_CONT')then
+
+		begin
+        	
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(id_alarma)
+					    from param.talarma alarm
+                        inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
+				        where alarm.id_alarma_fk is null and alarm.tipo = ''comunicado''  and ';
+           
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+    
+    
+    else
 					     
 		raise exception 'Transaccion inexistente';
 					         
