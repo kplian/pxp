@@ -269,7 +269,7 @@ class driver
 		$this->variables=array();
 		$this->tipos=array();
 		$this->valores=array();	
-		
+		$this->setUsuarioAi();		
 			
 	}
 	
