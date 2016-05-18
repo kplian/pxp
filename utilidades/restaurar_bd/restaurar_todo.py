@@ -3,6 +3,7 @@ import sys
 import os
 import subprocess
 import datetime
+from os.path import expanduser
 
 #Function to generate scripts array
 #param String file
