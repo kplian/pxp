@@ -16,7 +16,7 @@ def restaurar_db(base):
 		command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f ' + file_name
 	else:
 		validar_pgpass()
-		command = 'pg_dump ' + base + ' -U postgres -w -F c -b -N log -f ' + file_name	
+		command = 'pg_dump ' + base + '-h ' + host + ' -U postgres -w -F c -b -N log -f ' + file_name	
     
 	for line in run_command(command):
 		print line
