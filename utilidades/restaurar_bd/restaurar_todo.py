@@ -22,7 +22,7 @@ def restaurar_db(base):
 	print 'Se ha generado el backup de la base de datos en : ' + file_name
 	print 'Copie el archivo en otra ubicacion antes de reiniciar el equipo'
 
-def validar_pgpass (url):
+def validar_pgpass ():
 	home = expanduser("~")	
 	if (not os.path.exists(home + '/.pgpass')):
 		sys.exit("No existe el archivo " + home + '/.pgpass  . Debe existir ese archivo para conectarse con BD remotas (Revise la documentacion) ')	

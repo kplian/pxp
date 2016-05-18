@@ -192,6 +192,8 @@ class MODAlarma extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('titulo','titulo','varchar');
+		$this->setParametro('titulo_correo','titulo_correo','varchar');
+		
 		$this->setParametro('descripcion','descripcion','codigo_html');
 		$this->setParametro('id_uos','id_uos','varchar');
 
@@ -212,6 +214,7 @@ class MODAlarma extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_alarma','id_alarma','integer');
 		$this->setParametro('titulo','titulo','varchar');
+		$this->setParametro('titulo_correo','titulo_correo','varchar');
 		$this->setParametro('descripcion','descripcion','codigo_html');
 		$this->setParametro('id_uos','id_uos','varchar');
 
@@ -386,6 +389,8 @@ class MODAlarma extends MODbase{
 		$this->captura('id_alarma_fk','integer');
 		$this->captura('estado_comunicado','varchar');
 		$this->captura('id_uos','varchar');
+		$this->captura('titulo_correo','varchar');
+		
 		
 		
 		//Ejecuta la instruccion

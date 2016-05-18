@@ -24,6 +24,8 @@ DECLARE
   v_tipo					varchar;
   v_id_ot					integer;
   v_id_cargo				integer;
+  v_oficina					varchar;
+  v_empleado				varchar;
   
   
 BEGIN
@@ -73,19 +75,23 @@ BEGIN
             select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo 
             from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,p_id_periodo);
             
-            
+            select f.desc_funcionario1 into v_empleado
+            from orga.vfuncionario f
+            where f.id_funcionario = v_id_funcionario;
             
             if (v_id_centro_costo is null) then
-            	raise exception 'Existe un empleado que no tiene asignado centro de costo : %',v_id_funcionario;
+            	raise exception 'Existe un empleado que no tiene asignado centro de costo o ya no tiene un contrato activo en la empresa : %',v_empleado;
             end if;
             
-            select ofiot.id_orden_trabajo into v_id_ot
+            select ofiot.id_orden_trabajo,ofi.nombre into v_id_ot,v_oficina
             from orga.tcargo car
-            inner join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
+            left join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
+            inner join orga.toficina ofi on car.id_oficina = ofi.id_oficina
             where id_cargo = v_id_cargo;
             
+                        
             if (v_id_ot is null) then
-            	raise exception 'Existe una oficina que no tiene relacionado la orden de trabajo. Comuniquese con el area de costos';
+            	raise exception 'La oficina: %.No tiene relacionado la orden de trabajo. Comuniquese con el area de costos',v_oficina;
             end if;
             
             if (v_registros.total = v_registros.conteo) then
@@ -129,17 +135,22 @@ BEGIN
                     select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo 
             		from orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
                     
+                    select f.desc_funcionario1 into v_empleado
+                    from orga.vfuncionario f
+                    where f.id_funcionario = v_funcionarios.id_funcionario;
+                    
                     if (v_id_centro_costo is null) then
-                        raise exception 'Existe un empleado que no tiene asignado centro de costo: %',v_funcionarios.id_funcionario;
+                        raise exception 'Existe un empleado que no tiene asignado centro de costo o ya no tiene un contrato activo en la empresa : %',v_empleado;
                     end if;
                     
-                    select ofiot.id_orden_trabajo into v_id_ot
+                    select ofiot.id_orden_trabajo,ofi.nombre into v_id_ot,v_oficina
                     from orga.tcargo car
-                    inner join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
+                    left join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
+                    inner join orga.toficina ofi on car.id_oficina = ofi.id_oficina
                     where id_cargo = v_id_cargo;
                     
                     if (v_id_ot is null) then
-                        raise exception 'Existe una oficina que no tiene relacionado la orden de trabajo. Comuniquese con el area de costos';
+                        raise exception 'La oficina: %.No tiene relacionado la orden de trabajo. Comuniquese con el area de costos',v_oficina;
                     end if;
                     
                     if (v_funcionarios.total = v_funcionarios.numero) then
@@ -177,8 +188,12 @@ BEGIN
                 	v_id_centro_costo = null;
                 	v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
                      
+                    select f.desc_funcionario1 into v_empleado
+                    from orga.vfuncionario f
+                    where f.id_funcionario = v_funcionarios.id_funcionario;
+                    
                     if (v_id_centro_costo is null) then
-                        raise exception 'Existe un empleado que no tiene asignado centro de costo: %',v_funcionarios.id_funcionario;
+                        raise exception 'Existe un empleado que no tiene asignado centro de costo o ya no tiene un contrato activo en la empresa : %',v_empleado;
                     end if;
                     
                     if (v_funcionarios.total = v_funcionarios.numero) then

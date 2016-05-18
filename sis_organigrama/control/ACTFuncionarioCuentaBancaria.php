@@ -16,6 +16,10 @@ class ACTFuncionarioCuentaBancaria extends ACTbase{
 		
 		if ($this->objParam->getParametro('id_funcionario') != '') {
 			$this->objParam->addFiltro("funcue.id_funcionario = ". $this->objParam->getParametro('id_funcionario'));
+		}
+		
+		if ($this->objParam->getParametro('fecha') != '') {
+			$this->objParam->addFiltro("(funcue.fecha_ini <= ''". $this->objParam->getParametro('fecha')."''"." and (funcue.fecha_fin is null or funcue.fecha_fin >= ''". $this->objParam->getParametro('fecha')."''))");
 		}	
 		
 		

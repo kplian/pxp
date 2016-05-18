@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_alarma_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -89,7 +91,7 @@ BEGIN
               estado_comunicado
           	) values(
               v_parametros.titulo,
-              v_parametros.titulo,
+              v_parametros.titulo_correo,
               now()::Date,
               'activo',
               v_parametros.descripcion,
@@ -124,7 +126,7 @@ BEGIN
 			--Sentencia de la modificacion
 			update param.talarma set
                 titulo =  v_parametros.titulo,
-                titulo_correo =  v_parametros.titulo,
+                titulo_correo =  v_parametros.titulo_correo,
                 descripcion = v_parametros.descripcion,
                 id_uos = string_to_array(v_parametros.id_uos,',')::integer[],
                 id_usuario_mod = p_id_usuario,
@@ -402,7 +404,9 @@ BEGIN
                                                inner join segu.tusuario u on u.id_persona = f.id_persona
                                                where f.id_funcionario = va_id_funcionarios[v_cont3];
                                                
-                                               v_id_funcionario = NULL;
+                                               
+                                               v_id_usuario = NULL;
+                                               v_id_funcionario = va_id_funcionarios[v_cont3];
                                             ELSE
                                                v_id_usuario = NULL;
                                                v_id_funcionario = va_id_funcionarios[v_cont3];
@@ -432,7 +436,7 @@ BEGIN
                                                                         estado_comunicado
                                                                       ) values(
                                                                         v_registros.titulo,
-                                                                        v_registros.titulo,
+                                                                        v_registros.titulo_correo,
                                                                         v_id_funcionario,
                                                                         v_id_usuario,
                                                                         now()::Date,
