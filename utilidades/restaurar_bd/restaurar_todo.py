@@ -3,19 +3,29 @@ import sys
 import os
 import subprocess
 import datetime
+
 #Function to generate scripts array
 #param String file
 
 def restaurar_db(base):
 	print 'Iniciando backup de la BD :' + db
+	print 'El host es :' + host 	
 	file_name = '/tmp/bk_' + base + '_' +datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-	command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f ' + file_name
-        for line in run_command(command):
-        	print line
+	if (host == '127.0.0.1' or host == 'localhost'):
+		command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f ' + file_name
+	else:
+		validar_pgpass()
+		command = 'pg_dump ' + base + ' -U postgres -w -F c -b -N log -f ' + file_name	
+    
+	for line in run_command(command):
+		print line
 	print 'Se ha generado el backup de la base de datos en : ' + file_name
 	print 'Copie el archivo en otra ubicacion antes de reiniciar el equipo'
 
-
+def validar_pgpass (url):
+	home = expanduser("~")	
+	if (not os.path.exists(home + '/.pgpass')):
+		sys.exit("No existe el archivo " + home + '/.pgpass  . Debe existir ese archivo para conectarse con BD remotas (Revise la documentacion) ')	
 def get_schema (url):
 	esquema = []
 	
@@ -117,6 +127,13 @@ try:
 			db = db.replace('"','')
 			db = db.replace(';','')
 			print 'La base de datos es :' + db	
+		if line.find('$_SESSION["_HOST"]') != -1 :
+			vars = line.split('=')
+			host = vars[1]
+			host = host.strip()
+			host = host.replace('"','')
+			host = host.replace(';','')
+			print 'El host es :' + host
 	file1.close()		
 except:
 	sys.exit('El archivo pxp/lib/DatosGenerales.php no existe o no tiene permisos de lectura!!!')
