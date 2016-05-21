@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_funcionario_cuenta_bancaria_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION orga.ft_funcionario_cuenta_bancaria_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_funcionario_cuenta_bancaria_ime
@@ -45,7 +50,8 @@ BEGIN
 					
         begin
         	select max(fecha_ini) into v_max_fecha_ini
-        	from orga.tfuncionario_cuenta_bancaria;
+        	from orga.tfuncionario_cuenta_bancaria f 
+            where f.id_funcionario = v_parametros.id_funcionario;
         	
         	if (v_max_fecha_ini + interval '1 day' >= v_parametros.fecha_ini)then
         		raise exception 'Ya existe una cuenta bancaria asignada para este empleado con fecha inicio: %',v_max_fecha_ini;
@@ -158,7 +164,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_funcionario_cuenta_bancaria_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
