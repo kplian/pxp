@@ -552,5 +552,14 @@ select pxp.f_insert_tprocedimiento ('OR_OFCU_ELI', 'Eliminacion de registros', '
 /*****************************F-DAT-RAC-ORGA-0-05/08/2014*************/
 
 
+/*****************************I-DAT-LPZ-ORGA-0-11/05/2016*************/
+
+select pxp.f_insert_tgui ('Nivel Especialidad', 'Organiza deacuardo a la especialidad que se registra o grado de instruccion que se tiene', 'NIVESPE', 'si', 5, 'sis_organigrama/vista/especialidad_nivel/EspecialidadNivel.php', 3, '', 'EspecialidadNivel', 'ORGA');
+select pxp.f_insert_testructura_gui ('NIVESPE', 'PARAMRH');
+
+/*****************************F-DAT-LPZ-ORGA-0-11/05/2016*************/
+
+
+
 
 

@@ -33,6 +33,7 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+		///////// no
         {
             config:{
                 name: 'fecha_ini',

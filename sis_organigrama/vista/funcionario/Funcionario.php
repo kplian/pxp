@@ -314,6 +314,16 @@ Phx.vista.funcionario=function(config){
             handler: this.onBtnCuenta,
             tooltip: 'Cuenta Bancaria del Empleado'
         });
+        
+    this.addButton('btnFunEspecialidad',
+        {
+            text: 'Especialidad',
+            iconCls: 'blist',
+            disabled: true,
+            handler: this.onBtnFunEspe,
+            tooltip: 'Especialidad del Empleado'
+        });
+        
 	this.init();
 	var txt_ci=this.getComponente('ci');	
 	var txt_correo=this.getComponente('correo');	
@@ -399,14 +409,33 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
                     this.idContenedor,
                     'FuncionarioCuentaBancaria');
 	},
+	
+	onBtnFunEspe: function(){
+			var rec = {maestro: this.sm.getSelected().data} 
+						      
+            Phx.CP.loadWindows('../../../sis_organigrama/vista/funcionario_especialidad/FuncionarioEspecialidad.php',
+                    'Especialidad del Empleado',
+                    {
+                        width:700,
+                        height:450
+                    },
+                    rec,
+                    this.idContenedor,
+                    'FuncionarioEspecialidad');
+	},
+	
 	preparaMenu:function()
     {	
         this.getBoton('btnCuenta').enable();      
+        Phx.vista.funcionario.superclass.preparaMenu.call(this);
+        this.getBoton('btnFunEspecialidad').enable();      
         Phx.vista.funcionario.superclass.preparaMenu.call(this);
     },
     liberaMenu:function()
     {	
         this.getBoton('btnCuenta').disable();       
+        Phx.vista.funcionario.superclass.liberaMenu.call(this);
+        this.getBoton('btnFunEspecialidad').disable();       
         Phx.vista.funcionario.superclass.liberaMenu.call(this);
     }
 		  
