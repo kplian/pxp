@@ -36,6 +36,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		},
 		type:'TextField',
 		filters:{type:'string'},
+		bottom_filter: true,
 		id_grupo:0,
 		grid:true,
 		form:true
@@ -51,6 +52,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		},
 		type:'TextField',
 		filters:{type:'string'},
+		bottom_filter: true,
 		id_grupo:0,
 		grid:true,
 		form:true
@@ -66,6 +68,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		},
 		type:'TextField',
 		filters:{type:'string'},
+		bottom_filter: true,
 		id_grupo:0,
 		grid:true,
 		form:true

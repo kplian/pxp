@@ -12,7 +12,7 @@ $body$
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_alarma_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.talarma'
- AUTOR: 		 (rac)
+ AUTOR: 		 (fprudencio)
  FECHA:	        18-11-2011 11:59:10
  COMENTARIOS:	         
 ***************************************************************************
@@ -91,7 +91,7 @@ BEGIN
               estado_comunicado
           	) values(
               v_parametros.titulo,
-              v_parametros.titulo,
+              v_parametros.titulo_correo,
               now()::Date,
               'activo',
               v_parametros.descripcion,
@@ -126,7 +126,7 @@ BEGIN
 			--Sentencia de la modificacion
 			update param.talarma set
                 titulo =  v_parametros.titulo,
-                titulo_correo =  v_parametros.titulo,
+                titulo_correo =  v_parametros.titulo_correo,
                 descripcion = v_parametros.descripcion,
                 id_uos = string_to_array(v_parametros.id_uos,',')::integer[],
                 id_usuario_mod = p_id_usuario,
@@ -173,9 +173,12 @@ BEGIN
               END LOOP;
             
              -- modifica al estado enviado a todos los ceorreos sin falla
-			 update param.talarma set 
-                sw_correo = 1
-             where sw_correo = 0 and estado_envio = 'exito';
+             
+             update param.talarma set 
+                sw_correo = 1,
+                pendiente = 'no'
+             where sw_correo = 0 and estado_envio = 'exito' and pendiente = v_parametros.pendiente;
+             
 			--Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Desactiva envio de correo para alarmas'); 
                
@@ -401,7 +404,9 @@ BEGIN
                                                inner join segu.tusuario u on u.id_persona = f.id_persona
                                                where f.id_funcionario = va_id_funcionarios[v_cont3];
                                                
-                                               v_id_funcionario = NULL;
+                                               
+                                               v_id_usuario = NULL;
+                                               v_id_funcionario = va_id_funcionarios[v_cont3];
                                             ELSE
                                                v_id_usuario = NULL;
                                                v_id_funcionario = va_id_funcionarios[v_cont3];
@@ -431,7 +436,7 @@ BEGIN
                                                                         estado_comunicado
                                                                       ) values(
                                                                         v_registros.titulo,
-                                                                        v_registros.titulo,
+                                                                        v_registros.titulo_correo,
                                                                         v_id_funcionario,
                                                                         v_id_usuario,
                                                                         now()::Date,

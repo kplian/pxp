@@ -98,6 +98,64 @@ class MODCatalogoTipo extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function exportarDatos() {
+		
+		$this->procedimiento='param.ft_catalogo_tipo_sel';
+			$this->transaccion='PM_EXCATPO_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			
+			$this->setParametro('id_catalogo_tipo','id_catalogo_tipo','integer');
+			
+			//Definicion de la lista del resultado del query
+			$this->captura('tipo_reg','varchar');
+			$this->captura('id_catalogo_tipo','int4');
+			$this->captura('nombre','varchar');
+			$this->captura('id_subsistema','int4');
+			$this->captura('codigo_subsistema','varchar');
+			$this->captura('tabla','varchar');
+		
+		$this->armarConsulta();	
+		
+        $this->ejecutarConsulta(); 
+		 		
+		////////////////////////////
+		
+		
+		if($this->respuesta->getTipo() == 'ERROR'){
+			return $this->respuesta;
+		}
+		else {
+		    $this->procedimiento = 'param.ft_catalogo_tipo_sel';
+			$this->transaccion = 'PM_EXCATA_SEL';
+			$this->tipo_procedimiento = 'SEL';
+			$this->setCount(false);
+			$this->resetCaptura();
+			$this->addConsulta();		
+			
+			$this->captura('tipo_reg','varchar');
+			$this->captura('id_catalogo','int4');
+			$this->captura('id_catalogo_tipo','integer');
+			$this->captura('id_subsistema','integer');
+	        $this->captura('codigo_subsistema','varchar');
+			$this->captura('descripcion','varchar');
+			$this->captura('codigo','varchar');
+			$this->captura('desc_catalogo_tipo','varchar');
+		
+			
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
+
+		
+       return $this->respuesta;		
+	
+	}	
+	
+	
 			
 }
 ?>

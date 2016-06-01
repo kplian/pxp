@@ -6,7 +6,6 @@
 *@date 27-11-2012 23:32:44
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -17,9 +16,35 @@ Phx.vista.CatalogoTipo=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.CatalogoTipo.superclass.constructor.call(this,config);
 		this.init();
+		
+		this.addButton('btnWizard',
+            {
+                text: 'Exportar Plantilla',
+                iconCls: 'bchecklist',
+                disabled: false,
+                handler: this.expProceso,
+                tooltip: '<b>Exportar</b><br/>Exporta a archivo SQL la plantilla'
+            }
+        );
+		
 		this.iniciarEventos();
 		this.load({params:{start:0, limit:50}})
 	},
+	
+	expProceso : function(resp){
+			var data=this.sm.getSelected().data;
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url: '../../sis_parametros/control/CatalogoTipo/exportarDatos',
+				params: { 'id_catalogo_tipo' : data.id_catalogo_tipo },
+				success: this.successExport,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+			
+	},
+	
 			
 	Atributos:[
 		{

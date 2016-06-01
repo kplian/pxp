@@ -1239,11 +1239,7 @@ COMMENT ON COLUMN param.tdepto.id_entidad
 IS 'identifica a que entidad corresponde este departamento';
 
 /***********************************F-SCP-RAC-PARAM-0-22/02/2016****************************************/
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 536f32d407379c44497fdb9f0ebcebc208f21564
 /***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
 
 ALTER TABLE param.tentidad
@@ -1341,6 +1337,49 @@ COMMENT ON COLUMN param.talarma.id_uos
 IS 'hace referencia a las UO a las que se debe entregar el comunicado, solo en el regitro origen (tipo = comunicado) id_alarma_fk = NULL';
 
 /***********************************F-SCP-RAC-PARAM-0-11/04/2016****************************************/
+
+
+ 
+/***********************************I-SCP-RAC-PARAM-0-16/04/2016****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_grupo_ots INTEGER[];
+
+COMMENT ON COLUMN param.tconcepto_ingas.id_grupo_ots
+IS 'lamacena las ot que pueden relacionarce con este el concepto de gasto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_unidad_medida INTEGER;
+
+COMMENT ON COLUMN param.tconcepto_ingas.id_unidad_medida
+IS 'unidad de medida del concepto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN nandina VARCHAR(100);
+
+COMMENT ON COLUMN param.tconcepto_ingas.nandina
+IS 'coduigo partida de aduana para exportaciones';
+
+
+/***********************************F-SCP-RAC-PARAM-0-16/04/2016****************************************/
+/***********************************I-SCP-JRR-PARAM-0-22/04/2016****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN pendiente varchar(30) DEFAULT 'no';
+
+COMMENT ON COLUMN param.talarma.pendiente
+IS 'Si el mensaje esta en proceso de envio valores: no o hora en formato YYYYMMDD-HH24MISSMS la hora es la hora en la que se inicio el proceso de envio';
+
+/***********************************F-SCP-JRR-PARAM-0-22/04/2016****************************************/
+
 
 
 

@@ -79,7 +79,8 @@ BEGIN
                                    DOCUME.tipo_numeracion,
                                    DOCUME.periodo_gestion,
                                    DOCUME.tipo,
-                                   DOCUME.formato
+                                   DOCUME.formato,
+                                    DOCUME.ruta_plantilla
 
                             FROM param.tdocumento DOCUME
                             INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DOCUME.id_subsistema
@@ -95,6 +96,7 @@ BEGIN
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
                return v_consulta;
+
 
 
          END;
