@@ -1,8 +1,11 @@
-
-CREATE OR REPLACE FUNCTION orga.f_funcionario_especialidad_ime(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-  RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION orga.f_funcionario_especialidad_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Recursos Humanos
  FUNCION: 		orga.f_funcionario_especialidad_ime
@@ -48,6 +51,9 @@ BEGIN
 			id_funcionario,
 			estado_reg,
 			id_especialidad,
+            fecha,
+            numero_especialidad,
+            descripcion,
 			id_usuario_reg,
 			fecha_reg,
 			id_usuario_mod,
@@ -56,6 +62,9 @@ BEGIN
 			v_parametros.id_funcionario,
 			'activo',
 			v_parametros.id_especialidad,
+            v_parametros.fecha,
+            v_parametros.numero_especialidad,
+            v_parametros.descripcion,
 			p_id_usuario,
 			now(),
 			null,
@@ -85,6 +94,9 @@ BEGIN
 			update orga.tfuncionario_especialidad set
 			id_funcionario = v_parametros.id_funcionario,
 			id_especialidad = v_parametros.id_especialidad,
+            fecha = v_parametros.fecha,
+            numero_especialidad = v_parametros.numero_especialidad,
+            descripcion = v_parametros.descripcion,
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now()
 			where id_funcionario_especialidad=v_parametros.id_funcionario_especialidad;
@@ -137,8 +149,11 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
 ALTER FUNCTION orga.f_funcionario_especialidad_ime(integer, integer, character varying, character varying) OWNER TO postgres;
 
