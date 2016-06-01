@@ -39,6 +39,21 @@ def get_schema (url):
 	except:
         	print 'El archivo ' + url + ' no existe o no tiene permisos de lectura!!!',sys.exc_info()[1]
         	sys.exit('Se ha finalizado la ejecucion')
+def validar_funcion(archivo, nombre):
+	try:
+                file1 = open( archivo, 'r')
+                for line in file1:
+			if line.find('CREATE') != -1 and line.find('FUNCTION') != -1 and line.replace('"','').find(nombre) !=-1:
+                		break
+			elif line.find('CREATE') != -1 and line.find('FUNCTION') != -1 and line.find(nombre) ==-1:
+				f_log.write("ERROR: El nombre del archivo " + archivo + " no iguala con el nombre de la funcion definida en el contenido\n")
+				break
+			
+		file1.close()
+                
+        except:
+                print 'El archivo ' + archivo + ' no existe o no tiene permisos de lectura!!!',sys.exc_info()[1]
+                sys.exit('Se ha finalizado la ejecucion')
 def generate_scripts (file_str):
     scripts = []
     try:
@@ -84,7 +99,7 @@ def execute_script (systems , kind, file_log):
     	patches = os.listdir( item + 'base/' )
     	for f in patches:
             if f.startswith(kind):
-		file_log.write("*************"+ kind + " : " + item + "\n")
+		file_log.write("*************"+ kind + " : " + item + " ("+")\n")
             	
 		sql_scripts = generate_scripts(item + 'base/' + f)
    		
@@ -111,7 +126,7 @@ def execute_script (systems , kind, file_log):
 									validar_pgpass()
 									command = 'psql -t -h ' + host + ' -U ' + usuario + ' -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
                     
-                        					f_log.write("/***********************************" + script['codigo']  + "*****************************/\n")
+                        					f_log.write("/***********************************" + script['codigo']  + "("+ item +"base/"+ f +") *****************************/\n")
                         					for line in run_command(command):
                             	    					f_log.write(line)
 
@@ -264,6 +279,7 @@ for item in url:
     			f_log.write('restaurando '+funciones_dir + f+'\n')
     			#solo eliminar si la funcion no es pxp.f_delfunc.sql
     			if (f != 'pxp.f_delfunc.sql'):
+				validar_funcion(funciones_dir + f,f.replace('.sql',''))
     				if (host == '127.0.0.1' or host == 'localhost'):
 					command = 'psql '+ db + ' -c  "select pxp.f_delfunc(\$\$' + f.replace('.sql','')  + '\$\$)"'
 				else:
