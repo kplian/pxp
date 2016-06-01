@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_cargo_presupuesto_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION orga.ft_cargo_presupuesto_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_cargo_presupuesto_ime
@@ -77,7 +80,7 @@ BEGIN
 			
 			select sum(porcentaje) into v_suma_porcentaje
 			from  orga.tcargo_presupuesto
-			where fecha_ini = v_parametros.fecha_ini and estado_reg = 'activo';
+			where fecha_ini = v_parametros.fecha_ini and estado_reg = 'activo' and id_cargo = v_parametros.id_cargo;
 			
 			if (v_suma_porcentaje > 100) then
 				raise exception 'La suma de los porcentajes de presupuestos no debe superar el 100 porciento';
@@ -161,7 +164,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_cargo_presupuesto_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

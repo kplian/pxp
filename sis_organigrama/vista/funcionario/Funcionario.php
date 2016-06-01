@@ -59,7 +59,7 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'TextField',
-	       		filters:{type:'string'},
+	       		filters:{pfiltro:'FUNCIO.codigo',type:'string'},
 	       		bottom_filter : true,
 	       		id_grupo:0,
 	       		grid:true,
@@ -241,7 +241,8 @@ Phx.vista.funcionario=function(config){
 	       			anchor:'100%'
 	       		},
 	       		type:'TextField',
-	       		filters:{type:'string'},
+	       		filters:{pfiltro:'PERSON.ci',
+	       				type:'string'},
 	       		id_grupo:0,
 	       		bottom_filter : true,
 	       		grid:true,

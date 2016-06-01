@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_cargo_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION orga.ft_cargo_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_cargo_sel
@@ -62,7 +66,7 @@ BEGIN
 						tipcon.nombre,
 						escsal.nombre,
 						ofi.nombre,
-						(case when orga.f_get_empleado_x_item(cargo.id_cargo) is null then
+						(case when (orga.f_get_empleado_x_item(cargo.id_cargo)  is null and cargo.fecha_fin is null) then
 						  ''ACEFALO''
 						else
 						  ''ASIGNADO''
@@ -76,7 +80,7 @@ BEGIN
 						inner join orga.ttipo_contrato tipcon on tipcon.id_tipo_contrato = cargo.id_tipo_contrato
 						inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial
 						left join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
-				        where cargo.estado_reg = ''activo'' and (cargo.fecha_fin is null or cargo.fecha_fin >= now()::date) and ';
+				        where cargo.estado_reg = ''activo'' and  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -87,6 +91,7 @@ BEGIN
 				if (v_parametros.tipo is not null and v_parametros.tipo = 'oficial' and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
 					v_ids_cargo = orga.f_get_cargos_en_uso(v_parametros.id_uo, v_parametros.fecha);
 					v_consulta := v_consulta || ' and cargo.id_cargo not in (' || v_ids_cargo ||') ';
+					v_consulta := v_consulta || ' and (cargo.fecha_fin > ''' || v_parametros.fecha || ''' or cargo.fecha_fin is null) ';
 				end if;
 			end if;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
@@ -114,10 +119,20 @@ BEGIN
 						inner join orga.ttipo_contrato tipcon on tipcon.id_tipo_contrato = cargo.id_tipo_contrato
 						inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial
 						left join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
-					    where cargo.estado_reg = ''activo'' and (cargo.fecha_fin is null or cargo.fecha_fin >= now()::date) and ';
+					    where cargo.estado_reg = ''activo'' and ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
+			
+			if (pxp.f_existe_parametro(p_tabla, 'tipo') and
+				pxp.f_existe_parametro(p_tabla, 'fecha') and 
+				pxp.f_existe_parametro(p_tabla, 'id_uo')) then
+				if (v_parametros.tipo is not null and v_parametros.tipo = 'oficial' and v_parametros.fecha is not null and v_parametros.id_uo is not null) then
+					v_ids_cargo = orga.f_get_cargos_en_uso(v_parametros.id_uo, v_parametros.fecha);
+					v_consulta := v_consulta || ' and cargo.id_cargo not in (' || v_ids_cargo ||') ';
+					v_consulta := v_consulta || ' and (cargo.fecha_fin > ''' || v_parametros.fecha || ''' or cargo.fecha_fin is null) ';
+				end if;
+			end if;
 
 			--Devuelve la respuesta
 			return v_consulta;
@@ -139,7 +154,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_cargo_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

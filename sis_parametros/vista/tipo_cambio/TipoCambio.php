@@ -55,7 +55,8 @@ Phx.vista.TipoCambio=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:1179654
+				maxLength:1179654,
+				decimalPrecision:6
 			},
 			type:'NumberField',
 			filters:{pfiltro:'tcb.compra',type:'numeric'},
@@ -70,7 +71,8 @@ Phx.vista.TipoCambio=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:1179654
+				maxLength:1179654,
+				decimalPrecision:6
 			},
 			type:'NumberField',
 			filters:{pfiltro:'tcb.venta',type:'numeric'},
@@ -85,7 +87,8 @@ Phx.vista.TipoCambio=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:1179654
+				maxLength:1179654,
+				decimalPrecision:6
 			},
 			type:'NumberField',
 			filters:{pfiltro:'tcb.oficial',type:'numeric'},
