@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE FUNCTION orga.f_especialidad_ime(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
+CREATE OR REPLACE FUNCTION orga.ft_especialidad_ime(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
   RETURNS character varying AS
 $BODY$
 
@@ -143,4 +143,4 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION orga.f_especialidad_ime(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION orga.ft_especialidad_ime(integer, integer, character varying, character varying) OWNER TO postgres;

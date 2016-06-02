@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION orga.f_funcionario_especialidad_ime (
+CREATE OR REPLACE FUNCTION orga.ft_funcionario_especialidad_ime (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -155,5 +155,5 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-ALTER FUNCTION orga.f_funcionario_especialidad_ime(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION orga.ft_funcionario_especialidad_ime(integer, integer, character varying, character varying) OWNER TO postgres;
 

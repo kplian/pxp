@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION orga.f_funcionario_especialidad_sel (
+CREATE OR REPLACE FUNCTION orga.ft_funcionario_especialidad_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
