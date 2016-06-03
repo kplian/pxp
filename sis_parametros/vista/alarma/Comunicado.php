@@ -99,14 +99,30 @@ Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{
    	    {
 			config:{
 				name: 'titulo',
-				fieldLabel: 'Asunto (Titulo)',
+				fieldLabel: 'Remitente',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 250,
+				maxLength:200
+			},
+			type:'TextField',
+			filters:{pfiltro:'alarm.titulo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		
+		{
+			config:{
+				name: 'titulo_correo',
+				fieldLabel: 'Asunto',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 250,
 				maxLength:200
 			},
 			type:'TextArea',
-			filters:{pfiltro:'alarm.titulo',type:'string'},
+			filters:{pfiltro:'alarm.titulo_correo',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -218,7 +234,7 @@ Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_reg', type: 'date', dateFormat:'Y-m-d H:i:s'},
 		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d H:i:s'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'}
+		{name:'usr_mod', type: 'string'},'titulo_correo'
 		
 	],
 	

@@ -555,3 +555,28 @@ ALTER TABLE orga.tcargo
   ALTER COLUMN id_temporal_cargo DROP NOT NULL;
 
 /*****************************F-SCP-JRR-ORGA-0-01/02/2016*************/
+
+/*****************************I-SCP-JRR-ORGA-0-13/05/2016*************/
+
+ALTER TABLE orga.tfuncionario_especialidad
+  ADD COLUMN fecha DATE;
+  
+ALTER TABLE orga.tfuncionario_especialidad
+  ADD COLUMN numero_especialidad INTEGER;  
+
+ALTER TABLE orga.tfuncionario_especialidad
+  ADD COLUMN descripcion VARCHAR(200);  
+/*****************************F-SCP-JRR-ORGA-0-13/05/2016*************/
+
+
+/*****************************I-SCP-JRR-ORGA-0-17/05/2016*************/
+ALTER TABLE orga.tfuncionario_especialidad
+  ALTER COLUMN descripcion TYPE TEXT COLLATE pg_catalog."default";
+  
+/*****************************F-SCP-JRR-ORGA-0-17/05/2016*************/
+
+/*****************************I-SCP-JRR-ORGA-0-19/05/2016*************/
+ALTER TABLE orga.tfuncionario_especialidad
+  ALTER COLUMN numero_especialidad TYPE VARCHAR(10);
+  
+/*****************************F-SCP-JRR-ORGA-0-19/05/2016*************/

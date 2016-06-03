@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -77,11 +79,11 @@ BEGIN
                         from param.talarma alarm
 						left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario
                         left join segu.tusuario usu on usu.id_usuario =alarm.id_usuario
-                        left join segu.tusuario_rol urol on urol.id_usuario =usu.id_usuario and urol.estado_reg = ''activo'' and urol.id_rol = 1
+                        --left join segu.tusuario_rol urol on urol.id_usuario =usu.id_usuario and urol.estado_reg = ''activo'' and urol.id_rol = 1
                         left join segu.tpersona per on per.id_persona = usu.id_persona
                         left join orga.tfuncionario fnciousu on fnciousu.id_persona=per.id_persona
                         left join wf.tplantilla_correo pc on pc.id_plantilla_correo = alarm.id_plantilla_correo
-                        where alarm.pendiente = ''no'' and alarm.estado_envio = ''exito''  and alarm.sw_correo = 0 and urol.id_rol is null';
+                        where alarm.pendiente = ''no'' and alarm.estado_envio = ''exito''  and alarm.sw_correo = 0';
                         
                          
              for v_registros in execute(v_consulta) loop
@@ -111,7 +113,7 @@ BEGIN
             	v_cond = '(usua.id_usuario =  '||v_parametros.id_usuario||'
                 		or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and ';
             else
-            	v_cond = '0=0 and ';
+            	v_cond = '0=0 and alarm.tipo not in (''comunicado'') and ';
             end if;
          
          
@@ -168,7 +170,7 @@ BEGIN
             	v_cond = '(usua.id_usuario =  '||v_parametros.id_usuario||'
                 		or funcio.id_funcionario = '||(COALESCE(v_parametros.id_funcionario,'0'))::varchar ||'  ) and ';
             else
-            	v_cond = '0=0 and ';
+            	v_cond = '0=0 and alarm.tipo not in (''comunicado'') and ';
             end if;
             
 			--Sentencia de la consulta de conteo de registros
@@ -356,7 +358,8 @@ BEGIN
                         (alarm.fecha-now()::date)::integer as dias,
                         alarm.id_alarma_fk,
                         alarm.estado_comunicado,
-                        array_to_string( alarm.id_uos,'','',''null'')::varchar as id_uos
+                        array_to_string( alarm.id_uos,'','',''null'')::varchar as id_uos,
+                        alarm.titulo_correo
 						
                         
                         from param.talarma alarm

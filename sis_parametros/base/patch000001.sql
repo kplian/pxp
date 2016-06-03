@@ -1239,11 +1239,7 @@ COMMENT ON COLUMN param.tdepto.id_entidad
 IS 'identifica a que entidad corresponde este departamento';
 
 /***********************************F-SCP-RAC-PARAM-0-22/02/2016****************************************/
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 536f32d407379c44497fdb9f0ebcebc208f21564
 /***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
 
 ALTER TABLE param.tentidad

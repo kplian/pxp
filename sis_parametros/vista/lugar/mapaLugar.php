@@ -179,7 +179,7 @@ Phx.vista.mapaLugar=Ext.extend(Phx.gmapInterfaz,{
 		
 	},
 		
-	ubicarPos:function(direc,zoom){
+	ubicarPos: function(direc,zoom){
 			var myMapa = this.gm.getMap()
 			var address = direc;
 			

@@ -257,9 +257,7 @@ Phx.vista.Lugar=Ext.extend(Phx.arbInterfaz,{
 				}
 				else {
 					this.tbar.items.get('b-new-'+this.idContenedor).disable()
-				}
-			
-		
+				}			
 			// llamada funcion clace padre
 			Phx.vista.Lugar.superclass.preparaMenu.call(this,n)
 		},

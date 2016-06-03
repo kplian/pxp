@@ -17,7 +17,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Especialidad.superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:50}})
+		
 	},
 			
 	Atributos:[
@@ -27,6 +27,17 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 					labelSeparator:'',
 					inputType:'hidden',
 					name: 'id_especialidad'
+			},
+			type:'Field',
+			form:true 
+		},
+		
+		{
+			//configuracion del componente
+			config:{
+					labelSeparator:'',
+					inputType:'hidden',
+					name: 'id_especialidad_nivel'
 			},
 			type:'Field',
 			form:true 
@@ -62,49 +73,7 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-		{
-			config:{
-				name: 'id_especialidad_nivel',
-				fieldLabel: 'Nivel especialidad',
-				allowBlank: false,
-				emptyText:'Elija un valor...',
-				store:new Ext.data.JsonStore(
-				{
-					url: '../../sis_organigrama/control/EspecialidadNivel/listarEspecialidadNivel',
-					id: 'id_especialidad_nivel',
-					root:'datos',
-					sortInfo:{
-						field:'nombre',
-						direction:'ASC'
-					},
-					totalProperty:'total',
-					fields: ['id_especialidad_nivel','codigo','nombre'],
-					// turn on remote sorting
-					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
-				}),
-				valueField: 'id_especialidad_nivel',
-				displayField: 'nombre',
-				gdisplayField:'desc_especialidad_nivel',
-				//hiddenName: 'id_administrador',
-				forceSelection:true,
-				typeAhead: false,
-    			triggerAction: 'all',
-    			lazyRender:true,
-				mode:'remote',
-				pageSize:20,
-				queryDelay:500,
-				anchor: '100%',
-				gwidth:220,
-				minChars:2,
-				renderer:function (value, p, record){return String.format('{0}', record.data['desc_especialidad_nivel']);}
-			},
-			type:'ComboBox',
-			filters:{pfiltro:'espniv.nombre',type:'string'},
-			id_grupo:1,
-			grid:true,
-			form:true
-		},
+		
 		{
 			config:{
 				name: 'estado_reg',
@@ -205,6 +174,19 @@ Phx.vista.Especialidad=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_especialidad',
 		direction: 'ASC'
 	},
+	
+	onReloadPage:function(m){
+		this.maestro=m;
+		this.store.baseParams={id_especialidad_nivel:this.maestro.id_especialidad_nivel};
+		this.load({params:{start:0, limit:50}})
+	},
+	onButtonNew:function(){
+
+		Phx.vista.Especialidad.superclass.onButtonNew.call(this);
+		this.Cmp.id_especialidad_nivel.setValue(this.maestro.id_especialidad_nivel);
+		
+	},
+	
 	bdel:true,
 	bsave:false,
 	fwidth: 450,

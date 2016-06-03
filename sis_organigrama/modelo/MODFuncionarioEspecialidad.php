@@ -28,9 +28,16 @@ class MODFuncionarioEspecialidad extends MODbase{
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
+		$this->captura('fecha','date');
+		$this->captura('numero_especialidad','varchar');
+		$this->captura('descripcion','text');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		$this->captura('desc_especialidad','varchar');
+		$this->captura('nombre','varchar');
+		
+		
+		//$this->captura('desc_especialidad','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -51,6 +58,9 @@ class MODFuncionarioEspecialidad extends MODbase{
 		$this->setParametro('id_funcionario','id_funcionario','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_especialidad','id_especialidad','int4');
+		$this->setParametro('fecha','fecha','date');
+		$this->setParametro('numero_especialidad','numero_especialidad','varchar');
+		$this->setParametro('descripcion','descripcion','text');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -71,7 +81,9 @@ class MODFuncionarioEspecialidad extends MODbase{
 		$this->setParametro('id_funcionario','id_funcionario','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('id_especialidad','id_especialidad','int4');
-
+		$this->setParametro('fecha','fecha','date');
+		$this->setParametro('numero_especialidad','numero_especialidad','varchar');
+		$this->setParametro('descripcion','descripcion','text');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

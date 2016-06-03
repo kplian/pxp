@@ -820,23 +820,22 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 	},
 	tabsouth:[
 	     {
-          url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php',
-          title:'Hijos', 
-          height:'50%',
-          cls:'EstructuraEstadoHijo'
+	          url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoHijo.php',
+	          title:'Hijos', 
+	          height:'50%',
+	          cls:'EstructuraEstadoHijo'
          },
-	      {
-		   url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoPadre.php',
-		   title:'Padres', 
-		   //width:'50%',
-		   height:'50%',
-		   cls:'EstructuraEstadoPadre'
+	     {
+			   url:'../../../sis_workflow/vista/estructura_estado/EstructuraEstadoPadre.php',
+			   title:'Padres', 
+			   height:'50%',
+			   cls:'EstructuraEstadoPadre'
 		 },
 		 {
-          url:'../../../sis_workflow/vista/funcionario_tipo_estado/FuncionarioTipoEstado.php',
-          title:'Funcionarios', 
-          height:'50%',
-          cls:'FuncionarioTipoEstado'
+	          url:'../../../sis_workflow/vista/funcionario_tipo_estado/FuncionarioTipoEstado.php',
+	          title:'Funcionarios', 
+	          height:'50%',
+	          cls:'FuncionarioTipoEstado'
          }
 	
 	   ],

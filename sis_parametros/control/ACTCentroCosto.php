@@ -167,6 +167,11 @@ class ACTCentroCosto extends ACTbase{
 				$tip_pres = "(''2'',''3'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
+			
+			if($this->objParam->getParametro('tipo_pres') == 'administrativo'){				
+				$tip_pres = "(''0'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
+			}
             
         }
 		
