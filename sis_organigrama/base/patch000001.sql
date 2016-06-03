@@ -569,12 +569,6 @@ ALTER TABLE orga.tfuncionario_especialidad
 /*****************************F-SCP-JRR-ORGA-0-13/05/2016*************/
 
 
-/*****************************I-SCP-JRR-ORGA-0-17/05/2016*************/
-ALTER TABLE orga.tfuncionario_especialidad
-  ALTER COLUMN descripcion TYPE TEXT COLLATE pg_catalog."default";
-  
-/*****************************F-SCP-JRR-ORGA-0-17/05/2016*************/
-
 /*****************************I-SCP-JRR-ORGA-0-19/05/2016*************/
 ALTER TABLE orga.tfuncionario_especialidad
   ALTER COLUMN numero_especialidad TYPE VARCHAR(10);
