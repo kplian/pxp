@@ -148,6 +148,7 @@ Phx.vista.TipoProcesoOrigen=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'tipo_disparo',
                 fieldLabel: 'Tipo disparo',
+                qtip:'Opcional: el susario escoge si se dispara o no,  Obigatorio: siempre se dispara, Bandeja de espera:   El proceso se dispara manualmente atrave de otra interface  , Manual: el programador realize el proceso manualmente',
                 allowBlank: true,
                 anchor: '40%',
                 gwidth: 80,
@@ -155,14 +156,14 @@ Phx.vista.TipoProcesoOrigen=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-                store:['opcional','obligatorio','bandeja_espera']
+                store:['opcional','obligatorio','bandeja_espera','manual']
             },
             type:'ComboBox',
             id_grupo:1,
             filters:{   pfiltro:'tpo.tipo_disparo',
                         type: 'list',
                         //dataIndex: 'size',
-                        options: ['opcional','obligatorio','bandeja_espera'],  
+                        options: ['opcional','obligatorio','bandeja_espera','manual'],  
                     },
             grid:true,
             form:true

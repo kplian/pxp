@@ -1350,3 +1350,8 @@ ALTER TABLE wf.ttipo_estado
 COMMENT ON COLUMN wf.ttipo_estado.icono
 IS 'Icono para representar al estado';
 /****************************F-SCP-RCM-WF-0-24/03/2016*************/
+
+/****************************I-SCP-JRR-WF-0-24/05/2016*************/
+ALTER TABLE wf.tobs
+  ALTER COLUMN id_funcionario_resp SET NOT NULL;
+/****************************I-SCP-JRR-WF-0-24/05/2016*************/

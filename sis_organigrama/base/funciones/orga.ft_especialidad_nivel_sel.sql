@@ -1,13 +1,14 @@
+
 CREATE OR REPLACE FUNCTION "orga"."ft_especialidad_nivel_sel"(	
 				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
 /**************************************************************************
- SISTEMA:		Organigrama
+ SISTEMA:		Recursos Humanos
  FUNCION: 		orga.ft_especialidad_nivel_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.tespecialidad_nivel'
  AUTOR: 		 (admin)
- FECHA:	        16-04-2016 07:45:20
+ FECHA:	        26-08-2012 00:05:28
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -30,32 +31,30 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'OR_esp_niv_SEL'
+ 	#TRANSACCION:  'RH_RHNIES_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		16-04-2016 07:45:20
+ 	#FECHA:		26-08-2012 00:05:28
 	***********************************/
 
-	if(p_transaccion='OR_esp_niv_SEL')then
+	if(p_transaccion='RH_RHNIES_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						esp_niv.id_especialidad_nivel,
-						esp_niv.codigo,
-						esp_niv.estado_reg,
-						esp_niv.nombre,
-						esp_niv.usuario_ai,
-						esp_niv.fecha_reg,
-						esp_niv.id_usuario_reg,
-						esp_niv.id_usuario_ai,
-						esp_niv.fecha_mod,
-						esp_niv.id_usuario_mod,
+						rhnies.id_especialidad_nivel,
+						rhnies.codigo,
+						rhnies.nombre,
+						rhnies.estado_reg,
+						rhnies.id_usuario_reg,
+						rhnies.fecha_reg,
+						rhnies.id_usuario_mod,
+						rhnies.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod	
-						from orga.tespecialidad_nivel esp_niv
-						inner join segu.tusuario usu1 on usu1.id_usuario = esp_niv.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = esp_niv.id_usuario_mod
+						from orga.tespecialidad_nivel rhnies
+						inner join segu.tusuario usu1 on usu1.id_usuario = rhnies.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = rhnies.id_usuario_mod
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -68,20 +67,20 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'OR_esp_niv_CONT'
+ 	#TRANSACCION:  'RH_RHNIES_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		16-04-2016 07:45:20
+ 	#FECHA:		26-08-2012 00:05:28
 	***********************************/
 
-	elsif(p_transaccion='OR_esp_niv_CONT')then
+	elsif(p_transaccion='RH_RHNIES_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_especialidad_nivel)
-					    from orga.tespecialidad_nivel esp_niv
-					    inner join segu.tusuario usu1 on usu1.id_usuario = esp_niv.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = esp_niv.id_usuario_mod
+					    from orga.tespecialidad_nivel rhnies
+					    inner join segu.tusuario usu1 on usu1.id_usuario = rhnies.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = rhnies.id_usuario_mod
 					    where ';
 			
 			--Definicion de la respuesta		    

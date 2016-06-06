@@ -416,3 +416,15 @@ ALTER TABLE wf.ttipo_estado
     NOT DEFERRABLE;
 
 /*****************************F-DEP-JRR-WF-0-03/06/2015*************/
+
+/*****************************I-DEP-JRR-WF-0-20/05/2016*************/
+CREATE INDEX tdocumento_wf_idx ON wf.tdocumento_wf
+  USING btree (id_proceso_wf);
+
+CREATE INDEX testado_wf_idx ON wf.testado_wf
+  USING btree (id_proceso_wf);
+    
+CREATE INDEX testado_wf_idx1 ON wf.testado_wf
+  USING btree (id_tipo_estado);
+  
+/*****************************F-DEP-JRR-WF-0-20/05/2016*************/

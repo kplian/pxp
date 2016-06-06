@@ -699,9 +699,19 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            inipro.disable()
        }
        else{
-           inipro.setValue(false);
-           this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
-           this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
+       	
+	       	if(proc.tipo_disparo == 'manual' ||  proc.tipo_disparo =='bandeja_espera'){
+	       		inipro.setValue(false);
+	            inipro.disable();
+	            this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
+	            this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
+	       	}
+	       	else{
+	       		inipro.setValue(false);
+	            this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
+	            this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
+	       	}
+           
        }
        
         

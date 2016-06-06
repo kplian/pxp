@@ -175,10 +175,12 @@ print '**************UTILIDAD PARA RESTAURAR BD DEL FRAMEWORK PXP***************
 print 'Que desea hacer?'
 print '1. Restaurar la base de datos completamente (Esta opcion eliminara todos los objetos de la bd)'
 print '2. Actualizar los scripts faltantes en su base de datos (Solo eliminara las funciones y las volvera a crear)'
-print '3. Obtener un backup de la BD (sin el esquema log)'
-print '4. Salir del programa'
+print '3. Actualizar los scripts faltantes en la bd solo sobre un sistema'
+print '4. Obtener un backup de la BD (sin el esquema log)'
+print '5. Salir del programa'
 opcion = raw_input('Ingrese una opcion (1,2,3 o 4): ')
-if (opcion != '1' and opcion != '2' and opcion != '3') :
+sistema = 'indefinido'
+if (opcion != '1' and opcion != '2' and opcion != '3' and opcion != '4') :
 	sys.exit("Ha abandonado la restauracion de la base de datos")
 
 if opcion == '1':
@@ -195,30 +197,50 @@ if opcion == '1':
 elif opcion == '2':
 	usuario = obtener_usuario()
 	datos = 'n'
+elif opcion == '3':
+	usuario = obtener_usuario()
+	datos = 'n'
+	sistema = raw_input("Ingrese el nombre del sistema a actualzar(Ej: sis_seguridad): ")
+	if sistema == '':
+		sys.exit("Debe ingresar un nombre de sistema valido!!!")
 else:
 	restaurar_db(db)
 	sys.exit("Backup generado con exito")	
 print 'Iniciando la restauracion de los esquemas basicos...' 
 url = []
 #url pxp
-url.append(os.path.dirname(__file__) + '/../../')
+cadena_url = '/../../'
+if sistema == 'indefinido' or cadena_url.find(sistema) != -1:
+	url.append(os.path.dirname(__file__) + '/../../')
 #url segu
-url.append(os.path.dirname(__file__) + '/../../sis_seguridad/')
+cadena_url = '/../../sis_seguridad/'
+if sistema == 'indefinido' or cadena_url.find(sistema) != -1:
+	print 'entra' 
+	url.append(os.path.dirname(__file__) + '/../../sis_seguridad/')
 # url param
-url.append(os.path.dirname(__file__) + '/../../sis_parametros/')
+cadena_url = '/../../sis_parametros/'
+if sistema == 'indefinido' or cadena_url.find(sistema) != -1:
+	url.append(os.path.dirname(__file__) + '/../../sis_parametros/')
 # url gen
-url.append(os.path.dirname(__file__) + '/../../sis_generador/')
+cadena_url = '/../../sis_generador/'
+if sistema == 'indefinido' or cadena_url.find(sistema) != -1:
+	url.append(os.path.dirname(__file__) + '/../../sis_generador/')
 #url orga
-url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
+cadena_url = '/../../sis_organigrama/'
+if sistema == 'indefinido' or cadena_url.find(sistema) != -1:
+	url.append(os.path.dirname(__file__) + '/../../sis_organigrama/')
 #url WF
-url.append(os.path.dirname(__file__) + '/../../sis_workflow/')
+cadena_url = '/../../sis_workflow/'
+if sistema == 'indefinido' or cadena_url.find(sistema) != -1:
+	url.append(os.path.dirname(__file__) + '/../../sis_workflow/')
 
 ####RECUPERAR SISTEMAS ADICIONALES
 try:
         file1 = open(os.path.dirname(__file__) + '/../../../sistemas.txt', 'r')
 
         for line in file1:
-        	url.append(os.path.dirname(__file__) + '/'  + line.replace('\n',''))       
+		if sistema == 'indefinido' or line.find(sistema) != -1:
+        		url.append(os.path.dirname(__file__) + '/'  + line.replace('\n',''))       
         file1.close()
 except:
         print 'Solo se han recuperado los esquemas basicos del framework. (No existe el archivo sistemas.txt o no es posible leerlo'
