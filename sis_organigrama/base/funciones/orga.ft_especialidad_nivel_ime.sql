@@ -4,11 +4,11 @@ RETURNS character varying AS
 $BODY$
 
 /**************************************************************************
- SISTEMA:		Organigrama
+ SISTEMA:		Recursos Humanos
  FUNCION: 		orga.ft_especialidad_nivel_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'orga.tespecialidad_nivel'
  AUTOR: 		 (admin)
- FECHA:	        16-04-2016 07:45:20
+ FECHA:	        26-08-2012 00:05:28
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
@@ -34,43 +34,36 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'OR_esp_niv_INS'
+ 	#TRANSACCION:  'RH_RHNIES_INS'
  	#DESCRIPCION:	Insercion de registros
  	#AUTOR:		admin	
- 	#FECHA:		16-04-2016 07:45:20
+ 	#FECHA:		26-08-2012 00:05:28
 	***********************************/
 
-	if(p_transaccion='OR_esp_niv_INS')then
+	if(p_transaccion='RH_RHNIES_INS')then
 					
         begin
         	--Sentencia de la insercion
         	insert into orga.tespecialidad_nivel(
 			codigo,
-			estado_reg,
 			nombre,
-			usuario_ai,
-			fecha_reg,
+			estado_reg,
 			id_usuario_reg,
-			id_usuario_ai,
-			fecha_mod,
-			id_usuario_mod
+			fecha_reg,
+			id_usuario_mod,
+			fecha_mod
           	) values(
 			v_parametros.codigo,
-			'activo',
 			v_parametros.nombre,
-			v_parametros._nombre_usuario_ai,
-			now(),
+			'activo',
 			p_id_usuario,
-			v_parametros._id_usuario_ai,
+			now(),
 			null,
 			null
-							
-			
-			
 			)RETURNING id_especialidad_nivel into v_id_especialidad_nivel;
-			
+               
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','tipo_nivel_especialidad almacenado(a) con exito (id_especialidad_nivel'||v_id_especialidad_nivel||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Niveles Especialidad almacenado(a) con exito (id_especialidad_nivel'||v_id_especialidad_nivel||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_especialidad_nivel',v_id_especialidad_nivel::varchar);
 
             --Devuelve la respuesta
@@ -79,27 +72,25 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'OR_esp_niv_MOD'
+ 	#TRANSACCION:  'RH_RHNIES_MOD'
  	#DESCRIPCION:	Modificacion de registros
  	#AUTOR:		admin	
- 	#FECHA:		16-04-2016 07:45:20
+ 	#FECHA:		26-08-2012 00:05:28
 	***********************************/
 
-	elsif(p_transaccion='OR_esp_niv_MOD')then
+	elsif(p_transaccion='RH_RHNIES_MOD')then
 
 		begin
 			--Sentencia de la modificacion
 			update orga.tespecialidad_nivel set
 			codigo = v_parametros.codigo,
 			nombre = v_parametros.nombre,
-			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
-			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			fecha_mod = now()
 			where id_especialidad_nivel=v_parametros.id_especialidad_nivel;
                
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','tipo_nivel_especialidad modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Niveles Especialidad modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_especialidad_nivel',v_parametros.id_especialidad_nivel::varchar);
                
             --Devuelve la respuesta
@@ -108,13 +99,13 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'OR_esp_niv_ELI'
+ 	#TRANSACCION:  'RH_RHNIES_ELI'
  	#DESCRIPCION:	Eliminacion de registros
  	#AUTOR:		admin	
- 	#FECHA:		16-04-2016 07:45:20
+ 	#FECHA:		26-08-2012 00:05:28
 	***********************************/
 
-	elsif(p_transaccion='OR_esp_niv_ELI')then
+	elsif(p_transaccion='RH_RHNIES_ELI')then
 
 		begin
 			--Sentencia de la eliminacion
@@ -122,7 +113,7 @@ BEGIN
             where id_especialidad_nivel=v_parametros.id_especialidad_nivel;
                
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','tipo_nivel_especialidad eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Niveles Especialidad eliminado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_especialidad_nivel',v_parametros.id_especialidad_nivel::varchar);
               
             --Devuelve la respuesta

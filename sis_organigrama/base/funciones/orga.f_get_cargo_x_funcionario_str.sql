@@ -1,13 +1,8 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION orga.f_get_cargo_x_funcionario (
-  p_id_funcionario integer,
-  p_fecha date,
-  p_tipo_cargo varchar = 'ambos'::character varying
-)
-RETURNS integer [] AS
-$body$
-DECLARE
+CREATE OR REPLACE FUNCTION orga.f_get_cargo_x_funcionario_str(p_id_funcionario int4, p_fecha date, p_tipo_cargo varchar = 'ambos')
+  RETURNS varchar
+AS
+$BODY$
+  DECLARE
   v_id_empleado				integer;
   v_resp		            varchar;
   v_nombre_funcion        	text;
@@ -15,15 +10,15 @@ DECLARE
   v_tipo 					varchar;
   v_consulta 				varchar;
 BEGIN
-
-  v_nombre_funcion = 'orga.f_get_cargo_x_funcionario';
+  v_nombre_funcion = 'orga.f_get_cargo_x_funcionario_str';
 
   
-   select 
-     pxp.aggarray (asig.id_cargo) 
+   select car.nombre
+   
   into 
       v_resp
   from orga.tuo_funcionario asig
+  inner join orga.tcargo car on car.id_cargo = asig.id_cargo
   where 
          asig.fecha_asignacion <= p_fecha 
      and coalesce(asig.fecha_finalizacion, p_fecha)>=p_fecha 
@@ -49,9 +44,5 @@ WHEN OTHERS THEN
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 END;
-$body$
-LANGUAGE 'plpgsql'
-STABLE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$
+LANGUAGE plpgsql STABLE;
