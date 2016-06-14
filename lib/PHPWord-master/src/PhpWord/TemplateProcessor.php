@@ -706,6 +706,36 @@ class TemplateProcessor {
 			$this -> _rels = $this -> zipClass -> getFromName('word/_rels/document.xml.rels');
 			$this -> _types = $this -> zipClass -> getFromName('[Content_Types].xml');
 		}
+		
+		
+		$default='';
+		$pos_jpeg = strpos($this -> _types, '<Default Extension="jpeg" ContentType="image/jpeg"/>');
+		if ($pos_jpeg === false) {
+	  
+			$default .= '<Default Extension="jpeg" ContentType="image/jpeg"/>';
+			
+	    } else {
+	    	$default.='';
+        }
+		
+		$pos_jpg = strpos($this -> _types, '<Default Extension="jpg" ContentType="image/jpg"/>');
+		if ($pos_jpg === false) {
+	  
+			$default .= '<Default Extension="jpg" ContentType="image/jpg"/>';
+			
+	    } else {
+	    	$default.='';
+        }
+        
+        $pos_png = strpos($this -> _types, '<Default Extension="png" ContentType="image/png"/>');
+		if ($pos_png === false) {
+	  
+			$default .= '<Default Extension="png" ContentType="image/png"/>';
+			
+	    } else {
+	    	$default.='';
+        }
+		
 
 
 		$this -> _types = str_replace('</Types>', $default, $this -> _types) . '</Types>';
