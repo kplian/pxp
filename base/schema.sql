@@ -19,7 +19,7 @@ BEGIN
   	EXECUTE 'DROP SCHEMA IF EXISTS ' || par_esquema || ' CASCADE';
   	v_response = 'Esquema ' || par_esquema || 'eliminado correctamente';
   end if;
-  if (par_opcion in (1, 2)) then
+  if (par_opcion in (1, 2,3)) then
   	IF NOT EXISTS(
         SELECT schema_name
           FROM information_schema.schemata

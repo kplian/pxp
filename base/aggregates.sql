@@ -43,4 +43,11 @@ CREATE AGGREGATE pxp.list_unique (
 
 );
 
+DROP AGGREGATE IF EXISTS pxp.list_br (varchar);
+CREATE AGGREGATE pxp.list_br (text)
+(
+  SFUNC = pxp.br_cat,
+  STYPE = text
+);
+
 

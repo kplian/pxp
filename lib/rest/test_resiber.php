@@ -1,7 +1,7 @@
 <?php
 $data = array(	"credenciales"=>"{B6575E91-D2B3-48A3-B737-B66EDBD60AFA}{C0573161-B781-4B06-B4B7-C8D85DE86239}",
 											"idioma"=>"ES",
-											"tkt"=>"9304016395238",
+											"tkt"=>"9304016498489",
 											"ip"=>"127.0.0.1",
 											"xmlJson"=>false);
 $json_data = json_encode($data);  
@@ -18,7 +18,7 @@ curl_setopt($s, CURLOPT_HTTPHEADER, array(
 $_out = curl_exec($s);		
 $status = curl_getinfo($s, CURLINFO_HTTP_CODE);
 curl_close($s);
-echo $_out;
+
 $res = json_decode($_out);
 $cadena = str_replace('"terminal_salida":{,},', '', $res->TraerTktResult);
 echo "<pre>";

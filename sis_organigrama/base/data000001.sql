@@ -561,5 +561,16 @@ select pxp.f_insert_testructura_gui ('NIVESPE', 'PARAMRH');
 
 
 
+/*****************************I-DAT-RAC-ORGA-0-14/06/2016*************/
+/* Data for the 'pxp.variable_global' table  (Records 1 - 2) */
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'orga_codigo_gerencia_financiera', E'GAF', E'codigo de la uo correspondiente a la gerencia financiera'),
+  (E'orga_codigo_gerencia_general', E'GG', E'codigo de la uo correspomndiente a gerencia general');
+
+
+
+/*****************************F-DAT-RAC-ORGA-0-14/06/2016*************/
 
 

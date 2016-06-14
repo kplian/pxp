@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -319,7 +321,7 @@ BEGIN
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
           v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf,NULL,NULL,p_id_usuario);
-          
+          raise notice 'v_res_validacion %',v_res_validacion;
           IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
           		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
           	  v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','si');
@@ -401,7 +403,8 @@ BEGIN
                  --verificamos el numero de deptos
                  raise notice 'verificamos el numero de deptos';
                              
-                            
+                raise notice 'va_id_tipo_estado[1] %', va_id_tipo_estado[1]; 
+                                            
                   SELECT 
                   *
                   into
@@ -412,8 +415,7 @@ BEGIN
                      v_registros.fecha_ini,
                      v_registros.id_estado_wf,
                      TRUE) AS (total bigint);
-                
-                
+
                 --recupera el depto   
                 IF v_num_deptos >= 1 THEN
                   
@@ -533,7 +535,8 @@ BEGIN
                    from  wf.ttipo_proceso tp
                    inner join wf.ttipo_proceso_origen po on po.id_tipo_proceso = tp.id_tipo_proceso
                    inner join wf.ttipo_estado te on te.id_tipo_estado = po.id_tipo_estado 
-                   where tp.estado_reg = 'activo' and   po.id_tipo_estado   = v_parametros.id_tipo_estado_sig 
+                   where tp.estado_reg = 'activo'  and po.tipo_disparo != 'manual'
+                         and   po.id_tipo_estado   = v_parametros.id_tipo_estado_sig 
                    
                   ) LOOP
          
