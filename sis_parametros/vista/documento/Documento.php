@@ -306,7 +306,7 @@ Phx.vista.Documento=function(config){
 	this.addButton('VerPlantilla', {
 		text: 'VerPlantilla',
 		iconCls: 'bsee',
-		disabled: true,
+		disabled: false,
 		handler: this.VerPlantilla,
 		tooltip: '<b>VerPlantilla</b><br/>Permite visualizar la plantilla'
 	});
@@ -461,6 +461,22 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 			});
 			
 	},	  
+	
+	
+	VerPlantilla : function() {
+
+
+			var rec = this.sm.getSelected();
+			console.log(rec);
+			window.open(rec.data.ruta_plantilla);
+			
+			
+			
+
+			
+
+	},
+	
 		 
 })
 </script>
