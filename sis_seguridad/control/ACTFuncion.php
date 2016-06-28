@@ -411,6 +411,8 @@ class ACTFuncion extends ACTbase{
 		}
 	}
 	function getProcedimientos($cadenas, $id_gui) {
+		
+		
 		$procedimientos = array();
 		//primero buscamos la cadena que tiene la palabra control
 		foreach($cadenas as $cadena) {
@@ -429,6 +431,7 @@ class ACTFuncion extends ACTbase{
 			}
 		}
 		
+		
 		return $procedimientos;
 	}
 	
@@ -446,10 +449,12 @@ class ACTFuncion extends ACTbase{
 			foreach ($lines as $line_num => $line) {
 				if (strpos(trim($line), "/*")=== 0) {
 					$comentado = 1;
+					
 				}
 				
 				//Para el caso de Phx.CP.loadWindows
-			    if (strpos($line, 'function ' . $funcion)!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0 && $codigoFuncion == '') {
+			    if (stripos($line, 'function ' . $funcion)!== FALSE && (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0 && $codigoFuncion == '') {
+			    	
 			    	$codigoFuncion = $line;	
 			    	if (strpos($line, '{') !== FALSE) {
 						$llaves++;
@@ -464,6 +469,7 @@ class ACTFuncion extends ACTbase{
 						$llaves--;
 					}
 					if (strpos(str_replace(' ','',$line), '$this->create(') !== FALSE) {
+							
 						$arrtemp = explode('=', $line);
 						$varName = trim($arrtemp[0]);
 						//si el modelo esta envuelto por comillas simples
@@ -472,8 +478,11 @@ class ACTFuncion extends ACTbase{
 						else if(strpos($line, "'") !== FALSE)
 							$arrtemp = explode('"', $arrtemp[1]);
 						$modelo = $arrtemp[1];
+						$varName = str_replace(' ','',$varName);
+						
 												
 					} else if (strpos(str_replace(' ','',$line), $varName.'->') !== FALSE && $varName != '') {
+						
 						$tempArray = explode($varName.'->', str_replace(' ','',$line));
       $tempArray = explode('(', $tempArray[1]);
 						$funcionModelo = trim($tempArray[0]);
@@ -495,6 +504,7 @@ class ACTFuncion extends ACTbase{
 								
 				if (strpos($line, "*/")!== FALSE) {
 					$comentado = 0;
+					
 				}
 				
 				
@@ -502,7 +512,7 @@ class ACTFuncion extends ACTbase{
 		} else {
 			$this->notas = "No existe el archivo de control: ". htmlentities($archivo) . " <BR>";
 		}
-		
+			
 		return $funcionesModelo;
 	}
 
