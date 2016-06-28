@@ -66,26 +66,32 @@ BEGIN
         
         	--Sentencia de la insercion
         	insert into param.tplantilla(
-			estado_reg,
-			desc_plantilla,
-			sw_tesoro,
-			sw_compro,
-			nro_linea,
-			tipo,
-			fecha_reg,
-			id_usuario_reg,
-			fecha_mod,
-			id_usuario_mod,
-            sw_monto_excento,
-            sw_descuento ,
-            sw_autorizacion,
-            sw_codigo_control,
-            tipo_plantilla,
-            sw_nro_dui,
-            sw_ic,
-            tipo_excento,
-            valor_excento,
-            tipo_informe
+                estado_reg,
+                desc_plantilla,
+                sw_tesoro,
+                sw_compro,
+                nro_linea,
+                tipo,
+                fecha_reg,
+                id_usuario_reg,
+                fecha_mod,
+                id_usuario_mod,
+                sw_monto_excento,
+                sw_descuento ,
+                sw_autorizacion,
+                sw_codigo_control,
+                tipo_plantilla,
+                sw_nro_dui,
+                sw_ic,
+                tipo_excento,
+                valor_excento,
+                tipo_informe,
+                sw_qr,
+                sw_nit,
+                plantilla_qr
+                
+                
+                
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -106,9 +112,11 @@ BEGIN
             v_parametros.sw_ic,
             v_parametros.tipo_excento,
             v_parametros.valor_excento,
-            v_parametros.tipo_informe
-							
-			)RETURNING id_plantilla into v_id_plantilla;
+            v_parametros.tipo_informe,
+            v_parametros.sw_qr,
+            v_parametros.sw_nit,
+            v_parametros.plantilla_qr
+		)RETURNING id_plantilla into v_id_plantilla;
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Plantilla Documento almacenado(a) con exito (id_plantilla'||v_id_plantilla||')'); 
@@ -138,7 +146,7 @@ BEGIN
            v_parametros.valor_excento = COALESCE(v_parametros.valor_excento,0);
            
            IF v_parametros.tipo_excento != 'variable'  and  v_parametros.valor_excento <= 0 THEN
-             raise exception 'El valor Exento no puede ser menro a cero,  si el tipo no es variable';
+             raise exception 'El valor Exento no puede ser menor a cero,  si el tipo no es variable';
            END IF;
            
            IF  v_parametros.valor_excento < 0 THEN
@@ -164,7 +172,10 @@ BEGIN
               sw_ic = v_parametros.sw_ic,
               tipo_excento = v_parametros.tipo_excento,
               valor_excento = v_parametros.valor_excento,
-              tipo_informe = v_parametros.tipo_informe
+              tipo_informe = v_parametros.tipo_informe,
+              sw_qr = v_parametros.sw_qr,
+              sw_nit = v_parametros.sw_nit,
+              plantilla_qr = v_parametros.plantilla_qr
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta

@@ -1383,3 +1383,42 @@ IS 'Si el mensaje esta en proceso de envio valores: no o hora en formato YYYYMMD
 
 
 
+/***********************************I-SCP-RAC-PARAM-0-22/06/2016****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_qr VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_qr
+IS 'si se habilita o no el codigo qr para llenado rapido';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_nit VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_nit
+IS 'si permite o no el nro de nit';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN plantilla_qr VARCHAR;
+
+COMMENT ON COLUMN param.tplantilla.plantilla_qr
+IS 'defineel formato de lectura para el codigo qr, con os nombres de las columnas qe se llenan separados por pipe';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN show_combo VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tmoneda.show_combo
+IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de una solicitud de comra';
+
+
+/***********************************F-SCP-RAC-PARAM-0-22/06/2016****************************************/
+
