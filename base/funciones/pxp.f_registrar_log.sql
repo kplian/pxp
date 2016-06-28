@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.f_registrar_log (
   par_id_usuario integer,
   par_ip varchar,
@@ -60,6 +58,7 @@ declare
        v_desc_transaccion   varchar;
        v_registro           record;
        v_interval           interval;
+       v_registrar_log		varchar;
 
 begin
     v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
@@ -83,34 +82,33 @@ begin
         from segu.tusuario
         where id_usuario=par_id_usuario;
     end if;
-    
+    v_registrar_log = 'si';
     if(par_transaccion is not null)then
-        select descripcion
-        into v_desc_transaccion
-        from segu.tprocedimiento
+        select descripcion,p.habilita_log
+        into v_desc_transaccion ,v_registrar_log
+        from segu.tprocedimiento p
         where codigo=par_transaccion;
     end if;
-    
-    
-    v_id_log=(select nextval('segu.tlog_id_log_seq'));
-     --RAC, RCM: cambios para qe devuelva el id_log
-     
-    
-     
-     insert into segu.tlog(
-     id_log,
-     id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg,
-     estado_reg,procedimientos,transaccion,consulta,tiempo_ejecucion,
-     usuario_base,codigo_error,dia_semana,pid_db,pid_web,sid_web,cuenta_usuario,
-     descripcion_transaccion,codigo_subsistema,id_subsistema,si_log,id_usuario_ai,usuario_ai
-     ) values(
-     v_id_log,
-     par_id_usuario,par_mac,par_ip,par_tipo_log,par_descripcion,now(),'activo',
-     par_procedimientos,par_transaccion,par_consulta,par_tiempo_ejecucion,
-     par_usuario_base,par_codigo_error,to_char(now(),'D')::integer,
-     v_pid_db,par_pid_web,par_sid_web,v_cuenta,
-     v_desc_transaccion,v_subsistema,par_id_subsistema,par_log,par_id_usuario_ai, par_nom_usuario_ai
-     ) ;
+    v_id_log = 0;
+    if ((v_registrar_log = 'si' and par_transaccion not like '%_CONT') or par_tipo_log like 'ERROR_%' ) then
+        v_id_log=(select nextval('segu.tlog_id_log_seq'));
+        --RAC, RCM: cambios para qe devuelva el id_log
+         
+         insert into segu.tlog(
+         id_log,
+         id_usuario,mac_maquina,ip_maquina,tipo_log,descripcion,fecha_reg,
+         estado_reg,procedimientos,transaccion,consulta,tiempo_ejecucion,
+         usuario_base,codigo_error,dia_semana,pid_db,pid_web,sid_web,cuenta_usuario,
+         descripcion_transaccion,codigo_subsistema,id_subsistema,si_log,id_usuario_ai,usuario_ai
+         ) values(
+         v_id_log,
+         par_id_usuario,par_mac,par_ip,par_tipo_log,par_descripcion,now(),'activo',
+         par_procedimientos,par_transaccion,par_consulta,par_tiempo_ejecucion,
+         par_usuario_base,par_codigo_error,to_char(now(),'D')::integer,
+         v_pid_db,par_pid_web,par_sid_web,v_cuenta,
+         v_desc_transaccion,v_subsistema,par_id_subsistema,par_log,par_id_usuario_ai, par_nom_usuario_ai
+         ) ;
+	end if;
     
     IF(par_tipo_log in('ERROR_WEB','ERROR_CONTROLADO_PHP','INYECCION','SESION',
                         'ERROR_TRANSACCION_BD','ERROR_CONTROLADO_BD',

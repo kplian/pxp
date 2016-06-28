@@ -947,3 +947,10 @@ select pxp.f_insert_tgui ('Comunicados', 'registro de comunicados ', 'COMAL', 's
 /***********************************F-DAT-RAC-PARAM-0-12/04/2016*****************************************/
 
 
+/*******************************************I-DAT-JRR-PARAM-0-18/06/2016***********************************************/
+
+select pxp.f_insert_tprocedimiento ('PM_ALARM_SEL', 'Consulta de datos', 'no', '', '', 'param.ft_alarma_sel');
+select pxp.f_insert_tprocedimiento ('PM_ALARM_CONT', 'Conteo de registros', 'no', '', '', 'param.ft_alarma_sel');
+
+/*******************************************F-DAT-JRR-PARAM-0-18/06/2016***********************************************/
+
