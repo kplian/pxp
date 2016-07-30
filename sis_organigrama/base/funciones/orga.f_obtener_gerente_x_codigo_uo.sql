@@ -55,8 +55,9 @@ BEGIN
       from orga.tuo uo
       where upper(uo.codigo) = upper(v_codigo_uo);  
       
-      
-
+      IF v_id_uo is null then
+        raise exception 'No se encontro la unidad % para  %, verifique la variable global correspondiente ',v_codigo_uo , p_desc; 
+      end if;
       --recuepra el funcionario    
 
       select 

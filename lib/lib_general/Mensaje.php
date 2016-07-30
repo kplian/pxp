@@ -566,11 +566,10 @@ class Mensaje
 
 		}
 		elseif($this->tipo=='ERROR'){
-			header("HTTP/1.1 406 Not Acceptable");
+			header("HTTP/1.1 406 Not Acceptable");			
 		}
 		else{
-			header("HTTP/1.1 200 ok");
-			
+			header("HTTP/1.1 200 ok");			
 			//rac comentado por que generaba que el archivo se descargue al utilizar uploadfile
 			//header('Content-Type:'.$_SESSION['type_header'].';'.' charset="'.$_SESSION['codificacion_header'].'"');
 		}	

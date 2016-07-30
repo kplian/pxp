@@ -44,7 +44,11 @@ class MODPlantilla extends MODbase{
 		$this->captura('valor_excento','numeric');
 		$this->captura('tipo_informe','varchar');
 		
-
+		$this->captura('sw_qr','varchar');
+		$this->captura('sw_nit','varchar');
+		$this->captura('plantilla_qr','varchar');
+		
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -77,6 +81,9 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('tipo_excento','tipo_excento','varchar');
 		$this->setParametro('valor_excento','valor_excento','numeric');
 		$this->setParametro('tipo_informe','tipo_informe','varchar');
+		$this->setParametro('sw_qr','sw_qr','varchar');
+		$this->setParametro('sw_nit','sw_nit','varchar');
+		$this->setParametro('plantilla_qr','plantilla_qr','varchar');
 		
 		
 
@@ -112,6 +119,9 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('tipo_excento','tipo_excento','varchar');
 		$this->setParametro('valor_excento','valor_excento','numeric');
 		$this->setParametro('tipo_informe','tipo_informe','varchar');
+		$this->setParametro('sw_qr','sw_qr','varchar');
+		$this->setParametro('sw_nit','sw_nit','varchar');
+		$this->setParametro('plantilla_qr','plantilla_qr','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

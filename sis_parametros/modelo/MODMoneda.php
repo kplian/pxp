@@ -37,6 +37,8 @@ class MODMoneda extends MODbase{
 		$this->captura('triangulacion','varchar');
 		$this->captura('contabilidad','varchar');
 		$this->captura('codigo_internacional','varchar');
+		$this->captura('show_combo','varchar');
+		
 		
 		
 		//Ejecuta la instruccion
@@ -64,6 +66,7 @@ class MODMoneda extends MODbase{
 		$this->setParametro('triangulacion','triangulacion','varchar');
 		$this->setParametro('contabilidad','contabilidad','varchar');
 		$this->setParametro('codigo_internacional','codigo_internacional','varchar');
+		$this->setParametro('show_combo','show_combo','varchar');
 		
 
 		//Ejecuta la instruccion
@@ -92,6 +95,8 @@ class MODMoneda extends MODbase{
 		$this->setParametro('triangulacion','triangulacion','varchar');
 		$this->setParametro('contabilidad','contabilidad','varchar');
 		$this->setParametro('codigo_internacional','codigo_internacional','varchar');
+		$this->setParametro('show_combo','show_combo','varchar');
+		
 		
 		
 

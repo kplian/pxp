@@ -135,7 +135,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                         
                                            
                                      --busca las transacciones en el cuerpo de la funcion       
-                                    if(strpos(split_part(TRIM(v_contenido),'_transaccion=''',v_cant),''')')<1) then
+                                    if(strpos(split_part(replace(v_contenido,' ',''),'_transaccion=''',v_cant),''')')<1) then
                                                 v_bandera:=false;
                                            else
                                            
@@ -160,7 +160,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                               
                                               end IF;
                                             
-                                            v_codigo:=(select substr(split_part(TRIM(v_contenido),'_transaccion=''',v_cant),1,strpos(split_part(TRIM(v_contenido),'_transaccion=''',v_cant),''')')-1))::varchar;
+                                            v_codigo:=(select substr(split_part(replace(v_contenido,' ',''),'_transaccion=''',v_cant),1,strpos(split_part(replace(v_contenido,' ',''),'_transaccion=''',v_cant),''')')-1))::varchar;
 
                                                      
                                             raise notice '% ---  %',v_codigo, v_desc_transaccion;   

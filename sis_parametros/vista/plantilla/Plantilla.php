@@ -289,8 +289,73 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
             egrid: true,
             form:true
        },
-        
-        {
+       {
+            config:{
+                name: 'sw_nit',
+                fieldLabel: 'Nro NIT',
+                qtip: 'Habilitar el Nro de NIT',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_nit',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+       {
+            config:{
+                name: 'sw_qr',
+                fieldLabel: 'Código QR',
+                qtip: 'Si habilita el codigo QR tiene que configurar la plantilla de QR',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_qr',
+                        type: 'list',
+                         options: ['si','no']  
+                    },
+            grid:true,
+            egrid: true,
+            form:true
+       },
+       
+       {
+			config:{
+				name: 'plantilla_qr',
+				fieldLabel: 'Plantilla QR',
+				qtip: 'plantilla en el formato, (donde las variables sean nombre de las columnas de conta.tdoc_compra_venta): nit|nro_documento|nro_autorizacion|fecha|importe_doc|importe_base|codigo_control|nit_comprador| ...  etc',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 250,
+				maxLength:255
+			},
+			type:'TextField',
+			filters:{pfiltro:'plt.plantilla_qr',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+       
+       {
             config:{
                 name: 'tipo_plantilla',
                 fieldLabel: 'Tipo Plantilla',
@@ -468,7 +533,8 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},'sw_monto_excento',
 		'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla',
-		'sw_nro_dui','sw_ic','tipo_excento','valor_excento','tipo_informe'
+		'sw_nro_dui','sw_ic','tipo_excento','valor_excento','tipo_informe',
+		'sw_qr','sw_nit','plantilla_qr'
 		
 	],
 	sortInfo:{
