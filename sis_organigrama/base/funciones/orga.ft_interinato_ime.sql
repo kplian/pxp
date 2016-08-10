@@ -210,7 +210,7 @@ BEGIN
           inner join orga.tuo_funcionario tuof on 
                        tuof.id_cargo = int.id_cargo_titular 
                   and tuof.estado_reg = 'activo' 
-                  and tuof.tipo = 'oficial' 
+                  --and tuof.tipo = 'oficial' 
                   and ( (v_date >=  tuof.fecha_asignacion and v_date <= tuof.fecha_finalizacion)  or (v_date >=  tuof.fecha_asignacion and tuof.fecha_finalizacion is NULL))
          inner join orga.tfuncionario f on f.id_funcionario = tuof.id_funcionario
          inner join segu.tpersona p on p.id_persona = f.id_persona         

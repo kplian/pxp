@@ -6,7 +6,6 @@
 *@date 19-02-2013 22:53:59
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
-
 class ACTCentroCosto extends ACTbase{    
 			
 	function listarCentroCosto(){
@@ -135,6 +134,16 @@ class ACTCentroCosto extends ACTbase{
 				$tip_pres = "(''2'',''3'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
+		
+		if($this->objParam->getParametro('tipo_pres') == 'recurso'){
+				$tip_pres = "(''1'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
+		}
+		
+		if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo'){				
+				$tip_pres = "(''0'',''2'',''3'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
+		}
 
         $this->objParam->defecto('dir_ordenacion','asc');
         if($this->objParam->getParametro('id_gestion')!=''){
@@ -160,6 +169,16 @@ class ACTCentroCosto extends ACTbase{
 		if($this->objParam->getParametro('tipo_pres')!=''){
 			if($this->objParam->getParametro('tipo_pres') == 'gasto'){
 				$tip_pres = "(''2'',''3'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
+			}
+			
+			if($this->objParam->getParametro('tipo_pres') == 'administrativo'){				
+				$tip_pres = "(''0'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
+			}
+			
+			if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo'){				
+				$tip_pres = "(''0'',''2'',''3'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
             

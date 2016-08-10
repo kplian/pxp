@@ -52,26 +52,46 @@ BEGIN
            if v_parametros.sw_ic = 'si' and v_parametros.sw_monto_excento = 'no' then
             raise exception 'Si tenemos IC es necesario habilitar el Excento';
            end if;
+           
+           v_parametros.valor_excento = COALESCE(v_parametros.valor_excento,0);
+           
+           IF v_parametros.tipo_excento != 'variable'  and  v_parametros.valor_excento <= 0 THEN
+             raise exception 'El valor Exento no puede ser menro a cero,  si el tipo no es variable';
+           END IF;
+           
+           IF  v_parametros.valor_excento < 0 THEN
+             raise exception 'El valor Exento no puede ser menor a cero';
+           END IF;
+           
         
         	--Sentencia de la insercion
         	insert into param.tplantilla(
-			estado_reg,
-			desc_plantilla,
-			sw_tesoro,
-			sw_compro,
-			nro_linea,
-			tipo,
-			fecha_reg,
-			id_usuario_reg,
-			fecha_mod,
-			id_usuario_mod,
-            sw_monto_excento,
-            sw_descuento ,
-            sw_autorizacion,
-            sw_codigo_control,
-            tipo_plantilla,
-            sw_nro_dui,
-            sw_ic
+                estado_reg,
+                desc_plantilla,
+                sw_tesoro,
+                sw_compro,
+                nro_linea,
+                tipo,
+                fecha_reg,
+                id_usuario_reg,
+                fecha_mod,
+                id_usuario_mod,
+                sw_monto_excento,
+                sw_descuento ,
+                sw_autorizacion,
+                sw_codigo_control,
+                tipo_plantilla,
+                sw_nro_dui,
+                sw_ic,
+                tipo_excento,
+                valor_excento,
+                tipo_informe,
+                sw_qr,
+                sw_nit,
+                plantilla_qr
+                
+                
+                
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -89,9 +109,14 @@ BEGIN
             v_parametros.sw_codigo_control,
             v_parametros.tipo_plantilla,
             v_parametros.sw_nro_dui,
-            v_parametros.sw_ic
-							
-			)RETURNING id_plantilla into v_id_plantilla;
+            v_parametros.sw_ic,
+            v_parametros.tipo_excento,
+            v_parametros.valor_excento,
+            v_parametros.tipo_informe,
+            v_parametros.sw_qr,
+            v_parametros.sw_nit,
+            v_parametros.plantilla_qr
+		)RETURNING id_plantilla into v_id_plantilla;
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Plantilla Documento almacenado(a) con exito (id_plantilla'||v_id_plantilla||')'); 
@@ -115,24 +140,42 @@ BEGIN
         
         
             if v_parametros.sw_ic = 'si' and v_parametros.sw_monto_excento = 'no' then
-            raise exception 'Si tenemos IC es necesario habilitar el Excento';
-           end if;
+               raise exception 'Si tenemos IC es necesario habilitar el Excento';
+            end if;
+           
+           v_parametros.valor_excento = COALESCE(v_parametros.valor_excento,0);
+           
+           IF v_parametros.tipo_excento != 'variable'  and  v_parametros.valor_excento <= 0 THEN
+             raise exception 'El valor Exento no puede ser menor a cero,  si el tipo no es variable';
+           END IF;
+           
+           IF  v_parametros.valor_excento < 0 THEN
+             raise exception 'El valor Exento no puede ser menor a cero';
+           END IF;
+           
+           
 			--Sentencia de la modificacion
 			update param.tplantilla set
-			desc_plantilla = v_parametros.desc_plantilla,
-			sw_tesoro = v_parametros.sw_tesoro,
-			sw_compro = v_parametros.sw_compro,
-			nro_linea = v_parametros.nro_linea,
-			tipo = v_parametros.tipo,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-            sw_monto_excento = v_parametros.sw_monto_excento,
-            sw_descuento=v_parametros.sw_descuento,
-            sw_autorizacion=v_parametros.sw_autorizacion,
-            sw_codigo_control=v_parametros.sw_codigo_control,
-            tipo_plantilla=v_parametros.tipo_plantilla, 
-            sw_nro_dui = v_parametros.sw_nro_dui,
-            sw_ic = v_parametros.sw_ic
+              desc_plantilla = v_parametros.desc_plantilla,
+              sw_tesoro = v_parametros.sw_tesoro,
+              sw_compro = v_parametros.sw_compro,
+              nro_linea = v_parametros.nro_linea,
+              tipo = v_parametros.tipo,
+              fecha_mod = now(),
+              id_usuario_mod = p_id_usuario,
+              sw_monto_excento = v_parametros.sw_monto_excento,
+              sw_descuento=v_parametros.sw_descuento,
+              sw_autorizacion=v_parametros.sw_autorizacion,
+              sw_codigo_control=v_parametros.sw_codigo_control,
+              tipo_plantilla=v_parametros.tipo_plantilla, 
+              sw_nro_dui = v_parametros.sw_nro_dui,
+              sw_ic = v_parametros.sw_ic,
+              tipo_excento = v_parametros.tipo_excento,
+              valor_excento = v_parametros.valor_excento,
+              tipo_informe = v_parametros.tipo_informe,
+              sw_qr = v_parametros.sw_qr,
+              sw_nit = v_parametros.sw_nit,
+              plantilla_qr = v_parametros.plantilla_qr
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta

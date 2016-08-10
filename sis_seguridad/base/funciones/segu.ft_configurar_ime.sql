@@ -87,10 +87,7 @@ BEGIN
                 --1.1.1) IF si la contraseña nueva es igual a la confirmacion
 				IF (v_parametros.clave_nueva = v_parametros.clave_confirmacion) THEN
                 
-                
-                raise exception 'entra.11111111...';
-                  
-		
+              
 		        --1.1.1.1) modifico contraseña
 	            -- se actualiza la clave  
                 if (pxp.f_get_variable_global('sincronizar') = 'true') then

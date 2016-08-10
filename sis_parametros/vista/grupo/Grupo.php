@@ -34,7 +34,7 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre',
-				fieldLabel: 'nombre',
+				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 180,
@@ -49,10 +49,10 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'obs',
-				fieldLabel: 'obs',
+				fieldLabel: 'Observaciones',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:1000
 			},
 			type:'TextArea',

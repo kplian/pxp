@@ -48,6 +48,62 @@ class MODFuncionario extends MODbase{
 		$this->captura('telefono_ofi','varchar');
 		$this->captura('antiguedad_anterior','integer');
 		
+		$this->captura('estado_civil','varchar');
+		$this->captura('genero','varchar');
+		$this->captura('fecha_nacimiento','date');
+		$this->captura('id_lugar','integer');
+		$this->captura('nombre_lugar','varchar');
+		$this->captura('nacionalidad','varchar');
+		$this->captura('discapacitado','varchar');
+		$this->captura('carnet_discapacitado','varchar');
+		
+		//Ejecuta la funcion
+		$this->armarConsulta();		
+		//echo $this->getConsulta(); exit;
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+
+	}
+
+	function getDatosFuncionario(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_GETDAFUN_SEL';//nombre de la transaccion
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+			
+		//defino varialbes que se captran como retornod e la funcion
+		
+		$this->captura('id_funcionario','integer');
+		$this->captura('nombre_funcionario','varchar');
+		$this->captura('cargo','varchar');
+		$this->captura('telefonos_corporativos','varchar');
+		$this->captura('correo_corporativo','varchar');
+		
+		
+		//Ejecuta la funcion
+		$this->armarConsulta();		
+		//echo $this->getConsulta(); exit;
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+
+	}
+	
+	function getCumpleaneros(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado
+		$this->transaccion='RH_GETCUMPLEA_SEL';//nombre de la transaccion
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+			
+		//defino varialbes que se captran como retornod e la funcion
+		
+		$this->captura('id_funcionario','integer');
+		$this->captura('nombre_funcionario','varchar');
+		$this->captura('cargo','varchar');		
+		$this->captura('correo_corporativo','varchar');
+		
+		
 		//Ejecuta la funcion
 		$this->armarConsulta();		
 		//echo $this->getConsulta(); exit;
@@ -130,6 +186,14 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('interno','interno','varchar');
 		$this->setParametro('telefono_ofi','telefono_ofi','varchar');
 		$this->setParametro('antiguedad_anterior','antiguedad_anterior','integer');
+		
+		$this->setParametro('estado_civil','estado_civil','varchar');
+		$this->setParametro('genero','genero','varchar');
+		$this->setParametro('fecha_nacimiento','fecha_nacimiento','date');
+		$this->setParametro('id_lugar','id_lugar','integer');
+		$this->setParametro('nacionalidad','nacionalidad','varchar');
+		$this->setParametro('discapacitado','discapacitado','varchar');
+		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -158,6 +222,14 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('interno','interno','varchar');
 		$this->setParametro('telefono_ofi','telefono_ofi','varchar');
 		$this->setParametro('antiguedad_anterior','antiguedad_anterior','integer');
+		
+		$this->setParametro('estado_civil','estado_civil','varchar');
+		$this->setParametro('genero','genero','varchar');
+		$this->setParametro('fecha_nacimiento','fecha_nacimiento','date');
+		$this->setParametro('id_lugar','id_lugar','integer');
+		$this->setParametro('nacionalidad','nacionalidad','varchar');
+		$this->setParametro('discapacitado','discapacitado','varchar');
+		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				

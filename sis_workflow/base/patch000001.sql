@@ -1315,7 +1315,7 @@ IS 'esta funcion se ejecuta despude se insertar la alerta';
 
 
 
-*****************************I-SCP-RAC-WF-0-25/05/2015*************/
+/*****************************I-SCP-RAC-WF-0-25/05/2015*************/
 
 --------------- SQL ---------------
 
@@ -1333,3 +1333,25 @@ ALTER TABLE wf.ttipo_estado
   ADD COLUMN id_tipo_estado_anterior INTEGER;
 
 /*****************************F-SCP-JRR-WF-0-03/06/2015*************/
+
+/*****************************I-SCP-JRR-WF-0-20/02/2016*************/
+
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN transacciones_permiso VARCHAR(250);
+
+/*****************************F-SCP-JRR-WF-0-20/02/2016*************/
+
+
+
+/****************************I-SCP-RCM-WF-0-24/03/2016*************/
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN icono VARCHAR(50);
+
+COMMENT ON COLUMN wf.ttipo_estado.icono
+IS 'Icono para representar al estado';
+/****************************F-SCP-RCM-WF-0-24/03/2016*************/
+
+/****************************I-SCP-JRR-WF-0-24/05/2016*************/
+ALTER TABLE wf.tobs
+  ALTER COLUMN id_funcionario_resp SET NOT NULL;
+/****************************F-SCP-JRR-WF-0-24/05/2016*************/

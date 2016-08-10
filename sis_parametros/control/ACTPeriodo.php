@@ -16,6 +16,9 @@ class ACTPeriodo extends ACTbase{
 	    	$this->objParam->addFiltro("per.id_gestion = ".$this->objParam->getParametro('id_gestion'));	
 		}
 		
+		if($this->objParam->getParametro('fecha')!=''){
+	    	$this->objParam->addFiltro("per.id_periodo = (select po_id_periodo from param.f_get_periodo_gestion(''".$this->objParam->getParametro('fecha')."''))");	
+		}
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -42,6 +45,12 @@ class ACTPeriodo extends ACTbase{
 	function eliminarPeriodo(){
 			$this->objFunc=$this->create('MODPeriodo');	
 		$this->res=$this->objFunc->eliminarPeriodo($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function literalPeriodo(){
+		$this->objFunc=$this->create('MODPeriodo');	
+		$this->res=$this->objFunc->literalPeriodo($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

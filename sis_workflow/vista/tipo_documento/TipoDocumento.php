@@ -17,15 +17,8 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.TipoDocumento.superclass.constructor.call(this,config);
 		this.init();
-        var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
-        if(dataPadre){
-            this.onEnablePanel(this, dataPadre);
-        }
-        else
-        {
-           this.bloquearMenus();
-        }
-        
+		
+		
         //Adiciona botón para plantilla de documentos
         this.addButton('btnPlantilla',
             {
@@ -36,7 +29,15 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
                 tooltip: '<b>Plantilla</b><br/>Plantilla de Documentos'
             }
         );
-
+		
+        var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
+        if(dataPadre){
+            this.onEnablePanel(this, dataPadre);
+        }
+        else
+        {
+           this.bloquearMenus();
+        }
 	},
 			
 	Atributos:[
@@ -661,8 +662,8 @@ Phx.vista.TipoDocumento=Ext.extend(Phx.gridInterfaz,{
     preparaMenu:function(n){
           var data = this.getSelectedData();
           var tb =this.tbar;
-          Phx.vista.TipoDocumento.superclass.preparaMenu.call(this,n);  
-          this.getBoton('btnPlantilla').enable();
+		  this.getBoton('btnPlantilla').enable();
+          Phx.vista.TipoDocumento.superclass.preparaMenu.call(this,n);            
           return tb 
      }, 
      

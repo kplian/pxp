@@ -67,6 +67,72 @@ class ACTDocumento extends ACTbase{
 
 	}
 	
+	function subirPlantilla(){
+		$this->objFunSeguridad=$this->create('MODDocumento');	
+		$this->res=$this->objFunSeguridad->subirPlantilla($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function exportarDatos(){
+		
+		//crea el objetoFunProcesoMacro que contiene todos los metodos del sistema de workflow
+		$this->objFunProcesoMacro=$this->create('MODDocumento');		
+		
+		$this->res = $this->objFunProcesoMacro->exportarDatos();
+		
+		if($this->res->getTipo()=='ERROR'){
+			$this->res->imprimirRespuesta($this->res->generarJson());
+			exit;
+		}
+		
+		$nombreArchivo = $this->crearArchivoExportacion($this->res);
+		
+		$this->mensajeExito=new Mensaje();
+		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Se genero con exito el sql'.$nombreArchivo,
+										'Se genero con exito el sql'.$nombreArchivo,'control');
+		$this->mensajeExito->setArchivoGenerado($nombreArchivo);
+		
+		$this->res->imprimirRespuesta($this->mensajeExito->generarJson());
+
+	}
+	
+	function crearArchivoExportacion($res) {
+			
+		$data = $res -> getDatos();
+		$fileName = uniqid(md5(session_id()).'PlantillaCalculo').'.sql';
+		
+		//create file
+		$file = fopen("../../../reportes_generados/$fileName", 'w');
+		
+		$sw_gui = 0;
+		$sw_funciones = 0;
+		$sw_procedimiento = 0;
+		$sw_rol = 0; 
+		$sw_rol_pro = 0;
+		
+		fwrite ($file,"----------------------------------\r\n".
+					  "--COPY LINES TO SUBSYSTEM data.sql FILE  \r\n".
+					  "---------------------------------\r\n".
+					  "\r\n" );
+		
+		foreach ($data as $row) {			
+			
+			 	fwrite ($file, 
+					 "select param.f_import_tdocumento ('insert','".
+								$row['codigo']."'," .
+						     (is_null($row['descripcion'])?'NULL':"'".$row['descripcion']."'") ."," .
+							 (is_null($row['codigo_subsis'])?'NULL':"'".$row['codigo_subsis']."'") ."," .
+							 (is_null($row['tipo_numeracion'])?'NULL':"'".$row['tipo_numeracion']."'") ."," .
+							 (is_null($row['periodo_gestion'])?'NULL':"'".$row['periodo_gestion']."'") ."," .							 
+							 (is_null($row['tipo'])?'NULL':"'".$row['tipo']."'") ."," .							 
+							 (is_null($row['formato'])?'NULL':"'".$row['formato']."'").");\r\n");			
+							 
+			 
+         } //end for
+		
+		return $fileName;
+	}
+	
 	
 
 }

@@ -1,25 +1,8 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
-  par_codigo_documento varchar,
-  par_id integer,
-  par_id_uo integer,
-  par_id_depto integer,
-  par_id_usuario integer,
-  par_codigo_subsistema varchar,
-  par_formato varchar,
-  par_digitos_periodo integer = 0,
-  par_digitos_correlativo integer = 0,
-  par_tabla varchar = 'no_aplica'::character varying,
-  par_id_tabla integer = 0,
-  par_cod_tabla varchar = 'no_aplica'::character varying,
-  par_id_empresa integer = 1,
-  par_saltar_inicio varchar = 'no'::character varying,
-  par_forzar_inicio varchar = 'no'::character varying
-)
-RETURNS varchar AS
-$body$
-/**************************************************************************
+CREATE OR REPLACE FUNCTION param.f_obtener_correlativo(par_codigo_documento varchar, par_id int4, par_id_uo int4, par_id_depto int4, par_id_usuario int4, par_codigo_subsistema varchar, par_formato varchar, par_digitos_periodo int4 = 0, par_digitos_correlativo int4 = 0, par_tabla varchar = 'no_aplica', par_id_tabla int4 = 0, par_cod_tabla varchar = 'no_aplica', par_id_empresa int4 = 1, par_saltar_inicio varchar = 'no', par_forzar_inicio varchar = 'no')
+  RETURNS varchar
+AS
+$BODY$
+  /**************************************************************************
  FUNCION: 		param.f_obtener_correlativo
  DESCRIPCION:   Obtiene el correlativo de acuerdo al id_documento y su configuracion
                periodo/gestion  depto/uo/depto_uo, el formato
@@ -246,7 +229,7 @@ BEGIN
             on ges.id_gestion = p.id_gestion 
             and ges.estado_reg ='activo'
             where p.estado_reg='activo' and
-            now()::date between fecha_ini and fecha_fin ;
+            now()::date between p.fecha_ini and p.fecha_fin ;
             
             if(v_id is null) then
                raise exception 'Periodo para la fecha % inexistente', now()::date ;
@@ -259,7 +242,11 @@ BEGIN
             inner join param.tgestion ges 
             on ges.id_gestion = p.id_gestion 
             and ges.estado_reg ='activo'
-            where  p.estado_reg='activo' and p.id_periodo = par_id;  
+            where  p.estado_reg='activo' and p.id_periodo = par_id;
+				
+			if(v_id is null) then
+               raise exception 'Periodo para el par_id % inexistente', par_id ;
+            end if;
     
          END IF; 
          
@@ -486,9 +473,5 @@ EXCEPTION
   		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$
+LANGUAGE plpgsql VOLATILE;

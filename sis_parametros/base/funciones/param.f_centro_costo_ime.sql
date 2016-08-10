@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."f_centro_costo_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.f_centro_costo_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_centro_costo_ime
@@ -64,6 +69,39 @@ BEGIN
 			null
 							
 			)RETURNING id_centro_costo into v_id_centro_costo;
+            
+            -- chequear si existe el esquema de presupeustos
+            IF EXISTS (
+               SELECT 1
+               FROM   information_schema.tables 
+               WHERE  table_schema = 'pre'
+               AND    table_name = 'tpresupuesto'
+            ) THEN
+            
+                -- si existe insertar el presupuesto para este centro de costo con el mismo ID
+                
+                --Sentencia de la insercion
+                  insert into pre.tpresupuesto(
+                    id_presupuesto,
+                    id_centro_costo,
+                    estado,
+                    estado_reg,
+                    id_usuario_reg,
+                    fecha_reg
+                  ) values(
+                    v_id_centro_costo,
+                    v_id_centro_costo,
+                    'borrador', --crea el presupeusto en estado borrador
+                    'activo',
+                    p_id_usuario,
+                    now()
+      							
+                  );
+                
+                -- el tipo de presupeusto
+            
+            END IF;
+            
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costos almacenado(a) con exito (id_centro_costo'||v_id_centro_costo||')'); 
@@ -112,9 +150,29 @@ BEGIN
 	elsif(p_transaccion='PM_CEC_ELI')then
 
 		begin
-			--Sentencia de la eliminacion
+			
+            
+            
+             -- chequear si existe el esquema de presupeustos
+            IF EXISTS (
+               SELECT 1
+               FROM   information_schema.tables 
+               WHERE  table_schema = 'pre'
+               AND    table_name = 'tpresupuesto'
+            ) THEN
+            
+               --Sentencia de la eliminacion
+                delete from pre.tpresupuesto
+                where id_presupuesto=v_parametros.id_centro_costo;
+            
+            END IF;
+            
+            
+            
+            --Sentencia de la eliminacion
 			delete from param.tcentro_costo
             where id_centro_costo=v_parametros.id_centro_costo;
+            
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Centro de Costos eliminado(a)'); 
@@ -141,7 +199,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."f_centro_costo_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

@@ -89,7 +89,8 @@ BEGIN
 			id_usuario_reg,
 			fecha_mod,
 			id_usuario_mod,
-            codigo_largo
+            codigo_largo,
+            es_regional
           	) values(
 			v_parametros.codigo,
 			'activo',
@@ -102,7 +103,8 @@ BEGIN
 			p_id_usuario,
 			null,
 			null,
-            v_codigo_largo
+            v_codigo_largo,
+            v_parametros.es_regional
 			)RETURNING id_lugar into v_id_lugar;
                
 			--Definicion de la respuesta
@@ -159,7 +161,8 @@ BEGIN
 			tipo = v_parametros.tipo,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
-            codigo_largo=v_codigo_largo
+            codigo_largo=v_codigo_largo,
+            es_regional = v_parametros.es_regional
 			where id_lugar=v_parametros.id_lugar;
                
 			--Definicion de la respuesta

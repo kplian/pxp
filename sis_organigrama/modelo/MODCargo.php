@@ -69,7 +69,7 @@ class MODCargo extends MODbase{
 		$this->setParametro('id_tipo_contrato','id_tipo_contrato','int4');
 		$this->setParametro('id_oficina','id_oficina','int4');
 		$this->setParametro('id_uo','id_uo','int4');
-		$this->setParametro('id_temporal_cargo','id_temporal_cargo','int4');
+		$this->setParametro('id_temporal_cargo','id_temporal_cargo','varchar');
 		$this->setParametro('id_escala_salarial','id_escala_salarial','int4');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
@@ -95,7 +95,7 @@ class MODCargo extends MODbase{
 		$this->setParametro('id_cargo','id_cargo','int4');
 		$this->setParametro('id_tipo_contrato','id_tipo_contrato','int4');
 		$this->setParametro('id_oficina','id_oficina','int4');
-		$this->setParametro('id_temporal_cargo','id_temporal_cargo','int4');
+		$this->setParametro('id_temporal_cargo','id_temporal_cargo','varchar');
 		$this->setParametro('id_escala_salarial','id_escala_salarial','int4');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');

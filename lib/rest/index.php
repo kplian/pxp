@@ -438,7 +438,7 @@ $app->post(
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		$psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;
-		//var_dump($app->request->cookies);
+				
     	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
 			
 		} else if (isset($headers['Php-Auth-User'])) {

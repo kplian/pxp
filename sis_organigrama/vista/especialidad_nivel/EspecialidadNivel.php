@@ -155,6 +155,14 @@ Phx.vista.EspecialidadNivel=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		
 	],
+	
+	south:{
+		  url:'../../../sis_organigrama/vista/especialidad/Especialidad.php',
+		  title:'Especialidad', 
+		  height:'50%',
+		  cls:'Especialidad'
+		 },
+	
 	sortInfo:{
 		field: 'id_especialidad_nivel',
 		direction: 'ASC'

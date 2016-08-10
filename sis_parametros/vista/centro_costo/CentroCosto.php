@@ -25,10 +25,13 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 			//configuracion del componente
 			config:{
 					labelSeparator:'',
+					fieldLabel: 'ID',
 					inputType:'hidden',
 					name: 'id_centro_costo'
 			},
 			type:'Field',
+			gwidth: 100,
+			grid:true,
 			form:true 
 		},
 		{

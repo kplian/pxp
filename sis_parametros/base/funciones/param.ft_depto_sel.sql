@@ -67,28 +67,31 @@ BEGIN
         
        
                v_consulta:='SELECT 
-                            DEPPTO.id_depto,
-                            DEPPTO.codigo,
-                            DEPPTO.nombre,
-                            DEPPTO.nombre_corto,
-                            DEPPTO.id_subsistema,
-                            DEPPTO.estado_reg,
-                            DEPPTO.fecha_reg,
-                            DEPPTO.id_usuario_reg,
-                            DEPPTO.fecha_mod,
-                            DEPPTO.id_usuario_mod,
-                            PERREG.nombre_completo1 as usureg,
-                            PERMOD.nombre_completo1 as usumod,
-                            SUBSIS.codigo || '' - '' || SUBSIS.nombre as desc_subsistema,
-    						array_to_string(DEPPTO.id_lugares,'','')::varchar as id_lugares,
-                            DEPPTO.prioridad,
-                            DEPPTO.modulo
+                              DEPPTO.id_depto,
+                              DEPPTO.codigo,
+                              DEPPTO.nombre,
+                              DEPPTO.nombre_corto,
+                              DEPPTO.id_subsistema,
+                              DEPPTO.estado_reg,
+                              DEPPTO.fecha_reg,
+                              DEPPTO.id_usuario_reg,
+                              DEPPTO.fecha_mod,
+                              DEPPTO.id_usuario_mod,
+                              PERREG.nombre_completo1 as usureg,
+                              PERMOD.nombre_completo1 as usumod,
+                              SUBSIS.codigo || '' - '' || SUBSIS.nombre as desc_subsistema,
+                              array_to_string(DEPPTO.id_lugares,'','')::varchar as id_lugares,
+                              DEPPTO.prioridad,
+                              DEPPTO.modulo,
+                              DEPPTO.id_entidad,
+                              ENT.nombre as desc_entidad
                             FROM param.tdepto DEPPTO
-                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
-                            INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
-                            INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
-                            LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
-                            LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                              INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
+                              INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
+                              INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
+                              LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
+                              LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                              LEFT JOIN param.tentidad ENT on ENT.id_entidad=DEPPTO.id_entidad
                             WHERE DEPPTO.estado_reg =''activo'' and ';
               
                v_consulta:=v_consulta||v_parametros.filtro;
@@ -124,11 +127,12 @@ BEGIN
                v_consulta:='SELECT
                                   count(DEPPTO.id_depto)
                             FROM param.tdepto DEPPTO
-                            INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
-                            INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
-                            INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
-                            LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
-                            LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                              INNER JOIN segu.tsubsistema SUBSIS on SUBSIS.id_subsistema=DEPPTO.id_subsistema
+                              INNER JOIN segu.tusuario USUREG on USUREG.id_usuario=DEPPTO.id_usuario_reg
+                              INNER JOIN segu.vpersona PERREG on PERREG.id_persona=USUREG.id_persona
+                              LEFT JOIN segu.tusuario USUMOD on USUMOD.id_usuario=DEPPTO.id_usuario_mod
+                              LEFT JOIN segu.vpersona PERMOD on PERMOD.id_persona=USUMOD.id_persona
+                              LEFT JOIN param.tentidad ENT on ENT.id_entidad=DEPPTO.id_entidad
                             WHERE DEPPTO.estado_reg =''activo'' and ';
                v_consulta:=v_consulta||v_parametros.filtro;
                

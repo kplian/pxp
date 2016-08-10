@@ -263,7 +263,7 @@ class MODbase extends driver
 	 * @param $tamano Tamano maximo del archivo
 	 * @param $tipo_archivo array conteniendo los tipos de archivos permitidos
 	 */
-	function setFile($nombre, $variable_id, $blank = true, $tamano = '', $tipo_archivo = null, $folder = ''){
+	function setFile($nombre, $variable_id, $blank = true, $tamano = '', $tipo_archivo = null, $folder = '',$subfijo=''){
 		//obtenemos el tipo de la base de datos
 		
 		$this->validacion->validar($nombre, $this->arregloFiles[$nombre], 'bytea', $blank, $tamano, null, $tipo_archivo);
@@ -277,7 +277,7 @@ class MODbase extends driver
 		//extension del archivo
 		$fileexte = substr($filename, strrpos($filename, '.')+1);
 		//nombre con el que se guarda en el servidor
-		$file_server_name = md5($this->arreglo[$variable_id] . $_SESSION["_SEMILLA"]) . ".$fileexte";
+		$file_server_name = md5($this->arreglo[$variable_id].$_SESSION["_SEMILLA"]).$subfijo.".$fileexte";
 		
 		if (!file_exists($upload_folder)) {
 			//echo $upload_folder;
@@ -410,13 +410,13 @@ class MODbase extends driver
      * @param $folder subfolder donde se guardara el archivo
      */
     
-    function getFileName2($nombre, $variable_id, $folder = ''){
+    function getFileName2($nombre, $variable_id, $folder = '', $subfijo = ''){
         
         //obtenemos el tipo de la base de datos
         $upload_folder =  './../../../uploaded_files/' . $this->objParam->getSistema() . '/' .
                                  $this->objParam->getClase() . '/' ;
         if ($folder != '') {
-            $upload_folder .= $folder . '/';
+            $upload_folder .= $folder . '/'; 
         }
         //nombre del archivo enviado por el cliente
         $filename = $this->arregloFiles[$nombre]['name'];
@@ -425,7 +425,7 @@ class MODbase extends driver
         //nombre con el que se guarda en el servidor
         
         $file_name = md5($this->arreglo[$variable_id] . $_SESSION["_SEMILLA"]);
-        $file_server_name = $file_name . ".$fileexte";
+        $file_server_name = $file_name.$subfijo. ".$fileexte";
         
 		$resp =  Array();
 		$resp[0] = $file_name;

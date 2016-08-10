@@ -95,6 +95,7 @@ tabEnter:true,
 	       				renderer:function (value, p, record){return String.format('{0}', record.data['desc_person']);}
 	       			},
 	       			type:'TrigguerCombo',
+	       			bottom_filter:true,
 	       			id_grupo:0,
 	       			filters:{	
 	       				        pfiltro:'nombre_completo1',
@@ -396,6 +397,13 @@ tabEnter:true,
 	 */	
 	bdel:true,// boton para eliminar
 	bsave:true,// boton para eliminar
+	
+	onSubmit : function(o) {
+		  this.Cmp.contrasena_old.setValue(encodeURIComponent(this.Cmp.contrasena_old.getValue()));
+		  this.Cmp.contrasena.setValue(encodeURIComponent(this.Cmp.contrasena.getValue()));
+		  this.Cmp.conf_contrasena.setValue(encodeURIComponent(this.Cmp.conf_contrasena.getValue()));
+		  Phx.vista.usuario.superclass.onSubmit.call(this,o);
+	},
 
 	
     tabeast:[

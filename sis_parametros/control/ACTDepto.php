@@ -100,6 +100,10 @@ class ACTDepto extends ACTbase{
         
         
     }
+
+	function listarDeptoFiltradoXUO(){
+		
+	}
     
 	
 	
@@ -135,6 +139,8 @@ class ACTDepto extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
+	
+	
 	
 	
 

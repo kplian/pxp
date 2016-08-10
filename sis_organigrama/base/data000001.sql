@@ -552,5 +552,25 @@ select pxp.f_insert_tprocedimiento ('OR_OFCU_ELI', 'Eliminacion de registros', '
 /*****************************F-DAT-RAC-ORGA-0-05/08/2014*************/
 
 
+/*****************************I-DAT-LPZ-ORGA-0-11/05/2016*************/
+
+select pxp.f_insert_tgui ('Nivel Especialidad', 'Organiza deacuardo a la especialidad que se registra o grado de instruccion que se tiene', 'NIVESPE', 'si', 5, 'sis_organigrama/vista/especialidad_nivel/EspecialidadNivel.php', 3, '', 'EspecialidadNivel', 'ORGA');
+select pxp.f_insert_testructura_gui ('NIVESPE', 'PARAMRH');
+
+/*****************************F-DAT-LPZ-ORGA-0-11/05/2016*************/
+
+
+
+/*****************************I-DAT-RAC-ORGA-0-14/06/2016*************/
+/* Data for the 'pxp.variable_global' table  (Records 1 - 2) */
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'orga_codigo_gerencia_financiera', E'GAF', E'codigo de la uo correspondiente a la gerencia financiera'),
+  (E'orga_codigo_gerencia_general', E'GG', E'codigo de la uo correspomndiente a gerencia general');
+
+
+
+/*****************************F-DAT-RAC-ORGA-0-14/06/2016*************/
 
 

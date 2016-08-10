@@ -10,34 +10,64 @@ class MYPDF extends TCPDF {
 	
     public function MultiRow($row, $fill = false, $border = 1, $textcolor = array(0,0,0)) {    	
         $index = 0;
+		$index_aux = 0;
 		$height_base = 3;
 		$height_aux = 0;
 		$page_aux = 0;
 		$y_pos_aux = 0;
+		$column_aux = '';
 		$page_ini = $this->getPage();
 		$numbers = false;
 		if (count ($this->tablenumbers) > 0 ) {
 			$numbers = true;
 		}	
+		
+		/*****************************************************
+		 *   RECUPERA EL TAMAÑO DE LA COLUMNA MAS ALTA
+		 *   
+		 *****************************************************/
+		
         foreach ($row as $column) {
             if ($numbers && $this->tablenumbers[$index] > 0) {
             	$column = number_format ( $column , $this->tablenumbers[$index] , '.' , ',' );
             }
 			
-			$datos_res = $this->getHeight($this->tablewidths[$index], $height_base, $column, $border);
+			//$datos_res = $this->getHeight($this->tablewidths[$index], $height_base, $column, $border);
 			
-			if ($datos_res[2] > $height_aux) {
-				$height_aux = $datos_res[2];
-				$page_aux = $datos_res[1];
-				$y_pos_aux = $datos_res[0];
+			$datos_res = $this->getHeightV2($column, $this->tablewidths[$index]);
+			 
+			 if ($datos_res > $height_aux) {
+				$height_aux = $datos_res;
+				$index_aux = $index;
+				$column_aux = $column;
 				
-			}			
+			 }
+			
+				
 			$index++;
 			
         }
+		
+		
+		$resp = $this->getHeight($this->tablewidths[$index_aux], $height_base, $column_aux, $border);
+		$height_aux = $resp[2];
+		//$height_aux = $this->getHeightV3($column_aux, $this->tablewidths[$index_aux]);
+		
+		
+		
 		$this->CheckPageBreak($height_aux);
 		$index = 0;
+		
+		//echo $height_aux;
+		//exit;
+		
 		//var_dump($row); exit;
+		
+		/****************************************************
+		 * 
+		 *    IMPRIME LA COLUMNA CON LA ALTUR AENCONTRADA
+		 * 
+		 ****************************************************/
 		foreach ($row as $data) {
 			
 		
@@ -96,6 +126,19 @@ class MYPDF extends TCPDF {
 		$this->ln();
 		 
     }
+	
+	
+	public function getHeightV2( $data, $width){
+		return $this->getNumLines($data, $width, false, true,'',1);
+	}
+	
+	public function getHeightV3( $data, $width){
+		return $this->getStringHeight($data, $width, false, true,'',1);
+	}
+	
+	
+	
+	
 	public function getHeight($w=0, $h=0, $txt, $border=1, $align='L', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0) {
 		// store current object 
         $this->startTransaction(); 

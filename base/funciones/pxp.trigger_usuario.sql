@@ -101,7 +101,7 @@ _SEMILLA = '+_)(*&^%$#@!@TERPODO';
                                   FROM pg_catalog.pg_user u
                                   where u.usename = g_old_login) THEN
              	--Crea el usuario de base de datos
-                g_consulta := 'CREATE USER "'||g_new_login||'"';
+                g_consulta := 'CREATE USER "'||g_old_login||'"';
                 g_consulta := g_consulta||' WITH SUPERUSER ENCRYPTED PASSWORD '''||md5(_SEMILLA||OLD.contrasena)||'''';
                 g_consulta := g_consulta||' VALID UNTIL '''||OLD.fecha_caducidad||'''';
                 EXECUTE(g_consulta);             
@@ -109,10 +109,13 @@ _SEMILLA = '+_)(*&^%$#@!@TERPODO';
              END IF;          
              --end jrr   
              IF (OLD.cuenta != NEW.cuenta) THEN
+             	IF NOT EXISTS(SELECT *
+                                  FROM pg_catalog.pg_user u
+                                  where u.usename = g_new_login) THEN
                		 g_consulta := 'ALTER USER "'||g_old_login||'" RENAME TO "'||g_new_login||'"';
           
            		     EXECUTE(g_consulta);
-                   
+                 END IF;  
              END IF; 
 
              -- Modificación de la contraseña

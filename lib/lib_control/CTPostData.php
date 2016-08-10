@@ -30,6 +30,7 @@ class CTPostData{
 	private function obtenerPostData(){
 		
 		try {
+			
 			//Verifica si se ha enviado algun dato
 			if(count($_REQUEST)>0){
 				//Se obtiene las claves (nombres de las columnas) del array

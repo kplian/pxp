@@ -72,6 +72,7 @@ DECLARE
     va_verifica_documento 	varchar;
     
     v_i integer;
+    v_registros_correo	record;
 	
     
 BEGIN
@@ -140,6 +141,7 @@ BEGIN
      v_registros
     FROM wf.ttipo_estado te
     inner join wf.ttipo_proceso tp on tp.id_tipo_proceso  = te.id_tipo_proceso
+    left join wf.ttipo_documento td on td.id_tipo_proceso = tp.id_tipo_proceso
     inner join wf.tproceso_macro pm on tp.id_proceso_macro = pm.id_proceso_macro
     inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema 
     WHERE te.id_tipo_estado = p_id_tipo_estado_siguiente;
@@ -174,6 +176,7 @@ BEGIN
                
                      v_sw_error = false;
                      v_mensaje_error='';
+                     
                      FOR v_resgistros_prod_dis in (select 
                            ewf.id_estado_wf,
                            te.codigo,
@@ -220,7 +223,7 @@ BEGIN
     
      --verificamos si requiere manejo de alerta
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
-        
+ 			   
            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
            v_cont_alarma = 1;
            v_plantilla_asunto = p_titulo;
@@ -236,11 +239,18 @@ BEGIN
             END IF;
             
             --si no tenemos acceso directo como parametro p_acceso_directo,  buscamos en la configuracion del tipo estado
-            
+            p_titulo = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, '{DEPTO_PREVIO} {FUNCIONARIO_PREVIO}', p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                 
+           if (p_titulo = ' ') then
+              select u.desc_persona into p_titulo 
+              from segu.vusuario u 
+              where u.id_usuario = p_id_usuario ;
+           end if;
             IF p_acceso_directo = '' and  v_registros.acceso_directo_alerta is not NULL and v_registros.acceso_directo_alerta != '' THEN
                  
                  p_acceso_directo = v_registros.acceso_directo_alerta;
-                 p_titulo = v_registros.titulo_alerta;
+                 
+                 
                  p_clase = v_registros.nombre_clase_alerta;
                  p_parametros = v_registros.parametros_ad;
                  p_tipo = v_registros.tipo_noti;
@@ -293,8 +303,8 @@ BEGIN
               
              --manejo de alertas para departamentos
               
-               IF p_id_depto is not NULL   and  (v_registros_ant.id_depto is  NULL or v_registros_ant.id_depto != p_id_depto)  THEN
-              
+               IF (p_id_depto is not NULL and p_id_funcionario is NULL)  THEN
+                
                   -- buscamos entre los usarios del depto quien puede recibir alerta
               
                 FOR  v_registros_depto in  ( 
@@ -302,7 +312,7 @@ BEGIN
                        from  param.tdepto_usuario du 
                        where du.id_depto = p_id_depto 
                          and du.sw_alerta = 'si'
-                         and ( du.cargo=ANY(v_registros.cargo_depto) or v_registros.cargo_depto is NULL )
+                         and ( du.cargo=ANY(v_registros.cargo_depto) or v_registros.cargo_depto is NULL or array_to_string(v_registros.cargo_depto, ',') = '' )
                          
                          ) LOOP
                          
@@ -412,7 +422,7 @@ BEGIN
     
     /*Se registra las alarmas que se encuentran en plantilla correo que cumplan con la regla*/
              
-     for v_registros in (select pc.*,sub.nombre as nombre_subsistema,sub.codigo as codigo_subsistema 
+     for v_registros_correo in (select pc.*,sub.nombre as nombre_subsistema,sub.codigo as codigo_subsistema 
              					from wf.tplantilla_correo pc
                                 inner join wf.ttipo_estado te
                                 	on te.id_tipo_estado = pc.id_tipo_estado
@@ -424,11 +434,11 @@ BEGIN
                                 	on pm.id_subsistema = sub.id_subsistema                                 
              					 where pc.id_tipo_estado = p_id_tipo_estado_siguiente and pc.estado_reg = 'activo') loop
              	
-                if (wf.f_evaluar_regla_wf(p_id_usuario,p_id_proceso_wf,v_registros.regla,
+                if (wf.f_evaluar_regla_wf(p_id_usuario,p_id_proceso_wf,v_registros_correo.regla,
                 		p_id_tipo_estado_siguiente,v_registros_ant.id_tipo_estado)) then	
                     
-                    if (v_registros.plantilla is not null and v_registros.plantilla != '') then
-                        v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                    if (v_registros_correo.plantilla is not null and v_registros_correo.plantilla != '') then
+                        v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;
                     /*Se obtiene los documentos a colocar como adjuntos en el siguiente formato:
                     	url|id_proceso_wf,url,url,url|id_proceso_wf
@@ -442,13 +452,14 @@ BEGIN
                                     from wf.tdocumento_wf dwf 
                                     inner join wf.ttipo_documento td 
                                     on dwf.id_tipo_documento = td.id_tipo_documento
-                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros.documentos::int[]) and td.estado_reg = 'activo' and
+                                    where dwf.id_proceso_wf = p_id_proceso_wf and td.id_tipo_documento = ANY(v_registros_correo.documentos::int[]) and td.estado_reg = 'activo' and
                                     dwf.estado_reg = 'activo' and ((td.tipo = 'escaneado' and dwf.url is not null and dwf.url != '') or 
                                     td.tipo = 'generado');
                     
-                    if (v_registros.asunto is not null) then
-                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                    if (v_registros_correo.asunto is not null) then
+                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;	
+                   
                     --raise exception '%',p_id_proceso_wf;
                     v_alarma = param.f_inserta_alarma(
                                                       NULL,
@@ -466,20 +477,20 @@ BEGIN
                                                       wf.f_procesar_plantilla( 
                                                          p_id_usuario, 
                                                          p_id_proceso_wf, 
-                                                         array_to_string(v_registros.correos, ',')::text, 
+                                                         array_to_string(v_registros_correo.correos, ',')::text, 
                                                          p_id_tipo_estado_siguiente, 
                                                          p_id_estado_wf_anterior, 
                                                          p_obs),
                                                       v_documentos,
                                                       p_id_proceso_wf, 
                                                       v_id_estado_actual,
-                                                      v_registros.id_plantilla_correo,
-                                                      v_registros.mandar_automaticamente                                      
+                                                      v_registros_correo.id_plantilla_correo,
+                                                      v_registros_correo.mandar_automaticamente                                      
                                                           
                                                      );
                          --si teiene funcion de acuse parametrizada la ejecuta            
-                         IF  v_registros.funcion_creacion_correo is not NULL THEN
-                               EXECUTE ( 'select ' || v_registros.funcion_creacion_correo  ||'('||v_alarma::varchar||','||COALESCE(p_id_proceso_wf::varchar,'NULL')||','||COALESCE(p_id_estado_wf_anterior::varchar,'NULL')||')');
+                         IF  v_registros_correo.funcion_creacion_correo is not NULL THEN
+                               EXECUTE ( 'select ' || v_registros_correo.funcion_creacion_correo  ||'('||v_alarma::varchar||','||COALESCE(p_id_proceso_wf::varchar,'NULL')||','||COALESCE(p_id_estado_wf_anterior::varchar,'NULL')||')');
                          END IF; 
                 end if;
                  
@@ -500,7 +511,7 @@ BEGIN
     v_res_validacion = wf.f_valida_cambio_estado(p_id_estado_wf_anterior,'preregistro',p_id_tipo_estado_siguiente);
     IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
           
-        raise exception 'Es necesario registrar los siguientes campos en el formulario: % . Antes de pasar al estado : %',v_res_validacion,v_registros.nombre_Estado;
+        raise exception 'Es necesario registrar los siguientes campos en el formulario: % . Antes de pasar al estado : %',v_res_validacion,v_registros.nombre_estado;
           
     END IF;
     

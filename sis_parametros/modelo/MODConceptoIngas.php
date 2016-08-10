@@ -41,6 +41,11 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('sw_autorizacion','varchar');
 		$this->captura('id_entidad','integer');
 		$this->captura('descripcion_larga','text');
+		$this->captura('id_unidad_medida','int4');
+		$this->captura('desc_unidad_medida','varchar');
+		$this->captura('nandina','varchar');
+		
+		
 		
 		
 		
@@ -90,6 +95,7 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
 		$this->captura('sw_autorizacion','varchar');
+		
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -131,6 +137,53 @@ class MODConceptoIngas extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    /*
+	 * Autor RAC
+	 * DESC  lista concepto de gasto permitidos dentro de un presupeusto es necesario enviar el id presupuesto
+	 * */
+
+    function listarConceptoIngasPresupuesto(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.f_concepto_ingas_sel';
+        $this->transaccion='PM_CONIGPRE_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        
+        $this->setParametro('autorizacion','autorizacion','varchar');
+		$this->setParametro('autorizacion_nulos','autorizacion_nulos','varchar');
+		$this->setParametro('id_presupuesto','id_presupuesto','integer');
+		
+		        
+        //Definicion de la lista del resultado del query
+        $this->captura('id_concepto_ingas','int4');
+        $this->captura('desc_ingas','varchar');
+        $this->captura('tipo','varchar');
+        $this->captura('movimiento','varchar');
+        $this->captura('sw_tes','varchar');
+        $this->captura('id_oec','int4');
+        $this->captura('estado_reg','varchar');
+        $this->captura('id_usuario_reg','int4');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('fecha_mod','timestamp');
+        $this->captura('id_usuario_mod','int4');
+        $this->captura('usr_reg','varchar');
+        $this->captura('usr_mod','varchar');
+        $this->captura('activo_fijo','varchar');
+        $this->captura('almacenable','varchar');
+        $this->captura('desc_partida','text');
+		$this->captura('id_grupo_ots','varchar');
+		$this->captura('filtro_ot','varchar');
+		$this->captura('requiere_ot','varchar');
+		$this->captura('sw_autorizacion','varchar');
+		$this->captura('desc_gestion','varchar');
+		
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 	function insertarConceptoIngas(){
 		//Definicion de variables para ejecucion del procedimiento
@@ -147,6 +200,9 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
+		
+		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
+		$this->setParametro('nandina','nandina','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -172,6 +228,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
+		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
+		$this->setParametro('nandina','nandina','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

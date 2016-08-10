@@ -123,7 +123,7 @@ BEGIN
                 
                 IF p_administrador !=1  then            
                     --Verifica que tenga el usuario tenga un funcionario asociado que es un requisito
-                    if v_id_funcionario_usuario is null then
+                    if (v_id_funcionario_usuario is null and  v_fin = 'no') then
                         raise exception 'No se puede generar el listado porque el usuario no tiene registro como Funcionario';
                     end if;
                     
@@ -132,7 +132,7 @@ BEGIN
                         v_filtro = ' 0=0  and ';
                     elsif(v_depto_asignacion != 'ninguno') then
                     	--obtenemos los deptos asignados al usuario
-                        select pxp.list(du.id_depto::text) into v_deptos
+                        select coalesce(pxp.list(du.id_depto::text),'-1') into v_deptos
                         from param.tdepto_usuario du
                         where du.id_usuario = p_id_usuario and 
                         du.estado_reg = 'activo';
@@ -294,7 +294,7 @@ BEGIN
                 v_joins_wf = v_joins_wf ||  'inner join wf.tproceso_wf pw on pw.id_proceso_wf = ' || v_tabla.bd_codigo_tabla || '.id_proceso_wf ';            
                 IF p_administrador !=1  then
                     --v_joins_wf = ' inner join wf.testado_wf ew on ew.id_estado_wf = ' || v_tabla.bd_codigo_tabla || '.id_estado_wf ';
-                    if v_id_funcionario_usuario is null then
+                    if (v_id_funcionario_usuario is null and  v_fin = 'no') then
                         raise exception 'No se puede generar el listado porque el usuario no tiene registro como Funcionario';
                     end if;
                     --Verifica si el usuario tiene el rol del tipo de estado para levantar restricción de funcionario para visualización de datos
@@ -302,7 +302,7 @@ BEGIN
                         v_filtro = ' 0=0  and ';
                     elsif(v_depto_asignacion != 'ninguno') then
                     	--obtenemos los deptos asignados al usuario
-                        select pxp.list(du.id_depto::text) into v_deptos
+                        select coalesce(pxp.list(du.id_depto::text),'-1') into v_deptos
                         from param.tdepto_usuario du
                         where du.id_usuario = p_id_usuario and 
                         du.estado_reg = 'activo';

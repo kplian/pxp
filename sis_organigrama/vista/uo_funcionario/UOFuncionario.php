@@ -100,7 +100,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    				gwidth: 300,
    				fieldLabel:'Funcionario',
    				allowBlank:false,
-   				  				
+   				tinit:true,  				
    				valueField: 'id_funcionario',
    			    gdisplayField: 'desc_funcionario1',
       			renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
@@ -120,6 +120,17 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				name: 'id_cargo',
 				fieldLabel: 'Cargo a Asignar',
 				allowBlank: false,
+				tinit:true,
+   			    resizable:true,
+   			    tasignacion:true,
+   			    tname:'id_cargo',
+		        tdisplayField:'nombre',   				
+   				turl:'../../../sis_organigrama/vista/cargo/Cargo.php',
+	   			ttitle:'Cargos',
+	   			tconfig:{width:'80%',height:'90%'},
+	   			tdata:{},
+	   			tcls:'Cargo',
+	   			pid:this.idContenedor,
 				emptyText: 'Cargo...',
 				store: new Ext.data.JsonStore({
 					url: '../../sis_organigrama/control/Cargo/listarCargo',
@@ -153,7 +164,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 					return String.format('{0}', record.data['desc_cargo']);
 				}
 			},
-			type: 'ComboBox',
+			type: 'TrigguerCombo',
 			id_grupo: 0,
 			filters: {pfiltro: 'cargo.nombre#cargo.codigo#cargo.id_cargo',type: 'string'},
 			grid: true,
@@ -340,9 +351,11 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	onReloadPage:function(m){       
 		this.maestro=m;
 		this.Atributos[1].valorInicial=this.maestro.id_uo;
+		this.Cmp.id_cargo.tdata.id_uo = this.maestro.id_uo;
+		this.Cmp.id_funcionario.tdata.id_uo = this.maestro.id_uo;
 		this.Cmp.id_cargo.store.setBaseParam('id_uo',this.maestro.id_uo);
 		this.Cmp.id_funcionario.store.setBaseParam('id_uo',this.maestro.id_uo);
-
+ 
        if(m.id != 'id'){	
 
 		this.store.baseParams={id_uo:this.maestro.id_uo};
@@ -360,7 +373,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	},
 	loadValoresIniciales:function()
     {	
-        this.Cmp.tipo.setValue('oficial');       
+        this.Cmp.tipo.setValue('oficial');  
+        this.Cmp.tipo.fireEvent('select',this.Cmp.tipo);     
         Phx.vista.uo_funcionario.superclass.loadValoresIniciales.call(this);
     },
 	iniciarEventos : function () {
@@ -373,7 +387,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			}
 			
 		},this);
-		
+				
 		this.Cmp.id_funcionario.on('focus',function () {
 			if (this.Cmp.fecha_asignacion.getValue() == '' || this.Cmp.fecha_asignacion.getValue() == undefined) {
 				alert('Debe seleccionar la fecha de asignación');
@@ -388,6 +402,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			//Agregar al base params de funcionario y cargo
 			this.Cmp.id_funcionario.store.setBaseParam('tipo',this.Cmp.tipo.getValue());
 			this.Cmp.id_cargo.store.setBaseParam('tipo',this.Cmp.tipo.getValue());
+			this.Cmp.id_cargo.tdata.tipo = this.Cmp.tipo.getValue();
+			this.Cmp.id_funcionario.tdata.tipo = this.Cmp.tipo.getValue();
 			
 		},this);
 		
@@ -407,13 +423,20 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.Cmp.fecha_asignacion.on('blur', function () {
 			this.Cmp.id_cargo.store.setBaseParam('fecha',this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y'));
 			this.Cmp.id_funcionario.store.setBaseParam('fecha',this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y'));
+			this.Cmp.id_cargo.tdata.fecha = this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y');
+			this.Cmp.id_funcionario.tdata.fecha = this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y');
 			this.Cmp.id_funcionario.modificado = true;
 			this.Cmp.id_cargo.modificado = true;			
 		},this);
 		
 		this.Cmp.id_cargo.on('select', function (c,r,i) {
+			if (r.data) {
+				var data = r.data;
+			} else {
+				var data = r;
+			}			
 			//Mostrar fecha de finalizacion y obligar a llenar si no es de planta si es limpiar fecha_finalizacion, ocultar y habilitar null
-			if(r.data.codigo_tipo_contrato == 'PLA') {
+			if(data.codigo_tipo_contrato == 'PLA') {
 				this.Cmp.fecha_finalizacion.reset();
 				this.Cmp.fecha_finalizacion.allowBlank = true;
 				this.ocultarComponente(this.Cmp.fecha_finalizacion);

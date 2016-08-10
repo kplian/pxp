@@ -285,3 +285,18 @@
 	background-image:url(awe_left_arrow_all.png) !important;
 
 }
+.brellamada {
+    background-image:url(volumen.png) !important;
+}
+.batencion {
+    background-image:url(atencion.png) !important;
+}
+.bderivar {
+    background-image:url(reproducir.png) !important;
+}
+.bstop {
+    background-image:url(detener.png) !important;
+}
+.bcancelar {
+    background-image:url(cancelar.png) !important;
+}

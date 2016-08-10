@@ -47,22 +47,24 @@ BEGIN
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						moneda.id_moneda,
-						moneda.prioridad,
-						moneda.origen,
-						moneda.tipo_actualizacion,
-						moneda.estado_reg,
-						moneda.codigo,
-						moneda.moneda,
-						moneda.tipo_moneda,
-						moneda.id_usuario_reg,
-						moneda.fecha_reg,
-						moneda.id_usuario_mod,
-						moneda.fecha_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-                        moneda.triangulacion,
-                        moneda.contabilidad
+                            moneda.id_moneda,
+                            moneda.prioridad,
+                            moneda.origen,
+                            moneda.tipo_actualizacion,
+                            moneda.estado_reg,
+                            moneda.codigo,
+                            moneda.moneda,
+                            moneda.tipo_moneda,
+                            moneda.id_usuario_reg,
+                            moneda.fecha_reg,
+                            moneda.id_usuario_mod,
+                            moneda.fecha_mod,
+                            usu1.cuenta as usr_reg,
+                            usu2.cuenta as usr_mod,
+                            moneda.triangulacion,
+                            moneda.contabilidad,
+                            moneda.codigo_internacional,
+                            moneda.show_combo
 						from param.tmoneda moneda
 						inner join segu.tusuario usu1 on usu1.id_usuario = moneda.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = moneda.id_usuario_mod

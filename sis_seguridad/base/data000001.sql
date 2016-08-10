@@ -4501,3 +4501,4 @@ select pxp.f_insert_tprocedimiento ('SG_TUTO_CONT', 'Conteo de registros', 'si',
 select pxp.f_insert_trol ('PXP-Rol inicial', 'PXP-Rol inicial', 'PXP');
 
 /*******************************************F-DAT-JRR-SEGU-0-25/04/2014***********************************************/
+

@@ -34,10 +34,10 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo_proyecto',
-				fieldLabel: 'Codigo Proyecto',
+				fieldLabel: 'Código',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 120,
 				maxLength:10
 			},
 			type:'TextField',
@@ -49,10 +49,10 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre_proyecto',
-				fieldLabel: 'Nombre Proyecto',
+				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 240,
 				maxLength:100
 			},
 			type:'TextField',
@@ -67,7 +67,7 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Nombre Corto',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 140,
 				maxLength:100
 			},
 			type:'TextField',
@@ -79,10 +79,10 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion_proyecto',
-				fieldLabel: 'Descripcion Proyecto',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:300
 			},
 			type:'TextArea',
@@ -94,10 +94,10 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'id_proyecto_cat_prog',
-				fieldLabel: 'Id Proyecto Cat Prog',
+				fieldLabel: 'Proyecto Cat Prog',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 130,
 				maxLength:4
 			},
 			type:'NumberField',
@@ -109,7 +109,7 @@ Phx.vista.Proyecto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo_sisin',
-				fieldLabel: 'Codigo Sisin',
+				fieldLabel: 'Código Sisin',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,

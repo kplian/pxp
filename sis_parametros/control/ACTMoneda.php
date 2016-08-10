@@ -17,6 +17,18 @@ class ACTMoneda extends ACTbase{
 		if($this->objParam->getParametro('id_moneda')!=''){
               $this->objParam->addFiltro("id_moneda =".$this->objParam->getParametro('id_moneda'));    
          }
+		
+		if($this->objParam->getParametro('id_moneda_defecto')!='' && $this->objParam->getParametro('id_moneda_defecto') != 0){
+              $this->objParam->addFiltro("id_moneda =".$this->objParam->getParametro('id_moneda_defecto'));    
+         }
+		
+		if($this->objParam->getParametro('filtrar') == 'si' ){
+              $this->objParam->addFiltro("show_combo = ''si''");    
+        }
+		
+		if($this->objParam->getParametro('filtrar_base') == 'si' ){
+              $this->objParam->addFiltro("tipo_moneda = ''base''");    
+        }
          
 		
 		

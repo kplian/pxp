@@ -118,7 +118,11 @@ BEGIN
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE UOFUNC.estado_reg !=''inactivo'' and ';
+               v_id_padre:=v_parametros.id_uo;
+              
+               
                v_consulta:=v_consulta||v_parametros.filtro;
+               v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
                return v_consulta;
          END;
      else

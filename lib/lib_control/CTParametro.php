@@ -104,7 +104,9 @@ class CTParametro{
 
 	function aplicaFiltroRapido() {
 		if ($this->getParametro('bottom_filter_value') != '' && $this->getParametro('bottom_filter_fields')) {
-			$fields = explode(',', $this->getParametro('bottom_filter_fields'));
+			$fields = str_replace('#', ',', $this->getParametro('bottom_filter_fields'));	
+			$fields = explode(',', $fields);
+			
 			$value = $this->getParametro('bottom_filter_value');
 			
 			$query .= "((".$fields[0]."::varchar ILIKE ''%".$value."%'')"; 
@@ -228,6 +230,7 @@ class CTParametro{
 				$this->columnas_excel=$this->_json_decode($this->arreglo_parametros['columnas'],true);
 			}
 		}
+		
 
 	}
 	/**
@@ -241,10 +244,14 @@ class CTParametro{
 	 */
 
 	function _json_decode($string) {
+		
+			
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
-
+		$string = str_replace('\\', '\\\\', $string);
+		$string = str_replace('\\\\"', '\\"', $string);
+		
 		return json_decode($string,true);
 	}
 

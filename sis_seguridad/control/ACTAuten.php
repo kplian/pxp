@@ -275,7 +275,9 @@ class ACTAuten extends ACTbase {
 				//almacena llave ....
 				$_SESSION["_SESION"]->actualizarLlaves($_SESSION['key_k'], $_SESSION['key_p'], $_SESSION['key_p_inv'], $_SESSION['key_m'], $_SESSION['key_d'], $_SESSION['key_e']);
 			}
-			
+			$logo = str_replace('../../../', '', $_SESSION['_MINI_LOGO']);
+			$logo = ($_SESSION["_FORSSL"]=="SI") ? 'https://' : 'http://' . $_SERVER['HTTP_HOST'] . $_SESSION["_FOLDER"] . $logo;
+		    //cualquier variable que se agregue aqui tb debe ir en sis_seguridad/vista/_adm/resources/Phx.CP.mmain.php
 		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
 				echo "{success:true,
 				id_cargo:".$id_cargo.",
@@ -284,6 +286,7 @@ class ACTAuten extends ACTbase {
 				nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
 				nombre_basedatos:'".$_SESSION["_BASE_DATOS"]."',
 				mini_logo:'".$_SESSION["_MINI_LOGO"]."',
+				icono_notificaciones:'" . $logo . "',				
 				id_usuario:'".$_SESSION["_ID_USUARIO_OFUS"]."',
 				id_funcionario:'".$_SESSION["_ID_FUNCIOANRIO_OFUS"]."',
 				autentificacion:'".$_SESSION["_AUTENTIFICACION"]."',

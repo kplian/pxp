@@ -53,7 +53,7 @@ Phx.vista.NivelOrganizacional=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Nombre Nivel',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 250,
 				maxLength:50
 			},
 				type:'TextField',

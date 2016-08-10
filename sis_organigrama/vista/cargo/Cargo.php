@@ -13,6 +13,7 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
+		
 		this.maestro=config;
 		//llama al constructor de la clase padre
 		Phx.vista.Cargo.superclass.constructor.call(this,config);
@@ -27,7 +28,14 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
                 tooltip: 'Centros de Costo asociados al cargo'
             }
         );
-		this.load({params:{start:0, limit:50,id_uo: this.maestro.id_uo}});		
+        this.store.baseParams.id_uo = this.maestro.id_uo;
+        if (this.maestro.fecha) {
+        	this.store.baseParams.fecha = this.maestro.fecha;
+        } 
+        if (this.maestro.tipo) {
+        	this.store.baseParams.tipo = this.maestro.tipo;
+        }       
+		this.load({params:{start:0, limit:50}});		
 	},
 			
 	Atributos:[
@@ -126,6 +134,17 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Oficina',
 				allowBlank: false,
 				emptyText:'Oficina...',
+				tinit:true,
+   			    resizable:true,
+   			    tasignacion:true,
+   			    tname:'id_oficina',
+		        tdisplayField:'nombre',   				
+   				turl:'../../../sis_organigrama/vista/oficina/Oficina.php',
+	   			ttitle:'Oficinas',
+	   			tconfig:{width:'80%',height:'90%'},
+	   			tdata:{},
+	   			tcls:'Oficina',
+	   			pid:this.idContenedor,
 				store:new Ext.data.JsonStore(
 				{
 					url: '../../sis_organigrama/control/Oficina/listarOficina',
@@ -156,7 +175,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 				tpl:'<tpl for="."><div class="x-combo-list-item"><p>{codigo}</p><p>{nombre}</p><p>{nombre_lugar}</p> </div></tpl>',
 				renderer:function (value, p, record){return String.format('{0}', record.data['nombre_oficina']);}
 			},
-			type:'ComboBox',
+			type:'TrigguerCombo',
 			filters:{pfiltro:'ofi.nombre',type:'string'},
 			id_grupo:0,
 			grid:true,
@@ -164,7 +183,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config: {
-				name: 'id_temporal_cargo',
+				name: 'nombre',
 				fieldLabel: 'Nombre Cargo',
 				allowBlank: false,
 				emptyText: 'Elija una opción...',
@@ -181,11 +200,11 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 					remoteSort: true,
 					baseParams: {par_filtro: 'cargo.nombre'}
 				}),
-				valueField: 'id_temporal_cargo',
+				valueField: 'nombre',
 				displayField: 'nombre',
 				gdisplayField: 'nombre',
-				hiddenName: 'id_temporal_cargo',
-				forceSelection: true,
+				hiddenName: 'nombre',
+				forceSelection: false,
 				typeAhead: false,
 				triggerAction: 'all',
 				lazyRender: true,
@@ -210,6 +229,17 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 				name: 'id_escala_salarial',
 				fieldLabel: 'Escala Salarial',
 				allowBlank: false,
+				tinit:true,
+   			    resizable:true,
+   			    tasignacion:true,
+   			    tname:'id_escala_salarial',
+		        tdisplayField:'nombre',   				
+   				turl:'../../../sis_organigrama/vista/escala_salarial/EscalaSalarial.php',
+	   			ttitle:'Escalas Salariales',
+	   			tconfig:{width:'80%',height:'90%'},
+	   			tdata:{},
+	   			tcls:'EscalaSalarial',
+	   			pid:this.idContenedor,
 				emptyText: 'Elija una opción...',
 				store: new Ext.data.JsonStore({
 					url: '../../sis_organigrama/control/EscalaSalarial/listarEscalaSalarial',
@@ -393,6 +423,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 		{name:'codigo', type: 'string'},
 		{name:'nombre', type: 'string'},
 		{name:'nombre_tipo_contrato', type: 'string'},
+		{name:'codigo_tipo_contrato', type: 'string'},
 		{name:'nombre_escala', type: 'string'},
 		{name:'nombre_oficina', type: 'string'},
 		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d'},
@@ -445,7 +476,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
     },
     
     onButtonEdit : function () {
-    	this.ocultarComponente(this.Cmp.id_escala_salarial);
+    	//this.ocultarComponente(this.Cmp.id_escala_salarial);
     	this.ocultarComponente(this.Cmp.id_tipo_contrato);
     	if (this.Cmp.fecha_fin.getValue() == '' || this.Cmp.fecha_fin.getValue() == undefined) {
     		this.ocultarComponente(this.Cmp.fecha_fin);
@@ -483,3 +514,4 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 </script>
 		
 		
+ 

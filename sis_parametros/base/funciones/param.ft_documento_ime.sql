@@ -160,7 +160,29 @@ BEGIN
         END;
 
 
-    else
+
+/*******************************
+#TRANSACCION:  PM_DOCUME_INSPL
+#DESCRIPCION:	sube plantilla
+#AUTOR:		KPLIAN
+#FECHA:		28-06-2011
+***********************************/
+
+     elsif(par_transaccion='PM_DOCUME_INSPL')then
+       BEGIN
+
+         update param.tdocumento set
+           ruta_plantilla = v_parametros.ruta_archivo
+           where id_documento = v_parametros.id_documento;
+
+         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','documento eliminado con exito '||v_parametros.id_documento);
+         v_resp = pxp.f_agrega_clave(v_resp,'id_documento',v_parametros.id_documento::varchar);
+
+       END;
+
+
+
+     else
 
          raise exception 'No existe la transaccion: %',par_transaccion;
     end if;

@@ -1081,6 +1081,33 @@ ALTER TABLE param.tconcepto_ingas
 
 /***********************************F-SCP-JRR-PARAM-0-03/10/2015****************************************/
 
+/***********************************I-SCP-RAC-PARAM-1-31/08/2015****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_nro_dui VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_nro_dui
+IS 'si o no';
+
+
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_ic VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_ic
+IS 'si o no, si esta habilitado, es indispensable que el monto excento tambien lo este, ya que se copia el valor por que tienen el mismo comportamiento';
+
+/***********************************F-SCP-RAC-PARAM-1-31/08/2015****************************************/
+
+
+
+
+
+/***********************************I-SCP-RCM-PARAM-0-27/10/2015****************************************/
+alter table param.tcatalogo
+    add column icono varchar(100);
+/***********************************F-SCP-RCM-PARAM-0-27/10/2015****************************************/
 /***********************************I-SCP-GSS-PARAM-0-04/11/2015****************************************/
 
 CREATE TABLE param.tproveedor_cta_bancaria (
@@ -1109,3 +1136,289 @@ COMMENT ON COLUMN param.tmoneda.triangulacion
 IS 'es moneda de triangulacion';
 
 /***********************************F-SCP-RAC-PARAM-0-03/12/2015****************************************/
+
+/***********************************I-SCP-RAC-PARAM-0-18/12/2015****************************************/
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN codigo_internacional VARCHAR(4);
+  
+/***********************************F-SCP-RAC-PARAM-0-18/12/2015****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-21/12/2015****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgestion
+  ADD COLUMN fecha_ini DATE;
+  
+  --------------- SQL ---------------
+
+ALTER TABLE param.tgestion
+  ADD COLUMN fecha_fin DATE;
+
+/***********************************F-SCP-RAC-PARAM-0-21/12/2015****************************************/
+
+
+
+
+
+/***********************************I-SCP-FFP-PARAM-0-04/01/2016****************************************/
+
+ALTER TABLE param.tgestion
+  ADD COLUMN tipo VARCHAR(255);
+
+/***********************************F-SCP-FFP-PARAM-0-21/12/2015****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-05/11/2013****************************************/
+CREATE TABLE param.tproveedor_item_servicio (  
+  id_proveedor_item serial NOT NULL,
+  id_proveedor integer NOT NULL,
+  id_item integer,
+  id_servicio integer,
+  CONSTRAINT pk_tproveedor_item_servicio___id_proveedor_item PRIMARY KEY (id_proveedor_item),
+  CONSTRAINT chk_tproveedor_item_servivio__id_item__id_servicio CHECK (id_item IS NULL AND id_servicio IS NOT NULL OR id_servicio IS NULL AND id_item IS NOT NULL)
+) INHERITS (pxp.tbase)
+WITH OIDS;
+ALTER TABLE param.tproveedor_item_servicio OWNER TO postgres;
+/***********************************F-SCP-RCM-PARAM-0-05/11/2013****************************************/
+
+/***********************************I-SCP-JRR-PARAM-0-16/02/2016****************************************/
+
+ALTER TABLE param.tlugar
+  ADD COLUMN es_regional VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-JRR-PARAM-0-16/02/2016****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-19/02/2016****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN tipo_excento VARCHAR(20) DEFAULT 'variable' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.tipo_excento
+IS 'peuden ser variable, porcentual, constante. En caso de constante o porcentual toma el valor del campo valor_excento';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN valor_excento NUMERIC DEFAULT 0 NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.valor_excento
+IS 'valor que se aplica al excento cuando es  porcentual o constante';
+
+/***********************************F-SCP-RAC-PARAM-0-19/02/2016****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-22/02/2016****************************************/
+-------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN tipo_informe VARCHAR(30) DEFAULT 'lcv' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.tipo_informe
+IS 'lcv, libro de compras estandar
+retenciones,  retenciones de biene y servicios
+ncd, libro de compras notas de credito y debito
+otro,  otros';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tdepto
+  ADD COLUMN id_entidad INTEGER;
+
+COMMENT ON COLUMN param.tdepto.id_entidad
+IS 'identifica a que entidad corresponde este departamento';
+
+/***********************************F-SCP-RAC-PARAM-0-22/02/2016****************************************/
+
+/***********************************I-SCP-JRR-PARAM-0-10/03/2016****************************************/
+
+ALTER TABLE param.tentidad
+  ADD COLUMN pagina_entidad VARCHAR(200);
+
+/***********************************F-SCP-JRR-PARAM-0-10/03/2016****************************************/
+
+/***********************************I-SCP-JRR-PARAM-0-11/03/2016****************************************/
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN codigo VARCHAR(30);
+
+/***********************************F-SCP-JRR-PARAM-0-11/03/2016****************************************/
+
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-17/03/2016****************************************/
+
+
+ALTER TABLE param.tentidad
+  ADD COLUMN direccion_matriz VARCHAR;
+
+COMMENT ON COLUMN param.tentidad.direccion_matriz
+IS 'dirección fiscal que aprece en reprotes como LCV (direccion fiscal)';
+
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-17/03/2016****************************************/
+
+
+
+/***********************************I-SCP-FFP-PARAM-0-28/03/2016****************************************/
+
+ALTER TABLE param.tdocumento
+  ADD COLUMN ruta_plantilla VARCHAR(255);
+
+/***********************************F-SCP-FFP-PARAM-0-28/03/2016****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-11/04/2016****************************************/
+
+ALTER TABLE param.tentidad
+  ADD COLUMN identificador_min_trabajo VARCHAR(50);
+
+ALTER TABLE param.tentidad
+  ADD COLUMN identificador_caja_salud VARCHAR(50);
+/***********************************F-SCP-FFP-PARAM-0-11/04/2016****************************************/
+
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-11/04/2016****************************************/
+
+
+--------------- SQL ---------------
+
+ -- object recreation
+ALTER TABLE param.talarma
+  DROP CONSTRAINT chk_talarma__tipo RESTRICT;
+
+ALTER TABLE param.talarma
+  ADD CONSTRAINT chk_talarma__tipo CHECK ((tipo)::text = ANY (ARRAY[('comunicado'::character varying)::text,('alarma'::character varying)::text, ('notificacion'::character varying)::text]));
+
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_alarma_fk INTEGER;
+
+COMMENT ON COLUMN param.talarma.id_alarma_fk
+IS 'solo para alertas del tipo comunicado hace referencia al registro original';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN estado_comunicado VARCHAR(30);
+
+ALTER TABLE param.talarma
+  ALTER COLUMN estado_comunicado SET DEFAULT 'borrador';
+
+COMMENT ON COLUMN param.talarma.estado_comunicado
+IS 'borrado o activado, cuando esta activado se registras las alertas individuales';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN id_uos INTEGER[];
+
+COMMENT ON COLUMN param.talarma.id_uos
+IS 'hace referencia a las UO a las que se debe entregar el comunicado, solo en el regitro origen (tipo = comunicado) id_alarma_fk = NULL';
+
+/***********************************F-SCP-RAC-PARAM-0-11/04/2016****************************************/
+
+
+ 
+/***********************************I-SCP-RAC-PARAM-0-16/04/2016****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_grupo_ots INTEGER[];
+
+COMMENT ON COLUMN param.tconcepto_ingas.id_grupo_ots
+IS 'lamacena las ot que pueden relacionarce con este el concepto de gasto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_unidad_medida INTEGER;
+
+COMMENT ON COLUMN param.tconcepto_ingas.id_unidad_medida
+IS 'unidad de medida del concepto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN nandina VARCHAR(100);
+
+COMMENT ON COLUMN param.tconcepto_ingas.nandina
+IS 'coduigo partida de aduana para exportaciones';
+
+
+/***********************************F-SCP-RAC-PARAM-0-16/04/2016****************************************/
+/***********************************I-SCP-JRR-PARAM-0-22/04/2016****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma
+  ADD COLUMN pendiente varchar(30) DEFAULT 'no';
+
+COMMENT ON COLUMN param.talarma.pendiente
+IS 'Si el mensaje esta en proceso de envio valores: no o hora en formato YYYYMMDD-HH24MISSMS la hora es la hora en la que se inicio el proceso de envio';
+
+/***********************************F-SCP-JRR-PARAM-0-22/04/2016****************************************/
+
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-22/06/2016****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_qr VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_qr
+IS 'si se habilita o no el codigo qr para llenado rapido';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_nit VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_nit
+IS 'si permite o no el nro de nit';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN plantilla_qr VARCHAR;
+
+COMMENT ON COLUMN param.tplantilla.plantilla_qr
+IS 'defineel formato de lectura para el codigo qr, con os nombres de las columnas qe se llenan separados por pipe';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN show_combo VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tmoneda.show_combo
+IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de una solicitud de comra';
+
+
+/***********************************F-SCP-RAC-PARAM-0-22/06/2016****************************************/
+

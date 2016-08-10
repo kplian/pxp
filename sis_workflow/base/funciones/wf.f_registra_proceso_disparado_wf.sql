@@ -12,7 +12,8 @@ CREATE OR REPLACE FUNCTION wf.f_registra_proceso_disparado_wf (
   p_codigo_proceso_wf varchar = NULL::character varying,
   out ps_id_proceso_wf integer,
   out ps_id_estado_wf integer,
-  out ps_codigo_estado varchar
+  out ps_codigo_estado varchar,
+  out ps_nro_tramite varchar
 )
 RETURNS record AS
 $body$
@@ -217,6 +218,8 @@ BEGIN
         v_nro_tramite
       from wf.tproceso_wf pw
       where pw.id_proceso_wf = v_id_proceso_wf_prev;
+      
+      ps_nro_tramite = v_nro_tramite;
      
      
      

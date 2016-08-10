@@ -7,9 +7,6 @@
 *	Description: Build the menu definition and the composition
 */
 
-
-
-
 /*
 
 Para  definir la la metadata, menus, roles, etc
@@ -811,4 +808,149 @@ VALUES (E'moneda_intercambio', E'false', E'el sistema maneja moneda de intercamb
 
 /***********************************F-DAT-RAC-PARAM-0-28/10/2015*****************************************/
 
+
+/***********************************I-DAT-RCM-PARAM-0-21/01/2016*****************************************/
+select pxp.f_add_catalog('PARAM','tmoneda__origen','nacional');
+select pxp.f_add_catalog('PARAM','tmoneda__origen','extranjera');
+select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','sin_actualizacion');
+select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_saldo');
+select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_transaccion');
+/***********************************F-DAT-RCM-PARAM-0-21/01/2016*****************************************/
+
+
+
+/***********************************I-DAT-RCM-PARAM-0-24/01/2016*****************************************/
+
+
+select pxp.f_insert_tgui ('Entidad', 'Entidad', 'ENT', 'si', 10, 'sis_parametros/vista/entidad/Entidad.php', 2, '', 'Entidad', 'PARAM');
+select pxp.f_insert_testructura_gui ('ENT', 'PARAM');
+
+/***********************************F-DAT-RCM-PARAM-0-24/01/2016*****************************************/
+
+
+
+
+/***********************************I-DAT-RAC-PARAM-0-12/04/2016*****************************************/
+
+/* Data for the 'pxp.variable_global' table  (Records 1 - 1) */
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'param_comunicado', E'usuario', E'(usuario , funcionario) envio de copmunicados a usuarios de sistema o todos los funcionarios');
+
+
+select pxp.f_insert_tgui ('<i class="fa fa-wrench fa-2x"></i> PARAMETROS GENERALES', 'Parametros Generales', 'PARAM', 'si', 2, '', 1, '', 'Sistema de Parametros', 'PARAM');
+select pxp.f_insert_tgui ('Alarmas', 'Para programar las alarmas', 'ALARM', 'si', 0, 'sis_parametros/vista/alarma/Alarma.php', 2, '', 'Alarma', 'PARAM');
+select pxp.f_insert_tgui ('Departamentos', 'Departamentos', 'DEPTO', 'si', 0, 'sis_parametros/vista/depto/Depto.php', 2, '', 'Depto', 'PARAM');
+select pxp.f_insert_tgui ('Lugar', 'Lugar', 'LUG', 'si', 0, 'sis_parametros/vista/lugar/Lugar.php', 2, '', 'Lugar', 'PARAM');
+select pxp.f_insert_tgui ('Institucion', 'Detalle de instituciones', 'INSTIT', 'si', 0, 'sis_parametros/vista/institucion/Institucion.php', 2, '', 'Institucion', 'PARAM');
+select pxp.f_insert_tgui ('Proyecto', 'Proyecto EP proviene de ENDESIS', 'PRO', 'si', 5, 'sis_parametros/vista/proyecto/Proyecto.php', 2, '', 'Proyecto', 'PARAM');
+select pxp.f_insert_tgui ('Proveedores', 'Registro de Proveedores', 'PROVEE', 'si', 3, 'sis_parametros/vista/proveedor/Proveedor.php', 2, '', 'proveedor', 'PARAM');
+select pxp.f_insert_tgui ('Documentos', 'Documentos por Sistema', 'DOCUME', 'si', 0, 'sis_parametros/vista/documento/Documento.php', 2, '', 'Documento', 'PARAM');
+select pxp.f_insert_tgui ('Configuracion Alarmas', 'Para configurar las alarmas', 'CONALA', 'si', 0, 'sis_parametros/vista/config_alarma/ConfigAlarma.php', 2, '', 'ConfigAlarma', 'PARAM');
+select pxp.f_insert_tgui ('Unidades de Medida', 'Registro de Unidades de Medida', 'UME', 'si', 0, 'sis_parametros/vista/unidad_medida/UnidadMedida.php', 2, '', 'UnidadMedida', 'PARAM');
+select pxp.f_insert_tgui ('Gestion', 'Manejo de gestiones', 'GESTIO', 'si', 0, 'sis_parametros/vista/gestion/Gestion.php', 2, '', 'Gestion', 'PARAM');
+select pxp.f_insert_tgui ('Catalogo', 'Catalogo', 'CATA', 'si', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 2, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Periodo', 'Periodo', 'PERIOD', 'si', 0, 'sis_parametros/vista/periodo/Periodo.php', 2, '', 'Periodo', 'PARAM');
+select pxp.f_insert_tgui ('Moneda', 'Monedas', 'MONPAR', 'si', 0, 'sis_parametros/vista/moneda/Moneda.php', 2, '', 'Moneda', 'PARAM');
+select pxp.f_insert_tgui ('Tipos de Catálogos', 'Tipos de Catálogos', 'PACATI', 'si', 0, 'sis_parametros/vista/catalogo_tipo/CatalogoTipo.php', 2, '', 'CatalogoTipo', 'PARAM');
+select pxp.f_insert_tgui ('Servicios', 'Para registro de los servicios', 'SERVIC', 'si', 0, 'sis_parametros/vista/servicio/Servicio.php', 2, '', 'Servicio', 'PARAM');
+select pxp.f_insert_tgui ('EP', 'Elementos de la Estructura Programatica', 'CEP', 'si', 1, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Compras', 'Parametrizaciones re lacionadas con compras', 'CCOM', 'si', 2, '', 3, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Aprobadores', 'Aprobadores de Compras', 'APROC', 'si', 1, 'sis_parametros/vista/aprobador/Aprobador.php', 4, '', 'Aprobador', 'PARAM');
+select pxp.f_insert_tgui ('Financiador', 'Financiadores de Compras', 'FIN', 'si', 1, 'sis_parametros/vista/financiador/Financiador.php', 3, '', 'Financiador', 'PARAM');
+select pxp.f_insert_tgui ('Regional', 'Regionales de Compras', 'REGIO', 'si', 2, 'sis_parametros/vista/regional/Regional.php', 3, '', 'Regional', 'PARAM');
+select pxp.f_insert_tgui ('Programa', 'Programas de Compras', 'PROG', 'si', 3, 'sis_parametros/vista/programa/Programa.php', 3, '', 'Programa', 'PARAM');
+select pxp.f_insert_tgui ('Actividad', 'Actividad', 'ACT', 'si', 5, 'sis_parametros/vista/actividad/Actividad.php', 3, '', 'Actividad', 'PARAM');
+select pxp.f_insert_tgui ('Programa-Proyecto-Actividad', 'programa proyecto actividad', 'PPA', 'si', 6, 'sis_parametros/vista/programa_proyecto_acttividad/ProgramaProyectoActtividad.php', 3, '', 'ProgramaProyectoActtividad', 'PARAM');
+select pxp.f_insert_tgui ('Financiador-Regional-Programa-Proyecto', 'financiadores Regionales Programas Proyectos', 'FRPP', 'si', 7, 'sis_parametros/vista/ep/Ep.php', 3, '', 'Ep', 'PARAM');
+select pxp.f_insert_tgui ('Empresa', 'Empresa', 'EMP', 'si', 0, 'sis_parametros/vista/empresa/Empresa.php', 2, '', 'Empresa', 'PARAM');
+select pxp.f_insert_tgui ('Concepto de Ingreso/Gasto', 'Parametrizaciond e concepto de gasto o ingreso', 'CONIG', 'si', 2, 'sis_parametros/vista/concepto_ingas/ConceptoIngas.php', 4, '', 'ConceptoIngas', 'PARAM');
+select pxp.f_insert_tgui ('Centro de Costo', 'Centro de costo', 'CCOST', 'si', 9, 'sis_parametros/vista/centro_costo/CentroCosto.php', 2, '', 'CentroCosto', 'PARAM');
+select pxp.f_insert_tgui ('Tipo de Cambio', 'tipo de cambio', 'TCB', 'si', 0, 'sis_parametros/vista/tipo_cambio/TipoCambio.php', 2, '', 'TipoCambio', 'PARAM');
+select pxp.f_insert_tgui ('Asistentes', 'Asistentes', 'ASI', 'si', 4, 'sis_parametros/vista/asistente/Asistente.php', 2, '', 'Asistente', 'PARAM');
+select pxp.f_insert_tgui ('Documentos Fiscales', 'Listado de todos los Documentos fiscales', 'DF', 'si', 0, 'sis_parametros/vista/documento_fiscal/DocumentoFiscal.php', 2, '', 'DocumentoFiscal', 'PARAM');
+select pxp.f_insert_tgui ('Plantillas', 'Plantillas', 'PLANT', 'si', 0, 'sis_parametros/vista/plantilla/Plantilla.php', 2, '', 'Plantilla', 'PARAM');
+select pxp.f_insert_tgui ('Usuarios por Departamento', 'Usuarios por Departamento', 'DEPTO.1', 'no', 0, 'sis_parametros/vista/depto_usuario/DeptoUsuario.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Usuarios', 'Usuarios', 'DEPTO.1.1', 'no', 0, 'sis_seguridad/vista/usuario/Usuario.php', 4, '', 'usuario', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'DEPTO.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 5, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Roles', 'Roles', 'DEPTO.1.1.2', 'no', 0, 'sis_seguridad/vista/usuario_rol/UsuarioRol.php', 5, '', 'usuario_rol', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'DEPTO.1.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 6, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Ubicacion Lugar', 'Ubicacion Lugar', 'LUG.1', 'no', 0, 'sis_parametros/vista/lugar/mapaLugar.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Items/Servicios ofertados', 'Items/Servicios ofertados', 'PROVEE.1', 'no', 0, 'sis_parametros/vista/proveedor_item_servicio/ProveedorItemServicio.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Periodos', 'Periodos', 'GESTIO.1', 'no', 0, 'sis_parametros/vista/periodo/Periodo.php', 3, '', 'Periodo', 'PARAM');
+select pxp.f_insert_tgui ('subir Logo', 'subir Logo', 'EMP.1', 'no', 0, 'sis_parametros/vista/empresa/subirLogo.php', 3, '', 'subirLogo', 'PARAM');
+select pxp.f_insert_tgui ('Generadores de Alarma', 'Configuracion funciones que generan alarmas', 'GAL', 'si', 0, 'sis_parametros/vista/generador_alarma/GeneradorAlarma.php', 2, '', 'GeneradorAlarma', 'PARAM');
+select pxp.f_insert_tgui ('Grupos', 'Grupos', 'GQP', 'si', 8, 'sis_parametros/vista/grupo/Grupo.php', 3, '', 'Grupo', 'PARAM');
+select pxp.f_insert_tgui ('Depto - UO', 'Depto - UO', 'DEPTO.2', 'no', 0, 'sis_parametros/vista/depto_uo/DeptoUo.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Depto - EP', 'Depto - EP', 'DEPTO.3', 'no', 0, 'sis_parametros/vista/depto_ep/DeptoEp.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Depto UO - EP', 'Depto UO - EP', 'DEPTO.4', 'no', 0, 'sis_parametros/vista/depto_uo_ep/DeptoUoEp.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Firmas Documentos', 'Firmas Documentos', 'DEPTO.5', 'no', 0, 'sis_parametros/vista/firma/Firma.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Subsistema', 'Subsistema', 'DEPTO.6', 'no', 0, 'id_subsistema', 3, '', 'Subsistema...', 'PARAM');
+select pxp.f_insert_tgui ('EP\', 'EP\', 'DEPTO.1.1.3', 'no', 0, 'sis_seguridad/vista/usuario_grupo_ep/UsuarioGrupoEp.php', 5, '', ', 
+          width:400,
+          cls:', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'INSTIT.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 3, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'INSTIT.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 4, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'PROVEE.2', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 3, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Instituciones', 'Instituciones', 'PROVEE.3', 'no', 0, 'sis_parametros/vista/institucion/Institucion.php', 3, '', 'Institucion', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'PROVEE.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 4, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'PROVEE.3.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 4, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Catálogo', 'Catálogo', 'UME.1', 'no', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 3, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Catálogo', 'Catálogo', 'GESTIO.2', 'no', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 3, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Periodo Subistema', 'Periodo Subistema', 'GESTIO.1.1', 'no', 0, 'sis_parametros/vista/periodo_subsistema/PeriodoSubsistema.php', 4, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Periodo Subistema', 'Periodo Subistema', 'PERIOD.1', 'no', 0, 'sis_parametros/vista/periodo_subsistema/PeriodoSubsistema.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'APROC.1', 'no', 0, 'sis_organigrama/vista/funcionario/Funcionario.php', 5, '', 'funcionario', 'PARAM');
+select pxp.f_insert_tgui ('Cuenta Bancaria del Empleado', 'Cuenta Bancaria del Empleado', 'APROC.1.1', 'no', 0, 'sis_organigrama/vista/funcionario_cuenta_bancaria/FuncionarioCuentaBancaria.php', 6, '', 'FuncionarioCuentaBancaria', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'APROC.1.2', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 6, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Instituciones', 'Instituciones', 'APROC.1.1.1', 'no', 0, 'sis_parametros/vista/institucion/Institucion.php', 7, '', 'Institucion', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'APROC.1.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 8, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'APROC.1.1.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 9, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Catálogo', 'Catálogo', 'CONIG.1', 'no', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 5, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Organigrama', 'Organigrama', 'ASI.1', 'no', 0, 'sis_organigrama/vista/estructura_uo/EstructuraUoCheck.php', 3, '', '60%', 'PARAM');
+select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'ASI.2', 'no', 0, 'sis_organigrama/vista/funcionario/Funcionario.php', 3, '', 'funcionario', 'PARAM');
+select pxp.f_insert_tgui ('Catálogo', 'Catálogo', 'ASI.3', 'no', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 3, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Cargos por Unidad', 'Cargos por Unidad', 'ASI.1.1', 'no', 0, 'sis_organigrama/vista/cargo/Cargo.php', 4, '', 'Cargo', 'PARAM');
+select pxp.f_insert_tgui ('Asignacion de Funcionarios a Unidad', 'Asignacion de Funcionarios a Unidad', 'ASI.1.2', 'no', 0, 'sis_organigrama/vista/uo_funcionario/UOFuncionario.php', 4, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Asignación de Presupuesto por Cargo', 'Asignación de Presupuesto por Cargo', 'ASI.1.1.1', 'no', 0, 'sis_organigrama/vista/cargo_presupuesto/CargoPresupuesto.php', 5, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Centros de Costo Asignados por Cargo', 'Centros de Costo Asignados por Cargo', 'ASI.1.1.2', 'no', 0, 'sis_organigrama/vista/cargo_centro_costo/CargoCentroCosto.php', 5, '', 'CargoCentroCosto', 'PARAM');
+select pxp.f_insert_tgui ('Funcionarios', 'Funcionarios', 'ASI.1.2.1', 'no', 0, 'sis_organigrama/vista/funcionario/Funcionario.php', 5, '', 'funcionario', 'PARAM');
+select pxp.f_insert_tgui ('Cuenta Bancaria del Empleado', 'Cuenta Bancaria del Empleado', 'ASI.1.2.1.1', 'no', 0, 'sis_organigrama/vista/funcionario_cuenta_bancaria/FuncionarioCuentaBancaria.php', 6, '', 'FuncionarioCuentaBancaria', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'ASI.1.2.1.2', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 6, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Instituciones', 'Instituciones', 'ASI.1.2.1.1.1', 'no', 0, 'sis_parametros/vista/institucion/Institucion.php', 7, '', 'Institucion', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'ASI.1.2.1.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 8, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'ASI.1.2.1.1.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 9, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Catálogo', 'Catálogo', 'DF.1', 'no', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 3, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Roles', 'Roles', 'GQP.1', 'no', 0, 'sis_parametros/vista/grupo_ep/GrupoEp.php', 4, '', 'GrupoEp', 'PARAM');
+select pxp.f_insert_tgui ('Catálogo', 'Catálogo', 'DEPTO.1.2', 'no', 0, 'sis_parametros/vista/catalogo/Catalogo.php', 4, '', 'Catalogo', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'PROVEE.3.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 5, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'APROC.1.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 7, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'ASI.1.2.1.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 7, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Cuenta Bancaria del Empleado', 'Cuenta Bancaria del Empleado', 'ASI.2.1', 'no', 0, 'sis_organigrama/vista/funcionario_cuenta_bancaria/FuncionarioCuentaBancaria.php', 4, '', 'FuncionarioCuentaBancaria', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'ASI.2.2', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 4, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Instituciones', 'Instituciones', 'ASI.2.1.1', 'no', 0, 'sis_parametros/vista/institucion/Institucion.php', 5, '', 'Institucion', 'PARAM');
+select pxp.f_insert_tgui ('Personas', 'Personas', 'ASI.2.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 6, '', 'persona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'ASI.2.1.1.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 7, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'ASI.2.2.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 5, '', 'subirFotoPersona', 'PARAM');
+select pxp.f_insert_tgui ('Depto - Cuenta Bancaria', 'Depto - Cuenta Bancaria', 'DEPTO.7', 'no', 0, 'sis_tesoreria/vista/depto_cuenta_bancaria/DeptoCuentaBancaria.php', 3, '', '50%', 'PARAM');
+select pxp.f_insert_tgui ('Entidad', 'Entidad', 'ENT', 'si', 0, 'sis_parametros/vista/entidad/Entidad.php', 2, '', 'Entidad', 'PARAM');
+select pxp.f_insert_tgui ('Monedas', 'Monedas', 'MNDS', 'si', 2, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Alarmas', 'Alarmas', 'ALRMS', 'si', 3, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Empresa', 'Empresa', 'EMPS', 'si', 1, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Catalogos', 'Catalogos', 'CTLGS', 'si', 2, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Otros', 'Otros', 'OTROS', 'si', 50, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Comunicados', 'registro de comunicados ', 'COMAL', 'si', 1, 'sis_parametros/vista/alarma/Comunicado.php', 3, '', 'Comunicado', 'PARAM');
+
+
+
+
+/***********************************F-DAT-RAC-PARAM-0-12/04/2016*****************************************/
+
+
+/*******************************************I-DAT-JRR-PARAM-0-18/06/2016***********************************************/
+
+select pxp.f_insert_tprocedimiento ('PM_ALARM_SEL', 'Consulta de datos', 'no', '', '', 'param.ft_alarma_sel');
+select pxp.f_insert_tprocedimiento ('PM_ALARM_CONT', 'Conteo de registros', 'no', '', '', 'param.ft_alarma_sel');
+
+/*******************************************F-DAT-JRR-PARAM-0-18/06/2016***********************************************/
 

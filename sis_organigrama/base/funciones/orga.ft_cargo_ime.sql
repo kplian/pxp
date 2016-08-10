@@ -1,6 +1,9 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_cargo_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
+-- Function: orga.ft_cargo_ime(integer, integer, character varying, character varying)
+
+-- DROP FUNCTION orga.ft_cargo_ime(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.ft_cargo_ime(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
+  RETURNS character varying AS
 $BODY$
 
 /**************************************************************************
@@ -49,15 +52,14 @@ BEGIN
         	from orga.toficina
         	where id_oficina = v_parametros.id_oficina;
         	
-        	select nombre into v_nombre_cargo
-        	from orga.ttemporal_cargo 
-        	where id_temporal_cargo = v_parametros.id_temporal_cargo;
+        	
+        	
+        	
         	--Sentencia de la insercion
         	insert into orga.tcargo(
 			id_tipo_contrato,
 			id_lugar,
-			id_uo,
-			id_temporal_cargo,
+			id_uo,			
 			id_escala_salarial,
 			codigo,
 			nombre,
@@ -72,11 +74,10 @@ BEGIN
           	) values(
 			v_parametros.id_tipo_contrato,
 			v_id_lugar,
-			v_parametros.id_uo,
-			v_parametros.id_temporal_cargo,
+			v_parametros.id_uo,			
 			v_parametros.id_escala_salarial,
 			v_parametros.codigo,
-			v_nombre_cargo,
+			v_parametros.nombre,
 			v_parametros.fecha_ini,
 			'activo',
 			v_parametros.fecha_fin,
@@ -107,9 +108,7 @@ BEGIN
 	elsif(p_transaccion='OR_CARGO_MOD')then
 
 		begin
-			select nombre into v_nombre_cargo
-        	from orga.ttemporal_cargo 
-        	where id_temporal_cargo = v_parametros.id_temporal_cargo;
+		
         	
         	select id_lugar into v_id_lugar
         	from orga.toficina
@@ -118,13 +117,13 @@ BEGIN
 			--Sentencia de la modificacion
 			update orga.tcargo set
 			id_lugar = v_id_lugar,
-			id_temporal_cargo = v_parametros.id_temporal_cargo,
 			codigo = v_parametros.codigo,
-			nombre = v_nombre_cargo,
+			nombre = v_parametros.nombre,
 			fecha_ini = v_parametros.fecha_ini,
 			fecha_fin = v_parametros.fecha_fin,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
+			id_escala_salarial = v_parametros.id_escala_salarial,
 			id_oficina = v_parametros.id_oficina
 			where id_cargo=v_parametros.id_cargo;
                
@@ -184,6 +183,7 @@ EXCEPTION
 				        
 END;
 $BODY$
-LANGUAGE 'plpgsql' VOLATILE
-COST 100;
-ALTER FUNCTION "orga"."ft_cargo_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION orga.ft_cargo_ime(integer, integer, character varying, character varying)
+  OWNER TO postgres;

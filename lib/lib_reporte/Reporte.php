@@ -148,6 +148,7 @@ class Reporte
 		}
 		
 		$this->objReporteFormato->generarReporte();
+		
 		$this->mensajeExito=new Mensaje();
 		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado',
 										'Se generó con éxito el reporte: '.$this->nombreArchivo,'control');

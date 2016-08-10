@@ -57,7 +57,7 @@ Phx.vista.EstructuraUo=function(config){
 		},
 		{
 			config:{
-				fieldLabel: "codigo",
+				fieldLabel: "Código",
 				gwidth: 120,
 				name: 'codigo',
 				allowBlank:false,
@@ -88,7 +88,7 @@ Phx.vista.EstructuraUo=function(config){
 					fields: ['id_nivel_organizacional','numero_nivel','nombre_nivel'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'nivorg.numero_nivel,nivorg.nombre_nivel'}
+					baseParams:{par_filtro:'nivorg.numero_nivel#nivorg.nombre_nivel'}
 				}),
 				valueField: 'id_nivel_organizacional',
 				displayField: 'nombre_nivel',
@@ -234,7 +234,7 @@ Phx.vista.EstructuraUo=function(config){
 		{
 			config:{
 				name:'correspondencia',
-				fieldLabel:'Correspondencia',
+				fieldLabel:'Corresponden cia',
 				typeAhead: true,
 				allowBlank:false,
 	    		triggerAction: 'all',
@@ -333,7 +333,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 					       		width: 150}),
 		checkInactivos:new Ext.form.Checkbox({ 
 		                        width: 25}),
-    	title:'estructura_uo',
+    	title:'Unidad Organizacional',
 		ActSave:'../../sis_organigrama/control/EstructuraUo/guardarEstructuraUo',
 		ActDel:'../../sis_organigrama/control/EstructuraUo/eliminarEstructuraUo',	
 		ActList:'../../sis_organigrama/control/EstructuraUo/listarEstructuraUo',

@@ -46,7 +46,83 @@ class ACTFuncionario extends ACTbase{
 		
 		 
 		
-	} 
+	}
+
+	function getDatosFuncionario(){
+
+		//el objeto objParam contiene todas la variables recibidad desde la interfaz
+		
+		// parametros de ordenacion por defecto
+		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
+		$this->objParam->defecto('dir_ordenacion','asc');
+		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");		
+	
+	   
+        //si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
+        if($this->objParam->getParametro('nombre_empleado')!=''){
+        	$nombre_empleado = trim($this->objParam->getParametro('nombre_empleado'));
+			$nombre_empleado = str_replace(' ', '%', $nombre_empleado);
+            $this->objParam->addFiltro("(lower(PERSON.nombre_completo1) like lower(''%" .  $nombre_empleado ."%'') or 
+            							lower(PERSON.nombre_completo2) like lower(''%" .  $nombre_empleado ."%'') or 
+            							lower(CAR.nombre) like lower(''%" .  $nombre_empleado ."%''))");    
+        }	
+		
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODFuncionario','getDatosFuncionario');
+		}
+		else {
+			$this->objFunSeguridad=$this->create('MODFuncionario');
+			//ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad 
+			$this->res=$this->objFunSeguridad->getDatosFuncionario($this->objParam);
+			
+		}
+		
+		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+		 
+		
+	}
+	
+	function getCumpleaneros(){
+
+		//el objeto objParam contiene todas la variables recibidad desde la interfaz
+		
+		// parametros de ordenacion por defecto
+		$this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario1');
+		$this->objParam->defecto('dir_ordenacion','asc');
+		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");		
+	
+	   
+        //si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
+        if($this->objParam->getParametro('dia')!=''){
+            $this->objParam->addFiltro("extract (day from PERSON.fecha_nacimiento) = " . $this->objParam->getParametro('dia'));    
+        }
+		
+		if($this->objParam->getParametro('mes')!=''){
+            $this->objParam->addFiltro("extract (month from PERSON.fecha_nacimiento) = " . $this->objParam->getParametro('mes'));    
+        }	
+		
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODFuncionario','getCumpleaneros');
+		}
+		else {
+			$this->objFunSeguridad=$this->create('MODFuncionario');
+			//ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad 
+			$this->res=$this->objFunSeguridad->getCumpleaneros($this->objParam);
+			
+		}
+		
+		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+		 
+		
+	}
 	
 	function listarFuncionarioCargo(){
 
@@ -96,8 +172,13 @@ class ACTFuncionario extends ACTbase{
         }
 		
 		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
+			if($this->objParam->getParametro('fecha')==''){
+				$date = date('d/m/Y');
+			} else {
+				$date = $this->objParam->getParametro('fecha');
+			}
 			$this->objParam->addFiltro("FUNCAR.id_funcionario IN (select * 
-										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $this->objParam->getParametro('fecha') . "'', " .
+										FROM orga.f_get_funcionarios_x_usuario_asistente(''" . $date . "'', " .
 																						 $_SESSION["ss_id_usuario"] . ") AS (id_funcionario INTEGER)) ");
 		}
 		

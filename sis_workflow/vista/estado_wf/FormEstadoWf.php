@@ -138,7 +138,9 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
         this.armarGrupos(config);
         Phx.vista.FormEstadoWf.superclass.constructor.call(this,config);
        
-        this.init(); 
+        this.init();
+        
+       
         
         // CONFIGURA ESTADOS INICIALES DE LOS ATRIBUTOS BASICOS   
         this.Cmp.id_tipo_estado.reset();
@@ -289,7 +291,14 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
             }, scope : this
         });   
         //carga vaor inicial de las observaciones si existe
-        this.Cmp.obs.setValue(this.obsValorInicial)     
+        this.Cmp.obs.setValue(this.obsValorInicial) 
+        
+        
+        if(config.eventosExtra){
+        	config.eventosExtra(this);
+        }
+        
+            
     },
     
     ///////////////////////////////////////
@@ -690,9 +699,19 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
            inipro.disable()
        }
        else{
-           inipro.setValue(false);
-           this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
-           this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
+       	
+	       	if(proc.tipo_disparo == 'manual' ||  proc.tipo_disparo =='bandeja_espera'){
+	       		inipro.setValue(false);
+	            inipro.disable();
+	            this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
+	            this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
+	       	}
+	       	else{
+	       		inipro.setValue(false);
+	            this.form.getForm().findField('id_tipo_estado_pro['+cont+']').setDisabled(true);
+	            this.form.getForm().findField('obs_pro['+cont+']').setDisabled(true);
+	       	}
+           
        }
        
         
@@ -853,7 +872,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                         mode:'remote',
                         pageSize:50,
                         queryDelay:500,
-                        width:210,
+                        anchor: '80%',
                         gwidth:220,
                         minChars:2,
                         tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo_estado}</p>Prioridad: <strong>{nombre_estado}</strong> </div></tpl>'
@@ -894,8 +913,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                         mode:'remote',
                         pageSize:50,
                         queryDelay:500,
-                        width:210,
-                        gwidth:220,
+                        anchor: '80%',
                         minChars:2,
                         tpl: '<tpl for="."><div class="x-combo-list-item"><p>{codigo}-{nombre_depto}</p><p>{subsistema}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
                     
@@ -935,8 +953,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                         mode:'remote',
                         pageSize:50,
                         queryDelay:500,
-                        width:210,
-                        gwidth:220,
+                        anchor: '80%',
                         minChars:2,
                         tpl: '<tpl for="."><div class="x-combo-list-item"><p>{desc_funcionario}</p>Prioridad: <strong>{prioridad}</strong> </div></tpl>'
                     

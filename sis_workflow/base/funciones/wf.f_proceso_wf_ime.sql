@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -319,7 +321,7 @@ BEGIN
           where pw.id_proceso_wf =  v_parametros.id_proceso_wf;
           
           v_res_validacion = wf.f_valida_cambio_estado(v_registros.id_estado_wf,NULL,NULL,p_id_usuario);
-          
+          raise notice 'v_res_validacion %',v_res_validacion;
           IF  (v_res_validacion IS NOT NULL AND v_res_validacion != '') THEN
           		v_resp = pxp.f_agrega_clave(v_resp,'otro_dato','si');
           	  v_resp = pxp.f_agrega_clave(v_resp,'error_validacion_campos','si');
@@ -401,7 +403,8 @@ BEGIN
                  --verificamos el numero de deptos
                  raise notice 'verificamos el numero de deptos';
                              
-                            
+                raise notice 'va_id_tipo_estado[1] %', va_id_tipo_estado[1]; 
+                                            
                   SELECT 
                   *
                   into
@@ -412,8 +415,7 @@ BEGIN
                      v_registros.fecha_ini,
                      v_registros.id_estado_wf,
                      TRUE) AS (total bigint);
-                
-                
+
                 --recupera el depto   
                 IF v_num_deptos >= 1 THEN
                   
@@ -533,7 +535,8 @@ BEGIN
                    from  wf.ttipo_proceso tp
                    inner join wf.ttipo_proceso_origen po on po.id_tipo_proceso = tp.id_tipo_proceso
                    inner join wf.ttipo_estado te on te.id_tipo_estado = po.id_tipo_estado 
-                   where tp.estado_reg = 'activo' and   po.id_tipo_estado   = v_parametros.id_tipo_estado_sig 
+                   where tp.estado_reg = 'activo'  and po.tipo_disparo != 'manual'
+                         and   po.id_tipo_estado   = v_parametros.id_tipo_estado_sig 
                    
                   ) LOOP
          
@@ -602,10 +605,27 @@ BEGIN
                inner join wf.ttipo_estado te on te.id_tipo_estado = ewf.id_tipo_estado
                left join wf.ttipo_estado tea on tea.id_tipo_estado = te.id_tipo_estado_anterior
                where ewf.id_estado_wf = v_parametros.id_estado_wf;
-         		
-               if (v_id_tipo_estado is null) then
+               
+               SELECT  
+             
+                 ps_id_tipo_estado,
+                 ps_id_funcionario,
+                 ps_id_usuario_reg,
+                 ps_id_depto,
+                 ps_codigo_estado,
+                 ps_id_estado_wf_ant
+              into
+                 v_id_tipo_estado,
+                 v_id_funcionario,
+                 v_id_usuario_reg,
+                 v_id_depto,
+                 v_codigo_estado,
+                 v_id_estado_wf_ant 
+              FROM wf.f_obtener_estado_ant_log_wf(v_parametros.id_estado_wf);
+                
+         	
               
-                      --recuperaq estado anterior segun Log del WF
+                      --recupera  estado anterior segun Log del WF
                         SELECT  
                            ps_id_tipo_estado,
                            ps_id_funcionario,
@@ -630,21 +650,8 @@ BEGIN
                            v_id_proceso_wf
                       from wf.testado_wf ew
                       where ew.id_estado_wf= v_id_estado_wf_ant;
-                 else
-                 		
-                 		select id_funcionario  into v_id_funcionario
-     					from wf.f_funcionario_wf_sel(p_id_usuario, v_id_tipo_estado,now()::date,NULL) as (id_funcionario integer,desc_funcionario text,desc_cargo text,prioridad integer);
-                     	
-                         --
-                        select 
-                             ew.id_proceso_wf
-                          into 
-                             v_id_proceso_wf
-                        from wf.testado_wf ew
-                        where ew.id_estado_wf= v_parametros.id_estado_wf;
-                 end if;       
-                        
-                       
+                
+                 
                       
                       -- registra nuevo estado
                       
@@ -698,13 +705,16 @@ BEGIN
                           v_reg_tipo_estado
                         from wf.ttipo_estado te 
                         where te.id_tipo_estado = v_id_tipo_estado;
+                        
+                        
                       
                         IF  v_reg_tipo_estado.funcion_regreso is not NULL THEN
-                        	EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_regreso  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_id_proceso_wf::varchar||','||COALESCE(''''||v_codigo_estado||'''','NULL')||')');
+                        
+                         EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_regreso  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_id_proceso_wf::varchar||','||COALESCE(''''||v_codigo_estado||'''','NULL')||')');
+                        
+                        
                         END IF;
                         
-                       
-                    
                         -- si hay mas de un estado disponible  preguntamos al usuario
                         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
                         v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
@@ -760,7 +770,7 @@ BEGIN
                 
              FROM wf.f_obtener_estado_segun_log_wf(v_id_estado_wf, v_id_tipo_estado);
             
-              raise notice 'CODIGO ESTADO ENCONTRADO %',v_codigo_estado ;
+              raise exception 'CODIGO ESTADO ENCONTRADO % , %',v_codigo_estado, v_id_depto ;
              
              --registra estado borrador
               v_id_estado_actual = wf.f_registra_estado_wf(

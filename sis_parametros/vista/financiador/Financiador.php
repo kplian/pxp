@@ -34,10 +34,10 @@ Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo_financiador',
-				fieldLabel: 'Codigo Financiador',
+				fieldLabel: 'Código',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 80,
+				gwidth: 120,
 				maxLength:10
 			},
 			type:'TextField',
@@ -49,10 +49,10 @@ Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'nombre_financiador',
-				fieldLabel: 'Nombre Financiador',
+				fieldLabel: 'Nombre',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 240,
 				maxLength:100
 			},
 			type:'TextField',
@@ -64,10 +64,10 @@ Phx.vista.Financiador=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'descripcion_financiador',
-				fieldLabel: 'Descripcion Financiador',
+				fieldLabel: 'Descripción',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 200,
 				maxLength:120
 			},
 			type:'TextField',

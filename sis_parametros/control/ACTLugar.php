@@ -14,6 +14,10 @@ class ACTLugar extends ACTbase{
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
+		if ($this->objParam->getParametro('es_regional') != '') {
+			$this->objParam->addFiltro("lug.es_regional  in (''". $this->objParam->getParametro('es_regional') . "'')");
+		}
+		
 		if ($this->objParam->getParametro('tipo') != '') {
 			$this->objParam->addFiltro("lug.tipo  in (''". $this->objParam->getParametro('tipo') . "'')");
 		}

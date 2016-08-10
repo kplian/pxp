@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_id_usuario_ai integer,
@@ -94,10 +95,6 @@ DECLARE
 
 BEGIN
 
-
-
- --raise exception 'aaa  ';
-    
     v_nombre_funcion:='pxp.f_intermediario_ime';
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
@@ -111,17 +108,9 @@ BEGIN
             ,'sesion');
        
     if(par_transaccion='SEG_VALUSU_SEG' or par_transaccion='SEG_LISTUSU_SEG')then
-    
-  
-       
-        v_id_usuario:= segu.f_get_id_usuario(valores[6]::varchar);
-        
-       
-
+       v_id_usuario:= segu.f_get_id_usuario(valores[6]::varchar);
     else
-           
         v_id_usuario=par_id_usuario;
-    
     end if;
     
     
@@ -161,19 +150,18 @@ BEGIN
     v_upload_file=false;
       v_consulta:=v_consulta || variables[v_tamano] || ' ' || tipos[v_tamano] || ') on commit drop';
     END IF;
-   -- raise exception 'aa%',v_consulta;
+  
    
     
     execute(v_consulta);
     
-      
-         
+        
     
 	-- 3) IF verifica si los resultados a ser enviados deben estar en formato de matriz o no
     --    Si no es formato de matriz es una llamada sencilla con un unico regisotr en la tabla temporal
     if(es_matriz='no') then
          
-         -- 3.1)  prepara una cadena con un insert para la tabla temporal con los valores recibidos
+        -- 3.1)  prepara una cadena con un insert para la tabla temporal con los valores recibidos
         v_consulta:='insert into tt_parametros_'||v_secuencia||' values(';
 
         -- 3.2) FOR  recorre el array de  valores armando la cadena de insercion 
@@ -189,10 +177,9 @@ BEGIN
             ELSE
                 --RAC 12/09/2011 validacion para campo date vacio 
                 if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
-                     v_consulta:=v_consulta || 'null' || ',';
+                    v_consulta:=v_consulta || 'null' || ',';
                 else
-                    --v_consulta:=v_consulta ||''''|| valores[i] || ''',';
-                    v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
+                   v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
                 end if;
             
 
@@ -210,16 +197,9 @@ BEGIN
             
              if(v_upload_file)THEN
                  if(valores[v_tamano]='')THEN
-               -- raise exception '222';
---                    v_consulta:=v_consulta || 'null' || ','''||par_files::text||''')';
---                    v_consulta:=v_consulta || 'null' || ','||decode('{'||par_files||'}','hex')||')';
---                    v_consulta:=v_consulta || 'null' || ','''||encode('{'||par_files||'}','hex')||''')';
---                      v_consulta:=v_consulta || 'null' || ',encode('''||par_files||'''::bytea,''hex''))';
-                    --  v_consulta:=v_consulta || 'null' || ','''||encode(par_files,'escape')||''')';
+               
                      v_consulta:=v_consulta || 'null' || ','''||par_files||'''::bytea)';
                       
-                      
---                      v_consulta:=v_consulta || 'null' || ','''||par_files||'''::bytea)';
                 else
                     v_consulta:=v_consulta || valores[v_tamano]|| ','''||par_files||'''::bytea)';
                 end if;
@@ -246,9 +226,7 @@ BEGIN
               if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time' or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
                   v_consulta:=v_consulta || 'null' || ')';
               else
-                 -- v_consulta:=v_consulta ||''''|| valores[v_tamano] || ''')';
-                  
-                  v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') ||  ''')';
+                v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') ||  ''')';
               end if;
             
            END IF;
@@ -270,7 +248,7 @@ BEGIN
         execute v_consulta into v_retorno;
         
     
-    -- 4) ELSE Si  es formato de matriz,   un for recorre la misma haciendo por cada vuelta
+      -- 4) ELSE Si  es formato de matriz,   un for recorre la misma haciendo por cada vuelta
       --  un llamada al procedimiento almacenado con esto logramamos,  por ejemplo varias inserciones en una misma tabla
       -- y dentro de una misma transaccion, si tenemos algun error se corre un rollback para todo 
     else
@@ -370,14 +348,14 @@ BEGIN
     end if;
     
     
-    --Procesamiento de la respuesta de la funciÃ³n ejecutada
+    --Procesamiento de la respuesta de la funcion ejecutada
     --rcm
-    --raise exception '%',v_retorno[1];
+    
     
     --5) REgistra en LOG las trasacciones ejecutadas como exitosas
     
     v_id_log=0;
- -- v_habilitar_log = TRUE;
+ 
     
  
           
@@ -403,7 +381,7 @@ BEGIN
                                 par_nom_usuario_ai);
                                 
                                                                
- -- raise exception 'ssssssssssssss';
+ 
  
     v_resp='';
     v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','EXITO');
@@ -414,7 +392,7 @@ BEGIN
     
     v_resp =  replace(v_resp,'\#*#','''');
     v_resp =  replace(v_resp,'#*#','\"');
-    raise notice 'respuesta ......  %' , v_resp;
+   
     return pxp.f_resp_to_json(v_resp);
 
 EXCEPTION
@@ -425,7 +403,7 @@ EXCEPTION
         v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
         v_resp = pxp.f_agrega_clave(v_resp,'tipo_respuesta','ERROR'::varchar);
   		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-  		--raise exception '%',v_resp;
+  		
         v_tipo_error='ERROR_TRANSACCION_BD';
          
         --RAC 07/09/2013 para escapar comillas simples en el registro de  log
