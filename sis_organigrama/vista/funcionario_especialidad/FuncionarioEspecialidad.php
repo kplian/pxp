@@ -16,10 +16,16 @@ Phx.vista.FuncionarioEspecialidad=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.FuncionarioEspecialidad.superclass.constructor.call(this,config);
+		console.log('MAEEESTRO',this.maestro);
+		if(this.maestro){
+			this.store.baseParams={id_funcionario:this.maestro.id_funcionario};
+			this.load({params:{start:0, limit:this.tam_pag}})
+		} else {
+			this.grid.getTopToolbar().disable();
+			this.grid.getBottomToolbar().disable();
+		}
 		this.init();
 		this.iniciarEventos();
-		this.store.baseParams={id_funcionario:this.maestro.id_funcionario};
-		this.load({params:{start:0, limit:this.tam_pag}})
 	},
 			
 	Atributos:[
@@ -280,9 +286,22 @@ Phx.vista.FuncionarioEspecialidad=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:true,
+
+	loadValoresIniciales:function()
+	{
+		Phx.vista.FuncionarioEspecialidad.superclass.loadValoresIniciales.call(this);
+		this.getComponente('id_funcionario').setValue(this.maestro.id_funcionario);		
+	},
+	
+	onReloadPage:function(m)
+	{
+		this.maestro=m;						
+		this.store.baseParams={id_funcionario:this.maestro.id_funcionario};
+		this.load({params:{start:0, limit:50}});			
 	}
-)
+
+})
 </script>
 		
 		

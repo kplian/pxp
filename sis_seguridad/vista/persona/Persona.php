@@ -333,14 +333,14 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		// llamada funcion clace padre
 		Phx.vista.persona.superclass.preparaMenu.call(this,tb)
 		this.getBoton('aSubirFoto').enable();
-		this.getBoton('x').enable();
+		//this.getBoton('x').enable();
 	},
 	
 	liberaMenu:function(tb){
 		// llamada funcion clace padre
 		Phx.vista.persona.superclass.liberaMenu.call(this,tb)
 		this.getBoton('aSubirFoto').disable();
-		this.getBoton('x').disable();
+		//this.getBoton('x').disable();
 		
 	},
 
