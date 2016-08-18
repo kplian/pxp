@@ -142,7 +142,9 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 						
 						$correo->setAsunto($d['titulo_correo'].' '.$d['obs']);
 			            $correo->setMensaje($d['descripcion']);
-						$correo->setTitulo($d['titulo_correo']);
+                        if ($d['tipo'] != 'felicitacion') {
+                            $correo->setTitulo($d['titulo_correo']);
+                        }
 						
 						//Anadir los adjuntos
 						$adjuntos = explode(',', $d['documentos']);
