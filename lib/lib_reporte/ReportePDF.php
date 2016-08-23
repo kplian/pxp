@@ -899,7 +899,7 @@ class ReportePDF extends MYPDF
 		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
 				/*$e=dirname(__FILE__).'/lib/'.$_SESSION['_DIR_LOGO'];
 				echo $e; exit;*/
-		        $this->Image(dirname(__FILE__).'/../'.$_SESSION['_DIR_LOGO'], 18, 8, 36);
+		        $this->Image(dirname(__FILE__).'/../'.$_SESSION['_DIR_LOGO'], 26, 8, 20);
 		        
 		        $x = $this->GetX();
 		        $y = $this->GetY();
@@ -999,7 +999,7 @@ class ReportePDF extends MYPDF
 		        $y = $this->GetY();
 		        $this->SetXY($x, $y);
 		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
-		        $this->Image(dirname(__FILE__).'/../'.$_SESSION['_DIR_LOGO'], 18, 8, 36);
+		        $this->Image(dirname(__FILE__).'/../'.$_SESSION['_DIR_LOGO'], 26, 8, 20);
 		        
 		        $x = $this->GetX();
 		        $y = $this->GetY();
