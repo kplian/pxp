@@ -455,9 +455,9 @@ class ReportePDF extends MYPDF
 					$align=$this->tablealigns[$col];	
 				}
 				
-				if($relleno){
+				if($relleno){ //"#000080"
 					$html.='
-								<td BGCOLOR="#000080" width="'.$this->tablewidths[$col].'%" align="'.$align.'"><font color="#FFFFFF">'.$data[$col].'</font></td>';
+								<td BGCOLOR="#808080" width="'.$this->tablewidths[$col].'%" align="'.$align.'"><font color="#FFFFFF">'.$data[$col].'</font></td>';
 					//$relleno=0;
 				} else {
 				
@@ -921,8 +921,8 @@ class ReportePDF extends MYPDF
 		        $this->SetXY($x+170, $y);
 		        $this->setCellPaddings(2);
 		        $this->SetFont('','B');
-		        $this->Cell($width1, $height/4, 'Código:', "B", 0, '', false, '', 0, false, 'T', 'C');
-		        $this->Cell($width2, $height/4, $this->objParam->getParametro('codReporte'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        //$this->Cell($width1, $height/4, 'Código:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        //$this->Cell($width2, $height/4, $this->objParam->getParametro('codReporte'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
 		        
 		        $this->SetFont('','');
 		        $y += 5;
@@ -945,8 +945,8 @@ class ReportePDF extends MYPDF
 		        $this->SetXY($x+170, $y);
 		        $this->setCellPaddings(2);
 		        $this->SetFont('','B');
-		        $this->Cell($width1, $height/4, 'Fecha de Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
-		        $this->Cell($width2, $height/4, '29/06/2012   ', "B", 0, 'R', false, '', 0, false, 'T', 'C');
+		        //$this->Cell($width1, $height/4, 'Fecha de Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        //$this->Cell($width2, $height/4, '29/06/2012   ', "B", 0, 'R', false, '', 0, false, 'T', 'C');
 		        
 		        $this->SetFont('','');
 		        $y += 5;
@@ -1020,9 +1020,9 @@ class ReportePDF extends MYPDF
 		        $width2 = 23;
 		        $this->SetXY($x+105, $y);
 		        $this->setCellPaddings(2);
-		        $this->Cell($width1, $height/4, 'Codigo:', "B", 0, '', false, '', 0, false, 'T', 'C');
-		        $this->SetFont('','B');
-		        $this->Cell($width2, $height/4, $this->objParam->getParametro('codReporte'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        //$this->Cell($width1, $height/4, 'Codigo:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        //$this->SetFont('','B');
+		        //$this->Cell($width2, $height/4, $this->objParam->getParametro('codReporte'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
 		        
 		        $this->SetFont('','');
 		        $y += 5;
@@ -1042,9 +1042,9 @@ class ReportePDF extends MYPDF
 				$this->SetFontSize(7);
 		        $this->SetXY($x+105, $y);
 		        $this->setCellPaddings(2);
-		        $this->Cell($width1, $height/4, 'Fecha Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
-		        $this->SetFont('','B');
-		        $this->Cell($width2, $height/4, $this->objParam->getParametro('fechaRep'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
+		        //$this->Cell($width1, $height/4, 'Fecha Emisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        //$this->SetFont('','B');
+		        //$this->Cell($width2, $height/4, $this->objParam->getParametro('fechaRep'), "B", 0, 'C', false, '', 0, false, 'T', 'C');
 		        
 		        $this->SetFont('','');
 		        $y += 5;
