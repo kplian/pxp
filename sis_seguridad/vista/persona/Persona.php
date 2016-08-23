@@ -361,11 +361,9 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		//agregamos boton para mostrar ventana hijo
 		this.addButton('aSubirFoto',{name:'subirFoto',text:'Subir Foto',iconCls: 'baddphoto',disabled:true,handler:this.SubirFoto,tooltip: '<b>Subir Foto</b><br/>Permite actualizar la foto de la persona'});
 		
-		function SubirFoto()
-		{					
+	},
+	SubirFoto(){					
 			var rec=this.sm.getSelected();
-			//console.log(' rec',rec)
-						
 			Phx.CP.loadWindows('../../../sis_seguridad/vista/persona/subirFotoPersona.php',
 			'Subir foto',
 			{
@@ -373,13 +371,6 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 				width:400,
 				height:150
 		    },rec.data,this.idContenedor,'subirFotoPersona')
-		}
-		
-		
 	}
-	
-	
-
-}
-)
+})
 </script>
