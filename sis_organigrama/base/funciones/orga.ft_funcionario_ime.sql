@@ -35,6 +35,15 @@ v_tamano					integer;
 v_i 						integer;
 v_id_funcionario			integer;
 v_email_empresa             varchar;
+v_registros					record;
+v_asunto					varchar;
+v_destinatorio				varchar;
+v_template					varchar;
+v_id_alarma					integer[];
+v_titulo					varchar;
+v_clase						varchar;
+v_parametros_ad				varchar;
+v_acceso_directo			varchar;
 
 BEGIN
 
@@ -196,8 +205,112 @@ BEGIN
               v_resp = pxp.f_agrega_clave(v_resp,'email_empresa',v_email_empresa::varchar);
 
         END;
-    
+	
+    /*********************************    
+ 	#TRANSACCION:  'RH_CUMPLECORR_INS'
+ 	#DESCRIPCION:	  Registra alertas para felicitar cumpleanero del dia
+ 	#AUTOR:		Gonzalo Sarmiento Sejas
+ 	#FECHA:		11-08-2016
+	***********************************/
+
+	ELSEIF (par_transaccion='RH_CUMPLECORR_INS')then
+					
+       begin
        
+        -- seleccionar los cumpleaneros del dia
+         FOR v_registros in (SELECT FUNCIO.id_funcionario,
+                                     FUNCIO.desc_funcionario1::varchar,
+                                     CAR.nombre,
+                                     F.email_empresa,
+                                     usu.id_usuario
+                              FROM orga.vfuncionario FUNCIO
+                                   INNER JOIN orga.tfuncionario F ON F.id_funcionario = FUNCIO.id_funcionario
+                                   INNER JOIN SEGU.tpersona PERSON ON PERSON.id_persona = F.id_persona
+                                   INNER JOIN orga.tuo_funcionario uofun on uofun.id_funcionario =
+                                     FUNCIO.id_funcionario and uofun.estado_reg = 'activo' and
+                                     uofun.fecha_asignacion <= now() ::date 
+                                     and (uofun.fecha_finalizacion >= now() ::date or uofun.fecha_finalizacion is null)
+                                   INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo
+                                   INNER JOIN segu.tusuario usu on usu.id_persona=PERSON.id_persona
+                              WHERE extract(day from PERSON.fecha_nacimiento) = extract(day from current_date)
+                               AND extract(month from PERSON.fecha_nacimiento) = extract(month from current_date))  LOOP
+                
+           
+                ----------------------------
+                -- arma template de correo
+                -----------------------------
+                                        
+                v_asunto = 'Hoy es tu cumpleaños y BoA quiere festejar contigo!!!';
+           		
+                v_template = '<div style="width:400px; background-color: #019ADB; margin-right: auto; margin-left: auto;">
+ 							  <table width="400" style="background-color: #019ADB; font-family:''Helvetica Neue'',Helvetica,Arial,sans-serif; color: #ffffff; width: 400px;">
+        					  <tr bgcolor="#019ADB">
+				              <td>
+                				<img src="http://www.boa.bo/Content/Aniversarios/fondo_cumple.jpg" alt="400">
+            				  </td>
+        					  </tr>
+        					  <tr bgcolor="#019ADB" style="background-color: #019ADB;">
+            				  <td style="background-color: #019ADB; font-size: 20px;" align="center">'||
+                			  v_registros.desc_funcionario1::varchar ||
+            				  '</td>
+        					  </tr>
+        					  <tr>
+            				  <td style="background-color: #019ADB; font-size: 12px; padding-left: 20px; padding-right: 20px;" align="center">
+                			  <br />
+                			  Todos los que integramos la familia Boliviana de Aviaci&oacute;n nos sentimos agradecidos de poder ser
+                			  parte de la celebraci&oacute;n de tu cumpleaños; fluyen palabras de buenos deseos, esperando que este d&iacute;a
+                			  recibas grandes bendiciones.
+                			  Que la salud nunca falte y que el &eacute;xito y la prosperidad sean constantes todos los d&iacute;as de
+                			  tu vida a nivel personal, familiar y profesional.
+                			  Recibe nuestro reconocimiento y sincero cariño
+            				  </td>
+        					  </tr>
+        					  <tr>
+            				  <td>
+                				<table width="400" style="color: #ffffff; font-family:''Helvetica Neue'',Helvetica,Arial,sans-serif; font-size: 12px; width: 400px;">
+                    		  <tr>
+                        	  <td style="width: 100%; color: #ffffff;" align="center">
+                              <br/>
+                              <img src="http://www.boa.bo/Content/Aniversarios/fi.png" width="200" ><br />
+                              <span >Ing. Ronald S. Casso Casso</span><br />
+                              <span >GERENTE GENERAL</span><br />
+                              <span >Empresa Pública Nacional Estratégica</span><br />
+                              <span >Boliviana de Aviaci&oacute;n - BoA</span>
+                        	  </td>
+                    		  </tr>
+                    		  <tr>
+                        	  <td colspan="2">
+                              <hr/>
+                        	  </td>
+                    		  </tr>
+                			  </table>
+            				  </td>
+        					  </tr>
+    						  </table>
+							  </div>';
+                
+                v_titulo = ''|| v_registros.desc_funcionario1 ||'';
+                v_acceso_directo = '';
+                v_clase = '';
+                v_parametros_ad = '{}';
+           
+                -- inserta registros de alarmas par ael usario que creo la obligacion
+                v_id_alarma[1]:=param.f_inserta_alarma(NULL,
+                                                    v_template ,    --descripcion alarmce
+                                                    COALESCE(v_acceso_directo,''),--acceso directo
+                                                    now()::date,
+                                                    'felicitacion',
+                                                    '',   -->
+                                                    par_id_usuario,
+                                                    v_clase,
+                                                    v_titulo,--titulo
+                                                    COALESCE(v_parametros_ad,''),
+                                                    v_registros.id_usuario::integer,  --destino de la alarma
+                                                    v_asunto);
+
+       END LOOP;
+       end;
+         
    
     else
 
