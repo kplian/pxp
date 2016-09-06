@@ -11,10 +11,16 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 //Ext.BLANK_IMAGE_URL = '../../resources/images/default/s.gif';
 
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+
 Ext.example = function(){
     var msgCt;
 
     function createBox(t, s){
+    	alert('hora')
+    	console.log('....')
         return ['<div class="msg">',
                 '<div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>',
                 '<div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc"><h3>', t, '</h3>', s, '</div></div></div>',
@@ -30,6 +36,7 @@ Ext.example = function(){
             var s = String.format.apply(String, Array.prototype.slice.call(arguments, 1));
             var m = Ext.DomHelper.append(msgCt, {html:createBox(title, s)}, true);
             m.slideIn('t').pause(1).ghost("t", {remove:true});
+            console.log('se ejecuta')
         },
 
         init : function(){
@@ -62,6 +69,11 @@ Ext.example.shortBogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adip
 Ext.example.bogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.<br/><br/>Aliquam commodo ullamcorper erat. Nullam vel justo in neque porttitor laoreet. Aenean lacus dui, consequat eu, adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare sed, luctus eu, massa. Vivamus eget quam. Vivamus tincidunt diam nec urna. Curabitur velit.</p>';
 Ext.example.test = '<iframe src="http://docs.google.com/present/embed?id=dcn37mcz_22cmnwnwf8"></iframe>';
 Ext.example.test2 = '<iframe src="http://www.w3schools.com"></iframe>';
+//Ext.example.test3 = '<iframe src="../../../sis_seguridad/widgets/usuarios_login/" height = "340" width = "100%" align="center" frameborder="0"></iframe>';
+Ext.example.test3 = '<iframe src="../../../sis_seguridad/widgets/usuarios_login/"  scrolling="no" width = "100%" align="center" frameborder="0" onload="resizeIframe(this)"></iframe>';
+//Ext.example.test3 = "<iframe src='../../../sis_seguridad/widgets/usuarios_login/'  height = '360' scrolling='no' width = '100%' align='center' frameborder='0' ></iframe>";
+
+
 
 
 Ext.onReady(Ext.example.init, Ext.example);
@@ -305,7 +317,16 @@ Ext.define('Phx.vista.Dashboard',{
 		            },{
 		                columnWidth:.33,
 		                style:'padding:10px 0 10px 10px',
-		                items:[]
+		                items:[{
+				                    title: 'Another Panel 4',
+				                    tools: tools,
+				                    autoHeight: true,
+				                    autoScroll : true,
+				                    html:  Ext.example.test3
+				                }
+		                
+		                
+		                ]
 		            }]
 	        }]
 	    });
