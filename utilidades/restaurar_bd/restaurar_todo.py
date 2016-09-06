@@ -23,6 +23,52 @@ def restaurar_db(base):
 	print 'Se ha generado el backup de la base de datos en : ' + file_name
 	print 'Copie el archivo en otra ubicacion antes de reiniciar el equipo'
 
+def comparar_db(psistema):
+        print 'Funciones con diferencia en el sistema : ' + psistema
+	url = os.path.dirname(__file__) + '/../../../' + psistema + '/base/schema.sql'
+	esquema = get_schema(url)
+	
+	funciones_dir = os.path.dirname(__file__) + '/../../../' + psistema +  '/base/funciones/'
+        funciones = os.listdir( funciones_dir )
+	
+	if (host == '127.0.0.1' or host == 'localhost'):
+		command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db
+        else:
+        	validar_pgpass()
+                command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d dbkerp_capacitacion -d ' + db     + ' -h ' + host + ' -U ' + usuario	
+
+	
+	for line in run_command(command):
+                f = line.strip()
+				
+		codigo_bd = '';
+		codigo_file = '';
+
+		if os.path.isfile(funciones_dir + '/' + esquema[0] + '.' + f + '.sql'):
+			
+			file1 = open(funciones_dir + '/' + esquema[0] + '.' + f + '.sql', 'r')
+			inicio = False
+        		for line in file1:
+				if (line.strip().lower() == '$body$' and inicio == False):
+					inicio = True
+				elif (line.strip().lower() == '$body$' and inicio == True):
+					inicio = False
+				elif (inicio == True):
+					codigo_file += line
+			file1.close()
+			if (host == '127.0.0.1' or host == 'localhost'):
+        			command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db
+        		else:
+                		validar_pgpass()
+                		command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d dbkerp_capacitacion -d ' + db     + ' -h ' + host + ' -U ' + usuario
+			for line in run_command(command):
+				codigo_bd += line
+
+			if (codigo_file not in codigo_bd):
+				print 'Diferencia en funcion : ' + f
+		else:
+			print 'La funcion : ' + f + ' ,no esta en codigo fuente'	        
+			
 def validar_pgpass ():
 	home = expanduser("~")	
 	if (not os.path.exists(home + '/.pgpass')):
@@ -176,11 +222,12 @@ print 'Que desea hacer?'
 print '1. Restaurar la base de datos completamente (Esta opcion eliminara todos los objetos de la bd)'
 print '2. Actualizar los scripts faltantes en su base de datos (Solo eliminara las funciones y las volvera a crear)'
 print '3. Actualizar los scripts faltantes en la bd solo sobre un sistema'
-print '4. Obtener un backup de la BD (sin el esquema log)'
-print '5. Salir del programa'
-opcion = raw_input('Ingrese una opcion (1,2,3 o 4): ')
+print '4. Comparar funciones de un esquema en la bd con archivos en codigo fuente'
+print '5. Obtener un backup de la BD (sin el esquema log)'
+print '6. Salir del programa'
+opcion = raw_input('Ingrese una opcion (1,2,3,4,5 o 6): ')
 sistema = 'indefinido'
-if (opcion != '1' and opcion != '2' and opcion != '3' and opcion != '4') :
+if (opcion != '1' and opcion != '2' and opcion != '3' and opcion != '4' and opcion != '5') :
 	sys.exit("Ha abandonado la restauracion de la base de datos")
 
 if opcion == '1':
@@ -203,10 +250,22 @@ elif opcion == '3':
 	sistema = raw_input("Ingrese el nombre del sistema a actualzar(Ej: sis_seguridad): ")
 	if sistema == '':
 		sys.exit("Debe ingresar un nombre de sistema valido!!!")
+elif opcion == '4':
+        usuario = obtener_usuario()
+        datos = 'n'
+        sistema = raw_input("Ingrese el nombre del sistema a comparar(Ej: sis_seguridad): ")
+        if sistema == '':
+                sys.exit("Debe ingresar un nombre de sistema valido!!!")
+	comparar_db(sistema)
+	sys.exit("Comparacion Finalizada")
 else:
 	restaurar_db(db)
 	sys.exit("Backup generado con exito")	
-print 'Iniciando la restauracion de los esquemas basicos...' 
+
+if opcion == '4':
+	print 'Iniciando la comparacion...'
+else:
+	print 'Iniciando la restaturacion de la BD' 
 url = []
 #url pxp
 cadena_url = '/../../'
@@ -307,8 +366,7 @@ for item in url:
 				else:
 					validar_pgpass()
 					command = 'psql '+ db + ' -h ' + host + ' -U ' + usuario + ' -c  "select pxp.f_delfunc(\$\$' + f.replace('.sql','')  + '\$\$)"'
-    			 	
-    				
+    			 	    				
     			  	for line in run_command(command):
                                     f_log.write(line)
 					#Ejecutar la creacion de la funcion
