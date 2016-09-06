@@ -58,8 +58,11 @@ Ext.example = function(){
     };
 }();
 
-Ext.example.shortBogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.';
+Ext.example.shortBogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel,Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna. urna.';
 Ext.example.bogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.<br/><br/>Aliquam commodo ullamcorper erat. Nullam vel justo in neque porttitor laoreet. Aenean lacus dui, consequat eu, adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare sed, luctus eu, massa. Vivamus eget quam. Vivamus tincidunt diam nec urna. Curabitur velit.</p>';
+Ext.example.test = '<iframe src="http://docs.google.com/present/embed?id=dcn37mcz_22cmnwnwf8"></iframe>';
+Ext.example.test2 = '<iframe src="http://www.w3schools.com"></iframe>';
+
 
 Ext.onReady(Ext.example.init, Ext.example);
 
@@ -287,10 +290,18 @@ Ext.define('Phx.vista.Dashboard',{
 		                    tools: tools,
 		                    items: new SampleGrid([0, 2, 3])
 		                },{
-		                    title: 'Another Panel 1',
+		                    title: 'Another Panel 3',
 		                    tools: tools,
-		                    html: Ext.example.shortBogusMarkup
-		                }]
+		                    html: Ext.example.test
+		                },{
+		                    title: 'Another Panel 4',
+		                    tools: tools,
+		                    html:  Ext.example.test2
+		                }
+		                
+		                
+		                
+		               ]
 		            },{
 		                columnWidth:.33,
 		                style:'padding:10px 0 10px 10px',
