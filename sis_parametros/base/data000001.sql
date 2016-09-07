@@ -954,3 +954,13 @@ select pxp.f_insert_tprocedimiento ('PM_ALARM_CONT', 'Conteo de registros', 'no'
 
 /*******************************************F-DAT-JRR-PARAM-0-18/06/2016***********************************************/
 
+
+/*******************************************I-DAT-RAC-PARAM-0-06/09/2016***********************************************/
+
+select pxp.f_insert_tgui ('Dashboard', 'Dashboard', 'DASH', 'si', 50, 'sis_parametros/vista/dashboard/Dashboard.php', 1, '', 'Dashboard', 'PXP');
+select pxp.f_insert_testructura_gui ('DASH', 'SISTEMA');
+
+/*******************************************F-DAT-RAC-PARAM-0-06/09/2016***********************************************/
+
+
+
