@@ -90,7 +90,9 @@ begin
         where codigo=par_transaccion;
     end if;
     v_id_log = 0;
-    if ((v_registrar_log = 'si' and par_transaccion not like '%_CONT') or par_tipo_log like 'ERROR_%' ) then
+    
+    if (((v_registrar_log = 'si' OR v_registrar_log is null) and par_transaccion not like '%_CONT') or par_tipo_log like 'ERROR_%' ) then
+        
         v_id_log=(select nextval('segu.tlog_id_log_seq'));
         --RAC, RCM: cambios para qe devuelva el id_log
          
