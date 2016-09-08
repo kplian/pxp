@@ -112,6 +112,21 @@ class MODFuncionario extends MODbase{
 
 	}
 	
+	function alertarCumpleaneroDia(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='orga.ft_funcionario_ime';
+        $this->transaccion='RH_CUMPLECORR_INS';
+        $this->tipo_procedimiento='IME';
+        //definicion de variables
+		$this->tipo_conexion='seguridad';        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+		
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+	
 	function listarFuncionarioCargo(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_funcionario_sel';// nombre procedimiento almacenado

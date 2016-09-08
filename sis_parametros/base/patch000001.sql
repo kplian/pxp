@@ -1422,3 +1422,7 @@ IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de
 
 /***********************************F-SCP-RAC-PARAM-0-22/06/2016****************************************/
 
+/***********************************I-SCP-RCM-PARAM-0-24/08/2016*****************************************/
+alter table param.tinstitucion
+add constraint tinstitucion_uq_codigo unique(codigo);
+/***********************************F-SCP-RCM-PARAM-0-24/08/2016*****************************************/
