@@ -84,7 +84,7 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 			config:{
 				name: 'id_item',
 				fieldLabel: 'Item',
-				allowBlank: true,
+				allowBlank: false,
 				emptyText:'Item...',
 				store:new Ext.data.JsonStore(
 				{
@@ -277,9 +277,13 @@ Phx.vista.ProveedorItemServicio=Ext.extend(Phx.gridInterfaz,{
 		if(val=='item'){
 			cmbIt.enable();
 			cmbServ.disable();
+			cmbIt.allowBlank = false;
+			cmbServ.allowBlank = true;
 		} else{
 			cmbServ.enable();
 			cmbIt.disable();
+			cmbIt.allowBlank = true;
+			cmbServ.allowBlank = false;
 		}
 		
 	},

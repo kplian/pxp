@@ -813,8 +813,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		this.load({params:{start:0, limit:50}})
 		
 	},
-	loadValoresIniciales:function()
-	{
+	loadValoresIniciales:function(){
 		Phx.vista.TipoEstado.superclass.loadValoresIniciales.call(this);
 		this.getComponente('id_tipo_proceso').setValue(this.maestro.id_tipo_proceso);		
 	},

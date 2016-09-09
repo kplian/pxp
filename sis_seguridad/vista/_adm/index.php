@@ -88,8 +88,15 @@ if(!isset($_SESSION["_SESION"])){
     -->
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-all-debug.js"></script>
 
+
+
+      
+    <!-- descomentado -->  
+
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <!-- comentado 
+   
+    	 
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
       
