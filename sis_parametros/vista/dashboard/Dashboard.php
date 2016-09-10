@@ -248,71 +248,95 @@ Ext.define('Phx.vista.Dashboard',{
 	        }
 	    }];
 	    
-	    var tb = new Ext.Toolbar({
-        items:[{
-            text: 'New',
-            iconCls: 'album-btn',
-            handler: function(){
-            	
-                var node = root.appendChild(new Ext.tree.TreeNode({
-                    text:'Dashboard ' + (++newIndex),
-                    cls:'album-node',
-                    allowDrag:false
-                }));
-                
-                treeMenu.getSelectionModel().select(node);
-                
-                setTimeout(function(){
-                    ge.editNode = node;
-                    ge.startEdit(node.ui.textNode);
-                }, 10);
-            }
-          }]
-       });
+	    this.tb = new Ext.Toolbar({
+				        items:[{
+				            text: 'New',
+				            iconCls: 'album-btn',
+				            scope: this,
+				            handler: this.newDasboard, 
+				            
+				          },
+				          {
+				            text: 'Edit',
+				            iconCls: 'album-btn',
+				            scope: this,
+				            handler: function(){
+				            	
+				                this.sm = this.treeMenu.getSelectionModel();
+				                var node = this.sm.getSelectedNode();
+				                if(node){
+				                	
+					                 this.ge.editNode = node;
+					                 this.ge.startEdit(node.ui.textNode);
+				                	
+				                }
+				                else{
+				                	alert('seleccione un dashboard')
+				                }
+				                
+				            }
+				          }]
+				        });
        
        var newIndex = 3;
+       
+       
+       
+       this.loaderTree = new Ext.tree.TreeLoader({
+			url : '../../sis_parametros/control/Dashboard/listarDashboard',
+			baseParams : {foo:'bar'},
+			clearOnLoad : true
+		});
 	    
 	    
 	    // set up the Album tree
-	    var treeMenu = new Ext.tree.TreePanel({
+	    this.treeMenu = new Ext.tree.TreePanel({
 	         // tree
 	         animate:true,
+	         //maskDisabled:false,
 	         containerScroll: true,
 	         rootVisible:false,
 	         region:'west',
 	         width:200,
-	         split:true,
-	         title:'My dashboard',
+	         split:true,	         
 	         autoScroll:true,
-	         tbar: tb,
+	         tbar: this.tb,
+	         loader : this.loaderTree,
 	         margins: '5 0 5 5'
 	    });
+	    
+	    this.root = new Ext.tree.AsyncTreeNode({
+			text : this.textRoot,
+			draggable : false,
+			allowDelete : true,
+			allowEdit : true,
+			collapsed : true,
+			expanded : true,
+			expandable : true,
+			hidden : false,
+			id : 'id'
+		});
 	
-	    var root = new Ext.tree.TreeNode({
-	        text: 'Albums',
-	        allowDrag:false,
-	        allowDrop:false
-	    });
-	    treeMenu.setRootNode(root);
+	    
+	    
+	    this.treeMenu.setRootNode(this.root);
 	
-	    root.appendChild(
-	        new Ext.tree.TreeNode({text:'Album 1', cls:'album-node', allowDrag:false}),
-	        new Ext.tree.TreeNode({text:'Album 2', cls:'album-node', allowDrag:false}),
-	        new Ext.tree.TreeNode({text:'Album 3', cls:'album-node', allowDrag:false})
-	    );
+	    
 	
 	    // add an inline editor for the nodes
-	    var ge = new Ext.tree.TreeEditor(treeMenu, {/* fieldconfig here */ }, {
+	    this.ge = new Ext.tree.TreeEditor(this.treeMenu, {/* fieldconfig here */ }, {
 	        allowBlank:false,
 	        blankText:'A name is required',
 	        selectOnFocus:true
 	    });
+	    
+	    this.ge.on('complete', this.editDashboard, this);
 		  
 	   
 	    this.Border = new Ext.Container({
 	        layout:'border',
 	        items:[
-	           treeMenu
+	           this.treeMenu
 	          ,{
 	            xtype:'portal',
 	            region:'center',
@@ -376,6 +400,38 @@ Ext.define('Phx.vista.Dashboard',{
 	
 
 	
+	},
+	
+	newDasboard: function(){
+		Phx.CP.loadingShow();
+		Ext.Ajax.request({
+				url : '../../sis_parametros/control/Dashboard/insertarDashboard',
+				success : this.successNewDash,
+				failure : Phx.CP.conexionFailure,
+				params : {foo: 'bar'},
+				scope : this
+			});
+			
+			
+	},
+	
+	editDashboard:function(obj, value, startValue){		
+		var node = this.sm.getSelectedNode();
+		if(value != startValue){
+			Ext.Ajax.request({
+					url : '../../sis_parametros/control/Dashboard/insertarDashboard',
+					success : this.successNewDash,
+					failure : Phx.CP.conexionFailure,
+					params : {nombre: value, id_dashboard: node.attributes.id_dashboard},
+					scope : this
+				});	
+		}
+		
+	},
+	successNewDash:function(){
+		Phx.CP.loadingHide();
+		this.root.reload();
+		
 	}
 	
 	
