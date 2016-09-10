@@ -247,36 +247,73 @@ Ext.define('Phx.vista.Dashboard',{
 	            panel.ownerCt.remove(panel, true);
 	        }
 	    }];
+	    
+	    var tb = new Ext.Toolbar({
+        items:[{
+            text: 'New',
+            iconCls: 'album-btn',
+            handler: function(){
+            	
+                var node = root.appendChild(new Ext.tree.TreeNode({
+                    text:'Dashboard ' + (++newIndex),
+                    cls:'album-node',
+                    allowDrag:false
+                }));
+                
+                treeMenu.getSelectionModel().select(node);
+                
+                setTimeout(function(){
+                    ge.editNode = node;
+                    ge.startEdit(node.ui.textNode);
+                }, 10);
+            }
+          }]
+       });
+       
+       var newIndex = 3;
+	    
+	    
+	    // set up the Album tree
+	    var treeMenu = new Ext.tree.TreePanel({
+	         // tree
+	         animate:true,
+	         containerScroll: true,
+	         rootVisible:false,
+	         region:'west',
+	         width:200,
+	         split:true,
+	         title:'My dashboard',
+	         autoScroll:true,
+	         tbar: tb,
+	         margins: '5 0 5 5'
+	    });
+	
+	    var root = new Ext.tree.TreeNode({
+	        text: 'Albums',
+	        allowDrag:false,
+	        allowDrop:false
+	    });
+	    treeMenu.setRootNode(root);
+	
+	    root.appendChild(
+	        new Ext.tree.TreeNode({text:'Album 1', cls:'album-node', allowDrag:false}),
+	        new Ext.tree.TreeNode({text:'Album 2', cls:'album-node', allowDrag:false}),
+	        new Ext.tree.TreeNode({text:'Album 3', cls:'album-node', allowDrag:false})
+	    );
+	
+	    // add an inline editor for the nodes
+	    var ge = new Ext.tree.TreeEditor(treeMenu, {/* fieldconfig here */ }, {
+	        allowBlank:false,
+	        blankText:'A name is required',
+	        selectOnFocus:true
+	    });
 		  
 	   
 	    this.Border = new Ext.Container({
 	        layout:'border',
-	        items:[{
-	            region:'west',
-	            title:'West',
-	            split:true,
-	            width: 200,
-	            minSize: 175,
-	            maxSize: 400,
-	            collapsible: true,
-	            margins:'35 0 5 5',
-	            cmargins:'35 5 5 5',
-	            layout:'accordion',
-	            layoutConfig:{
-	                animate:true
-	            },
-	            items: [{
-	                title:'Navigation',
-	                autoScroll:true,
-	                border:false,
-	                iconCls:'nav'
-	            },{
-	                title:'Settings',
-	                border:false,
-	                autoScroll:true,
-	                iconCls:'settings'
-	            }]
-	        },{
+	        items:[
+	           treeMenu
+	          ,{
 	            xtype:'portal',
 	            region:'center',
 	            margins:'35 5 5 0',
