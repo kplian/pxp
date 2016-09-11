@@ -13,6 +13,7 @@ class ACTDashdet extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_dashdet');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODDashdet','listarDashdet');
@@ -20,6 +21,22 @@ class ACTDashdet extends ACTbase{
 			$this->objFunc=$this->create('MODDashdet');
 			
 			$this->res=$this->objFunc->listarDashdet($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function listarDashdetalle(){
+		$this->objParam->defecto('ordenacion','id_dashdet');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODDashdet','listarDashdetalle');
+		} else{
+			$this->objFunc=$this->create('MODDashdet');
+			
+			$this->res=$this->objFunc->listarDashdetalle($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

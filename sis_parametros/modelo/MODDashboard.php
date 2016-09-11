@@ -20,6 +20,8 @@ class MODDashboard extends MODbase{
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		
 		$this->setCount(false);
+		
+		
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_dashboard','int4');
@@ -33,7 +35,8 @@ class MODDashboard extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
-		$this->captura('usr_mod','varchar');
+		$this->captura('usr_mod','varchar');		
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

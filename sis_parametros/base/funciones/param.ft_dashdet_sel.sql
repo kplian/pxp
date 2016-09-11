@@ -1,7 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."ft_dashdet_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION param.ft_dashdet_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_dashdet_sel
@@ -68,6 +74,10 @@ BEGIN
 			return v_consulta;
 						
 		end;
+        
+        
+        
+        
 
 	/*********************************    
  	#TRANSACCION:  'PM_DAD_CONT'
@@ -93,6 +103,53 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'PM_DADET_SEL'
+ 	#DESCRIPCION:	Consulta de datos
+ 	#AUTOR:		admin	
+ 	#FECHA:		10-09-2016 11:31:12
+	***********************************/
+
+	elsif(p_transaccion='PM_DADET_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+						dad.id_dashdet,
+						dad.estado_reg,
+						dad.columna,
+						dad.id_widget,
+						dad.fila,
+						dad.id_dashboard,
+						dad.fecha_reg,
+						dad.usuario_ai,
+						dad.id_usuario_reg,
+						dad.id_usuario_ai,
+						dad.id_usuario_mod,
+						dad.fecha_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod,
+                        w.clase,
+                        w.nombre,
+                        w.ruta,
+                        w.tipo,
+                        w.obs
+						from param.tdashdet dad
+                        inner join param.twidget w on w.id_widget = dad.id_widget
+						inner join segu.tusuario usu1 on usu1.id_usuario = dad.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = dad.id_usuario_mod
+                       
+				        where  id_dashboard = '||v_parametros.id_dashboard;
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||'  order by columna, fila asc';
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;    
+        
 					
 	else
 					     
@@ -109,7 +166,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."ft_dashdet_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
