@@ -237,7 +237,7 @@ Ext.define('Phx.vista.Dashboard',{
 				                id: wid,
 				                layout: 'fit',
 				                tools: this.toolsportlet,
-				                title: 'prueba',
+				                title: entry.nombre,
 				                closable: true,
 				                autoShow: true,
 				                autoScroll: false,
@@ -266,36 +266,11 @@ Ext.define('Phx.vista.Dashboard',{
 	limpiarDashboard:function(){
 		var me = this;
 		
-		//me.PanelDash.removeAll(true);
-		
-		
-		
 		for(var i=0; i<=2 ;i++){
-	    	var aux = 0; 
-	    	
+	    	var aux = 0; 	    	
 	    	me.PanelDash.items.items[i].removeAll(true)
-	    	
-	    	
-	    	
-	    	/*
-	    	console.log('limpiarDashboard .......',i)
-	    	console.log('me.PanelDash.items.items[i].items.items .......',me.PanelDash.items.items[i].items.items)
-	    	  	
-	    	me.PanelDash.items.items[i].items.items.forEach(function(entry) {
-	    	     entry.ownerCt.remove(entry, true);
-	    	})
-	    	
-	    	me.PanelDash.items.items[i].items.items.forEach(function(entry) {
-	    	     entry.ownerCt.remove(entry, true);
-	    	})
-	    	
-	    	me.PanelDash.items.items[i].items.items.forEach(function(entry) {
-	    	     entry.ownerCt.remove(entry, true);
-	    	})*/
-    	
-       }
-       
-       this.nodoActual = undefined;
+         }       
+         this.nodoActual = undefined;
 	},
 	
 	newDasboard: function(){
@@ -340,18 +315,17 @@ Ext.define('Phx.vista.Dashboard',{
 		                width: '70%',
 		                height: '50%'
 		            }, 
-		            { foo: 'foo'}, me.idContenedor,'WidgetDash',
-		            {
-		                config:[{
+		            { foo: 'foo' }, 
+		            me.idContenedor,'WidgetDash',
+		            {  config:[{
 		                          event: 'selectwidget',
 		                          delegate: me.onSelectwidget,
-		                        }],
+		                       }],
 		               scope:me
 		           }); 
        }   
-       else { 
-       	
-       	   alert('Primero seleccione el dashboard')
+       else {        	
+       	  alert('Primero seleccione el dashboard')
        }       
 	},
 	

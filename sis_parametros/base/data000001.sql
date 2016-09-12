@@ -964,3 +964,39 @@ select pxp.f_insert_testructura_gui ('DASH', 'SISTEMA');
 
 
 
+/*******************************************I-DAT-RAC-PARAM-0-07/10/2016***********************************************/
+
+----------------------------------
+--COPY LINES TO data.sql FILE  
+---------------------------------
+select pxp.f_insert_tgui ('Widget', 'Widget para dashboard', 'WIDGET', 'si', 10, 'sis_parametros/vista/widget/WidgetConfig.php', 3, '', 'WidgetConfig', 'PARAM');
+----------------------------------
+--COPY LINES TO dependencies.sql FILE  
+---------------------------------
+select pxp.f_insert_testructura_gui ('WIDGET', 'OTROS');
+
+
+
+/* Data for the 'param.twidget' table  (Records 1 - 3) */
+
+INSERT INTO param.twidget ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_widget", "nombre", "obs", "foto", "clase", "tipo", "ruta")
+VALUES 
+  (1, 1, E'2016-09-10 04:34:20.673', E'2016-09-11 05:59:54.043', E'activo', NULL, E'NULL', 1, E'Prueba', E'este es un widget  de prueba sin datos relevantes', E'./../../../uploaded_files/sis_parametros/Widget/85ab53cb4ec4e66acb25d58419cfc392_v.jpg', E'Prueba', E'objeto', E'sis_seguridad/widgets/Prueba.php'),
+  (1, 1, E'2016-09-10 06:24:19.559', E'2016-09-11 10:36:09.940', E'activo', NULL, E'NULL', 2, E'test', E'test', NULL, E'Prueba3', E'objeto', E'sis_seguridad/widgets/Prueba3.php'),
+  (1, NULL, E'2016-09-11 10:59:02.279', NULL, E'activo', NULL, E'NULL', 3, E'iframe', E'iframe', NULL, E'Prueba2', E'iframe', E'sis_seguridad/widgets/Prueba2.php');
+
+
+/* Data for the 'param.tdashboard' table  (Records 1 - 4) */
+
+INSERT INTO param.tdashboard ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_dashboard", "nombre", "id_usuario")
+VALUES 
+  (1, 1, E'2016-09-10 07:41:23', E'2016-09-11 18:25:46.596', E'activo', NULL, E'NULL', 1, E'mi test', 1),
+  (1, NULL, E'2016-09-11 06:24:06.452', NULL, E'activo', NULL, E'NULL', 27, E'Mi dashboard', 1),
+  (1, 1, E'2016-09-11 23:07:16.106', E'2016-09-11 23:07:26.357', E'activo', NULL, E'NULL', 28, E'prueba', 1),
+  (1, 1, E'2016-09-11 23:07:46.370', E'2016-09-11 23:07:54.814', E'activo', NULL, E'NULL', 29, E'test', 1);
+
+
+/*******************************************F-DAT-RAC-PARAM-0-07/10/2016***********************************************/
+
+
+
