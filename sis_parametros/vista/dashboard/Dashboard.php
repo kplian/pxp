@@ -52,7 +52,17 @@ Ext.define('Phx.vista.Dashboard',{
 				                }
 				                
 				            }
-				          }]
+				          },
+				          {
+						            text: 'Delete',
+						            iconCls: 'album-btn',
+						            scope: this,
+						            handler: this.deleteDasboard
+				            
+				          }
+				          
+				          
+				          ]
 				        });
 				        
 				        
@@ -119,9 +129,10 @@ Ext.define('Phx.vista.Dashboard',{
 	    });
 	    
 	    this.ge.on('complete', this.editDashboard, this);
+	    
+	    
 	    this.PanelDash = new Ext.ux.Portal({
 	            region:'center',
-	            //margins:'35 5 5 0',
 	            margins: '5 0 5 5',
 	            tbar:this.tbDash,
 	            items:[{
@@ -136,16 +147,9 @@ Ext.define('Phx.vista.Dashboard',{
 		                columnWidth:.33,
 		                style:'padding:10px 0 10px 10px',
 		                items:[]
-		            }],
-		            
-		       /*listeners: {
-                    'drop': function(e){
-                    	
-                    	         Ext.Msg.alert('Portlet Dropped', e.panel.title + '<br />Column: ' + 
-                                     e.columnIndex + '<br />Position: ' + e.position);
-                           }
-                }*/
-	        });
+		            }]
+		    
+		    });
 	    
 	    this.Border = new Ext.Container({
 	        layout:'border',
@@ -286,8 +290,28 @@ Ext.define('Phx.vista.Dashboard',{
 			
 	},
 	
-	editDashboard:function(obj, value, startValue){		
+	deleteDasboard: function(){
+		 
+		 
+		this.sm = this.treeMenu.getSelectionModel();
 		var node = this.sm.getSelectedNode();
+		
+		if(confirm('¿Está seguro de eliminar el Dashboard?')){
+					
+					Phx.CP.loadingShow();
+					Ext.Ajax.request({
+							url : '../../sis_parametros/control/Dashboard/eliminarDashboard',
+							success : this.successDelDash,
+							failure : Phx.CP.conexionFailure,
+							params : { id_dashboard: node.attributes.id_dashboard },
+							scope : this
+						});
+			
+		}	
+	},
+	
+	editDashboard:function(obj, value, startValue,o){	
+		var node =obj.editNode;		
 		if(value != startValue){
 			Ext.Ajax.request({
 					url : '../../sis_parametros/control/Dashboard/insertarDashboard',
@@ -297,6 +321,13 @@ Ext.define('Phx.vista.Dashboard',{
 					scope : this
 				});	
 		}
+		
+	},
+	
+	successDelDash:function(){
+		Phx.CP.loadingHide();		
+		this.limpiarDashboard();
+		this.root.reload();
 		
 	},
 	successNewDash:function(){
