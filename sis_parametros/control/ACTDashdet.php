@@ -56,6 +56,13 @@ class ACTDashdet extends ACTbase{
 		$this->res=$this->objFunc->eliminarDashdet($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function guardarPosiciones(){
+		$this->objFunc=$this->create('MODDashdet');	
+		$this->res=$this->objFunc->guardarPosiciones($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+		
 			
 }
 

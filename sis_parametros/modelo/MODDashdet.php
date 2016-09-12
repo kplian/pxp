@@ -145,6 +145,24 @@ class MODDashdet extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	
+	function guardarPosiciones(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_dashdet_ime';
+		$this->transaccion='PM_SAVESTATUS_IME';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_dashboard_activo','id_dashboard_activo','int4');
+		$this->setParametro('json_procesos','json_procesos','text');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>

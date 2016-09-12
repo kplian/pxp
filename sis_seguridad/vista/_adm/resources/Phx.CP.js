@@ -1633,7 +1633,8 @@ Phx.CP=function(){
   				       u.update(
   				      	 { url: inter.require, 
   				      	   params: o.argument.params,
-  				      	   scripts : true,
+  				      	   scripts : true,  
+  				      	   listeners: o.argument.options.listeners	,			      	   
   				      	   showLoadIndicator: "Cargando...2",
   				      	   callback: this.callbackWindows,
   				      	   scope:this
@@ -1729,7 +1730,7 @@ Phx.CP=function(){
 	                vaMyCls = [];
   				       
   				vaMyCls.push(mycls);
-				
+				console.log('listeners.......',listeners)
 				var Win = new Ext.Window(Ext.apply(Ventana,{
 					id: wid,// manager: this.windows,
 					autoDestroy: true,
