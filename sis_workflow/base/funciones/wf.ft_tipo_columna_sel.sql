@@ -27,6 +27,10 @@ DECLARE
     v_parametros        record;
     v_nombre_funcion    text;
     v_resp              varchar;
+    v_accion			varchar;
+    v_id_tabla			integer;
+    v_id_tipo_estado	integer;
+    v_id_proceso_wf		integer;
                 
 BEGIN
 
@@ -211,6 +215,73 @@ BEGIN
             --v_consulta:=v_consulta||' and (te.codigo = '''|| v_parametros.tipo_estado || ''' or te.codigo is null) ';
             v_consulta:=v_consulta||' order by tipcol.bd_prioridad, tipcol.id_tipo_columna asc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
+            --Devuelve la respuesta
+            return v_consulta;
+                        
+        end;
+    
+    /*********************************    
+    #TRANSACCION:  'WF_TIPCOLFOR_SEL'
+    #DESCRIPCION:   Detalle de columnas a mostrar en el formulario
+    #AUTOR:     admin   
+    #FECHA:     07-05-2014 21:41:15
+    ***********************************/
+
+    elsif(p_transaccion='WF_TIPCOLFOR_SEL')then
+                    
+        begin
+        	if (pxp.f_existe_parametro(p_tabla,'id_estado_wf')) then 
+            	if (v_parametros.id_estado_wf is not null) THEN
+                	v_accion = 'edit';
+                else
+                	v_accion = 'new';
+                end if;
+            else
+            	v_accion = 'new';
+            end if;
+            
+            if v_accion = 'edit' THEN
+            	select t.id_tabla, ewf.id_tipo_estado, ewf.id_proceso_wf
+                into	v_id_tabla, v_id_tipo_estado, v_id_proceso_wf
+                from wf.testado_wf ewf
+                inner join wf.tproceso_wf pwf on ewf.id_proceso_wf = pwf.id_proceso_wf 
+                inner join wf.ttabla t on t.id_tipo_proceso = pwf.id_tipo_proceso and 
+                	t.vista_tipo = 'maestro'
+                where ewf.id_estado_wf = v_parametros.id_estado_wf;
+                
+            	
+                v_consulta = '
+                		select tc.bd_nombre_columna,ce.momento,wf.f_evaluar_regla_wf (' || p_id_usuario || ',
+                                             ' || v_id_proceso_wf || ',
+                                             ce.regla,
+                                             ' || v_id_tipo_estado || ',
+                                             ' || v_parametros.id_estado_wf || ') 
+                        from wf.ttipo_columna tc
+        				inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna
+        				inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
+            			where ce.momento in (''registrar'',''exigir'') and ce.estado_reg = ''activo'' 
+                        	and tc.estado_reg = ''activo'' and id_tabla = ' || v_id_tabla || ' and te.id_tipo_estado = ' || v_id_tipo_estado;
+                	
+                
+            else
+            	select t.id_tabla, ewf.id_tipo_estado
+                into	v_id_tabla, v_id_tipo_estado
+                from wf.ttipo_proceso tp   
+                inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
+                inner join wf.ttabla t on t.id_tipo_proceso = tp.id_tipo_proceso and 
+                	t.vista_tipo = 'maestro'
+                where tp.codigo = v_parametros.codigo_proceso and pm.codigo = v_parametros.proceso_macro;
+            
+            	v_consulta = '
+                		select tc.bd_nombre_columna,ce.momento,true
+                        from wf.ttipo_columna tc
+        				inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna
+        				inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
+            			where ce.momento in (''registrar'',''exigir'') and ce.estado_reg = ''activo'' and tc.estado_reg = ''activo'' 
+                        		and id_tabla = ' || v_id_tabla || ' and te.id_tipo_estado = ' || v_id_tipo_estado;
+                	
+            end if;            
+           
             --Devuelve la respuesta
             return v_consulta;
                         

@@ -47,7 +47,6 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/fileuploadfield/css/fileuploadfield.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/ColumnHeaderGroup.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/GroupSummary.css" />
-   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/gridsummary.css"/>
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/RowEditor.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/treegrid/treegrid.css" />
    

@@ -1657,7 +1657,7 @@ Phx.CP=function(){
 				
 				o.argument.params.mycls = o.argument.params.vaMyCls[0];
 				var obj = Phx.CP.setPagina(new Phx.vista[o.argument.params.mycls](o.argument.params));
-				console.log(obj);
+
 				//adciona eventos al objeto interface si existen
 				if(o.argument.options.listeners){
 					if(obj.esperarEventos === true){
