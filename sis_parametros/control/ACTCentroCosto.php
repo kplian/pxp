@@ -140,6 +140,11 @@ class ACTCentroCosto extends ACTbase{
 				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
 		
+		if($this->objParam->getParametro('tipo_pres') == 'recurso,administrativo'){
+				$tip_pres = "(''1'',''0'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
+		    }
+		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo'){				
 				$tip_pres = "(''0'',''2'',''3'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
@@ -171,6 +176,16 @@ class ACTCentroCosto extends ACTbase{
 				$tip_pres = "(''2'',''3'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
+			
+			if($this->objParam->getParametro('tipo_pres') == 'recurso'){
+				$tip_pres = "(''1'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
+		    }
+			
+			if($this->objParam->getParametro('tipo_pres') == 'recurso,administrativo'){
+				$tip_pres = "(''1'',''0'')"; 
+				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
+		    }
 			
 			if($this->objParam->getParametro('tipo_pres') == 'administrativo'){				
 				$tip_pres = "(''0'')"; 
