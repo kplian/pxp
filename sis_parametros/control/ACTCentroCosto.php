@@ -198,6 +198,10 @@ class ACTCentroCosto extends ACTbase{
 			}
             
         }
+
+        if($this->objParam->getParametro('id_uo')!=''){
+            $this->objParam->addFiltro("cec.id_uo = ".$this->objParam->getParametro('id_uo'));    
+        }
 		
         if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
