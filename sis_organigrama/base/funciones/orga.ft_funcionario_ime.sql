@@ -11,13 +11,13 @@ $body$
 /**************************************************************************
  FUNCION: 		orga.ft_funcionario_ime
  DESCRIPCIÓN:   modificaciones de funciones
- AUTOR: 	    KPLIAN (mzm)	
- FECHA:	        
- COMENTARIOS:	
+ AUTOR: 	    KPLIAN (mzm)
+ FECHA:
+ COMENTARIOS:
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
+ DESCRIPCION:
  AUTOR:		KPLIAN (rac)
  FECHA:		21-01-2011
  ***************************************************************************/
@@ -49,17 +49,17 @@ BEGIN
 
      v_nombre_funcion:='orga.ft_funcionario_ime';
      v_parametros:=pxp.f_get_record(par_tabla);
-     
-     
- /*******************************    
+
+
+ /*******************************
  #TRANSACCION:   RH_FUNCIO_INS
  #DESCRIPCION:	Inserta Funcionarios
- #AUTOR:			
- #FECHA:		25-01-2011	
+ #AUTOR:
+ #FECHA:		25-01-2011
 ***********************************/
      if(par_transaccion='RH_FUNCIO_INS')then
 
-        
+
           BEGIN
 
 
@@ -67,7 +67,7 @@ BEGIN
                if exists (select 1 from orga.tfuncionario where codigo=v_parametros.codigo and estado_reg='activo') then
                   raise exception 'Insercion no realizada. CODIGO EN USO';
                end if;
-               
+
                if exists(select 1 from orga.tfuncionario where id_persona=v_parametros.id_persona and estado_reg='activo') then
                   raise exception 'Insercion no realizada. Esta persona ya está registrada como funcionario';
                end if;
@@ -84,8 +84,8 @@ BEGIN
 		               antiguedad_anterior)
                values(
                       v_parametros.codigo,
-                      v_parametros.id_persona, 
-                      'activo',now()::date, 
+                      v_parametros.id_persona,
+                      'activo',now()::date,
                       par_id_usuario,
                       v_parametros.id_persona,
                       v_parametros.interno,
@@ -93,8 +93,8 @@ BEGIN
                       v_parametros.telefono_ofi,
                       v_parametros.antiguedad_anterior)
                RETURNING id_funcionario into v_id_funcionario;
-               
-               update segu.tpersona 
+
+               update segu.tpersona
                	set estado_civil = v_parametros.estado_civil,
                	genero = v_parametros.genero,
                	fecha_nacimiento = v_parametros.fecha_nacimiento,
@@ -103,36 +103,36 @@ BEGIN
                	discapacitado = v_parametros.discapacitado,
                	carnet_discapacitado = v_parametros.carnet_discapacitado
                where id_persona = v_parametros.id_persona;
-               	
-                      
+
+
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','funcionario '||v_parametros.codigo ||' insertado con exito ');
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_id_funcion::varchar);
          END;
- /*******************************    
+ /*******************************
  #TRANSACCION:      RH_FUNCIO_MOD
  #DESCRIPCION:	Modifica la parametrizacion seleccionada
- #AUTOR:			
+ #AUTOR:
  #FECHA:		25-01-2011
 ***********************************/
      elsif(par_transaccion='RH_FUNCIO_MOD')then
 
-          
+
           BEGIN
-        
-          
+
+
                 if exists (select 1 from orga.tfuncionario
                 			where id_funcionario!=v_parametros.id_funcionario
                 			and codigo=v_parametros.codigo
                 			and estado_reg='activo') then
                   raise exception 'Modificacion no realizada. CODIGO EN USO';
                 end if;
-                
+
                 if exists(select 1 from orga.tfuncionario
                 			where id_funcionario!=v_parametros.id_funcionario
                 			and id_persona=v_parametros.id_persona and estado_reg='activo') then
                   raise exception 'Insercion no realizada. Esta persona ya está registrada como funcionario';
                end if;
-                
+
                 update orga.tfuncionario set
                 	codigo=v_parametros.codigo,
                     id_usuario_mod=par_id_usuario,
@@ -145,8 +145,8 @@ BEGIN
                     telefono_ofi= v_parametros.telefono_ofi,
                     antiguedad_anterior =  v_parametros.antiguedad_anterior
                 where id_funcionario=v_parametros.id_funcionario;
-                
-                update segu.tpersona 
+
+                update segu.tpersona
                	set estado_civil = v_parametros.estado_civil,
                	genero = v_parametros.genero,
                	fecha_nacimiento = v_parametros.fecha_nacimiento,
@@ -155,35 +155,35 @@ BEGIN
                	discapacitado = v_parametros.discapacitado,
                	carnet_discapacitado = v_parametros.carnet_discapacitado
                where id_persona = v_parametros.id_persona;
-                
+
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario modificado con exito '||v_parametros.id_funcionario);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);
-               
-                
+
+
           END;
-          
-/*******************************    
+
+/*******************************
  #TRANSACCION:  RH_FUNCIO_ELI
  #DESCRIPCION:	Inactiva la parametrizacion selecionada
- #AUTOR:			
+ #AUTOR:
  #FECHA:		25-01-2011
 ***********************************/
 
     elsif(par_transaccion='RH_FUNCIO_ELI')then
         BEGIN
-        
+
          --inactivacion de la periodo
                update orga.tfuncionario
                set estado_reg='inactivo'
                where id_funcionario=v_parametros.id_funcionario;
                return 'Funcionario eliminado con exito';
-               
+
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario eliminado con exito '||v_parametros.id_funcionario);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);
 
         END;
-     
-/*******************************    
+
+/*******************************
  #TRANSACCION:  RH_MAILFUN_GET
  #DESCRIPCION:	Recuepra el email del funcionario
  #AUTOR:	    RAC
@@ -192,21 +192,21 @@ BEGIN
 
     elsif(par_transaccion='RH_MAILFUN_GET')then
         BEGIN
-        
+
          --inactivacion de la periodo
-              select 
+              select
               fun.email_empresa
               into
               v_email_empresa
               from orga.tfuncionario fun
               where fun.id_funcionario = v_parametros.id_funcionario;
-              
+
               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Recupera el correo del funcionario');
               v_resp = pxp.f_agrega_clave(v_resp,'email_empresa',v_email_empresa::varchar);
 
         END;
-	
-    /*********************************    
+
+    /*********************************
  	#TRANSACCION:  'RH_CUMPLECORR_INS'
  	#DESCRIPCION:	  Registra alertas para felicitar cumpleanero del dia
  	#AUTOR:		Gonzalo Sarmiento Sejas
@@ -214,34 +214,36 @@ BEGIN
 	***********************************/
 
 	ELSEIF (par_transaccion='RH_CUMPLECORR_INS')then
-					
+
        begin
-       
+
         -- seleccionar los cumpleaneros del dia
          FOR v_registros in (SELECT FUNCIO.id_funcionario,
-                                     FUNCIO.desc_funcionario1::varchar,
+                                     FUNCIO.nombre::varchar,
+                                     FUNCIO.ap_paterno,
+                                     FUNCIO.ap_materno,
                                      CAR.nombre,
                                      F.email_empresa,
                                      usu.id_usuario
-                              FROM orga.vfuncionario FUNCIO
+                              FROM orga.vfuncionario_personareporte FUNCIO
                                    INNER JOIN orga.tfuncionario F ON F.id_funcionario = FUNCIO.id_funcionario
                                    INNER JOIN SEGU.tpersona PERSON ON PERSON.id_persona = F.id_persona
                                    INNER JOIN orga.tuo_funcionario uofun on uofun.id_funcionario =
                                      FUNCIO.id_funcionario and uofun.estado_reg = 'activo' and
-                                     uofun.fecha_asignacion <= now() ::date 
+                                     uofun.fecha_asignacion <= now() ::date
                                      and (uofun.fecha_finalizacion >= now() ::date or uofun.fecha_finalizacion is null)
                                    INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo
                                    INNER JOIN segu.tusuario usu on usu.id_persona=PERSON.id_persona
                               WHERE extract(day from PERSON.fecha_nacimiento) = extract(day from current_date)
                                AND extract(month from PERSON.fecha_nacimiento) = extract(month from current_date))  LOOP
-                
-           
+
+
                 ----------------------------
                 -- arma template de correo
                 -----------------------------
-                                        
+
                 v_asunto = 'Hoy es tu cumpleaños y BoA quiere festejar contigo!!!';
-           		
+
                 v_template = '<div style="width:400px; background-color: #019ADB; margin-right: auto; margin-left: auto;">
  							  <table width="400" style="background-color: #019ADB; font-family:''Helvetica Neue'',Helvetica,Arial,sans-serif; color: #ffffff; width: 400px;">
         					  <tr bgcolor="#019ADB">
@@ -251,7 +253,12 @@ BEGIN
         					  </tr>
         					  <tr bgcolor="#019ADB" style="background-color: #019ADB;">
             				  <td style="background-color: #019ADB; font-size: 20px;" align="center">'||
-                			  v_registros.desc_funcionario1::varchar ||
+                			  v_registros.nombre::varchar ||
+            				  '</td>
+        					  </tr>
+                              <tr bgcolor="#019ADB" style="background-color: #019ADB;">
+            				  <td style="background-color: #019ADB; font-size: 20px;" align="center">'||
+                			  COALESCE(v_registros.ap_paterno,'')::varchar || '  ' || COALESCE(v_registros.ap_materno,'')::varchar ||
             				  '</td>
         					  </tr>
         					  <tr>
@@ -288,14 +295,14 @@ BEGIN
         					  </tr>
     						  </table>
 							  </div>';
-                
-                v_titulo = ''|| v_registros.desc_funcionario1 ||'';
+
+                v_titulo = ''|| v_registros.nombre || ' ' || COALESCE(v_registros.ap_paterno,'')::varchar || ' ' || COALESCE(v_registros.ap_materno,'')::varchar || '';
                 v_acceso_directo = '';
                 v_clase = '';
                 v_parametros_ad = '{}';
-           
+
                 -- inserta registros de alarmas par ael usario que creo la obligacion
-                v_id_alarma[1]:=param.f_inserta_alarma(NULL,
+                v_id_alarma[1]:=param.f_inserta_alarma(v_registros.id_funcionario,
                                                     v_template ,    --descripcion alarmce
                                                     COALESCE(v_acceso_directo,''),--acceso directo
                                                     now()::date,
@@ -310,14 +317,14 @@ BEGIN
 
        END LOOP;
        end;
-         
-   
+
+
     else
 
          raise exception 'No existe la transaccion: %',par_transaccion;
     end if;
-    
- return v_resp;  
+
+ return v_resp;
 
 EXCEPTION
 
