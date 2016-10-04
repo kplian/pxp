@@ -24,7 +24,26 @@ class ACTUsuario extends ACTbase{
 			$this->objFunSeguridad=$this->create('MODUsuario');
 			$this->res=$this->objFunSeguridad->listarUsuario($this->objParam);
 		}
-		
+
+		if($this->objParam->getParametro('_adicionar')!=''){
+
+			$respuesta = $this->res->getDatos();
+
+
+			array_unshift ( $respuesta, array(  'id_usuario'=>'0',
+					'id_clasificador'=>'Todos',
+					'cuenta'=>'Todos',
+					'fecha_reg'=>'Todos',
+					'estado_reg'=>'Todos',
+					'estilo'=>'Todos',
+					'id_persona'=>'Todos',
+					'desc_person'=>'Todos',
+					'id_roles'=>'Todos',
+					'autentificacion'=>'Todos') );
+			//var_dump($respuesta);
+			$this->res->setDatos($respuesta);
+		}
+
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());
 		
