@@ -270,7 +270,7 @@ class ACTAuten extends ACTbase {
 				$id_cargo = 0;
 			}
 			
-			//almacena llave ....
+
 			if($_SESSION["_tipo_aute"] != 'REST'){
 				//almacena llave ....
 				$_SESSION["_SESION"]->actualizarLlaves($_SESSION['key_k'], $_SESSION['key_p'], $_SESSION['key_p_inv'], $_SESSION['key_m'], $_SESSION['key_d'], $_SESSION['key_e']);

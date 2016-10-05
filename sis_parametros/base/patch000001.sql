@@ -1426,3 +1426,56 @@ IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de
 alter table param.tinstitucion
 add constraint tinstitucion_uq_codigo unique(codigo);
 /***********************************F-SCP-RCM-PARAM-0-24/08/2016*****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-27/09/2016*****************************************/
+
+--------------- SQL ---------------
+
+CREATE TABLE param.twidget (
+  id_widget SERIAL NOT NULL,
+  nombre VARCHAR,
+  obs VARCHAR,
+  foto VARCHAR,
+  clase VARCHAR(100),
+  tipo VARCHAR(30) DEFAULT 'iframe' NOT NULL,
+  ruta VARCHAR,
+  PRIMARY KEY(id_widget)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.twidget.tipo
+IS 'iframe o objeto';
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tdashboard (
+  id_dashboard SERIAL NOT NULL,
+  nombre VARCHAR,
+  id_usuario INTEGER,
+  PRIMARY KEY(id_dashboard)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tdashdet (
+  id_dashdet SERIAL NOT NULL,
+  id_dashboard INTEGER NOT NULL,
+  id_widget INTEGER NOT NULL,
+  columna INTEGER DEFAULT 0 NOT NULL,
+  fila INTEGER,
+  PRIMARY KEY(id_dashdet)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-27/09/2016*****************************************/
+
+

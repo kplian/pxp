@@ -40,16 +40,17 @@ require 'Slim/Slim.php';
  * of setting names and values into the application constructor.
  */
 $app = new \Slim\Slim(array(
-    'log.level' => \Slim\Log::EMERGENCY,
+
+    'log.enabled' => false,
     'debug' => false
 ));
 register_shutdown_function('fatalErrorShutdownHandler');
 set_exception_handler('exception_handler');
 set_error_handler('error_handler');
 
-$app->error('exception_handler');
+//$app->error('exception_handler');
 $app->log->setEnabled(false);
-error_reporting(~E_NOTICE);
+//error_reporting(~E_NOTICE);
 $app->response->headers->set('Content-Type', 'application/json');
 $headers = $app->request->headers;
 
@@ -92,6 +93,7 @@ function authPxp($headersArray) {
 	
 	$_SESSION["_SESION"]= new CTSesion();
 	$_SESSION["_tipo_aute"] = 'REST';   
+
 	$mensaje = '';  
     //listar usuario con Pxp-User del header
     $objParam = new CTParametro('',null,null,'../../sis_seguridad/control/Usuario/listarUsuario');
@@ -385,7 +387,10 @@ $app->get(
 $app->post(
 	 
     '/seguridad/Auten/verificarCredenciales',
-    function () use ($app) {    	
+    function () use ($app) {
+        register_shutdown_function('fatalErrorShutdownHandler');
+        set_exception_handler('exception_handler');
+        set_error_handler('error_handler');
     	$headers = $app->request->headers;
 		if (isset($headers['Php-Auth-User'])) {
 						
@@ -433,7 +438,8 @@ $app->post(
 $app->post(
 	 
     '/:sistema/:clase_control/:metodo',
-    function ($sistema,$clase_control,$metodo) use ($app) {    		
+    function ($sistema,$clase_control,$metodo) use ($app) {
+
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		$psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;
@@ -566,5 +572,6 @@ $app->options('/:sistema/:clase_control/:metodo', function ($sistema,$clase_cont
  * This method should be called last. This executes the Slim application
  * and returns the HTTP response to the HTTP client.
  */
+error_reporting(0);
 $app->run();
-error_reporting(-1);
+
