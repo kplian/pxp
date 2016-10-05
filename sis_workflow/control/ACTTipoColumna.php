@@ -26,6 +26,22 @@ class ACTTipoColumna extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+    function listarColumnasFormulario(){
+        $this->objParam->defecto('ordenacion','nombre_columna');
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODTipoColumna','listarColumnasFormulario');
+        } else{
+            $this->objFunc=$this->create('MODTipoColumna');
+
+            $this->res=$this->objFunc->listarColumnasFormulario($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 				
 	function insertarTipoColumna(){
 		$this->objFunc=$this->create('MODTipoColumna');	
