@@ -1476,6 +1476,27 @@ WITH (oids = false);
 
 
 
+
+
 /***********************************F-SCP-RAC-PARAM-0-27/09/2016*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-06/10/2016*****************************************/
+
+CREATE TYPE param.dashdet AS (
+  id_dashboard INTEGER,
+  id_dashdet INTEGER,
+  id_widget INTEGER,
+  fila INTEGER,
+  columna INTEGER
+);
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-06/10/2016*****************************************/
+
+
+
+
 
 

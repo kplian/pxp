@@ -9,149 +9,28 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-//Ext.BLANK_IMAGE_URL = '../../resources/images/default/s.gif';
-
 function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
 }
 
-Ext.example = function(){
-    var msgCt;
-
-    function createBox(t, s){
-    	alert('hora')
-    	console.log('....')
-        return ['<div class="msg">',
-                '<div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>',
-                '<div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc"><h3>', t, '</h3>', s, '</div></div></div>',
-                '<div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>',
-                '</div>'].join('');
-    }
-    return {
-        msg : function(title, format){
-            if(!msgCt){
-                msgCt = Ext.DomHelper.insertFirst(document.body, {id:'msg-div'}, true);
-            }
-            msgCt.alignTo(document, 't-t');
-            var s = String.format.apply(String, Array.prototype.slice.call(arguments, 1));
-            var m = Ext.DomHelper.append(msgCt, {html:createBox(title, s)}, true);
-            m.slideIn('t').pause(1).ghost("t", {remove:true});
-            console.log('se ejecuta')
-        },
-
-        init : function(){
-            /*
-            var t = Ext.get('exttheme');
-            if(!t){ // run locally?
-                return;
-            }
-            var theme = Cookies.get('exttheme') || 'aero';
-            if(theme){
-                t.dom.value = theme;
-                Ext.getBody().addClass('x-'+theme);
-            }
-            t.on('change', function(){
-                Cookies.set('exttheme', t.getValue());
-                setTimeout(function(){
-                    window.location.reload();
-                }, 250);
-            });*/
-
-            var lb = Ext.get('lib-bar');
-            if(lb){
-                lb.show();
-            }
-        }
-    };
-}();
-
-Ext.example.shortBogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel,Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna. urna.';
-Ext.example.bogusMarkup = '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus. Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.<br/><br/>Aliquam commodo ullamcorper erat. Nullam vel justo in neque porttitor laoreet. Aenean lacus dui, consequat eu, adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare sed, luctus eu, massa. Vivamus eget quam. Vivamus tincidunt diam nec urna. Curabitur velit.</p>';
-Ext.example.test = '<iframe src="http://docs.google.com/present/embed?id=dcn37mcz_22cmnwnwf8"></iframe>';
-Ext.example.test2 = '<iframe src="http://www.w3schools.com"></iframe>';
-//Ext.example.test3 = '<iframe src="../../../sis_seguridad/widgets/usuarios_login/" height = "340" width = "100%" align="center" frameborder="0"></iframe>';
-Ext.example.test3 = '<iframe src="../../../sis_seguridad/widgets/usuarios_login/"  scrolling="no" width = "100%" align="center" frameborder="0" onload="resizeIframe(this)"></iframe>';
-//Ext.example.test3 = "<iframe src='../../../sis_seguridad/widgets/usuarios_login/'  height = '360' scrolling='no' width = '100%' align='center' frameborder='0' ></iframe>";
-
-
-
-
-Ext.onReady(Ext.example.init, Ext.example);
-
-
-
-// old school cookie functions
-var Cookies = {};
-Cookies.set = function(name, value){
-     var argv = arguments;
-     var argc = arguments.length;
-     var expires = (argc > 2) ? argv[2] : null;
-     var path = (argc > 3) ? argv[3] : '/';
-     var domain = (argc > 4) ? argv[4] : null;
-     var secure = (argc > 5) ? argv[5] : false;
-     document.cookie = name + "=" + escape (value) +
-       ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
-       ((path == null) ? "" : ("; path=" + path)) +
-       ((domain == null) ? "" : ("; domain=" + domain)) +
-       ((secure == true) ? "; secure" : "");
-};
-
-Cookies.get = function(name){
-	var arg = name + "=";
-	var alen = arg.length;
-	var clen = document.cookie.length;
-	var i = 0;
-	var j = 0;
-	while(i < clen){
-		j = i + alen;
-		if (document.cookie.substring(i, j) == arg)
-			return Cookies.getCookieVal(j);
-		i = document.cookie.indexOf(" ", i) + 1;
-		if(i == 0)
-			break;
-	}
-	return null;
-};
-
-Cookies.clear = function(name) {
-  if(Cookies.get(name)){
-    document.cookie = name + "=" +
-    "; expires=Thu, 01-Jan-70 00:00:01 GMT";
-  }
-};
-
-Cookies.getCookieVal = function(offset){
-   var endstr = document.cookie.indexOf(";", offset);
-   if(endstr == -1){
-       endstr = document.cookie.length;
-   }
-   return unescape(document.cookie.substring(offset, endstr));
-};
-
-
 Ext.namespace('Phx','Phx.vista.widget');
-	
 Ext.define('Phx.vista.Dashboard',{		
 	extend: 'Ext.util.Observable',
 	
 	constructor: function(config) {
 		
-		Ext.apply(this, arguments[0]);
-				
+		Ext.apply(this, config);
+		var me = this;		
 		this.callParent(arguments);
 		
 	    
 	    this.panel = Ext.getCmp(this.idContenedor);
-	    console.log('this.panel',this.panel);
-	    
-	    
-	    
 	    this.tb = new Ext.Toolbar({
 				        items:[{
-				            text: 'New',
-				            iconCls: 'album-btn',
-				            scope: this,
-				            handler: this.newDasboard, 
+						            text: 'New',
+						            iconCls: 'album-btn',
+						            scope: this,
+						            handler: this.newDasboard
 				            
 				          },
 				          {
@@ -173,12 +52,37 @@ Ext.define('Phx.vista.Dashboard',{
 				                }
 				                
 				            }
-				          }]
+				          },
+				          {
+						            text: 'Delete',
+						            iconCls: 'album-btn',
+						            scope: this,
+						            handler: this.deleteDasboard
+				            
+				          }
+				          
+				          
+				          ]
 				        });
-       
+				        
+				        
+		this.tbDash = new Ext.Toolbar({
+			            region:'north',
+				        items:['->',{
+					            text: 'Insertar Widget',
+					            iconCls: 'album-btn',
+					            scope: this,
+					            handler: this.loadWindowsWidget, 
+					            
+					          },{
+					            text: 'Guardar',
+					            iconCls: 'album-btn',
+					            scope: this,
+					            handler: this.guardarPosiciones, 
+					            
+					          }]
+				        });	
        var newIndex = 3;
-       
-       
        
        this.loaderTree = new Ext.tree.TreeLoader({
 			url : '../../sis_parametros/control/Dashboard/listarDashboard',
@@ -215,13 +119,7 @@ Ext.define('Phx.vista.Dashboard',{
 			id : 'id'
 		});
 	
-	
-	
-	    
-	    
-	    this.treeMenu.setRootNode(this.root);
-	
-	    
+	     this.treeMenu.setRootNode(this.root);
 	
 	    // add an inline editor for the nodes
 	    this.ge = new Ext.tree.TreeEditor(this.treeMenu, {/* fieldconfig here */ }, {
@@ -232,75 +130,35 @@ Ext.define('Phx.vista.Dashboard',{
 	    
 	    this.ge.on('complete', this.editDashboard, this);
 	    
-	    // create some portlet tools using built in Ext tool ids
-	    var tools = [{
-	        id:'gear',
-	        handler: function(){
-	            Ext.Msg.alert('Message', 'The Settings tool was clicked.');
-	        }
-	    },{
-	        id:'close',
-	        handler: function(e, target, panel){
-	            panel.ownerCt.remove(panel, true);
-	        }
-	    }];
-		  
-	   
+	    
 	    this.PanelDash = new Ext.ux.Portal({
 	            region:'center',
-	            margins:'35 5 5 0',
+	            margins: '5 0 5 5',
+	            tbar:this.tbDash,
 	            items:[{
 		                columnWidth:.33,
 		                style:'padding:10px 0 10px 10px',
-		                items:[
-		                   {
-		                       title: 'Another Panel 1',
-		                       tools: tools,
-		                       html: Ext.example.shortBogusMarkup
-		                   }]
+		                items:[]
 		            },{
 		                columnWidth:.33,
 		                style:'padding:10px 0 10px 10px',
-		                items:[
-		                {
-		                    title: 'Another Panel 3',
-		                    tools: tools,
-		                    html: Ext.example.test
-		                },{
-		                    title: 'Another Panel 4',
-		                    tools: tools,
-		                    html:  Ext.example.test2
-		                }
-		                
-		                
-		                
-		               ]
+		                items:[]
 		            },{
 		                columnWidth:.33,
 		                style:'padding:10px 0 10px 10px',
-		                items:[{
-				                    title: 'Another Panel 4',
-				                    tools: tools,
-				                    autoHeight: true,
-				                    autoScroll : true,
-				                    html:  Ext.example.test3
-				                }
-		                
-		                
-		                ]
+		                items:[]
 		            }]
-	        })
-	   
+		    
+		    });
+	    
 	    this.Border = new Ext.Container({
 	        layout:'border',
-	        items:[this.treeMenu, this.PanelDash]
-	    });
-	    
+	        items:[  this.treeMenu, this.PanelDash]
+	    });	    
 	    
 	    this.panel.add(this.Border);
 	    this.panel.doLayout();
-	    this.addEvents('init');
-	    
+	    this.addEvents('init');	    
 	    
 	    this.treeMenu.on('click', function(node, e){
 				if(node.isLeaf()){
@@ -312,11 +170,20 @@ Ext.define('Phx.vista.Dashboard',{
 				}
 			}, this);
 			
+		 // create some portlet tools using built in Ext tool ids
+	    this.toolsportlet = [{
+	        id:'gear',
+	        handler: function(){
+	            Ext.Msg.alert('Message', 'The Settings tool was clicked.');
+	        }
+	    },{
+	        id:'close',
+	        handler: function(e, target, panel){
+	            panel.ownerCt.remove(panel, true);
+	        }
+	    }];	
 			
-	    
-	
-
-	
+			
 	},
 	nodoActual: null,
 	
@@ -325,6 +192,9 @@ Ext.define('Phx.vista.Dashboard',{
 		
 		//es diferente del nodo actual
 		if(nodo != this.nodoActual){
+			
+			//limpiar widget
+		    this.limpiarDashboard();
 			
 			this.nodoActual = nodo;
 			//extraer datos de los widget configurados
@@ -347,50 +217,37 @@ Ext.define('Phx.vista.Dashboard',{
 		console.log('regreso', response,arg,b)
 		
 		console.log('responseText',response.responseText)
-		//limpiar widget
-		this.limpiarDashboard();
-			
-		//crear objetos si no existen
 		
-		//Phx.vista.widget
-		
+					
+		//crear objetos 	
 		var regreso = Ext.util.JSON.decode(Ext.util.Format.trim(response.responseText)).datos;	
 		
-		console.log('regreso', regreso)
-		
-		
-		// create some portlet tools using built in Ext tool ids
-	    var tools = [{
-	        id:'gear',
-	        handler: function(){
-	            Ext.Msg.alert('Message', 'The Settings tool was clicked.');
-	        }
-	    },{
-	        id:'close',
-	        handler: function(e, target, panel){
-	            panel.ownerCt.remove(panel, true);
-	        }
-	    }];
-		
 		var me = this;
-		regreso.forEach(function(entry) {
-		      
-
-			
-			 var wid = Ext.id(), item;
-			 console.log('entry......',entry, wid,entry.ruta); 
-			 
-			 
-		     me.PanelDash.items.items[0].add(new Ext.ux.Portlet({
+		regreso.forEach(function(entry) {			 
+			 me.insertarWidget(entry);		      	
+		});
+		
+		me.PanelDash.doLayout();
+		
+		
+	},
+	
+	insertarWidget:function(entry){
+		var me = this;
+		var wid = Ext.id(), item ;
+		console.log('entry',entry.columna);		
+		var indice = entry.columna?entry.columna:0;
+		me.PanelDash.items.items[indice].add(new Ext.ux.Portlet({
 				                id: wid,
 				                layout: 'fit',
-				                tools: tools,
-				                title: 'prueba',
+				                tools: this.toolsportlet,
+				                title: entry.nombre,
 				                closable: true,
 				                autoShow: true,
 				                autoScroll: false,
 				                autoHeight : false,
 				                autoDestroy: true,
+				                widget: entry,
 				                autoLoad: {
 						  				url: '../../../'+entry.ruta,
 						  				params:{ idContenedor: wid, _tipo: 'direc', mycls: entry.clase},
@@ -401,40 +258,23 @@ Ext.define('Phx.vista.Dashboard',{
 						  				scripts :true 
 						  			}
 				           }));
-		      	
-		});
-		
-		me.PanelDash.doLayout();
-		
-		
-			
-		//cargar objetos en panel	
-		
-	},
-	
-	insertarWidget:function(){
-		
 	
 	
 	},
 	
-	callbackWidget: function(a,o,c,d){
-		
-		
-		 console.log('---------------',a,o,c,d)
-		  console.log('d.arguments.config.clase  .....',d.arguments.config.clase)
-		 
-		 
-		  var xx = new Phx.vista.widget[d.arguments.config.clase](d.params);
-		  xx.init();
-		 
-		
+	callbackWidget: function(a,o,c,d){		
+		 var xx = new Phx.vista.widget[d.arguments.config.clase](d.params);
+		  xx.init();		 
 	},
-	
-	
 	
 	limpiarDashboard:function(){
-		console.log('limpiar dashboard')
+		var me = this;
+		
+		for(var i=0; i<=2 ;i++){
+	    	var aux = 0; 	    	
+	    	me.PanelDash.items.items[i].removeAll(true)
+         }       
+         this.nodoActual = undefined;
 	},
 	
 	newDasboard: function(){
@@ -450,8 +290,28 @@ Ext.define('Phx.vista.Dashboard',{
 			
 	},
 	
-	editDashboard:function(obj, value, startValue){		
+	deleteDasboard: function(){
+		 
+		 
+		this.sm = this.treeMenu.getSelectionModel();
 		var node = this.sm.getSelectedNode();
+		
+		if(confirm('¿Está seguro de eliminar el Dashboard?')){
+					
+					Phx.CP.loadingShow();
+					Ext.Ajax.request({
+							url : '../../sis_parametros/control/Dashboard/eliminarDashboard',
+							success : this.successDelDash,
+							failure : Phx.CP.conexionFailure,
+							params : { id_dashboard: node.attributes.id_dashboard },
+							scope : this
+						});
+			
+		}	
+	},
+	
+	editDashboard:function(obj, value, startValue,o){	
+		var node =obj.editNode;		
 		if(value != startValue){
 			Ext.Ajax.request({
 					url : '../../sis_parametros/control/Dashboard/insertarDashboard',
@@ -463,14 +323,96 @@ Ext.define('Phx.vista.Dashboard',{
 		}
 		
 	},
+	
+	successDelDash:function(){
+		Phx.CP.loadingHide();		
+		this.limpiarDashboard();
+		this.root.reload();
+		
+	},
 	successNewDash:function(){
 		Phx.CP.loadingHide();
 		this.root.reload();
 		
-	}
+	},
+	
+	loadWindowsWidget:function(){		
+		var me = this;
+		
+		if(this.nodoActual)	{                
+			    Phx.CP.loadWindows('../../../sis_parametros/vista/widget/WidgetDash.php',
+		            'Estado de Wf',
+		            {   modal: true,
+		                width: '70%',
+		                height: '50%'
+		            }, 
+		            { foo: 'foo' }, 
+		            me.idContenedor,'WidgetDash',
+		            {  config:[{
+		                          event: 'selectwidget',
+		                          delegate: me.onSelectwidget,
+		                       }],
+		               scope:me
+		           }); 
+       }   
+       else {        	
+       	  alert('Primero seleccione el dashboard')
+       }       
+	},
+	
+	onSelectwidget: function(win, rec){	
+		 var me = this;	
+		 console.log('selectwidget', rec)
+		 win.panel.close();
+		 
+		 me.insertarWidget(rec.data);		      	
+		 me.PanelDash.doLayout();
+	},
 	
 	
+	getPosiciones: function(){
+    	
+    	var position = [], me = this;
+    	for(var i=0; i<=2 ;i++){
+	    	var aux = 0; 
+	    	  	
+	    	me.PanelDash.items.items[i].items.items.forEach(function(entry) {
+	    	       position.push({  columna: i, 
+	    			             fila:aux, 
+	    			             id_widget: entry.widget.id_widget?entry.widget.id_widget:0, 
+	    			             id_dashdet: entry.widget.id_dashdet?entry.widget.id_dashdet:0,
+	    			             id_dashboard: entry.widget.id_dashboard ?entry.widget.id_dashboard:0
+	    			          
+	    			         });
+	    		aux++;
+	    	})
+    	
+       }
+       
+       return position
+    
+    },
+    
+    guardarPosiciones:function(){
+    	
+    	if(this.nodoActual)	{   
+    		console.log(this.getPosiciones());
+	    	Phx.CP.loadingShow();
+	        Ext.Ajax.request({
+	            url:'../../sis_parametros/control/Dashdet/guardarPosiciones',
+	            params:{
+	            	    id_dashboard_activo:  this.nodoActual.attributes.id_dashboard,
+	            	    json_procesos:  Ext.util.JSON.encode(this.getPosiciones()),
+	                },
+	            success: this.successNewDash,
+	            failure: Phx.CP.conexionFailure, 
+	            scope: this
+	        });
+	    }
+	    else{
+	    	alert('Primero seleccion un dashboard');
+	    }	
+    }
 	
 });
-
 </script>

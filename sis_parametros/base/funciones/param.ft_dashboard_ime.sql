@@ -122,7 +122,11 @@ BEGIN
 	elsif(p_transaccion='PM_DAS_ELI')then
 
 		begin
-			--Sentencia de la eliminacion
+			
+            
+            delete from param.tdashdet where id_dashboard=v_parametros.id_dashboard;
+            
+            --Sentencia de la eliminacion
 			delete from param.tdashboard
             where id_dashboard=v_parametros.id_dashboard;
                

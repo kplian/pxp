@@ -14,17 +14,17 @@ Phx.vista.Widget=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
+		
+		 this.addEvents({
+            "selectwidget" : true
+        });
+	    
+	    
+		
     	//llama al constructor de la clase padre
 		Phx.vista.Widget.superclass.constructor.call(this,config);
 		
-		this.addButton('addPlantilla', {
-				text : 'Imagen',
-				iconCls : 'bundo',
-				disabled : false,
-				handler : this.addPlantilla,
-				tooltip : ' <b>Subir imagen</b>'
-			});
-
+		
 
 
 		
@@ -33,19 +33,7 @@ Phx.vista.Widget=Ext.extend(Phx.gridInterfaz,{
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
 	
-	addPlantilla : function() {
-
-
-			var rec = this.sm.getSelected();
-			Phx.CP.loadWindows('../../../sis_parametros/vista/widget/subirImagen.php', 'Subir', {
-				modal : true,
-				width : 500,
-				height : 250
-			}, rec.data, this.idContenedor, 'subirImagen')
-
-			
-
-	},
+	
 			
 	Atributos:[
 		{
@@ -296,17 +284,7 @@ Phx.vista.Widget=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	
-	preparaMenu: function (n) {
-		Phx.vista.Widget.superclass.preparaMenu.call(this, n);
-		var data = this.getSelectedData();
-		this.getBoton('addPlantilla').enable();
-		
-	},
-	liberaMenu: function (n) {
-		Phx.vista.Widget.superclass.liberaMenu.call(this, n);
-		this.getBoton('addPlantilla').disable();
-		
-	},
+	
 	
 	
 	bdel:true,
