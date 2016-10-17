@@ -1085,4 +1085,14 @@ ALTER TABLE segu.tpersona
 ALTER TABLE segu.tpersona
   ADD COLUMN id_lugar INTEGER;
 
-/*****************************F-SCP-JRR-SEGU-0-04/05/2016*************/
+/*****************************F-SCP-JRR-SEGU-0-17/10/2016*************/
+
+/*****************************I-SCP-JRR-SEGU-0-17/10/2016*************/
+CREATE INDEX tsesion_idx ON segu.tsesion
+USING btree (pid_web);
+
+CREATE INDEX tsesion_idx1 ON segu.tsesion
+USING btree (variable COLLATE pg_catalog."default");
+
+/*****************************F-SCP-JRR-SEGU-0-17/10/2016*************/
+
