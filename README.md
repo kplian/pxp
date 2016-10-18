@@ -13,9 +13,9 @@ http://foro.kplian.com/
 
 http://gema.kplian.com/sis_seguridad/vista/_adm/index.php
 
-	user:     rodrigo
+	user:      admin
 	 
-	password:  rodrigo
+	password:  admin
 
 
 ## INSTALLATION :<a name="installation"></a>
