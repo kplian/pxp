@@ -176,6 +176,7 @@ BEGIN
                
                      v_sw_error = false;
                      v_mensaje_error='';
+                     
                      FOR v_resgistros_prod_dis in (select 
                            ewf.id_estado_wf,
                            te.codigo,
@@ -222,7 +223,7 @@ BEGIN
     
      --verificamos si requiere manejo de alerta
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
-        
+ 			   
            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
            v_cont_alarma = 1;
            v_plantilla_asunto = p_titulo;
@@ -302,8 +303,8 @@ BEGIN
               
              --manejo de alertas para departamentos
               
-               IF p_id_depto is not NULL   and  (v_registros_ant.id_depto is  NULL or v_registros_ant.id_depto != p_id_depto)  THEN
-              
+               IF (p_id_depto is not NULL and p_id_funcionario is NULL)  THEN
+                
                   -- buscamos entre los usarios del depto quien puede recibir alerta
               
                 FOR  v_registros_depto in  ( 
@@ -311,7 +312,7 @@ BEGIN
                        from  param.tdepto_usuario du 
                        where du.id_depto = p_id_depto 
                          and du.sw_alerta = 'si'
-                         and ( du.cargo=ANY(v_registros.cargo_depto) or v_registros.cargo_depto is NULL )
+                         and ( du.cargo=ANY(v_registros.cargo_depto) or v_registros.cargo_depto is NULL or array_to_string(v_registros.cargo_depto, ',') = '' )
                          
                          ) LOOP
                          
@@ -458,6 +459,7 @@ BEGIN
                     if (v_registros_correo.asunto is not null) then
                     	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;	
+                   
                     --raise exception '%',p_id_proceso_wf;
                     v_alarma = param.f_inserta_alarma(
                                                       NULL,

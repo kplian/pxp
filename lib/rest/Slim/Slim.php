@@ -1249,7 +1249,7 @@ class Slim
      */
     public function run()
     {
-        set_error_handler(array('\Slim\Slim', 'handleErrors'));
+        set_error_handler('error_handler');
 
         //Apply final outer middleware layers
         if ($this->config('debug')) {
@@ -1361,6 +1361,7 @@ class Slim
      */
     public static function handleErrors($errno, $errstr = '', $errfile = '', $errline = '')
     {
+
         if (!($errno & error_reporting())) {
             return;
         }

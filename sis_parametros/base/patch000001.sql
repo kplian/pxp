@@ -1383,3 +1383,120 @@ IS 'Si el mensaje esta en proceso de envio valores: no o hora en formato YYYYMMD
 
 
 
+/***********************************I-SCP-RAC-PARAM-0-22/06/2016****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_qr VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_qr
+IS 'si se habilita o no el codigo qr para llenado rapido';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_nit VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tplantilla.sw_nit
+IS 'si permite o no el nro de nit';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN plantilla_qr VARCHAR;
+
+COMMENT ON COLUMN param.tplantilla.plantilla_qr
+IS 'defineel formato de lectura para el codigo qr, con os nombres de las columnas qe se llenan separados por pipe';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN show_combo VARCHAR(3) DEFAULT 'si' NOT NULL;
+
+COMMENT ON COLUMN param.tmoneda.show_combo
+IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de una solicitud de comra';
+
+
+/***********************************F-SCP-RAC-PARAM-0-22/06/2016****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-24/08/2016*****************************************/
+alter table param.tinstitucion
+add constraint tinstitucion_uq_codigo unique(codigo);
+/***********************************F-SCP-RCM-PARAM-0-24/08/2016*****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-27/09/2016*****************************************/
+
+--------------- SQL ---------------
+
+CREATE TABLE param.twidget (
+  id_widget SERIAL NOT NULL,
+  nombre VARCHAR,
+  obs VARCHAR,
+  foto VARCHAR,
+  clase VARCHAR(100),
+  tipo VARCHAR(30) DEFAULT 'iframe' NOT NULL,
+  ruta VARCHAR,
+  PRIMARY KEY(id_widget)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.twidget.tipo
+IS 'iframe o objeto';
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tdashboard (
+  id_dashboard SERIAL NOT NULL,
+  nombre VARCHAR,
+  id_usuario INTEGER,
+  PRIMARY KEY(id_dashboard)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tdashdet (
+  id_dashdet SERIAL NOT NULL,
+  id_dashboard INTEGER NOT NULL,
+  id_widget INTEGER NOT NULL,
+  columna INTEGER DEFAULT 0 NOT NULL,
+  fila INTEGER,
+  PRIMARY KEY(id_dashdet)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-27/09/2016*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-06/10/2016*****************************************/
+
+CREATE TYPE param.dashdet AS (
+  id_dashboard INTEGER,
+  id_dashdet INTEGER,
+  id_widget INTEGER,
+  fila INTEGER,
+  columna INTEGER
+);
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-06/10/2016*****************************************/
+
+
+
+
+
+

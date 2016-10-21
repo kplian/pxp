@@ -17,6 +17,10 @@ class ACTDepto extends ACTbase{
 		if( $this->objParam->getParametro('modulo') != '' ) {
 			$this->objParam->addFiltro("DEPPTO.modulo = ''".$this->objParam->getParametro('modulo')."''");
 		}
+
+        if( $this->objParam->getParametro('prioridad') != '' ) {
+            $this->objParam->addFiltro("DEPPTO.prioridad = ".$this->objParam->getParametro('prioridad'));
+        }
 		
 		if( $this->objParam->getParametro('id_depto_origen') != '' ) {
 			$this->objParam->addFiltro("deppto.id_depto in (select dd.id_depto_destino  from param.tdepto_depto dd where dd.id_depto_origen  = ".$this->objParam->getParametro('id_depto_origen').")");
@@ -65,9 +69,21 @@ class ACTDepto extends ACTbase{
 			
 		}
 		
+		if($this->objParam->getParametro('_adicionar')!=''){
+		    
+			$respuesta = $this->res->getDatos();
+			
+										
+		    array_unshift ( $respuesta, array(  'id_depto'=>'0',
+		                                'codigo'=>'Todos',
+									    'nombre'=>'Todos',
+										'nombre_corto'=>'Todos',
+										'id_subsistema'=>'Todos',
+										'estado_reg'=>'Todos',
+										'desc_subsistema'=>'Todos'));
+			$this->res->setDatos($respuesta);
+		}		
 		$this->res->imprimirRespuesta($this->res->generarJson());
-		
-		
 	}
 	
 	function listarDeptoFiltradoXUsuario(){

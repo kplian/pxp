@@ -21,6 +21,7 @@ class Reporte
 	 * 
 	 */
 	function __construct(CTParametro $pParam, $control){
+
 		$this->objParam=$pParam;
 		$this->control = $control;
 		if($this->objParam->getParametro('titulo')!=''){

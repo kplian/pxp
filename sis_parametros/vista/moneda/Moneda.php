@@ -210,6 +210,33 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
             form:true
         },
         
+         {
+            config:{
+                name:'show_combo',
+                fieldLabel:'Mostrar en Combos',
+                qtip: 'Si se muestras en combos otras interfaces como solicitud de compra o solicitud de fondos etc',
+                allowBlank: false,
+                anchor: '80%',
+                emptyText:'Tipo...',                   
+                typeAhead:true,
+                triggerAction:'all',
+                lazyRender:true,
+                mode:'local',
+                valueField:'inicio',                   
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{type: 'list',
+                     pfiltro:'moneda.show_combo',
+                     options: ['si','no']
+                    },
+            grid:true,
+            form:true
+        },
+        
+        
+        
         
 		{
 			
@@ -311,7 +338,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'triangulacion','contabilidad'
+		{name:'usr_mod', type: 'string'},'triangulacion','contabilidad','show_combo'
 		
 		
 	],

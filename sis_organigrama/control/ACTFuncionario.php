@@ -262,7 +262,11 @@ class ACTFuncionario extends ACTbase{
 
     }
 	
-	
+	function alertarCumpleaneroDia(){
+		$this->objFunc=$this->create('MODFuncionario');	
+		$this->res=$this->objFunc->alertarCumpleaneroDia($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 
 }
 

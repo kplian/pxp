@@ -55,6 +55,31 @@ class MODTipoColumna extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+    function listarColumnasFormulario(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='wf.ft_tipo_columna_sel';
+        $this->transaccion='WF_TIPCOLFOR_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        //Definicion de la lista del resultado del query
+        $this->setParametro('codigo_proceso','codigo_proceso','varchar');
+        $this->setParametro('proceso_macro','proceso_macro','varchar');
+        $this->setParametro('id_estado_wf','id_estado_wf','int4');
+
+        $this->captura('nombre_columna','varchar');
+        $this->captura('momento','varchar');
+        $this->captura('regla','boolean');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 	function insertarTipoColumna(){
 		//Definicion de variables para ejecucion del procedimiento

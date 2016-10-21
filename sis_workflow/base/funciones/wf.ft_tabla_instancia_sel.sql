@@ -132,7 +132,7 @@ BEGIN
                         v_filtro = ' 0=0  and ';
                     elsif(v_depto_asignacion != 'ninguno') then
                     	--obtenemos los deptos asignados al usuario
-                        select pxp.list(du.id_depto::text) into v_deptos
+                        select coalesce(pxp.list(du.id_depto::text),'-1') into v_deptos
                         from param.tdepto_usuario du
                         where du.id_usuario = p_id_usuario and 
                         du.estado_reg = 'activo';
@@ -302,7 +302,7 @@ BEGIN
                         v_filtro = ' 0=0  and ';
                     elsif(v_depto_asignacion != 'ninguno') then
                     	--obtenemos los deptos asignados al usuario
-                        select pxp.list(du.id_depto::text) into v_deptos
+                        select coalesce(pxp.list(du.id_depto::text),'-1') into v_deptos
                         from param.tdepto_usuario du
                         where du.id_usuario = p_id_usuario and 
                         du.estado_reg = 'activo';
