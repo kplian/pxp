@@ -322,6 +322,7 @@ Phx.vista.EstructuraUo=function(config){
 		
 		this.loaderTree.baseParams={id_subsistema:this.id_subsistema};
 		this.rootVisible=false;
+		this.iniciarEventos();
 	
 		
 }
@@ -330,6 +331,7 @@ Phx.vista.EstructuraUo=function(config){
 Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		datoFiltro:new Ext.form.Field({ 
 		                        allowBlank:true,
+		                        enableKeyEvents : true,
 					       		width: 150}),
 		checkInactivos:new Ext.form.Checkbox({ 
 		                        width: 25}),
@@ -463,6 +465,14 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		
 		//estable el manejo de eventos del formulario
 		iniciarEventos:function(){
+			
+			console.log(this.datoFiltro);
+			this.datoFiltro.on('specialkey',function(field, e){
+				if (e.getKey() == e.ENTER) {
+                     this.onButtonAct();   
+                }
+			},this)
+			
 			/*this.getComponente('tipo_dato').on('beforeselect',function(combo,record,index){
 				if(record.json[0]=='interface'){
 				
