@@ -491,6 +491,7 @@ class Mensaje
 		$cuerpo_array=array();
 		$detalle_array=array();
 		$detalle_array['mensaje']=$this->mensaje;
+        
 		if(isset($this->archivo_generado)){
 			$detalle_array['archivo_generado']=$this->archivo_generado;
 		}
