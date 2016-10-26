@@ -196,6 +196,13 @@ class ACTConceptoIngas extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 	
+	function subirImagen(){
+		$this->objFunSeguridad=$this->create('MODConceptoIngas');	
+		$this->res=$this->objFunSeguridad->subirImagen($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+		
+	
 	
 			
 }

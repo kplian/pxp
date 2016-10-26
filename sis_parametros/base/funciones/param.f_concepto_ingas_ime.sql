@@ -302,7 +302,36 @@ BEGIN
 
 		end; 
          
-	else
+	/*********************************    
+ 	#TRANSACCION:  'PM_CIGIMG_MOD'
+ 	#DESCRIPCION:	Subir imagen para el ceoncepto de gasto / ingreso
+ 	#AUTOR:		rac	
+ 	#FECHA:		26-10-2016 19:49:23
+	***********************************/
+
+	elsif(p_transaccion='PM_CIGIMG_MOD')then
+
+		begin
+       
+			--Sentencia de la modificacion
+			update param.tconcepto_ingas set
+              ruta_foto = v_parametros.ruta_foto,	
+              fecha_mod = now(),
+              id_usuario_mod = p_id_usuario
+			where id_concepto_ingas=v_parametros.id_concepto_ingas;
+            
+                   
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Imagen cambiada para concepto de gasto'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_concepto_ingas',v_parametros.id_concepto_ingas::varchar);
+               
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+    
+    
+    else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;
 

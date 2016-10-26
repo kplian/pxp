@@ -72,8 +72,10 @@ BEGIN
                         conig.descripcion_larga,
                         conig.id_unidad_medida,
                         um.codigo as  desc_unidad_medida,
-                        conig.nandina
-						from param.tconcepto_ingas conig
+                        conig.nandina,
+                        COALESCE(conig.ruta_foto,'''')::Varchar as ruta_foto
+						
+                        from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                         left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
