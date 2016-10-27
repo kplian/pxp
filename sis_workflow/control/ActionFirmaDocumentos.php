@@ -50,6 +50,7 @@ include_once(dirname(__FILE__).'/../../sis_workflow/modelo/MODDocumentoWf.php');
         
         $objFunc=new MODDocumentoWf($objParam);    
         $res=$objFunc->listaDocumentosFirma();
+
 		if($res->getTipo()=='ERROR'){
 			echo 'Se ha producido un error-> Mensaje Técnico:'.$res->getMensajeTec();
 			exit;        
@@ -73,9 +74,13 @@ include_once(dirname(__FILE__).'/../../sis_workflow/modelo/MODDocumentoWf.php');
 							"fecha_firma"=>$d["fecha_firma"],
 							"usuario_firma"=>$d["usuario_firma"],
 							"nombre_usuario_firma"=>$d["nombre_usuario_firma"]));
-				
+                $res = str_replace('\\', '\\\\', $res);
+                $res = str_replace('\\\\', '\\', $res);
+
 				$res_json = json_decode($res);
-				
+                
+				//var_dump($res_json);
+                //exit;
 				$objParam->addParametro('archivo_generado',$res_json->ROOT->detalle->archivo_generado);
 				$objParam->addParametro('hash_firma',$res_json->ROOT->datos->hash);
 				$objParam->addParametro('datos_firma',json_encode($res_json->ROOT->datos->datos_documento));
