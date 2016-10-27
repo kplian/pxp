@@ -84,7 +84,7 @@ $respuesta =  $ClienteSiga->doPost('CTB/CTB00301.asmx/Selecionar',
         		"sSearch"=>"",  
         		"sSortDir"=>"asc"), 
         "codigoEstabelecimento"=>"24150", 
-        "indice"=>"3", 
+        "indice"=>"", 
         "ativo"=>"True"
 
     ), 'json');
