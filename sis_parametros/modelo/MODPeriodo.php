@@ -37,6 +37,8 @@ class MODPeriodo extends MODbase{
 		$this->captura('usr_mod','varchar');
 		
 		$this->captura('literal','varchar');
+		$this->captura('codigo_siga','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -58,6 +60,8 @@ class MODPeriodo extends MODbase{
 		$this->setParametro('periodo','periodo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
+		$this->setParametro('codigo_siga','codigo_siga','varchar');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,6 +84,9 @@ class MODPeriodo extends MODbase{
 		$this->setParametro('periodo','periodo','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
+		$this->setParametro('codigo_siga','codigo_siga','varchar');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -141,6 +148,9 @@ class MODPeriodo extends MODbase{
 			
 
 	}
+
+
+
 			
 }
 ?>

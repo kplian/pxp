@@ -18,6 +18,8 @@ class ClienteSiga
     private $_first_connection = true;
     private $_error_number = 0;
     private $_cookie_file = '';
+	private $retval = '';
+	
 
     const HTTP  = 'http';
     const HTTPS = 'https';
@@ -86,6 +88,18 @@ class ClienteSiga
     {
         return $this->_exec(self::POST, $this->_url($url), $params, $typeForm);
     }
+	
+	/**
+     * POST request
+     *
+     * @param string $url
+     * @param array $params
+     * @return string
+     */
+    public function doPostMultipart($url, $boundary)
+    {
+        return $this->_exec(self::POST, $this->_url($url), $params, 'multipart2', $boundary);
+    }
 
     /**
      * GET Request
@@ -136,7 +150,7 @@ class ClienteSiga
         return $this;
     }
 	
-	public function clearHeader($header)
+	public function clearHeader()
     {
         $this->_headers = array();
         return $this;
@@ -167,7 +181,7 @@ class ClienteSiga
 	}
 
 	
-	function getBody($boundary)
+	function getBody2($boundary)
 	{
 	  $eol = "\r\n";
 	
@@ -178,13 +192,29 @@ class ClienteSiga
 	  return $body;
 	}
 	
+
 	function multipart_build_query($fields, $boundary){
 	  $retval = '';
+	  $eol = "\r\n";
 	  foreach($fields as $key => $value){
-	    $retval .= "--$boundary\nContent-Disposition: form-data; name=\"$key\"\n\n$value\n";
+	    $retval .= "--$boundary".$eol."Content-Disposition: form-data; name=\"$key\"".$eol.$eol.$value.$eol;
 	  }
-	  $retval .= "--$boundary--";
+	  $retval .= "--$boundary--".$eol;
 	  return $retval;
+	}
+	
+	function clearRetval(){
+		$this->retval = '';
+	}
+	
+	function addParamMultipart($boundary, $key,$value){
+		$eol = "\r\n";
+		$this->retval.=$retval .= "--$boundary".$eol."Content-Disposition: form-data; name=\"$key\"".$eol.$eol.$value.$eol;
+	}
+	function getBody($boundary){
+		$this->retval.= "--$boundary--".$eol;
+		//echo "<BR>".$this->retval."<BR>";
+		return  $this->retval;
 	}
 
     const HTTP_OK = 200;
@@ -199,7 +229,7 @@ class ClienteSiga
      * @param array $params
      * @return string
      */
-    private function _exec($type, $url, $params = array(),$typeForm)
+    private function _exec($type, $url, $params = array(),$typeForm='json',$boundary='')
     {
 
         $headers = $this->_headers;
@@ -224,17 +254,21 @@ class ClienteSiga
 					curl_setopt($s, CURLOPT_POST, true);
 				    curl_setopt($s, CURLOPT_POSTFIELDS, json_encode($params));
 		        }
-				else{
+				else if($typeForm =='multipart'){
 					
-					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+					curl_setopt($s, CURLOPT_CUSTOMREQUEST, 'POST');
 				    $boundary = md5(time());
                     $body = $this->multipart_build_query($params, $boundary);
 					curl_setopt($s, CURLOPT_POSTFIELDS, $body);
-					
-					
-					 array_push($headers,"Content-Type: multipart/form-data; boundary=$boundary");
+					array_push($headers,"Content-Type: multipart/form-data; boundary=$boundary");
 					
 		        }
+				else{
+					curl_setopt($s, CURLOPT_CUSTOMREQUEST, 'POST');
+				    curl_setopt($s, CURLOPT_POSTFIELDS, $this->getBody($boundary));
+					array_push($headers,"Content-Type: multipart/form-data; boundary=$boundary");
+					
+				}
                 
                 
                 break;
