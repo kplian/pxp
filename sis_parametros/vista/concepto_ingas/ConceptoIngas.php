@@ -270,7 +270,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 				forceSelection: false,
 				name: 'id_cat_concepto',
 				fieldLabel: 'Tipo Catálogo',
-				allowBlank: false,
+				allowBlank: true,
 				emptyText: 'Tipo Catálogo',
 				store: new Ext.data.JsonStore({
 					url: '../../sis_parametros/control/CatConcepto/listarCatConcepto',
