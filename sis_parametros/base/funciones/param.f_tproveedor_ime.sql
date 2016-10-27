@@ -106,13 +106,9 @@ BEGIN
                      id_lugar,						rotulo_comercial, 			contacto)
                     values 
                     (p_id_usuario,					now(),						'activo',
-                    v_parametros.id_institucion,	v_parametros.id_persona,	case when v_parametros.id_persona is NULL THEN
-                                                                                    'institucion'
-                                                                                else
-                                                                                    'persona'
-                                                                                end,
+                    v_parametros.id_institucion,	v_parametros.id_persona,	v_parametros.tipo,
                     v_parametros.numero_sigma,		v_codigo_gen,		v_parametros.nit,
-                    v_parametros.id_lugar,			v_parametros.rotulo_comercial,	v_parametros.contacto)RETURNING id_proveedor into v_id_proveedor;
+                    v_parametros.id_lugar,			v_parametros.rotulo_comercial,	v_parametros.contacto) RETURNING id_proveedor into v_id_proveedor;
            else
                     if (v_parametros.tipo = 'persona')then
                         
@@ -309,12 +305,12 @@ BEGIN
                          into
                           v_id_config_subtipo_cuenta
                         FROM conta.tconfig_subtipo_cuenta csc
-                        where   upper(csc.nombre) = 'PROVEEDORES'
+                        where   upper(csc.nombre) in ('PROVEEDORES','CUENTAS POR PAGAR')
                                and csc.estado_reg = 'activo';
                                
                                
                         if v_id_config_subtipo_cuenta is null then       
-                            raise exception ' no tiene configurado un subtipo de cuenta para proveedores';
+                            raise exception ' no tiene configurado un subtipo de cuenta para PROVEEDORES o CUENTAS POR PAGAR';
                         end if;
                         
                         for v_reg_cuenta in (
@@ -414,12 +410,13 @@ BEGIN
                 id_usuario_mod = p_id_usuario,
                 fecha_mod = now(),
                 rotulo_comercial = v_parametros.rotulo_comercial,
-                contacto = v_parametros.contacto
+                contacto = v_parametros.contacto,
+                tipo = v_parametros.tipo
             where id_proveedor=v_parametros.id_proveedor;
             
             
             --modificar datos basicos de proveedor y persona ,....isntitucion el nit
-            if (v_parametros.tipo = 'persona')then
+            if v_parametros.id_persona is not null then
                     
                     
                     update  segu.tpersona  set 

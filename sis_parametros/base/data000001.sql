@@ -1065,8 +1065,23 @@ select pxp.f_insert_testructura_gui ('VARDEP', 'EMPS');
 
 /***********************************I-DAT-RAC-PARAM-0-06/09/2017*****************************************/
 
+
 select pxp.f_insert_tgui ('Categoria de Concepto', 'Categoria de Concepto', 'CATCON', 'si', 3, 'sis_parametros/vista/cat_concepto/CatConcepto.php', 4, '', 'CatConcepto', 'PARAM');
 select pxp.f_insert_testructura_gui ('CATCON', 'CCOM');
 
 /***********************************F-DAT-RAC-PARAM-0-06/09/2017*****************************************/
+
+
+/***********************************I-DAT-RAC-PARAM-0-05/09/2017*****************************************/
+
+----------------------------------
+--COPY LINES TO SUBSYSTEM data.sql FILE  
+---------------------------------
+
+select param.f_import_tcatalogo_tipo ('insert','tproveedor_tipo','PARAM','tproveedor');
+select param.f_import_tcatalogo ('insert','PARAM','Abastecimiento','abastecimiento','tproveedor_tipo');
+select param.f_import_tcatalogo ('insert','PARAM','General','general','tproveedor_tipo');
+
+/***********************************F-DAT-RAC-PARAM-0-05/09/2017*****************************************/
+
 
