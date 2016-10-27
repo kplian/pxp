@@ -252,7 +252,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 					totalProperty: 'total',
 					fields: ['id_escala_salarial', 'nombre', 'codigo','haber_basico'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'escsal.nombre#escsal.codigo'}
+					baseParams: {par_filtro: 'escsal.haber_basico#escsal.nombre#escsal.codigo'}
 				}),
 				valueField: 'id_escala_salarial',
 				displayField: 'nombre',
@@ -282,7 +282,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'Código',
+				fieldLabel: 'Item/contrato',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
@@ -478,12 +478,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
     onButtonEdit : function () {
     	//this.ocultarComponente(this.Cmp.id_escala_salarial);
     	this.ocultarComponente(this.Cmp.id_tipo_contrato);
-    	if (this.Cmp.fecha_fin.getValue() == '' || this.Cmp.fecha_fin.getValue() == undefined) {
-    		this.ocultarComponente(this.Cmp.fecha_fin);
-    	} else {
-    		this.mostrarComponente(this.Cmp.fecha_fin);
-    		
-    	}
+    	
     	Phx.vista.Cargo.superclass.onButtonEdit.call(this);
     },
     onButtonNew : function () {

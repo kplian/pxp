@@ -126,14 +126,14 @@ BEGIN
  
                 --verficar que el funcionario no este activo en dos unidades simultaneamente
                 --raise exception '%    %',v_parametros.id_funcionario,v_parametros.id_uo;
-               if ( ((select count(id_funcionario) from 
+               /*if ( ((select count(id_funcionario) from 
                            orga.tuo_funcionario  a
                            where a.id_funcionario=v_parametros.id_funcionario
                            and a.estado_reg = 'activo'
                            and a.id_uo != v_parametros.id_uo))>0) then
                            
                            raise exception 'El Funcionario se encuentra en otro cargo vigente primero inactive su asignacion actual';
-               end if;
+               end if;*/
                 
                 
                 

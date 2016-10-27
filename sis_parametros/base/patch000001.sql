@@ -1497,6 +1497,15 @@ CREATE TYPE param.dashdet AS (
 
 
 
+/***********************************I-SCP-RAC-PARAM-0-26/10/2016*****************************************/
 
+--------------- SQL ---------------
 
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN ruta_foto VARCHAR(300);
+
+COMMENT ON COLUMN param.tconcepto_ingas.ruta_foto
+IS 'opcionalmente se permite almacenar la ruta de la foto del concepto de ingeso o gasto';
+
+/***********************************F-SCP-RAC-PARAM-0-26/10/2016*****************************************/
 

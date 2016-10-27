@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -78,8 +76,7 @@ BEGIN
 		               fecha_reg,
 		               id_usuario_reg,
 		               email_empresa,
-		               interno,
-		               fecha_ingreso,
+		               interno,		              
 		               telefono_ofi,
 		               antiguedad_anterior)
                values(
@@ -88,8 +85,7 @@ BEGIN
                       'activo',now()::date,
                       par_id_usuario,
                       v_parametros.id_persona,
-                      v_parametros.interno,
-                      v_parametros.fecha_ingreso,
+                      v_parametros.interno,                      
                       v_parametros.telefono_ofi,
                       v_parametros.antiguedad_anterior)
                RETURNING id_funcionario into v_id_funcionario;
@@ -139,8 +135,7 @@ BEGIN
                     id_persona=v_parametros.id_persona,
                     estado_reg=v_parametros.estado_reg,
                     email_empresa=v_parametros.email_empresa,
-                    interno=v_parametros.interno,
-                    fecha_ingreso=v_parametros.fecha_ingreso,
+                    interno=v_parametros.interno,                    
                     fecha_mod=now()::date,
                     telefono_ofi= v_parametros.telefono_ofi,
                     antiguedad_anterior =  v_parametros.antiguedad_anterior
