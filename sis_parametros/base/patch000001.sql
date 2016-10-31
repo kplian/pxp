@@ -1507,5 +1507,13 @@ ALTER TABLE param.tconcepto_ingas
 COMMENT ON COLUMN param.tconcepto_ingas.ruta_foto
 IS 'opcionalmente se permite almacenar la ruta de la foto del concepto de ingeso o gasto';
 
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ALTER COLUMN codigo TYPE VARCHAR(300) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tconcepto_ingas
+  ADD UNIQUE (codigo);
 /***********************************F-SCP-RAC-PARAM-0-26/10/2016*****************************************/
 
