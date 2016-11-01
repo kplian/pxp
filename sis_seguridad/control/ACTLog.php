@@ -171,6 +171,25 @@ class ACTLog extends ACTbase{
 	
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+	function listarCantidadXTransaccion(){
+		//el objeto objParam contiene todas la variables recibidad desde la interfaz
+		$this->objParam->defecto('ordenacion','id_log');
+		$this->objParam->defecto('dir_ordenacion','desc');
+		
+		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte=new Reporte($this->objParam, $this);
+			$this->res=$this->objReporte->generarReporteListado('MODLog','listarCantidadXTransaccion');
+		}
+		else{
+			$this->objFunSeguridad=$this->create('MODLog');
+			$this->res=$this->objFunSeguridad->listarCantidadXTransaccion($this->objParam);
+		}
+	
+		$this->res->imprimirRespuesta($this->res->generarJson());
+		
+		
+	}
 }
 
 ?>
