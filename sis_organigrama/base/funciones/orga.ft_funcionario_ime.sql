@@ -233,7 +233,7 @@ BEGIN
                                      uofun.fecha_asignacion <= now() ::date
                                      and (uofun.fecha_finalizacion >= now() ::date or uofun.fecha_finalizacion is null)
                                    INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo
-                                   INNER JOIN segu.tusuario usu on usu.id_persona=PERSON.id_persona
+                                   LEFT JOIN segu.tusuario usu on usu.id_persona=PERSON.id_persona
                               WHERE extract(day from PERSON.fecha_nacimiento) = extract(day from current_date)
                                AND extract(month from PERSON.fecha_nacimiento) = extract(month from current_date))  LOOP
 
