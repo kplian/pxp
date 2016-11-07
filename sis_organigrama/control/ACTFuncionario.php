@@ -40,7 +40,7 @@ class ACTFuncionario extends ACTbase{
 			$this->res=$this->objFunSeguridad->listarFuncionario($this->objParam);
 			
 		}
-		
+
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());
 		
@@ -198,7 +198,20 @@ class ACTFuncionario extends ACTbase{
 			$this->res=$this->objFunSeguridad->listarFuncionarioCargo($this->objParam);
 			
 		}
-		
+
+		if($this->objParam->getParametro('todos')!=''){
+
+			$respuesta = $this->res->getDatos();
+
+
+			array_unshift ( $respuesta, array(  'id_funcionario'=>'0',
+					'desc_funcionario1'=>'Todos',
+					'nombre_cargo'=>'Todos',
+					'email_empresa'=>'Todos',
+					'carnet_discapacitado'=>'Todos') );
+			$this->res->setDatos($respuesta);
+		}
+
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());
 		
