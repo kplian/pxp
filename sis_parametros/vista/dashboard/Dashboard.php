@@ -234,30 +234,35 @@ Ext.define('Phx.vista.Dashboard',{
 	
 	insertarWidget:function(entry){
 		var me = this;
-		var wid = Ext.id(), item ;
+		var wid = Ext.id()+'-Widget', item ;
 		console.log('entry',entry.columna);		
 		var indice = entry.columna?entry.columna:0;
-		me.PanelDash.items.items[indice].add(new Ext.ux.Portlet({
+		var tmp = new Ext.ux.Portlet({
 				                id: wid,
 				                layout: 'fit',
-				                tools: this.toolsportlet,
 				                title: entry.nombre,
 				                closable: true,
+				                maximizable : true,
 				                autoShow: true,
 				                autoScroll: false,
 				                autoHeight : false,
 				                autoDestroy: true,
 				                widget: entry,
+				                forceLayout:true,
 				                autoLoad: {
 						  				url: '../../../'+entry.ruta,
 						  				params:{ idContenedor: wid, _tipo: 'direc', mycls: entry.clase},
 						  				showLoadIndicator: "Cargando...",
 						  				arguments: {config: entry},
 						  				callback: me.callbackWidget,
+						  				text: 'Loading...',
 						  				scope: me,
 						  				scripts :true 
 						  			}
-				           }));
+				          });
+		
+		me.PanelDash.items.items[indice].add(tmp);
+		//tmp.show()
 	
 	
 	},

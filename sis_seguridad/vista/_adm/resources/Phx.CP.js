@@ -978,22 +978,15 @@ Phx.CP=function(){
 			
 			 //return true;
 			}
-			else{
-				
-				Phx.CP.getPlublicKey();
-	
+			else{				
+				Phx.CP.getPlublicKey();	
 			}
 			setTimeout(function(){
-				
-							
-				Ext.get('loading').remove();
-				Ext.get('loading-mask').fadeOut({remove:true});
-				if(Ext.get('_usu')){
-				  Ext.get('_usu').focus();
+					Ext.get('loading').remove();
+					Ext.get('loading-mask').fadeOut({remove:true});
+					if(Ext.get('_usu')){
+					  Ext.get('_usu').focus();
 				}
-				
-				
-				
 				
 			  }, 1000);
 

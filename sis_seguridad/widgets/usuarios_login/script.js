@@ -21,11 +21,11 @@ $(document).ready(function() {
       ];
       drawGraph(dataset);*/
 
-      clientRestPxp.setCredentialsPxp('admin', md5('admin'));
+      clientRestPxp.setCredentialsPxp('admin', md5('123'));
       var contra = clientRestPxp._user;
 
       config.tipo_ruta = "IP";
-      config.IP.ip = '192.168.1.32';
+      config.IP.ip = 'tienda.kplian.com';
       config.IP.carpeta = 'kerp';
       config.init();
 
