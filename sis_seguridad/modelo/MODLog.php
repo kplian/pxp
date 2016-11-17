@@ -53,6 +53,7 @@ class MODLog extends MODbase{
 		return $this->respuesta;
 
 	}
+
 	function listarLogHorario(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='segu.ft_log_sel';// nombre procedimiento almacenado
@@ -294,6 +295,29 @@ class MODLog extends MODbase{
 		$this->captura('vmstat_web','varchar');
 		$this->captura('sid_web','text');
 			
+		//Ejecuta la funcion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		return $this->respuesta;
+	}
+
+	function listarCantidadXTransaccion(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_log_sel';// nombre procedimiento almacenado
+		$this->transaccion='SEG_WTRANS_SEL';//nombre de la transaccion
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->count=false;
+		
+		$this->setParametro('gestion','gestion','varchar');
+		$this->setParametro('transaccion','transaccion','varchar');
+		//Definicion de la lista del resultado del query
+	
+		
+		$this->captura('periodo','text');
+		$this->captura('exito','bigint');
+		$this->captura('error','bigint');
+				
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

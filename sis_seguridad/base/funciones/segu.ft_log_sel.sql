@@ -279,6 +279,36 @@ BEGIN
                return v_consulta;
          END;
 
+    /*******************************
+     #TRANSACCION:  SEG_WTRANS_SEL
+     #DESCRIPCION:  Cantidad de ejecucion de una TRANSACCION por gestion, exitos y errores
+     #AUTOR:        RCM
+     #FECHA:        11/03/2016
+    ***********************************/
+     elsif(p_transaccion='SEG_WTRANS_SEL')then
+
+          BEGIN
+
+              v_consulta = 'select distinct to_char(lo.fecha_reg,''yyyy-MM'') as periodo,
+                            (select count(1)
+                            from segu.tlog lo1
+                            where lo1.transaccion = ''' || v_parametros.transaccion || '''
+                            and lo1.tipo_log = ''LOG_TRANSACCION''
+                            and to_char(lo1.fecha_reg,''yyyy-MM'')= to_char(lo.fecha_reg,''yyyy-MM'')
+                            and to_char(lo1.fecha_reg,''yyyy'')::integer = '||v_parametros.gestion||') as exito,
+                            (select count(1)
+                            from segu.tlog lo1
+                            where lo1.transaccion = ''SEG_VALUSU_SEG''
+                            and lo1.tipo_log = ''ERROR_ACCESO''
+                            and to_char(lo1.fecha_reg,''yyyy-MM'')= to_char(lo.fecha_reg,''yyyy-MM'')
+                            and to_char(lo1.fecha_reg,''yyyy'')::integer = '||v_parametros.gestion||') as error
+                            from segu.tlog lo
+                            where lo.transaccion = ''SEG_VALUSU_SEG''
+                            and to_char(lo.fecha_reg,''yyyy'')::integer = ' ||v_parametros.gestion||'
+                            order by 1';
+               return v_consulta;
+         END;         
+
      else
          raise exception 'No existe la opcion';
 

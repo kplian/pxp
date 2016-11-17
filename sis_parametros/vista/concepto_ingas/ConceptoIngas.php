@@ -48,6 +48,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			
 
 	},
+	
+	
 			
 	Atributos:[
 		{
