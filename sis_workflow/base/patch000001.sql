@@ -1355,3 +1355,10 @@ IS 'Icono para representar al estado';
 ALTER TABLE wf.tobs
   ALTER COLUMN id_funcionario_resp SET NOT NULL;
 /****************************F-SCP-JRR-WF-0-24/05/2016*************/
+
+/*****************************I-SCP-JRR-WF-0-30/08/2016*************/
+
+ALTER TABLE wf.ttipo_columna
+  ADD COLUMN orden INTEGER;
+
+/*****************************F-SCP-JRR-WF-0-30/08/2016*************/

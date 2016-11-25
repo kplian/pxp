@@ -8,8 +8,8 @@ CREATE OR REPLACE FUNCTION wf.f_procesar_plantilla (
   p_id_funcionario_actual integer = NULL::integer,
   p_id_depto_actual integer = NULL::integer
 )
-RETURNS text AS
-$body$
+  RETURNS text AS
+  $body$
 /*
 Autor:  Rensi Arteaga Copari  KPLIAN
 Fecha 15/04/2014
@@ -261,6 +261,7 @@ BEGIN
                  --  solo si existe tabla de referencia
                 IF  v_registros.tabla != '' and v_registros.tabla is not null and v_columnas_consulta != '' and v_columnas_consulta is not null THEN
                       
+                	
                       execute  'select '||v_columnas_consulta ||
                                  ' from '||v_registros.tabla|| ' where '
                                 ||v_registros.tabla||'.id_proceso_wf='|| p_id_proceso_wf ||'' into v_tabla;
@@ -282,7 +283,7 @@ BEGIN
                        WHILE (v_i <= array_length(v_columna_nueva, 1)) LOOP
                        
                             --sin espacios
-                            v_template_evaluado = replace(v_template_evaluado, '{$tabla.'||v_columna_nueva[v_i]||'}',( v_tabla_hstore->v_columna_nueva[v_i])::varchar);
+                            v_template_evaluado = replace(v_template_evaluado, '{$tabla.'||v_columna_nueva[v_i]||'}',replace(( v_tabla_hstore->v_columna_nueva[v_i]), '"', '')::varchar);
                             v_i = v_i +1;
                       
                        END LOOP;
@@ -304,13 +305,18 @@ BEGIN
               --------------------------------------------------
              
               v_template_evaluado = replace(v_template_evaluado, '{TIPO_PROCESO}',COALESCE(v_TIPO_PROCESO,''));
+             
               v_template_evaluado = replace(v_template_evaluado, '{NUM_TRAMITE}',COALESCE(v_NUM_TRAMITE,''));
               v_template_evaluado = replace(v_template_evaluado, '{USUARIO_PREVIO}',COALESCE(v_USUARIO_PREVIO,''));
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ANTERIOR}',COALESCE(v_ESTADO_ANTERIOR,''));
+              
               v_template_evaluado = replace(v_template_evaluado, '{OBS}',v_OBS);
+             
               v_template_evaluado = replace(v_template_evaluado, '{FUNCIONARIO_PREVIO}', COALESCE(v_FUNCIONARIO_PREVIO,''));
+              
               v_template_evaluado = replace(v_template_evaluado, '{DEPTO_PREVIO}',COALESCE(v_DEPTO_PREVIO,''));
               v_template_evaluado = replace(v_template_evaluado, '{FUNCIONARIO_ACTUAL}', COALESCE(v_FUNCIONARIO_ACTUAL,''));
+               
               v_template_evaluado = replace(v_template_evaluado, '{DEPTO_ACTUAL}',COALESCE(v_DEPTO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{PROCESO_MACRO}',COALESCE(v_PROCESO_MACRO,''));
               v_template_evaluado = replace(v_template_evaluado, '{ESTADO_ACTUAL}',COALESCE(v_ESTADO_ACTUAL,''));
@@ -318,8 +324,7 @@ BEGIN
               v_template_evaluado = replace(v_template_evaluado, '{CODIGO_ACTUAL}',COALESCE(v_CODIGO_ACTUAL,''));
               v_template_evaluado = replace(v_template_evaluado, '{ID_FUNCIONARIO_PREVIO}',COALESCE(v_ID_FUNCIONARIO_PREVIO,-1)::varchar);
               v_template_evaluado = replace(v_template_evaluado, '{ID_DEPTO_PREVIO}',COALESCE(v_ID_DEPTO_PREVIO,-1)::varchar);
-              
-              
+                 
               return  v_template_evaluado;
            
            

@@ -1773,5 +1773,21 @@ select pxp.f_insert_testructura_gui ('COMAL', 'ALRMS');
 
 
 
+/***********************************I-DEP-RAC-PARAM-0-22/11/2016****************************************/
+
+CREATE UNIQUE INDEX tsubsistema_var_idx ON param.tsubsistema_var
+  USING btree (codigo, id_subsistema);
+  
+  --------------- SQL ---------------
+
+ALTER TABLE param.tsubsistema_var
+  ADD CONSTRAINT tsubsistema_var__id_subsistema_fk FOREIGN KEY (id_subsistema)
+    REFERENCES segu.tsubsistema(id_subsistema)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+/***********************************F-DEP-RAC-PARAM-0-22/11/2016****************************************/
 
 

@@ -439,7 +439,7 @@ $app->post(
 	 
     '/:sistema/:clase_control/:metodo',
     function ($sistema,$clase_control,$metodo) use ($app) {
-
+        
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		$psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;

@@ -82,6 +82,11 @@ header("content-type: text/javascript; charset=UTF-8");
 			title : 'Depto Relacionados',
 			height : '50%',
 			cls : 'DeptoDepto'
+		}, {
+			url : '../../../sis_parametros/vista/depto_var/DeptoVar.php',
+			title : 'Config. Variables',
+			height : '50%',
+			cls : 'DeptoVar'
 		}],
 		Atributos : [{
 			//configuracion del componente

@@ -26,7 +26,7 @@ v_nombre_funcion varchar;
 v_resp varchar;
 
 v_id_tipo_proceso integer;
-v_id_tipo_estado integer;
+v_id_tipo_estado integer; 
 
 va_id_estado_wf  integer[];
 va_id_proceso_wf integer[];

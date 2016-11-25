@@ -1,10 +1,12 @@
--- Function: param.f_proveedor_item_servicio_sel(integer, integer, character varying, character varying)
-
--- DROP FUNCTION param.f_proveedor_item_servicio_sel(integer, integer, character varying, character varying);
-
-CREATE OR REPLACE FUNCTION param.f_proveedor_item_servicio_sel(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-  RETURNS character varying AS
-$BODY$/**************************************************************************
+CREATE OR REPLACE FUNCTION param.f_proveedor_item_servicio_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+  RETURNS varchar AS
+  $body$
+/**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.f_proveedor_item_servicio_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tproveedor_item_servicio'
@@ -118,7 +120,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION param.f_proveedor_item_servicio_sel(integer, integer, character varying, character varying) OWNER TO postgres;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

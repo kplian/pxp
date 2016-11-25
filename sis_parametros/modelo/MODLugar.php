@@ -35,6 +35,8 @@ class MODLugar extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('es_regional','varchar');
+
+		//$this->captura('nombre_lugar','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -72,7 +74,11 @@ class MODLugar extends MODbase{
 		$this->captura('tipo_nodo','varchar');
 		$this->captura('codigo_largo','varchar');
 		$this->captura('es_regional','varchar');
-		
+
+		//$this->captura('nombre_lugar','varchar');
+
+
+
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

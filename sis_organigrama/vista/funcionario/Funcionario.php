@@ -46,7 +46,7 @@ Phx.vista.funcionario=function(config){
 	   		   
 	   			grid:true,
 	   			form:true
-	   	      },
+			},
 
 	       	{
 	       		config:{

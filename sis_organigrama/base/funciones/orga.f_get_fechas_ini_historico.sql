@@ -15,7 +15,7 @@ CREATE OR REPLACE FUNCTION orga.f_get_fechas_ini_historico (
             inner join orga.tcargo car on car.id_cargo = ha.id_cargo
             inner join orga.ttipo_contrato tcon on tcon.id_tipo_contrato=car.id_tipo_contrato
             where ha.estado_reg = ''activo'' and ha.id_funcionario = '||p_id_funcionario||' and tcon.id_tipo_contrato in (1,4)
-            order by fecha_asignacion')loop
+            order by fecha_asignacion desc')loop
       if (g_fechas = '')then
         g_fechas = to_char(g_registros.fecha_asignacion,'DD/MM/YYYY');
         g_ultima_fecha_ini = g_registros.fecha_asignacion;
@@ -32,7 +32,7 @@ CREATE OR REPLACE FUNCTION orga.f_get_fechas_ini_historico (
 
     return g_fechas;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

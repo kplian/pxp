@@ -150,6 +150,7 @@ if(!isset($_SESSION["_SESION"])){
     <!-- componentes extendidos  -->	  
     <script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.PagingMemoryProxy.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.AwesomeCombo.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/ClearCombo.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/Ext.util.Format.CurrencyFactory.js"></script>
 	
 	

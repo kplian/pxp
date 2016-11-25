@@ -546,8 +546,7 @@ Phx.CP=function(){
 		init:function(){
          	Ext.QuickTips.init();
          	Ext.History.init();
-         	Ext.History.on('change', function(token){  
-         		
+         	Ext.History.on('change', function(token){
 		        if(token && token != 'null') {
 		        	
 		           	 var parts = token.split(':'),
@@ -876,7 +875,7 @@ Phx.CP=function(){
 
 		// este metodo contruye la ventana de login
 		// se ejecuta al cargar el index
-		iniciarLogin:function(x,regreso,z){ 
+		iniciarLogin:function(x,regreso,z){
 			
 			
 			

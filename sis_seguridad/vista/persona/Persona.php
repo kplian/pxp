@@ -354,6 +354,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	constructor: function(config){
 		// configuracion del data store
 		Phx.vista.persona.superclass.constructor.call(this,config);
+		
 		this.init();
 		// this.addButton('my-boton',{disabled:false,handler:myBoton,tooltip:
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});

@@ -1496,7 +1496,47 @@ CREATE TYPE param.dashdet AS (
 /***********************************F-SCP-RAC-PARAM-0-06/10/2016*****************************************/
 
 
+/***********************************I-SCP-RAC-PARAM-0-22/11/2016*****************************************/
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tsubsistema_var (
+  id_subsistema_var SERIAL NOT NULL,
+  codigo VARCHAR(50) NOT NULL,
+  nombre VARCHAR NOT NULL,
+  descripcion VARCHAR NOT NULL,
+  valor_def VARCHAR DEFAULT '' NOT NULL,
+  id_subsistema INTEGER NOT NULL,
+  PRIMARY KEY(id_subsistema_var)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tsubsistema_var.valor_def
+IS 'Valor por defecto';
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tdepto_var (
+  id_depto_var SERIAL NOT NULL,
+  id_subsistema_var INTEGER NOT NULL,
+  id_depto INTEGER NOT NULL,
+  valor VARCHAR DEFAULT '' NOT NULL,
+  PRIMARY KEY(id_depto_var)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tdepto_var.id_subsistema_var
+IS 'identifica la variable';
+
+COMMENT ON COLUMN param.tdepto_var.valor
+IS 'el valor asignado a la variable';
 
 
 
+
+/***********************************F-SCP-RAC-PARAM-0-22/11/2016*****************************************/
 

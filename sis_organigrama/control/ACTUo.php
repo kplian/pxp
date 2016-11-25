@@ -20,6 +20,10 @@ class ACTUo extends ACTbase{
             $this->objParam->addFiltro("UO.presupuesta = ''".$this->objParam->getParametro('presupuesta')."''");  
         }
 		
+		if ($this->objParam->getParametro('gerencia') != '') {
+            $this->objParam->addFiltro("UO.gerencia = ''".$this->objParam->getParametro('gerencia')."''");  
+        }
+		
 		if ($this->objParam->getParametro('planilla') != '') {
             $this->objParam->addFiltro("UO.planilla = ''".$this->objParam->getParametro('planilla')."''");  
         }

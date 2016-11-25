@@ -218,7 +218,7 @@ class ACTFuncionario extends ACTbase{
 		
 		
 	}
-	
+
 	
 	function guardarFuncionario(){
 	
@@ -280,6 +280,8 @@ class ACTFuncionario extends ACTbase{
 		$this->res=$this->objFunc->alertarCumpleaneroDia($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+	
 
 }
 

@@ -574,3 +574,9 @@ ALTER TABLE orga.tfuncionario_especialidad
   ALTER COLUMN numero_especialidad TYPE VARCHAR(10);
   
 /*****************************F-SCP-JRR-ORGA-0-19/05/2016*************/
+
+/*****************************I-SCP-JRR-ORGA-0-13/09/2016*************/
+CREATE SEQUENCE orga.rep_planilla_actualizada
+  INCREMENT 1 START 1;
+
+/*****************************F-SCP-JRR-ORGA-0-13/09/2016*************/

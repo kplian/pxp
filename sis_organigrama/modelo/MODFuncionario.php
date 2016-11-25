@@ -282,7 +282,6 @@ class MODFuncionario extends MODbase{
         $this->ejecutarConsulta();
         return $this->respuesta;
     }
-	
-	
+
 }
 ?>

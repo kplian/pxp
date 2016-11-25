@@ -158,7 +158,7 @@ header("content-type: text/javascript; charset=UTF-8");
 				grow : true,
 				minGrow : 200,
 				anchor : '80%',
-				gwidth : 300,
+				gwidth : 400,
 				maxLength : 200,
 				renderer : function(value, p, record) {
 					return value ? '<p>'+value+'</p>':''
@@ -178,7 +178,7 @@ header("content-type: text/javascript; charset=UTF-8");
 				fieldLabel : 'Observaciones',
 				allowBlank : true,
 				anchor : '80%',
-				gwidth : 300,
+				gwidth : 200,
 				maxLength : 10
 			},
 			type : 'Field',
@@ -343,11 +343,11 @@ header("content-type: text/javascript; charset=UTF-8");
 
 			var tb = Phx.vista.AlarmaFuncionario.superclass.preparaMenu.call(this, n);
 
-			if (data['tipo'] == 'notificacion' || data['tipo'] == 'comunicado') {
+			//if (data['tipo'] == 'notificacion' || data['tipo'] == 'comunicado') {
 				this.getBoton('del').enable();
-			} else {
-				this.getBoton('del').disable();
-			}
+			//} else {
+			//	this.getBoton('del').disable();
+			//}
 
 			if (data['acceso_directo'] != undefined && data['acceso_directo'] != '') {
 				this.getBoton('accesoDirec').enable();

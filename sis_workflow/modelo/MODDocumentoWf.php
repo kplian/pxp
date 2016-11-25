@@ -364,7 +364,8 @@ class MODDocumentoWf extends MODbase{
 				} else if ($e->getCode() == 2) {//es un error en bd de una consulta
 					$this->respuesta->setMensaje('ERROR',$this->nombre_archivo,$e->getMessage(),$e->getMessage(),'modelo','','','','');
 				} else {//es un error lanzado con throw exception
-					throw new Exception($e->getMessage(), 2);
+
+                    throw new Exception($e->getMessage(), 2);
 				}
 		}    
 	    

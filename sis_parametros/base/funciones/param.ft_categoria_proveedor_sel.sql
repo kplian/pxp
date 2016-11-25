@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
+CREATE OR REPLACE FUNCTION param.ft_categoria_proveedor_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -7,11 +7,11 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
   RETURNS varchar AS
   $body$
   /**************************************************************************
-   SISTEMA:		Organigrama
-   FUNCION: 		orga.ft_oficina_sel
-   DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.toficina'
-   AUTOR: 		 (admin)
-   FECHA:	        15-01-2014 16:05:34
+   SISTEMA:		Parametros Generales
+   FUNCION: 		param.ft_categoria_proveedor_sel
+   DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tcategoria_proveedor'
+   AUTOR: 		 (gsarmiento)
+   FECHA:	        06-10-2014 14:06:09
    COMENTARIOS:
   ***************************************************************************
    HISTORIAL DE MODIFICACIONES:
@@ -30,41 +30,36 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
 
   BEGIN
 
-    v_nombre_funcion = 'orga.ft_oficina_sel';
+    v_nombre_funcion = 'param.ft_categoria_proveedor_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
     /*********************************
-     #TRANSACCION:  'OR_OFI_SEL'
+     #TRANSACCION:  'PM_CATPRO_SEL'
      #DESCRIPCION:	Consulta de datos
-     #AUTOR:		admin
-     #FECHA:		15-01-2014 16:05:34
+     #AUTOR:		gsarmiento
+     #FECHA:		06-10-2014 14:06:09
     ***********************************/
 
-    if(p_transaccion='OR_OFI_SEL')then
+    if(p_transaccion='PM_CATPRO_SEL')then
 
       begin
         --Sentencia de la consulta
         v_consulta:='select
-						ofi.id_oficina,
-						ofi.aeropuerto,
-						ofi.id_lugar,
-						ofi.nombre,
-						ofi.codigo,
-						ofi.estado_reg,
-						ofi.fecha_reg,
-						ofi.id_usuario_reg,
-						ofi.fecha_mod,
-						ofi.id_usuario_mod,
+						catpro.id_categoria_proveedor,
+						catpro.estado_reg,
+						catpro.nombre_categoria,
+						catpro.id_usuario_ai,
+						catpro.id_usuario_reg,
+						catpro.fecha_reg,
+						catpro.usuario_ai,
+						catpro.id_usuario_mod,
+						catpro.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-						lug.nombre as nombre_lugar,
-						ofi.zona_franca,
-						ofi.frontera
-						from orga.toficina ofi
-						inner join segu.tusuario usu1 on usu1.id_usuario = ofi.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = ofi.id_usuario_mod
-						inner join param.tlugar lug on lug.id_lugar = ofi.id_lugar
-				        where  ofi.estado_reg = ''activo'' and ';
+						usu2.cuenta as usr_mod	
+						from param.tcategoria_proveedor catpro
+						inner join segu.tusuario usu1 on usu1.id_usuario = catpro.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = catpro.id_usuario_mod
+				        where  ';
 
         --Definicion de la respuesta
         v_consulta:=v_consulta||v_parametros.filtro;
@@ -76,22 +71,21 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
       end;
 
     /*********************************
-     #TRANSACCION:  'OR_OFI_CONT'
+     #TRANSACCION:  'PM_CATPRO_CONT'
      #DESCRIPCION:	Conteo de registros
-     #AUTOR:		admin
-     #FECHA:		15-01-2014 16:05:34
+     #AUTOR:		gsarmiento
+     #FECHA:		06-10-2014 14:06:09
     ***********************************/
 
-    elsif(p_transaccion='OR_OFI_CONT')then
+    elsif(p_transaccion='PM_CATPRO_CONT')then
 
       begin
         --Sentencia de la consulta de conteo de registros
-        v_consulta:='select count(id_oficina)
-					    from orga.toficina ofi
-					    inner join segu.tusuario usu1 on usu1.id_usuario = ofi.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = ofi.id_usuario_mod
-                        inner join param.tlugar lug on lug.id_lugar = ofi.id_lugar
-					    where  ofi.estado_reg = ''activo'' and ';
+        v_consulta:='select count(id_categoria_proveedor)
+					    from param.tcategoria_proveedor catpro
+					    inner join segu.tusuario usu1 on usu1.id_usuario = catpro.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = catpro.id_usuario_mod
+					    where ';
 
         --Definicion de la respuesta
         v_consulta:=v_consulta||v_parametros.filtro;
