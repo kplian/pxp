@@ -249,8 +249,10 @@ class CTParametro{
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
-		$string = str_replace('\\', '\\\\', $string);
-		$string = str_replace('\\\\"', '\\"', $string);
+
+
+        $string = str_replace('\\', '\\\\', $string);
+        $string = str_replace('\\\\"', '\\"', $string);
 		
 		return json_decode($string,true);
 	}

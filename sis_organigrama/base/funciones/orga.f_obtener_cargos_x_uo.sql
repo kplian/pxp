@@ -29,7 +29,7 @@ v_filtro_fecha	varchar;
 
 
 BEGIN
-	select pxp.aggarray(c.id_cargo)::VARCHAR[] into v_respuesta
+	select pxp.aggarray(c.codigo)::VARCHAR[] into v_respuesta
     from orga.tcargo c
     where c.estado_reg = 'activo' and c.id_uo = kp_id_uo;    
     

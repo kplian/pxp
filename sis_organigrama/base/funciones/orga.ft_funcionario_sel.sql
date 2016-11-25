@@ -62,7 +62,7 @@ BEGIN
                             FUNCIO.email_empresa,
                             FUNCIO.interno,
                             FUNCIO.fecha_ingreso,
-                            PERSON.nombre_completo1 AS desc_person,
+                            PERSON.nombre_completo2 AS desc_person,
                             usu1.cuenta as usr_reg,
 						    usu2.cuenta as usr_mod,
                             PERSON.ci, 

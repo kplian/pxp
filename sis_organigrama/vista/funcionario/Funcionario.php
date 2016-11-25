@@ -40,7 +40,7 @@ Phx.vista.funcionario=function(config){
 	   			id_grupo:0,
 	   			bottom_filter : true,
 	   			filters:{	
-			        pfiltro:'PERSON.nombre_completo1',
+			        pfiltro:'PERSON.nombre_completo2',
 					type:'string'
 				},
 	   		   
@@ -193,7 +193,7 @@ Phx.vista.funcionario=function(config){
 	       		config:{
 	       			name:'discapacitado',
 	       			fieldLabel:'Discapacitado',
-	       			allowBlank:true,
+	       			allowBlank:false,
 	       			emptyText:'Discapacitado...',
 	       			
 	       			typeAhead: true,
@@ -218,7 +218,7 @@ Phx.vista.funcionario=function(config){
 	       			fieldLabel: "Carnet Discapacitado",
 	       			gwidth: 120,
 	       			name: 'carnet_discapacitado',
-	       			allowBlank:false,	
+	       			allowBlank:true,	
 	       			maxLength:100,
 	       			minLength:1,
 	       			anchor:'100%'
@@ -248,24 +248,7 @@ Phx.vista.funcionario=function(config){
 	       		grid:true,
 	       		form:false
 	       	},
-	       	{
-	       		config:{
-	       			fieldLabel: "Fecha de Ingreso",
-	       			gwidth: 120,
-	       			name: 'fecha_ingreso',
-	       			allowBlank:false,	
-	       			maxLength:100,
-	       			minLength:1,
-	       			format:'d/m/Y',
-	       			anchor:'100%',
-	       			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
-	       		},
-	       		type:'DateField',
-	       		filters:{type:'date'},
-	       		id_grupo:0,
-	       		grid:true,
-	       		form:true
-	       	},
+	       	
 	       	{
 	       		config:{
 	       			fieldLabel: "Antiguedad Anterior (meses)",
@@ -286,7 +269,7 @@ Phx.vista.funcionario=function(config){
 	       			fieldLabel: "Correo Empresarial",
 	       			gwidth: 120,
 	       			name: 'email_empresa',
-	       			allowBlank:false,	
+	       			allowBlank:true,	
 	       			maxLength:100,
 	       			minLength:1,
 	       			anchor:'100%'

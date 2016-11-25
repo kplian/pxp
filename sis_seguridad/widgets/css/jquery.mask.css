@@ -1,0 +1,33 @@
+.ui-mask {
+  position: absolute;
+  z-index: 10000;
+  background: black;
+  background: rgba(0,0,0,.5);
+}
+
+.ui-mask-bright {
+  background: white;
+  background: rgba(255,255,255,.8);
+}
+
+.ui-mask-empty {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
+  background: transparent url(load.gif) no-repeat center;
+}
+
+
+
+#loading .loading-indicator{
+	background:white;
+	color:#555;
+	font:bold 13px tahoma,arial,helvetica;
+	padding:10px;
+	margin:0;
+    text-align:center;
+    height:auto;
+}

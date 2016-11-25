@@ -22,8 +22,34 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		this.crearFormAuto();
 		this.addButton('inserOT',{ text: 'Configurar OT', iconCls: 'blist',disabled: false, handler: this.mostarFormOt, tooltip: '<b>Configurar OT</b><br/>Permite añadir grupos de OT autorizados para el concepto de gasto'});
         this.addButton('inserAuto',{ text: 'Configurar Autorizaciones', iconCls: 'blist', disabled: false, handler: this.mostarFormAuto, tooltip: '<b>Configurar autorizaciones</b><br/>Permite seleccionar desde que modulos  puede selecionarse el concepto'});
-    
+        
+        this.addButton('addImagen', {
+				text : 'Imagen',
+				iconCls : 'bundo',
+				disabled : false,
+				handler : this.addImagen,
+				tooltip : ' <b>Subir imagen</b>'
+			});
+			
+	
+	
 	},
+	
+	addImagen : function() {
+
+
+			var rec = this.sm.getSelected();
+			Phx.CP.loadWindows('../../../sis_parametros/vista/concepto_ingas/subirImagenConcepto.php', 'Subir', {
+				modal : true,
+				width : 500,
+				height : 250
+			}, rec.data, this.idContenedor, 'subirImagenConcepto')
+
+			
+
+	},
+	
+	
 			
 	Atributos:[
 		{
@@ -31,9 +57,20 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_concepto_ingas'
+					name: 'id_concepto_ingas',
+					renderer:function (value, p, record){	
+						//return  String.format('{0}',"<div style='text-align:center'><img src = ../../control/foto_persona/"+ record.data['foto']+"?"+record.data['nombre_foto']+hora_actual+" align='center' width='70' height='70'/></div>");
+						var splittedArray = record.data['ruta_foto'].split('.');
+						if (splittedArray[splittedArray.length - 1] != "") {
+							return  String.format('{0}',"<div style='text-align:center'><img src = '"+ record.data['ruta_foto']+"' align='center' width='70' height='70'/></div>");
+						} else {
+							return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/noimagen2.jpg' align='center' width='70' height='70'/></div>");
+						}
+						
+					},
 			},
 			type:'Field',
+			grid:true,
 			form:true 
 		},
 	       	{
@@ -587,7 +624,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'activo_fijo', type: 'string'},
 		{name:'almacenable', type: 'string'},
 		'id_grupo_ots','filtro_ot','requiere_ot',
-		'sw_autorizacion','desc_unidad_medida','id_unidad_medida','nandina'
+		'sw_autorizacion','desc_unidad_medida','id_unidad_medida','nandina','ruta_foto'
 		
 	],
 	sortInfo:{
@@ -603,10 +640,11 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
         var data = this.getSelectedData();
         var tb =this.tbar;
         
-        //this.getBoton('btnChequeoDocumentos').setDisabled(false);
-        this.getBoton('inserOT').setDisabled(false);
-        this.getBoton('inserAuto').setDisabled(false);
         Phx.vista.ConceptoIngas.superclass.preparaMenu.call(this,n);
+        this.getBoton('inserOT').enable();
+        this.getBoton('inserAuto').enable();       
+        this.getBoton('addImagen').enable();
+		
         
         
         
@@ -618,6 +656,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
         if(tb){
             this.getBoton('inserOT').disable();
             this.getBoton('inserAuto').disable();
+            this.getBoton('addImagen').disable();
+		
         }
        return tb
     }

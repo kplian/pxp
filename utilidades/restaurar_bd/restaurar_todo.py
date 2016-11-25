@@ -35,7 +35,7 @@ def comparar_db(psistema):
 		command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db
         else:
         	validar_pgpass()
-                command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d dbkerp_capacitacion -d ' + db     + ' -h ' + host + ' -U ' + usuario	
+                command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db     + ' -h ' + host + ' -U ' + usuario	
 
 	
 	for line in run_command(command):
@@ -60,10 +60,11 @@ def comparar_db(psistema):
         			command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db
         		else:
                 		validar_pgpass()
-                		command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d dbkerp_capacitacion -d ' + db     + ' -h ' + host + ' -U ' + usuario
+                		command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db     + ' -h ' + host + ' -U ' + usuario
 			for line in run_command(command):
 				codigo_bd += line
-
+			codigo_file = "".join(codigo_file.split());
+			codigo_bd = "".join(codigo_bd.split());
 			if (codigo_file not in codigo_bd):
 				print 'Diferencia en funcion : ' + f
 		else:

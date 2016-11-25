@@ -180,32 +180,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       		valorInicial:'expedicion',
 	       		form:true
 	       	},
-	{
-	       		config:{
-	       			name:'estilo',
-	       			fieldLabel:'Estilo Interfaz',
-	       			allowBlank:false,
-	       			emptyText:'Estilo...',
-	       			
-	       			typeAhead: true,
-	       		    triggerAction: 'all',
-	       		    lazyRender:true,
-	       		    mode: 'local',
-	       		    //readOnly:true,
-	       		    valueField: 'estilo',
-	       		   // displayField: 'descestilo',
-	       		    store:['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosaguy/css/xtheme-rosaguy.css']
-	       		    
-	       		},
-	       		type:'ComboBox',
-	       		id_grupo:0,
-	       		filters:{	
-	       		         type: 'list',
-	       				 options: ['xtheme-blue.css','xtheme-gray.css','xtheme-access.css','verdek/css/xtheme-verdek.css','lilamarti/css/xtheme-lilamarti.css','rosaguy/css/xtheme-rosaguy.css'],	
-	       		 	},
-	       		grid:true,
-	       		form:true
-	       	},
+	
 	 {
 		config:{
 			fieldLabel: "Telefono",

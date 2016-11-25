@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
   par_tabla varchar,
   par_transaccion varchar
 )
+
   RETURNS varchar AS
   $body$
   /**************************************************************************
@@ -171,7 +172,6 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
      #AUTOR:	    KPLIAN (mzm)
      #FECHA:		03-06-2011
     ***********************************/
-
     elsif(par_transaccion='RH_UOFUNC_ELI')then
       BEGIN
 

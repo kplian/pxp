@@ -1535,8 +1535,25 @@ IS 'identifica la variable';
 COMMENT ON COLUMN param.tdepto_var.valor
 IS 'el valor asignado a la variable';
 
-
-
-
 /***********************************F-SCP-RAC-PARAM-0-22/11/2016*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-26/10/2016*****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN ruta_foto VARCHAR(300);
+
+COMMENT ON COLUMN param.tconcepto_ingas.ruta_foto
+IS 'opcionalmente se permite almacenar la ruta de la foto del concepto de ingeso o gasto';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ALTER COLUMN codigo TYPE VARCHAR(300) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tconcepto_ingas
+  ADD UNIQUE (codigo);
+/***********************************F-SCP-RAC-PARAM-0-26/10/2016*****************************************/
 
