@@ -321,6 +321,15 @@ Phx.vista.Interinato=Ext.extend(Phx.gridInterfaz,{
              
           },this);
 	},
+    onButtonNew : function() {
+        Phx.vista.Interinato.superclass.onButtonNew.call(this);
+        console.log(this.Cmp);
+        this.Cmp.id_cargo_titular.store.baseParams.fecha = this.Cmp.fecha_ini.getValue().dateFormat(this.Cmp.fecha_ini.format);
+        this.Cmp.id_cargo_titular.modificado=true;
+        this.Cmp.id_cargo_suplente.store.baseParams.fecha = this.Cmp.fecha_ini.getValue().dateFormat(this.Cmp.fecha_ini.format);
+        this.Cmp.id_cargo_suplente.modificado=true;
+
+    },
 	
 	onButtonEdit:function(){
        Phx.vista.Interinato.superclass.onButtonEdit.call(this); 
