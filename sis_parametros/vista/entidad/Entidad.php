@@ -42,6 +42,7 @@ Phx.vista.Entidad=Ext.extend(Phx.gridInterfaz,{
                 filters:{pfiltro:'ent.nombre',type:'string'},
                 id_grupo:1,
                 grid:true,
+                egrid:true,
                 form:true
         },
 		

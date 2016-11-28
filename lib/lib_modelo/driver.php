@@ -217,6 +217,7 @@ class driver
 	
     //RAC 10/08/2016 agregas 'E , en los valores para que respete los retornos de carro almacenados en base de datos
     //OJO  puede traer algun otro problema, en la pruebas basicos no tuvimos ninguno
+    //JRR 27/11/2016 Escapara backslash de las cadenas
 	function getArregloValores(){
 		
 		$arreglo='array[';
@@ -225,6 +226,8 @@ class driver
 			foreach ($this->valores as $row){
 				$arreglo.='array[';
 				foreach ($row as $valor){
+                    $valor = str_replace('\\','\\\\',$valor);
+
 					$arreglo.="E'$valor',";
 				}
 				$arreglo = substr ($arreglo, 0, -1);
@@ -234,6 +237,7 @@ class driver
 		}
 		else{
 			foreach ($this->valores as $valor){
+                $valor = str_replace('\\','\\\\',$valor);
 				$arreglo.="E'$valor',";
 			}
 			

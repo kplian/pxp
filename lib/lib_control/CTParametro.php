@@ -244,17 +244,49 @@ class CTParametro{
 	 */
 
 	function _json_decode($string) {
-		
+
 			
-		if (get_magic_quotes_gpc()) {
+		/*if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
-		}
+		}*/
 
 
-        $string = str_replace('\\', '\\\\', $string);
-        $string = str_replace('\\\\"', '\\"', $string);
-		
-		return json_decode($string,true);
+
+        //$string = str_replace('\\', '\\\\', $string);
+
+
+
+        //$string = str_replace('\\\\"', '\\"', $string);
+
+        $obj = json_decode($string,true);
+        /*if ($_SESSION['ss_id_usuario'] == '83') {
+            $string2 = '{"id_entidad":"2","nombre":"!\\"#$%&/()=+\\\\","nit":"3456","identificador_min_trabajo":"","identificador_caja_salud":"","tipo_venta_producto":"","estados_comprobante_venta":"sdfghj","estados_anulacion_venta":"","pagina_entidad":"dfghj","direccion_matriz":"dfghj"}';
+            var_dump($string2);
+            var_dump(json_decode($string2));
+            //$string = stripslashes($string);
+            //$string = str_replace('\\\\\\\\', '\\', $string);
+            var_dump($string);
+            var_dump(json_decode($string));
+
+            exit;
+        }*/
+
+
+
+        /*foreach ($obj as $key => $value)
+        {
+            if (is_array($value)) {
+
+            } else {
+                if (is_string($value)) {
+                    $obj[$key] = urldecode($value);
+                }
+            }
+
+        }*/
+        
+
+		return $obj;
 	}
 
 	static function _json_decode_static($string) {
