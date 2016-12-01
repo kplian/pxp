@@ -134,17 +134,17 @@ class CTSesion {
 	function validarSesion() {
 		if ($this->estado == 'activa') {
 
-			//$this->recuparaSidBase();
+			$this->recuparaSidBase();
 
 			//echo "$this->sid_base =".session_id (). " !!!!!  $this->ip_base =".$this->getIP ();
 			//exit;
-             //en un entorno de internet esta valiacion no es util debido a NAT
+            // en un entorno de internet esta valiacion no es util debido a NAT
 
 			//if ($this->sid_base == session_id () && $this->ip_base == $this->getIP ()) {
-            //if ($this->sid_base == session_id ()) {
+            if ($this->sid_base == session_id () || $_SESSION["_ESTADO_SISTEMA"] == 'desarrollo') {
 				return true;
 					
-			//}
+			}
 		}
 
 		return false;
