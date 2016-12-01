@@ -61,6 +61,35 @@ class MODConceptoIngas extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function listarConceptoIngasPartidaGestion(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.f_concepto_ingas_sel';
+		$this->transaccion='PM_CONIGPARGES_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+
+		$this->setParametro('id_gestion','id_gestion','int4');
+		//Definicion de la lista del resultado del query
+		$this->captura('desc_ingas','varchar');
+		$this->captura('codigo','varchar');
+		$this->captura('nombre_partida','varchar');
+		$this->captura('descripcion','varchar');
+		$this->captura('movimiento','varchar');
+		$this->captura('tipo_partida','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('activo_fijo','varchar');
+		$this->captura('almacenable','varchar');
+		$this->captura('exige_ot','varchar');
+		$this->captura('sistemas','text');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
 	/*
 	Author RAC
 	Date 20 Junio 2014
