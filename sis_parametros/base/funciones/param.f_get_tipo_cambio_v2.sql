@@ -41,17 +41,17 @@ BEGIN
      
     -- calula tipo de cambio
     IF v_id_moneda_base != p_id_moneda_1 and v_id_moneda_base != p_id_moneda_2 THEN
-    	RETURN  param.f_convertir_moneda (p_id_moneda_1,p_id_moneda_2, 1.00, p_fecha,'O',50,1.00, 'no'); 
+    	RETURN  param.f_convertir_moneda (p_id_moneda_1,p_id_moneda_2, 1.00, p_fecha,p_tipo,50,1.00, 'no'); 
    
     ELSE
        
        IF v_id_moneda_base = p_id_moneda_1 THEN
           
-          RETURN  param.f_get_tipo_cambio(p_id_moneda_2, p_fecha, 'O');
+          RETURN  param.f_get_tipo_cambio(p_id_moneda_2, p_fecha, p_tipo);
        
        ELSE
          
-         RETURN  param.f_get_tipo_cambio(p_id_moneda_1, p_fecha, 'O');
+         RETURN  param.f_get_tipo_cambio(p_id_moneda_1, p_fecha, p_tipo);
        
        END IF;
     

@@ -30,13 +30,18 @@ DECLARE
     v_id_moneda_base            integer;
     v_tipo                      varchar;
     v_tipo_cambio				numeric;
+    v_registros					record;
 
 BEGIN
     v_nombre_funcion:='param.f_get_tipo_cambio';
     
+    
+    
     /*Dar valores por defecto*/
     if(p_tipo is null)then
         v_tipo='O';
+    else
+      v_tipo= p_tipo;
     end if;
     
     if(p_fecha is null)then
@@ -50,14 +55,30 @@ BEGIN
     if(p_id_moneda_1=v_id_moneda_base)then
         v_tipo_cambio = 1;
     else
-    	select tc.oficial
-        into v_tipo_cambio
+    	select 
+            tc.oficial,
+            tc.compra,
+            tc.venta
+        into 
+           v_registros
         from param.ttipo_cambio tc
         where tc.id_moneda=p_id_moneda_1
         and tc.fecha=p_fecha;
     end if;
     
-	return v_tipo_cambio;
+    
+    
+    if v_tipo = 'O' then
+      return v_registros.oficial;
+    elseif v_tipo = 'C' THEN 
+      return v_registros.compra;
+    elseif v_tipo = 'V' then
+      return v_registros.venta;
+    else
+      return 'tipo no reconocido %',v_tipo; 
+    end if;
+    
+	
 
 EXCEPTION
 
