@@ -1557,3 +1557,47 @@ ALTER TABLE param.tconcepto_ingas
   ADD UNIQUE (codigo);
 /***********************************F-SCP-RAC-PARAM-0-26/10/2016*****************************************/
 
+/***********************************I-SCP-FFP-PARAM-0-05/12/2016*****************************************/
+
+
+CREATE TABLE param.ttipo_archivo (
+  id_tipo_archivo SERIAL,
+  nombre_id VARCHAR(255) NOT NULL ,
+  tipo_archivo VARCHAR(255) NOT NULL ,
+  tabla VARCHAR(255) NOT NULL ,
+  codigo VARCHAR(255) NOT NULL ,
+  nombre VARCHAR(255) NOT NULL ,
+  multiple VARCHAR(255) ,
+  PRIMARY KEY(id_tipo_archivo)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+CREATE TABLE param.tarchivo (
+  id_archivo SERIAL,
+  id_tipo_archivo INTEGER NOT NULL ,
+  id_tabla INTEGER NOT NULL ,
+  extension VARCHAR(255) NOT NULL ,
+  nombre_archivo VARCHAR(255) NOT NULL ,
+  folder VARCHAR(255),
+  PRIMARY KEY(id_archivo)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+CREATE TABLE param.tarchivo_historico (
+  id_archivo_historico SERIAL,
+  id_tabla INTEGER NOT NULL ,
+  id_archivo VARCHAR(255) NOT NULL ,
+  version INTEGER NOT NULL ,
+  PRIMARY KEY(id_archivo_historico)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+
+ALTER TABLE param.tarchivo ADD id_archivo_fk INTEGER NULL;
+
+/***********************************F-SCP-FFP-PARAM-0-05/12/2016*****************************************/
+
