@@ -49,7 +49,7 @@ header("content-type: text/javascript; charset=UTF-8");
 			k:'".$_SESSION['key_k']."',
 			p:'".$_SESSION['_p']."',
 			x:".$x.",
-            parammetros:{cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
+            parametros:{cont_alertas:".$_SESSION["_CONT_ALERTAS"].",
             nombre_usuario:'".$_SESSION["_NOM_USUARIO"]."',
 			mini_logo:'".$_SESSION["_MINI_LOGO"]."',
 			icono_notificaciones:'" . $logo . "',		

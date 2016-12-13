@@ -53,7 +53,10 @@ BEGIN
 
 	/*Si la moneda 1 y la 2 son la misma se devuelve el mismo tipo de cambio*/
     if(p_id_moneda_1=v_id_moneda_base)then
+   
         v_tipo_cambio = 1;
+        return v_tipo_cambio;    
+         
     else
     	select 
             tc.oficial,
@@ -75,7 +78,7 @@ BEGIN
     elseif v_tipo = 'V' then
       return v_registros.venta;
     else
-      return 'tipo no reconocido %',v_tipo; 
+      raise exception 'tipo no reconocido %',v_tipo; 
     end if;
     
 	

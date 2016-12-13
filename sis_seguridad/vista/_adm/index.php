@@ -41,7 +41,6 @@ if(!isset($_SESSION["_SESION"])){
  <!-- componentes extendidos  -->	   
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/gridfilters/css/GridFilters.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/gridfilters/css/RangeMenu.css" />
-
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/statusbar/css/statusbar.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/AwesomeCombo/static/css/Ext.ux.AwesomeCombo.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/fileuploadfield/css/fileuploadfield.css" />
@@ -49,15 +48,10 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/GroupSummary.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/RowEditor.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/treegrid/treegrid.css" />
-   
-
-    
    <link rel="stylesheet" type="text/css" href="resources/docs.css"></link>
    <link rel="stylesheet" type="text/css" href="resources/style.css"></link>
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/Portal.css" />
-
    <link rel="stylesheet" type="text/css" href="../../../lib/ext3/resources/css/ext-all.css"/>
-  
    <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/<?php echo $_SESSION['_ESTILO_MENU'];?>/menus.css"/>
    <style type="text/css" media="screen">
 		    html, body{
@@ -67,10 +61,7 @@ if(!isset($_SESSION["_SESION"])){
 		        overflow:hidden;
 		    }   
     </style>
-    
     <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/font-awesome-4.2.0/css/font-awesome.css"/>
-
-
 	<!-- GC -->
 </head>
 <body  style="background:#ffffff url('<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>') no-repeat center center;">
@@ -86,43 +77,25 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/builds/ext-core.js"></script>
     -->
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-all-debug.js"></script>
-
-
-
-      
-    <!-- descomentado -->  
-
+    <!-- descomentado --> 
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <!-- comentado 
-   
-    	 
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-      
-     	
-     	
      	cd ..<script type="text/javascript" src="resources/TaskBar.js"></script> 
-     
-
     <script type="text/javascript" src="resources/TaskBar.js"></script> 
      -->
 
-     <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
-	 <script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
-	 <script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
-	 <script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
-     <!-- status bar -->
-      <script type="text/javascript" src="../../../lib/ux/statusbar/StatusBar.js"></script>
-      <script type="text/javascript" src="../../../lib/ux/SearchField.js"></script>
-	
-    
-     <!-- para filtro en grillas -->
-     
+    <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
+	<script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
+	<script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
+	<script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
+    <!-- status bar -->
+    <script type="text/javascript" src="../../../lib/ux/statusbar/StatusBar.js"></script>
+    <script type="text/javascript" src="../../../lib/ux/SearchField.js"></script>
+    <!-- para filtro en grillas -->
     <script type="text/javascript" src="../../../lib/ux/gridfilters/menu/ListMenu.js"></script>
-	<script type="text/javascript" src="../../../lib/ux/gridfilters/menu/RangeMenu.js"></script>
-	
-	<script type="text/javascript" src="../../../lib/ux/gridfilters/GridFilters.js"></script>
-	
+	<script type="text/javascript" src="../../../lib/ux/gridfilters/menu/RangeMenu.js"></script>	
+	<script type="text/javascript" src="../../../lib/ux/gridfilters/GridFilters.js"></script>	
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/Filter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/StringFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/DateFilter.js"></script>
@@ -132,36 +105,29 @@ if(!isset($_SESSION["_SESION"])){
 	<script type="text/javascript" src="../../../lib/ux/RowEditor.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/RowExpander.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/GridSummary.js"></script>
-	<script type="text/javascript" src="../../../lib/ux/GroupSummary.js"></script>
-	
+	<script type="text/javascript" src="../../../lib/ux/GroupSummary.js"></script>	
 	<script type="text/javascript" src="../../../lib/ux/Portal.js"></script>
     <script type="text/javascript" src="../../../lib/ux/PortalColumn.js"></script>
-    <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>
-    	
+    <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>    	
 	<script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridSorter.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumnResizer.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridNodeUI.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridLoader.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumns.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGrid.js"></script>
-    
-   
     <script type="text/javascript" src="../../../lib/ux/GMapPanel.js"></script>
     <!-- componentes extendidos  -->	  
     <script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.PagingMemoryProxy.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.AwesomeCombo.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/ClearCombo.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/Ext.util.Format.CurrencyFactory.js"></script>
-	
-	
 	<script type="text/javascript" src="../../../lib/ux/MoneyField.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/fileuploadfield/FileUploadField.js"></script>
 	 <!-- componentes extendidos propios -->	  
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>    
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboRec.js'></script>   
     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboMultiple.js'></script>  
-     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>   
-   
+    <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>   
     <script type="text/javascript" src="../../../lib/ext3/TabCloseMenu.js"></script>
     <script type="text/javascript" charset="UTF-8" src="resources/Phx.CP.js"></script>
     <?php

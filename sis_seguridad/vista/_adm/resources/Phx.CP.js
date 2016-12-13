@@ -473,11 +473,9 @@ Phx.CP=function(){
 	
     return{
         
-        evaluateHash:function(action,token_inicio){
-        	
-        	
+        evaluateHash:function(action,token_inicio){ 
 		    //verificamos la accion
-		    if(action=='main-tabs'){
+		    if(action=='main-tabs'){		    	
 				if (token_inicio == '' || token_inicio == 'PXPWELCOME') {
 	        		this.getMainPanel().loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
 	        	} else {
@@ -510,8 +508,7 @@ Phx.CP=function(){
         	}
         	else{
         		//si la accion es procesar una alertar recuperamos el datos
-        		if(action=='alerta'){
-        			
+        		if(action=='alerta'){        			
         			Ext.Ajax.request({
 	                    url:'../../sis_parametros/control/Alarma/getAlarma',
 	                    params:{'alarma':token_inicio},
@@ -524,50 +521,58 @@ Phx.CP=function(){
 								Phx.CP.loadWindows(interfaz.acceso_directo, interfaz.titulo, {
 											modal : true,
 											width : '90%',
-											height : '90%'
+											height : '90%',
+											auxNoClose: true
 										}, par, this.idContenedor, interfaz.clase)
 							}
 							else{
-								alert('Nos se encontro el acceso, la alerta fue eliminada')
+								alert('No se encontro el acceso, la alerta fue eliminada')
 							}
 							
 						},
 	                    failure: this.conexionFailure,
 	                    timeout:this.timeout,
 	                    scope:this
-	                });
-        			
+	                });        			
         		}
-        	}
+            }
         },
         
 		// funcion que se ejcuta despues de una autentificacion exitosa
 		// para dibujar los paneles de menu y mainpanel
-		init:function(){
+		init:function(){         	
          	Ext.QuickTips.init();
-         	Ext.History.init();
+         	Ext.History.init();         	   
          	Ext.History.on('change', function(token){
 		        if(token && token != 'null') {
-		        	
-		           	 var parts = token.split(':'),
+		        	 var parts = token.split(':'),
 		                tabId = 'docs-' + parts[1],
 		                action = parts[0],
 		                tab = mainPanel.getComponent(tabId);
 		            
-		            //cerramos todas las ventanas abiertas con loadWindows
-		            Ext.WindowMgr.each(function(w){
-		            	if(w.is_page){
-		            		w.close();
-		            	}
-		            },this);	            
-		            
+		            //cerramos todas las ventanas abiertas con loadWindows menos alertar y aplicacion de interinato
+		            //comentado por que se cerraban las ventas iniciaales de alertaas , parametros y otros
+		            /*Ext.WindowMgr.each(function(w){
+		            	    //if(w.is_page){}
+		            		console.log('CLOSE', w)
+		            		if(w.auxNoClose===false){
+		            			w.close();
+		            			alert('close 1')
+		            		}
+		            		else{
+		            			alert('close 2')
+		            		}
+		            },this);*/	            
 		            
 		            if(action=='main-tabs'){
 						 //si el tab existe toma el foco
 						if(tab){
-					    	mainPanel.setActiveTab(tab);
-					            
-					    } else {
+					    	mainPanel.setActiveTab(tab);					            
+					    } 
+					    else if (parts[1] == 'PXPWELCOME') {
+	        		        mainPanel.loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');
+   						}
+					    else {
 					    	var node = menu.getNodeById(parts[1]);				    	
 					    	if (node) {				    		
 				    			node.fireEvent('click', node);
@@ -588,18 +593,15 @@ Phx.CP=function(){
 				                    	
 				                    },
 				                    failure: this.conexionFailure,
-				                    timeout:this.timeout,
-				                    scope:this
+				                    timeout: this.timeout,
+				                    scope: this
 				                });
-				    		}
+				             }
 					    }
 				   }	
 				   else{
 				   	 Phx.CP.evaluateHash(action,parts[1]);
 				   }	            
-		        }
-		        else{        	
-		            mainPanel.loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');           
 		        }
 		    });
 			// definicion de la instancia de la clase menu
@@ -611,6 +613,7 @@ Phx.CP=function(){
 				} 
 				contNodo++;
 				},this)
+			
 			menu.on('load',function(){
 				if(contNodo==1){
 					 Ext.getBody().unmask();
@@ -651,7 +654,7 @@ Phx.CP=function(){
 				}, 10);
 			}
 
-			function collapseAll(){
+		   function collapseAll(){
 				var n = menu.getSelectionModel().getSelectedNode();
 				ctxMenu.hide();
 				setTimeout(function(){
@@ -659,7 +662,7 @@ Phx.CP=function(){
 				}, 10);
 			}
 
-			function expandAll(){
+		   function expandAll(){
 				var n = menu.getSelectionModel().getSelectedNode();
 				ctxMenu.hide();
 				setTimeout(function(){
@@ -701,7 +704,8 @@ Phx.CP=function(){
 			});
 
         	// definicion de una instacia de la clase MainPanel
-			mainPanel=new MainPanel({menuTree:menu});
+			mainPanel = new MainPanel({menuTree:menu});
+			
 			//windowManager = new Ext.WindowGroup(), 
 			mainPanel.on('tabchange', function(tp, tab){
 				if(tab){  
@@ -709,24 +713,12 @@ Phx.CP=function(){
 					var token_id = aux[1];					
 					if (token_id != 'salir') {
 						Ext.History.add('main-tabs:' + token_id);						
-						menu.selectClass(tab.cclass);
-						
+						menu.selectClass(tab.cclass);						
 					}
-				}
-				
+				}				
 		    });
-
-			
-           /* var detailsPanel = {
-				title: 'Details',
-		        region: 'center',
-		        bodyStyle: 'padding-bottom:15px;background:#eee;',
-				autoScroll: true,
-				item:Ext.Element.get('1rn')
-		    };*/
-			
-
-
+		    
+		    
     		// declaricion del panel SUR
 			// var d_pie = Ext.DomHelper.append(document.body, {tag:
 			// 'div',id:'estado'/*,class:"x-layout-panel-hd"*/});
@@ -747,27 +739,20 @@ Phx.CP=function(){
 				  autoHeight:true,
 				  margins: '0 0 0 0',        
 				  split:false,
-				 // height:37,
 				  bbar:[  
 				  {xtype:'label',
 				  width: 500,
-				  //autoHeight:true,
-				 
 				  html:' <a href="http://www.kplian.com" target="_blank"><img src="'+Phx.CP.config_ini.mini_logo+'"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> </a>',
 				  border: false
 				  },
-				  '->',{
+				  '->',
+				  {
 				  	xtype:'label',
-				
-				 
-				  iconCls:'user_suit',
-				 
-				  html:'<div id="1rn" align="right"><font >Usuario: </font><font ><b>'+Phx.CP.config_ini.nombre_usuario+'</b></font></div>'
+				    iconCls:'user_suit',
+				    html:'<div id="1rn" align="right"><font >Usuario: </font><font ><b>'+Phx.CP.config_ini.nombre_usuario+'</b></font></div>'
 				  },'-',
-				   { 
+				  { 
 				  	xtype:'label',
-				  
-				    
 				    html:'<div id="2rn" align="right"><img src="../../../lib/imagenes/NoPerfilImage.jpg" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/></div>'
 				   },
 				   {
@@ -794,12 +779,34 @@ Phx.CP=function(){
 			});
 
 			viewport.doLayout();
+			
+			//evalua hash de la url inicial
+			var tokenDelimiter = ':',
+			    action,
+			    token_inicio = "",
+			    aux = window.location.hash.substr(1);
+			    
+			if (aux) {
+		    	var arreglo_aux = aux.split(tokenDelimiter);
+		    	token_inicio = arreglo_aux[1];
+		    	action = arreglo_aux[0];
+		    } 
+		    else{
+		    	action = 'main-tabs';
+		    	token_inicio = 'PXPWELCOME';
+		    }
+			
+			Phx.CP.evaluateHash(action,token_inicio);
+			Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
+			
+			
 			if(Phx.CP.config_ini.cont_interino*1 > 0){
 				
 				this.loadWindows('../../../sis_organigrama/vista/interinato/AplicarInterino.php','Aplicar Interinato',{
 								width:550,
 								height:250,
-								modal:false
+								modal:false,
+								auxNoClose: true
 						    },{id_usuario:Phx.CP.config_ini.id_usuario},
 						    'Phx.CP','AplicarInterino');
 				
@@ -811,9 +818,13 @@ Phx.CP=function(){
 					this.loadWindows('../../../sis_parametros/vista/alarma/AlarmaFuncionario.php','Alarmas',{
 							width:900,
 							height:400,
-							modal:false
-					    },{id_usuario:Phx.CP.config_ini.id_usuario},
+							modal:false,
+							auxNoClose: true
+					    },
+					    { id_usuario: Phx.CP.config_ini.id_usuario },
 					    'Phx.CP','AlarmaFuncionario');
+					    
+					   
 				/*
 				  url: donde se encuentra el js de la ventana que se quiere abrir
 				  title: titulo de la ventanan que se abrira
@@ -826,44 +837,18 @@ Phx.CP=function(){
 			}
 			
 			
-			
-			
-			//evalua hash de la url
-			var tokenDelimiter = ':',
-			    action,
-			    token_inicio = "",
-			    aux = window.location.hash.substr(1);
-			    
-			    
-		    if (aux) {
-		    	var arreglo_aux = aux.split(tokenDelimiter);
-		    	token_inicio = arreglo_aux[1];
-		    	action = arreglo_aux[0];
-		    } 
-			Phx.CP.evaluateHash(action,token_inicio);
-			if(!token_inicio ){
-				 mainPanel.loadClass('../../../sis_seguridad/vista/inicio/tabInicial.php','PXPWELCOME', 'Inicio','','../../../sis_seguridad/vista/inicio/tabInicial.php','tabInicial');           
-		       
-			}
-			 
-			Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario,Phx.CP.config_ini.id_funcionario);
 			Phx.CP.obtenerFotoPersona(Phx.CP.config_ini.id_usuario,
-						function(resp){
-							setTimeout(function(){
-								var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-	                            var _im ='../../../lib/imagenes/NoPerfilImage.jpg';
-	                            if(reg.datos[0].extension){
-	                            	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].foto;
-	                            }
-	                             Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
-								 
-								},3000);
-						});
-			
-		   
-		   //get state interface from gui
-		   //Phx.CP.getStateGui()
-		   
+										function(resp){
+											setTimeout(function(){
+												var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+							                    var _im ='../../../lib/imagenes/NoPerfilImage.jpg';
+							                    if(reg.datos[0].extension){
+							                    	_im ='../../../sis_seguridad/control/foto_persona/'+reg.datos[0].foto;
+							                    }
+							                     Ext.Element.get('2rn').update('<img src="'+_im+'" align="center" width="35" height="35"  style="margin-left:5px;margin-top:1px;margin-bottom:1px"/> ');
+												 
+												},3000);
+										});
 			
 		},
 		//para capturar variables enviadas por get
@@ -872,23 +857,14 @@ Phx.CP=function(){
 		// vector que contiene los parametros de configuracion inicial pasados
 		// por el servidor en la autentificacion
 		config_ini:new Array(),
-
 		// este metodo contruye la ventana de login
 		// se ejecuta al cargar el index
 		iniciarLogin:function(x,regreso,z){
-			
-			
-			
-			
 			Ext.QuickTips.init();
 			Ext.form.Field.prototype.msgTarget = 'side';
            // formulario
 			form_login = new Ext.form.FormPanel({
-				//baseCls: 'x-plain',
-				//bodyStyle:'padding:30px 5px 50px 25px;border:none;background:#FFFFFF url(resources/oLogo.png) no-repeat right center;',
-				bodyStyle:'padding:30px 0px 40px 15px;',
-				
-				//labelWidth: 65,
+				bodyStyle:'padding:30px 0px 40px 15px;',				
 				labelAlign:'right',
 				url:'../../sis_seguridad/control/Auten/verificarCredenciales',
 				defaultType: 'textfield',
@@ -896,37 +872,25 @@ Phx.CP=function(){
 				items: [{
 					fieldLabel: 'Usuario',
 					allowBlank:false,
-					// labelStyle: 'font-weight:bold;',
-					//align:'center',
 					name:'usuario',
 					id:'_usu'
 				},{
 					fieldLabel: 'Contraseña',
-					// labelStyle: 'font-weight:bold;',
 					name:'contrasena',
 					allowBlank:false,
-					//align:'center',
 					inputType: 'password'
 				}],
 				 bbar: new Ext.ux.StatusBar({
 			            id: 'basic-statusbar',
-                        // defaults to use when the status is cleared:
-			            defaultText: '',
-			            //defaultIconCls: 'default-icon',
-			         // values to set initially:
+                        defaultText: '',
 			            text: 'Ready',
 			            iconCls: 'x-status-valid'
                    })
 			});
 
-
-
 			// ventana para el login
 			win_login = new Ext.Window({
 				title: 'PXP',
-				//baseCls: 'x-window',
-				// iconCls: 'image_login',
-
 				modal:true,
 				width:320,
 				height:180,
@@ -935,51 +899,44 @@ Phx.CP=function(){
 				minWidth:300,
 				minHeight:180,
 				layout: 'fit',
-				//plain:true,
-				//bodyStyle:'padding:5px;',
 				items: form_login,
 			     buttons: [{
 					text:'Entrar',
-					//keys:[Ext.EventObject.ENTER],
 					handler:Phx.CP.entrar  
 				}],
-				keys:[{key:Ext.EventObject.ENTER,handler:Phx.CP.entrar}]
+				keys:[{ key:Ext.EventObject.ENTER, handler: Phx.CP.entrar }]
 			});
 			
 			this.win_login = win_login; 
-
-			// win_login.show();
 			
-			//win_login.addKeyListener(Ext.EventObject.ENTER, Phx.CP.entrar); // Tecla enter
-
+			
             if(x=='activa'){
-				Phx.CP.CRIPT=new Phx.Encriptacion({encryptionExponent:regreso.e,
-							modulus:regreso.m,
-							permutacion:regreso.p,
-							k:regreso.k});
-						    Phx.CP.config_ini.x=regreso.x;
-				
-			
-					   sw_auten_veri=false;
+				    Phx.CP.CRIPT = new Phx.Encriptacion({ encryptionExponent: regreso.e,
+														  modulus: regreso.m,
+														  permutacion: regreso.p,
+														  k: regreso.k });
+					   Phx.CP.config_ini.x = regreso.x;
+				       sw_auten_veri = false;
+			           
 			           if(regreso.success){
 			        	   // copia configuracion inicial recuperada
-							Ext.apply(Phx.CP.config_ini,regreso.parammetros);
+							Ext.apply(Phx.CP.config_ini,regreso.parametros);
 							//aplica el estilo de vista del usuario
 							Phx.CP.setEstiloVista(Phx.CP.config_ini.estilo_vista);
 						   //si s la primera vez inicia el entorno
 			        	   if(!sw_auten){
 			        		   Phx.CP.init();
-							   sw_auten=true;
+							   sw_auten = true;
 			        	   }
 			        	   //recuperamos la variable de sesion
 						   Phx.CP.session = Ext.util.Cookies.get('PHPSESSID');
 			        	 }	
 			
-			 //return true;
 			}
 			else{				
 				Phx.CP.getPlublicKey();	
 			}
+			
 			setTimeout(function(){
 					Ext.get('loading').remove();
 					Ext.get('loading-mask').fadeOut({remove:true});
@@ -1015,10 +972,8 @@ Phx.CP=function(){
 							modulus:regreso.m,
 							permutacion:regreso.p,
 							k:regreso.k});
-						    Phx.CP.config_ini.x=regreso.x;
-						    // muestra ventana de login
-					    //Phx.CP.setEstiloVista("xtheme-access.css");
-								
+						    
+						Phx.CP.config_ini.x=regreso.x;
 						win_login.show();
 					
 
@@ -1082,22 +1037,17 @@ Phx.CP=function(){
 							
 							//recuperamos la variable de sesion
 							Phx.CP.session = Ext.util.Cookies.get('PHPSESSID');
-							
-							
 							//si s la primera vez inicia el entorno
 							if(!sw_auten){
-			        		   Phx.CP.init();
-							   sw_auten=true;
-			        	   }
-			        	    
-			        	    form_login.setTitle("LOGIN");
+			        		    Phx.CP.init();
+							    sw_auten = true;
+			        	    }
+							form_login.setTitle("LOGIN");
 			        	    form_login.getForm().findField('usuario').disable();
 			        	    form_login.getForm().findField('contrasena').reset();
 							Phx.CP.loadingHide();
 							
-							
-							
-			        	  
+			        	    
 			      		}
 						else{
 							if(regreso.mensaje){
@@ -1112,37 +1062,30 @@ Phx.CP=function(){
 							ajax.failure();
 						}
 						
-						
-						
-						
-
 					},
 					failure:function(form,action,resp){
 						sw_auten_veri=false;
 						// ocultamos el loading
 						Phx.CP.loadingHide();
-						win_login.setTitle("Error en los Datos");
-					
-						// form.reset().reset();
-						// form_login.getForm().reset();
+						win_login.setTitle("Error en los Datos");					
 						Ext.get('_usu').focus();
 					}
 				};
 
 
 				if(form_login.getForm().isValid()){
-            		Phx.CP.loadingShow();
-					
+            		Phx.CP.loadingShow();					
             		Ext.Ajax.defaultHeaders={
 					  'Powered-By': 'Pxp'
 					};
 					// Envia crendenciales al servidor
-
+                    console.log(Phx.Encriptacion);
 					Ext.Ajax.request({
 						url:form_login.url,
 						params:{
 							_tipo:'auten',
-							contrasena: md5(form_login.getForm().findField('contrasena').getValue()),
+                            //se quita el md5 de la contraseña, si la encripacion esta activada no se encripta en este paso, si no esta activada se encripta
+							contrasena: Phx.CP.config_ini.x=='1'?form_login.getForm().findField('contrasena').getValue():Phx.CP.CRIPT.Encriptar(form_login.getForm().findField('contrasena').getValue()),
 							usuario:form_login.getForm().findField('usuario').getValue()
 							
 							},
@@ -1150,9 +1093,6 @@ Phx.CP=function(){
 						success:ajax.success,
 						failure:ajax.failure
 					});
-					
-					
-
 				}
 				else{
 					sw_auten_veri=false;
@@ -1698,6 +1638,7 @@ Phx.CP=function(){
 				var	Ventana={
 					modal:true,
 					title:title,
+					auxNoClose:config.auxNoClose?true:false,
 					width:'60%',
 					height:'60%',
 					shadow:true,
@@ -1778,5 +1719,3 @@ Phx.CP=function(){
 		
 	}
 }();
-// al cargar el script ejecuta primero el metodo login
-//Ext.onReady(Phx.CP.iniciarLogin,Phx.CP,true);
