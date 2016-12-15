@@ -1,7 +1,7 @@
 <?php
 $data = array(	"credenciales"=>"{B6575E91-D2B3-48A3-B737-B66EDBD60AFA}{C0573161-B781-4B06-B4B7-C8D85DE86239}",
 											"idioma"=>"ES",
-											"fecha"=>"11/28/2016",
+											"fecha"=>"11/25/2016",
 											//"tkt"=>"9304017134495",
                                             "ip"=>"127.0.0.1",
 											"xmlJson"=>false);
@@ -26,8 +26,7 @@ $_out = substr($_out,109);
 $_out = substr($_out,0,-4);
 $_out = str_replace('\\','',$_out);
 
-echo $_out;
-exit;
+
 //$cadena = str_replace('"terminal_salida":{,},', '', $res->TraerTktResult);
 $res = json_decode($_out);
 

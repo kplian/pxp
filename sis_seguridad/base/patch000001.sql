@@ -1096,3 +1096,7 @@ USING btree (variable COLLATE pg_catalog."default");
 
 /*****************************F-SCP-JRR-SEGU-0-17/10/2016*************/
 
+/*****************************I-SCP-JRR-SEGU-0-13/12/2016*************/
+CREATE INDEX tsesion_idx2 ON segu.tsesion
+USING btree (id_usuario, estado_reg);
+/*****************************F-SCP-JRR-SEGU-0-13/12/2016*************/

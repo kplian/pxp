@@ -1601,3 +1601,21 @@ ALTER TABLE param.tarchivo ADD id_archivo_fk INTEGER NULL;
 
 /***********************************F-SCP-FFP-PARAM-0-05/12/2016*****************************************/
 
+/***********************************F-SCP-GSS-PARAM-0-15/12/2016*****************************************/
+
+CREATE TABLE param.tplantilla_archivo_excel (
+  id_plantilla_archivo_excel SERIAL,
+  nombre VARCHAR(20) NOT NULL,
+  codigo VARCHAR(10) NOT NULL,
+  PRIMARY KEY(id_plantilla_archivo_excel)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tplantilla_archivo_excel.nombre
+IS 'campo que guarda el nombre de la plantilla del archivo excel';
+
+COMMENT ON COLUMN param.tplantilla_archivo_excel.codigo
+IS 'campo que guarda el codigo asignado a la plantilla del archivo excel';
+
+/***********************************F-SCP-GSS-PARAM-0-15/12/2016*****************************************/

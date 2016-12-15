@@ -42,7 +42,8 @@ class MODCentroCosto extends MODbase{
 		$this->captura('nombre_proyecto','varchar');
 		$this->captura('nombre_actividad','varchar');
 		$this->captura('nombre_financiador','varchar');
-		$this->captura('nombre_regional','varchar');		
+		$this->captura('nombre_regional','varchar');
+		$this->captura('movimiento_tipo_pres','varchar');		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -81,7 +82,9 @@ class MODCentroCosto extends MODbase{
 		$this->captura('nombre_proyecto','varchar');
 		$this->captura('nombre_actividad','varchar');
 		$this->captura('nombre_financiador','varchar');
-		$this->captura('nombre_regional','varchar');		
+		$this->captura('nombre_regional','varchar');
+		$this->captura('movimiento_tipo_pres','varchar');
+				
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -129,7 +132,8 @@ class MODCentroCosto extends MODbase{
         $this->captura('nombre_proyecto','varchar');
         $this->captura('nombre_actividad','varchar');
         $this->captura('nombre_financiador','varchar');
-        $this->captura('nombre_regional','varchar');    
+        $this->captura('nombre_regional','varchar'); 
+		$this->captura('movimiento_tipo_pres','varchar');   
 		
 		
 		
@@ -177,7 +181,8 @@ class MODCentroCosto extends MODbase{
         $this->captura('nombre_proyecto','varchar');
         $this->captura('nombre_actividad','varchar');
         $this->captura('nombre_financiador','varchar');
-        $this->captura('nombre_regional','varchar');    
+        $this->captura('nombre_regional','varchar'); 
+		$this->captura('movimiento_tipo_pres','varchar');   
         
         
         
@@ -226,7 +231,8 @@ class MODCentroCosto extends MODbase{
         $this->captura('nombre_proyecto','varchar');
         $this->captura('nombre_actividad','varchar');
         $this->captura('nombre_financiador','varchar');
-        $this->captura('nombre_regional','varchar');    
+        $this->captura('nombre_regional','varchar'); 
+		$this->captura('movimiento_tipo_pres','varchar');   
         
         
         

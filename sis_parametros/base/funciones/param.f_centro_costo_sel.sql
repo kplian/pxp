@@ -67,10 +67,11 @@ BEGIN
                           gestion,
                           codigo_cc,
                           nombre_programa,
-         					nombre_proyecto,
-         					nombre_actividad,
-         					nombre_financiador,
-         					nombre_regional
+         				  nombre_proyecto,
+         				  nombre_actividad,
+         				  nombre_financiador,
+         				  nombre_regional,
+                          movimiento_tipo_pres
 						from pre.vpresupuesto_cc cec
 						 where  ';
 			
@@ -137,7 +138,8 @@ BEGIN
          				  nombre_proyecto,
          				  nombre_actividad,
          				  nombre_financiador,
-         				  nombre_regional
+         				  nombre_regional,
+                          movimiento_tipo_pres
 						from param.vcentro_costo cec
 						 where  ';
 			
@@ -225,7 +227,8 @@ BEGIN
          				  cec.nombre_proyecto,
          				  cec.nombre_actividad,
          				  cec.nombre_financiador,
-         				  cec.nombre_regional
+         				  cec.nombre_regional,
+                          cec.movimiento_tipo_pres
 						from pre.vpresupuesto_cc cec
 						 WHERE '||v_filadd;
 			
@@ -333,7 +336,8 @@ BEGIN
          				  cec.nombre_proyecto,
          				  cec.nombre_actividad,
          				  cec.nombre_financiador,
-         				  cec.nombre_regional
+         				  cec.nombre_regional,
+                          cec.movimiento_tipo_pres
 						from pre.vpresupuesto_cc cec
                         '||v_inner||'
 						 WHERE ';
@@ -475,7 +479,8 @@ BEGIN
          				  cec.nombre_proyecto,
          				  cec.nombre_actividad,
          				  cec.nombre_financiador,
-         				  cec.nombre_regional
+         				  cec.nombre_regional,
+                          cec.movimiento_tipo_pres
 						from pre.vpresupuesto_cc cec
                         inner join param.tdepto_uo_ep due on due.estado_reg = ''activo'' and
                             
