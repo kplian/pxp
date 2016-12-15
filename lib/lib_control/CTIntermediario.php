@@ -362,7 +362,10 @@ class CTIntermediario{
 					else{
 						//destruimos las sesion para que se cre un nuevo
 						//identificador en la proxima conexion
-						session_destroy();
+						//RAC ...   15/12/2016
+						//si destruimos la sersion tambien destruimos las llaves	
+						//y el relogueo no funciona					
+						//session_destroy();
 						throw new Exception('La sesion ha sido duplicada',2);
 							
 							

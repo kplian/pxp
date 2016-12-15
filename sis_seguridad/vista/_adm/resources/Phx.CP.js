@@ -1141,12 +1141,14 @@ Phx.CP=function(){
 				
 				if(reg.ROOT.detalle.mensaje == 'sesion no iniciada'){
 					
-					//consulta para preparar lalve seugn el sid perdido
-					if(Phx.CP.contador == 0){
+					//consulta para preparar llave seugn el sid perdido
+					//TODO RAC 15/12/2016 ... por que este if parace no tener sentido 
+					//queda comentado 
+					//if(Phx.CP.contador == 0){
 						Phx.CP.prepararLlavesSession();
 						Phx.CP.contador = Phx.CP.contador + 1;
 						return;	
-					}
+					//}
 					
 				}
 				
