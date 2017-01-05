@@ -1618,4 +1618,62 @@ IS 'campo que guarda el nombre de la plantilla del archivo excel';
 COMMENT ON COLUMN param.tplantilla_archivo_excel.codigo
 IS 'campo que guarda el codigo asignado a la plantilla del archivo excel';
 
+CREATE TABLE param.tcolumnas_archivo_excel (
+  id_columna_archivo_excel SERIAL,
+  id_plantilla_archivo_excel INTEGER NOT NULL,
+  nombre_columna VARCHAR(20),
+  numero_columna INTEGER,
+  tipo_valor VARCHAR(10),
+  sw_legible VARCHAR(2),
+  PRIMARY KEY(id_columna_archivo_excel)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tcolumnas_archivo_excel.nombre_columna
+IS 'campo que indica el nombre de la columna';
+
+COMMENT ON COLUMN param.tcolumnas_archivo_excel.numero_columna
+IS 'campo que indica el numero de columna';
+
+COMMENT ON COLUMN param.tcolumnas_archivo_excel.tipo_valor
+IS 'campo que indica de que tipo debera ser el valor de la columna';
+
+COMMENT ON COLUMN param.tcolumnas_archivo_excel.sw_legible
+IS 'campo que indica si la columna sera leida o no sera leida';
+
 /***********************************F-SCP-GSS-PARAM-0-15/12/2016*****************************************/
+
+/***********************************I-SCP-GSS-PARAM-0-20/12/2016*****************************************/
+
+ALTER TABLE param.tplantilla_archivo_excel
+  ADD COLUMN hojaExcel VARCHAR(40);
+
+COMMENT ON COLUMN param.tplantilla_archivo_excel.hojaExcel
+IS 'nombre de la hoja a ser leida';
+
+ALTER TABLE param.tplantilla_archivo_excel
+  ADD COLUMN filaInicio INTEGER;
+
+COMMENT ON COLUMN param.tplantilla_archivo_excel.filaInicio
+IS 'fila de inicio desde la cual se leera el archivo';
+
+ALTER TABLE param.tcolumnas_archivo_excel
+  ADD COLUMN formato_fecha VARCHAR(10);
+
+COMMENT ON COLUMN param.tcolumnas_archivo_excel.formato_fecha
+IS 'campo que indica el formato de la fecha en el archivo';
+
+ALTER TABLE param.tplantilla_archivo_excel
+  ADD COLUMN fila_fin INTEGER;
+
+COMMENT ON COLUMN param.tplantilla_archivo_excel.fila_fin
+IS 'fila final hasta donde se leeran las filas';
+
+ALTER TABLE param.tplantilla_archivo_excel
+  ADD COLUMN filas_excluidas TEXT;
+
+COMMENT ON COLUMN param.tplantilla_archivo_excel.filas_excluidas
+IS 'filas que seran excluidas de la lectura';
+
+/***********************************F-SCP-GSS-PARAM-0-20/12/2016*****************************************/

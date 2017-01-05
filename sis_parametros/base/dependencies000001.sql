@@ -1790,4 +1790,13 @@ ALTER TABLE param.tsubsistema_var
 
 /***********************************F-DEP-RAC-PARAM-0-22/11/2016****************************************/
 
+/***********************************F-DEP-GSS-PARAM-0-15/12/2016****************************************/
 
+ALTER TABLE param.tcolumnas_archivo_excel
+  ADD CONSTRAINT fk_tcolumnas_archivo_excel__id_plantilla_archivo_excel FOREIGN KEY (id_plantilla_archivo_excel)
+    REFERENCES param.tplantilla_archivo_excel(id_plantilla_archivo_excel)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/***********************************F-DEP-GSS-PARAM-0-15/12/2016****************************************/
