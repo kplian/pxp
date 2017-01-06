@@ -1000,3 +1000,34 @@ VALUES
 
 
 
+/***********************************I-DAT-GSS-PARAM-0-05/01/2017*****************************************/
+
+select pxp.f_insert_tgui ('Archivos Excel', 'Archivos Excel', 'ARXLS', 'si', 10, 'sis_parametros/vista/plantilla_archivo_excel/PlantillaArchivoExcel.php', 3, '', 'PlantillaArchivoExcel', 'PARAM');
+select pxp.f_insert_tgui ('Columnas Excel', 'columnas excel del archivo', 'COLXLS', 'si', 1, 'sis_parametros/vista/columnas_archivo_excel/ColumnasArchivoExcel.php', 4, '', 'ColumnasArchivoExcel', 'PARAM');
+
+select pxp.f_insert_testructura_gui ('ARXLS', 'OTROS');
+select pxp.f_insert_testructura_gui ('COLXLS', 'ARXLS');
+
+select pxp.f_insert_tprocedimiento ('PM_ARXLS_INS', 'Insercion de registros', 'si', '', '', 'param.ft_plantilla_archivo_excel_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARXLS_MOD', 'Modificacion de registros', 'si', '', '', 'param.ft_plantilla_archivo_excel_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARXLS_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_plantilla_archivo_excel_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARXLS_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_plantilla_archivo_excel_sel');
+select pxp.f_insert_tprocedimiento ('PM_ARXLS_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_plantilla_archivo_excel_sel');
+
+select pxp.f_insert_tprocedimiento ('PM_COLXLS_INS', 'Insercion de registros', 'si', '', '', 'param.ft_columnas_archivo_excel_ime');
+select pxp.f_insert_tprocedimiento ('PM_COLXLS_MOD', 'Modificacion de registros', 'si', '', '', 'param.ft_columnas_archivo_excel_ime');
+select pxp.f_insert_tprocedimiento ('PM_COLXLS_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_columnas_archivo_excel_ime');
+select pxp.f_insert_tprocedimiento ('PM_COLXLS_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_columnas_archivo_excel_sel');
+select pxp.f_insert_tprocedimiento ('PM_COLXLS_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_columnas_archivo_excel_sel');
+
+select pxp.f_insert_tprocedimiento_gui ('PM_ARXLS_INS', 'ARXLS', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_ARXLS_MOD', 'ARXLS', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_ARXLS_ELI', 'ARXLS', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_ARXLS_SEL', 'ARXLS', 'no');
+
+select pxp.f_insert_tprocedimiento_gui ('PM_COLXLS_INS', 'COLXLS', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_COLXLS_MOD', 'COLXLS', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_COLXLS_ELI', 'COLXLS', 'no');
+select pxp.f_insert_tprocedimiento_gui ('PM_COLXLS_SEL', 'COLXLS', 'no');
+
+/***********************************F-DAT-GSS-PARAM-0-05/01/2017*****************************************/
