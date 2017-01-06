@@ -17,20 +17,20 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Archivo.superclass.constructor.call(this,config);
 
-		this.addButton('Subir Archivo', {
+		/*this.addButton('Subir Archivo', {
 			argument: {imprimir: 'Subir Archivo'},
-			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivo', /*iconCls:'' ,*/
+			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivo', /!*iconCls:'' ,*!/
 			disabled: false,
 			handler: this.subirArchivo
 		});
 
 		this.addButton('Subir Archivos', {
 			argument: {imprimir: 'Subir Archivos'},
-			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivos', /*iconCls:'' ,*/
+			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivos', /!*iconCls:'' ,*!/
 			disabled: false,
 			handler: this.subirArchivos
 		});
-
+*/
 
 		this.grid.addListener('cellclick', this.oncellclick,this);
 
@@ -84,6 +84,33 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:true
+		},
+
+		{
+			config:{
+				name: 'ver',
+				fieldLabel: 'Doc. Digital',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 65,
+				scope: this,
+				renderer:function (value, p, record, rowIndex, colIndex){
+
+					if(record.data.id_archivo != null){
+						return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Abrir Documento' src = '../../../lib/imagenes/icono_awesome/awe_print_good.png' align='center' width='30' height='30'></div>";
+
+					}else{
+						return  String.format('{0}',"<div style='text-align:center'><img title='Documento No Escaneado' src = '../../../lib/imagenes/icono_awesome/awe_wrong.png' align='center' width='30' height='30'/></div>");
+
+					}
+
+				},
+			},
+			type:'Checkbox',
+			filters:{pfiltro:'arch.ver',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:false
 		},
 
 		{
@@ -357,8 +384,10 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_tipo_archivo',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true,
+	bdel:false,
+	bsave:false,
+	bnew:false,
+	bedit:false,
 
 	subirArchivo: function (record) {
 
@@ -400,24 +429,21 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 
 		console.log('record seleccionado ',record);
 
-		if (fieldName == 'nro_tramite_ori' && record.data.id_proceso_wf_ori) {
-			//open documentos de origen
-			this.loadCheckDocumentosSolWf(record);
-		} else if (fieldName == 'upload') {
+		if (fieldName == 'upload') {
 			//if (record.data.solo_lectura == 'no' &&  !record.data.id_proceso_wf_ori) {
 				this.subirArchivo(record);
 			//}
-		} else if(fieldName == 'modificar') {
-			if(record.data['modificar'] == 'si'){
-
-				this.cambiarMomentoClick(record);
-
+		}else if (fieldName == 'ver') {
+			if (record.data['extension'].length != 0) {
+				window.open( record.data.folder+"/"+record.data.nombre_archivo+"."+record.data.extension);
+			} else {
+				alert('No se ha subido ningun archivo para este documento');
 			}
 		}
 
 
 
-	},
+		},
 
 
 	east:{

@@ -190,6 +190,16 @@ class ACTLog extends ACTbase{
 		
 		
 	}
+
+	function listarRest(){
+		$this->objParam->defecto('ordenacion','id_log');
+		$this->objParam->defecto('dir_ordenacion','desc');
+
+		$this->objFunc=$this->create('MODLog');
+		$this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]);
+		$this->res=$this->objFunc->listarRest($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 }
 
 ?>

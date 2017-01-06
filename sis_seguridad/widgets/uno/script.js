@@ -17,7 +17,10 @@ $(document).ready(function() {
       });*/
       dataset=[
       	{label:'2016', value:'300'},
-      	{label:'2015', value:'500'},
+      	{label:'2015', value:'400'},
+        {label:'2014', value:'200'},
+        {label:'2013', value:'100'},
+
       ];
       drawGraph(dataset);
     }

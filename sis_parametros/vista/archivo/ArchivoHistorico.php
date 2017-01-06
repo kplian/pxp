@@ -39,6 +39,33 @@ header("content-type: text/javascript; charset=UTF-8");
                     form:true
                 },
 
+                {
+                    config:{
+                        name: 'ver',
+                        fieldLabel: 'Doc. Digital',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 65,
+                        scope: this,
+                        renderer:function (value, p, record, rowIndex, colIndex){
+
+                            if(record.data.id_archivo != null){
+                                return "<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Abrir Documento' src = '../../../lib/imagenes/icono_awesome/awe_print_good.png' align='center' width='30' height='30'></div>";
+
+                            }else{
+                                return  String.format('{0}',"<div style='text-align:center'><img title='Documento No Escaneado' src = '../../../lib/imagenes/icono_awesome/awe_wrong.png' align='center' width='30' height='30'/></div>");
+
+                            }
+
+                        },
+                    },
+                    type:'Checkbox',
+                    filters:{pfiltro:'arch.ver',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:false
+                },
+
 
                 {
                     config:{
@@ -71,32 +98,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     form:true
                 },
 
-                {
-                    config:{
-                        fieldLabel: "Subir",
-                        gwidth: 65,
-                        inputType:'file',
-                        name: 'upload',
-                        buttonText: '',
-                        maxLength:150,
-                        anchor:'100%',
-                        renderer:function (value, p, record){
 
-                            if(record.data.extension!='') {
-                                return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Reemplazar ArchivoHistorico' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
-                            } else {
-                                return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Subir ArchivoHistorico' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
-                            }
-
-                        },
-
-                    },
-                    type:'Field',
-                    sortable:false,
-                    id_grupo:0,
-                    grid:true,
-                    form:false
-                },
 
                 {
                     config:{
@@ -159,6 +161,9 @@ header("content-type: text/javascript; charset=UTF-8");
                     grid:true,
                     form:true
                 },
+
+
+
                 {
                     config: {
                         name: 'id_tipo_archivo',
@@ -342,9 +347,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 field: 'id_tipo_archivo',
                 direction: 'ASC'
             },
-            bdel:true,
-            bsave:true,
-
+            bdel:false,
+            bsave:false,
+            bnew:false,
+            bedit:false,
 
             preparaMenu: function (tb) {
                 // llamada funcion clace padre
@@ -357,9 +363,38 @@ header("content-type: text/javascript; charset=UTF-8");
             onReloadPage: function (m) {
                 this.maestro = m;
                 console.log(this.maestro);
-                this.store.baseParams = {id_archivo: this.maestro.id_archivo};
-                this.load({params: {start: 0, limit: 50}})
+
+                if(this.maestro.id_archivo != null){
+                    this.store.baseParams = {id_archivo: this.maestro.id_archivo};
+                    this.load({params: {start: 0, limit: 50}})
+                }
+
             },
+
+
+        oncellclick : function(grid, rowIndex, columnIndex, e) {
+
+            var record = this.store.getAt(rowIndex),
+                fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
+
+            console.log('record seleccionado ',record);
+
+            if (fieldName == 'upload') {
+                //if (record.data.solo_lectura == 'no' &&  !record.data.id_proceso_wf_ori) {
+                this.subirArchivo(record);
+                //}
+            }else if (fieldName == 'ver') {
+                if (record.data['extension'].length != 0) {
+                    window.open( record.data.folder+"/"+record.data.nombre_archivo+"."+record.data.extension);
+                } else {
+                    alert('No se ha subido ningun archivo para este documento');
+                }
+            }
+
+
+
+        },
+
 
 
         }

@@ -17,14 +17,14 @@ Ext.define('Phx.vista.widget.Prueba',{
 		   Ext.apply(this, config)
 		
 		   this.callParent(arguments);
-		
+		 
 		
 		    
 		    this.panel = Ext.getCmp(this.idContenedor);
 		    
 		    this.iniciarGrid();
 		    
-		    this.panel.add(new SampleGrid([0, 2, 3]));
+		    this.panel.add(new SampleGrid([0, 1, 2, 3,4]));
 		    
 		  
 		
