@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.f_sinc_funciones_subsistema (
   par_id_subsistema integer
 )
@@ -79,7 +81,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                        
                        v_nombre_function = v_esquema||'.'||v_registros.v_funcion; 
                        
-                       raise notice ' listado funcion -> %',v_nombre_function;
+                       raise notice ' OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO      listado funcion -> %',v_nombre_function;
                        
                        if(v_nombre_function not in ('segu.f_sinc_funciones_subsistema', 'segu.f_verif_eliminado'))THEN
                          --
@@ -135,7 +137,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                         
                                            
                                      --busca las transacciones en el cuerpo de la funcion       
-                                    if(strpos(split_part(replace(v_contenido,' ',''),'_transaccion=''',v_cant),''')')<1) then
+                                    if(strpos(split_part(replace(v_contenido,' ',''),'p_transaccion=''',v_cant),''')')<1) then
                                                 v_bandera:=false;
                                            else
                                            

@@ -1601,7 +1601,7 @@ ALTER TABLE param.tarchivo ADD id_archivo_fk INTEGER NULL;
 
 /***********************************F-SCP-FFP-PARAM-0-05/12/2016*****************************************/
 
-/***********************************F-SCP-GSS-PARAM-0-15/12/2016*****************************************/
+/***********************************I-SCP-GSS-PARAM-0-15/12/2016*****************************************/
 
 CREATE TABLE param.tplantilla_archivo_excel (
   id_plantilla_archivo_excel SERIAL,

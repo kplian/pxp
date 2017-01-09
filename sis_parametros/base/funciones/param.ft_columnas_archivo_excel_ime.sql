@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_columnas_archivo_excel_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -37,13 +39,13 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS_INS'
+ 	#TRANSACCION:  'PM_COLXLS2_INS'
  	#DESCRIPCION:	Insercion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	if(p_transaccion='PM_COLXLS_INS')then
+	if(p_transaccion='PM_COLXLS2_INS')then
 
         begin
 
@@ -104,13 +106,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS_MOD'
+ 	#TRANSACCION:  'PM_COLXLS2_MOD'
  	#DESCRIPCION:	Modificacion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	elsif(p_transaccion='PM_COLXLS_MOD')then
+	elsif(p_transaccion='PM_COLXLS2_MOD')then
 
 		begin
 			--Sentencia de la modificacion
@@ -139,13 +141,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS_ELI'
+ 	#TRANSACCION:  'PM_COLXLS2_ELI'
  	#DESCRIPCION:	Eliminacion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	elsif(p_transaccion='PM_COLXLS_ELI')then
+	elsif(p_transaccion='PM_COLXLS2_ELI')then
 
 		begin
 			--Sentencia de la eliminacion

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_columnas_archivo_excel_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -34,13 +36,13 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS_SEL'
+ 	#TRANSACCION:  'PM_COLXLS2_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	if(p_transaccion='PM_COLXLS_SEL')then
+	if(p_transaccion='PM_COLXLS2_SEL')then
 
     	begin
     		--Sentencia de la consulta
@@ -78,13 +80,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS_CONT'
+ 	#TRANSACCION:  'PM_COLXLS2_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	elsif(p_transaccion='PM_COLXLS_CONT')then
+	elsif(p_transaccion='PM_COLXLS2_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros

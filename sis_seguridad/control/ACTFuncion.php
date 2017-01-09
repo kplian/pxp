@@ -318,6 +318,7 @@ class ACTFuncion extends ACTbase{
 		$retorna = $gui;
 		$this->objParam->setTipoTran('IME');
 		$this->objParam->iniciaParametro();
+		
 		$this->objParam->addParametro('ruta_archivo', $gui['ruta_archivo']);
 		$this->objParam->addParametro('nombre', $gui['nombre']);
 		$this->objParam->addParametro('descripcion', $gui['descripcion']);

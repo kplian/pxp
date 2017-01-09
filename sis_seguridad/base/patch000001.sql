@@ -1100,3 +1100,11 @@ USING btree (variable COLLATE pg_catalog."default");
 CREATE INDEX tsesion_idx2 ON segu.tsesion
 USING btree (id_usuario, estado_reg);
 /*****************************F-SCP-JRR-SEGU-0-13/12/2016*************/
+
+/*****************************I-SCP-RAC-SEGU-0-06/01/2017*************/
+
+ALTER TABLE segu.tprocedimiento
+  ALTER COLUMN codigo TYPE VARCHAR(50) COLLATE pg_catalog."default";
+
+/*****************************F-SCP-RAC-SEGU-0-06/01/2017*************/
+
