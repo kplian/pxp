@@ -178,6 +178,10 @@
     //ENDESIS, NO, (SE PUEDEN ANHADIR SEGUN NECSIDAD)
     //tiene que estar sincronizado con la variable global en base de datos
     $_SESSION['_SIS_INTEGRACION']='NO'; 
+
+     // Si se incluira la libreria de google maps o no al cargar la pagina de inicio ,posibles valores:  si|no
+     $_SESSION["_INCLUDE_GMAPS"] = 'no';
+
 	//REST clases que no necesitan la vaidacion de permisos de sesion
 	$_SESSION['_REST_NO_CHECK'] = array('/parametros/Alarma/confirmarAcuseRecibo',
 	                                    '/parametros/Alarma/otro');
