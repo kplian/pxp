@@ -23,9 +23,17 @@ class MODUsuario extends MODbase {
 		$this->tipo_procedimiento='IME';
 		$this->count=false;
         $this->oEncryp=new CTEncriptacionPrivada($this->arreglo['contrasena'],$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
-		
+
+        if ($this->arreglo['_tipo'] == 'restAuten') {
+            
+            $contrasena = $this->arreglo['contrasena'];
+
+        } else {
+
+            $contrasena = $_SESSION["encriptar_data"]=='si'?md5( $this->arreglo['contrasena']):md5($this->oEncryp->getDecodificado());
+        }
 		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
-							 "contrasena"=>$_SESSION["encriptar_data"]=='si'?md5( $this->arreglo['contrasena']):md5($this->oEncryp->getDecodificado()),
+							 "contrasena"=>$contrasena,
 							 "dir_ip"=>getenv("REMOTE_ADDR"));
 				
 		//Define los parametros para ejecucion de la funcion

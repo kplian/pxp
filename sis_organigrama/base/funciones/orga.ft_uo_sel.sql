@@ -6,8 +6,8 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_sel (
   par_tabla varchar,
   par_transaccion varchar
 )
-RETURNS varchar AS
-$body$
+  RETURNS varchar AS
+  $body$
 /**************************************************************************
  FUNCION: 		orga.ft_uo_sel
  DESCRIPCIÓN:  listado de uo
@@ -86,7 +86,7 @@ BEGIN
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE '||v_filadd;
+                            WHERE UO.estado_reg=''activo'' and '||v_filadd;
                
                
                v_consulta:=v_consulta||v_parametros.filtro;
@@ -125,7 +125,7 @@ BEGIN
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE  '||v_filadd;
+                            WHERE UO.estado_reg=''activo'' and '||v_filadd;
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;
