@@ -138,8 +138,7 @@ BEGIN
          				  nombre_proyecto,
          				  nombre_actividad,
          				  nombre_financiador,
-         				  nombre_regional,
-                          movimiento_tipo_pres
+         				  nombre_regional
 						from param.vcentro_costo cec
 						 where  ';
 			
