@@ -39,13 +39,13 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS2_INS'
+ 	#TRANSACCION:  'PM_COLXLS_INS'
  	#DESCRIPCION:	Insercion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	if(p_transaccion='PM_COLXLS2_INS')then
+	if(p_transaccion='PM_COLXLS_INS')then
 
         begin
 
@@ -106,13 +106,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS2_MOD'
+ 	#TRANSACCION:  'PM_COLXLS_MOD'
  	#DESCRIPCION:	Modificacion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	elsif(p_transaccion='PM_COLXLS2_MOD')then
+	elsif(p_transaccion='PM_COLXLS_MOD')then
 
 		begin
 			--Sentencia de la modificacion
@@ -141,13 +141,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_COLXLS2_ELI'
+ 	#TRANSACCION:  'PM_COLXLS_ELI'
  	#DESCRIPCION:	Eliminacion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:43
 	***********************************/
 
-	elsif(p_transaccion='PM_COLXLS2_ELI')then
+	elsif(p_transaccion='PM_COLXLS_ELI')then
 
 		begin
 			--Sentencia de la eliminacion

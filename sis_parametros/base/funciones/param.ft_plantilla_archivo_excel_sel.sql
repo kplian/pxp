@@ -36,13 +36,13 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************
- 	#TRANSACCION:  'PM_ARXLS2_SEL'
+ 	#TRANSACCION:  'PM_ARXLS_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:39
 	***********************************/
 
-	if(p_transaccion='PM_ARXLS2_SEL')then
+	if(p_transaccion='PM_ARXLS_SEL')then
 
     	begin
     		--Sentencia de la consulta
@@ -80,13 +80,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_ARXLS2_CONT'
+ 	#TRANSACCION:  'PM_ARXLS_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:39
 	***********************************/
 
-	elsif(p_transaccion='PM_ARXLS2_CONT')then
+	elsif(p_transaccion='PM_ARXLS_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros

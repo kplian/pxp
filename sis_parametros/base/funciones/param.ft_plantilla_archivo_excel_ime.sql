@@ -39,13 +39,13 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************
- 	#TRANSACCION:  'PM_ARXLS2_INS'
+ 	#TRANSACCION:  'PM_ARXLS_INS'
  	#DESCRIPCION:	Insercion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:39
 	***********************************/
 
-	if(p_transaccion='PM_ARXLS2_INS')then
+	if(p_transaccion='PM_ARXLS_INS')then
 
         begin
         	--Sentencia de la insercion
@@ -96,13 +96,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_ARXLS2_MOD'
+ 	#TRANSACCION:  'PM_ARXLS_MOD'
  	#DESCRIPCION:	Modificacion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:39
 	***********************************/
 
-	elsif(p_transaccion='PM_ARXLS2_MOD')then
+	elsif(p_transaccion='PM_ARXLS_MOD')then
 
 		begin
 			--Sentencia de la modificacion
@@ -131,13 +131,13 @@ BEGIN
 		end;
 
 	/*********************************
- 	#TRANSACCION:  'PM_ARXLS2_ELI'
+ 	#TRANSACCION:  'PM_ARXLS_ELI'
  	#DESCRIPCION:	Eliminacion de registros
  	#AUTOR:		gsarmiento
  	#FECHA:		15-12-2016 20:46:39
 	***********************************/
 
-	elsif(p_transaccion='PM_ARXLS2_ELI')then
+	elsif(p_transaccion='PM_ARXLS_ELI')then
 
 		begin
 			--Sentencia de la eliminacion
