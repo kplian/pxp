@@ -115,7 +115,7 @@ BEGIN
       v_id_tipo_estado, ps_codigo_estado
     from wf.ttipo_estado te
     where te.id_tipo_proceso = v_id_tipo_proceso 
-    and te.inicio ='si' ;   
+    and te.inicio ='si' and te.estado_reg='activo';
  
  -- inserta el primer estado del proceso 
        INSERT INTO 

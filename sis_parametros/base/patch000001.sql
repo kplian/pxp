@@ -1647,15 +1647,15 @@ IS 'campo que indica si la columna sera leida o no sera leida';
 /***********************************I-SCP-GSS-PARAM-0-20/12/2016*****************************************/
 
 ALTER TABLE param.tplantilla_archivo_excel
-  ADD COLUMN hojaExcel VARCHAR(40);
+  ADD COLUMN hoja_excel VARCHAR(40);
 
-COMMENT ON COLUMN param.tplantilla_archivo_excel.hojaExcel
+COMMENT ON COLUMN param.tplantilla_archivo_excel.hoja_excel
 IS 'nombre de la hoja a ser leida';
 
 ALTER TABLE param.tplantilla_archivo_excel
-  ADD COLUMN filaInicio INTEGER;
+  ADD COLUMN fila_inicio INTEGER;
 
-COMMENT ON COLUMN param.tplantilla_archivo_excel.filaInicio
+COMMENT ON COLUMN param.tplantilla_archivo_excel.fila_inicio
 IS 'fila de inicio desde la cual se leera el archivo';
 
 ALTER TABLE param.tcolumnas_archivo_excel
@@ -1675,5 +1675,17 @@ ALTER TABLE param.tplantilla_archivo_excel
 
 COMMENT ON COLUMN param.tplantilla_archivo_excel.filas_excluidas
 IS 'filas que seran excluidas de la lectura';
+
+ALTER TABLE param.tplantilla_archivo_excel
+  ADD COLUMN tipo_archivo VARCHAR(10);
+
+ALTER TABLE param.tplantilla_archivo_excel
+  ADD COLUMN delimitador VARCHAR(5);
+
+ALTER TABLE param.tcolumnas_archivo_excel
+  ADD COLUMN anio_fecha INTEGER;
+
+ALTER TABLE param.tcolumnas_archivo_excel
+  ADD COLUMN nombre_columna_tabla VARCHAR(20);
 
 /***********************************F-SCP-GSS-PARAM-0-20/12/2016*****************************************/
