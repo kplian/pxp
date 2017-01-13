@@ -217,6 +217,7 @@ class ACTFuncion extends ACTbase{
 			    	}
 			    	$cadenaMD = $line;
 			    } else if (strpos($line, '}')!== FALSE && $cadenaMD != '') {
+                    
 			    	$cadenaMD .= $line;
 					$newGui = $this->getRelacion($cadenaMD);
 					if ($booltab == 1) {
@@ -224,6 +225,9 @@ class ACTFuncion extends ACTbase{
 					} else {
 						$cadenaMD = '';
 					}
+                    if (strpos($line, ']')!== FALSE){
+                        $cadenaMD = '';
+                    }
 					
 					if (!$this->existe($gui['ruta_archivo'], $newGui['ruta_archivo'])) {
 						//guardar datos de newgui y actualizar el id de newgui
