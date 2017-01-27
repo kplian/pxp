@@ -1,74 +1,64 @@
 CREATE OR REPLACE FUNCTION orga.f_tr_cargo (
 )
-RETURNS trigger AS
-$body$
-DECLARE
-  
-BEGIN
-  if (OLD.id_escala_salarial != NEW.id_escala_salarial) then
-  	raise exception 'No es posible modificar la escala salarial de un cargo';
-  end if;
-  if (NEW.nombre != OLD.nombre) then
-    	INSERT INTO 
-            orga.tcargo
-          (
-            id_usuario_reg,
-            id_usuario_mod,
-            fecha_reg,
-            fecha_mod,
-            estado_reg,
-            id_usuario_ai,
-            usuario_ai,            
-            id_uo,
-            id_tipo_contrato,
-            id_escala_salarial,
-            codigo,
-            nombre,
-            fecha_ini,
-            fecha_fin,
-            id_lugar,
-            id_temporal_cargo,
-            id_oficina,
-            id_cargo_padre
-          ) 
+  RETURNS trigger AS
+  $body$
+  DECLARE
+    v_id_gestion		integer;
+    v_id_centro_costo	integer;
+    v_fecha_ini			date;
+    v_gestion			numeric;
+
+
+  BEGIN
+    IF (TG_OP='INSERT')then
+      BEGIN
+        if (pxp.f_get_variable_global('') = 'si') then
+          if (NEW.fecha_ini is null) then
+            v_fecha_ini = now()::date;
+          else
+            v_fecha_ini = NEW.fecha_ini;
+          end if;
+
+
+          select g.id_gestion ,g.gestion,g.fecha_ini into v_id_gestion,v_gestion,v_fecha_ini
+          from param.tgestion g
+          where g.fecha_ini <= v_fecha_ini and g.fecha_fin >= v_fecha_ini;
+
+          select pre.id_presupuesto into v_id_centro_costo
+          from pre.vpresupuesto_cc pre
+          where pre.id_uo = orga.f_get_uo_presupuesta(NEW.id_uo,NULL,v_fecha_ini) and
+                pre.movimiento_tipo_pres = 'gasto' and pre.id_gestion = v_id_gestion
+          order by pre.id_presupuesto ASC limit 1;
+
+          if (v_id_centro_costo is null) then
+            raise exception 'No se encontro un presupuesto para el cargo en la gestion %',v_gestion;
+          end if;
+
+
+          INSERT INTO
+            orga.tcargo_presupuesto
+            (
+              id_usuario_reg,
+              id_centro_costo,
+              id_cargo,
+              porcentaje,
+              fecha_ini,
+              id_gestion
+            )
           VALUES (
-            OLD.id_usuario_reg,
-            OLD.id_usuario_mod,
-            OLD.fecha_reg,
-            OLD.fecha_mod,
-            'inactivo',
-            OLD.id_usuario_ai,
-            OLD.usuario_ai,            
-            OLD.id_uo,
-            OLD.id_tipo_contrato,
-            OLD.id_escala_salarial,
-            OLD.codigo,
-            OLD.nombre,
-            OLD.fecha_ini,
-            now() - interval '1 day',
-          	OLD.id_lugar,
-            OLD.id_temporal_cargo,
-            OLD.id_oficina,
-            OLD.id_cargo
+            NEW.id_usuario_reg,
+            v_id_centro_costo,
+            NEW.id_cargo,
+            100,
+            v_fecha_ini,
+            v_id_gestion
           );
-        
-        update orga.tcargo set fecha_ini = now(),
-        id_temporal_cargo = NEW.id_temporal_cargo,
-        nombre = NEW.nombre,
-        fecha_mod = now(),
-        id_usuario_mod = NEW.id_usuario_mod,
-        id_lugar = NEW.id_lugar,
-        id_oficina = NEW.id_oficina,
-        codigo = NEW.codigo,
-        id_tipo_contrato = NEW.id_tipo_contrato
-        where id_cargo = OLD.id_cargo;
-                        
-        RETURN NULL;
-    else 
-    	return NEW;    
-    end if;
-END;
-$body$
+        end if;
+
+      END;
+    END IF;
+  END;
+  $body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

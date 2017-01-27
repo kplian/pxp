@@ -260,6 +260,7 @@ elif opcion == '4':
 	comparar_db(sistema)
 	sys.exit("Comparacion Finalizada")
 else:
+	usuario = obtener_usuario()
 	restaurar_db(db)
 	sys.exit("Backup generado con exito")	
 

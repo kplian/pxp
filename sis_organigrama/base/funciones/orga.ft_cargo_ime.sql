@@ -1,11 +1,11 @@
--- Function: orga.ft_cargo_ime(integer, integer, character varying, character varying)
-
--- DROP FUNCTION orga.ft_cargo_ime(integer, integer, character varying, character varying);
-
-CREATE OR REPLACE FUNCTION orga.ft_cargo_ime(p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-  RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION orga.ft_cargo_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+  RETURNS varchar AS
+  $body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_cargo_ime
@@ -117,13 +117,11 @@ BEGIN
 			--Sentencia de la modificacion
 			update orga.tcargo set
 			id_lugar = v_id_lugar,
-			codigo = v_parametros.codigo,
-			nombre = v_parametros.nombre,
+			codigo = v_parametros.codigo,			
 			fecha_ini = v_parametros.fecha_ini,
 			fecha_fin = v_parametros.fecha_fin,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-			id_escala_salarial = v_parametros.id_escala_salarial,
+			id_usuario_mod = p_id_usuario,			
 			id_oficina = v_parametros.id_oficina
 			where id_cargo=v_parametros.id_cargo;
                
@@ -182,8 +180,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-ALTER FUNCTION orga.ft_cargo_ime(integer, integer, character varying, character varying)
-  OWNER TO postgres;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
