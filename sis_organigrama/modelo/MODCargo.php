@@ -58,6 +58,33 @@ class MODCargo extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+
+    function listarCargoAcefalo(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='orga.ft_cargo_sel';
+        $this->transaccion='OR_CARGOACE_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+
+        $this->setParametro('fecha','fecha','date');
+
+
+        //Definicion de la lista del resultado del query
+        $this->captura('cargo','varchar');
+        $this->captura('lugar','varchar');
+        $this->captura('gerencia','varchar');
+        $this->captura('cantidad','int4');
+
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 	function insertarCargo(){
 		//Definicion de variables para ejecucion del procedimiento
