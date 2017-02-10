@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_import_ttipo_proceso_origen (
   p_accion varchar,
   p_codigo_tipo_proceso varchar,
@@ -20,6 +22,8 @@ BEGIN
     select id_tipo_proceso into v_id_tipo_proceso_origen
     from wf.ttipo_proceso tp    
     where tp.codigo = p_codigo_tipo_proceso_origen;
+    
+    
     --raise exception '%',v_id_tipo_proceso_origen;
     select id_tipo_proceso,id_proceso_macro into v_id_tipo_proceso,v_id_proceso_macro
     from wf.ttipo_proceso tp    
@@ -42,6 +46,8 @@ BEGIN
     else
         if (v_identificador is null)then
         
+          If v_id_tipo_proceso_origen is not null AND  v_id_tipo_estado is not null  THEN
+        
            INSERT INTO 
               wf.ttipo_proceso_origen
             (
@@ -62,15 +68,25 @@ BEGIN
               v_id_proceso_macro,
               1
             );
-        else            
-           UPDATE wf.ttipo_proceso_origen  
-            SET              
-              id_tipo_estado = v_id_tipo_estado,
-              tipo_disparo = p_tipo_disparo,
-              funcion_validacion_wf = p_funcion_validacion_wf,
-              id_proceso_macro = v_id_proceso_macro,
-              modificado = 1             
-            WHERE id_tipo_proceso_origin = v_id_tipo_proceso_origen;
+           ELSE
+              raise notice 'ALERTA,.... no existe el v_id_tipo_proceso_origen  %, o el id_tipo_estado %',p_codigo_tipo_proceso_origen, p_codigo_tipo_proceso ;
+           END IF;  
+            
+        else    
+        
+             If v_id_tipo_proceso_origen is not null AND  v_id_tipo_estado is not null  THEN        
+                 UPDATE wf.ttipo_proceso_origen  
+                  SET              
+                    id_tipo_estado = v_id_tipo_estado,
+                    tipo_disparo = p_tipo_disparo,
+                    funcion_validacion_wf = p_funcion_validacion_wf,
+                    id_proceso_macro = v_id_proceso_macro,
+                    modificado = 1             
+                  WHERE id_tipo_proceso_origin = v_id_tipo_proceso_origen;
+            
+             ELSE
+              	raise notice 'ALERTA,.... no existe el v_id_tipo_proceso_origen  %, o el id_tipo_estado %',p_codigo_tipo_proceso_origen, p_codigo_tipo_proceso ;
+             END IF;
         end if;
     
     end if; 
