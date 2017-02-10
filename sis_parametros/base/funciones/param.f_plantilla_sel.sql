@@ -72,7 +72,10 @@ BEGIN
                             plt.tipo_informe,
                             plt.sw_qr,
                             plt.sw_nit,
-                            COALESCE(plt.plantilla_qr,'''')
+                            COALESCE(plt.plantilla_qr,''''),
+                            plt.sw_estacion,
+                            plt.sw_punto_venta,
+                            plt.sw_cod_no_iata
 						from param.tplantilla plt
 						inner join segu.tusuario usu1 on usu1.id_usuario = plt.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = plt.id_usuario_mod

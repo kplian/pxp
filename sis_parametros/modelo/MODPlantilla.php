@@ -47,7 +47,10 @@ class MODPlantilla extends MODbase{
 		$this->captura('sw_qr','varchar');
 		$this->captura('sw_nit','varchar');
 		$this->captura('plantilla_qr','varchar');
-		
+		$this->captura('sw_estacion','varchar');
+		$this->captura('sw_punto_venta','varchar');
+		$this->captura('sw_codigo_no_iata','varchar');
+
 		
 		
 		//Ejecuta la instruccion
@@ -84,8 +87,9 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_qr','sw_qr','varchar');
 		$this->setParametro('sw_nit','sw_nit','varchar');
 		$this->setParametro('plantilla_qr','plantilla_qr','varchar');
-		
-		
+		$this->setParametro('sw_estacion','sw_estacion','varchar');
+		$this->setParametro('sw_punto_venta','sw_punto_venta','varchar');
+		$this->setParametro('sw_codigo_no_iata','sw_codigo_no_iata','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -122,6 +126,9 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_qr','sw_qr','varchar');
 		$this->setParametro('sw_nit','sw_nit','varchar');
 		$this->setParametro('plantilla_qr','plantilla_qr','varchar');
+		$this->setParametro('sw_estacion','sw_estacion','varchar');
+		$this->setParametro('sw_punto_venta','sw_punto_venta','varchar');
+		$this->setParametro('sw_codigo_no_iata','sw_codigo_no_iata','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
