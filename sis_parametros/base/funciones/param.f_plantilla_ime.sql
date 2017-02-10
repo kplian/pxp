@@ -175,7 +175,10 @@ BEGIN
               tipo_informe = v_parametros.tipo_informe,
               sw_qr = v_parametros.sw_qr,
               sw_nit = v_parametros.sw_nit,
-              plantilla_qr = v_parametros.plantilla_qr
+              plantilla_qr = v_parametros.plantilla_qr,
+              sw_estacion = v_parametros.sw_estacion,
+              sw_punto_venta = v_parametros.sw_punto_venta,
+              sw_cod_no_iata = v_parametros.sw_codigo_no_iata
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta
