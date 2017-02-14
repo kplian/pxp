@@ -19,7 +19,7 @@ BEGIN
    FOR v_registros in (select 
                            uot.nro,
                            uot.codigo_padre,
-                           uot.codigo_padre,
+                           uot.codigo,
                            uot.estado,
                            uot.padre,
                            uot.unidad
@@ -37,7 +37,7 @@ BEGIN
                
                    -- insertamos registro
                    
-                   IF v_registros.codigo_padre is null or  v_registros.codigo_padre = '0' THEN
+                   IF (v_registros.codigo_padre is null or  v_registros.codigo_padre = '0' or  v_registros.codigo_padre = '') and (v_registros.padre is null or  v_registros.padre = '0' or  v_registros.codigo_padre = '') THEN
                       
                        -- recupera el nivel organizacional de empresa
                         select 
@@ -50,7 +50,8 @@ BEGIN
                         --es un nodo base
                        insert into orga.tuo( 
                            codigo,      
-                           nombre_unidad,nombre_cargo,   
+                           nombre_unidad,
+                           nombre_cargo,   
                            descripcion, 
                            cargo_individual,
                            presupuesta,    
@@ -60,13 +61,14 @@ BEGIN
                            nodo_base, 
                            correspondencia, 
                            gerencia,
-                           id_nivel_organizacional)
+                           id_nivel_organizacional,
+                           codigo_alterno)
                        values(
                          upper(v_registros.codigo), 
-                         v_registros.unidad, 
-                         v_registros.unidad, 
-                         v_registros.unidad,
-                         v_registros.unidad,
+                         upper(v_registros.unidad), 
+                         upper(v_registros.unidad), 
+                         upper(v_registros.unidad),
+                         'no',
                          'no', --v_parametros.presupuesta, 
                          'activo', 
                          now()::date, 
@@ -74,7 +76,8 @@ BEGIN
                          'si',--v_parametros.nodo_base, 
                          'no',--v_parametros.correspondencia, 
                          'no',--v_parametros.gerencia,
-                         v_id_nivel_organizacional);
+                         v_id_nivel_organizacional,
+                         upper(v_registros.codigo));
                       
                    ELSE
                    
@@ -89,15 +92,26 @@ BEGIN
                       
                        
                       -- recupera el id del nodo padre
+                      IF v_registros.codigo_padre is not null and v_registros.codigo_padre != '' THEN
+                            select 
+                               uo.id_uo
+                              into
+                                v_id_uo_padre
+                            
+                            from orga.tuo uo
+                            where uo.codigo = pper(v_registros.codigo_padre) and
+                                 uo.estado_reg = 'activo';
+                      ELSE
+                               select 
+                               uo.id_uo
+                              into
+                                v_id_uo_padre
+                            
+                            from orga.tuo uo
+                            where uo.nombre_unidad = upper(v_registros.padre) and
+                                 uo.estado_reg = 'activo';
                       
-                      select 
-                         uo.id_uo
-                        into
-                          v_id_uo_padre
-                      
-                      from orga.tuo uo
-                      where uo.codigo = v_registros.codigo_padre and
-                           uo.estado_reg = 'activo';
+                      END IF;
                       
                       
                       IF v_id_uo_padre is not null THEN
@@ -110,7 +124,8 @@ BEGIN
                           
                                 insert into orga.tuo( 
                                    codigo,      
-                                   nombre_unidad,nombre_cargo,   
+                                   nombre_unidad,
+                                   nombre_cargo,   
                                    descripcion, 
                                    cargo_individual,
                                    presupuesta,    
@@ -120,21 +135,23 @@ BEGIN
                                    nodo_base, 
                                    correspondencia, 
                                    gerencia,
-                                   id_nivel_organizacional)
+                                   id_nivel_organizacional,
+                                   codigo_alterno)
                                values(
-                                 upper(v_registros.codigo), 
-                                 v_registros.unidad, 
-                                 v_registros.unidad, 
-                                 v_registros.unidad,
-                                 v_registros.unidad,
-                                 'no', --v_parametros.presupuesta, 
-                                 'activo', 
-                                 now()::date, 
-                                 1, --par_id_usuario, 
-                                 'no',--v_parametros.nodo_base, 
-                                 'no',--v_parametros.correspondencia, 
-                                 'no',--v_parametros.gerencia,
-                                 v_id_nivel_organizacional) RETURNING id_uo into v_id_uo; 
+                                   upper(v_registros.codigo), 
+                                   upper(v_registros.unidad), 
+                                   upper(v_registros.unidad), 
+                                   upper(v_registros.unidad),
+                                  'no',
+                                  'no', --v_parametros.presupuesta, 
+                                  'activo', 
+                                  now()::date, 
+                                  1, --par_id_usuario, 
+                                  'no',--v_parametros.nodo_base, 
+                                  'no',--v_parametros.correspondencia, 
+                                  'no',--v_parametros.gerencia,
+                                  v_id_nivel_organizacional,
+                                  upper(v_registros.codigo)) RETURNING id_uo into v_id_uo; 
                           
                               -- insetar estructura uo
                               
@@ -164,6 +181,11 @@ BEGIN
 
               
               
+              update orga.tuo_tmp set
+                migrado = 'si'
+              
+              WHERE unidad = v_registros.unidad
+                    and migrado = 'no';
           
                         
       
@@ -171,6 +193,8 @@ BEGIN
    
    END LOOP;
   
+
+reTURN TRUE;
   
 
 END;
