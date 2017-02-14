@@ -354,7 +354,82 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
-       
+
+        {
+            config:{
+                name: 'sw_estacion',
+                fieldLabel: 'Estacion',
+                qtip: 'El documento admite estacion',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_estacion',
+                type: 'list',
+                options: ['si','no']
+            },
+            grid:true,
+            egrid: true,
+            form:true
+        },
+
+        {
+            config:{
+                name: 'sw_punto_venta',
+                fieldLabel: 'Punto de Venta',
+                qtip: 'El documento admite Punto de Venta',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_punto_venta',
+                type: 'list',
+                options: ['si','no']
+            },
+            grid:true,
+            egrid: true,
+            form:true
+        },
+
+        {
+            config:{
+                name: 'sw_codigo_no_iata',
+                fieldLabel: 'Codigo No Iata',
+                qtip: 'El documento admite Codigo No Iata',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_cod_no_iata',
+                type: 'list',
+                options: ['si','no']
+            },
+            grid:true,
+            egrid: true,
+            form:true
+        },
+
        {
             config:{
                 name: 'tipo_plantilla',
@@ -534,7 +609,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},'sw_monto_excento',
 		'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla',
 		'sw_nro_dui','sw_ic','tipo_excento','valor_excento','tipo_informe',
-		'sw_qr','sw_nit','plantilla_qr'
+		'sw_qr','sw_nit','plantilla_qr', 'sw_estacion', 'sw_punto_venta', 'sw_codigo_no_iata'
 		
 	],
 	sortInfo:{

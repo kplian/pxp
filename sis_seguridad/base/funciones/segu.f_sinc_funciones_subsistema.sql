@@ -181,14 +181,14 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                                                
                                                            
                                                            if exists(select 1 
-                                                              from segu.tprocedimiento
-                                                              where codigo =v_codigo )then 
+                                                              from segu.tprocedimiento p
+                                                              where codigo =v_codigo and p.estado_reg='activo' )then 
                                                               
                                                               
                                                                 select  f.nombre into v_nombre_fun
                                                                 from segu.tprocedimiento p
                                                                 inner join segu.tfuncion f on f.id_funcion = p.id_funcion
-                                                                where p.codigo =v_codigo ;
+                                                                where p.codigo =v_codigo and p.estado_reg='activo';
                                                                 --OFFSET  START 0 LIMIT 1;
                                                               
                                                                 raise exception 'El codigo % se duplica para la funcion  % y minimamente en %',v_codigo,v_nombre_function,v_nombre_fun;
@@ -206,7 +206,7 @@ v_nombre_funcion:='segu.f_sinc_funciones_subsistema';
                                                 	                                                	    
                                                         UPDATE segu.tprocedimiento 
                                                       		SET descripcion= v_desc_transaccion
-                                                    	WHERE codigo =v_codigo 
+                                                    	WHERE codigo =v_codigo and estado_reg='activo'
                                                        		and id_funcion=v_id_funcion and 
                                                             trim(descripcion) != v_desc_transaccion;                                                   
                                                        

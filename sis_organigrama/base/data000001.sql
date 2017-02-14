@@ -69,15 +69,11 @@ select pxp.f_insert_tfuncion ('orga.f_tipo_horario_ime', 'Funcion para tabla    
 select pxp.f_insert_tfuncion ('orga.ft_uo_funcionario_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_obtener_funcionarios_x_uo', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_usuario_uo_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('orga.f_funcionario_especialidad_ime', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('orga.f_especialidad_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_uo_arb_inicia', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_uo_arb_recursivo', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('orga.f_especialidad_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_especialidad_nivel_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.f_tipo_horario_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_usuario_uo_sel', 'Funcion para tabla     ', 'ORGA');
-select pxp.f_insert_tfuncion ('orga.f_funcionario_especialidad_sel', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_especialidad_nivel_ime', 'Funcion para tabla     ', 'ORGA');
 select pxp.f_insert_tfuncion ('orga.ft_funcionario_ime', 'Funcion para tabla     ', 'ORGA');
 
@@ -141,24 +137,8 @@ select pxp.f_insert_tprocedimiento ('PM_uuo_MOD', '	Modificacion de registros
  	', 'si', '', '', 'orga.ft_usuario_uo_ime');
 select pxp.f_insert_tprocedimiento ('PM_uuo_INS', '	Insercion de registros
  	', 'si', '', '', 'orga.ft_usuario_uo_ime');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_ELI', '	Eliminacion de registros
- 	', 'si', '', '', 'orga.f_funcionario_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_MOD', '	Modificacion de registros
- 	', 'si', '', '', 'orga.f_funcionario_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_INS', '	Insercion de registros
- 	', 'si', '', '', 'orga.f_funcionario_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_CONT', '	Conteo de registros
- 	', 'si', '', '', 'orga.f_especialidad_sel');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_SEL', '	Consulta de datos
- 	', 'si', '', '', 'orga.f_especialidad_sel');
 select pxp.f_insert_tprocedimiento ('RH_INIUOARB_SEL', '	Filtro en organigrama
  	', 'si', '', '', 'orga.f_uo_arb_inicia');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_ELI', '	Eliminacion de registros
- 	', 'si', '', '', 'orga.f_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_MOD', '	Modificacion de registros
- 	', 'si', '', '', 'orga.f_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_INS', '	Insercion de registros
- 	', 'si', '', '', 'orga.f_especialidad_ime');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_CONT', '	Conteo de registros
  	', 'si', '', '', 'orga.ft_especialidad_nivel_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_SEL', '	Consulta de datos
@@ -171,10 +151,6 @@ select pxp.f_insert_tprocedimiento ('PM_UUO_CONT', '	Conteo de registros
  	', 'si', '', '', 'orga.ft_usuario_uo_sel');
 select pxp.f_insert_tprocedimiento ('PM_UUO_SEL', '	Consulta de datos
  	', 'si', '', '', 'orga.ft_usuario_uo_sel');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_CONT', '	Conteo de registros
- 	', 'si', '', '', 'orga.f_funcionario_especialidad_sel');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_SEL', '	Consulta de datos
- 	', 'si', '', '', 'orga.f_funcionario_especialidad_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_ELI', '	Eliminacion de registros
  	', 'si', '', '', 'orga.ft_especialidad_nivel_ime');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_MOD', '	Modificacion de registros
@@ -285,23 +261,13 @@ select pxp.f_insert_tprocedimiento ('RH_UOFUNC_INS', 'Inserta uos funcionario', 
 select pxp.f_insert_tprocedimiento ('PM_uuo_ELI', 'Eliminacion de registros', 'si', '', '', 'orga.ft_usuario_uo_ime');
 select pxp.f_insert_tprocedimiento ('PM_uuo_MOD', 'Modificacion de registros', 'si', '', '', 'orga.ft_usuario_uo_ime');
 select pxp.f_insert_tprocedimiento ('PM_uuo_INS', 'Insercion de registros', 'si', '', '', 'orga.ft_usuario_uo_ime');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_ELI', 'Eliminacion de registros', 'si', '', '', 'orga.f_funcionario_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_MOD', 'Modificacion de registros', 'si', '', '', 'orga.f_funcionario_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_INS', 'Insercion de registros', 'si', '', '', 'orga.f_funcionario_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_CONT', 'Conteo de registros', 'si', '', '', 'orga.f_especialidad_sel');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_SEL', 'Consulta de datos', 'si', '', '', 'orga.f_especialidad_sel');
-select pxp.f_insert_tprocedimiento ('RH_INIUOARB_SEL', 'Filtro en organigrama', 'si', '', '', 'orga.f_uo_arb_inicia');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_ELI', 'Eliminacion de registros', 'si', '', '', 'orga.f_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_MOD', 'Modificacion de registros', 'si', '', '', 'orga.f_especialidad_ime');
-select pxp.f_insert_tprocedimiento ('RH_ESPCIA_INS', 'Insercion de registros', 'si', '', '', 'orga.f_especialidad_ime');
+select pxp.f_insert_tprocedimiento ('RH_INIUOARB_SEL', 'Filtro en organigrama', 'si', '', '', 'orga.f_uo_arb_inicia');;
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_CONT', 'Conteo de registros', 'si', '', '', 'orga.ft_especialidad_nivel_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_SEL', 'Consulta de datos', 'si', '', '', 'orga.ft_especialidad_nivel_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHTIHO_CONT', 'Conteo de registros', 'si', '', '', 'orga.f_tipo_horario_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHTIHO_SEL', 'Consulta de datos', 'si', '', '', 'orga.f_tipo_horario_sel');
 select pxp.f_insert_tprocedimiento ('PM_UUO_CONT', 'Conteo de registros', 'si', '', '', 'orga.ft_usuario_uo_sel');
 select pxp.f_insert_tprocedimiento ('PM_UUO_SEL', 'Consulta de datos', 'si', '', '', 'orga.ft_usuario_uo_sel');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_CONT', 'Conteo de registros', 'si', '', '', 'orga.f_funcionario_especialidad_sel');
-select pxp.f_insert_tprocedimiento ('RH_RHESFU_SEL', 'Consulta de datos', 'si', '', '', 'orga.f_funcionario_especialidad_sel');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_ELI', 'Eliminacion de registros', 'si', '', '', 'orga.ft_especialidad_nivel_ime');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_MOD', 'Modificacion de registros', 'si', '', '', 'orga.ft_especialidad_nivel_ime');
 select pxp.f_insert_tprocedimiento ('RH_RHNIES_INS', 'Insercion de registros', 'si', '', '', 'orga.ft_especialidad_nivel_ime');
