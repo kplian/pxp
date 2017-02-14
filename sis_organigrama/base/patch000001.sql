@@ -580,3 +580,41 @@ CREATE SEQUENCE orga.rep_planilla_actualizada
   INCREMENT 1 START 1;
 
 /*****************************F-SCP-JRR-ORGA-0-13/09/2016*************/
+
+
+/*****************************I-SCP-RAC-ORGA-0-14/02/2017*************/
+
+
+--------------- SQL ---------------
+
+CREATE TABLE orga.tuo_tmp (
+  nro INTEGER,
+  codigo_padre VARCHAR,
+  padre VARCHAR,
+  codigo VARCHAR,
+  unidad VARCHAR,
+  estado VARCHAR DEFAULT 'activo' NOT NULL
+) 
+WITH (oids = false);
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo_tmp
+  ADD COLUMN migrado VARCHAR(4) DEFAULT 'no' NOT NULL;
+  
+  
+  --------------- SQL ---------------
+
+ALTER TABLE orga.tuo
+  ADD COLUMN codigo_alterno VARCHAR;
+
+COMMENT ON COLUMN orga.tuo.codigo_alterno
+IS 'este codigo se puede usar como llave de manera alterna al codigo de la UO';
+
+
+/*****************************F-SCP-RAC-ORGA-0-14/02/2017*************/
+
+
+
+
+
