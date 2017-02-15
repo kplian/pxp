@@ -37,7 +37,7 @@ BEGIN
                
                    -- insertamos registro
                    
-                   IF (v_registros.codigo_padre is null or  v_registros.codigo_padre = '0' or  v_registros.codigo_padre = '') and (v_registros.padre is null or  v_registros.padre = '0' or  v_registros.codigo_padre = '') THEN
+                   IF (v_registros.codigo_padre is null or  v_registros.codigo_padre = '0' or  v_registros.codigo_padre = '') and (v_registros.padre is null or  v_registros.padre = '0' or  v_registros.padre = '') THEN
                       
                        -- recupera el nivel organizacional de empresa
                         select 
@@ -78,6 +78,12 @@ BEGIN
                          'no',--v_parametros.gerencia,
                          v_id_nivel_organizacional,
                          upper(v_registros.codigo));
+                         
+                         
+                         update orga.tuo_tmp set
+                              migrado = 'si'
+                         WHERE unidad = v_registros.unidad
+                                  and migrado = 'no';
                       
                    ELSE
                    
@@ -171,8 +177,14 @@ BEGIN
                           
                           end if;
                           
+                           update orga.tuo_tmp set
+                              migrado = 'si'
+                            
+                            WHERE unidad = v_registros.unidad
+                                  and migrado = 'no';
+                          
                       ELSE
-                          raise notice 'No se encontro el nodo padre %, no se inserta nada en la linea %', v_registros.codigio_padre, v_registros.nro;
+                          raise notice 'No se encontro el nodo padre %, no se inserta nada en la linea %', v_registros.codigo_padre, v_registros.nro;
                       END IF;
                    
                    END IF;
@@ -181,11 +193,7 @@ BEGIN
 
               
               
-              update orga.tuo_tmp set
-                migrado = 'si'
-              
-              WHERE unidad = v_registros.unidad
-                    and migrado = 'no';
+             
           
                         
       
