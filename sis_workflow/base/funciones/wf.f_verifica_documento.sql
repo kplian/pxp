@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.f_verifica_documento (
   p_id_usuario_reg integer,
   p_id_estado_wf integer
@@ -236,7 +238,7 @@ BEGIN
             
             IF v_resp_cadena_firma != '' THEN
                
-               v_resp_cadena = v_resp_cadena||'No se firmaron los documentos:<br>' ||v_resp_fisico;
+               v_resp_cadena = v_resp_cadena||'No se firmaron los documentos:<br>' ||v_resp_cadena_firma;
             
             END IF;
         
