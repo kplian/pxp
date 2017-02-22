@@ -38,7 +38,7 @@ CREATE TABLE orga.tfuncionario (
 	id_funcionario serial NOT NULL,
     id_persona integer NOT NULL,
     codigo varchar(20),
-    email_empresa varchar(40),
+    email_empresa varchar(150),
     interno varchar(9),
     fecha_ingreso date DEFAULT now() NOT NULL
 ) 

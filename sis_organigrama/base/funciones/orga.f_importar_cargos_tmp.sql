@@ -71,6 +71,8 @@ BEGIN
                   v_id_uo
                 from orga.tuo uo
                 where uo.codigo = v_registros.codigo_uo;
+                
+                
             IF v_registros.individual = 'si' THEN
                 
                v_id_uo_cargo = v_id_uo;
@@ -175,7 +177,7 @@ BEGIN
                   ) values(
                       v_id_tipo_contrato,
                       v_id_lugar,
-                      v_id_uo,			
+                      v_id_uo_cargo,			
                       2,--v_parametros.id_escala_salarial,
                       v_registros.item,
                       v_registros.cargo,
