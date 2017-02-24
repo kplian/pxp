@@ -1009,3 +1009,9 @@ select pxp.f_insert_testructura_gui ('ARXLS', 'OTROS');
 select pxp.f_insert_testructura_gui ('COLXLS', 'ARXLS');
 
 /***********************************F-DAT-GSS-PARAM-0-05/01/2017*****************************************/
+
+/***********************************I-DAT-FFP-PARAM-0-24/02/2017*****************************************/
+
+select pxp.f_insert_tgui ('Tipo Archivo', 'tipos de archivos', 'TIPOAR', 'si', 9, 'sis_parametros/vista/tipo_archivo/TipoArchivo.php', 3, '', 'TipoArchivo', 'PARAM');
+select pxp.f_insert_testructura_gui ('TIPOAR', 'OTROS');
+/***********************************F-DAT-GSS-PARAM-0-24/02/2017*****************************************/
