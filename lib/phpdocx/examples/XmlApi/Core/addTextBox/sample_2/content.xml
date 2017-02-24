@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="textboxFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addTextBox>
+                        <pdx:data pdx:dataId="" pdx:type="text">Some text content for the textbox. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+                        <pdx:width pdx:value="200" />
+                        <pdx:align pdx:value="left" />
+                        <pdx:border pdx:value="false" />
+                        <pdx:paddingLeft pdx:value="10" />
+                        <pdx:fillColor pdx:value="#DDDDDD" />
+                    </pdx:addTextBox>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">textboxFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Text in the main document flow. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

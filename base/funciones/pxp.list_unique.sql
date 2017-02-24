@@ -1,3 +1,5 @@
+DROP AGGREGATE IF EXISTS pxp.list_unique (varchar);
+
 CREATE OR REPLACE FUNCTION pxp.list_unique (
   text,
   text
@@ -20,3 +22,11 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+CREATE AGGREGATE pxp.list_unique (
+  text)
+(
+  SFUNC = pxp.list_unique,
+  STYPE = text
+
+);

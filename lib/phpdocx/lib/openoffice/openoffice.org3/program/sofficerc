@@ -1,0 +1,8 @@
+[Bootstrap]
+Logo=1
+NativeProgress=true
+ProgressBarColor=14,133,205
+ProgressFrameColor=207,208,211
+ProgressPosition=185,206
+ProgressSize=320,7
+URE_BOOTSTRAP=${ORIGIN}/fundamentalrc

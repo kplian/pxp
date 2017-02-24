@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBreak pdx:type="line" pdx:number="1" />
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBreak pdx:type="line" pdx:number="2" />
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBreak pdx:type="page" pdx:number="1" />
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

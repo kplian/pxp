@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceVariableByHTML pdx:variableName="ADDRESS" pdx:replaceType="inline" parseDivsAsPs="true">
+            <pdx:data pdx:dataId="" pdx:type="HTML"><![CDATA[<p style="font-family: verdana; font-size: 11px">C/ Matías Turrión 24, Madrid 28043 <b>Spain</b></p>]]></pdx:data>
+        </pdx:replaceVariableByHTML>
+        <pdx:replaceVariableByHTML pdx:variableName="CHUNK_1" pdx:replaceType="block" parseDivsAsPs="true" pdx:isFile="true" pdx:downloadImages="true" pdx:filter="#capa_bg_bottom">
+            <pdx:data pdx:dataId="" pdx:type="HTML">http://www.2mdc.com/PHPDOCX/example.html</pdx:data>
+        </pdx:replaceVariableByHTML>
+        <pdx:replaceVariableByHTML pdx:variableName="CHUNK_2" pdx:replaceType="block" pdx:isFile="true" pdx:downloadImages="true" pdx:filter="#lateral">
+            <pdx:data pdx:dataId="" pdx:type="HTML">http://www.2mdc.com/PHPDOCX/example.html</pdx:data>
+        </pdx:replaceVariableByHTML>
+    </pdx:templateVariables>
+</pdx:document>

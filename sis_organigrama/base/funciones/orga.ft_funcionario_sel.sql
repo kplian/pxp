@@ -246,7 +246,9 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
                             INNER JOIN orga.tfuncionario F ON F.id_funcionario=FUNCIO.id_funcionario
                             INNER JOIN SEGU.tpersona PERSON ON PERSON.id_persona=F.id_persona
                             INNER JOIN orga.tuo_funcionario uofun on 
-                            	uofun.id_funcionario = FUNCIO.id_funcionario and uofun.estado_reg = ''activo'' and
+                            	uofun.id_funcionario = FUNCIO.id_funcionario and 
+                                uofun.tipo = ''oficial'' and
+                                uofun.estado_reg = ''activo'' and
                                 uofun.fecha_asignacion <= now()::date and 
                                 (uofun.fecha_finalizacion >= now()::date or uofun.fecha_finalizacion is null)
                             INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo                            
@@ -394,7 +396,7 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
 
 
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

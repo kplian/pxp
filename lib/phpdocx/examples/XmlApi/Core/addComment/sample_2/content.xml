@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="htmlFragment" pdx:target="comment">
+                <pdx:content>
+                    <pdx:embedHTML>
+                        <pdx:data pdx:dataId="" pdx:type="HTML"><![CDATA[<p>This is some HTML code with a link to <a href="http://www.2mdc.com">2mdc.com</a> and a random image: <img src="/var/www/phpdocx/examples/XmlApi/files/img/image.png" width="35" height="35" style="vertical-align: -15px"></p>]]></pdx:data>
+                    </pdx:embedHTML>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="commentFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addComment pdx:initials="PT" pdx:author="PHPDocX Team" pdx:date="10 September 2000">
+                        <pdx:textDocument>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">comment</pdx:data>
+                            <pdx:paragraphStyle />             
+                        </pdx:textDocument>
+                        <pdx:textComment>
+                            <pdx:data pdx:dataId="" pdx:dataType="wordFragment">htmlFragment</pdx:data>
+                        </pdx:textComment>
+                    </pdx:addComment>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Here comes the </pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">commentFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text"> and some other text.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

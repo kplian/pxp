@@ -1,0 +1,13 @@
+[Version]
+AllLanguages=en-US
+buildid=341m1(Build:9593)
+ExtensionUpdateURL=http://updateexte.services.openoffice.org/ExtensionUpdateService/check.Update
+OOOBaseVersion=3.4
+ProductBuildid=9593
+ProductMajor=341
+ProductMinor=1
+ProductSource=AOO341
+Revision=
+UpdateID=OpenOffice.org_3_en-US
+UpdateURL=http://www.openoffice.org/projects/update/aoo341/check.Update?pkgfmt=archive
+UpdateUserAgent=<PRODUCT> (${buildid}; ${_OS}; ${_ARCH}; BundledLanguages=${AllLanguages})

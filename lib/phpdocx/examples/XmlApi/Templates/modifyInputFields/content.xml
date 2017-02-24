@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:modifyInputFields>
+            <pdx:inputField pdx:variableName="textfield_1">
+                <pdx:data pdx:dataId="" pdx:dataType="text">first</pdx:data>
+            </pdx:inputField>
+            <pdx:inputField pdx:variableName="textfield_2">
+                <pdx:data pdx:dataId="" pdx:dataType="text">second</pdx:data>
+            </pdx:inputField>
+            <pdx:inputField pdx:variableName="sdt_1">
+                <pdx:data pdx:dataId="" pdx:dataType="text">third</pdx:data>
+            </pdx:inputField>
+            <pdx:inputField pdx:variableName="sdt_2">
+                <pdx:data pdx:dataId="" pdx:dataType="text">fourth</pdx:data>
+            </pdx:inputField>
+        </pdx:modifyInputFields>
+    </pdx:templateVariables>
+</pdx:document>

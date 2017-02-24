@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Table of Contents</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:bold pdx:value="true" />
+                    <pdx:fontSize pdx:value="14" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addTableContents pdx:autoUpdate="true" pdx:stylesTOC="/var/www/phpdocx/examples/XmlApi/files/crazyTOC.docx">
+            <pdx:legendText>Click here to update the TOC</pdx:legendText>
+            <pdx:paragraphStyle>
+                <pdx:bold pdx:value="true" />
+                <pdx:color pdx:value="B70000" />
+                <pdx:fontSize pdx:value="12" />
+            </pdx:paragraphStyle>
+        </pdx:addTableContents>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Chapter 1</pdx:data>
+            </pdx:textRun>
+            <pdx:paragraphStyle>
+                <pdx:pStyle pdx:value="Heading1PHPDOCX" />
+            </pdx:paragraphStyle>
+        </pdx:addText>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Section</pdx:data>
+            </pdx:textRun>
+            <pdx:paragraphStyle>
+                <pdx:pStyle pdx:value="Heading2PHPDOCX" />
+            </pdx:paragraphStyle>
+        </pdx:addText>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Another TOC entry</pdx:data>
+            </pdx:textRun>
+            <pdx:paragraphStyle>
+                <pdx:pStyle pdx:value="Heading3PHPDOCX" />
+            </pdx:paragraphStyle>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

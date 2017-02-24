@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This example illustrates how to add a mergefield to a Word document.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addMergeField pdx:name="MyMergeField example" pdx:format="Upper" pdx:textAfter=" and some text afterwards." pdx:textBefore="A mergefield example: ">
+            <pdx:paragraphStyle>
+                <pdx:color pdx:value="B70000" />
+            </pdx:paragraphStyle>
+        </pdx:addMergeField>
+    </pdx:content>
+</pdx:document>

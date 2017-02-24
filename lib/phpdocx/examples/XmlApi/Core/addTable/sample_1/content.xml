@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addTable>
+            <pdx:data pdx:dataId="" pdx:type="table">
+                <pdx:row>
+                    <pdx:data pdx:dataId="" pdx:type="row">
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">11</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">12</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">13</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">14</pdx:data>
+                        </pdx:cell>
+                    </pdx:data>
+                </pdx:row>
+                <pdx:row>
+                    <pdx:data pdx:dataId="" pdx:type="row">
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">21</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">22</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">23</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">24</pdx:data>
+                        </pdx:cell>
+                    </pdx:data>
+                </pdx:row>
+                <pdx:row>
+                    <pdx:data pdx:dataId="" pdx:type="row">
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">31</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">32</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">33</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">34</pdx:data>
+                        </pdx:cell>
+                    </pdx:data>
+                </pdx:row>
+            </pdx:data>
+            <pdx:tableProperties>
+                <pdx:border pdx:color="B70000" pdx:width="10" pdx:style="single" />
+                <pdx:tableAlign pdx:value="center" />
+                <pdx:paragraphStyle>
+                    <pdx:bold pdx:value="true" />
+                    <pdx:font pdx:value="Algerian" />
+                    <pdx:fontSize pdx:value="18" />
+                </pdx:paragraphStyle>
+            </pdx:tableProperties>
+        </pdx:addTable>
+    </pdx:content>
+</pdx:document>

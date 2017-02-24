@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:addProperties>
+            <pdx:title>My title</pdx:title>
+            <pdx:subject>My subject</pdx:subject>
+            <pdx:creator>The creator</pdx:creator>
+            <pdx:keywords>keyword 1, keyword 2, keyword 3</pdx:keywords>
+            <pdx:description>The description could be much longer than this</pdx:description>
+            <pdx:category>My category</pdx:category>
+            <pdx:manager>CEO</pdx:manager>
+            <pdx:company>My company</pdx:company>
+            <pdx:contentStatus>contentStatus</pdx:contentStatus>
+            <pdx:customProperties>
+                <pdx:custom pdx:type="text" pdx:name="My custom text">This is a reasonably large text</pdx:custom>
+                <pdx:custom pdx:type="number" pdx:name="My custom number">4567</pdx:custom>
+                <pdx:custom pdx:type="date" pdx:name="My custom date">1962-01-27T23:00:00Z</pdx:custom>
+                <pdx:custom pdx:type="boolean" pdx:name="My custom boolean">true</pdx:custom>
+            </pdx:customProperties>
+        </pdx:addProperties>
+    </pdx:settings>
+</pdx:document>

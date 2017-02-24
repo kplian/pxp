@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:addBackgroundImage pdx:src="/var/www/phpdocx/examples/XmlApi/files/image.png" />
+    </pdx:settings>
+</pdx:document>

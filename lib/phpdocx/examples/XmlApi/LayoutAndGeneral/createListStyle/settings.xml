@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document  xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:createListStyle pdx:name="latin">
+            <pdx:item pdx:type="lowerLetter" pdx:format="%1." />
+            <pdx:item pdx:type="lowerRoman" pdx:format="%1.%2." />
+        </pdx:createListStyle>
+    </pdx:settings>
+</pdx:document>

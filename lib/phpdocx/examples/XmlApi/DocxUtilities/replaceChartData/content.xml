@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:utilities>
+        <pdx:replaceChartData pdx:source="/var/www/phpdocx/examples/XmlApi/files/example_area_chart.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/DocxUtilities/replaceChartData/output_replaceChartData.docx" pdx:chartNumber="0">
+            <pdx:chartRowValue>
+                <pdx:chartValue pdx:value="25" />
+                <pdx:chartValue pdx:value="10" />
+                <pdx:chartValue pdx:value="5" />
+            </pdx:chartRowValue>
+            <pdx:chartRowValue>
+                <pdx:chartValue pdx:value="20" />
+                <pdx:chartValue pdx:value="5" />
+                <pdx:chartValue pdx:value="4" />
+            </pdx:chartRowValue>
+            <pdx:chartRowValue>
+                <pdx:chartValue pdx:value="15" />
+                <pdx:chartValue pdx:value="0" />
+                <pdx:chartValue pdx:value="3" />
+            </pdx:chartRowValue>
+            <pdx:chartRowValue>
+                <pdx:chartValue pdx:value="10" />
+                <pdx:chartValue pdx:value="15" />
+                <pdx:chartValue pdx:value="2" />
+            </pdx:chartRowValue>
+        </pdx:replaceChartData>
+    </pdx:utilities>
+</pdx:document>

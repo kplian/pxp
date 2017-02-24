@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Este texto está en español y no debería estar marcado si se utiliza el corrector ortográfico.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Now in english.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

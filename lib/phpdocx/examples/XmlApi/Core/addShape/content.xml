@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Arc:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addShape pdx:type="arc">
+        	<pdx:width pdx:value="70"/>
+            <pdx:height pdx:value="70"/>
+            <pdx:color pdx:strokecolor="#ff0000" pdx:fillcolor="#555555" />
+            <pdx:strokeWidth pdx:value="4" />
+            <pdx:arc pdx:startAngle="0" pdx:endAngle="210" />
+        </pdx:addShape>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Curve:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addShape pdx:type="curve">
+            <pdx:color pdx:strokecolor="#ff0000" pdx:fillcolor="#555555" />
+            <pdx:strokeWidth pdx:value="4" />
+            <pdx:curve pdx:control1="60,70" pdx:control2="125,170" pdx:from="300,40" pdx:to="120,150"/>
+        </pdx:addShape>
+    </pdx:content>
+</pdx:document>

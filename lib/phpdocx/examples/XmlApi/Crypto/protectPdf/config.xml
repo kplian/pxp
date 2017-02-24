@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:config>
+        <pdx:output pdx:name="output" pdx:type="pdf" />
+        <pdx:crypto>
+            <pdx:protect pdx:password="phpdocx" pdx:src="/var/www/phpdocx/examples/XmlApi/files/Test.pdf" pdx:target="/var/www/phpdocx/examples/XmlApi/Crypto/protectPdf/Protected.pdf" pdx:type="print,annot-forms" />
+        </pdx:crypto>
+    </pdx:config>
+</pdx:document>

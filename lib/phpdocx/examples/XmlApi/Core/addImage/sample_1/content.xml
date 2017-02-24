@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">In this first example we just add an image with a dashed border:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addImage pdx:imageAlign="center" pdx:scaling="50">
+            <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+            <pdx:imageBorder pdx:borderColor="FF0000" pdx:borderStyle="lgDash" pdx:borderWidth="6" />
+            <pdx:imageMargin pdx:spacingTop="10" pdx:spacingRight="20" pdx:spacingBottom="0" pdx:spacingLeft="0" />
+            <pdx:textWrap pdx:value="0" />
+        </pdx:addImage>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This is a closing paragraph.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

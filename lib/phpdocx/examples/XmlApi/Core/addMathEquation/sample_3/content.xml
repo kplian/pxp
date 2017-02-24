@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We write a math equation using MathMML:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addMathEquation pdx:type="mathml">
+            <pdx:data pdx:dataId="" pdx:dataType="text"><![CDATA[<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>A</mi> <mo>=</mo><mfenced open="[" close="]"><mtable><mtr><mtd><mi>x</mi></mtd> <mtd><mn>2</mn></mtd></mtr><mtr><mtd><mn>3</mn></mtd><mtd><mi>w</mi></mtd></mtr></mtable></mfenced></mrow></math>]]></pdx:data>
+        </pdx:addMathEquation>
+    </pdx:content>
+</pdx:document>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="linkFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to Google</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                    </pdx:addLink>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Now we include a link to </pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">linkFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text"> in the middle of a pragraph of plain text.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceVariableByWordML>
+            <pdx:variable pdx:name="WORDML">
+                <pdx:data pdx:dataId="" pdx:dataType="text">
+                    <![CDATA[<w:p><w:r><w:t xml:space="preserve">This is a simple paragraph with some </w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>bold</w:t></w:r><w:r><w:t xml:space="preserve"> text.</w:t></w:r></w:p>]]>
+                </pdx:data>
+            </pdx:variable>
+        </pdx:replaceVariableByWordML>
+    </pdx:templateVariables>
+</pdx:document>

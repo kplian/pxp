@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="textFragment" pdx:target="defaultHeader">
+                <pdx:content>
+                    <pdx:addImage pdx:dpi="300">
+                        <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+                    </pdx:addImage>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addHeader>
+            <pdx:default pdx:wordFragmentName="textFragment" />
+        </pdx:addHeader>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This document has a header with just one image.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

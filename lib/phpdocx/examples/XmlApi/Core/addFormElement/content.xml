@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addFormElement pdx:formElementType="textfield" pdx:defaultValue="This is a test" >
+            <pdx:paragraphStyle>
+                <pdx:color pdx:value="0000CC" />
+                <pdx:fontSize pdx:value="12" />
+                <pdx:italic pdx:value="true" />
+                <pdx:bold pdx:value="true" />
+                <pdx:font pdx:value="Arial" />
+            </pdx:paragraphStyle>
+        </pdx:addFormElement>
+        <pdx:addFormElement pdx:formElementType="checkbox" pdx:defaultValue="true" >
+            <pdx:paragraphStyle>
+                <pdx:fontSize pdx:value="12" />
+            </pdx:paragraphStyle>
+        </pdx:addFormElement>
+        <pdx:addFormElement pdx:formElementType="select" pdx:defaultValue="true" >
+            <pdx:options>
+                <pdx:item>One</pdx:item>
+                <pdx:item>Two</pdx:item>
+                <pdx:item>Three</pdx:item>
+                <pdx:item>Four</pdx:item>
+            </pdx:options>
+            <pdx:paragraphStyle>
+                <pdx:color pdx:value="C90000" />
+                <pdx:fontSize pdx:value="14" />
+                <pdx:bold pdx:value="true" />
+                <pdx:font pdx:value="Algerian" />
+                <pdx:underline pdx:value="double" />
+            </pdx:paragraphStyle>
+        </pdx:addFormElement>
+    </pdx:content>
+</pdx:document>

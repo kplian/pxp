@@ -1,0 +1,144 @@
+
+======================================================================
+OpenOffice.org 3.4.1 ReadMe
+======================================================================
+
+
+For latest updates to this readme file, see http://www.openoffice.org/welcome/readme.html
+
+This file contains important information about this program. Please read this information very carefully before starting work.
+
+The OpenOffice.org Community, responsible for the development of this product, would like to invite you to participate as a community member. As a new user, you can check out the OpenOffice.org site with helpful user information at http://www.openoffice.org/about_us/introduction.html
+
+Also read the sections below about getting involved in the OpenOffice.org project.
+
+Is OpenOffice.org really free for any user? 
+----------------------------------------------------------------------
+
+OpenOffice.org is free for use by everybody. You may take this copy of OpenOffice.org and install it on as many computers as you like, and use it for any purpose you like (including commercial, government, public administration and educational use). For further details see the license text delivered together with OpenOffice.org or http://www.openoffice.org/license.html
+
+Why is OpenOffice.org free for any user?
+----------------------------------------------------------------------
+
+You can use this copy of OpenOffice.org today free of charge because individual contributors and corporate sponsors have designed, developed, tested, translated, documented, supported, marketed, and helped in many other ways to make OpenOffice.org what it is today - the world's leading open-source office software.
+
+If you appreciate their efforts, and would like to ensure OpenOffice.org continues into the future, please consider contributing to the project - see http://contributing.openoffice.org for details. Everyone has a contribution to make.
+
+----------------------------------------------------------------------
+Notes on Installation
+----------------------------------------------------------------------
+
+OpenOffice.org requires a recent version of JAVA for full functionality which is part of the OpenOffice.org installation package.
+
+System Requirements
+----------------------------------------------------------------------
+
+* Linux Kernel version 2.6.18 or higher
+* glibc2 version 2.5 or higher
+* gtk version 2.10.4 or higher
+* Pentium compatible PC (Pentium III or Athlon recommended)
+* 256 MB RAM (512 MB RAM recommended)
+* Up to 1.55 GB available hard disk space
+* X Server with 1024x768 resolution (higher resolution recommended), with at least 256 colors
+* Window Manager
+* Gnome 2.16 or higher, with the gail 1.8.6 and the at-spi 1.7 packages, required for support of assistive technology tools (AT tools)
+
+There is a wide variety of Linux distributions, and even within the same distribution there may be different installation options (KDE vs Gnome, etc.). Some distributions ship with their own ‘native’ version of OpenOffice.org, which may have different features from this Community OpenOffice.org. Sometimes you can install the Community OpenOffice.org alongside the ‘native’ version. However, it’s usually safer to remove the ‘native’ version before installing this Community version. Consult the documentation for your distribution for details of how to do this.
+
+It is recommended that you always backup your system before you remove or install software.
+
+Please make sure you have enough free memory in the temporary directory on your system and that read, write and run access rights have been granted. Close all other programs before starting the installation.
+
+----------------------------------------------------------------------
+Extension Database Incompatibility
+----------------------------------------------------------------------
+
+The Berkeley database engine has been upgraded in this version of OpenOffice.org. The database engine upgrade introduces an incompatibility with user data for installed extensions for OpenOffice.org versions prior to 3.2 that may require your action if you downgrade your version of OpenOffice.org.
+
+This version of OpenOffice.org will convert your extension database to the new Berkeley database format when extensions are installed or removed. After this conversion, the database can no longer be read by earlier versions of OpenOffice.org. Downgrading to an earlier version may result in a dysfunctional installation.
+
+If you downgrade to an earlier version of OpenOffice.org, you must remove the user data directory {user data}/uno_packages, for example ~/.openoffice.org/3/user/uno_packages, and reinstall all extensions.
+
+----------------------------------------------------------------------
+Problems During Program Startup
+----------------------------------------------------------------------
+
+If you experience OpenOffice.org startup problems (most notably while using Gnome) please 'unset' the SESSION_MANAGER environment variable inside the shell you use to start OpenOffice.org. This can be done by adding the line "unset SESSION_MANAGER" to the beginning of the soffice shell script found in the "[office folder]/program" directory.
+
+Difficulties starting OpenOffice.org (e.g. applications hang) as well as problems with the screen display are often caused by the graphics card driver. If these problems occur, please update your graphics card driver or try using the graphics driver delivered with your operating system. Difficulties displaying 3D objects can often be solved by deactivating the option "Use OpenGL" under 'Tools - Options - OpenOffice.org - View - 3D view'.
+
+----------------------------------------------------------------------
+Shortcut Keys
+----------------------------------------------------------------------
+
+Only shortcut keys (key combinations) not used by the operating system can be used in OpenOffice.org. If a key combination in OpenOffice.org does not work as described in the OpenOffice.org Help, check if that shortcut is already used by the operating system. To rectify such conflicts, you can change the keys assigned by your operating system. Alternatively, you can change almost any key assignment in OpenOffice.org. For more information on this topic, refer to the OpenOffice.org Help or the Help documention of your operating system.
+
+----------------------------------------------------------------------
+File Locking
+----------------------------------------------------------------------
+
+File locking is enabled by default in OpenOffice.org. On a network that uses the Network File System protocol (NFS), the locking daemon for NFS clients must be active. To disable file locking, edit the soffice script and change the line "export SAL_ENABLE_FILE_LOCKING" to "# export SAL_ENABLE_FILE_LOCKING". If you disable file locking, the write access of a document is not restricted to the user who first opens the document.
+
+Warning: The activated file locking feature can cause problems with Solaris 2.5.1 and 2.7 used in conjunction with Linux NFS 2.0. If your system environment has these parameters, we strongly recommend that you avoid using the file locking feature. Otherwise, OpenOffice.org will hang when you try to open a file from a NFS mounted directory from a Linux computer.
+
+----------------------------------------------------------------------
+Important Accessibility Notes
+----------------------------------------------------------------------
+
+For more information on the accessibility features in OpenOffice.org, see http://www.openoffice.org/access/
+
+----------------------------------------------------------------------
+User Support
+----------------------------------------------------------------------
+
+The main support page http://support.openoffice.org/ offers various possibilities for help with OpenOffice.org. Your question may have already been answered - check the Community Forum at http://user.services.openoffice.org or search the archives of the 'users@openoffice.org' mailing list at http://www.openoffice.org/mail_list.html. Alternatively, you can send in your questions to users@openoffice.org. How to subscribe to the list (to get an email response) is explained on this page: http://wiki.services.openoffice.org/wiki/Website/Content/help/mailinglists.
+
+Also check the FAQ section at http://wiki.services.openoffice.org/wiki/Documentation/FAQ.
+
+----------------------------------------------------------------------
+Reporting Bugs & Issues
+----------------------------------------------------------------------
+
+The OpenOffice.org Web site hosts IssueZilla, our mechanism for reporting, tracking and solving bugs and issues. We encourage all users to feel entitled and welcome to report issues that may arise on your particular platform. Energetic reporting of issues is one of the most important contributions that the user community can make to the ongoing development and improvement of the suite.
+
+----------------------------------------------------------------------
+Getting Involved
+----------------------------------------------------------------------
+
+The OpenOffice.org Community would very much benefit from your active participation in the development of this important open source project.
+
+As a user, you are already a valuable part of the suite's development process and we would like to encourage you to take an even more active role with a view to being a long-term contributor to the community. Please join and check out the user page at http://incubator.apache.org/openofficeorg/get-involved.html
+
+How to Start
+----------------------------------------------------------------------
+
+The best way to start contributing is to subscribe to one or more of the mailing lists, lurk for a while, and gradually use the mail archives to familiarize yourself with many of the topics covered since the OpenOffice.org source code was released back in October 2000. When you're comfortable, all you need to do is send an email self-introduction and jump right in. If you are familiar with Open Source Projects, check out our To-Dos list and see if there is anything you would like to help with at http://development.openoffice.org/todo.html.
+
+Subscribe
+----------------------------------------------------------------------
+
+Here are a few of the Project mailing lists to which you can subscribe at http://incubator.apache.org/openofficeorg/mailing-lists.html
+
+* News: ooo-announce@incubator.apache.org *recommended to all users* (light traffic)
+* Main user forum: ooo-users@incubator.apache.org *easy way to lurk on discussions* (heavy traffic)
+* Marketing project: ooo-marketing@incubator.apache.org *beyond development* (getting heavy)
+* General code contributor list: ooo-dev@incubator.apache.org (moderate/heavy)
+
+Joining the Project
+----------------------------------------------------------------------
+
+You can make major contributions to this important open source project even if you have limited software design or coding experience. Yes, you!
+
+At http://incubator.apache.org/openofficeorg/get-involved.html you will find a first overview where you can start with, ranging from Localization, QA, user support to some real core coding projects. If you are not a developer, try the Documentation or the Marketing Project. The OpenOffice.org Marketing Project is applying both guerilla and traditional commercial techniques to marketing open source software, and we are doing it across language and cultural barriers, so you can help just by spreading the word and telling a friend about this office suite.
+
+You can help by joining the marktig mailig list ooo-marketing@incubator.apache.org or visit the Marketing Communications & Information Network on http://marketing.openoffice.org where you can provide point communication contact with press, media, government agencies, consultants, schools, Linux Users Groups and developers in your country and local community.
+
+We hope you enjoy working with the new OpenOffice.org 3.4.1 and will join us online.
+
+The OpenOffice.org Community
+
+----------------------------------------------------------------------
+Used / Modified Source Code
+----------------------------------------------------------------------
+
+For detailed information about used and or modified source code see the NOTICE file whihc is part of the installation.

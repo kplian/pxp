@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:utilities>
+        <pdx:watermarkDocx pdx:source="/var/www/phpdocx/examples/XmlApi/files/Text.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/DocxUtilities/watermarkDocx/output_watermarkDocx.docx" pdx:type="image">
+            <pdx:image pdx:value="/var/www/phpdocx/examples/XmlApi/files/image.png" />
+            <pdx:decolorate pdx:value="false" />
+        </pdx:watermarkDocx>
+    </pdx:utilities>
+</pdx:document>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addHeading pdx:level="0" >
+            <pdx:data pdx:dataId="" pdx:dataType="text">First level title</pdx:data>
+        </pdx:addHeading>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+         <pdx:addHeading pdx:level="1" >
+            <pdx:data pdx:dataId="" pdx:dataType="text">Second level title</pdx:data>
+        </pdx:addHeading>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addHeading pdx:level="2" >
+            <pdx:data pdx:dataId="" pdx:dataType="text">Third level title with additional custom formatting</pdx:data>
+            <pdx:paragraphStyle>
+                <pdx:color pdx:value="FF0000" />
+                <pdx:fontSize pdx:value="13" />
+                <pdx:textAlign pdx:value="center" />
+            </pdx:paragraphStyle>
+        </pdx:addHeading>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

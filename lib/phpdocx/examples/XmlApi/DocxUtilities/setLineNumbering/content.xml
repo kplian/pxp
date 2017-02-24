@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:utilities>
+        <pdx:setLineNumbering pdx:source="/var/www/phpdocx/examples/XmlApi/files/second.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/DocxUtilities/setLineNumbering/output_setLineNumbering.docx" pdx:start="25" />
+    </pdx:utilities>
+</pdx:document>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We add a few simple fields that render some properties:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addSimpleField pdx:fieldName="TITLE" pdx:fieldType="general" pdx:fieldFormat="" pdx:doNotShadeFormData="" pdx:updateFields="" >
+            <pdx:paragraphStyle />
+        </pdx:addSimpleField>
+        <pdx:addSimpleField pdx:fieldName="AUTHOR" pdx:fieldType="general" pdx:fieldFormat="" pdx:doNotShadeFormData="" pdx:updateFields="" >
+            <pdx:paragraphStyle />
+        </pdx:addSimpleField>
+        <pdx:addSimpleField pdx:fieldName="NUMPAGES" pdx:fieldType="general" pdx:fieldFormat="" pdx:doNotShadeFormData="" pdx:updateFields="" >
+            <pdx:paragraphStyle />
+        </pdx:addSimpleField>
+        <pdx:addSimpleField pdx:fieldName="COMMENTS" pdx:fieldType="general" pdx:fieldFormat="" pdx:doNotShadeFormData="" pdx:updateFields="" >
+            <pdx:paragraphStyle />
+        </pdx:addSimpleField>
+    </pdx:content>
+</pdx:document>

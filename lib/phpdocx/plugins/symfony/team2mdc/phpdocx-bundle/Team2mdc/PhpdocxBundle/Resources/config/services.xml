@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="phpdocxbundle.createdocx.class">Team2mdc\PhpdocxBundle\Classes\PhpdocxBridge</parameter>
+        <parameter key="phpdocxbundle.tcpdf.class">Team2mdc\PhpdocxBundle\Classes\TcpdfBridge</parameter>
+        <parameter key="phpdocxbundle.dompdf.class">Team2mdc\PhpdocxBundle\Classes\DompdfBridge</parameter>
+    </parameters>
+    <services>
+        <service id="phpdocxbundle.createdocx" class="%phpdocxbundle.createdocx.class%"></service>
+        <service id="phpdocxbundle.createdocxfromtemplate" class="%phpdocxbundle.createdocxfromtemplate.class%"></service>
+        <service id="phpdocxbundle.wordfragment" class="%phpdocxbundle.wordfragment.class%"></service>
+        <service id="phpdocxbundle.tcpdf" class="%phpdocxbundle.tcpdf.class%"></service>
+        <service id="phpdocxbundle.dompdf" class="%phpdocxbundle.dompdf.class%"></service>
+    </services>
+</container>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We extract a math equation from an external Word file:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addMathEquation pdx:type="docx">
+            <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/math.docx</pdx:data>
+        </pdx:addMathEquation>
+    </pdx:content>
+</pdx:document>

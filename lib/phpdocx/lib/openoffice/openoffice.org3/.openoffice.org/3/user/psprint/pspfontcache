@@ -1,0 +1,502 @@
+PspFontCacheFile format 4
+FontCacheDirectory:1350463958:/home/jlopez/phpdocx_pro/lib/openoffice/openoffice.org/basis3.4/share/fonts/truetype
+File:DejaVuSerifCondensed-Italic.ttf
+2;1
+DejaVu Serif Condensed
+-1;DejaVuSerifCondensed-Italic;2;5;4;2;65535;928;235;163;0;2235;1163;2235;1163;0;0;0;0;Condensed Italic
+
+FontCacheDirectory:1348667651:/usr/share/fonts/truetype
+File:symbol.ttf
+2;1
+Symbol
+-1;SymbolMT;0;5;5;2;10;1005;219;224;0;1112;1224;1112;1224;0;0;0;0;Regular
+
+FontCacheDirectory:1348669275:/usr/share/fonts/truetype/msttcorefonts
+File:Courier_New_Bold_Italic.ttf
+2;1
+Courier New
+-1;CourierNewPS-BoldItalicMT;2;8;5;1;65535;832;300;132;0;938;1132;938;1132;0;0;0;0;Negreta cursiva
+
+File:Arial_Bold_Italic.ttf
+2;1
+Arial
+-1;Arial-BoldItalicMT;2;8;5;2;65535;905;211;116;0;1715;1116;1715;1116;0;0;0;0;Negreta cursiva
+
+File:Times_New_Roman_Italic.ttf
+2;1
+Times New Roman
+-1;TimesNewRomanPS-ItalicMT;2;5;5;2;65535;891;216;107;0;1617;1107;1617;1107;0;0;0;0;cursiva
+
+File:Arial_Black.ttf
+2;1
+Arial Black
+-1;Arial-Black;0;5;5;2;65535;1100;309;409;0;1880;1409;1880;1409;0;0;0;0;Normal
+
+File:Courier_New.ttf
+2;1
+Courier New
+-1;CourierNewPSMT;0;5;5;1;65535;832;300;132;0;658;1132;658;1132;0;0;0;0;Normal
+
+File:Verdana_Bold_Italic.ttf
+2;1
+Verdana
+-1;Verdana-BoldItalic;2;8;5;2;65535;1005;209;214;0;1870;1214;1870;1214;0;0;0;0;Negreta cursiva
+
+File:Arial_Italic.ttf
+2;1
+Arial
+-1;Arial-ItalicMT;2;5;5;2;65535;905;211;116;0;1598;1116;1598;1116;0;0;0;0;Cursiva
+
+File:Georgia_Bold.ttf
+2;1
+Georgia
+-1;Georgia-Bold;0;8;5;2;65535;916;219;135;0;1485;1135;1485;1135;0;0;0;0;Negreta
+
+File:Georgia_Italic.ttf
+2;1
+Georgia
+-1;Georgia-Italic;2;5;5;2;65535;916;219;135;0;1391;1135;1391;1135;0;0;0;0;Cursiva
+
+File:Trebuchet_MS_Bold.ttf
+2;1
+Trebuchet MS
+-1;TrebuchetMS-Bold;0;8;5;2;65535;938;222;160;0;1229;1160;1229;1160;0;0;0;8;Negreta
+
+File:Times_New_Roman.ttf
+2;1
+Times New Roman
+-1;TimesNewRomanPSMT;0;5;5;2;65535;891;216;107;0;2596;1107;2596;1107;0;0;0;0;Normal
+
+File:Georgia_Bold_Italic.ttf
+2;1
+Georgia
+-1;Georgia-BoldItalic;2;8;5;2;65535;916;219;135;0;1596;1135;1596;1135;0;0;0;0;Negreta cursiva
+
+File:Georgia.ttf
+2;1
+Georgia
+-1;Georgia;0;5;5;2;65535;916;219;135;0;1339;1135;1339;1135;0;0;0;0;Normal
+
+File:Webdings.ttf
+2;1
+Webdings
+-1;Webdings;0;5;5;2;10;799;200;-1;0;4001;999;4001;999;0;0;0;0;Regular
+
+File:Courier_New_Bold.ttf
+2;1
+Courier New
+-1;CourierNewPS-BoldMT;0;8;5;1;65535;832;300;132;0;747;1132;747;1132;0;0;0;0;Negreta
+
+File:Arial_Bold.ttf
+2;1
+Arial
+-1;Arial-BoldMT;0;8;5;2;65535;905;211;116;0;2660;1116;2660;1116;0;0;0;0;Negreta
+
+File:Andale_Mono.ttf
+2;1
+Andale Mono
+-1;AndaleMono;0;5;5;1;65535;907;217;124;0;600;1124;600;1124;0;0;0;8;Normal
+
+File:Impact.ttf
+2;1
+Impact
+-1;Impact;0;5;3;2;65535;1008;210;218;0;1390;1218;1390;1218;0;0;0;0;Normal
+
+File:Times_New_Roman_Bold.ttf
+2;1
+Times New Roman
+-1;TimesNewRomanPS-BoldMT;0;8;5;2;65535;891;216;107;0;2591;1107;2591;1107;0;0;0;0;Negreta
+
+File:Comic_Sans_MS_Bold.ttf
+2;1
+Comic Sans MS
+-1;ComicSansMS-Bold;0;8;5;2;65535;1102;291;393;0;1340;1393;1340;1393;0;0;0;0;Negreta
+
+File:Arial.ttf
+2;1
+Arial
+-1;ArialMT;0;5;5;2;65535;905;211;116;0;2692;1116;2692;1116;0;0;0;0;Normal
+
+File:Verdana.ttf
+2;1
+Verdana
+-1;Verdana;0;5;5;2;65535;1005;209;214;0;1495;1214;1495;1214;0;0;0;0;Normal
+
+File:Trebuchet_MS.ttf
+2;1
+Trebuchet MS
+-1;TrebuchetMS;0;5;5;2;65535;938;222;160;0;1167;1160;1167;1160;0;0;0;8;Normal
+
+File:Comic_Sans_MS.ttf
+2;1
+Comic Sans MS
+-1;ComicSansMS;0;5;5;2;65535;1102;291;393;0;1278;1393;1278;1393;0;0;0;0;Normal
+
+File:Verdana_Bold.ttf
+2;1
+Verdana
+-1;Verdana-Bold;0;8;5;2;65535;1005;209;214;0;1780;1214;1780;1214;0;0;0;0;Negreta
+
+File:Trebuchet_MS_Bold_Italic.ttf
+2;1
+Trebuchet MS
+-1;Trebuchet-BoldItalic;2;8;5;2;65535;938;222;160;0;1262;1160;1262;1160;0;0;0;8;Negreta cursiva
+
+File:Trebuchet_MS_Italic.ttf
+2;1
+Trebuchet MS
+-1;TrebuchetMS-Italic;2;5;5;2;65535;938;222;160;0;1216;1160;1216;1160;0;0;0;8;Cursiva
+
+File:Courier_New_Italic.ttf
+2;1
+Courier New
+-1;CourierNewPS-ItalicMT;2;5;5;1;65535;832;300;132;0;867;1132;867;1132;0;0;0;0;Cursiva
+
+File:Verdana_Italic.ttf
+2;1
+Verdana
+-1;Verdana-Italic;2;5;5;2;65535;1005;209;214;0;1591;1214;1591;1214;0;0;0;0;Cursiva
+
+File:Times_New_Roman_Bold_Italic.ttf
+2;1
+Times New Roman
+-1;TimesNewRomanPS-BoldItalicMT;2;8;5;2;65535;891;216;107;0;1753;1107;1753;1107;0;0;0;0;Negreta cursiva
+
+FontCacheDirectory:1348669295:/usr/share/fonts/truetype/openoffice
+File:opens___.ttf
+2;1
+OpenSymbol
+-1;OpenSymbol;0;5;5;2;65535;799;200;-1;0;1262;999;1262;999;0;0;0;8;Regular
+
+FontCacheDirectory:1345450085:/usr/share/fonts/truetype/ttf-dejavu
+File:DejaVuSans-BoldOblique.ttf
+2;1
+DejaVu Sans
+-1;DejaVuSans-BoldOblique;1;8;5;2;65535;928;235;163;0;3070;1163;3070;1163;0;0;0;0;Bold Oblique
+
+File:DejaVuSansMono-Oblique.ttf
+2;1
+DejaVu Sans Mono
+-1;DejaVuSansMono-Oblique;1;5;5;1;65535;928;235;163;0;1151;1163;1151;1163;0;0;0;0;Oblique
+
+File:DejaVuSansCondensed-Bold.ttf
+2;1
+DejaVu Sans Condensed
+-1;DejaVuSansCondensed-Bold;0;8;4;2;65535;928;235;163;0;2739;1163;2739;1163;0;0;0;0;Condensed Bold
+
+File:DejaVuSerifCondensed-Bold.ttf
+2;1
+DejaVu Serif Condensed
+-1;DejaVuSerifCondensed-Bold;0;8;4;2;65535;938;235;173;0;2368;1173;2368;1173;0;0;0;0;Condensed Bold
+
+File:DejaVuSansMono.ttf
+2;1
+DejaVu Sans Mono
+-1;DejaVuSansMono;0;5;5;1;65535;928;235;163;0;1275;1163;1275;1163;0;0;0;0;Book
+
+File:DejaVuSerif.ttf
+2;1
+DejaVu Serif
+-1;DejaVuSerif;0;5;5;2;65535;928;235;163;0;2448;1163;2448;1163;0;0;0;0;Book
+
+File:DejaVuSansCondensed.ttf
+2;1
+DejaVu Sans Condensed
+-1;DejaVuSansCondensed;0;5;4;2;65535;928;235;163;0;2430;1163;2430;1163;0;0;0;0;Condensed
+
+File:DejaVuSerifCondensed.ttf
+2;1
+DejaVu Serif Condensed
+-1;DejaVuSerifCondensed;0;5;4;2;65535;928;235;163;0;2203;1163;2203;1163;0;0;0;0;Condensed
+
+File:DejaVuSans.ttf
+2;1
+DejaVu Sans
+-1;DejaVuSans;0;5;5;2;65535;928;235;163;0;2700;1163;2700;1163;0;0;0;0;Book
+
+File:DejaVuSans-ExtraLight.ttf
+2;1
+DejaVu Sans Light
+-1;DejaVuSans-ExtraLight;0;2;5;2;65535;928;235;163;0;2391;1163;2391;1163;0;0;0;0;ExtraLight
+
+File:DejaVuSerifCondensed-Italic.ttf
+2;1
+DejaVu Serif Condensed
+-1;DejaVuSerifCondensed-Italic;2;5;4;2;65535;928;235;163;0;2240;1163;2240;1163;0;0;0;0;Condensed
+
+File:DejaVuSerif-Bold.ttf
+2;1
+DejaVu Serif
+-1;DejaVuSerif-Bold;0;8;5;2;65535;938;235;173;0;2630;1173;2630;1173;0;0;0;0;Bold
+
+File:DejaVuSansMono-BoldOblique.ttf
+2;1
+DejaVu Sans Mono
+-1;DejaVuSansMono-BoldOblique;1;8;5;1;65535;928;235;163;0;1235;1163;1235;1163;0;0;0;0;Bold Oblique
+
+File:DejaVuSans-Oblique.ttf
+2;1
+DejaVu Sans
+-1;DejaVuSans-Oblique;1;5;5;2;65535;928;235;163;0;2674;1163;2674;1163;0;0;0;0;Oblique
+
+File:DejaVuSansCondensed-BoldOblique.ttf
+2;1
+DejaVu Sans Condensed
+-1;DejaVuSansCondensed-BoldOblique;1;8;4;2;65535;928;235;163;0;2764;1163;2764;1163;0;0;0;0;Condensed Bold Oblique
+
+File:DejaVuSerif-BoldItalic.ttf
+2;1
+DejaVu Serif
+-1;DejaVuSerif-BoldItalic;2;8;5;2;65535;938;235;173;0;2665;1173;2665;1173;0;0;0;0;Bold Italic
+
+File:DejaVuSerifCondensed-BoldItalic.ttf
+2;1
+DejaVu Serif Condensed
+-1;DejaVuSerifCondensed-BoldItalic;2;8;4;2;65535;938;235;173;0;2398;1173;2398;1173;0;0;0;0;Condensed Bold Italic
+
+File:DejaVuSansCondensed-Oblique.ttf
+2;1
+DejaVu Sans Condensed
+-1;DejaVuSansCondensed-Oblique;1;5;4;2;65535;928;235;163;0;2407;1163;2407;1163;0;0;0;0;Condensed Oblique
+
+File:DejaVuSansMono-Bold.ttf
+2;1
+DejaVu Sans Mono
+-1;DejaVuSansMono-Bold;0;8;5;1;65535;928;235;163;0;1177;1163;1177;1163;0;0;0;0;Bold
+
+File:DejaVuSerif-Italic.ttf
+2;1
+DejaVu Serif
+-1;DejaVuSerif-Italic;2;5;5;2;65535;928;235;163;0;2489;1163;2489;1163;0;0;0;0;Italic
+
+File:DejaVuSans-Bold.ttf
+2;1
+DejaVu Sans
+-1;DejaVuSans-Bold;0;8;5;2;65535;928;235;163;0;3044;1163;3044;1163;0;0;0;0;Bold
+
+FontCacheDirectory:1348665152:/usr/share/fonts/truetype/ttf-liberation
+File:LiberationMono-Bold.ttf
+2;1
+Liberation Mono
+-1;LiberationMono-Bold;0;8;5;1;65535;832;300;132;0;640;1132;640;1132;0;0;0;8;Bold
+
+File:LiberationMono-BoldItalic.ttf
+2;1
+Liberation Mono
+-1;LiberationMono-BoldItalic;2;8;5;1;65535;832;300;132;0;791;1132;791;1132;0;0;0;8;Bold Italic
+
+File:LiberationMono-Italic.ttf
+2;1
+Liberation Mono
+-1;LiberationMono-Italic;2;5;5;1;65535;832;300;132;0;798;1132;798;1132;0;0;0;8;Italic
+
+File:LiberationMono-Regular.ttf
+2;1
+Liberation Mono
+-1;LiberationMono-Regular;0;5;5;1;65535;832;300;132;0;632;1132;632;1132;0;0;0;8;Regular
+
+File:LiberationSans-Regular.ttf
+2;1
+Liberation Sans
+-1;LiberationSans-Regular;0;5;5;2;65535;905;211;116;0;1253;1116;1253;1116;0;0;0;8;Regular
+
+File:LiberationSerif-Italic.ttf
+2;1
+Liberation Serif
+-1;LiberationSerif-Italic;2;5;5;2;65535;891;216;107;0;1263;1107;1263;1107;0;0;0;8;Italic
+
+File:LiberationSerif-Bold.ttf
+2;1
+Liberation Serif
+-1;LiberationSerif-Bold;0;8;5;2;65535;891;216;107;0;1266;1107;1266;1107;0;0;0;8;Bold
+
+File:LiberationSans-BoldItalic.ttf
+2;1
+Liberation Sans
+-1;LiberationSans-BoldItalic;2;8;5;2;65535;905;211;116;0;1336;1116;1336;1116;0;0;0;8;Bold Italic
+
+File:LiberationSerif-BoldItalic.ttf
+2;1
+Liberation Serif
+-1;LiberationSerif-BoldItalic;2;8;5;2;65535;891;216;107;0;1328;1107;1328;1107;0;0;0;8;Bold Italic
+
+File:LiberationSans-Italic.ttf
+2;1
+Liberation Sans
+-1;LiberationSans-Italic;2;5;5;2;65535;905;211;116;0;1333;1116;1333;1116;0;0;0;8;Italic
+
+File:LiberationSans-Bold.ttf
+2;1
+Liberation Sans
+-1;LiberationSans-Bold;0;8;5;2;65535;905;211;116;0;1246;1116;1246;1116;0;0;0;8;Bold
+
+File:LiberationSerif-Regular.ttf
+2;1
+Liberation Serif
+-1;LiberationSerif-Regular;0;5;5;2;65535;891;216;107;0;1182;1107;1182;1107;0;0;0;8;Regular
+
+FontCacheDirectory:1350463965:/home/jlopez/phpdocx_pro/lib/openoffice/openoffice.org3/program/../basis-link/share/psprint/fontmetric
+EmptyFontCacheDirectory:1349249366:/home/jlopez/phpdocx_pro/lib/openoffice/openoffice.org3/program/../program/../.openoffice.org/3/user/psprint/fontmetric
+FontCacheDirectory:1350463958:/home/jlopez/phpdocx_package/lib/openoffice/openoffice.org/basis3.4/share/fonts/truetype
+File:DejaVuSerifCondensed-Italic.ttf
+2;1
+DejaVu Serif Condensed
+-1;DejaVuSerifCondensed-Italic;2;5;4;2;65535;928;235;163;0;2235;1163;2235;1163;0;0;0;0;Condensed Italic
+
+FontCacheDirectory:1350463965:/home/jlopez/phpdocx_package/lib/openoffice/openoffice.org3/program/../basis-link/share/psprint/fontmetric
+File:Times-Roman.afm
+3;1
+Times
+-1;Times-Roman;0;6;0;2;91;898;218;116;0;1000;662;1000;662;0;0;0;Roman
+
+File:Courier.afm
+3;1
+Courier
+-1;Courier;0;6;0;1;91;805;250;55;0;715;562;715;562;0;0;0
+
+File:Palatino-Italic.afm
+3;1
+Palatino
+-1;Palatino-Italic;2;6;0;2;91;918;276;194;0;1010;692;1010;692;0;0;0;Italic
+
+File:Courier-Bold.afm
+3;1
+Courier
+-1;Courier-Bold;0;8;0;1;91;801;250;51;0;749;562;749;562;0;0;0;Bold
+
+File:ITCBookman-LightItalic.afm
+3;1
+ITC Bookman
+-1;Bookman-LightItalic;2;3;0;2;91;883;250;133;0;1269;681;1269;681;0;0;0;Light Italic
+
+File:ITCBookman-Demi.afm
+3;1
+ITC Bookman
+-1;Bookman-Demi;0;7;0;2;91;934;250;184;0;1346;681;1346;681;0;0;0;Demi
+
+File:Helvetica.afm
+3;1
+Helvetica
+-1;Helvetica;0;6;0;2;91;931;225;156;0;1000;718;1000;718;0;0;0
+
+File:NewCenturySchlbk-Bold.afm
+3;1
+New Century Schoolbook
+-1;NewCenturySchlbk-Bold;0;8;0;2;91;988;250;238;0;1000;722;1000;722;0;0;0;Bold
+
+File:NewCenturySchlbk-BoldItalic.afm
+3;1
+New Century Schoolbook
+-1;NewCenturySchlbk-BoldItalic;2;8;0;2;91;991;250;241;0;1147;722;1147;722;0;0;0;Bold Italic
+
+File:ITCZapfChancery-MediumItalic.afm
+3;1
+ITC Zapf Chancery
+-1;ZapfChancery-MediumItalic;2;6;0;2;91;831;314;145;0;1065;708;1065;708;0;0;0;Medium Italic
+
+File:ZapfDingbats.afm
+3;1
+ITC Zapf Dingbats
+-1;ZapfDingbats;0;6;0;2;10;820;143;-37;0;981;820;981;820;0;0;0
+
+File:ITCAvantGarde-Book.afm
+3;1
+ITC Avant Garde Gothic
+-1;AvantGarde-Book;0;3;0;2;91;955;222;177;0;1148;740;1148;740;0;0;0;Book
+
+File:Times-Italic.afm
+3;1
+Times
+-1;Times-Italic;2;6;0;2;91;883;217;100;0;1010;653;1010;653;0;0;0;Italic
+
+File:Helvetica-Oblique.afm
+3;1
+Helvetica
+-1;Helvetica-Oblique;2;6;0;2;91;931;225;156;0;1116;718;1116;718;0;0;0;Oblique
+
+File:ITCAvantGarde-Demi.afm
+3;1
+ITC Avant Garde Gothic
+-1;AvantGarde-Demi;0;7;0;2;91;1021;251;272;0;1222;740;1222;740;0;0;0;Demi
+
+File:ITCBookman-Light.afm
+3;1
+ITC Bookman
+-1;Bookman-Light;0;3;0;2;91;908;251;159;0;1266;681;1266;681;0;0;0;Light
+
+File:Courier-Oblique.afm
+3;1
+Courier
+-1;Courier-Oblique;2;6;0;1;91;805;250;55;0;849;562;849;562;0;0;0;Oblique
+
+File:NewCenturySchlbk-Italic.afm
+3;1
+New Century Schoolbook
+-1;NewCenturySchlbk-Italic;2;6;0;2;91;958;250;208;0;994;722;994;722;0;0;0;Italic
+
+File:Courier-BoldOblique.afm
+3;1
+Courier
+-1;Courier-BoldOblique;2;8;0;1;91;801;250;51;0;869;562;869;562;0;0;0;Bold Oblique
+
+File:ITCAvantGarde-DemiOblique.afm
+3;1
+ITC Avant Garde Gothic
+-1;AvantGarde-DemiOblique;2;7;0;2;91;1021;251;272;0;1256;740;1256;740;0;0;0;Demi Oblique
+
+File:Palatino-BoldItalic.afm
+3;1
+Palatino
+-1;Palatino-BoldItalic;2;8;0;2;91;926;271;197;0;1073;681;1073;681;0;0;0;Bold Italic
+
+File:Times-Bold.afm
+3;1
+Times
+-1;Times-Bold;0;8;0;2;91;935;218;153;0;1000;676;1000;676;0;0;0;Bold
+
+File:Palatino-Roman.afm
+3;1
+Palatino
+-1;Palatino-Roman;0;6;0;2;91;927;283;210;0;1021;692;1021;692;0;0;0;Roman
+
+File:ITCAvantGarde-BookOblique.afm
+3;1
+ITC Avant Garde Gothic
+-1;AvantGarde-BookOblique;2;3;0;2;91;955;222;177;0;1279;740;1279;740;0;0;0;Book Oblique
+
+File:ITCBookman-DemiItalic.afm
+3;1
+ITC Bookman
+-1;Bookman-DemiItalic;2;7;0;2;91;941;250;191;0;1333;681;1333;681;0;0;0;Demi Italic
+
+File:Palatino-Bold.afm
+3;1
+Palatino
+-1;Palatino-Bold;0;8;0;2;91;924;266;190;0;1000;681;1000;681;0;0;0;Bold
+
+File:NewCenturySchlbk-Roman.afm
+3;1
+New Century Schoolbook
+-1;NewCenturySchlbk-Roman;0;6;0;2;91;965;250;215;0;1000;722;1000;722;0;0;0;Roman
+
+File:Helvetica-BoldOblique.afm
+3;1
+Helvetica
+-1;Helvetica-BoldOblique;2;8;0;2;91;962;228;190;0;1114;718;1114;718;0;0;0;Bold Oblique
+
+File:Helvetica-Bold.afm
+3;1
+Helvetica
+-1;Helvetica-Bold;0;8;0;2;91;962;228;190;0;1003;718;1003;718;0;0;0;Bold
+
+File:Times-BoldItalic.afm
+3;1
+Times
+-1;Times-BoldItalic;2;8;0;2;91;921;218;139;0;996;669;996;669;0;0;0;Bold Italic
+
+File:Symbol.afm
+3;1
+Symbol
+-1;Symbol;0;6;0;2;10;1010;293;303;0;1090;1010;1090;1010;0;0;0
+
+EmptyFontCacheDirectory:1349249366:/home/jlopez/phpdocx_package/lib/openoffice/openoffice.org3/program/../program/../.openoffice.org/3/user/psprint/fontmetric

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:setTemplateSymbol pdx:symbolValue="|" />
+        <pdx:replaceVariableByText pdx:parseLineBreaks="true">
+            <pdx:variable pdx:variableName="FIRST" >
+                <pdx:data pdx:dataId="" pdx:dataType="text">Hello World!</pdx:data>
+            </pdx:variable>
+        </pdx:replaceVariableByText>
+    </pdx:templateVariables>
+</pdx:document>

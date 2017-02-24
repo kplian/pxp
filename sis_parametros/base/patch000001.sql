@@ -1689,3 +1689,16 @@ ALTER TABLE param.tcolumnas_archivo_excel
   ADD COLUMN nombre_columna_tabla VARCHAR(20);
 
 /***********************************F-SCP-GSS-PARAM-0-20/12/2016*****************************************/
+
+/***********************************I-SCP-GSS-PARAM-0-03/02/2017*****************************************/
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_estacion VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_punto_venta VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_cod_no_iata VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-GSS-PARAM-0-03/02/2017*****************************************/

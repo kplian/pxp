@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+    	<pdx:addProperties>
+            <pdx:title>The title of the document.</pdx:title>
+            <pdx:creator>The autor of the document.</pdx:creator>
+            <pdx:description>A description of the document.</pdx:description>
+        </pdx:addProperties>
+        <pdx:docxSettings>
+            <pdx:updateFields pdx:value="true"/>
+        </pdx:docxSettings>
+    </pdx:settings>
+</pdx:document>

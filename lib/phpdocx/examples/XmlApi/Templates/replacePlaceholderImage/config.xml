@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:config>
+        <pdx:template pdx:path="/var/www/phpdocx/examples/XmlApi/files/placeholderImage.docx" />
+        <pdx:output pdx:name="output" pdx:type="docx" />
+    </pdx:config>
+</pdx:document>

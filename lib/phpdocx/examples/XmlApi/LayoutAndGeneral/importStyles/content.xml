@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This is the resulting paragraph with the "CrazyStyle".</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+                <pdx:paragraphStyle>
+                    <pdx:pStyle pdx:value="crazyStyle" />
+                </pdx:paragraphStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

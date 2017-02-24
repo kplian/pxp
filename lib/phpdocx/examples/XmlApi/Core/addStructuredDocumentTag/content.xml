@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addStructuredDocumentTag pdx:sdtType="comboBox" >
+            <pdx:alias pdx:value="Combo Box" />
+            <pdx:listItems>
+                <pdx:item pdx:value="1">First Choice</pdx:item>
+                <pdx:item pdx:value="2">Second choice</pdx:item>
+                <pdx:item pdx:value="3">Third choice</pdx:item>
+            </pdx:listItems>
+            <pdx:paragraphStyle>
+                <pdx:bold pdx:value="true" />
+                <pdx:color pdx:value="FF0000" />
+                <pdx:font pdx:value="Argelian" />
+                <pdx:fontSize pdx:value="12" />
+                <pdx:italic pdx:value="true" />
+                <pdx:placeholderText pdx:value="Choose a value or write it down" />
+                <pdx:underline pdx:value="true" />
+            </pdx:paragraphStyle>
+        </pdx:addStructuredDocumentTag>
+        <pdx:addStructuredDocumentTag pdx:sdtType="date" >
+            <pdx:alias pdx:value="Date Picker" />
+            <pdx:paragraphStyle>
+                <pdx:alias pdx:value="Combo Box" />
+                <pdx:fontSize pdx:value="14" />
+                <pdx:italic pdx:value="true" />
+                <pdx:color pdx:value="777777" />
+                <pdx:bold pdx:value="true" />
+                <pdx:font pdx:value="Calibri" />
+                <pdx:placeholderText pdx:value="Choose a date" />
+            </pdx:paragraphStyle>
+        </pdx:addStructuredDocumentTag>
+        <pdx:addStructuredDocumentTag pdx:sdtType="comboBox" >
+            <pdx:alias pdx:value="Dropdown menu" />
+            <pdx:listItems>
+                <pdx:item pdx:value="1">One</pdx:item>
+                <pdx:item pdx:value="2">Two</pdx:item>
+                <pdx:item pdx:value="3">Three</pdx:item>
+            </pdx:listItems>
+            <pdx:paragraphStyle>
+                <pdx:fontSize pdx:value="12" />
+                <pdx:placeholderText pdx:value="Choose a value" />
+            </pdx:paragraphStyle>
+        </pdx:addStructuredDocumentTag>
+        <pdx:addStructuredDocumentTag pdx:sdtType="richText" >
+            <pdx:alias pdx:value="Rich text" />
+            <pdx:paragraphStyle>
+                <pdx:placeholderText pdx:value="This text is locked" />
+                <pdx:lock pdx:value="contentLocked"/>
+            </pdx:paragraphStyle>
+        </pdx:addStructuredDocumentTag>
+    </pdx:content>
+</pdx:document>

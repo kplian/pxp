@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This is just a simple text to help illustrate how to mark a document as final.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Beware that this 'protection' can be easily removed by an expert user.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

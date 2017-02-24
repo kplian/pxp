@@ -1,3 +1,4 @@
+DROP AGGREGATE IF EXISTS pxp.list_br (varchar);
 
 CREATE OR REPLACE FUNCTION pxp.br_cat (
   text,
@@ -16,3 +17,9 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+CREATE AGGREGATE pxp.list_br (text)
+(
+  SFUNC = pxp.br_cat,
+  STYPE = text
+);

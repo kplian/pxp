@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="imageFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addImage pdx:imageAlign="center" pdx:scaling="40">
+                        <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+                        <pdx:imageMargin pdx:spacingTop="0" pdx:spacingRight="20" pdx:spacingBottom="0" pdx:spacingLeft="0" />
+                        <pdx:imagePosition pdx:float="right" />
+                        <pdx:textWrap pdx:value="1" />
+                    </pdx:addImage>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addImage pdx:imageAlign="center" pdx:scaling="40">
+            <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+            <pdx:imageMargin pdx:spacingTop="0" pdx:spacingRight="20" pdx:spacingBottom="0" pdx:spacingLeft="0" />
+            <pdx:textWrap pdx:value="1" />
+        </pdx:addImage>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">There is more than one way to make that the text wraps around an image. Maybe the simplest is the one used here with the option textWrap = 1. You may also placed it on the right using the float option.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBreak pdx:type="line" pdx:number="1" />
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">imageFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Although you can have a little more control using Word fragments. This si so because in the first example the image is in a paragraph of its own while here it is inserted in the same paragraph as this text.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

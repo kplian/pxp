@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We will now add a 3D pie chart to the Word document:</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addChart pdx:chartType="pie3DChart">
+            <pdx:data pdx:dataId="" pdx:type="chart">
+                <pdx:legend>
+                    <pdx:seriesLegend pdx:value="Legend 1" />
+                    <pdx:seriesLegend pdx:value="Legend 2" />
+                    <pdx:seriesLegend pdx:value="Legend 3" />
+                </pdx:legend>
+                <pdx:chartData>
+                    <pdx:series>
+                        <pdx:dataValue pdx:value="20" />
+                    </pdx:series>
+                    <pdx:series>
+                        <pdx:dataValue pdx:value="30" />
+                    </pdx:series>
+                    <pdx:series>
+                        <pdx:dataValue pdx:value="40" />
+                    </pdx:series>
+                </pdx:chartData>
+            </pdx:data>
+            <pdx:rotX pdx:value="20" />
+            <pdx:rotY pdx:value="20" />
+            <pdx:perspective pdx:value="30" />
+            <pdx:chartAlign pdx:value="center" />
+            <pdx:color pdx:value="2" />
+            <pdx:showPercent pdx:value="1" />
+            <pdx:sizeX pdx:value="10"/>
+            <pdx:sizeY pdx:value="5"/>
+            <pdx:chartAlign pdx:value="center"/>
+        </pdx:addChart>
+         <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">And now the same chart in 2D with a different color scheme and without the percentages:</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addChart pdx:chartType="pieChart">
+            <pdx:data pdx:dataId="" pdx:type="chart">
+                <pdx:legend>
+                    <pdx:seriesLegend pdx:value="Legend 1" />
+                    <pdx:seriesLegend pdx:value="Legend 2" />
+                    <pdx:seriesLegend pdx:value="Legend 3" />
+                </pdx:legend>
+                <pdx:chartData>
+                    <pdx:series>
+                        <pdx:dataValue pdx:value="20" />
+                    </pdx:series>
+                    <pdx:series>
+                        <pdx:dataValue pdx:value="30" />
+                    </pdx:series>
+                    <pdx:series>
+                        <pdx:dataValue pdx:value="40" />
+                    </pdx:series>
+                </pdx:chartData>
+            </pdx:data>
+            <pdx:chartAlign pdx:value="center" />
+            <pdx:color pdx:value="3" />
+            <pdx:sizeX pdx:value="10"/>
+            <pdx:sizeY pdx:value="5"/>
+            <pdx:chartAlign pdx:value="center"/>
+        </pdx:addChart>
+    </pdx:content>
+</pdx:document>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:importStyles pdx:src="/var/www/phpdocx/examples/XmlApi/files/TemplateStyles.docx" pdx:importType="merge" pdx:styleIdentifier="styleName" >
+            <pdx:styles>
+                <pdx:style pdx:name="crazyStyle" />
+            </pdx:styles>
+        </pdx:importStyles>
+    </pdx:settings>
+</pdx:document>

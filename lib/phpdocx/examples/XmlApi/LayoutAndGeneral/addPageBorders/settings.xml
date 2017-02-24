@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document  xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:addPageBorders>
+            <pdx:top pdx:color="FF0000" pdx:width="12" />
+            <pdx:right pdx:width="12" />
+            <pdx:bottom pdx:width="12" />
+            <pdx:left pdx:width="12" />
+        </pdx:addPageBorders>
+    </pdx:settings>
+</pdx:document>

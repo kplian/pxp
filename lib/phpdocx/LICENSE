@@ -1,0 +1,46 @@
+Copyright (c) Narcea Producciones Multimedia S.L.
+
+General PHPDOCX license conditions
+
+1. This irrevocable PERPETUAL LICENSE covers the current version package of PHPDOCX.
+
+2. This license gives the holder the right to install the PHPDOCX library package  in ONE server.
+
+3. This license also grants the holder the right to install the PHPDOCX library package in a private network, 
+i.e. localhost or a LAN, for development and testing purposes but NOT  for production.
+
+4. The license holder is allowed to modify the source code of the PHPDOCX library in order to further adapt 
+it to his needs but in no event will the original copyright holders of PHPDOCX be held responsible for action or 
+actions resulting from any modifications of the source.
+
+5. The license holder may not redistribute PHPDOCX in its current version or with any modification of the 
+source code introduced by the holder.
+
+6. The license holder CAN NOT redistribute PHPDOCX package as part of other product without the explicit 
+permission by writing of the copyright holder of PHPDOCX.
+
+7. The license holder will not remove or modify any copyright notice from any of the source files included in 
+the PHPDOCX package.
+
+Limitations of use
+The license holder may NOT offer, for free or for a fee, the services provided by PHPDOCX in conjunction with 
+its own services as part of a SaaS or a PaaS.
+
+Limitation of Liability
+In no event, except for intellectual property claim, shall the copyright holders of PHPDOCX be liable for any 
+damages whatsoever, including, but not restricted to, lost revenue or profit or other direct, indirect, special, 
+incidental or consequential damages, except to the extent invariable law, if any, provides otherwise.
+
+Limited Warranty
+PHPDOCX warrants that licensor is owner of the software with authority to license the software to licensee and that 
+the software does not infringe third party intellectual property rights. Licensor agrees to indemnify, defend 
+and hold harmless licensee from any claims either that licensor does not owns the software or that the software 
+infringes a third party's intellectual property.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ARE DISCLAIMED. IN NO EVENT SHALL NARCEA PRODUCCIONES MULTIMEDIA S.L. OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

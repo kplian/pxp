@@ -255,12 +255,12 @@ class ExcelInput{
                             if($columna['tipo_valor'] == 'date') {
                                 $valorColumna = $this->formatearFecha($celda->getValue(),$columna['formato_fecha'],$columna['anio_fecha']);
                             }else{
-                                if($columna['tipo_valor']=='numeric'){
+                                /*if($columna['tipo_valor']=='numeric'){
                                     //$valorColumna = str_replace(',','',$celda->getValue());
                                     $valorColumna = $this->formatearNumero($celda->getValue());
-                                }else{
+                                }else{*/
                                     $valorColumna = $celda->getValue();
-                                }
+                                //}
                             }
                             /*if ($valorColumna == null)
                                 break;*/

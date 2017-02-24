@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="commentFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addComment pdx:initials="PT" pdx:author="PHPDocX Team" pdx:date="10 September 2000">
+                        <pdx:textDocument>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">comment</pdx:data>
+                            <pdx:paragraphStyle />             
+                        </pdx:textDocument>
+                        <pdx:textComment>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">The comment we want to insert.</pdx:data>
+                        </pdx:textComment>
+                    </pdx:addComment>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Here comes the </pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">commentFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text"> and some other text.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

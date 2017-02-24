@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:utilities>
+        <pdx:searchAndHighlight pdx:source="/var/www/phpdocx/examples/XmlApi/files/second.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/DocxUtilities/searchAndHighlight/output_searchAndHighlight.docx" pdx:searchTerm="data" pdx:highlightColor="green">
+            <pdx:valueContext pdx:value="document" />
+            <pdx:valueContext pdx:value="endnotes" />
+            <pdx:valueContext pdx:value="comments" />
+            <pdx:valueContext pdx:value="headersAndFooters" />
+            <pdx:valueContext pdx:value="footnotes" />
+        </pdx:searchAndHighlight>
+    </pdx:utilities>
+</pdx:document>

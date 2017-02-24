@@ -1,0 +1,32 @@
+[settings]
+; absolute path to the temp dir. If empty the default system tmp directory will be used
+temp_path = ""
+
+; if set to true: detects if the contents are UTF-8 encoded and if not encodes them
+; if set to false do nothing
+encode_to_UTF8 = "false"
+
+; default document language
+language = "en-US"
+
+; default paper size
+paper_size = "A4"
+
+; right to left languages config
+;bidi = "true"
+;rtl = "true"
+
+[license]
+; PHPDocX license code
+code = ""
+; subdomain (PRO license), domain (Corporate license) or IP (Enterprise license)
+value = ""
+
+[transform]
+; transform options. Only available for Corporate and Enterprise licenses. OpenOffice by default
+
+; libreoffice or openoffice
+;method = "libreoffice"
+
+; libreoffice installation path, absolute path
+;path = "/opt/libreoffice4.3/program/soffice"

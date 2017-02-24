@@ -1,0 +1,113 @@
+﻿<h2>Global RTL settings</h2>
+<p>If you mainly use PHPDocX to generate Word documents written in a &quot;right to left&quot; language, you may 
+save some typing by establishing global RTL properties in the phpdocxconfig.ini file that is
+located in the config folder (that sits directly in the root folder of the PHPDocX installation).</p>
+
+<p>In order to do so you should only uncomment (remove the initial &quot;;&quot;) the following two lines in phpdocxconfig.ini:</p>
+
+<pre>; bidi = "true"
+; rtl = "true"</pre>
+
+<p>After doing so all your Word content will be assumed to be &quot;right to left&quot; unless explicitely stated.</p>
+
+<h2>RTL settings per document</h2>
+<p>Unless your main source of content for your Word documents come from &quot;right to left&quot; sources you may not want to modify the
+global configuration settings of PHPDocX but rather to do so just for specific documents.</p>
+<p>Whenever you are certain that a document is going mainly to include &quot;right to left&quot; content you may instruct PHPDocX to
+treat content by default as RTL by calling the setRTL method just after the standard call to the constructor:</p>
+<pre>
+require_once 'pathToPHPDocX/classes/CreateDocx.inc';
+$docx = new CreateDocx();
+$docx->setRTL();
+</pre>
+
+<p>The setRTL method accepts an array as parameter with keys 'bidi' and 'rtl' that are set by default to 'on' but that you can state
+explicitely to 'off' in case you want to override the global RTL settings discussed in the previous heading.</p>
+
+<p>The setRTL method does not only instruct PHPDocX about the fact that the Word content is supposed to be &quot;right to left&quot; but it also 
+modifies some general page layout properties regarding gutters, footnote and endnote separators, etcetera.</p>
+
+<h2>RTL settings for specific content</h2>
+
+<p>Although you can refer to the API documentation for the use of the bidi and rtl options available for each method we would like to include here
+some general comments that will be useful to understand the general logic of the process.</p>
+
+<p>If you have already set the global PHPDocX RTL properties or you used the setRTL method you may ignore what follows but we guess that there may pop
+up plenty of situations were left to right  and right to left content may be mixed in a given document so one may need to know how to switch from one to the other.</p>
+
+<p><strong>WARNING:</strong> we do not recommend to use setRTL(array('bidi' => 'on'/'off', 'rtl' => 'on'/'off'))to switch the RTL properties from one part of the document to another 
+because this method sets some document wide properties and you may get unexpected results.</p>
+
+<h3>Paragraph wide properties</h3>
+
+<p>In order to properly format left to right paragraphs one should generally set the 'bidi' optional parameter to 'on'.</p>
+<p>This parameter is available in the following methods (we highlight in bold the parameters that accept that option):</p>
+<ul>
+	<li>addComment(<strong>$options</strong>)</li>
+	<li>addEndnote(<strong>$options</strong>)</li>
+	<li>addFootnote(<strong>$options</strong>)</li>
+	<li>addDateAndHour(<strong>$options</strong>)</li>
+	<li>addHeading($text, $level, <strong>$options</strong>)</li>
+	<li>addmergefield($name, $mergeParameters, <strong>$options</strong>)</li>
+	<li>addPageNumber($type, <strong>$options</strong>)</li>
+	<li>addSimpleField($fieldName, $type, $format, <strong>$options</strong>)</li>
+	<li>addSection($sectionType, $paperType, <strong>$options</strong>)</li>
+	<li>addText($textParams, <strong>$paragraphParams</strong>)</li>
+	<li>modifyPageLayout($paperType, <strong>$options</strong>)</li>
+</ul>
+
+<h3>Text formatting properties</h3>
+<p>The other required formatting property 'rtl' can be equally set to 'on' in the above methods with the only difference that the addText 
+method accepts also the rtl option in the $textParams variable to format the individual runs of text that may compose the whole paragraph.</p>
+
+<h3>Left to right tables</h3>
+<p>The formatting of tables is equally simple, you only need to set the 'bidi' option to 'on' in the $tableProperties parameter of the addTable method.</p>
+<p><strong>WARNING:</strong> if you include WORDML fragments in the table individual cells the content of those fragments should be correctly set up 
+	for proper right to left dispaly.</p>
+	
+<h3>A simple example</h3>
+<p> we are now going to generate a simple document with some content in hebrew and arabic:</p>
+<pre>
+require_once 'pathToPHPDocX/classes/CreateDocx.inc';
+$docx = new CreateDocx();
+$docx->setDefaultFont('Times New Roman');
+$docx->setRTL();
+$docx->addText('טקסט פשוט בעברית.');
+$docx->addFootnote(
+    array(
+        'textDocument' => array('text' => 'הערת שוליים פשוט בעברית.'),
+        'textFootnote' => 'את הטקסט של הערת השוליים.'
+    )
+);
+$docx->addText('نص بسيط في اللغة العربية.');
+$docx->addFootnote(
+    array(
+        'textDocument' => array('text' => 'حاشية باللغة العربية.'),
+        'textFootnote' => 'نص الحاشية السفلية.'
+    )
+);
+$valuesTable = array(
+    array(
+        'עמודת טקסט בעברית',
+        'العمود النص العربي'
+    ),
+    array(
+        'זהו טקסט התוכן הסלולרי',
+				'هذا هو مضمون النص الخلية'
+    )
+);
+
+$widthTableCols = array(
+    2500,
+    3000
+);
+
+$paramsTable = array(
+    'TBLSTYLEval' => 'MediumShading1PHPDOCX',
+    'size_col' => $widthTableCols
+);
+
+$docx->addTable($valuesTable, $paramsTable);
+
+$docx->createDocx('example_rtl_languages');
+</pre>

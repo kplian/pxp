@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addBookmark pdx:type="start" pdx:name="bookmark_name" />
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Text that has been bookmarked.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBookmark pdx:type="end" pdx:name="bookmark_name" />
+    </pdx:content>
+</pdx:document>

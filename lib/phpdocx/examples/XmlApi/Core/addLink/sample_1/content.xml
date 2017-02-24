@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addLink>
+            <pdx:linkText>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Link to Google</pdx:data>
+            </pdx:linkText>
+            <pdx:linkURL>
+                <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+            </pdx:linkURL>
+        </pdx:addLink>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">And now the same link with some additional formatting:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addLink>
+            <pdx:linkText>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Link to Google in red color and not underlined</pdx:data>
+            </pdx:linkText>
+            <pdx:linkURL>
+                <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+            </pdx:linkURL>
+            <pdx:paragraphStyle>
+                <pdx:color pdx:value="B70000" />
+                <pdx:underline pdx:value="none" />
+            </pdx:paragraphStyle>
+        </pdx:addLink>
+    </pdx:content>
+</pdx:document>

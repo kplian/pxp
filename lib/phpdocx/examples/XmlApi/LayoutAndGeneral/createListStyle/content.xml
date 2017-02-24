@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addList pdx:listType="latin">
+            <pdx:data pdx:type="list">
+                <pdx:item pdx:depth="1">item 1</pdx:item>
+                <pdx:item pdx:depth="2">subitem 1.1</pdx:item>
+                <pdx:item pdx:depth="2">subitem 1.2</pdx:item>
+                <pdx:item pdx:depth="2">subitem 1.3</pdx:item>
+                <pdx:item pdx:depth="1">item 2</pdx:item>
+            </pdx:data>
+        </pdx:addList>
+    </pdx:content>
+</pdx:document>

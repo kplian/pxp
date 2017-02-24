@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We know this looks ugly</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:underline pdx:value="single" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text"> but we only want to illustrate some of the functionality of the addText method.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:bold pdx:value="true" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+            <pdx:paragraphStyle>
+                <pdx:border pdx:color="B70000" pdx:space="8" pdx:style="double" pdx:width="12">
+                    <pdx:top pdx:color="000000" />
+                </pdx:border>
+            </pdx:paragraphStyle>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

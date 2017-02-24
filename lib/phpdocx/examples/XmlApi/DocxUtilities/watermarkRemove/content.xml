@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:utilities>
+        <pdx:watermarkRemove pdx:source="/var/www/phpdocx/examples/XmlApi/files/Watermark.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/DocxUtilities/watermarkRemove/output_watermarkRemove.docx" />
+    </pdx:utilities>
+</pdx:document>

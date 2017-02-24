@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main">
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="imageFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addImage pdx:scaling="50">
+                        <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+                        <pdx:textWrap pdx:value="1" />
+                        <pdx:imagePosition pdx:float="right" />
+                    </pdx:addImage>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="linkFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to Google</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                        <pdx:paragraphStyle>
+                            <pdx:color pdx:value="0000FF" />
+                            <pdx:underline pdx:value="single" />
+                        </pdx:paragraphStyle>
+                    </pdx:addLink>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="footnoteFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addFootnote>
+                        <pdx:textDocument>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">here it is</pdx:data>
+                            <pdx:paragraphStyle />                        
+                        </pdx:textDocument>
+                        <pdx:textFootnote>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">This is the footnote text.</pdx:data>
+                        </pdx:textFootnote>
+                    </pdx:addFootnote>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="textFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addText>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="wordFragment">imageFragment</pdx:data>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">I am going to write a link: </pdx:data>
+                            <pdx:textRunStyle>
+                                <pdx:bold pdx:value="true" />
+                            </pdx:textRunStyle>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="wordFragment">linkFragment</pdx:data>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text"> to illustrate how to include links. </pdx:data>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text"> As you may see is extremely simple to do so and can be done with any other Word element. For example to include  a footnote is also as simple as this: </pdx:data>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="wordFragment">footnoteFragment</pdx:data>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text"> , as you see there is a footnote at the bootom of the page. </pdx:data>
+                            <pdx:textRunStyle>
+                                <pdx:color pdx:value="B70000" />
+                            </pdx:textRunStyle>
+                        </pdx:textRun>
+                    </pdx:addText>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+    </pdx:content>
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceVariableByWordFragment pdx:replaceType="block">
+            <pdx:variable pdx:name="WORDFRAGMENT" pdx:wordFragmentName="textFragment" />
+        </pdx:replaceVariableByWordFragment>
+    </pdx:templateVariables>
+</pdx:document>

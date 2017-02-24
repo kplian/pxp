@@ -1,0 +1,43 @@
+How to generate the TOC when transforming a DOCX file to PDF
+
+1. It is necessary to use the LibreOffice plugin to make the conversion.
+
+2. Open with a text editor the macros file.
+
+This file is located in the home directory of the user that is going to make the conversion.
+For example with the default configuration for the apache web server, it is located in the path /var/www/.config/libreoffice/4/user/basic/Standard/Module1.xba.
+Or using FastCGI as PHP handler, this file is located at .config/libreoffice/4/user/basic/Standard/Module1.xba of ther user's folder.
+If the directory .config/libreoffice, doesn’t exists, make a first conversion so LibreOffice generates this path structure.
+
+3. In the opened file, add the following lines:
+
+Sub SaveToPDF(cFile)
+
+  Dim oPropertyValue As new com.sun.star.beans.PropertyValue
+
+  cURL = convertToURL(cFile)
+
+  oPropertyValue.Name = &quot;Hidden&quot;
+  oPropertyValue.Value =  True
+  oDoc = StarDesktop.loadComponentFromURL(cURL, &quot;_blank&quot;, 0, Array(oPropertyValue))
+
+  dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+  dispatcher.executeDispatch(oDoc.CurrentController.Frame, &quot;.uno:UpdateAllIndexes&quot;, &quot;&quot;, 0, Array())
+
+  GlobalScope.BasicLibraries.LoadLibrary(&quot;Tools&quot;)
+  cFileNew = Tools.Strings.GetFileNameWithoutExtension(cFile) + &quot;.pdf&quot;
+  cURL = ConvertToURL(cFileNew)
+
+  oPropertyValue.Name = &quot;FilterName&quot;
+  oPropertyValue.Value =  &quot;writer_pdf_Export&quot;
+  oDoc.storeToURL(cURL, Array(oPropertyValue))
+
+  oDoc.close(True)
+
+End Sub
+
+Just after Sub Main End Sub.
+
+4. You can now do the conversion setting the toc parameter as true:
+
+$docx->transformDocument('example_text.docx', 'example_text.pdf', null, array('toc' => true));

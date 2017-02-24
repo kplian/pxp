@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:docxSettings>
+            <pdx:view pdx:value="outline" />
+            <pdx:zoom pdx:value="70" />
+        </pdx:docxSettings>
+    </pdx:settings>
+</pdx:document>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">A paragraph in grey color with borders. All borders are red but the right one that is blue. The general border style is single but the left border that is double. The top border is also thicker. We also include big left indentation.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+                <pdx:paragraphStyle>
+                    <pdx:pStyle pdx:value="myStyle" />
+                </pdx:paragraphStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

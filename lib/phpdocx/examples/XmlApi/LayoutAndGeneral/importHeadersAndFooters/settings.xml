@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document  xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:importHeadersAndFooters pdx:src="/var/www/phpdocx/examples/XmlApi/files/TemplateHeaderAndFooter.docx" pdx:type="headerAndFooter" />
+    </pdx:settings>
+</pdx:document>

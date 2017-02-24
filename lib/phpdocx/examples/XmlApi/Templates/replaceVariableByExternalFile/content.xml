@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceVariableByExternalFile pdx:matchSource="true">
+            <pdx:variable pdx:variableName="EXTERNAL" >
+                <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/External.docx</pdx:data>
+            </pdx:variable>
+        </pdx:replaceVariableByExternalFile>
+    </pdx:templateVariables>
+</pdx:document>

@@ -1,3 +1,5 @@
+DROP AGGREGATE IF EXISTS pxp.aggarray (anyelement);
+
 CREATE OR REPLACE FUNCTION pxp.aggregate_array (
   anyarray,
   anyelement
@@ -15,6 +17,11 @@ ELSE array_append($1,$2)
 END;
 $body$
     LANGUAGE sql;
+
+CREATE AGGREGATE pxp.aggarray (anyelement) (
+    SFUNC = pxp.aggregate_array,
+    STYPE = anyarray
+);
 --
 -- Definition for function comma_cat (OID = 304140) : 
 --

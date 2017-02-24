@@ -1,0 +1,8 @@
+[Bootstrap]
+BaseInstallation=${OOO_BASE_DIR}
+InstallMode=<installmode>
+ProductKey=OpenOffice.org 3.4.1
+UserInstallation=$ORIGIN/../.openoffice.org/3
+[ErrorReport]
+ErrorReportPort=80
+ErrorReportServer=

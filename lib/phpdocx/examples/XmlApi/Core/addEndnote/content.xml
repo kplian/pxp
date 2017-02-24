@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="endnoteFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addEndnote>
+                        <pdx:textDocument>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">endnote</pdx:data>
+                        </pdx:textDocument>
+                        <pdx:textEndnote>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">The endnote we want to insert.</pdx:data>
+                        </pdx:textEndnote>
+                    </pdx:addEndnote>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Here comes the </pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">endnoteFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text"> and some other text.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

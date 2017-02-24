@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We write a math equation using OMML (the native Word XML standard for math equations):</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addMathEquation pdx:type="omml">
+            <pdx:data pdx:dataId="" pdx:dataType="text"><![CDATA[<m:oMathPara><m:oMath><m:r><m:t>∪±∞=~×</m:t></m:r></m:oMath></m:oMathPara>]]></pdx:data>
+        </pdx:addMathEquation>
+    </pdx:content>
+</pdx:document>

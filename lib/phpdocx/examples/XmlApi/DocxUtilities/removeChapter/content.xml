@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:utilities>
+        <pdx:removeChapter pdx:source="/var/www/phpdocx/examples/XmlApi/files/headings.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/DocxUtilities/removeChapter/output_removeChapter.docx" pdx:searchTerm="First Heading" />
+    </pdx:utilities>
+</pdx:document>

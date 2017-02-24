@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="dateFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addDateAndHour pdx:wordFragmentName="dateFormat" pdx:dateFormat="dd/MM/yyyy H:mm:ss">
+			            <pdx:paragraphStyle>
+			                <pdx:bold pdx:value="true"/>
+			                <pdx:fontSize pdx:value="12"/>
+			                <pdx:color pdx:value="b70000"/>
+			            </pdx:paragraphStyle>
+        			</pdx:addDateAndHour> 
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addHeader>
+            <pdx:default pdx:wordFragmentName="dateFragment" />
+        </pdx:addHeader>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Let us include now different examples of the addDateAndHour with different date formatting:</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addDateAndHour pdx:dateFormat="dd' of 'MMMM' of 'yyyy' at 'H:mm">
+            <pdx:paragraphStyle>
+                <pdx:bold pdx:value="true"/>
+                <pdx:fontSize pdx:value="14"/>
+                <pdx:color pdx:value="333333"/>
+                <pdx:textAlign pdx:value="center"/>
+            </pdx:paragraphStyle>
+        </pdx:addDateAndHour> 
+        <pdx:addDateAndHour pdx:dateFormat="MM'-'dd'-'yy">
+            <pdx:paragraphStyle>
+                <pdx:bold pdx:value="true"/>
+                <pdx:fontSize pdx:value="11"/>
+                <pdx:color pdx:value="0000FF"/>
+            </pdx:paragraphStyle>
+        </pdx:addDateAndHour> 
+    </pdx:content>
+</pdx:document>

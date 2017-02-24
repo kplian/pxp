@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:config>
+        <pdx:output pdx:name="output" pdx:type="docx" />
+        <pdx:sign pdx:privateKey="/var/www/phpdocx/examples/XmlApi/files/Test.pem" pdx:password="phpdocx_pass" pdx:X509Certificate="/var/www/phpdocx/examples/XmlApi/files/Test.pem" pdx:src="/var/www/phpdocx/examples/XmlApi/files/Text.docx" />
+    </pdx:config>
+</pdx:document>

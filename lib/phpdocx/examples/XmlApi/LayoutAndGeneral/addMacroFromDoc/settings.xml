@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:addMacroFromDoc pdx:src="/var/www/phpdocx/examples/XmlApi/files/fileMacros.docm" />
+    </pdx:settings>
+</pdx:document>

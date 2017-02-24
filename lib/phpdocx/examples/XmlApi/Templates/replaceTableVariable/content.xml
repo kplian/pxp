@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceTableVariable>
+            <pdx:data pdx:dataId="" pdx:type="table">
+                <pdx:row>
+                    <pdx:item pdx:variableName="ITEM" pdx:wordFragmentName="">Product A</pdx:item>
+                    <pdx:item pdx:variableName="REFERENCE" pdx:wordFragmentName="">107AW3</pdx:item>
+                </pdx:row>
+                <pdx:row>
+                    <pdx:item pdx:variableName="ITEM" pdx:wordFragmentName="">Product B</pdx:item>
+                    <pdx:item pdx:variableName="REFERENCE" pdx:wordFragmentName="">204RS67O</pdx:item>
+                </pdx:row>
+                <pdx:row>
+                    <pdx:item pdx:variableName="ITEM" pdx:wordFragmentName="">Product C</pdx:item>
+                    <pdx:item pdx:variableName="REFERENCE" pdx:wordFragmentName="">25GTR56</pdx:item>
+                </pdx:row>
+            </pdx:data>
+        </pdx:replaceTableVariable>
+    </pdx:templateVariables>
+</pdx:document>

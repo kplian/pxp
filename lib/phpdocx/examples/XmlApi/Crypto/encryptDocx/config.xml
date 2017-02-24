@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:config>
+        <pdx:output pdx:name="output" pdx:type="docx" />
+        <pdx:crypto>
+            <pdx:encrypt pdx:password="phpdocx" pdx:src="/var/www/phpdocx/examples/XmlApi/files/Text.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/Crypto/encryptDocx/Crypted.docx" />
+        </pdx:crypto>
+    </pdx:config>
+</pdx:document>

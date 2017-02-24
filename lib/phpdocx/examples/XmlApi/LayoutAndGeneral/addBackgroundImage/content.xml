@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Please, use a discrete background image so the text is easily readable.</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:bold pdx:value="true" />
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This one is pretty annoying but it illustrates well the functionality :-)</pdx:data>
+                <pdx:textRunStyle>
+                    <pdx:bold pdx:value="true" />
+                    <pdx:font pdx:value="Arial" />
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

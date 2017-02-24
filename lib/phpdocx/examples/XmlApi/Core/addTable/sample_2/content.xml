@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="linkFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addLink>
+                        <pdx:linkText>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Link to Google</pdx:data>
+                        </pdx:linkText>
+                        <pdx:linkURL>
+                            <pdx:data pdx:dataId="" pdx:type="URL">http://www.google.es</pdx:data>
+                        </pdx:linkURL>
+                    </pdx:addLink>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="imageFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addImage>
+                        <pdx:data pdx:dataId="" pdx:dataType="text">/var/www/phpdocx/examples/XmlApi/files/img/image.png</pdx:data>
+                    </pdx:addImage>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addTable>
+            <pdx:data pdx:dataId="" pdx:type="table">
+                <pdx:row>
+                    <pdx:data pdx:dataId="" pdx:type="row">
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Title A</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Title B</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Title C</pdx:data>
+                        </pdx:cell>
+                    </pdx:data>
+                </pdx:row>
+                <pdx:row>
+                    <pdx:data pdx:dataId="" pdx:type="row">
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">Line A</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="wordFragment">linkFragment</pdx:data>
+                        </pdx:cell>
+                        <pdx:cell>
+                            <pdx:data pdx:dataId="" pdx:dataType="wordFragment">imageFragment</pdx:data>
+                        </pdx:cell>
+                    </pdx:data>
+                </pdx:row>
+            </pdx:data>
+            <pdx:tableProperties>
+                <pdx:border pdx:color="B70000" pdx:style="single" />
+                <pdx:tableStyle pdx:id="LightListAccent1PHPDOCX" />
+                <pdx:tableAlign pdx:value="center" />
+                <pdx:columnWidths>
+                    <pdx:column pdx:width="1000" />
+                    <pdx:column pdx:width="2500" />
+                    <pdx:column pdx:width="3000" />
+                </pdx:columnWidths>
+            </pdx:tableProperties>
+        </pdx:addTable>
+    </pdx:content>
+</pdx:document>

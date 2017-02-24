@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="bookmarkStartFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addBookmark pdx:type="start" pdx:name="bookmark_name" />
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="bookmarkEndFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addBookmark pdx:type="end" pdx:name="bookmark_name" />
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We are only going to bookmark: </pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">bookmarkStartFragment</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">this words.</pdx:data>
+            </pdx:textRun>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="wordFragment">bookmarkEndFragment</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

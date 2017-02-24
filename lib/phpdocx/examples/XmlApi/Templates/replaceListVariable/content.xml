@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replaceListVariable pdx:variableName="LISTVAR">
+            <pdx:data pdx:dataId="" pdx:type="list">
+                <pdx:item>First item</pdx:item>
+                <pdx:item>Second item</pdx:item>
+                <pdx:item>Third item</pdx:item>
+            </pdx:data>
+        </pdx:replaceListVariable>
+    </pdx:templateVariables>
+</pdx:document>

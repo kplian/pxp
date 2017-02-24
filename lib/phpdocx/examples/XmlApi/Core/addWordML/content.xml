@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+    	<pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">We are now going to add a paragraph by inserting a chunk of WordML code.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addWordML>
+            <pdx:data>
+                <![CDATA[<w:p><w:r><w:t>A very simple paragraph with only text.</w:t></w:r></w:p>]]>
+            </pdx:data>
+        </pdx:addWordML>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">Be aware that this is not, in general, a recommendable practice unless you are truly familiar with the OOXML standard.</pdx:data>
+                <pdx:textRunStyle>
+                </pdx:textRunStyle>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>

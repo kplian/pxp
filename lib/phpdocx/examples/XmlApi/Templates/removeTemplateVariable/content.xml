@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:removeTemplateVariable pdx:removeType="block" pdx:variableName="FOOTERVAR" pdx:target="footer" />
+        <pdx:removeTemplateVariable pdx:removeType="inline" pdx:variableName="OTHERVAR" />
+        <pdx:removeTemplateVariable pdx:removeType="block" pdx:variableName="FOOTNOTEVAR" pdx:target="footnote" />
+    </pdx:templateVariables>
+</pdx:document>

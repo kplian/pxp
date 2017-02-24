@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:settings>
+        <pdx:createParagraphStyle pdx:name="myStyle" >
+            <pdx:paragraphStyle>
+                <pdx:border pdx:color="990000" pdx:style="single" pdx:width="12">
+                    <pdx:top pdx:width="24" />
+                    <pdx:right pdx:color="000099" />
+                    <pdx:left pdx:style="double" />
+                </pdx:border>
+                <pdx:color pdx:value="999999" />
+                <pdx:indentLeft pdx:value="920" />
+            </pdx:paragraphStyle>
+        </pdx:createParagraphStyle>
+    </pdx:settings>
+</pdx:document>

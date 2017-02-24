@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:config>
+        <pdx:output pdx:name="output" pdx:type="pdf" />
+        <pdx:transformDocument pdx:src="/var/www/phpdocx/examples/XmlApi/files/Text.docx" pdx:target="/var/www/phpdocx/examples/XmlApi/FormatConversion/transformDocument/Text.pdf" />
+    </pdx:config>
+</pdx:document>

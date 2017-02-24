@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:templateVariables pdx:preprocessedTemplate="">
+        <pdx:replacePlaceholderImage pdx:name="HEADERIMG" pdx:target="header" pdx:height="3" pdx:width="3" pdx:path="/var/www/phpdocx/examples/XmlApi/files/img/logo_header.jpg" />
+        <pdx:replacePlaceholderImage pdx:name="LOGO" pdx:path="/var/www/phpdocx/examples/XmlApi/files/img/imageP3.png" />
+    </pdx:templateVariables>
+</pdx:document>

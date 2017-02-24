@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="textFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:addText>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">We insert some </pdx:data>
+                        </pdx:textRun>
+                        <pdx:textRun>
+                            <pdx:data pdx:dataId="" pdx:dataType="text">bold text</pdx:data>
+                            <pdx:textRunStyle>
+                                <pdx:bold pdx:value="true" />
+                            </pdx:textRunStyle>
+                        </pdx:textRun>
+                    </pdx:addText>
+                </pdx:content>
+            </pdx:wordFragment>
+            <pdx:wordFragment pdx:wordFragmentName="htmlFragment" pdx:target="document">
+                <pdx:content>
+                    <pdx:embedHTML>
+                        <pdx:data pdx:dataId="" pdx:type="HTML"><![CDATA[<i>Some HTML code</i> with a <a href="http://www.phpdocx.com">link</a>]]></pdx:data>
+                    </pdx:embedHTML>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addList pdx:listType="1">
+            <pdx:data pdx:type="list">
+                <pdx:item>In this example we use a custom list (val = 5) that comes bundled with the default PHPdocX template.</pdx:item>
+                <pdx:data pdx:type="list">
+                    <pdx:item pdx:dataType="wordFragment">textFragment</pdx:item>
+                    <pdx:item>Line B</pdx:item>
+                    <pdx:item>Line C</pdx:item>
+                </pdx:data>
+                <pdx:item pdx:dataType="wordFragment">htmlFragment</pdx:item>
+                <pdx:item>Line 3</pdx:item>
+            </pdx:data>
+        </pdx:addList>
+    </pdx:content>
+</pdx:document>

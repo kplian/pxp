@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdx:document xmlns:pdx="http://www.phpdocx.com/main" >
+    <pdx:content>
+        <pdx:wordFragments>
+            <pdx:wordFragment pdx:wordFragmentName="pageNumberFragment" pdx:target="defaultHeader">
+                <pdx:content>
+                    <pdx:addPageNumber pdx:numberType="numerical">
+                        <pdx:paragraphStyle>
+                            <pdx:bold pdx:value="true" />
+                            <pdx:color pdx:value="B70000" />
+                            <pdx:sz pdx:value="14" />
+                            <pdx:textAlign pdx:value="right" />
+                        </pdx:paragraphStyle>
+                    </pdx:addPageNumber>
+                </pdx:content>
+            </pdx:wordFragment>
+        </pdx:wordFragments>
+        <pdx:addHeader>
+            <pdx:default pdx:wordFragmentName="pageNumberFragment" />
+        </pdx:addHeader>
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This is the first page.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBreak pdx:type="page" pdx:number="1" />
+        <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This is the second page.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+        <pdx:addBreak pdx:type="page" pdx:number="1" />
+         <pdx:addText>
+            <pdx:textRun>
+                <pdx:data pdx:dataId="" pdx:dataType="text">This is the third page.</pdx:data>
+            </pdx:textRun>
+        </pdx:addText>
+    </pdx:content>
+</pdx:document>
