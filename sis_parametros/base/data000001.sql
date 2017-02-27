@@ -1009,3 +1009,11 @@ select pxp.f_insert_testructura_gui ('ARXLS', 'OTROS');
 select pxp.f_insert_testructura_gui ('COLXLS', 'ARXLS');
 
 /***********************************F-DAT-GSS-PARAM-0-05/01/2017*****************************************/
+
+/***********************************I-DAT-FFP-PARAM-0-27/02/2017*****************************************/
+
+
+select pxp.f_insert_tgui ('Configuracion Lector', 'configuracion lector', 'CONFLECT', 'si', 10, 'sis_parametros/vista/conf_lector_mobile/ConfLectorMobile.php', 3, '', 'ConfLectorMobile', 'PARAM');
+
+select pxp.f_insert_testructura_gui ('CONFLECT', 'OTROS');
+/***********************************F-DAT-GSS-PARAM-0-27/02/2017*****************************************/
