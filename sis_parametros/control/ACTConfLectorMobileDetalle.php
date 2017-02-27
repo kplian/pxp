@@ -17,6 +17,9 @@ class ACTConfLectorMobileDetalle extends ACTbase{
 		if($this->objParam->getParametro('id_conf_lector_mobile')!=''){
 			$this->objParam->addFiltro("conflem.id_conf_lector_mobile =''".$this->objParam->getParametro('id_conf_lector_mobile')."''");
 		}
+		if($this->objParam->getParametro('conf_lector_mobile')!=''){
+			$this->objParam->addFiltro("lector.nombre =''".$this->objParam->getParametro('conf_lector_mobile')."''");
+		}
 
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);

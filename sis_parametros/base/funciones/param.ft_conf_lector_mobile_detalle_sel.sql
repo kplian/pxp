@@ -59,6 +59,8 @@ BEGIN
 						from param.tconf_lector_mobile_detalle conflem
 						inner join segu.tusuario usu1 on usu1.id_usuario = conflem.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conflem.id_usuario_mod
+						INNER JOIN param.tconf_lector_mobile lector on lector.id_conf_lector_mobile = conflem.id_conf_lector_mobile
+
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -85,6 +87,8 @@ BEGIN
 					    from param.tconf_lector_mobile_detalle conflem
 					    inner join segu.tusuario usu1 on usu1.id_usuario = conflem.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = conflem.id_usuario_mod
+						INNER JOIN param.tconf_lector_mobile lector on lector.id_conf_lector_mobile = conflem.id_conf_lector_mobile
+
 					    where ';
 			
 			--Definicion de la respuesta		    
