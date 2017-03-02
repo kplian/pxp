@@ -38,7 +38,7 @@ CREATE TABLE orga.tfuncionario (
 	id_funcionario serial NOT NULL,
     id_persona integer NOT NULL,
     codigo varchar(20),
-    email_empresa varchar(40),
+    email_empresa varchar(150),
     interno varchar(9),
     fecha_ingreso date DEFAULT now() NOT NULL
 ) 
@@ -580,3 +580,134 @@ CREATE SEQUENCE orga.rep_planilla_actualizada
   INCREMENT 1 START 1;
 
 /*****************************F-SCP-JRR-ORGA-0-13/09/2016*************/
+
+
+/*****************************I-SCP-RAC-ORGA-0-14/02/2017*************/
+
+
+--------------- SQL ---------------
+
+CREATE TABLE orga.tuo_tmp (
+  nro INTEGER,
+  codigo_padre VARCHAR,
+  padre VARCHAR,
+  codigo VARCHAR,
+  unidad VARCHAR,
+  estado VARCHAR DEFAULT 'activo' NOT NULL
+) 
+WITH (oids = false);
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo_tmp
+  ADD COLUMN migrado VARCHAR(4) DEFAULT 'no' NOT NULL;
+  
+  
+  --------------- SQL ---------------
+
+ALTER TABLE orga.tuo
+  ADD COLUMN codigo_alterno VARCHAR;
+
+COMMENT ON COLUMN orga.tuo.codigo_alterno
+IS 'este codigo se puede usar como llave de manera alterna al codigo de la UO';
+
+
+--------------- SQL ---------------
+
+CREATE TABLE orga.tcargo_tmp (
+  codigo_uo VARCHAR,
+  uo VARCHAR,
+  item VARCHAR,
+  cargo VARCHAR,
+  migrado VARCHAR(1) DEFAULT 'no' NOT NULL,
+  id_cargo INTEGER
+) 
+WITH (oids = false);
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tcargo_tmp
+  ADD COLUMN individual VARCHAR;
+  
+  --------------- SQL ---------------
+
+COMMENT ON COLUMN orga.tcargo_tmp.individual
+IS 'si cargo individual se lo asgina a la gerencia, si no crea una uo que depende de la gerencia antes de asociar el cargo';
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tcargo_tmp
+  ADD COLUMN contrato VARCHAR DEFAULT 'planta' NOT NULL;
+
+COMMENT ON COLUMN orga.tcargo_tmp.contrato
+IS 'planta, eventual';
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tcargo_tmp
+  ADD COLUMN lugar VARCHAR DEFAULT 'BOLIVIA' NOT NULL;
+
+COMMENT ON COLUMN orga.tcargo_tmp.lugar
+IS 'lugar donde desarrolla funciones';
+
+
+--------------- SQL ---------------
+
+CREATE TABLE orga.tescala_salarial_tmp (
+  codigo VARCHAR,
+  nombre VARCHAR,
+  id_escala_salarial INTEGER,
+  migrado VARCHAR DEFAULT 'no'::character varying NOT NULL,
+  monto NUMERIC
+) 
+WITH (oids = false);
+
+
+
+--------------- SQL ---------------
+CREATE TABLE orga.tfuncionario_tmp (
+  nombre VARCHAR,
+  nombre2 VARCHAR,
+  paterno VARCHAR,
+  materno VARCHAR,
+  item VARCHAR,
+  fecha_nac DATE,
+  nua VARCHAR,
+  ci VARCHAR,
+  exp VARCHAR,
+  domicilio VARCHAR,
+  telefono VARCHAR,
+  celular VARCHAR,
+  sangre VARCHAR,
+  sexo VARCHAR,
+  estado_civil VARCHAR,
+  profesion VARCHAR,
+  cd_cargo VARCHAR,
+  fecha_ingreso DATE,
+  estado VARCHAR,
+  codigo_escala VARCHAR,
+  nombre_escala VARCHAR,
+  lugar_pago VARCHAR,
+  forma_pago VARCHAR,
+  cuenta_banco VARCHAR,
+  aporte_cacsel VARCHAR,
+  afp VARCHAR,
+  nacionalidad VARCHAR,
+  correo_empresa VARCHAR,
+  sindicato VARCHAR,
+  calsel VARCHAR,
+  id_persona INTEGER,
+  id_funcionario INTEGER,
+  migrado VARCHAR DEFAULT 'no'::character varying NOT NULL,
+  banco VARCHAR,
+  distrito_trabajo VARCHAR,
+  matricula_seguro VARCHAR
+) 
+WITH (oids = false);
+
+/*****************************F-SCP-RAC-ORGA-0-14/02/2017*************/
+
+
+
+
+

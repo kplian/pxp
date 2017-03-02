@@ -1702,3 +1702,4 @@ ALTER TABLE param.tplantilla
   ADD COLUMN sw_cod_no_iata VARCHAR(3) DEFAULT 'no' NOT NULL;
 
 /***********************************F-SCP-GSS-PARAM-0-03/02/2017*****************************************/
+
