@@ -27,7 +27,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_conf_lector_mobile	integer;
-			    
+	v_respuesta	VARCHAR;
+
 BEGIN
 
     v_nombre_funcion = 'param.ft_conf_lector_mobile_ime';
@@ -142,11 +143,14 @@ BEGIN
 		begin
 			--Sentencia de la eliminacion
 
+			v_respuesta = '<b>'||v_parametros.code||'<b>';
+			v_respuesta= v_respuesta || '<br><br> mensaje de prueba';
+
 
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Configuracion Lector Mobile eliminado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_conf_lector_mobile',''::varchar);
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje_code',v_parametros.code::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje_code',v_respuesta::varchar);
 
             --Devuelve la respuesta
             return v_resp;
