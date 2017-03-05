@@ -96,6 +96,22 @@ class MODConfLectorMobile extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	function prueba(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_conf_lector_mobile_ime';
+		$this->transaccion='PM_CONFLEC_PRU';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para la funcion
+		$this->setParametro('code','code','varchar');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>

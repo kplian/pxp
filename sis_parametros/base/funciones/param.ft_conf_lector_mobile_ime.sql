@@ -129,7 +129,30 @@ BEGIN
             return v_resp;
 
 		end;
-         
+
+	/*********************************
+ 	#TRANSACCION:  'PM_CONFLEC_PRU'
+ 	#DESCRIPCION:	prueba de registros
+ 	#AUTOR:		admin
+ 	#FECHA:		27-02-2017 01:01:56
+	***********************************/
+
+	elsif(p_transaccion='PM_CONFLEC_PRU')then
+
+		begin
+			--Sentencia de la eliminacion
+
+
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Configuracion Lector Mobile eliminado(a)');
+            v_resp = pxp.f_agrega_clave(v_resp,'id_conf_lector_mobile',''::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje_code',v_parametros.code::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+
 	else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;

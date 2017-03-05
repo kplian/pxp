@@ -39,6 +39,11 @@ class ACTConfLectorMobile extends ACTbase{
 		$this->res=$this->objFunc->eliminarConfLectorMobile($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	function prueba(){
+			$this->objFunc=$this->create('MODConfLectorMobile');
+		$this->res=$this->objFunc->prueba($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 
