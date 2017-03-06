@@ -111,6 +111,21 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+        {
+            config:{
+                name: 'correo_oficina',
+                fieldLabel: 'Correo Of.',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:200
+            },
+            type:'TextField',
+            filters:{pfiltro:'ofi.correo_oficina',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
 		
 		{
 			config:{
@@ -134,6 +149,23 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+
+		{
+			config:{
+				name: 'direccion',
+				fieldLabel: 'direccion',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:20
+			},
+			type:'TextField',
+			filters:{pfiltro:'ofi.direccion',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+
 		{
 			config:{
 				name: 'zona_franca',
@@ -278,7 +310,9 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+		{name:'correo_oficina', type: 'string'},
+		{name:'direccion', type: 'string'}
+
 	],
 	sortInfo:{
 		field: 'id_oficina',

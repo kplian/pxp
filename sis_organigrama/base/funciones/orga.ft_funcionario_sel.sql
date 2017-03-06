@@ -4,8 +4,8 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_tabla varchar,
   par_transaccion varchar
 )
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
   /**************************************************************************
    FUNCION: 		orga.ft_funcionario_sel
    DESCRIPCIÓN:  listado de funcionario
@@ -159,8 +159,12 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
                             PERSON.nombre_completo1::varchar,
                             CAR.nombre,
                             pxp.list(nc.numero)::varchar,
-                            FUNCIO.email_empresa
-                            
+                            FUNCIO.email_empresa,
+                            PERSON.nombre,
+                            PERSON.ap_paterno,
+                            ofi.nombre,
+                            lug.nombre,
+                            uo.nombre_unidad
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN orga.tuo_funcionario uofun on 
@@ -173,6 +177,11 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
                                 (fc.fecha_fin >= now()::date or fc.fecha_fin is null) and fc.tipo_asignacion = ''personal''
                             LEFT JOIN gecom.tnumero_celular nc ON
                             	nc.id_numero_celular = fc.id_numero_celular and nc.tipo = ''celular''
+                            LEFT JOIN orga.toficina ofi ON
+                            	ofi.id_oficina = car.id_oficina
+                            LEFT JOIN param.tlugar lug on lug.id_lugar = ofi.id_lugar
+                            INNER JOIN orga.tuo uo on uo.id_uo = orga.f_get_uo_gerencia(uofun.id_uo,NULL,NULL)
+                            
                             WHERE ';
 
 
@@ -181,7 +190,12 @@ CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
         v_consulta := v_consulta ||  ' GROUP BY FUNCIO.id_funcionario,
                             PERSON.nombre_completo1,
                             CAR.nombre,                            
-                            FUNCIO.email_empresa';
+                            FUNCIO.email_empresa,
+                            PERSON.nombre,
+                            PERSON.ap_paterno,
+                            ofi.nombre,
+                            lug.nombre,
+                            uo.nombre_unidad';
 
 
         v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;

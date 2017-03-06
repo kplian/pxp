@@ -57,15 +57,23 @@ echo $res;*/
         "fecha"=>"26/01/2017",
         //"id_gerencia"=>"",
         "cargo"=>"trafi"
+    ));*/
+
+echo $pxpRestClient->doPost('organigrama/Funcionario/getDatosFuncionario',
+    array(
+        "nombre_empleado"=>"rivera",
+        "start"=>0,
+        "limit"=>50
+
     ));
 
-echo $variable;
-*/
 
+
+/*
 $res = $pxpRestClient->doPost('reclamo/Respuesta/reporteRespuestaPDF',
     array("id_proceso_wf"=>'141236'));
 
-echo $res;
+echo $res;*/
 
 
 	
