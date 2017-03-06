@@ -157,7 +157,7 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:20
+				maxLength:255
 			},
 			type:'TextField',
 			filters:{pfiltro:'ofi.direccion',type:'string'},

@@ -84,6 +84,8 @@ class MODFuncionario extends MODbase{
 		$this->captura('oficina','varchar');
 		$this->captura('lugar','varchar');
 		$this->captura('gerencia','varchar');
+		$this->captura('direccion','varchar');
+		$this->captura('celular1','varchar');
 
 		
 		//Ejecuta la funcion

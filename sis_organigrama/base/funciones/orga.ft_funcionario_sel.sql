@@ -164,7 +164,9 @@ $body$
                             PERSON.ap_paterno,
                             ofi.nombre,
                             lug.nombre,
-                            uo.nombre_unidad
+                            uo.nombre_unidad,
+                            ofi.direccion,
+                            PERSON.celular1
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN orga.tuo_funcionario uofun on 
@@ -195,7 +197,9 @@ $body$
                             PERSON.ap_paterno,
                             ofi.nombre,
                             lug.nombre,
-                            uo.nombre_unidad';
+                            uo.nombre_unidad,
+                            ofi.direccion,
+                            PERSON.celular1';
 
 
         v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
