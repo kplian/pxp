@@ -2,8 +2,8 @@
 /**
  *@package pXP
  *@file Usuario.php
- *@author KPLIAN (JRR)
- *@date 14-02-2011
+ *@author Miguel Alejandro Mamani Villegas
+ *@date 06-03-2017
  *@description  Vista para desplegar lista de usuarios
  */
 header("content-type: text/javascript; charset=UTF-8");
@@ -376,7 +376,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
         ],
         sortInfo:{
-            field: 'nombre',
+            field: 'desc_person',
             direction: 'ASC'
         },
 
