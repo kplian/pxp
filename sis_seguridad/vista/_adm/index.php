@@ -62,6 +62,7 @@ if(!isset($_SESSION["_SESION"])){
 		    }   
     </style>
     <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/font-awesome-4.2.0/css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../lib/ux/ux.HtmlEditor/resources/css/htmleditorplugins.css"/>
 	<!-- GC -->
 </head>
 <body  style="background:#ffffff url('<?php echo $_SESSION['_DIR_BACKGROUND_LOGIN']?>') no-repeat center center;">
@@ -133,9 +134,27 @@ if(!isset($_SESSION["_SESION"])){
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>    
 	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboRec.js'></script>   
     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboMultiple.js'></script>  
-    <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>   
+    <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>
     <script type="text/javascript" src="../../../lib/ext3/TabCloseMenu.js"></script>
     <script type="text/javascript" charset="UTF-8" src="resources/Phx.CP.js"></script>
+
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.MidasCommand.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Divider.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.HR.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Image.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.RemoveFormat.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.IndentOutdent.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.SubSuperScript.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.RemoveFormat.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.FindAndReplace.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Table.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Word.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Link.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.SpecialCharacters.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.UndoRedo.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Heading.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Plugins.js"></script>
+
     <?php
      echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";  
 	?>

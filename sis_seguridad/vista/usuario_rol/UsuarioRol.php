@@ -85,6 +85,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 						type:'string'
 					},
 			grid:true,
+			//bottom_filter:true,
 			form:true
 	},
 	 {

@@ -1800,3 +1800,13 @@ ALTER TABLE param.tcolumnas_archivo_excel
     NOT DEFERRABLE;
 
 /***********************************F-DEP-GSS-PARAM-0-15/12/2016****************************************/
+
+/***********************************I-DEP-MAM-PARAM-0-06/03/2017****************************************/
+CREATE VIEW param.vgrupos (
+    id_grupo,
+    obs)
+AS
+SELECT gru.id_grupo,
+    gru.obs
+FROM param.tgrupo gru;
+/***********************************F-DEP-MAN-PARAM-0-06/03/2017****************************************/

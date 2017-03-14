@@ -31,6 +31,7 @@ class MODColumnasArchivoExcel extends MODbase{
 		$this->captura('nombre_columna','varchar');
 		$this->captura('nombre_columna_tabla','varchar');
 		$this->captura('tipo_valor','varchar');
+		$this->captura('punto_decimal','varchar');
 		$this->captura('estado_reg','varchar');
 		$this->captura('id_usuario_ai','int4');
 		$this->captura('id_usuario_reg','int4');
@@ -67,6 +68,7 @@ class MODColumnasArchivoExcel extends MODbase{
 		$this->captura('nombre_columna','varchar');
 		$this->captura('nombre_columna_tabla','varchar');
 		$this->captura('tipo_valor','varchar');
+		$this->captura('punto_decimal','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -92,6 +94,7 @@ class MODColumnasArchivoExcel extends MODbase{
 		$this->setParametro('nombre_columna_tabla','nombre_columna_tabla','varchar');
 		$this->setParametro('tipo_valor','tipo_valor','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('punto_decimal','punto_decimal','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -118,6 +121,7 @@ class MODColumnasArchivoExcel extends MODbase{
 		$this->setParametro('nombre_columna_tabla','nombre_columna_tabla','varchar');
 		$this->setParametro('tipo_valor','tipo_valor','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('punto_decimal','punto_decimal','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -43,6 +43,7 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
 			type:'TextField',
 			filters:{pfiltro:'gru.nombre',type:'string'},
 			id_grupo:1,
+            bottom_filter:true,
 			grid:true,
 			form:true
 		},
@@ -156,6 +157,7 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+        {name:'id_usuario', type: 'string'}
 		
 	],
 	sortInfo:{
@@ -164,15 +166,23 @@ Phx.vista.Grupo=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:false,
-    east:{
-          url:'../../../sis_parametros/vista/grupo_ep/GrupoEp.php',
-          title:'Roles', 
-          width:'45%',
-          cls:'GrupoEp'
-         }
-    }
-    
-)
+
+    tabeast:[
+        {
+            url:'../../../sis_parametros/vista/grupo_ep/GrupoEp.php',
+            title:'Roles',
+            width:400,
+            cls:'GrupoEp'
+        },
+        {
+            url:'../../../sis_parametros/vista/usuarios_ep/UsuariosEp.php',
+            title:'Usuarios',
+            width:400,
+            cls:'UsuariosEp'
+        }
+    ]
+
+    })
 </script>
 		
 		

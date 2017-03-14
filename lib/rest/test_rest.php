@@ -41,7 +41,7 @@ echo $res;*/
 				));
 	
 	echo $variable;
-	*/
+
 
 	echo $pxpRestClient->doPost('almacenes/Item/listarSaldosXItems', 
 		array(					
@@ -49,7 +49,32 @@ echo $res;*/
 				"id_almacen"=>1
 				));
 	
-	echo $variable;
+	echo $variable;*/
+
+/*echo $pxpRestClient->doPost('organigrama/Cargo/listarCargoAcefalo',
+    array(
+        "tipo_contrato"=>"planta",
+        "fecha"=>"26/01/2017",
+        //"id_gerencia"=>"",
+        "cargo"=>"trafi"
+    ));*/
+
+echo $pxpRestClient->doPost('organigrama/Funcionario/getDatosFuncionario',
+    array(
+        "nombre_empleado"=>"rivera",
+        "start"=>0,
+        "limit"=>50
+
+    ));
+
+
+
+/*
+$res = $pxpRestClient->doPost('reclamo/Respuesta/reporteRespuestaPDF',
+    array("id_proceso_wf"=>'141236'));
+
+echo $res;*/
+
 
 	
 	/*echo $pxpRestClient->doPost('almacenes/Clasificacion/listarClasificacionArb',

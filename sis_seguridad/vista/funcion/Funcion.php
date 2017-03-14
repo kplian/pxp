@@ -42,6 +42,7 @@ Phx.vista.funcion=Ext.extend(Phx.gridInterfaz,{
 		type:'TextField',
 		filters:{pfiltro:'funcio.nombre',type:'string'},
 		id_grupo:0,
+		 bottom_filter:true,
 		grid:true,
 		form:true
 	},

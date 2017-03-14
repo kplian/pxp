@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION orga.f_tr_cargo (
 )
-  RETURNS trigger AS
-  $body$
+RETURNS trigger AS
+$body$
   DECLARE
     v_id_gestion		integer;
     v_id_centro_costo	integer;
@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION orga.f_tr_cargo (
   BEGIN
     IF (TG_OP='INSERT')then
       BEGIN
-        if (pxp.f_get_variable_global('') = 'si') then
+        if (pxp.f_get_variable_global('plani_carga_presupuesto_from_uo') = 'si') then
           if (NEW.fecha_ini is null) then
             v_fecha_ini = now()::date;
           else
@@ -54,11 +54,13 @@ CREATE OR REPLACE FUNCTION orga.f_tr_cargo (
             v_id_gestion
           );
         end if;
+        
 
       END;
     END IF;
+    RETURN NEW;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
