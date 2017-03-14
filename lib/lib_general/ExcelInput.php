@@ -227,13 +227,13 @@ class ExcelInput{
                             $valorColumna = $this->formatearFecha($celda,$columna['formato_fecha'],$columna['anio_fecha']);
                         }else{
                             if($columna['tipo_valor']=='numeric'){
-                                $valorColumna = $this->formatearNumero($celda);
+                                $valorColumna = $this->formatearNumero($celda,$columna['punto_decimal']);
                             }else{
                                 $valorColumna = $celda;
                             }
                         }
-                        /*if ($valorColumna == null)
-                            break;*/
+                        if ($valorColumna == null)
+                            break;
                         $arrayFila[$columna['nombre_columna_tabla']]= $valorColumna;
                     }
                 }
@@ -253,17 +253,17 @@ class ExcelInput{
                         if($columna['sw_legible']=='si') {
                             $celda = $worksheet->getCellByColumnAndRow($columna['numero_columna']-1, $i);
                             if($columna['tipo_valor'] == 'date') {
+
                                 $valorColumna = $this->formatearFecha($celda->getValue(),$columna['formato_fecha'],$columna['anio_fecha']);
                             }else{
                                 if($columna['tipo_valor']=='numeric'){
-                                    //$valorColumna = str_replace(',','',$celda->getValue());
-                                    $valorColumna = $this->formatearNumero($celda->getValue());
+                                    $valorColumna = $this->formatearNumero($celda->getValue(),$columna['punto_decimal']);
                                 }else{
                                     $valorColumna = $celda->getValue();
                                 }
                             }
-                            /*if ($valorColumna == null)
-                                break;*/
+                            if ($valorColumna == null && $worksheet->getCellByColumnAndRow($columna['numero_columna'], $i)->getValue() == null)
+                                break;
                             $arrayFila[$columna['nombre_columna_tabla']]= $valorColumna;
                         }
                     }
@@ -275,6 +275,7 @@ class ExcelInput{
     }
 
     function formatearFecha($fecha, $formato_fecha, $anio_fecha){
+
         switch ($formato_fecha) {
             case "yyyymmdd":
                 $fechaFormateada = substr($fecha,6)."-".substr($fecha,4,2)."-".substr($fecha,0,4);
@@ -291,19 +292,34 @@ class ExcelInput{
             case "mm/dd/yyyy":
                 $fechaFormateada  = substr($fecha,3,2)."/".substr($fecha,0,2)."/".substr($fecha,6);
                 break;
+
+            case "dd-mm-yyyy hh:mm":
+                $fechaFormateada = $fecha;
+                break;
+            case "dd/mm/yyyy hh:mm":
+                $fechaFormateada = $fecha;
+                break;
+
             default:
                 throw new Exception(__METHOD__.': Formato de fecha no definido');
         }
-        return PHPExcel_Style_NumberFormat::toFormattedString($fechaFormateada, 'dd/mm/yyyy');
+
+        if($formato_fecha == "dd-mm-yyyy hh:mm" || $formato_fecha == "dd/mm/yyyy hh:mm"){
+            return PHPExcel_Style_NumberFormat::toFormattedString($fechaFormateada, 'dd/mm/yyyy hh:mm:ss');
+        }else{
+            return PHPExcel_Style_NumberFormat::toFormattedString($fechaFormateada, 'dd/mm/yyyy');
+        }
+
     }
 
-    function formatearNumero($numero){
-        $decimales = substr($numero,-3);
-        $decimales = str_replace(',','.',$decimales);
-        $parteEntera = substr($numero,0,-3);
-        $parteEntera = str_replace(',','',$parteEntera);
-        $parteEntera = str_replace('.','',$parteEntera);
-        $res = $parteEntera.$decimales;
+    function formatearNumero($numero, $dec_point){
+        if($dec_point == '.'){
+            $res = str_replace(',','',$numero);
+        }else if($dec_point == ',') {
+            $res = $numero;
+        }else{
+            throw new Exception(__METHOD__.': No se definio el punto decimal para la columna de valor numeric');
+        }
         return $res;
     }
 }

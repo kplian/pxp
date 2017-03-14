@@ -92,6 +92,7 @@ Phx.vista.UsuarioGrupoEp=Ext.extend(Phx.gridInterfaz,{
                 pfiltro: 'gep.nombre',
                 type: 'string'
             },
+			//bottom_filter:true,
             grid: true,
             form: true
         },

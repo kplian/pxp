@@ -1,8 +1,8 @@
 <?php
 /**
 *@package pXP
-*@file Rol.php
-*@author KPLIAN (FRH)
+*@file RolUsuario.php
+*@author Grover (GVC)
 *@date 14-02-2011
 *@description  Vista para desplegar rolesde usaurio
 */
@@ -48,7 +48,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 	 {
 		config:{
 			fieldLabel: "Nombre",
-			gwidth: 100,
+			gwidth: 200,
 			name: 'rol',
 			allowBlank:false,	
 			maxLength:100,
@@ -59,13 +59,14 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 		type:'TextField',
 		filters:{type:'string'},
 		id_grupo:0,
+		bottom_filter:true,
 		grid:true,
 		form:true
 	},
 	 {
 		config:{
 			fieldLabel: "Descripcion",
-			gwidth: 130,
+			gwidth: 300,
 			name: 'descripcion',
 			allowBlank:true,	
 			maxLength:100,
@@ -77,6 +78,7 @@ var FormatoVista=function (value,p,record){return value?value.dateFormat('d/m/Y'
 		
 		filters:{type:'string'},
 		id_grupo:0,
+		 bottom_filter:true,
 		grid:true,
 		form:true
 	},{
@@ -154,12 +156,28 @@ Ext.extend(Phx.vista.rol,Phx.gridInterfaz,{
 	bdel:true,//boton para eliminar
 	bsave:false,//boton para eliminar
 
-	east:{
+	/*east:{
 		  url:'../../../sis_seguridad/vista/gui_rol/GuiRol.php',
 		  title:'Procedimientos', 
 		  width:400,
 		  cls:'gui_rol'
-		 },
+		 },*/
+
+	tabeast:[
+		{
+			url:'../../../sis_seguridad/vista/gui_rol/GuiRol.php',
+			title:'Procedimientos',
+			width:400,
+			cls:'gui_rol'
+		}
+		/*,
+		{
+			url:'../../../sis_seguridad/vista/usuario_rol/RolUsuario.php',
+			title:'Usuarios',
+			width:400,
+			cls:'rol_usuario'
+		}*/
+	],
 
 	//sobre carga de funcion
 	preparaMenu:function(tb){

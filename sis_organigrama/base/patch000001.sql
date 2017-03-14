@@ -707,6 +707,30 @@ WITH (oids = false);
 
 /*****************************F-SCP-RAC-ORGA-0-14/02/2017*************/
 
+/*****************************I-SCP-FFP-ORGA-0-06/03/2016*************/
+ALTER TABLE orga.toficina ADD direccion VARCHAR(255) NULL;
+
+
+/*****************************F-SCP-FFP-ORGA-0-06/03/2016*************/
+
+/*****************************I-SCP-FFP-ORGA-1-06/03/2016*************/
+CREATE TABLE orga.tlog_generacion_firma_correo (
+  id_log_generacion_firma_correo SERIAL,
+  id_funcionario         INTEGER,
+  nombre                    VARCHAR(255),
+  cargo                     VARCHAR(255),
+  cargo_ingles              VARCHAR(255),
+  direccion                 VARCHAR(255),
+  telefono_interno                VARCHAR(255),
+  telefono_corporativo            VARCHAR(255),
+  telefono_personal                    VARCHAR(255),
+  PRIMARY KEY(id_log_generacion_firma_correo)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+/*****************************F-SCP-FFP-ORGA-1-06/03/2016*************/
+
+
 
 
 

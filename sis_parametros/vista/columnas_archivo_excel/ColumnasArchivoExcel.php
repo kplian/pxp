@@ -110,14 +110,14 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 				lazyRender:true,
 				mode: 'local',
 				valueField: 'inicio',
-				store:['string','date','numeric']
+				store:['string','date','entero','numeric']
 			},
 			type:'ComboBox',
 			id_grupo:1,
 			filters:{
 				type: 'list',
 				pfiltro:'colxls.tipo_valor',
-				options: ['string','date','numeric'],
+				options: ['string','date','entero','numeric'],
 			},
 			grid:true,
 			form:true
@@ -151,12 +151,26 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
+				name: 'punto_decimal',
+				fieldLabel: 'Punto Decimal',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:1
+			},
+			type:'TextField',
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		{
+			config:{
 				name: 'formato_fecha',
 				fieldLabel: 'Formato Fecha',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:10
+				maxLength:20
 			},
 			type:'TextField',
 			id_grupo:1,
@@ -300,6 +314,7 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 		{name:'nombre_columna', type: 'string'},
 		{name:'nombre_columna_tabla', type: 'string'},
 		{name:'tipo_valor', type: 'string'},
+		{name:'punto_decimal', type: 'string'},
 		{name:'anio_fecha', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
 		{name:'id_usuario_ai', type: 'numeric'},
@@ -329,16 +344,24 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 		this.cmpTipoValor = this.getComponente('tipo_valor');
 		this.cmpFormatoFecha = this.getComponente('formato_fecha');
 		this.cmpAnioFecha = this.getComponente('anio_fecha');
+		this.cmpPuntoDecimal = this.getComponente('punto_decimal');
 		this.ocultarComponente(this.cmpFormatoFecha);
 		this.ocultarComponente(this.cmpAnioFecha);
+		this.ocultarComponente(this.cmpPuntoDecimal);
 
-		this.cmpTipoValor.on('select',function(com,dat){
-			if(dat.data.field1 == 'date'){
+		this.cmpTipoValor.on('select',function(com,dat) {
+			if (dat.data.field1 == 'date') {
 				this.mostrarComponente(this.cmpFormatoFecha);
 				this.mostrarComponente(this.cmpAnioFecha);
-			}else{
+				this.ocultarComponente(this.cmpPuntoDecimal);
+			} else if (dat.data.field1 == 'numeric') {
 				this.ocultarComponente(this.cmpFormatoFecha);
 				this.ocultarComponente(this.cmpAnioFecha);
+				this.mostrarComponente(this.cmpPuntoDecimal);
+			} else {
+				this.ocultarComponente(this.cmpFormatoFecha);
+				this.ocultarComponente(this.cmpAnioFecha);
+				this.ocultarComponente(this.cmpPuntoDecimal);
 			}
 		},this);
 	},

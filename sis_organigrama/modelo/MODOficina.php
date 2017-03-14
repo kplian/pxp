@@ -35,7 +35,9 @@ class MODOficina extends MODbase{
 		$this->captura('nombre_lugar','varchar');
 		$this->captura('zona_franca','varchar');
 		$this->captura('frontera','varchar');
-		
+		$this->captura('correo_oficina','varchar');
+		$this->captura('direccion','varchar');
+
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -59,8 +61,9 @@ class MODOficina extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('zona_franca','zona_franca','varchar');
 		$this->setParametro('frontera','frontera','varchar');
-		
-		
+        $this->setParametro('correo_oficina','correo_oficina','varchar');
+        $this->setParametro('direccion','direccion','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -84,7 +87,9 @@ class MODOficina extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('zona_franca','zona_franca','varchar');
 		$this->setParametro('frontera','frontera','varchar');
-		
+        $this->setParametro('correo_oficina','correo_oficina','varchar');
+		$this->setParametro('direccion','direccion','varchar');
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

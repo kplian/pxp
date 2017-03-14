@@ -1,0 +1,17 @@
+{
+  "name"       : "phpdocx/phpdocx",
+  "description": "A fork of the popular PhpDocx library.",
+  "license"    : "GPL-1.0+",
+  "authors"    : [
+    {
+      "name"    : "Loïc Favory",
+      "email"   : "loic@effetb.com",
+      "homepage": "http://www.effetb.com"
+    }
+  ],
+  "autoload"   : {
+    "classmap": [
+      "Classes/"
+    ]
+  }
+}

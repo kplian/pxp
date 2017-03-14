@@ -1010,6 +1010,7 @@ select pxp.f_insert_testructura_gui ('COLXLS', 'ARXLS');
 
 /***********************************F-DAT-GSS-PARAM-0-05/01/2017*****************************************/
 
+
 /***********************************I-DAT-FFP-PARAM-0-27/02/2017*****************************************/
 
 
@@ -1017,3 +1018,10 @@ select pxp.f_insert_tgui ('Configuracion Lector', 'configuracion lector', 'CONFL
 
 select pxp.f_insert_testructura_gui ('CONFLECT', 'OTROS');
 /***********************************F-DAT-FFP-PARAM-0-27/02/2017*****************************************/
+
+/***********************************I-DAT-FFP-PARAM-0-24/02/2017*****************************************/
+
+select pxp.f_insert_tgui ('Tipo Archivo', 'tipos de archivos', 'TIPOAR', 'si', 9, 'sis_parametros/vista/tipo_archivo/TipoArchivo.php', 3, '', 'TipoArchivo', 'PARAM');
+select pxp.f_insert_testructura_gui ('TIPOAR', 'OTROS');
+/***********************************F-DAT-FFP-PARAM-0-24/02/2017*****************************************/
+

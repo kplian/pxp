@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE FUNCTION pxp.br_cat (
   text,
   text

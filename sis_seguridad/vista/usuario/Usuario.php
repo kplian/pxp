@@ -167,6 +167,7 @@ tabEnter:true,
 	       		type:'TextField',
 	       		filters:{type:'string'},
 	       		id_grupo:0,
+				bottom_filter:true,
 	       		grid:true,
 	       		form:true
 	       	},
