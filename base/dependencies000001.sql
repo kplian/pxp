@@ -100,4 +100,55 @@ select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'INITRAHP.5.1.1', '
 
 select pxp.f_insert_testructura_gui ('ASINT', 'SISTEMA');
 
+--los aggregates no se modoficaran solo las funciones de los aggregates
+CREATE AGGREGATE pxp.list (text) (
+    SFUNC = pxp.comma_cat,
+    STYPE = text
+);
+
+CREATE AGGREGATE pxp.text_concat (text) (
+    SFUNC = pxp.concat,
+    STYPE = text
+);
+
+CREATE AGGREGATE pxp.textcat_all (text) (
+    SFUNC = textcat,
+    STYPE = text
+);
+
+CREATE AGGREGATE pxp.aggarray (anyelement) (
+    SFUNC = pxp.aggregate_array,
+    STYPE = anyarray
+);
+
+CREATE AGGREGATE pxp.aggarray1 (anyelement) (
+    SFUNC = pxp.aggregate_array,
+    STYPE = anyarray
+);
+
+
+
+
+CREATE AGGREGATE pxp.html_rows (
+  varchar)
+(
+  SFUNC = pxp.html_rows,
+  STYPE = "varchar"
+);
+
+CREATE AGGREGATE pxp.list_unique (
+  text)
+(
+  SFUNC = pxp.list_unique,
+  STYPE = text
+
+);
+
+
+CREATE AGGREGATE pxp.list_br (text)
+(
+  SFUNC = pxp.br_cat,
+  STYPE = text
+);
+
 /****************************F-SCP-JRR-PXP-0-25/04/2014********************************/

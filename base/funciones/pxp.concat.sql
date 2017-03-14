@@ -1,5 +1,3 @@
-DROP AGGREGATE IF EXISTS pxp.text_concat (text);
-
 CREATE OR REPLACE FUNCTION pxp.concat (
   text,
   text
@@ -18,11 +16,3 @@ begin
 end
 $body$
     LANGUAGE plpgsql IMMUTABLE;
-
-CREATE AGGREGATE pxp.text_concat (text) (
-    SFUNC = pxp.concat,
-    STYPE = text
-);
---
--- Definition for function existe_archivo (OID = 304209) : 
---

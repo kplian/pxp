@@ -59,7 +59,7 @@ BEGIN
 						from param.tgrupo gru
 						inner join segu.tusuario usu1 on usu1.id_usuario = gru.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = gru.id_usuario_mod
-                        inner join segu.tusuario_grupo_ep uep on uep.id_grupo = gru.id_grupo
+                        left join segu.tusuario_grupo_ep uep on uep.id_grupo = gru.id_grupo
 				        where  ';
 
 			--Definicion de la respuesta

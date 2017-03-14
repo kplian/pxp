@@ -1,5 +1,3 @@
-DROP AGGREGATE IF EXISTS pxp.html_rows (varchar);
-
 CREATE OR REPLACE FUNCTION pxp.html_rows (
   varchar,
   varchar
@@ -22,10 +20,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
-CREATE AGGREGATE pxp.html_rows (
-  varchar)
-(
-  SFUNC = pxp.html_rows,
-  STYPE = "varchar"
-);
