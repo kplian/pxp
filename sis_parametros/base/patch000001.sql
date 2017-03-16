@@ -1703,3 +1703,34 @@ ALTER TABLE param.tplantilla
 
 /***********************************F-SCP-GSS-PARAM-0-03/02/2017*****************************************/
 
+
+/***********************************I-SCP-FFP-PARAM-0-26/02/2017*****************************************/
+
+
+
+--------------- SQL ---------------
+
+
+CREATE TABLE param.tconf_lector_mobile(
+  id_conf_lector_mobile SERIAL,
+  nombre VARCHAR(255),
+  estado VARCHAR(255),
+
+  CONSTRAINT pk_tconf_lector_mobile__id_conf_lector_mobile PRIMARY KEY(id_conf_lector_mobile)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+CREATE TABLE param.tconf_lector_mobile_detalle(
+  id_conf_lector_mobile_detalle SERIAL,
+  control VARCHAR(255),
+  nombre VARCHAR(255),
+  descripcion VARCHAR(255),
+  activity VARCHAR(255),
+  id_conf_lector_mobile INTEGER,
+
+  CONSTRAINT pk_tconf_lector_mobile_detalle__id_conf_lector_mobile_detalle PRIMARY KEY(id_conf_lector_mobile_detalle)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/***********************************F-SCP-RAC-PARAM-0-26/02/2017*****************************************/
+

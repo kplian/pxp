@@ -356,6 +356,13 @@ a.x-tool-pdf {background-image: url('../../_adm/images/gears.png')!important;}
 }
 
 
+.west-panel .x-layout-collapsed-west p {            
+      writing-mode: tb-rl;  no-repeat center; content: 'whatever it is you want to add';
+}
+        
+        
+
+
 .gridmultiline {
 white-space: pre-wrap; /* css-3 */
 white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
