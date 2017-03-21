@@ -56,6 +56,7 @@ BEGIN
 						colxls.nombre_columna,
                         colxls.nombre_columna_tabla,
 						colxls.tipo_valor,
+                        colxls.punto_decimal,
 						colxls.estado_reg,
 						colxls.id_usuario_ai,
 						colxls.id_usuario_reg,
@@ -94,7 +95,7 @@ BEGIN
 					    from param.tcolumnas_archivo_excel colxls
 					    inner join segu.tusuario usu1 on usu1.id_usuario = colxls.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = colxls.id_usuario_mod
-					    where ';
+					    where colxls.id_plantilla_archivo_excel='||v_parametros.id_plantilla_archivo_excel||' and ';
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -123,7 +124,8 @@ BEGIN
 						colxls.numero_columna,
 						colxls.nombre_columna,
                         colxls.nombre_columna_tabla,
-						colxls.tipo_valor
+						colxls.tipo_valor,
+                        colxls.punto_decimal
 						from param.tcolumnas_archivo_excel colxls
                         inner join param.tplantilla_archivo_excel plaxls on plaxls.id_plantilla_archivo_excel=colxls.id_plantilla_archivo_excel
 						inner join segu.tusuario usu1 on usu1.id_usuario = colxls.id_usuario_reg

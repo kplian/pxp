@@ -55,7 +55,8 @@ BEGIN
 			fecha_mod,
 			id_usuario_mod,
 			zona_franca,
-			frontera
+			frontera,
+			direccion
           	) values(
 			v_parametros.aeropuerto,
 			v_parametros.id_lugar,
@@ -67,7 +68,8 @@ BEGIN
 			null,
 			null,
 			v_parametros.zona_franca,
-			v_parametros.frontera
+			v_parametros.frontera,
+			v_parametros.direccion
 							
 			)RETURNING id_oficina into v_id_oficina;
 			
@@ -99,7 +101,8 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			zona_franca = v_parametros.zona_franca,
-			frontera = v_parametros.frontera
+			frontera = v_parametros.frontera,
+			direccion = v_parametros.direccion
 			where id_oficina=v_parametros.id_oficina;
                
 			--Definicion de la respuesta

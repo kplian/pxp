@@ -55,10 +55,17 @@ class ACTFuncionario extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','PERSON.nombre_completo1');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");		
-	
-	   
-        //si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
+		$this->objParam->addFiltro("FUNCIO.estado_reg = ''activo''");
+
+
+		//si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
+		if($this->objParam->getParametro('id_funcionario')!=''){
+
+			$this->objParam->addFiltro("FUNCIO.id_funcionario = ".$this->objParam->getParametro('id_funcionario')." ");
+		}
+
+
+		//si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
         if($this->objParam->getParametro('nombre_empleado')!=''){
         	$nombre_empleado = trim($this->objParam->getParametro('nombre_empleado'));
 			$nombre_empleado = str_replace(' ', '%', $nombre_empleado);

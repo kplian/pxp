@@ -16,6 +16,3 @@ begin
 end
 $body$
     LANGUAGE plpgsql IMMUTABLE;
---
--- Definition for function existe_archivo (OID = 304209) : 
---

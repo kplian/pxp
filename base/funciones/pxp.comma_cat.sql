@@ -12,6 +12,3 @@ select case
  END
 $body$
     LANGUAGE sql;
---
--- Definition for function concat (OID = 304142) : 
---
