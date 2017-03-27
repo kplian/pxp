@@ -731,6 +731,18 @@ WITH (oids = false);
 /*****************************F-SCP-FFP-ORGA-1-06/03/2016*************/
 
 
+/*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
+
+--------------- SQL ---------------
+
+--algun chapulin se  puso   esta columna en la 
+--consulta y se ovlido poner el scrip para la columna en la tabla
+
+ALTER TABLE orga.toficina
+  ADD COLUMN correo_oficina VARCHAR;
+
+/*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
+
 
 
 
