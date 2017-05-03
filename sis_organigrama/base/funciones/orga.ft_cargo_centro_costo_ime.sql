@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_cargo_centro_costo_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION orga.ft_cargo_centro_costo_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_cargo_centro_costo_ime
@@ -48,6 +51,12 @@ BEGIN
         	select cc.id_gestion into v_id_gestion
         	from param.tcentro_costo cc
         	where id_centro_costo = v_parametros.id_centro_costo;
+            
+            if (pxp.f_get_variable_global('orga_exigir_ot') = 'si') then
+            	if (v_parametros.id_ot is null) then
+                	raise exception 'Debe registrar la OT ya que es un campo obligatorio';
+                end if;
+            end if;
         	
         	--Sentencia de la insercion
         	insert into orga.tcargo_centro_costo(
@@ -60,7 +69,8 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            id_ot
           	) values(
 			v_parametros.id_cargo,
 			v_id_gestion,
@@ -71,7 +81,8 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+            v_parametros.id_ot
 							
 			)RETURNING id_cargo_centro_costo into v_id_cargo_centro_costo;
 			
@@ -102,6 +113,13 @@ BEGIN
 	elsif(p_transaccion='OR_CARCC_MOD')then
 
 		begin
+        
+        	if (pxp.f_get_variable_global('orga_exigir_ot') = 'si') then
+            	if (v_parametros.id_ot is null) then
+                	raise exception 'Debe registrar la OT ya que es un campo obligatorio';
+                end if;
+            end if;	
+        
 			--Sentencia de la modificacion
 			update orga.tcargo_centro_costo set
 			id_cargo = v_parametros.id_cargo,
@@ -110,7 +128,8 @@ BEGIN
 			porcentaje = v_parametros.porcentaje,
 			fecha_ini = v_parametros.fecha_ini,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            id_ot = v_parametros.id_ot
 			where id_cargo_centro_costo=v_parametros.id_cargo_centro_costo;
                
 			--Definicion de la respuesta
@@ -161,7 +180,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_cargo_centro_costo_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
