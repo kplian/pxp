@@ -273,7 +273,7 @@ class MODArchivo extends MODbase{
 
 				//damos las rutas a guardar las conversiones de tamanios
 
-				if($tipo_archivo == 'imagen'){
+				if($tipo_archivo_nombre == 'imagen'){
 					$url_original = $file_name[1];
 					$url_mediano = $file_name[1]."mediano/";
 					$url_pequeno = $file_name[1]."pequeno/";
