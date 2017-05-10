@@ -190,8 +190,16 @@ class MODArchivo extends MODbase{
 			$this->setParametro('unico_id','unico_id','varchar');
 
 
+			//si no envian sistema/control entonces el folder sera vacio para que entre donde corresponda
+            $folder = '';
+
+            if($this->aParam->getParametro('ruta_personalizada') != ''){
+                $folder = $this->aParam->getParametro('ruta_personalizada');
+            }
+
 			//validar que no sea un arhvio en blanco
-			$file_name = $this->getFileName2('archivo', 'unico_id', '', false);
+			$file_name = $this->getFileName2('archivo', 'unico_id', $folder, false);
+
 
 
 			//Define los parametros para la funcion
@@ -266,14 +274,20 @@ class MODArchivo extends MODbase{
 
 			if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
 				//cipiamos el nuevo archivo
-				$this->setFile('archivo','unico_id', false,100000 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar'));
+				$this->setFile('archivo',
+                    'unico_id',
+                    false,
+                    100000,
+                    array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar'),
+                    $folder
+                );
 
 
 
 
 				//damos las rutas a guardar las conversiones de tamanios
 
-				if($tipo_archivo == 'imagen'){
+				if($tipo_archivo_nombre == 'imagen'){
 					$url_original = $file_name[1];
 					$url_mediano = $file_name[1]."mediano/";
 					$url_pequeno = $file_name[1]."pequeno/";

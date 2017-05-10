@@ -24,6 +24,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.getComponente('tabla').setValue(this.datos_extras_tabla);
                 this.getComponente('id_tabla').setValue(this.datos_extras_id);
                 this.getComponente('id_tipo_archivo').setValue(this.datos_extras_id_tipo_archivo);
+                this.getComponente('ruta_personalizada').setValue(this.datos_extras_ruta_personalizada);
             },
             successSave:function(resp)
             {
@@ -57,6 +58,15 @@ header("content-type: text/javascript; charset=UTF-8");
                         labelSeparator:'',
                         inputType:'hidden',
                         name: 'tabla'
+                    },
+                    type:'Field',
+                    form:true
+                },
+                {
+                    config:{
+                        labelSeparator:'',
+                        inputType:'hidden',
+                        name: 'ruta_personalizada'
                     },
                     type:'Field',
                     form:true

@@ -37,9 +37,13 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		this.id_ = config.datos_extras_id;
 		this.tabla_ = config.datos_extras_tabla;
 		this.codigo_ = config.datos_extras_codigo;
+		this.ruta_personalizada = config.datos_extras_ruta_personalizada;
+		if(this.ruta_personalizada == undefined){
+		    this.ruta_personalizada = '';
+        }
 
 		this.init();
-		this.load({params:{start:0, limit:this.tam_pag,tabla:this.tabla_,id_tabla:this.id_}})
+		this.load({params:{start:0, limit:this.tam_pag,tabla:this.tabla_,id_tabla:this.id_,ruta_personalizada:this.ruta_personalizada}})
 	},
 			
 	Atributos:[
@@ -395,8 +399,10 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 			datos_extras_id:this.id_,
 			datos_extras_tabla:this.tabla_,
 			datos_extras_id_tipo_archivo:record.data.id_tipo_archivo,
+            datos_extras_ruta_personalizada : this.ruta_personalizada
 
-		};
+
+    };
 
 		Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/upload.php',
 			'Interfaces',

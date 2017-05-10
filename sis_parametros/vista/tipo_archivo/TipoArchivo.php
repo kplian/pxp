@@ -319,6 +319,10 @@ Phx.vista.TipoArchivo=Ext.extend(Phx.gridInterfaz,{
 		rec.datos_extras_tabla = 'ttipo_archivo';
 		//enviamos el codigo ya que una tabla puede tener varios archivos diferentes como ci,pasaporte,contrato,slider,fotos,etc
 		rec.datos_extras_codigo = 'archivo prueba';
+
+		//esto es cuando queremos darle una ruta personalizada
+		//rec.datos_extras_ruta_personalizada = './../../../uploaded_files/favioVideos/videos/';
+
 		Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/Archivo.php',
 			'Archivo',
 			{
