@@ -262,7 +262,9 @@ class ExcelInput{
                                     $valorColumna = $celda->getValue();
                                 }
                             }
-                            if ($valorColumna == null && $worksheet->getCellByColumnAndRow($columna['numero_columna'], $i)->getValue() == null)
+                            if ($worksheet->getCellByColumnAndRow($columna[0], $i)->getValue() == null
+                                  && $worksheet->getCellByColumnAndRow($columna[1], $i)->getValue() == null
+                                  && $worksheet->getCellByColumnAndRow($columna[2], $i)->getValue() == null)
                                 break;
                             $arrayFila[$columna['nombre_columna_tabla']]= $valorColumna;
                         }
