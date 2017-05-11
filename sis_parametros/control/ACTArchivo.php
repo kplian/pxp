@@ -39,6 +39,11 @@ class ACTArchivo extends ACTbase{
 		$this->res=$this->objFunc->eliminarArchivo($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	function eliminarArchivo2(){
+			$this->objFunc=$this->create('MODArchivo');
+		$this->res=$this->objFunc->eliminarArchivo2($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 
 	function subirArchivo(){
 		$this->objFunc=$this->create('MODArchivo');

@@ -98,6 +98,8 @@ class MODArchivo extends MODbase{
 			
 	function eliminarArchivo(){
 		//Definicion de variables para ejecucion del procedimiento
+
+        exit;
 		$this->procedimiento='param.ft_archivo_ime';
 		$this->transaccion='PM_ARCH_ELI';
 		$this->tipo_procedimiento='IME';
@@ -111,6 +113,37 @@ class MODArchivo extends MODbase{
 
 		//Devuelve la respuesta
 		return $this->respuesta;
+	}
+
+	function eliminarArchivo2(){
+		//Definicion de variables para ejecucion del procedimiento
+
+
+
+        $file = $this->aParam->getParametro('folder').$this->aParam->getParametro('nombre_archivo').'.'.$this->aParam->getParametro('extension');
+        if (!unlink($file))
+        {
+            echo ("Error deleting $file");
+        }
+        else
+        {
+            $this->procedimiento='param.ft_archivo_ime';
+            $this->transaccion='PM_ARCH_ELI';
+            $this->tipo_procedimiento='IME';
+
+            //Define los parametros para la funcion
+            $this->setParametro('id_archivo','id_archivo','int4');
+
+            //Ejecuta la instruccion
+            $this->armarConsulta();
+            $this->ejecutarConsulta();
+
+            //Devuelve la respuesta
+            return $this->respuesta;
+        }
+        
+        
+
 	}
 
 
@@ -141,6 +174,8 @@ class MODArchivo extends MODbase{
 		$this->captura('tabla','varchar');
 		$this->captura('nombre','varchar');
 		$this->captura('codigo','varchar');
+		$this->captura('multiple','varchar');
+		$this->captura('nombre_descriptivo','varchar');
 		/*$this->captura('nombre_archivo','varchar');
 		$this->captura('extension','varchar');
 		$this->captura('id_tabla','int4');*/
@@ -161,6 +196,8 @@ class MODArchivo extends MODbase{
 	function subirArchivo()
 	{
 
+
+
 		$cone = new conexion();
 		$link = $cone->conectarpdo();
 		$copiado = false;
@@ -173,6 +210,29 @@ class MODArchivo extends MODbase{
 			}
 
 
+            $tipo_archivo  = $this->verTipoArchivo($this->aParam->getParametro('id_tipo_archivo'));
+            if (count($tipo_archivo) == 0) {
+                throw new Exception("no exite una configuracion para subir archivos en la tabla que enviaste", 1);
+            }
+
+
+            $tipo_archivo_nombre = $tipo_archivo[0]['tipo_archivo'];
+            $multiple = $tipo_archivo[0]['multiple'];
+            $nombre_id = $tipo_archivo[0]['nombre_id'];
+            $id_tipo_archivo = $tipo_archivo[0]['id_tipo_archivo'];
+
+            $extensiones_permitidas = $tipo_archivo[0]['extensiones_permitidas'];
+
+            //sacamos la ruta para ver donde se guardara si es vacio se guardara en que sistema y en que control
+            $ruta_guardar =  $tipo_archivo[0]['ruta_guardar'];
+            if($ruta_guardar == 'null' || $ruta_guardar == null){
+               $ruta_guardar = '';
+            }
+
+
+            //si no envian sistema/control entonces el folder sera vacio para que entre donde corresponda
+            $folder = $ruta_guardar;
+
 			//Definicion de variables para ejecucion del procedimiento
 			$this->procedimiento='param.ft_archivo_ime';
 			$this->transaccion='PM_ARCH_INS';
@@ -182,20 +242,17 @@ class MODArchivo extends MODbase{
 			$ext = pathinfo($this->arregloFiles['archivo']['name']);
 			$this->arreglo['extension'] = $ext['extension'];
 			$extension = $ext['extension'];
-			$unico_id = uniqid();
+            $unico_id = uniqid();
 
+
+            
 			//crea un unico id para el nombre
 			$this->aParam->addParametro('unico_id', $unico_id);
 			$this->arreglo['unico_id'] = $unico_id;
 			$this->setParametro('unico_id','unico_id','varchar');
 
 
-			//si no envian sistema/control entonces el folder sera vacio para que entre donde corresponda
-            $folder = '';
 
-            if($this->aParam->getParametro('ruta_personalizada') != ''){
-                $folder = $this->aParam->getParametro('ruta_personalizada');
-            }
 
 			//validar que no sea un arhvio en blanco
 			$file_name = $this->getFileName2('archivo', 'unico_id', $folder, false);
@@ -209,6 +266,8 @@ class MODArchivo extends MODbase{
 			$this->aParam->addParametro('file_name', $file_name[2]);
 			$this->arreglo['file_name'] = $file_name[2];
 			$this->setParametro('file_name','file_name','varchar');
+
+
 
 
 			//manda como parametro el folder del arhivo
@@ -228,16 +287,8 @@ class MODArchivo extends MODbase{
 
 
 
-			$tipo_archivo  = $this->verTipoArchivo($this->aParam->getParametro('id_tipo_archivo'));
-			if (count($tipo_archivo) == 0) {
-				throw new Exception("no exite una configuracion para subir archivos en la tabla que enviaste", 1);
-			}
-			
 
-			$tipo_archivo_nombre = $tipo_archivo[0]['tipo_archivo'];
-			$multiple = $tipo_archivo[0]['multiple'];
-			$nombre_id = $tipo_archivo[0]['nombre_id'];
-			$id_tipo_archivo = $tipo_archivo[0]['id_tipo_archivo'];
+
 
 
 			$tabla = $this->aParam->getParametro('tabla');
@@ -254,6 +305,8 @@ class MODArchivo extends MODbase{
 			$this->setParametro('id_tabla','id_tabla','int4');
 
 
+			//enviamos el nombre de archivo
+            $this->setParametro('nombre_descriptivo','nombre_descriptivo','varchar');
 
 
 
@@ -278,7 +331,7 @@ class MODArchivo extends MODbase{
                     'unico_id',
                     false,
                     100000,
-                    array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar'),
+                    preg_split('~,~', $extensiones_permitidas),
                     $folder
                 );
 
