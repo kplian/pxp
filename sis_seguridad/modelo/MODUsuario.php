@@ -110,6 +110,8 @@ class MODUsuario extends MODbase {
 		$this->captura('descripcion','text');
 		$this->captura('id_roles','text');
 		$this->captura('autentificacion','varchar');
+        //$this->captura('id_grupo','integer');
+
 			
 		
 		//Ejecuta la funcion

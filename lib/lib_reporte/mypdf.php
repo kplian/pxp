@@ -8,6 +8,12 @@ class MYPDF extends TCPDF {
 	var $tableborders=array();
 	var $tabletextcolor=array();
 	
+	var $tablewidthsHD=array();
+	var $tablealignsHD=array();
+	var $tablenumbersHD=array();
+	var $tablebordersHD=array();
+	var $tabletextcoloHDr=array();
+	
 	/* RAC
 	 * 05/01/2017
 	 * Dibuja la fila calculando de manera exacta la altura 
@@ -236,6 +242,86 @@ class MYPDF extends TCPDF {
 		
 		$this->ln();
     }
+
+/*
+ * Autor: RAC
+ * Fecha: 21/03/2017
+ * Desc: Multifila para el header para evitar que los aprametros de acho, y demas estilos se sobrepongan
+ * 
+ * */
+    public function MultiRowHeader($row, $fill = false, $border = 1, $textcolor = array(0,0,0)) {    	
+        $index = 0;
+		$index_aux = 0;
+		$height_base = 3;
+		$height_aux = 0;
+		//$page_aux = 0;
+		//$y_pos_aux = 0;
+		$column_aux = '';
+		//$page_ini = $this->getPage();
+		$numbers = false;
+		if (count ($this->tablenumbersHD) > 0 ) {
+			$numbers = true;
+		}	
+		
+		/*****************************************************
+		 *   RECUPERA EL TAMAÑO DE LA COLUMNA MAS ALTA
+		 *   
+		 *****************************************************/
+		
+        foreach ($row as $column) {
+            if ($numbers && $this->tablenumbers[$index] > 0) {
+            	$column = number_format ( $column , $this->tablenumbersHD[$index] , '.' , ',' );
+            }
+			$datos_res = $this->getHeightV2($column, $this->tablewidthsHD[$index]);			 
+			 if ($datos_res > $height_aux) {
+				$height_aux = $datos_res;
+				$index_aux = $index;
+				$column_aux = $column;				
+			 }
+			$index++;
+			
+        }		
+		
+		////////RAC 04/01/2016  temporalmente completado ...esta linea hace lentos los reportes
+		//$resp = $this->getHeight($this->tablewidths[$index_aux], $height_base, $column_aux, $border);
+		//$height_aux = $resp[2];
+		
+		//RAC 04/01/2016... buscar una alternativa para calcular a altur amaxima de las columnas
+		$height_aux = $this->getHeightV3($column_aux, $this->tablewidthsHD[$index_aux]) * $height_aux;
+		
+		
+		
+		$this->CheckPageBreak($height_aux);
+		$index = 0;
+		
+		//echo $height_aux;
+		//exit;
+		
+		//var_dump($row); exit;
+		
+		/****************************************************
+		 * 
+		 *    IMPRIME LA FILA CON LA ALTUR AENCONTRADA
+		 * 
+		 ****************************************************/
+		foreach ($row as $data) {			
+		
+            if ($numbers && $this->tablenumbersHD[$index] > 0) {
+            	$data = number_format ( $data , $this->tablenumbersHD[$index] , '.' , ',' );
+            }			
+			//definicion de border
+			$border_final = (isset($this->tablebordersHD[$index])?$this->tablebordersHD[$index]:$border);						
+			//definicion de cambio de color
+			$textcolor_final = (isset($this->tabletextcolorHD[$index])?$this->tabletextcolorHD[$index]:$textcolor);				
+			$this->setTextColorArray($textcolor_final);			
+			$this->MultiCell($this->tablewidthsHD[$index], $height_aux, $data, $border_final,$this->tablealignsHD[$index], $fill, 0, '','' , true);
+			$index++;
+			
+        }
+		
+		$this->ln();
+    }
+
 
 	public function UniRow($row, $fill = false, $border = 1, $textcolor = array(0,0,0)) {    	
         //$index = 0;

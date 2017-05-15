@@ -5,9 +5,9 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
   p_id_lugar integer,
   p_id_cuenta integer
 )
-  RETURNS varchar AS
-  $body$
-  DECLARE
+RETURNS varchar AS
+$body$
+DECLARE
     v_resp		            varchar;
     v_nombre_funcion        	text;
     v_mensaje_error         	text;
@@ -26,6 +26,7 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
     v_id_cargo				integer;
     v_oficina					varchar;
     v_empleado				varchar;
+    v_num_cuenta			varchar;
 
 
   BEGIN
@@ -95,8 +96,8 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
         end if;
 
         if (v_registros.total = v_registros.conteo) then
-          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo)
-          values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,p_monto - v_suma ,v_id_ot);
+          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo,descripcion)
+          values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,p_monto - v_suma ,v_id_ot,'Prorrateo ' || p_codigo_prorrateo);
           if (v_registros.suma_total != p_monto) then
             v_resp ='El monto de la factura no iguala con la suma del consumo por numero. Monto Factura : ' || p_monto || ', Suma consumo por numero: ' || v_registros.suma_total || '. SE HA GENERADO EL PRORRATEO DE TODAS FORMAS!!!!';
 
@@ -105,8 +106,8 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
           end if;
           v_suma = p_monto;
         else
-          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo)
-          values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,round((v_registros.consumo*v_factor),2),v_id_ot);
+          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo,descripcion)
+          values ( v_registros.id_numero_celular,v_id_funcionario,v_id_centro_costo,round((v_registros.consumo*v_factor),2),v_id_ot,'Prorrateo ' || p_codigo_prorrateo);
 
           v_suma = v_suma + round((v_registros.consumo*v_factor),2);
         end if;
@@ -114,7 +115,7 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
     elsif (p_codigo_prorrateo = 'POFI') then
 
       /*Obtener el id_oficina a partir de la cuenta*/
-      select id_oficina into v_id_oficina
+      select id_oficina,nro_cuenta into v_id_oficina,v_num_cuenta
       from orga.toficina_cuenta
       where id_oficina_cuenta = p_id_cuenta;
 
@@ -155,13 +156,13 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
 
         if (v_funcionarios.total = v_funcionarios.numero) then
 
-          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo)
-          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma,v_id_ot );
+          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo,descripcion)
+          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma,v_id_ot ,'Prorrateo por oficina: ' || v_oficina || ' cuenta: ' || v_num_cuenta);
 
           v_suma = p_monto;
         else
-          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo)
-          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,round((p_monto/v_funcionarios.total),2),v_id_ot);
+          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo,descripcion)
+          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,round((p_monto/v_funcionarios.total),2),v_id_ot,'Prorrateo por oficina: ' || v_oficina || ' cuenta: ' || v_num_cuenta);
 
           v_suma = v_suma + round((p_monto/v_funcionarios.total),2);
         end if;
@@ -225,7 +226,7 @@ CREATE OR REPLACE FUNCTION orga.f_prorratear_x_empleado (
       v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
       raise exception '%',v_resp;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

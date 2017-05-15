@@ -59,7 +59,9 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
 						usu2.cuenta as usr_mod,
 						lug.nombre as nombre_lugar,
 						ofi.zona_franca,
-						ofi.frontera
+						ofi.frontera,
+						ofi.correo_oficina,
+						ofi.direccion
 						from orga.toficina ofi
 						inner join segu.tusuario usu1 on usu1.id_usuario = ofi.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ofi.id_usuario_mod

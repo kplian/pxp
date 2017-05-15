@@ -1690,29 +1690,18 @@ ALTER TABLE param.tcolumnas_archivo_excel
 
 /***********************************F-SCP-GSS-PARAM-0-20/12/2016*****************************************/
 
-
-/***********************************I-SCP-RAC-PARAM-0-10/02/2017*****************************************/
-
-
-
---------------- SQL ---------------
+/***********************************I-SCP-GSS-PARAM-0-03/02/2017*****************************************/
 
 ALTER TABLE param.tplantilla
-  ADD COLUMN sw_estacion VARCHAR(12);
-  
-  
-  
-  --------------- SQL ---------------
+  ADD COLUMN sw_estacion VARCHAR(3) DEFAULT 'no' NOT NULL;
 
 ALTER TABLE param.tplantilla
-  ADD COLUMN sw_punto_venta VARCHAR(10);
-  
-  --------------- SQL ---------------
+  ADD COLUMN sw_punto_venta VARCHAR(3) DEFAULT 'no' NOT NULL;
 
 ALTER TABLE param.tplantilla
-  ADD COLUMN sw_cod_no_iata VARCHAR(15);
-  
-/***********************************F-SCP-RAC-PARAM-0-10/02/2017*****************************************/
+  ADD COLUMN sw_cod_no_iata VARCHAR(3) DEFAULT 'no' NOT NULL;
+
+/***********************************F-SCP-GSS-PARAM-0-03/02/2017*****************************************/
 
 
 /***********************************I-SCP-FFP-PARAM-0-26/02/2017*****************************************/
@@ -1744,4 +1733,18 @@ CREATE TABLE param.tconf_lector_mobile_detalle(
 WITHOUT OIDS;
 
 /***********************************F-SCP-RAC-PARAM-0-26/02/2017*****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-08/05/2017*****************************************/
+
+ALTER TABLE param.ttipo_archivo ADD extensiones_permitidas VARCHAR(255) NULL;
+ALTER TABLE param.tarchivo ADD nombre_descriptivo VARCHAR NULL;
+/***********************************F-SCP-RAC-PARAM-0-08/05/2017*****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-011/05/2017*****************************************/
+
+ALTER TABLE param.ttipo_archivo ADD ruta_guardar VARCHAR(255) NULL;
+ALTER TABLE param.ttipo_archivo ALTER COLUMN ruta_guardar SET DEFAULT '';
+/***********************************F-SCP-RAC-PARAM-0-11/05/2017*****************************************/
 

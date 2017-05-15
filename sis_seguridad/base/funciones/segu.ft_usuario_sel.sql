@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_usuario_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.fvalidar_usuario
@@ -14,17 +15,17 @@ $body$
                 que solo tiene el privilegio de correr esta funcion
  AUTOR: 		KPLIAN(rac)
  FECHA:			26/07/2010
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:			
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
 ***************************************************************************/
 
 DECLARE
- 
+
 v_consulta              varchar;
 v_parametros            record;
 v_mensaje_error         text;
@@ -44,12 +45,12 @@ v_resp varchar;
 BEGIN
      v_nombre_funcion:='segu.ft_usuario_sel';
      v_parametros:=pxp.f_get_record(par_tabla);
-     
-/*******************************    
+
+/*******************************
  #TRANSACCION:  SEG_VALUSU_SEL
  #DESCRIPCION:	consulta los datos del usario segun contrasena y login
- #AUTOR:		KPLIAN(rac)	
- #FECHA:		26/07/2010	
+ #AUTOR:		KPLIAN(rac)
+ #FECHA:		26/07/2010
 ***********************************/
 
      if(par_transaccion='SEG_VALUSU_SEL')then
@@ -58,23 +59,23 @@ BEGIN
 
                v_consulta:='SELECT u.id_usuario,
                                    u.cuenta,
-                                   u.contrasena 
-                            FROM segu.tusuario u  
+                                   u.contrasena
+                            FROM segu.tusuario u
                             WHERE u.cuenta='''||v_parametros.login || '''
-                            and u.contrasena=''' || v_parametros.password || ''' 
-                            and u.fecha_caducidad>=now()::date 
+                            and u.contrasena=''' || v_parametros.password || '''
+                            and u.fecha_caducidad>=now()::date
                             and u.estado_reg=''activo''';
 
                return v_consulta;
-               
+
           END;
-/*******************************    
+/*******************************
  #TRANSACCION:  SEG_USUARI_SEL
  #DESCRIPCION:	Listar usuarios activos de sistema
- #AUTOR:		KPLIAN(rac)	
- #FECHA:		26/07/2010	
+ #AUTOR:		KPLIAN(rac)
+ #FECHA:		26/07/2010
 ***********************************/
-          
+
      elsif(par_transaccion='SEG_USUARI_SEL')then
 
           --consulta:=';
@@ -94,17 +95,17 @@ BEGIN
                                    CLASIF.descripcion,
                                    pxp.text_concat(UR.id_rol::text) as id_roles,
                                    USUARI.autentificacion
+                                  
                             FROM segu.tusuario USUARI
                                  INNER JOIN segu.vpersona PERSON on PERSON.id_persona = USUARI.id_persona
-                                 LEFT JOIN segu.tclasificador CLASIF on CLASIF.id_clasificador =
-                                 USUARI.id_clasificador 
-                                 LEFT JOIN segu.tusuario_rol UR on ur.estado_reg= ''activo'' 
-                                 and ur.id_usuario = usuari.id_usuario
+                                 LEFT JOIN segu.tclasificador CLASIF on CLASIF.id_clasificador = USUARI.id_clasificador
+                                 LEFT JOIN segu.tusuario_rol UR on ur.estado_reg= ''activo'' and ur.id_usuario = usuari.id_usuario
+                               
                             WHERE USUARI.estado_reg = ''activo'' and ';
-                           
+
                v_consulta:=v_consulta||v_parametros.filtro;
-              
-               v_consulta:=v_consulta||'      GROUP BY USUARI.id_usuario,
+               
+                   v_consulta:=v_consulta||'      GROUP BY USUARI.id_usuario,
                                                USUARI.id_clasificador,
                                                USUARI.cuenta,
                                                USUARI.contrasena,
@@ -118,19 +119,20 @@ BEGIN
                                                PERSON.nombre,
                                                CLASIF.descripcion,
                                                USUARI.autentificacion';
-             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
+               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
+				raise notice 'que esta pasando: %',v_consulta;
                return v_consulta;
 
 
          END;
 
-/*******************************    
+/*******************************
  #TRANSACCION:  SEG_USUARI_CONT
  #DESCRIPCION:	Contar usuarios activos de sistema
- #AUTOR:		KPLIAN(rac)	
- #FECHA:		26/07/2010	
+ #AUTOR:		KPLIAN(rac)
+ #FECHA:		26/07/2010
 ***********************************/
      elsif(par_transaccion='SEG_USUARI_CONT')then
 
@@ -139,21 +141,82 @@ BEGIN
 
                v_consulta:='SELECT count(USUARI.id_usuario)
                             FROM segu.tusuario USUARI
-                            INNER JOIN segu.vpersona PERSON
-                              ON PERSON.id_persona=USUARI.id_persona
-                            LEFT JOIN segu.tclasificador CLASIF
-                              ON CLASIF.id_clasificador=USUARI.id_clasificador
+                            INNER JOIN segu.vpersona PERSON  ON PERSON.id_persona=USUARI.id_persona
+                            LEFT JOIN segu.tclasificador CLASIF ON CLASIF.id_clasificador=USUARI.id_clasificador
                             WHERE USUARI.estado_reg=''activo'' AND ';
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;
+         
+   /*******************************
+   #TRANSACCION:  SEG_USUARIBK_SEL
+   #DESCRIPCION:	Listar usuarios activos de sistema, (REA) 27/03/2016, esta consulta esta mal hecha la dejo como backup
+   #AUTOR:		KPLIAN(rac)
+   #FECHA:		26/07/2010
+  ***********************************/
+
+     elsif(par_transaccion='SEG_USUARIBK_SEL')then
+
+          --consulta:=';
+          BEGIN
+
+               v_consulta:='SELECT USUARI.id_usuario,
+                                   USUARI.id_clasificador,
+                                   USUARI.cuenta,
+                                   USUARI.contrasena,
+                                   USUARI.fecha_caducidad,
+                                   USUARI.fecha_reg,
+                                   USUARI.estado_reg,
+                                   USUARI.estilo,
+                                   USUARI.contrasena_anterior,
+                                   USUARI.id_persona,
+                                   PERSON.nombre_completo2 as desc_person,
+                                   CLASIF.descripcion,
+                                   pxp.text_concat(UR.id_rol::text) as id_roles,
+                                   USUARI.autentificacion,
+                                   grup.id_grupo
+                            FROM segu.tusuario USUARI
+                                 INNER JOIN segu.vpersona PERSON on PERSON.id_persona = USUARI.id_persona
+                                 LEFT JOIN segu.tclasificador CLASIF on CLASIF.id_clasificador =
+                                 USUARI.id_clasificador
+                                 LEFT JOIN segu.tusuario_rol UR on ur.estado_reg= ''activo''
+                                 and ur.id_usuario = usuari.id_usuario
+                                 LEFT join segu.tusuario_grupo_ep ug on ug.id_usuario = USUARI.id_usuario
+                                 LEFT join param.vgrupos grup on ug.id_grupo  =  grup.id_grupo
+                            WHERE USUARI.estado_reg = ''activo'' and ';
+
+               v_consulta:=v_consulta||v_parametros.filtro;
+
+               v_consulta:=v_consulta||'      GROUP BY USUARI.id_usuario,
+                                               USUARI.id_clasificador,
+                                               USUARI.cuenta,
+                                               USUARI.contrasena,
+                                               USUARI.fecha_caducidad,
+                                               USUARI.fecha_reg,
+                                               USUARI.estado_reg,
+                                               USUARI.estilo,
+                                               USUARI.contrasena_anterior,
+                                               USUARI.id_persona,
+                                               PERSON.nombre_completo2,
+                                               PERSON.nombre,
+                                               CLASIF.descripcion,
+                                               USUARI.autentificacion,
+                                               grup.id_grupo';
+             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+
+				raise notice 'que esta pasando: %',v_consulta;
+               return v_consulta;
+
+
+         END;      
+         
 
      else
          raise exception 'No existe la opcion';
 
      end if;
-          
-    
+
+
 
 EXCEPTION
 
@@ -167,7 +230,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_validar_usuario_ime (OID = 305109) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
