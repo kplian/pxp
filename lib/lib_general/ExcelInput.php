@@ -164,7 +164,10 @@ class ExcelInput{
         $res = $objFunc->listarPlantillaArchivoExcel();
         $plantilla = $res->datos;
 
-        //var_dump($res); exit;
+        if(count($plantilla)==0){
+            throw new Exception('No se parametrizo la plantilla de archivo para '.$codigo);
+        }
+        
         $this->setNombreHoja($plantilla[0]['hoja_excel']);
         $this->setFilaInicio($plantilla[0]['fila_inicio']);
         $this->setFilaFin($plantilla[0]['fila_fin']);
