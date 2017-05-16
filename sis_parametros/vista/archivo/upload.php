@@ -26,6 +26,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.getComponente('id_tabla').setValue(this.datos_extras_id);
                 this.getComponente('id_tipo_archivo').setValue(this.datos_extras_id_tipo_archivo);
 
+                //si la ruta perzonalizada se envia desde la vista entonces debemos agregarlo al submit
+                this.argumentExtraSubmit={'ruta_perzonalizada':this.datos_extras_ruta_personalizada};
+
 
                 this.Cmp.id_tipo_archivo.hide();
                 this.Cmp.nombre_descriptivo.hide();

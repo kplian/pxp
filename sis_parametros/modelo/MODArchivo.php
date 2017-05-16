@@ -222,6 +222,7 @@ class MODArchivo extends MODbase{
             $id_tipo_archivo = $tipo_archivo[0]['id_tipo_archivo'];
 
             $extensiones_permitidas = $tipo_archivo[0]['extensiones_permitidas'];
+            $nombre_tipo_archivo = $tipo_archivo[0]['nombre'];
 
             //sacamos la ruta para ver donde se guardara si es vacio se guardara en que sistema y en que control
             $ruta_guardar =  $tipo_archivo[0]['ruta_guardar'];
@@ -229,9 +230,17 @@ class MODArchivo extends MODbase{
                $ruta_guardar = '';
             }
 
+            //si mandamos una ruta desde la vista entonces tomamos en cuenta esa agregandole el nombre de tipo de archivo
+            if($this->aParam->getParametro('ruta_perzonalizada') != ''){
+                $ruta_guardar = $this->aParam->getParametro('ruta_perzonalizada').'/'.$nombre_tipo_archivo.'/';
+            }
+
+
 
             //si no envian sistema/control entonces el folder sera vacio para que entre donde corresponda
             $folder = $ruta_guardar;
+
+
 
 			//Definicion de variables para ejecucion del procedimiento
 			$this->procedimiento='param.ft_archivo_ime';

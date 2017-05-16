@@ -33,6 +33,7 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		this.id_ = config.datos_extras_id;
 		this.tabla_ = config.datos_extras_tabla;
 		this.codigo_ = config.datos_extras_codigo;
+		this.ruta_personalizada = config.datos_extras_ruta_personalizada;
 
 
         //verificamos si existe una configuracion o varias para archivos multiple
@@ -485,7 +486,8 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		var rec = {
 			datos_extras_id:this.id_,
 			datos_extras_tabla:this.tabla_,
-			datos_extras_id_tipo_archivo:record.data.id_tipo_archivo
+			datos_extras_id_tipo_archivo:record.data.id_tipo_archivo,
+            datos_extras_ruta_personalizada:this.ruta_personalizada
 
 
     };
@@ -504,7 +506,8 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		var rec = {
 			datos_extras_id:this.id_,
 			datos_extras_tabla:this.tabla_,
-            datos_extras_multiple : 'si'
+            datos_extras_multiple : 'si',
+            datos_extras_ruta_personalizada:this.ruta_personalizada
 
 
          };
