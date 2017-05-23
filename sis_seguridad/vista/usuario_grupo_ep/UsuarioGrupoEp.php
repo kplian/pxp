@@ -89,7 +89,7 @@ Phx.vista.UsuarioGrupoEp=Ext.extend(Phx.gridInterfaz,{
             type: 'ComboBox',
             id_grupo: 0,
             filters: {
-                pfiltro: 'gep.nombre',
+                pfiltro: 'gr.nombre',
                 type: 'string'
             },
 			//bottom_filter:true,

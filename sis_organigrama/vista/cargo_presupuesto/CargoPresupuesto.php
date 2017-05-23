@@ -73,6 +73,24 @@ Phx.vista.CargoPresupuesto=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
+        {
+            config:{
+                name:'id_ot',
+                fieldLabel: 'Orden Trabajo',
+                sysorigen:'sis_contabilidad',
+                origen:'OT',
+                allowBlank:true,
+                gwidth:200,
+                baseParams:{par_filtro:'desc_orden#motivo_orden'},
+                renderer:function(value, p, record){return String.format('{0}', record.data['desc_orden']);}
+
+            },
+            type:'ComboRec',
+            id_grupo:0,
+            filters:{pfiltro:'ot.motivo_orden#ot.desc_orden',type:'string'},
+            grid:true,
+            form:true
+        },
 		{
 			config:{
 				name: 'porcentaje',
@@ -190,6 +208,8 @@ Phx.vista.CargoPresupuesto=Ext.extend(Phx.gridInterfaz,{
 	id_store:'id_cargo_presupuesto',
 	fields: [
 		{name:'id_cargo_presupuesto', type: 'numeric'},
+        {name:'id_ot', type: 'numeric'},
+        {name:'desc_orden', type: 'string'},
 		{name:'id_cargo', type: 'numeric'},
 		{name:'id_gestion', type: 'numeric'},
 		{name:'id_centro_costo', type: 'numeric'},
