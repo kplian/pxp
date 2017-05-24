@@ -575,9 +575,34 @@ class MODbase extends driver
 
 		$img_destino = imagecreatetruecolor($ancho_origen,$alto_origen);
 
-		imagecopyresized($img_destino,$img_origen,0,0,0,0,$ancho_origen,$alto_origen,imagesx($img_origen),imagesy($img_origen));
-		imagejpeg($img_destino,$ruta_destino.$nombre_img.'.'.$extension_de_la_imagen);
-		
+
+
+         switch ($extension_de_la_imagen) {
+             case 'jpg' :
+                 imagecopyresized($img_destino,$img_origen,0,0,0,0,$ancho_origen,$alto_origen,imagesx($img_origen),imagesy($img_origen));
+
+                 imagejpeg($img_destino,$ruta_destino.$nombre_img.'.'.$extension_de_la_imagen);
+
+                 break;
+             case 'png' :
+
+                 imagealphablending($img_destino, FALSE);
+                 imagesavealpha($img_destino, TRUE);
+                 imagecopyresized($img_destino,$img_origen,0,0,0,0,$ancho_origen,$alto_origen,imagesx($img_origen),imagesy($img_origen));
+                 imagepng($img_destino,$ruta_destino.$nombre_img.'.'.$extension_de_la_imagen);
+
+                 /*imagealphablending($img_destino, false);
+                 imagesavealpha($img_destino,true);
+                 $transparent = imagecolorallocatealpha($img_destino, 255, 255, 255, 127);
+                 imagefilledrectangle($img_destino, 0, 0, $nWidth, $nHeight, $transparent);
+                 imagepng($img_destino,$ruta_destino.$nombre_img.'.'.$extension_de_la_imagen);*/
+
+
+                 break;
+
+         }
+
+
 	 }
 
 

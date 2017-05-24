@@ -29,6 +29,8 @@ DECLARE
 	v_id_archivo	integer;
 	v_registros_json RECORD;
 	v_record_anterior record;
+
+	v_record_tipo_archivo RECORD;
 			    
 BEGIN
 
@@ -62,7 +64,8 @@ BEGIN
 			id_usuario_reg,
 			id_usuario_ai,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+			nombre_descriptivo
           	) values(
 			'activo',
 			v_parametros.folder,
@@ -75,42 +78,56 @@ BEGIN
 			p_id_usuario,
 			v_parametros._id_usuario_ai,
 			null,
-			null
+			null,
+			v_parametros.nombre_descriptivo
 							
 			
 			
 			)RETURNING id_archivo into v_id_archivo;
 
 
+					select *
+					INTO v_record_tipo_archivo
+						FROM param.ttipo_archivo
+							where id_tipo_archivo = v_parametros.id_tipo_archivo;
 
-					IF EXISTS (SELECT 0 FROM param.tarchivo
-											where id_tipo_archivo = v_parametros.id_tipo_archivo
-														and id_tabla = v_parametros.id_tabla
-														and id_archivo_fk is NULL and id_archivo != v_id_archivo )
-					THEN
-						--stuff here
+					--RAISE EXCEPTION '%',v_record_tipo_archivo.multiple;
 
-					--	RAISE EXCEPTION '%','ya existe un documento se ira al historial';
+					--si es diferente de si el multiple entonces  se tomara en cuenta los archivos historicos
+					IF v_record_tipo_archivo.multiple != 'si' or v_record_tipo_archivo.multiple is null THEN
 
-
-						--obtenemos el archivo que se modificara y se llavara al historico
-						select *
-						into v_record_anterior
-						FROM param.tarchivo
+						IF EXISTS (SELECT 0 FROM param.tarchivo
 						where id_tipo_archivo = v_parametros.id_tipo_archivo
-									AND id_tabla = v_parametros.id_tabla;
+									and id_tabla = v_parametros.id_tabla
+									and id_archivo_fk is NULL and id_archivo != v_id_archivo )
+						THEN
+							--stuff here
 
-						UPDATE param.tarchivo
-						SET id_archivo_fk = v_id_archivo
-						where id_tipo_archivo = v_parametros.id_tipo_archivo
-									AND id_tabla = v_parametros.id_tabla
-									and id_archivo_fk is NULL and id_archivo != v_id_archivo;
-
-					ELSE
+							--	RAISE EXCEPTION '%','ya existe un documento se ira al historial';
 
 
+							--obtenemos el archivo que se modificara y se llavara al historico
+							select *
+							into v_record_anterior
+							FROM param.tarchivo
+							where id_tipo_archivo = v_parametros.id_tipo_archivo
+										AND id_tabla = v_parametros.id_tabla;
+
+							UPDATE param.tarchivo
+							SET id_archivo_fk = v_id_archivo
+							where id_tipo_archivo = v_parametros.id_tipo_archivo
+										AND id_tabla = v_parametros.id_tabla
+										and id_archivo_fk is NULL and id_archivo != v_id_archivo;
+
+						ELSE
+
+
+
+						END IF;
 
 					END IF;
+
+
 
 
 
