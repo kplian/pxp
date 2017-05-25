@@ -750,7 +750,7 @@ ALTER TABLE orga.tcargo_presupuesto
 ALTER TABLE orga.toficina
   ADD COLUMN correo_oficina VARCHAR;
 
-/*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
+/*****************************F-SCP-RAC-ORGA-1-23/03/2017*************/
 
 
 
