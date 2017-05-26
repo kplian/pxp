@@ -1734,3 +1734,64 @@ WITHOUT OIDS;
 
 /***********************************F-SCP-RAC-PARAM-0-26/02/2017*****************************************/
 
+
+
+/***********************************I-SCP-RAC-PARAM-0-26/05/2017*****************************************/
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.ttipo_cc (
+  id_tipo_cc SERIAL NOT NULL,
+  codigo VARCHAR NOT NULL UNIQUE,
+  descripcion VARCHAR,
+  movimiento VARCHAR(6) DEFAULT 'no' NOT NULL,
+  tipo VARCHAR(100) DEFAULT 'centro' NOT NULL,
+  mov_pres VARCHAR(50) [] NOT NULL,
+  control_partida VARCHAR(5) DEFAULT 'si' NOT NULL,
+  control_techo VARCHAR(4) DEFAULT 'no' NOT NULL,
+  momento_pres VARCHAR(50) [] NOT NULL,
+  id_ep INTEGER,
+  id_tipo_cc_fk INTEGER,
+  PRIMARY KEY(id_tipo_cc)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.ttipo_cc.movimiento
+IS 'su o no, los tipo de presupeusto son los nodos hojas, estos nodos se transforman en centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc.tipo
+IS 'centro, proyecto, orden, son clasificadores del centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc.mov_pres
+IS 'ingreso , egreso, define que movimeintos puede realizar este centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc.control_partida
+IS 'si o no, se aplica a los nodos de contrl presupeustario, indica si controla partida entonces  verifica el techo por partida';
+
+COMMENT ON COLUMN param.ttipo_cc.control_techo
+IS 'indique en que nivel se queire la verificacion presupeustaria';
+
+COMMENT ON COLUMN param.ttipo_cc.momento_pres
+IS 'que momentos presupeustarios se condideran en este nodo, comprometido, ejecutado, pagado';
+
+COMMENT ON COLUMN param.ttipo_cc.id_ep
+IS 'identifica la estructura programatica, van prevalecer las que estan en nodo de movimiento';
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-26/05/2017*****************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
