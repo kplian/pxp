@@ -13,6 +13,14 @@ class ACTTipoArchivo extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_tipo_archivo');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+
+        if($this->objParam->getParametro('tabla')!=''){
+            $this->objParam->addFiltro("tipar.tabla = ''".$this->objParam->getParametro('tabla')."''");
+        }
+        if($this->objParam->getParametro('multiple')!=''){
+            $this->objParam->addFiltro("tipar.multiple = ''".$this->objParam->getParametro('multiple')."''");
+        }
+
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODTipoArchivo','listarTipoArchivo');

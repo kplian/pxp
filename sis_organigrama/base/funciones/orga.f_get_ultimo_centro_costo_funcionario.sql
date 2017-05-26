@@ -2,7 +2,8 @@ CREATE OR REPLACE FUNCTION orga.f_get_ultimo_centro_costo_funcionario (
   p_id_funcionario integer,
   p_id_periodo integer,
   out po_id_centro_costo integer,
-  out po_id_cargo integer
+  out po_id_cargo integer,
+  out po_id_ot integer
 )
 RETURNS record AS
 $body$
@@ -23,7 +24,7 @@ BEGIN
     where id_periodo = p_id_periodo;
     
 
-    select car.id_cargo,carpre.id_centro_costo into po_id_cargo,po_id_centro_costo
+    select car.id_cargo,carpre.id_centro_costo,carpre.id_ot into po_id_cargo,po_id_centro_costo,po_id_ot
     from orga.tuo_funcionario uofun
     inner join orga.tcargo car
         on car.id_cargo = uofun.id_cargo

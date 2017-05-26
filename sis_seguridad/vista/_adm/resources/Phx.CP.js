@@ -1227,7 +1227,7 @@ Phx.CP=function(){
                     timeout:that.timeout,
                     scope:that
                 }); 							 
-			}, 60000);
+			}, 150000);
 			
 		},
 		notificar : function(titulo,mensaje) {

@@ -51,6 +51,12 @@ BEGIN
         	select cc.id_gestion into v_id_gestion
         	from param.tcentro_costo cc
         	where id_centro_costo = v_parametros.id_centro_costo;
+            
+            if (pxp.f_get_variable_global('orga_exigir_ot') = 'si') then
+            	if (v_parametros.id_ot is null) then
+                	raise exception 'Debe registrar la OT ya que es un campo obligatorio';
+                end if;
+            end if;
         	
         	--Sentencia de la insercion
         	insert into orga.tcargo_presupuesto(
@@ -63,7 +69,8 @@ BEGIN
 			id_usuario_reg,
 			fecha_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            id_ot
           	) values(
 			v_parametros.id_cargo,
 			v_id_gestion,
@@ -74,7 +81,8 @@ BEGIN
 			p_id_usuario,
 			now(),
 			null,
-			null
+			null,
+            v_parametros.id_ot
 							
 			)RETURNING id_cargo_presupuesto into v_id_cargo_presupuesto;
 			
@@ -105,6 +113,14 @@ BEGIN
 	elsif(p_transaccion='OR_CARPRE_MOD')then
 
 		begin
+        
+        	if (pxp.f_get_variable_global('orga_exigir_ot') = 'si') then
+            	if (v_parametros.id_ot is null) then
+                	raise exception 'Debe registrar la OT ya que es un campo obligatorio';
+                end if;
+            end if;
+            
+            
 			--Sentencia de la modificacion
 			update orga.tcargo_presupuesto set
 			id_cargo = v_parametros.id_cargo,
@@ -113,7 +129,8 @@ BEGIN
 			porcentaje = v_parametros.porcentaje,
 			fecha_ini = v_parametros.fecha_ini,
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+			id_usuario_mod = p_id_usuario,
+            id_ot = v_parametros.id_ot
 			where id_cargo_presupuesto=v_parametros.id_cargo_presupuesto;
                
 			--Definicion de la respuesta

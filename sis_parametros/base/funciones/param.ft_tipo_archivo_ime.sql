@@ -57,7 +57,9 @@ BEGIN
 			fecha_reg,
 			id_usuario_reg,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+			extensiones_permitidas,
+			ruta_guardar
           	) values(
 			v_parametros.nombre_id,
 			v_parametros.multiple,
@@ -71,7 +73,9 @@ BEGIN
 			now(),
 			p_id_usuario,
 			null,
-			null
+			null,
+			v_parametros.extensiones_permitidas,
+			v_parametros.ruta_guardar
 							
 			
 			
@@ -107,7 +111,9 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+				extensiones_permitidas = v_parametros.extensiones_permitidas,
+				ruta_guardar = v_parametros.ruta_guardar
 			where id_tipo_archivo=v_parametros.id_tipo_archivo;
                
 			--Definicion de la respuesta
