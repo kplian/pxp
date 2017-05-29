@@ -139,7 +139,7 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'correos',
-				fieldLabel: 'Correos',
+				fieldLabel: 'Para',
 				allowBlank: false,
 				anchor: '80%',
 				qtip:'Es posible registrar campos de la tabla definida en tipo proceso, los cuales deben estar entre llaves.<br> Ej: {$tabla.correo_proveedor}',
@@ -152,6 +152,40 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+
+        {
+            config:{
+                name: 'cc',
+                fieldLabel: 'CC',
+                allowBlank: true,
+                anchor: '80%',
+                qtip:'Es posible registrar campos de la tabla definida en tipo proceso, los cuales deben estar entre llaves.<br> Ej: {$tabla.correo_proveedor}',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextArea',
+            filters:{pfiltro:'pcorreo.cc',type:'string'},
+            id_grupo:2,
+            grid:true,
+            form:true
+        },
+
+        {
+            config:{
+                name: 'bcc',
+                fieldLabel: 'BCC',
+                allowBlank: true,
+                anchor: '80%',
+                qtip:'Es posible registrar campos de la tabla definida en tipo proceso, los cuales deben estar entre llaves.<br> Ej: {$tabla.correo_proveedor}',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'TextArea',
+            filters:{pfiltro:'pcorreo.bcc',type:'string'},
+            id_grupo:2,
+            grid:true,
+            form:true
+        },
 		
 		{
        			config:{
@@ -473,7 +507,9 @@ Phx.vista.PlantillaCorreo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'asunto', type: 'string'},'requiere_acuse',
 		'url_acuse','mensaje_acuse','mensaje_link_acuse',
-		'mandar_automaticamente','funcion_acuse_recibo','funcion_creacion_correo'
+		'mandar_automaticamente','funcion_acuse_recibo','funcion_creacion_correo',
+        'cc',
+        'bcc'
 		
 	],
 	sortInfo:{
