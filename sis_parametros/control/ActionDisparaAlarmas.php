@@ -110,13 +110,30 @@ include_once(dirname(__FILE__).'/../../sis_parametros/modelo/MODAlarma.php');
 			                
 			            } else if (isset($d['correos'])) {
 			            	$correos = explode(',', $d['correos']);
+                            var_dump($correos);
 							foreach($correos as $value) {
-								echo 'ssss <br>';
-								echo $value;
-								echo '--------';
-								
+
 								$value = trim($value);
-			            		$correo->addDestinatario($value,$value);
+								echo 'sss <br>';
+								echo $value;
+                                if (preg_match('/\([A-Za-z0-9]+/', $value)){
+                                    $procesar = explode(';',trim($value, '()'));
+                                    foreach($procesar as $value) {
+                                        $value = trim($value);
+                                        $correo->addCC($value, $value);
+                                    }
+
+                                }else if (preg_match('/\[[A-Za-z0-9]+/', $value)){
+                                    $procesar = explode(';',trim($value, '[]'));
+                                    foreach($procesar as $value) {
+                                        $value = trim($value);
+                                        $correo->addBCC($value, $value);
+                                    }
+                                }
+                                else {
+                                    $correo->addDestinatario($value, $value);
+                                }
+
 								if (!PHPMailer::validateAddress($value)) {
 						            throw new phpmailerException("Email address " . $value . " is invalid -- aborting!");
 						        }
