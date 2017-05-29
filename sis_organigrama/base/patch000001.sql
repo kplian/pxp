@@ -740,6 +740,18 @@ ALTER TABLE orga.tcargo_presupuesto
 /***********************************F-SCP-JRR-ORGA-0-02/05/2017****************************************/
 
 
+/*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
+
+--------------- SQL ---------------
+
+--algun chapulin se  puso   esta columna en la 
+--consulta y se ovlido poner el scrip para la columna en la tabla
+
+ALTER TABLE orga.toficina
+  ADD COLUMN correo_oficina VARCHAR;
+
+/*****************************F-SCP-RAC-ORGA-1-23/03/2017*************/
+
 
 
 

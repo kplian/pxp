@@ -17,30 +17,53 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Archivo.superclass.constructor.call(this,config);
 
-		/*this.addButton('Subir Archivo', {
-			argument: {imprimir: 'Subir Archivo'},
-			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivo', /!*iconCls:'' ,*!/
-			disabled: false,
-			handler: this.subirArchivo
+		this.addButton('SubirArchivoMultiple', {
+			argument: {imprimir: 'SubirArchivoMultiple'},
+			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivos Multiples', iconCls:'' ,
+			disabled: true,
+			handler: this.subirArchivosMultiples
 		});
 
-		this.addButton('Subir Archivos', {
-			argument: {imprimir: 'Subir Archivos'},
-			text: '<i class="fa fa-thumbs-o-up fa-2x"></i> Subir Archivos', /!*iconCls:'' ,*!/
-			disabled: false,
-			handler: this.subirArchivos
-		});
-*/
+
+
+
 
 		this.grid.addListener('cellclick', this.oncellclick,this);
 
 		this.id_ = config.datos_extras_id;
 		this.tabla_ = config.datos_extras_tabla;
 		this.codigo_ = config.datos_extras_codigo;
+		this.ruta_personalizada = config.datos_extras_ruta_personalizada;
+
+
+        //verificamos si existe una configuracion o varias para archivos multiple
+
+        Ext.Ajax.request({
+            url: '../../sis_parametros/control/TipoArchivo/listarTipoArchivo',
+            params: {
+                "start":"0","limit":"50","sort":"id_tipo_archivo","dir":"ASC",
+                'tabla': this.tabla_,
+                'multiple':'si'
+
+            },
+            success: function (resp) {
+                console.log('resp',resp)
+                var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+
+                if(objRes.total > 0){
+                    this.getBoton('SubirArchivoMultiple').enable();
+                }
+            },
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        });
+
 
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag,tabla:this.tabla_,id_tabla:this.id_}})
-	},
+	    console.log('this',this);
+    },
 			
 	Atributos:[
 		{
@@ -62,7 +85,13 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:255
+				maxLength:255,
+                renderer:function (value, p, record, rowIndex, colIndex){
+
+
+                   return value;
+
+                },
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipar.nombre',type:'string'},
@@ -81,6 +110,22 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'arch.tabla',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+
+		{
+			config:{
+				name: 'nombre_descriptivo',
+				fieldLabel: 'nombre_descriptivo',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:255
+			},
+			type:'TextField',
+			filters:{pfiltro:'arch.nombre_descriptivo',type:'string'},
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -124,11 +169,16 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 				anchor:'100%',
 				renderer:function (value, p, record){
 
-						if(record.data.extension!='') {
-							return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Reemplazar Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
-						} else {
-							return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Subir Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
-						}
+				    if(record.data.multiple != 'si'){
+                        if(record.data.extension!='') {
+                            return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Reemplazar Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
+                        } else {
+                            return  String.format('{0}',"<div style='text-align:center'><img border='0' style='-webkit-user-select:auto;cursor:pointer;' title='Subir Archivo' src = '../../../lib/imagenes/icono_awesome/awe_upload.png' align='center' width='30' height='30'></div>");
+                        }
+                    }else{
+				        return '';
+                    }
+
 
 				},
 
@@ -378,16 +428,58 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		{name:'tabla', type: 'string'},
 		{name:'nombre', type: 'string'},
 		{name:'codigo', type: 'string'},
+		{name:'multiple', type: 'string'},
+		{name:'nombre_descriptivo', type: 'string'},
 
 	],
 	sortInfo:{
 		field: 'id_tipo_archivo',
 		direction: 'ASC'
 	},
-	bdel:false,
+	bdel:true,
 	bsave:false,
 	bnew:false,
 	bedit:false,
+
+    preparaMenu: function (n) {
+        Phx.vista.Archivo.superclass.preparaMenu.call(this, n);
+
+        var data = this.getSelectedData();
+        console.log('menu',data)
+        var tb = this.tbar;
+
+//si el archivo esta escaneado se permite visualizar
+        console.log(data.multiple)
+
+        //solo los multiples se eliminan
+        if(data.multiple == 'si'){
+            this.getBoton('del').enable();
+        }else{
+            this.getBoton('del').disable();
+        }
+        return tb
+    },
+    onButtonDel:function () {
+	    //eliminamos
+        var rec = this.sm.getSelected();
+        console.log(rec);
+
+        Ext.Ajax.request({
+            url: '../../sis_parametros/control/Archivo/eliminarArchivo2',
+            params: {
+                id_archivo: rec.data.id_archivo,
+                nombre_archivo: rec.data.nombre_archivo,
+                extension: rec.data.extension,
+                folder: rec.data.folder,
+
+            },
+            success: this.successDel,
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        });
+    },
+
 
 	subirArchivo: function (record) {
 
@@ -395,8 +487,10 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 			datos_extras_id:this.id_,
 			datos_extras_tabla:this.tabla_,
 			datos_extras_id_tipo_archivo:record.data.id_tipo_archivo,
+            datos_extras_ruta_personalizada:this.ruta_personalizada
 
-		};
+
+    };
 
 		Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/upload.php',
 			'Interfaces',
@@ -407,7 +501,27 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 
 
 	},
-	subirArchivos: function () {
+    subirArchivosMultiples: function (record) {
+
+		var rec = {
+			datos_extras_id:this.id_,
+			datos_extras_tabla:this.tabla_,
+            datos_extras_multiple : 'si',
+            datos_extras_ruta_personalizada:this.ruta_personalizada
+
+
+         };
+
+		Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/upload.php',
+			'Interfaces',
+			{
+				width: 900,
+				height: 400
+			}, rec, this.idContenedor, 'subirArchivo');
+
+
+	},
+	/*subirArchivos: function () {
 		var rec = {
 			datos_extras_id:this.id_,
 			datos_extras_tabla:this.tabla_
@@ -420,7 +534,7 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 			}, rec, this.idContenedor, 'subirArchivoMultiple');
 
 
-	},
+	},*/
 
 	oncellclick : function(grid, rowIndex, columnIndex, e) {
 
@@ -450,6 +564,7 @@ Phx.vista.Archivo=Ext.extend(Phx.gridInterfaz,{
 		url:'../../../sis_parametros/vista/archivo/ArchivoHistorico.php',
 		title:'ArchivoHistorico',
 		width:300,
+        collapsed: true,
 		cls:'ArchivoHistorico'
 	},
 

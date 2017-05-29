@@ -123,14 +123,16 @@ BEGIN
 						usu2.cuenta as usr_mod,
 						tipar.tabla,
 						tipar.nombre,
-						tipar.codigo
+						tipar.codigo,
+            tipar.multiple,
+            arch.nombre_descriptivo
 						from param.ttipo_archivo tipar
   left join param.tarchivo arch on arch.id_tipo_archivo = tipar.id_tipo_archivo and arch.id_tabla = '||v_parametros.id_tabla||'
 
   left join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
   left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 where
-				         ';
+			 CASE WHEN tipar.multiple = ''si''  THEN (arch.extension is not null ) ELSE 0=0  END   AND       ';
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;

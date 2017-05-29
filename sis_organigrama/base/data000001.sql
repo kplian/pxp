@@ -547,7 +547,6 @@ VALUES
   (E'orga_exigir_ot', E'no', E'obligara a registrar ot en las tablas cargo_presupuesto y cargo_centro_costo');
 
 
-
 /*****************************F-DAT-JRR-ORGA-0-02/05/2017*************/
 
 

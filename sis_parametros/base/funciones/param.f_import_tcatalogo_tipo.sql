@@ -30,7 +30,7 @@ BEGIN
         -------------------------- TODO
         
     else
-        if (v_id_subsistema is null)then
+        if (v_id_catalogo_tipo is null)then
             
               INSERT INTO param.tcatalogo_tipo
                         (
