@@ -1748,3 +1748,10 @@ ALTER TABLE param.ttipo_archivo ADD ruta_guardar VARCHAR(255) NULL;
 ALTER TABLE param.ttipo_archivo ALTER COLUMN ruta_guardar SET DEFAULT '';
 /***********************************F-SCP-RAC-PARAM-0-11/05/2017*****************************************/
 
+
+/***********************************I-SCP-FFP-PARAM-0-29/05/2017*****************************************/
+
+ALTER TABLE param.ttipo_archivo ADD tamano NUMERIC(10) NULL;
+
+/***********************************F-SCP-FFP-PARAM-0-29/05/2017*****************************************/
+
