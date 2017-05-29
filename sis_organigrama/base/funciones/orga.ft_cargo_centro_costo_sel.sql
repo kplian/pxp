@@ -58,11 +58,14 @@ BEGIN
 						carpre.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-						cc.codigo_cc
+						cc.codigo_cc,
+                        carpre.id_ot,
+                        ot.desc_orden
 						from orga.tcargo_centro_costo carpre
 						inner join segu.tusuario usu1 on usu1.id_usuario = carpre.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = carpre.id_usuario_mod
-						inner join param.vcentro_costo cc on cc.id_centro_costo = carpre.id_centro_costo
+						left join conta.torden_trabajo ot on ot.id_orden_trabajo = carpre.id_ot
+                        inner join param.vcentro_costo cc on cc.id_centro_costo = carpre.id_centro_costo
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -89,7 +92,8 @@ BEGIN
 					    from orga.tcargo_centro_costo carpre
 					    inner join segu.tusuario usu1 on usu1.id_usuario = carpre.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = carpre.id_usuario_mod
-						inner join param.vcentro_costo cc on cc.id_centro_costo = carpre.id_centro_costo
+						left join conta.torden_trabajo ot on ot.id_orden_trabajo = carpre.id_ot
+                        inner join param.vcentro_costo cc on cc.id_centro_costo = carpre.id_centro_costo
 					    where ';
 			
 			--Definicion de la respuesta		    

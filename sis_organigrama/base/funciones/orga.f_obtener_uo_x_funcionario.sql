@@ -1,10 +1,9 @@
 CREATE OR REPLACE FUNCTION orga.f_obtener_uo_x_funcionario (
   par_id_funcionario integer,
-  par_opcion character varying,
+  par_opcion varchar,
   par_fecha date
 )
-RETURNS integer
-AS 
+RETURNS integer AS
 $body$
 /************************************
 FUNCION: f_obtener_uo_x_funcionario
@@ -42,7 +41,7 @@ v_tope:='no';
     where
          ((UOFUNC.estado_reg='activo' and UOFUNC.fecha_asignacion<=coalesce(par_fecha,now()::date))
          or (UOFUNC.estado_reg='inactivo' and UOFUNC.fecha_finalizacion>=coalesce(par_fecha,now()::date)))
-         and UOFUNC.id_funcionario=par_id_funcionario;
+         and UOFUNC.id_funcionario=par_id_funcionario AND UO.estado_reg='activo';
                               
 
     v_id_uo:= pxp.f_iif(((par_opcion='presupuesto' and v_presupuesta='si') or (par_opcion='gerencia' and v_gerencia='si') or (par_opcion='funcionario')), ''||v_uo_funcionario||'','-1')::integer;
@@ -86,7 +85,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_uo_arb_inicia (OID = 304943) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

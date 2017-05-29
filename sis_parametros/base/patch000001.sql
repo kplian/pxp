@@ -1423,8 +1423,13 @@ IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de
 /***********************************F-SCP-RAC-PARAM-0-22/06/2016****************************************/
 
 /***********************************I-SCP-RCM-PARAM-0-24/08/2016*****************************************/
+/*
+ en algunas base de datos el codigo noes unico por eso lo comento
+ RAC 25/05/2017
+ 
 alter table param.tinstitucion
 add constraint tinstitucion_uq_codigo unique(codigo);
+*/
 /***********************************F-SCP-RCM-PARAM-0-24/08/2016*****************************************/
 
 
@@ -1706,11 +1711,7 @@ ALTER TABLE param.tplantilla
 
 /***********************************I-SCP-FFP-PARAM-0-26/02/2017*****************************************/
 
-
-
 --------------- SQL ---------------
-
-
 CREATE TABLE param.tconf_lector_mobile(
   id_conf_lector_mobile SERIAL,
   nombre VARCHAR(255),
@@ -1732,21 +1733,25 @@ CREATE TABLE param.tconf_lector_mobile_detalle(
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
-/***********************************F-SCP-RAC-PARAM-0-26/02/2017*****************************************/
+/***********************************F-SCP-FFP-PARAM-0-26/02/2017*****************************************/
 
 
 /***********************************I-SCP-FFP-PARAM-0-08/05/2017*****************************************/
 
 ALTER TABLE param.ttipo_archivo ADD extensiones_permitidas VARCHAR(255) NULL;
 ALTER TABLE param.tarchivo ADD nombre_descriptivo VARCHAR NULL;
+
 /***********************************F-SCP-RAC-PARAM-0-08/05/2017*****************************************/
 
 
-/***********************************I-SCP-FFP-PARAM-0-011/05/2017*****************************************/
+/***********************************I-SCP-FFP-PARAM-0-11/05/2017*****************************************/
 
 ALTER TABLE param.ttipo_archivo ADD ruta_guardar VARCHAR(255) NULL;
 ALTER TABLE param.ttipo_archivo ALTER COLUMN ruta_guardar SET DEFAULT '';
-/***********************************F-SCP-RAC-PARAM-0-11/05/2017*****************************************/
+
+/***********************************F-SCP-FFP-PARAM-0-11/05/2017*****************************************/
+
+
 
 
 /***********************************I-SCP-FFP-PARAM-0-29/05/2017*****************************************/

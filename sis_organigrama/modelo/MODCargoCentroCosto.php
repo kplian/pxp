@@ -34,6 +34,8 @@ class MODCargoCentroCosto extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_centro_costo','text');
+        $this->captura('id_ot','int4');
+        $this->captura('desc_orden','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -56,6 +58,7 @@ class MODCargoCentroCosto extends MODbase{
 		$this->setParametro('porcentaje','porcentaje','numeric');
 		$this->setParametro('fecha_ini','fecha_ini','date');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+        $this->setParametro('id_ot','id_ot','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -79,6 +82,7 @@ class MODCargoCentroCosto extends MODbase{
 		$this->setParametro('porcentaje','porcentaje','numeric');
 		$this->setParametro('fecha_ini','fecha_ini','date');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+        $this->setParametro('id_ot','id_ot','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
