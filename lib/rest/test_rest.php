@@ -91,6 +91,13 @@ echo $pxpRestClient->doPost('obingresos/Agencia/insertarBoletaAgencia',
     ));
 
 */
+
+echo $pxpRestClient->doPost('almacenes/Item/nombreClasificacionItems',
+    array(
+        "id_item"=>"1615,1617"
+    ));
+
+/*
 echo $pxpRestClient->doPost('obingresos/Deposito/insertarDeposito',
     array(
         "tipo"=>"agencia",
@@ -103,7 +110,7 @@ echo $pxpRestClient->doPost('obingresos/Deposito/insertarDeposito',
         "id_periodo_venta" =>""
 
     ));
-
+*/
 /*
 
 $this->setParametro('id_contrato','id_contrato','integer');

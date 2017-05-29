@@ -428,3 +428,57 @@ CREATE INDEX testado_wf_idx1 ON wf.testado_wf
   USING btree (id_tipo_estado);
   
 /*****************************F-DEP-JRR-WF-0-20/05/2016*************/
+
+
+
+/*****************************I-DEP-MMV-WF-0-29/05/2017*************/
+CREATE VIEW wf.vbitacotas_procesos (
+    id_tipo_proceso,
+    tipo_proceso,
+    nro_tramite,
+    nombre_estado,
+    date_part,
+    fecha_ini,
+    fecha_fin,
+    estado_sig,
+    proveido,
+    proceso_wf,
+    id_proceso_wf,
+    id_estado_wf,
+    id_funcionario,
+    nombre_completo1)
+AS
+ WITH hyomin AS (
+SELECT e.id_proceso_wf,
+            f.desc_funcionario1,
+            e.id_estado_wf,
+            t.nombre_estado
+FROM wf.testado_wf e
+      JOIN wf.ttipo_estado t ON t.id_tipo_estado = e.id_tipo_estado AND
+          t.nombre_estado::text = 'Borrador'::text
+   JOIN orga.vfuncionario f ON f.id_funcionario = e.id_funcionario
+        )
+    SELECT tp.id_tipo_proceso,
+    tp.nombre AS tipo_proceso,
+    pf.nro_tramite,
+    te1.nombre_estado,
+    date_part('day'::text, est2.fecha_reg - est1.fecha_reg) AS date_part,
+    est1.fecha_reg AS fecha_ini,
+    est2.fecha_reg AS fecha_fin,
+    te2.nombre_estado AS estado_sig,
+    est2.obs AS proveido,
+    pf.descripcion AS proceso_wf,
+    pf.id_proceso_wf,
+    est1.id_estado_wf,
+    est1.id_funcionario,
+    h.desc_funcionario1 AS nombre_completo1
+    FROM wf.testado_wf est1
+   JOIN wf.testado_wf est2 ON est2.id_estado_anterior = est1.id_estado_wf
+   JOIN wf.ttipo_estado te1 ON te1.id_tipo_estado = est1.id_tipo_estado
+   JOIN wf.ttipo_estado te2 ON te2.id_tipo_estado = est2.id_tipo_estado
+   JOIN wf.tproceso_wf pf ON pf.id_proceso_wf = est1.id_proceso_wf
+   JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = pf.id_tipo_proceso
+   LEFT JOIN hyomin h ON h.id_proceso_wf = est2.id_proceso_wf
+    ORDER BY est2.fecha_reg;
+
+/*****************************F-DEP-MMV-WF-0-29/05/2017*************/
