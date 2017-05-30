@@ -511,3 +511,13 @@ EXECUTE PROCEDURE orga.f_tr_cargo();
 
 
 /*********************************F-DEP-JRR-ORGA-0-05/03/2015***********************************/
+
+/*********************************I-DEP-JRR-ORGA-0-16/03/2017***********************************/
+DROP TRIGGER tcargo_tr ON orga.tcargo;
+
+CREATE TRIGGER tcargo_tr
+  AFTER INSERT
+  ON orga.tcargo FOR EACH ROW
+  EXECUTE PROCEDURE orga.f_tr_cargo();
+
+/*********************************F-DEP-JRR-ORGA-0-16/03/2017***********************************/

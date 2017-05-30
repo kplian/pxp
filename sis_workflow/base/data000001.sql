@@ -614,4 +614,9 @@ select pxp.f_insert_tgui ('Observaciones', 'Observaciones del WF', 'OBSFUN', 'si
 select pxp.f_insert_testructura_gui ('OBSFUN', 'SISTEMA');
 /***********************************F-DAT-RAC-WF-0-13/0/2015*****************************************/
 
+/***********************************I-DAT-MMV-WF-0-29/05/2017*****************************************/
+select pxp.f_insert_tgui ('Bitacoras Procesos', 'Bitacoras Procesos', 'BP', 'si', 11, 'sis_workflow/vista/reporte_procesos/FromFiltro.php', 2, '', 'FormFiltro', 'WF');
+select pxp.f_insert_testructura_gui ('BP', 'WF');
+/***********************************F-DAT-MMV-WF-0-29/05/2017*****************************************/
+
 

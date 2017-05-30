@@ -677,3 +677,7 @@ ALTER TABLE segu.tpersona
     FOREIGN KEY (id_lugar) REFERENCES param.tlugar(id_lugar);
 
 /***********************************F-DEP-JRR-SEGU-0-04/05/2016*****************************************/
+
+/***********************************I-DEP-JRR-SEGU-0-16/03/2017*****************************************/
+ALTER TABLE segu.tusuario ENABLE ALWAYS TRIGGER trigger_usuario;
+/***********************************F-DEP-JRR-SEGU-0-16/03/2017*****************************************/

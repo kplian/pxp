@@ -156,7 +156,7 @@ function authPxp($headersArray) {
 		'control','','','OTRO','');
 		
 		//rac 21092011 					
-		$men->imprimirRespuesta($men->generarJson(),'401');
+		$men->imprimirRespuesta($men->generarJson(),'200');
 		exit;
 	}
 	
@@ -439,10 +439,11 @@ $app->post(
 	 
     '/:sistema/:clase_control/:metodo',
     function ($sistema,$clase_control,$metodo) use ($app) {
-        
+       
     	$headers = $app->request->headers;	
 		$cookies = $app->request->cookies;
 		$psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;
+
 				
     	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
 			
@@ -466,7 +467,8 @@ $app->post(
     	     
         //TODO validar cadenas vaias y retorna error en forma JSON
         $ruta_include = 'sis_'.$sistema.'/control/ACT'.$clase_control.'.php';
-        $ruta_url = 'sis_'+$sistema.'/control/'.$clase_control.'/'.$metodo;
+        $ruta_url = 'sis_'+ $sistema.'/control/'.$clase_control.'/'.$metodo;
+
          
         //TODO verificar sesion
         //throw new Exception('La sesion ha sido duplicada',2);
@@ -475,7 +477,7 @@ $app->post(
         $objPostData=new CTPostData();
 		
         $aPostData = $objPostData->getData();
-		
+        $aPostFiles = $objPostData->getFiles();
         foreach($app->request->post() as $key => $val) {
         	$aPostData[$key] = $val;
 		} 
@@ -491,10 +493,10 @@ $app->post(
         $JSON = json_encode($aPostData);
         
 
-        $objParam = new CTParametro($JSON,$m,null,'../../'.$ruta_url);
+        $objParam = new CTParametro($JSON,$m,$aPostFiles,'../../'.$ruta_url);
         include_once dirname(__FILE__).'/../../../'.$ruta_include;
 
-        
+
         //Instancia la clase dinamica para ejecutar la accion requerida
         eval('$cad = new ACT'.$clase_control.'($objParam);');
 		

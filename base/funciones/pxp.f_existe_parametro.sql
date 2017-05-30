@@ -1,9 +1,8 @@
 CREATE OR REPLACE FUNCTION pxp.f_existe_parametro (
-  p_tabla character varying,
-  p_parametro character varying
+  p_tabla varchar,
+  p_parametro varchar
 )
-RETURNS boolean
-AS 
+RETURNS boolean AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_existe_parametro
@@ -25,15 +24,18 @@ $body$
     v_nombre_funcion   	text;
     v_resp              varchar;
     v_respuesta         boolean;
+    v_oid				bigint;
  BEGIN
     v_nombre_funcion:='pxp.f_existe_parametro';
     v_respuesta=false;
     
+    select c.oid into v_oid
+    from pg_class c  
+    where c.relname=p_tabla;
+    
     if(exists ( select 1
-                from pg_class c
-                inner join pg_catalog.pg_attribute a
-                    on c.oid = a.attrelid
-                where c.relname=p_tabla and a.attname ilike p_parametro))then
+                from pg_catalog.pg_attribute a                    
+                where a.attrelid = v_oid and a.attname ilike p_parametro))then
                 
         v_respuesta=true;
     end if;
@@ -50,7 +52,8 @@ $body$
 		raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_get_mensaje_err (OID = 304227) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
