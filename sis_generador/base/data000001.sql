@@ -39,3 +39,10 @@ select pxp.f_insert_tprocedimiento ('GEN_ESQUEM_CONT', 'Listado de esquemas en l
 /***********************************F-DAT-JRR-GEN-0-25/04/2014****************************************/
 
 
+
+/***********************************I-DAT-RAC-GEN-0-30/04/2017****************************************/
+select pxp.f_insert_tgui ('<i class="fa fa-puzzle-piece fa-2x"></i> GENERADOR DE CODIGO', 'Generador de CÃ³digo', 'GEN', 'si', 4, '', 1, '', '', 'GEN');
+/***********************************F-DAT-RAC-GEN-0-30/04/2017****************************************/
+
+
+
