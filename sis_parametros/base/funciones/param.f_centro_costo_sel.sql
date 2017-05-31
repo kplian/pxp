@@ -73,7 +73,7 @@ BEGIN
          				  nombre_regional,
                           movimiento_tipo_pres
 						from pre.vpresupuesto_cc cec
-						 where  ';
+						where  ';
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -118,7 +118,7 @@ BEGIN
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						 id_centro_costo,
+						  id_centro_costo,
                           estado_reg,
                           id_ep,
                           id_gestion,
@@ -138,7 +138,10 @@ BEGIN
          				  nombre_proyecto,
          				  nombre_actividad,
          				  nombre_financiador,
-         				  nombre_regional
+         				  nombre_regional,
+                          cec.id_tipo_cc,
+                          cec.codigo_tcc,
+                          cec.descripcion_tcc 
 						from param.vcentro_costo cec
 						 where  ';
 			

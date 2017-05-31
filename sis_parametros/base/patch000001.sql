@@ -1800,6 +1800,28 @@ IS 'identifica la estructura programatica, van prevalecer las que estan en nodo 
 
 
 
+--------------- SQL ---------------
+
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN fecha_inicio DATE NOT NULL;
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN fecha_final DATE;
+
+COMMENT ON COLUMN param.ttipo_cc.fecha_final
+IS 'fehca de finalizacion solo es util en nodos de movimeinto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.ttipo_cc
+  ALTER COLUMN fecha_inicio DROP NOT NULL;
+
+
+
 /***********************************F-SCP-RAC-PARAM-0-26/05/2017*****************************************/
 
 
@@ -1807,9 +1829,17 @@ IS 'identifica la estructura programatica, van prevalecer las que estan en nodo 
 
 
 
+/***********************************I-SCP-RAC-PARAM-0-30/05/2017*****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.tcentro_costo
+  ADD COLUMN id_tipo_cc INTEGER;
+
+COMMENT ON COLUMN param.tcentro_costo.id_tipo_cc
+IS 'el tipo centro de costo propociona una estructura tipo arbol para la contabilidad analitica, un tipo_cc hoja  puede tener un centros de costo en diferetnes gestion, la EP quedara simplemente como un metodo de asignacionde permisos';
 
 
-
+/***********************************F-SCP-RAC-PARAM-0-30/05/2017*****************************************/
 
 
 
