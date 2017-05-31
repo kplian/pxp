@@ -216,6 +216,9 @@ class MODArchivo extends MODbase{
             }
 
 
+
+
+
             $tipo_archivo_nombre = $tipo_archivo[0]['tipo_archivo'];
             $multiple = $tipo_archivo[0]['multiple'];
             $nombre_id = $tipo_archivo[0]['nombre_id'];
@@ -223,6 +226,14 @@ class MODArchivo extends MODbase{
 
             $extensiones_permitidas = $tipo_archivo[0]['extensiones_permitidas'];
             $nombre_tipo_archivo = $tipo_archivo[0]['nombre'];
+            $tamano_tipo_archivo = $tipo_archivo[0]['tamano'];
+
+
+            if((($this->arregloFiles['archivo']['size'] / 1000) / 1024) > $tamano_tipo_archivo  ){
+                throw new Exception("El tamaño del Archivo supera a la configuración");
+
+            }
+
 
             //sacamos la ruta para ver donde se guardara si es vacio se guardara en que sistema y en que control
             $ruta_guardar =  $tipo_archivo[0]['ruta_guardar'];
@@ -265,6 +276,7 @@ class MODArchivo extends MODbase{
 
 			//validar que no sea un arhvio en blanco
 			$file_name = $this->getFileName2('archivo', 'unico_id', $folder, false);
+
 
 
 
@@ -332,6 +344,7 @@ class MODArchivo extends MODbase{
 			if ($resp_procedimiento['tipo_respuesta']=='ERROR') {
 				throw new Exception("Error al ejecutar en la bd", 3);
 			}
+
 
 
 			if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
