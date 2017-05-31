@@ -43,6 +43,24 @@ class ACTDocumentoWf extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+    function getRutaDocumento(){
+        $this->objParam->defecto('ordenacion','id_documento_wf');
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+        /*$this->objParam->addFiltro("tewf.nombre_estado != ''anulado''");
+        $this->objParam->addFiltro("tewf.nombre_estado != ''cancelado''");*/
+        $this->objParam->addParametro('dominio',$_SERVER['HTTP_HOST'] . $_SESSION["_FOLDER"]);
+        if ($this->objParam->getParametro('id_documento_wf') != '') {
+            $this->objParam->addFiltro("dwf.id_documento_wf = " . $this->objParam->getParametro('id_documento_wf'));
+        }
+
+
+        $this->objFunc=$this->create('MODDocumentoWf');
+        $this->res=$this->objFunc->getRutaDocumento($this->objParam);
+
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 				
 	function insertarDocumentoWf(){
 		$this->objFunc=$this->create('MODDocumentoWf');	

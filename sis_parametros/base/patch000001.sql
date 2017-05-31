@@ -1753,8 +1753,6 @@ ALTER TABLE param.ttipo_archivo ALTER COLUMN ruta_guardar SET DEFAULT '';
 
 
 
-
-
 /***********************************I-SCP-RAC-PARAM-0-26/05/2017*****************************************/
 
 
@@ -1826,9 +1824,6 @@ ALTER TABLE param.ttipo_cc
 
 
 
-
-
-
 /***********************************I-SCP-RAC-PARAM-0-30/05/2017*****************************************/
 --------------- SQL ---------------
 
@@ -1842,5 +1837,12 @@ IS 'el tipo centro de costo propociona una estructura tipo arbol para la contabi
 /***********************************F-SCP-RAC-PARAM-0-30/05/2017*****************************************/
 
 
+
+
+/***********************************I-SCP-FFP-PARAM-0-29/05/2017*****************************************/
+
+ALTER TABLE param.ttipo_archivo ADD tamano NUMERIC(10) NULL;
+
+/***********************************F-SCP-FFP-PARAM-0-29/05/2017*****************************************/
 
 

@@ -79,38 +79,21 @@ class MODDocumentoWf extends MODbase{
 		return $this->respuesta;
 	}
 
-	function listaDocumentosFirma(){
+	function getRutaDocumento(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='wf.ft_documento_wf_sel';
-		$this->transaccion='WF_DWFFIRMA_SEL';
+		$this->transaccion='WF_DWFRUTA_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-		$this->tipo_conexion='seguridad';
+
+
 		
 		$this->count=false;
 		
-		//$this->count=false;	
-		$this->id_usuario = 1;
-						
+
+        $this->setParametro('dominio','dominio','varchar');
 		//Definicion de la lista del resultado del query
-		$this->captura('id_documento_wf','int4');
+
 		$this->captura('url','varchar');
-		$this->captura('num_tramite','varchar');
-		$this->captura('id_tipo_documento','int4');
-		$this->captura('obs','text');
-		$this->captura('id_proceso_wf','int4');
-		$this->captura('extension','varchar');
-		$this->captura('chequeado','varchar');
-		$this->captura('estado_reg','varchar');
-		$this->captura('nombre_tipo_doc','varchar');
-		$this->captura('nombre_doc','varchar');
-		$this->captura('momento','varchar');
-		
-		$this->captura('accion_pendiente','varchar');
-		$this->captura('fecha_firma','varchar');
-		$this->captura('usuario_firma','varchar');
-		$this->captura('action','varchar');
-		$this->captura('nombre_usuario_firma','text');
-		
 		
 		
 		//Ejecuta la instruccion
@@ -186,20 +169,22 @@ class MODDocumentoWf extends MODbase{
 		return $this->respuesta;
 	}
 	
-	function subirDocumentoWfArchivo(){ 
-                    
+	function subirDocumentoWfArchivo(){
+
             $cone = new conexion();
 			$link = $cone->conectarpdo();
-			$copiado = false;			
+			$copiado = false;
+
+            
 			try {
 				
 				$link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
 		  	    $link->beginTransaction();
-				
+
 				if ($this->arregloFiles['archivo']['name'] == "") {
 					throw new Exception("El archivo no puede estar vacio");
 				}
-				
+
 	            $this->procedimiento='wf.ft_documento_wf_ime';
 	            $this->transaccion='WF_DOCWFAR_MOD';
 	            $this->tipo_procedimiento='IME';
@@ -259,7 +244,7 @@ class MODDocumentoWf extends MODbase{
 				   }
 				   
 				   //cipiamos el nuevo archivo 
-	               $this->setFile('archivo','id_documento_wf', false,100000 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar'));
+	               $this->setFile('archivo','id_documento_wf', false,100000 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar','txt'));
 	            }
 				
 				$link->commit();

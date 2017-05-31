@@ -38,6 +38,7 @@ class MODTipoArchivo extends MODbase{
 		$this->captura('usr_mod','varchar');
 		$this->captura('extensiones_permitidas','varchar');
 		$this->captura('ruta_guardar','varchar');
+		$this->captura('tamano','numeric');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -63,6 +64,7 @@ class MODTipoArchivo extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('extensiones_permitidas','extensiones_permitidas','varchar');
 		$this->setParametro('ruta_guardar','ruta_guardar','varchar');
+		$this->setParametro('tamano','tamano','numeric');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -89,6 +91,8 @@ class MODTipoArchivo extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('extensiones_permitidas','extensiones_permitidas','varchar');
 		$this->setParametro('ruta_guardar','ruta_guardar','varchar');
+        $this->setParametro('tamano','tamano','numeric');
+
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

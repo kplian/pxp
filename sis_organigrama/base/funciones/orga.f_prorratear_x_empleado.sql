@@ -73,7 +73,7 @@ DECLARE
         v_id_centro_costo = null;
         v_id_centro_costo = null;
 
-        select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo
+        select po_id_cargo,po_id_centro_costo,po_id_ot into v_id_cargo,v_id_centro_costo,v_id_ot
         from orga.f_get_ultimo_centro_costo_funcionario(v_id_funcionario,p_id_periodo);
 
         select f.desc_funcionario1 into v_empleado
@@ -83,16 +83,9 @@ DECLARE
         if (v_id_centro_costo is null) then
           raise exception 'Existe un empleado que no tiene asignado centro de costo o ya no tiene un contrato activo en la empresa : %',v_empleado;
         end if;
-
-        select ofiot.id_orden_trabajo,ofi.nombre into v_id_ot,v_oficina
-        from orga.tcargo car
-          left join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
-          inner join orga.toficina ofi on car.id_oficina = ofi.id_oficina
-        where id_cargo = v_id_cargo;
-
-
+        
         if (v_id_ot is null) then
-          raise exception 'La oficina: %.No tiene relacionado la orden de trabajo. Comuniquese con el area de costos',v_oficina;
+          raise exception 'Existe un empleado que no tiene asignado ot o ya no tiene un contrato activo en la empresa : %',v_empleado;
         end if;
 
         if (v_registros.total = v_registros.conteo) then
@@ -133,7 +126,7 @@ DECLARE
               and uofun.estado_reg = 'activo' and car.id_oficina = v_id_oficina )loop
         v_id_centro_costo = null;
 
-        select po_id_cargo,po_id_centro_costo into v_id_cargo,v_id_centro_costo
+        select po_id_cargo,po_id_centro_costo,po_id_ot into v_id_cargo,v_id_centro_costo,v_id_ot
         from orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
 
         select f.desc_funcionario1 into v_empleado
@@ -144,16 +137,10 @@ DECLARE
           raise exception 'Existe un empleado que no tiene asignado centro de costo o ya no tiene un contrato activo en la empresa : %',v_empleado;
         end if;
 
-        select ofiot.id_orden_trabajo,ofi.nombre into v_id_ot,v_oficina
-        from orga.tcargo car
-          left join conta.toficina_ot ofiot on car.id_oficina = ofiot.id_oficina
-          inner join orga.toficina ofi on car.id_oficina = ofi.id_oficina
-        where id_cargo = v_id_cargo;
-
         if (v_id_ot is null) then
-          raise exception 'La oficina: %.No tiene relacionado la orden de trabajo. Comuniquese con el area de costos',v_oficina;
+          raise exception 'Existe un empleado que no tiene asignado ot o ya no tiene un contrato activo en la empresa : %',v_empleado;
         end if;
-
+        
         if (v_funcionarios.total = v_funcionarios.numero) then
 
           insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo,descripcion)
@@ -187,8 +174,9 @@ DECLARE
               (uofun.fecha_finalizacion >= v_periodo.fecha_fin or uofun.fecha_finalizacion is NULL)
               and uofun.estado_reg = 'activo')loop
         v_id_centro_costo = null;
-        v_id_centro_costo = orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
-
+        select po_id_cargo,po_id_centro_costo,po_id_ot into v_id_cargo,v_id_centro_costo,v_id_ot
+        from orga.f_get_ultimo_centro_costo_funcionario(v_funcionarios.id_funcionario,p_id_periodo);
+		        
         select f.desc_funcionario1 into v_empleado
         from orga.vfuncionario f
         where f.id_funcionario = v_funcionarios.id_funcionario;
@@ -196,16 +184,20 @@ DECLARE
         if (v_id_centro_costo is null) then
           raise exception 'Existe un empleado que no tiene asignado centro de costo o ya no tiene un contrato activo en la empresa : %',v_empleado;
         end if;
+        
+        if (v_id_ot is null) then
+          raise exception 'Existe un empleado que no tiene asignado ot o ya no tiene un contrato activo en la empresa : %',v_empleado;
+        end if;
 
         if (v_funcionarios.total = v_funcionarios.numero) then
 
-          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto)
-          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma );
+          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo)
+          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,p_monto - v_suma,v_id_ot );
 
           v_suma = p_monto;
         else
-          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto)
-          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,round((p_monto/v_funcionarios.total),2));
+          insert into tes_temp_prorrateo (id_tabla,id_funcionario,id_centro_costo,monto,id_orden_trabajo)
+          values ( p_id_cuenta,v_funcionarios.id_funcionario,v_id_centro_costo,round((p_monto/v_funcionarios.total),2),v_id_orden_trabajo);
 
           v_suma = v_suma + round((p_monto/v_funcionarios.total),2);
         end if;

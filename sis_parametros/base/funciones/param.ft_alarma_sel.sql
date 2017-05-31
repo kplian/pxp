@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_alarma_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -33,6 +31,7 @@ DECLARE
     v_filtro 			varchar;
     v_cond				varchar;
     v_registros			record;
+   
 			    
 BEGIN
                                                     
@@ -85,14 +84,17 @@ BEGIN
                         left join wf.tplantilla_correo pc on pc.id_plantilla_correo = alarm.id_plantilla_correo
                         where alarm.pendiente = ''no'' and alarm.estado_envio = ''exito''  and alarm.sw_correo = 0';
                         
-                         
+                  
              for v_registros in execute(v_consulta) loop
              	update param.talarma set pendiente = v_registros.pendiente
-                where id_alarma = v_registros.id_alarma;                
+                where id_alarma = v_registros.id_alarma;
+                           
              end loop;
              
-             v_consulta = replace(v_consulta, 'alarm.pendiente = ''no''', 'alarm.pendiente = ''' || v_registros.pendiente || '''');
-			
+             
+             	
+             	v_consulta = replace(v_consulta, 'alarm.pendiente = ''no''', 'alarm.pendiente = ''' || coalesce(v_registros.pendiente,'x') || '''');
+			 
 			--Devuelve la respuesta
 			return v_consulta;
 						

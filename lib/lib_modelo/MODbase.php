@@ -265,13 +265,15 @@ class MODbase extends driver
 	 */
 	function setFile($nombre, $variable_id, $blank = true, $tamano = '', $tipo_archivo = null, $folder = '',$subfijo=''){
 		//obtenemos el tipo de la base de datos
-		
+
 		$this->validacion->validar($nombre, $this->arregloFiles[$nombre], 'bytea', $blank, $tamano, null, $tipo_archivo);
+        
 		$upload_folder =  './../../../uploaded_files/' . $this->objParam->getSistema() . '/' .
 								 $this->objParam->getClase() . '/' ;
 		if ($folder != '') {
 			$upload_folder .= $folder . '/';
 		}
+
 		//nombre del archivo enviado por el cliente
 		$filename = $this->arregloFiles[$nombre]['name'];
 		//extension del archivo

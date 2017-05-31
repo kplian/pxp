@@ -549,3 +549,10 @@ VALUES
 /*****************************F-DAT-JRR-ORGA-0-02/05/2017*************/
 
 
+
+
+/*****************************I-DAT-RAC-ORGA-0-30/05/2017*************/
+select pxp.f_insert_tgui ('<i class="fa fa-sitemap fa-2x"></i> ORGANIGRAMA', 'Organigrama Institucional', 'ORGA', 'si', 5, '', 1, '', '', 'ORGA');
+/*****************************F-DAT-RAC-ORGA-0-30/05/2017*************/
+
+

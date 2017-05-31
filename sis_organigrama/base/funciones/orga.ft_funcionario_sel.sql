@@ -171,7 +171,7 @@ $body$
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN orga.tuo_funcionario uofun on 
                             	uofun.id_funcionario = FUNCIO.id_funcionario and uofun.estado_reg = ''activo'' and
-                                uofun.fecha_asignacion <= now()::date and 
+                                uofun.fecha_asignacion <= now()::date and uofun.tipo = ''oficial'' and
                                 (uofun.fecha_finalizacion >= now()::date or uofun.fecha_finalizacion is null)
                             INNER JOIN orga.tcargo car on car.id_cargo = uofun.id_cargo
                             LEFT JOIN gecom.tfuncionario_celular fc on fc.id_funcionario = FUNCIO.id_funcionario
