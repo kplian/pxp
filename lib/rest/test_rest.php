@@ -94,7 +94,7 @@ echo $pxpRestClient->doPost('obingresos/Agencia/insertarBoletaAgencia',
 
 echo $pxpRestClient->doPost('almacenes/Item/nombreClasificacionItems',
     array(
-        "id_item"=>"1615,1617"
+        "codigos"=>"3.4.1.70.7,3.4.1.69.6"
     ));
 
 /*
