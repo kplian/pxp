@@ -1025,3 +1025,11 @@ select pxp.f_insert_tgui ('Tipo Archivo', 'tipos de archivos', 'TIPOAR', 'si', 9
 select pxp.f_insert_testructura_gui ('TIPOAR', 'OTROS');
 /***********************************F-DAT-FFP-PARAM-0-24/02/2017*****************************************/
 
+
+/***********************************I-DAT-RAC-PARAM-0-01/06/2017*****************************************/
+select pxp.f_insert_tgui ('Tipo Centro de Costo', 'Tipo de Centro de Costo', 'TIPCC', 'si', 14, 'sis_parametros/vista/tipo_cc/TipoCcArb.php', 3, '', 'TipoCcArb', 'PARAM');
+select pxp.f_insert_testructura_gui ('TIPCC', 'CEP');
+/***********************************F-DAT-RAC-PARAM-0-01/06/2017*****************************************/
+
+
+
