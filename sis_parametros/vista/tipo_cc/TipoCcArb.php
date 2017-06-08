@@ -85,7 +85,7 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
        		    lazyRender:true,
        		    mode: 'local',
        		    valueField: 'inicio',    
-       		    store:['centro','pep','orden','estadistica']
+       		    store:['centro','edt','orden','estadistica']
 			},
 			type:'ComboBox',
 			id_grupo:1,
@@ -113,7 +113,6 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
        		    store:['si','no']
 			},
 			type:'ComboBox',
-			valorInicial:'si',
 			id_grupo:1,
 			grid:true,
 			form:true
@@ -139,7 +138,6 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			},
 			type:'ComboBox',
 			id_grupo:1,
-			valorInicial:'si',
 			grid:true,
 			form:true
 		},
@@ -288,7 +286,7 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 		{name:'control_partida', type: 'string'},
 		{name:'momento_pres', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d'},
-		{name:'fecha_inio', type: 'date',dateFormat:'Y-m-d'},
+		{name:'fecha_inicio', type: 'date',dateFormat:'Y-m-d'},
 		{name:'fecha_final', type: 'date',dateFormat:'Y-m-d'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
@@ -296,7 +294,7 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_ep'
+		{name:'usr_mod', type: 'string'},'desc_ep','id_ep'
 		
 	],
 	
@@ -310,15 +308,20 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	expanded: false,
 	
 	
-    getTipoCuentaPadre: function(n) {
+    getDatosPadre: function(n) {
 			var direc
 			var padre = n.parentNode;
+			var obj; 
             if (padre) {
-				if (padre.attributes.id != 'id') {
-					return this.getTipoCuentaPadre(padre);
-				} else {
-					return n.attributes.tipo_cuenta;
-				}
+				
+					obj = {
+				        id_ep: n.attributes.id_ep,
+				        tipo: n.attributes.tipo,
+				        fecha_inicio:n.attributes.fecha_inicio ,
+				        fecha_final:n.attributes.fecha_final 
+				       } 
+					return obj;
+				
 			} else {
 				return undefined;
 			}
@@ -340,17 +343,19 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
    
    iniciarEventos: function(){
    	    
-   	        this.Cmp.control_techo.on('beforeselect',function(combo,record,index){
-				console.log('....', record, combo.getValue())
+   	        this.Cmp.control_techo.on('select',function(combo,record,index){
+				
 				if(combo.getValue() == 'no'){
+					this.ocultarComponente(this.Cmp.momento_pres);
+					this.ocultarComponente(this.Cmp.control_partida);
+					this.ocultarComponente(this.Cmp.mov_pres);
+					
+				} else{
 					this.mostrarComponente(this.Cmp.momento_pres);
 					this.mostrarComponente(this.Cmp.control_partida);
 					this.mostrarComponente(this.Cmp.mov_pres);
 					
-				} else{
-					this.ocultarComponente(this.Cmp.momento_pres);
-					this.ocultarComponente(this.Cmp.control_partida);
-					this.ocultarComponente(this.Cmp.mov_pres);
+					
 					
 				} 
 				
@@ -359,17 +364,11 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			},this);
 			
 			
-			this.Cmp.movimiento.on('beforeselect',function(combo,record,index){
-				console.log('....', record, combo.getValue())
-				if(combo.getValue() == 'no'){
-					this.mostrarComponente(this.Cmp.fecha_inicio);
-					this.mostrarComponente(this.Cmp.fecha_final);
-					this.Cmp.id_ep.allowBlank = false;
-					
-				} else{
-					this.ocultarComponente(this.Cmp.fecha_inicio);
-					this.ocultarComponente(this.Cmp.fecha_final);
+			this.Cmp.movimiento.on('select',function(combo,record,index){				
+				if(combo.getValue() == 'no'){					
 					this.Cmp.id_ep.allowBlank = true;
+				} else{					
+					this.Cmp.id_ep.allowBlank = false;					
 				} 
 			},this);
    	
@@ -378,8 +377,6 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 		
 		Phx.vista.TipoCcArb.superclass.onButtonEdit.call(this);
 		
-		         
-	        
 	    if(this.Cmp.control_techo.getValue() == 'si'){
 			this.mostrarComponente(this.Cmp.momento_pres);
 			this.mostrarComponente(this.Cmp.control_partida);
@@ -391,14 +388,9 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			this.ocultarComponente(this.Cmp.mov_pres);			
 		}
 		
-		if(this.Cmp.movimiento.getValue() == 'si'){
-			this.mostrarComponente(this.Cmp.fecha_inicio);
-			this.mostrarComponente(this.Cmp.fecha_final);
+		if(this.Cmp.movimiento.getValue() == 'si'){			
 			this.Cmp.id_ep.allowBlank = false;
-					
-		} else{
-			this.ocultarComponente(this.Cmp.fecha_inicio);
-			this.ocultarComponente(this.Cmp.fecha_final);
+		} else{			
 			this.Cmp.id_ep.allowBlank = true;
 		} 
 		
@@ -413,8 +405,12 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	        this.Cmp.id_ep.allowBlank = false;
 	        
 	        if(nodo && nodo.attributes.id!='id'){	        	
+	        	var obj = this.getDatosPadre(nodo);	        	        	
 	        	this.Cmp.tipo.disable();
-	        	this.Cmp.tipo.setValue(this.getTipoCuentaPadre(nodo));
+	        	this.Cmp.tipo.setValue(obj.tipo);
+	        	this.Cmp.id_ep.setValue(obj.id_ep);
+	        	this.Cmp.fecha_inicio.setValue(obj.fecha_inicio);
+	        	this.Cmp.fecha_final.setValue(obj.fecha_final);
 	        }
 	        else{	        	
 	        	this.Cmp.tipo.enable();
