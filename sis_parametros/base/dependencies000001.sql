@@ -1979,4 +1979,68 @@ AS
    
 /***********************************F-DEP-RAC-PARAM-0-05/06/2017****************************************/
        
+
+/***********************************I-DEP-RAC-PARAM-0-12/06/2017****************************************/
+CREATE OR REPLACE VIEW param.vtipo_cc(
+    id_tipo_cc,
+    codigo,
+    control_techo,
+    mov_pres,
+    estado_reg,
+    movimiento,
+    id_ep,
+    id_tipo_cc_fk,
+    descripcion,
+    tipo,
+    control_partida,
+    momento_pres,
+    fecha_reg,
+    usuario_ai,
+    id_usuario_reg,
+    id_usuario_ai,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    desc_ep,
+    id_financiador,
+    id_regional,
+    id_prog_pory_acti,
+    desc_ppa,
+    fecha_inicio,
+    fecha_final)
+AS
+  SELECT tcc.id_tipo_cc,
+         tcc.codigo,
+         tcc.control_techo,
+         tcc.mov_pres,
+         tcc.estado_reg,
+         tcc.movimiento,
+         tcc.id_ep,
+         tcc.id_tipo_cc_fk,
+         tcc.descripcion,
+         tcc.tipo,
+         tcc.control_partida,
+         tcc.momento_pres,
+         tcc.fecha_reg,
+         tcc.usuario_ai,
+         tcc.id_usuario_reg,
+         tcc.id_usuario_ai,
+         tcc.id_usuario_mod,
+         tcc.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         ep.ep::character varying AS desc_ep,
+         ep.id_financiador,
+         ep.id_regional,
+         ep.id_prog_pory_acti,
+         ep.desc_ppa,
+         tcc.fecha_inicio,
+         tcc.fecha_final
+  FROM param.ttipo_cc tcc
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = tcc.id_usuario_reg
+       LEFT JOIN param.vep ep ON ep.id_ep = tcc.id_ep
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = tcc.id_usuario_mod;
+/***********************************F-DEP-RAC-PARAM-0-12/06/2017****************************************/
        
+              
