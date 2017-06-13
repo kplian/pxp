@@ -11,7 +11,9 @@ class ACTUsuario extends ACTbase{
 	function listarUsuario(){
 
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
-		
+
+        $this->dispararEventoWS();
+
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','desc_person');
 		$this->objParam->defecto('dir_ordenacion','asc');
