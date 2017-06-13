@@ -158,7 +158,7 @@ $body$
                				FUNCIO.id_funcionario,
                             PERSON.nombre_completo1::varchar,
                             CAR.nombre,
-                            pxp.list(nc.numero)::varchar,
+                            pxp.list_unique(nc.numero)::varchar,
                             FUNCIO.email_empresa,
                             PERSON.nombre,
                             PERSON.ap_paterno,
@@ -166,7 +166,8 @@ $body$
                             lug.nombre,
                             uo.nombre_unidad,
                             ofi.direccion,
-                            PERSON.celular1
+                            PERSON.celular1,
+                            pxp.list_unique(ni.numero)::varchar
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN orga.tuo_funcionario uofun on 
@@ -178,7 +179,12 @@ $body$
                             	and fc.estado_reg = ''activo'' and fc.fecha_inicio <= now()::date and
                                 (fc.fecha_fin >= now()::date or fc.fecha_fin is null) and fc.tipo_asignacion = ''personal''
                             LEFT JOIN gecom.tnumero_celular nc ON
-                            	nc.id_numero_celular = fc.id_numero_celular and nc.tipo = ''celular''
+                            	nc.id_numero_celular = fc.id_numero_celular and nc.tipo in (''celular'')
+                            LEFT JOIN gecom.tfuncionario_celular fi on fi.id_funcionario = FUNCIO.id_funcionario
+                            	and fi.estado_reg = ''activo'' and fi.fecha_inicio <= now()::date and
+                                (fi.fecha_fin >= now()::date or fi.fecha_fin is null) and fi.tipo_asignacion = ''personal''
+                            LEFT JOIN gecom.tnumero_celular ni ON
+                            	ni.id_numero_celular = fi.id_numero_celular and ni.tipo in (''interno'')
                             LEFT JOIN orga.toficina ofi ON
                             	ofi.id_oficina = car.id_oficina
                             LEFT JOIN param.tlugar lug on lug.id_lugar = ofi.id_lugar
