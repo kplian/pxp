@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -172,6 +170,31 @@ BEGIN
             --Devuelve la respuesta
       return v_consulta;
             
+    end;
+    
+    
+    /*********************************    
+  #TRANSACCION:  'WF_DWFRUTA_SEL'
+  #DESCRIPCION: Obtener ruta de documento
+  #AUTOR:   admin 
+  #FECHA:   15-01-2014 13:52:19
+  ***********************************/
+
+  elsif(p_transaccion='WF_DWFRUTA_SEL')then
+
+    begin        
+        
+      --Sentencia de la consulta de conteo de registros
+      v_consulta:='select (''' || v_parametros.dominio || ''' || replace(dwf.url, ''./../../../'', ''''))::varchar
+              from wf.tdocumento_wf dwf                        
+                where ';
+      
+      --Definicion de la respuesta        
+      v_consulta:=v_consulta||v_parametros.filtro;
+
+      --Devuelve la respuesta
+      return v_consulta;
+
     end;
 
   /*********************************    

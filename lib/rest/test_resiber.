@@ -1,3 +1,0 @@
-<?php
-
-$s = curl_init();

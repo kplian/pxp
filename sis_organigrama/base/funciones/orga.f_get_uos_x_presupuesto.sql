@@ -14,7 +14,7 @@ BEGIN
               SELECT es.id_uo_hijo ,es.id_uo_padre
               FROM orga.testructura_uo es
               inner join orga.tuo uo on es.id_uo_hijo = uo.id_uo and uo.presupuesta=p_presupuesta
-              WHERE uo.gerencia = 'no' and es.id_uo_padre = p_id_uo
+              WHERE (uo.gerencia = 'no' or uo.gerencia is null) and es.id_uo_padre = p_id_uo
 
               UNION
 
@@ -22,7 +22,7 @@ BEGIN
               FROM orga.testructura_uo es
               inner join recursetree rt on rt.id_hijo = es.id_uo_padre
               inner join orga.tuo uo on es.id_uo_hijo = uo.id_uo and uo.presupuesta=p_presupuesta
-              where uo.gerencia = 'no'
+              where (uo.gerencia = 'no' or uo.gerencia is null)
 
           )
     SELECT pxp.list(id_hijo::text)::varchar into v_resp

@@ -56,11 +56,10 @@ BEGIN
 	v_filtro_codigo = '';
     if(par_transaccion='SEG_MENU_SEL')then
     	BEGIN
+        
     	v_tabla_menu = '';
         
-        delete from segu.tgui_rol where temporal = 1; 
-        delete from segu.testructura_gui where temporal = 1; 
-        delete from segu.tgui where temporal = 1;        
+                
         for v_registros in (select tp.codigo as codigo_proceso, ta.menu_nombre,te.codigo,te.nombre_estado,
         						pxp.list(terol.id_rol::text) as roles
                             from wf.ttabla ta
@@ -80,13 +79,16 @@ BEGIN
                 v_respuesta = wf.f_registra_gui_tabla(	v_registros.codigo_proceso,v_registros.menu_nombre, 
                 										v_registros.codigo,v_registros.nombre_estado, v_registros.roles);	
         end loop;
+        
         if(v_parametros.id_padre='%')then
+        
         	if (pxp.f_existe_parametro(par_tabla, 'busqueda')) then            	
             	v_nivel:='%';
             	v_filtro_codigo = ' and g.codigo_gui = ''' || v_parametros.codigo || ''' ';
             else
             	v_nivel = 1;
             end if;
+            raise notice 'tiempo2:%',clock_timestamp();
         else
             v_nivel='%';
         end if;
@@ -122,7 +124,7 @@ BEGIN
                                   AND g.nivel::text like '''||v_nivel|| '''' || v_filtro_codigo || '
                                   ORDER BY g.orden_logico,eg.fk_id_gui';
                                   
-                                  raise notice 'adm: %',v_consulta;
+                                  raise notice 'antes query: %',clock_timestamp();
               
               return v_consulta;
            

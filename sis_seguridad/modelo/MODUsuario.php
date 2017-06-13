@@ -221,6 +221,43 @@ function insertarUsuario(){
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}
+
+    function listarGrupoUsuario(){
+
+
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='segu.ft_usuario_sel';// nombre procedimiento almacenado
+        $this->transaccion='SEG_USGRU_SEL';//nombre de la transaccion
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+
+
+        //defino varialbes que se captran como retornod e la funcion
+        $this->captura('id_usuario','integer');
+        $this->captura('id_clasificador','integer');
+        $this->captura('cuenta','varchar');
+        $this->captura('contrasena','varchar');
+        $this->captura('fecha_caducidad','date');
+        $this->captura('fecha_reg','date');
+        $this->captura('estado_reg','pxp.estado_reg');
+        $this->captura('estilo','varchar');
+        $this->captura('contrasena_anterior','varchar');
+        $this->captura('id_persona','integer');
+        $this->captura('desc_person','text');
+        $this->captura('descripcion','text');
+       // $this->captura('id_roles','text');
+        $this->captura('autentificacion','varchar');
+        $this->captura('id_grupo','integer');
+
+
+
+        //Ejecuta la funcion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        return $this->respuesta;
+
+    }
 	
 	
 	

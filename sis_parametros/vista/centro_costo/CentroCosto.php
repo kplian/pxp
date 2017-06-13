@@ -18,6 +18,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.CentroCosto.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:50}})
+		this.iniciarEventos();
 	},
 			
 	Atributos:[
@@ -43,6 +44,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 				gdisplayField:'gestion',//mapea al store del grid
 				allowBlank:false,
 				gwidth: 200,
+				width:250,
 				renderer:function (value, p, record){return String.format('{0}', record.data['gestion']);}
 			},
 			type:'ComboRec',
@@ -51,30 +53,53 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+		{
+	   		config:{
+	   				name:'id_tipo_cc',
+	   				qtip: 'Tipo de centro de costos, cada tipo solo puede tener un centro por gestión',	   				
+	   				origen:'TIPOCC',
+	   				fieldLabel:'Tipo Centro',
+	   				gdisplayField: 'descripcion_tcc',	   				
+	   				allowBlank:false,
+	   				width:250,
+	   				gwidth:200,
+	   				renderer:function (value, p, record){return String.format('{0} - {1}', record.data['codigo_tcc'],  record.data['descripcion_tcc']);}
+	   				
+	      		},
+   			type:'ComboRec',
+   			id_grupo:0,
+   			filters:{pfiltro:'cec.codigo_tcc#cec.descripcion_tcc',type:'string'},
+   		    grid:true,
+   			form:true
+	    },
 	    {
 	   		config:{
 	   				name:'id_ep',
+	   				qtip:'La estructura programatica se utiliza para determinar permisos sobre los centros de costos', 
 	   				origen:'EP',
 	   				fieldLabel:'EP',
-	   				allowBlank:true,
+	   				allowBlank:false,
 	   				gdisplayField:'ep',//mapea al store del grid
 	   			    gwidth:200,
+	   			    width:250,
 	   			    renderer:function (value, p, record){return String.format('{0}', record.data['ep']);}
 	      		},
    			type:'ComboRec',
    			id_grupo:0,
    			filters:{pfiltro:'ep',type:'string'},
    		    grid:true,
-   			form:true
+   			form:false
 	    },
 		{
 	   		config:{
 	   				name:'id_uo',
+	   				qtip:'La unidad dueña del centro de costo  (no es necesiramente la que aplique el costo)',
 	   				origen:'UO',
 	   				fieldLabel:'Unidad',
 	   				allowBlank:false,
 	   				gdisplayField:'nombre_uo',//mapea al store del grid
 	   			    gwidth:200,
+	   			    width:250,
 	   			    baseParams:{presupuesta:'si'},
 	      			renderer:function (value, p, record){return String.format('{0} {1}' , record.data['codigo_uo'], record.data['nombre_uo']);}
 	      		},
@@ -84,7 +109,9 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
    		    grid:true,
    			form:true
 	    },
-		{
+		
+	    
+	    {
 			config:{
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
@@ -179,7 +206,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'gestion','ep','codigo_uo','nombre_uo'
+		{name:'usr_mod', type: 'string'},'gestion','ep','codigo_uo','nombre_uo','id_tipo_cc','codigo_tcc','descripcion_tcc'
 		
 	],
 	sortInfo:{
@@ -187,9 +214,18 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:true,
+	iniciarEventos: function(){
+		this.Cmp.id_gestion.on('select', function(cmp, rec, indice){
+			  this.Cmp.id_tipo_cc.reset();
+			  console.log(rec)
+			  this.Cmp.id_tipo_cc.store.baseParams.gestion = rec.data.gestion;
+			  this.Cmp.id_tipo_cc.modificado = true; 
+			
+		},this);
+		
 	}
-)
+})
 </script>
 		
 		

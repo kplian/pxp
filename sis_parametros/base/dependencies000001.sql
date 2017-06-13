@@ -1810,3 +1810,173 @@ SELECT gru.id_grupo,
     gru.obs
 FROM param.tgrupo gru;
 /***********************************F-DEP-MAN-PARAM-0-06/03/2017****************************************/
+
+
+
+
+/***********************************I-DEP-RAC-PARAM-0-30/05/2017****************************************/
+
+CREATE OR REPLACE VIEW param.vcentro_costo
+AS
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         (((((('('::text || uo.codigo::text) || ')-('::text) || ep.ep) || ')-('
+           ::text) || ges.gestion) || ') id:'::text) || cec.id_centro_costo::
+           text AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional,
+         cec.id_tipo_cc,
+         tcc.codigo as codigo_tcc,
+         tcc.descripcion as descripcion_tcc,
+         tcc.id_tipo_cc_fk,
+         tcc.fecha_inicio,
+         tcc.fecha_final
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg      
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       LEFT JOIN param.ttipo_cc tcc on tcc.id_tipo_cc = cec.id_tipo_cc ;
+       
+       
+       
+CREATE OR REPLACE VIEW param.vtipo_cc_mov(
+    id_tipo_cc,
+    codigo,
+    control_techo,
+    mov_pres,
+    estado_reg,
+    movimiento,
+    id_ep,
+    id_tipo_cc_fk,
+    descripcion,
+    tipo,
+    control_partida,
+    momento_pres,
+    fecha_reg,
+    usuario_ai,
+    id_usuario_reg,
+    id_usuario_ai,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    desc_ep,
+    id_financiador,
+    id_regional,
+    id_prog_pory_acti,
+    desc_ppa,
+    fecha_inicio,
+    fecha_final,
+    gestion_ini,
+    gestion_fin)
+AS
+  SELECT tcc.id_tipo_cc,
+         tcc.codigo,
+         tcc.control_techo,
+         tcc.mov_pres,
+         tcc.estado_reg,
+         tcc.movimiento,
+         tcc.id_ep,
+         tcc.id_tipo_cc_fk,
+         tcc.descripcion,
+         tcc.tipo,
+         tcc.control_partida,
+         tcc.momento_pres,
+         tcc.fecha_reg,
+         tcc.usuario_ai,
+         tcc.id_usuario_reg,
+         tcc.id_usuario_ai,
+         tcc.id_usuario_mod,
+         tcc.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         ep.ep::character varying AS desc_ep,
+         ep.id_financiador,
+         ep.id_regional,
+         ep.id_prog_pory_acti,
+         ep.desc_ppa,
+         tcc.fecha_inicio,
+         tcc.fecha_final,
+         gi.gestion AS gestion_ini,
+         gf.gestion AS gestion_fin
+  FROM param.ttipo_cc tcc
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = tcc.id_usuario_reg
+       JOIN param.vep ep ON ep.id_ep = tcc.id_ep
+       JOIN param.tperiodo pi ON tcc.fecha_inicio >= pi.fecha_ini AND
+         tcc.fecha_inicio <= pi.fecha_fin
+       JOIN param.tgestion gi ON pi.id_gestion = gi.id_gestion
+       LEFT JOIN param.tperiodo pf ON tcc.fecha_final >= pf.fecha_ini AND
+         tcc.fecha_final <= pf.fecha_fin
+       LEFT JOIN param.tgestion gf ON pf.id_gestion = gf.id_gestion
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = tcc.id_usuario_mod
+  WHERE tcc.movimiento::text = 'si'::text;
+  
+/***********************************F-DEP-RAC-PARAM-0-30/05/2017****************************************/
+
+
+
+/***********************************I-DEP-RAC-PARAM-0-05/06/2017****************************************/
+
+CREATE OR REPLACE VIEW param.vcentro_costo
+AS
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         (((((('('::text || uo.codigo::text) || ')-('::text) || ep.ep) || ')-('
+           ::text) || ges.gestion) || ') id:'::text) || cec.id_centro_costo::
+           text AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional,
+         cec.id_tipo_cc,
+         tcc.codigo AS codigo_tcc,
+         tcc.descripcion AS descripcion_tcc,
+         tcc.id_tipo_cc_fk,
+         tcc.fecha_inicio,
+         tcc.fecha_final,
+         tcc.mov_pres,
+         tcc.momento_pres
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;
+       
+   
+/***********************************F-DEP-RAC-PARAM-0-05/06/2017****************************************/
+       
+       

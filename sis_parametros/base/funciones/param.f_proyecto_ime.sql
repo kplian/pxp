@@ -101,16 +101,16 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update param.tproyecto set
-			hidro = v_parametros.hidro,
-			id_proyecto_cat_prog = v_parametros.id_proyecto_cat_prog,
-			codigo_proyecto = v_parametros.codigo_proyecto,
-			descripcion_proyecto = v_parametros.descripcion_proyecto,
-			nombre_proyecto = v_parametros.nombre_proyecto,
-			nombre_corto = v_parametros.nombre_corto,
-			
-			codigo_sisin = v_parametros.codigo_sisin,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario
+               
+                id_proyecto_cat_prog = v_parametros.id_proyecto_cat_prog,
+                codigo_proyecto = v_parametros.codigo_proyecto,
+                descripcion_proyecto = v_parametros.descripcion_proyecto,
+                nombre_proyecto = v_parametros.nombre_proyecto,
+                nombre_corto = v_parametros.nombre_corto,
+    			
+                codigo_sisin = v_parametros.codigo_sisin,
+                fecha_mod = now(),
+                id_usuario_mod = p_id_usuario
 			where id_proyecto=v_parametros.id_proyecto;
                
 			--Definicion de la respuesta
