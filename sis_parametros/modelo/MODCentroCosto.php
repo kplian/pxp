@@ -43,7 +43,12 @@ class MODCentroCosto extends MODbase{
 		$this->captura('nombre_actividad','varchar');
 		$this->captura('nombre_financiador','varchar');
 		$this->captura('nombre_regional','varchar');
-		//$this->captura('movimiento_tipo_pres','varchar');		
+		//$this->captura('movimiento_tipo_pres','varchar');	
+		
+		$this->captura('id_tipo_cc','int4');
+		$this->captura('codigo_tcc','varchar');
+		$this->captura('descripcion_tcc','varchar');	
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -256,6 +261,7 @@ class MODCentroCosto extends MODbase{
 		$this->setParametro('id_ep','id_ep','int4');
 		$this->setParametro('id_gestion','id_gestion','int4');
 		$this->setParametro('id_uo','id_uo','int4');
+		$this->setParametro('id_tipo_cc','id_tipo_cc','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -277,6 +283,7 @@ class MODCentroCosto extends MODbase{
 		$this->setParametro('id_ep','id_ep','int4');
 		$this->setParametro('id_gestion','id_gestion','int4');
 		$this->setParametro('id_uo','id_uo','int4');
+		$this->setParametro('id_tipo_cc','id_tipo_cc','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

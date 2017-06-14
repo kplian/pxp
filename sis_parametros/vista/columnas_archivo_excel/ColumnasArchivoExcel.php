@@ -49,7 +49,7 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 150,
 				//fieldStyle: 'text-transform:uppercase',
-				maxLength:20
+				maxLength:30
 			},
 			type:'TextField',
 			filters:{pfiltro:'colxls.nombre_columna',type:'string'},
@@ -87,7 +87,7 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 						field.resumeEvents(true);
 					}
 				},
-				maxLength:20
+				maxLength:30
 			},
 			type:'TextField',
 			filters:{pfiltro:'colxls.nombre_columna_tabla',type:'string'},

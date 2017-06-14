@@ -1423,8 +1423,13 @@ IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de
 /***********************************F-SCP-RAC-PARAM-0-22/06/2016****************************************/
 
 /***********************************I-SCP-RCM-PARAM-0-24/08/2016*****************************************/
+/*
+ en algunas base de datos el codigo noes unico por eso lo comento
+ RAC 25/05/2017
+ 
 alter table param.tinstitucion
 add constraint tinstitucion_uq_codigo unique(codigo);
+*/
 /***********************************F-SCP-RCM-PARAM-0-24/08/2016*****************************************/
 
 
@@ -1706,11 +1711,7 @@ ALTER TABLE param.tplantilla
 
 /***********************************I-SCP-FFP-PARAM-0-26/02/2017*****************************************/
 
-
-
 --------------- SQL ---------------
-
-
 CREATE TABLE param.tconf_lector_mobile(
   id_conf_lector_mobile SERIAL,
   nombre VARCHAR(255),
@@ -1732,19 +1733,116 @@ CREATE TABLE param.tconf_lector_mobile_detalle(
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
-/***********************************F-SCP-RAC-PARAM-0-26/02/2017*****************************************/
+/***********************************F-SCP-FFP-PARAM-0-26/02/2017*****************************************/
 
 
 /***********************************I-SCP-FFP-PARAM-0-08/05/2017*****************************************/
 
 ALTER TABLE param.ttipo_archivo ADD extensiones_permitidas VARCHAR(255) NULL;
 ALTER TABLE param.tarchivo ADD nombre_descriptivo VARCHAR NULL;
+
 /***********************************F-SCP-RAC-PARAM-0-08/05/2017*****************************************/
 
 
-/***********************************I-SCP-FFP-PARAM-0-011/05/2017*****************************************/
+/***********************************I-SCP-FFP-PARAM-0-11/05/2017*****************************************/
 
 ALTER TABLE param.ttipo_archivo ADD ruta_guardar VARCHAR(255) NULL;
 ALTER TABLE param.ttipo_archivo ALTER COLUMN ruta_guardar SET DEFAULT '';
-/***********************************F-SCP-RAC-PARAM-0-11/05/2017*****************************************/
+
+/***********************************F-SCP-FFP-PARAM-0-11/05/2017*****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-26/05/2017*****************************************/
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.ttipo_cc (
+  id_tipo_cc SERIAL NOT NULL,
+  codigo VARCHAR NOT NULL UNIQUE,
+  descripcion VARCHAR,
+  movimiento VARCHAR(6) DEFAULT 'no' NOT NULL,
+  tipo VARCHAR(100) DEFAULT 'centro' NOT NULL,
+  mov_pres VARCHAR(50) [] NOT NULL,
+  control_partida VARCHAR(5) DEFAULT 'si' NOT NULL,
+  control_techo VARCHAR(4) DEFAULT 'no' NOT NULL,
+  momento_pres VARCHAR(50) [] NOT NULL,
+  id_ep INTEGER,
+  id_tipo_cc_fk INTEGER,
+  PRIMARY KEY(id_tipo_cc)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+COMMENT ON COLUMN param.ttipo_cc.movimiento
+IS 'su o no, los tipo de presupeusto son los nodos hojas, estos nodos se transforman en centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc.tipo
+IS 'centro, proyecto, orden, son clasificadores del centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc.mov_pres
+IS 'ingreso , egreso, define que movimeintos puede realizar este centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc.control_partida
+IS 'si o no, se aplica a los nodos de contrl presupeustario, indica si controla partida entonces  verifica el techo por partida';
+
+COMMENT ON COLUMN param.ttipo_cc.control_techo
+IS 'indique en que nivel se queire la verificacion presupeustaria';
+
+COMMENT ON COLUMN param.ttipo_cc.momento_pres
+IS 'que momentos presupeustarios se condideran en este nodo, comprometido, ejecutado, pagado';
+
+COMMENT ON COLUMN param.ttipo_cc.id_ep
+IS 'identifica la estructura programatica, van prevalecer las que estan en nodo de movimiento';
+
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN fecha_inicio DATE NOT NULL;
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN fecha_final DATE;
+
+COMMENT ON COLUMN param.ttipo_cc.fecha_final
+IS 'fehca de finalizacion solo es util en nodos de movimeinto';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.ttipo_cc
+  ALTER COLUMN fecha_inicio DROP NOT NULL;
+
+
+
+/***********************************F-SCP-RAC-PARAM-0-26/05/2017*****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-0-30/05/2017*****************************************/
+--------------- SQL ---------------
+
+ALTER TABLE param.tcentro_costo
+  ADD COLUMN id_tipo_cc INTEGER;
+
+COMMENT ON COLUMN param.tcentro_costo.id_tipo_cc
+IS 'el tipo centro de costo propociona una estructura tipo arbol para la contabilidad analitica, un tipo_cc hoja  puede tener un centros de costo en diferetnes gestion, la EP quedara simplemente como un metodo de asignacionde permisos';
+
+
+/***********************************F-SCP-RAC-PARAM-0-30/05/2017*****************************************/
+
+
+
+
+/***********************************I-SCP-FFP-PARAM-0-29/05/2017*****************************************/
+
+ALTER TABLE param.ttipo_archivo ADD tamano NUMERIC(10) NULL;
+
+/***********************************F-SCP-FFP-PARAM-0-29/05/2017*****************************************/
+
 

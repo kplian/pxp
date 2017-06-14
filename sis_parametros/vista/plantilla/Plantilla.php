@@ -68,6 +68,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -92,6 +93,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -117,6 +119,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',
             grid:true,
             egrid: true,
             form:true
@@ -142,6 +145,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['variable','porcentual','constante']  
                     },
+                    
             grid: true,
             egrid: true,
             form: true
@@ -185,6 +189,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -210,6 +215,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -235,6 +241,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -260,6 +267,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -285,6 +293,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',        
             grid:true,
             egrid: true,
             form:true
@@ -309,6 +318,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',       
             grid:true,
             egrid: true,
             form:true
@@ -333,6 +343,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                         type: 'list',
                          options: ['si','no']  
                     },
+            valorInicial: 'no',
             grid:true,
             egrid: true,
             form:true
@@ -376,6 +387,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                 options: ['si','no']
             },
             grid:true,
+            valorInicial: 'no',
             egrid: true,
             form:true
         },
@@ -400,6 +412,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                 type: 'list',
                 options: ['si','no']
             },
+            valorInicial: 'no',
             grid:true,
             egrid: true,
             form:true
@@ -427,6 +440,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
             },
             grid:true,
             egrid: true,
+            valorInicial: 'no',
             form:true
         },
 

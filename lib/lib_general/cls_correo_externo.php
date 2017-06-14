@@ -49,23 +49,34 @@ class CorreoExterno
    }
 
     
-    function addDestinatario($dir_destinatario,$nom_destinatario=''){
+    function addDestinatario($dir_destinatario,$nom_destinatario=''){//desarrollo,produccion
+
     	if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
     		$this->mail->AddAddress($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
     	} else {
-    		$this->mail->AddAddress($dir_destinatario, $nom_destinatario); 
+            $this->mail->AddAddress($dir_destinatario, $nom_destinatario);
     	}       
     }
     
-    function addCC($dir_destinatario,$nom_destinatario=''){
+    function addCC($dir_destinatario,$nom_destinatario=''){//desarrollo
     	if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
     		$this->mail->AddCC($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
     	} else {
-    		$this->mail->AddCC($dir_destinatario, $nom_destinatario); 
-    	}   
-        
+    	    //var_dump('addCC');
+    		$this->mail->AddCC($dir_destinatario, $nom_destinatario);
+    	}
     }
-    
+
+
+    function addBCC($dir_destinatario,$nom_destinatario=''){//desarrollo
+        if ($_SESSION["_ESTADO_SISTEMA"] == 'desarrollo' && isset($_SESSION["_MAIL_PRUEBAS"])) {
+            $this->mail->addBCC($_SESSION["_MAIL_PRUEBAS"], 'Prueba de Correo Pxp');
+        } else {
+            //var_dump('addBCC');
+            $this->mail->AddBCC($dir_destinatario, $nom_destinatario);
+        }
+
+    }
     
     
     function addAdjunto($archivo,$name = ''){

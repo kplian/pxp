@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION segu.ft_usuario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -95,16 +93,16 @@ BEGIN
                                    CLASIF.descripcion,
                                    pxp.text_concat(UR.id_rol::text) as id_roles,
                                    USUARI.autentificacion
-                                  
+
                             FROM segu.tusuario USUARI
                                  INNER JOIN segu.vpersona PERSON on PERSON.id_persona = USUARI.id_persona
                                  LEFT JOIN segu.tclasificador CLASIF on CLASIF.id_clasificador = USUARI.id_clasificador
                                  LEFT JOIN segu.tusuario_rol UR on ur.estado_reg= ''activo'' and ur.id_usuario = usuari.id_usuario
-                               
+
                             WHERE USUARI.estado_reg = ''activo'' and ';
 
                v_consulta:=v_consulta||v_parametros.filtro;
-               
+
                    v_consulta:=v_consulta||'      GROUP BY USUARI.id_usuario,
                                                USUARI.id_clasificador,
                                                USUARI.cuenta,
@@ -147,20 +145,20 @@ BEGIN
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
          END;
-         
+
    /*******************************
-   #TRANSACCION:  SEG_USUARIBK_SEL
-   #DESCRIPCION:	Listar usuarios activos de sistema, (REA) 27/03/2016, esta consulta esta mal hecha la dejo como backup
-   #AUTOR:		KPLIAN(rac)
-   #FECHA:		26/07/2010
+   #TRANSACCION:  SEG_USGRU_SEL
+   #DESCRIPCION:  Grupo de EPs ususarios
+   #AUTOR:		Miguel Alejandro Mamani Villegas
+   #FECHA:		30/05/2017
   ***********************************/
 
-     elsif(par_transaccion='SEG_USUARIBK_SEL')then
+     elsif(par_transaccion='SEG_USGRU_SEL')then
 
           --consulta:=';
           BEGIN
 
-               v_consulta:='SELECT USUARI.id_usuario,
+               v_consulta:='SELECT DISTINCT  USUARI.id_usuario,
                                    USUARI.id_clasificador,
                                    USUARI.cuenta,
                                    USUARI.contrasena,
@@ -172,44 +170,51 @@ BEGIN
                                    USUARI.id_persona,
                                    PERSON.nombre_completo2 as desc_person,
                                    CLASIF.descripcion,
-                                   pxp.text_concat(UR.id_rol::text) as id_roles,
                                    USUARI.autentificacion,
-                                   grup.id_grupo
-                            FROM segu.tusuario USUARI
+                                   ug.id_grupo
+                            	 FROM segu.tusuario USUARI
                                  INNER JOIN segu.vpersona PERSON on PERSON.id_persona = USUARI.id_persona
+                                 INNER join segu.tusuario_grupo_ep ug on ug.id_usuario = USUARI.id_usuario
                                  LEFT JOIN segu.tclasificador CLASIF on CLASIF.id_clasificador =
                                  USUARI.id_clasificador
-                                 LEFT JOIN segu.tusuario_rol UR on ur.estado_reg= ''activo''
-                                 and ur.id_usuario = usuari.id_usuario
-                                 LEFT join segu.tusuario_grupo_ep ug on ug.id_usuario = USUARI.id_usuario
-                                 LEFT join param.vgrupos grup on ug.id_grupo  =  grup.id_grupo
-                            WHERE USUARI.estado_reg = ''activo'' and ';
+                                 WHERE USUARI.estado_reg = ''activo'' and ';
 
                v_consulta:=v_consulta||v_parametros.filtro;
 
-               v_consulta:=v_consulta||'      GROUP BY USUARI.id_usuario,
-                                               USUARI.id_clasificador,
-                                               USUARI.cuenta,
-                                               USUARI.contrasena,
-                                               USUARI.fecha_caducidad,
-                                               USUARI.fecha_reg,
-                                               USUARI.estado_reg,
-                                               USUARI.estilo,
-                                               USUARI.contrasena_anterior,
-                                               USUARI.id_persona,
-                                               PERSON.nombre_completo2,
-                                               PERSON.nombre,
-                                               CLASIF.descripcion,
-                                               USUARI.autentificacion,
-                                               grup.id_grupo';
+
              v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
 				raise notice 'que esta pasando: %',v_consulta;
                return v_consulta;
+               end;
 
 
-         END;      
-         
+ /*******************************
+ #TRANSACCION:  SEG_USGRU_CONT
+ #DESCRIPCION:	Contar usuarios activos de sistema
+ #AUTOR:		Miguel Alejandro Mamani Villegas
+ #FECHA:		30/05/2017
+***********************************/
+     elsif(par_transaccion='SEG_USGRU_CONT')then
+
+
+          BEGIN
+
+               v_consulta:='SELECT count(DISTINCT  USUARI.id_usuario)
+                             FROM segu.tusuario USUARI
+                                 INNER JOIN segu.vpersona PERSON on PERSON.id_persona = USUARI.id_persona
+                                 INNER join segu.tusuario_grupo_ep ug on ug.id_usuario = USUARI.id_usuario
+                                 LEFT JOIN segu.tclasificador CLASIF on CLASIF.id_clasificador =
+                                 USUARI.id_clasificador
+                                 WHERE USUARI.estado_reg = ''activo'' and ';
+
+
+
+               v_consulta:=v_consulta||v_parametros.filtro;
+               return v_consulta;
+         END;
+
+
 
      else
          raise exception 'No existe la opcion';

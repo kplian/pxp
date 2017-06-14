@@ -12,27 +12,9 @@ header("content-type: text/javascript; charset=UTF-8");
     Phx.vista.UsuariosEp=Ext.extend(Phx.gridInterfaz,{
         constructor:function(config){
             this.maestro=config.maestro;
-
-
-
-//function render_id_rol(value, p, record){return String.format('{0}', record.data['rol']);}
-            //llama al constructor de la clase padre
             Phx.vista.UsuariosEp.superclass.constructor.call(this,config);
             this.init();
-           // this.load({params:{start:0, limit:50}});
-            this.addButton('aInterSis',{text:'Themes',iconCls: 'blist',disabled:false,handler:this.inittest,tooltip: '<b>Configuracion de Themas</b><br/>Permite disenar un tema personalizado'});
-
-
         },
-        inittest:function(){
-            var fileref=document.createElement("script");
-            fileref.setAttribute("type","text/javascript");
-            fileref.setAttribute("src","http://extbuilder.sytes.net/springapp/js/app/builder.js");
-            fileref.setAttribute("id","extthemebuilder_"+Math.random());
-            if (typeof fileref!="undefined")
-                document.getElementsByTagName("head")[0].appendChild(fileref);
-        },
-
 
 
         tabEnter:true,
@@ -180,15 +162,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     maxLength:100,
                     minLength:1,
                     anchor:'100%',
-                    inputType:'password',
-                    /*validator:function(value){
-                     var texto= new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
-                     if(texto.test(value)){
-                     return true;
-                     }else{
-                     return 'La contraseña es demasiado débil (Debe tener un mínimo de 8 caracteres y contener mayusculas, minusculas, números y caracteres especiales)';
-                     }
-                     }*/
+                    inputType:'password'
+
 
                 },
                 type:'TextField',
@@ -356,9 +331,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 form:true
             }],
         title:'Usuario',
-        ActSave:'../../sis_seguridad/control/Usuario/guardarUsuario',
-        ActDel:'../../sis_seguridad/control/Usuario/eliminarUsuario',
-        ActList:'../../sis_seguridad/control/Usuario/listarUsuario',
+        ActList:'../../sis_seguridad/control/Usuario/listarGrupoUsuario',
         id_store:'id_usuario',
         fields: [
             {name:'id_usuario'},
@@ -371,7 +344,7 @@ header("content-type: text/javascript; charset=UTF-8");
             {name:'desc_person', type: 'string'},
             {name:'descripcion', type: 'string'},
             {name:'estilo'},
-            'id_roles','autentificacion','id_grupo'
+            'autentificacion','id_grupo'
 
 
         ],
@@ -380,15 +353,11 @@ header("content-type: text/javascript; charset=UTF-8");
             direction: 'ASC'
         },
 
-        bdel:true,// boton para eliminar
-        bsave:true,// boton para eliminar
+        bdel:false,// boton para eliminar
+        bsave:false,// boton para eliminar
+        bedit:false,
+        bnew:false,
 
-        onSubmit : function(o) {
-            this.Cmp.contrasena_old.setValue(encodeURIComponent(this.Cmp.contrasena_old.getValue()));
-            this.Cmp.contrasena.setValue(encodeURIComponent(this.Cmp.contrasena.getValue()));
-            this.Cmp.conf_contrasena.setValue(encodeURIComponent(this.Cmp.conf_contrasena.getValue()));
-            Phx.vista.UsuariosEp.superclass.onSubmit.call(this,o);
-        },
         loadValoresIniciales:function(){
             Phx.vista.UsuariosEp.superclass.loadValoresIniciales.call(this);
             this.getComponente('id_grupo').setValue(this.maestro.id_grupo);
@@ -398,7 +367,6 @@ header("content-type: text/javascript; charset=UTF-8");
             this.maestro=m;
             this.store.baseParams={id_grupo:this.maestro.id_grupo};
             this.load({params:{start:0, limit:50}})
-
         }
 
 

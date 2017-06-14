@@ -730,6 +730,15 @@ WITH (oids = false);
 
 /*****************************F-SCP-FFP-ORGA-1-06/03/2016*************/
 
+/***********************************I-SCP-JRR-ORGA-0-02/05/2017****************************************/
+ALTER TABLE orga.tcargo_centro_costo
+  ADD COLUMN id_ot INTEGER;
+
+ALTER TABLE orga.tcargo_presupuesto
+  ADD COLUMN id_ot INTEGER;
+
+/***********************************F-SCP-JRR-ORGA-0-02/05/2017****************************************/
+
 
 /*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
 
@@ -741,7 +750,7 @@ WITH (oids = false);
 ALTER TABLE orga.toficina
   ADD COLUMN correo_oficina VARCHAR;
 
-/*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
+/*****************************F-SCP-RAC-ORGA-1-23/03/2017*************/
 
 
 

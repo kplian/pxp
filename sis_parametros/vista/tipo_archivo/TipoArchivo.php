@@ -215,6 +215,24 @@ Phx.vista.TipoArchivo=Ext.extend(Phx.gridInterfaz,{
             form: true
         },
 
+        {
+            config:{
+                name: 'tamano',
+                fieldLabel: 'Tamaño en Megas',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:1179654,
+                decimalPrecision:0
+            },
+            type:'NumberField',
+            filters:{pfiltro:'tipar.tamano',type:'numeric'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+
+
 
         {
             config:{
@@ -366,6 +384,7 @@ Phx.vista.TipoArchivo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'extensiones_permitidas', type: 'string'},
 		{name:'ruta_guardar', type: 'string'},
+		{name:'tamano', type: 'string'},
 
 	],
 	sortInfo:{
