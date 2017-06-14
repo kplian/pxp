@@ -12,7 +12,7 @@ class ACTUsuario extends ACTbase{
 
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
 
-        $this->dispararEventoWS();
+        //$this->dispararEventoWS();
 
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','desc_person');
