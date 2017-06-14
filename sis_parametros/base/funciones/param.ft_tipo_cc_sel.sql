@@ -105,6 +105,77 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+     /*********************************    
+ 	#TRANSACCION:  'PM_TCCALL_SEL'
+ 	#DESCRIPCION:	Consulta de datos
+ 	#AUTOR:		admin	
+ 	#FECHA:		26-05-2017 10:10:19
+	***********************************/
+
+	elsif(p_transaccion='PM_TCCALL_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='SELECT 
+                          id_tipo_cc,
+                          codigo,
+                          control_techo,
+                          mov_pres,
+                          estado_reg,
+                          movimiento,
+                          id_ep,
+                          id_tipo_cc_fk,
+                          descripcion,
+                          tipo,
+                          control_partida,
+                          momento_pres,
+                          fecha_reg,
+                          usuario_ai,
+                          id_usuario_reg,
+                          id_usuario_ai,
+                          id_usuario_mod,
+                          fecha_mod,
+                          usr_reg,
+                          usr_mod,
+                          desc_ep,
+                          fecha_inicio,
+                          fecha_final
+                        FROM   param.vtipo_cc  tcc
+				        where   ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            raise notice  'Consulta...%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_TCCALL_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		26-05-2017 10:10:19
+	***********************************/
+
+	elsif(p_transaccion='PM_TCCALL_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='SELECT count(id_tipo_cc)
+					     FROM   param.vtipo_cc tcc
+				         WHERE  ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;   
+        
 	/*********************************   
      #TRANSACCION:  'PM_TCCARB_SEL'
      #DESCRIPCION:    Consulta tipos de centro de costo en formato arbol

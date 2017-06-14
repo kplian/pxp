@@ -52,6 +52,45 @@ class MODTipoCc extends MODbase{
 		return $this->respuesta;
 	}
 
+   function listarTipoCcAll(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_tipo_cc_sel';
+		$this->transaccion='PM_TCCALL_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('id_tipo_cc','int4');
+		$this->captura('codigo','varchar');
+		$this->captura('control_techo','varchar');
+		$this->captura('mov_pres','_varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('movimiento','varchar');
+		$this->captura('id_ep','int4');
+		$this->captura('id_tipo_cc_fk','int4');
+		$this->captura('descripcion','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('control_partida','varchar');
+		$this->captura('momento_pres','_varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('usuario_ai','varchar');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('id_usuario_ai','int4');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('desc_ep','varchar');
+		$this->captura('fecha_inicio','date');
+		$this->captura('fecha_final','date');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
    function listarTipoCcArb(){
 		    //Definicion de variables para ejecucion del procedimientp
 		   $this->procedimiento='param.ft_tipo_cc_sel';

@@ -30,4 +30,7 @@ include_once(dirname(__FILE__).'/../../sis_seguridad/modelo/MODSesion.php');
 //	include_once($archivo);
 //}
 
+//require_once __DIR__ . "/../../../../vendor/autoload.php";
+include_once(dirname(__FILE__).'/../textalk/vendor/autoload.php');
+
 ?>

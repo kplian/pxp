@@ -18,6 +18,8 @@ class ACTTipoCc extends ACTbase{
             $this->objParam->addFiltro("( tcc.gestion_ini <= ".$this->objParam->getParametro('gestion').' and '.$this->objParam->getParametro('gestion').' <= COALESCE(tcc.gestion_fin,'.$this->objParam->getParametro('gestion').'))'); 
 			   
         }
+		
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODTipoCc','listarTipoCc');
@@ -25,6 +27,28 @@ class ACTTipoCc extends ACTbase{
 			$this->objFunc=$this->create('MODTipoCc');
 			
 			$this->res=$this->objFunc->listarTipoCc($this->objParam);
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+   function listarTipoCcAll(){
+		$this->objParam->defecto('ordenacion','id_tipo_cc');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+		
+		
+		if($this->objParam->getParametro('movimiento')!=''){
+            $this->objParam->addFiltro(" tcc.movimiento = ''".$this->objParam->getParametro('movimiento')."'' "); 
+			   
+        }
+		
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODTipoCc','listarTipoCcAll');
+		} else{
+			$this->objFunc=$this->create('MODTipoCc');
+			
+			$this->res=$this->objFunc->listarTipoCcAll($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}

@@ -540,8 +540,14 @@ Phx.CP=function(){
         
 		// funcion que se ejcuta despues de una autentificacion exitosa
 		// para dibujar los paneles de menu y mainpanel
-		init:function(){         	
-         	Ext.QuickTips.init();
+		init:function(){
+
+			//ffp iniciamos la conexion del websocket
+            Phx.CP.webSocket.iniciarWebSocket();
+
+
+
+            Ext.QuickTips.init();
          	Ext.History.init();         	   
          	Ext.History.on('change', function(token){
 		        if(token && token != 'null') {
@@ -930,7 +936,14 @@ Phx.CP=function(){
 			        	   }
 			        	   //recuperamos la variable de sesion
 						   Phx.CP.session = Ext.util.Cookies.get('PHPSESSID');
-			        	 }	
+			        	 }
+
+
+
+
+
+
+
 			
 			}
 			else{				
@@ -1717,7 +1730,54 @@ Phx.CP=function(){
 		        }
 		    }
 		    return arr;
+		},
+
+		//websocket
+
+		//sessionWebSocket conexionwWebSocket guiPXP evento
+		webSocket: {
+            iniciarWebSocket : function () {
+
+            	var hostname = window.location.hostname;
+                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':8080');
+                console.log(Phx.CP.webSocket.conn);
+                Phx.CP.webSocket.conn.onopen = function (e) {
+                    console.log("Conecion establecida");
+
+
+                    //por el momento
+                    Phx.CP.webSocket.conn.send(JSON.stringify({
+                        data: {"id_usuario": Phx.CP.config_ini.id_usuario,"nombre_usuario":Phx.CP.config_ini.nombre_usuario ,"evento": 'sis_colas/ticket',"id_contenedor":15},
+                        tipo: "escucharEvento"
+
+                    }));
+
+ 					/*Phx.CP.webSocket.conn.send(JSON.stringify({
+                        data: {"mensaje": 'hola favio',"evento":'sis_colas/ticket'},
+                        tipo: "enviarMensaje"
+
+                    }));*/
+
+
+                };
+
+                Phx.CP.webSocket.conn.onmessage = function (e) {
+
+                    console.log(e)
+                    var jsonData = JSON.parse(e.data);
+                    var type = jsonData.type;
+                    var data = jsonData.data;
+
+
+
+
+                };
+
+                
+
+            }
 		}
+
 		
 	}
 }();
