@@ -64,7 +64,8 @@ class Pxp implements MessageComponentInterface {
                         "id_usuario"=>$data["data"]["id_usuario"],
                         "nombre_usuario"=>$data["data"]["nombre_usuario"],
                         "evento"=>$data["data"]["evento"],
-                        "id_contenedor"=>$data["data"]["id_contenedor"]
+                        "id_contenedor"=>$data["data"]["id_contenedor"],
+                        "metodo"=>$data["data"]["metodo"]
                     ));
 
                 }else{
@@ -75,7 +76,9 @@ class Pxp implements MessageComponentInterface {
                         "id_usuario"=>$data["data"]["id_usuario"],
                         "nombre_usuario"=>$data["data"]["nombre_usuario"],
                         "evento"=>$data["data"]["evento"],
-                        "id_contenedor"=>$data["data"]["id_contenedor"]);
+                        "id_contenedor"=>$data["data"]["id_contenedor"],
+                        "metodo"=>$data["data"]["metodo"]
+                    );
 
                 }
 
@@ -87,12 +90,40 @@ class Pxp implements MessageComponentInterface {
 
                 $evento = $data["data"]["evento"];
 
-                foreach ($this->eventos[$evento] as $evento){
+                foreach ($this->eventos[$evento] as $even){
                     if ($evento["id_conexion"] != $id_conexion){
 
-                        $this->users[$evento["id_conexion"]]->send($data["data"]["mensaje"]);
+                        $send = array(
+                            "mensaje" => $data["data"]["mensaje"],
+                            "data" => $even
+                        );
+                        $send = json_encode($send, true);
+
+                        $this->users[$even["id_conexion"]]->send($send);
                     }
                 }
+            }elseif($tipo == "eleminarEvento"){
+
+                $id_contenedor = $data["data"]["id_contenedor"];
+
+                foreach ($this->eventos as $key1 =>$eventos){
+
+                    foreach ($eventos as $key => $e) {
+
+
+                        //eleminamos si encuentra
+                        if($e['id_contenedor'] == $id_contenedor && $e['id_conexion'] == $id_conexion && $e['id_session'] == $idSession){
+
+                            unset($this->eventos[$key1][$key]);
+
+                        }
+
+                    }
+                }
+
+                var_dump($this->eventos);
+
+
             }
 
         }
@@ -111,6 +142,28 @@ class Pxp implements MessageComponentInterface {
     }
 
     public function onClose(ConnectionInterface $conn) {
+
+
+
+        //eliminamos todas los eventos que esta escuchando la conexion
+        foreach ($this->eventos as $key1 =>$eventos){
+
+            foreach ($eventos as $key => $e) {
+
+                //var_dump($e);
+
+
+                //eleminamos si encuentra
+                if($e['id_conexion'] == $conn->resourceId){
+
+                    unset($this->eventos[$key1][$key]);
+
+                }
+
+            }
+        }
+
+
         // The connection is closed, remove it, as we can no longer send it messages
         $this->clients->detach($conn);
 
@@ -122,6 +175,17 @@ class Pxp implements MessageComponentInterface {
 
         $conn->close();
     }
+
+
+    public function send(ConnectionInterface $client, $type, $data){
+        $send = array(
+            "type" => $type,
+            "data" => $data
+        );
+        $send = json_encode($send, true);
+        $client->send($send);
+    }
+
 
 
 }
