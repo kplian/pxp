@@ -11,28 +11,36 @@ class conexion
 
 
 	
-	function conectarnp(){
+	function conectarnp($remote = ''){
 		try {       
     		 $_host='';
     		 $_port='';
     		 $_dbname='';
     		 $_user='';
     		 $_password='';
-    		     
-    		 if(isset($_SESSION['_HOST'])){
-    		      $_host   = $_SESSION['_HOST'];
-    		 }
+			 
+    		 if ($remote != '' && isset($_SESSION['_REMOTE_PXP'][$remote])) {
+    		 	$_host   = $_SESSION['_REMOTE_PXP'][$remote]['host'];
+    		 }  else {
+	    		 if(isset($_SESSION['_HOST'])){
+	    		 	$_host   = $_SESSION['_HOST'];
+	    		 }
+    		 }    		 
     		 
     		 if(isset($_SESSION['_PUERTO'])){
                   $_port   = $_SESSION['_PUERTO'];
              } 
-             
-             if(isset($_SESSION['_BASE_DATOS'])){
-                   $_dbname= $_SESSION['_BASE_DATOS'];
-             } 
-             
+			 
+			 if ($remote != '' && isset($_SESSION['_REMOTE_PXP'][$remote])) {
+    		 	$_dbname   = $_SESSION['_REMOTE_PXP'][$remote]['db'];
+    		 }  else {
+	    		 if(isset($_SESSION['_BASE_DATOS'])){
+	    		 	$_dbname   = $_SESSION['_BASE_DATOS'];
+	    		 }
+    		 }             
+                          
              if(isset($_SESSION['_BASE_DATOS']) && isset($_SESSION['_LOGIN'])){
-                   $_user= $_SESSION['_BASE_DATOS']."_". $_SESSION['_LOGIN'];
+                   $_user= $_dbname."_". $_SESSION['_LOGIN'];
              } 
              
              if(isset($_SESSION['_CONTRASENA'])){

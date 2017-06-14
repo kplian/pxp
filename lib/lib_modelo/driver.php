@@ -46,6 +46,7 @@ class driver
 	protected $count;
 	protected $addConsulta;
 	protected $esMatriz;
+	protected $remote = '';
 	
 	
 	
@@ -301,6 +302,18 @@ class driver
 	 */
 	function setCount($logico){
 		$this->count=$logico;
+
+	}
+	
+	/**
+	 * Nombre funcion:	setRemote
+	 * Proposito:		Define un servidor remoto pxp al que conectarse
+	 * Fecha creacion:	12/04/2009
+	 * @param $servidor nombre del servidor remoto
+	 * 
+	 */
+	function setRemote($servidor){
+		$this->remote=$servidor;
 
 	}
 	
@@ -920,7 +933,7 @@ class driver
 		}
 		else{
 			//echo 'sss';exit;
-			$link=$cone->conectarnp();
+			$link=$cone->conectarnp($this->remote);
 		}
 		
 		
@@ -1110,7 +1123,7 @@ class driver
 			$link=$cone->conectarSegu();
 		}
 		else{
-			$link=$cone->conectarnp();
+			$link=$cone->conectarnp($this->remote);
 		}
 
 		if($link==0){
