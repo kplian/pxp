@@ -173,11 +173,14 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
                 anchor: '80%',
                 gwidth: 100,
                 maxLength:255
+
+
             },
             type:'TextField',
             filters:{pfiltro:'ofi.direccion',type:'string'},
             id_grupo:1,
             grid:true,
+            egrid:true,
             form:true
         },
         {
@@ -193,6 +196,7 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
             filters:{pfiltro:'cms.precio_unitario',type:'numeric'},
             id_grupo:1,
             grid:true,
+            egrid:true,
             form:true
         },
 
