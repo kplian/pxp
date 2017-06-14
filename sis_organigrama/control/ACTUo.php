@@ -46,7 +46,15 @@ class ACTUo extends ACTbase{
 			//ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad 
 			$this->res=$this->objFunc->listarUo();
 			
-		}
+		} if($this->objParam->getParametro('_adicionar')!=''){
+
+            $respuesta = $this->res->getDatos();
+
+
+            array_unshift ( $respuesta, array(  'id_uo'=>'0',
+                'nombre_unidad'=>'Todos'));
+            $this->res->setDatos($respuesta);
+        }
 		
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());
