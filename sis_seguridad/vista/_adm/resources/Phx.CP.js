@@ -1738,8 +1738,9 @@ Phx.CP=function(){
             return arr;
         },
 
-        //websocket
-
+        /***********************************************
+         *  WebSocket por favio figueroa
+         ***************************************************/
 
         //sessionWebSocket conexionwWebSocket guiPXP evento
         webSocket: {
@@ -1751,6 +1752,17 @@ Phx.CP=function(){
                 console.log(Phx.CP.webSocket.conn);
                 Phx.CP.webSocket.conn.onopen = function (e) {
                     console.log("Conecion establecida");
+
+                    //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
+
+                    //crear json
+                    var json = JSON.stringify({
+                        data: {"id_usuario": Phx.CP.config_ini.id_usuario },
+                        tipo: "registrarUsuarioSocket"
+
+                    });
+                    Phx.CP.webSocket.conn.send(json);
+
 
 
 
@@ -1766,15 +1778,19 @@ Phx.CP=function(){
                     //obtenemos el data de la configuracion al lanzar el evento escucharEvento esos datos los tenemos aca
                     var data = jsonData.data;
 
-                    console.log(mensaje)
-                    console.log(data)
+                   // console.log(mensaje)
+                    //console.log(data)
 
-                    //var funtion = 'Phx.CP.webSocket.'+data.metodo;
-                    //var funtion = 'Phx.CP.getPagina("'+data.id_contenedor+'").'+data.metodo;
-                    console.log( Phx.CP.webSocket.scopeVistas)
-                    var f ='Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"].'+data.metodo+'.call(Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"],mensaje)';
-                    //eval(f)(mensaje);
-                    eval(f);
+
+                    if(data.id_contenedor != undefined){
+                        var f ='Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"].'+data.metodo+'.call(Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"],mensaje)';
+                        eval(f);
+                    }else{
+                        var f = 'Phx.CP.webSocket.'+data.metodo+'(mensaje)';
+                        eval(f);
+                    }
+
+
 
 
 
@@ -1812,11 +1828,23 @@ Phx.CP=function(){
 
                 Phx.CP.webSocket.conn.send(json);
             },
-            pruebaColas:function(mensaje){
+            enviarMensajeUsuario:function(mensaje){
 
-                console.log(mensaje)
-                alert(mensaje)
-            }
+                if(mensaje.tipo_mensaje == "alert"){
+                    alert(mensaje.mensaje)
+                }else{
+                    Phx.CP.notificar(mensaje.titulo,mensaje.mensaje);
+                }
+
+
+            },
+            actualizarVistaUsuario:function(mensaje){
+
+
+                //alert('se actualizara');
+                window.location.reload(true);
+            },
+
         }
 
 

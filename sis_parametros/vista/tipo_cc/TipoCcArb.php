@@ -14,11 +14,9 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	constructor:function(config){
 		this.maestro=config.maestro;		
     	//llama al constructor de la clase padre
-		Phx.vista.TipoCcArb.superclass.constructor.call(this,config);
-		
+		Phx.vista.TipoCcArb.superclass.constructor.call(this,config);		
 		this.init();
 		this.iniciarEventos();
-		
 	},
 	
 	Atributos:[
@@ -341,26 +339,17 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			}
 		},	
    
-   iniciarEventos: function(){
-   	    
-   	        this.Cmp.control_techo.on('select',function(combo,record,index){
-				
+   iniciarEventos: function(){   	    
+   	        this.Cmp.control_techo.on('select',function(combo,record,index){				
 				if(combo.getValue() == 'no'){
 					this.ocultarComponente(this.Cmp.momento_pres);
 					this.ocultarComponente(this.Cmp.control_partida);
-					this.ocultarComponente(this.Cmp.mov_pres);
-					
+					this.ocultarComponente(this.Cmp.mov_pres);					
 				} else{
 					this.mostrarComponente(this.Cmp.momento_pres);
 					this.mostrarComponente(this.Cmp.control_partida);
 					this.mostrarComponente(this.Cmp.mov_pres);
-					
-					
-					
 				} 
-				
-				
-				
 			},this);
 			
 			
@@ -373,15 +362,12 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			},this);
    	
    },
-   onButtonEdit:function(n){
-		
-		Phx.vista.TipoCcArb.superclass.onButtonEdit.call(this);
-		
+   onButtonEdit:function(n){		
+		Phx.vista.TipoCcArb.superclass.onButtonEdit.call(this);		
 	    if(this.Cmp.control_techo.getValue() == 'si'){
 			this.mostrarComponente(this.Cmp.momento_pres);
 			this.mostrarComponente(this.Cmp.control_partida);
-			this.mostrarComponente(this.Cmp.mov_pres);
-			
+			this.mostrarComponente(this.Cmp.mov_pres);			
 		} else{
 			this.ocultarComponente(this.Cmp.momento_pres);
 			this.ocultarComponente(this.Cmp.control_partida);
@@ -393,17 +379,12 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 		} else{			
 			this.Cmp.id_ep.allowBlank = true;
 		} 
-		
-		
-		
 	},
 	
-    onButtonNew:function(n){
-    		
+    onButtonNew:function(n){    		
     		Phx.vista.TipoCcArb.superclass.onButtonNew.call(this);
 	        var nodo = this.sm.getSelectedNode();
-	        this.Cmp.id_ep.allowBlank = false;
-	        
+	        this.Cmp.id_ep.allowBlank = false;	        
 	        if(nodo && nodo.attributes.id!='id'){	        	
 	        	var obj = this.getDatosPadre(nodo);	        	        	
 	        	this.Cmp.tipo.disable();
@@ -415,7 +396,6 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	        else{	        	
 	        	this.Cmp.tipo.enable();
 	        }
-	      
     },
    
 })

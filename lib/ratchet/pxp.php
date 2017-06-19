@@ -4,16 +4,22 @@ require 'vendor/autoload.php';
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
+//$this->usuariosPXPSocket = array();
+
 class Pxp implements MessageComponentInterface {
     protected $clients;
+    protected $usuariosPXPSocket;
 
     protected $eventos = array();
+   // protected $usuarioPXP = array();
 
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
 
         $this->users = [];
+
+        $this->usuariosPXPSocket = [];
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -121,7 +127,112 @@ class Pxp implements MessageComponentInterface {
                     }
                 }
 
-                var_dump($this->eventos);
+
+
+            }elseif($tipo == "registrarUsuarioSocket"){ //registramos al usuario con su socket para saber que usuarios estan conectados
+
+                $id_usuario = $data["data"]["id_usuario"];
+
+                if (array_key_exists($id_usuario, $this->usuariosPXPSocket)) {
+
+                    //existe ya registrado el USUARIO
+
+                    array_push($this->usuariosPXPSocket[$id_usuario],array(
+                        "id_conexion"=> $id_conexion,
+                        "id_session"=>$idSession,
+                        "id_usuario"=>$id_usuario
+                    ));
+
+                }else{
+                    //no existe
+
+                    $this->usuariosPXPSocket[$id_usuario][0] = array(
+                        "id_conexion"=> $id_conexion,
+                        "id_session"=>$idSession,
+                        "id_usuario"=>$id_usuario
+                    );
+
+                }
+
+                var_dump($this->usuariosPXPSocket);
+
+
+
+
+            }elseif($tipo == "obtenerUsuariosConectados"){ //obtenemos usuario conectados
+
+
+
+                $send = json_encode($this->usuariosPXPSocket, true);
+
+                $this->users[$id_conexion]->send($send);
+
+
+                //var_dump($this->usuariosPXPSocket);
+
+
+
+
+            }elseif($tipo == "enviarMensajeUsuario"){ //enviamos mensaje a un usuario en especifico o a varios
+
+
+                $id_usuario = $data["data"]["id_usuario"];
+                $id_usuario = (int)$id_usuario;
+
+                if($data["data"]["destino"] == "Unico"){
+
+                    foreach ($this->usuariosPXPSocket[$id_usuario] as $conexiones_habilitadas){
+                        $id_conexion_para_enviar = $conexiones_habilitadas['id_conexion'];
+
+                        $send = array(
+                            "mensaje" => array(
+                                "tipo_mensaje" => $data["data"]["tipo_mensaje"],
+                                "titulo" => $data["data"]["titulo"],
+                                "mensaje" => $data["data"]["mensaje"]
+                            ),
+                            "data"=> array(
+                                "metodo" => $data["data"]["evento"]
+                                //si no le envias id_contenedor entonces este metodo debe estar en el contenedor principal
+                            )
+                        );
+                        $send = json_encode($send, true);
+
+                        $this->users[$id_conexion_para_enviar]->send($send);
+                    }
+
+                }else{ //mandamos a todos los conectados
+
+                    foreach ($this->usuariosPXPSocket as $usuarios_conectados){
+                        foreach ($usuarios_conectados as $conexiones_habilitadas){
+
+                            $id_conexion_para_enviar = $conexiones_habilitadas['id_conexion'];
+
+
+                            $send = array(
+                                "mensaje" => array(
+                                    "tipo_mensaje" => $data["data"]["tipo_mensaje"],
+                                    "titulo" => $data["data"]["titulo"],
+                                    "mensaje" => $data["data"]["mensaje"]
+                                ),
+                                "data"=> array(
+                                    "metodo" => $data["data"]["evento"]
+                                    //si no le envias id_contenedor entonces este metodo debe estar en el contenedor principal
+                                )
+                            );
+                            $send = json_encode($send, true);
+
+                            $this->users[$id_conexion_para_enviar]->send($send);
+                        }
+                    }
+
+                }
+
+
+                //enviamos un retorno al que envio
+                $this->users[$id_conexion]->send('envio correcto');
+
+
+
 
 
             }
@@ -162,6 +273,29 @@ class Pxp implements MessageComponentInterface {
 
             }
         }
+
+        //eliminamos los usuario con dicha conexion cerrada
+        foreach ($this->usuariosPXPSocket as $key1 =>$usuarios){
+
+            foreach ($usuarios as $key => $u) {
+
+
+                //eleminamos si encuentra
+                if($u['id_conexion'] == $conn->resourceId){
+
+                    unset($this->usuariosPXPSocket[$key1][$key]);
+
+                    //verificamos si ya no existe ninguna conexion para un usuario especifico y eliminamos su arreglo principal
+                    if(count($this->usuariosPXPSocket[$key1]) == 0){
+                        unset($this->usuariosPXPSocket[$key1]);
+                    }
+
+                }
+
+            }
+        }
+
+        var_dump($this->usuariosPXPSocket);
 
 
         // The connection is closed, remove it, as we can no longer send it messages
