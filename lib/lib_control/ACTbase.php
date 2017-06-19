@@ -69,6 +69,7 @@ abstract class ACTbase
 
 
         $client->send(json_encode($send));
+        return $client->receive();
 
 	}
 	
