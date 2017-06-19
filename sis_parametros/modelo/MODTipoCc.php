@@ -43,6 +43,11 @@ class MODTipoCc extends MODbase{
 		$this->captura('desc_ep','varchar');
 		$this->captura('fecha_inicio','date');
 		$this->captura('fecha_final','date');
+		$this->captura('codigo_tccp','varchar');
+		$this->captura('descripcion_tccp','varchar');
+		$this->captura('mov_pres_str','varchar');
+		$this->captura('momento_pres_str','varchar');
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -82,6 +87,10 @@ class MODTipoCc extends MODbase{
 		$this->captura('desc_ep','varchar');
 		$this->captura('fecha_inicio','date');
 		$this->captura('fecha_final','date');
+		$this->captura('codigo_tccp','varchar');
+		$this->captura('descripcion_tccp','varchar');
+		
+	
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -194,6 +203,8 @@ class MODTipoCc extends MODbase{
 		$this->setParametro('momento_pres','momento_pres','varchar');
 		$this->setParametro('fecha_inicio','fecha_inicio','date');		
 		$this->setParametro('fecha_final','fecha_final','date');
+		$this->setParametro('mov_pres_str','mov_pres_str','varchar');
+		$this->setParametro('momento_pres_str','momento_pres_str','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
