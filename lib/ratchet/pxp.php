@@ -13,6 +13,10 @@ class Pxp implements MessageComponentInterface {
     protected $eventos = array();
    // protected $usuarioPXP = array();
 
+    protected $cone;
+    protected $link;
+
+
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
@@ -20,26 +24,75 @@ class Pxp implements MessageComponentInterface {
         $this->users = [];
 
         $this->usuariosPXPSocket = [];
+
+        $this->cone = new conexion();
+        $this->link = $this->cone->conectarpdo();
+
     }
 
     public function onOpen(ConnectionInterface $conn) {
         // Store the new connection to send messages to later
+
+
+        //obtenemos la session del pxp
+        $sessionIDPXP = $conn->WebSocket->request->getQuery()->toArray()['sessionIDPXP'];
+        var_dump($sessionIDPXP);
+
+        //verificaremos si la session enviada esta registrada en nuestra bd
+
+        $seguSessionPXP = $this->link->prepare("select * from segu.tsesion where variable = '$sessionIDPXP' and fecha_reg = now()::DATE ");
+        $seguSessionPXP->execute();
+        $seguSessionPXP_RES = $seguSessionPXP->fetchAll(PDO::FETCH_ASSOC);
+
+
         $this->clients->attach($conn);
-
-
         //anadimos a una id_conexion la conexion entera para poder acceder luego a send
         $this->users[$conn->resourceId] = $conn;
 
-        echo "New connection! ({$conn->resourceId})\n";
+        //si existe esa session registrada
+        if (count($seguSessionPXP_RES) > 0){
 
-        $idSession = $conn->WebSocket->request->getCookie("PHPSESSID");
 
-        echo "New session! ({$idSession})\n";
+
+            echo "New connection! ({$conn->resourceId})\n";
+
+            //esta es una session de conexion al socket
+            $idSession = $conn->WebSocket->request->getCookie("PHPSESSID");
+
+            echo "New session! ({$idSession})\n";
+
+        }else{
+            echo "no tiene permiso para conectarse! \n";
+
+            $send = array(
+                "mensaje" => array(
+                    "mensaje" => "se cerro el socket porque no tienes permiso no seas pendejo!!!",
+                ),
+                "data"=> array(
+                    "metodo" => "cierreSocket"
+                    //si no le envias id_contenedor entonces este metodo debe estar en el contenedor principal
+                )
+            );
+            $id_conexion = $conn->resourceId;
+            $send = json_encode($send, true);
+            $this->users[$id_conexion]->send($send);
+
+            $conn->close();
+
+        }
+
+
+
+
 
 
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
+
+
+
+
 
         //obtenemos la id_conexion
         $id_conexion = $from->resourceId;
@@ -253,6 +306,7 @@ class Pxp implements MessageComponentInterface {
     }
 
     public function onClose(ConnectionInterface $conn) {
+
 
 
 
