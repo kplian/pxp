@@ -103,7 +103,7 @@ Phx.vista.Wsmensaje=Ext.extend(Phx.gridInterfaz,{
 					totalProperty: 'total',
 					fields: ['id_usuario', 'cuenta', 'desc_person'],
 					remoteSort: true,
-					baseParams: {par_filtro: 'usu.cuenta',ws:'si'}
+					baseParams: {par_filtro: 'USUARI.cuenta#PERSON.nombre_completo2',ws:'si'}
 				}),
 				valueField: 'id_usuario',
 				displayField: 'desc_person',

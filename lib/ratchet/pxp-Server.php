@@ -1,4 +1,6 @@
 <?php
+require '../DatosGenerales.php';
+require '../lib_control/CTincludes.php';
 
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;

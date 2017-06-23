@@ -1748,9 +1748,10 @@ Phx.CP=function(){
             iniciarWebSocket : function () {
 
                 var hostname = window.location.hostname;
-                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':8080');
+                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':8080?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
                 console.log(Phx.CP.webSocket.conn);
                 Phx.CP.webSocket.conn.onopen = function (e) {
+                    console.log(e)
                     console.log("Conecion establecida");
 
                     //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
@@ -1843,6 +1844,11 @@ Phx.CP=function(){
 
                 //alert('se actualizara');
                 window.location.reload(true);
+            },
+            cierreSocket:function(mensaje){
+
+                alert(mensaje.mensaje);
+
             },
 
         }

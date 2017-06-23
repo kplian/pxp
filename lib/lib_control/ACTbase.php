@@ -60,13 +60,7 @@ abstract class ACTbase
 
 	function dispararEventoWS($send){
 
-
-
-
-
-        $client = new Client("ws://localhost:8080");
-
-
+        $client = new Client("ws://localhost:8080?sessionIDPXP=".session_id());
 
         $client->send(json_encode($send));
         return $client->receive();
