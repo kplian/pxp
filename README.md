@@ -134,4 +134,4 @@ https://www.youtube.com/watch?v=uUVevOzYDy4
 
 ## License
 
-See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
+See the [LICENSE](LICENSE.txt) file for license rights and limitations (GPLv3).
