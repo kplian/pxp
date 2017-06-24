@@ -18,8 +18,9 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.TipoCc.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
+		this.iniciarEventos();
 	},
-			
+	
 	Atributos:[
 		{
 			//configuracion del componente
@@ -31,6 +32,30 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
+		
+		{
+	   		config:{
+	   				name:'id_tipo_cc_fk',
+	   				qtip: 'Tipo de centro de costos, cada tipo solo puede tener un centro por gestión',	   				
+	   				origen:'TIPOCC',
+	   				fieldLabel:'Tipo Centro Padre',
+	   				gdisplayField: 'descripcion_tccp',
+	   				url:'../../sis_parametros/control/TipoCc/listarTipoCcAll',	
+	   				baseParams: {movimiento:'no'} ,  				
+	   				allowBlank:true,
+	   				width:250,
+	   				gwidth:250,
+	   				renderer:function (value, p, record){return String.format('({0}) {1}', record.data['codigo_tccp'],  record.data['descripcion_tccp']);}
+	   				
+	      		},
+   			type:'ComboRec',
+   			id_grupo:0,
+   			filters:{pfiltro:'cec.codigo_tcc#cec.descripcion_tcc',type:'string'},
+   		    grid:true,
+   			form:true
+	    },
+		
+		
 		{
 			config:{
 				name: 'codigo',
@@ -38,171 +63,24 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:-5
+				maxLength:200
 			},
 				type:'TextField',
-				filters:{pfiltro:'tcc.codigo',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
 		},
-		{
-			config:{
-				name: 'control_techo',
-				fieldLabel: 'control_techo',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.control_techo',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
-				name: 'mov_pres',
-				fieldLabel: 'mov_pres',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:50
-			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.mov_pres',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
-				name: 'estado_reg',
-				fieldLabel: 'Estado Reg.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
-			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.estado_reg',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
-		},
-		{
-			config:{
-				name: 'movimiento',
-				fieldLabel: 'movimiento',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:6
-			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.movimiento',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config: {
-				name: 'id_ep',
-				fieldLabel: 'id_ep',
-				allowBlank: true,
-				emptyText: 'Elija una opción...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_/control/Clase/Metodo',
-					id: 'id_',
-					root: 'datos',
-					sortInfo: {
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_', 'nombre', 'codigo'],
-					remoteSort: true,
-					baseParams: {par_filtro: 'movtip.nombre#movtip.codigo'}
-				}),
-				valueField: 'id_',
-				displayField: 'nombre',
-				gdisplayField: 'desc_',
-				hiddenName: 'id_ep',
-				forceSelection: true,
-				typeAhead: false,
-				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 15,
-				queryDelay: 1000,
-				anchor: '100%',
-				gwidth: 150,
-				minChars: 2,
-				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['desc_']);
-				}
-			},
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {pfiltro: 'movtip.nombre',type: 'string'},
-			grid: true,
-			form: true
-		},
-		{
-			config: {
-				name: 'id_tipo_cc_fk',
-				fieldLabel: 'id_tipo_cc_fk',
-				allowBlank: true,
-				emptyText: 'Elija una opción...',
-				store: new Ext.data.JsonStore({
-					url: '../../sis_/control/Clase/Metodo',
-					id: 'id_',
-					root: 'datos',
-					sortInfo: {
-						field: 'nombre',
-						direction: 'ASC'
-					},
-					totalProperty: 'total',
-					fields: ['id_', 'nombre', 'codigo'],
-					remoteSort: true,
-					baseParams: {par_filtro: 'movtip.nombre#movtip.codigo'}
-				}),
-				valueField: 'id_',
-				displayField: 'nombre',
-				gdisplayField: 'desc_',
-				hiddenName: 'id_tipo_cc_fk',
-				forceSelection: true,
-				typeAhead: false,
-				triggerAction: 'all',
-				lazyRender: true,
-				mode: 'remote',
-				pageSize: 15,
-				queryDelay: 1000,
-				anchor: '100%',
-				gwidth: 150,
-				minChars: 2,
-				renderer : function(value, p, record) {
-					return String.format('{0}', record.data['desc_']);
-				}
-			},
-			type: 'ComboBox',
-			id_grupo: 0,
-			filters: {pfiltro: 'movtip.nombre',type: 'string'},
-			grid: true,
-			form: true
-		},
+		
 		{
 			config:{
 				name: 'descripcion',
 				fieldLabel: 'descripcion',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
-				maxLength:-5
+				gwidth: 450,
+				maxLength:400
 			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.descripcion',type:'string'},
+				type:'TextArea',
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -210,47 +88,187 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'tipo',
-				fieldLabel: 'tipo',
+				fieldLabel: 'Tipo de Aplicacion?',
+				anchor: '80%',
+				gwidth: 70,
+				allowBlank: false,	
+				emptyText:'tipo...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio',    
+       		    store:['centro','edt','orden','estadistica']
+			},
+			type:'ComboBox',
+			id_grupo:1,
+	        valorInicial:'estadistica',
+			grid:true,
+			form:true
+		},
+		
+		{
+			config:{
+				name: 'movimiento',
+				qtip:'los nodos transaccionales no tienen hijos, son lo que se peuden convertir en centros de costo',
+				fieldLabel: 'Transaccional',
+				anchor: '80%',
+				gwidth: 70,
+				allowBlank: false,
+				maxLength:2,
+				emptyText:'si/no...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio', 
+       		    forcSselect:true,     
+       		    store:['si','no']
+			},
+			type:'ComboBox',
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		
+		{
+			config:{
+				name: 'control_techo',
+				qtip:'Si es Techo el presupuestario  se valida a este nivel',
+				fieldLabel: 'Techo Presupeustario',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 100,
-				maxLength:100
+				gwidth: 70,
+				maxLength:2,
+				emptyText:'si/no...',       			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio', 
+       		    forcSselect:true,    
+       		    store:['si','no']
 			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.tipo',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			type:'ComboBox',
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
 		{
 			config:{
 				name: 'control_partida',
-				fieldLabel: 'control_partida',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:5
+				qtip:'Controlar el presupesuto por partidas',
+				fieldLabel: 'Controlar Partida',
+				allowBlank: false,  
+				anchor: '80%', 
+				gwidth: 70,   			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio', 
+       		    forcSselect:true, 
+       		    store:['si','no']
 			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.control_partida',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			type:'ComboBox',
+			id_grupo:1,
+			valorInicial:'si',
+			grid:true,
+			form:true
 		},
 		{
 			config:{
-				name: 'momento_pres',
-				fieldLabel: 'momento_pres',
+				name: 'momento_pres_str',
+				qtip:'Que momento se controla con este presupeusto',
+				fieldLabel: 'Momentos',
+				anchor: '80%',
+				allowBlank: false,	    			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio', 
+       		    forcSselect:true,
+                enableMultiSelect: true,    
+       		    store:['formulado','comprometido','ejecutado','pagado']
+			},
+			type:'AwesomeCombo',
+			id_grupo:1,
+			valorInicial:'formulado,comprometido,ejecutado,pagado',
+			grid:false,
+			form:true
+		},
+		{
+			config:{
+				name: 'mov_pres_str',
+				qtip:'Si el presupeusto es de ignreso o egreso o ambos',
+				fieldLabel: 'Ingreso / Egreso',
+				anchor: '80%',
+				gwidth: 120,
+				allowBlank: false,	
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    forcSselect:true,
+                enableMultiSelect: true,     
+       		    store:['ingreso','egreso']
+			},
+			type:'AwesomeCombo',
+			id_grupo:1,
+			valorInicial:'ingreso,egreso',
+			grid:true,
+			form:true
+		},
+		
+		{
+	   		config:{
+	   				name:'id_ep',
+	   				origen:'EP',
+	   				anchor: '80%',
+	   				gwidth: 200,
+	   				fieldLabel:'EP',
+	   				allowBlank:true,
+	   				gdisplayField:'desc_ep',//mapea al store del grid	   			   
+	   			    renderer:function (value, p, record){return String.format('{0}', record.data['desc_ep']);}
+	      		},
+   			type:'ComboRec',
+   			id_grupo:0,
+   		    grid:true,
+   			form:true
+	    },
+		
+		{
+			config:{
+				name: 'fecha_inicio',
+				fieldLabel: 'Fecha Inicio',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:50
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.momento_pres',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			type:'DateField',
+			id_grupo:1,
+			grid:false,
+			form:true
+		},
+		
+		
+		{
+			config:{
+				name: 'fecha_final',
+				fieldLabel: 'Fecha Final',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+						format: 'd/m/Y', 
+						renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+			},
+			type:'DateField',
+			id_grupo:1,
+			grid:false,
+			form:true
 		},
 		{
 			config:{
@@ -268,21 +286,7 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		{
-			config:{
-				name: 'usuario_ai',
-				fieldLabel: 'Funcionaro AI',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:300
-			},
-				type:'TextField',
-				filters:{pfiltro:'tcc.usuario_ai',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
-		},
+		
 		{
 			config:{
 				name: 'usr_reg',
@@ -296,21 +300,6 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'usu1.cuenta',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:false
-		},
-		{
-			config:{
-				name: 'id_usuario_ai',
-				fieldLabel: 'Creado por',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'Field',
-				filters:{pfiltro:'tcc.id_usuario_ai',type:'numeric'},
-				id_grupo:1,
-				grid:false,
 				form:false
 		},
 		{
@@ -343,14 +332,44 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
+		},
+		{
+			config:{
+				name: 'id_usuario_ai',
+				fieldLabel: 'Creado por',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+				type:'Field',
+				filters:{pfiltro:'tcc.id_usuario_ai',type:'numeric'},
+				id_grupo:1,
+				grid:false,
+				form:false
+		},
+		{
+			config:{
+				name: 'usuario_ai',
+				fieldLabel: 'Funcionaro AI',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:300
+			},
+				type:'TextField',
+				filters:{pfiltro:'tcc.usuario_ai',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:false
 		}
 	],
 	tam_pag:50,	
-	title:'Tipo Centro de Costo',
-	ActSave:'../../sis_parametros/control/TipoCc/insertarTipoCc',
-	ActDel:'../../sis_parametros/control/TipoCc/eliminarTipoCc',
-	ActList:'../../sis_parametros/control/TipoCc/listarTipoCc',
-	id_store:'id_tipo_cc',
+	title: 'Tipo Centro de Costo',
+	ActSave: '../../sis_parametros/control/TipoCc/insertarTipoCcArb',
+	ActDel: '../../sis_parametros/control/TipoCc/eliminarTipoCcArb',
+	ActList: '../../sis_parametros/control/TipoCc/listarTipoCc',
+	id_store: 'id_tipo_cc',
 	fields: [
 		{name:'id_tipo_cc', type: 'numeric'},
 		{name:'codigo', type: 'string'},
@@ -370,8 +389,12 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_ai', type: 'numeric'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'fecha_inicio', type: 'date',dateFormat:'Y-m-d'},
+		{name:'fecha_final', type: 'date',dateFormat:'Y-m-d'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		'desc_ep', 'id_ep', 'codigo_tccp', 
+		'descripcion_tccp','mov_pres_str','momento_pres_str'
 		
 	],
 	sortInfo:{
@@ -379,9 +402,61 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
-	}
-)
+	bsave:true,
+	bnew: false,
+	iniciarEventos: function(){
+   	    
+   	        this.Cmp.control_techo.on('select',function(combo,record,index){				
+				if(combo.getValue() == 'no'){
+					this.ocultarComponente(this.Cmp.momento_pres);
+					this.ocultarComponente(this.Cmp.control_partida);
+					this.ocultarComponente(this.Cmp.mov_pres);					
+				} else{
+					this.mostrarComponente(this.Cmp.momento_pres);
+					this.mostrarComponente(this.Cmp.control_partida);
+					this.mostrarComponente(this.Cmp.mov_pres);
+				} 
+			},this);			
+			
+			this.Cmp.movimiento.on('select',function(combo,record,index){				
+				if(combo.getValue() == 'no'){					
+					this.Cmp.id_ep.allowBlank = true;
+				} else{					
+					this.Cmp.id_ep.allowBlank = false;					
+				} 
+			},this);
+   	
+   },
+   
+   onButtonEdit:function(n){		
+		Phx.vista.TipoCc.superclass.onButtonEdit.call(this);				
+	    if(this.Cmp.control_techo.getValue() == 'si'){
+			this.mostrarComponente(this.Cmp.momento_pres);
+			this.mostrarComponente(this.Cmp.control_partida);
+			this.mostrarComponente(this.Cmp.mov_pres);
+			
+		} else{
+			this.ocultarComponente(this.Cmp.momento_pres);
+			this.ocultarComponente(this.Cmp.control_partida);
+			this.ocultarComponente(this.Cmp.mov_pres);			
+		}
+		
+		if(this.Cmp.movimiento.getValue() == 'si'){			
+			this.Cmp.id_ep.allowBlank = false;
+		} else{			
+			this.Cmp.id_ep.allowBlank = true;
+		} 
+	},
+	
+    onButtonNew:function(n){    		
+    		Phx.vista.TipoCc.superclass.onButtonNew.call(this);	       
+	        this.Cmp.id_ep.allowBlank = false;	        
+	        this.Cmp.tipo.enable();
+	      
+    },
+   
+   
+})
 </script>
 		
 		
