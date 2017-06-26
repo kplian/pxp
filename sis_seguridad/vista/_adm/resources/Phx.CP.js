@@ -1,4 +1,4 @@
-
+Ext.chart.Chart.CHART_URL = '../../../lib/ext3/resources/charts.swf';
 Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
 
     constructor : function(config){
