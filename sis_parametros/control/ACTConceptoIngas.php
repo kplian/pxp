@@ -76,7 +76,13 @@ class ACTConceptoIngas extends ACTbase{
          }
         
          if($this->objParam->getParametro('movimiento')!=''){
-              $this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
+         	  if(  $this->objParam->getParametro('movimiento') == 'ingreso_egreso'){
+         	  	$this->objParam->addFiltro("conig.movimiento in (''ingreso'',''gasto'')");    
+         	  }
+			  else{
+			  	$this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
+			  }
+              
          }
          
          if($this->objParam->getParametro('id_gestion')!=''){

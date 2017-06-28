@@ -58,8 +58,8 @@
 	
 	
 	//Estuilo de iconos utilizados en la barra de herramientas
-	// icono_dibu, icono, icono_byn, icono_inc
-	$_SESSION['_ESTILO_MENU']='icono_dibu';
+	// icono_dibu, icono, icono_byn, icono_inc, icono_awesome
+	$_SESSION['_ESTILO_MENU']='icono_awesome';
 	
 	//varciale que determina el cotexto del sistema
 	//para determinar la claridad de los errores
