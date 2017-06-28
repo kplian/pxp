@@ -6,6 +6,7 @@
  Autor:	Kplian
  Fecha:	01/07/2010
  */
+
 class ACTUsuario extends ACTbase{    
 
 	function listarUsuario(){
@@ -13,6 +14,33 @@ class ACTUsuario extends ACTbase{
 		//el objeto objParam contiene todas la variables recibidad desde la interfaz
 
         //$this->dispararEventoWS();
+
+
+        if($this->objParam->getParametro('ws')=='si'){
+
+
+            $data = array(
+
+                "mensaje" => "obtenerUsuariosConectados",
+
+            );
+
+            $send = array(
+                "tipo" => "obtenerUsuariosConectados",
+                "data" => $data
+            );
+
+            $usuarios_socket = $this->dispararEventoWS($send);
+
+            $usuarios_socket =json_decode($usuarios_socket, true);
+
+            $array_keys = array_keys($usuarios_socket);
+            $implode = implode(',', $array_keys);
+
+
+            $this->objParam->addFiltro("USUARI.id_usuario in (" . $implode ." ) ");
+        }
+
 
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','desc_person');

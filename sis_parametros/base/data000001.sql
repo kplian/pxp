@@ -1033,3 +1033,9 @@ select pxp.f_insert_testructura_gui ('TIPCC', 'CEP');
 
 
 
+/***********************************I-DAT-RAC-PARAM-0-19/06/2017*****************************************/
+select pxp.f_insert_tgui ('Tipo Centro de Costo Trans.', 'Tipo Centro de Costo', 'TCC', 'si', 14, 'sis_parametros/vista/tipo_cc/TipoCc.php', 3, '', 'TipoCc', 'PARAM');
+select pxp.f_insert_testructura_gui ('TCC', 'CEP');
+/***********************************F-DAT-RAC-PARAM-0-19/06/2017*****************************************/
+
+

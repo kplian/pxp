@@ -58,26 +58,12 @@ abstract class ACTbase
 		
 	}
 
-	function dispararEventoWS(){
+	function dispararEventoWS($send){
 
-
-
-
-
-        $client = new Client("ws://localhost:8080");
-
-        $data = array(
-            "evento" => "sis_colas/ticket",
-            "mensaje" => "si podemos ayudarte gil",
-            "id_otro" => "147"
-        );
-
-        $send = array(
-            "tipo" => "enviarMensaje",
-            "data" => $data
-        );
+        $client = new Client("ws://localhost:8080?sessionIDPXP=".session_id());
 
         $client->send(json_encode($send));
+        return $client->receive();
 
 	}
 	

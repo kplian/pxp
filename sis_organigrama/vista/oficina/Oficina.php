@@ -165,6 +165,40 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true
 		},
+        {
+            config:{
+                name: 'telefono',
+                fieldLabel: 'Telefono',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+
+
+            },
+            type:'TextField',
+            filters:{pfiltro:'ofi.direccion',type:'string'},
+            id_grupo:1,
+            grid:true,
+            egrid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'orden',
+                fieldLabel: 'Orden',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:1310721
+            },
+            type:'NumberField',
+            filters:{pfiltro:'cms.precio_unitario',type:'numeric'},
+            id_grupo:1,
+            grid:true,
+            egrid:true,
+            form:true
+        },
 
 		{
 			config:{
@@ -311,7 +345,9 @@ Phx.vista.Oficina=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'correo_oficina', type: 'string'},
-		{name:'direccion', type: 'string'}
+		{name:'direccion', type: 'string'},
+        {name:'telefono', type: 'string'},
+        {name:'orden', type: 'numeric'}
 
 	],
 	sortInfo:{

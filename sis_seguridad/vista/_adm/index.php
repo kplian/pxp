@@ -29,7 +29,7 @@ if(!isset($_SESSION["_SESION"])){
 <html lang="es">
 <head>
  <title><?php echo $_SESSION['_NOMBRE_SIS']; ?></title>
-	<meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />	
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />	
 	<meta name="language" content="es"/>
 	<meta name="author" content="Rensi Arteaga Copari" />
 	<meta name="subject" content="rensi@kplian.com" />
@@ -96,6 +96,8 @@ if(!isset($_SESSION["_SESION"])){
 	<script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
 	<script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
 	<script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <!-- status bar -->
     <script type="text/javascript" src="../../../lib/ux/statusbar/StatusBar.js"></script>
     <script type="text/javascript" src="../../../lib/ux/SearchField.js"></script>
