@@ -29,7 +29,7 @@ if(!isset($_SESSION["_SESION"])){
 <html lang="es">
 <head>
  <title><?php echo $_SESSION['_NOMBRE_SIS']; ?></title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />	
+    <meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />		
 	<meta name="language" content="es"/>
 	<meta name="author" content="Rensi Arteaga Copari" />
 	<meta name="subject" content="rensi@kplian.com" />

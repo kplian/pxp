@@ -271,6 +271,8 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
     id_nodo_p:'id_tipo_cc_fk',
 	
 	fields:  [
+	     'id',
+        'tipo_meta',
 		{name:'id_tipo_cc', type: 'numeric'},
 		{name:'codigo', type: 'string'},
 		{name:'control_techo', type: 'string'},

@@ -2042,5 +2042,78 @@ AS
        LEFT JOIN param.vep ep ON ep.id_ep = tcc.id_ep
        LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = tcc.id_usuario_mod;
 /***********************************F-DEP-RAC-PARAM-0-12/06/2017****************************************/
-       
+
+/***********************************I-DEP-RAC-PARAM-0-29/06/2017****************************************/
+
+
+CREATE OR REPLACE VIEW param.vcentro_costo (
+    id_centro_costo,
+    estado_reg,
+    id_ep,
+    id_gestion,
+    id_uo,
+    id_usuario_reg,
+    fecha_reg,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    codigo_uo,
+    nombre_uo,
+    ep,
+    gestion,
+    codigo_cc,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    nombre_financiador,
+    nombre_regional,
+    id_tipo_cc,
+    codigo_tcc,
+    descripcion_tcc,
+    id_tipo_cc_fk,
+    fecha_inicio,
+    fecha_final,
+    mov_pres,
+    momento_pres)
+AS
+ SELECT cec.id_centro_costo,
+    cec.estado_reg,
+    cec.id_ep,
+    cec.id_gestion,
+    cec.id_uo,
+    cec.id_usuario_reg,
+    cec.fecha_reg,
+    cec.id_usuario_mod,
+    cec.fecha_mod,
+    usu1.cuenta AS usr_reg,
+    usu2.cuenta AS usr_mod,
+    uo.codigo AS codigo_uo,
+    uo.nombre_unidad AS nombre_uo,
+    ep.ep,
+    ges.gestion,
+    ((((ges.gestion || ' '::text) || tcc.descripcion::text) || ' - ('::text) || tcc.codigo::text) || ')'::text AS codigo_cc,
+    ep.nombre_programa,
+    ep.nombre_proyecto,
+    ep.nombre_actividad,
+    ep.nombre_financiador,
+    ep.nombre_regional,
+    cec.id_tipo_cc,
+    tcc.codigo AS codigo_tcc,
+    tcc.descripcion AS descripcion_tcc,
+    tcc.id_tipo_cc_fk,
+    tcc.fecha_inicio,
+    tcc.fecha_final,
+    tcc.mov_pres,
+    tcc.momento_pres
+   FROM param.tcentro_costo cec
+     JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+     JOIN param.vep ep ON ep.id_ep = cec.id_ep
+     JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+     JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
+     LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+     LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;
+ 
+ /***********************************F-DEP-RAC-PARAM-0-29/06/2017****************************************/
+      
               
