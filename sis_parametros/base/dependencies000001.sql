@@ -2045,8 +2045,7 @@ AS
 
 /***********************************I-DEP-RAC-PARAM-0-29/06/2017****************************************/
 
-
-CREATE OR REPLACE VIEW param.vcentro_costo (
+CREATE OR REPLACE VIEW param.vcentro_costo(
     id_centro_costo,
     estado_reg,
     id_ep,
@@ -2077,43 +2076,110 @@ CREATE OR REPLACE VIEW param.vcentro_costo (
     mov_pres,
     momento_pres)
 AS
- SELECT cec.id_centro_costo,
-    cec.estado_reg,
-    cec.id_ep,
-    cec.id_gestion,
-    cec.id_uo,
-    cec.id_usuario_reg,
-    cec.fecha_reg,
-    cec.id_usuario_mod,
-    cec.fecha_mod,
-    usu1.cuenta AS usr_reg,
-    usu2.cuenta AS usr_mod,
-    uo.codigo AS codigo_uo,
-    uo.nombre_unidad AS nombre_uo,
-    ep.ep,
-    ges.gestion,
-    ((((ges.gestion || ' '::text) || tcc.descripcion::text) || ' - ('::text) || tcc.codigo::text) || ')'::text AS codigo_cc,
-    ep.nombre_programa,
-    ep.nombre_proyecto,
-    ep.nombre_actividad,
-    ep.nombre_financiador,
-    ep.nombre_regional,
-    cec.id_tipo_cc,
-    tcc.codigo AS codigo_tcc,
-    tcc.descripcion AS descripcion_tcc,
-    tcc.id_tipo_cc_fk,
-    tcc.fecha_inicio,
-    tcc.fecha_final,
-    tcc.mov_pres,
-    tcc.momento_pres
-   FROM param.tcentro_costo cec
-     JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-     JOIN param.vep ep ON ep.id_ep = cec.id_ep
-     JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-     JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
-     LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-     LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;
- 
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         ((((tcc.codigo::text || ' - '::text) || ' '::text) || tcc.descripcion::
+           text) || ' '::text) || ges.gestion AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional,
+         cec.id_tipo_cc,
+         tcc.codigo AS codigo_tcc,
+         tcc.descripcion AS descripcion_tcc,
+         tcc.id_tipo_cc_fk,
+         tcc.fecha_inicio,
+         tcc.fecha_final,
+         tcc.mov_pres,
+         tcc.momento_pres
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;
+       
  /***********************************F-DEP-RAC-PARAM-0-29/06/2017****************************************/
       
               
+
+/***********************************I-DEP-RAC-PARAM-0-04/07/2017****************************************/
+  
+
+CREATE OR REPLACE VIEW param.vtipo_cc_raiz(
+    codigo_raiz,
+    descripcion_raiz,
+    id_tipo_cc_raiz,
+    control_techo,
+    control_partida,
+    ids,
+    id_tipo_cc,
+    id_tipo_cc_fk,
+    codigo,
+    descripcion,
+    movimiento)
+AS
+WITH RECURSIVE tipo_cc_raiz(
+    ids,
+    id_tipo_cc,
+    id_tipo_cc_fk,
+    descripcion,
+    codigo,
+    control_techo,
+    control_partida,
+    movimiento) AS(
+  SELECT ARRAY [ c_1.id_tipo_cc ] AS "array",
+         c_1.id_tipo_cc,
+         c_1.id_tipo_cc_fk,
+         c_1.descripcion,
+         c_1.codigo,
+         c_1.control_techo,
+         c_1.control_partida,
+         c_1.movimiento
+  FROM param.ttipo_cc c_1
+  WHERE c_1.id_tipo_cc_fk IS NULL AND
+        c_1.estado_reg::text = 'activo'::text
+  UNION
+  SELECT pc.ids || c2.id_tipo_cc,
+         c2.id_tipo_cc,
+         c2.id_tipo_cc_fk,
+         c2.descripcion,
+         c2.codigo,
+         c2.control_techo,
+         c2.control_partida,
+         c2.movimiento
+  FROM param.ttipo_cc c2,
+       tipo_cc_raiz pc
+  WHERE c2.id_tipo_cc_fk = pc.id_tipo_cc AND
+        c2.estado_reg::text = 'activo'::text)
+      SELECT cl.codigo AS codigo_raiz,
+             cl.descripcion AS descripcion_raiz,
+             cl.id_tipo_cc AS id_tipo_cc_raiz,
+             cl.control_techo,
+             cl.control_partida,
+             c.ids,
+             c.id_tipo_cc,
+             c.id_tipo_cc_fk,
+             c.codigo,
+             c.descripcion,
+             c.movimiento
+      FROM tipo_cc_raiz c
+           JOIN param.ttipo_cc cl ON cl.id_tipo_cc = c.ids [ 1 ];
+           
+/***********************************F-DEP-RAC-PARAM-0-04/07/2017****************************************/
+  
