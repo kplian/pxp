@@ -34,6 +34,8 @@ DECLARE
 	v_id_tipo_cc			integer;
     v_id_tipo_cc_fk			integer;
     v_reg_control			record;
+    va_mov_pres_str			varchar[];
+    va_momento_pres			varchar[];
 			    
 BEGIN
 
@@ -138,6 +140,17 @@ BEGIN
                       
                 END IF;
             
+            IF pxp.f_existe_parametro(p_tabla,'mov_pres_str') THEN
+               va_mov_pres_str = string_to_array(v_parametros.mov_pres_str,',');
+            ELSE
+               va_mov_pres_str = string_to_array(v_parametros.mov_pres,',');
+            END IF;
+            
+            IF pxp.f_existe_parametro(p_tabla,'momento_pres_str') THEN
+               va_momento_pres = string_to_array(v_parametros.momento_pres_str,',');
+            ELSE
+               va_momento_pres = string_to_array(v_parametros.momento_pres,',');
+            END IF;
             
         	--Sentencia de la insercion
         	insert into param.ttipo_cc(
@@ -163,7 +176,7 @@ BEGIN
           	) values(
                   upper(v_parametros.codigo),
                   v_parametros.control_techo,
-                  string_to_array(v_parametros.mov_pres,','),
+                  va_mov_pres_str,
                   'activo',
                   v_parametros.movimiento,
                   v_parametros.id_ep,
@@ -171,7 +184,7 @@ BEGIN
                   v_parametros.descripcion,
                   v_parametros.tipo,
                   v_parametros.control_partida,
-                  string_to_array(v_parametros.momento_pres,','),
+                  va_momento_pres,
                   now(),
                   v_parametros._nombre_usuario_ai,
                   p_id_usuario,
@@ -323,19 +336,34 @@ BEGIN
                   
             END IF;
             
+            IF pxp.f_existe_parametro(p_tabla,'mov_pres_str') THEN
+               va_mov_pres_str = string_to_array(v_parametros.mov_pres_str,',');
+            ELSE
+               va_mov_pres_str = string_to_array(v_parametros.mov_pres,',');
+            END IF;
+            
+            
+            IF pxp.f_existe_parametro(p_tabla,'momento_pres_str') THEN
+               va_momento_pres = string_to_array(v_parametros.momento_pres_str,',');
+            ELSE
+               va_momento_pres = string_to_array(v_parametros.momento_pres,',');
+            END IF;
+            
+            
+            
                
 			--Sentencia de la modificacion
 			update param.ttipo_cc set
                   codigo = upper(v_parametros.codigo),
                   control_techo = v_parametros.control_techo,
-                  mov_pres =  string_to_array(v_parametros.mov_pres,','),
+                  mov_pres =  va_mov_pres_str,
                   movimiento = v_parametros.movimiento,
                   id_ep = v_parametros.id_ep,
                   id_tipo_cc_fk = v_id_tipo_cc_fk,
                   descripcion = v_parametros.descripcion,
                   tipo = v_parametros.tipo,
                   control_partida = v_parametros.control_partida,
-                  momento_pres = string_to_array(v_parametros.momento_pres,','),
+                  momento_pres = va_momento_pres,
                   id_usuario_mod = p_id_usuario,
                   fecha_mod = now(),
                   id_usuario_ai = v_parametros._id_usuario_ai,
@@ -370,8 +398,17 @@ BEGIN
              				1
                         from param.ttipo_cc tc
                         where tc.id_tipo_cc_fk = v_parametros.id_tipo_cc) THEN
-                      raise exception 'El nodo que queire eliminar tiene nodos hijos, elimine los hijos primeramente';
-            END IF;           
+                      raise exception 'El nodo que quiere eliminar tiene nodos hijos, elimine los hijos primeramente';
+            END IF;   
+            
+            --revisar que no este relacioando a ningun centor de costos
+            IF exists (select 
+             				1
+                        from param.tcentro_costo cc
+                        where cc.id_tipo_cc = v_parametros.id_tipo_cc) THEN
+                      raise exception 'El nodo que quiere eliminar tiene centros de costos relacionados, elimine la relación antes de continuar';
+            END IF;  
+                    
             
             --Sentencia de la eliminacion
 			delete from param.ttipo_cc

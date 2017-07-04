@@ -21,6 +21,16 @@ class ACTOficina extends ACTbase{
 			
 			$this->res=$this->objFunc->listarOficina($this->objParam);
 		}
+        if($this->objParam->getParametro('_adicionar')!=''){
+
+            $respuesta = $this->res->getDatos();
+
+
+            array_unshift ( $respuesta, array(  'id_oficina'=>'0',
+                'nombre'=>'Todos',
+                'codigo'=>'Todos'));
+            $this->res->setDatos($respuesta);
+        }
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				

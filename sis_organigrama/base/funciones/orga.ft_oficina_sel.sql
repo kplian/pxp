@@ -4,8 +4,8 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
   p_tabla varchar,
   p_transaccion varchar
 )
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
   /**************************************************************************
    SISTEMA:		Organigrama
    FUNCION: 		orga.ft_oficina_sel
@@ -61,7 +61,9 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
 						ofi.zona_franca,
 						ofi.frontera,
 						ofi.correo_oficina,
-						ofi.direccion
+						ofi.direccion,
+                        ofi.telefono,
+                        ofi.orden
 						from orga.toficina ofi
 						inner join segu.tusuario usu1 on usu1.id_usuario = ofi.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = ofi.id_usuario_mod
@@ -118,7 +120,7 @@ CREATE OR REPLACE FUNCTION orga.ft_oficina_sel (
       v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
       raise exception '%',v_resp;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

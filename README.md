@@ -131,3 +131,7 @@ After pull, the code is updated,but database scripts are  not executed yet. It's
 This video explains to use code generator for PXP
 
 https://www.youtube.com/watch?v=uUVevOzYDy4
+
+## LICENSE
+
+See the [LICENSE](LICENSE.txt) file for license rights and limitations (GPLv3).

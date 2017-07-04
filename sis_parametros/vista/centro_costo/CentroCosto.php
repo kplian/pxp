@@ -59,6 +59,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 	   				qtip: 'Tipo de centro de costos, cada tipo solo puede tener un centro por gestión',	   				
 	   				origen:'TIPOCC',
 	   				fieldLabel:'Tipo Centro',
+	   				gdisplayField: 'descripcion_tcc',	   				
 	   				allowBlank:false,
 	   				width:250,
 	   				gwidth:200,
@@ -74,7 +75,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
 	    {
 	   		config:{
 	   				name:'id_ep',
-	   				qtip:'La estructura programatica se utiliza para determinar permisos sobre lso centros de costos', 
+	   				qtip:'La estructura programatica se utiliza para determinar permisos sobre los centros de costos', 
 	   				origen:'EP',
 	   				fieldLabel:'EP',
 	   				allowBlank:false,
@@ -87,7 +88,7 @@ Phx.vista.CentroCosto=Ext.extend(Phx.gridInterfaz,{
    			id_grupo:0,
    			filters:{pfiltro:'ep',type:'string'},
    		    grid:true,
-   			form:true
+   			form:false
 	    },
 		{
 	   		config:{

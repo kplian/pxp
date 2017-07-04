@@ -1,0 +1,6 @@
+{
+
+  "require": {
+    "textalk/websocket": "1.0.*"
+  }
+}

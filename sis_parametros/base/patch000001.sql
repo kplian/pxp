@@ -1845,6 +1845,22 @@ ALTER TABLE param.ttipo_archivo ADD tamano NUMERIC(10) NULL;
 
 /***********************************F-SCP-FFP-PARAM-0-29/05/2017*****************************************/
 
+
+/***********************************I-SCP-FFP-PARAM-0-16/06/2017*****************************************/
+
+CREATE TABLE param.twsmensaje (
+  id_wsmensaje SERIAL,
+  id_usuario INTEGER,
+  tipo VARCHAR(255),
+  titulo VARCHAR(255),
+  mensaje text,
+  CONSTRAINT twsmensaje_pkey PRIMARY KEY(id_wsmensaje)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+/***********************************F-SCP-FFP-PARAM-0-16/06/2017*****************************************/
+
+
 /***********************************I-SCP-RCM-PARAM-0-08/06/2017*****************************************/
 ALTER TABLE param.tcatalogo
   ALTER COLUMN orden TYPE INTEGER;

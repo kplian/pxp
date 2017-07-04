@@ -48,30 +48,35 @@ BEGIN
     	begin
     		--Sentencia de la consulta
 			v_consulta:='SELECT 
-                          id_tipo_cc,
-                          codigo,
-                          control_techo,
-                          mov_pres,
-                          estado_reg,
-                          movimiento,
-                          id_ep,
-                          id_tipo_cc_fk,
-                          descripcion,
-                          tipo,
-                          control_partida,
-                          momento_pres,
-                          fecha_reg,
-                          usuario_ai,
-                          id_usuario_reg,
-                          id_usuario_ai,
-                          id_usuario_mod,
-                          fecha_mod,
-                          usr_reg,
-                          usr_mod,
-                          desc_ep,
-                          fecha_inicio,
-                          fecha_final
+                          tcc.id_tipo_cc,
+                          tcc.codigo,
+                          tcc.control_techo,
+                          tcc.mov_pres,
+                          tcc.estado_reg,
+                          tcc.movimiento,
+                          tcc.id_ep,
+                          tcc.id_tipo_cc_fk,
+                          tcc.descripcion,
+                          tcc.tipo,
+                          tcc.control_partida,
+                          tcc.momento_pres,
+                          tcc.fecha_reg,
+                          tcc.usuario_ai,
+                          tcc.id_usuario_reg,
+                          tcc.id_usuario_ai,
+                          tcc.id_usuario_mod,
+                          tcc.fecha_mod,
+                          tcc.usr_reg,
+                          tcc.usr_mod,
+                          tcc.desc_ep,
+                          tcc.fecha_inicio,
+                          tcc.fecha_final,
+                          COALESCE(tccp.codigo,'''')::varchar as codigo_tccp,
+                          COALESCE(tccp.descripcion,'''')::varchar as descripcion_tccp,
+                          array_to_string(tcc.mov_pres,'','')::varchar as mov_pres_str,
+                          array_to_string(tcc.momento_pres,'','')::varchar as momento_pres_str
                         FROM   param.vtipo_cc_mov  tcc
+                         left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
 				        where   ';
 			
 			--Definicion de la respuesta
@@ -94,9 +99,10 @@ BEGIN
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='SELECT count(id_tipo_cc)
-					     FROM   param.vtipo_cc_mov tcc
-				         WHERE  ';
+			v_consulta:='SELECT count(tcc.id_tipo_cc)
+					     FROM   param.vtipo_cc_mov  tcc
+                         left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
+				        where   ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -105,6 +111,81 @@ BEGIN
 			return v_consulta;
 
 		end;
+        
+     /*********************************    
+ 	#TRANSACCION:  'PM_TCCALL_SEL'
+ 	#DESCRIPCION:	Consulta de datos
+ 	#AUTOR:		admin	
+ 	#FECHA:		26-05-2017 10:10:19
+	***********************************/
+
+	elsif(p_transaccion='PM_TCCALL_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='SELECT 
+                          tcc.id_tipo_cc,
+                          tcc.codigo,
+                          tcc.control_techo,
+                          tcc.mov_pres,
+                          tcc.estado_reg,
+                          tcc.movimiento,
+                          tcc.id_ep,
+                          tcc.id_tipo_cc_fk,
+                          tcc.descripcion,
+                          tcc.tipo,
+                          tcc.control_partida,
+                          tcc.momento_pres,
+                          tcc.fecha_reg,
+                          tcc.usuario_ai,
+                          tcc.id_usuario_reg,
+                          tcc.id_usuario_ai,
+                          tcc.id_usuario_mod,
+                          tcc.fecha_mod,
+                          tcc.usr_reg,
+                          tcc.usr_mod,
+                          tcc.desc_ep,
+                          tcc.fecha_inicio,
+                          tcc.fecha_final,
+                          COALESCE(tccp.codigo,'''')::varchar as codigo_tccp,
+                          COALESCE(tccp.descripcion,'''')::varchar as descripcion_tccp
+                        FROM   param.vtipo_cc  tcc
+                        left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
+                        WHERE   ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            raise notice  'Consulta...%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_TCCALL_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:		admin	
+ 	#FECHA:		26-05-2017 10:10:19
+	***********************************/
+
+	elsif(p_transaccion='PM_TCCALL_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='SELECT count(tcc.id_tipo_cc)
+					     FROM   param.vtipo_cc  tcc
+                         left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
+                         WHERE  ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;   
+        
 	/*********************************   
      #TRANSACCION:  'PM_TCCARB_SEL'
      #DESCRIPCION:    Consulta tipos de centro de costo en formato arbol

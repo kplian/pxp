@@ -19,8 +19,8 @@ Phx.vista.subirFotoPersona=Ext.extend(Phx.frmInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.subirFotoPersona.superclass.constructor.call(this,config);
 		this.init();	
-		this.loadValoresIniciales()	
-		
+		this.loadValoresIniciales()
+
 	},
 	
 	loadValoresIniciales:function()

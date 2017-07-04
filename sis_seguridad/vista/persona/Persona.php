@@ -329,8 +329,16 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	constructor: function(config){
 		// configuracion del data store
 		Phx.vista.persona.superclass.constructor.call(this,config);
-		
-		this.init();
+
+        this.addButton('archivo', {
+            argument: {imprimir: 'archivo'},
+            text: '<i class="fa fa-thumbs-o-up fa-2x"></i> archivo', /*iconCls:'' ,*/
+            disabled: false,
+            handler: this.archivo
+        });
+
+
+        this.init();
 		// this.addButton('my-boton',{disabled:false,handler:myBoton,tooltip:
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});
 		this.load({params:{start:0, limit:50}})
@@ -347,6 +355,32 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 				width:400,
 				height:150
 		    },rec.data,this.idContenedor,'subirFotoPersona')
-	}
+	},
+
+    archivo : function (){
+
+
+
+        var rec = this.getSelectedData();
+
+        //enviamos el id seleccionado para cual el archivo se deba subir
+        rec.datos_extras_id = rec.id_persona;
+        //enviamos el nombre de la tabla
+        rec.datos_extras_tabla = 'tpersona';
+        //enviamos el codigo ya que una tabla puede tener varios archivos diferentes como ci,pasaporte,contrato,slider,fotos,etc
+        rec.datos_extras_codigo = 'ci_persona';
+
+        //esto es cuando queremos darle una ruta personalizada
+        //rec.datos_extras_ruta_personalizada = './../../../uploaded_files/favioVideos/videos/';
+
+        Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/Archivo.php',
+            'Archivo',
+            {
+                width: 900,
+                height: 400
+            }, rec, this.idContenedor, 'Archivo');
+
+    },
+
 })
 </script>
