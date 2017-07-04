@@ -2117,3 +2117,69 @@ AS
  /***********************************F-DEP-RAC-PARAM-0-29/06/2017****************************************/
       
               
+
+/***********************************I-DEP-RAC-PARAM-0-04/07/2017****************************************/
+  
+
+CREATE OR REPLACE VIEW param.vtipo_cc_raiz(
+    codigo_raiz,
+    descripcion_raiz,
+    id_tipo_cc_raiz,
+    control_techo,
+    control_partida,
+    ids,
+    id_tipo_cc,
+    id_tipo_cc_fk,
+    codigo,
+    descripcion,
+    movimiento)
+AS
+WITH RECURSIVE tipo_cc_raiz(
+    ids,
+    id_tipo_cc,
+    id_tipo_cc_fk,
+    descripcion,
+    codigo,
+    control_techo,
+    control_partida,
+    movimiento) AS(
+  SELECT ARRAY [ c_1.id_tipo_cc ] AS "array",
+         c_1.id_tipo_cc,
+         c_1.id_tipo_cc_fk,
+         c_1.descripcion,
+         c_1.codigo,
+         c_1.control_techo,
+         c_1.control_partida,
+         c_1.movimiento
+  FROM param.ttipo_cc c_1
+  WHERE c_1.id_tipo_cc_fk IS NULL AND
+        c_1.estado_reg::text = 'activo'::text
+  UNION
+  SELECT pc.ids || c2.id_tipo_cc,
+         c2.id_tipo_cc,
+         c2.id_tipo_cc_fk,
+         c2.descripcion,
+         c2.codigo,
+         c2.control_techo,
+         c2.control_partida,
+         c2.movimiento
+  FROM param.ttipo_cc c2,
+       tipo_cc_raiz pc
+  WHERE c2.id_tipo_cc_fk = pc.id_tipo_cc AND
+        c2.estado_reg::text = 'activo'::text)
+      SELECT cl.codigo AS codigo_raiz,
+             cl.descripcion AS descripcion_raiz,
+             cl.id_tipo_cc AS id_tipo_cc_raiz,
+             cl.control_techo,
+             cl.control_partida,
+             c.ids,
+             c.id_tipo_cc,
+             c.id_tipo_cc_fk,
+             c.codigo,
+             c.descripcion,
+             c.movimiento
+      FROM tipo_cc_raiz c
+           JOIN param.ttipo_cc cl ON cl.id_tipo_cc = c.ids [ 1 ];
+           
+/***********************************F-DEP-RAC-PARAM-0-04/07/2017****************************************/
+  
