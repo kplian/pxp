@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_moneda_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -31,7 +29,8 @@ DECLARE
 	v_resp		            varchar;
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
-	v_id_moneda	integer;
+	v_id_moneda				integer;
+    v_desc_moneda			varchar;
 			    
 BEGIN
 
@@ -145,6 +144,32 @@ BEGIN
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Moneda eliminado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_moneda',v_parametros.id_moneda::varchar);
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+        
+    /*********************************    
+ 	#TRANSACCION:  'PM_MONBASE_GET'
+ 	#DESCRIPCION:	Obtener la moneda base
+ 	#AUTOR:			RCM
+ 	#FECHA:			19/06/2017
+	***********************************/
+
+	elsif(p_transaccion='PM_MONBASE_GET')then
+
+		begin
+			--Obtener la moneda base
+			v_id_moneda = param.f_get_moneda_base();
+            
+            --Obtener descripcion
+            select moneda into v_desc_moneda from param.tmoneda where id_moneda = v_id_moneda;
+               
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Moneda base encontrada'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_moneda',v_id_moneda::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'moneda',v_desc_moneda);
               
             --Devuelve la respuesta
             return v_resp;
