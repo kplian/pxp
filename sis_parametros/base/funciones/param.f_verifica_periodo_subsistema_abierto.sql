@@ -1,5 +1,6 @@
 CREATE OR REPLACE FUNCTION param.f_verifica_periodo_subsistema_abierto (
-p_id_periodo_subsistema integer
+p_id_periodo_subsistema integer,
+p_lanzar_exception boolean = true
 )
 RETURNS varchar AS
 $body$
@@ -20,13 +21,15 @@ DECLARE
 
     v_resp                      varchar;
     v_nombre_funcion            text;
-    v_mensaje_error             text;
+    v_mensaje_error             varchar;
     v_id_moneda                 integer;
     v_estado					varchar;
     v_periodo					varchar;
     v_sistema					varchar;
 
 BEGIN
+
+    v_mensaje_error = 'exito';
 
 	--Obtiene los datos del sistema y periodo
     select
@@ -49,10 +52,15 @@ BEGIN
     
     --Verfica si está abierto
     if v_estado != 'abierto' then
-    	raise exception 'El periodo % del sistema % no está Abierto',v_periodo, v_sistema;
+        if p_lanzar_exception = false then
+            v_mensaje_error = 'El periodo '||v_periodo||' del sistema '||v_sistema||' no está Abierto';
+        else
+            raise exception 'El periodo % del sistema % no está Abierto',v_periodo, v_sistema;
+        end if;
+    	
     end if;
     
-    return 'exito';
+    return v_mensaje_error;
 
 EXCEPTION
 
