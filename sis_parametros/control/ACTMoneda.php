@@ -54,8 +54,14 @@ class ACTMoneda extends ACTbase{
 	}
 						
 	function eliminarMoneda(){
-			$this->objFunc=$this->create('MODMoneda');	
+		$this->objFunc=$this->create('MODMoneda');	
 		$this->res=$this->objFunc->eliminarMoneda($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+	function getMonedaBase(){
+		$this->objFunc=$this->create('MODMoneda');	
+		$this->res=$this->objFunc->getMonedaBase($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

@@ -749,6 +749,18 @@ ALTER TABLE orga.tcargo_presupuesto
 
 ALTER TABLE orga.toficina
   ADD COLUMN correo_oficina VARCHAR;
+  
+  
+  --------------- SQL ---------------
+
+ALTER TABLE orga.toficina
+  ADD COLUMN telefono VARCHAR(50);
+  
+  
+  --------------- SQL ---------------
+
+ALTER TABLE orga.toficina
+  ADD COLUMN orden NUMERIC(100,2);
 
 /*****************************F-SCP-RAC-ORGA-1-23/03/2017*************/
 
