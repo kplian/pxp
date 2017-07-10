@@ -1525,7 +1525,10 @@ Phx.CP=function(){
             }
 
             //borrar el evento del websocket
-            Phx.CP.webSocket.eleminarEvento(id);
+            if(Phx.CP.webSocket.habilitado == 'si'){
+                Phx.CP.webSocket.eleminarEvento(id);
+
+            }
 
 
 
@@ -1745,6 +1748,7 @@ Phx.CP=function(){
         //sessionWebSocket conexionwWebSocket guiPXP evento
         webSocket: {
             scopeVistas:[],
+            habilitado:'no',
             iniciarWebSocket : function () {
 
                 var hostname = window.location.hostname;
@@ -1753,6 +1757,7 @@ Phx.CP=function(){
                 Phx.CP.webSocket.conn.onopen = function (e) {
                     console.log(e)
                     console.log("Conecion establecida");
+                    Phx.CP.webSocket.habilitado = 'si';
 
                     //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
 
@@ -1797,9 +1802,15 @@ Phx.CP=function(){
 
                 };
 
+                Phx.CP.webSocket.conn.onerror = function (e) {
+
+                    console.log(e)
+                };
+
 
 
             },
+
             //x es el this de la vista es el scope que tendremos
             escucharEvento:function(evento,id_contenedor,metodo,scope){
 
