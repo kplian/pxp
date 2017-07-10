@@ -543,7 +543,7 @@ Phx.CP=function(){
         init:function(){
 
             //ffp iniciamos la conexion del websocket
-            Phx.CP.webSocket.iniciarWebSocket();
+            //Phx.CP.webSocket.iniciarWebSocket();
 
 
 
@@ -1525,10 +1525,12 @@ Phx.CP=function(){
             }
 
             //borrar el evento del websocket
+
             if(Phx.CP.webSocket.habilitado == 'si'){
                 Phx.CP.webSocket.eleminarEvento(id);
 
             }
+
 
 
 
