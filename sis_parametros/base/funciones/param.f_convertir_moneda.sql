@@ -20,6 +20,16 @@ $body$
  AUTOR: 	    KPLIAN (jrr)	
  FECHA:	
  COMENTARIOS:	
+ 
+ EJEMPLO
+ 
+ v_monto_mb = param.f_convertir_moneda(v_reg_op.id_moneda, --moneda origen para conversion
+                                                  v_id_moneda_base,   --moneda a la que sera convertido
+                                                  v_reg_op.total_pago, --este monto siemrpe estara en moenda base
+                                                  v_reg_op.fecha, 
+                                                  'O',-- tipo oficial, venta, compra 
+                                                  NULL);--defecto dos decimales   
+ 
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
