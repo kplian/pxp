@@ -543,7 +543,7 @@ Phx.CP=function(){
         init:function(){
 
             //ffp iniciamos la conexion del websocket
-            //Phx.CP.webSocket.iniciarWebSocket();
+            Phx.CP.webSocket.iniciarWebSocket();
 
 
 
@@ -803,7 +803,7 @@ Phx.CP=function(){
             }
 
             Phx.CP.evaluateHash(action,token_inicio);
-            Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
+            //Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
 
 
             if(Phx.CP.config_ini.cont_interino*1 > 0){
@@ -923,6 +923,7 @@ Phx.CP=function(){
                     k: regreso.k });
                 Phx.CP.config_ini.x = regreso.x;
                 sw_auten_veri = false;
+
 
                 if(regreso.success){
                     // copia configuracion inicial recuperada
@@ -1753,8 +1754,9 @@ Phx.CP=function(){
             habilitado:'no',
             iniciarWebSocket : function () {
 
+
                 var hostname = window.location.hostname;
-                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':8080?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
+                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':'+Phx.CP.config_ini.puerto_websocket+'?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
                 console.log(Phx.CP.webSocket.conn);
                 Phx.CP.webSocket.conn.onopen = function (e) {
                     console.log(e)
@@ -1804,9 +1806,11 @@ Phx.CP=function(){
 
                 };
 
-                Phx.CP.webSocket.conn.onerror = function (e) {
+                Phx.CP.webSocket.conn.onerror = function (e,a) {
 
-                    console.log(e)
+                    if(Phx.CP.webSocket.habilitado = 'no'){
+                        alert('webscket no esta escuchando contáctate con el administrador')
+                    }
                 };
 
 

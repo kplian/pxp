@@ -152,7 +152,8 @@ class MODAlarma extends MODbase{
 		$this->captura('tipo','varchar');
 		$this->captura('dias','integer');
 		$this->captura('titulo_correo','varchar');
-		
+		$this->captura('id_usuario','int4');
+
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -418,7 +419,28 @@ class MODAlarma extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
-	
-			
+
+
+    function alarmaWebSocket(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.ft_alarma_sel';
+        $this->transaccion='PM_NOTISOCKET_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(FALSE);
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_usuario','int4');
+        $this->captura('titulo','text');
+        $this->captura('titulo_correo','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+
 }
 ?>
