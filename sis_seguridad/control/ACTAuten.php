@@ -297,6 +297,7 @@ class ACTAuten extends ACTbase {
 				estilo_vista:'".$_SESSION["_ESTILO_VISTA"]."',
 				mensaje_tec:'".$_SESSION["mensaje_tec"]."',
 				sis_integracion:'".$sis_integracion."',
+				puerto_websocket:'".$_SESSION["_PUERTO_WEBSOCKET"]."',
 				timeout:".$_SESSION["_TIMEOUT"]."}";
 	
 				exit;

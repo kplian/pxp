@@ -57,7 +57,7 @@ class ACTWsmensaje extends ACTbase{
 
         $usuarios_socket =json_decode($usuarios_socket, true);
 
-        var_dump($usuarios_socket);
+        //var_dump($usuarios_socket);
 
 
 
