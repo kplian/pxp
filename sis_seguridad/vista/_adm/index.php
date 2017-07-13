@@ -97,8 +97,8 @@ if(!isset($_SESSION["_SESION"])){
 	<script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
 	<script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
 	<script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="../../../lib/chart/highcharts.js"></script>
+    <script src="../../../lib/chart/exporting.js"></script>
     <!-- status bar -->
     <script type="text/javascript" src="../../../lib/ux/statusbar/StatusBar.js"></script>
     <script type="text/javascript" src="../../../lib/ux/SearchField.js"></script>
@@ -158,6 +158,9 @@ if(!isset($_SESSION["_SESION"])){
     <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Heading.js"></script>
     <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Plugins.js"></script>
     <script type='text/javascript' charset="UTF-8" src="../../../lib/opl/ol.js"></script>
+
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/MultiSelect.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ItemSelector.js"></script>
     <?php
      echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";  
 	?>

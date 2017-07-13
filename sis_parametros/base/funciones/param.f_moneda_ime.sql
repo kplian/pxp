@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_moneda_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -49,37 +51,39 @@ BEGIN
         begin
         	--Sentencia de la insercion
         	insert into param.tmoneda(
-			prioridad,
-			origen,
-			tipo_actualizacion,
-			estado_reg,
-			codigo,
-			moneda,
-			tipo_moneda,
-			id_usuario_reg,
-			fecha_reg,
-			id_usuario_mod,
-			fecha_mod,
-            triangulacion,
-            contabilidad,
-            codigo_internacional,
-            show_combo
+                prioridad,
+                origen,
+                tipo_actualizacion,
+                estado_reg,
+                codigo,
+                moneda,
+                tipo_moneda,
+                id_usuario_reg,
+                fecha_reg,
+                id_usuario_mod,
+                fecha_mod,
+                triangulacion,
+                contabilidad,
+                codigo_internacional,
+                show_combo,
+                actualizacion
           	) values(
-			v_parametros.prioridad,
-			v_parametros.origen,
-			v_parametros.tipo_actualizacion,
-			'activo',
-			v_parametros.codigo,
-			v_parametros.moneda,
-			v_parametros.tipo_moneda,
-			p_id_usuario,
-			now(),
-			null,
-			null,
-            v_parametros.triangulacion,
-            v_parametros.contabilidad,
-            v_parametros.codigo_internacional,
-            v_parametros.show_combo
+              v_parametros.prioridad,
+              v_parametros.origen,
+              v_parametros.tipo_actualizacion,
+              'activo',
+              v_parametros.codigo,
+              v_parametros.moneda,
+              v_parametros.tipo_moneda,
+              p_id_usuario,
+              now(),
+              null,
+              null,
+              v_parametros.triangulacion,
+              v_parametros.contabilidad,
+              v_parametros.codigo_internacional,
+              v_parametros.show_combo,
+              v_parametros.actualizacion
 							
 			)RETURNING id_moneda into v_id_moneda;
 			
@@ -115,7 +119,8 @@ BEGIN
               triangulacion =  v_parametros.triangulacion,
               contabilidad =  v_parametros.contabilidad,
               codigo_internacional = v_parametros.codigo_internacional,
-              show_combo = v_parametros.show_combo
+              show_combo = v_parametros.show_combo,
+              actualizacion = v_parametros.actualizacion
 			where id_moneda = v_parametros.id_moneda;
                
 			--Definicion de la respuesta
