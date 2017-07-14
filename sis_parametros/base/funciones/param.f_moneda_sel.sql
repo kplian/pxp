@@ -64,7 +64,8 @@ BEGIN
                             moneda.triangulacion,
                             moneda.contabilidad,
                             moneda.codigo_internacional,
-                            moneda.show_combo
+                            moneda.show_combo,
+                            moneda.actualizacion
 						from param.tmoneda moneda
 						inner join segu.tusuario usu1 on usu1.id_usuario = moneda.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = moneda.id_usuario_mod
