@@ -158,6 +158,7 @@ if(!isset($_SESSION["_SESION"])){
     <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Heading.js"></script>
     <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ux.HtmlEditor/src/Ext.ux.form.HtmlEditor.Plugins.js"></script>
     <script type='text/javascript' charset="UTF-8" src="../../../lib/opl/ol.js"></script>
+    <script type='text/javascript' charset="UTF-8" src="../../../lib/moment/moment.min.js"></script>
     <?php
      echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";  
 	?>
