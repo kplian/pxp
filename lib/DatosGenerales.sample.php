@@ -119,7 +119,12 @@
 	
 	//datos de correo elecronico
     $_SESSION["_CUENTA_MAIL"]='user@tudomiino.com';
-	
+
+	//---------------WEBSOCKET----------------------------------//
+	//por defecto es el puerto 8010 en caso de que tengas mas pxp ejemplo un vps con varios pxp entonces considerar otros puertos
+	//puertos recomendados 8010 a 8079
+	$_SESSION['_PUERTO_WEBSOCKET']= 8010;
+
 	//--------------- TITULOS ----------------------------------//
 	
 	$_SESSION['_TITULO_SIS_LARGO']="FRAMEWORK PARA DESARROLLO DE SOFTWARE";

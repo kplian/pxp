@@ -1039,4 +1039,10 @@ select pxp.f_insert_testructura_gui ('TCC', 'CEP');
 /***********************************F-DAT-RAC-PARAM-0-19/06/2017*****************************************/
 
 
+/***********************************I-DAT-FFP-PARAM-0-11/07/2017*****************************************/
+select pxp.f_insert_tgui ('wsMensaje', 'web socket mensaje', 'WSME', 'si', 5, 'sis_parametros/vista/wsmensaje/Wsmensaje.php', 3, '', 'Wsmensaje', 'PARAM');
+
+/***********************************F-DAT-FFP-PARAM-0-11/07/2017*****************************************/
+
+
 

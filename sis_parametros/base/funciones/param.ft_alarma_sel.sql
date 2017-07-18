@@ -31,7 +31,11 @@ DECLARE
     v_filtro 			varchar;
     v_cond				varchar;
     v_registros			record;
-   
+
+
+	v_id_alarma INTEGER;
+	ret varchar;
+	aux int;
 			    
 BEGIN
                                                     
@@ -139,7 +143,8 @@ BEGIN
                         alarm.obs,
                         alarm.tipo,
                         (alarm.fecha-now()::date)::integer as dias,
-                        alarm.titulo_correo
+                        alarm.titulo_correo,
+                        alarm.id_usuario
 						from param.talarma alarm
 						inner join segu.tusuario usu1 on usu1.id_usuario = alarm.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
@@ -403,6 +408,50 @@ BEGIN
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+
+
+		/*********************************
+   #TRANSACCION:  'PM_NOTISOCKET_SEL'
+   #DESCRIPCION:	lista de alarmas para ser usado en el websocket
+   #AUTOR:		favio figueroa
+   #FECHA:		11/07/2017  11:59:10
+  ***********************************/
+
+	elseif(p_transaccion='PM_NOTISOCKET_SEL')then
+
+		begin
+
+
+			ret := '';
+			FOR aux IN
+			UPDATE param.talarma
+			SET estado_notificacion = 'enviado'
+			WHERE estado_notificacion = 'pendiente'
+			RETURNING id_alarma
+			LOOP
+				ret := ret || aux || ',';
+			END LOOP;
+
+			ret = ret || '0';
+
+
+			-- Sentencia de la consulta
+			v_consulta:='SELECT
+                     	alarm.id_usuario,
+                     	upper(alarm.tipo) as titulo,
+                     	alarm.titulo_correo
+                        from param.talarma alarm
+				        where alarm.id_alarma in ('|| ret ||')';
+
+
+
+
+
 
 			--Devuelve la respuesta
 			return v_consulta;

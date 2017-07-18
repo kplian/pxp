@@ -187,6 +187,32 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
         
         {
             config:{
+                name:'actualizacion',
+                fieldLabel:'Actualización?',
+                qtip: 'la moneda sirve para actulizar por inflación y tenencia de bienes AITB , solo podemos tener una moneda para actualización',
+                allowBlank: false,
+                anchor: '80%',
+                emptyText:'Tipo...',                   
+                typeAhead:true,
+                triggerAction:'all',
+                lazyRender:true,
+                mode:'local',
+                valueField:'inicio',                   
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{type: 'list',
+                     pfiltro:'moneda.actualizacion',
+                     options: ['si','no']
+                    },
+            grid:true,
+            form:true
+        },
+        
+        
+        {
+            config:{
                 name:'contabilidad',
                 fieldLabel:'Contabilidad',
                 qtip: 'La moneda se utilizará en contabilidad?',
@@ -338,7 +364,7 @@ Phx.vista.Moneda=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'triangulacion','contabilidad','show_combo'
+		{name:'usr_mod', type: 'string'},'triangulacion','contabilidad','show_combo','actualizacion'
 		
 		
 	],

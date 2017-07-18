@@ -1865,3 +1865,38 @@ WITHOUT OIDS;
 ALTER TABLE param.tcatalogo
   ALTER COLUMN orden TYPE INTEGER;
 /***********************************F-SCP-RCM-PARAM-0-08/06/2017*****************************************/
+
+/***********************************I-SCP-RCM-PARAM-0-09/07/2017*****************************************/
+ALTER TABLE param.ttipo_archivo
+  ADD UNIQUE (codigo); 
+/***********************************F-SCP-RCM-PARAM-0-09/07/2017*****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-0-11/07/2017*****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tmoneda
+  ADD COLUMN actualizacion VARCHAR(4) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN param.tmoneda.actualizacion
+IS 'moneda de actualizacion'; 
+
+
+/***********************************F-SCP-RAC-PARAM-0-11/07/2017*****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-11/07/2017*****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.talarma ADD estado_notificacion VARCHAR(255) NULL;
+
+
+
+
+/***********************************F-SCP-FFP-PARAM-0-11/07/2017*****************************************/
+
+
+
+

@@ -157,7 +157,9 @@ BEGIN
             
              select 
                tcc.movimiento,
-               tcc.id_ep
+               tcc.id_ep,
+               tcc.codigo,
+               tcc.descripcion
               into
                v_registros
              from param.ttipo_cc tcc
@@ -202,7 +204,7 @@ BEGIN
                  --Sentencia de la insercion
                  update  pre.tpresupuesto set
                    descripcion = ('('||v_registros.codigo||') '||v_registros.descripcion)::varchar
-                 where id_presupeustos = v_parametros.id_centro_costo;	
+                 where id_presupuesto = v_parametros.id_centro_costo;	
             END IF;
             
             

@@ -100,9 +100,13 @@ BEGIN
  v_nombre_funcion = 'param.f_obtener_listado_aprobadores';
  
  -- crea tabla temporal
-  
-        --Creación de tabla temporal
-		v_consulta = 'create temp table tt_aprobador_'||p_id_usuario||'(
+    IF pxp.f_iftableexists('tt_aprobador') THEN
+          delete from tt_aprobador;
+       ELSE
+          
+        
+         --Creación de tabla temporal
+		 create temp table tt_aprobador(
                  id_aprobador integer,
 			     id_funcionario integer,
 			     desc_funcionario text,
@@ -111,9 +115,10 @@ BEGIN
                  prioridad int,
                  monto_min numeric,
                  monto_max numeric
-			)on commit drop';
-        
-         execute(v_consulta);
+			)on commit drop;
+          
+       END IF; 
+       
  
 
  
@@ -181,7 +186,7 @@ BEGIN
                   v_desc_funcionario  
                  from orga.vfuncionario fun where fun.id_funcionario = v_fun_array[v_i];
               
-                 v_consulta=  'INSERT INTO table tt_aprobador_'||p_id_usuario||'(
+                 v_consulta=  'INSERT INTO table (
                                   id_aprobador,
                                   id_funcionario,
                                   fecha_ini,
@@ -338,7 +343,7 @@ IF v_sw_aprobador =false THEN
                   v_desc_funcionario  
                  from orga.vfuncionario fun where fun.id_funcionario = v_fun_array[v_i];
                  
-                   v_consulta=  'INSERT INTO  tt_aprobador_'||p_id_usuario||'(
+                   v_consulta=  'INSERT INTO  tt_aprobador(
                                       id_aprobador,
                                       id_funcionario,
                                       fecha_ini,
@@ -372,33 +377,32 @@ END IF;
 
 
 
+--RAC 10/07/2017 se coenta esta validacion ya que necesitamos respuesta validas
+--  para la estategia de liberaciones
 
-
-IF v_sw_aprobador THEN
+--IF v_sw_aprobador THEN
 
  --consulta de la tabla temporal, 
-v_consulta=  'SELECT 
-                id_aprobador,
-                id_funcionario,
-                fecha_ini,
-                fecha_fin,
-                desc_funcionario,
-                monto_min,
-                monto_max,
-                prioridad 
-              FROM tt_aprobador_'||p_id_usuario;
- 
- 
 
-
-  FOR v_registros in execute (v_consulta) LOOP
+  FOR v_registros in  (SELECT 
+                          id_aprobador,
+                          id_funcionario,
+                          fecha_ini,
+                          fecha_fin,
+                          desc_funcionario,
+                          monto_min,
+                          monto_max,
+                          prioridad 
+                        FROM tt_aprobador) LOOP
           RETURN NEXT v_registros;
   END LOOP;
  
-  
+ /* 
 ELSE
-    raise exception 'No existen aprobadores configurados, consulte con el administrador de sistema';
-END IF;
+    IF p_devolver_error THEN 
+    		raise exception 'No existen aprobadores configurados, consulte con el administrador de sistema';
+    END IF;
+END IF;*/
  
 EXCEPTION
 				

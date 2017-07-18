@@ -543,7 +543,7 @@ Phx.CP=function(){
         init:function(){
 
             //ffp iniciamos la conexion del websocket
-            //Phx.CP.webSocket.iniciarWebSocket();
+            Phx.CP.webSocket.iniciarWebSocket();
 
 
 
@@ -803,7 +803,7 @@ Phx.CP=function(){
             }
 
             Phx.CP.evaluateHash(action,token_inicio);
-            Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
+            //Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
 
 
             if(Phx.CP.config_ini.cont_interino*1 > 0){
@@ -923,6 +923,7 @@ Phx.CP=function(){
                     k: regreso.k });
                 Phx.CP.config_ini.x = regreso.x;
                 sw_auten_veri = false;
+
 
                 if(regreso.success){
                     // copia configuracion inicial recuperada
@@ -1525,7 +1526,12 @@ Phx.CP=function(){
             }
 
             //borrar el evento del websocket
-            //Phx.CP.webSocket.eleminarEvento(id);
+
+            if(Phx.CP.webSocket.habilitado == 'si'){
+                Phx.CP.webSocket.eleminarEvento(id);
+
+            }
+
 
 
 
@@ -1745,14 +1751,17 @@ Phx.CP=function(){
         //sessionWebSocket conexionwWebSocket guiPXP evento
         webSocket: {
             scopeVistas:[],
+            habilitado:'no',
             iniciarWebSocket : function () {
 
+
                 var hostname = window.location.hostname;
-                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':8080?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
+                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':'+Phx.CP.config_ini.puerto_websocket+'?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
                 console.log(Phx.CP.webSocket.conn);
                 Phx.CP.webSocket.conn.onopen = function (e) {
                     console.log(e)
                     console.log("Conecion establecida");
+                    Phx.CP.webSocket.habilitado = 'si';
 
                     //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
 
@@ -1797,9 +1806,17 @@ Phx.CP=function(){
 
                 };
 
+                Phx.CP.webSocket.conn.onerror = function (e,a) {
+
+                    if(Phx.CP.webSocket.habilitado = 'no'){
+                        alert('webscket no esta escuchando contáctate con el administrador')
+                    }
+                };
+
 
 
             },
+
             //x es el this de la vista es el scope que tendremos
             escucharEvento:function(evento,id_contenedor,metodo,scope){
 
