@@ -1809,7 +1809,7 @@ Phx.CP=function(){
                 Phx.CP.webSocket.conn.onerror = function (e,a) {
 
                     if(Phx.CP.webSocket.habilitado = 'no'){
-                        alert('webscket no esta escuchando contáctate con el administrador')
+                        console.log('webscket no esta escuchando contáctate con el administrador')
                     }
                 };
 
