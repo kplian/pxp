@@ -607,6 +607,75 @@ class MODArchivo extends MODbase{
 		return $this->respuesta;
 	}
 
+	function listarArchivoTabla(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_archivo_sel';
+		$this->transaccion='PM_ARTABLA_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		//$this->setCount(false);
+
+
+        $this->captura('tipo_archivo','varchar');
+        $this->captura('extension','varchar');
+        $this->captura('nombre_archivo','varchar');
+        $this->captura('folder','varchar');
+        $this->captura('nombre_descriptivo','varchar');
+
+
+        $datos = json_decode($this->objParam->getParametro('campos'));
+
+        $arra = array();
+        $campos = '';
+        $conteo = count($datos);
+        foreach ($datos as $key=> $dato) {
+
+
+
+
+            if($dato->nick != ''){
+                $campos .= $dato->nick.".".$dato->nombre .' as '.$dato->renombrar;
+                $this->captura($dato->renombrar,$dato->tipo_dato);
+
+
+            }else{
+                $campos .= "tabla.".$dato->nombre;
+                $this->captura($dato->nombre,$dato->tipo_dato);
+            }
+
+
+            if (($key+1) < $conteo){
+                $campos.= ",";
+            }
+
+        }
+
+        $this->aParam->addParametro('campos', $campos);
+        $this->arreglo['campos'] = $campos;
+        $this->setParametro('campos','campos','varchar');
+        $this->setParametro('tipo_archivo','tipo_archivo','varchar');
+
+
+
+        if($this->objParam->getParametro('join') != ''){
+            $json_join = $this->objParam->getParametro('join');
+
+
+            $this->aParam->addParametro('json_join', $json_join);
+            $this->arreglo['json_join'] = $json_join;
+            $this->setParametro('json_join','json_join','text');
+        }
+
+
+
+
+
+        //Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 
 
 

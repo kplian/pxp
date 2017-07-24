@@ -74,6 +74,44 @@ class ACTArchivo extends ACTbase{
 		$this->res=$this->objFunc->listarArchivoHistorico($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+
+
+    function listarArchivoTabla(){
+
+
+        if($this->objParam->getParametro('filtros') != ''){
+
+            $datos = json_decode($this->objParam->getParametro('filtros'));
+
+            if(count($datos) >0){
+
+                foreach ($datos as $key=> $dato) {
+
+
+                    if($dato->tipo_filtro == 'igual'){
+                        $this->objParam->addFiltro(" ".$dato->campo." = ''".$dato->valor."'' ");
+
+                    }else if($dato->tipo_filtro == 'busqueda'){
+                        $this->objParam->addFiltro(" upper(".$dato->campo.") LIKE  upper(''%".$dato->valor."%'') ");
+
+                    }
+
+
+
+                }
+
+            }
+
+
+        }
+
+
+        $this->objFunc=$this->create('MODArchivo');
+        $this->res=$this->objFunc->listarArchivoTabla($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
 			
 }
 
