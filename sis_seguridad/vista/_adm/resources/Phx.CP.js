@@ -49,6 +49,57 @@ Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
     }
 });
 
+Ext.ux.clone =  function(item, cloneDom) {
+            if (item == null) {
+                return item;
+            }
+ 
+            // DOM nodes 
+            // TODO proxy this to Ext.Element.clone to handle automatic id attribute changing 
+            // recursively 
+            if (cloneDom !== false && item.nodeType && item.cloneNode) {
+                return item.cloneNode(true);
+            }
+ 
+            var type = toString.call(item),
+                i, j, k, clone, key;
+ 
+            // Date 
+            if (type === '[object Date]') {
+                return new Date(item.getTime());
+            }
+ 
+            // Array 
+            if (type === '[object Array]') {
+                i = item.length;
+ 
+                clone = [];
+ 
+                while (i--) {
+                    clone[i] = Ext.clone(item[i], cloneDom);
+                }
+            }
+            // Object 
+            else if (type === '[object Object]' && item.constructor === Object) {
+                clone = {};
+ 
+                for (key in item) {
+                    clone[key] = Ext.clone(item[key], cloneDom);
+                }
+ 
+                if (enumerables) {
+                    for (j = enumerables.length; j--;) {
+                        k = enumerables[j];
+                        if (item.hasOwnProperty(k)) {
+                            clone[k] = item[k];
+                        }
+                    }
+                }
+            }
+ 
+            return clone || item;
+        };
+
 ///////////////////////////////
 //		CLASE MENU		  	//
 //////////////////////////////
@@ -543,7 +594,7 @@ Phx.CP=function(){
         init:function(){
 
             //ffp iniciamos la conexion del websocket
-            //Phx.CP.webSocket.iniciarWebSocket();
+            Phx.CP.webSocket.iniciarWebSocket();
 
 
 
@@ -803,7 +854,7 @@ Phx.CP=function(){
             }
 
             Phx.CP.evaluateHash(action,token_inicio);
-            Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
+            //Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
 
 
             if(Phx.CP.config_ini.cont_interino*1 > 0){
@@ -855,6 +906,15 @@ Phx.CP=function(){
 
                     },3000);
                 });
+                
+            //RAC se incluyen imagenes /SVG 
+            //23/07/2017      
+            window.Images = ['arrow', 'default', 'animal', 'bicycle', 'boat', 'bus', 'car', 'crane', 'helicopter',
+                          'motorcycle', 'offroad', 'person', 'pickup', 'plane', 'ship', 'tractor', 'truck', 'van'];
+        
+            for (i = 0; i < window.Images.length; i++) {
+               this.addSvgFile('../../../lib/images/svg/' + window.Images[i] + '.svg', window.Images[i] + 'Svg');
+            }
 
         },
         //para capturar variables enviadas por get
@@ -923,6 +983,7 @@ Phx.CP=function(){
                     k: regreso.k });
                 Phx.CP.config_ini.x = regreso.x;
                 sw_auten_veri = false;
+
 
                 if(regreso.success){
                     // copia configuracion inicial recuperada
@@ -1525,7 +1586,12 @@ Phx.CP=function(){
             }
 
             //borrar el evento del websocket
-            //Phx.CP.webSocket.eleminarEvento(id);
+
+            if(Phx.CP.webSocket.habilitado == 'si'){
+                Phx.CP.webSocket.eleminarEvento(id);
+
+            }
+
 
 
 
@@ -1670,7 +1736,33 @@ Phx.CP=function(){
                     //parseMargins:'50 50 50 50',
                     minimizable: false,
                     maximizable: true,
-                    proxyDrag:true
+                    proxyDrag:true,
+                    bbar: {
+                        items: [
+                            {
+                                // xtype: 'button', // default for Toolbars, same as 'tbbutton'
+                                text: 'Button'
+                            },
+                            {
+                                xtype: 'splitbutton', // same as 'tbsplitbutton'
+                                text: 'Split Button'
+                            },
+                            // begin using the right-justified button container
+                            '->', // same as {xtype: 'tbfill'}, // Ext.Toolbar.Fill
+                            {
+                                xtype: 'textfield',
+                                name: 'field1',
+                                emptyText: 'enter search term'
+                            },
+                            // add a vertical separator bar between toolbar items
+                            '-', // same as {xtype: 'tbseparator'} to create Ext.Toolbar.Separator
+                            'text 1', // same as {xtype: 'tbtext', text: 'text1'} to create Ext.Toolbar.TextItem
+                            {xtype: 'tbspacer'},// same as ' ' to create Ext.Toolbar.Spacer
+                            'text 2',
+                            {xtype: 'tbspacer', width: 50}, // add a 50px space
+                            'text 3'
+                        ]
+                    }
                 };
 
                 Ext.apply(Ventana,config);
@@ -1737,6 +1829,8 @@ Phx.CP=function(){
             }
             return arr;
         },
+        
+        
 
         /***********************************************
          *  WebSocket por favio figueroa
@@ -1745,14 +1839,17 @@ Phx.CP=function(){
         //sessionWebSocket conexionwWebSocket guiPXP evento
         webSocket: {
             scopeVistas:[],
+            habilitado:'no',
             iniciarWebSocket : function () {
 
+
                 var hostname = window.location.hostname;
-                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':8080?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
+                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':'+Phx.CP.config_ini.puerto_websocket+'?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
                 console.log(Phx.CP.webSocket.conn);
                 Phx.CP.webSocket.conn.onopen = function (e) {
                     console.log(e)
                     console.log("Conecion establecida");
+                    Phx.CP.webSocket.habilitado = 'si';
 
                     //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
 
@@ -1797,9 +1894,17 @@ Phx.CP=function(){
 
                 };
 
+                Phx.CP.webSocket.conn.onerror = function (e,a) {
+
+                    if(Phx.CP.webSocket.habilitado = 'no'){
+                        console.log('webscket no esta escuchando contáctate con el administrador')
+                    }
+                };
+
 
 
             },
+
             //x es el this de la vista es el scope que tendremos
             escucharEvento:function(evento,id_contenedor,metodo,scope){
 
@@ -1851,7 +1956,17 @@ Phx.CP=function(){
 
             },
 
+        },
+        
+        addSvgFile:  function (file, id) {
+            var svg = document.createElement('object');
+            svg.setAttribute('id', id);
+            svg.setAttribute('data', file);
+            svg.setAttribute('type', 'image/svg+xml');
+            svg.setAttribute('style', 'visibility:hidden;position:absolute;left:-100px;');
+            return document.body.appendChild(svg);
         }
+        
 
 
     }

@@ -11,7 +11,14 @@ require 'vendor/autoload.php';
 
 require 'pxp.php';
 
+ini_set("error_log", "/tmp/php-error.log");
+error_log( "Hello, errors!" );
 
+ignore_user_abort(true);
+
+ini_set('max_execution_time', 0);
+
+set_time_limit(0);
 
 $server = IoServer::factory(
     new HttpServer(
@@ -19,7 +26,7 @@ $server = IoServer::factory(
             new Pxp()
         )
     ),
-    8080
+    $_SESSION['_PUERTO_WEBSOCKET']
 );
 
 $server->run();

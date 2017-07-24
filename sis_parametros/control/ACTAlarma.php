@@ -22,6 +22,12 @@ class ACTAlarma extends ACTbase{
 			}			
 			$this->objParam->addFiltro("alarm.fecha_reg > (now() - interval ''" . ($this->objParam->getParametro('minutos') + 1 ). " minute'')");	
 		}
+
+		//ffp
+		if($this->objParam->getParametro('estado_notificacion')!='') {
+
+			$this->objParam->addFiltro("alarm.estado_notificacion = ''".$this->objParam->getParametro('estado_notificacion')."'' ");
+		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -139,6 +145,14 @@ class ACTAlarma extends ACTbase{
 		$this->objFunc=$this->create('MODAlarma');		
 		$this->res=$this->objFunc->finalizarComunicado();
 		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+   function alarmaWebSocket(){
+		$this->objFunc=$this->create('MODAlarma');
+		$this->res=$this->objFunc->alarmaWebSocket();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+   function obtenerSessionId(){
+		echo session_id();
 	}
 
 

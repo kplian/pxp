@@ -33,7 +33,22 @@ class ACTProveedor extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-	
+
+   function listarProveedorV2(){
+		$this->objParam->defecto('ordenacion','id_proveedor');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam, $this);
+			$this->res = $this->objReporte->generarReporteListado('MODProveedor','listarProveedorV2');
+		} else{
+			$this->objFunc=$this->create('MODProveedor');	
+			$this->res=$this->objFunc->listarProveedorV2();
+		}
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+
 	function listarProveedorCombos(){
 		$this->objParam->defecto('ordenacion','id_proveedor');
 
