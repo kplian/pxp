@@ -1900,3 +1900,17 @@ ALTER TABLE param.talarma ADD estado_notificacion VARCHAR(255) NULL;
 
 
 
+/***********************************I-SCP-RAC-PARAM-0-21/07/2017*****************************************/
+
+
+--------------- SQL ---------------
+
+CREATE SEQUENCE param.seq_codigo_proveedor
+  INCREMENT 1 START 1;
+
+
+/***********************************F-SCP-RAC-PARAM-0-21/07/2017*****************************************/
+
+
+
+

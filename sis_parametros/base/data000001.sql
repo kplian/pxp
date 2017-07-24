@@ -1046,3 +1046,15 @@ select pxp.f_insert_tgui ('wsMensaje', 'web socket mensaje', 'WSME', 'si', 5, 's
 
 
 
+/***********************************I-DAT-RAC-PARAM-0-18/07/2017*****************************************/
+
+ALTER TABLE param.tproveedor
+  ADD COLUMN id_auxiliar INTEGER;
+
+COMMENT ON COLUMN param.tproveedor.id_auxiliar
+IS 'idenfica el auxilar contable que le correponde al proveedor, automaticamente al crear proveedores creamos auxiliares contables';
+
+/***********************************F-DAT-RAC-PARAM-0-18/07/2017*****************************************/
+
+
+

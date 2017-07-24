@@ -6,7 +6,7 @@ $BODY$
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_archivo_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tarchivo'
- AUTOR: 		 (admin)
+ AUTOR: 		 (favio.figueroa)
  FECHA:	        05-12-2016 15:04:48
  COMENTARIOS:	
 ***************************************************************************
@@ -23,6 +23,11 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
+
+	v_record_tipo_archivo record;
+
+	v_registros_json_join RECORD;
+	v_join VARCHAR;
 			    
 BEGIN
 
@@ -32,7 +37,7 @@ BEGIN
 	/*********************************    
  	#TRANSACCION:  'PM_ARCH_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		favio.figueroa
  	#FECHA:		05-12-2016 15:04:48
 	***********************************/
 
@@ -73,7 +78,7 @@ BEGIN
 	/*********************************    
  	#TRANSACCION:  'PM_ARCH_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		favio.figueroa
  	#FECHA:		05-12-2016 15:04:48
 	***********************************/
 
@@ -98,7 +103,7 @@ BEGIN
 	/*********************************
  	#TRANSACCION:  'PM_ARCOD_SEL'
  	#DESCRIPCION:	lista de registros
- 	#AUTOR:		admin
+ 	#AUTOR:		favio.figueroa
  	#FECHA:		05-12-2016 15:04:48
 	***********************************/
 
@@ -143,7 +148,7 @@ where
 	/*********************************
  	#TRANSACCION:  'PM_ARCOD_CONT'
  	#DESCRIPCION:	conteo de registros
- 	#AUTOR:		admin
+ 	#AUTOR:		favio.figueroa
  	#FECHA:		05-12-2016 15:04:48
 	***********************************/
 
@@ -169,7 +174,7 @@ where ';
 /*********************************
  	#TRANSACCION:  'PM_ARVER_SEL'
  	#DESCRIPCION:	conteo de registros
- 	#AUTOR:		admin
+ 	#AUTOR:		favio.figueroa
  	#FECHA:		05-12-2016 15:04:48
 	***********************************/
 
@@ -226,6 +231,116 @@ where ';
 										left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 									INNER JOIN param.ttipo_archivo tipar on tipar.id_tipo_archivo = arch.id_tipo_archivo
 									WHERE ';
+
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+
+/*********************************
+ 	#TRANSACCION:  'PM_ARTABLA_SEL'
+ 	#DESCRIPCION:	consulta con la tabla incluida
+ 	#AUTOR:		favio.figueroa
+ 	#FECHA:		05-12-2016 15:04:48
+	***********************************/
+
+	elsif(p_transaccion='PM_ARTABLA_SEL')then
+
+		begin
+
+			v_join = ' ';
+
+			IF (pxp.f_existe_parametro(p_tabla,'json_join')) THEN
+				FOR v_registros_json_join IN (SELECT *
+																			FROM json_populate_recordset(NULL :: param.archivo_json_join,
+																																	 v_parametros.json_join :: JSON)) LOOP
+
+					v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.nick || ' on ' ||v_registros_json_join.condicion || ' ';
+
+				END LOOP;
+			END IF;
+
+
+
+			SELECT
+				tipar.tabla,
+				tipar.nombre_id,
+				tipar.id_tipo_archivo
+			INTO v_record_tipo_archivo
+			FROM param.ttipo_archivo tipar
+			WHERE codigo = v_parametros.tipo_archivo;
+
+
+			v_consulta = 'select
+			              '''||v_parametros.tipo_archivo||'''::varchar as tipo_archivo,
+                    archivo.extension,
+                    archivo.nombre_archivo,
+                    archivo.folder,
+                    archivo.nombre_descriptivo,
+                    '||v_parametros.campos|| '
+       from ' || v_record_tipo_archivo.tabla || ' tabla
+      inner join param.tarchivo archivo on archivo.id_tabla = tabla.' || v_record_tipo_archivo.nombre_id || ' and archivo.id_archivo_fk is NULL
+      '|| v_join ||'
+      where archivo.id_tipo_archivo = ' || v_record_tipo_archivo.id_tipo_archivo || ' and ';
+
+
+
+
+
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+
+		/*********************************
+ 	#TRANSACCION:  'PM_ARTABLA_CONT'
+ 	#DESCRIPCION:	conteo de registros
+ 	#AUTOR:		favio.figueroa
+ 	#FECHA:		05-12-2016 15:04:48
+	***********************************/
+
+	elsif(p_transaccion='PM_ARTABLA_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+
+			v_join = ' ';
+
+			IF (pxp.f_existe_parametro(p_tabla,'json_join')) THEN
+				FOR v_registros_json_join IN (SELECT *
+																			FROM json_populate_recordset(NULL :: param.archivo_json_join,
+																																	 v_parametros.json_join :: JSON)) LOOP
+
+					v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.nick || ' on ' ||v_registros_json_join.condicion || ' ';
+
+				END LOOP;
+			END IF;
+
+
+			SELECT
+				tipar.tabla,
+				tipar.nombre_id,
+				tipar.id_tipo_archivo
+			INTO v_record_tipo_archivo
+			FROM param.ttipo_archivo tipar
+			WHERE codigo = v_parametros.tipo_archivo;
+
+
+			v_consulta = 'select count(archivo.id_archivo)
+       from ' || v_record_tipo_archivo.tabla || ' tabla
+      inner join param.tarchivo archivo on archivo.id_tabla = tabla.' || v_record_tipo_archivo.nombre_id || ' and archivo.id_archivo_fk is NULL
+      where archivo.id_tipo_archivo = ' || v_record_tipo_archivo.id_tipo_archivo || ' and ';
+
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
