@@ -115,6 +115,8 @@ BEGIN
                     v_parametros.id_lugar,			v_parametros.rotulo_comercial,	v_parametros.contacto)RETURNING id_proveedor into v_id_proveedor;
            else
                     if (v_parametros.tipo = 'persona')then
+                        
+                        
                         insert into segu.tpersona (
                                    nombre,
                                    apellido_paterno,
@@ -156,8 +158,12 @@ BEGIN
                                     from param.tinstitucion i 
                                     where i.estado_reg = 'activo' 
                                           and  i.codigo =  v_parametros.codigo_institucion ) THEN
-                             raise exception 'Ya existe una institución cone esta sigla %',  v_parametros.codigo_institucion;
+                             raise exception 'Ya existe una institución con esta sigla %',  v_parametros.codigo_institucion;
                          END IF;
+                         
+                         --generar codigo de proveedores
+                         v_num_seq =  nextval('param.seq_codigo_proveedor');
+                          v_codigo_gen = 'PR'||pxp.f_llenar_ceros(v_num_seq, 6);
                     
                         --Sentencia de la insercion
                         insert into param.tinstitucion(
@@ -186,7 +192,7 @@ BEGIN
                             'activo',
                             v_parametros.casilla,
                             v_parametros.direccion_institucion,
-                            v_parametros.doc_id,
+                            v_parametros.nit, --v_parametros.doc_id,
                             v_parametros.telefono2_institucion,
                             v_parametros.email2_institucion,
                             v_parametros.celular1_institucion,
@@ -201,14 +207,12 @@ BEGIN
                             now(),
                             null,
                             null,
-                            v_parametros.codigo_institucion
+                            COALESCE(v_parametros.codigo_institucion,v_codigo_gen)
                         
                         )RETURNING id_institucion into v_id_institucion;
                     end if;
                     
-                     --generar codigo de proveedores
-                     v_num_seq =  nextval('param.seq_codigo_proveedor');
-                     v_codigo_gen = 'PR'||pxp.f_llenar_ceros(v_num_seq, 6);
+                     
                     
                     
                     
@@ -412,6 +416,63 @@ BEGIN
                 rotulo_comercial = v_parametros.rotulo_comercial,
                 contacto = v_parametros.contacto
             where id_proveedor=v_parametros.id_proveedor;
+            
+            
+            --modificar datos basicos de proveedor y persona ,....isntitucion el nit
+            if (v_parametros.tipo = 'persona')then
+                    
+                    
+                    update  segu.tpersona  set 
+                       nombre = v_parametros.nombre,
+                       apellido_paterno = v_parametros.apellido_paterno,
+                       apellido_materno = v_parametros.apellido_materno,
+                       ci = v_parametros.ci,
+                       correo = v_parametros.correo,
+                       celular1 =v_parametros.celular1,
+                       telefono1 =v_parametros.telefono1,
+                       telefono2 =v_parametros.telefono2,
+                       celular2 =v_parametros.celular2,
+                       genero = v_parametros.genero,
+                       fecha_nacimiento =v_parametros.fecha_nacimiento,
+                       direccion = v_parametros.direccion
+                     WHERE id_persona  = v_parametros.id_persona;
+            
+            else
+            
+                      IF   exists(select  
+                                       1 
+                                    from param.tinstitucion i 
+                                    where i.estado_reg = 'activo' 
+                                          and  i.codigo =  v_parametros.codigo_institucion 
+                                          and i.id_institucion != v_parametros.id_institucion) THEN
+                             raise exception 'Ya existe una institución con esta sigla %',  v_parametros.codigo_institucion;
+                         END IF;
+            
+                     --Sentencia de la insercion  --modifica datos de la institucion
+                     
+                        update  param.tinstitucion set
+                            fax = v_parametros.fax,
+                            casilla = v_parametros.casilla,
+                            direccion = v_parametros.direccion_institucion,
+                            doc_id =  v_parametros.nit,
+                            telefono2 = v_parametros.telefono2_institucion,
+                            email2 = v_parametros.email2_institucion,
+                            celular1 = v_parametros.celular1_institucion,
+                            email1 =  v_parametros.email1_institucion,        			
+                            nombre = v_parametros.nombre_institucion,
+                            observaciones = v_parametros.observaciones,
+                            telefono1 =  v_parametros.telefono1_institucion,
+                            celular2 = v_parametros.celular2_institucion,
+                            pag_web = v_parametros.pag_web,
+                            id_usuario_mod = p_id_usuario,
+                            fecha_mod = now(),
+                            codigo = v_parametros.codigo_institucion
+                       WHERE id_institucion = v_parametros.id_institucion;
+                   
+            
+            end if;
+            
+            
             
             
             
