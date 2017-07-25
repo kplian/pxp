@@ -327,6 +327,7 @@ where ';
 			END IF;
 
 
+
 			SELECT
 				tipar.tabla,
 				tipar.nombre_id,
@@ -339,6 +340,7 @@ where ';
 			v_consulta = 'select count(archivo.id_archivo)
        from ' || v_record_tipo_archivo.tabla || ' tabla
       inner join param.tarchivo archivo on archivo.id_tabla = tabla.' || v_record_tipo_archivo.nombre_id || ' and archivo.id_archivo_fk is NULL
+       '|| v_join ||'
       where archivo.id_tipo_archivo = ' || v_record_tipo_archivo.id_tipo_archivo || ' and ';
 
 
