@@ -131,7 +131,7 @@ Phx.vista.TipoProcesoOrigen=Ext.extend(Phx.gridInterfaz,{
                 minChars: 2,
                 gwidth: 200,
                 renderer: function(value, p, record) {
-                    return String.format('{0}', record.data['desc_tipo_estado']);
+                    return String.format('{0}, {1}', record.data['desc_tipo_estado'], record.data['desc_tipo_proceso']);
                 },
                 tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
             },
@@ -315,7 +315,7 @@ Phx.vista.TipoProcesoOrigen=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_proceso_macro','desc_tipo_estado'
+		{name:'usr_mod', type: 'string'},'desc_proceso_macro','desc_tipo_estado','desc_tipo_proceso'
 		
 	],
 	sortInfo:{
