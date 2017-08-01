@@ -53,40 +53,40 @@ Ext.ux.clone =  function(item, cloneDom) {
             if (item == null) {
                 return item;
             }
- 
-            // DOM nodes 
-            // TODO proxy this to Ext.Element.clone to handle automatic id attribute changing 
-            // recursively 
+
+            // DOM nodes
+            // TODO proxy this to Ext.Element.clone to handle automatic id attribute changing
+            // recursively
             if (cloneDom !== false && item.nodeType && item.cloneNode) {
                 return item.cloneNode(true);
             }
- 
+
             var type = toString.call(item),
                 i, j, k, clone, key;
- 
-            // Date 
+
+            // Date
             if (type === '[object Date]') {
                 return new Date(item.getTime());
             }
- 
-            // Array 
+
+            // Array
             if (type === '[object Array]') {
                 i = item.length;
- 
+
                 clone = [];
- 
+
                 while (i--) {
-                    clone[i] = Ext.clone(item[i], cloneDom);
+                    clone[i] = Ext.ux.clone(item[i], cloneDom);
                 }
             }
-            // Object 
+            // Object
             else if (type === '[object Object]' && item.constructor === Object) {
                 clone = {};
- 
+
                 for (key in item) {
-                    clone[key] = Ext.clone(item[key], cloneDom);
+                    clone[key] = Ext.ux.clone(item[key], cloneDom);
                 }
- 
+
                 if (enumerables) {
                     for (j = enumerables.length; j--;) {
                         k = enumerables[j];
@@ -96,7 +96,7 @@ Ext.ux.clone =  function(item, cloneDom) {
                     }
                 }
             }
- 
+
             return clone || item;
         };
 
@@ -906,12 +906,12 @@ Phx.CP=function(){
 
                     },3000);
                 });
-                
+
             //RAC se incluyen imagenes /SVG 
             //23/07/2017      
             window.Images = ['arrow', 'default', 'animal', 'bicycle', 'boat', 'bus', 'car', 'crane', 'helicopter',
                           'motorcycle', 'offroad', 'person', 'pickup', 'plane', 'ship', 'tractor', 'truck', 'van'];
-        
+
             for (i = 0; i < window.Images.length; i++) {
                this.addSvgFile('../../../lib/images/svg/' + window.Images[i] + '.svg', window.Images[i] + 'Svg');
             }
@@ -1803,8 +1803,8 @@ Phx.CP=function(){
             }
             return arr;
         },
-        
-        
+
+
 
         /***********************************************
          *  WebSocket por favio figueroa
@@ -1842,6 +1842,7 @@ Phx.CP=function(){
 
                 Phx.CP.webSocket.conn.onmessage = function (e) {
 
+
                     var jsonData = JSON.parse(e.data);
 
                     //es el mensaje que mostrara a todos los que estan escuchando
@@ -1853,14 +1854,21 @@ Phx.CP=function(){
                    // console.log(mensaje)
                     //console.log(data)
 
+                    //vemos que tipo es si es una respuesta de un mensaje enviado anteriormente
+                    if (data.tipo == 'respuesta de envio'){
 
-                    if(data.id_contenedor != undefined){
-                        var f ='Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"].'+data.metodo+'.call(Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"],mensaje)';
-                        eval(f);
-                    }else{
-                        var f = 'Phx.CP.webSocket.'+data.metodo+'(mensaje)';
-                        eval(f);
+                        console.log(mensaje);
+                    }else{ //o si es un mensaje que tiene que ejecutar en evento
+                        if(data.id_contenedor != undefined){
+                            var f ='Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"].'+data.metodo+'.call(Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"],mensaje)';
+                            eval(f);
+                        }else{
+                            var f = 'Phx.CP.webSocket.'+data.metodo+'(mensaje)';
+                            eval(f);
+                        }
                     }
+
+
 
 
 
@@ -1926,12 +1934,13 @@ Phx.CP=function(){
             },
             cierreSocket:function(mensaje){
 
-                alert(mensaje.mensaje);
+                //alert(mensaje.mensaje);
+                alert('ah ocurrido un error con el socket');
 
             },
 
         },
-        
+
         addSvgFile:  function (file, id) {
             var svg = document.createElement('object');
             svg.setAttribute('id', id);
@@ -1940,7 +1949,7 @@ Phx.CP=function(){
             svg.setAttribute('style', 'visibility:hidden;position:absolute;left:-100px;');
             return document.body.appendChild(svg);
         }
-        
+
 
 
     }
