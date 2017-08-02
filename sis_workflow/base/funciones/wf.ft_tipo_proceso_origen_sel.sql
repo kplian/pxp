@@ -46,26 +46,28 @@ BEGIN
      				
     	begin
     		--Sentencia de la consulta
-			v_consulta:='select
-						tpo.id_tipo_proceso_origin,
-						tpo.id_tipo_proceso,
-						tpo.id_tipo_estado,
-						tpo.id_proceso_macro,
-						tpo.funcion_validacion_wf,
-						tpo.tipo_disparo,
-						tpo.estado_reg,
-						tpo.id_usuario_reg,
-						tpo.id_usuario_ai,
-						tpo.usuario_ai,
-						tpo.fecha_reg,
-						tpo.id_usuario_mod,
-						tpo.fecha_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-                        te.nombre_estado as desc_tipo_estado,
-                        pm.nombre as desc_proceso_macro	
+			v_consulta:=' select
+                            tpo.id_tipo_proceso_origin,
+                            tpo.id_tipo_proceso,
+                            tpo.id_tipo_estado,
+                            tpo.id_proceso_macro,
+                            tpo.funcion_validacion_wf,
+                            tpo.tipo_disparo,
+                            tpo.estado_reg,
+                            tpo.id_usuario_reg,
+                            tpo.id_usuario_ai,
+                            tpo.usuario_ai,
+                            tpo.fecha_reg,
+                            tpo.id_usuario_mod,
+                            tpo.fecha_mod,
+                            usu1.cuenta as usr_reg,
+                            usu2.cuenta as usr_mod,
+                            te.nombre_estado as desc_tipo_estado,
+                            pm.nombre as desc_proceso_macro	,
+                            tp.nombre as desc_tipo_proceso
 						from wf.ttipo_proceso_origen tpo
                         inner join wf.ttipo_estado te on te.id_tipo_estado = tpo.id_tipo_estado
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = te.id_tipo_proceso
                         inner join wf.tproceso_macro pm on pm.id_proceso_macro = tpo.id_proceso_macro
 						inner join segu.tusuario usu1 on usu1.id_usuario = tpo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tpo.id_usuario_mod
@@ -94,10 +96,11 @@ BEGIN
 			v_consulta:='select count(id_tipo_proceso_origin)
 					    from wf.ttipo_proceso_origen tpo
                         inner join wf.ttipo_estado te on te.id_tipo_estado = tpo.id_tipo_estado
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = te.id_tipo_proceso
                         inner join wf.tproceso_macro pm on pm.id_proceso_macro = tpo.id_proceso_macro
 						inner join segu.tusuario usu1 on usu1.id_usuario = tpo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tpo.id_usuario_mod
-					    where  tpo.estado_reg = ''activo'' and  ';
+				        where   tpo.estado_reg = ''activo'' and  ';
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
