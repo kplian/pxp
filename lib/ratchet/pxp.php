@@ -40,7 +40,7 @@ class Pxp implements MessageComponentInterface {
 
         //verificaremos si la session enviada esta registrada en nuestra bd
 
-        $seguSessionPXP = $this->link->prepare("select * from segu.tsesion where variable = '$sessionIDPXP' and fecha_reg = now()::DATE ");
+        $seguSessionPXP = $this->link->prepare("select * from segu.tsesion where variable = '$sessionIDPXP'  ");
         $seguSessionPXP->execute();
         $seguSessionPXP_RES = $seguSessionPXP->fetchAll(PDO::FETCH_ASSOC);
 
@@ -66,7 +66,7 @@ class Pxp implements MessageComponentInterface {
 
             $send = array(
                 "mensaje" => array(
-                    "mensaje" => "se cerro el socket porque no tienes permiso no seas pendejo!!!",
+                    "mensaje" => "se cerro el socket porque no tienes permiso!!!",
                 ),
                 "data"=> array(
                     "metodo" => "cierreSocket"
@@ -96,6 +96,7 @@ class Pxp implements MessageComponentInterface {
 
         //obtenemos la id_conexion
         $id_conexion = $from->resourceId;
+        echo "connection! ({$id_conexion})\n";
         //obtenemos la idSession
         $idSession = $from->WebSocket->request->getCookie("PHPSESSID");
 
@@ -148,6 +149,7 @@ class Pxp implements MessageComponentInterface {
             }elseif($tipo == "enviarMensaje"){
 
                 $evento = $data["data"]["evento"];
+                echo $evento;
 
                 foreach ($this->eventos[$evento] as $even){
                     if ($evento["id_conexion"] != $id_conexion){
@@ -161,6 +163,19 @@ class Pxp implements MessageComponentInterface {
                         $this->users[$even["id_conexion"]]->send($send);
                     }
                 }
+
+                //creamos un array para la devolucion solo para que el disparador sepa que le tiene que llegar algo
+                $send = array(
+                    "mensaje" => "envio correctamente",
+                    "data"=> array(
+                        "tipo" => "respuesta de envio"
+                    )
+                );
+                $send = json_encode($send, true);
+
+                $this->users[$id_conexion]->send($send);
+
+
             }elseif($tipo == "eleminarEvento"){
 
                 $id_contenedor = $data["data"]["id_contenedor"];
@@ -279,6 +294,7 @@ class Pxp implements MessageComponentInterface {
                     }
 
                 }
+
 
 
                 //enviamos un retorno al que envio
