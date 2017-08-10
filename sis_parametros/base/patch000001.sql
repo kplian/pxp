@@ -1913,4 +1913,34 @@ CREATE SEQUENCE param.seq_codigo_proveedor
 
 
 
+/***********************************I-SCP-FFP-PARAM-0-08/08/2017*****************************************/
+
+
+--------------- SQL ---------------
+CREATE TABLE param.ttipo_archivo_campo (
+  id_tipo_archivo_campo SERIAL,
+  nombre varchar(255),
+  tipo_dato varchar(255),
+  alias varchar(255),
+  renombrar varchar(255),
+  id_tipo_archivo INTEGER,
+  CONSTRAINT ttipo_archivo_campo_pkey PRIMARY KEY(id_tipo_archivo_campo)
+) INHERITS (pxp.tbase);
+
+
+CREATE TABLE param.ttipo_archivo_join (
+  id_tipo_archivo_join SERIAL,
+  tipo varchar(255),
+  tabla varchar(255),
+  condicion varchar(255),
+  id_tipo_archivo INTEGER,
+  CONSTRAINT ttipo_archivo_join_pkey PRIMARY KEY(id_tipo_archivo_join)
+) INHERITS (pxp.tbase);
+
+ALTER TABLE param.ttipo_archivo_join ADD alias VARCHAR(255) NULL;
+
+/***********************************F-SCP-FFP-PARAM-0-08/08/2017*****************************************/
+
+
+
 

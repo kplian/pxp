@@ -80,6 +80,36 @@ class ACTArchivo extends ACTbase{
     function listarArchivoTabla(){
 
 
+
+
+
+
+        $this->objParam->parametros_consulta['ordenacion'] = 'id_tipo_archivo_campo';
+        $this->objParam->parametros_consulta['dir_ordenacion'] = 'asc';
+        $this->objParam->parametros_consulta['cantidad'] = '1000';
+        $this->objParam->parametros_consulta['filtro'] = ' 0 = 0 ';
+        $this->objParam->addFiltro("tipoar.codigo = ''" . $this->objParam->getParametro('tipo_archivo') . "'' ");
+
+        $this->objFunc=$this->create('MODTipoArchivoCampo');
+        $this->res=$this->objFunc->listarTipoArchivoCampo($this->objParam);
+
+        if ($this->res->getTipo() == 'ERROR') {
+            $this->res->imprimirRespuesta($this->res->generarJson());
+            exit;
+        }
+        $campos = $this->res->getDatos();
+        $campos = json_encode($campos);
+
+        $this->objParam->addParametro('campos', $campos);
+
+
+
+        $this->objParam->parametros_consulta['ordenacion'] = $this->objParam->getParametro('sort');
+        $this->objParam->parametros_consulta['dir_ordenacion'] = $this->objParam->getParametro('dir');
+        $this->objParam->parametros_consulta['cantidad'] = $this->objParam->getParametro('limit');
+        $this->objParam->parametros_consulta['filtro'] = ' 0 = 0 ';
+
+
         if($this->objParam->getParametro('filtros') != ''){
 
             $datos = json_decode($this->objParam->getParametro('filtros'));
@@ -105,12 +135,13 @@ class ACTArchivo extends ACTbase{
 
 
         }
-
-
+        
         $this->objFunc=$this->create('MODArchivo');
         $this->res=$this->objFunc->listarArchivoTabla($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+
+    
 
 			
 }
