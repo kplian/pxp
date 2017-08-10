@@ -556,3 +556,19 @@ select pxp.f_insert_tgui ('<i class="fa fa-sitemap fa-2x"></i> ORGANIGRAMA', 'Or
 /*****************************F-DAT-RAC-ORGA-0-30/05/2017*************/
 
 
+
+
+/*****************************I-DAT-RAC-ORGA-0-08/08/2017*************/
+
+------------- SQL ---------------
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN id_auxiliar INTEGER;
+
+COMMENT ON COLUMN orga.tfuncionario.id_auxiliar
+IS 'ahce referencia al id_auciliar_contable del funcionario, es de uso opcional';
+
+
+/*****************************F-DAT-RAC-ORGA-0-08/08/2017*************/
+
+

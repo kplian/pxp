@@ -492,24 +492,16 @@ class MODValidacion
 	function validarCodigoHtml($nombre,$valor,$blank,$tamano){		
 		 if($blank==false){
                 array_push($this->res,'El campo '.$nombre." debe ser registrado");
-        }	
-								
+        }							
 	}
 	
 	function validarJson($nombre,$valor,$blank,$tamano) {
-                
         if($blank==false){
-                array_push($this->res,'El campo '.$nombre." debe ser registrado");
+           array_push($this->res,'El campo '.$nombre." debe ser registrado");
         }            
         json_decode($valor);
-        if(json_last_error() != JSON_ERROR_NONE){
-           throw new Exception("El archivo no se pudo subir, por favor intentelo de nuevo");
+        if(json_last_error() != JSON_ERROR_NONE  ){
+           throw new Exception("Error en archvi JSON: ".json_last_error_msg());
         }
-        
-     
-    
-    
     }
-	
-	
 }

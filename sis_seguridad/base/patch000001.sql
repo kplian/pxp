@@ -1108,3 +1108,8 @@ ALTER TABLE segu.tprocedimiento
 
 /*****************************F-SCP-RAC-SEGU-0-06/01/2017*************/
 
+
+/*****************************I-SCP-RCM-SEGU-0-09/08/2017*************/
+CREATE INDEX idx_tusuario__id_usuario ON segu.tusuario
+  USING btree (id_usuario);
+/*****************************F-SCP-RCM-SEGU-0-09/08/2017*************/
