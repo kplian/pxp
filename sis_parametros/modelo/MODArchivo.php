@@ -624,6 +624,8 @@ class MODArchivo extends MODbase{
 
         $datos = json_decode($this->objParam->getParametro('campos'));
 
+
+
         $arra = array();
         $campos = '';
         $conteo = count($datos);
@@ -631,9 +633,8 @@ class MODArchivo extends MODbase{
 
 
 
-
-            if($dato->nick != ''){
-                $campos .= $dato->nick.".".$dato->nombre .' as '.$dato->renombrar;
+            if($dato->alias != ''){
+                $campos .= $dato->alias.".".$dato->nombre .' as '.$dato->renombrar;
                 $this->captura($dato->renombrar,$dato->tipo_dato);
 
 
@@ -649,6 +650,8 @@ class MODArchivo extends MODbase{
 
         }
 
+      
+
         $this->aParam->addParametro('campos', $campos);
         $this->arreglo['campos'] = $campos;
         $this->setParametro('campos','campos','varchar');
@@ -656,14 +659,6 @@ class MODArchivo extends MODbase{
 
 
 
-        if($this->objParam->getParametro('join') != ''){
-            $json_join = $this->objParam->getParametro('join');
-
-
-            $this->aParam->addParametro('json_join', $json_join);
-            $this->arreglo['json_join'] = $json_join;
-            $this->setParametro('json_join','json_join','text');
-        }
 
 
 
