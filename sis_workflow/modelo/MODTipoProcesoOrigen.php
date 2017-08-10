@@ -38,6 +38,9 @@ class MODTipoProcesoOrigen extends MODbase{
 		
 		$this->captura('desc_tipo_estado','varchar');
 		$this->captura('desc_proceso_macro','varchar');
+		$this->captura('desc_tipo_proceso','varchar');
+		
+		
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
