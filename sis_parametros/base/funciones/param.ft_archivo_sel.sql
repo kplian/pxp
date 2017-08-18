@@ -25,6 +25,8 @@ DECLARE
 	v_resp				varchar;
 
 	v_record_tipo_archivo record;
+	v_record_campos record;
+	v_record_join record;
 
 	v_registros_json_join RECORD;
 	v_join VARCHAR;
@@ -251,20 +253,11 @@ where ';
 
 		begin
 
-			v_join = ' ';
-
-			IF (pxp.f_existe_parametro(p_tabla,'json_join')) THEN
-				FOR v_registros_json_join IN (SELECT *
-																			FROM json_populate_recordset(NULL :: param.archivo_json_join,
-																																	 v_parametros.json_join :: JSON)) LOOP
-
-					v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.nick || ' on ' ||v_registros_json_join.condicion || ' ';
-
-				END LOOP;
-			END IF;
 
 
 
+
+			--obtenemos el tipo de archivo
 			SELECT
 				tipar.tabla,
 				tipar.nombre_id,
@@ -272,6 +265,25 @@ where ';
 			INTO v_record_tipo_archivo
 			FROM param.ttipo_archivo tipar
 			WHERE codigo = v_parametros.tipo_archivo;
+
+
+
+			--obtenemos join
+
+
+			v_join = ' ';
+
+
+			FOR v_registros_json_join IN (SELECT *
+																		FROM param.ttipo_archivo_join tjoin
+																		WHERE id_tipo_archivo = v_record_tipo_archivo.id_tipo_archivo) LOOP
+
+				v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.alias || ' on ' ||v_registros_json_join.condicion || ' ';
+
+			END LOOP;
+
+
+
 
 
 			v_consulta = 'select
@@ -314,17 +326,7 @@ where ';
 		begin
 			--Sentencia de la consulta de conteo de registros
 
-			v_join = ' ';
 
-			IF (pxp.f_existe_parametro(p_tabla,'json_join')) THEN
-				FOR v_registros_json_join IN (SELECT *
-																			FROM json_populate_recordset(NULL :: param.archivo_json_join,
-																																	 v_parametros.json_join :: JSON)) LOOP
-
-					v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.nick || ' on ' ||v_registros_json_join.condicion || ' ';
-
-				END LOOP;
-			END IF;
 
 
 
@@ -335,6 +337,18 @@ where ';
 			INTO v_record_tipo_archivo
 			FROM param.ttipo_archivo tipar
 			WHERE codigo = v_parametros.tipo_archivo;
+
+
+			v_join = ' ';
+
+
+			FOR v_registros_json_join IN (SELECT *
+																		FROM param.ttipo_archivo_join tjoin
+																		WHERE id_tipo_archivo = v_record_tipo_archivo.id_tipo_archivo) LOOP
+
+				v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.alias || ' on ' ||v_registros_json_join.condicion || ' ';
+
+			END LOOP;
 
 
 			v_consulta = 'select count(archivo.id_archivo)

@@ -7,7 +7,7 @@ $BODY$
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_archivo_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tarchivo'
- AUTOR: 		 (admin)
+ AUTOR: 		 (favio.figueroa)
  FECHA:	        05-12-2016 15:04:48
  COMENTARIOS:	
 ***************************************************************************
