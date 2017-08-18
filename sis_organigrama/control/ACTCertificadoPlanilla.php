@@ -7,6 +7,7 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 require_once(dirname(__FILE__).'/../reportes/RCertificadoPDF.php');
+require_once(dirname(__FILE__).'/../reportes/RCertificadoDOC.php');
 
 class ACTCertificadoPlanilla extends ACTbase{
 
@@ -81,6 +82,22 @@ class ACTCertificadoPlanilla extends ACTbase{
         $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
     }
 
+    function reporteCertificadoDoc(){
+
+        $this->objFunc=$this->create('MODCertificadoPlanilla');
+        $dataSource = $this->objFunc->reporteCertificado();
+        $this->dataSource=$dataSource->getDatos();
+        $nombreArchivo = uniqid(md5(session_id()).'[Certificado-'.$this->dataSource[0]['nro_tramite'].']').'.docx';
+        $reporte = new RCertificadoDOC($this->objParam);
+        
+        $reporte->datosHeader($dataSource->getDatos());
+        $reporte->write(dirname(__FILE__).'/../../../reportes_generados/'.$nombreArchivo);
+        //var_dump((dirname(__FILE__).'/../../reportes_generados/'));exit;
+        $this->mensajeExito=new Mensaje();
+        $this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado','Se generó con éxito el reporte: '.$nombreArchivo,'control');
+        $this->mensajeExito->setArchivoGenerado($nombreArchivo);
+        $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+    }
 
 }
 

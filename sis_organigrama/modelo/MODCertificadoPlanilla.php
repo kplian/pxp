@@ -167,29 +167,27 @@ class MODCertificadoPlanilla extends MODbase{
         $this->setCount(false);
         $this->setParametro('id_proceso_wf', 'id_proceso_wf', 'int4');
         $this->setParametro('id_usuario','id_usuario','int4');
+
         $this->captura('nombre_funcionario','text');
         $this->captura('nombre_cargo','varchar');
         $this->captura('fecha_contrato','date');
         $this->captura('haber_basico','numeric');
         $this->captura('ci','varchar');
         $this->captura('expedicion','varchar');
-        $this->captura('genero','text');
+        $this->captura('genero','varchar');
         $this->captura('fecha_solicitud','date');
         $this->captura('nombre_unidad','varchar');
         $this->captura('haber_literal','varchar');
-        $this->captura('tipo','text');
-        $this->captura('jefa_recursos','varchar');
+        $this->captura('jefa_recursos','text');
         $this->captura('tipo_certificado','varchar');
-        $this->captura('tipo_trabajador','text');
         $this->captura('importe_viatico','numeric');
         $this->captura('literal_importe_viatico','varchar');
-        $this->captura('iniciales','varchar');
         $this->captura('nro_tramite','varchar');
-        $this->captura('tipo_ge','text');
+        $this->captura('iniciales','varchar');
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
-        //var_dump($this->respuesta); exit;
+      // var_dump($this->respuesta); exit;
         //Devuelve la respuesta
         return $this->respuesta;
     }
