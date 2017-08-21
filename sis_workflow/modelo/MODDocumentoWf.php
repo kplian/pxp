@@ -104,6 +104,49 @@ class MODDocumentoWf extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function listaDocumentosFirma(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_documento_wf_sel';
+		$this->transaccion='WF_DWFFIRMA_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->tipo_conexion='seguridad';
+
+		$this->count=false;
+
+		//$this->count=false;
+		$this->id_usuario = 1;
+
+		//Definicion de la lista del resultado del query
+		$this->captura('id_documento_wf','int4');
+		$this->captura('url','varchar');
+		$this->captura('num_tramite','varchar');
+		$this->captura('id_tipo_documento','int4');
+		$this->captura('obs','text');
+		$this->captura('id_proceso_wf','int4');
+		$this->captura('extension','varchar');
+		$this->captura('chequeado','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('nombre_tipo_doc','varchar');
+		$this->captura('nombre_doc','varchar');
+		$this->captura('momento','varchar');
+
+		$this->captura('accion_pendiente','varchar');
+		$this->captura('fecha_firma','varchar');
+		$this->captura('usuario_firma','varchar');
+		$this->captura('action','varchar');
+		$this->captura('nombre_usuario_firma','text');
+
+
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 	function insertarDocumentoWf(){
 		//Definicion de variables para ejecucion del procedimiento
