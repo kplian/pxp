@@ -64,6 +64,7 @@ BEGIN
 						from param.tdepto_depto dede
 						inner join param.tdepto ddes on ddes.id_depto = dede.id_depto_destino
                         inner join segu.tusuario usu1 on usu1.id_usuario = dede.id_usuario_reg
+                        inner join segu.tsubsistema sdes on sdes.id_subsistema = ddes.id_subsistema
                         left join segu.tusuario usu2 on usu2.id_usuario = dede.id_usuario_mod
 				        where  ';
 			
@@ -91,6 +92,7 @@ BEGIN
 					    from param.tdepto_depto dede
 						inner join param.tdepto ddes on ddes.id_depto = dede.id_depto_destino
                         inner join segu.tusuario usu1 on usu1.id_usuario = dede.id_usuario_reg
+                        inner join segu.tsubsistema sdes on sdes.id_subsistema = ddes.id_subsistema
                         left join segu.tusuario usu2 on usu2.id_usuario = dede.id_usuario_mod
 				        where ';
 			
