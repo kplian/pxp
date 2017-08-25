@@ -18,9 +18,22 @@ class ACTDeptoDepto extends ACTbase{
             $this->objParam->addFiltro("dede.id_depto_origen = ".$this->objParam->getParametro('id_depto'));    
         }
 		
+		if($this->objParam->getParametro('id_depto_destino')!=''){
+            $this->objParam->addFiltro("dede.id_depto_destino = ".$this->objParam->getParametro('id_depto_destino'));    
+        }
+		
+		
 		if($this->objParam->getParametro('id_subsistema')!=''){
             $this->objParam->addFiltro("ddes.id_subsistema = ".$this->objParam->getParametro('id_subsistema'));    
         }
+		
+		
+		if($this->objParam->getParametro('codigo_sis_des')!=''){
+            $this->objParam->addFiltro("sdes.codigo = ''".$this->objParam->getParametro('codigo_sis_des')."''");    
+        }
+		
+		
+		
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
