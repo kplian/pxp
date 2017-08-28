@@ -1013,6 +1013,15 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		//
 	},
 	
+	tabeast:[
+	{
+	  url:'../../../sis_parametros/vista/proveedor_cta_bancaria/ProveedorCtaBancaria.php',
+	  title:'Cta Bancaria', 
+	  width:'50%',
+	  cls:'ProveedorCtaBancaria',
+	  params:{nombre_tabla:'param.tproveedor',tabla_id : 'id_proveedor'}
+	}],
+	
 	fheight: '95%',
     fwidth: '95%',
 	Grupos: [
