@@ -152,3 +152,21 @@ CREATE AGGREGATE pxp.list_br (text)
 );
 
 /****************************F-SCP-JRR-PXP-0-25/04/2014********************************/
+
+
+/****************************I-SCP-RAC-PXP-0-17/08/2017********************************/
+
+--------------- SQL ---------------
+
+CREATE AGGREGATE pxp.concat_array (
+  pg_catalog.anyarray)
+(
+  SFUNC = pxp.concat_array,
+  STYPE = anyarray
+);
+
+/****************************F-SCP-RAC-PXP-0-17/08/2017********************************/
+
+
+
+
