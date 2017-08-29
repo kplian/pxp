@@ -12,6 +12,10 @@ class ACTCatalogo extends ACTbase{
 	function listarCatalogo(){
 		$this->objParam->defecto('ordenacion','id_catalogo');
 		$this->objParam->defecto('dir_ordenacion','asc');
+
+		if($this->objParam->getParametro('catalogoTipo')!=''){
+            $this->objParam->addFiltro("cattip.nombre = ''".$this->objParam->getParametro('catalogoTipo')."''");
+        }
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
