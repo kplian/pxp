@@ -11,12 +11,13 @@ from os.path import expanduser
 def restaurar_db(base):
 	print 'Iniciando backup de la BD :' + db
 	print 'El host es :' + host 	
+	print 'El puerto es:' + port
 	file_name = '/tmp/bk_' + base + '_' +datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 	if (host == '127.0.0.1' or host == 'localhost'):
 		command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f ' + file_name
 	else:
 		validar_pgpass()
-		command = 'pg_dump ' + base + ' -h ' + host + ' -U ' + usuario + ' -w -F c -b -N log -f ' + file_name	
+		command = 'pg_dump ' + base + ' -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -w -F c -b -N log -f ' + file_name	
     
 	for line in run_command(command):
 		print line
@@ -35,7 +36,7 @@ def comparar_db(psistema):
 		command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db
         else:
         	validar_pgpass()
-                command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db     + ' -h ' + host + ' -U ' + usuario	
+                command = 'psql -t -1 -q -A -c "select p.proname from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db     + ' -h ' + host + ' -p ' + port + ' -U ' + usuario	
 
 	
 	for line in run_command(command):
@@ -60,7 +61,7 @@ def comparar_db(psistema):
         			command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db
         		else:
                 		validar_pgpass()
-                		command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db     + ' -h ' + host + ' -U ' + usuario
+                		command = 'psql -t -1 -q -A -c "select p.prosrc from pg_proc p INNER JOIN pg_namespace n ON p.pronamespace = n.oid where proname = \$\$' + f + '\$\$ and n.nspname = \$\$' + esquema[0] + '\$\$" -d ' + db     + ' -h ' + host + ' -p ' + port + ' -U ' + usuario
 			for line in run_command(command):
 				codigo_bd += line
 			codigo_file = "".join(codigo_file.split());
@@ -155,7 +156,7 @@ def execute_script (systems , kind, file_log):
 							command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db
 					else:
 							validar_pgpass()
-							command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db	+ ' -h ' + host + ' -U ' + usuario
+							command = 'psql -t -1 -q -A -c "select pxp.f_is_loaded_script(\$\$' + script['codigo']  + '\$\$)" -d ' + db	+ ' -h ' + host + ' -p ' + port + ' -U ' + usuario
                     	        
 					for line in run_command(command):
 							if kind == 'custom_type':
@@ -171,7 +172,7 @@ def execute_script (systems , kind, file_log):
 									command = 'psql -t -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
 								else:
 									validar_pgpass()
-									command = 'psql -t -h ' + host + ' -U ' + usuario + ' -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
+									command = 'psql -t -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -1 -q -A -d ' + db + ' < /tmp/file_command.txt'
                     
                         					f_log.write("/***********************************" + script['codigo']  + "("+ item +"base/"+ f +") *****************************/\n")
                         					for line in run_command(command):
@@ -210,6 +211,13 @@ try:
 			host = host.replace('"','')
 			host = host.replace(';','')
 			print 'El host es :' + host
+		if line.find('$_SESSION["_PUERTO"]') != -1 :
+                        vars = line.split('=')
+                        port = vars[1]
+                        port = port.strip()
+                        port = port.replace('"','')
+                        port = port.replace(';','')
+                        print 'La puerto es :' + port
 	file1.close()		
 except:
 	sys.exit('El archivo pxp/lib/DatosGenerales.php no existe o no tiene permisos de lectura!!!')
@@ -318,7 +326,7 @@ for item in url:
 			command = 'psql -q -d ' + db + ' < ' + item + 'base/schema.sql'
 		else:
 			validar_pgpass()
-			command = 'psql -h ' + host + ' -U ' + usuario + ' -q -d ' + db + ' < ' + item + 'base/schema.sql'
+			command = 'psql -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -q -d ' + db + ' < ' + item + 'base/schema.sql'
 		
 		for line in run_command(command):
                 	f_log.write(line)	
@@ -330,7 +338,7 @@ for item in url:
 				command = 'psql '+ db + ' -c  "select pxp.f_manage_schema(\$\$' + esquema  + '\$\$,' + opcion + ')"'
 			else:
 				validar_pgpass()
-				command = 'psql '+ db + ' -h ' + host + ' -U ' + usuario + ' -c  "select pxp.f_manage_schema(\$\$' + esquema  + '\$\$,' + opcion + ')"'
+				command = 'psql '+ db + ' -h ' + host + ' -p ' + port  + ' -U ' + usuario + ' -c  "select pxp.f_manage_schema(\$\$' + esquema  + '\$\$,' + opcion + ')"'
 						
 			for line in run_command(command):
        				f_log.write(line)
@@ -345,7 +353,7 @@ if (host == '127.0.0.1' or host == 'localhost'):
 	command = 'psql -q -d ' + db + ' < ' + url[0] +   'base/funciones/pxp.f_delfunc.sql'
 else:
 	validar_pgpass()
-	command = 'psql -h ' + host + ' -U ' + usuario + ' -q -d ' + db + ' < ' + url[0] +   'base/funciones/pxp.f_delfunc.sql'          	
+	command = 'psql -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -q -d ' + db + ' < ' + url[0] +   'base/funciones/pxp.f_delfunc.sql'          	
 			
 for line in run_command(command):
 	f_log.write(line)
@@ -367,7 +375,7 @@ for item in url:
 					command = 'psql '+ db + ' -c  "select pxp.f_delfunc(\$\$' + f.replace('.sql','')  + '\$\$)"'
 				else:
 					validar_pgpass()
-					command = 'psql '+ db + ' -h ' + host + ' -U ' + usuario + ' -c  "select pxp.f_delfunc(\$\$' + f.replace('.sql','')  + '\$\$)"'
+					command = 'psql '+ db + ' -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -c  "select pxp.f_delfunc(\$\$' + f.replace('.sql','')  + '\$\$)"'
     			 	    				
     			  	for line in run_command(command):
                                     f_log.write(line)
@@ -376,7 +384,7 @@ for item in url:
 				command = 'psql -q -d ' + db + ' < ' + funciones_dir + f  
 			else:
 				validar_pgpass()
-				command = 'psql  -h ' + host + ' -U ' + usuario + ' -q -d ' + db + ' < ' + funciones_dir + f            	
+				command = 'psql  -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -q -d ' + db + ' < ' + funciones_dir + f            	
     			 	
             		
 			for line in run_command(command):
@@ -394,7 +402,7 @@ if (datos  == 's'):
 		command = 'psql '+ db + ' < ' + item + 'base/test_data.sql'
 	    else:
 		validar_pgpass()
-		command = 'psql -h ' + host + ' -U ' + usuario + ' '+ db + ' < ' + item + 'base/test_data.sql'           	
+		command = 'psql -h ' + host + ' -p ' + port + ' -U ' + usuario + ' '+ db + ' < ' + item + 'base/test_data.sql'           	
     			 	
             for line in run_command(command):
                 f_log.write(line)
@@ -405,7 +413,7 @@ if os.access(os.path.dirname(__file__) + '/../../base/aggregates.sql', os.R_OK):
 		command = 'psql '+ db + ' < ' + os.path.dirname(__file__) + '/../../base/aggregates.sql'
 	else:
 		validar_pgpass()
-		command = 'psql -h ' + host + ' -U ' + usuario + ' '+ db + ' < ' + os.path.dirname(__file__) + '/../../base/aggregates.sql'           	
+		command = 'psql -h ' + host + ' -p ' + port + ' -U ' + usuario + ' '+ db + ' < ' + os.path.dirname(__file__) + '/../../base/aggregates.sql'           	
     		
 	
 	for line in run_command(command):
@@ -420,7 +428,7 @@ if (host == '127.0.0.1' or host == 'localhost'):
 	command = 'psql '+ db + ' -c  \'select pxp.f_update_sequences()\''
 else:
 	validar_pgpass()
-	command = 'psql  -h ' + host + ' -U ' + usuario + ' '+ db + ' -c  \'select pxp.f_update_sequences()\''
+	command = 'psql  -h ' + host + ' -p ' + port + ' -U ' + usuario + ' '+ db + ' -c  \'select pxp.f_update_sequences()\''
 	
 for line in run_command(command):
 	f_log.write(line)

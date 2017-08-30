@@ -1108,17 +1108,24 @@ IS 'si o no, si esta habilitado, es indispensable que el monto excento tambien l
 alter table param.tcatalogo
     add column icono varchar(100);
 /***********************************F-SCP-RCM-PARAM-0-27/10/2015****************************************/
+
+
 /***********************************I-SCP-GSS-PARAM-0-04/11/2015****************************************/
 
 CREATE TABLE param.tproveedor_cta_bancaria (
-  id_proveedor_cta_bancaria SERIAL, 
-  nro_cuenta VARCHAR(30), 
-  swift_big VARCHAR(10), 
-  fw_aba_cta VARCHAR(15), 
-  id_proveedor INTEGER NOT NULL, 
-  id_banco_beneficiario INTEGER, 
-  id_banco_intermediario INTEGER, 
-  CONSTRAINT tproveedor_cta_bancaria_pkey PRIMARY KEY(id_proveedor_cta_bancaria)
+  id_proveedor_cta_bancaria SERIAL,
+  nro_cuenta VARCHAR(30),
+  swift_big VARCHAR(10),
+  fw_aba_cta VARCHAR(15),
+  id_proveedor INTEGER NOT NULL,
+  id_banco_beneficiario INTEGER,
+  banco_intermediario VARCHAR(30),
+  CONSTRAINT tproveedor_cta_bancaria_pkey PRIMARY KEY(id_proveedor_cta_bancaria),
+  CONSTRAINT fk_tproveedor_cta_bancaria__id_banco_beneficiario FOREIGN KEY (id_banco_beneficiario)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
 ) INHERITS (pxp.tbase)
 
 WITH (oids = false);

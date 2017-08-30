@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2010 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,13 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.4, 2010-08-26
+ * @version    ##VERSION##, ##DATE##
  */
 
-define('IDENTIFIER_OLE', pack('CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1));
+defined('IDENTIFIER_OLE') ||
+    define('IDENTIFIER_OLE', pack('CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1));
 
 class PHPExcel_Shared_OLERead {
 	private $data = '';
@@ -59,41 +60,52 @@ class PHPExcel_Shared_OLERead {
 	const START_BLOCK_POS					= 0x74;
 	const SIZE_POS							= 0x78;
 
+
+
+	public $wrkbook						= null;
+	public $summaryInformation			= null;
+	public $documentSummaryInformation	= null;
+
+
 	/**
 	 * Read the file
 	 *
 	 * @param $sFileName string Filename
-	 * @throws Exception
+	 * @throws PHPExcel_Reader_Exception
 	 */
 	public function read($sFileName)
 	{
 		// Check if file exists and is readable
 		if(!is_readable($sFileName)) {
-			throw new Exception("Could not open " . $sFileName . " for reading! File does not exist, or it is not readable.");
+			throw new PHPExcel_Reader_Exception("Could not open " . $sFileName . " for reading! File does not exist, or it is not readable.");
+		}
+
+		// Get the file identifier
+		// Don't bother reading the whole file until we know it's a valid OLE file
+		$this->data = file_get_contents($sFileName, FALSE, NULL, 0, 8);
+
+		// Check OLE identifier
+		if ($this->data != self::IDENTIFIER_OLE) {
+			throw new PHPExcel_Reader_Exception('The filename ' . $sFileName . ' is not recognised as an OLE file');
 		}
 
 		// Get the file data
 		$this->data = file_get_contents($sFileName);
 
-		// Check OLE identifier
-		if (substr($this->data, 0, 8) != self::IDENTIFIER_OLE) {
-			throw new Exception('The filename ' . $sFileName . ' is not recognised as an OLE file');
-		}
-
 		// Total number of sectors used for the SAT
-		$this->numBigBlockDepotBlocks = $this->_GetInt4d($this->data, self::NUM_BIG_BLOCK_DEPOT_BLOCKS_POS);
+		$this->numBigBlockDepotBlocks = self::_GetInt4d($this->data, self::NUM_BIG_BLOCK_DEPOT_BLOCKS_POS);
 
 		// SecID of the first sector of the directory stream
-		$this->rootStartBlock = $this->_GetInt4d($this->data, self::ROOT_START_BLOCK_POS);
+		$this->rootStartBlock = self::_GetInt4d($this->data, self::ROOT_START_BLOCK_POS);
 
 		// SecID of the first sector of the SSAT (or -2 if not extant)
-		$this->sbdStartBlock = $this->_GetInt4d($this->data, self::SMALL_BLOCK_DEPOT_BLOCK_POS);
+		$this->sbdStartBlock = self::_GetInt4d($this->data, self::SMALL_BLOCK_DEPOT_BLOCK_POS);
 
 		// SecID of the first sector of the MSAT (or -2 if no additional sectors are used)
-		$this->extensionBlock = $this->_GetInt4d($this->data, self::EXTENSION_BLOCK_POS);
+		$this->extensionBlock = self::_GetInt4d($this->data, self::EXTENSION_BLOCK_POS);
 
 		// Total number of sectors used by MSAT
-		$this->numExtensionBlocks = $this->_GetInt4d($this->data, self::NUM_EXTENSION_BLOCK_POS);
+		$this->numExtensionBlocks = self::_GetInt4d($this->data, self::NUM_EXTENSION_BLOCK_POS);
 
 		$bigBlockDepotBlocks = array();
 		$pos = self::BIG_BLOCK_DEPOT_BLOCKS_POS;
@@ -105,7 +117,7 @@ class PHPExcel_Shared_OLERead {
 		}
 
 		for ($i = 0; $i < $bbdBlocks; ++$i) {
-			  $bigBlockDepotBlocks[$i] = $this->_GetInt4d($this->data, $pos);
+			  $bigBlockDepotBlocks[$i] = self::_GetInt4d($this->data, $pos);
 			  $pos += 4;
 		}
 
@@ -114,150 +126,85 @@ class PHPExcel_Shared_OLERead {
 			$blocksToRead = min($this->numBigBlockDepotBlocks - $bbdBlocks, self::BIG_BLOCK_SIZE / 4 - 1);
 
 			for ($i = $bbdBlocks; $i < $bbdBlocks + $blocksToRead; ++$i) {
-				$bigBlockDepotBlocks[$i] = $this->_GetInt4d($this->data, $pos);
+				$bigBlockDepotBlocks[$i] = self::_GetInt4d($this->data, $pos);
 				$pos += 4;
 			}
 
 			$bbdBlocks += $blocksToRead;
 			if ($bbdBlocks < $this->numBigBlockDepotBlocks) {
-				$this->extensionBlock = $this->_GetInt4d($this->data, $pos);
+				$this->extensionBlock = self::_GetInt4d($this->data, $pos);
 			}
 		}
 
 		$pos = 0;
-		$index = 0;
-		$this->bigBlockChain = array();
-
+		$this->bigBlockChain = '';
+		$bbs = self::BIG_BLOCK_SIZE / 4;
 		for ($i = 0; $i < $this->numBigBlockDepotBlocks; ++$i) {
 			$pos = ($bigBlockDepotBlocks[$i] + 1) * self::BIG_BLOCK_SIZE;
 
-			for ($j = 0 ; $j < self::BIG_BLOCK_SIZE / 4; ++$j) {
-				$this->bigBlockChain[$index] = $this->_GetInt4d($this->data, $pos);
-				$pos += 4 ;
-				++$index;
-			}
+			$this->bigBlockChain .= substr($this->data, $pos, 4*$bbs);
+			$pos += 4*$bbs;
 		}
 
 		$pos = 0;
-		$index = 0;
 		$sbdBlock = $this->sbdStartBlock;
-		$this->smallBlockChain = array();
-
+		$this->smallBlockChain = '';
 		while ($sbdBlock != -2) {
 			$pos = ($sbdBlock + 1) * self::BIG_BLOCK_SIZE;
 
-			for ($j = 0; $j < self::BIG_BLOCK_SIZE / 4; ++$j) {
-				$this->smallBlockChain[$index] = $this->_GetInt4d($this->data, $pos);
-				$pos += 4;
-				++$index;
-			}
+			$this->smallBlockChain .= substr($this->data, $pos, 4*$bbs);
+			$pos += 4*$bbs;
 
-			$sbdBlock = $this->bigBlockChain[$sbdBlock];
+			$sbdBlock = self::_GetInt4d($this->bigBlockChain, $sbdBlock*4);
 		}
 
-		$block = $this->rootStartBlock;
-		$pos = 0;
-
 		// read the directory stream
+		$block = $this->rootStartBlock;
 		$this->entry = $this->_readData($block);
 
 		$this->_readPropertySets();
 	}
 
 	/**
-	 * Extract binary stream data, workbook stream + sheet streams
+	 * Extract binary stream data
 	 *
 	 * @return string
 	 */
-	public function getWorkBook()
+	public function getStream($stream)
 	{
-		if ($this->props[$this->wrkbook]['size'] < self::SMALL_BLOCK_THRESHOLD){
-			$rootdata = $this->_readData($this->props[$this->rootentry]['startBlock']);
-
-			$streamData = '';
-			$block = $this->props[$this->wrkbook]['startBlock'];
-
-			$pos = 0;
-			while ($block != -2) {
-	  			$pos = $block * self::SMALL_BLOCK_SIZE;
-				$streamData .= substr($rootdata, $pos, self::SMALL_BLOCK_SIZE);
-
-				$block = $this->smallBlockChain[$block];
-			}
-
-			return $streamData;
-
-
-		} else {
-			$numBlocks = $this->props[$this->wrkbook]['size'] / self::BIG_BLOCK_SIZE;
-			if ($this->props[$this->wrkbook]['size'] % self::BIG_BLOCK_SIZE != 0) {
-				++$numBlocks;
-			}
-
-			if ($numBlocks == 0) return '';
-
-
-			$streamData = '';
-			$block = $this->props[$this->wrkbook]['startBlock'];
-
-			$pos = 0;
-
-			while ($block != -2) {
-				$pos = ($block + 1) * self::BIG_BLOCK_SIZE;
-				$streamData .= substr($this->data, $pos, self::BIG_BLOCK_SIZE);
-				$block = $this->bigBlockChain[$block];
-			}
-
-			return $streamData;
-		}
-	}
-
-	/**
-	 * Extract binary stream data, summary information
-	 *
-	 * @return string|null
-	 */
-	public function getSummaryInformation()
-	{
-		if (!isset($this->summaryInformation)) {
+		if ($stream === NULL) {
 			return null;
 		}
 
-		if ($this->props[$this->summaryInformation]['size'] < self::SMALL_BLOCK_THRESHOLD){
+		$streamData = '';
+
+		if ($this->props[$stream]['size'] < self::SMALL_BLOCK_THRESHOLD) {
 			$rootdata = $this->_readData($this->props[$this->rootentry]['startBlock']);
 
-			$streamData = '';
-			$block = $this->props[$this->summaryInformation]['startBlock'];
+			$block = $this->props[$stream]['startBlock'];
 
-			$pos = 0;
 			while ($block != -2) {
 	  			$pos = $block * self::SMALL_BLOCK_SIZE;
 				$streamData .= substr($rootdata, $pos, self::SMALL_BLOCK_SIZE);
 
-				$block = $this->smallBlockChain[$block];
+				$block = self::_GetInt4d($this->smallBlockChain, $block*4);
 			}
 
 			return $streamData;
-
-
 		} else {
-			$numBlocks = $this->props[$this->summaryInformation]['size'] / self::BIG_BLOCK_SIZE;
-			if ($this->props[$this->summaryInformation]['size'] % self::BIG_BLOCK_SIZE != 0) {
+			$numBlocks = $this->props[$stream]['size'] / self::BIG_BLOCK_SIZE;
+			if ($this->props[$stream]['size'] % self::BIG_BLOCK_SIZE != 0) {
 				++$numBlocks;
 			}
 
 			if ($numBlocks == 0) return '';
 
-
-			$streamData = '';
-			$block = $this->props[$this->summaryInformation]['startBlock'];
-
-			$pos = 0;
+			$block = $this->props[$stream]['startBlock'];
 
 			while ($block != -2) {
 				$pos = ($block + 1) * self::BIG_BLOCK_SIZE;
 				$streamData .= substr($this->data, $pos, self::BIG_BLOCK_SIZE);
-				$block = $this->bigBlockChain[$block];
+				$block = self::_GetInt4d($this->bigBlockChain, $block*4);
 			}
 
 			return $streamData;
@@ -273,13 +220,12 @@ class PHPExcel_Shared_OLERead {
 	private function _readData($bl)
 	{
 		$block = $bl;
-		$pos = 0;
 		$data = '';
 
 		while ($block != -2)  {
 			$pos = ($block + 1) * self::BIG_BLOCK_SIZE;
-			$data = $data . substr($this->data, $pos, self::BIG_BLOCK_SIZE);
-			$block = $this->bigBlockChain[$block];
+			$data .= substr($this->data, $pos, self::BIG_BLOCK_SIZE);
+			$block = self::_GetInt4d($this->bigBlockChain, $block*4);
 		}
 		return $data;
 	 }
@@ -287,12 +233,12 @@ class PHPExcel_Shared_OLERead {
 	/**
 	 * Read entries in the directory stream.
 	 */
-	private function _readPropertySets()
-	{
+	private function _readPropertySets() {
 		$offset = 0;
 
 		// loop through entires, each entry is 128 bytes
-		while ($offset < strlen($this->entry)) {
+		$entryLen = strlen($this->entry);
+		while ($offset < $entryLen) {
 			// entry data (128 bytes)
 			$d = substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);
 
@@ -304,16 +250,12 @@ class PHPExcel_Shared_OLERead {
 
 			// sectorID of first sector or short sector, if this entry refers to a stream (the case with workbook)
 			// sectorID of first sector of the short-stream container stream, if this entry is root entry
-			$startBlock = $this->_GetInt4d($d, self::START_BLOCK_POS);
+			$startBlock = self::_GetInt4d($d, self::START_BLOCK_POS);
 
-			$size = $this->_GetInt4d($d, self::SIZE_POS);
+			$size = self::_GetInt4d($d, self::SIZE_POS);
 
-			$name = '';
-			for ($i = 0; $i < $nameSize ; ++$i) {
-				$name .= $d[$i];
-			}
+			$name = str_replace("\x00", "", substr($d,0,$nameSize));
 
-			$name = str_replace("\x00", "", $name);
 
 			$this->props[] = array (
 				'name' => $name,
@@ -321,19 +263,28 @@ class PHPExcel_Shared_OLERead {
 				'startBlock' => $startBlock,
 				'size' => $size);
 
+			// tmp helper to simplify checks
+			$upName = strtoupper($name);
+
 			// Workbook directory entry (BIFF5 uses Book, BIFF8 uses Workbook)
-			if (($name == 'Workbook') || ($name == 'Book') || ($name == 'WORKBOOK') || ($name == 'BOOK')) {
+			if (($upName === 'WORKBOOK') || ($upName === 'BOOK')) {
 				$this->wrkbook = count($this->props) - 1;
 			}
-
-			// Root entry
-			if ($name == 'Root Entry' || $name == 'ROOT ENTRY' || $name == 'R') {
+			else if ( $upName === 'ROOT ENTRY' || $upName === 'R') {
+				// Root entry
 				$this->rootentry = count($this->props) - 1;
 			}
 
 			// Summary information
 			if ($name == chr(5) . 'SummaryInformation') {
+//				echo 'Summary Information<br />';
 				$this->summaryInformation = count($this->props) - 1;
+			}
+
+			// Additional Document Summary information
+			if ($name == chr(5) . 'DocumentSummaryInformation') {
+//				echo 'Document Summary Information<br />';
+				$this->documentSummaryInformation = count($this->props) - 1;
 			}
 
 			$offset += self::PROPERTY_STORAGE_BLOCK_SIZE;
@@ -348,14 +299,19 @@ class PHPExcel_Shared_OLERead {
 	 * @param int $pos
 	 * @return int
 	 */
-	private function _GetInt4d($data, $pos)
+	private static function _GetInt4d($data, $pos)
 	{
+		// FIX: represent numbers correctly on 64-bit system
+		// http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
 		// Hacked by Andreas Rehm 2006 to ensure correct result of the <<24 block on 32 and 64bit systems
-		$_or_24 = ord($data[$pos+3]);
-		if ($_or_24>=128) $_ord_24 = -abs((256-$_or_24) << 24);
-		else $_ord_24 = ($_or_24&127) << 24;
-
-		return ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | $_ord_24;
+		$_or_24 = ord($data[$pos + 3]);
+		if ($_or_24 >= 128) {
+			// negative number
+			$_ord_24 = -abs((256 - $_or_24) << 24);
+		} else {
+			$_ord_24 = ($_or_24 & 127) << 24;
+		}
+		return ord($data[$pos]) | (ord($data[$pos + 1]) << 8) | (ord($data[$pos + 2]) << 16) | $_ord_24;
 	}
 
 }
