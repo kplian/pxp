@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2010 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Worksheet
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.4, 2010-08-26
+ * @version    ##VERSION##, ##DATE##
  */
 
 
@@ -91,7 +91,7 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Worksheet
- * @copyright  Copyright (c) 2006 - 2010 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Worksheet_HeaderFooter
 {
@@ -108,70 +108,70 @@ class PHPExcel_Worksheet_HeaderFooter
 	 *
 	 * @var string
 	 */
-	private $_oddHeader;
+	private $_oddHeader			= '';
 
 	/**
 	 * OddFooter
 	 *
 	 * @var string
 	 */
-	private $_oddFooter;
+	private $_oddFooter			= '';
 
 	/**
 	 * EvenHeader
 	 *
 	 * @var string
 	 */
-	private $_evenHeader;
+	private $_evenHeader		= '';
 
 	/**
 	 * EvenFooter
 	 *
 	 * @var string
 	 */
-	private $_evenFooter;
+	private $_evenFooter		= '';
 
 	/**
 	 * FirstHeader
 	 *
 	 * @var string
 	 */
-	private $_firstHeader;
+	private $_firstHeader		= '';
 
 	/**
 	 * FirstFooter
 	 *
 	 * @var string
 	 */
-	private $_firstFooter;
+	private $_firstFooter		= '';
 
 	/**
 	 * Different header for Odd/Even, defaults to false
 	 *
 	 * @var boolean
 	 */
-	private $_differentOddEven;
+	private $_differentOddEven	= false;
 
 	/**
 	 * Different header for first page, defaults to false
 	 *
 	 * @var boolean
 	 */
-	private $_differentFirst;
+	private $_differentFirst	= false;
 
 	/**
 	 * Scale with document, defaults to true
 	 *
 	 * @var boolean
 	 */
-	private $_scaleWithDocument;
+	private $_scaleWithDocument	= true;
 
 	/**
 	 * Align with margins, defaults to true
 	 *
 	 * @var boolean
 	 */
-	private $_alignWithMargins;
+	private $_alignWithMargins	= true;
 
 	/**
 	 * Header/footer images
@@ -185,18 +185,6 @@ class PHPExcel_Worksheet_HeaderFooter
      */
     public function __construct()
     {
-    	// Initialise values
-    	$this->_oddHeader			= '';
-    	$this->_oddFooter			= '';
-    	$this->_evenHeader			= '';
-    	$this->_evenFooter			= '';
-    	$this->_firstHeader			= '';
-    	$this->_firstFooter			= '';
-    	$this->_differentOddEven 	= false;
-    	$this->_differentFirst 		= false;
-    	$this->_scaleWithDocument 	= true;
-    	$this->_alignWithMargins 	= true;
-    	$this->_headerFooterImages	= array();
     }
 
     /**
@@ -404,7 +392,7 @@ class PHPExcel_Worksheet_HeaderFooter
      *
      * @param PHPExcel_Worksheet_HeaderFooterDrawing $image
      * @param string $location
-     * @throws Exception
+     * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function addImage(PHPExcel_Worksheet_HeaderFooterDrawing $image = null, $location = self::IMAGE_HEADER_LEFT) {
@@ -416,7 +404,7 @@ class PHPExcel_Worksheet_HeaderFooter
      * Remove header/footer image
      *
      * @param string $location
-     * @throws Exception
+     * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function removeImage($location = self::IMAGE_HEADER_LEFT) {
@@ -430,12 +418,12 @@ class PHPExcel_Worksheet_HeaderFooter
      * Set header/footer images
      *
      * @param PHPExcel_Worksheet_HeaderFooterDrawing[] $images
-     * @throws Exception
+     * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function setImages($images) {
     	if (!is_array($images)) {
-    		throw new Exception('Invalid parameter!');
+    		throw new PHPExcel_Exception('Invalid parameter!');
     	}
 
     	$this->_headerFooterImages = $images;
