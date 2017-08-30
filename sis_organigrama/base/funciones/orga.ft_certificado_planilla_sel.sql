@@ -49,7 +49,7 @@ BEGIN
       planc.id_certificado_planilla,
       planc.tipo_certificado,
       planc.fecha_solicitud,
-      planc.beneficiario,
+     planc.beneficiario,
       planc.id_funcionario,
       planc.estado_reg,
       planc.importe_viatico,
@@ -72,7 +72,7 @@ BEGIN
       pe.expedicion
       from orga.tcertificado_planilla planc
       inner join segu.tusuario usu1 on usu1.id_usuario = planc.id_usuario_reg
-      inner join orga.vfuncionario_cargo f on f.id_funcionario = planc.id_funcionario --and f.fecha_finalizacion is null
+      inner join orga.vfuncionario_cargo f on f.id_funcionario = planc.id_funcionario and (f.fecha_finalizacion is null or f.fecha_finalizacion >= now()::date)
       inner join orga.tcargo car on car.id_cargo = f.id_cargo
       inner join orga.tescala_salarial es on es.id_escala_salarial =car.id_escala_salarial
       inner join orga.tfuncionario fon on fon.id_funcionario = planc.id_funcionario
@@ -162,7 +162,7 @@ BEGIN
                               c.nro_tramite,
                               '''||v_iniciales||'''::varchar as iniciales
                               from orga.tcertificado_planilla c
-                              inner join orga.vfuncionario_cargo  fu on fu.id_funcionario = c.id_funcionario and fu.fecha_finalizacion is null
+                              inner join orga.vfuncionario_cargo  fu on fu.id_funcionario = c.id_funcionario and (fu.fecha_finalizacion is null or fu.fecha_finalizacion >=  now()::date )
                               inner join orga.tcargo ca on ca.id_cargo = fu.id_cargo
                               inner join orga.tescala_salarial es on es.id_escala_salarial = ca.id_escala_salarial
                               inner join orga.tfuncionario fun on fun.id_funcionario = fu.id_funcionario
