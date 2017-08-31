@@ -18,7 +18,10 @@
  *	@version 1.1
  *	@license PHP v3.0
  */
-class LUDecomposition {
+class PHPExcel_Shared_JAMA_LUDecomposition {
+
+	const MatrixSingularException	= "Can only perform operation on singular matrix.";
+	const MatrixSquareException		= "Mismatched Row dimension";
 
 	/**
 	 *	Decomposition storage
@@ -58,9 +61,9 @@ class LUDecomposition {
 	 *	@return Structure to access L, U and piv.
 	 */
 	public function __construct($A) {
-		if ($A instanceof Matrix) {
+		if ($A instanceof PHPExcel_Shared_JAMA_Matrix) {
 			// Use a "left-looking", dot-product, Crout/Doolittle algorithm.
-			$this->LU = $A->getArrayCopy();
+			$this->LU = $A->getArray();
 			$this->m  = $A->getRowDimension();
 			$this->n  = $A->getColumnDimension();
 			for ($i = 0; $i < $this->m; ++$i) {
@@ -112,7 +115,7 @@ class LUDecomposition {
 				}
 			}
 		} else {
-			throw new Exception(JAMAError(ArgumentTypeException));
+			throw new PHPExcel_Calculation_Exception(PHPExcel_Shared_JAMA_Matrix::ArgumentTypeException);
 		}
 	}	//	function __construct()
 
@@ -134,7 +137,7 @@ class LUDecomposition {
 				}
 			}
 		}
-		return new Matrix($L);
+		return new PHPExcel_Shared_JAMA_Matrix($L);
 	}	//	function getL()
 
 
@@ -153,7 +156,7 @@ class LUDecomposition {
 				}
 			}
 		}
-		return new Matrix($U);
+		return new PHPExcel_Shared_JAMA_Matrix($U);
 	}	//	function getU()
 
 
@@ -205,7 +208,7 @@ class LUDecomposition {
 			}
 			return $d;
 		} else {
-			throw new Exception(JAMAError(MatrixDimensionException));
+			throw new PHPExcel_Calculation_Exception(PHPExcel_Shared_JAMA_Matrix::MatrixDimensionException);
 		}
 	}	//	function det()
 
@@ -215,8 +218,8 @@ class LUDecomposition {
 	 *
 	 *	@param  $B  A Matrix with as many rows as A and any number of columns.
 	 *	@return  X so that L*U*X = B(piv,:)
-	 *	@exception  IllegalArgumentException Matrix row dimensions must agree.
-	 *	@exception  RuntimeException  Matrix is singular.
+	 *	@PHPExcel_Calculation_Exception  IllegalArgumentException Matrix row dimensions must agree.
+	 *	@PHPExcel_Calculation_Exception  RuntimeException  Matrix is singular.
 	 */
 	public function solve($B) {
 		if ($B->getRowDimension() == $this->m) {
@@ -245,11 +248,11 @@ class LUDecomposition {
 				}
 				return $X;
 			} else {
-				throw new Exception(JAMAError(MatrixSingularException));
+				throw new PHPExcel_Calculation_Exception(self::MatrixSingularException);
 			}
 		} else {
-			throw new Exception(JAMAError(MatrixSquareException));
+			throw new PHPExcel_Calculation_Exception(self::MatrixSquareException);
 		}
 	}	//	function solve()
 
-}	//	class LUDecomposition
+}	//	class PHPExcel_Shared_JAMA_LUDecomposition
