@@ -11,7 +11,7 @@ $respuesta =  $ClienteSiga->doGet('index.aspx',
     array(
         "f_login"=>"S", 
         "f_usuario"=>"rensi.coparia", 
-        "f_senha"=>"Mesu161182=!\"%$"
+        "f_senha"=>"xxxxxx"
 
     ));
 
