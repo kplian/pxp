@@ -1950,4 +1950,17 @@ ALTER TABLE param.ttipo_archivo_join ADD alias VARCHAR(255) NULL;
 
 
 
+/***********************************I-SCP-RAC-PARAM-0-02/09/2017*****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tperiodo
+  ADD COLUMN codigo_siga VARCHAR;
+
+COMMENT ON COLUMN param.tperiodo.codigo_siga
+IS 'codigo id del periodo en sistema SIGA';
+
+
+/***********************************F-SCP-RAC-PARAM-0-02/09/2017*****************************************/
+
 

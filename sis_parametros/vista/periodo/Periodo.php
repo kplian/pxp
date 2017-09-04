@@ -52,8 +52,12 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'per.periodo',type:'numeric'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:false
 		},
+		
+		
+		
+		
 		{
 			config:{
 				name: 'fecha_ini',
@@ -68,7 +72,7 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'per.fecha_ini',type:'date'},
 			id_grupo:1,
 			grid:true,
-			form:true
+			form:false
 		},
 		{
 			config:{
@@ -84,8 +88,26 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 			filters:{pfiltro:'per.fecha_fin',type:'date'},
 			id_grupo:1,
 			grid:true,
+			form:false
+		},
+		{
+			config:{
+				name: 'codigo_siga',
+				fieldLabel: 'Código SIGA',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:500
+			},
+			type:'TextField',
+			filters:{pfiltro:'per.codigo_siga',type:'numeric'},
+			id_grupo:1,
+			grid:true,
 			form:true
 		},
+		
+		
+		
 		{
 			config:{
 				name: 'estado_reg',
@@ -182,7 +204,7 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'}
+		{name:'usr_mod', type: 'string'},'codigo_siga'
 		
 	],
 	sortInfo:{
@@ -201,7 +223,7 @@ Phx.vista.Periodo=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:false,
 	bsave:false,
-	bedit:false,
+	bedit:true,
 	bnew:false,
 	east:{
 		  url:'../../../sis_parametros/vista/periodo_subsistema/PeriodoSubsistema.php',
