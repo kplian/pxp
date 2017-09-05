@@ -52,7 +52,7 @@ BEGIN
             provee.id_proveedor,
             provee.id_persona,
             provee.codigo,
-              provee.numero_sigma,
+            provee.numero_sigma,
             provee.tipo,
             provee.estado_reg,
             provee.id_institucion,

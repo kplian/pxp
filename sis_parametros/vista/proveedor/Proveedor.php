@@ -40,7 +40,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		//Inicializa el objeto de los argumentos extra
 		this.argumentExtraSubmit={};
 		this.argumentExtraSubmit.register=this.register;
-		this.argumentExtraSubmit.tipo=this.tipo;
+		//this.argumentExtraSubmit.tipo=this.tipo;
 		
 	},
 	iniciarEventos : function () {
@@ -335,6 +335,52 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:false
 		},
+		
+		{
+		config : {
+						name:'tipo',
+						qtip:'Tipo de proveedor',
+						fieldLabel : 'Tipo:',
+						resizable:true,
+						allowBlank:true,
+		   				emptyText:'Seleccione un catálogo...',
+		   				store: new Ext.data.JsonStore({
+							url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+							id: 'id_catalogo',
+							root: 'datos',
+							sortInfo:{
+								field: 'orden',
+								direction: 'ASC'
+							},
+							totalProperty: 'total',
+							fields: ['id_catalogo','codigo','descripcion'],
+							// turn on remote sorting
+							remoteSort: true,
+							baseParams: {par_filtro:'descripcion',cod_subsistema:'PARAM',catalogo_tipo:'tproveedor_tipo'}
+						}),
+	       			    enableMultiSelect:true,    				
+						valueField: 'codigo',
+		   				displayField: 'descripcion',
+		   				gdisplayField: 'tipo',
+		   				forceSelection:true,
+		   				typeAhead: false,
+		       			triggerAction: 'all',
+		       			lazyRender:true,
+		   				mode:'remote',
+		   				pageSize:10,
+		   				queryDelay:1000,
+		   				width:180,
+		   				minChars:2
+		    },
+			type:'ComboBox',
+			filters:{pfiltro:'provee.tipo',type:'string'},
+			id_grupo:0,
+			grid:true,
+			form:true
+		 },
+		
+		
+		
 		{
 			config:{
 				name: 'id_lugar',
