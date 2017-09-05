@@ -181,6 +181,7 @@ class MODProveedor extends MODbase{
 		$this->setParametro('direccion','direccion','varchar');
 		$this->setParametro('rotulo_comercial','rotulo_comercial','varchar');
 		$this->setParametro('contacto','contacto','text');
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -238,6 +239,8 @@ class MODProveedor extends MODbase{
 		$this->setParametro('direccion','direccion','varchar');
 		$this->setParametro('rotulo_comercial','rotulo_comercial','varchar');
 		$this->setParametro('contacto','contacto','text');
+		
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
