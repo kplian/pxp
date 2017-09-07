@@ -135,6 +135,59 @@ class MODProveedor extends MODbase{
 		return $this->respuesta;
 	}
 
+    function listarProveedorWf(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.f_tproveedor_sel';
+		$this->transaccion='PM_PROVEEDORWF_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+				
+		$this->setParametro('tipo','tipo','varchar'); 
+		$this->setParametro('tipo_interfaz','tipo_interfaz','varchar');
+		$this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');   
+			 	
+			
+		//Definicion de la lista del resultado del query
+		$this->captura('id_proveedor','int4');		
+		$this->captura('id_institucion','int4');
+		$this->captura('id_persona','int4');
+		$this->captura('tipo','varchar');
+		$this->captura('numero_sigma','varchar');
+		$this->captura('codigo','varchar');		
+		$this->captura('nit','varchar');
+		$this->captura('id_lugar','int4');		
+		$this->captura('estado_reg','varchar');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');		
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('nombre_completo1','text');
+		$this->captura('nombre','varchar');	
+		$this->captura('lugar','varchar');
+		$this->captura('nombre_proveedor','varchar');
+		$this->captura('rotulo_comercial','varchar');
+		$this->captura('ci','varchar');
+		$this->captura('desc_dir_proveedor','varchar');
+		$this->captura('contacto','text');		
+		$this->captura('id_proceso_wf','int4');
+		$this->captura('id_estado_wf','int4');
+		$this->captura('nro_tramite','varchar');
+		$this->captura('estado','varchar');
+		
+		
+				
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		//echo $this->consulta;exit;
+		$this->ejecutarConsulta();
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+
+
+
 			
 	function insertarProveedor(){ 
 		//Definicion de variables para ejecucion del procedimiento
