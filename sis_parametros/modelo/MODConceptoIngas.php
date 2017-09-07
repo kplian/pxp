@@ -43,16 +43,10 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('descripcion_larga','text');
 		$this->captura('id_unidad_medida','int4');
 		$this->captura('desc_unidad_medida','varchar');
-		$this->captura('nandina','varchar');
-		
-		$this->captura('ruta_foto','varchar');
-		
-		
-		
-		
-		
-		
-		
+		$this->captura('nandina','varchar');		
+		$this->captura('ruta_foto','varchar');		
+		$this->captura('id_cat_concepto','int4');
+		$this->captura('desc_cat_concepto','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -105,8 +99,6 @@ class MODConceptoIngas extends MODbase{
         
         $this->setParametro('autorizacion','autorizacion','varchar');
 		$this->setParametro('autorizacion_nulos','autorizacion_nulos','varchar');
-		
-		        
         //Definicion de la lista del resultado del query
         $this->captura('id_concepto_ingas','int4');
         $this->captura('desc_ingas','varchar');
@@ -128,7 +120,6 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
 		$this->captura('sw_autorizacion','varchar');
-		
         
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -236,6 +227,8 @@ class MODConceptoIngas extends MODbase{
 		
 		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
 		$this->setParametro('nandina','nandina','varchar');
+		
+		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -262,8 +255,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
 		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
-		$this->setParametro('nandina','nandina','varchar');
-
+		$this->setParametro('nandina','nandina','varchar');		
+		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

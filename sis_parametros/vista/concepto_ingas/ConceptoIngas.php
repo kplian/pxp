@@ -263,6 +263,56 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:false
 		 },	
+		 
+		{
+			config: {
+				typeAhead: false,
+				forceSelection: false,
+				name: 'id_cat_concepto',
+				fieldLabel: 'Tipo Catálogo',
+				allowBlank: true,
+				emptyText: 'Tipo Catálogo',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_parametros/control/CatConcepto/listarCatConcepto',
+					id: 'id_cat_concepto',
+					root: 'datos',
+					sortInfo: {
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_cat_concepto', 'codigo','nombre'],
+					// turn on remote sorting
+					remoteSort: true,
+					baseParams: {
+						par_filtro: 'nombre'
+					}
+				}),
+				valueField: 'id_cat_concepto',
+				displayField: 'nombre',
+				gdisplayField: 'desc_cat_concepto',
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 10,
+				queryDelay: 200,
+				listWidth:'280',
+				resizable:true,
+				width: 250,
+				minChars: 2,
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p> {codigo} - {nombre}</p></div></tpl>',
+				renderer:function(value, p, record){return String.format('{0}', record.data['desc_cat_concepto']);},
+				gwidth:130
+			},
+			type: 'ComboBox',
+			id_grupo: 1,
+			filters: {
+				pfiltro: 'cc.nombre',
+				type: 'string'
+			},
+			grid: true,
+			form: true
+		}, 
 	     
 		{
 			config:{
@@ -624,7 +674,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'activo_fijo', type: 'string'},
 		{name:'almacenable', type: 'string'},
 		'id_grupo_ots','filtro_ot','requiere_ot',
-		'sw_autorizacion','desc_unidad_medida','id_unidad_medida','nandina','ruta_foto'
+		'sw_autorizacion','desc_unidad_medida','id_unidad_medida',
+		'nandina','ruta_foto','id_cat_concepto','desc_cat_concepto'
 		
 	],
 	sortInfo:{

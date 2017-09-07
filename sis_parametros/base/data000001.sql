@@ -1063,6 +1063,14 @@ select pxp.f_insert_testructura_gui ('VARDEP', 'EMPS');
 
 /***********************************F-DAT-RAC-PARAM-0-18/07/2017*****************************************/
 
+/***********************************I-DAT-RAC-PARAM-0-06/09/2017*****************************************/
+
+
+select pxp.f_insert_tgui ('Categoria de Concepto', 'Categoria de Concepto', 'CATCON', 'si', 3, 'sis_parametros/vista/cat_concepto/CatConcepto.php', 4, '', 'CatConcepto', 'PARAM');
+select pxp.f_insert_testructura_gui ('CATCON', 'CCOM');
+
+/***********************************F-DAT-RAC-PARAM-0-06/09/2017*****************************************/
+
 
 /***********************************I-DAT-RAC-PARAM-0-05/09/2017*****************************************/
 
@@ -1108,7 +1116,6 @@ select pxp.f_insert_tgui ('Proveedor Inicio', 'Proveedor Inicio de Trámite', 'P
 select pxp.f_insert_testructura_gui ('PROVINI', 'CCOM');
 
 /***********************************F-DAT-RAC-PARAM-1-07/09/2017*****************************************/
-
 
 
 

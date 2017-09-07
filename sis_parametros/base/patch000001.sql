@@ -1961,6 +1961,7 @@ COMMENT ON COLUMN param.tperiodo.codigo_siga
 IS 'codigo id del periodo en sistema SIGA';
 
 
+
 /***********************************F-SCP-RAC-PARAM-0-02/09/2017*****************************************/
 
 
@@ -1993,17 +1994,36 @@ ALTER TABLE param.tproveedor
 
 
 /***********************************I-SCP-RAC-PARAM-3-06/09/2017*****************************************/
-     
-
---------------- SQL ---------------
-
 ALTER TABLE param.tproveedor
   ALTER COLUMN estado SET DEFAULT 'borrador';
 
 ALTER TABLE param.tproveedor
   ALTER COLUMN estado SET NOT NULL;
-  
-
 /***********************************F-SCP-RAC-PARAM-3-06/09/2017*****************************************/
      
   
+
+/***********************************I-SCP-RAC-PARAM-0-04/09/2017*****************************************/
+
+CREATE TABLE param.tcat_concepto (
+  id_cat_concepto SERIAL,
+  codigo VARCHAR,
+  nombre VARCHAR,
+  habilitado VARCHAR,
+  CONSTRAINT tcat_concepto_pkey PRIMARY KEY(id_cat_concepto)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+ALTER TABLE param.tcat_concepto
+  ALTER COLUMN codigo SET STATISTICS 0;
+  
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_cat_concepto INTEGER;
+
+/***********************************F-SCP-RAC-PARAM-0-04/09/2017*****************************************/
+
+
+
