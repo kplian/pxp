@@ -104,14 +104,12 @@ class MODProveedor extends MODbase{
 		$this->captura('numero_sigma','varchar');
 		$this->captura('codigo','varchar');		
 		$this->captura('nit','varchar');
-		$this->captura('id_lugar','int4');
-		
+		$this->captura('id_lugar','int4');		
 		$this->captura('estado_reg','varchar');
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_mod','int4');
-		$this->captura('fecha_mod','timestamp');
-		
+		$this->captura('fecha_mod','timestamp');		
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('nombre_completo1','text');
@@ -121,7 +119,12 @@ class MODProveedor extends MODbase{
 		$this->captura('rotulo_comercial','varchar');
 		$this->captura('ci','varchar');
 		$this->captura('desc_dir_proveedor','varchar');
-		$this->captura('contacto','text');
+		$this->captura('contacto','text');		
+		$this->captura('id_proceso_wf','int4');
+		$this->captura('id_estado_wf','int4');
+		$this->captura('nro_tramite','varchar');
+		$this->captura('estado','varchar');
+		
 		
 				
 		//Ejecuta la instruccion
@@ -266,6 +269,74 @@ class MODProveedor extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+
+   function iniciarTramite(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.f_tproveedor_ime';
+		$this->transaccion='PM_INITRA_IME';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		
+		$this->setParametro('id_proveedor','id_proveedor','int4');
+		$this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+   
+   function siguienteEstadoProveedor(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'param.f_tproveedor_ime';
+        $this->transaccion = 'PM_SIGESTP_IME';
+        $this->tipo_procedimiento = 'IME';
+   
+        //Define los parametros para la funcion
+        $this->setParametro('id_proveedor','id_proveedor','int4');
+        $this->setParametro('id_proceso_wf_act','id_proceso_wf_act','int4');
+        $this->setParametro('id_estado_wf_act','id_estado_wf_act','int4');
+        $this->setParametro('id_funcionario_usu','id_funcionario_usu','int4');
+        $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+        $this->setParametro('id_funcionario_wf','id_funcionario_wf','int4');
+        $this->setParametro('id_depto_wf','id_depto_wf','int4');		
+        $this->setParametro('obs','obs','text');
+        $this->setParametro('json_procesos','json_procesos','text');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+
+    function anteriorEstadoProveedor(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.f_tproveedor_ime';
+        $this->transaccion='PM_ANTEPRO_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+        $this->setParametro('id_estado_wf','id_estado_wf','int4');
+		$this->setParametro('obs','obs','varchar');
+		$this->setParametro('estado_destino','estado_destino','varchar');
+		
+		
+	
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>

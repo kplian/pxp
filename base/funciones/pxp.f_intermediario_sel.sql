@@ -1,3 +1,4 @@
+--------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
@@ -81,11 +82,14 @@ v_exception_context			varchar;
 
 
 BEGIN
+	
     v_nombre_funcion:='pxp.f_intermediario_sel';
     v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
-    v_retorno='';
+    raise notice 'ini:%',v_hora_ini;
+    v_retorno='';    
+        	
     v_resp_error=pxp.f_ejecutar_dblink('('||pg_backend_pid()::varchar||',
             '''||par_sid_web||''','||par_pid_web||','''||par_transaccion||''','''||par_procedimiento||''')'
             ,'sesion');
@@ -126,11 +130,12 @@ BEGIN
     
     execute(v_consulta);
     
+    
     v_consulta:='insert into tt_parametros_'||v_secuencia||' values(';
     
     for i in 1..(v_tamano-1) loop
           tipos[i] = lower(tipos[i]); 
-         IF(tipos[i]='numeric' or tipos[i]='integer' or tipos[i]='int4' or tipos[i]='int8' or tipos[i]='bigint')then
+         IF(lower(tipos[i]) in ('numeric' ,'integer','int4','int8','bigint'))then
             if(valores[i]='')then
                 v_consulta:=v_consulta || 'null' || ',';
             else
@@ -139,7 +144,7 @@ BEGIN
         ELSE
            
             --RAC 12/09/2011 validacion para campo date vacio 
-            if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
+            if((lower(tipos[i]) in  ('date','timestamp','time','bool','boolean')) and  valores[i]='')THEN
                      v_consulta:=v_consulta || 'null' || ',';
             else
                   
@@ -152,7 +157,7 @@ BEGIN
 
     end loop;
 
-      IF(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8' or tipos[v_tamano]='bigint')then
+      IF(lower(tipos[v_tamano]) in ('numeric','integer','int4','int8','bigint'))then
         if(valores[v_tamano]='')then
             v_consulta:=v_consulta || 'null'|| ')';
         else
@@ -162,7 +167,7 @@ BEGIN
      ELSE
      
      --RAC 12/09/2011 validacion para campo date vacio 
-            if((tipos[v_tamano]='date' or tipos[v_tamano]='timestamp' or tipos[v_tamano]='time' or tipos[v_tamano]='bool' or tipos[v_tamano]='boolean') and  valores[v_tamano]='')THEN
+            if((lower(tipos[v_tamano]) in ('date','timestamp','time','bool','boolean')) and  valores[v_tamano]='')THEN
                  v_consulta:=v_consulta || 'null' || ')';
             else
                   v_consulta:=v_consulta ||''''|| replace(valores[v_tamano],'''','''''') || ''')';
@@ -191,7 +196,7 @@ BEGIN
    
      v_consulta:='select ' || par_procedimiento || '('||v_administrador||','||coalesce(par_id_usuario,0)||',''tt_parametros_'||v_secuencia||''','''||par_transaccion||''')';
     
-   -- raise notice 'prueba:%',v_consulta;
+    --raise notice 'prueba:%',v_consulta;
     execute v_consulta into v_retorno;
     
     

@@ -79,6 +79,25 @@ class ACTProveedor extends ACTbase{
 		$this->res=$this->objFunc->eliminarProveedor();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function iniciarTramite(){
+		$this->objParam->addParametro('id_funcionario_usu',$_SESSION["ss_id_funcionario"]); 
+		$this->objFunc=$this->create('MODProveedor');	
+		$this->res=$this->objFunc->iniciarTramite();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
+	function siguienteEstadoProveedor(){
+        $this->objFunc=$this->create('MODProveedor');  
+        $this->res=$this->objFunc->siguienteEstadoProveedor($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
+   function anteriorEstadoProveedor(){
+        $this->objFunc=$this->create('MODProveedor');  
+        $this->res=$this->objFunc->anteriorEstadoProveedor($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

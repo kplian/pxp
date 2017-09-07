@@ -13,6 +13,45 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 
 	register:'',
 	tipo: '',
+	fheight: '95%',
+    fwidth: '95%',
+	Grupos: [
+            {
+                layout: 'column',
+                border: false,
+                defaults: {
+                   border: false
+                },            
+                items: [{
+					        bodyStyle: 'padding-right:5px;',
+					        items: [{
+					            xtype: 'fieldset',
+					            title: 'Datos principales',
+					            autoHeight: true,
+					            items: [],
+						        id_grupo:0
+					        }]
+					    }, {
+					        bodyStyle: 'padding-left:5px;',
+					        items: [{
+					            xtype: 'fieldset',
+					            title: 'Datos persona',
+					            autoHeight: true,
+					            items: [],
+						        id_grupo:1
+					        }]
+					    },{
+					        bodyStyle: 'padding-left:5px;',
+					        items: [{
+					            xtype: 'fieldset',
+					            title: 'Datos institucion',
+					            autoHeight: true,
+					            items: [],
+						        id_grupo:2
+					        }]
+					    }]
+            }
+    ],
 	
 	constructor:function(config){
 		this.maestro=config.maestro;
@@ -20,6 +59,33 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
         this.initButtons=[this.cmbProveedor];  	
         Phx.vista.proveedor.superclass.constructor.call(this,config);
 		this.init();
+		
+		this.addButton('btnIniTra',{grupo:[0],text: 'Iniciar',iconCls: 'bchecklist',disabled: true,handler: this.iniTramite,tooltip: '<b>Iniciar Trámite</b><br/>Inicia el trámite de formulación para el presupuesto'});
+        this.addButton('ant_estado',{
+         	  grupo:[4],
+              argument: {estado: 'anterior'},
+              text: 'Retroceder',
+              iconCls: 'batras',
+              disabled: true,
+              handler: this.antEstado,
+              tooltip: '<b>Pasar al Anterior Estado</b>'
+        });
+          
+        this.addButton('fin_registro', { grupo:[0], text:'Siguiente', iconCls: 'badelante', disabled:true,handler:this.fin_registro,tooltip: '<b>Siguiente</b><p>Pasa al siguiente estado, si esta en borrador comprometera presupuesto</p>'});
+        
+         this.addButton('btnChequeoDocumentosWf',
+            {
+                text: 'Documentos',
+                grupo:[0,1,2],
+                iconCls: 'bchecklist',
+                disabled: true,
+                handler: this.loadCheckDocumentosSolWf,
+                tooltip: '<b>Documentos de la Solicitud</b><br/>Subir los documetos requeridos en la solicitud seleccionada.'
+            }
+        );
+		this.addButton('diagrama_gantt',{ grupo:[0,1,2], text: 'Gantt', iconCls: 'bgantt', disabled: true, handler: this.diagramGantt, tooltip: '<b>Diagrama gantt de proceso macro</b>'});
+
+		
 		
 		
 		this.cmbProveedor.on('select',this.capturaFiltros,this);
@@ -112,6 +178,33 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			form:true 
 		},
 		{
+			config:{
+				name: 'nro_tramite',
+				fieldLabel: 'N# Trámite',				
+				gwidth: 180
+			},
+			type:'TextField',
+			filters:{pfiltro:'provee.nro_tramite',type:'string'},
+			grid:true,
+			form:false
+		},
+		{
+			
+			
+			config:{
+				name: 'estado',
+				fieldLabel: 'Estado',				
+				gwidth: 110
+			},
+			type:'TextField',
+			filters:{pfiltro:'provee.estado',type:'string'},
+			grid:true,
+			form:false
+		},
+		
+		{
+			
+			
 			config:{
 				name: 'nombre_proveedor',
 				fieldLabel: 'Nombre Proveedor',				
@@ -900,8 +993,26 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		{name:'lugar', type: 'string'},
 		{name:'pais', type: 'string'},
 		{name:'rotulo_comercial', type: 'string'},
-		{name:'nombre_proveedor', type: 'string'},'ci', 'desc_dir_proveedor','contacto'
+		{name:'nombre_proveedor', type: 'string'},'ci', 'desc_dir_proveedor','contacto',
+		'id_proceso_wf','id_estado_wf','nro_tramite','estado'
 	],
+	
+	iniTramite: function(){
+   	        var rec = this.sm.getSelected();
+		    Phx.CP.loadingShow(); 
+	   		Ext.Ajax.request({
+				url: '../../sis_parametros/control/Proveedor/iniciarTramite',
+			  	params:{
+			  		id_proveedor: rec.data.id_proveedor
+			      },
+			      success:this.successRep,
+			      failure: this.conexionFailure,
+			      timeout:this.timeout,
+			      scope:this
+			});
+		
+   		
+   },
 	
 	cmbProveedor:new Ext.form.ComboBox({
 	       			name:'proveedor',
@@ -1059,45 +1170,229 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		//
 	},
 	
-	fheight: '95%',
-    fwidth: '95%',
-	Grupos: [
+	 preparaMenu:function(n){
+	 	  var data = this.getSelectedData();
+          var tb =this.tbar;
+          
+          Phx.vista.proveedor.superclass.preparaMenu.call(this,n);
+          if(data['estado'] == 'borrador'){
+          	 this.getBoton('btnIniTra').enable();
+          }
+          else{
+          	 this.getBoton('btnIniTra').disable();
+          }
+          
+          if (data['estado']!= 'borrador' && data['estado']!= 'aprobado' && data['nro_tramite']!=''){
+             this.getBoton('ant_estado').enable(); 
+          }
+          else{
+          	this.getBoton('ant_estado').disable();
+          }
+          
+          if (data['estado']!= 'aprobado'&& data['nro_tramite']!=''&& data['nro_tramite']!=undefined){
+              	 this.getBoton('fin_registro').enable();
+          }
+          else{
+          	this.getBoton('fin_registro').disable();
+          }
+          
+          this.getBoton('btnChequeoDocumentosWf').enable(); 
+          this.getBoton('diagrama_gantt').enable(); 
+          
+          
+    },
+    
+    liberaMenu:function(){
+    	var tb = Phx.vista.proveedor.superclass.liberaMenu.call(this);
+        if(tb){
+            this.getBoton('btnIniTra').disable();
+            this.getBoton('fin_registro').disable();
+            this.getBoton('ant_estado').disable(); 
+            this.getBoton('btnChequeoDocumentosWf').disable();
+            this.getBoton('diagrama_gantt').disable();  
+            
+            
+            
+        }
+    },
+    
+    antEstado:function(res){
+         var rec=this.sm.getSelected();
+         Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/AntFormEstadoWf.php',
+            'Estado de Wf',
             {
-                layout: 'column',
-                border: false,
-                defaults: {
-                   border: false
-                },            
-                items: [{
-					        bodyStyle: 'padding-right:5px;',
-					        items: [{
-					            xtype: 'fieldset',
-					            title: 'Datos principales',
-					            autoHeight: true,
-					            items: [],
-						        id_grupo:0
-					        }]
-					    }, {
-					        bodyStyle: 'padding-left:5px;',
-					        items: [{
-					            xtype: 'fieldset',
-					            title: 'Datos persona',
-					            autoHeight: true,
-					            items: [],
-						        id_grupo:1
-					        }]
-					    },{
-					        bodyStyle: 'padding-left:5px;',
-					        items: [{
-					            xtype: 'fieldset',
-					            title: 'Datos institucion',
-					            autoHeight: true,
-					            items: [],
-						        id_grupo:2
-					        }]
-					    }]
+                modal:true,
+                width:450,
+                height:250
+            }, { data:rec.data, estado_destino: res.argument.estado }, this.idContenedor,'AntFormEstadoWf',
+            {
+                config:[{
+                          event: 'beforesave',
+                          delegate: this.onAntEstado,
+                        }],
+               scope:this
+             });
+    },
+    
+    onAntEstado: function(wizard,resp){
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                // form:this.form.getForm().getEl(),
+                url:'../../sis_parametros/control/Proveedor/anteriorEstadoProveedor',
+                params:{
+                        id_proceso_wf: resp.id_proceso_wf,
+                        id_estado_wf:  resp.id_estado_wf,  
+                        obs: resp.obs,
+                        estado_destino: resp.estado_destino
+                 },
+                argument: { wizard: wizard },  
+                success: this.successWizard,
+                failure: this.conexionFailure,
+                timeout: this.timeout,
+                scope: this
+            });
+           
+     },
+     
+    fin_registro: function(a,b,forzar_fin, paneldoc){                   
+            var d = this.sm.getSelected().data;
+            this.mostrarWizard(this.sm.getSelected());
+	},
+	
+	 mostrarWizard : function(rec) {
+     	var configExtra = [],
+     		obsValorInicial;
+     	 
+     	console.log('rec.data',rec.data)
+     	this.objWizard = Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/FormEstadoWf.php',
+                                'Estado de Wf',
+                                {
+                                    modal: true,
+                                    width: 700,
+                                    height: 450
+                                }, {
+                                	configExtra: configExtra,
+                                	data:{
+                                       id_estado_wf: rec.data.id_estado_wf,
+                                       id_proceso_wf: rec.data.id_proceso_wf, 
+                                       id_proveedor: rec.data.id_proveedor,
+                                       fecha_ini: rec.data.fecha_tentativa
+                                      
+                                   },
+                                   obsValorInicial : obsValorInicial,
+                                }, this.idContenedor, 'FormEstadoWf',
+                                {
+                                    config:[{
+                                              event:'beforesave',
+                                              delegate: this.onSaveWizard,
+                                              
+                                            },
+					                        {
+					                          event:'requirefields',
+					                          delegate: function () {
+						                          	this.onButtonEdit();
+										        	this.window.setTitle('Registre los campos antes de pasar al siguiente estado');
+										        	this.formulario_wizard = 'si';
+					                          }
+					                          
+					                        }],
+                                    
+                                    scope:this
+                                 });        
+     },
+    onSaveWizard:function(wizard,resp){
+        Phx.CP.loadingShow();
+        Ext.Ajax.request({
+            url: '../../sis_parametros/control/Proveedor/siguienteEstadoProveedor',
+            params:{
+            	    
+            	    id_proveedor: wizard.data.id_proveedor,
+            	    id_proceso_wf_act:  resp.id_proceso_wf_act,
+	                id_estado_wf_act:   resp.id_estado_wf_act,
+	                id_tipo_estado:     resp.id_tipo_estado,
+	                id_funcionario_wf:  resp.id_funcionario_wf,
+	                id_depto_wf:        resp.id_depto_wf,
+	                obs:                resp.obs,
+	                json_procesos:      Ext.util.JSON.encode(resp.procesos)
+                },
+            success: this.successWizard,
+            failure: this.conexionFailure, //chequea si esta en verificacion presupeusto para enviar correo de transferencia
+            argument: { wizard: wizard },
+            timeout: this.timeout,
+            scope: this
+        });
+    },
+    successWizard:function(resp){
+        Phx.CP.loadingHide();
+        resp.argument.wizard.panel.destroy()
+        this.reload();
+    },
+    
+     
+    
+    successRep:function(resp){
+        Phx.CP.loadingHide();
+        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+        if(!reg.ROOT.error){
+            this.reload();
+            if(reg.ROOT.datos.observaciones){
+               alert(reg.ROOT.datos.observaciones)
             }
-        ]
-	}
-)
+           
+        }else{
+            alert('Ocurrió un error durante el proceso')
+        }
+	},
+	
+	 loadCheckDocumentosSolWf:function() {
+            var rec=this.sm.getSelected();
+            rec.data.nombreVista = this.nombreVista;
+            Phx.CP.loadWindows('../../../sis_workflow/vista/documento_wf/DocumentoWf.php',
+                    'Documentos del Proceso',
+                    {
+                        width:'90%',
+                        height:500
+                    },
+                    rec.data,
+                    this.idContenedor,
+                    'DocumentoWf'
+        )
+    },
+    onOpenObs:function() {
+            var rec=this.sm.getSelected();
+            
+            var data = {
+            	id_proceso_wf: rec.data.id_proceso_wf,
+            	id_estado_wf: rec.data.id_estado_wf,
+            	num_tramite: rec.data.num_tramite
+            }
+            
+            Phx.CP.loadWindows('../../../sis_workflow/vista/obs/Obs.php',
+                    'Observaciones del WF',
+                    {
+                        width:'80%',
+                        height:'70%'
+                    },
+                    data,
+                    this.idContenedor,
+                    'Obs'
+        )
+    },
+    diagramGantt:function(){           
+            var data=this.sm.getSelected().data.id_proceso_wf;
+            Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url:'../../sis_workflow/control/ProcesoWf/diagramaGanttTramite',
+                params:{'id_proceso_wf':data},
+                success:this.successExport,
+                failure: this.conexionFailure,
+                timeout:this.timeout,
+                scope:this
+            });         
+    }
+      
+     
+	
+	
+})
 </script>	
