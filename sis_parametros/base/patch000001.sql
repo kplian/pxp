@@ -1964,3 +1964,46 @@ IS 'codigo id del periodo en sistema SIGA';
 /***********************************F-SCP-RAC-PARAM-0-02/09/2017*****************************************/
 
 
+/***********************************I-SCP-RAC-PARAM-0-05/09/2017*****************************************/
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD COLUMN estado VARCHAR;
+  
+--------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD COLUMN id_proceso_wf INTEGER;
+  
+--------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD COLUMN id_estado_wf INTEGER;
+  
+--------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ADD COLUMN nro_tramite VARCHAR;
+  
+    
+/***********************************F-SCP-RAC-PARAM-0-05/09/2017*****************************************/
+     
+
+
+/***********************************I-SCP-RAC-PARAM-3-06/09/2017*****************************************/
+     
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tproveedor
+  ALTER COLUMN estado SET DEFAULT 'borrador';
+
+ALTER TABLE param.tproveedor
+  ALTER COLUMN estado SET NOT NULL;
+  
+
+/***********************************F-SCP-RAC-PARAM-3-06/09/2017*****************************************/
+     
+  
