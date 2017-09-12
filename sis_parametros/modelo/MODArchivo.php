@@ -209,12 +209,15 @@ class MODArchivo extends MODbase{
 				throw new Exception("El archivo no puede estar vacio");
 			}
 
+            if ($this->aParam->getParametro('id_tipo_archivo') != '') {
 
-            $tipo_archivo  = $this->verTipoArchivo($this->aParam->getParametro('id_tipo_archivo'));
+                $tipo_archivo = $this->verTipoArchivo($this->aParam->getParametro('id_tipo_archivo'));
+            } else {
+                $tipo_archivo = $this->verTipoArchivoByCodigo($this->aParam->getParametro('codigo_tipo_archivo'));
+            }
             if (count($tipo_archivo) == 0) {
                 throw new Exception("no exite una configuracion para subir archivos en la tabla que enviaste", 1);
             }
-
 
 
 
@@ -333,6 +336,7 @@ class MODArchivo extends MODbase{
 
 			//Ejecuta la instruccion
 			$this->armarConsulta();
+
 			$stmt = $link->prepare($this->consulta);
 			$stmt->execute();
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -348,6 +352,7 @@ class MODArchivo extends MODbase{
 
 
 			if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
+                
 				//cipiamos el nuevo archivo
 				$this->setFile('archivo',
                     'unico_id',
@@ -372,6 +377,7 @@ class MODArchivo extends MODbase{
 				}
 
 
+
 			}
 
 
@@ -382,7 +388,7 @@ class MODArchivo extends MODbase{
 			$link->commit();
 			$this->respuesta=new Mensaje();
 			$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->consulta);
-			$this->respuesta->setDatos($respuesta);
+            $this->respuesta->setDatos($resp_procedimiento['datos']);
 
 
 
@@ -560,12 +566,23 @@ class MODArchivo extends MODbase{
 
 	function verTipoArchivo($id_tipo_archivo){
 
+
+
 		$res = $this->link->prepare("select * from  param.ttipo_archivo WHERE id_tipo_archivo = '$id_tipo_archivo' limit 1");
 
 		$res->execute();
 		$result = $res->fetchAll(PDO::FETCH_ASSOC);
 		return $result;
 	}
+
+    function verTipoArchivoByCodigo($codigo){
+
+        $res = $this->link->prepare("select * from  param.ttipo_archivo WHERE codigo = '$codigo' limit 1");
+
+        $res->execute();
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 
 
 
