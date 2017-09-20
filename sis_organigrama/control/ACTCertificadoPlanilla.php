@@ -33,13 +33,48 @@ class ACTCertificadoPlanilla extends ACTbase{
 	}
 				
 	function insertarCertificadoPlanilla(){
-		$this->objFunc=$this->create('MODCertificadoPlanilla');	
-		if($this->objParam->insertar('id_certificado_planilla')){
-			$this->res=$this->objFunc->insertarCertificadoPlanilla($this->objParam);			
-		} else{			
-			$this->res=$this->objFunc->modificarCertificadoPlanilla($this->objParam);
-		}
-		$this->res->imprimirRespuesta($this->res->generarJson());
+
+	    if($this->objParam->getParametro('tipo_certificado') == 'Con viáticos de los últimos tres meses') {
+
+            $data = array("empleadoID" => $this->objParam->getParametro('id_funcionario'));
+            $data_string = json_encode($data);
+            $request = 'http://sms.obairlines.bo/BoAServiceItinerario/servServiceErp.svc/GetPromedioViaticos';
+            $session = curl_init($request);
+            curl_setopt($session, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($session, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($session, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($data_string))
+            );
+//
+            $result = curl_exec($session);
+            curl_close($session);
+            $respuesta = json_decode($result);
+            $resDatos = json_decode($respuesta->GetPromedioViaticosResult, true);
+            //var_dump($resDatos["Codigo"]);exit;
+            if ($resDatos["Codigo"] == 0) {
+                throw new Exception('Error en servicio viaticos.');
+            }
+            $this->objParam->addParametro('importe_viatico', $resDatos["Resultado"]);
+            $this->objFunc = $this->create('MODCertificadoPlanilla');
+
+            if ($this->objParam->insertar('id_certificado_planilla')) {
+                $this->res = $this->objFunc->insertarCertificadoPlanilla($this->objParam);
+            } else {
+                $this->res = $this->objFunc->modificarCertificadoPlanilla($this->objParam);
+            }
+            $this->res->imprimirRespuesta($this->res->generarJson());
+        }else{
+            $this->objFunc = $this->create('MODCertificadoPlanilla');
+
+            if ($this->objParam->insertar('id_certificado_planilla')) {
+                $this->res = $this->objFunc->insertarCertificadoPlanilla($this->objParam);
+            } else {
+                $this->res = $this->objFunc->modificarCertificadoPlanilla($this->objParam);
+            }
+            $this->res->imprimirRespuesta($this->res->generarJson());
+        }
 	}
 						
 	function eliminarCertificadoPlanilla(){
@@ -69,6 +104,9 @@ class ACTCertificadoPlanilla extends ACTbase{
         $this->objParam->addParametro('orientacion','P');
         $this->objParam->addParametro('tamano','LETTER');
         $this->objParam->addParametro('nombre_archivo',$nombreArchivo);
+
+        //llamar servicio recuperar viaticos
+
 
         $this->objReporte = new RCertificadoPDF($this->objParam);
         $this->objReporte->setDatos($this->res->datos);
