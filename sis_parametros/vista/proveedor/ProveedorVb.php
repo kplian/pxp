@@ -56,7 +56,6 @@ Phx.vista.ProveedorVb = {
 
 	   
        this.init();
-       //this.load({params:{start:0, limit:this.tam_pag, tipo_interfaz: this.nombreVista }});
        
        
         

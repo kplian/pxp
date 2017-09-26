@@ -322,20 +322,20 @@ BEGIN
                 v_where:= 'provee.id_persona is null';
             end if;
             
-            
+            /*
             IF v_parametros.tipo_interfaz = 'ProveedorVb' THEN
                  IF p_administrador !=1 THEN
-                    v_filadd = ' (lower(provee.estado)  not in (''borrador'')) and ';
+                    v_filadd = ' (lower(provee.estado)  not in (''borrador'', ''aprobado'')) and ';
                   ELSE
-                    v_filadd = ' (lower(provee.estado)  not in (''borrador'')) and ';
+                    v_filadd = ' (lower(provee.estado)  not in (''borrador'', ''aprobado'')) and ';
                   END IF;
-            END IF;
+            END IF;*/
             
             IF p_administrador !=1 THEN
-                v_filadd = ' (ewf.id_funcionario='||v_parametros.id_funcionario_usu::varchar||' ) and  (lower(provee.estado) not in (''borrador'')) and ';
+                v_filadd = ' (ewf.id_funcionario='||v_parametros.id_funcionario_usu::varchar||' ) and  (lower(provee.estado) not in (''borrador'', ''aprobado'')) and ';
                
              ELSE
-                v_filadd = ' (lower(provee.estado) not in (''borrador'')) and ';
+                v_filadd = ' (lower(provee.estado) not in (''borrador'', ''aprobado'')) and ';
               
             END IF;
             

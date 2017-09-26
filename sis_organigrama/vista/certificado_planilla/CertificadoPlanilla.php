@@ -2,7 +2,7 @@
 /**
 *@package pXP
 *@file gen-CertificadoPlanilla.php
-*@author  (miguel.mamani)
+*@author  (MMV)
 *@date 24-07-2017 14:48:34
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
@@ -35,7 +35,7 @@ Phx.vista.CertificadoPlanilla=Ext.extend(Phx.gridInterfaz,{
         this.store.baseParams.pes_estado = 'borrador';
 		this.init();
         this.ocultarComponente(this.Cmp.importe_viatico);
-		this.inicarEvento();
+		//this.inicarEvento();
 		this.load({params:{start:0, limit:this.tam_pag}});
         this.finCons = true;
         this.addButton('ant_estado',{
@@ -319,21 +319,6 @@ Phx.vista.CertificadoPlanilla=Ext.extend(Phx.gridInterfaz,{
             grid: true,
             form: false
         },
-		{
-			config:{
-				name: 'beneficiario',
-				fieldLabel: 'Beneficiario',
-				allowBlank: true,
-				anchor: '60%',
-				gwidth: 100,
-				maxLength:255
-			},
-				type:'TextField',
-				filters:{pfiltro:'planc.beneficiario',type:'string'},
-				id_grupo:1,
-				grid:false,
-				form:false
-		},
         {
             config:{
                 name: 'importe_viatico',
@@ -346,7 +331,7 @@ Phx.vista.CertificadoPlanilla=Ext.extend(Phx.gridInterfaz,{
             type:'NumberField',
             filters:{pfiltro:'planc.importe_viatico',type:'numeric'},
             id_grupo:1,
-            grid:false,
+            grid:true,
             form:true
         },
 		{
