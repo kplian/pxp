@@ -9,7 +9,7 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.ProveedorConsulta=Ext.extend(Phx.formInterfaz,{
 
 	register:'',
 	tipo: '',
@@ -55,33 +55,25 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	
 	constructor:function(config){
 		this.maestro=config.maestro;
-    	//llama al constructor de la clase padre
-        this.initButtons=[this.cmbProveedor];  	
-        Phx.vista.proveedor.superclass.constructor.call(this,config);
-        this.store.lastOptions = {};
-		this.init();
-		
-		
-		this.cmbProveedor.on('select',this.capturaFiltros,this);
+    	Phx.vista.ProveedorConsulta.superclass.constructor.call(this,config);
+        this.init();
 		this.iniciarEventos();
-		this.cmbProveedor.fireEvent('select');
+		
+		//this.capturaFiltros()
+		
+		
 		
 	},
 	
-	capturaFiltros:function(combo, record, index){
-		this.tipo = this.cmbProveedor.getValue();
-		this.store.baseParams={tipo:this.cmbProveedor.getValue(),tipo_interfaz: this.nombreVista};
-		this.load({params:{start:0,limit:50}});
-	},
-	agregarArgsExtraSubmit: function(){
-		//Inicializa el objeto de los argumentos extra
-		this.argumentExtraSubmit={};
-		this.argumentExtraSubmit.register=this.register;
-		//this.argumentExtraSubmit.tipo=this.tipo;
+	capturaDatosPRoveedor:function(id_proveedor){
+		
 		
 	},
+	
+	
 	iniciarEventos : function () {
-		Phx.vista.proveedor.superclass.iniciarEventos.call();
+		Phx.vista.ProveedorConsulta.superclass.iniciarEventos.call();
+		
 		this.getComponente('id_persona').on('select',function(c,r,n){
 			
 			if (this.register != 'update') {				
