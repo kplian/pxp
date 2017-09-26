@@ -55,34 +55,36 @@ BEGIN
         begin
         	--Sentencia de la insercion
         	insert into param.tconcepto_ingas(
-			desc_ingas,
-			tipo,
-			movimiento,
-			sw_tes,
-		
-			estado_reg,
-			id_usuario_reg,
-			fecha_reg,
-			fecha_mod,
-			id_usuario_mod,
-			activo_fijo,
-			almacenable,
-            id_unidad_medida,
-            nandina
+                desc_ingas,
+                tipo,
+                movimiento,
+                sw_tes,
+    		
+                estado_reg,
+                id_usuario_reg,
+                fecha_reg,
+                fecha_mod,
+                id_usuario_mod,
+                activo_fijo,
+                almacenable,
+                id_unidad_medida,
+                nandina,
+                id_cat_concepto
           	) values(
-			v_parametros.desc_ingas,
-			v_parametros.tipo,
-			v_parametros.movimiento,
-			v_parametros.sw_tes,		
-			'activo',
-			p_id_usuario,
-			now(),
-			null,
-			null,
-			v_parametros.activo_fijo,
-			v_parametros.almacenable,
-            v_parametros.id_unidad_medida,
-            v_parametros.nandina				
+                v_parametros.desc_ingas,
+                v_parametros.tipo,
+                v_parametros.movimiento,
+                v_parametros.sw_tes,		
+                'activo',
+                p_id_usuario,
+                now(),
+                null,
+                null,
+                v_parametros.activo_fijo,
+                v_parametros.almacenable,
+                v_parametros.id_unidad_medida,
+                v_parametros.nandina,
+              	v_parametros.id_cat_concepto				
 			)RETURNING id_concepto_ingas into v_id_concepto_ingas;
 			
 			--Definicion de la respuesta
@@ -107,17 +109,17 @@ BEGIN
        
 			--Sentencia de la modificacion
 			update param.tconcepto_ingas set
-			desc_ingas = v_parametros.desc_ingas,
-			tipo = v_parametros.tipo,
-			movimiento = v_parametros.movimiento,
-			sw_tes = v_parametros.sw_tes,
-            id_unidad_medida = v_parametros.id_unidad_medida,
-            nandina = v_parametros.nandina,
-			
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-			activo_fijo=v_parametros.activo_fijo,
-			almacenable =v_parametros.almacenable
+                desc_ingas = v_parametros.desc_ingas,
+                tipo = v_parametros.tipo,
+                movimiento = v_parametros.movimiento,
+                sw_tes = v_parametros.sw_tes,
+                id_unidad_medida = v_parametros.id_unidad_medida,
+                nandina = v_parametros.nandina,
+    			fecha_mod = now(),
+                id_usuario_mod = p_id_usuario,
+                activo_fijo=v_parametros.activo_fijo,
+                almacenable =v_parametros.almacenable,
+                id_cat_concepto = v_parametros.id_cat_concepto
 			where id_concepto_ingas=v_parametros.id_concepto_ingas;
             --si se integra con endesis actualizamos la tabla conceptoingas  
             if (pxp.f_get_variable_global('sincronizar') = 'true') then

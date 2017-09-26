@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "param"."ft_archivo_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION param.ft_archivo_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_archivo_ime
@@ -31,6 +34,7 @@ DECLARE
 	v_record_anterior record;
 
 	v_record_tipo_archivo RECORD;
+    v_ruta					varchar;
 			    
 BEGIN
 
@@ -135,6 +139,7 @@ BEGIN
 					--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo almacenado(a) con exito (id_archivo'||v_id_archivo||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_archivo',v_id_archivo::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'url',(v_parametros.folder || v_parametros.nombre_archivo || '.' || v_parametros.extension)::varchar);
 
             --Devuelve la respuesta
             return v_resp;
@@ -274,7 +279,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."ft_archivo_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

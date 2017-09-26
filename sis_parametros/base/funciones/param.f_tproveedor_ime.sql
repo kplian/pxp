@@ -27,6 +27,7 @@ DECLARE
 
 	v_nro_requerimiento    	integer;
 	v_parametros           	record;
+    v_reg_pres           	record;
 	v_id_requerimiento         integer;
     v_resp                    varchar;
     v_nombre_funcion        text;
@@ -46,6 +47,29 @@ DECLARE
     v_num_seq					integer;
     v_codigo_gen				varchar;
     v_desc_proveedor_antes 		varchar; 
+    v_codigo_wf 				varchar;
+    v_id_gestion				integer;
+    v_num_tramite				varchar;
+    v_id_proceso_wf				integer;
+    v_id_estado_wf				integer;
+    v_codigo_estado 			varchar;
+    v_operacion					varchar;
+    v_registros_pp				record;
+    v_id_tipo_estado				integer;
+    v_id_funcionario				integer;
+    v_id_usuario_reg				integer;
+    v_id_depto						integer;
+    v_id_estado_wf_ant 				integer;
+    v_acceso_directo 				varchar;
+    v_clase 						varchar;
+    v_parametros_ad 				varchar;
+    v_tipo_noti 					varchar;
+    v_titulo  						varchar;
+    v_id_estado_actual 				integer;
+    v_registros_proc				record; 
+    v_codigo_estado_siguiente		varchar;
+    v_obs							varchar;
+    v_codigo_tipo_pro  				varchar; 
     
 BEGIN
                            
@@ -106,13 +130,9 @@ BEGIN
                      id_lugar,						rotulo_comercial, 			contacto)
                     values 
                     (p_id_usuario,					now(),						'activo',
-                    v_parametros.id_institucion,	v_parametros.id_persona,	case when v_parametros.id_persona is NULL THEN
-                                                                                    'institucion'
-                                                                                else
-                                                                                    'persona'
-                                                                                end,
+                    v_parametros.id_institucion,	v_parametros.id_persona,	v_parametros.tipo,
                     v_parametros.numero_sigma,		v_codigo_gen,		v_parametros.nit,
-                    v_parametros.id_lugar,			v_parametros.rotulo_comercial,	v_parametros.contacto)RETURNING id_proveedor into v_id_proveedor;
+                    v_parametros.id_lugar,			v_parametros.rotulo_comercial,	v_parametros.contacto) RETURNING id_proveedor into v_id_proveedor;
            else
                     if (v_parametros.tipo = 'persona')then
                         
@@ -309,12 +329,12 @@ BEGIN
                          into
                           v_id_config_subtipo_cuenta
                         FROM conta.tconfig_subtipo_cuenta csc
-                        where   upper(csc.nombre) = 'PROVEEDORES'
+                        where   upper(csc.nombre) in ('PROVEEDORES','CUENTAS POR PAGAR')
                                and csc.estado_reg = 'activo';
                                
                                
                         if v_id_config_subtipo_cuenta is null then       
-                            raise exception ' no tiene configurado un subtipo de cuenta para proveedores';
+                            raise exception ' no tiene configurado un subtipo de cuenta para PROVEEDORES o CUENTAS POR PAGAR';
                         end if;
                         
                         for v_reg_cuenta in (
@@ -414,12 +434,13 @@ BEGIN
                 id_usuario_mod = p_id_usuario,
                 fecha_mod = now(),
                 rotulo_comercial = v_parametros.rotulo_comercial,
-                contacto = v_parametros.contacto
+                contacto = v_parametros.contacto,
+                tipo = v_parametros.tipo
             where id_proveedor=v_parametros.id_proveedor;
             
             
             --modificar datos basicos de proveedor y persona ,....isntitucion el nit
-            if (v_parametros.tipo = 'persona')then
+            if v_parametros.id_persona is not null then
                     
                     
                     update  segu.tpersona  set 
@@ -581,6 +602,382 @@ BEGIN
             return v_resp;
 
         end;
+    /*********************************    
+ 	#TRANSACCION:  'PM_INITRA_IME'
+ 	#DESCRIPCION:	Iniciar tramite de proveedores
+ 	#AUTOR:		Rensi Artega Copari (KPLIAN)
+ 	#FECHA:		05/09/2017 00:30:39
+	***********************************/
+
+	elsif(p_transaccion='PM_INITRA_IME')then
+
+		begin
+        
+                
+               select
+                   pr.codigo,
+                   pr.nro_tramite
+               into
+                   v_reg_pres
+              from param.tproveedor pr
+              where pr.id_proveedor = v_parametros.id_proveedor;
+              
+              select 
+                 per.id_gestion
+              into
+                 v_id_gestion
+              from param.tperiodo per
+              where   now()::Date BETWEEN per.fecha_ini and per.fecha_fin;
+                 
+                 
+              v_codigo_wf = pxp.f_get_variable_global('param_wf_codigo_proveedor');
+                           
+              IF  v_reg_pres.nro_tramite is not NULL or  v_reg_pres.nro_tramite !='' THEN
+                 raise exception 'El trámite ya fue iniciado % ', v_reg_pres.nro_tramite;              
+              END IF;
+        
+              -- obtiene numero de tramite
+                 SELECT 
+                       ps_num_tramite ,
+                       ps_id_proceso_wf ,
+                       ps_id_estado_wf ,
+                       ps_codigo_estado 
+                    into
+                       v_num_tramite,
+                       v_id_proceso_wf,
+                       v_id_estado_wf,
+                       v_codigo_estado   
+                        
+                  FROM wf.f_inicia_tramite(
+                       p_id_usuario, 
+                       v_parametros._id_usuario_ai,
+                       v_parametros._nombre_usuario_ai,
+                       v_id_gestion, 
+                       v_codigo_wf, 
+                       v_parametros.id_funcionario_usu,
+                       NULL,
+                       'Inicio de tramite.... ',
+                       v_reg_pres.codigo);
+			
+            
+            
+            update param.tproveedor  p  set
+               nro_tramite = v_num_tramite,
+               id_estado_wf = v_id_estado_wf,
+               id_proceso_wf = v_id_proceso_wf,
+               estado = v_codigo_estado
+            where p.id_proveedor = v_parametros.id_proveedor;
+            
+            
+            
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','se inicio el tramite de proveedores' ); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_proveedor',v_parametros.id_proveedor::varchar);
+            
+              
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;   
+      
+      /*********************************    
+      #TRANSACCION:  'PM_ANTEPRO_IME'
+      #DESCRIPCION: retrocede el estado de proveedores
+      #AUTOR:		RAC	
+      #FECHA:		06-09-2017 12:12:51
+      ***********************************/
+
+	elseif(p_transaccion='PM_ANTEPRO_IME')then   
+        begin
+        
+        v_operacion = 'anterior';
+        
+        IF  pxp.f_existe_parametro(p_tabla , 'estado_destino')  THEN
+           v_operacion = v_parametros.estado_destino;
+        END IF;
+        
+      
+        
+        --obtenermos datos basicos
+        select
+            pp.id_proveedor,
+            pp.id_proceso_wf,
+            pp.estado,
+            pwf.id_tipo_proceso
+        into 
+            v_registros_pp
+            
+        from param.tproveedor  pp
+        inner  join wf.tproceso_wf pwf  on  pwf.id_proceso_wf = pp.id_proceso_wf
+        where pp.id_proceso_wf  = v_parametros.id_proceso_wf;
+        
+        
+       
+        v_id_proceso_wf = v_registros_pp.id_proceso_wf;
+        
+        IF  v_operacion = 'anterior' THEN
+            --------------------------------------------------
+            --Retrocede al estado inmediatamente anterior
+            -------------------------------------------------
+           --recuperaq estado anterior segun Log del WF
+              SELECT  
+             
+                 ps_id_tipo_estado,
+                 ps_id_funcionario,
+                 ps_id_usuario_reg,
+                 ps_id_depto,
+                 ps_codigo_estado,
+                 ps_id_estado_wf_ant
+              into
+                 v_id_tipo_estado,
+                 v_id_funcionario,
+                 v_id_usuario_reg,
+                 v_id_depto,
+                 v_codigo_estado,
+                 v_id_estado_wf_ant 
+              FROM wf.f_obtener_estado_ant_log_wf(v_parametros.id_estado_wf);
+              
+              
+             
+              
+              
+        ELSE
+           --recupera el estado inicial
+           -- recuperamos el estado inicial segun tipo_proceso
+             
+             SELECT  
+               ps_id_tipo_estado,
+               ps_codigo_estado
+             into
+               v_id_tipo_estado,
+               v_codigo_estado
+             FROM wf.f_obtener_tipo_estado_inicial_del_tipo_proceso(v_registros_pp.id_tipo_proceso);
+             
+             
+             
+             --busca en log e estado de wf que identificamos como el inicial
+             SELECT 
+               ps_id_funcionario,
+              ps_id_depto
+             into
+              v_id_funcionario,
+             v_id_depto
+               
+                
+             FROM wf.f_obtener_estado_segun_log_wf(v_id_estado_wf, v_id_tipo_estado);
+             
+            
+        
+        
+        END IF; 
+          
+          
+          
+         --configurar acceso directo para la alarma   
+             v_acceso_directo = '';
+             v_clase = '';
+             v_parametros_ad = '';
+             v_tipo_noti = 'notificacion';
+             v_titulo  = 'Visto Bueno';
+             
+           
+           IF   v_codigo_estado_siguiente not in('borrador','aprobado','anulado')   THEN
+                  v_acceso_directo = '../../../sis_parametros/vista/proveedor/ProveedorVb.php';
+                 v_clase = 'ProveedorVb';
+                 v_parametros_ad = '{filtro_directo:{campo:"provee.id_proceso_wf",valor:"'||v_id_proceso_wf::varchar||'"}}';
+                 v_tipo_noti = 'notificacion';
+                 v_titulo  = 'Visto Bueno';
+             
+           END IF;
+             
+          
+          -- registra nuevo estado
+                      
+          v_id_estado_actual = wf.f_registra_estado_wf(
+              v_id_tipo_estado,                --  id_tipo_estado al que retrocede
+              v_id_funcionario,                --  funcionario del estado anterior
+              v_parametros.id_estado_wf,       --  estado actual ...
+              v_id_proceso_wf,                 --  id del proceso actual
+              p_id_usuario,                    -- usuario que registra
+              v_parametros._id_usuario_ai,
+              v_parametros._nombre_usuario_ai,
+              v_id_depto,                       --depto del estado anterior
+              '[RETROCESO] '|| v_parametros.obs,
+              v_acceso_directo,
+              v_clase,
+              v_parametros_ad,
+              v_tipo_noti,
+              v_titulo);
+                      
+              IF  not param.f_fun_regreso_proveedor_wf(p_id_usuario, 
+                                                   v_parametros._id_usuario_ai, 
+                                                   v_parametros._nombre_usuario_ai, 
+                                                   v_id_estado_actual, 
+                                                   v_parametros.id_proceso_wf, 
+                                                   v_codigo_estado) THEN
+            
+               raise exception 'Error al retroceder estado';
+            
+            END IF;              
+                         
+                         
+         -- si hay mas de un estado disponible  preguntamos al usuario
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
+                        
+                              
+          --Devuelve la respuesta
+            return v_resp;
+              
+        
+        end; 
+        
+    /*********************************    
+ 	#TRANSACCION:  'PM_SIGESTP_IME'
+ 	#DESCRIPCION:  cambia al siguiente estado	
+ 	#AUTOR:		RAC	
+ 	#FECHA:		06-09-2017 12:12:51
+	***********************************/
+
+	elseif(p_transaccion='PM_SIGESTP_IME')then   
+        begin
+        
+         /*   PARAMETROS
+         
+        $this->setParametro('id_proceso_wf_act','id_proceso_wf_act','int4');
+        $this->setParametro('id_tipo_estado','id_tipo_estado','int4');
+        $this->setParametro('id_funcionario_wf','id_funcionario_wf','int4');
+        $this->setParametro('id_depto_wf','id_depto_wf','int4');
+        $this->setParametro('obs','obs','text');
+        $this->setParametro('json_procesos','json_procesos','text');
+        */
+        
+        --obtenermos datos basicos
+          select
+              p.id_proceso_wf,
+              p.id_estado_wf,
+              p.estado
+              
+             into
+              v_id_proceso_wf,
+              v_id_estado_wf,
+              v_codigo_estado
+              
+          from param.tproveedor p
+          where p.id_proveedor = v_parametros.id_proveedor;
+          
+          
+          -- recupera datos del estado
+         
+           select 
+            ew.id_tipo_estado ,
+            te.codigo
+           into 
+            v_id_tipo_estado,
+            v_codigo_estado
+          from wf.testado_wf ew
+          inner join wf.ttipo_estado te on te.id_tipo_estado = ew.id_tipo_estado
+          where ew.id_estado_wf = v_parametros.id_estado_wf_act;
+        
+         
+          
+           -- obtener datos tipo estado
+           select
+                 te.codigo
+            into
+                 v_codigo_estado_siguiente
+           from wf.ttipo_estado te
+           where te.id_tipo_estado = v_parametros.id_tipo_estado;
+                
+           IF  pxp.f_existe_parametro(p_tabla,'id_depto_wf') THEN
+              v_id_depto = v_parametros.id_depto_wf;
+           END IF;
+                
+           IF  pxp.f_existe_parametro(p_tabla,'obs') THEN
+                  v_obs=v_parametros.obs;
+           ELSE
+                  v_obs='---';
+           END IF;
+            
+           ---------------------------------------
+           -- REGISTA EL SIGUIENTE ESTADO DEL WF.
+           ---------------------------------------
+            
+           v_id_estado_actual =  wf.f_registra_estado_wf(  v_parametros.id_tipo_estado, 
+                                                           v_parametros.id_funcionario_wf, 
+                                                           v_parametros.id_estado_wf_act, 
+                                                           v_id_proceso_wf,
+                                                           p_id_usuario,
+                                                           v_parametros._id_usuario_ai,
+                                                           v_parametros._nombre_usuario_ai,
+                                                           v_id_depto,
+                                                           v_obs);
+                                                             
+          --------------------------------------
+          -- registra los procesos disparados
+          --------------------------------------
+         
+          FOR v_registros_proc in ( select * from json_populate_recordset(null::wf.proceso_disparado_wf, v_parametros.json_procesos::json)) LOOP
+    
+               -- get cdigo tipo proceso
+               select   
+                  tp.codigo 
+               into 
+                  v_codigo_tipo_pro   
+               from wf.ttipo_proceso tp 
+               where  tp.id_tipo_proceso =  v_registros_proc.id_tipo_proceso_pro;
+          
+          
+              -- disparar creacion de procesos seleccionados
+              SELECT
+                       ps_id_proceso_wf,
+                       ps_id_estado_wf,
+                       ps_codigo_estado
+                 into
+                       v_id_proceso_wf,
+                       v_id_estado_wf,
+                       v_codigo_estado
+              FROM wf.f_registra_proceso_disparado_wf(
+                       p_id_usuario,
+                       v_parametros._id_usuario_ai,
+                       v_parametros._nombre_usuario_ai,
+                       v_id_estado_actual, 
+                       v_registros_proc.id_funcionario_wf_pro, 
+                       v_registros_proc.id_depto_wf_pro,
+                       v_registros_proc.obs_pro,
+                       v_codigo_tipo_pro,    
+                       v_codigo_tipo_pro);
+                       
+                       
+           END LOOP; 
+           
+           
+           
+          --------------------------------------------------
+          --  ACTUALIZA EL NUEVO ESTADO DEL PRESUPUESTO
+          ----------------------------------------------------
+               
+           
+          IF  param.f_fun_inicio_proveedor_wf(p_id_usuario, 
+           									v_parametros._id_usuario_ai, 
+                                            v_parametros._nombre_usuario_ai, 
+                                            v_id_estado_actual, 
+                                            v_id_proceso_wf, 
+                                            v_codigo_estado_siguiente) THEN
+          
+                                              
+          END IF;
+          
+         
+             
+          -- si hay mas de un estado disponible  preguntamos al usuario
+          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado del proveedor id='||v_parametros.id_proveedor); 
+          v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
+          
+          
+          -- Devuelve la respuesta
+          return v_resp;
+        
+     end;            
          
     else
      

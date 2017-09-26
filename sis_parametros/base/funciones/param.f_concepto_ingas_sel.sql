@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -71,12 +73,15 @@ BEGIN
                         conig.id_unidad_medida,
                         um.codigo as  desc_unidad_medida,
                         conig.nandina,
-                        COALESCE(conig.ruta_foto,'''')::Varchar as ruta_foto
+                        COALESCE(conig.ruta_foto,'''')::Varchar as ruta_foto,
+                        conig.id_cat_concepto,
+                        (cc.codigo ||'' - ''||cc.nombre)::varchar as desc_cat_concepto
 
                         from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                         left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+                        left join param.tcat_concepto cc on cc.id_cat_concepto = conig.id_cat_concepto
 				        where conig.estado_reg = ''activo''  and ';
 
 			--Definicion de la respuesta
@@ -104,6 +109,7 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                         left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida
 						left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+                        left join param.tcat_concepto cc on cc.id_cat_concepto = conig.id_cat_concepto
 				        where conig.estado_reg = ''activo'' and ';
 
 			--Definicion de la respuesta
@@ -203,7 +209,7 @@ BEGIN
             END IF;
 
 
-            --IF  p_administrador != 1 THEN
+            IF  p_administrador != 1 THEN
                IF pxp.f_existe_parametro(p_tabla,'autorizacion')THEN
                    IF v_autorizacion_nulos = 'si' THEN
                     v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
@@ -211,7 +217,7 @@ BEGIN
                      v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
                    END IF;
                 END IF;
-             --END IF;
+             END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(conig.id_concepto_ingas)
 					      from param.tconcepto_ingas conig

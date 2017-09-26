@@ -1063,5 +1063,59 @@ select pxp.f_insert_testructura_gui ('VARDEP', 'EMPS');
 
 /***********************************F-DAT-RAC-PARAM-0-18/07/2017*****************************************/
 
+/***********************************I-DAT-RAC-PARAM-0-06/09/2017*****************************************/
+
+
+select pxp.f_insert_tgui ('Categoria de Concepto', 'Categoria de Concepto', 'CATCON', 'si', 3, 'sis_parametros/vista/cat_concepto/CatConcepto.php', 4, '', 'CatConcepto', 'PARAM');
+select pxp.f_insert_testructura_gui ('CATCON', 'CCOM');
+
+/***********************************F-DAT-RAC-PARAM-0-06/09/2017*****************************************/
+
+
+/***********************************I-DAT-RAC-PARAM-0-05/09/2017*****************************************/
+
+----------------------------------
+--COPY LINES TO SUBSYSTEM data.sql FILE  
+---------------------------------
+
+select param.f_import_tcatalogo_tipo ('insert','tproveedor_tipo','PARAM','tproveedor');
+select param.f_import_tcatalogo ('insert','PARAM','Abastecimiento','abastecimiento','tproveedor_tipo');
+select param.f_import_tcatalogo ('insert','PARAM','General','general','tproveedor_tipo');
+
+/***********************************F-DAT-RAC-PARAM-0-05/09/2017*****************************************/
+
+
+/***********************************I-DAT-RAC-PARAM-1-06/09/2017*****************************************/
+
+select wf.f_import_tproceso_macro ('insert','PROV', 'PARAM', 'Proveedores','si');
+select wf.f_import_tcategoria_documento ('insert','legales', 'Legales');
+select wf.f_import_tcategoria_documento ('insert','proceso', 'Proceso');
+select wf.f_import_ttipo_proceso ('insert','REG',NULL,NULL,'PROV','Registro de Proveedores','param.tproveedor','','si','','','','REG',NULL);
+select wf.f_import_ttipo_estado ('insert','borrador','REG','Borrador','si','no','no','ninguno','','ninguno','','','no','no',NULL,'<font color="99CC00" size="5"><font size="4">{TIPO_PROCESO}</font></font><br><br><b>&nbsp;</b>Tramite:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <b>{NUM_TRAMITE}</b><br><b>&nbsp;</b>Usuario :<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {USUARIO_PREVIO} </b>en estado<b>&nbsp; {ESTADO_ANTERIOR}<br></b>&nbsp;<b>Responsable:&nbsp;&nbsp; &nbsp;&nbsp; </b><b>{FUNCIONARIO_PREVIO}&nbsp; {DEPTO_PREVIO}<br>&nbsp;</b>Estado Actual<b>: &nbsp; &nbsp;&nbsp; {ESTADO_ACTUAL}</b><br><br><br>&nbsp;{OBS} <br>','Aviso WF ,  {PROCESO_MACRO}  ({NUM_TRAMITE})','','no','','','','','','','',NULL);
+select wf.f_import_ttipo_estado ('insert','revision','REG','revision','no','no','no','todos','','ninguno','','','si','si',NULL,'<font color="99CC00" size="5"><font size="4">{TIPO_PROCESO}</font></font><br><br><b>&nbsp;</b>Tramite:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <b>{NUM_TRAMITE}</b><br><b>&nbsp;</b>Usuario :<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {USUARIO_PREVIO} </b>en estado<b>&nbsp; {ESTADO_ANTERIOR}<br></b>&nbsp;<b>Responsable:&nbsp;&nbsp; &nbsp;&nbsp; </b><b>{FUNCIONARIO_PREVIO}&nbsp; {DEPTO_PREVIO}<br>&nbsp;</b>Estado Actual<b>: &nbsp; &nbsp;&nbsp; {ESTADO_ACTUAL}</b><br><br><br>&nbsp;{OBS} <br>','Aviso WF ,  {PROCESO_MACRO}  ({NUM_TRAMITE})','','no','','','','','','','',NULL);
+select wf.f_import_ttipo_estado ('insert','aprobado','REG','aprobado','no','no','si','anterior','','ninguno','','','no','no',NULL,'<font color="99CC00" size="5"><font size="4">{TIPO_PROCESO}</font></font><br><br><b>&nbsp;</b>Tramite:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <b>{NUM_TRAMITE}</b><br><b>&nbsp;</b>Usuario :<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {USUARIO_PREVIO} </b>en estado<b>&nbsp; {ESTADO_ANTERIOR}<br></b>&nbsp;<b>Responsable:&nbsp;&nbsp; &nbsp;&nbsp; </b><b>{FUNCIONARIO_PREVIO}&nbsp; {DEPTO_PREVIO}<br>&nbsp;</b>Estado Actual<b>: &nbsp; &nbsp;&nbsp; {ESTADO_ACTUAL}</b><br><br><br>&nbsp;{OBS} <br>','Aviso WF ,  {PROCESO_MACRO}  ({NUM_TRAMITE})','','no','','','','','','','',NULL);
+select wf.f_import_ttipo_documento ('insert','NIT','REG','NIT','Numero de Identificación Tributaria','','escaneado',1.00,'{}');
+select wf.f_import_ttipo_documento ('insert','MATR','REG','Matricula de Comercio','Matricula de Comercio','','escaneado',1.00,'{}');
+select wf.f_import_testructura_estado ('insert','borrador','revision','REG',1,'');
+select wf.f_import_testructura_estado ('insert','revision','aprobado','REG',1,'');
+select wf.f_import_ttipo_documento_estado ('insert','MATR','REG','borrador','REG','crear','superior','');
+select wf.f_import_ttipo_documento_estado ('insert','NIT','REG','borrador','REG','crear','superior','');
+
+
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES  (E'param_wf_codigo_proveedor', E'REG', E'Codigo de proceso macro del wf para el flujo de proveedores');
+
+/***********************************F-DAT-RAC-PARAM-1-06/09/2017*****************************************/
+
+
+/***********************************I-DAT-RAC-PARAM-1-07/09/2017*****************************************/
+select pxp.f_insert_tgui ('Proveedor VoBo', 'Proveedor VoBo', 'PROVB', 'si', 4, 'sis_parametros/vista/proveedor/ProveedorVb.php', 4, '', 'ProveedorVb', 'PARAM');
+select pxp.f_insert_testructura_gui ('PROVB', 'CCOM');
+select pxp.f_insert_tgui ('Proveedor Inicio', 'Proveedor Inicio de Trámite', 'PROVINI', 'si', 3, 'sis_parametros/vista/proveedor/ProveedorInicio.php', 4, '', 'ProveedorInicio', 'PARAM');
+select pxp.f_insert_testructura_gui ('PROVINI', 'CCOM');
+
+/***********************************F-DAT-RAC-PARAM-1-07/09/2017*****************************************/
+
 
 
