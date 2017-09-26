@@ -569,9 +569,70 @@ BEGIN
 			return v_consulta;
 
 		end;
+
+  /*********************************    
+  #TRANSACCION: 'PM_CCPRO_SEL'
+  #DESCRIPCION: Devuelve los Centros de costo por proyecto
+  #AUTOR:       RCM
+  #FECHA:       26/09/2017
+  ***********************************/
+
+  elsif(p_transaccion='PM_CENCOS_SEL')then
+            
+      begin
+        --Sentencia de la consulta
+      v_consulta:='select
+                  cc.id_centro_costo, cc.id_gestion, cc.codigo_uo, cc.nombre_uo, cc.gestion,
+                  cc.codigo_cc, cc.nombre_proyecto, cc.codigo_tcc, cc.descripcion_tcc,
+                  cc.fecha_inicio, cc.fecha_final, py.id_proyecto
+                  from param.vcentro_costo cc
+                  inner join param.tep ep
+                  on ep.id_ep = cc.id_ep
+                  inner join param.tprograma_proyecto_acttividad ppa
+                  on ppa.id_prog_pory_acti = ep.id_prog_pory_acti
+                  inner join param.tproyecto py
+                  on py.id_proyecto = ppa.id_proyecto
+                  where ';
+      
+      --Definicion de la respuesta
+      v_consulta:=v_consulta||v_parametros.filtro;
+      v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+      --Devuelve la respuesta
+      return v_consulta;
+            
+    end;
+
+  /*********************************    
+  #TRANSACCION: 'PM_CENCOS_CONT'
+  #DESCRIPCION: Conteo de registros
+  #AUTOR:       RCM
+  #FECHA:       26/09/2017
+  ***********************************/
+
+  elsif(p_transaccion='PM_CENCOS_CONT')then
+
+    begin
+      --Sentencia de la consulta de conteo de registros
+      v_consulta:='select count(1)
+                  from param.vcentro_costo cc
+                  inner join param.tep ep
+                  on ep.id_ep = cc.id_ep
+                  inner join param.tprograma_proyecto_acttividad ppa
+                  on ppa.id_prog_pory_acti = ep.id_prog_pory_acti
+                  inner join param.tproyecto py
+                  on py.id_proyecto = ppa.id_proyecto
+                  where ';
+      
+      --Definicion de la respuesta        
+      v_consulta:=v_consulta||v_parametros.filtro;
+
+      --Devuelve la respuesta
+      return v_consulta;
+
+    end;  
     
-    
-    else					     
+  else					     
 		raise exception 'Transaccion inexistente';					         
 	end if;
 					
