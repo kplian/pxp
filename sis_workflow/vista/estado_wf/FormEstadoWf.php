@@ -683,7 +683,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                                             fieldLabel: 'Proveido',
                                             allowBlank: false,
                                             anchor: '80%',
-                                            maxLength:1000
+                                            maxLength:2000
                                         }
                                          
                                   ]}
@@ -968,7 +968,7 @@ Phx.vista.FormEstadoWf=Ext.extend(Phx.frmInterfaz,{
                 fieldLabel: 'Proveido',
                 allowBlank: false,
                 anchor: '80%',
-                maxLength:1000
+                maxLength:2000
             },
             type:'TextArea',
             form:true 
