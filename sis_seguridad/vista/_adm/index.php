@@ -53,6 +53,7 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/Portal.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ext3/resources/css/ext-all.css"/>
    <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/<?php echo $_SESSION['_ESTILO_MENU'];?>/menus.css"/>
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/LockingGridView.css" />
    <link rel="stylesheet" href="../../../lib/opl/ol.css" type="text/css">
    <style type="text/css" media="screen">
 		    html, body{
@@ -161,6 +162,7 @@ if(!isset($_SESSION["_SESION"])){
     <script type='text/javascript' charset="UTF-8" src="../../../lib/moment/moment.min.js"></script>
     <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/MultiSelect.js"></script>
     <script type='text/javascript' charset="UTF-8" src="../../../lib/ux/ItemSelector.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="../../../lib/ux/grid/LockingGridView.js"></script>
 
     <?php
      echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";  
@@ -175,6 +177,7 @@ if(!isset($_SESSION["_SESION"])){
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/arbGridInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/frmInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gmapInterfaz.js'></script>
+
       
      
      
