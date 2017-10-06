@@ -309,6 +309,34 @@ class MODCentroCosto extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function listarCentroCostoProyecto(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.f_centro_costo_sel';
+		$this->transaccion='PM_CCPRO_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+
+		//Definicion de la lista del resultado del query
+		$this->captura('id_centro_costo','int4');
+		$this->captura('id_gestion','int4');
+		$this->captura('codigo_uo','varchar');
+		$this->captura('nombre_uo','varchar');
+		$this->captura('gestion','int4');
+		$this->captura('codigo_cc','text');
+		$this->captura('nombre_proyecto','varchar');
+		$this->captura('codigo_tcc','varchar');
+		$this->captura('descripcion_tcc','varchar');
+		$this->captura('fecha_inicio','date');
+		$this->captura('fecha_final','date');
+		$this->captura('id_proyecto','int4');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 }
 ?>

@@ -561,7 +561,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
                                  ['fondo_avance', 'Fondo en Avance'],
                                  ['contrato', 'Contratos'],
                                  ['pago_unico', 'Pago Único'],
-                                 ['especial', 'Especial']
+                                 ['especial', 'Especial'],
+                                 ['viatico', 'Viáticos']
                                ]
                         }),
        				valueField: 'variable',

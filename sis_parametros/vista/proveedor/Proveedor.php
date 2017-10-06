@@ -1142,12 +1142,25 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		//
 	},
 	
-	 
+
+	tabeast:[
+	{
+	  url:'../../../sis_parametros/vista/proveedor_cta_bancaria/ProveedorCtaBancaria.php',
+	  title:'Cta Bancaria', 
+	  width:'50%',
+	  cls:'ProveedorCtaBancaria',
+	  params:{nombre_tabla:'param.tproveedor',tabla_id : 'id_proveedor'}
+	}],
+	
+	fheight: '95%',
+    fwidth: '95%',
+
     
     antEstado:function(res){
          var rec=this.sm.getSelected();
          Phx.CP.loadWindows('../../../sis_workflow/vista/estado_wf/AntFormEstadoWf.php',
             'Estado de Wf',
+
             {
                 modal:true,
                 width:450,
