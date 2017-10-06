@@ -354,7 +354,26 @@ tabEnter:true,
        			id_grupo:0,
        			grid:false,
        			form:true
-       	}],
+       	}
+        /*{
+            config:{
+                name: 'usuario_externo',
+                fieldLabel: 'Usuario Externo',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 200,
+                maxLength:100
+
+            },
+            type:'TextField',
+            filters:{pfiltro:'usx.usuario_externo',type:'string'},
+            id_grupo:1,
+            grid:false,
+            form:false,
+            bottom_filter:true
+        }*/
+
+    ],
 	title:'Usuario',
 	ActSave:'../../sis_seguridad/control/Usuario/guardarUsuario',
 	ActDel:'../../sis_seguridad/control/Usuario/eliminarUsuario',
@@ -372,6 +391,7 @@ tabEnter:true,
 	{name:'descripcion', type: 'string'},
 	{name:'estilo'},
 	'id_roles','autentificacion'
+      //  {name:'usuario_externo', type: 'string'}
 	
 		
 	],
@@ -413,15 +433,21 @@ tabEnter:true,
           title:'Roles', 
           width:400,
           cls:'usuario_rol'
-         }
-          ,
+         },
           {
           url:'../../../sis_seguridad/vista/usuario_grupo_ep/UsuarioGrupoEp.php',
           title:'EP\'', 
           width:400,
           cls:'UsuarioGrupoEp'    
-          }
-        ],
+          },
+        {
+            url:'../../../sis_seguridad/vista/usuario_externo/UsuarioExterno.php',
+            title:'Usuario Externo',
+            width:400,
+            cls:'UsuarioExterno'
+        }
+
+        ]
 	
 
 		  
