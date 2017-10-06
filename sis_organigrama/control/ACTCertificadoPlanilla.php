@@ -136,6 +136,14 @@ class ACTCertificadoPlanilla extends ACTbase{
         $this->mensajeExito->setArchivoGenerado($nombreArchivo);
         $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
     }
+    function consultaDatosFuncionario()
+    {
+
+        //$this->objParam->addParametro('id_funcionario',$this->objParam->getParametro('id_funcionario'));
+        $this->objFunc=$this->create('MODCertificadoPlanilla');
+        $this->res=$this->objFunc->servicioConsultaDatosFuncionario($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 
 }
 

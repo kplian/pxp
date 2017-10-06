@@ -101,7 +101,8 @@ BEGIN
 		begin
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_certificado_planilla)
-							from orga.tcertificado_planilla planc
+
+                      from orga.tcertificado_planilla planc
       inner join segu.tusuario usu1 on usu1.id_usuario = planc.id_usuario_reg
       inner join orga.vfuncionario_cargo f on f.id_funcionario = planc.id_funcionario and (f.fecha_finalizacion is null or f.fecha_finalizacion >= now())
       inner join orga.tcargo car on car.id_cargo = f.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
@@ -109,7 +110,7 @@ BEGIN
       inner join orga.tfuncionario fon on fon.id_funcionario = planc.id_funcionario
       inner join segu.tpersona pe on pe .id_persona = fon.id_persona
       left join segu.tusuario usu2 on usu2.id_usuario = planc.id_usuario_mod
-      where  ';
+					    where ';
 
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -161,7 +162,7 @@ BEGIN
                               c.nro_tramite,
                               '''||v_iniciales||'''::varchar as iniciales
                               from orga.tcertificado_planilla c
-                              inner join orga.vfuncionario_cargo  fu on fu.id_funcionario = c.id_funcionario and (fu.fecha_finalizacion is null or fu.fecha_finalizacion >= now())
+                              inner join orga.vfuncionario_cargo  fu on fu.id_funcionario = c.id_funcionario and fu.fecha_finalizacion is null
                               inner join orga.tcargo ca on ca.id_cargo = fu.id_cargo
                               inner join orga.tescala_salarial es on es.id_escala_salarial = ca.id_escala_salarial
                               inner join orga.tfuncionario fun on fun.id_funcionario = fu.id_funcionario
@@ -172,7 +173,38 @@ BEGIN
 			return v_consulta;
 
 		end;
+    /*********************************
+ 	#TRANSACCION:  'OR_CERT_SER'
+ 	#DESCRIPCION:	Servicio consulta datos funcionario
+ 	#AUTOR:		miguel.mamani
+ 	#FECHA:		24-07-2017 14:48:34
+	***********************************/
 
+    elsif(p_transaccion='OR_CERT_SER')then
+
+		begin
+			v_consulta:='  select planc.nro_tramite,
+                            f.desc_funcionario1 as nombre_funcionario,
+                            planc.fecha_solicitud,
+                            planc.tipo_certificado,
+                            planc.estado,
+                            f.nombre_cargo,
+                            round(es.haber_basico + round(plani.f_evaluar_antiguedad(plani.f_get_fecha_primer_contrato_empleado(f.id_uo_funcionario, f.id_funcionario, f.fecha_asignacion), planc.fecha_solicitud::date, fon.antiguedad_anterior), 2)) as remuneracion
+                            from orga.tcertificado_planilla planc
+                            inner join orga.vfuncionario_cargo f on f.id_funcionario = planc.id_funcionario and (f.fecha_finalizacion is null or f.fecha_finalizacion >= now())
+                            inner join orga.tcargo car on car.id_cargo = f.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
+                            inner join orga.tescala_salarial es on es.id_escala_salarial =car.id_escala_salarial
+                            inner join orga.tfuncionario fon on fon.id_funcionario = planc.id_funcionario
+                            where planc.id_funcionario ='||v_parametros.id_funcionario;
+
+
+			--Devuelve la respuesta
+            --raise exception 'llega ';
+            raise notice 'CONSULTA %',v_consulta;
+			return v_consulta;
+
+
+		end;
 
 	else
 

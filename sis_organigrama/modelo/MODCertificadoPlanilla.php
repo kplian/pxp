@@ -191,6 +191,30 @@ class MODCertificadoPlanilla extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    function servicioConsultaDatosFuncionario()
+    {
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'orga.ft_certificado_planilla_sel';
+        $this->transaccion = 'OR_CERT_SER';
+        $this->tipo_procedimiento = 'SEL';
+
+        //Define los parametros para la funcion
+        $this->setCount(false);
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+
+        $this->captura('nro_tramite','varchar');
+        $this->captura('nombre_funcionario','text');
+        $this->captura('fecha_solicitud','date');
+        $this->captura('tipo_certificado','varchar');
+        $this->captura('estado','varchar');
+        $this->captura('nombre_cargo','varchar');
+        $this->captura('remuneracion','numeric');
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 
 
 
