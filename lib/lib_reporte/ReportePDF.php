@@ -242,13 +242,14 @@ class ReportePDF extends MYPDF
 		$cantCol=2;
 		$anchoCol=93;
 		if($this->orientacion=='L'){
-			$cantCol=4;
-			$anchoCol=60;
+			$cantCol=2;
+			$anchoCol=110;
 		}
-		
+
 		//var_dump($this->objParam->getParametro('maestro'));exit;
 		if($this->objParam->getParametro('maestro')!=null&&$this->objParam->getParametro('desplegarMaestro')=='si'){
 			$this->swMaestro=1;
+
 			//if(is_array($this->objParam->getParametro('maestro'))){
 				$arr=array();
 				$arrMas=array();
@@ -269,7 +270,7 @@ class ReportePDF extends MYPDF
 				}
 				//echo $i;exit;
 				if($this->objParam->getParametro('filaInicioEtiquetas')==0){
-					 $this->maestroY=($i-1)*4;
+					 $this->maestroY=15;//($i-1)*4;
 				} else{
 					$this->maestroY=$this->objParam->getParametro('filaInicioEtiquetas');	
 				}
@@ -305,6 +306,8 @@ class ReportePDF extends MYPDF
 				/*$this->maestroTipoEtiquetas='vertical';
 				$this->aMaestroEtiquetas=$this->objParam->getParametro('maestro');
 				$this->renderMaestro();*/
+
+				//$this->SetXY(10, 300);
 				
 			}
 	}
@@ -630,7 +633,7 @@ class ReportePDF extends MYPDF
 				$aux[$i][0]='<b>'.$this->aMaestroEtiquetas[$i].':</b>';
 				$aux[$i][1]=$this->aMaestro[0][$i];
 			}
-//var_dump($aux);exit;
+
 			if($this->tipoReporte=='pdf'||$this->tipoReporte=='pdf_grid'){
 				//2. Formatea el maestro en función de las columnas definidas
 				if($this->maestroBloqueCant>1){
@@ -912,7 +915,7 @@ class ReportePDF extends MYPDF
 		                
 		        $this->setXY($x+170,$y);
 		        $this->SetFont('','');
-		        $this->Cell(40, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
+		        $this->Cell(40+17, $height, '', 1, 0, 'C', false, '', 0, false, 'T', 'C');
 		        
 		        $this->SetFontSize(7);
 		        
@@ -929,7 +932,7 @@ class ReportePDF extends MYPDF
 		        $this->SetXY($x+170, $y);
 		        $this->setCellPaddings(2);
 		        $this->SetFont('','B');
-		        $this->Cell($width1, $height/4, 'Revisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width1+17, $height/4, 'Revisión:', "B", 0, '', false, '', 0, false, 'T', 'C');
 		        $this->Cell($width2, $height/4, '1', "B", 0, 'C', false, '', 0, false, 'T', 'C');
 		        
 				
@@ -953,7 +956,7 @@ class ReportePDF extends MYPDF
 		        $this->SetXY($x+170, $y);
 		        $this->setCellPaddings(2);
 		        $this->SetFont('','B');
-		        $this->Cell($width1, $height/4, 'Pagina:', "B", 0, '', false, '', 0, false, 'T', 'C');
+		        $this->Cell($width1+17, $height/4, 'Pagina:', "B", 0, '', false, '', 0, false, 'T', 'C');
 		        $this->Cell($width2, $height/4,  '                  '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), "B", 0, 'C', false, '', 0, false, 'T', 'C');
         
 				
