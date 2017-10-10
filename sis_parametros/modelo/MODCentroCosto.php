@@ -316,6 +316,9 @@ class MODCentroCosto extends MODbase{
 		$this->transaccion='PM_CCPRO_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 
+		//Define los parametros para la funcion
+		$this->setParametro('id_proyecto_ep','id_proyecto_ep','int4');
+
 		//Definicion de la lista del resultado del query
 		$this->captura('id_centro_costo','int4');
 		$this->captura('id_gestion','int4');

@@ -1998,7 +1998,16 @@ ALTER TABLE param.tproveedor
   ALTER COLUMN estado SET DEFAULT 'borrador';
 
 ALTER TABLE param.tproveedor
-  ALTER COLUMN estado SET NOT NULL;
+ALTER COLUMN estado SET NOT NULL;
+  
+ALTER TABLE param.tproveedor
+  ADD COLUMN id_auxiliar INTEGER;
+
+COMMENT ON COLUMN param.tproveedor.id_auxiliar
+IS 'idenfica el auxilar contable que le correponde al proveedor, automaticamente al crear proveedores creamos auxiliares contables';
+  
+  
+  
 /***********************************F-SCP-RAC-PARAM-3-06/09/2017*****************************************/
      
   
