@@ -1047,19 +1047,8 @@ select pxp.f_insert_tgui ('wsMensaje', 'web socket mensaje', 'WSME', 'si', 5, 's
 
 
 /***********************************I-DAT-RAC-PARAM-0-18/07/2017*****************************************/
-
-ALTER TABLE param.tproveedor
-  ADD COLUMN id_auxiliar INTEGER;
-
-COMMENT ON COLUMN param.tproveedor.id_auxiliar
-IS 'idenfica el auxilar contable que le correponde al proveedor, automaticamente al crear proveedores creamos auxiliares contables';
-
-
-
-
 select pxp.f_insert_tgui ('Plantillas Var Deptos', 'Plantillas de Variables para Deptos', 'VARDEP', 'si', 2, 'sis_parametros/vista/subsistema_var/SubsistemaConf.php', 3, '', 'SubsistemaConf', 'PARAM');
 select pxp.f_insert_testructura_gui ('VARDEP', 'EMPS');
-
 
 /***********************************F-DAT-RAC-PARAM-0-18/07/2017*****************************************/
 
