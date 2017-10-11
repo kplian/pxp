@@ -42,6 +42,7 @@ v_titulo					varchar;
 v_clase						varchar;
 v_parametros_ad				varchar;
 v_acceso_directo			varchar;
+v_id_biometrico       integer;
 
 BEGIN
 
@@ -70,6 +71,7 @@ BEGIN
                   raise exception 'Insercion no realizada. Esta persona ya está registrada como funcionario';
                end if;
 
+               SELECT nextval('orga.tfuncionario_id_biometrico_seq') INTO v_id_biometrico;
                INSERT INTO orga.tfuncionario(
 		               codigo, id_persona,
 		               estado_reg,
@@ -78,7 +80,9 @@ BEGIN
 		               email_empresa,
 		               interno,		              
 		               telefono_ofi,
-		               antiguedad_anterior)
+		               antiguedad_anterior,
+		               id_oficina,
+                   id_biometrico)
                values(
                       v_parametros.codigo,
                       v_parametros.id_persona,
@@ -87,7 +91,9 @@ BEGIN
                       v_parametros.id_persona,
                       v_parametros.interno,                      
                       v_parametros.telefono_ofi,
-                      v_parametros.antiguedad_anterior)
+                      v_parametros.antiguedad_anterior,
+                      v_parametros.id_oficina,
+                      v_id_biometrico)
                RETURNING id_funcionario into v_id_funcionario;
 
                update segu.tpersona
@@ -138,7 +144,8 @@ BEGIN
                     interno=v_parametros.interno,                    
                     fecha_mod=now()::date,
                     telefono_ofi= v_parametros.telefono_ofi,
-                    antiguedad_anterior =  v_parametros.antiguedad_anterior
+                    antiguedad_anterior =  v_parametros.antiguedad_anterior,
+                    id_oficina = v_parametros.id_oficina
                 where id_funcionario=v_parametros.id_funcionario;
 
                 update segu.tpersona

@@ -204,7 +204,7 @@ class MODCertificadoPlanilla extends MODbase{
 
         $this->captura('nro_tramite','varchar');
         $this->captura('nombre_funcionario','text');
-        $this->captura('fecha_solicitud','date');
+        $this->captura('fecha_solicitud','text');
         $this->captura('tipo_certificado','varchar');
         $this->captura('estado','varchar');
         $this->captura('nombre_cargo','varchar');

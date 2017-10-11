@@ -45,7 +45,8 @@ class ACTWsmensaje extends ACTbase{
             "titulo" => $this->objParam->getParametro('titulo'),
             "id_usuario" => $this->objParam->getParametro('id_usuario'),
             "destino" => $this->objParam->getParametro('destino'),
-            "evento" => $evento
+            "evento" => $evento,
+			"url" => 'url_prueba'
         );
 
         $send = array(

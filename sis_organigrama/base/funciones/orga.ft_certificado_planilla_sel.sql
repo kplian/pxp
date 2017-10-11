@@ -61,19 +61,19 @@ BEGIN
       planc.id_usuario_mod,
       usu1.cuenta as usr_reg,
       usu2.cuenta as usr_mod,
-      f.desc_funcionario1,
+      fun.desc_funcionario1,
       planc.nro_tramite,
       planc.estado,
       planc.id_proceso_wf,
       planc.id_estado_wf,
-      f.nombre_cargo,
+      fun.nombre_cargo,
       pe.ci,
-      round(es.haber_basico + round(plani.f_evaluar_antiguedad(plani.f_get_fecha_primer_contrato_empleado(f.id_uo_funcionario, f.id_funcionario, f.fecha_asignacion), planc.fecha_solicitud::date, fon.antiguedad_anterior), 2)) as haber_basico,
+      round(es.haber_basico + round(plani.f_evaluar_antiguedad(plani.f_get_fecha_primer_contrato_empleado(fun.id_uo_funcionario, fun.id_funcionario, fun.fecha_asignacion), planc.fecha_solicitud::date, fon.antiguedad_anterior), 2)) as haber_basico,
       pe.expedicion
       from orga.tcertificado_planilla planc
       inner join segu.tusuario usu1 on usu1.id_usuario = planc.id_usuario_reg
-      inner join orga.vfuncionario_cargo f on f.id_funcionario = planc.id_funcionario and (f.fecha_finalizacion is null or f.fecha_finalizacion >= now())
-      inner join orga.tcargo car on car.id_cargo = f.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
+      inner join orga.vfuncionario_cargo fun on fun.id_funcionario = planc.id_funcionario and (fun.fecha_finalizacion is null or fun.fecha_finalizacion >= now())
+      inner join orga.tcargo car on car.id_cargo = fun.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
       inner join orga.tescala_salarial es on es.id_escala_salarial =car.id_escala_salarial
       inner join orga.tfuncionario fon on fon.id_funcionario = planc.id_funcionario
       inner join segu.tpersona pe on pe .id_persona = fon.id_persona
@@ -103,9 +103,9 @@ BEGIN
 			v_consulta:='select count(id_certificado_planilla)
 
                       from orga.tcertificado_planilla planc
-      inner join segu.tusuario usu1 on usu1.id_usuario = planc.id_usuario_reg
-      inner join orga.vfuncionario_cargo f on f.id_funcionario = planc.id_funcionario and (f.fecha_finalizacion is null or f.fecha_finalizacion >= now())
-      inner join orga.tcargo car on car.id_cargo = f.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
+  inner join segu.tusuario usu1 on usu1.id_usuario = planc.id_usuario_reg
+      inner join orga.vfuncionario_cargo fun on fun.id_funcionario = planc.id_funcionario and (fun.fecha_finalizacion is null or fun.fecha_finalizacion >= now())
+      inner join orga.tcargo car on car.id_cargo = fun.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
       inner join orga.tescala_salarial es on es.id_escala_salarial =car.id_escala_salarial
       inner join orga.tfuncionario fon on fon.id_funcionario = planc.id_funcionario
       inner join segu.tpersona pe on pe .id_persona = fon.id_persona
@@ -185,7 +185,7 @@ BEGIN
 		begin
 			v_consulta:='  select planc.nro_tramite,
                             f.desc_funcionario1 as nombre_funcionario,
-                            planc.fecha_solicitud,
+                            to_char(  planc.fecha_solicitud,''DD/MM/YYYY'')::text as fecha_solicitud,
                             planc.tipo_certificado,
                             planc.estado,
                             f.nombre_cargo,
@@ -195,7 +195,7 @@ BEGIN
                             inner join orga.tcargo car on car.id_cargo = f.id_cargo and (car.fecha_fin is null or car.fecha_fin >= now()) and car.estado_reg = ''activo''
                             inner join orga.tescala_salarial es on es.id_escala_salarial =car.id_escala_salarial
                             inner join orga.tfuncionario fon on fon.id_funcionario = planc.id_funcionario
-                            where planc.id_funcionario ='||v_parametros.id_funcionario;
+                            where planc.id_funcionario ='||v_parametros.id_funcionario||'order by planc.nro_tramite desc';
 
 
 			--Devuelve la respuesta

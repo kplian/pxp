@@ -73,7 +73,7 @@ BEGIN
 			p_id_usuario,
 			null,
 			null,
-			now()
+			v_parametros.fecha_ini
 							
 			)RETURNING id_escala_salarial into v_id_escala_salarial;
 			
@@ -119,7 +119,8 @@ BEGIN
 			nombre = v_parametros.nombre,
 			nro_casos = v_parametros.nro_casos,
 			id_usuario_mod = p_id_usuario,
-			fecha_mod = now()
+			fecha_mod = now(),
+      fecha_ini = v_parametros.fecha_ini
 			where id_escala_salarial=v_parametros.id_escala_salarial;
 			
 			if (v_parametros.fecha_ini is not null and v_reg_old.haber_basico != v_parametros.haber_basico) then

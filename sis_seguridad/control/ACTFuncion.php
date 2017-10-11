@@ -208,7 +208,7 @@ class ACTFuncion extends ACTbase{
 				//Para el caso de maestro detalle east,west,south
 			    if ((strpos($line, 'east')!== FALSE || strpos($line, 'west')!== FALSE || strpos($line, 'south')!== FALSE || 
 			    	strpos($line, 'xeast')!== FALSE || strpos($line, 'xwest')!== FALSE || strpos($line, 'xsouth')!== FALSE ||
-					strpos($line, 'tabeast')!== FALSE || strpos($line, 'tabwest')!== FALSE || strpos($line, 'tabsouth')!== FALSE) 
+					strpos($line, 'tabeast')!== FALSE || strpos($line, 'tabwest')!== FALSE || strpos($line, 'tabsouth')!== FALSE)
 			    	&& (strpos($line, '//') === FALSE || strpos(trim($line), '//') !== 0 ) && $comentado == 0) {
 			    	if (strpos($line, 'tab')!== FALSE) {
 						$booltab = 1;			    		
@@ -346,8 +346,9 @@ class ACTFuncion extends ACTbase{
 	}
 	
 	function insertaProcedimientos($gui) {
+
 		$filename = '../../../' . $gui['ruta_archivo'];
-		
+		//var_dump($filename);
 		//se abre el archivo
 		if (file_exists($filename) && is_readable ($filename)) {
 			
@@ -416,8 +417,7 @@ class ACTFuncion extends ACTbase{
 		}
 	}
 	function getProcedimientos($cadenas, $id_gui) {
-		
-		
+
 		$procedimientos = array();
 		//primero buscamos la cadena que tiene la palabra control
 		foreach($cadenas as $cadena) {

@@ -55,6 +55,9 @@ DECLARE
     v_id_funcionario integer;
     v_id_usuario_reg integer;
     v_id_estado_wf_ant	integer;
+    v_count			integer;
+    v_valor			integer;
+    v_funcionario	varchar;
 
 BEGIN
 
@@ -71,6 +74,29 @@ BEGIN
 	if(p_transaccion='OR_PLANC_INS')then
 
         begin
+
+        select v.valor
+        into
+        v_valor
+        from pxp.variable_global v
+        where v.variable = 'control_registros';
+
+        select count(c.id_certificado_planilla)
+        into
+        v_count
+		from orga.tcertificado_planilla c
+		where c.id_funcionario = v_parametros.id_funcionario;
+
+        select desc_funcionario1
+        into
+        v_funcionario
+        from orga.vfuncionario
+        where id_funcionario = v_parametros.id_funcionario;
+
+        if v_valor = v_count then
+        raise exception 'El Funcionario %, sobrepaso el limite maximo de certificados emitidos por gestion = %.',v_funcionario,v_valor;
+        end if ;
+
 
         --Gestion para WF
     	   SELECT g.id_gestion
@@ -132,7 +158,7 @@ BEGIN
 			v_parametros.fecha_solicitud,
 			v_parametros.id_funcionario,
 			'activo',
-			v_parametros.importe_viatico,
+			COALESCE (v_parametros.importe_viatico,0),
 			v_parametros._id_usuario_ai,
 			now(),
 			v_parametros._nombre_usuario_ai,

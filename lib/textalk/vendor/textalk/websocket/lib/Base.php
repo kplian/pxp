@@ -81,7 +81,6 @@ class Base {
     for ($i = 0; $i < $payload_length; $i++) {
       $frame .= ($masked === true) ? $payload[$i] ^ $mask[$i % 4] : $payload[$i];
     }
-
     $this->write($frame);
   }
 
@@ -177,7 +176,7 @@ class Base {
 
   protected function write($data) {
     $written = fwrite($this->socket, $data);
-
+    
     if ($written < strlen($data)) {
       throw new ConnectionException(
         "Could only write $written out of " . strlen($data) . " bytes."

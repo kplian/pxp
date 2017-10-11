@@ -34,6 +34,11 @@ class ACTCertificadoPlanilla extends ACTbase{
 				
 	function insertarCertificadoPlanilla(){
 
+	    if ($this->objParam->getParametro('tipo_certificado') != 'Con viáticos de los últimos tres meses'
+            or $this->objParam->getParametro('tipo_certificado') != 'General'){
+            throw new Exception('Error no existe el tipo de certificado.');
+        }
+
 	    if($this->objParam->getParametro('tipo_certificado') == 'Con viáticos de los últimos tres meses') {
 
             $data = array("empleadoID" => $this->objParam->getParametro('id_funcionario'));

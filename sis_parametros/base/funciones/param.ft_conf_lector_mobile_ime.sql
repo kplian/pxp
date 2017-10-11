@@ -143,7 +143,7 @@ BEGIN
 		begin
 			--Sentencia de la eliminacion
 
-			v_respuesta = '<b>'||v_parametros.code||'<b>';
+			v_respuesta = '<b>hola jaime'||v_parametros.code||'<b>';
 			v_respuesta= v_respuesta || '<br><br> mensaje de prueba';
 
 

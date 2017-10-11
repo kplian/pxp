@@ -765,6 +765,20 @@ ALTER TABLE orga.toficina
 /*****************************F-SCP-RAC-ORGA-1-23/03/2017*************/
 
 
+/*****************************I-SCP-FEA-ORGA-0-20/09/2017*************/
+
+--------------- SQL ---------------
+CREATE SEQUENCE orga.tfuncionario_id_biometrico_seq
+INCREMENT 1 MINVALUE 1
+MAXVALUE 9223372036854775807 START 1
+CACHE 1;
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN id_oficina INTEGER,
+  ADD COLUMN id_biometrico INTEGER;
+/*****************************F-SCP-FEA-ORGA-0-20/09/2017*************/
+
+
 
 
 

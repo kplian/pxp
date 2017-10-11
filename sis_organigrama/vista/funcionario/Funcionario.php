@@ -12,6 +12,8 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.funcionario=function(config){
 
+
+
 	this.Atributos=[
 	       	{
 	       		// configuracion del componente
@@ -124,7 +126,7 @@ Phx.vista.funcionario=function(config){
 	       			format:'d/m/Y',
 	       			anchor:'100%',
 	       			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
-	       		},
+				},
 	       		type:'DateField',
 	       		filters:{type:'date'},
 	       		id_grupo:0,
@@ -221,7 +223,8 @@ Phx.vista.funcionario=function(config){
 	       			allowBlank:true,	
 	       			maxLength:100,
 	       			minLength:1,
-	       			anchor:'100%'
+	       			anchor:'100%',
+					hidden:true
 	       		},
 	       		type:'TextField',
 	       		filters:{type:'string'},
@@ -411,6 +414,79 @@ Phx.vista.funcionario=function(config){
 	       		form:true
 	       	},
 			{
+				config: {
+					name: 'id_oficina',
+					fieldLabel: 'Oficina',
+					allowBlank: true,
+					emptyText: 'Elija una oficina...',
+					store: new Ext.data.JsonStore({
+						
+						url: '../../sis_organigrama/control/Oficina/listarOficina',
+						id: 'id_oficina',
+						root: 'datos',
+						sortInfo: {
+							field: 'nombre',
+							direction: 'ASC'
+						},
+						totalProperty: 'total',
+						fields: ['id_oficina', 'nombre', 'codigo','nombre_lugar'],
+						remoteSort: true,
+						baseParams: {par_filtro: 'ofi.nombre#ofi.codigo#lug.nombre'}
+					}),
+					valueField: 'id_oficina',
+					displayField: 'nombre',
+					gdisplayField: 'desc_oficina',
+					hiddenName: 'id_oficina',
+					forceSelection: true,
+					typeAhead: false,
+					triggerAction: 'all',
+					lazyRender: true,
+					mode: 'remote',
+					pageSize: 10,
+					queryDelay: 1000,
+					anchor: '100%',
+					gwidth: 150,
+					minChars: 2,
+					resizable:true,
+					listWidth:'263',
+					style: 'color:green;',
+					tpl: new Ext.XTemplate([
+						'<tpl for=".">',
+						'<div class="x-combo-list-item">',
+						'<div class="awesomecombo-item {checked}">',
+						'<p><b>Nombre: {nombre}</b></p>',
+						'</div><p>Codigo:  <span style="color: green;">{codigo}</span> Lugar: <span style="color: green;">{nombre_lugar}</span></p>',
+						'</div></tpl>'
+					]),
+					renderer: function (value, p, record) {
+
+						return String.format('{0}', record.data['desc_oficina']);
+					}
+				},
+				type: 'AwesomeCombo',
+				id_grupo: 3,
+				filters: {pfiltro: 'tof.nombre', type: 'string'},
+				grid: true,
+				form: true
+			},
+			{
+				config:{
+					name: 'id_biometrico',
+					fieldLabel: 'ID Biométrico',
+					allowBlank: true,
+					anchor: '100%',
+					disabled: true,
+					style: 'color: blue; background-color: yellow;',
+					gwidth: 100,
+					maxLength:15
+				},
+				type:'NumberField',
+				filters:{pfiltro:'FUNCIO.id_biometrico',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+			},
+			{
 				config:{
 					name: 'usr_reg',
 					fieldLabel: 'Creado por',
@@ -477,15 +553,47 @@ Phx.vista.funcionario=function(config){
             handler: this.onBtnFunEspe,
             tooltip: 'Especialidad del Empleado'
         });
+
+
+    this.addButton('archivo', {
+        argument: {imprimir: 'archivo'},
+        text: '<i class="fa fa-thumbs-o-up fa-2x"></i> archivo', /*iconCls:'' ,*/
+        disabled: false,
+        handler: this.archivo
+    });
+
         
 	this.init();
+
+	//f.e.a(eventos recientes)
+	//begin
+	this.getComponente('genero').on('select',function (combo, record, index ) {
+		if(combo.value == 'masculino'){
+			this.getComponente('nacionalidad').setValue('BOLIVIANO');
+		}else{
+			this.getComponente('nacionalidad').setValue('BOLIVIANA');
+		}
+	}, this);
+
+	this.getComponente('fecha_nacimiento').on('beforerender',function (combo) {
+		var fecha_actual = new Date();
+		fecha_actual.setMonth(fecha_actual.getMonth() - 216);
+		this.getComponente('fecha_nacimiento').setMaxValue(fecha_actual);
+	}, this);
+
+	this.getComponente('discapacitado').on('select',function (combo, record, index ) {
+		if(combo.value == 'si'){
+			this.getComponente('carnet_discapacitado').setVisible(true);
+		}else{
+			this.getComponente('carnet_discapacitado').setVisible(false);
+		}
+	}, this);
+	//end
+
 	var txt_ci=this.getComponente('ci');	
 	var txt_correo=this.getComponente('correo');	
 	var txt_telefono=this.getComponente('telefono');	
 	this.getComponente('id_persona').on('select',onPersona);
-	//this.getComponente();
-	
-	
 
 	function onPersona(c,r,e){
 		txt_ci.setValue(r.data.ci);
@@ -547,7 +655,10 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	'horario1',
 	'horario2',
 	'horario3',
-	'horario4'
+	'horario4',
+	{name:'id_oficina', type: 'numeric'},
+	{name:'id_biometrico', type: 'numeric'},
+	{name:'desc_oficina', type: 'string'}
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',
@@ -565,8 +676,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	 */	
 	bdel:true,
 	bsave:false,
-	fwidth: 450,
-	fheight: 430,
+	fwidth: 500,
+	fheight: 480,
 	onBtnCuenta: function(){
 			var rec = {maestro: this.sm.getSelected().data} 
 						      
@@ -608,7 +719,32 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
         Phx.vista.funcionario.superclass.liberaMenu.call(this);
         this.getBoton('btnFunEspecialidad').disable();       
         Phx.vista.funcionario.superclass.liberaMenu.call(this);
-    }
+    },
+
+    archivo: function () {
+
+
+        var rec = this.getSelectedData();
+
+        //enviamos el id seleccionado para cual el archivo se deba subir
+        rec.datos_extras_id = rec.id_funcionario;
+        //enviamos el nombre de la tabla
+        rec.datos_extras_tabla = 'orga.tfuncionario';
+        //enviamos el codigo ya que una tabla puede tener varios archivos diferentes como ci,pasaporte,contrato,slider,fotos,etc
+        rec.datos_extras_codigo = '';
+
+        //esto es cuando queremos darle una ruta personalizada
+        //rec.datos_extras_ruta_personalizada = './../../../uploaded_files/favioVideos/videos/';
+
+        Phx.CP.loadWindows('../../../sis_parametros/vista/archivo/Archivo.php',
+            'Archivo',
+            {
+                width: 900,
+                height: 400
+            }, rec, this.idContenedor, 'Archivo');
+
+    },
+
 		  
 		 
 })

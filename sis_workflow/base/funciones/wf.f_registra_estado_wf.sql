@@ -73,6 +73,10 @@ DECLARE
     
     v_i integer;
     v_registros_correo	record;
+
+    --correos con copia y copia oculta
+    v_cc	text;
+    v_bcc	text;
 	
     
 BEGIN
@@ -447,7 +451,7 @@ BEGIN
                     select pxp.list((case when td.tipo = 'escaneado' then
                                             dwf.url || '|' ||td.codigo || '.' || dwf.extension
                                             else
-                                            td.action || '|' || dwf.id_proceso_wf || '|' ||td.codigo || '.pdf'
+                                            td.action || '|' || dwf.id_proceso_wf || '|' ||td.nombre || '.pdf'
                                             end)::varchar) into v_documentos
                                     from wf.tdocumento_wf dwf 
                                     inner join wf.ttipo_documento td 
@@ -458,36 +462,96 @@ BEGIN
                     
                     if (v_registros_correo.asunto is not null) then
                     	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
-                    end if;	
-                   
+                    end if;
+                    -- SEGMENTO QUE ME PERMITE VERIFICAR SI TENGO CORREOS CON COPIA, CON COPIA OCULTA,
+                    --O SOLAMENTE PARA UN O VARIOS DESTINATARIO.
+                    IF ((length(array_to_string( v_registros_correo.cc,',')) <> '0' OR v_registros_correo.cc <>'{}') OR (length(array_to_string( v_registros_correo.bcc,',')) <> '0' OR v_registros_correo.bcc <> '{}'))THEN
+                        --CADENA PARA RECONOCER QUE SON CON COPIA
+
+                        v_cc = wf.f_procesar_plantilla(
+                                                       p_id_usuario,
+                                                       p_id_proceso_wf,
+                                                       array_to_string(v_registros_correo.cc, ';')::text,
+                                                       p_id_tipo_estado_siguiente,
+                                                       p_id_estado_wf_anterior,
+                                                       p_obs);
+                        IF (length(v_cc)>'0')THEN
+                        	v_cc = ',('||v_cc||')';
+                        ELSE
+                        	v_cc =  '';
+                        END IF;
+                        --CADENA PARA RECONOCER QUE SON CON COPIA OCULTA
+                        v_bcc = wf.f_procesar_plantilla(
+                                                       p_id_usuario,
+                                                       p_id_proceso_wf,
+                                                       array_to_string(v_registros_correo.bcc, ';')::text,
+                                                       p_id_tipo_estado_siguiente,
+                                                       p_id_estado_wf_anterior,
+                                                       p_obs);
+                        IF (length(v_bcc)>'0')THEN
+                        	v_bcc = ',['||v_bcc||']';
+                        ELSE
+                        	v_bcc =  '';
+                        END IF;
+                        --INSERTAMOS ALARMA CON CC Y BCC Y ADDRESS
+                        v_alarma = param.f_inserta_alarma(
+                                                          NULL,
+                                                          v_desc_alarma,
+                                                          NULL,--acceso directo
+                                                          now()::date,
+                                                          'notificacion',
+                                                          '',
+                                                          p_id_usuario,
+                                                          NULL,
+                                                          p_titulo,--titulo
+                                                          p_parametros::varchar,
+                                                          NULL,
+                                                          v_plantilla_asunto,
+                                                          wf.f_procesar_plantilla(
+                                                             p_id_usuario,
+                                                             p_id_proceso_wf,
+                                                             array_to_string(v_registros_correo.correos, ',')::text,
+                                                             p_id_tipo_estado_siguiente,
+                                                             p_id_estado_wf_anterior,
+                                                             p_obs)||v_cc||v_bcc,
+                                                          v_documentos,
+                                                          p_id_proceso_wf,
+                                                          v_id_estado_actual,
+                                                          v_registros_correo.id_plantilla_correo,
+                                                          v_registros_correo.mandar_automaticamente
+
+                                                         );
+                    ELSE
+                    --REGISTRA UNA ALARMA NORMAL SI NO TENEMOS 'CC' CON COPIA O 'BCC' COPIA OCULTA
                     --raise exception '%',p_id_proceso_wf;
-                    v_alarma = param.f_inserta_alarma(
-                                                      NULL,
-                                                      v_desc_alarma,
-                                                      NULL,--acceso directo
-                                                      now()::date,
-                                                      'notificacion',
-                                                      '',
-                                                      p_id_usuario,
-                                                      NULL,
-                                                      p_titulo,--titulo
-                                                      p_parametros::varchar,
-                                                      NULL,
-                                                      v_plantilla_asunto,
-                                                      wf.f_procesar_plantilla( 
-                                                         p_id_usuario, 
-                                                         p_id_proceso_wf, 
-                                                         array_to_string(v_registros_correo.correos, ',')::text, 
-                                                         p_id_tipo_estado_siguiente, 
-                                                         p_id_estado_wf_anterior, 
-                                                         p_obs),
-                                                      v_documentos,
-                                                      p_id_proceso_wf, 
-                                                      v_id_estado_actual,
-                                                      v_registros_correo.id_plantilla_correo,
-                                                      v_registros_correo.mandar_automaticamente                                      
-                                                          
-                                                     );
+                      v_alarma = param.f_inserta_alarma(
+                                                        NULL,
+                                                        v_desc_alarma,
+                                                        NULL,--acceso directo
+                                                        now()::date,
+                                                        'notificacion',
+                                                        '',
+                                                        p_id_usuario,
+                                                        NULL,
+                                                        p_titulo,--titulo
+                                                        p_parametros::varchar,
+                                                        NULL,
+                                                        v_plantilla_asunto,
+                                                        wf.f_procesar_plantilla(
+                                                           p_id_usuario,
+                                                           p_id_proceso_wf,
+                                                           array_to_string(v_registros_correo.correos, ',')::text,
+                                                           p_id_tipo_estado_siguiente,
+                                                           p_id_estado_wf_anterior,
+                                                           p_obs),
+                                                        v_documentos,
+                                                        p_id_proceso_wf,
+                                                        v_id_estado_actual,
+                                                        v_registros_correo.id_plantilla_correo,
+                                                        v_registros_correo.mandar_automaticamente
+
+                                                       );
+                    END IF;
                          --si teiene funcion de acuse parametrizada la ejecuta            
                          IF  v_registros_correo.funcion_creacion_correo is not NULL THEN
                                EXECUTE ( 'select ' || v_registros_correo.funcion_creacion_correo  ||'('||v_alarma::varchar||','||COALESCE(p_id_proceso_wf::varchar,'NULL')||','||COALESCE(p_id_estado_wf_anterior::varchar,'NULL')||')');

@@ -2,7 +2,6 @@
 class RCertificadoPDF extends  ReportePDF{
     function Header() {
         $this->ln(35);
-
         $img_file = dirname(__FILE__).'/../media/direcciones.jpg';
         $img_agua = dirname(__FILE__).'/../media/marcaAgua.jpg';
         $this->Image($img_file, 7, 2, 52, 260, '', '', '', false, 300, '', false, false, 0);
@@ -12,7 +11,6 @@ class RCertificadoPDF extends  ReportePDF{
         }else{
             $tipo = 'de la interesada';
         }
-
         $this->SetFont('times', '', 15);
         $html = '<p align="center"><b><u>CERTIFICADO</u></b></p>';
         $this->writeHTML($html);
@@ -20,7 +18,6 @@ class RCertificadoPDF extends  ReportePDF{
         $this->ln(10);
         $this->SetFont('times', '', 13);
         $this->writeHTML($cabecera);
-
     }
     public function Footer()
     {
