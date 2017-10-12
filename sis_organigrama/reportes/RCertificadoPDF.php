@@ -4,7 +4,8 @@ class RCertificadoPDF extends  ReportePDF{
         $this->ln(35);
         $img_file = dirname(__FILE__).'/../media/direcciones.jpg';
         $img_agua = dirname(__FILE__).'/../media/marcaAgua.jpg';
-        $this->Image($img_file, 7, 2, 52, 260, '', '', '', false, 300, '', false, false, 0);
+
+        $this->Image($img_file, 7, 10, 90, 500, '', '', '', false, 300, '', false, false, 0);
         $this->Image($img_agua, 130, 150, 80, 80, '', '', '', false, 300, '', false, false, 0);
         if ($this->datos[0]['genero'] == 'Sr'){
             $tipo = 'del interesado';
@@ -25,7 +26,7 @@ class RCertificadoPDF extends  ReportePDF{
         $this->SetFont('helvetica', 'I', 6);
         $this->Cell(0, 0, 'GAG/'.$this->datos[0]['iniciales'], 0, 1, 'L');
         $this->Cell(0, 0, 'Cc/Arch', 0, 0, 'L');
-        $html = 'Numero Tramite: '.$this->datos[0]['nro_tramite']."\n".'Fecha Solicitud: '.$this->datos[0]['fecha_solicitud']."\n".'Funcionario: '.$this->datos[0]['nombre_funcionario'];
+        $html = 'Numero Tramite: '.$this->datos[0]['nro_tramite']."\n".'Fecha Solicitud: '.$this->datos[0]['fecha_solicitud']."\n".'Funcionario: '.$this->datos[0]['nombre_funcionario']."\n".'Frimado Por: '.$this->datos[0]['jefa_recursos']."\n".'Emitido Por: '.$this->datos[0]['fun_imitido'];
         $style = array(
             'border' => 2,
             'vpadding' => 'auto',
@@ -35,7 +36,11 @@ class RCertificadoPDF extends  ReportePDF{
             'module_width' => 1, // width of a single module in points
             'module_height' => 1 // height of a single module in points
         );
-        $this->write2DBarcode($html, 'QRCODE,M', 11, 230, 25, 25, $style, 'N');
+        if($this->datos[0]['estado'] == 'emitido') {
+            $this->write2DBarcode($html, 'QRCODE,M', 160, 210, 30, 30, $style, 'N');
+            $this->Image(dirname(__FILE__) . '/../media/firma.png', 98, 220, 35, 35, '', '', '', false, 300, '', false, false, 0);
+        }
+
     }
     function setDatos($datos) {
         $this->datos = $datos;
@@ -65,6 +70,7 @@ class RCertificadoPDF extends  ReportePDF{
         }
         $fecha='<p style="font-family:Century Gothic, serif; font-style:italic;text-align: justify">Es cuando se certifica, para fines de derecho que convengan '.$tipol.'.</p><p style="font-family:Century Gothic, serif; font-style:italic;text-align: justify">Cochabamba '.$this->fechaLiteral($this->datos[0]['fecha_solicitud']).'.</p>';
         $this->writeHTML($fecha);
+
     }
     function fechaLiteral($va){
         setlocale(LC_ALL,"es_ES@euro","es_ES","esp");

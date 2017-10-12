@@ -18,7 +18,7 @@ class MODCertificadoPlanilla extends MODbase{
 		$this->procedimiento='orga.ft_certificado_planilla_sel';
 		$this->transaccion='OR_PLANC_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-				
+        $this->setParametro('tipo_interfaz','tipo_interfaz','varchar');
 		//Definicion de la lista del resultado del query
 		$this->captura('id_certificado_planilla','int4');
 		$this->captura('tipo_certificado','varchar');
@@ -184,10 +184,12 @@ class MODCertificadoPlanilla extends MODbase{
         $this->captura('literal_importe_viatico','varchar');
         $this->captura('nro_tramite','varchar');
         $this->captura('iniciales','varchar');
+        $this->captura('fun_imitido','varchar');
+        $this->captura('estado','varchar');
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
-      // var_dump($this->respuesta); exit;
+      //var_dump($this->respuesta); exit;
         //Devuelve la respuesta
         return $this->respuesta;
     }

@@ -14,12 +14,22 @@ class ACTCertificadoPlanilla extends ACTbase{
 	function listarCertificadoPlanilla(){
 		$this->objParam->defecto('ordenacion','id_certificado_planilla');
 
-        if ($this->objParam->getParametro('pes_estado') == 'borrador') {
-            $this->objParam->addFiltro("planc.estado in (''borrador'')");
-        }if ($this->objParam->getParametro('pes_estado') == 'emitido') {
-            $this->objParam->addFiltro("planc.estado in (''emitido'')");
-        }
 
+        if($this->objParam->getParametro('tipo_interfaz') == 'CertificadoPlanilla') {
+
+            if ($this->objParam->getParametro('pes_estado') == 'borrador') {
+                $this->objParam->addFiltro("planc.estado in (''borrador'')");
+            }
+            if ($this->objParam->getParametro('pes_estado') == 'emitido') {
+                $this->objParam->addFiltro("planc.estado in (''emitido'')");
+            }
+        }
+       if ($this->objParam->getParametro('tipo_interfaz') == 'CertificadoEmitido'){
+
+
+            $this->objParam->addFiltro("planc.estado in (''emitido'')");
+
+        }
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -34,10 +44,10 @@ class ACTCertificadoPlanilla extends ACTbase{
 				
 	function insertarCertificadoPlanilla(){
 
-	    if ($this->objParam->getParametro('tipo_certificado') != 'Con viáticos de los últimos tres meses'
+	   /* if ($this->objParam->getParametro('tipo_certificado') != 'Con viáticos de los últimos tres meses'
             or $this->objParam->getParametro('tipo_certificado') != 'General'){
             throw new Exception('Error no existe el tipo de certificado.');
-        }
+        }*/
 
 	    if($this->objParam->getParametro('tipo_certificado') == 'Con viáticos de los últimos tres meses') {
 
@@ -131,11 +141,14 @@ class ACTCertificadoPlanilla extends ACTbase{
         $dataSource = $this->objFunc->reporteCertificado();
         $this->dataSource=$dataSource->getDatos();
         $nombreArchivo = uniqid(md5(session_id()).'[Certificado-'.$this->dataSource[0]['nro_tramite'].']').'.docx';
-        $reporte = new RCertificadoDOC($this->objParam);
-        
+       /* $reporte = new RCertificadoDOC($this->objParam);
         $reporte->datosHeader($dataSource->getDatos());
+        $reporte->write(dirname(__FILE__).'/../../../reportes_generados/'.$nombreArchivo);*/
+
+        $reporte = new RCertificadoDOC($this->objParam);
+        $reporte->datosHeader($this->dataSource);
         $reporte->write(dirname(__FILE__).'/../../../reportes_generados/'.$nombreArchivo);
-        //var_dump((dirname(__FILE__).'/../../reportes_generados/'));exit;
+
         $this->mensajeExito=new Mensaje();
         $this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado','Se generó con éxito el reporte: '.$nombreArchivo,'control');
         $this->mensajeExito->setArchivoGenerado($nombreArchivo);
