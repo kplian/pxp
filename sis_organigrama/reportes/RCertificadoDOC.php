@@ -13,14 +13,14 @@ Class RCertificadoDOC {
 
     function write($fileName) {
         if ($this->dataSource[0]['genero'] == 'Sr'){
-            $tipo = 'del interesado';
+            $tipo = 'al interesado';
             $gen = 'el';
             $tipol = 'al interesado';
             $tra = 'trabajor';
         }else{
             $gen = 'la';
-            $tipo = 'de la interesada';
-            $tipol = 'de la interesada';
+            $tipo = 'a la interesada';
+            $tipol = 'a la interesada';
             $tra = 'trabajadora';
         }
 
@@ -53,7 +53,7 @@ Class RCertificadoDOC {
             $templateProcessor->setValue('VIATICO_LITERAL', $this->dataSource[0]['literal_importe_viatico']);
 
         }
-        $cadena = 'Numero Tramite: '.$this->dataSource[0]['nro_tramite']."\n".'Fecha Solicitud: '.$this->dataSource[0]['fecha_solicitud']."\n".'Funcionario: '.$this->dataSource[0]['nombre_funcionario']."\n".'Frimado Por: '.$this->dataSource[0]['jefa_recursos']."\n".'Emitido Por: '.$this->dataSource[0]['fun_imitido'];
+        $cadena = 'Numero Tramite: '.$this->dataSource[0]['nro_tramite']."\n".'Fecha Solicitud: '.$this->dataSource[0]['fecha_solicitud']."\n".'Funcionario: '.$this->dataSource[0]['nombre_funcionario']."\n".'Firmado Por: '.$this->dataSource[0]['jefa_recursos']."\n".'Emitido Por: '.$this->dataSource[0]['fun_imitido'];
         if($this->dataSource[0]['estado'] == 'emitido') {
             $templateProcessor->setImg('QR', array('src' => $this->codigoQr($cadena, $this->dataSource[0]['nro_tramite']), 'swh' => '90'));
         }else{

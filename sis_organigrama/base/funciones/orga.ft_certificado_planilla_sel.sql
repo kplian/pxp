@@ -31,6 +31,7 @@ DECLARE
     v_fun_emetido		varchar;
     v_usuario			record;
     v_filtro			varchar;
+    v_impreso			varchar;
 
 BEGIN
 
@@ -56,17 +57,16 @@ BEGIN
                     INNER JOIN orga.tfuncionario tf on tf.id_persona = tu.id_persona
                     INNER JOIN orga.vfuncionario fun on fun.id_funcionario = tf.id_funcionario
                     WHERE tu.id_usuario = p_id_usuario;
-          IF 	p_administrador THEN
+               IF  (p_administrador)  THEN
 				v_filtro = ' 0=0 and ';
-
-
+          elsif (v_parametros.tipo_interfaz ='CertificadoPlanilla')then
+			v_filtro = ' 0=0 and ';
           elsif (v_parametros.tipo_interfaz = 'CertificadoEmitido') THEN
-          v_filtro ='planc.estado in (''emitido'') and ((select wfe.id_funcionario
+         v_filtro ='planc.estado in (''emitido'') and (select wfe.id_funcionario
                                                                 from wf.testado_wf wfe
                                                                 inner join wf.ttipo_estado ta on ta.id_tipo_estado = wfe.id_tipo_estado
-                                                                where wfe.id_proceso_wf = planc.id_proceso_wf and ta.codigo <> ''borrador'') ='||v_usuario.id_funcionario||' or planc.id_usuario_mod = '||p_id_usuario|| ') and';
-
-          END IF;
+                                                                where wfe.id_proceso_wf = planc.id_proceso_wf and ta.codigo <> ''borrador'') ='||v_usuario.id_funcionario||' and';
+     END IF;
 		--Sentencia de la consulta
 			v_consulta:='select
                               planc.id_certificado_planilla,
@@ -92,7 +92,8 @@ BEGIN
                               fun.nombre_cargo,
                               pe.ci,
                               round(es.haber_basico + round(plani.f_evaluar_antiguedad(plani.f_get_fecha_primer_contrato_empleado(fun.id_uo_funcionario, fun.id_funcionario, fun.fecha_asignacion), planc.fecha_solicitud::date, fon.antiguedad_anterior), 2)) as haber_basico,
-                              pe.expedicion
+                              pe.expedicion,
+                              planc.impreso
                               from orga.tcertificado_planilla planc
                               inner join segu.tusuario usu1 on usu1.id_usuario = planc.id_usuario_reg
                               inner join orga.vfuncionario_cargo fun on fun.id_funcionario = planc.id_funcionario and (fun.fecha_finalizacion is null or fun.fecha_finalizacion >= now())
@@ -106,7 +107,7 @@ BEGIN
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+			raise notice 'cosulta...%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 
@@ -130,17 +131,16 @@ BEGIN
                     INNER JOIN orga.tfuncionario tf on tf.id_persona = tu.id_persona
                     INNER JOIN orga.vfuncionario fun on fun.id_funcionario = tf.id_funcionario
                     WHERE tu.id_usuario = p_id_usuario;
-          IF 	p_administrador THEN
+               IF  (p_administrador)  THEN
 				v_filtro = ' 0=0 and ';
-
-
+          elsif (v_parametros.tipo_interfaz ='CertificadoPlanilla')then
+			v_filtro = ' 0=0 and ';
           elsif (v_parametros.tipo_interfaz = 'CertificadoEmitido') THEN
-          v_filtro ='planc.estado in (''emitido'') and ((select wfe.id_funcionario
+         v_filtro ='planc.estado in (''emitido'') and (select wfe.id_funcionario
                                                                 from wf.testado_wf wfe
                                                                 inner join wf.ttipo_estado ta on ta.id_tipo_estado = wfe.id_tipo_estado
-                                                                where wfe.id_proceso_wf = planc.id_proceso_wf and ta.codigo <> ''borrador'') ='||v_usuario.id_funcionario||' or planc.id_usuario_mod = '||p_id_usuario|| ') and';
-
-          END IF;
+                                                                where wfe.id_proceso_wf = planc.id_proceso_wf and ta.codigo <> ''borrador'') ='||v_usuario.id_funcionario||' and';
+     END IF;
 			--Sentencia de la consulta de conteo de registros
 			v_consulta:='select count(id_certificado_planilla)
 
@@ -163,8 +163,87 @@ BEGIN
 		end;
 
         /*********************************
+ 	#TRANSACCION:  'OR_CERT_HTM'
+ 	#DESCRIPCION:	Reporte htnl
+ 	#AUTOR:		miguel.mamani
+ 	#FECHA:		24-07-2017 14:48:34
+	***********************************/
+
+	elsif(p_transaccion='OR_CERT_HTM')then
+
+		begin
+
+    	select impreso
+            into
+            v_impreso
+            from  orga.tcertificado_planilla
+            where id_proceso_wf = v_parametros.id_proceso_wf;
+
+    	if (v_impreso = 'si') then
+        raise exception 'El Certificado ya fue impreso';
+        else
+      	update orga.tcertificado_planilla  set
+		impreso = v_parametros.impreso
+        where id_proceso_wf = v_parametros.id_proceso_wf;
+       	end if;
+
+        select orga.f_iniciales_funcionarios(p.desc_funcionario1)
+        into
+        v_iniciales
+        from segu.tusuario u
+        inner join orga.vfuncionario_persona p on p.id_persona = u.id_persona
+        where u.id_usuario = p_id_usuario;
+
+
+        select f.desc_funcionario1
+        into
+        v_fun_emetido
+        from wf.testado_wf w
+        inner join wf.ttipo_estado e on e.id_tipo_estado = w.id_tipo_estado
+        inner join orga.vfuncionario f on f.id_funcionario = w.id_funcionario
+        where e.codigo = 'emitido' and w.id_proceso_wf = v_parametros.id_proceso_wf;
+
+
+        v_consulta:='select  initcap (fu.desc_funcionario1) as  nombre_funcionario,
+                              fu.nombre_cargo,
+                              plani.f_get_fecha_primer_contrato_empleado(fu.id_uo_funcionario, fu.id_funcionario, fu.fecha_asignacion) as fecha_contrato,
+                              round(es.haber_basico + round(plani.f_evaluar_antiguedad(plani.f_get_fecha_primer_contrato_empleado(fu.id_uo_funcionario, fu.id_funcionario, fu.fecha_asignacion), c.fecha_solicitud::date, fun.antiguedad_anterior), 2)) as haber_basico,
+                              pe.ci,
+                              pe.expedicion,
+                              CASE
+                              WHEN pe.genero::text = ANY (ARRAY[''varon''::character varying,''VARON''::character varying, ''Varon''::character varying]::text[]) THEN ''Sr''::text
+                              WHEN pe.genero::text = ANY (ARRAY[''mujer''::character varying,''MUJER''::character varying, ''Mujer''::character varying]::text[]) THEN ''Sra''::text
+                              ELSE ''''::text
+                              END::character varying AS genero,
+                              c.fecha_solicitud,
+                              ger.nombre_unidad,
+                              initcap  (mat.f_primer_letra_mayuscula( pxp.f_convertir_num_a_letra( round(es.haber_basico + round(plani.f_evaluar_antiguedad(plani.f_get_fecha_primer_contrato_empleado(fu.id_uo_funcionario, fu.id_funcionario, fu.fecha_asignacion), c.fecha_solicitud::date, fun.antiguedad_anterior), 2)))))::varchar as haber_literal,
+                              (select initcap( cart.desc_funcionario1)
+                              from orga.vfuncionario_cargo cart
+                              where cart.nombre_cargo = ''Jefe Recursos Humanos'') as jefa_recursos,
+                              c.tipo_certificado,
+                              c.importe_viatico,
+                              initcap  (mat.f_primer_letra_mayuscula( pxp.f_convertir_num_a_letra(c.importe_viatico)))::varchar as literal_importe_viatico,
+                              c.nro_tramite,
+                              '''||COALESCE (v_iniciales,'NA')||'''::varchar as iniciales,
+                               '''||COALESCE (v_fun_emetido,'NA')||'''::varchar as fun_imitido,
+                               c.estado
+                              from orga.tcertificado_planilla c
+                              inner join orga.vfuncionario_cargo  fu on fu.id_funcionario = c.id_funcionario and fu.fecha_finalizacion is null
+                              inner join orga.tcargo ca on ca.id_cargo = fu.id_cargo
+                              inner join orga.tescala_salarial es on es.id_escala_salarial = ca.id_escala_salarial
+                              inner join orga.tfuncionario fun on fun.id_funcionario = fu.id_funcionario
+                              inner join segu.tpersona pe on pe.id_persona = fun.id_persona
+                              JOIN orga.tuo ger ON ger.id_uo = orga.f_get_uo_gerencia(fu.id_uo, NULL::integer, NULL::date)
+                              where c.id_proceso_wf ='||v_parametros.id_proceso_wf;
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+
+       /*********************************
  	#TRANSACCION:  'OR_CERT_REP'
- 	#DESCRIPCION:	Reporte
+ 	#DESCRIPCION:	Reporte htnl
  	#AUTOR:		miguel.mamani
  	#FECHA:		24-07-2017 14:48:34
 	***********************************/
@@ -172,6 +251,9 @@ BEGIN
 	elsif(p_transaccion='OR_CERT_REP')then
 
 		begin
+
+
+
         select orga.f_iniciales_funcionarios(p.desc_funcionario1)
         into
         v_iniciales
@@ -231,6 +313,7 @@ BEGIN
  	#AUTOR:		miguel.mamani
  	#FECHA:		24-07-2017 14:48:34
 	***********************************/
+
 
     elsif(p_transaccion='OR_CERT_SER')then
 

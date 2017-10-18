@@ -38,6 +38,15 @@ header("content-type: text/javascript; charset=UTF-8");
                     handler:this.sigEstado,
                     tooltip: '<b>Pasar al Siguiente Estado</b>'
                 });
+                this.addButton('btnImprimir',
+                    {   grupo:[7],
+                        text: 'Imprimir',
+                        iconCls: 'bpdf32',
+                        disabled: true,
+                        handler: this.imprimirNota,
+                        tooltip: '<b>Imprimir Certificado de Trabajo</b><br/>Certificado De Trabajo'
+                    }
+                );
                 this.addButton('btnChequeoDocumentosWf',{
                     text: 'Documentos',
                     grupo: [0,1,2,3,4,5,6,7],
@@ -105,6 +114,32 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     type:'Field',
                     form:true
+                },
+                {
+                    config:{
+                        name: 'impreso',
+                        fieldLabel: 'Impreso',
+                        allowBlank: true,
+                        anchor: '80%',
+                        gwidth: 80,
+                        maxLength:100,
+                        renderer: function (value,p,record) {
+                            var result;
+                            if(value == "si") {
+                            result = "<div style='text-align:center'><img src = '../../../lib/imagenes/icono_inc/inc_printer.png' align='center' width='28' height='28' title='impreso'/></div>";
+                            }else{
+                                result = "<div style='text-align:center'><img src = '../../../lib/imagenes/icono_inc/inc_pdf.png' align='center' width='28' height='28' title='impreso'/></div>";
+
+                            }
+                            return result;
+                        }
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'planc.impreso',type:'string'},
+                    id_grupo:1,
+                    grid:true,
+                    form:false
+
                 },
                 {
                     config:{
@@ -456,7 +491,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name:'nombre_cargo', type: 'string'},
                 {name:'ci', type: 'string'},
                 {name:'haber_basico', type: 'numeric'},
-                {name:'expedicion', type: 'string'}
+                {name:'expedicion', type: 'string'} ,
+                {name:'impreso', type: 'string'}
 
             ],
             sortInfo:{
@@ -484,7 +520,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     this.getBoton('sig_estado').disable();
                     this.getBoton('btnChequeoDocumentosWf').setDisabled(true);
                     this.getBoton('diagrama_gantt').disable();
-
+                    //this.getBoton('btnImprimir').setVisible(false);
                     /// this.getBoton('ant_estado').setVisible(false);
                 }
                 return tb

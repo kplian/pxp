@@ -8,7 +8,7 @@
 */
 require_once(dirname(__FILE__).'/../reportes/RCertificadoPDF.php');
 require_once(dirname(__FILE__).'/../reportes/RCertificadoDOC.php');
-
+require_once(dirname(__FILE__).'/../reportes/RCertificadoHtml.php');
 class ACTCertificadoPlanilla extends ACTbase{
 
 	function listarCertificadoPlanilla(){
@@ -160,6 +160,17 @@ class ACTCertificadoPlanilla extends ACTbase{
         //$this->objParam->addParametro('id_funcionario',$this->objParam->getParametro('id_funcionario'));
         $this->objFunc=$this->create('MODCertificadoPlanilla');
         $this->res=$this->objFunc->servicioConsultaDatosFuncionario($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function reporteCertificadoHtml(){
+        $this->objFunc=$this->create('MODCertificadoPlanilla');
+        $this->res=$this->objFunc->reporteCertificadoHtml($this->objParam);
+        $datos = $this->res->getDatos();
+        $datos = $datos[0];
+        $reporte = new RCertificadoHtml();
+        $temp = array();
+        $temp['html'] = $reporte->generarHtml($datos);
+        $this->res->setDatos($temp);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 

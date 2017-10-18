@@ -44,6 +44,7 @@ class MODCertificadoPlanilla extends MODbase{
         $this->captura('ci','varchar');
         $this->captura('haber_basico','numeric');
         $this->captura('expedicion','varchar');
+        $this->captura('impreso','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -156,6 +157,45 @@ class MODCertificadoPlanilla extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    function reporteCertificadoHtml()
+    {
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'orga.ft_certificado_planilla_sel';
+        $this->transaccion = 'OR_CERT_HTM';
+        $this->tipo_procedimiento = 'SEL';
+
+        //Define los parametros para la funcion
+        $this->setCount(false);
+        $this->setParametro('id_proceso_wf', 'id_proceso_wf', 'int4');
+        $this->setParametro('id_usuario','id_usuario','int4');
+        $this->setParametro('impreso','impreso','varchar');
+
+        $this->captura('nombre_funcionario','text');
+        $this->captura('nombre_cargo','varchar');
+        $this->captura('fecha_contrato','date');
+        $this->captura('haber_basico','numeric');
+        $this->captura('ci','varchar');
+        $this->captura('expedicion','varchar');
+        $this->captura('genero','varchar');
+        $this->captura('fecha_solicitud','date');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('haber_literal','varchar');
+        $this->captura('jefa_recursos','text');
+        $this->captura('tipo_certificado','varchar');
+        $this->captura('importe_viatico','numeric');
+        $this->captura('literal_importe_viatico','varchar');
+        $this->captura('nro_tramite','varchar');
+        $this->captura('iniciales','varchar');
+        $this->captura('fun_imitido','varchar');
+        $this->captura('estado','varchar');
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+      //var_dump($this->respuesta); exit;
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
     function reporteCertificado()
     {
         //Definicion de variables para ejecucion del procedimiento
@@ -167,6 +207,7 @@ class MODCertificadoPlanilla extends MODbase{
         $this->setCount(false);
         $this->setParametro('id_proceso_wf', 'id_proceso_wf', 'int4');
         $this->setParametro('id_usuario','id_usuario','int4');
+
 
         $this->captura('nombre_funcionario','text');
         $this->captura('nombre_cargo','varchar');

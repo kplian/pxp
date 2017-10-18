@@ -21,6 +21,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.store.baseParams.pes_estado = 'borrador';
             this.load({params:{start:0, limit:this.tam_pag}});
             this.getBoton('ant_estado').setVisible(false);
+            this.getBoton('btnImprimir').setVisible(false);
             this.finCons = true;
         },
         gruposBarraTareas:[
