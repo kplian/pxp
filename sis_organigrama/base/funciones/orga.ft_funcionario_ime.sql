@@ -72,29 +72,6 @@ BEGIN
                end if;
 
                SELECT nextval('orga.tfuncionario_id_biometrico_seq') INTO v_id_biometrico;
-               INSERT INTO orga.tfuncionario(
-		               codigo, id_persona,
-		               estado_reg,
-		               fecha_reg,
-		               id_usuario_reg,
-		               email_empresa,
-		               interno,		              
-		               telefono_ofi,
-		               antiguedad_anterior,
-		               id_oficina,
-                   id_biometrico)
-               values(
-                      v_parametros.codigo,
-                      v_parametros.id_persona,
-                      'activo',now()::date,
-                      par_id_usuario,
-                      v_parametros.id_persona,
-                      v_parametros.interno,                      
-                      v_parametros.telefono_ofi,
-                      v_parametros.antiguedad_anterior,
-                      v_parametros.id_oficina,
-                      v_id_biometrico)
-               RETURNING id_funcionario into v_id_funcionario;
 
                update segu.tpersona
                	set estado_civil = v_parametros.estado_civil,
@@ -105,6 +82,28 @@ BEGIN
                	discapacitado = v_parametros.discapacitado,
                	carnet_discapacitado = v_parametros.carnet_discapacitado
                where id_persona = v_parametros.id_persona;
+
+               INSERT INTO orga.tfuncionario(
+		               codigo, id_persona,
+		               estado_reg,
+		               fecha_reg,
+		               id_usuario_reg,
+		               email_empresa,
+		               interno,		              
+		               telefono_ofi,
+		               antiguedad_anterior,
+                   id_biometrico)
+               values(
+                      v_parametros.codigo,
+                      v_parametros.id_persona,
+                      'activo',now()::date,
+                      par_id_usuario,
+                      v_parametros.id_persona,
+                      v_parametros.interno,                      
+                      v_parametros.telefono_ofi,
+                      v_parametros.antiguedad_anterior,
+                      v_id_biometrico)
+               RETURNING id_funcionario into v_id_funcionario;
 
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','funcionario '||v_parametros.codigo ||' insertado con exito ');
@@ -135,19 +134,6 @@ BEGIN
                   raise exception 'Insercion no realizada. Esta persona ya está registrada como funcionario';
                end if;
 
-                update orga.tfuncionario set
-                	codigo=v_parametros.codigo,
-                    id_usuario_mod=par_id_usuario,
-                    id_persona=v_parametros.id_persona,
-                    estado_reg=v_parametros.estado_reg,
-                    email_empresa=v_parametros.email_empresa,
-                    interno=v_parametros.interno,                    
-                    fecha_mod=now()::date,
-                    telefono_ofi= v_parametros.telefono_ofi,
-                    antiguedad_anterior =  v_parametros.antiguedad_anterior,
-                    id_oficina = v_parametros.id_oficina
-                where id_funcionario=v_parametros.id_funcionario;
-
                 update segu.tpersona
                	set estado_civil = v_parametros.estado_civil,
                	genero = v_parametros.genero,
@@ -157,6 +143,18 @@ BEGIN
                	discapacitado = v_parametros.discapacitado,
                	carnet_discapacitado = v_parametros.carnet_discapacitado
                where id_persona = v_parametros.id_persona;
+
+                update orga.tfuncionario set
+                	codigo=v_parametros.codigo,
+                    id_usuario_mod=par_id_usuario,
+                    id_persona=v_parametros.id_persona,
+                    estado_reg=v_parametros.estado_reg,
+                    email_empresa=v_parametros.email_empresa,
+                    interno=v_parametros.interno,                    
+                    fecha_mod=now()::date,
+                    telefono_ofi= v_parametros.telefono_ofi,
+                    antiguedad_anterior =  v_parametros.antiguedad_anterior
+                where id_funcionario=v_parametros.id_funcionario;
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Funcionario modificado con exito '||v_parametros.id_funcionario);
                v_resp = pxp.f_agrega_clave(v_resp,'id_funcionario',v_parametros.id_funcionario::varchar);

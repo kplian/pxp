@@ -414,62 +414,6 @@ Phx.vista.funcionario=function(config){
 	       		form:true
 	       	},
 			{
-				config: {
-					name: 'id_oficina',
-					fieldLabel: 'Oficina',
-					allowBlank: true,
-					emptyText: 'Elija una oficina...',
-					store: new Ext.data.JsonStore({
-						
-						url: '../../sis_organigrama/control/Oficina/listarOficina',
-						id: 'id_oficina',
-						root: 'datos',
-						sortInfo: {
-							field: 'nombre',
-							direction: 'ASC'
-						},
-						totalProperty: 'total',
-						fields: ['id_oficina', 'nombre', 'codigo','nombre_lugar'],
-						remoteSort: true,
-						baseParams: {par_filtro: 'ofi.nombre#ofi.codigo#lug.nombre'}
-					}),
-					valueField: 'id_oficina',
-					displayField: 'nombre',
-					gdisplayField: 'desc_oficina',
-					hiddenName: 'id_oficina',
-					forceSelection: true,
-					typeAhead: false,
-					triggerAction: 'all',
-					lazyRender: true,
-					mode: 'remote',
-					pageSize: 10,
-					queryDelay: 1000,
-					anchor: '100%',
-					gwidth: 150,
-					minChars: 2,
-					resizable:true,
-					listWidth:'263',
-					style: 'color:green;',
-					tpl: new Ext.XTemplate([
-						'<tpl for=".">',
-						'<div class="x-combo-list-item">',
-						'<div class="awesomecombo-item {checked}">',
-						'<p><b>Nombre: {nombre}</b></p>',
-						'</div><p>Codigo:  <span style="color: green;">{codigo}</span> Lugar: <span style="color: green;">{nombre_lugar}</span></p>',
-						'</div></tpl>'
-					]),
-					renderer: function (value, p, record) {
-
-						return String.format('{0}', record.data['desc_oficina']);
-					}
-				},
-				type: 'AwesomeCombo',
-				id_grupo: 3,
-				filters: {pfiltro: 'tof.nombre', type: 'string'},
-				grid: true,
-				form: true
-			},
-			{
 				config:{
 					name: 'id_biometrico',
 					fieldLabel: 'ID Biométrico',
@@ -555,12 +499,13 @@ Phx.vista.funcionario=function(config){
         });
 
 
-    this.addButton('archivo', {
-        argument: {imprimir: 'archivo'},
-        text: '<i class="fa fa-thumbs-o-up fa-2x"></i> archivo', /*iconCls:'' ,*/
-        disabled: false,
-        handler: this.archivo
-    });
+	this.addButton('archivo', {
+		text: 'Archivos Func.',
+		iconCls: 'bfolder',
+		disabled: false,
+		handler: this.archivo,
+		tooltip: '<b>Archivos Funcionario</b><br><b>Nos permite visualizar los archivos de un funcionario.</b>'
+	});
 
         
 	this.init();
@@ -656,9 +601,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	'horario2',
 	'horario3',
 	'horario4',
-	{name:'id_oficina', type: 'numeric'},
-	{name:'id_biometrico', type: 'numeric'},
-	{name:'desc_oficina', type: 'string'}
+	{name:'id_biometrico', type: 'numeric'}
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',
@@ -708,16 +651,16 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	
 	preparaMenu:function()
     {	
-        this.getBoton('btnCuenta').enable();      
-        Phx.vista.funcionario.superclass.preparaMenu.call(this);
+        this.getBoton('btnCuenta').enable();
         this.getBoton('btnFunEspecialidad').enable();      
+        this.getBoton('archivo').enable();
         Phx.vista.funcionario.superclass.preparaMenu.call(this);
     },
     liberaMenu:function()
     {	
-        this.getBoton('btnCuenta').disable();       
-        Phx.vista.funcionario.superclass.liberaMenu.call(this);
+        this.getBoton('btnCuenta').disable();
         this.getBoton('btnFunEspecialidad').disable();       
+        this.getBoton('archivo').disable();
         Phx.vista.funcionario.superclass.liberaMenu.call(this);
     },
 
@@ -725,7 +668,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 
 
         var rec = this.getSelectedData();
-
+		console.log(rec);
         //enviamos el id seleccionado para cual el archivo se deba subir
         rec.datos_extras_id = rec.id_funcionario;
         //enviamos el nombre de la tabla

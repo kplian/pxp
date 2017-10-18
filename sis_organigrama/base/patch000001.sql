@@ -778,6 +778,11 @@ ALTER TABLE orga.tfuncionario
   ADD COLUMN id_biometrico INTEGER;
 /*****************************F-SCP-FEA-ORGA-0-20/09/2017*************/
 
+/*****************************I-SCP-FEA-ORGA-0-18/10/2017*************/
+ALTER TABLE orga.tfuncionario
+  DROP COLUMN id_oficina;
+/*****************************F-SCP-FEA-ORGA-0-18/10/2017*************/
+
 
 
 
