@@ -3,7 +3,7 @@ require_once(dirname(__FILE__).'/../../lib/tcpdf/tcpdf_barcodes_2d.php');
 class RCertificadoHtml{
     var $html;
     function generarHtml ($datos) {
-       // var_dump();exit;
+      
         setlocale(LC_ALL,"es_ES@euro","es_ES","esp");
         if ($datos['genero'] == 'Sr'){
             $tipo = 'al interesado';
@@ -31,7 +31,6 @@ class RCertificadoHtml{
 					<body>
 					<br>
 <br>
-<br> 
 <table style="width: 100%;" border="0" >
 <tbody>
 <tr>
