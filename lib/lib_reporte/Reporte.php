@@ -36,7 +36,7 @@ class Reporte
 			//Agrega la extensión al nombre de archivo
 			$this->nombreArchivo.='.xls';
 			//Instancia la clase de excel
-			$this->objReporteFormato=new ReporteXLS($this->nombreArchivo,"Exportacion de ".$this->titulo);
+			$this->objReporteFormato=new ReporteXLS($this->nombreArchivo,$this->titulo);
 			//Se definen las columnas que se van a mostrar
 			$this->objReporteFormato->defineDatosMostrar($this->objParam->getColumnasReporte());
 		} 
@@ -47,7 +47,7 @@ class Reporte
 			$this->objParam->addParametro('orientacion',$this->objParam->getParametro('pdfOrientacion'));
 			$this->objParam->addParametro('tamano','Letter');
 			$this->objParam->addParametro('nombre_archivo',$this->nombreArchivo);
-			$this->objParam->addParametro('titulo_archivo',"Exportacion de ".$this->titulo);
+			$this->objParam->addParametro('titulo_archivo',$this->titulo);
 
 			//Instancia la clase de pdf
 			$this->objReporteFormato=new ReportePDF($this->objParam);

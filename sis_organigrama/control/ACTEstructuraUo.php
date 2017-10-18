@@ -192,6 +192,8 @@ class ACTEstructuraUo extends ACTbase {
 
 			array_push($arreglo, array('nombre' => 'id_estructura_uo', 'valor' => 'id_estructura_uo'));
 
+
+
 			//Se imprime el arbol en formato JSON
 			$this -> res -> imprimirRespuesta($this -> res -> generarJson());
 
@@ -308,7 +310,7 @@ class ACTEstructuraUo extends ACTbase {
 			 descripcion:\'' . $f["descripcion"] . '\',
 			 codigo:\'' . $f["codigo"] . '\',
 			 nodo_base:\'' . $f["nodo_base"] . '\',
-			 gerencia:\'' . $f["gerencia"] . '\',
+			 gerencia:\'' . $f["gerencia"] . '\',               
 			 id_estructura_uo:' . $f["id_estructura_uo"] . ',
 			 correspondencia:\'' . $f["correspondencia"] . '\',
 			 presupuesta:\'' . $f["presupuesta"] . '\',
@@ -508,6 +510,7 @@ class ACTEstructuraUo extends ACTbase {
 			array_push($arreglo, array('nombre' => 'id_estructura_uo', 'valor' => 'id_estructura_uo'));
 
 			//Se imprime el arbol en formato JSON
+            
 			$this -> res -> imprimirRespuesta($this -> res -> generarJson());
 
 		}

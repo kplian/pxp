@@ -1842,7 +1842,6 @@ Phx.CP=function(){
 
                 Phx.CP.webSocket.conn.onmessage = function (e) {
 
-
                     var jsonData = JSON.parse(e.data);
 
                     //es el mensaje que mostrara a todos los que estan escuchando
@@ -1851,9 +1850,7 @@ Phx.CP=function(){
                     //obtenemos el data de la configuracion al lanzar el evento escucharEvento esos datos los tenemos aca
                     var data = jsonData.data;
 
-                   // console.log(mensaje)
                     //console.log(data)
-
                     //vemos que tipo es si es una respuesta de un mensaje enviado anteriormente
                     if (data.tipo == 'respuesta de envio'){
 
@@ -1867,12 +1864,6 @@ Phx.CP=function(){
                             eval(f);
                         }
                     }
-
-
-
-
-
-
 
                 };
 
@@ -1889,7 +1880,6 @@ Phx.CP=function(){
 
             //x es el this de la vista es el scope que tendremos
             escucharEvento:function(evento,id_contenedor,metodo,scope){
-
 
                 console.log(scope)
                 this.scopeVistas[id_contenedor] = scope;
@@ -1917,14 +1907,19 @@ Phx.CP=function(){
                 Phx.CP.webSocket.conn.send(json);
             },
             enviarMensajeUsuario:function(mensaje){
+                console.log('mensaje',mensaje);
 
                 if(mensaje.tipo_mensaje == "alert"){
-                    alert(mensaje.mensaje)
+                    alert(mensaje.mensaje);
                 }else{
                     Phx.CP.notificar(mensaje.titulo,mensaje.mensaje);
+                    //si es que tuviera url
+                    if(mensaje.url != undefined || mensaje.url != null){
+                        //Phx.CP.notificar(mensaje.titulo,mensaje.mensaje);
+                        alert(mensaje.mensaje);
+                        window.open('../../../lib/lib_control/Intermediario.php?r='+mensaje.url+'&t='+new Date().toLocaleTimeString());
+                    }
                 }
-
-
             },
             actualizarVistaUsuario:function(mensaje){
 

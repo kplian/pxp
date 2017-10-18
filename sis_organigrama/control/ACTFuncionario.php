@@ -40,6 +40,21 @@ class ACTFuncionario extends ACTbase{
 			$this->res=$this->objFunSeguridad->listarFuncionario($this->objParam);
 			
 		}
+		
+		if($this->objParam->getParametro('todos')!=''){
+
+			$respuesta = $this->res->getDatos();
+
+
+			array_unshift ( $respuesta, array(  'id_funcionario'=>'0',
+					'desc_person'=>'Todos',
+					'ci'=>'Todos',
+					'documento'=>'Todos',
+					'telefono'=>'Todos') );
+			$this->res->setDatos($respuesta);
+		}
+		
+		
 
 		//imprime respuesta en formato JSON para enviar lo a la interface (vista)
 		$this->res->imprimirRespuesta($this->res->generarJson());

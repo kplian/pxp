@@ -144,7 +144,7 @@ Ext.extend(Phx.vista.usuario_rol,Phx.gridInterfaz,{
 	fields: [
 	'id_usuario_rol','id_rol',
 	'rol',
-	'descripcion',,
+	'descripcion',
 	{name:'fecha_reg',type: 'date', dateFormat: 'Y-m-d'},
 	'nombre'],
 	sortInfo:{

@@ -20,7 +20,6 @@ class Pxp implements MessageComponentInterface {
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
-
         $this->users = [];
 
         $this->usuariosPXPSocket = [];
@@ -44,6 +43,7 @@ class Pxp implements MessageComponentInterface {
         $seguSessionPXP->execute();
         $seguSessionPXP_RES = $seguSessionPXP->fetchAll(PDO::FETCH_ASSOC);
 
+        var_dump($seguSessionPXP_RES);
 
         $this->clients->attach($conn);
         //anadimos a una id_conexion la conexion entera para poder acceder luego a send
@@ -109,7 +109,7 @@ class Pxp implements MessageComponentInterface {
 
             //obtenemos el tipo del mensaje
             $tipo = $data['tipo'];
-
+            
             //registramos el evento al usuario para que escuche todo relacionado con el evento
             if($tipo == "escucharEvento"){
                 // formato del json que tiene que recibir: data: {"id_usuario": Phx.CP.config_ini.id_usuario,"nombre_usuario":Phx.CP.config_ini.nombre_usuario ,"evento": 'sis_colas/ticket',"id_contenedor":15},
@@ -242,8 +242,7 @@ class Pxp implements MessageComponentInterface {
 
 
             }elseif($tipo == "enviarMensajeUsuario"){ //enviamos mensaje a un usuario en especifico o a varios
-
-
+                
                 $id_usuario = $data["data"]["id_usuario"];
                 $id_usuario = (int)$id_usuario;
 
@@ -256,7 +255,8 @@ class Pxp implements MessageComponentInterface {
                             "mensaje" => array(
                                 "tipo_mensaje" => $data["data"]["tipo_mensaje"],
                                 "titulo" => $data["data"]["titulo"],
-                                "mensaje" => $data["data"]["mensaje"]
+                                "mensaje" => $data["data"]["mensaje"],
+                                "url"=>$data["data"]["url"]
                             ),
                             "data"=> array(
                                 "metodo" => $data["data"]["evento"]

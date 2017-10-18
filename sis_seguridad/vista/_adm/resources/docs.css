@@ -369,3 +369,16 @@ white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
 white-space: -pre-wrap; /* Opera 4-6 */
 white-space: -o-pre-wrap; /* Opera 7 */
 word-wrap: break-word; /* Internet Explorer 5.5+ */}
+
+
+/* style rows on mouseover */
+.x-grid3-row-over .x-grid3-cell-inner {
+   font-weight: bold;
+}
+.multilineColumn .x-grid3-cell-inner {
+  white-space:  normal !important;
+}
+   
+
+
+

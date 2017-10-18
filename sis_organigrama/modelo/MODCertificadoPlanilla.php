@@ -18,7 +18,7 @@ class MODCertificadoPlanilla extends MODbase{
 		$this->procedimiento='orga.ft_certificado_planilla_sel';
 		$this->transaccion='OR_PLANC_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-				
+        $this->setParametro('tipo_interfaz','tipo_interfaz','varchar');
 		//Definicion de la lista del resultado del query
 		$this->captura('id_certificado_planilla','int4');
 		$this->captura('tipo_certificado','varchar');
@@ -44,6 +44,7 @@ class MODCertificadoPlanilla extends MODbase{
         $this->captura('ci','varchar');
         $this->captura('haber_basico','numeric');
         $this->captura('expedicion','varchar');
+        $this->captura('impreso','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -156,17 +157,18 @@ class MODCertificadoPlanilla extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
-    function reporteCertificado()
+    function reporteCertificadoHtml()
     {
         //Definicion de variables para ejecucion del procedimiento
         $this->procedimiento = 'orga.ft_certificado_planilla_sel';
-        $this->transaccion = 'OR_CERT_REP';
+        $this->transaccion = 'OR_CERT_HTM';
         $this->tipo_procedimiento = 'SEL';
 
         //Define los parametros para la funcion
         $this->setCount(false);
         $this->setParametro('id_proceso_wf', 'id_proceso_wf', 'int4');
         $this->setParametro('id_usuario','id_usuario','int4');
+        $this->setParametro('impreso','impreso','varchar');
 
         $this->captura('nombre_funcionario','text');
         $this->captura('nombre_cargo','varchar');
@@ -184,10 +186,75 @@ class MODCertificadoPlanilla extends MODbase{
         $this->captura('literal_importe_viatico','varchar');
         $this->captura('nro_tramite','varchar');
         $this->captura('iniciales','varchar');
+        $this->captura('fun_imitido','varchar');
+        $this->captura('estado','varchar');
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
-      // var_dump($this->respuesta); exit;
+      //var_dump($this->respuesta); exit;
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function reporteCertificado()
+    {
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'orga.ft_certificado_planilla_sel';
+        $this->transaccion = 'OR_CERT_REP';
+        $this->tipo_procedimiento = 'SEL';
+
+        //Define los parametros para la funcion
+        $this->setCount(false);
+        $this->setParametro('id_proceso_wf', 'id_proceso_wf', 'int4');
+        $this->setParametro('id_usuario','id_usuario','int4');
+
+
+        $this->captura('nombre_funcionario','text');
+        $this->captura('nombre_cargo','varchar');
+        $this->captura('fecha_contrato','date');
+        $this->captura('haber_basico','numeric');
+        $this->captura('ci','varchar');
+        $this->captura('expedicion','varchar');
+        $this->captura('genero','varchar');
+        $this->captura('fecha_solicitud','date');
+        $this->captura('nombre_unidad','varchar');
+        $this->captura('haber_literal','varchar');
+        $this->captura('jefa_recursos','text');
+        $this->captura('tipo_certificado','varchar');
+        $this->captura('importe_viatico','numeric');
+        $this->captura('literal_importe_viatico','varchar');
+        $this->captura('nro_tramite','varchar');
+        $this->captura('iniciales','varchar');
+        $this->captura('fun_imitido','varchar');
+        $this->captura('estado','varchar');
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+      //var_dump($this->respuesta); exit;
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+    function servicioConsultaDatosFuncionario()
+    {
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento = 'orga.ft_certificado_planilla_sel';
+        $this->transaccion = 'OR_CERT_SER';
+        $this->tipo_procedimiento = 'SEL';
+
+        //Define los parametros para la funcion
+        $this->setCount(false);
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+
+        $this->captura('nro_tramite','varchar');
+        $this->captura('nombre_funcionario','text');
+        $this->captura('fecha_solicitud','text');
+        $this->captura('tipo_certificado','varchar');
+        $this->captura('estado','varchar');
+        $this->captura('nombre_cargo','varchar');
+        $this->captura('remuneracion','numeric');
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
         //Devuelve la respuesta
         return $this->respuesta;
     }

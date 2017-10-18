@@ -198,7 +198,7 @@ BEGIN
                             v_tabla.bd_codigo_tabla || '.id_usuario_mod,'||
                             v_tabla.bd_codigo_tabla || '.fecha_mod,
                             usu1.cuenta as usr_reg,
-                            usu1.cuenta as usr_mod
+                            usu2.cuenta as usr_mod
                             
                         from ' || v_tabla.esquema || '.t' || v_tabla.bd_nombre_tabla || ' ' || v_tabla.bd_codigo_tabla || '
                         inner join segu.tusuario usu1 on usu1.id_usuario = ' || v_tabla.bd_codigo_tabla || '.id_usuario_reg

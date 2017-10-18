@@ -79,7 +79,8 @@ $body$
                             LUG.nombre as nombre_lugar,
                             PERSON2.nacionalidad,
                             PERSON2.discapacitado,
-                            PERSON2.carnet_discapacitado
+                            PERSON2.carnet_discapacitado,
+                            FUNCIO.id_biometrico
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona

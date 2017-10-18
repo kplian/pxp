@@ -7,7 +7,7 @@
  */
 class PxpRestClient
 {
-    private $_host = null;
+  private $_host = null;
 	private $_base_url = null;
     private $_port = null;
     private $_user = null;
@@ -223,14 +223,12 @@ class PxpRestClient
     private function _exec($type, $url, $params = array())
     {
         $headers = $this->_headers;
-		
-        $s = curl_init();
+		$s = curl_init();
         
         if(!is_null($this->_user) && ($this->_first_connection || $this->_error_number == 1)){        	
            	curl_setopt($s, CURLOPT_USERPWD, $this->_user.':'.$this->_pass);
 			$this->_first_connection = false;
         }
-		
         switch ($type) {
             case self::DELETE:
                 curl_setopt($s, CURLOPT_URL, $url . '?' . http_build_query($params));
@@ -242,7 +240,7 @@ class PxpRestClient
                 curl_setopt($s, CURLOPT_POSTFIELDS, $params);
                 break;
             case self::POST:
-                curl_setopt($s, CURLOPT_URL, $url);
+                curl_setopt($s, CURLOPT_URL,$url);
                 curl_setopt($s, CURLOPT_POST, true);
                 curl_setopt($s, CURLOPT_POSTFIELDS, $params);
                 break;
@@ -251,19 +249,24 @@ class PxpRestClient
 				
                 break;
         }
-
+        curl_setopt($s,CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($s, CURLOPT_RETURNTRANSFER, true);
 		//curl_setopt($s, CURLOPT_HEADER, true);
         curl_setopt($s, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt ($s, CURLOPT_COOKIEJAR, $this->_cookie_file);		
-		curl_setopt ($s, CURLOPT_COOKIEFILE, $this->_cookie_file); 		
+		curl_setopt ($s, CURLOPT_COOKIEFILE, $this->_cookie_file);
+        curl_setopt($s, CURLINFO_HEADER_OUT, true);
 
 		
         $_out = curl_exec($s);
 		
 		
         $status = curl_getinfo($s, CURLINFO_HTTP_CODE);
-		
+        $information = curl_getinfo($s);
+        //echo $url."   ".$status;
+        //exit;
+        //var_dump($information);
+        //exit;
         curl_close($s);
 		
         switch ($status) {
@@ -285,6 +288,6 @@ class PxpRestClient
         }
 		
         return $out;
-    }    
+    }      
 }
 ?>
