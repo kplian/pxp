@@ -47,7 +47,7 @@ Content-Disposition: form-data; name="f_tipodocumento"
 
 1
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_documento"
+Content-Disposition: form-data; name="f_documento"     //nro de documento
 
 2
 -----------------------------14455224730379
@@ -55,23 +55,23 @@ Content-Disposition: form-data; name="f_valor"
 
 100,00
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_despesa_rateio"
+Content-Disposition: form-data; name="f_despesa_rateio"    //concepto de gasto cuenta contable
 
 169
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_centrocusto_rateio"
+Content-Disposition: form-data; name="f_centrocusto_rateio"  //centor de costo
 
 BO 01-0010 - BARRIO PETROLERO
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_percentualRateio"
+Content-Disposition: form-data; name="f_percentualRateio"   //porcentaje prorrateo
 
 100,00
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_valorRateio"
+Content-Disposition: form-data; name="f_valorRateio"    //costo concepto
 
 100,00
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_fornecedor"
+Content-Disposition: form-data; name="f_fornecedor"   //proveedor
 
 469147
 -----------------------------14455224730379
@@ -107,7 +107,7 @@ Content-Disposition: form-data; name="f_desconto"
 
 0,00
 -----------------------------14455224730379
-Content-Disposition: form-data; name="f_total"
+Content-Disposition: form-data; name="f_total"  //total pago
 
 100,00
 -----------------------------14455224730379

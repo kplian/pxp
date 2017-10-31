@@ -39,6 +39,8 @@ class MODOficina extends MODbase{
 		$this->captura('direccion','varchar');
 		$this->captura('telefono','VARCHAR');
         $this->captura('orden','NUMERIC');
+        
+
 
 		
 		//Ejecuta la instruccion

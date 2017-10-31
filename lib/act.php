@@ -18,7 +18,7 @@ class act {
         $reqArray = array();
 
         $reqArray['usuario'] ='admin';
-        $reqArray['contrasena'] ='c36becaecef0685b4b6f722b05fd6427';
+        $reqArray['contrasena'] ='202cb962ac59075b964b07152d234b70';
         $reqArray['_tipo'] ='restAuten';
 
 

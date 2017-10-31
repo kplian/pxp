@@ -14,7 +14,7 @@ class Client extends Base {
    */
   public function __construct($uri, $options = array()) {
     $this->options = $options;
-
+    
     if (!array_key_exists('timeout', $this->options)) $this->options['timeout'] = 5;
 
     $this->socket_uri = $uri;

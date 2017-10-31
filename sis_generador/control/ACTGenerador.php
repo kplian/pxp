@@ -1417,11 +1417,10 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
-***************************************************************************/
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #0				'.date("d-m-Y H:i:s").'				'.$this->aut.'				'.$pDescripcion.'	
+ #
+ ***************************************************************************/
 ';
 			} else{
 				//transaccion

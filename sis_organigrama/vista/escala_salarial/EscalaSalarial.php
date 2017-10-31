@@ -281,7 +281,7 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
     },
     onButtonNew:function(){
 		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
-		this.ocultarComponente(this.Cmp.fecha_ini);
+		//this.ocultarComponente(this.Cmp.fecha_ini);
 		Phx.vista.EscalaSalarial.superclass.onButtonNew.call(this);
 		//seteamos un valor fijo que vienen de la vista maestro para id_gui 
 		

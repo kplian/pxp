@@ -1,0 +1,113 @@
+string(26) "opcbivl14tf5sgvh16hbhg8lq6"
+New connection! (93)
+New session! (n9c18dndnku0r3hmnjnoirt5p4)
+array(1) {
+  [475]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["id_conexion"]=>
+      int(93)
+      ["id_session"]=>
+      string(26) "n9c18dndnku0r3hmnjnoirt5p4"
+      ["id_usuario"]=>
+      string(3) "475"
+    }
+  }
+}
+array(0) {
+}
+Connection 93 has disconnected
+string(26) "opcbivl14tf5sgvh16hbhg8lq6"
+New connection! (144)
+New session! (n9c18dndnku0r3hmnjnoirt5p4)
+array(1) {
+  [475]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["id_conexion"]=>
+      int(144)
+      ["id_session"]=>
+      string(26) "n9c18dndnku0r3hmnjnoirt5p4"
+      ["id_usuario"]=>
+      string(3) "475"
+    }
+  }
+}
+string(26) "opcbivl14tf5sgvh16hbhg8lq6"
+New connection! (149)
+New session! ()
+array(1) {
+  [475]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["id_conexion"]=>
+      int(144)
+      ["id_session"]=>
+      string(26) "n9c18dndnku0r3hmnjnoirt5p4"
+      ["id_usuario"]=>
+      string(3) "475"
+    }
+  }
+}
+Connection 149 has disconnected
+string(26) "opcbivl14tf5sgvh16hbhg8lq6"
+New connection! (154)
+New session! ()
+array(1) {
+  [475]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["id_conexion"]=>
+      int(144)
+      ["id_session"]=>
+      string(26) "n9c18dndnku0r3hmnjnoirt5p4"
+      ["id_usuario"]=>
+      string(3) "475"
+    }
+  }
+}
+Connection 154 has disconnected
+array(0) {
+}
+Connection 144 has disconnected
+string(26) "opcbivl14tf5sgvh16hbhg8lq6"
+New connection! (159)
+New session! (n9c18dndnku0r3hmnjnoirt5p4)
+array(1) {
+  [475]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["id_conexion"]=>
+      int(159)
+      ["id_session"]=>
+      string(26) "n9c18dndnku0r3hmnjnoirt5p4"
+      ["id_usuario"]=>
+      string(3) "475"
+    }
+  }
+}
+array(0) {
+}
+Connection 159 has disconnected
+string(26) "opcbivl14tf5sgvh16hbhg8lq6"
+New connection! (164)
+New session! (n9c18dndnku0r3hmnjnoirt5p4)
+array(1) {
+  [475]=>
+  array(1) {
+    [0]=>
+    array(3) {
+      ["id_conexion"]=>
+      int(164)
+      ["id_session"]=>
+      string(26) "n9c18dndnku0r3hmnjnoirt5p4"
+      ["id_usuario"]=>
+      string(3) "475"
+    }
+  }
+}
