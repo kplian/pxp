@@ -102,7 +102,7 @@ BEGIN
       from wf.ttipo_proceso tp
       where id_tipo_estado = v_id_tipo_estado_prev and tp.estado_reg = 'activo';
      
-      
+       
       
       select 
        count(tpo.id_tipo_proceso_origin)    
@@ -111,9 +111,8 @@ BEGIN
       from wf.ttipo_proceso_origen tpo
       where tpo.id_tipo_estado = v_id_tipo_estado_prev and tpo.estado_reg = 'activo'; 
    
-    v_cantidad_disparos = v_cantidad_disparos + COALESCE(v_cantidad_disparos_origenes,0);
-    
- 
+    v_cantidad_disparos = COALESCE(v_cantidad_disparos,0) + COALESCE(v_cantidad_disparos_origenes,0);
+
    
     -- si solo tiene un proceso disparado
     if v_cantidad_disparos = 1 then
@@ -124,7 +123,7 @@ BEGIN
           v_id_tipo_proceso_next
         from wf.ttipo_proceso tp 
         where   tp.estado_reg = 'activo'  and  tp.id_tipo_estado=v_id_tipo_estado_prev;
-        
+       
         
         if  v_id_tipo_proceso_next is NULL then
           select
@@ -134,12 +133,14 @@ BEGIN
           from wf.ttipo_proceso_origen tp 
           where  tp.estado_reg = 'activo' and   tp.id_tipo_estado=v_id_tipo_estado_prev;
         end if;
+        
+       
     
     -- si el proceso no apunta a ningun lado
     elsif v_cantidad_disparos = 0 then
     
     
-        raise exception 'El estado %, no apunta  a ningun proceso',v_codigo_prev;
+        raise exception 'El estado %, no apunta  a ningun proceso, %',v_codigo_prev, v_id_tipo_estado_prev;
     
     --si tiene mas de uno se busca el camino segun el codigo
     else
@@ -181,6 +182,8 @@ BEGIN
               if  v_id_tipo_proceso_next is NULL then
                    raise exception 'El proceso tiene % destino(s) posible(s), y entre ellos no se encuentra %',v_cantidad_disparos, p_codigo_tipo_proceso;
               end if;
+              
+             
                 
           end if;
       

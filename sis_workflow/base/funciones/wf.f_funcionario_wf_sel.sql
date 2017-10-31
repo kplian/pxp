@@ -483,12 +483,10 @@ BEGIN
                  
                  END IF;
       --Adquisiciones aprobacion del funcionario supervisor
-       ELSEIF v_nombre_func_list ='ADQ_SUP_SOL_COMPRA'  THEN
-       
-               IF p_count=FALSE then
-                 --recuperamos el supervidor  de la solictud de compra
-                
-                    v_consulta='select
+      ELSEIF v_nombre_func_list ='ADQ_SUP_SOL_COMPRA'  THEN
+                 IF p_count=FALSE then
+                     --recuperamos el supervidor  de la solictud de compra
+                     v_consulta='select
                           fun.id_funcionario,
                           fun.desc_funcionario1 as desc_funcionario,
                           ''Supervisor''::text  as desc_funcionario_cargo,
@@ -497,27 +495,51 @@ BEGIN
                         inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_supervisor
                         where sol.id_estado_wf = '||p_id_estado_wf||'
                         and '||p_filtro||'
-                            order by fun.desc_funcionario1
-                            limit '|| p_limit::varchar||' offset '||p_start::varchar;
-                        
-                          FOR g_registros in execute (v_consulta)LOOP     
-                  		   RETURN NEXT g_registros;
-                		 END LOOP;
+                        order by fun.desc_funcionario1
+                        limit '|| p_limit::varchar||' offset '||p_start::varchar;
+                        FOR g_registros in execute (v_consulta)LOOP     
+                  		  RETURN NEXT g_registros;
+                		END LOOP;
                  ELSE
-                       v_consulta='select
+                     v_consulta='select
                           COUNT(fun.id_funcionario)
                         from adq.tsolicitud sol
                         inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_supervisor
                         where sol.id_estado_wf = '||p_id_estado_wf||'
                         and '||p_filtro;
-                        
-                          FOR g_registros in execute (v_consulta)LOOP     
-                  		   RETURN NEXT g_registros;
-                		  END LOOP;
-                 
-                 
+                        FOR g_registros in execute (v_consulta)LOOP     
+                  		  RETURN NEXT g_registros;
+                		END LOOP;
                  END IF;
-      
+      ELSEIF v_nombre_func_list ='ADQ_LIB_SOL_COMPRA'  THEN
+      --CALVAREZ: obtenemos el responsable según la solicitud realizada
+                 IF p_count=FALSE then
+                     --recuperamos el supervidor  de la solictud de compra
+                     v_consulta='select
+                          fun.id_funcionario,
+                          fun.desc_funcionario1 as desc_funcionario,
+                          ''Liberación''::text  as desc_funcionario_cargo,
+                          1 as prioridad
+                        from adq.tsolicitud sol
+                        inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_supervisor
+                        where sol.id_estado_wf = '||p_id_estado_wf||'
+                        and '||p_filtro||'
+                        order by fun.desc_funcionario1
+                        limit '|| p_limit::varchar||' offset '||p_start::varchar;
+                        FOR g_registros in execute (v_consulta)LOOP     
+                  		  RETURN NEXT g_registros;
+                		END LOOP;
+                 ELSE
+                     v_consulta='select
+                          COUNT(fun.id_funcionario)
+                        from adq.tsolicitud sol
+                        inner join  orga.vfuncionario fun on fun.id_funcionario = sol.id_funcionario_supervisor
+                        where sol.id_estado_wf = '||p_id_estado_wf||'
+                        and '||p_filtro;
+                        FOR g_registros in execute (v_consulta)LOOP     
+                  		  RETURN NEXT g_registros;
+                		END LOOP;
+                 END IF;
       ELSE
                  --  ejecutar funcion de listado 
                  IF p_count=FALSE then
@@ -550,6 +572,9 @@ BEGIN
                                   '||quote_literal(p_filtro)||'
                                   
                                  ) AS '||v_as;
+                                 
+                                 
+                   raise notice  'consulta: %',v_consulta;              
                                        
                                       
                   FOR g_registros in execute (v_consulta)LOOP  
