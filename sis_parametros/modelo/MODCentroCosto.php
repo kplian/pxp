@@ -332,6 +332,7 @@ class MODCentroCosto extends MODbase{
 		$this->captura('fecha_inicio','date');
 		$this->captura('fecha_final','date');
 		$this->captura('id_proyecto','int4');
+		$this->captura('id_tipo_cc','int4');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -340,6 +341,6 @@ class MODCentroCosto extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-			
+
 }
 ?>

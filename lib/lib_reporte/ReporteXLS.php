@@ -18,6 +18,7 @@ class ReporteXLS
 	function __construct($nom_archivo,$titulo){
 		//ini_set('memory_limit','512M');
 		set_time_limit(400);
+		$titulo = substr($titulo, 0,30);
 		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
 		$cacheSettings = array('memoryCacheSize'  => '10MB');
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);

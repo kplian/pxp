@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.f_importar_cargos_tmp (
 )
 RETURNS boolean AS
@@ -86,7 +84,7 @@ BEGIN
                    v_id_uo_cargo
                 from orga.tuo uo
                 inner join orga.testructura_uo euo on euo.id_uo_hijo = uo.id_uo
-                where euo.id_uo_padre = v_id_uo 
+                where euo.id_uo_padre = v_id_uo
                       and upper(uo.nombre_cargo) = upper(v_registros.cargo); 
                 
                 --si no encontramos una uo para el cargo la creamos
@@ -157,51 +155,59 @@ BEGIN
   
             
             IF v_id_uo is not null and v_id_uo_cargo is not null THEN   
-                     
-                 --Sentencia de la insercion
-                  insert into orga.tcargo(
-                      id_tipo_contrato,
-                      id_lugar,
-                      id_uo,			
-                      id_escala_salarial,
-                      codigo,
-                      nombre,
-                      fecha_ini,
-                      estado_reg,
-                      fecha_fin,
-                      fecha_reg,
-                      id_usuario_reg,
-                      fecha_mod,
-                      id_usuario_mod,
-                      id_oficina
-                  ) values(
-                      v_id_tipo_contrato,
-                      v_id_lugar,
-                      v_id_uo_cargo,			
-                      2,--v_parametros.id_escala_salarial,
-                      v_registros.item,
-                      v_registros.cargo,
-                      '01/01/2015',
-                      'activo',
-                      NULL,--v_parametros.fecha_fin,
-                      now(),
-                      1,--p_id_usuario,
-                      null,
-                      null,
-                      null--v_parametros.id_oficina
-      							
-                  )RETURNING id_cargo into v_id_cargo;
+                  --verificamos si el cargo ya está registrado   
+                  SELECT c.id_cargo
+                  INTO v_id_cargo
+                  FROM orga.tcargo c
+                  WHERE c.codigo=v_registros.item;
                   
+                  IF v_id_cargo IS NOT NULL THEN
+                  		UPDATE orga.tcargo
+                        SET id_tipo_contrato = v_id_tipo_contrato,
+                            id_lugar = v_id_lugar,
+                            id_uo = v_id_uo_cargo
+                        WHERE id_cargo=v_id_cargo;
+                  ELSE
+                        insert into orga.tcargo(
+                            id_tipo_contrato,
+                            id_lugar,
+                            id_uo,			
+                            id_escala_salarial,
+                            codigo,
+                            nombre,
+                            fecha_ini,
+                            estado_reg,
+                            fecha_fin,
+                            fecha_reg,
+                            id_usuario_reg,
+                            fecha_mod,
+                            id_usuario_mod,
+                            id_oficina
+                        ) values(
+                            v_id_tipo_contrato,
+                            v_id_lugar,
+                            v_id_uo_cargo,			
+                            2,--v_parametros.id_escala_salarial,
+                            v_registros.item,
+                            v_registros.cargo,
+                            '01/01/2015',
+                            'activo',
+                            NULL,--v_parametros.fecha_fin,
+                            now(),
+                            1,--p_id_usuario,
+                            null,
+                            null,
+                            null--v_parametros.id_oficina
+            							
+                        )RETURNING id_cargo into v_id_cargo;
+                  END IF;
                   
                   update orga.tcargo_tmp set
                      migrado = 'si',
                      id_cargo = v_id_cargo
-                   where codigo_uo = v_registros.codigo_uo
-                         and cargo = v_registros.cargo
-                         and item = v_registros.item;
-                          
-                  
-                  
+                  where codigo_uo = v_registros.codigo_uo
+                     and cargo = v_registros.cargo
+                     and item = v_registros.item;
                   
            ELSE
               raise notice 'no se encontro la UO %',v_registros.codigo_uo;

@@ -2035,4 +2035,14 @@ ALTER TABLE param.tconcepto_ingas
 /***********************************F-SCP-RAC-PARAM-0-04/09/2017*****************************************/
 
 
-
+/***********************************I-SCP-RCM-PARAM-0-27/10/2017*****************************************/
+CREATE TABLE param.tferiado (
+    id_feriado serial NOT NULL,
+    id_lugar integer,
+    descripcion varchar(100),
+    fecha date,
+    tipo varchar(15),
+    CONSTRAINT pk_tferiado__id_feriado PRIMARY KEY(id_feriado)
+) 
+INHERITS (pxp.tbase) WITH OIDS;
+/***********************************F-SCP-RCM-PARAM-0-27/10/2017*****************************************/

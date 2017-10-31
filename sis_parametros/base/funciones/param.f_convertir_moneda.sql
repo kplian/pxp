@@ -25,7 +25,7 @@ $body$
  
  v_monto_mb = param.f_convertir_moneda(v_reg_op.id_moneda, --moneda origen para conversion
                                                   v_id_moneda_base,   --moneda a la que sera convertido
-                                                  v_reg_op.total_pago, --este monto siemrpe estara en moenda base
+                                                  v_reg_op.total_pago, --este monto siemrpe estara en moneda base
                                                   v_reg_op.fecha, 
                                                   'O',-- tipo oficial, venta, compra 
                                                   NULL);--defecto dos decimales   
@@ -179,7 +179,7 @@ BEGIN
         where id_moneda=v_id_moneda_2;
         
         IF p_show_error = 'si' THEN
-        	raise exception 'No existe tipo de cambio para la fecha: % y la moenda: % ', to_char(p_fecha,'DD/MM/YYYY'),v_moneda;
+        	raise exception 'No existe tipo de cambio para la fecha: % y la moneda: % ', to_char(p_fecha,'DD/MM/YYYY'),v_moneda;
         ELSE
             return NULL;
         END IF;

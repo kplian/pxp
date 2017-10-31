@@ -584,7 +584,8 @@ BEGIN
       v_consulta:='select
                   cc.id_centro_costo, cc.id_gestion, cc.codigo_uo, cc.nombre_uo, cc.gestion,
                   cc.codigo_cc, cc.nombre_proyecto, cc.codigo_tcc, cc.descripcion_tcc,
-                  cc.fecha_inicio, cc.fecha_final, ppa.id_proyecto
+                  cc.fecha_inicio, cc.fecha_final, ppa.id_proyecto,
+                  cc.id_tipo_cc
                   from param.vcentro_costo cc
                   inner join param.tep ep
                   on ep.id_ep = cc.id_ep
@@ -594,7 +595,7 @@ BEGIN
       
       --Definicion de la respuesta
       --v_consulta:=v_consulta||v_parametros.filtro;
-      --v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+      v_consulta:=v_consulta||' order by cc.id_tipo_cc limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
       --Devuelve la respuesta
       return v_consulta;

@@ -1106,5 +1106,10 @@ select pxp.f_insert_testructura_gui ('PROVINI', 'CCOM');
 
 /***********************************F-DAT-RAC-PARAM-1-07/09/2017*****************************************/
 
+/***********************************I-DAT-RCM-PARAM-1-27/10/2017*****************************************/
+select pxp.f_insert_tgui ('Feriados', 'Registro de Feriados', 'FERIADO', 'si', 11, 'sis_parametros/vista/feriado/Feriado.php', 3, '', 'Feriado', 'PARAM');
+select pxp.f_insert_testructura_gui ('FERIADO', 'OTROS');
 
-
+select pxp.f_add_catalog('PARAM','tferiado__tipo','Permanente','permanente');
+select pxp.f_add_catalog('PARAM','tferiado__tipo','Solo gestión','solo_gestion');
+/***********************************F-DAT-RCM-PARAM-1-27/10/2017*****************************************/
