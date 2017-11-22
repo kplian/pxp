@@ -1113,3 +1113,8 @@ ALTER TABLE segu.tprocedimiento
 CREATE INDEX idx_tusuario__id_usuario ON segu.tusuario
   USING btree (id_usuario);
 /*****************************F-SCP-RCM-SEGU-0-09/08/2017*************/
+
+/*****************************I-SCP-RCM-SEGU-0-07/11/2017*************/
+alter table segu.tprocedimiento
+alter column id_funcion set not null;
+/*****************************F-SCP-RCM-SEGU-0-07/11/2017*************/

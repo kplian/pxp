@@ -26,7 +26,7 @@ DECLARE
     v_dias_habiles		       integer;
     v_dias_feriados            integer;
     v_dias_feriados_x_lugar    integer;
-    v_gestion            integer;
+    v_gestion                  integer;
   
 BEGIN
 
@@ -42,7 +42,6 @@ BEGIN
     --Obtención de gestión de la fecha fin
     v_gestion = extract('year' from p_fecha_fin);
     
-    --TODO: obtener la cantidad de días feriados en el rango de fechas
     --Se obtiene los feriados globales en el rango de fechas
     select 
     count(1)
@@ -68,6 +67,7 @@ BEGIN
         end;
     
     --Devuelve la diferencia
+    raise notice 'Días feriados nacionales: %, días feriados locales: %',coalesce(v_dias_feriados,0),coalesce(v_dias_feriados_x_lugar,0);
     return v_dias_habiles - coalesce(v_dias_feriados,0) - coalesce(v_dias_feriados_x_lugar,0);
 
 EXCEPTION
