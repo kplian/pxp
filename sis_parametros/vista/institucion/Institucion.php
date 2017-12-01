@@ -36,6 +36,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'instit.codigo',type:'string'},
+			bottom_filter : true,
 			id_grupo:0,
 			grid:true,
 			form:true
@@ -51,6 +52,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'TextField',
 			filters:{pfiltro:'instit.nombre',type:'string'},
+			bottom_filter : true,
 			id_grupo:0,
 			grid:true,
 			form:true
@@ -66,6 +68,7 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 			},
 			type:'NumberField',
 			filters:{pfiltro:'instit.doc_id',type:'string'},
+			bottom_filter : true,
 			id_grupo:0,
 			grid:true,
 			form:true
