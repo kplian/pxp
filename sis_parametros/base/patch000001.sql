@@ -2046,3 +2046,14 @@ CREATE TABLE param.tferiado (
 ) 
 INHERITS (pxp.tbase) WITH OIDS;
 /***********************************F-SCP-RCM-PARAM-0-27/10/2017*****************************************/
+/***********************************I-SCP-FPC-PARAM-0-03/12/2017*****************************************/
+
+CREATE TABLE param.tinstitucion_persona (
+  id_institucion_persona SERIAL NOT NULL,
+  id_institucion INTEGER NOT NULL,
+  id_persona INTEGER NOT NULL,
+  cargo_institucion VARCHAR(100),
+  PRIMARY KEY(id_institucion_persona)
+) 
+INHERITS (pxp.tbase) WITH OIDS;
+/***********************************F-SCP-FPC-PARAM-0-03/12/2017*****************************************/

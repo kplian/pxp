@@ -2268,3 +2268,18 @@ EXECUTE PROCEDURE param.ftrig_talarma();
 select pxp.f_insert_testructura_gui ('WSME', 'ALRMS');
 
 /***********************************F-DEP-FFP-PARAM-0-12/07/2017****************************************/
+/***********************************I-DEP-FPC-PARAM-0-03/12/2017****************************************/
+ALTER TABLE param.tinstitucion_persona
+  ADD CONSTRAINT tinstitucion_persona_fk FOREIGN KEY (id_institucion)
+    REFERENCES param.tinstitucion(id_institucion)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+ALTER TABLE param.tinstitucion_persona
+  ADD CONSTRAINT tinstitucion_persona_fk1 FOREIGN KEY (id_persona)
+    REFERENCES segu.tpersona(id_persona)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;    
+/***********************************F-DEP-FPC-PARAM-0-03/12/2017****************************************/

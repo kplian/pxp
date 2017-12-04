@@ -52,6 +52,9 @@
 .bprint {
 	background-image:url(awe_printer.png) !important; 
 }
+.badjunto {
+	background-image:url(awe_adjunto.png) !important; 
+}
 .bedit {
 	background-image:url(awe_edit.png) !important;
 }
@@ -152,6 +155,9 @@
 
 .bprintcheck {
     background-image:url(awe_printer.png) !important;
+}
+.badjuntocheck {
+    background-image:url(awe_adjunto.png) !important;
 }
 
 .bword {

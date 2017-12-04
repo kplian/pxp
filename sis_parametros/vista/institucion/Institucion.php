@@ -483,10 +483,13 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.Institucion.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:50}});
-		
-		
-		
 	},
+	east : {
+			url : '../../../sis_parametros/vista/institucion_persona/InstitucionPersona.php',
+			cls : 'InstitucionPersona',
+			title : 'Persona Institucion',
+			height : '50%'
+		},
 	onButtonNew:function(){
 	  Phx.vista.Institucion.superclass.onButtonNew.call(this);
 	},
@@ -500,6 +503,11 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_institucion',
 		direction: 'ASC'
 	},
+	loadValoresIniciales : function() {
+
+			Phx.vista.Institucion.superclass.loadValoresIniciales.call(this);
+
+		},
 	bsave:false,
 	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
     bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
