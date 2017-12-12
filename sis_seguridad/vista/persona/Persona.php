@@ -127,7 +127,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
 	       		    mode: 'local',	       		    
-	       		    store:['documento_identidad','pasaporte']
+	       		    store:['documento_identidad','pasaporte','Ninguno']
 	       		    
 	       		},
 	       		type:'ComboBox',
@@ -344,7 +344,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		this.load({params:{start:0, limit:50}})
 		//agregamos boton para mostrar ventana hijo
 		this.addButton('aSubirFoto',{name:'subirFoto',text:'Subir Foto',iconCls: 'baddphoto',disabled:true,handler:this.SubirFoto,tooltip: '<b>Subir Foto</b><br/>Permite actualizar la foto de la persona'});
-		
+		this.iniciarEventos();
 	},
 	SubirFoto(){					
 			var rec=this.sm.getSelected();
@@ -355,7 +355,23 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 				width:400,
 				height:150
 		    },rec.data,this.idContenedor,'subirFotoPersona')
-	},
+	},iniciarEventos(){
+	   	this.Cmp.tipo_documento.on('select',function(combo,record,index){
+	    	if(combo.getValue()=='Ninguno'){
+	    		this.Cmp.ci.reset();
+	    		this.Cmp.ci.disable();
+	    		this.Cmp.expedicion.reset();
+	    		this.Cmp.expedicion.disable();
+	    		this.Cmp.ci.modificado=true;
+	    		this.Cmp.expedicion.modificado=true;	
+	    	}else{
+	    		this.Cmp.ci.enable();
+	    		this.Cmp.expedicion.enable();
+	    		this.Cmp.ci.modificado=true;
+	    		this.Cmp.expedicion.modificado=true;
+	    	}	    	
+	   	},this)
+   },
 
     archivo : function (){
 

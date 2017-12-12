@@ -1,11 +1,10 @@
 CREATE OR REPLACE FUNCTION segu.ft_persona_ime (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.ft_persona_ime
@@ -64,10 +63,12 @@ BEGIN
           
           		--Verificación de persona ya registrada
           		--CI
-          		if exists(select 1 from segu.tpersona
-          					where ci = v_parametros.ci) then
-          			raise exception 'Este número de Carnet de Identidad ya fue registrado';
-          		end if;
+                IF(v_parametros.tipo_documento!='Ninguno')THEN
+                  if exists(select 1 from segu.tpersona
+                              where ci = v_parametros.ci) then
+                      raise exception 'Este número de Carnet de Identidad ya fue registrado';
+                  end if;
+                END IF;
           		--Nombre completo
           		if exists(select 1 from segu.tpersona
           					where upper(nombre) = upper(v_parametros.nombre)
@@ -90,9 +91,9 @@ BEGIN
                                tipo_documento,
                                expedicion)
                values(
-                      v_parametros.nombre,
-                      v_parametros.ap_paterno,
-                      v_parametros.ap_materno,
+                      upper(v_parametros.nombre),
+                      upper(v_parametros.ap_paterno),
+                      upper(v_parametros.ap_materno),
                       v_parametros.ci,
                       v_parametros.correo,
                       v_parametros.celular1,
@@ -129,11 +130,13 @@ BEGIN
           
    				--Verificación de persona ya registrada
           		--CI
-          		if exists(select 1 from segu.tpersona
-          					where ci = v_parametros.ci
-          					and id_persona != v_parametros.id_persona) then
-          			raise exception 'Este número de Carnet de Identidad ya fue registrado';
-          		end if;
+                IF(v_parametros.tipo_documento!='Ninguno')THEN
+                  if exists(select 1 from segu.tpersona
+                              where ci = v_parametros.ci
+                              and id_persona != v_parametros.id_persona) then
+                      raise exception 'Este número de Carnet de Identidad ya fue registrado';
+                  end if;
+                END IF;
           		--Nombre completo
           		if exists(select 1 from segu.tpersona
           					where upper(nombre) = upper(v_parametros.nombre)
@@ -144,9 +147,9 @@ BEGIN
           		end if;
 
                update segu.tpersona 
-               set nombre=v_parametros.nombre,
-               apellido_paterno=v_parametros.ap_paterno,
-               apellido_materno=v_parametros.ap_materno,
+               set nombre=upper(v_parametros.nombre),
+               apellido_paterno=upper(v_parametros.ap_paterno),
+               apellido_materno=upper(v_parametros.ap_materno),
                ci=v_parametros.ci,
                correo=v_parametros.correo,
                celular1=v_parametros.celular1,
@@ -236,7 +239,8 @@ EXCEPTION
 		raise exception '%',v_resp;
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_persona_sel (OID = 305077) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
