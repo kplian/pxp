@@ -112,13 +112,26 @@ or
   "../../../sis_mantenimiento/"
   One path should be one line in the file
 
+## TO CLONE AN EXISTING SYSTEM:<a name="existing_system"></a>
+
+For this, yo should have an instance already running and follow these steps:
+
+1. Go to your project root folder
+2. Clone your system git repository. If you have more than one system, you have to clone them all
+	#git  clone yourrepository.git
+3. Create or update a file named "sistemas.txt" inside your project root folder wich contains the path for every system of your project.Eg:
+  "../../../sis_mantenimiento/"
+  One path should be one line in the file
+4. Execute the script: "./restaurar_todo.py" It whould be in your project folder and pxp/utilidades/restaurar_bd (Execute it as postgres user)
+5. If you have data to loose in the system select option 2, if there is nothing to loose select option number 1
+
 ## TO UPDATE THE DATABASE ON PULL OR MERGE:<a name="update_db"></a>
 
 
 After pull, the code is updated,but database scripts are  not executed yet. It's possible to execute folowing these steps:
   
 1. Go to "/pxp/utilidades/restaurar_bd/" folder
-2. Change user to postgres: "su postgres -"  ##don't forget the score
+2. Change user to postgres: "su postgres -" 
 3. Execute the script: "./restaurar_todo.py"
 4. Now we have a menu with 4 options:
 	* Option 1 Drops all tables and functions an restore them from scripts ¡¡¡You lose information here!!!!
