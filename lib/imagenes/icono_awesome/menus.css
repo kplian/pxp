@@ -55,6 +55,9 @@
 .badjunto {
 	background-image:url(awe_adjunto.png) !important; 
 }
+.banular {
+	background-image:url(awe_anular.png) !important; 
+}
 .bedit {
 	background-image:url(awe_edit.png) !important;
 }
@@ -158,6 +161,9 @@
 }
 .badjuntocheck {
     background-image:url(awe_adjunto.png) !important;
+}
+.banularcheck {
+    background-image:url(awe_anular.png) !important;
 }
 
 .bword {
