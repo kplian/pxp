@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -44,7 +46,7 @@ BEGIN
 ***********************************/
      if(par_transaccion='RH_UOFUNC_SEL')then
 
-          
+
           BEGIN
 
                v_consulta:='SELECT
@@ -85,12 +87,11 @@ BEGIN
               
                 v_id_padre:=v_parametros.id_uo;
               
-               
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
-               
-               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-
+		
+               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad;
+        
                return v_consulta;
 
 

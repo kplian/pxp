@@ -1028,7 +1028,7 @@ class PHPExcel_Shared_JAMA_Matrix {
 			$LU = new PHPExcel_Shared_JAMA_LUDecomposition($this);
 			return $LU->solve($B);
 		} else {
-			$QR = new PHPExcel_Shared_JAMA_QRDecomposition($this);
+			$QR = new QRDecomposition($this);
 			return $QR->solve($B);
 		}
 	}	//	function solve()
@@ -1054,4 +1054,6 @@ class PHPExcel_Shared_JAMA_Matrix {
 		$L = new PHPExcel_Shared_JAMA_LUDecomposition($this);
 		return $L->det();
 	}	//	function det()
+
+
 }	//	class PHPExcel_Shared_JAMA_Matrix

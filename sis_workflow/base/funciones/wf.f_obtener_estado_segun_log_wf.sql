@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_obtener_estado_segun_log_wf (
   p_id_estado_wf integer,
   p_id_tipo_estado integer,
@@ -12,22 +10,22 @@ CREATE OR REPLACE FUNCTION wf.f_obtener_estado_segun_log_wf (
 RETURNS record AS
 $body$
 /**************************************************************************
- FUNCION: 		wf.f_obtener_estado_segun_log_wf
- DESCRIPCION: 	esta funcion permite obtener el estado_wf   correpondiente al parametro id_tipo_estado,   
+ FUNCION:     wf.f_obtener_estado_segun_log_wf
+ DESCRIPCION:   esta funcion permite obtener el estado_wf   correpondiente al parametro id_tipo_estado,   
                  segun registro del log del WF para el parametros id_estado_wf,
                  (busca recursivamente en el los hasta encontra el tipo_estado)
                 
  
  
- AUTOR: 		KPLIAN(RAC)
- FECHA:			15/03/2013
- COMENTARIOS:	
+ AUTOR:     KPLIAN(RAC)
+ FECHA:     15/03/2013
+ COMENTARIOS: 
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:			
+ DESCRIPCION: 
+ AUTOR:     
+ FECHA:     
  ********************************
 
   p_id_estado_wf integer,    ->   identificador del estado del WF de donde se inicia la busqueda
@@ -36,21 +34,21 @@ $body$
 ***************************************************************************/
 DECLARE
 
-v_nombre_funcion 				varchar;
-v_resp 							varchar;
+v_nombre_funcion        varchar;
+v_resp              varchar;
 
-v_id_tipo_proceso 				integer;
-v_id_tipo_estado 				integer;
-v_id_proceso_wf 				integer;
+v_id_tipo_proceso         integer;
+v_id_tipo_estado        integer;
+v_id_proceso_wf         integer;
 
-va_id_tipo_estado 				integer[];
-va_codigo_estado 				varchar[];
-va_disparador 					varchar[];
-va_regla 						varchar[];
-va_prioridad 					integer[];
-v_id_tipo_estado_anterior		integer;
+va_id_tipo_estado         integer[];
+va_codigo_estado        varchar[];
+va_disparador           varchar[];
+va_regla            varchar[];
+va_prioridad          integer[];
+v_id_tipo_estado_anterior   integer;
 
-	
+  
 BEGIN
 
 v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
@@ -97,7 +95,12 @@ v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
                                            order by  id_estado_wf   desc
                                            limit 1 offset 0;  
    
-      
+
+if p_id_estado_wf = 11186 then
+  --raise exception 'aa: %   %',ps_id_estado_wf_ant,ps_codigo_estado;
+end if;
+
+
 
   select
    ewp.id_funcionario,
@@ -114,13 +117,13 @@ v_nombre_funcion='wf.f_obtener_estado_segun_log_wf';
 
 return;
 EXCEPTION
-				
-	WHEN OTHERS THEN
-		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
+        
+  WHEN OTHERS THEN
+    v_resp='';
+    v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+    v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+    v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+    raise exception '%',v_resp;
 
 
 END;

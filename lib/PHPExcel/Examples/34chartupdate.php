@@ -37,7 +37,7 @@ date_default_timezone_set('Europe/London');
  */
 
 /** PHPExcel */
-require_once dirname(__FILE__) . '/../Classes/PHPExcel.php';
+include '../Classes/PHPExcel.php';
 
 if (!file_exists("33chartcreate-bar.xlsx")) {
 	exit("Please run 33chartcreate-bar.php first." . EOL);

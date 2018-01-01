@@ -77,7 +77,7 @@ class ACTConceptoIngas extends ACTbase{
         
          if($this->objParam->getParametro('movimiento')!=''){
          	  if(  $this->objParam->getParametro('movimiento') == 'ingreso_egreso'){
-         	  	$this->objParam->addFiltro("conig.movimiento in (''ingreso'',''gasto'')");    
+         	  	$this->objParam->addFiltro("conig.movimiento in (''recurso'',''gasto'',''ingreso'')");    
          	  }
 			  else{
 			  	$this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    

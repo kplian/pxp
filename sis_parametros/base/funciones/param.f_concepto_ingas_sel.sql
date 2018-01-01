@@ -141,12 +141,14 @@ BEGIN
            --RAC, 1/7/2015 solo por el tema de regularizaciones lso administradores no  tenian filtros
            -- IF  p_administrador != 1 THEN
                IF pxp.f_existe_parametro(p_tabla,'autorizacion')THEN
+                if v_parametros.autorizacion <> '' then
                    IF v_autorizacion_nulos = 'si' THEN
                     v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
                    ELSE
                      v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
                    END IF;
-                END IF;
+                end if;
+              END IF;
             -- END IF;
 
 

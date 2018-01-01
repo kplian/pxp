@@ -194,8 +194,6 @@ class PHPExcel_Calculation {
 	 */
 	private $_cyclicReferenceStack;
 
-	private $_cellStack = array();
-
 	/**
 	 * Current iteration counter for cyclic formulae
 	 * If the value is 0 (or less) then cyclic formulae will throw an exception,
@@ -204,7 +202,7 @@ class PHPExcel_Calculation {
 	 * @var integer
 	 *
 	 */
-	private $_cyclicFormulaCount = 1;
+	private $_cyclicFormulaCount = 0;
 
 	private $_cyclicFormulaCell = '';
 
@@ -214,7 +212,7 @@ class PHPExcel_Calculation {
 	 * @var integer
 	 *
 	 */
-	public $cyclicFormulaCount = 1;
+	public $cyclicFormulaCount = 0;
 
 	/**
 	 * Precision used for calculations
@@ -1628,7 +1626,7 @@ class PHPExcel_Calculation {
 												 'argumentCount'	=>	'2'
 												),
 				'VALUE'					=> array('category'			=>	PHPExcel_Calculation_Function::CATEGORY_TEXT_AND_DATA,
-												 'functionCall'		=>	'PHPExcel_Calculation_TextData::VALUE',
+												 'functionCall'		=>	'PHPExcel_Calculation_Functions::DUMMY',
 												 'argumentCount'	=>	'1'
 												),
 				'VAR'					=> array('category'			=>	PHPExcel_Calculation_Function::CATEGORY_STATISTICAL,
@@ -1726,7 +1724,6 @@ class PHPExcel_Calculation {
 		if ($this->_savedPrecision < $setPrecision) {
 			ini_set('precision',$setPrecision);
 		}
-		$this->delta = 1 * pow(10, -$setPrecision);
 
 		if ($workbook !== NULL) {
 			self::$_workbookSets[$workbook->getID()] = $this;
@@ -2243,17 +2240,9 @@ class PHPExcel_Calculation {
 		}
 
 		//	Execute the calculation for the cell formula
-        $this->_cellStack[] = array(
-            'sheet' => $pCell->getWorksheet()->getTitle(),
-            'cell' => $pCell->getCoordinate(),
-        );
 		try {
 			$result = self::_unwrapResult($this->_calculateFormulaValue($pCell->getValue(), $pCell->getCoordinate(), $pCell));
-            $cellAddress = array_pop($this->_cellStack);
-            $this->_workbook->getSheetByName($cellAddress['sheet'])->getCell($cellAddress['cell']);
 		} catch (PHPExcel_Exception $e) {
-            $cellAddress = array_pop($this->_cellStack);
-            $this->_workbook->getSheetByName($cellAddress['sheet'])->getCell($cellAddress['cell']);
 			throw new PHPExcel_Calculation_Exception($e->getMessage());
 		}
 
@@ -2344,22 +2333,24 @@ class PHPExcel_Calculation {
 	}	//	function calculateFormula()
 
 
-    public function getValueFromCache($cellReference, &$cellValue) {
+    public function getValueFromCache($worksheetName, $cellID, &$cellValue) {
 		// Is calculation cacheing enabled?
 		// Is the value present in calculation cache?
-		$this->_debugLog->writeDebugLog('Testing cache value for cell ', $cellReference);
-		if (($this->_calculationCacheEnabled) && (isset($this->_calculationCache[$cellReference]))) {
-			$this->_debugLog->writeDebugLog('Retrieving value for cell ', $cellReference, ' from cache');
+//echo 'Test cache for ',$worksheetName,'!',$cellID,PHP_EOL;
+		$this->_debugLog->writeDebugLog('Testing cache value for cell ', $worksheetName, '!', $cellID);
+		if (($this->_calculationCacheEnabled) && (isset($this->_calculationCache[$worksheetName][$cellID]))) {
+//echo 'Retrieve from cache',PHP_EOL;
+			$this->_debugLog->writeDebugLog('Retrieving value for cell ', $worksheetName, '!', $cellID, ' from cache');
 			// Return the cached result
-			$cellValue = $this->_calculationCache[$cellReference];
+			$cellValue = $this->_calculationCache[$worksheetName][$cellID];
 			return TRUE;
 		}
 		return FALSE;
     }
 
-    public function saveValueToCache($cellReference, $cellValue) {
+    public function saveValueToCache($worksheetName, $cellID, $cellValue) {
 		if ($this->_calculationCacheEnabled) {
-			$this->_calculationCache[$cellReference] = $cellValue;
+			$this->_calculationCache[$worksheetName][$cellID] = $cellValue;
 		}
 	}
 
@@ -2373,49 +2364,49 @@ class PHPExcel_Calculation {
 	 * @throws	PHPExcel_Calculation_Exception
 	 */
 	public function _calculateFormulaValue($formula, $cellID=null, PHPExcel_Cell $pCell = null) {
-		$cellValue = null;
+		$cellValue = '';
 
 		//	Basic validation that this is indeed a formula
 		//	We simply return the cell value if not
 		$formula = trim($formula);
 		if ($formula{0} != '=') return self::_wrapResult($formula);
-		$formula = ltrim(substr($formula, 1));
+		$formula = ltrim(substr($formula,1));
 		if (!isset($formula{0})) return self::_wrapResult($formula);
 
 		$pCellParent = ($pCell !== NULL) ? $pCell->getWorksheet() : NULL;
 		$wsTitle = ($pCellParent !== NULL) ? $pCellParent->getTitle() : "\x00Wrk";
-        $wsCellReference = $wsTitle . '!' . $cellID;
 
-		if (($cellID !== NULL) && ($this->getValueFromCache($wsCellReference, $cellValue))) {
+		if (($cellID !== NULL) && ($this->getValueFromCache($wsTitle, $cellID, $cellValue))) {
 			return $cellValue;
 		}
 
-		if (($wsTitle{0} !== "\x00") && ($this->_cyclicReferenceStack->onStack($wsCellReference))) {
-            if ($this->cyclicFormulaCount <= 0) {
-                $this->_cyclicFormulaCell = '';
+		if (($wsTitle{0} !== "\x00") && ($this->_cyclicReferenceStack->onStack($wsTitle.'!'.$cellID))) {
+			if ($this->cyclicFormulaCount <= 0) {
 				return $this->_raiseFormulaError('Cyclic Reference in Formula');
-			} elseif ($this->_cyclicFormulaCell === $wsCellReference) {
+			} elseif (($this->_cyclicFormulaCount >= $this->cyclicFormulaCount) &&
+					  ($this->_cyclicFormulaCell == $wsTitle.'!'.$cellID)) {
+				return $cellValue;
+			} elseif ($this->_cyclicFormulaCell == $wsTitle.'!'.$cellID) {
 				++$this->_cyclicFormulaCount;
 				if ($this->_cyclicFormulaCount >= $this->cyclicFormulaCount) {
-                    $this->_cyclicFormulaCell = '';
 					return $cellValue;
 				}
 			} elseif ($this->_cyclicFormulaCell == '') {
+				$this->_cyclicFormulaCell = $wsTitle.'!'.$cellID;
 				if ($this->_cyclicFormulaCount >= $this->cyclicFormulaCount) {
 					return $cellValue;
 				}
-				$this->_cyclicFormulaCell = $wsCellReference;
 			}
 		}
 
 		//	Parse the formula onto the token stack and calculate the value
-		$this->_cyclicReferenceStack->push($wsCellReference);
+		$this->_cyclicReferenceStack->push($wsTitle.'!'.$cellID);
 		$cellValue = $this->_processTokenStack($this->_parseFormula($formula, $pCell), $cellID, $pCell);
 		$this->_cyclicReferenceStack->pop();
 
 		// Save to calculation cache
 		if ($cellID !== NULL) {
-			$this->saveValueToCache($wsCellReference, $cellValue);
+			$this->saveValueToCache($wsTitle, $cellID, $cellValue);
 		}
 
 		//	Return the calculated value
@@ -2649,7 +2640,7 @@ class PHPExcel_Calculation {
 	}	//	function _showTypeDetails()
 
 
-	private function _convertMatrixReferences($formula) {
+	private static function _convertMatrixReferences($formula) {
 		static $matrixReplaceFrom = array('{',';','}');
 		static $matrixReplaceTo = array('MKMATRIX(MKMATRIX(','),MKMATRIX(','))');
 
@@ -2738,7 +2729,7 @@ class PHPExcel_Calculation {
 
 	// Convert infix to postfix notation
 	private function _parseFormula($formula, PHPExcel_Cell $pCell = NULL) {
-		if (($formula = $this->_convertMatrixReferences(trim($formula))) === FALSE) {
+		if (($formula = self::_convertMatrixReferences(trim($formula))) === FALSE) {
 			return FALSE;
 		}
 
@@ -2920,11 +2911,11 @@ class PHPExcel_Calculation {
 //				echo 'Element with value '.$val.' is an Operand, Variable, Constant, String, Number, Cell Reference or Function<br />';
 
 				if (preg_match('/^'.self::CALCULATION_REGEXP_FUNCTION.'$/i', $val, $matches)) {
-					$val = preg_replace('/\s/u','',$val);
+					$val = preg_replace('/\s/','',$val);
 //					echo 'Element '.$val.' is a Function<br />';
 					if (isset(self::$_PHPExcelFunctions[strtoupper($matches[1])]) || isset(self::$_controlFunctions[strtoupper($matches[1])])) {	// it's a function
 						$stack->push('Function', strtoupper($val));
-						$ax = preg_match('/^\s*(\s*\))/ui', substr($formula, $index+$length), $amatch);
+						$ax = preg_match('/^\s*(\s*\))/i', substr($formula, $index+$length), $amatch);
 						if ($ax) {
 							$stack->push('Operand Count for Function '.strtoupper($val).')', 0);
 							$expectingOperator = TRUE;
@@ -3601,39 +3592,27 @@ class PHPExcel_Calculation {
 				break;
 			//	Equality
 			case '=':
-                if (is_numeric($operand1) && is_numeric($operand2)) {
-                    $result = (abs($operand1 - $operand2) < $this->delta);
-                } else {
-                    $result = strcmp($operand1, $operand2) == 0;
-                }
+				$result = ($operand1 == $operand2);
 				break;
 			//	Greater than or equal
 			case '>=':
-                if (is_numeric($operand1) && is_numeric($operand2)) {
-                    $result = ((abs($operand1 - $operand2) < $this->delta) || ($operand1 > $operand2));
-				} elseif ($useLowercaseFirstComparison) {
+				if ($useLowercaseFirstComparison) {
 					$result = $this->strcmpLowercaseFirst($operand1, $operand2) >= 0;
 				} else {
-					$result = strcmp($operand1, $operand2) >= 0;
+					$result = ($operand1 >= $operand2);
 				}
 				break;
 			//	Less than or equal
 			case '<=':
-                if (is_numeric($operand1) && is_numeric($operand2)) {
-                    $result = ((abs($operand1 - $operand2) < $this->delta) || ($operand1 < $operand2));
-                } elseif ($useLowercaseFirstComparison) {
+				if ($useLowercaseFirstComparison) {
 					$result = $this->strcmpLowercaseFirst($operand1, $operand2) <= 0;
 				} else {
-					$result = strcmp($operand1, $operand2) <= 0;
+					$result = ($operand1 <= $operand2);
 				}
 				break;
 			//	Inequality
 			case '<>':
-                if (is_numeric($operand1) && is_numeric($operand2)) {
-                    $result = (abs($operand1 - $operand2) > 1E-14);
-                } else {
-                    $result = strcmp($operand1, $operand2) != 0;
-                }
+				$result = ($operand1 != $operand2);
 				break;
 		}
 
@@ -3641,19 +3620,21 @@ class PHPExcel_Calculation {
 		$this->_debugLog->writeDebugLog('Evaluation Result is ', $this->_showTypeDetails($result));
 		//	And push the result onto the stack
 		$stack->push('Value',$result);
-		return true;
-	}
+		return TRUE;
+	}	//	function _executeBinaryComparisonOperation()
 
 	/**
 	 * Compare two strings in the same way as strcmp() except that lowercase come before uppercase letters
-	 * @param    string    $str1    First string value for the comparison
-	 * @param    string    $str2    Second string value for the comparison
-	 * @return   integer
+	 * @param string $str1
+	 * @param string $str2
+	 * @return integer
 	 */
 	private function strcmpLowercaseFirst($str1, $str2)
 	{
-        $inversedStr1 = PHPExcel_Shared_String::StrCaseReverse($str1);
-        $inversedStr2 = PHPExcel_Shared_String::StrCaseReverse($str2);
+		$from = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+		$to = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$inversedStr1 = strtr($str1, $from, $to);
+		$inversedStr2 = strtr($str2, $from, $to);
 
 		return strcmp($inversedStr1, $inversedStr2);
 	}

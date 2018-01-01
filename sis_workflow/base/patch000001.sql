@@ -1362,3 +1362,10 @@ ALTER TABLE wf.ttipo_columna
   ADD COLUMN orden INTEGER;
 
 /*****************************F-SCP-JRR-WF-0-30/08/2016*************/
+
+/*****************************I-SCP-JRR-WF-0-30/08/2016*************/
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN cc VARCHAR[];
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN bcc VARCHAR[];
+/*****************************F-SCP-JRR-WF-0-30/08/2016*************/

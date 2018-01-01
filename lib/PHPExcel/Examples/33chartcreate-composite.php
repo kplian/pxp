@@ -68,13 +68,13 @@ $objWorksheet->fromArray(
 //		Number of datapoints in series
 //		Data values
 //		Data Marker
-$dataSeriesLabels1 = array(
+$dataseriesLabels1 = array(
 	new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$B$1', NULL, 1),	//	Temperature
 );
-$dataSeriesLabels2 = array(
+$dataseriesLabels2 = array(
 	new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$C$1', NULL, 1),	//	Rainfall
 );
-$dataSeriesLabels3 = array(
+$dataseriesLabels3 = array(
 	new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$D$1', NULL, 1),	//	Humidity
 );
 
@@ -106,7 +106,7 @@ $series1 = new PHPExcel_Chart_DataSeries(
 	PHPExcel_Chart_DataSeries::TYPE_BARCHART,		// plotType
 	PHPExcel_Chart_DataSeries::GROUPING_CLUSTERED,	// plotGrouping
 	range(0, count($dataSeriesValues1)-1),			// plotOrder
-	$dataSeriesLabels1,								// plotLabel
+	$dataseriesLabels1,								// plotLabel
 	$xAxisTickValues,								// plotCategory
 	$dataSeriesValues1								// plotValues
 );
@@ -131,7 +131,7 @@ $series2 = new PHPExcel_Chart_DataSeries(
 	PHPExcel_Chart_DataSeries::TYPE_LINECHART,		// plotType
 	PHPExcel_Chart_DataSeries::GROUPING_STANDARD,	// plotGrouping
 	range(0, count($dataSeriesValues2)-1),			// plotOrder
-	$dataSeriesLabels2,								// plotLabel
+	$dataseriesLabels2,								// plotLabel
 	NULL,											// plotCategory
 	$dataSeriesValues2								// plotValues
 );
@@ -153,14 +153,14 @@ $series3 = new PHPExcel_Chart_DataSeries(
 	PHPExcel_Chart_DataSeries::TYPE_AREACHART,		// plotType
 	PHPExcel_Chart_DataSeries::GROUPING_STANDARD,	// plotGrouping
 	range(0, count($dataSeriesValues2)-1),			// plotOrder
-	$dataSeriesLabels3,								// plotLabel
+	$dataseriesLabels3,								// plotLabel
 	NULL,											// plotCategory
 	$dataSeriesValues3								// plotValues
 );
 
 
 //	Set the series in the plot area
-$plotArea = new PHPExcel_Chart_PlotArea(NULL, array($series1, $series2, $series3));
+$plotarea = new PHPExcel_Chart_PlotArea(NULL, array($series1, $series2, $series3));
 //	Set the chart legend
 $legend = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_RIGHT, NULL, false);
 
@@ -172,7 +172,7 @@ $chart = new PHPExcel_Chart(
 	'chart1',		// name
 	$title,			// title
 	$legend,		// legend
-	$plotArea,		// plotArea
+	$plotarea,		// plotArea
 	true,			// plotVisibleOnly
 	0,				// displayBlanksAs
 	NULL,			// xAxisLabel

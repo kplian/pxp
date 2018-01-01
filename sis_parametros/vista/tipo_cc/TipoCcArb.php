@@ -389,7 +389,8 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	        this.Cmp.id_ep.allowBlank = false;	        
 	        if(nodo && nodo.attributes.id!='id'){	        	
 	        	var obj = this.getDatosPadre(nodo);	        	        	
-	        	this.Cmp.tipo.disable();
+	        	//comentado temporalmente para evitar e bloqueo, al parecer existe un bug noidentificado
+	        	//this.Cmp.tipo.disable();
 	        	this.Cmp.tipo.setValue(obj.tipo);
 	        	this.Cmp.id_ep.setValue(obj.id_ep);
 	        	this.Cmp.fecha_inicio.setValue(obj.fecha_inicio);

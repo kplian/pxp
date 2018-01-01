@@ -80,7 +80,8 @@ BEGIN
 		               email_empresa,
 		               interno,		              
 		               telefono_ofi,
-		               antiguedad_anterior)
+		               antiguedad_anterior,
+                       id_auxiliar)
                values(
                       v_parametros.codigo,
                       v_parametros.id_persona,
@@ -89,7 +90,8 @@ BEGIN
                       v_parametros.id_persona,
                       v_parametros.interno,                      
                       v_parametros.telefono_ofi,
-                      v_parametros.antiguedad_anterior)
+                      v_parametros.antiguedad_anterior,
+                      v_parametros.id_auxiliar)
                RETURNING id_funcionario into v_id_funcionario;
 
                update segu.tpersona
@@ -140,7 +142,8 @@ BEGIN
                     interno=v_parametros.interno,                    
                     fecha_mod=now()::date,
                     telefono_ofi= v_parametros.telefono_ofi,
-                    antiguedad_anterior =  v_parametros.antiguedad_anterior
+                    antiguedad_anterior =  v_parametros.antiguedad_anterior,
+                    id_auxiliar = v_parametros.id_auxiliar
                 where id_funcionario=v_parametros.id_funcionario;
 
                 update segu.tpersona

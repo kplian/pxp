@@ -481,13 +481,13 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender: true,
                 mode: 'local',
-                store: ['lcv','ncd','retenciones','otros']
+                store: ['lcv','ncd','retenciones','efectivo','otros']
             },
             type:'ComboBox',
             id_grupo:1,
             filters:{   pfiltro:'plt.tipo_plantilla',
                         type: 'list',
-                         options: ['lcv','ncd','retenciones','otros']  
+                         options: ['lcv','ncd','retenciones','efectivo','otros']  
                     },
             grid: true,
             egrid: true,

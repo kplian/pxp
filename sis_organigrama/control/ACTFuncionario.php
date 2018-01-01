@@ -208,7 +208,7 @@ class ACTFuncionario extends ACTbase{
 			$this->objParam->addFiltro("FUNCAR.id_cargo NOT in (select rpc.id_cargo from adq.trpc rpc where rpc.estado_reg = ''activo'') ");
 		}
 		
-		
+		//var_dump($this->objParam);
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);

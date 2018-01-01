@@ -235,7 +235,7 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-                store:['opcional','obligatorio','bandeja_espera']
+                store:['opcional','obligatorio','bandeja_espera','manual']
             },
             type:'ComboBox',
             id_grupo:1,

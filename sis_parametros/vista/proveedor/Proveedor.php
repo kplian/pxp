@@ -77,7 +77,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 		//Inicializa el objeto de los argumentos extra
 		this.argumentExtraSubmit={};
 		this.argumentExtraSubmit.register=this.register;
-		//this.argumentExtraSubmit.tipo=this.tipo;
+		this.argumentExtraSubmit.tipo=this.tipo;
 		
 	},
 	iniciarEventos : function () {

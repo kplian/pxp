@@ -633,11 +633,7 @@ class PHPExcel_Worksheet_AutoFilter
 						);
 					} else {
 						//	Filter on date group values
-						$arguments = array(
-                            'date' => array(),
-                            'time' => array(),
-                            'dateTime' => array(),
-                        );
+						$arguments = array();
 						foreach($ruleDataSet as $ruleValue) {
 							$date = $time = '';
 							if ((isset($ruleValue[PHPExcel_Worksheet_AutoFilter_Column_Rule::AUTOFILTER_RULETYPE_DATEGROUP_YEAR])) &&

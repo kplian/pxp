@@ -56,6 +56,8 @@ class MODFuncionario extends MODbase{
 		$this->captura('nacionalidad','varchar');
 		$this->captura('discapacitado','varchar');
 		$this->captura('carnet_discapacitado','varchar');
+		$this->captura('id_auxiliar','integer');
+		$this->captura('desc_auxiliar','varchar');
 		
 		//Ejecuta la funcion
 		$this->armarConsulta();		
@@ -217,6 +219,7 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('nacionalidad','nacionalidad','varchar');
 		$this->setParametro('discapacitado','discapacitado','varchar');
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
+		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -254,6 +257,7 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('nacionalidad','nacionalidad','varchar');
 		$this->setParametro('discapacitado','discapacitado','varchar');
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
+		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

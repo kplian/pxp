@@ -439,9 +439,6 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 				if ($pStyle->getAlignment()->getIndent() > 0) {
 					$objWriter->writeAttribute('indent', 	$pStyle->getAlignment()->getIndent());
 				}
-				if ($pStyle->getAlignment()->getReadorder() > 0) {
-					$objWriter->writeAttribute('readingOrder', 	$pStyle->getAlignment()->getReadorder());
-				}
 			$objWriter->endElement();
 
 			// protection

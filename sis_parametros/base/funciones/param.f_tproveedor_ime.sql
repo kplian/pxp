@@ -290,6 +290,7 @@ BEGIN
                             from conta.tauxiliar a
                             where      a.estado_reg = 'activo'
                                   and  a.nombre_auxiliar =  v_desc_proveedor ) THEN
+                           v_desc_proveedor = v_desc_proveedor || ' (PROVEEDOR)';
                            
                            raise exception 'Ya existe un auxiliar con esta descripcion:  %',v_desc_proveedor;           
                                   

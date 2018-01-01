@@ -17,7 +17,7 @@ Phx.vista.InstitucionPersona=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.InstitucionPersona.superclass.constructor.call(this,config);
 
 		this.init();
-		this.bloquearMenus();
+		//this.bloquearMenus();
 		if(Phx.CP.getPagina(this.idContenedorPadre)){
       	 var dataMaestro=Phx.CP.getPagina(this.idContenedorPadre).getSelectedData();
 	 	 if(dataMaestro){ 
@@ -146,11 +146,11 @@ Phx.vista.InstitucionPersona=Ext.extend(Phx.gridInterfaz,{
 		  
 		  //cuando el conrtato esta registrado el abogado no puede hacerle mas cambios
 		  
-		  		if(tb){
+		  		
 		  			
-			  		this.getBoton('edit').disable();
-			  		this.getBoton('del').disable();
-			  	}
+			  		this.getBoton('edit').enable();
+			  		this.getBoton('del').enable();
+			  	
 		   
 		  return tb
 		

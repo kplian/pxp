@@ -44,6 +44,8 @@ class ACTEstructuraUo extends ACTbase {
 			
 			if ($this -> res) {
 				
+				//var_dump($this->res->datos);exit;
+				
 				foreach ($this->res->datos as $f) {
 					//var_dump($f);
 					if ($pri == 1) {

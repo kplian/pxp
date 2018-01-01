@@ -22,7 +22,8 @@ BEGIN
                            uot.codigo,
                            uot.estado,
                            uot.padre,
-                           uot.unidad
+                           uot.unidad,
+                           uot.nivel
                         from orga.tuo_tmp uot
                         WHERE uot.migrado = 'no' )LOOP
                         
@@ -37,7 +38,7 @@ BEGIN
                
                    -- insertamos registro
                    
-                   IF (v_registros.codigo_padre is null or  v_registros.codigo_padre = '0' or  v_registros.codigo_padre = '') and (v_registros.padre is null or  v_registros.padre = '0' or  v_registros.padre = '') THEN
+                   IF (v_registros.codigo_padre is null or  v_registros.codigo_padre = '0' or  v_registros.codigo_padre = '') THEN
                       
                        -- recupera el nivel organizacional de empresa
                         select 
@@ -94,7 +95,7 @@ BEGIN
                           into
                             v_id_nivel_organizacional
                          from orga.tnivel_organizacional no
-                         where no.nombre_nivel ilike 'UNIDAD';
+                         where no.nombre_nivel ilike v_registros.nivel;
                       
                        
                       -- recupera el id del nodo padre
@@ -105,7 +106,7 @@ BEGIN
                                 v_id_uo_padre
                             
                             from orga.tuo uo
-                            where uo.codigo = pper(v_registros.codigo_padre) and
+                            where TRIM(uo.codigo) = TRIM(upper(v_registros.codigo_padre)) and
                                  uo.estado_reg = 'activo';
                       ELSE
                                select 

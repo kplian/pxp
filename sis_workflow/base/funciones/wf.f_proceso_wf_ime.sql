@@ -522,7 +522,7 @@ BEGIN
                       tp.id_tipo_proceso
                    from  wf.ttipo_proceso tp
                    inner join wf.ttipo_estado te on te.id_tipo_estado = tp.id_tipo_estado 
-                   where tp.estado_reg = 'activo'  and   tp.id_tipo_estado   = v_parametros.id_tipo_estado_sig
+                   where tp.estado_reg = 'activo' and tp.tipo_disparo != 'manual' and   tp.id_tipo_estado   = v_parametros.id_tipo_estado_sig
                    
                   UNION
                  select 

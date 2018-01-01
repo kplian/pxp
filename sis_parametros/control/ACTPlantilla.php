@@ -32,6 +32,10 @@ class ACTPlantilla extends ACTbase{
 		if($this->objParam->getParametro('tipo_plantilla')!=''){
             $this->objParam->addFiltro("plt.tipo_plantilla=''".$this->objParam->getParametro('tipo_plantilla')."''");  
         }
+
+        if($this->objParam->getParametro('filtrar')!=''){
+            $this->objParam->addFiltro("plt.filtrar=''".$this->objParam->getParametro('filtrar')."''");  
+        }
         
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
@@ -42,6 +46,27 @@ class ACTPlantilla extends ACTbase{
 			
 			$this->res=$this->objFunc->listarPlantilla($this->objParam);
 		}
+
+		if($this->objParam->getParametro('_adicionar')!=''){
+
+			$respuesta = $this->res->getDatos();
+
+
+			array_unshift ( $respuesta, array(
+					'id_plantilla'=>'0',
+					'estado_reg'=>'Todos',
+					'desc_plantilla'=>'Todos',
+					'sw_tesoro'=>'Todos',
+					'sw_compro'=>'Todos',
+					'nro_linea'=>'Todos',
+					'fecha_reg'=>'Todos',
+					'sw_descuento'=>'Todos',
+					'tipo_plantilla'=>'Todos',
+					'sw_nro_dui'=>'Todos') );
+			//var_dump($respuesta);
+			$this->res->setDatos($respuesta);
+		}
+
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				

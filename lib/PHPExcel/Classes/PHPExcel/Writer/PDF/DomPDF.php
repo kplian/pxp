@@ -83,9 +83,6 @@ class PHPExcel_Writer_PDF_DomPDF extends PHPExcel_Writer_PDF_Core implements PHP
             $printMargins = $this->_phpExcel->getSheet($this->getSheetIndex())->getPageMargins();
         }
 
-        
-        $orientation = ($orientation == 'L') ? 'landscape' : 'portrait';
-
         //  Override Page Orientation
         if (!is_null($this->getOrientation())) {
             $orientation = ($this->getOrientation() == PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT)
@@ -101,6 +98,7 @@ class PHPExcel_Writer_PDF_DomPDF extends PHPExcel_Writer_PDF_Core implements PHP
             $paperSize = self::$_paperSizes[$printPaperSize];
         }
 
+        $orientation = ($orientation == 'L') ? 'landscape' : 'portrait';
 
         //  Create PDF
         $pdf = new DOMPDF();

@@ -68,7 +68,7 @@ $objWorksheet->fromArray(
 //		Number of datapoints in series
 //		Data values
 //		Data Marker
-$dataSeriesLabels = array(
+$dataseriesLabels = array(
 	new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$C$1', NULL, 1),	//	2011
 	new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$D$1', NULL, 1),	//	2012
 );
@@ -98,9 +98,9 @@ $dataSeriesValues = array(
 //	Build the dataseries
 $series = new PHPExcel_Chart_DataSeries(
 	PHPExcel_Chart_DataSeries::TYPE_RADARCHART,				// plotType
-	NULL,													// plotGrouping (Radar charts don't have any grouping)
+	NULL,													// plotGrouping
 	range(0, count($dataSeriesValues)-1),					// plotOrder
-	$dataSeriesLabels,										// plotLabel
+	$dataseriesLabels,										// plotLabel
 	$xAxisTickValues,										// plotCategory
 	$dataSeriesValues,										// plotValues
 	NULL,													// smooth line
@@ -111,7 +111,7 @@ $series = new PHPExcel_Chart_DataSeries(
 $layout = new PHPExcel_Chart_Layout();
 
 //	Set the series in the plot area
-$plotArea = new PHPExcel_Chart_PlotArea($layout, array($series));
+$plotarea = new PHPExcel_Chart_PlotArea($layout, array($series));
 //	Set the chart legend
 $legend = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_RIGHT, NULL, false);
 
@@ -123,7 +123,7 @@ $chart = new PHPExcel_Chart(
 	'chart1',		// name
 	$title,			// title
 	$legend,		// legend
-	$plotArea,		// plotArea
+	$plotarea,		// plotArea
 	true,			// plotVisibleOnly
 	0,				// displayBlanksAs
 	NULL,			// xAxisLabel

@@ -1,7 +1,7 @@
 <?php
 
 
-class AutofilterColumnTest extends PHPUnit_Framework_TestCase
+class ColumnTest extends PHPUnit_Framework_TestCase
 {
 	private $_testInitialColumn = 'H';
 

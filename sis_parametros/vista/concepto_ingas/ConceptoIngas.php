@@ -6,7 +6,6 @@
 *@date 25-02-2013 19:49:23
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -22,35 +21,24 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		this.crearFormAuto();
 		this.addButton('inserOT',{ text: 'Configurar OT', iconCls: 'blist',disabled: false, handler: this.mostarFormOt, tooltip: '<b>Configurar OT</b><br/>Permite añadir grupos de OT autorizados para el concepto de gasto'});
         this.addButton('inserAuto',{ text: 'Configurar Autorizaciones', iconCls: 'blist', disabled: false, handler: this.mostarFormAuto, tooltip: '<b>Configurar autorizaciones</b><br/>Permite seleccionar desde que modulos  puede selecionarse el concepto'});
-        
         this.addButton('addImagen', {
 				text : 'Imagen',
 				iconCls : 'bundo',
 				disabled : false,
 				handler : this.addImagen,
 				tooltip : ' <b>Subir imagen</b>'
-			});
-			
-	
-	
+			});			
 	},
 	
 	addImagen : function() {
-
-
 			var rec = this.sm.getSelected();
 			Phx.CP.loadWindows('../../../sis_parametros/vista/concepto_ingas/subirImagenConcepto.php', 'Subir', {
 				modal : true,
 				width : 500,
 				height : 250
 			}, rec.data, this.idContenedor, 'subirImagenConcepto')
-
-			
-
 	},
 	
-	
-			
 	Atributos:[
 		{
 			//configuracion del componente

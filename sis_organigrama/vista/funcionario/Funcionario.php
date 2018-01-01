@@ -474,8 +474,32 @@ Phx.vista.funcionario=function(config){
 				id_grupo:1,
 				grid:true,
 				form:false
-			}
-	       	
+			},
+			{
+   			config:{
+	   				sysorigen:'sis_contabilidad',
+	       		    name:'id_auxiliar',
+	   				origen:'AUXILIAR',
+	   				allowBlank:true,
+	   				fieldLabel:'Auxiliar',
+	   				gdisplayField:'desc_auxiliar',//mapea al store del grid
+	   				gwidth:200,
+	   				width: 380,
+	   				listWidth: 380,
+	   				//anchor: '80%',
+		   			renderer:function (value, p, record){return String.format('{0}', record.data['desc_auxiliar']);}
+	       	     },
+	   			type:'ComboRec',
+	   			id_grupo:0,
+	   			filters:{	
+			        pfiltro:'au.codigo_auxiliar#au.nombre_auxiliar',
+					type:'string'
+				},
+	   		   
+	   			grid:true,
+	   			form:true
+		   	},
+		       	
 	       	
 	       	];
 	       	
@@ -601,6 +625,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	'horario2',
 	'horario3',
 	'horario4',
+	'id_auxiliar',
+	'desc_auxiliar',
 	{name:'id_biometrico', type: 'numeric'}
 	],
 	sortInfo:{

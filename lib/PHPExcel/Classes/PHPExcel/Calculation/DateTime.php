@@ -1071,9 +1071,7 @@ class PHPExcel_Calculation_DateTime {
 	public static function DAYOFMONTH($dateValue = 1) {
 		$dateValue	= PHPExcel_Calculation_Functions::flattenSingleValue($dateValue);
 
-		if ($dateValue === null) {
-            $dateValue = 1;
-		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue == 0.0) {
 			return 0;
@@ -1116,9 +1114,7 @@ class PHPExcel_Calculation_DateTime {
 		}
 		$style = floor($style);
 
-		if ($dateValue === null) {
-            $dateValue = 1;
-		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
@@ -1184,9 +1180,7 @@ class PHPExcel_Calculation_DateTime {
 		}
 		$method = floor($method);
 
-		if ($dateValue === null) {
-            $dateValue = 1;
-		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
@@ -1222,9 +1216,7 @@ class PHPExcel_Calculation_DateTime {
 	public static function MONTHOFYEAR($dateValue = 1) {
 		$dateValue	= PHPExcel_Calculation_Functions::flattenSingleValue($dateValue);
 
-		if ($dateValue === null) {
-            $dateValue = 1;
-		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
@@ -1253,9 +1245,7 @@ class PHPExcel_Calculation_DateTime {
 	public static function YEAR($dateValue = 1) {
 		$dateValue	= PHPExcel_Calculation_Functions::flattenSingleValue($dateValue);
 
-		if ($dateValue === null) {
-            $dateValue = 1;
-		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
