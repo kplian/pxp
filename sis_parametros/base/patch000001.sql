@@ -2057,3 +2057,19 @@ CREATE TABLE param.tinstitucion_persona (
 ) 
 INHERITS (pxp.tbase) WITH OIDS;
 /***********************************F-SCP-FPC-PARAM-0-03/12/2017*****************************************/
+
+
+
+
+***********************************I-SCP-FPC-PARAM-0-14/01/2017*****************************************/
+
+ALTER TABLE param.tproveedor
+  ADD COLUMN codigo_sap VARCHAR;
+
+***********************************F-SCP-FPC-PARAM-0-14/01/2017*****************************************/
+
+
+
+
+
+
