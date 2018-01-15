@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_importar_proveedor_tmp (
 )
 RETURNS boolean AS
@@ -17,25 +15,25 @@ BEGIN
   v_cont = 1;
   FOR v_r in (
   select ct.id,
-         ct.nit,
-         ct.nom_comercio,
-         ct.lugar,
-         ct.direccion,
-         ct.sigla,
-         ct.nombre,
-         ct.unipersonal,
-         ct.categ1,
-         ct.categ2,
-         ct.categ3,
-         ct.telf1,
-         ct.telf2,
-         ct.telf3,
-         ct.telf4,
-         ct.correo,
-         ct.web,
-         ct.contacto
+         coalesce(trim(ct.nit),'') as nit,
+         coalesce(trim(ct.nom_comercio),'') as nom_comercio,
+         coalesce(trim(ct.lugar),'') as lugar,
+         coalesce(trim(ct.direccion),'') as direccion,
+         coalesce(trim(ct.sigla),'') as sigla,
+         coalesce(trim(ct.nombre),'') as nombre,
+         coalesce(trim(ct.unipersonal),'') as unipersonal,
+         coalesce(trim(ct.categ1),'') as categ1,
+         coalesce(trim(ct.categ2),'') as categ2,
+         coalesce(trim(ct.categ3),'') as categ3,
+         coalesce(trim(ct.telf1),'') as telf1,
+         coalesce(trim(ct.telf2),'') as telf2,
+         coalesce(trim(ct.telf3),'') as telf3,
+         coalesce(trim(ct.telf4),'') as telf4,
+         coalesce(trim(ct.correo),'') as correo,
+         coalesce(trim(ct.web),'') as web,
+         coalesce(trim(ct.contacto),'') as contacto
   from param.tproveedor_tmp ct
-  where ct.migrado = 'no')
+  where ct.migrado = 'no' order by id)
   LOOP
     raise notice 'PROVEEDOR: %', v_r;
 
@@ -45,6 +43,7 @@ BEGIN
     v_r.telf1 = replace(v_r.telf1, '(', '');
     v_r.telf1 = replace(v_r.telf1, ')', '');
     v_r.telf1 = replace(v_r.telf1, '+', '');
+    v_r.telf1 = replace(v_r.telf1, '/', '');
 
     v_r.telf2 = replace(v_r.telf2, '.', '');
     v_r.telf2 = replace(v_r.telf2, '-', '');
@@ -52,6 +51,7 @@ BEGIN
     v_r.telf2 = replace(v_r.telf2, '(', '');
     v_r.telf2 = replace(v_r.telf2, ')', '');
     v_r.telf2 = replace(v_r.telf2, '+', '');
+    v_r.telf2 = replace(v_r.telf2, '/', '');
 
     v_r.telf3 = replace(v_r.telf3, '.', '');
     v_r.telf3 = replace(v_r.telf3, '-', '');
@@ -59,6 +59,7 @@ BEGIN
     v_r.telf3 = replace(v_r.telf3, '(', '');
     v_r.telf3 = replace(v_r.telf3, ')', '');
     v_r.telf3 = replace(v_r.telf3, '+', '');
+    v_r.telf3 = replace(v_r.telf3, '/', '');
 
     v_r.telf4 = replace(v_r.telf4, '.', '');
     v_r.telf4 = replace(v_r.telf4, '-', '');
@@ -66,11 +67,12 @@ BEGIN
     v_r.telf4 = replace(v_r.telf4, '(', '');
     v_r.telf4 = replace(v_r.telf4, ')', '');
     v_r.telf4 = replace(v_r.telf4, '+', '');
+    v_r.telf4 = replace(v_r.telf4, '/', '');
 
-    if v_r.sigla='' then
+    if v_r.sigla='' or v_r.sigla is null then
       v_sigla = 'CSA' || v_cont::varchar;
       v_cont = v_cont + 1;
-      else
+    else
       v_sigla = v_r.sigla;
       IF exists(
         select 1
@@ -81,10 +83,10 @@ BEGIN
         v_cont = v_cont + 1;
       END IF;
     end if;
-    if v_r.id=41 then--para debug
+    if v_r.id=9482 then--para debug
       v_sigla = v_sigla;
     end if;
-    if trim(v_r.unipersonal)='' then--institución
+    if trim(v_r.unipersonal)='' or v_r.unipersonal is null then--institución
       v_tabla = pxp.f_crear_parametro(ARRAY['apellido_materno',
         'apellido_paterno',
         'casilla',
@@ -127,9 +129,9 @@ BEGIN
         ''::varchar,
         ''::varchar,
         ''::varchar,
-        replace(substr(coalesce(v_r.telf1::varchar,''),0 , 50), '.', ''),
+        replace(substr(coalesce(v_r.telf1::varchar,''),0 , 19), '.', ''),
         ''::varchar,
-        replace(substr(coalesce(v_r.telf2::varchar,''),0 , 50), '.', ''),
+        replace(substr(coalesce(v_r.telf2::varchar,''),0 , 19), '.', ''),
         ''::varchar,
         ''::varchar,
         ''::varchar,
@@ -156,9 +158,9 @@ BEGIN
         'no_registered'::varchar,
         coalesce(v_r.nom_comercio::varchar,''),
         ''::varchar,
-        replace(substr(coalesce(v_r.telf3::varchar,''),0 , 50), '.', ''),
+        replace(substr(coalesce(v_r.telf3::varchar,''),0 , 19), '.', ''),
         ''::varchar,
-        replace(substr(coalesce(v_r.telf4::varchar,''),0 , 50), '.', ''),
+        replace(substr(coalesce(v_r.telf4::varchar,''),0 , 19), '.', ''),
         'institucion'::varchar
         ],
         ARRAY['varchar',
@@ -331,7 +333,7 @@ BEGIN
     where p.id = v_r.id;
     raise notice 'OK: % - %', v_id_proveedor, v_r.nom_comercio;
   END LOOP;
-
+  raise exception 'TERMINÓ - comentar en producción';
   RETURN TRUE;
 
 END;

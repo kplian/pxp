@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_tproveedor_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -9,26 +7,26 @@ CREATE OR REPLACE FUNCTION param.f_tproveedor_ime (
 RETURNS varchar AS
 $body$
 /**************************************************************************
- SISTEMA:		Parametros Generales
- FUNCION: 		param.f_tproveedor_ime
+ SISTEMA:   Parametros Generales
+ FUNCION:     param.f_tproveedor_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tproveedor'
- AUTOR: 		 (mzm)
- FECHA:	        15-11-2011 10:44:58
- COMENTARIOS:	
+ AUTOR:      (mzm)
+ FECHA:         15-11-2011 10:44:58
+ COMENTARIOS: 
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION: 
+ AUTOR:     
+ FECHA:   
 ***************************************************************************/
 
 DECLARE
 
-	v_nro_requerimiento    	integer;
-	v_parametros           	record;
-    v_reg_pres           	record;
-	v_id_requerimiento         integer;
+  v_nro_requerimiento     integer;
+  v_parametros            record;
+    v_reg_pres            record;
+  v_id_requerimiento         integer;
     v_resp                    varchar;
     v_nombre_funcion        text;
     v_mensaje_error         text;
@@ -36,40 +34,40 @@ DECLARE
     v_codigo                varchar;
     
     --10abr12   
-    v_respuesta_sinc        	varchar;  
-    v_id_auxiliar 				integer; 
-    v_desc_proveedor			varchar;  
-    v_id_config_subtipo_cuenta	integer;   
-    v_reg_cuenta				record; 
-    v_registros_prov 			record;  
-    v_id_persona				integer;
-    v_id_institucion   			integer;
-    v_num_seq					integer;
-    v_codigo_gen				varchar;
-    v_desc_proveedor_antes 		varchar; 
-    v_codigo_wf 				varchar;
-    v_id_gestion				integer;
-    v_num_tramite				varchar;
-    v_id_proceso_wf				integer;
-    v_id_estado_wf				integer;
-    v_codigo_estado 			varchar;
-    v_operacion					varchar;
-    v_registros_pp				record;
-    v_id_tipo_estado				integer;
-    v_id_funcionario				integer;
-    v_id_usuario_reg				integer;
-    v_id_depto						integer;
-    v_id_estado_wf_ant 				integer;
-    v_acceso_directo 				varchar;
-    v_clase 						varchar;
-    v_parametros_ad 				varchar;
-    v_tipo_noti 					varchar;
-    v_titulo  						varchar;
-    v_id_estado_actual 				integer;
-    v_registros_proc				record; 
-    v_codigo_estado_siguiente		varchar;
-    v_obs							varchar;
-    v_codigo_tipo_pro  				varchar; 
+    v_respuesta_sinc          varchar;  
+    v_id_auxiliar         integer; 
+    v_desc_proveedor      varchar;  
+    v_id_config_subtipo_cuenta  integer;   
+    v_reg_cuenta        record; 
+    v_registros_prov      record;  
+    v_id_persona        integer;
+    v_id_institucion        integer;
+    v_num_seq         integer;
+    v_codigo_gen        varchar;
+    v_desc_proveedor_antes    varchar; 
+    v_codigo_wf         varchar;
+    v_id_gestion        integer;
+    v_num_tramite       varchar;
+    v_id_proceso_wf       integer;
+    v_id_estado_wf        integer;
+    v_codigo_estado       varchar;
+    v_operacion         varchar;
+    v_registros_pp        record;
+    v_id_tipo_estado        integer;
+    v_id_funcionario        integer;
+    v_id_usuario_reg        integer;
+    v_id_depto            integer;
+    v_id_estado_wf_ant        integer;
+    v_acceso_directo        varchar;
+    v_clase             varchar;
+    v_parametros_ad         varchar;
+    v_tipo_noti           varchar;
+    v_titulo              varchar;
+    v_id_estado_actual        integer;
+    v_registros_proc        record; 
+    v_codigo_estado_siguiente   varchar;
+    v_obs             varchar;
+    v_codigo_tipo_pro         varchar; 
     
 BEGIN
                            
@@ -121,18 +119,18 @@ BEGIN
                      --recupera codigo de proveedor
                      v_num_seq =  nextval('param.seq_codigo_proveedor');
                      v_codigo_gen = 'PR'||pxp.f_llenar_ceros(v_num_seq, 6);
-           
+
            
                     insert into param.tproveedor
-                    (id_usuario_reg, 				fecha_reg,					estado_reg,
-                     id_institucion,				id_persona,					tipo,
-                     numero_sigma,					codigo,						nit,
-                     id_lugar,						rotulo_comercial, 			contacto)
+                    (id_usuario_reg,        fecha_reg,          estado_reg,
+                     id_institucion,        id_persona,         tipo,
+                     numero_sigma,          codigo,           nit,
+                     id_lugar,            rotulo_comercial,       contacto)
                     values 
-                    (p_id_usuario,					now(),						'activo',
-                    v_parametros.id_institucion,	v_parametros.id_persona,	v_parametros.tipo,
-                    v_parametros.numero_sigma,		v_codigo_gen,		v_parametros.nit,
-                    v_parametros.id_lugar,			v_parametros.rotulo_comercial,	v_parametros.contacto) RETURNING id_proveedor into v_id_proveedor;
+                    (p_id_usuario,          now(),            'activo',
+                    v_parametros.id_institucion,  v_parametros.id_persona,  v_parametros.tipo,
+                    v_parametros.numero_sigma,    v_codigo_gen,   v_parametros.nit,
+                    v_parametros.id_lugar,      v_parametros.rotulo_comercial,  v_parametros.contacto) RETURNING id_proveedor into v_id_proveedor;
            else
                     if (v_parametros.tipo = 'persona')then
                         
@@ -184,18 +182,18 @@ BEGIN
                          --generar codigo de proveedores
                          v_num_seq =  nextval('param.seq_codigo_proveedor');
                           v_codigo_gen = 'PR'||pxp.f_llenar_ceros(v_num_seq, 6);
-                    
+
                         --Sentencia de la insercion
                         insert into param.tinstitucion(
                             fax,
-                            estado_reg,        			
+                            estado_reg,             
                             casilla,
                             direccion,
                             doc_id,
                             telefono2,
                             email2,
                             celular1,
-                            email1,        			
+                            email1,             
                             nombre,
                             observaciones,
                             telefono1,
@@ -237,19 +235,19 @@ BEGIN
                     
                     
                      insert into param.tproveedor
-                        (id_usuario_reg, 				fecha_reg,					estado_reg,
-                         id_institucion,				id_persona,					tipo,
-                         numero_sigma,					codigo,						nit,
-                         id_lugar,						rotulo_comercial,			contacto)
+                        (id_usuario_reg,        fecha_reg,          estado_reg,
+                         id_institucion,        id_persona,         tipo,
+                         numero_sigma,          codigo,           nit,
+                         id_lugar,            rotulo_comercial,     contacto)
                       values 
-                        (p_id_usuario,					now(),						'activo',
-                        v_id_institucion,				v_id_persona,				case when v_id_persona is NULL THEN
+                        (p_id_usuario,          now(),            'activo',
+                        v_id_institucion,       v_id_persona,       case when v_id_persona is NULL THEN
                                                                                         'institucion'
                                                                                     else
                                                                                         'persona'
                                                                                     end,
-                        v_parametros.numero_sigma,		v_codigo_gen,		v_parametros.nit,
-                        v_parametros.id_lugar,			v_parametros.rotulo_comercial, v_parametros.contacto)RETURNING id_proveedor into v_id_proveedor;
+                        v_parametros.numero_sigma,    v_codigo_gen,   v_parametros.nit,
+                        v_parametros.id_lugar,      v_parametros.rotulo_comercial, v_parametros.contacto)RETURNING id_proveedor into v_id_proveedor;
                 end if;
             
             --insertar auxiliar
@@ -292,10 +290,10 @@ BEGIN
                                   and  a.nombre_auxiliar =  v_desc_proveedor ) THEN
                            v_desc_proveedor = v_desc_proveedor || ' (PROVEEDOR)';
                            
-                           raise exception 'Ya existe un auxiliar con esta descripcion:  %',v_desc_proveedor;           
+                           --raise exception 'Ya existe un auxiliar con esta descripcion:  %',v_desc_proveedor;           
                                   
                          END IF;
-                  
+
                         --Sentencia de la insercion
                         insert into conta.tauxiliar(
                           
@@ -316,7 +314,7 @@ BEGIN
                             null,
                             null,
                             'si'
-            							
+                          
                         )RETURNING id_auxiliar into v_id_auxiliar;
                         
                         update param.tproveedor p set
@@ -480,7 +478,7 @@ BEGIN
                             telefono2 = v_parametros.telefono2_institucion,
                             email2 = v_parametros.email2_institucion,
                             celular1 = v_parametros.celular1_institucion,
-                            email1 =  v_parametros.email1_institucion,        			
+                            email1 =  v_parametros.email1_institucion,              
                             nombre = v_parametros.nombre_institucion,
                             observaciones = v_parametros.observaciones,
                             telefono1 =  v_parametros.telefono1_institucion,
@@ -604,15 +602,15 @@ BEGIN
 
         end;
     /*********************************    
- 	#TRANSACCION:  'PM_INITRA_IME'
- 	#DESCRIPCION:	Iniciar tramite de proveedores
- 	#AUTOR:		Rensi Artega Copari (KPLIAN)
- 	#FECHA:		05/09/2017 00:30:39
-	***********************************/
+  #TRANSACCION:  'PM_INITRA_IME'
+  #DESCRIPCION: Iniciar tramite de proveedores
+  #AUTOR:   Rensi Artega Copari (KPLIAN)
+  #FECHA:   05/09/2017 00:30:39
+  ***********************************/
 
-	elsif(p_transaccion='PM_INITRA_IME')then
+  elsif(p_transaccion='PM_INITRA_IME')then
 
-		begin
+    begin
         
                 
                select
@@ -659,7 +657,7 @@ BEGIN
                        NULL,
                        'Inicio de tramite.... ',
                        v_reg_pres.codigo);
-			
+      
             
             
             update param.tproveedor  p  set
@@ -678,16 +676,16 @@ BEGIN
             --Devuelve la respuesta
             return v_resp;
 
-		end;   
+    end;   
       
       /*********************************    
       #TRANSACCION:  'PM_ANTEPRO_IME'
       #DESCRIPCION: retrocede el estado de proveedores
-      #AUTOR:		RAC	
-      #FECHA:		06-09-2017 12:12:51
+      #AUTOR:   RAC 
+      #FECHA:   06-09-2017 12:12:51
       ***********************************/
 
-	elseif(p_transaccion='PM_ANTEPRO_IME')then   
+  elseif(p_transaccion='PM_ANTEPRO_IME')then   
         begin
         
         v_operacion = 'anterior';
@@ -833,13 +831,13 @@ BEGIN
         end; 
         
     /*********************************    
- 	#TRANSACCION:  'PM_SIGESTP_IME'
- 	#DESCRIPCION:  cambia al siguiente estado	
- 	#AUTOR:		RAC	
- 	#FECHA:		06-09-2017 12:12:51
-	***********************************/
+  #TRANSACCION:  'PM_SIGESTP_IME'
+  #DESCRIPCION:  cambia al siguiente estado 
+  #AUTOR:   RAC 
+  #FECHA:   06-09-2017 12:12:51
+  ***********************************/
 
-	elseif(p_transaccion='PM_SIGESTP_IME')then   
+  elseif(p_transaccion='PM_SIGESTP_IME')then   
         begin
         
          /*   PARAMETROS
@@ -959,7 +957,7 @@ BEGIN
                
            
           IF  param.f_fun_inicio_proveedor_wf(p_id_usuario, 
-           									v_parametros._id_usuario_ai, 
+                            v_parametros._id_usuario_ai, 
                                             v_parametros._nombre_usuario_ai, 
                                             v_id_estado_actual, 
                                             v_id_proceso_wf, 
