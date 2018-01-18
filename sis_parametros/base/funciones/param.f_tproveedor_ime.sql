@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_tproveedor_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -86,7 +88,7 @@ BEGIN
         begin      
         
          
-           
+                        
            --verificar que el codigo de proveedor sea unico
            --verificar que el proveedor no se duplique  para la misma institucion 
            IF  exists(select 1 from param.tproveedor p where p.estado_reg = 'activo' and p.codigo = v_codigo_gen)   THEN
@@ -95,7 +97,7 @@ BEGIN
            
            
            if v_parametros.register = 'before_registered' then
-           
+             
                      IF( v_parametros.id_institucion is not NULL 
                           and (exists (select 1 from param.tproveedor  p
                                 where p.id_institucion =  v_parametros.id_institucion
@@ -132,9 +134,9 @@ BEGIN
                     v_parametros.numero_sigma,    v_codigo_gen,   v_parametros.nit,
                     v_parametros.id_lugar,      v_parametros.rotulo_comercial,  v_parametros.contacto) RETURNING id_proveedor into v_id_proveedor;
            else
+                   
                     if (v_parametros.tipo = 'persona')then
-                        
-                        
+                        --raise exception 'error provocado%',v_parametros.tipo;
                         insert into segu.tpersona (
                                    nombre,
                                    apellido_paterno,
@@ -167,6 +169,11 @@ BEGIN
                                 v_parametros.direccion)  
                             
                         RETURNING id_persona INTO v_id_persona;
+                        
+                     --Copiado para crear codigo auxliar al crear persona (antes creaba sin codigo auxiliar al crear persona)
+                     v_num_seq =  nextval('param.seq_codigo_proveedor');
+                     v_codigo_gen = 'PR'||pxp.f_llenar_ceros(v_num_seq, 6);
+                     
                     else
                          
                          --verificar que el codigo no se duplique

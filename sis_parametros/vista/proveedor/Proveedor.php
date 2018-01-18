@@ -69,6 +69,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	},
 	
 	capturaFiltros:function(combo, record, index){
+
 		this.tipo = this.cmbProveedor.getValue();
 		this.store.baseParams={tipo:this.cmbProveedor.getValue(),tipo_interfaz: this.nombreVista};
 		this.load({params:{start:0,limit:50}});
@@ -83,7 +84,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	iniciarEventos : function () {
 		Phx.vista.proveedor.superclass.iniciarEventos.call();
 		this.getComponente('id_persona').on('select',function(c,r,n){
-			
+		
 			if (this.register != 'update') {				
 				this.getComponente('rotulo_comercial').setValue(r.data.nombre_completo1);
 			}
@@ -108,6 +109,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 			
 			
 	     	this.getComponente('id_institucion').on('select',function(c,r,n){
+	     		
 				 	if (this.register != 'update') {				
 						this.getComponente('rotulo_comercial').setValue(r.data.nombre);
 					}
