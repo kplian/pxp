@@ -90,7 +90,7 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
    				fieldLabel:'Unidad Org.',
    				gdisplayField:'desc_uo',//mapea al store del grid
    			    gwidth:200,
-   			    //baseParams: { correspondencia : 'si' },
+   			     //baseParams: { presupuesta : 'si' },
    			     renderer:function (value, p, record){return String.format('{0}', record.data['desc_uo']);}
        	     },
    			type:'ComboRec',
@@ -378,9 +378,9 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
 			
 			//Carga los parametros del store de UO
 			if(this.Cmp.recursivo.getValue()=='Si'){
-				Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'si'})
+				Ext.apply(this.Cmp.id_uo.store.baseParams,{presupuesta: 'si'})
 			} else{
-				Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'no'})
+				Ext.apply(this.Cmp.id_uo.store.baseParams,{presupuesta: 'no'})
 			}
 			this.Cmp.id_uo.modificado=true;
 			
@@ -397,13 +397,15 @@ Phx.vista.Asistente=Ext.extend(Phx.gridInterfaz,{
 		onRecursivo: function(cmb,rec){
  			if(rec.data){
  				if(rec.data.descripcion=='Si'){
- 					Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'si'})
+ 					Ext.apply(this.Cmp.id_uo.store.baseParams,{presupuesta: 'si'})
+ 					//Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'si'})
  					this.Cmp.uo.disable();
  					this.Cmp.id_uo.enable()
  					this.Cmp.id_uo.allowBlank=false
  					this.Cmp.uo.allowBlank=true
  				} else{
- 					Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'no'})
+ 					Ext.apply(this.Cmp.id_uo.store.baseParams,{presupuesta: 'no'})
+ 					//Ext.apply(this.Cmp.id_uo.store.baseParams,{correspondencia: 'no'})
  					this.Cmp.uo.enable();
  					this.Cmp.id_uo.disable()
  					this.Cmp.id_uo.allowBlank=true

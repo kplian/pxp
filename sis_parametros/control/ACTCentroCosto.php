@@ -135,7 +135,7 @@ class ACTCentroCosto extends ACTbase{
         $this->objParam->defecto('ordenacion','id_centro_costo');
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto'){
-				$tip_pres = "(''2'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''2'',''5'',''3'',''6'',''7'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
 		
@@ -151,12 +151,12 @@ class ACTCentroCosto extends ACTbase{
 		
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,ingreso_egreso'){					
-				$tip_pres = "(''0'',''2'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		}
 		
 		if($this->objParam->getParametro('tipo_pres') == 'ggasto,administrativo,recurso,ingreso_egreso' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,recurso,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''3'',''6'',''7'',''1'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		}
 		
@@ -184,7 +184,7 @@ class ACTCentroCosto extends ACTbase{
 		
 		if($this->objParam->getParametro('tipo_pres')!=''){
 			if($this->objParam->getParametro('tipo_pres') == 'gasto'){
-				$tip_pres = "(''2'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''2'',''5'',''3'',''6'',''7'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
 			
@@ -206,13 +206,13 @@ class ACTCentroCosto extends ACTbase{
 			}
 			
 			if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''0'',''5'',''2'',''3'',''6'',''7'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
 			
 			
 			if($this->objParam->getParametro('tipo_pres') == 'ggasto,administrativo,recurso,ingreso_egreso' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,recurso,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''3'',''6'',''7'',''1'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		    }
 		
