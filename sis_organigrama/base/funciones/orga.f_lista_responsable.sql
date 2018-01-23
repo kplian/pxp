@@ -196,7 +196,7 @@ BEGIN
                             fun.desc_funcionario1 as desc_funcionario,
                             ''Gerente''::text  as desc_funcionario_cargo,
                             1 as prioridad
-                         FROM orga.vfuncionario fun WHERE  '||p_filtro||'
+                         FROM orga.vfuncionario fun WHERE  '||p_filtro||' and fun.desc_funcionario1 != ''ADMINISTRADOR DEL SISTEMA ''
                          limit '|| p_limit::varchar||' offset '||p_start::varchar; 
      
               
@@ -207,7 +207,7 @@ BEGIN
       ELSE
                   v_consulta='select
                                   COUNT(fun.id_funcionario) as total
-                                 FROM orga.vfuncionario fun  WHERE '||p_filtro;   
+                                 FROM orga.vfuncionario fun  WHERE '||p_filtro||' and fun.desc_funcionario1 != ''ADMINISTRADOR DEL SISTEMA '' ';   
                                           
                    FOR g_registros in execute (v_consulta)LOOP     
                      RETURN NEXT g_registros;

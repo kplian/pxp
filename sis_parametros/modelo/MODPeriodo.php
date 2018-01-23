@@ -148,8 +148,24 @@ class MODPeriodo extends MODbase{
 			
 
 	}
+	function getDetalleEncabezado(){ // No esta en uso a un 
+		
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.f_periodo_ime';
+		$this->transaccion='PM_ENCAB_GET';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_pago_simple','id_pago_simple','int4');
 
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
 
+		//Devuelve la respuesta
+		return $this->respuesta;
+
+	}
 
 			
 }
