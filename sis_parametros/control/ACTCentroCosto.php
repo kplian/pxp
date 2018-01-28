@@ -26,6 +26,8 @@ class ACTCentroCosto extends ACTbase{
 	    	$this->objParam->addFiltro("cec.id_gestion in (select id_gestion from param.tgestion where gestion = extract(''year'' from ''" . $this->objParam->getParametro('fecha') . "'')");	
 		}
 		
+		$this->objParam->addFiltro("cec.estado_reg = ''activo''"); 
+		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODCentroCosto','listarCentroCosto');
@@ -34,6 +36,8 @@ class ACTCentroCosto extends ACTbase{
 			
 			$this->res=$this->objFunc->listarCentroCosto($this->objParam);
 		}
+		
+		 
 		
 		if($this->objParam->getParametro('_adicionar')!=''){
 		    
@@ -74,7 +78,9 @@ class ACTCentroCosto extends ACTbase{
 		
 		if($this->objParam->getParametro('id_partida')!=''){
 	    	$this->objParam->addFiltro("cec.id_centro_costo in (select id_presupuesto from pre.tpresup_partida where id_partida = " . $this->objParam->getParametro('id_partida') . ")");	
-		}		
+		}	
+		
+		$this->objParam->addFiltro("cec.estado_reg = ''activo''"); 	
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -119,6 +125,8 @@ class ACTCentroCosto extends ACTbase{
 		if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
         }
+		
+		$this->objParam->addFiltro("cec.estado_reg = ''activo''"); 
         
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -135,7 +143,7 @@ class ACTCentroCosto extends ACTbase{
         $this->objParam->defecto('ordenacion','id_centro_costo');
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto'){
-				$tip_pres = "(''2'',''5'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
 		
@@ -151,16 +159,16 @@ class ACTCentroCosto extends ACTbase{
 		
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,ingreso_egreso'){					
-				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		}
 		
 		if($this->objParam->getParametro('tipo_pres') == 'ggasto,administrativo,recurso,ingreso_egreso' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,recurso,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		}
 		
-
+        $this->objParam->addFiltro("cec.estado_reg = ''activo''"); 
         $this->objParam->defecto('dir_ordenacion','asc');
         if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
@@ -184,7 +192,7 @@ class ACTCentroCosto extends ACTbase{
 		
 		if($this->objParam->getParametro('tipo_pres')!=''){
 			if($this->objParam->getParametro('tipo_pres') == 'gasto'){
-				$tip_pres = "(''2'',''5'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
 			
@@ -206,13 +214,13 @@ class ACTCentroCosto extends ACTbase{
 			}
 			
 			if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,ingreso_egreso'){				
-				$tip_pres = "(''0'',''5'',''2'',''3'',''6'',''7'')"; 
+				$tip_pres = "(''0'',''5'',''2'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
 			
 			
 			if($this->objParam->getParametro('tipo_pres') == 'ggasto,administrativo,recurso,ingreso_egreso' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,recurso,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		    }
 		
@@ -228,6 +236,7 @@ class ACTCentroCosto extends ACTbase{
         if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));    
         }
+        $this->objParam->addFiltro("cec.estado_reg = ''activo''"); 
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
             $this->objReporte = new Reporte($this->objParam,$this);
             $this->res = $this->objReporte->generarReporteListado('MODCentroCosto','listarCentroCostoFiltradoXDepto');
@@ -262,7 +271,8 @@ class ACTCentroCosto extends ACTbase{
         if($this->objParam->getParametro('id_proyecto')!=''){
             $this->objParam->addFiltro("py.id_proyecto = ".$this->objParam->getParametro('id_proyecto'));    
         }
-
+		
+	
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
             $this->objReporte = new Reporte($this->objParam,$this);
             $this->res = $this->objReporte->generarReporteListado('MODCentroCosto','listarCentroCostoProyecto');

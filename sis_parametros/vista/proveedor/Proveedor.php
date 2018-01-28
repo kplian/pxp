@@ -996,7 +996,7 @@ Phx.vista.proveedor=Ext.extend(Phx.gridInterfaz,{
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    value:'persona',
+	       		    value:'institucion',
 	       		    mode: 'local',
 	       		    width: 100,
 	       		    store:['institucion','persona']
