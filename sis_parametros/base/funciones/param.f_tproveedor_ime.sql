@@ -583,6 +583,12 @@ BEGIN
                     where pr.id_proveedor = v_parametros.id_proveedor;
                     
                     
+                    update   param.tproveedor pro set
+                      id_auxiliar = NULL,
+                      codigo = NULL
+                     where pro.id_proveedor=v_parametros.id_proveedor;
+                    
+                    
                     
                     delete   from conta.tcuenta_auxiliar ca 
                     where  ca.id_auxiliar = v_registros_prov.id_auxiliar;
