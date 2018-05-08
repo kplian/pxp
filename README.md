@@ -4,6 +4,8 @@ PXP
 ## SUPPORT : <a name="support"></a>
 Youtube chanel (https://www.youtube.com/channel/UCSk4IfCR6swJYu3zPOEiGuw)
 
+Interface maestro Detalle (https://www.youtube.com/watch?v=uUVevOzYDy4)
+
 Support forum
 (request an invitation! to rensi@kplian.com  or  jaime@kplian.com)
 
