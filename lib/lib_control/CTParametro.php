@@ -2,8 +2,12 @@
 /**
  Revision: RCM
  Fecha: 29-06-2010
- 
- **/
+ * 
+ * 
+ *  ISSUE            FECHA:		      AUTOR                 DESCRIPCION
+ # 0              29-06-2010        RCM KPLIAN        Creacion
+ * 101            12/06/2018        RAC KPLIAN        Adciona ordenacion dinamica   
+***************************************************************************/
 class CTParametro{
 	
 	private $tipo_tran;//SEL || IME || OTRO
@@ -33,7 +37,7 @@ class CTParametro{
 	 * @param entero $cantidad
 	 * @param array $filter
 	 */
-	//function __construct($tip,$ord='',$dir='',$pun=0,$can=0,$fil='',$fil_col='',$fil_value=''){
+	//function __construct($tip, $ord='',$dir='',$pun=0,$can=0,$fil='',$fil_col='',$fil_value=''){
 	//cambio rcm 20/07/2010
 	function __construct($pPostData,$matriz,$aPostFiles,$ruta=''){
 		$this->aPostData=$pPostData;
@@ -42,6 +46,7 @@ class CTParametro{
 		$tempArr = explode('/', $ruta);
 		$this->sistema = $tempArr[2];
 		$this->clase = $tempArr[4];
+		$this->metodo = $tempArr[5];
 		
 		if($pPostData!=''){
 			$this->iniciaParametro();
@@ -58,13 +63,44 @@ class CTParametro{
 		//Obtiene los parametros del filtro
 		$this->obtenerParametroFiltro();
 
-		$this->setParametrosJson($this->aPostData);
-
+		$this->setParametrosJson($this->aPostData);  
 		//var_dump($this->arreglo_parametros);
-		//Envia los parametros
+		
+		
+		if ( $this->metodo != 'listarTablaInstancia'){
+			//RAC  08/06/2018,  seadiciona criterio de ordenacion para mmultiples ordenaciones
+			$aux_sort=isset($this->arreglo_parametros['sort'])?$this->arreglo_parametros['sort']:'';
+			$aux_dir=isset($this->arreglo_parametros['dir'])?$this->arreglo_parametros['dir']:'';
 			
-		$this->parametros_consulta['ordenacion']=isset($this->arreglo_parametros['sort'])?$this->arreglo_parametros['sort']:'';
-		$this->parametros_consulta['dir_ordenacion']=isset($this->arreglo_parametros['dir'])?$this->arreglo_parametros['dir']:'';
+			
+			$crit_sort = new CTSort($aux_sort,  $aux_dir,  $this->clase.$this->metodo);		
+		    $sortcol = $crit_sort->get_criterio_sort();
+			
+			
+			
+			//Envia los parametros		
+			if(!isset($sortcol)||$sortcol==''){
+				$this->parametros_consulta['ordenacion'] = $aux_sort;
+			    $this->parametros_consulta['dir_ordenacion'] = $aux_dir;
+			}
+			else{
+				$this->parametros_consulta['ordenacion'] = $sortcol;
+			    $this->parametros_consulta['dir_ordenacion'] = ' ';
+			}
+		
+			
+		}
+		else{
+			$this->parametros_consulta['ordenacion']=isset($this->arreglo_parametros['sort'])?$this->arreglo_parametros['sort']:'';
+		    $this->parametros_consulta['dir_ordenacion']=isset($this->arreglo_parametros['dir'])?$this->arreglo_parametros['dir']:'';
+		}
+		
+		
+		
+		
+		
+		
+		
 		$this->parametros_consulta['puntero']=isset($this->arreglo_parametros['start'])?$this->arreglo_parametros['start']:'';
 		$this->parametros_consulta['cantidad']=isset($this->arreglo_parametros['limit'])?$this->arreglo_parametros['limit']:'';
 

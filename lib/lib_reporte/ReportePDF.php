@@ -184,7 +184,7 @@ class ReportePDF extends MYPDF
 		$this->Cell($ancho, 0, $_SESSION['_REP_NOMBRE_SISTEMA'], '', 0, 'R');
 		$this->Ln();
 		$fecha_rep = date("d-m-Y H:i:s");
-		$this->Cell($ancho, 0, "Fecha : ".$fecha_rep, '', 0, 'L');
+		$this->Cell($ancho, 0, "Fecha Impresion : ".$fecha_rep, '', 0, 'L');
 		$this->Ln($line_width);
 		$this->Ln();
 		$barcode = $this->getBarcode();

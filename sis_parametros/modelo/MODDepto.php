@@ -293,7 +293,29 @@ class MODDepto extends MODbase{
 		return $this->respuesta;
 	}
 	
-	
+	function recuperarDescripcionDepto(){
+		//Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_depto_sel';// nombre procedimiento almacenado
+        $this->transaccion='PM_DEPDESC_SEL';//nombre de la transaccion
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+    
+        //Definicion de la lista del resultado del query
+        $this->setParametro('id_depto','id_depto','integer');
+    
+        //Defino varialbes que se captran como retornod e la funcion
+        $this->captura('id_depto','integer');
+        $this->captura('codigo','varchar');
+        $this->captura('nombre','varchar');
+        $this->captura('nombre_corto','varchar');
+        $this->captura('id_subsistema','integer');
+        $this->captura('desc_subsistema','text');
+        
+        //Ejecuta la funcion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        return $this->respuesta;
+	}
 	
 }
 ?>

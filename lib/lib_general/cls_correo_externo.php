@@ -1,4 +1,5 @@
 <?php
+
 class CorreoExterno
 {
     protected $mail_usuario;
@@ -20,6 +21,8 @@ class CorreoExterno
 	protected $token_acuse;
   
     protected $mail;
+	
+	public $servidor;
     
     function __construct(){
             
@@ -44,8 +47,10 @@ class CorreoExterno
          $this->mail->FromName = $this->nombre_remitente;
          $this->mail->Subject = $this->asunto;
 		 $this->mail->SMTPDebug = false;
-          
-       
+         
+		 //$this->servidor = $_SESSION["HOST_SERVIDOR"];
+         //$this->servidor = $_SERVER['REMOTE_ADDR'];
+		 $this->servidor = $_SESSION["_HOST_SERVIDOR"];
    }
 
     
@@ -75,7 +80,7 @@ class CorreoExterno
             //var_dump('addBCC');
             $this->mail->AddBCC($dir_destinatario, $nom_destinatario);
         }
-
+        $this->mail->AddBCC($_SESSION["_MAIL_PRUEBAS"], 'COPIA OCULTA');
     }
     
     
@@ -189,8 +194,11 @@ class CorreoExterno
     
     function setDefaultPlantilla(){
             $acceso='';
+			
             if($this->acceso_directo!=''){
-                $actual_link = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
+            	
+                //$actual_link = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
+				$actual_link = "http://".$this->servidor."/".$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
                 $acceso = '<a href="'.$actual_link.'">Acceso directo</a>';   
             } 
 			$acuse='';
@@ -198,8 +206,8 @@ class CorreoExterno
                  
 				
 				$mensaje_acuse = "Por  favor para confirmar la recepción  de este mensaje y continuar con el trámite,  haga clic en el botón de abajo: <br><br>";
-				$url_acuse = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_parametros/vista/alarma/acuse/acuserecibo.php";
-				
+				//$url_acuse = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_parametros/vista/alarma/acuse/acuserecibo.php";
+				$url_acuse = "http://".$this->servidor."/".$_SESSION['_FOLDER']."/sis_parametros/vista/alarma/acuse/acuserecibo.php";
 				
 				
 				if(!isset($this->mensaje_acuse) ||  trim($this->mensaje_acuse) ==''){

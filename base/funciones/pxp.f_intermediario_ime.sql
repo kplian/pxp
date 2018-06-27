@@ -155,7 +155,9 @@ BEGIN
       v_consulta:=v_consulta || variables[v_tamano] || ' ' || tipos[v_tamano] || ') on commit drop';
     END IF;
   
-   
+    IF  v_consulta is null THEN
+       raise exception 'Error al crear tabla temporal en el intermediario';
+    END IF;
     
     execute(v_consulta);
     
@@ -187,6 +189,10 @@ BEGIN
                 end if;
             
 
+            END IF;
+            
+            IF v_consulta is null THEN
+               raise exception 'ERROR al agregar el parametros a la consulta %',variables[i];
             END IF;
 
         end loop; -- END FOOR 3.2)

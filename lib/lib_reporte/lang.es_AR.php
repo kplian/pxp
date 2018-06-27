@@ -306,7 +306,8 @@ class Numbers_Words_es_AR extends Numbers_Words
                 $ret .= $this->_sep . 'veinte';
             } else {
                 if (($power > 0) and ($d == 1)) {
-                    $ret .= $this->_sep . 'veinti�n';
+                    $ret .= $this->_sep . 'veintiun';
+                    //$ret .= $this->_sep . 'veinti�n';
                 } else {
                     $ret .= $this->_sep . 'veinti' . $this->_digits[$d];
                 }

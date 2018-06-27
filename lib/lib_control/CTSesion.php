@@ -141,10 +141,13 @@ class CTSesion {
             // en un entorno de internet esta valiacion no es util debido a NAT
 
 			//if ($this->sid_base == session_id () && $this->ip_base == $this->getIP ()) {
-            if ($this->sid_base == session_id () || $_SESSION["_ESTADO_SISTEMA"] == 'desarrollo') {
+		    		
+		    	
+		   //27/06/2018 ..comentado ,   TODO es necesario ahcer configurable..... 		
+           // if ($this->sid_base == session_id () || $_SESSION["_ESTADO_SISTEMA"] == 'desarrollo') {
 				return true;
 					
-			}
+			//}
 		}
 
 		return false;

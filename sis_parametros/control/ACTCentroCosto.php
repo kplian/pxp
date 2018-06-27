@@ -143,7 +143,7 @@ class ACTCentroCosto extends ACTbase{
         $this->objParam->defecto('ordenacion','id_centro_costo');
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto'){
-				$tip_pres = "(''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
+				$tip_pres = "(''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'',''21'',''22'',''23'',''24'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in  ".$tip_pres);   
 		}
 		
@@ -159,12 +159,12 @@ class ACTCentroCosto extends ACTbase{
 		
 		
 		if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,ingreso_egreso'){					
-				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'',''21'',''22'',''23'',''24'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		}
 		
 		if($this->objParam->getParametro('tipo_pres') == 'ggasto,administrativo,recurso,ingreso_egreso' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,recurso,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'',''21'',''22'',''23'',''24'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		}
 		
@@ -192,7 +192,7 @@ class ACTCentroCosto extends ACTbase{
 		
 		if($this->objParam->getParametro('tipo_pres')!=''){
 			if($this->objParam->getParametro('tipo_pres') == 'gasto'){
-				$tip_pres = "(''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'',''21'',''22'',''23'',''24'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
 			
@@ -214,13 +214,13 @@ class ACTCentroCosto extends ACTbase{
 			}
 			
 			if($this->objParam->getParametro('tipo_pres') == 'gasto,administrativo' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,ingreso_egreso'){				
-				$tip_pres = "(''0'',''5'',''2'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
+				$tip_pres = "(''0'',''5'',''2'',''3'',''6'',''7'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'',''21'',''22'',''23'',''24'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 			}
 			
 			
 			if($this->objParam->getParametro('tipo_pres') == 'ggasto,administrativo,recurso,ingreso_egreso' || $this->objParam->getParametro('tipo_pres') == 'gasto,administrativo,recurso,ingreso_egreso'){				
-				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'')"; 
+				$tip_pres = "(''0'',''2'',''5'',''3'',''6'',''7'',''1'',''9'',''10'',''11'',''12'',''13'',''14'',''15'',''16'',''17'',''18'',''19'',''20'',''21'',''22'',''23'',''24'')"; 
 				$this->objParam->addFiltro("cec.tipo_pres in ".$tip_pres);   
 		    }
 		
