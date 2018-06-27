@@ -114,17 +114,24 @@ function authPxp($headersArray) {
 	//creamos array de request
 	$reqArray = array();
 	
-	if (!extension_loaded('mcrypt')) {
+	if (!extension_loaded('mcrypt') && !isset($headersArray['auth-version'])) {
 		if ($mensaje == '')
-	    $mensaje = 'El modulo mcrypt no esta instalado en el servidor. No es posible utilizar REST en este momento';
+	    	$mensaje = 'El modulo mcrypt no esta instalado en el servidor. No es posible utilizar REST en este momento';
 	}
 	if ($headersArray['Pxp-User'] == $headersArray['Php-Auth-User']) {
-		
-		$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
+		if (!isset($headersArray['auth-version'])) {
+			$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
+		} else {
+			$auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+		}
 		$headers = false;
 	} else {
 	//desencriptar usuario y contrasena
-		$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+		if (!isset($headersArray['auth-version'])) {
+			$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+		} else {
+			$auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+		}
 		$headers = true;
 	}
 	
@@ -179,6 +186,13 @@ function fnDecrypt($sValue, $sSecretKey)
             )
         ), "\0"
     );
+}
+
+function opensslDecrypt($ivCiphertext, $password) {
+    $method = "AES-256-CBC";
+    $iv = substr($ivCiphertext, 0, 16);	    
+    $ciphertext = substr($ivCiphertext, 16);
+    return openssl_decrypt($ciphertext, $method, $password, OPENSSL_RAW_DATA, $iv);
 }
 
 
@@ -393,7 +407,7 @@ $app->post(
         set_error_handler('error_handler');
     	$headers = $app->request->headers;
 		if (isset($headers['Php-Auth-User'])) {
-						
+						 
     		authPxp($headers);
 			
 		} else {	
@@ -464,10 +478,11 @@ $app->post(
     	
 		//var_dump($app->request->headers);
 		
-    	     
+    	 
         //TODO validar cadenas vaias y retorna error en forma JSON
         $ruta_include = 'sis_'.$sistema.'/control/ACT'.$clase_control.'.php';
-        $ruta_url = 'sis_'+ $sistema.'/control/'.$clase_control.'/'.$metodo;
+		    
+        $ruta_url = 'sis_'. $sistema.'/control/'.$clase_control.'/'.$metodo;
 
          
         //TODO verificar sesion
