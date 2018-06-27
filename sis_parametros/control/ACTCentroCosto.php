@@ -259,7 +259,7 @@ class ACTCentroCosto extends ACTbase{
 	}
 						
 	function eliminarCentroCosto(){
-			$this->objFunc=$this->create('MODCentroCosto');	
+		$this->objFunc=$this->create('MODCentroCosto');	
 		$this->res=$this->objFunc->eliminarCentroCosto($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
