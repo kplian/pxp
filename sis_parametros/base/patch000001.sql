@@ -2070,6 +2070,42 @@ ALTER TABLE param.tproveedor
 
 
 
+/***********************************I-SCP-FFP-PARAM-0-18/10/2017*****************************************/
+
+CREATE TABLE param.tfield_tipo_archivo(
+  id_field_tipo_archivo SERIAL NOT NULL,
+  id_tipo_archivo int4 NOT NULL,
+  nombre VARCHAR(255),
+  tipo VARCHAR(255),
+  descripcion VARCHAR(255),
+
+  PRIMARY KEY (id_field_tipo_archivo))
+  INHERITS (pxp.tbase);
+
+
+ALTER TABLE param.ttipo_archivo ADD orden INTEGER NULL;
+
+
+CREATE TABLE param.tfield_valor_archivo(
+  id_field_valor_archivo SERIAL NOT NULL,
+  id_field_tipo_archivo int4 NOT NULL,
+  id_archivo int4 NOT NULL,
+  valor VARCHAR(255),
+  PRIMARY KEY (id_field_valor_archivo))
+  INHERITS (pxp.tbase);
+
+/***********************************F-SCP-FFP-PARAM-0-18/10/2017*****************************************/
+
+
+
+/***********************************I-SCP-FFP-PARAM-0-24/10/2017*****************************************/
+
+ALTER TABLE param.ttipo_archivo ADD obligatorio VARCHAR(255) NULL;
+
+/***********************************F-SCP-FFP-PARAM-0-24/10/2017*****************************************/
+
+
+
 
 
 

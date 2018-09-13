@@ -132,7 +132,8 @@ BEGIN
 						tipar.nombre,
 						tipar.codigo,
             tipar.multiple,
-            arch.nombre_descriptivo
+            arch.nombre_descriptivo,
+            tipar.obligatorio
 						from param.ttipo_archivo tipar
   left join param.tarchivo arch on arch.id_tipo_archivo = tipar.id_tipo_archivo and arch.id_tabla = '||v_parametros.id_tabla||'
 

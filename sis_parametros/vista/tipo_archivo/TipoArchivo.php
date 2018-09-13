@@ -131,7 +131,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         fieldLabel: 'Nombre',
                         allowBlank: false,
                         anchor: '80%',
-                        gwidth: 100,
+                        gwidth: 230,
                         maxLength: 255
                     },
                     type: 'TextField',
@@ -212,6 +212,34 @@ header("content-type: text/javascript; charset=UTF-8");
                     type: 'AwesomeCombo',
                     //valorInicial: 'imagen',
                     filters: {pfiltro: 'tipar.extensiones_permitidas', type: 'string'},
+                    id_grupo: 0,
+                    grid: true,
+                    form: true
+                },
+
+
+                {
+                    config: {
+                        name: 'obligatorio',
+                        fieldLabel: 'Obligatorio',
+                        typeAhead: true,
+                        allowBlank: false,
+                        triggerAction: 'all',
+                        emptyText: 'Seleccione Opcion...',
+                        selectOnFocus: true,
+                        width: 250,
+                        mode: 'local',
+                        store: new Ext.data.ArrayStore({
+                            fields: ['ID', 'valor'],
+                            data: [['si', 'Si'],
+                                ['no', 'No']]
+                        }),
+                        valueField: 'ID',
+                        displayField: 'valor'
+                    },
+                    type: 'ComboBox',
+                    valorInicial: 'no',
+                    filters: {pfiltro: 'tipar.obligatorio', type: 'string'},
                     id_grupo: 0,
                     grid: true,
                     form: true
@@ -362,7 +390,23 @@ header("content-type: text/javascript; charset=UTF-8");
                     id_grupo: 1,
                     grid: true,
                     form: false
-                }
+                },
+                {
+                    config: {
+                        name: 'orden',
+                        fieldLabel: 'Orden',
+                        allowBlank: false,
+                        anchor: '80%',
+                        gwidth: 100,
+                        maxLength: 1179654,
+                        decimalPrecision: 0
+                    },
+                    type: 'NumberField',
+                    filters: {pfiltro: 'tipar.orden', type: 'numeric'},
+                    id_grupo: 1,
+                    grid: true,
+                    form: true
+                },
             ],
             tam_pag: 50,
             title: 'Tipo Archivo',
@@ -390,6 +434,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 {name: 'extensiones_permitidas', type: 'string'},
                 {name: 'ruta_guardar', type: 'string'},
                 {name: 'tamano', type: 'string'},
+                {name: 'orden', type: 'string'},
+                {name: 'obligatorio', type: 'string'},
 
             ],
             sortInfo: {
@@ -458,6 +504,12 @@ header("content-type: text/javascript; charset=UTF-8");
                     title: 'Campos',
                     width: '40%',
                     cls: 'TipoArchivoCampo'
+                },
+                {
+                    url: '../../../sis_parametros/vista/field_tipo_archivo/FieldTipoArchivo.php',
+                    title: 'Field Tipo Archivo',
+                    width: '40%',
+                    cls: 'FieldTipoArchivo'
                 },
 
 
