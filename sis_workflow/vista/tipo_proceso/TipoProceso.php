@@ -138,7 +138,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '60%',
 				gwidth: 100,
-				maxLength:10
+				maxLength:10,
+				qtip:  'Codigo unico del proceso'
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipproc.codigo',type:'string'},
@@ -153,7 +154,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: false,
                 anchor: '60%',
                 gwidth: 100,
-                maxLength:150
+                maxLength:150,
+		qtip:  'Este codigo puede repetirse, sirve para que al codificar se pueda hacer un mismo manejo para procesos similares. Ejemplo "Cotizacion" de compra nacional y "Cotizacion" de compra internacional'
             },
             type:'TextField',
             filters:{pfiltro:'tipproc.codigo_llave',type:'string'},
@@ -168,7 +170,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '60%',
 				gwidth: 250,
-				maxLength:200
+				maxLength:200,
+				qtip:  'Nombre descriptivo del proceso'
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipproc.nombre',type:'string'},
@@ -213,7 +216,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				renderer: function(value, p, record) {
 					return String.format('{0}', record.data['desc_tipo_estado']);
 				},
-				tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>'
+				tpl: '<tpl for="."><div class="x-combo-list-item"><p>({codigo})- {nombre_estado}</p>Inicio: <strong>{inicio}</strong>, Fin: <strong>{fin} <p>Tipo Proceso: {desc_tipo_proceso}</p></strong> </div></tpl>',
+				qtip:  'Este es el estado del proceso anterior que dispara este proceso'
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
@@ -235,7 +239,9 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-                store:['opcional','obligatorio','bandeja_espera','manual']
+                store:['opcional','obligatorio','bandeja_espera','manual'],
+		qtip:  'opcional:Si este proceso se dispara opcionalmente en el wizard,obligatorio: obligatoriamente en el wizard,manual: debe programarse manualmente'
+		
             },
             type:'ComboBox',
             id_grupo:1,
@@ -254,7 +260,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '60%',
                 gwidth: 150,
-                maxLength:100
+                maxLength:100,
+		qtip:  'Funcion que define si se dispara el proceso, debe devolver true o false'
             },
             type:'TextField',
             filters:{pfiltro:'tipproc.funcion_validacion_wf',type:'string'},
@@ -269,7 +276,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '60%',
 				gwidth: 150,
-				maxLength:100
+				maxLength:100,
+				qtip:  'Tabla o vista que contiene los datos con los que se puede hacer condiciones para estados o documentos'
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipproc.tabla',type:'string'},
@@ -284,7 +292,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: true,
 				anchor: '60%',
 				gwidth: 100,
-				maxLength:150
+				maxLength:150,
+				qtip:  'columna del identificador de la tabla'
 			},
 			type:'TextField',
 			filters:{pfiltro:'tipproc.columna_llave',type:'string'},
@@ -317,7 +326,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
 	       				 options: ['si','no'],	
 	       		 	},
 			grid:true,
-			form:true
+			form:true,
+			qtip:  'Si es el proceso inicial del proceso macro'
 		},
         {
             config:{
@@ -326,7 +336,8 @@ Phx.vista.TipoProceso=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 anchor: '70%',
                 gwidth: 200,
-                maxLength:150
+                maxLength:150,
+		qtip:  'Descripcion del proceso'
             },
             type:'TextArea',
             filters:{pfiltro:'tipproc.descripcion',type:'string'},
