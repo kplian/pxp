@@ -146,7 +146,8 @@ Phx.vista.gui=function(config) {
 				name: 'ruta_archivo',
 				
 				allowBlank:false,
-				anchor:'100%'
+				anchor:'100%',
+				qtip:'La ruta debe tener este formato: sistema/vista/carpeta/archivo.php'
 				
 			},
 			type:'TextArea',
