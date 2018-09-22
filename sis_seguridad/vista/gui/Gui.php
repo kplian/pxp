@@ -4,7 +4,7 @@
 *@file Gui.php 
 *@author KPLIAN (admin) 
 *@date 14-02-2011
-*@description  Vista para registrar la vistas
+*@description  Vista para registrar la vistas tabla gui
 */
 
 header("content-type: text/javascript; charset=UTF-8");
