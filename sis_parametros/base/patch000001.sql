@@ -2258,3 +2258,11 @@ ALTER TABLE param.tproveedor
 add column autorizacion VARCHAR(50)[];
 /***********************************F-SCP-JRR-PARAM-0-30/11/2018*****************************************/
 
+/***********************************I-SCP-JRR-PARAM-1-30/11/2018*****************************************/
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN operativo VARCHAR(4) NOT NULL DEFAULT 'si';
+
+COMMENT ON COLUMN param.ttipo_cc.operativo
+IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
+/***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
+/***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
