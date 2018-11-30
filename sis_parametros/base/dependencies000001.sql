@@ -2258,11 +2258,3 @@ AS
 /***********************************F-DEP-FPC-PARAM-0-03/12/2017****************************************/
 
 
-/***********************************I-DEP-JRR-PARAM-0-30/11/2018****************************************/
-ALTER TABLE param.tproveedor_cta_bancaria
-  ADD CONSTRAINT fk_tproveedor_cta_bancaria__id_banco_beneficiario FOREIGN KEY (id_banco_beneficiario)
-    REFERENCES param.tinstitucion(id_institucion)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-    NOT DEFERRABLE;
-/***********************************F-DEP-JRR-PARAM-0-30/11/2018****************************************/
