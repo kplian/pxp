@@ -1249,6 +1249,7 @@ CREATE TABLE param.tproveedor_cta_bancaria (
   fw_aba_cta VARCHAR(15),
   id_proveedor INTEGER NOT NULL,
   id_banco_beneficiario INTEGER,
+  id_banco_intermediario INTEGER,
   banco_intermediario VARCHAR(30),
   CONSTRAINT tproveedor_cta_bancaria_pkey PRIMARY KEY(id_proveedor_cta_bancaria)
 ) INHERITS (pxp.tbase);
