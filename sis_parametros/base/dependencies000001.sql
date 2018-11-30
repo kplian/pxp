@@ -1372,6 +1372,7 @@ AS
 /***********************************I-DEP-RAC-PARAM-0-29/05/2014****************************************/
 
 --------------- SQL ---------------
+DROP VIEW param.vproveedor;
 
 CREATE OR REPLACE VIEW param.vproveedor(
     id_proveedor,
