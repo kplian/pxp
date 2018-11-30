@@ -478,7 +478,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 				form:false
 		}
 	],
-	tam_pag:10,	
+	tam_pag:100,	
 	title:'Tipo Columna',
 	ActSave:'../../sis_workflow/control/TipoColumna/insertarTipoColumna',
 	ActDel:'../../sis_workflow/control/TipoColumna/eliminarTipoColumna',
@@ -564,7 +564,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
     },
     onComboTablaSelect:function(combo, rec, index){
         this.store.baseParams = {id_tabla : rec.data.id_tabla};        
-        this.load({params:{start:0, limit:10}});
+        this.load({params:{start:0, limit:100}});
         this.desbloquearMenus();
         this.getBoton('new').enable();
         this.getBoton('act').enable();

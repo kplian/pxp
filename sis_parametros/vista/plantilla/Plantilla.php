@@ -481,7 +481,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender: true,
                 mode: 'local',
-                store: ['lcv','ncd','retenciones','efectivo','otros']
+                store: ['lcv','ncd','retenciones','efectivo','regularizacion','otros']
             },
             type:'ComboBox',
             id_grupo:1,

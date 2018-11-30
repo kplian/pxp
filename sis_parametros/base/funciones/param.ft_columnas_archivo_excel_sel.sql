@@ -17,6 +17,8 @@ $body$
  COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
+ ISSUE		    FECHA    		AUTOR			DESCRIPCION
+	#1			21/11/2018		EGS				se agrego campos para que funcione la exportacion de plantilla
 
  DESCRIPCION:
  AUTOR:
@@ -45,10 +47,12 @@ BEGIN
 	if(p_transaccion='PM_COLXLS_SEL')then
 
     	begin
+            --#1	21/11/2018	EGS	 Se agrgo el campo codigo para la exportacion de plantilla
     		--Sentencia de la consulta
 			v_consulta:='select
 						colxls.id_columna_archivo_excel,
 						colxls.id_plantilla_archivo_excel,
+                        colxls.codigo,      
 						colxls.sw_legible,
                         colxls.formato_fecha,
                         colxls.anio_fecha,

@@ -13,6 +13,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
+		
+		this.initButtons=[this.cmbVersion]; //EGS
     	//llama al constructor de la clase padre
 		Phx.vista.ConceptoIngas.superclass.constructor.call(this,config);
 		this.init();
@@ -27,7 +29,12 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 				disabled : false,
 				handler : this.addImagen,
 				tooltip : ' <b>Subir imagen</b>'
-			});			
+			});	
+		///EGS
+		this.cmbVersion.on('select',this.capturaFiltros,this);
+		this.iniciarEventos();
+		this.cmbVersion.fireEvent('select');		
+		///EGS
 	},
 	
 	addImagen : function() {
@@ -38,6 +45,16 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 				height : 250
 			}, rec.data, this.idContenedor, 'subirImagenConcepto')
 	},
+	/////////EGS/////////////		 
+
+	capturaFiltros:function(combo, record, index){
+		this.store.baseParams.nombre_vista = this.nombreVista;
+		//this.tipo = this.cmbVersion.getValue();
+		this.store.baseParams.version=this.cmbVersion.getValue();//busca en la grilla el campo solicitado
+	    this.load(); 
+	},
+	
+	///////////////////EGS/////////////////////
 	
 	Atributos:[
 		{
@@ -300,7 +317,53 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			},
 			grid: true,
 			form: true
-		}, 
+		},
+				/////EGS///
+		 {
+	       		config:{
+	       			name:'version',
+	       			fieldLabel:'version',
+	       			allowBlank:false,
+	       			emptyText:'version...',
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    gwidth: 100,
+	       		    store:new Ext.data.ArrayStore({
+		        	fields: ['ID', 'valor'],
+		        	data :	[[1,'1'],	
+		        			[2,'2']]
+		        				
+		    		}),
+					valueField:'ID',
+					displayField:'valor',
+					//renderer:function (value, p, record){if (value == 1) {return 'si'} else {return 'no'}}
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,	       		
+	       		grid:true,
+	       		form:true
+	       },
+	       ///////////////EGS///
+	       {
+			config:{
+				name: 'codigo',
+				fieldLabel: 'Codigo',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:10,
+				
+			},
+			type:'TextField',
+			filters:{pfiltro:'conig.codigo',type:'string'},
+			bottom_filter : true,
+			id_grupo:0,
+			grid:true,
+			form:true
+		},
+	     /////////////////EGS//// 
 	     
 		{
 			config:{
@@ -550,7 +613,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
                                  ['contrato', 'Contratos'],
                                  ['pago_unico', 'Pago Único'],
                                  ['especial', 'Especial'],
-                                 ['viatico', 'Viáticos']
+                                 ['viatico', 'Viáticos'],
+                                 ['formulacion_presupuesto', 'Formulación de presupuesto']
                                ]
                         }),
        				valueField: 'variable',
@@ -662,6 +726,8 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},
 		{name:'activo_fijo', type: 'string'},
 		{name:'almacenable', type: 'string'},
+		{name:'version', type: 'numeric'},///EGS/////
+		{name:'codigo', type: 'string'},///EGS/////////
 		'id_grupo_ots','filtro_ot','requiere_ot',
 		'sw_autorizacion','desc_unidad_medida','id_unidad_medida',
 		'nandina','ruta_foto','id_cat_concepto','desc_cat_concepto'
@@ -675,6 +741,25 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 	bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	//bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
 	//bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
+	
+		///EGS///////////////
+	cmbVersion:new Ext.form.ComboBox({
+		            grupo:[0],
+	       			name:'version',
+	       			fieldLabel:'version',
+	       			allowBlank:false,
+	       			forceSelection:true,
+	       			emptyText:'Version',
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    value:'1',
+	       		    mode: 'local',
+	       		    width: 100,
+	       		    store:['1','2']
+	       		}),
+	
+	///EGS///////////////
 	
 	 preparaMenu:function(n){
         var data = this.getSelectedData();

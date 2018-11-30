@@ -48,6 +48,9 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('id_cat_concepto','int4');
 		$this->captura('desc_cat_concepto','varchar');
 		
+		$this->captura('version','int4');///EGS
+		$this->captura('codigo','varchar');////EGS
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -94,6 +97,8 @@ class MODConceptoIngas extends MODbase{
 	function listarConceptoIngasMasPartida(){
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='param.f_concepto_ingas_sel';
+        //CAP - 29/06/2018 cambie la función para listar los conceptos configurados para formulación solamente
+        //$this->transaccion='PM_CONIGPAR_SEL';
         $this->transaccion='PM_CONIGPAR_SEL';
         $this->tipo_procedimiento='SEL';//tipo de transaccion
         
@@ -225,6 +230,10 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
 		
+		$this->setParametro('version','version','int4');///EGS
+		
+		$this->setParametro('codigo','codigo','varchar');///egs
+		
 		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
 		$this->setParametro('nandina','nandina','varchar');
 		
@@ -254,6 +263,11 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('activo_fijo','activo_fijo','varchar');
 		$this->setParametro('almacenable','almacenable','varchar');
+		
+		$this->setParametro('version','version','int4');//egs
+		$this->setParametro('codigo','codigo','varchar');///egs
+		
+		
 		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
 		$this->setParametro('nandina','nandina','varchar');		
 		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');

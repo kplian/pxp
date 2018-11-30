@@ -5,6 +5,8 @@
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:43
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+*  ISSUE		FECHA    		AUTOR			DESCRIPCION
+*	#1			21/11/2018		EGS				se agrego campos codigo para que funcione la exportacion de plantilla
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -41,6 +43,26 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true
 		},
+					//#1 21/11/2018		EGS
+
+		{
+			config:{
+				name: 'codigo',
+				fieldLabel: 'Codigo',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:10
+			},
+			type:'TextField',
+			filters:{pfiltro:'arxls.codigo',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
+		},
+		
+			//#1 21/11/2018		EGS
+
 		{
 			config:{
 				name: 'nombre_columna',
@@ -308,6 +330,7 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_columna_archivo_excel', type: 'numeric'},
 		{name:'id_plantilla_archivo_excel', type: 'numeric'},
+		{name:'codigo', type: 'string'},		//#1 21/11/2018		EGS
 		{name:'sw_legible', type: 'string'},
 		{name:'formato_fecha', type: 'string'},
 		{name:'numero_columna', type: 'numeric'},

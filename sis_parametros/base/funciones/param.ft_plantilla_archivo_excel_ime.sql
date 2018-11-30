@@ -18,6 +18,7 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
+
  DESCRIPCION:
  AUTOR:
  FECHA:
@@ -32,6 +33,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_plantilla_archivo_excel	integer;
+    
+    v_columna_archivo_excel			record;
 
 BEGIN
 
@@ -48,11 +51,17 @@ BEGIN
 	if(p_transaccion='PM_ARXLS_INS')then
 
         begin
+        	
+            IF v_parametros.hoja_excel = ''THEN
+            	v_parametros.hoja_excel = NULL;
+            END IF;
+            
+            --raise Exception '%', v_parametros.hoja_excel;
         	--Sentencia de la insercion
         	insert into param.tplantilla_archivo_excel(
 			nombre,
 			estado_reg,
-			codigo,
+			codigo,	
             hoja_excel,
             fila_inicio,
             fila_fin,
@@ -68,7 +77,7 @@ BEGIN
           	) values(
 			v_parametros.nombre,
 			'activo',
-			v_parametros.codigo,
+			UPPER(v_parametros.codigo),
             v_parametros.hoja_excel,
             v_parametros.fila_inicio,
             v_parametros.fila_fin,
@@ -105,10 +114,24 @@ BEGIN
 	elsif(p_transaccion='PM_ARXLS_MOD')then
 
 		begin
+            IF v_parametros.hoja_excel = ''THEN
+            	v_parametros.hoja_excel = NULL;
+            END IF;
+            
+            SELECT
+            	cae.id_plantilla_archivo_excel
+            INTO
+            v_columna_archivo_excel
+            FROM param.tcolumnas_archivo_excel cae
+            WHERE cae.id_plantilla_archivo_excel = v_parametros.id_plantilla_archivo_excel;
+            
+            IF v_columna_archivo_excel is not null THEN
+            	RAISE EXCEPTION 'Tiene Columas con este Codigo Realacionadas a la plantilla';
+            END IF ;
 			--Sentencia de la modificacion
 			update param.tplantilla_archivo_excel set
 			nombre = v_parametros.nombre,
-			codigo = v_parametros.codigo,
+			codigo =upper(v_parametros.codigo), 
             hoja_excel = v_parametros.hoja_excel,
             fila_inicio = v_parametros.fila_inicio,
             fila_fin = v_parametros.fila_fin,

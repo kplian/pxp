@@ -51,7 +51,7 @@ $body$
 
       --consulta:=';
       BEGIN
-
+	
         v_consulta:='SELECT
                             FUNCIO.id_funcionario,
                             FUNCIO.codigo,
@@ -340,45 +340,40 @@ $body$
 
       --consulta:=';
       BEGIN
-
         v_filadd = '';
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
         END IF;
 
         v_consulta:='SELECT
-                            FUNCAR.id_uo_funcionario,
-                            FUNCAR.id_funcionario,
-                            FUNCAR.desc_funcionario1,
-                            FUNCAR.desc_funcionario2,
-                            FUNCAR.id_uo,
-                            FUNCAR.nombre_cargo,
-                            FUNCAR.fecha_asignacion,
-                            FUNCAR.fecha_finalizacion,
-                            FUNCAR.num_doc,
-                            FUNCAR.ci,
-                            FUNCAR.codigo,
-                            FUNCAR.email_empresa,
-                            FUNCAR.estado_reg_fun,
-                            FUNCAR.estado_reg_asi,
-                            FUNCAR.id_cargo,
-                            FUNCAR.descripcion_cargo,
-                            FUNCAR.cargo_codigo,
-                            FUNCAR.id_lugar,
-                            FUNCAR.id_oficina,
-                            FUNCAR.lugar_nombre,
-                            FUNCAR.oficina_nombre
-                            
-                            FROM orga.vfuncionario_cargo_lugar FUNCAR 
-                            WHERE '||v_filadd;
-
-
+                    FUNCAR.id_uo_funcionario,
+                    FUNCAR.id_funcionario,
+                    FUNCAR.desc_funcionario1,
+                    FUNCAR.desc_funcionario2,
+                    FUNCAR.id_uo,
+                    FUNCAR.nombre_cargo,
+                    FUNCAR.fecha_asignacion,
+                    FUNCAR.fecha_finalizacion,
+                    FUNCAR.num_doc,
+                    FUNCAR.ci,
+                    FUNCAR.codigo,
+                    FUNCAR.email_empresa,
+                    FUNCAR.estado_reg_fun,
+                    FUNCAR.estado_reg_asi,
+                    FUNCAR.id_cargo,
+                    FUNCAR.descripcion_cargo,
+                    FUNCAR.cargo_codigo,
+                    FUNCAR.id_lugar,
+                    FUNCAR.id_oficina,
+                    FUNCAR.lugar_nombre,
+                    FUNCAR.oficina_nombre                            
+                    FROM orga.vfuncionario_cargo_lugar FUNCAR 
+                    WHERE '||v_filadd;		
         v_consulta:=v_consulta||v_parametros.filtro;
         v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-
-
-
-        return v_consulta;
+        --RAISE NOTICE 'error %',v_consulta;
+       --RAISE EXCEPTION 'error %',v_consulta;
+       return v_consulta;
 
 
       END;

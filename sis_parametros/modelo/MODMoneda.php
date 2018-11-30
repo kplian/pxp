@@ -144,6 +144,21 @@ class MODMoneda extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	function getMonedaTriangulacion(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.f_moneda_ime';
+		$this->transaccion='PM_MONTRIAN_GET';
+		$this->tipo_procedimiento='IME';
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
+		
 		
 }
 ?>

@@ -4,6 +4,7 @@
 *@file gen-ACTConceptoIngas.php
 *@author  (admin)
 *@date 25-02-2013 19:49:23
+*@date 29/06/2018 calvarez - se añadió filtro para conig.sw_autorizacion='formulacion_presupuesto' para listar conceptos en la formulación de la memoria de cálculo
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
@@ -23,6 +24,15 @@ class ACTConceptoIngas extends ACTbase{
                    $this->objParam->addFiltro("conig.tipo =''Servicio''");    
                  }
         }
+		////////EGS/////
+		if($this->objParam->getParametro('version')!=''){
+              $this->objParam->addFiltro("conig.version =''".$this->objParam->getParametro('version')."''");    //egs
+         }
+		if($this->objParam->getParametro('codigo')!=''){
+              $this->objParam->addFiltro("conig.codigo =''".$this->objParam->getParametro('codigo')."''");    //egs
+         }
+
+		//////EGS///
         
          if($this->objParam->getParametro('movimiento')!=''){
               $this->objParam->addFiltro("conig.movimiento =''".$this->objParam->getParametro('movimiento')."''");    
@@ -88,17 +98,15 @@ class ACTConceptoIngas extends ACTbase{
          if($this->objParam->getParametro('id_gestion')!=''){
               $this->objParam->addFiltro("par.id_gestion =".$this->objParam->getParametro('id_gestion'));    
          }
-		 
+         if($this->objParam->getParametro('sw_autorizacion')!=''){
+              $this->objParam->addFiltro("''".$this->objParam->getParametro('sw_autorizacion')."'' = ANY (conig.sw_autorizacion)");  
+         }
 		 if($this->objParam->getParametro('requiere_ot')!=''){
               $this->objParam->addFiltro("conig.requiere_ot =''".$this->objParam->getParametro('requiere_ot')."''");    
          }
-		 
 		 if($this->objParam->getParametro('id_concepto_ingas')!=''){
               $this->objParam->addFiltro("conig.id_concepto_ingas =''".$this->objParam->getParametro('id_concepto_ingas')."''");    
          }
-         
-        
-        
         if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
             $this->objReporte = new Reporte($this->objParam,$this);
             $this->res = $this->objReporte->generarReporteListado('MODConceptoIngas','listarConceptoIngasMasPartida');

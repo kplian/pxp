@@ -1113,3 +1113,6 @@ select pxp.f_insert_testructura_gui ('FERIADO', 'OTROS');
 select pxp.f_add_catalog('PARAM','tferiado__tipo','Permanente','permanente');
 select pxp.f_add_catalog('PARAM','tferiado__tipo','Solo gestión','solo_gestion');
 /***********************************F-DAT-RCM-PARAM-1-27/10/2017*****************************************/
+
+
+

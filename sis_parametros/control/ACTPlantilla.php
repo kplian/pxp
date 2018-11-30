@@ -5,6 +5,13 @@
 *@author  Gonzalo Sarmiento Sejas
 *@date 01-04-2013 19:57:55
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+ * 
+   HISTORIAL DE MODIFICACIONES:
+   	
+ ISSUE            FECHA:		      AUTOR                 DESCRIPCION
+   
+ #0        		  01-04-2013        RAC KPLIAN             creacion
+ #0999  ETR       12/07/2018        RAC KPLIAN            filtro segun tipo de informe
 */
 
 class ACTPlantilla extends ACTbase{    
@@ -35,6 +42,11 @@ class ACTPlantilla extends ACTbase{
 
         if($this->objParam->getParametro('filtrar')!=''){
             $this->objParam->addFiltro("plt.filtrar=''".$this->objParam->getParametro('filtrar')."''");  
+        }
+		
+		//#0999  RAC  20/08/2018 adicione filtro del tipo de informe
+		if($this->objParam->getParametro('tipo_informe')!='' && $this->objParam->getParametro('tipo_informe')!='todos'){
+            $this->objParam->addFiltro("plt.tipo_informe =''".$this->objParam->getParametro('tipo_informe')."''");  
         }
         
 		

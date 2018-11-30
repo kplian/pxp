@@ -43,6 +43,15 @@ BEGIN
 
 
   	v_nombre_funcion = 'orga.f_get_aprobadores_x_funcionario';
+    
+    --TODO: 16-01-2018 RCM arreglar esta quemada para aprobador del GG
+    if par_id_funcionario = 250 then
+    	v_consulta = 'select 255::integer as id_funcionario';
+        
+        return query execute (v_consulta);
+    
+    end if;
+    --FIN TODO
         
     
     --raise exception 'ssss';

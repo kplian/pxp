@@ -17,8 +17,14 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.TipoCc.superclass.constructor.call(this,config);
 		this.init();
-		this.load({params:{start:0, limit:this.tam_pag}})
-		this.iniciarEventos();
+		this.load({params:{start:0, limit:this.tam_pag}});
+        this.addButton('inserAuto',{ text: 'Autorizaciones', iconCls: 'blist', disabled: false, handler: this.mostarFormAuto, tooltip: '<b>Configurar autorizaciones</b><br/>Permite seleccionar desde que modulos  puede selecionarse el concepto'});
+        this.crearFormAuto();
+        this.iniciarEventos();
+        //this.combotes();
+		
+	
+		
 	},
 	
 	Atributos:[
@@ -50,7 +56,7 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 	      		},
    			type:'ComboRec',
    			id_grupo:0,
-   			filters:{pfiltro:'cec.codigo_tcc#cec.descripcion_tcc',type:'string'},
+   			filters:{pfiltro:'tccp.codigo#tccp.descripcion',type:'string'},
    		    grid:true,
    			form:true
 	    },
@@ -237,7 +243,22 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
    		    grid:true,
    			form:true
 	    },
-		
+        //cabio
+        {
+            config:{
+                name: 'autoriazcion',
+                fieldLabel: 'Autorizacion',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 200,
+                maxLength:30
+            },
+            type:'TextField',
+            filters:{pfiltro:'tcc.autorizacion',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
 		{
 			config:{
 				name: 'fecha_inicio',
@@ -394,7 +415,8 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		'desc_ep', 'id_ep', 'codigo_tccp', 
-		'descripcion_tccp','mov_pres_str','momento_pres_str'
+		'descripcion_tccp','mov_pres_str','momento_pres_str',{name:'autoriazcion', type: 'string'}
+
 		
 	],
 	sortInfo:{
@@ -451,11 +473,124 @@ Phx.vista.TipoCc=Ext.extend(Phx.gridInterfaz,{
     onButtonNew:function(n){    		
     		Phx.vista.TipoCc.superclass.onButtonNew.call(this);	       
 	        this.Cmp.id_ep.allowBlank = false;	        
-	        this.Cmp.tipo.enable();
-	      
+	        this.Cmp.tipo.enable();    
     },
-   
-   
+
+    mostarFormAuto:function(){
+        var data = this.getSelectedData();
+       if(data){
+            this.cmpAuto.setValue(data.autoriazcion);
+            this.wAuto.show();
+        }
+
+    },
+    crearFormAuto:function(){
+        var storeCombo = new Ext.data.JsonStore({
+            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+            id: 'id_catalogo',
+            root: 'datos',
+            sortInfo:{
+                field: 'descripcion',
+                direction: 'ASC'
+            },
+            totalProperty: 'total',
+            fields: ['id_catalogo','codigo','descripcion'],
+            remoteSort: true,
+            baseParams: {par_filtro: 'descripcion', cod_subsistema : 'PARAM',catalogo_tipo :'ttipo_cc'}
+        });
+	    var combo = new Ext.form.AwesomeCombo({
+            name:'autoriazcion',
+            fieldLabel:'Autorizaciones',
+            allowBlank : false,
+            typeAhead: true,
+            store: storeCombo,
+            mode: 'remote',
+            pageSize: 15,
+            triggerAction: 'all',
+            valueField : 'descripcion',
+            displayField : 'descripcion',
+            forceSelection: true,
+            allowBlank : false,
+            anchor: '100%',
+            resizable : true,
+            enableMultiSelect: true
+        });
+	    this.formAuto = new Ext.form.FormPanel({
+            baseCls: 'x-plain',
+            autoDestroy: true,
+            border: false,
+            layout: 'form',
+            autoHeight: true,
+            items: [combo]
+        });
+        this.wAuto = new Ext.Window({
+            title: 'Configuracion',
+            collapsible: true,
+            maximizable: true,
+            autoDestroy: true,
+            width: 380,
+            height: 170,
+            layout: 'fit',
+            plain: true,
+            bodyStyle: 'padding:5px;',
+            buttonAlign: 'center',
+            items: this.formAuto,
+            modal:true,
+            closeAction: 'hide',
+            buttons: [{
+                text: 'Guardar',
+                handler: this.saveAuto,
+                scope: this},
+                {
+                    text: 'Cancelar',
+                    handler: function(){ this.wAuto.hide() },
+                    scope: this
+                }]
+        });
+        this.cmpAuto = this.formAuto.getForm().findField('autoriazcion');
+    },
+    saveAuto: function(){
+        var d = this.getSelectedData();
+        Phx.CP.loadingShow();
+        Ext.Ajax.request({
+            url: '../../sis_parametros/control/TipoCc/asignarAutorizacion',
+            params: {
+                id_tipo_cc: d.id_tipo_cc,
+                autorizacion: this.cmpAuto.getValue()
+
+            },
+            success: this.successSinc,
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        });
+
+    },
+    successSinc:function(resp){
+        Phx.CP.loadingHide();
+        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+        if(!reg.ROOT.error){
+            if(this.wAuto){
+                this.wAuto.hide();
+            }
+            this.reload();
+        }else{
+            alert('ocurrio un error durante el proceso')
+        }
+    },
+    preparaMenu:function(n){
+        var tb =this.tbar;
+        Phx.vista.TipoCc.superclass.preparaMenu.call(this,n);
+        this.getBoton('inserAuto').enable();
+        return tb
+    },
+    liberaMenu:function(){
+        var tb = Phx.vista.TipoCc.superclass.liberaMenu.call(this);
+        if(tb){
+            this.getBoton('inserAuto').disable();
+        }
+        return tb
+    }
 })
 </script>
 		

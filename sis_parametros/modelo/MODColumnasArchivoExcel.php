@@ -5,6 +5,8 @@
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:43
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+*	ISSUE		FECHA    		AUTOR			DESCRIPCION
+*	#1			21/11/2018		EGS				se agrego campos para que funcione la exportacion de plantilla
 */
 
 class MODColumnasArchivoExcel extends MODbase{
@@ -24,6 +26,7 @@ class MODColumnasArchivoExcel extends MODbase{
 		//Definicion de la lista del resultado del query
 		$this->captura('id_columna_archivo_excel','int4');
 		$this->captura('id_plantilla_archivo_excel','int4');
+		$this->captura('codigo','varchar'); //#1 21/11/2018		EGS	
 		$this->captura('sw_legible','varchar');
 		$this->captura('formato_fecha','varchar');
 		$this->captura('anio_fecha','int4');
@@ -95,6 +98,8 @@ class MODColumnasArchivoExcel extends MODbase{
 		$this->setParametro('tipo_valor','tipo_valor','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('punto_decimal','punto_decimal','varchar');
+		$this->setParametro('codigo','codigo','varchar');  //#1 21/11/2018		EGS
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -122,6 +127,8 @@ class MODColumnasArchivoExcel extends MODbase{
 		$this->setParametro('tipo_valor','tipo_valor','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('punto_decimal','punto_decimal','varchar');
+		$this->setParametro('codigo','codigo','varchar');	//#1 21/11/2018		EGS
+		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

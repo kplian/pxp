@@ -2065,11 +2065,34 @@ INHERITS (pxp.tbase) WITH OIDS;
 
 ALTER TABLE param.tproveedor
   ADD COLUMN codigo_sap VARCHAR;
+  
+  
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN version INTEGER DEFAULT 1 NOT NULL;
+
+COMMENT ON COLUMN param.tconcepto_ingas.version
+IS 'versiond e la configuracion, por ejemplo version 1 para 2018 , version 2 para 2019 en adelante';  
+
+
+--------------- SQL ---------------
+
+CREATE TABLE param.tconcepto_ingas_ids (
+  id_concepto_ingas_uno INTEGER NOT NULL,
+  id_concepto_ingas_dos INTEGER NOT NULL,
+  obs VARCHAR
+) 
+WITH (oids = false);
 
 ***********************************F-SCP-FPC-PARAM-0-14/01/2017*****************************************/
+***********************************I-SCP-EGS-PARAM-0-21/11/2018*****************************************/
 
+ALTER TABLE param.tcolumnas_archivo_excel
+ADD COLUMN codigo VARCHAR(150);
 
+ALTER TABLE param.tcolumnas_archivo_excel
+ADD COLUMN codigo_plantilla VARCHAR(150);
 
+***********************************F-SCP-EGS-PARAM-0-21/11/2018*****************************************/
 
 
 

@@ -5,6 +5,8 @@
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:39
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+* 	ISSUE		FECHA    		AUTOR			DESCRIPCION
+*	#1			21/11/2018		EGS				se agrego funciones para exportar la configuracion de plantilla 
 */
 
 class MODPlantillaArchivoExcel extends MODbase{
@@ -113,6 +115,92 @@ class MODPlantillaArchivoExcel extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	//	#1			21/11/2018		EGS	
+		function exportarDatos() {
+		
+		$this->procedimiento='param.ft_plantilla_archivo_excel_sel';
+			$this->transaccion='PARAM_EXPPAE_SEL';
+			$this->tipo_procedimiento='SEL';
+			$this->setCount(false);
+			
+		    $this->setParametro('id_plantilla_archivo_excel','id_plantilla_archivo_excel','integer');
+			
+			//Definicion de la lista del resultado del query
+				$this->captura('tipo_reg','varchar');
+				$this->captura('id_plantilla_archivo_excel','int4');
+				$this->captura('codigo','varchar');
+				$this->captura('nombre','varchar');
+				$this->captura('estado_reg','varchar');
+				$this->captura('hoja_excel','varchar');
+				$this->captura('fila_inicio','int4');
+				$this->captura('fila_fin','int4');
+				$this->captura('filas_excluidas','text');
+				$this->captura('tipo_archivo','varchar');
+				$this->captura('delimitador','varchar');
+				$this->captura('id_usuario_reg','int4');
+				$this->captura('usuario_ai','varchar');
+				$this->captura('fecha_reg','timestamp');
+				$this->captura('id_usuario_ai','int4');
+				$this->captura('fecha_mod','timestamp');
+				$this->captura('id_usuario_mod','int4');
+				$this->captura('usr_reg','varchar');
+				$this->captura('usr_mod','varchar');
+			
+		
+		$this->armarConsulta();	
+		
+        $this->ejecutarConsulta(); 
+		 		
+		////////////////////////////
+		
+		
+		if($this->respuesta->getTipo() == 'ERROR'){
+			return $this->respuesta;
+		}
+		else {
+		    $this->procedimiento = 'param.ft_plantilla_archivo_excel_sel';
+			$this->transaccion = 'PARAM_EXPPAEC_SEL';
+			$this->tipo_procedimiento = 'SEL';
+			$this->setCount(false);
+			$this->resetCaptura();
+			$this->addConsulta();	
+				
+			$this->captura('tipo_reg','varchar');
+			$this->captura('id_columna_archivo_excel','int4');
+			$this->captura('id_plantilla_archivo_excel','int4');
+			$this->captura('codigo','varchar');
+			$this->captura('codigo_plantilla','varchar');
+			$this->captura('sw_legible','varchar');
+			$this->captura('formato_fecha','varchar');
+			$this->captura('anio_fecha','int4');
+			$this->captura('numero_columna','int4');
+			$this->captura('nombre_columna','varchar');
+			$this->captura('nombre_columna_tabla','varchar');
+			$this->captura('tipo_valor','varchar');
+			$this->captura('punto_decimal','varchar');
+			$this->captura('estado_reg','varchar');
+			$this->captura('id_usuario_ai','int4');
+			$this->captura('id_usuario_reg','int4');
+			$this->captura('fecha_reg','timestamp');
+			$this->captura('usuario_ai','varchar');
+			$this->captura('fecha_mod','timestamp');
+			$this->captura('id_usuario_mod','int4');
+			$this->captura('usr_reg','varchar');
+			$this->captura('usr_mod','varchar');
+			
+		
+			
+			$this->armarConsulta();
+			$consulta=$this->getConsulta();			
+	  
+			$this->ejecutarConsulta($this->respuesta);
+		}
+
+		
+       return $this->respuesta;		
+	
+	}
+	//	#1			21/11/2018		EGS			
 			
 }
 ?>

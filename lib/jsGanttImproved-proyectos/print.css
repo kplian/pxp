@@ -1,0 +1,26 @@
+@page {size: landscape}
+		@page {size: A4 landscape}
+		
+		@media print {
+		 	body { font-size: 5pt }
+			html, body {
+					width:auto;
+				    height: auto;
+				  }
+				  #cuerpo {
+				    height: 650px;
+				  }
+				}
+		@media screen {
+				  body { font-size: 10px }
+				}
+		@media screen, print {
+				  body { line-height: 1.2 }
+
+
+.oculto {visibility:hidden} 
+
+html, body {
+			width:auto;
+			height: auto;
+ }

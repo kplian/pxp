@@ -17,7 +17,8 @@ $body$
  COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
+  ISSUE		FECHA    		AUTOR			DESCRIPCION
+	#1			21/11/2018		EGS		    se agrego las transacciones PARAM_EXPPAE_SEL y PARAM_EXPPAEC_SEL para exportar la configuracion de plantilla
  DESCRIPCION:
  AUTOR:
  FECHA:
@@ -103,7 +104,89 @@ BEGIN
 			return v_consulta;
 
 		end;
-
+	 /*********************************    
+ 	#TRANSACCION:  'PARAM_EXPPAE_SEL'
+ 	#DESCRIPCION:	exportar plantilla de Archivo Excel
+ 	#AUTOR:			EGS
+ 	#FECHA:		
+	***********************************/     
+	
+    elsif(p_transaccion='PARAM_EXPPAE_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+                        ''maestro''::varchar as tipo_reg,
+						arxls.id_plantilla_archivo_excel,
+						arxls.codigo,
+                        arxls.nombre,
+						arxls.estado_reg,
+                        arxls.hoja_excel,
+                        arxls.fila_inicio,
+                        arxls.fila_fin,
+                        arxls.filas_excluidas,
+                        arxls.tipo_archivo,
+                        arxls.delimitador,
+						arxls.id_usuario_reg,
+						arxls.usuario_ai,
+						arxls.fecha_reg,
+						arxls.id_usuario_ai,
+						arxls.fecha_mod,
+						arxls.id_usuario_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod
+						from param.tplantilla_archivo_excel arxls
+						inner join segu.tusuario usu1 on usu1.id_usuario = arxls.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = arxls.id_usuario_mod
+				        where  arxls.id_plantilla_archivo_excel =   '||v_parametros.id_plantilla_archivo_excel;
+			
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+     /*********************************    
+ 	#TRANSACCION:  'PARAM_EXPPAEC_SEL'
+ 	#DESCRIPCION:	exportar plantilla de archivo excel con sus columnas detalle
+ 	#AUTOR:			EGS
+ 	#FECHA:		
+	***********************************/     
+	
+    elsif(p_transaccion='PARAM_EXPPAEC_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+            		    ''detalle''::varchar as tipo_reg,
+                        colxls.id_columna_archivo_excel,
+						colxls.id_plantilla_archivo_excel,
+                        colxls.codigo,
+                        colxls.codigo_plantilla,
+						colxls.sw_legible,
+                        colxls.formato_fecha,
+                        colxls.anio_fecha,
+						colxls.numero_columna,
+						colxls.nombre_columna,
+                        colxls.nombre_columna_tabla,
+						colxls.tipo_valor,
+                        colxls.punto_decimal,
+						colxls.estado_reg,
+						colxls.id_usuario_ai,
+						colxls.id_usuario_reg,
+						colxls.fecha_reg,
+						colxls.usuario_ai,
+						colxls.fecha_mod,
+						colxls.id_usuario_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod
+						from param.tcolumnas_archivo_excel colxls
+						inner join segu.tusuario usu1 on usu1.id_usuario = colxls.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = colxls.id_usuario_mod
+                        where colxls.id_plantilla_archivo_excel='||v_parametros.id_plantilla_archivo_excel;
+			
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
 	else
 
 		raise exception 'Transaccion inexistente';

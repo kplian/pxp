@@ -1508,12 +1508,18 @@ CREATE OR REPLACE VIEW param.vproveedor(
     tipo,
     id_institucion,
     desc_proveedor,
+    desc_proveedor2,
     nit,
     id_lugar,
     lugar,
     pais,
     email,
-    rotulo_comercial)
+    rotulo_comercial,
+    ap_paterno,
+    ap_materno,
+    nombre,
+    internacional,
+    autorizacion)
 AS
   SELECT provee.id_proveedor,
          provee.id_persona,
@@ -1524,20 +1530,36 @@ AS
          pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(
            person.nombre_completo1) = btrim(provee.rotulo_comercial::text),
            person.nombre_completo1::character varying, (((
+           person.nombre_completo1 || ' '::text) || provee.rotulo_comercial::
+           text) || ' '::text)::character varying), pxp.f_iif(btrim(
+           instit.nombre::text) = btrim(provee.rotulo_comercial::text),
+           instit.nombre, (((instit.nombre::text || ' '::text) || btrim(
+           provee.rotulo_comercial::text)) || ' '::text)::character varying)) AS
+           desc_proveedor,
+         pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(
+           person.nombre_completo1) = btrim(provee.rotulo_comercial::text),
+           person.nombre_completo1::character varying, (((
            person.nombre_completo1 || ' ('::text) || provee.rotulo_comercial::
            text) || ')'::text)::character varying), pxp.f_iif(btrim(
            instit.nombre::text) = btrim(provee.rotulo_comercial::text),
            instit.nombre, (((instit.nombre::text || ' ('::text) || btrim(
            provee.rotulo_comercial::text)) || ')'::text)::character varying)) AS
-           desc_proveedor,
+           desc_proveedor2,
          provee.nit,
          provee.id_lugar,
-         COALESCE(lug.nombre,'')::varchar(100) AS lugar,
+         COALESCE(lug.nombre, ''::character varying)::character varying (100) AS
+           lugar,
          param.f_obtener_padre_lugar(provee.id_lugar, 'pais'::character varying)
            AS pais,
          pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
            AS email,
-         provee.rotulo_comercial
+         provee.rotulo_comercial,
+         person.ap_paterno,
+         person.ap_materno,
+         person.nombre,
+         provee.internacional,
+         array_to_string(provee.autorizacion, ','::text)::character varying AS
+           autorizacion
   FROM param.tproveedor provee
        LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
        LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
@@ -2281,5 +2303,80 @@ ALTER TABLE param.tinstitucion_persona
     REFERENCES segu.tpersona(id_persona)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-    NOT DEFERRABLE;    
+    NOT DEFERRABLE; 
+    
+    
+
+CREATE OR REPLACE VIEW param.vcentro_costo(
+    id_centro_costo,
+    estado_reg,
+    id_ep,
+    id_gestion,
+    id_uo,
+    id_usuario_reg,
+    fecha_reg,
+    id_usuario_mod,
+    fecha_mod,
+    usr_reg,
+    usr_mod,
+    codigo_uo,
+    nombre_uo,
+    ep,
+    gestion,
+    codigo_cc,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    nombre_financiador,
+    nombre_regional,
+    id_tipo_cc,
+    codigo_tcc,
+    descripcion_tcc,
+    id_tipo_cc_fk,
+    fecha_inicio,
+    fecha_final,
+    mov_pres,
+    momento_pres,
+    operativo)
+AS
+  SELECT cec.id_centro_costo,
+         cec.estado_reg,
+         cec.id_ep,
+         cec.id_gestion,
+         cec.id_uo,
+         cec.id_usuario_reg,
+         cec.fecha_reg,
+         cec.id_usuario_mod,
+         cec.fecha_mod,
+         usu1.cuenta AS usr_reg,
+         usu2.cuenta AS usr_mod,
+         uo.codigo AS codigo_uo,
+         uo.nombre_unidad AS nombre_uo,
+         ep.ep,
+         ges.gestion,
+         ((((tcc.codigo::text || ' - '::text) || ' '::text) || tcc.descripcion::
+           text) || ' '::text) || ges.gestion AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional,
+         cec.id_tipo_cc,
+         tcc.codigo AS codigo_tcc,
+         tcc.descripcion AS descripcion_tcc,
+         tcc.id_tipo_cc_fk,
+         tcc.fecha_inicio,
+         tcc.fecha_final,
+         tcc.mov_pres,
+         tcc.momento_pres,
+         COALESCE(tcc.operativo,'no')::varchar(4) as operativo
+  FROM param.tcentro_costo cec
+       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
+       JOIN param.vep ep ON ep.id_ep = cec.id_ep
+       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;    
+    
+       
 /***********************************F-DEP-FPC-PARAM-0-03/12/2017****************************************/

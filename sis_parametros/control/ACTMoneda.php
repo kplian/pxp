@@ -64,6 +64,11 @@ class ACTMoneda extends ACTbase{
 		$this->res=$this->objFunc->getMonedaBase($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	function getMonedaTriangulacion(){
+		$this->objFunc=$this->create('MODMoneda');	
+		$this->res=$this->objFunc->getMonedaTriangulacion($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 

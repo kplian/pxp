@@ -5,6 +5,10 @@
 *@author  Gonzalo Sarmiento Sejas
 *@date 21-02-2013 15:04:03
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ * 
+ * 
+ * COMENTARIOS:	 
+  #33  ETR       18/07/2018        RAC KPLIAN       agregar opearativo si o no
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -17,6 +21,25 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 		Phx.vista.TipoCcArb.superclass.constructor.call(this,config);		
 		this.init();
 		this.iniciarEventos();
+		this.crearFormAuto();
+		this.crearFormAutorizacion();
+		
+			this.addButton('btnAgrPla',{
+              text: 'Agregar desde Plantilla',
+              iconCls: 'bexport',
+              //disabled: false,
+              handler: this.agregarPlantilla,
+              tooltip: '<b>Agregar desde Plantilla'
+          });
+        this.addButton('inserAuto',{
+            text: 'Autorizaciones',
+            iconCls: 'blist',
+            //disabled: false,
+            handler:
+            this.mostarFormAuto,
+            tooltip: '<b>Configurar autorizaciones</b>'});
+     
+		
 	},
 	
 	Atributos:[
@@ -91,7 +114,23 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			grid:true,
 			form:true
 		},
-		
+        ///nuevo autoriazcion MMV
+        {
+            config:{
+                name: 'autoriazcion',
+                fieldLabel: 'Autorizacion',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 200,
+                maxLength:30
+            },
+            type:'TextField',
+            filters:{pfiltro:'tcc.autorizacion',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false
+        },
+        ////
 		{
 			config:{
 				name: 'movimiento',
@@ -206,7 +245,7 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			grid:true,
 			form:true
 		},
-		
+
 		{
 	   		config:{
 	   				name:'id_ep',
@@ -223,6 +262,28 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
    		    grid:true,
    			form:true
 	    },
+		{  //  #33 ++
+			config:{
+				name: 'operativo',
+				qtip:'Si NO es operativo no  permite la imputaciones desde adquisiciones, tesorería, etc (NOTA: excepto contabilidad, donde siempre es permitido)',
+				fieldLabel: 'Operativo',
+				allowBlank: false,  
+				anchor: '80%', 
+				gwidth: 70,   			
+       			typeAhead: true,
+       		    triggerAction: 'all',
+       		    lazyRender:true,
+       		    mode: 'local',
+       		    valueField: 'inicio', 
+       		    forcSselect:true, 
+       		    store:['si','no']
+			},
+			type:'ComboBox',
+			id_grupo:1,
+			valorInicial:'si',
+			grid:true,
+			form:true
+		},
 		
 		{
 			config:{
@@ -294,7 +355,7 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_ep','id_ep'
+		{name:'usr_mod', type: 'string'},'desc_ep','id_ep','operativo',{name:'autoriazcion', type: 'string'}
 		
 	],
 	
@@ -400,6 +461,274 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	        	this.Cmp.tipo.enable();
 	        }
     },
+    agregarPlantilla:function(){
+    	var nodo = this.sm.getSelectedNode();
+    	//console.log(nodo);
+    	//console.log(nodo.attributes.movimiento);
+    	if (nodo.attributes.movimiento =='no') 
+    	{			
+				this.wAuto.show();
+    		
+    		}
+    	 else{
+    	 	
+    	 	alert('El nodo escogido es transaccional no puede agregar plantilla');
+    	 	this.liberaMenu();
+    	 	
+    	 };
+   },
+
+   	crearFormAuto:function(){
+		 	 this.formAuto = new Ext.form.FormPanel({
+            baseCls: 'x-plain',
+            autoDestroy: true,
+           
+            border: false,
+            layout: 'form',
+             autoHeight: true,
+           
+    
+            items: [
+            	  {
+		                name: 'id_tipo_cc_plantilla',
+		                xtype:"combo",
+		                fieldLabel: 'Plantilla',
+		                allowBlank: false,
+		                emptyText:'Elija una plantilla...',
+		                store:new Ext.data.JsonStore(
+		                {
+		                    url: '../../sis_parametros/control/TipoCcPlantilla/listarTipoCcArbPlantillaPadre',
+		                    id: 'id_tipo_cc_plantilla',
+		                    root:'datos',
+		                    sortInfo:{
+		                        field:'codigo',
+		                        direction:'ASC'
+		                    },
+		                    totalProperty:'total',
+		                    fields: ['id_tipo_cc_plantilla','descripcion','codigo'],
+		                    remoteSort: true,
+		                }),
+		                valueField: 'id_tipo_cc_plantilla',
+		                hiddenValue: 'id_tipo_cc_plantilla',
+		                displayField: 'codigo',
+		                //gdisplayField:'nro_documento',
+		                listWidth:'280',
+		                forceSelection:true,
+		                typeAhead: false,
+		                triggerAction: 'all',
+		                lazyRender:true,
+		                mode:'remote',
+		                pageSize:20,
+		                queryDelay:500,
+		                gwidth: 100,
+		                minChars:2
+		            },
+   
+       			{
+       				name: 'codigo',
+            		xtype: 'textfield',
+            		fieldLabel: 'Codigo',
+            		allowBlank: true,
+					anchor: '80%',
+					gwidth: 100,
+            		qtip: 'Codigo'
+       			}]
+        });
+	this.wAuto = new Ext.Window({
+            title: 'Agregar',
+            collapsible: true,
+            maximizable: true,
+            autoDestroy: true,
+            width: 380,
+            height: 280,
+            layout: 'fit',
+            plain: true,
+            bodyStyle: 'padding:5px;',
+            buttonAlign: 'center',
+            items: this.formAuto,
+            modal:true,
+             closeAction: 'hide',
+            buttons: [{
+                text: 'Guardar',
+                handler: this.saveAuto,
+                scope: this
+                
+            },
+             {
+                text: 'Cancelar',
+                handler: function(){ this.wAuto.hide() },
+                scope: this
+            }]
+        });
+        
+         this.cmpDescripcion = this.formAuto.getForm().findField('id_tipo_cc_plantilla');
+         this.cmpCodigo = this.formAuto.getForm().findField('codigo');
+         
+           
+	},
+	    saveAuto: function(){
+		    var d = this.getSelectedData();
+		    Phx.CP.loadingShow();
+            Ext.Ajax.request({
+                url: '../../sis_parametros/control/TipoCc/agregarPlantilla',
+                params: { 
+                	      id_tipo_cc_plantilla: this.cmpDescripcion.getValue(),
+                	      codigo:this.cmpCodigo.getValue(),
+                	       id_tipo_cc:d. id_tipo_cc
+                	    
+                	    },
+                success: function(){
+                	Phx.CP.loadingHide();
+                	this.wAuto.hide();
+               		this.onButtonAct(); 
+                },
+                failure: this.conexionFailure,
+                timeout: this.timeout,
+                scope: this
+            });
+		
+	},
+	
+	preparaMenu: function(n) {
+		
+		var selectedNode = this.sm.getSelectedNode();
+		
+		var data = this.getSelectedData();
+		var tb = this.tbar;
+		Phx.vista.TipoCcArb.superclass.preparaMenu.call(this, n);
+
+	    this.getBoton('btnAgrPla').enable();
+        this.getBoton('inserAuto').enable();
+		//Si es un nodo del tipo transaccional u hoja deshabilita boton de agregar plantilla
+		
+		if(selectedNode&&selectedNode.attributes&&selectedNode.attributes.movimiento =='no'){
+			this.getBoton('btnAgrPla').enable();
+		} else {
+			
+			this.getBoton('btnAgrPla').disable();
+           // this.getBoton('inserAuto').disable();
+		}
+		return tb
+	},
+
+	liberaMenu: function() {
+		var tb = Phx.vista.TipoCcArb.superclass.liberaMenu.call(this);
+		var selectedNode = this.sm.getSelectedNode();
+	
+
+		//this.getBoton('btnAgrPla').disable();    
+		return tb
+	},
+
+
+
+    /////INICIO-MMV-ASIGNAR-AUTORIZACION///
+    mostarFormAuto:function(){
+        var data = this.getSelectedData();
+        if(data){
+            this.cmpAuto.setValue(data.autoriazcion);
+            this.ventanaAuto.show();
+        }
+
+    },
+    crearFormAutorizacion:function(){
+        var storeCombo = new Ext.data.JsonStore({
+            url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+            id: 'id_catalogo',
+            root: 'datos',
+            sortInfo:{
+                field: 'descripcion',
+                direction: 'ASC'
+            },
+            totalProperty: 'total',
+            fields: ['id_catalogo','codigo','descripcion'],
+            remoteSort: true,
+            baseParams: {par_filtro: 'descripcion', cod_subsistema : 'PARAM',catalogo_tipo :'ttipo_cc'}
+        });
+        var combo = new Ext.form.AwesomeCombo({
+            name:'autoriazcion',
+            fieldLabel:'Autorizaciones',
+            allowBlank : false,
+            typeAhead: true,
+            store: storeCombo,
+            mode: 'remote',
+            pageSize: 15,
+            triggerAction: 'all',
+            valueField : 'codigo',
+            displayField : 'descripcion',
+            forceSelection: true,
+            allowBlank : false,
+            anchor: '100%',
+            resizable : true,
+            enableMultiSelect: true
+        });
+        this.formAuto = new Ext.form.FormPanel({
+            baseCls: 'x-plain',
+            autoDestroy: true,
+            border: false,
+            layout: 'form',
+            autoHeight: true,
+            items: [combo]
+        });
+        this.ventanaAuto = new Ext.Window({
+            title: 'Configuracion',
+            collapsible: true,
+            maximizable: true,
+            autoDestroy: true,
+            width: 380,
+            height: 170,
+            layout: 'fit',
+            plain: true,
+            bodyStyle: 'padding:5px;',
+            buttonAlign: 'center',
+            items: this.formAuto,
+            modal:true,
+            closeAction: 'hide',
+            buttons: [{
+                text: 'Guardar',
+                handler: this.saveAutorizacion,
+                scope: this},
+                {
+                    text: 'Cancelar',
+                    handler: function(){ this.ventanaAuto.hide() },
+                    scope: this
+                }]
+        });
+        this.cmpAuto = this.formAuto.getForm().findField('autoriazcion');
+    },
+    saveAutorizacion: function(){
+        var d = this.getSelectedData();
+        Phx.CP.loadingShow();
+        Ext.Ajax.request({
+            url: '../../sis_parametros/control/TipoCc/asignarAutorizacion',
+            params: {
+                id_tipo_cc: d.id_tipo_cc,
+                autorizacion: this.cmpAuto.getValue()
+            },
+            success: this.successSinc,
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        });
+    },
+    successSinc:function(resp){
+        Phx.CP.loadingHide();
+        var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+        if(!reg.ROOT.error){
+            if(this.ventanaAuto){
+                this.ventanaAuto.hide();
+            }
+            var sn = this.sm.getSelectedNode();
+            if (sn && sn.parentNode) {
+                sn.parentNode.reload();
+            } else {
+                this.root.reload();
+            }
+        }else{
+            alert('ocurrio un error durante el proceso')
+        }
+    }
+  //////FIN-MMV-ASIGNAR-AUTORIZACION////
    
 })
 </script>

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_tipo_cc_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -14,13 +12,17 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.ttipo_cc'
  AUTOR: 		 (admin)
  FECHA:	        26-05-2017 10:10:19
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
+
+                 COMENTARIOS:
+  #33  ETR       18/07/2018        RAC KPLIAN        insertar  tipos de centros operativos o no
+  #34  ETR       09/10/2018        MMV 		 		 insertar timpos de autorizacion por catalago
 ***************************************************************************/
 
 DECLARE
@@ -30,24 +32,24 @@ DECLARE
 	v_nombre_funcion   	text;
 	v_resp				varchar;
     v_where			varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'param.ft_tipo_cc_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'PM_TCC_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		26-05-2017 10:10:19
 	***********************************/
 
 	if(p_transaccion='PM_TCC_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
-			v_consulta:='SELECT 
+			v_consulta:='SELECT
                           tcc.id_tipo_cc,
                           tcc.codigo,
                           tcc.control_techo,
@@ -78,20 +80,20 @@ BEGIN
                         FROM   param.vtipo_cc_mov  tcc
                          left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
 				        where   ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
             raise notice  'Consulta...%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'PM_TCC_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		26-05-2017 10:10:19
 	***********************************/
 
@@ -103,27 +105,27 @@ BEGIN
 					     FROM   param.vtipo_cc_mov  tcc
                          left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
 				        where   ';
-			
-			--Definicion de la respuesta		    
+
+			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 
 			--Devuelve la respuesta
 			return v_consulta;
 
 		end;
-        
-     /*********************************    
+
+     /*********************************
  	#TRANSACCION:  'PM_TCCALL_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		26-05-2017 10:10:19
 	***********************************/
 
 	elsif(p_transaccion='PM_TCCALL_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
-			v_consulta:='SELECT 
+			v_consulta:='SELECT
                           tcc.id_tipo_cc,
                           tcc.codigo,
                           tcc.control_techo,
@@ -152,20 +154,20 @@ BEGIN
                         FROM   param.vtipo_cc  tcc
                         left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
                         WHERE   ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
             raise notice  'Consulta...%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'PM_TCCALL_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		26-05-2017 10:10:19
 	***********************************/
 
@@ -177,16 +179,16 @@ BEGIN
 					     FROM   param.vtipo_cc  tcc
                          left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
                          WHERE  ';
-			
-			--Definicion de la respuesta		    
+
+			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 
 			--Devuelve la respuesta
 			return v_consulta;
 
-		end;   
-        
-	/*********************************   
+		end;
+
+	/*********************************
      #TRANSACCION:  'PM_TCCARB_SEL'
      #DESCRIPCION:    Consulta tipos de centro de costo en formato arbol
      #AUTOR:          Rensi Arteaga
@@ -194,17 +196,17 @@ BEGIN
     ***********************************/
 
     elseif(p_transaccion='PM_TCCARB_SEL')then
-                    
-        begin       
+
+        begin
               if(v_parametros.node = 'id') then
-                v_where := ' tcc.id_tipo_cc_fk is NULL  ';   
-                     
+                v_where := ' tcc.id_tipo_cc_fk is NULL  ';
+
               else
                 v_where := ' tcc.id_tipo_cc_fk = '||v_parametros.node;
               end if;
-              
-            
-              
+
+
+
               v_consulta:='select
                             tcc.id_tipo_cc,
                             tcc.codigo,
@@ -234,34 +236,36 @@ BEGIN
                           when (tcc.movimiento=''no'' )then
                                ''hijo''::varchar
                           END as tipo_nodo ,
-                        ep.ep::varchar as desc_ep	
+                        ep.ep::varchar as desc_ep,
+                        tcc.operativo,	--  #33 ++
+                        array_to_string(tcc.autorizacion,'','')::varchar as autoriazcion --  #34 ++
 						from param.ttipo_cc tcc
                         inner join segu.tusuario usu1 on usu1.id_usuario = tcc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tcc.id_usuario_mod
                         left join param.vep ep on ep.id_ep = tcc.id_ep
-				        where  '||v_where|| ' 
+				        where  '||v_where|| '
                               and tcc.estado_reg = ''activo''
                               ORDER BY tcc.id_tipo_cc';
-                              
-                              
-                        
-       
-       
-            
+
+
+
+
+
+
             raise notice '%',v_consulta;
-           
+          -- RAISE EXCEPTION 'jonathan %',v_consulta;
             --Devuelve la respuesta
             return v_consulta;
-                       
-        end;     				
+
+        end;
 	else
-					     
+
 		raise exception 'Transaccion inexistente';
-					         
+
 	end if;
-					
+
 EXCEPTION
-					
+
 	WHEN OTHERS THEN
 			v_resp='';
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
@@ -275,3 +279,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION param.ft_tipo_cc_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

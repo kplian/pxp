@@ -233,6 +233,25 @@ class ACTProcesoWf extends ACTbase{
                $resultSolicitud->imprimirRespuesta($resultSolicitud->generarJson());
                 
 		}
+		//////////////EGS//////////////////////
+	function diagramaGanttJS(){
+					
+				$dataSource = new DataSource();
+			    //$idSolicitud = $this->objParam->getParametro('nro_tramite');
+			    //$this->objParam->addParametroConsulta('id_plan_mant',$idPlanMant);
+			    $this->objParam->addParametroConsulta('ordenacion','nro_tramite');
+			    $this->objParam->addParametroConsulta('dir_ordenacion','ASC');
+			    $this->objParam->addParametroConsulta('cantidad',1000);
+			    $this->objParam->addParametroConsulta('puntero',0);
+			    
+			    $this->objFunc = $this->create('MODProcesoWf');
+				
+			    $resultSolicitud = $this->objFunc->listarGantWf();
+				
+                $resultSolicitud->imprimirRespuesta($resultSolicitud->generarJson());
+                
+		}
+	//////////////EGS//////////////////////
 			
 }
 

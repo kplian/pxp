@@ -17,7 +17,8 @@ $body$
  COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
+  ISSUE		    FECHA    		AUTOR			DESCRIPCION
+	#1			21/11/2018		EGS				se agrego campo Codigo y su validacion para ser unico para que funcione la exportacion de plantilla
  DESCRIPCION:
  AUTOR:
  FECHA:
@@ -32,6 +33,9 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_columna_archivo_excel	integer;
+    v_codigo					varchar;--#1 21/11/2018	EGS	
+    v_record_columna			record;--#1	21/11/2018 EGS	
+
 
 BEGIN
 
@@ -48,6 +52,14 @@ BEGIN
 	if(p_transaccion='PM_COLXLS_INS')then
 
         begin
+        	--valida que el codigo sea unico #1 21/11/2018	EGS 
+        	select exc.codigo 
+            into v_codigo
+            from param.tcolumnas_archivo_excel exc
+            where UPPER(exc.codigo) = UPPER(v_parametros.codigo);
+            IF v_codigo is not null THEN
+            RAISE EXCEPTION 'Este Codigo Ya Existe';
+            END IF;
 
         	select id_columna_archivo_excel into v_id_columna_archivo_excel
             from param.tcolumnas_archivo_excel
@@ -57,6 +69,14 @@ BEGIN
             IF v_id_columna_archivo_excel IS NOT NULL THEN
             	raise exception 'Ya existe una columna asignada con el numero %', v_parametros.numero_columna;
             END IF;
+           --busca el codigo de plantilla para insertalo en la columna del detalle #1 21/11/2018	EGS 
+            SELECT
+            	pae.codigo
+            INTO
+            	v_codigo
+            FROM param.tplantilla_archivo_excel pae
+            WHERE pae.id_plantilla_archivo_excel = v_parametros.id_plantilla_archivo_excel;
+
 
         	--Sentencia de la insercion
         	insert into param.tcolumnas_archivo_excel(
@@ -75,7 +95,9 @@ BEGIN
 			fecha_reg,
 			usuario_ai,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+            codigo_plantilla,-- #1 21/11/2018	EGS 
+            codigo			-- #1 21/11/2018	EGS 
           	) values(
 			v_parametros.id_plantilla_archivo_excel,
 			v_parametros.sw_legible,
@@ -92,7 +114,9 @@ BEGIN
 			now(),
 			v_parametros._nombre_usuario_ai,
 			null,
-			null
+			null,
+            v_codigo,	-- #1 21/11/2018	EGS 
+            UPPER(v_parametros.codigo)-- #1 21/11/2018	EGS 
 
 
 
@@ -117,6 +141,25 @@ BEGIN
 	elsif(p_transaccion='PM_COLXLS_MOD')then
 
 		begin
+          	--valida que el codigo sea unico #1 21/11/2018	EGS 
+        	select 
+            	exc.id_columna_archivo_excel,
+                exc.codigo 
+            into v_record_columna
+            from param.tcolumnas_archivo_excel exc
+            where UPPER(exc.codigo) = UPPER(v_parametros.codigo);
+            IF v_record_columna.codigo is not null  and v_parametros.id_columna_archivo_excel <> v_record_columna.id_columna_archivo_excel THEN
+            RAISE EXCEPTION 'Este Codigo Ya Existe';
+            END IF;
+        
+          --busca el codigo de plantilla para insertalo en la columna del detalle #1 21/11/2018 EGS 
+            SELECT
+            	pae.codigo
+            INTO
+            	v_codigo
+            FROM param.tplantilla_archivo_excel pae
+            WHERE pae.id_plantilla_archivo_excel = v_parametros.id_plantilla_archivo_excel;
+            
 			--Sentencia de la modificacion
 			update param.tcolumnas_archivo_excel set
 			id_plantilla_archivo_excel = v_parametros.id_plantilla_archivo_excel,
@@ -131,7 +174,9 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            codigo_plantilla = v_record_columna.codigo,  --#1 21/11/2018	EGS 
+            codigo = UPPER(v_parametros.codigo) -- #1 21/11/2018	EGS 
 			where id_columna_archivo_excel=v_parametros.id_columna_archivo_excel;
 
 			--Definicion de la respuesta

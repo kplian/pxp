@@ -484,3 +484,10 @@ WITH hyomin AS(
     ORDER BY est2.fecha_reg;
 
 /*****************************F-DEP-MMV-WF-0-29/05/2017*************/
+
+
+/*****************************I-DEP-EGS-WF-0-30/08/2018*************/
+
+select wf.f_import_ttipo_proceso_origen ('insert','CBRRE','CBRRE','CBTE','validado','manual','');
+
+/*****************************F-DEP-EGS-WF-0-30/08/2018*************/

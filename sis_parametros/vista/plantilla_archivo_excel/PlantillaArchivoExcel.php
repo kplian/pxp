@@ -5,6 +5,8 @@
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:39
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+*		ISSUE		FECHA    		AUTOR			DESCRIPCION
+*		#1			21/11/2018		EGS				botones y funciones para exportar la configuracion de plantilla   
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -19,7 +21,34 @@ Phx.vista.PlantillaArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.iniciarEventos();
 		this.load({params:{start:0, limit:this.tam_pag}})
+		//#1			21/11/2018		EGS		
+		this.addButton('btnWizard',
+            {
+                text: 'Exportar Plantilla',
+                iconCls: 'bchecklist',
+                disabled: false,
+                handler: this.expProceso,
+                tooltip: '<b>Exportar</b><br/>Exporta a archivo SQL la plantilla'
+            }
+        );
+        //#1			21/11/2018		EGS	
 	},
+	//#1			21/11/2018		EGS	
+	expProceso : function(resp){
+			var data=this.sm.getSelected().data;
+			console.log('data',data);
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url: '../../sis_parametros/control/PlantillaArchivoExcel/exportarDatos',
+				params: { 'id_plantilla_archivo_excel' : data.id_plantilla_archivo_excel },
+				success: this.successExport,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+			
+	},
+	//#1			21/11/2018		EGS	
 			
 	Atributos:[
 		{
@@ -320,9 +349,32 @@ Phx.vista.PlantillaArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 				this.ocultarComponente(this.cmpDelimitador);
 			}
 		},this);
-	}
-	}
-)
+	},
+		
+	//#1			21/11/2018		EGS	
+	preparaMenu: function(n) {
+
+		var data = this.getSelectedData();
+		var tb = this.tbar;
+		Phx.vista.PlantillaArchivoExcel.superclass.preparaMenu.call(this, n);
+        
+		this.getBoton('btnWizard').enable();
+
+		return tb
+	},
+
+		
+	liberaMenu: function() {
+		var tb = Phx.vista.PlantillaArchivoExcel.superclass.liberaMenu.call(this);
+		if (tb) {
+			this.getBoton('btnWizard').disable();
+			           
+           
+		}
+		return tb
+	},
+	//#1			21/11/2018		EGS	
+})
 </script>
 		
 		

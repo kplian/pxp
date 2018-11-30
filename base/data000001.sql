@@ -92,3 +92,12 @@ VALUES (E'pxp_array_lista_blanca', E'PM_CONACUSE_MOD', E'separa por comas sin es
 
 /****************************F-DAT-RAC-PXP-0-04/05/2015******************/
 
+/****************************I-DAT-EGS-PXP-0-30/08/2018******************/
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+ (E'v_cobro_comun', E'CBRCMN,CBRCMNRE', E'codigo cobro comun'),
+ (E'v_cobro_retencion_garantia', E'CBRCMNRG,CBRCMNRGRE', E'codigo cobro con retencion de garantia'),
+ (E'v_cobro_anticipo', E'CBRCMNAT,CBRCMNATRE', E'codigo cobro anticipo');
+
+/****************************F-DAT-EGS-PXP-0-30/09/2018******************/
+
