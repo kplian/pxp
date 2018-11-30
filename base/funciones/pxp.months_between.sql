@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION pxp.months_between (
 )
 RETURNS integer AS
 $body$
-   select abs(months_of(age($1, $2)))
+   select abs(pxp.months_of(age($1, $2)))
 $body$
 LANGUAGE 'sql'
 IMMUTABLE
