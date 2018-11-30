@@ -2250,7 +2250,10 @@ CREATE TABLE param.tfield_valor_archivo(
 ALTER TABLE param.ttipo_archivo ADD obligatorio VARCHAR(255) NULL;
 
 /***********************************F-SCP-FFP-PARAM-0-24/10/2017*****************************************/
-
-
-
+/***********************************I-SCP-JRR-PARAM-0-30/11/2018*****************************************/
+ALTER TABLE param.tproveedor
+add column internacional VARCHAR(10);
+ALTER TABLE param.tproveedor
+add column autorizacion VARCHAR(50)[];
+/***********************************F-SCP-JRR-PARAM-0-30/11/2018*****************************************/
 
