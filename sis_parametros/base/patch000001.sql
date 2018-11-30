@@ -1250,9 +1250,7 @@ CREATE TABLE param.tproveedor_cta_bancaria (
   id_banco_beneficiario INTEGER,
   banco_intermediario VARCHAR(30),
   CONSTRAINT tproveedor_cta_bancaria_pkey PRIMARY KEY(id_proveedor_cta_bancaria)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-GSS-PARAM-0-04/11/2015****************************************/
 
