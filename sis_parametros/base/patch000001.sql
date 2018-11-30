@@ -2265,4 +2265,3 @@ ALTER TABLE param.ttipo_cc
 COMMENT ON COLUMN param.ttipo_cc.operativo
 IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
 /***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
-/***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
