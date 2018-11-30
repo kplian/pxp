@@ -573,7 +573,6 @@ IS 'ahce referencia al id_auciliar_contable del funcionario, es de uso opcional'
 /*****************************I-DAT-MMV-ORGA-0-12/10/2017*************/
 select pxp.f_insert_trol ('ORGA - Certificados de Trabajo', 'ORGA - Certificados de Trabajo', 'ORGA');
 select pxp.f_insert_tgui ('Certificados Emitidos', 'Certificado Emitido', 'CEE', 'si', 5, 'sis_organigrama/vista/certificado_planilla/CertificadoEmetido.php', 3, '', 'CertificadoEmetido', 'ORGA');
-select pxp.f_insert_testructura_gui ('PLACE', 'PROCRH');
 select pxp.f_insert_testructura_gui ('CEE', 'PROCRH');
 /*****************************F-DAT-MMV-ORGA-0-12/10/2017*************/
 
