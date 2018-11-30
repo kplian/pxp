@@ -53,5 +53,3 @@ END;
 $BODY$
   LANGUAGE plpgsql IMMUTABLE
   COST 100;
-ALTER FUNCTION pxp.f_get_weekend_days(date, date)
-  OWNER TO jaime;

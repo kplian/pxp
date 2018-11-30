@@ -4,7 +4,7 @@
 *@file Gui.php 
 *@author KPLIAN (admin) 
 *@date 14-02-2011
-*@description  Vista para registrar la vistas
+*@description  Vista para registrar la vistas tabla gui
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -146,7 +146,8 @@ Phx.vista.gui=function(config) {
 				name: 'ruta_archivo',
 				
 				allowBlank:false,
-				anchor:'100%'
+				anchor:'100%',
+				qtip:'La ruta debe tener este formato: sistema/vista/carpeta/archivo.php'
 				
 			},
 			type:'TextArea',

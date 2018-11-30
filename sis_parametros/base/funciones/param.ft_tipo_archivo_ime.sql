@@ -60,7 +60,9 @@ BEGIN
 			id_usuario_mod,
 			extensiones_permitidas,
 			ruta_guardar,
-			tamano
+			tamano,
+			orden,
+            obligatorio
           	) values(
 			v_parametros.nombre_id,
 			v_parametros.multiple,
@@ -77,7 +79,9 @@ BEGIN
 			null,
 			v_parametros.extensiones_permitidas,
 			v_parametros.ruta_guardar,
-			v_parametros.tamano
+			v_parametros.tamano,
+			v_parametros.orden,
+            v_parametros.obligatorio
 
 							
 			
@@ -117,7 +121,9 @@ BEGIN
 			usuario_ai = v_parametros._nombre_usuario_ai,
 				extensiones_permitidas = v_parametros.extensiones_permitidas,
 				ruta_guardar = v_parametros.ruta_guardar,
-				tamano = v_parametros.tamano
+				tamano = v_parametros.tamano,
+				orden = v_parametros.orden,
+        obligatorio = v_parametros.obligatorio
 			where id_tipo_archivo=v_parametros.id_tipo_archivo;
                
 			--Definicion de la respuesta
