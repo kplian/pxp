@@ -1116,3 +1116,4 @@ select pxp.f_add_catalog('PARAM','tferiado__tipo','Solo gestión','solo_gestion'
 
 
 
+

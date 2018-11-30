@@ -166,13 +166,16 @@ BEGIN
                             
                            from orga.vfuncionario_cargo fun
                            where 
-                            (fun.fecha_asignacion::date  < '''||p_fecha ||''' and  ( fun.fecha_finalizacion >= '''||p_fecha||''' or fun.fecha_finalizacion is NULL))
+                            (fun.fecha_asignacion::date  <= '''||p_fecha ||''' and  ( fun.fecha_finalizacion >= '''||p_fecha||''' or fun.fecha_finalizacion is NULL))
                             and '||p_filtro||'
                             order by fun.desc_funcionario1
                             limit '|| p_limit::varchar||' offset '||p_start::varchar;
                  
               
                       -- listado de todos los funcionarios en la tabla 
+                      
+                     -- raise notice '%', v_consulta;
+                      
                           FOR g_registros in execute(v_consulta) LOOP     
                            RETURN NEXT g_registros;
                          END LOOP;
@@ -184,7 +187,7 @@ BEGIN
                                    COUNT(DISTINCT(fun.id_funcionario))
                                  from orga.vfuncionario_cargo fun
                                  where 
-                                   (fun.fecha_asignacion::date  < '''|| p_fecha::varchar ||''' and ( fun.fecha_finalizacion >= '''||p_fecha||''' or fun.fecha_finalizacion is NULL))
+                                   (fun.fecha_asignacion::date  <= '''|| p_fecha::varchar ||''' and ( fun.fecha_finalizacion >= '''||p_fecha||''' or fun.fecha_finalizacion is NULL))
                                     and '||p_filtro;
                   
                          FOR g_registros in execute(v_consulta) LOOP              

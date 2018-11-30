@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "param"."ft_tipo_archivo_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION param.ft_tipo_archivo_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_tipo_archivo_ime
@@ -60,9 +63,7 @@ BEGIN
 			id_usuario_mod,
 			extensiones_permitidas,
 			ruta_guardar,
-			tamano,
-			orden,
-            obligatorio
+			tamano
           	) values(
 			v_parametros.nombre_id,
 			v_parametros.multiple,
@@ -79,9 +80,7 @@ BEGIN
 			null,
 			v_parametros.extensiones_permitidas,
 			v_parametros.ruta_guardar,
-			v_parametros.tamano,
-			v_parametros.orden,
-            v_parametros.obligatorio
+			v_parametros.tamano
 
 							
 			
@@ -121,9 +120,7 @@ BEGIN
 			usuario_ai = v_parametros._nombre_usuario_ai,
 				extensiones_permitidas = v_parametros.extensiones_permitidas,
 				ruta_guardar = v_parametros.ruta_guardar,
-				tamano = v_parametros.tamano,
-				orden = v_parametros.orden,
-        obligatorio = v_parametros.obligatorio
+				tamano = v_parametros.tamano
 			where id_tipo_archivo=v_parametros.id_tipo_archivo;
                
 			--Definicion de la respuesta
@@ -174,7 +171,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."ft_tipo_archivo_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

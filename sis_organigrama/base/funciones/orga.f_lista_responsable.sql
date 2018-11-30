@@ -15,12 +15,12 @@ $body$
 /**************************************************************************
  SISTEMA ENDESIS - SISTEMA DE ...
 ***************************************************************************
- SCRIPT: 		tes.f_lista_funcionario_aprobador
- DESCRIPCIÓN: 	lista funcionariso aprobadores segun configuracion en sistema de parametros,  
+ SCRIPT:     tes.f_lista_funcionario_aprobador
+ DESCRIPCIÓN:   lista funcionariso aprobadores segun configuracion en sistema de parametros,  
                 con lso datos de WF, la misma lista de aprobadores es compartida con adquisciones
- AUTOR: 		Rensi Arteaga Copari
- FECHA:			10/07/2017
- COMENTARIOS:	
+ AUTOR:     Rensi Arteaga Copari
+ FECHA:      10/07/2017
+ COMENTARIOS:  
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
@@ -56,7 +56,7 @@ $body$
 */
 
 DECLARE
-	g_registros  		record;
+  g_registros      record;
     v_depto_asignacion    varchar;
     v_nombre_depto_func_list   varchar;
     
@@ -72,12 +72,12 @@ DECLARE
     v_size    integer;
     v_i       integer;    
     v_reg_op    record;
-    va_id_uo	integer[];
+    va_id_uo  integer[];
     v_id_moneda_base integer;
-    v_monto_mb			numeric;
-    v_id_subsistema		integer;   
-    v_tam				integer;
-    v_id_func_list		varchar;
+    v_monto_mb      numeric;
+    v_id_subsistema    integer;   
+    v_tam        integer;
+    v_id_func_list    varchar;
 
     v_id_funcionario    integer[];
     
@@ -92,7 +92,7 @@ SELECT
   from orga.tuo_funcionario uofun
   inner join orga.tuo uo on uo.id_uo = uofun.id_uo
   where
-  uofun.estado_reg = 'activo' and uo.id_nivel_organizacional not in(7,8,9,5,6)
+  uofun.estado_reg = 'activo' and uo.id_nivel_organizacional not in(7,8,9,5)
   and uofun.fecha_asignacion <= now() and (uofun.fecha_finalizacion is null or uofun.fecha_finalizacion >= now());
 
     --RAISE EXCEPTION 'error provocado %',v_id_func_list;
@@ -117,15 +117,15 @@ SELECT
         
        
 EXCEPTION
-					
-	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
+          
+  WHEN OTHERS THEN
+      v_resp='';
+      v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+      v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+      v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+      raise exception '%',v_resp;
 
-				        
+                
 END;
 $body$
 LANGUAGE 'plpgsql'
