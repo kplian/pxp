@@ -2265,3 +2265,51 @@ ALTER TABLE param.ttipo_cc
 COMMENT ON COLUMN param.ttipo_cc.operativo
 IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
 /***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
+
+/***********************************I-SCP-EGS-PARAM-1-01/12/2018*****************************************/
+
+CREATE TABLE param.ttipo_cc_plantilla (
+  id_tipo_cc_plantilla SERIAL,
+  codigo VARCHAR NOT NULL,
+  descripcion VARCHAR,
+  movimiento VARCHAR(6) DEFAULT 'no'::character varying NOT NULL,
+  tipo VARCHAR(100) DEFAULT 'centro'::character varying NOT NULL,
+  mov_pres VARCHAR(50) [] NOT NULL,
+  control_partida VARCHAR(5) DEFAULT 'si'::character varying NOT NULL,
+  control_techo VARCHAR(4) DEFAULT 'no'::character varying NOT NULL,
+  momento_pres VARCHAR(50) [] NOT NULL,
+  id_tipo_cc_fk INTEGER,
+  operativo VARCHAR(4) DEFAULT 'si'::character varying NOT NULL,
+  CONSTRAINT ttipo_cc_plantilla_codigo_key UNIQUE(codigo),
+  CONSTRAINT ttipo_cc_plantilla_pkey PRIMARY KEY(id_tipo_cc_plantilla)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.movimiento
+IS 'su o no, los tipo de presupeusto son los nodos hojas, estos nodos se transforman en centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.tipo
+IS 'centro, proyecto, orden, son clasificadores del centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.mov_pres
+IS 'ingreso , egreso, define que movimeintos puede realizar este centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.control_partida
+IS 'si o no, se aplica a los nodos de contrl presupeustario, indica si controla partida entonces  verifica el techo por partida';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.control_techo
+IS 'indique en que nivel se queire la verificacion presupeustaria';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.momento_pres
+IS 'que momentos presupeustarios se condideran en este nodo, comprometido, ejecutado, pagado';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.operativo
+IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
+
+CREATE INDEX ttipo_cc_plantilla_idx ON param.ttipo_cc_plantilla
+  USING btree (id_tipo_cc_fk);
+
+ALTER TABLE param.ttipo_cc_plantilla
+  OWNER TO dbarchumacero;
+/***********************************F-SCP-JRR-PARAM-1-01/12/2018*****************************************/
+
