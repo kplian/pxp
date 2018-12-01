@@ -74,7 +74,7 @@ BEGIN
                 	v_respuesta = wf.f_registra_gui_tabla(v_registros.codigo_proceso,v_registros.menu_nombre, NULL, NULL,NULL);
                 	v_tabla_menu = v_registros.menu_nombre;
                 end if;                
-            	
+            	raise exception 'llega';
                 --registr los guis
                 v_respuesta = wf.f_registra_gui_tabla(	v_registros.codigo_proceso,v_registros.menu_nombre, 
                 										v_registros.codigo,v_registros.nombre_estado, v_registros.roles);	
