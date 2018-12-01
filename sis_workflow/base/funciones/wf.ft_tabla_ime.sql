@@ -199,11 +199,13 @@ BEGIN
 	elsif(p_transaccion='WF_EJSCTABLA_PRO')then
 
 		begin
-        	v_id_tabla = v_parametros.id_tabla;
-		if (pxp.f_existe_parametro(v_parametros,'nombre_tabla')) then
+        	
+		if (pxp.f_existe_parametro(p_tabla,'nombre_tabla')) then
 			select id_tabla into v_id_tabla
 			from wf.ttabla t 
 			where t.bd_nombre_tabla = v_parametros.nombre_tabla;
+		else	
+			v_id_tabla = v_parametros.id_tabla;
 		end if;
         	v_col_ejecutadas = 0;
     		v_ejecuta_tabla = 0;
