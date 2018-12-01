@@ -199,7 +199,12 @@ BEGIN
 	elsif(p_transaccion='WF_EJSCTABLA_PRO')then
 
 		begin
-        	
+        	v_id_tabla = v_parametros.id_tabla;
+		if (pxp.f_existe_parametro(v_parametros,'nombre_tabla')) then
+			select id_tabla into v_id_tabla
+			from wf.ttabla t 
+			where t.bd_nombre_tabla = v_parametros.nombre_tabla;
+		end if;
         	v_col_ejecutadas = 0;
     		v_ejecuta_tabla = 0;
     		v_ejecuta_script = 0;
@@ -211,7 +216,7 @@ BEGIN
             inner join wf.ttipo_proceso tp on t.id_tipo_proceso = tp.id_tipo_proceso
             inner join wf.tproceso_macro pm on pm.id_proceso_macro = tp.id_proceso_macro
             inner join segu.tsubsistema s on pm.id_subsistema = s.id_subsistema
-            where t.id_tabla = v_parametros.id_tabla;
+            where t.id_tabla = v_id_tabla;
             
             /*v_respuesta = wf.f_registra_gui_tabla(v_tabla.codigo_proceso,v_tabla.menu_nombre, NULL, NULL);
             
@@ -230,7 +235,7 @@ BEGIN
                             PRIMARY KEY (id_' || v_tabla.bd_nombre_tabla || ')) INHERITS (pxp.tbase);';
                 
                 execute (v_query);
-                update wf.ttabla set ejecutado = 'si' where id_tabla = v_parametros.id_tabla;
+                update wf.ttabla set ejecutado = 'si' where id_tabla = v_id_tabla;
                 
                 v_ejecuta_tabla = 1;
                 
@@ -270,7 +275,7 @@ BEGIN
                      
 			-- Crear Columnas
             for v_columnas in (	select * from wf.ttipo_columna 
-            					where id_tabla = v_parametros.id_tabla and ejecutado = 'no') loop
+            					where id_tabla = v_id_tabla and ejecutado = 'no') loop
             	v_tamano = '';
                 if (v_columnas.bd_tamano_columna is not null and v_columnas.bd_tamano_columna != '') then
                 	v_tamano = '(' || replace(v_columnas.bd_tamano_columna, '_', ',') || ')';
@@ -314,7 +319,7 @@ BEGIN
                
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje',v_mensaje); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_parametros.id_tabla::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tabla',v_id_tabla::varchar);
               
             --Devuelve la respuesta
             return v_resp;
