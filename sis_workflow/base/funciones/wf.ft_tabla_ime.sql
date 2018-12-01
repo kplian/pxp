@@ -295,7 +295,7 @@ BEGIN
                         
             	execute (v_tabla.bd_scripts_extras);
                 
-                update wf.ttabla set script_ejecutado = 'si' where id_tabla = v_parametros.id_tabla;
+                update wf.ttabla set script_ejecutado = 'si' where id_tabla = v_id_tabla;
                 v_ejecuta_script = 1;
             end if;
             
