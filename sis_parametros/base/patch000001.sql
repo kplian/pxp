@@ -2311,5 +2311,121 @@ CREATE INDEX ttipo_cc_plantilla_idx ON param.ttipo_cc_plantilla
 
 ALTER TABLE param.ttipo_cc_plantilla
   OWNER TO dbarchumacero;
-/***********************************F-SCP-JRR-PARAM-1-01/12/2018*****************************************/
+/***********************************F-SCP-EGS-PARAM-1-01/12/2018*****************************************/
+
+
+
+/***********************************I-SCP-AVQ-PARAM-0-01/12/2018*****************************************/
+
+CREATE TABLE param.tbuzon (
+  id_usuario_reg INTEGER,
+  id_usuario_mod INTEGER,
+  fecha_reg TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  fecha_mod TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  estado_reg VARCHAR(10) DEFAULT 'activo'::character varying,
+  id_usuario_ai INTEGER,
+  usuario_ai VARCHAR(300),
+  id_buzon  SERIAL,
+  sugerencia VARCHAR(1000),
+  fecha TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  CONSTRAINT tbuzon_pkey PRIMARY KEY(id_buzon)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_estacion DROP DEFAULT;
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_estacion TYPE VARCHAR(12) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_estacion DROP NOT NULL;
+
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_punto_venta DROP DEFAULT;
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_punto_venta TYPE VARCHAR(10) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_punto_venta DROP NOT NULL;
+
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cod_no_iata DROP DEFAULT;
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cod_no_iata TYPE VARCHAR(15) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cod_no_iata DROP NOT NULL;
+
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN filtrar VARCHAR(20);
+
+
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN autorizacion VARCHAR(50) [];
+
+ALTER TABLE param.tproveedor_cta_bancaria
+  ALTER COLUMN banco_intermediario TYPE VARCHAR(300) COLLATE pg_catalog."default";
+
+
+ALTER TABLE param.tproveedor
+  ALTER COLUMN internacional SET DEFAULT 'no'::character varying;
+
+
+CREATE TABLE param.tadministrador (
+  id_usuario_reg INTEGER,
+  id_usuario_mod INTEGER,
+  fecha_reg TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  fecha_mod TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  estado_reg VARCHAR(10) DEFAULT 'activo'::character varying,
+  id_usuario_ai INTEGER,
+  usuario_ai VARCHAR(300),
+  id_administrador SERIAL,
+  id_funcionario INTEGER NOT NULL,
+  id_lugar INTEGER NOT NULL,
+  CONSTRAINT tadministrador_pkey PRIMARY KEY(id_administrador)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+ALTER TABLE param.tcolumnas_archivo_excel
+  ADD COLUMN punto_decimal VARCHAR(2);
+
+
+ALTER TABLE param.tinstitucion
+  ADD CONSTRAINT tinstitucion_uq_codigo 
+    UNIQUE (codigo) NOT DEFERRABLE;
+
+CREATE INDEX tdepto_uo_ep_idx1 ON param.tdepto_uo_ep
+  USING btree (id_uo);
+
+CREATE INDEX tdepto_uo_ep_idx ON param.tdepto_uo_ep
+  USING btree (id_ep);
+
+
+CREATE UNIQUE INDEX tconcepto_ingas_idx ON param.tconcepto_ingas
+  USING btree (codigo COLLATE pg_catalog."default", estado_reg COLLATE pg_catalog."default");
+
+
+CREATE INDEX tcentro_costo_idx2 ON param.tcentro_costo
+  USING btree (id_uo);
+
+CREATE INDEX tcentro_costo_idx1 ON param.tcentro_costo
+  USING btree (id_ep);
+
+
+CREATE INDEX tcentro_costo_idx ON param.tcentro_costo
+  USING btree (id_tipo_cc);
+
+
+
+/***********************************F-SCP-AVQ-PARAM-0-01/12/2018*****************************************/
+
 

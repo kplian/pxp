@@ -1369,3 +1369,13 @@ ALTER TABLE wf.tplantilla_correo
 ALTER TABLE wf.tplantilla_correo
   ADD COLUMN bcc VARCHAR[];
 /*****************************F-SCP-JRR-WF-0-30/08/2016*************/
+
+/*****************************I-SCP-AVQ-WF-0-1/12/2018*************/
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN cc VARCHAR [];
+
+ALTER TABLE wf.tplantilla_correo
+  ADD COLUMN bcc VARCHAR [];
+
+/*****************************F-SCP-AVQ-WF-0-1/12/2018*************/
