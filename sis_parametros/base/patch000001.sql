@@ -257,135 +257,6 @@ WITH ( OIDS=TRUE );
 
 ALTER TABLE param.tcatalogo OWNER TO postgres;
 
---
--- Definition for index tinstitucion_idx (OID = 308254) : 
---
-CREATE UNIQUE INDEX tinstitucion_idx ON param.tinstitucion USING btree (doc_id, estado_reg);
---
--- Definition for index tperiodo__gestion_per_estado__idx (OID = 308255) : 
---
-CREATE UNIQUE INDEX tperiodo__gestion_per_estado__idx ON param.tperiodo USING btree (estado_reg, periodo, id_gestion);
---
--- Definition for index pk_pm_id_financiador (OID = 307978) : 
---
-ALTER TABLE ONLY param.tfinanciador
-    ADD CONSTRAINT pk_pm_id_financiador
-    PRIMARY KEY (id_financiador);
---
--- Definition for index pk_pm_id_programa (OID = 307980) : 
---
-ALTER TABLE ONLY param.tprograma
-    ADD CONSTRAINT pk_pm_id_programa
-    PRIMARY KEY (id_programa);
---
--- Definition for index pk_pm_id_proyecto (OID = 307982) : 
---
-ALTER TABLE ONLY param.tproyecto
-    ADD CONSTRAINT pk_pm_id_proyecto
-    PRIMARY KEY (id_proyecto);
---
--- Definition for index pk_pm_id_regional (OID = 307984) : 
---
-ALTER TABLE ONLY param.tregional
-    ADD CONSTRAINT pk_pm_id_regional
-    PRIMARY KEY (id_regional);
---
--- Definition for index talarma_pkey (OID = 307988) : 
---
-ALTER TABLE ONLY param.talarma
-    ADD CONSTRAINT talarma_pkey
-    PRIMARY KEY (id_alarma);
---
--- Definition for index tcorrelativo_pkey (OID = 307990) : 
---
-ALTER TABLE ONLY param.tcorrelativo
-    ADD CONSTRAINT tcorrelativo_pkey
-    PRIMARY KEY (id_correlativo);
---
--- Definition for index tdocumento_pkey (OID = 307996) : 
---
-ALTER TABLE ONLY param.tdocumento
-    ADD CONSTRAINT tdocumento_pkey
-    PRIMARY KEY (id_documento);
---
--- Definition for index tgestion_pkey (OID = 307998) : 
---
-ALTER TABLE ONLY param.tgestion
-    ADD CONSTRAINT tgestion_pkey
-    PRIMARY KEY (id_gestion);
---
--- Definition for index tinstitucion_codigo_key (OID = 308000) : 
---
-ALTER TABLE ONLY param.tinstitucion
-    ADD CONSTRAINT tinstitucion_codigo_key
-    UNIQUE (codigo);
---
--- Definition for index tinstitucion_pkey (OID = 308002) : 
---
-ALTER TABLE ONLY param.tinstitucion
-    ADD CONSTRAINT tinstitucion_pkey
-    PRIMARY KEY (id_institucion);
---
--- Definition for index tlugas_pkey (OID = 308004) : 
---
-ALTER TABLE ONLY param.tlugar
-    ADD CONSTRAINT tlugas_pkey
-    PRIMARY KEY (id_lugar);
---
--- Definition for index tmoneda_pkey (OID = 308006) : 
---
-ALTER TABLE ONLY param.tmoneda
-    ADD CONSTRAINT tmoneda_pkey
-    PRIMARY KEY (id_moneda);
---
--- Definition for index tperiodo_pkey (OID = 308008) : 
---
-ALTER TABLE ONLY param.tperiodo
-    ADD CONSTRAINT tperiodo_pkey
-    PRIMARY KEY (id_periodo);
---
--- Definition for index tpm_financiador_codigo_financiador_key (OID = 308010) : 
---
-ALTER TABLE ONLY param.tfinanciador
-    ADD CONSTRAINT tpm_financiador_codigo_financiador_key
-    UNIQUE (codigo_financiador);
---
--- Definition for index tpm_programa_codigo_programa_key (OID = 308012) : 
---
-ALTER TABLE ONLY param.tprograma
-    ADD CONSTRAINT tpm_programa_codigo_programa_key
-    UNIQUE (codigo_programa);
---
--- Definition for index tpm_proyecto_codigo_proyecto_key (OID = 308014) : 
---
-ALTER TABLE ONLY param.tproyecto
-    ADD CONSTRAINT tpm_proyecto_codigo_proyecto_key
-    UNIQUE (codigo_proyecto);
---
--- Definition for index tpm_regional_codigo_regional_key (OID = 308016) : 
---
-ALTER TABLE ONLY param.tregional
-    ADD CONSTRAINT tpm_regional_codigo_regional_key
-    UNIQUE (codigo_regional);
---
--- Definition for index tproveedor_idx (OID = 308018) : 
---
-ALTER TABLE ONLY param.tproveedor
-    ADD CONSTRAINT tproveedor_idx
-    UNIQUE (id_institucion, tipo, estado_reg);
---
--- Definition for index tproveedor_idx1 (OID = 308020) : 
---
-ALTER TABLE ONLY param.tproveedor
-    ADD CONSTRAINT tproveedor_idx1
-    UNIQUE (id_persona, tipo, estado_reg);
---
--- Definition for index tproveedor_pkey (OID = 308022) : 
---
-ALTER TABLE ONLY param.tproveedor
-    ADD CONSTRAINT tproveedor_pkey
-    PRIMARY KEY (id_proveedor);
-
 /***********************************F-SCP-JRR-PARAM-1-19/11/2012****************************************/
 
 /***********************************I-SCP-RCM-PARAM-0-23/11/2012****************************************/
@@ -577,6 +448,136 @@ CREATE TABLE param.testado_funcionario(
     tiempo_estimado int4,
     id_unidad_medida int4,
     PRIMARY KEY (id_estado_funcionario)) INHERITS (pxp.tbase);
+		 
+
+--
+-- Definition for index tinstitucion_idx (OID = 308254) : 
+--
+CREATE UNIQUE INDEX tinstitucion_idx ON param.tinstitucion USING btree (doc_id, estado_reg);
+--
+-- Definition for index tperiodo__gestion_per_estado__idx (OID = 308255) : 
+--
+CREATE UNIQUE INDEX tperiodo__gestion_per_estado__idx ON param.tperiodo USING btree (estado_reg, periodo, id_gestion);
+--
+-- Definition for index pk_pm_id_financiador (OID = 307978) : 
+--
+ALTER TABLE ONLY param.tfinanciador
+    ADD CONSTRAINT pk_pm_id_financiador
+    PRIMARY KEY (id_financiador);
+--
+-- Definition for index pk_pm_id_programa (OID = 307980) : 
+--
+ALTER TABLE ONLY param.tprograma
+    ADD CONSTRAINT pk_pm_id_programa
+    PRIMARY KEY (id_programa);
+--
+-- Definition for index pk_pm_id_proyecto (OID = 307982) : 
+--
+ALTER TABLE ONLY param.tproyecto
+    ADD CONSTRAINT pk_pm_id_proyecto
+    PRIMARY KEY (id_proyecto);
+--
+-- Definition for index pk_pm_id_regional (OID = 307984) : 
+--
+ALTER TABLE ONLY param.tregional
+    ADD CONSTRAINT pk_pm_id_regional
+    PRIMARY KEY (id_regional);
+--
+-- Definition for index talarma_pkey (OID = 307988) : 
+--
+ALTER TABLE ONLY param.talarma
+    ADD CONSTRAINT talarma_pkey
+    PRIMARY KEY (id_alarma);
+--
+-- Definition for index tcorrelativo_pkey (OID = 307990) : 
+--
+ALTER TABLE ONLY param.tcorrelativo
+    ADD CONSTRAINT tcorrelativo_pkey
+    PRIMARY KEY (id_correlativo);
+--
+-- Definition for index tdocumento_pkey (OID = 307996) : 
+--
+ALTER TABLE ONLY param.tdocumento
+    ADD CONSTRAINT tdocumento_pkey
+    PRIMARY KEY (id_documento);
+--
+-- Definition for index tgestion_pkey (OID = 307998) : 
+--
+ALTER TABLE ONLY param.tgestion
+    ADD CONSTRAINT tgestion_pkey
+    PRIMARY KEY (id_gestion);
+--
+-- Definition for index tinstitucion_codigo_key (OID = 308000) : 
+--
+ALTER TABLE ONLY param.tinstitucion
+    ADD CONSTRAINT tinstitucion_codigo_key
+    UNIQUE (codigo);
+--
+-- Definition for index tinstitucion_pkey (OID = 308002) : 
+--
+ALTER TABLE ONLY param.tinstitucion
+    ADD CONSTRAINT tinstitucion_pkey
+    PRIMARY KEY (id_institucion);
+--
+-- Definition for index tlugas_pkey (OID = 308004) : 
+--
+ALTER TABLE ONLY param.tlugar
+    ADD CONSTRAINT tlugas_pkey
+    PRIMARY KEY (id_lugar);
+--
+-- Definition for index tmoneda_pkey (OID = 308006) : 
+--
+ALTER TABLE ONLY param.tmoneda
+    ADD CONSTRAINT tmoneda_pkey
+    PRIMARY KEY (id_moneda);
+--
+-- Definition for index tperiodo_pkey (OID = 308008) : 
+--
+ALTER TABLE ONLY param.tperiodo
+    ADD CONSTRAINT tperiodo_pkey
+    PRIMARY KEY (id_periodo);
+--
+-- Definition for index tpm_financiador_codigo_financiador_key (OID = 308010) : 
+--
+ALTER TABLE ONLY param.tfinanciador
+    ADD CONSTRAINT tpm_financiador_codigo_financiador_key
+    UNIQUE (codigo_financiador);
+--
+-- Definition for index tpm_programa_codigo_programa_key (OID = 308012) : 
+--
+ALTER TABLE ONLY param.tprograma
+    ADD CONSTRAINT tpm_programa_codigo_programa_key
+    UNIQUE (codigo_programa);
+--
+-- Definition for index tpm_proyecto_codigo_proyecto_key (OID = 308014) : 
+--
+ALTER TABLE ONLY param.tproyecto
+    ADD CONSTRAINT tpm_proyecto_codigo_proyecto_key
+    UNIQUE (codigo_proyecto);
+--
+-- Definition for index tpm_regional_codigo_regional_key (OID = 308016) : 
+--
+ALTER TABLE ONLY param.tregional
+    ADD CONSTRAINT tpm_regional_codigo_regional_key
+    UNIQUE (codigo_regional);
+--
+-- Definition for index tproveedor_idx (OID = 308018) : 
+--
+ALTER TABLE ONLY param.tproveedor
+    ADD CONSTRAINT tproveedor_idx
+    UNIQUE (id_institucion, tipo, estado_reg);
+--
+-- Definition for index tproveedor_idx1 (OID = 308020) : 
+--
+ALTER TABLE ONLY param.tproveedor
+    ADD CONSTRAINT tproveedor_idx1
+    UNIQUE (id_persona, tipo, estado_reg);
+--
+-- Definition for index tproveedor_pkey (OID = 308022) : 
+--
+ALTER TABLE ONLY param.tproveedor
+    ADD CONSTRAINT tproveedor_pkey
+    PRIMARY KEY (id_proveedor);
 
 /***********************************F-SCP-RAC-PARAM-0-04/01/2013*****************************************/
 
@@ -1248,11 +1249,10 @@ CREATE TABLE param.tproveedor_cta_bancaria (
   fw_aba_cta VARCHAR(15),
   id_proveedor INTEGER NOT NULL,
   id_banco_beneficiario INTEGER,
+  id_banco_intermediario INTEGER,
   banco_intermediario VARCHAR(30),
   CONSTRAINT tproveedor_cta_bancaria_pkey PRIMARY KEY(id_proveedor_cta_bancaria)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-GSS-PARAM-0-04/11/2015****************************************/
 
@@ -2185,7 +2185,7 @@ INHERITS (pxp.tbase) WITH OIDS;
 
 
 
-***********************************I-SCP-FPC-PARAM-0-14/01/2017*****************************************/
+/***********************************I-SCP-FPC-PARAM-0-14/01/2017*****************************************/
 
 ALTER TABLE param.tproveedor
   ADD COLUMN codigo_sap VARCHAR;
@@ -2207,8 +2207,8 @@ CREATE TABLE param.tconcepto_ingas_ids (
 ) 
 WITH (oids = false);
 
-***********************************F-SCP-FPC-PARAM-0-14/01/2017*****************************************/
-***********************************I-SCP-EGS-PARAM-0-21/11/2018*****************************************/
+/***********************************F-SCP-FPC-PARAM-0-14/01/2017*****************************************/
+/***********************************I-SCP-EGS-PARAM-0-21/11/2018*****************************************/
 
 ALTER TABLE param.tcolumnas_archivo_excel
 ADD COLUMN codigo VARCHAR(150);
@@ -2216,7 +2216,7 @@ ADD COLUMN codigo VARCHAR(150);
 ALTER TABLE param.tcolumnas_archivo_excel
 ADD COLUMN codigo_plantilla VARCHAR(150);
 
-***********************************F-SCP-EGS-PARAM-0-21/11/2018*****************************************/
+/***********************************F-SCP-EGS-PARAM-0-21/11/2018*****************************************/
 
 /***********************************I-SCP-FFP-PARAM-0-18/10/2017*****************************************/
 
@@ -2251,7 +2251,181 @@ CREATE TABLE param.tfield_valor_archivo(
 ALTER TABLE param.ttipo_archivo ADD obligatorio VARCHAR(255) NULL;
 
 /***********************************F-SCP-FFP-PARAM-0-24/10/2017*****************************************/
+/***********************************I-SCP-JRR-PARAM-0-30/11/2018*****************************************/
+ALTER TABLE param.tproveedor
+add column internacional VARCHAR(10);
+ALTER TABLE param.tproveedor
+add column autorizacion VARCHAR(50)[];
+/***********************************F-SCP-JRR-PARAM-0-30/11/2018*****************************************/
+
+/***********************************I-SCP-JRR-PARAM-1-30/11/2018*****************************************/
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN operativo VARCHAR(4) NOT NULL DEFAULT 'si';
+
+COMMENT ON COLUMN param.ttipo_cc.operativo
+IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
+/***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
+
+/***********************************I-SCP-EGS-PARAM-1-01/12/2018*****************************************/
+
+CREATE TABLE param.ttipo_cc_plantilla (
+  id_tipo_cc_plantilla SERIAL,
+  codigo VARCHAR NOT NULL,
+  descripcion VARCHAR,
+  movimiento VARCHAR(6) DEFAULT 'no'::character varying NOT NULL,
+  tipo VARCHAR(100) DEFAULT 'centro'::character varying NOT NULL,
+  mov_pres VARCHAR(50) [] NOT NULL,
+  control_partida VARCHAR(5) DEFAULT 'si'::character varying NOT NULL,
+  control_techo VARCHAR(4) DEFAULT 'no'::character varying NOT NULL,
+  momento_pres VARCHAR(50) [] NOT NULL,
+  id_tipo_cc_fk INTEGER,
+  operativo VARCHAR(4) DEFAULT 'si'::character varying NOT NULL,
+  CONSTRAINT ttipo_cc_plantilla_codigo_key UNIQUE(codigo),
+  CONSTRAINT ttipo_cc_plantilla_pkey PRIMARY KEY(id_tipo_cc_plantilla)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.movimiento
+IS 'su o no, los tipo de presupeusto son los nodos hojas, estos nodos se transforman en centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.tipo
+IS 'centro, proyecto, orden, son clasificadores del centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.mov_pres
+IS 'ingreso , egreso, define que movimeintos puede realizar este centro de costo';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.control_partida
+IS 'si o no, se aplica a los nodos de contrl presupeustario, indica si controla partida entonces  verifica el techo por partida';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.control_techo
+IS 'indique en que nivel se queire la verificacion presupeustaria';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.momento_pres
+IS 'que momentos presupeustarios se condideran en este nodo, comprometido, ejecutado, pagado';
+
+COMMENT ON COLUMN param.ttipo_cc_plantilla.operativo
+IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
+
+CREATE INDEX ttipo_cc_plantilla_idx ON param.ttipo_cc_plantilla
+  USING btree (id_tipo_cc_fk);
+
+ALTER TABLE param.ttipo_cc_plantilla
+  OWNER TO dbarchumacero;
+/***********************************F-SCP-EGS-PARAM-1-01/12/2018*****************************************/
 
 
+
+/***********************************I-SCP-AVQ-PARAM-0-01/12/2018*****************************************/
+
+CREATE TABLE param.tbuzon (
+  id_usuario_reg INTEGER,
+  id_usuario_mod INTEGER,
+  fecha_reg TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  fecha_mod TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  estado_reg VARCHAR(10) DEFAULT 'activo'::character varying,
+  id_usuario_ai INTEGER,
+  usuario_ai VARCHAR(300),
+  id_buzon  SERIAL,
+  sugerencia VARCHAR(1000),
+  fecha TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
+  CONSTRAINT tbuzon_pkey PRIMARY KEY(id_buzon)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_estacion DROP DEFAULT;
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_estacion TYPE VARCHAR(12) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_estacion DROP NOT NULL;
+
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_punto_venta DROP DEFAULT;
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_punto_venta TYPE VARCHAR(10) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_punto_venta DROP NOT NULL;
+
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cod_no_iata DROP DEFAULT;
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cod_no_iata TYPE VARCHAR(15) COLLATE pg_catalog."default";
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cod_no_iata DROP NOT NULL;
+
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN filtrar VARCHAR(20);
+
+
+ALTER TABLE param.ttipo_cc
+  ADD COLUMN autorizacion VARCHAR(50) [];
+
+ALTER TABLE param.tproveedor_cta_bancaria
+  ALTER COLUMN banco_intermediario TYPE VARCHAR(300) COLLATE pg_catalog."default";
+
+
+ALTER TABLE param.tproveedor
+  ALTER COLUMN internacional SET DEFAULT 'no'::character varying;
+
+
+CREATE TABLE param.tadministrador (
+  id_usuario_reg INTEGER,
+  id_usuario_mod INTEGER,
+  fecha_reg TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  fecha_mod TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  estado_reg VARCHAR(10) DEFAULT 'activo'::character varying,
+  id_usuario_ai INTEGER,
+  usuario_ai VARCHAR(300),
+  id_administrador SERIAL,
+  id_funcionario INTEGER NOT NULL,
+  id_lugar INTEGER NOT NULL,
+  CONSTRAINT tadministrador_pkey PRIMARY KEY(id_administrador)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+ALTER TABLE param.tcolumnas_archivo_excel
+  ADD COLUMN punto_decimal VARCHAR(2);
+
+
+ALTER TABLE param.tinstitucion
+  ADD CONSTRAINT tinstitucion_uq_codigo 
+    UNIQUE (codigo) NOT DEFERRABLE;
+
+CREATE INDEX tdepto_uo_ep_idx1 ON param.tdepto_uo_ep
+  USING btree (id_uo);
+
+CREATE INDEX tdepto_uo_ep_idx ON param.tdepto_uo_ep
+  USING btree (id_ep);
+
+
+CREATE UNIQUE INDEX tconcepto_ingas_idx ON param.tconcepto_ingas
+  USING btree (codigo COLLATE pg_catalog."default", estado_reg COLLATE pg_catalog."default");
+
+
+CREATE INDEX tcentro_costo_idx2 ON param.tcentro_costo
+  USING btree (id_uo);
+
+CREATE INDEX tcentro_costo_idx1 ON param.tcentro_costo
+  USING btree (id_ep);
+
+
+CREATE INDEX tcentro_costo_idx ON param.tcentro_costo
+  USING btree (id_tipo_cc);
+
+
+
+/***********************************F-SCP-AVQ-PARAM-0-01/12/2018*****************************************/
 
 

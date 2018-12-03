@@ -74,10 +74,9 @@ BEGIN
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Buzon almacenado(a) con exito (id_buzon'||v_id_buzon||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_buzon',v_id_buzon::varchar);
-			
+
             --Devuelve la respuesta
             return v_resp;
-            raise exception 'Sugerencia Registrada';
 
 		end;
 

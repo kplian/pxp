@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_tproveedor_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -127,12 +125,12 @@ BEGIN
                     (id_usuario_reg,        fecha_reg,          estado_reg,
                      id_institucion,        id_persona,         tipo,
                      numero_sigma,          codigo,           nit,
-                     id_lugar,            rotulo_comercial,       contacto)
+                     id_lugar,            rotulo_comercial,       contacto,internacional)
                     values 
                     (p_id_usuario,          now(),            'activo',
                     v_parametros.id_institucion,  v_parametros.id_persona,  v_parametros.tipo,
                     v_parametros.numero_sigma,    v_codigo_gen,   v_parametros.nit,
-                    v_parametros.id_lugar,      v_parametros.rotulo_comercial,  v_parametros.contacto) RETURNING id_proveedor into v_id_proveedor;
+                    v_parametros.id_lugar,      v_parametros.rotulo_comercial,  v_parametros.contacto,v_parametros.internacional) RETURNING id_proveedor into v_id_proveedor;
            else
                    
                     if (v_parametros.tipo = 'persona')then
@@ -245,7 +243,7 @@ BEGIN
                         (id_usuario_reg,        fecha_reg,          estado_reg,
                          id_institucion,        id_persona,         tipo,
                          numero_sigma,          codigo,           nit,
-                         id_lugar,            rotulo_comercial,     contacto)
+                         id_lugar,            rotulo_comercial,     contacto,internacional)
                       values 
                         (p_id_usuario,          now(),            'activo',
                         v_id_institucion,       v_id_persona,       case when v_id_persona is NULL THEN
@@ -254,7 +252,7 @@ BEGIN
                                                                                         'persona'
                                                                                     end,
                         v_parametros.numero_sigma,    v_codigo_gen,   v_parametros.nit,
-                        v_parametros.id_lugar,      v_parametros.rotulo_comercial, v_parametros.contacto)RETURNING id_proveedor into v_id_proveedor;
+                        v_parametros.id_lugar,      v_parametros.rotulo_comercial, v_parametros.contacto,v_parametros.internacional)RETURNING id_proveedor into v_id_proveedor;
                 end if;
             
             --insertar auxiliar
@@ -405,7 +403,7 @@ BEGIN
         begin
           
             
-            
+--            raise exception 'mistake';
            if exists(select 1 from param.tproveedor
                     where codigo = v_parametros.codigo
                     and id_proveedor != v_parametros.id_proveedor) then
@@ -441,7 +439,8 @@ BEGIN
                 fecha_mod = now(),
                 rotulo_comercial = v_parametros.rotulo_comercial,
                 contacto = v_parametros.contacto,
-                tipo = v_parametros.tipo
+                tipo = v_parametros.tipo,
+                internacional = v_parametros.internacional
             where id_proveedor=v_parametros.id_proveedor;
             
             
@@ -989,7 +988,31 @@ BEGIN
           -- Devuelve la respuesta
           return v_resp;
         
-     end;            
+     end;     
+      /*********************************    
+ 	#TRANSACCION:  'PM_ESTA_IME'
+ 	#DESCRIPCION:	Asignar Estado proveedor
+ 	#AUTOR:		  MMV
+ 	#FECHA:			20/08/2018
+	***********************************/
+    elsif(p_transaccion='PM_ESTA_IME')then
+					
+        begin
+        
+  
+              update param.tproveedor  set
+              autorizacion =  string_to_array(v_parametros.autorizacion,',')::varchar[] 
+              where id_proveedor = v_parametros.id_proveedor;
+        
+        	--Definicion de la respuesta
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se registro los estados con exito'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_proveedor',v_parametros.id_proveedor::varchar);
+
+            --Devuelve la respuesta
+    
+    	return v_resp;
+
+	end;        
          
     else
      

@@ -252,7 +252,7 @@ BEGIN
 
 
 
-            raise notice '%',v_consulta;
+            --raise notice '%',v_consulta;
           -- RAISE EXCEPTION 'jonathan %',v_consulta;
             --Devuelve la respuesta
             return v_consulta;
@@ -271,7 +271,7 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
 			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
+      raise exception '%',v_resp;
 END;
 $body$
 LANGUAGE 'plpgsql'
@@ -279,6 +279,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
-ALTER FUNCTION param.ft_tipo_cc_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
-  OWNER TO postgres;

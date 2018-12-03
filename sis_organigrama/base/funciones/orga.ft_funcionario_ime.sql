@@ -87,7 +87,7 @@ BEGIN
                       v_parametros.id_persona,
                       'activo',now()::date,
                       par_id_usuario,
-                      v_parametros.id_persona,
+                      v_parametros.email_empresa,
                       v_parametros.interno,                      
                       v_parametros.telefono_ofi,
                       v_parametros.antiguedad_anterior,

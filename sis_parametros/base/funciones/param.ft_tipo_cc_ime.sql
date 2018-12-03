@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_tipo_cc_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -9,48 +7,63 @@ CREATE OR REPLACE FUNCTION param.ft_tipo_cc_ime (
 RETURNS varchar AS
 $body$
 /**************************************************************************
- SISTEMA:		Parametros Generales
- FUNCION: 		param.ft_tipo_cc_ime
+ SISTEMA:    Parametros Generales
+ FUNCION:     param.ft_tipo_cc_ime
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.ttipo_cc'
- AUTOR: 		 (admin)
- FECHA:	        26-05-2017 10:10:19
- COMENTARIOS:	
+ AUTOR:      (admin)
+ FECHA:          26-05-2017 10:10:19
+ COMENTARIOS:  
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ DESCRIPCION:  
+ AUTOR:      
+ FECHA:  
+ 
+ 
+                 COMENTARIOS:   
+  #33  ETR       18/07/2018        RAC KPLIAN        Modificar tipos de centros operativos o no
+    
 ***************************************************************************/
 
 DECLARE
 
-	v_nro_requerimiento    	integer;
-	v_parametros           	record;
-	v_id_requerimiento     	integer;
-	v_resp		            varchar;
-	v_nombre_funcion        text;
-	v_mensaje_error         text;
-	v_id_tipo_cc			integer;
-    v_id_tipo_cc_fk			integer;
-    v_reg_control			record;
-    va_mov_pres_str			varchar[];
-    va_momento_pres			varchar[];
-			    
+  v_nro_requerimiento      integer;
+  v_parametros             record;
+  v_id_requerimiento       integer;
+  v_resp                varchar;
+  v_nombre_funcion        text;
+  v_mensaje_error         text;
+  v_id_tipo_cc      integer;
+    v_id_tipo_cc_fk      integer;
+    v_reg_control      record;
+    va_mov_pres_str      varchar[];
+    va_momento_pres      varchar[];
+    
+    item          record;
+    item_padre        record;
+    item_hijos        record;
+    v_codigo        varchar;
+    v_padre              varchar;
+    v_padre_id         integer;
+    v_comparacion           integer;
+    v_agrupador        varchar;
+    v_tipo_array      varchar[];
+          
 BEGIN
 
     v_nombre_funcion = 'param.ft_tipo_cc_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'PM_TCC_INS'
- 	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		Rensi Arteaga	
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+  /*********************************    
+   #TRANSACCION:  'PM_TCC_INS'
+   #DESCRIPCION:  Insercion de registros
+   #AUTOR:    Rensi Arteaga  
+   #FECHA:    26-05-2017 10:10:19
+  ***********************************/
 
-	if(p_transaccion='PM_TCC_INS')then
-					
+  if(p_transaccion='PM_TCC_INS')then
+          
         begin
         
               IF v_parametros.id_tipo_cc_fk != 'id' and v_parametros.id_tipo_cc_fk != '' THEN
@@ -152,8 +165,8 @@ BEGIN
                va_momento_pres = string_to_array(v_parametros.momento_pres,',');
             END IF;
             
-        	--Sentencia de la insercion
-        	insert into param.ttipo_cc(
+          --Sentencia de la insercion
+          insert into param.ttipo_cc(
                 codigo,
                 control_techo,
                 mov_pres,
@@ -172,8 +185,9 @@ BEGIN
                 id_usuario_mod,
                 fecha_mod,
                 fecha_inicio,
-                fecha_final
-          	) values(
+                fecha_final,
+                operativo   -- #33 ++
+            ) values(
                   upper(v_parametros.codigo),
                   v_parametros.control_techo,
                   va_mov_pres_str,
@@ -192,28 +206,29 @@ BEGIN
                   null,
                   null,
                   v_parametros.fecha_inicio,
-                  v_parametros.fecha_final
-			)RETURNING id_tipo_cc into v_id_tipo_cc;
-			
-			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Centro de Costo almacenado(a) con exito (id_tipo_cc'||v_id_tipo_cc||')'); 
+                  v_parametros.fecha_final,
+                  v_parametros.operativo  -- #33 ++
+      )RETURNING id_tipo_cc into v_id_tipo_cc;
+      
+      --Definicion de la respuesta
+      v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Centro de Costo almacenado(a) con exito (id_tipo_cc'||v_id_tipo_cc||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cc',v_id_tipo_cc::varchar);
 
             --Devuelve la respuesta
             return v_resp;
 
-		end;
+    end;
 
-	/*********************************    
- 	#TRANSACCION:  'PM_TCC_MOD'
- 	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		admin	
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+  /*********************************    
+   #TRANSACCION:  'PM_TCC_MOD'
+   #DESCRIPCION:  Modificacion de registros
+   #AUTOR:    admin  
+   #FECHA:    26-05-2017 10:10:19
+  ***********************************/
 
-	elsif(p_transaccion='PM_TCC_MOD')then
+  elsif(p_transaccion='PM_TCC_MOD')then
 
-		begin
+    begin
         
              IF v_parametros.id_tipo_cc_fk != 'id' and v_parametros.id_tipo_cc_fk != '' THEN
                    v_id_tipo_cc_fk  = v_parametros.id_tipo_cc_fk::integer;
@@ -352,8 +367,8 @@ BEGIN
             
             
                
-			--Sentencia de la modificacion
-			update param.ttipo_cc set
+      --Sentencia de la modificacion
+      update param.ttipo_cc set
                   codigo = upper(v_parametros.codigo),
                   control_techo = v_parametros.control_techo,
                   mov_pres =  va_mov_pres_str,
@@ -369,33 +384,34 @@ BEGIN
                   id_usuario_ai = v_parametros._id_usuario_ai,
                   usuario_ai = v_parametros._nombre_usuario_ai,
                   fecha_inicio = v_parametros.fecha_inicio,
-                  fecha_final = v_parametros.fecha_final
+                  fecha_final = v_parametros.fecha_final,
+                  operativo = v_parametros.operativo
             where id_tipo_cc=v_parametros.id_tipo_cc;
                
-			--Definicion de la respuesta
+      --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Centro de Costo modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cc',v_parametros.id_tipo_cc::varchar);
                
             --Devuelve la respuesta
             return v_resp;
             
-		end;
+    end;
 
-	/*********************************    
- 	#TRANSACCION:  'PM_TCC_ELI'
- 	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		admin	
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+  /*********************************    
+   #TRANSACCION:  'PM_TCC_ELI'
+   #DESCRIPCION:  Eliminacion de registros
+   #AUTOR:    admin  
+   #FECHA:    26-05-2017 10:10:19
+  ***********************************/
 
-	elsif(p_transaccion='PM_TCC_ELI')then
+  elsif(p_transaccion='PM_TCC_ELI')then
 
-		begin
-			
+    begin
+      
             
             --verificar que no tenga nodos hijos
             IF exists (select 
-             				1
+                     1
                         from param.ttipo_cc tc
                         where tc.id_tipo_cc_fk = v_parametros.id_tipo_cc) THEN
                       raise exception 'El nodo que quiere eliminar tiene nodos hijos, elimine los hijos primeramente';
@@ -403,7 +419,7 @@ BEGIN
             
             --revisar que no este relacioando a ningun centor de costos
             IF exists (select 
-             				1
+                     1
                         from param.tcentro_costo cc
                         where cc.id_tipo_cc = v_parametros.id_tipo_cc) THEN
                       raise exception 'El nodo que quiere eliminar tiene centros de costos relacionados, elimine la relación antes de continuar';
@@ -411,7 +427,7 @@ BEGIN
                     
             
             --Sentencia de la eliminacion
-			delete from param.ttipo_cc
+      delete from param.ttipo_cc
             where id_tipo_cc=v_parametros.id_tipo_cc;
                
             --Definicion de la respuesta
@@ -421,23 +437,223 @@ BEGIN
             --Devuelve la respuesta
             return v_resp;
 
-		end;
-         
-	else
+    end;
      
-    	raise exception 'Transaccion inexistente: %',p_transaccion;
+        
+  /*********************************    
+   #TRANSACCION:  'PM_TCCAP_INS'
+   #DESCRIPCION:  Insercion de registros de plantilla
+   #AUTOR:      EGS
+   #FECHA:      16/08/2018
+  ***********************************/
 
-	end if;
+  elsif(p_transaccion='PM_TCCAP_INS')then
+          
+        begin
+           
+             FOR item IN (
+               ---nota :el padre en la consulta siempre esta ordenado antes que los hijos --
+                      WITH RECURSIVE arbol  AS(   SELECT r.id_tipo_cc_plantilla,
+                                                         r.id_tipo_cc_fk, 
+                                                         r.descripcion,
+                                                         r.tipo,
+                                                         r.codigo,
+                                                         r.mov_pres,
+                                                         r.control_techo,
+                                                         r.control_partida,
+                                                         r.momento_pres,
+                                                         r.movimiento,
+                                                         r.operativo,
+                                                         r.codigo as padre_codigo  
+                                                    FROM param.ttipo_cc_plantilla r
+                                                   WHERE r.id_tipo_cc_plantilla = v_parametros.id_tipo_cc_plantilla
+                                              UNION ALL
+                                                       SELECT  t.id_tipo_cc_plantilla,
+                                                               t.id_tipo_cc_fk, 
+                                                               t.descripcion,
+                                                               t.tipo,
+                                                               t.codigo,
+                                                               t.mov_pres,
+                                                               t.control_techo,
+                                                               t.control_partida,
+                                                               t.momento_pres,
+                                                               t.movimiento,
+                                                               t.operativo,
+                                                        al.codigo as padre_codigo  
+                                                       FROM param.ttipo_cc_plantilla t
+                                                       JOIN arbol al ON al.id_tipo_cc_plantilla=t.id_tipo_cc_fk
+                                                        )
+                        select * from arbol
+                    order by arbol.id_tipo_cc_plantilla ASC
+              )LOOP
+              
+              
+               v_codigo = v_parametros.codigo||'-'||item.codigo;     
+              --raise exception 'codigo encadenado %',v_codigo;
+             
+            IF(item.id_tipo_cc_fk is  null)then
+                  v_id_tipo_cc_fk = v_parametros.id_tipo_cc;
+                    
+                     insert into param.ttipo_cc(
+                                   id_tipo_cc_fk, 
+                                   descripcion,
+                                   tipo,
+                                   codigo,
+                                   mov_pres,
+                                   control_techo,
+                                   control_partida,
+                                   momento_pres,
+                                   movimiento,
+                                   operativo,  -- #33 ++
+                                   fecha_reg,
+                                   id_usuario_reg
+                                   
+                            ) values(                   
+                                     v_id_tipo_cc_fk,
+                                     item.descripcion::VARCHAR,
+                                     item.tipo::VARCHAR,
+                                     upper(v_codigo)::VARCHAR,
+                                     item.mov_pres::character varying[],
+                                     item.control_techo::VARCHAR,
+                                     item.control_partida::VARCHAR,
+                                     item.momento_pres::character varying[] ,
+                                     item.movimiento::VARCHAR,
+                                     item.operativo::VARCHAR,  -- #33 ++
+                                     now(),
+                                     p_id_usuario
+                                     
+                            );
+     
+                     -- raise exception 'hola fk%',v_id_tipo_cc_fk ;
+              ELSE   
+             
+                       v_padre = v_parametros.codigo||'-'||item.padre_codigo;
+                          /*
+                          for item_padre in (select t.id_tipo_cc,
+                                                     t.codigo,
+                                                     t.id_tipo_cc_fk 
+                                          from param.ttipo_cc t 
+                                          where 
+                                          t.codigo = v_padre)loop
+                                          
+                                          v_padre_id= item_padre.id_tipo_cc;*/
+                                          
+                            select t.id_tipo_cc
+                                          from param.ttipo_cc t 
+                                          where 
+                                          t.codigo = v_padre
+                                          into v_padre_id;
+                  
+                        -- end loop;   
+                                   insert into param.ttipo_cc(
+                                   id_tipo_cc_fk, 
+                                   descripcion,
+                                   tipo,
+                                   codigo,
+                                   mov_pres,
+                                   control_techo,
+                                   control_partida,
+                                   momento_pres,
+                                   movimiento,
+                                   operativo,  -- #33 ++
+                                   fecha_reg,
+                                   id_usuario_reg
+                                   
+                            ) values(                   
+                                     v_padre_id,
+                                     item.descripcion::VARCHAR,
+                                     item.tipo::VARCHAR,
+                                     upper(v_codigo)::VARCHAR,
+                                     item.mov_pres::character varying[],
+                                     item.control_techo::VARCHAR,
+                                     item.control_partida::VARCHAR,
+                                     item.momento_pres::character varying[] ,
+                                     item.movimiento::VARCHAR,
+                                     item.operativo::VARCHAR,  -- #33 ++
+                                     now(),
+                                     p_id_usuario
+                                     
+                            );
+                     
+                          
+                  
+              END IF;
+             
+              
+              END LOOP;
+                       
+         
+      
+      --Definicion de la respuesta
+      v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Centro de Costo desde planilla almacenado(a) con exito'); 
+           --v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cc',v_id_tipo_cc::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
+    end;
+    /*********************************    
+   #TRANSACCION:  'PM_AUTO_INS'
+   #DESCRIPCION:  Asignar autorizacion
+   #AUTOR:      MMV
+   #FECHA:      20/08/2018
+  ***********************************/
+    elsif(p_transaccion='PM_AUTO_INS')then
+          
+        begin
+        
+    -- raise exception 'llegas %',v_parametros.id_tipo_cc;
+     
+     
+         WITH RECURSIVE tipo_cc(id_tipo_cc_fk,codigo,descripcion,id_tipo_cc) AS(
+                        select   tcc.id_tipo_cc_fk,
+                            tcc.codigo,
+                                tcc.descripcion,
+                                tcc.id_tipo_cc
+                        from param.ttipo_cc tcc
+                        where tcc.id_tipo_cc = v_parametros.id_tipo_cc
+                        union all
+                        select   tcc2.id_tipo_cc_fk,
+                            tcc2.codigo,
+                                tcc2.descripcion,
+                                tcc2.id_tipo_cc
+                        from tipo_cc tcc1 
+                        inner join param.ttipo_cc tcc2 on tcc2.id_tipo_cc_fk = tcc1.id_tipo_cc
+                        )SELECT pxp.list(cc.id_tipo_cc::varchar)
+                         into
+                         v_agrupador
+                         FROM tipo_cc cc;
+              
+            v_tipo_array = string_to_array(v_agrupador,',');
+            
+             update param.ttipo_cc set 
+              autorizacion = string_to_array(v_parametros.autorizacion,',')::varchar[] 
+              where id_tipo_cc::varchar = ANY(v_tipo_array);
+        
+          --Definicion de la respuesta
+      v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se registro las autorizacion con exito'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cc',v_parametros.id_tipo_cc::varchar);
+
+            --Devuelve la respuesta
+    
+      return v_resp;
+
+  end; 
+    else
+     
+      raise exception 'Transaccion inexistente: %',p_transaccion;
+
+  end if;
 
 EXCEPTION
-				
-	WHEN OTHERS THEN
-		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-				        
+        
+  WHEN OTHERS THEN
+    v_resp='';
+    v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+    v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+    v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+    raise exception '%',v_resp;
+                
 END;
 $body$
 LANGUAGE 'plpgsql'

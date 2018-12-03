@@ -52,7 +52,13 @@ BEGIN
 
 	if (p_transaccion='PM_CONIG_INS') then
 					
-        begin
+        begin 
+        	  IF exists(SELECT cgi.codigo,
+                          cgi.version
+       	 	from param.tconcepto_ingas cgi
+       		WHERE cgi.codigo = v_parametros.codigo and cgi.version = v_parametros.version )THEN			
+			  raise exception 'codigo ya existe';
+		 end if;
         	--Sentencia de la insercion
         	insert into param.tconcepto_ingas(
                 desc_ingas,
@@ -67,6 +73,8 @@ BEGIN
                 id_usuario_mod,
                 activo_fijo,
                 almacenable,
+                version,
+                codigo,
                 id_unidad_medida,
                 nandina,
                 id_cat_concepto
@@ -82,6 +90,8 @@ BEGIN
                 null,
                 v_parametros.activo_fijo,
                 v_parametros.almacenable,
+                v_parametros.version,
+                v_parametros.codigo, 
                 v_parametros.id_unidad_medida,
                 v_parametros.nandina,
               	v_parametros.id_cat_concepto				
@@ -106,6 +116,13 @@ BEGIN
 	elsif(p_transaccion='PM_CONIG_MOD')then
 
 		begin
+        	  IF exists(SELECT cgi.codigo,
+                          cgi.version
+       	 	from param.tconcepto_ingas cgi
+       		WHERE cgi.codigo = v_parametros.codigo and cgi.version = v_parametros.version
+            and  cgi.id_concepto_ingas !=  v_parametros.id_concepto_ingas  )THEN			
+			  raise exception 'codigo ya existe';
+		 end if;
        
 			--Sentencia de la modificacion
 			update param.tconcepto_ingas set
@@ -119,6 +136,8 @@ BEGIN
                 id_usuario_mod = p_id_usuario,
                 activo_fijo=v_parametros.activo_fijo,
                 almacenable =v_parametros.almacenable,
+                version =v_parametros.version,
+                codigo =v_parametros.codigo,
                 id_cat_concepto = v_parametros.id_cat_concepto
 			where id_concepto_ingas=v_parametros.id_concepto_ingas;
             --si se integra con endesis actualizamos la tabla conceptoingas  
@@ -137,6 +156,8 @@ BEGIN
                         ',NULL,'''|| v_parametros.tipo ||
                         ''','''|| v_parametros.activo_fijo ||
                         ''','''|| v_parametros.almacenable ||
+                        ''','''|| v_parametros.version ||
+                        ''','''|| v_parametros.codigo ||
                         ''','|| p_id_usuario ||                    
                     ')',true) AS (id_concepto_endesis integer) into v_id_concepto_endesis;
                 

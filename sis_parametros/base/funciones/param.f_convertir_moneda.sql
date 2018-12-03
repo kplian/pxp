@@ -33,9 +33,10 @@ $body$
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:		
- FECHA:		
+ ISSUE            FECHA:		      AUTOR                 DESCRIPCION
+   
+ #10001   ETR       15/10/2018        RAC KPLIAN         validacion de division por cero 
+
  ***************************************************************************/
 DECLARE
 
@@ -119,9 +120,12 @@ BEGIN
         from param.ttipo_cambio tc
         where   tc.id_moneda=v_id_moneda_2 and
                 tc.fecha=p_fecha;
-     
-     v_res_custom = (v_res/p_tipo_cambio_custom);
-                
+      --  #10001  RAC validaciond e division por cero 
+      IF p_tipo_cambio_custom != 0 THEN
+          v_res_custom = (v_res/p_tipo_cambio_custom);
+      ELSE 
+           v_res_custom = 0;
+      END IF;            
     /*Si la moneda base es la moneda 2 se multiplica por el tipo de cambio*/
     elsif(v_id_moneda_base=v_id_moneda_2)then
         

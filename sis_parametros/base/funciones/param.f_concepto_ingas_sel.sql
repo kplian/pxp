@@ -29,8 +29,9 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-    v_filtro 			varchar;
-    v_autorizacion_nulos	varchar;
+  v_filtro 			varchar;
+  v_autorizacion_nulos	varchar;
+  v_concepto_ingas_version varchar;
 
 BEGIN
 
@@ -75,7 +76,9 @@ BEGIN
                         conig.nandina,
                         COALESCE(conig.ruta_foto,'''')::Varchar as ruta_foto,
                         conig.id_cat_concepto,
-                        (cc.codigo ||'' - ''||cc.nombre)::varchar as desc_cat_concepto
+                        (cc.codigo ||'' - ''||cc.nombre)::varchar as desc_cat_concepto,
+                         conig.version,
+                         conig.codigo
 
                         from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
@@ -119,7 +122,7 @@ BEGIN
 			return v_consulta;
 
 		end;
-     /*********************************
+  /*********************************
  	#TRANSACCION:  'PM_CONIGPAR_SEL'
  	#DESCRIPCION:	listado de conceptos de gatos con partidas prespeustaria
  	#AUTOR:		rac
@@ -127,6 +130,78 @@ BEGIN
 	***********************************/
 
 	elsif(p_transaccion='PM_CONIGPAR_SEL')then
+
+    	begin
+
+            v_filtro = '';
+
+            IF  pxp.f_existe_parametro(p_tabla,'autorizacion_nulos') THEN
+               v_autorizacion_nulos =  v_parametros.autorizacion_nulos;
+            ELSE
+               v_autorizacion_nulos = 'si';
+            END IF;
+
+           --RAC, 1/7/2015 solo por el tema de regularizaciones lso administradores no  tenian filtros
+           -- IF  p_administrador != 1 THEN
+               IF pxp.f_existe_parametro(p_tabla,'autorizacion')THEN
+                if v_parametros.autorizacion <> '' then
+                   IF v_autorizacion_nulos = 'si' THEN
+                    v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion) or conig.sw_autorizacion is null ) and ';
+                   ELSE
+                     v_filtro = '('''||v_parametros.autorizacion||''' = ANY (conig.sw_autorizacion)) and ';
+                   END IF;
+                end if;
+              END IF;
+            -- END IF;
+
+	  --MANU,07/11/2018 SE INCLUYO UN DISTINCT POR LAS VERSIONES QUE EXISTEN
+      --Sentencia de la consulta
+			v_consulta:='select
+						  distinct
+                          conig.id_concepto_ingas,
+                          conig.desc_ingas,
+                          conig.tipo,
+                          conig.movimiento,
+                          conig.sw_tes,
+                          conig.id_oec,
+                          conig.estado_reg,
+                          conig.id_usuario_reg,
+                          conig.fecha_reg,
+                          conig.fecha_mod,
+                          conig.id_usuario_mod,
+                          usu1.cuenta as usr_reg,
+                          usu2.cuenta as usr_mod,
+                          conig.activo_fijo,
+                          conig.almacenable,
+                          par.codigo||'' ''||par.nombre_partida as desc_partida,
+                          array_to_string( conig.id_grupo_ots,'','',''null'')::varchar,
+                          conig.filtro_ot,
+                          conig.requiere_ot,
+                          array_to_string( conig.sw_autorizacion, '','',''null'')::varchar
+                        from param.tconcepto_ingas conig
+                          inner join pre.tconcepto_partida cp on cp.id_concepto_ingas = conig.id_concepto_ingas
+                          inner join pre.tpartida par on par.id_partida = cp.id_partida
+                          inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
+                          left join segu.tusuario usu2 on usu2.id_usuario = conig.id_usuario_mod
+				        where conig.estado_reg = ''activo'' and '||v_filtro;
+
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            raise notice 'consulta >>>> % <<<<',v_consulta;
+   
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+  /*********************************
+ 	#TRANSACCION:  'PM_CONIGPAR_MEM_SEL'
+ 	#DESCRIPCION:	listado de conceptos de gatos con partidas prespeustaria
+ 	#AUTOR:		rac
+ 	#FECHA:		20-06-2014 19:49:23
+	***********************************/
+
+	elsif(p_transaccion='PM_CONIGPAR_MEM_SEL')then
 
     	begin
 
@@ -190,6 +265,7 @@ BEGIN
 			return v_consulta;
 
 		end;
+  
 
 	/*********************************
  	#TRANSACCION:  'PM_CONIGPAR_CONT'

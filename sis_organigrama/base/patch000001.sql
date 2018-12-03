@@ -785,5 +785,41 @@ ALTER TABLE orga.tfuncionario
 
 
 
+/*****************************I-SCP-RAC-ORGA-0-01/12/2018*************/
+
+CREATE TABLE orga.tfuncionario_cat_prof (
+  id_usuario_reg INTEGER,
+  id_usuario_mod INTEGER,
+  fecha_reg TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  fecha_mod TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  estado_reg VARCHAR(10) DEFAULT 'activo'::character varying,
+  id_usuario_ai INTEGER,
+  usuario_ai VARCHAR(300),
+  id_funcionario_cat_prof SERIAL,
+  codigo VARCHAR(20),
+  cat_profesional VARCHAR(50)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+ALTER TABLE orga.tfuncionario_cat_prof
+  ALTER COLUMN id_funcionario_cat_prof SET STATISTICS 0;
+
+ALTER TABLE orga.tfuncionario_cat_prof
+  ALTER COLUMN codigo SET STATISTICS 0;
+
+ALTER TABLE orga.tfuncionario_cat_prof
+  ALTER COLUMN cat_profesional SET STATISTICS 0;
+  
+  
+  ALTER TABLE orga.tuo
+  ALTER COLUMN cargo_individual TYPE VARCHAR;
+
+  
+  
+  
+/*****************************F-SCP-RAC-ORGA-0-01/12/2018*************/
+
+
 
 

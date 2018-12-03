@@ -142,19 +142,6 @@ ALTER TABLE param.tgestion
 --
 -- Definition for view vproveedor (OID = 306454) : 
 --
-CREATE VIEW param.vproveedor AS
-SELECT provee.id_proveedor, provee.id_persona, provee.codigo,
-    provee.numero_sigma, provee.tipo, provee.id_institucion,
-    pxp.f_iif((provee.id_persona IS NOT NULL),
-    (person.nombre_completo1)::character varying, ((((instit.codigo)::text
-    || '-'::text) || (instit.nombre)::text))::character varying) AS
-    desc_proveedor, provee.nit
-FROM ((param.tproveedor provee LEFT JOIN segu.vpersona person ON
-    ((person.id_persona = provee.id_persona))) LEFT JOIN param.tinstitucion
-    instit ON ((instit.id_institucion = provee.id_institucion)))
-WHERE ((provee.estado_reg)::text = 'activo'::text);
-
-
 
 --
 -- Definition for index fk_tcorrelativo__id_depto (OID = 308838) : 
@@ -171,6 +158,52 @@ ALTER TABLE ONLY param.tcorrelativo
     FOREIGN KEY (id_uo) REFERENCES orga.tuo(id_uo);
 --
 -- Definition for index tdepto_usuario_tdepto_usuairo_pkey (OID = 429272) : 
+
+CREATE OR REPLACE VIEW param.vproveedor (
+    id_proveedor,
+    id_persona,
+    codigo,
+    numero_sigma,
+    tipo,
+    id_institucion,
+    desc_proveedor,
+    desc_proveedor2,
+    nit,
+    id_lugar,
+    lugar,
+    pais,
+    email,
+    rotulo_comercial,
+    ap_paterno,
+    ap_materno,
+    nombre,
+    internacional,
+    autorizacion)
+AS
+ SELECT provee.id_proveedor,
+    provee.id_persona,
+    provee.codigo,
+    provee.numero_sigma,
+    provee.tipo,
+    provee.id_institucion,
+    pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(person.nombre_completo1) = btrim(provee.rotulo_comercial::text), person.nombre_completo1::character varying, (((person.nombre_completo1 || ' ('::text) || provee.rotulo_comercial::text) || ')'::text)::character varying), pxp.f_iif(btrim(instit.nombre::text) = btrim(provee.rotulo_comercial::text), instit.nombre, (((instit.nombre::text || ' ('::text) || btrim(provee.rotulo_comercial::text)) || ')'::text)::character varying)) AS desc_proveedor,
+    pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(person.nombre_completo1) = btrim(provee.rotulo_comercial::text), person.nombre_completo1::character varying, person.nombre_completo1::character varying), pxp.f_iif(btrim(instit.nombre::text) = btrim(provee.rotulo_comercial::text), instit.nombre, instit.nombre)) AS desc_proveedor2,
+    provee.nit,
+    provee.id_lugar,
+    COALESCE(lug.nombre, ''::character varying)::character varying(100) AS lugar,
+    param.f_obtener_padre_lugar(provee.id_lugar, 'pais'::character varying) AS pais,
+    pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1) AS email,
+    provee.rotulo_comercial,
+    person.ap_paterno,
+    person.ap_materno,
+    person.nombre,
+    provee.internacional,
+    array_to_string(provee.autorizacion, ','::text)::character varying AS autorizacion
+   FROM param.tproveedor provee
+     LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
+     LEFT JOIN param.tinstitucion instit ON instit.id_institucion = provee.id_institucion
+     LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
+  WHERE provee.estado_reg::text = 'activo'::text;
 --
 
 
@@ -327,47 +360,6 @@ AS
        JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;  
        
  /***********************************F-DEP-RAC-PARAM-0-22/02/2013*****************************************/
-
-/***********************************I-DEP-AAO-PARAM-0-07/03/2013*****************************************/
-DROP VIEW param.vproveedor;
-
-CREATE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
-    codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    nit,
-    id_lugar,
-    lugar,
-    pais)
-AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL,
-          person.nombre_completo1::character varying, ((instit.codigo::text ||
-           '-' ::text) || instit.nombre::text) ::character varying) AS
-            desc_proveedor,
-         provee.nit,
-         provee.id_lugar,
-         lug.nombre as lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar,'pais') as pais
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion = provee.id_institucion
-       LEFT JOIN param.tlugar lug on lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo' ::text;
-
-ALTER TABLE param.vproveedor
-  OWNER TO postgres;
-
-/***********************************F-DEP-AAO-PARAM-0-07/03/2013*****************************************/
 
 /***********************************I-DEP-AAO-PARAM-62-19/03/2013*****************************************/
 ALTER TABLE param.tperiodo_subsistema
@@ -603,48 +595,6 @@ ALTER TABLE ONLY param.tdepto_ep
 /***********************************F-DEP-JRR-PARAM-0-29/04/2013*****************************************/
     
     
-/***********************************I-DEP-RAC-PARAM-0-07/05/2013*****************************************/
-  
-  DROP VIEW param.vproveedor;
-  
-    CREATE OR REPLACE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
-    codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    nit,
-    id_lugar,
-    lugar,
-    pais,
-    email)
-AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL,
-          person.nombre_completo1::character varying, ((instit.codigo::text ||
-           '-' ::text) || instit.nombre::text) ::character varying) AS
-            desc_proveedor,
-         provee.nit,
-         provee.id_lugar,
-         lug.nombre AS lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar, 'pais' ::character varying
-         ) AS pais,
-         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
-          AS email
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
-        provee.id_institucion
-       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo' ::text;
-/***********************************F-DEP-RAC-PARAM-0-07/05/2013*****************************************/
 
 /***********************************I-DEP-JRR-PARAM-0-24/05/2013*****************************************/
 CREATE OR REPLACE VIEW param.vcentro_costo(
@@ -877,150 +827,13 @@ AS
 
 
 
-/***********************************I-DEP-RAC-PARAM-0-24/12/2013*****************************************/
-
-
---------------- SQL ---------------
-
-CREATE OR REPLACE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
-    codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    nit,
-    id_lugar,
-    lugar,
-    pais,
-    email)
-AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL,
-          person.nombre_completo1::character varying,
-           instit.nombre::text::character varying) AS desc_proveedor,
-         provee.nit,
-         provee.id_lugar,
-         lug.nombre AS lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar, 'pais' ::character varying
-         ) AS pais,
-         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
-          AS email
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
-        provee.id_institucion
-       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo' ::text;
-
-
-
-/***********************************F-DEP-RAC-PARAM-0-24/12/2013*****************************************/
-
-
 /***********************************I-DEP-JRR-PARAM-0-24/01/2014****************************************/
 
 ALTER TABLE param.tinstitucion
   DROP CONSTRAINT tinstitucion_codigo_key RESTRICT;
 /***********************************F-DEP-JRR-PARAM-0-24/01/2014****************************************/
 
-/***********************************I-DEP-JRR-PARAM-0-20/03/2014****************************************/
-  
-CREATE OR REPLACE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
-    codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    nit,
-    id_lugar,
-    lugar,
-    pais,
-    email,
-    rotulo_comercial)
-AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL,
-          person.nombre_completo1::character varying,
-           instit.nombre::text::character varying) AS desc_proveedor,
-         provee.nit,
-         provee.id_lugar,
-         lug.nombre AS lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar, 'pais' ::character varying
-         ) AS pais,
-         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
-          AS email,
-         provee.rotulo_comercial
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
-        provee.id_institucion
-       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo' ::text;
 
-/***********************************F-DEP-JRR-PARAM-0-20/03/2014****************************************/
-
-
-
-/***********************************I-DEP-RAC-PARAM-0-07/04/2014****************************************/
-  
-
-CREATE OR REPLACE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
-    codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    nit,
-    id_lugar,
-    lugar,
-    pais,
-    email,
-    rotulo_comercial)
-AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL,
-          person.nombre_completo1::character varying, pxp.f_iif(btrim(
-          instit.nombre::text) = btrim(provee.rotulo_comercial::text),
-           instit.nombre, (((instit.nombre::text || '(' ::text) || btrim(
-           provee.rotulo_comercial::text)) || ')' ::text) ::character varying))
-            AS desc_proveedor,
-         provee.nit,
-         provee.id_lugar,
-         lug.nombre AS lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar, 'pais' ::character varying
-         ) AS pais,
-         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
-          AS email,
-         provee.rotulo_comercial
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
-        provee.id_institucion
-       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo' ::text;
-
-/***********************************F-DEP-RAC-PARAM-0-07/04/2014****************************************/
   
 /***********************************I-DEP-JRR-PARAM-0-25/04/2014****************************************/
 
@@ -1312,133 +1125,39 @@ select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.2', 'no');
 
 
 
-/***********************************I-DEP-RAC-PARAM-0-19/05/2014****************************************/
-
-
---------------- SQL ---------------
-
-CREATE OR REPLACE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
-    codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    nit,
-    id_lugar,
-    lugar,
-    pais,
-    email,
-    rotulo_comercial)
-AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(
-         person.nombre_completo1) = btrim(provee.rotulo_comercial::text),
-          person.nombre_completo1::character varying, (((person.nombre_completo1
-           || ' (' ::text) || provee.rotulo_comercial::text) || ')' ::text)
-            ::character varying), pxp.f_iif(btrim(instit.nombre::text) = btrim(
-            provee.rotulo_comercial::text), instit.nombre, (((
-            instit.nombre::text || ' (' ::text) || btrim(
-            provee.rotulo_comercial::text)) || ')' ::text) ::character varying))
-             AS desc_proveedor,
-         provee.nit,
-         provee.id_lugar,
-         lug.nombre AS lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar, 'pais' ::character varying
-         ) AS pais,
-         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
-          AS email,
-         provee.rotulo_comercial
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
-        provee.id_institucion
-       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo' ::text;
-
-
-
-
-/***********************************F-DEP-RAC-PARAM-0-19/05/2014****************************************/
-
-
 
 /***********************************I-DEP-RAC-PARAM-0-29/05/2014****************************************/
 
---------------- SQL ---------------
 
-CREATE OR REPLACE VIEW param.vproveedor(
-    id_proveedor,
-    id_persona,
+CREATE OR REPLACE VIEW param.v_tmp_tipo_cc_raiz (
+    codigo_raiz,
+    descripcion_raiz,
+    id_tipo_cc_raiz,
+    control_techo,
+    control_partida,
+    ids,
+    id_tipo_cc,
+    id_tipo_cc_fk,
     codigo,
-    numero_sigma,
-    tipo,
-    id_institucion,
-    desc_proveedor,
-    desc_proveedor2,
-    nit,
-    id_lugar,
-    lugar,
-    pais,
-    email,
-    rotulo_comercial,
-    ap_paterno,
-    ap_materno,
-    nombre,
-    internacional,
-    autorizacion)
+    descripcion,
+    movimiento,
+    tipo_cc_padre1,
+    tipo_cc_padre2)
 AS
-  SELECT provee.id_proveedor,
-         provee.id_persona,
-         provee.codigo,
-         provee.numero_sigma,
-         provee.tipo,
-         provee.id_institucion,
-         pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(
-           person.nombre_completo1) = btrim(provee.rotulo_comercial::text),
-           person.nombre_completo1::character varying, (((
-           person.nombre_completo1 || ' '::text) || provee.rotulo_comercial::
-           text) || ' '::text)::character varying), pxp.f_iif(btrim(
-           instit.nombre::text) = btrim(provee.rotulo_comercial::text),
-           instit.nombre, (((instit.nombre::text || ' '::text) || btrim(
-           provee.rotulo_comercial::text)) || ' '::text)::character varying)) AS
-           desc_proveedor,
-         pxp.f_iif(provee.id_persona IS NOT NULL, pxp.f_iif(btrim(
-           person.nombre_completo1) = btrim(provee.rotulo_comercial::text),
-           person.nombre_completo1::character varying, (((
-           person.nombre_completo1 || ' ('::text) || provee.rotulo_comercial::
-           text) || ')'::text)::character varying), pxp.f_iif(btrim(
-           instit.nombre::text) = btrim(provee.rotulo_comercial::text),
-           instit.nombre, (((instit.nombre::text || ' ('::text) || btrim(
-           provee.rotulo_comercial::text)) || ')'::text)::character varying)) AS
-           desc_proveedor2,
-         provee.nit,
-         provee.id_lugar,
-         COALESCE(lug.nombre, ''::character varying)::character varying (100) AS
-           lugar,
-         param.f_obtener_padre_lugar(provee.id_lugar, 'pais'::character varying)
-           AS pais,
-         pxp.f_iif(provee.id_persona IS NOT NULL, person.correo, instit.email1)
-           AS email,
-         provee.rotulo_comercial,
-         person.ap_paterno,
-         person.ap_materno,
-         person.nombre,
-         provee.internacional,
-         array_to_string(provee.autorizacion, ','::text)::character varying AS
-           autorizacion
-  FROM param.tproveedor provee
-       LEFT JOIN segu.vpersona person ON person.id_persona = provee.id_persona
-       LEFT JOIN param.tinstitucion instit ON instit.id_institucion =
-         provee.id_institucion
-       LEFT JOIN param.tlugar lug ON lug.id_lugar = provee.id_lugar
-  WHERE provee.estado_reg::text = 'activo'::text;
+ SELECT vtipo_cc_raiz.codigo_raiz,
+    vtipo_cc_raiz.descripcion_raiz,
+    vtipo_cc_raiz.id_tipo_cc_raiz,
+    vtipo_cc_raiz.control_techo,
+    vtipo_cc_raiz.control_partida,
+    vtipo_cc_raiz.ids,
+    vtipo_cc_raiz.id_tipo_cc,
+    vtipo_cc_raiz.id_tipo_cc_fk,
+    vtipo_cc_raiz.codigo,
+    vtipo_cc_raiz.descripcion,
+    vtipo_cc_raiz.movimiento,
+    vtipo_cc_raiz.ids[1] AS tipo_cc_padre1,
+    vtipo_cc_raiz.ids[2] AS tipo_cc_padre2
+   FROM param.vtipo_cc_raiz;
 
 /***********************************F-DEP-RAC-PARAM-0-29/05/2014****************************************/
 
@@ -2257,11 +1976,6 @@ AS
 /***********************************F-DEP-FPC-PARAM-0-03/12/2017****************************************/
 
 
-/***********************************I-DEP-JRR-PARAM-0-30/11/2018****************************************/
-ALTER TABLE param.tproveedor_cta_bancaria
-  ADD CONSTRAINT fk_tproveedor_cta_bancaria__id_banco_beneficiario FOREIGN KEY (id_banco_beneficiario)
-    REFERENCES param.tinstitucion(id_institucion)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-    NOT DEFERRABLE;
-/***********************************F-DEP-JRR-PARAM-0-30/11/2018****************************************/
+
+
+

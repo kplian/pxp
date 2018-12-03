@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_tproveedor_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -174,7 +172,9 @@ BEGIN
                         provee.id_proceso_wf,
                         provee.id_estado_wf,
                         provee.nro_tramite,
-                        provee.estado
+                        provee.estado,
+						provee.internacional,
+                        array_to_string(provee.autorizacion,'','')::varchar as autorizacion
                         from param.tproveedor provee
 						inner join segu.tusuario usu1 on usu1.id_usuario = provee.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = provee.id_usuario_mod   
@@ -185,8 +185,9 @@ BEGIN
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
+		
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+--RAISE EXCEPTION '% ERROR ',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
 						
