@@ -5,6 +5,9 @@
  de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabla tsubsistema
  Autor:	Kplian
  Fecha:	01/07/2010
+* 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+*	#1				EGS					03/12/2018				se aumento funcion para solo mostrar estrucutura gui y insert gui activos
+ 
  */
 class ACTSubsistema extends ACTbase{    
 
@@ -78,8 +81,14 @@ class ACTSubsistema extends ACTbase{
 			exit;
 		}
 		
+		///#1	EGS	 03/12/2018	
+		if($this->objParam->getParametro('todo') == 'actual'){
+		$nombreArchivo = $this->crearArchivoExportacionActual($this->res);
+		}
+		else{		
 		$nombreArchivo = $this->crearArchivoExportacion($this->res);
-		
+		}
+		///#1	EGS	 03/12/2018	
 		$this->mensajeExito=new Mensaje();
 		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Se genero con exito el sql'.$nombreArchivo,
 										'Se genero con exito el sql'.$nombreArchivo,'control');
@@ -250,6 +259,66 @@ class ACTSubsistema extends ACTbase{
 		}
 		return $fileName;
 	}
+
+	///#1	EGS	 03/12/2018	
+	function crearArchivoExportacionActual($res) {
+		$data = $res -> getDatos();
+		$fileName = uniqid(md5(session_id()).'ExportDataSegu').'.sql';
+		//create file
+		$file = fopen("../../../reportes_generados/$fileName", 'w');
+		
+		$sw_gui = 0;
+		$sw_funciones=0;
+		$sw_procedimiento=0;
+		$sw_rol=0; 
+		$sw_rol_pro=0;
+		fwrite ($file,"----------------------------------\r\n".
+						  "--COPY LINES TO data.sql FILE  \r\n".
+						  "---------------------------------\r\n".
+						  "\r\n" );
+		foreach ($data as $row) {
+			 if ($row['tipo'] == 'gui' ) {
+			 	
+				if ($row['estado_reg'] == 'activo' && $row['visible'] == 'si' ) {
+	
+					fwrite ($file, 
+					"select pxp.f_insert_tgui ('". 
+							$row['nombre']."', '" . 
+							$row['descripcion']."', '" . 
+							$row['codigo_gui']."', '" . 
+							$row['visible']."', " . 
+							$row['orden_logico'].", '" . 
+							$row['ruta_archivo']."', " . 
+							$row['nivel'].", '" . 
+							$row['icono']."', '" . 
+							$row['clase_vista']."', '" . 
+							$row['subsistema']."');\r\n");
+					
+				}				
+				
+			}
+		}		
+		
+		
+		fwrite ($file,"----------------------------------\r\n".
+						  "--COPY LINES TO dependencies.sql FILE  \r\n".
+						  "---------------------------------\r\n".
+						  "\r\n" );
+		
+		foreach ($data as $row) {
+			if ($row['tipo'] == 'estructura_gui' ) {
+				if ($row['estado_reg'] == 'activo' && $row['visible'] == 'si') {
+					fwrite ($file, 
+						"select pxp.f_insert_testructura_gui ('".
+								$row['codigo_gui']."', '" . 
+								$row['fk_codigo_gui']."');\r\n");
+				}
+				
+			} 
+		}
+		return $fileName;
+	}
+	///#1	EGS	 03/12/2018	
 
 }
 

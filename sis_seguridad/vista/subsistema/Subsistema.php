@@ -5,6 +5,8 @@
 *@author KPLIAN (RAC)
 *@date 14-02-2011
 *@description  Vista para mostrar listado de subsistemas
+* 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+*	#1				EGS					03/12/2018				Se aumento opcion en menu solo para inserte gui y estructura gui 
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -155,6 +157,9 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
                    					text: 'Exportar Cambios Realizados', handler: this.expMenu, scope: this, argument : {todo:'no'}
                    				},{
                    					text: 'Exportar Todos los Datos de Seguridad', handler: this.expMenu, scope: this, argument : {todo : 'si'}
+                   				},
+                   				{
+                   					text: 'Exportar Todos los Datos Actuales', handler: this.expMenu, scope: this, argument : {todo : 'actual'} //#1	EGS	03/12/2018	
                    				}
                    				]
                    			}
