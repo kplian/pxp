@@ -1,10 +1,11 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_get_mensaje_err2 (
-  p_procedimientos character varying,
-  p_codigo_error character varying,
-  p_mensaje_error character varying
+  p_procedimientos varchar,
+  p_codigo_error varchar,
+  p_mensaje_error varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		pxp.f_get_mensaje_err2
@@ -62,7 +63,8 @@ begin
 
 end;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function f_get_mensaje_exi (OID = 304229) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

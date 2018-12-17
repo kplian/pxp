@@ -6,10 +6,10 @@ CREATE OR REPLACE FUNCTION pxp.f_add_dias_fecha (
 RETURNS date AS
 $body$
 /**************************************************************************
- SISTEMA:       PXP
+ SISTEMA:   	PXP
  FUNCION:     	pxp.f_add_dias_fecha
  DESCRIPCION:   Agrega la cantidad de días especificado a una fecha, pudiendo considerar días calendario o sólo días hábiles en función del p_tipo
- AUTOR:         RCM
+ AUTOR:      	RCM
  FECHA:         16/11/2017
  COMENTARIOS: 
 ***************************************************************************
@@ -21,13 +21,14 @@ $body$
 ***************************************************************************/
 DECLARE
 
-	v_nombre_funcion        text;
-    v_resp                  varchar;
-    v_fecha                 date;
-    v_fecha_ant             date;
-    v_sql                   varchar;
-    v_cant_dias_habiles     integer;
-    v_cant_dias_no_habiles  integer;
+	v_nombre_funcion    text;
+    v_resp              varchar;
+    v_fecha				date;
+    v_fecha_ant			date;
+    v_sql				varchar;
+    v_cant_dias_habiles integer;
+    v_cant_dias_no_habiles integer;
+    v_cont integer;
 
 BEGIN
 
@@ -47,15 +48,17 @@ BEGIN
         v_cant_dias_habiles = pxp.f_get_dias_habiles(p_fecha,v_fecha);
         v_cant_dias_no_habiles = p_cant_dias - v_cant_dias_habiles;
         
---        raise notice '@@@@fecha inicial: %, dias habiles: %, dias no habiles: % ',v_fecha,v_cant_dias_habiles,v_cant_dias_no_habiles;
-
-        while v_cant_dias_no_habiles > 0 loop
+  --      raise notice '@@@@fecha inicial: %, dias habiles: %, dias no habiles: % ',v_fecha,v_cant_dias_habiles,v_cant_dias_no_habiles;
+        v_cont=0;
+        while v_cant_dias_no_habiles > 0 and v_cont<10 loop
 	        --Reinicializa variable
             v_fecha_ant = v_fecha;
         	--Incremento de días hábiles
         	v_fecha = v_fecha_ant + (v_cant_dias_no_habiles||' day')::interval;
             v_cant_dias_habiles = pxp.f_get_dias_habiles(v_fecha_ant,v_fecha);
 	        v_cant_dias_no_habiles = v_cant_dias_no_habiles - v_cant_dias_habiles;
+    --        raise notice 'fecha_ant: %, fecha: %, dias habiles: %, dias no habiles: %',v_fecha_ant, v_fecha,v_cant_dias_habiles,v_cant_dias_no_habiles;
+            v_cont=v_cont+1;
         end loop;
     
     end if;
@@ -79,3 +82,4 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+

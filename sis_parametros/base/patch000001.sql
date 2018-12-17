@@ -2429,3 +2429,17 @@ CREATE INDEX tcentro_costo_idx ON param.tcentro_costo
 /***********************************F-SCP-AVQ-PARAM-0-01/12/2018*****************************************/
 
 
+/***********************************I-SCP-CAP-PARAM-0-06/12/2018*****************************************/
+
+ALTER TABLE param.talarma
+  ALTER COLUMN titulo TYPE VARCHAR(3000) COLLATE pg_catalog."default";
+
+--CREATE UNIQUE INDEX tconcepto_ingas_idx ON param.tconcepto_ingas
+--  USING btree (codigo COLLATE pg_catalog."default", estado_reg COLLATE pg_catalog."default");
+
+ALTER TABLE param.tproveedor
+  ALTER COLUMN codigo DROP NOT NULL;
+
+
+
+/***********************************F-SCP-CAP-PARAM-0-06/12/2018*****************************************/

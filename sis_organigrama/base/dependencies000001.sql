@@ -300,13 +300,6 @@ ALTER TABLE orga.tuo_funcionario
     
 /********************************************F-DEP-JRR-ORGA-0-24/01/2014********************************************/
 
-/*********************************I-DEP-JRR-ORGA-0-25/04/2014***********************************/
-select pxp.f_insert_testructura_gui ('ESTORG.2.1.2.1', 'ESTORG.2.1.2');
-select pxp.f_insert_testructura_gui ('FUNCIO.2.1', 'FUNCIO.2');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'ESTORG.2.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'FUNCIO.2.1', 'no');
-
-/*********************************F-DEP-JRR-ORGA-0-25/04/2014***********************************/
 
 
 /*********************************I-DEP-RAC-ORGA-0-25/05/2014***********************************/
@@ -416,25 +409,6 @@ ALTER TABLE orga.toficina_cuenta
 
 
 
-/*********************************I-DEP-RAC-ORGA-0-05/08/2014***********************************/
-select pxp.f_insert_testructura_gui ('OFICI.1', 'OFICI');
-select pxp.f_insert_testructura_gui ('ASIGINGEN', 'PROCRH');
-select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_INS', 'OFICI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_MOD', 'OFICI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_ELI', 'OFICI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_OFCU_SEL', 'OFICI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_INS', 'Interinos', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_SEL', 'Interinos', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'Interinos', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_MOD', 'Interinos', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_ELI', 'Interinos', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'ASIGINGEN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_INS', 'ASIGINGEN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_MOD', 'ASIGINGEN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_ELI', 'ASIGINGEN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_INT_SEL', 'ASIGINGEN', 'no');
-
-/*********************************F-DEP-RAC-ORGA-0-05/08/2014***********************************/
 
 
 /*********************************I-DEP-RAC-ORGA-0-19/08/2014***********************************/
@@ -603,6 +577,23 @@ AS
      JOIN orga.toficina of ON of.id_oficina = car.id_oficina
      JOIN param.tlugar lu ON lu.id_lugar = of.id_lugar
   WHERE uof.estado_reg::text = 'activo'::text;
+  
+  
+select pxp.f_insert_testructura_gui ('ESTORG', 'PARAMRH');
+select pxp.f_insert_testructura_gui ('FUNCIO', 'PROCRH');
+select pxp.f_insert_testructura_gui ('PARAMRH', 'ORGA');
+select pxp.f_insert_testructura_gui ('PROCRH', 'ORGA');
+select pxp.f_insert_testructura_gui ('REPRH', 'ORGA');
+select pxp.f_insert_testructura_gui ('ORGA', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('CARPCARG', 'PARAMRH');
+select pxp.f_insert_testructura_gui ('JERAPRO', 'CARPCARG');
+select pxp.f_insert_testructura_gui ('ESCASAL', 'CARPCARG');
+select pxp.f_insert_testructura_gui ('NIVORGA', 'PARAMRH');
+select pxp.f_insert_testructura_gui ('ORTIPCON', 'CARPCARG');
+select pxp.f_insert_testructura_gui ('OFICI', 'PARAMRH');
+select pxp.f_insert_testructura_gui ('Interinos', 'PROCRH');
+select pxp.f_insert_testructura_gui ('NIVESPE', 'PARAMRH');
+select pxp.f_insert_testructura_gui ('ASIGINGEN', 'PROCRH');
 
 
 

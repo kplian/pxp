@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION pxp.months_between (
   date,
   date
@@ -13,3 +11,4 @@ IMMUTABLE
 RETURNS NULL ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+

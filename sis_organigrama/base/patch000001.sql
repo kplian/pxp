@@ -820,6 +820,42 @@ ALTER TABLE orga.tfuncionario_cat_prof
   
 /*****************************F-SCP-RAC-ORGA-0-01/12/2018*************/
 
+/*****************************I-SCP-CAP-ORGA-0-06/12/2018*************/
+ALTER TABLE orga.tcargo_tmp
+  ALTER COLUMN migrado DROP DEFAULT;
+
+ALTER TABLE orga.tcargo_tmp
+  ALTER COLUMN migrado TYPE VARCHAR(10) COLLATE pg_catalog."default";
+
+ALTER TABLE orga.tcargo_tmp
+  ALTER COLUMN migrado SET DEFAULT 'no'::character varying;
+
+ALTER TABLE orga.tcargo_tmp
+  ADD COLUMN escala VARCHAR(10);
+
+ALTER TABLE orga.tcargo_tmp
+  ADD COLUMN fecha_ingreso DATE;
+
+ALTER TABLE orga.tcargo_tmp
+  ADD COLUMN oficina VARCHAR(200);
+
+ALTER TABLE orga.tfuncionario_cat_prof
+  ADD CONSTRAINT tfuncionario_cat_prof_pkey 
+    PRIMARY KEY (id_funcionario_cat_prof) NOT DEFERRABLE;
+
+ALTER TABLE orga.tfuncionario_tmp
+  ADD COLUMN usuario VARCHAR(100);
+
+ALTER TABLE orga.tuo_tmp
+  ADD COLUMN nivel VARCHAR(100);
+
+------------- SQL ---------------
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN id_auxiliar INTEGER;
+
+COMMENT ON COLUMN orga.tfuncionario.id_auxiliar
+IS 'ahce referencia al id_auciliar_contable del funcionario, es de uso opcional';
 
 
-
+/*****************************F-SCP-CAP-ORGA-0-06/12/2018*************/
