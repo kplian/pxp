@@ -50,6 +50,8 @@ select pxp.f_insert_tgui ('Estados por momento', 'Estados por momento', 'INITRAH
 select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'INITRAHP.4.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 4, '', 'subirFotoPersona', 'WF');
 select pxp.f_insert_tgui ('Personas', 'Personas', 'INITRAHP.5.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 4, '', 'persona', 'WF');
 select pxp.f_insert_tgui ('Subir foto', 'Subir foto', 'INITRAHP.5.1.1', 'no', 0, 'sis_seguridad/vista/persona/subirFotoPersona.php', 5, '', 'subirFotoPersona', 'WF');
+select pxp.f_insert_tgui ('Help Desk', 'Help Desk', 'INITRAHP', 'si', 100, 'sis_workflow/vista/proceso_wf/ProcesoWfIniHelpDesk.php', 1, '../../../lib/imagenes/help_desk.png', 'ProcesoWfIniHD', 'PXP');
+select pxp.f_insert_tgui ('Asignar interino', 'Asigna interinos', 'ASINT', 'si', 105, 'sis_organigrama/vista/interinato/AsignarInterino.php', 1, '', 'AsignarInterino', 'PXP');
 
 /****************************F-DAT-JRR-PXP-0-25/04/2014******************/
 
@@ -77,9 +79,7 @@ select pxp.f_insert_tgui ('Aplicar Interinato', 'Aplicar interinato, asume lor r
 --COPY LINES TO data.sql FILE  
 ---------------------------------
 
- select pxp.f_insert_tgui ('Help Desk', 'Help Desk', 'INITRAHP', 'si', 100, 'sis_workflow/vista/proceso_wf/ProcesoWfIniHelpDesk.php', 1, '../../../lib/imagenes/help_desk.png', 'ProcesoWfIniHD', 'PXP');
- select pxp.f_insert_tgui ('Asignar interino', 'Asigna interinos', 'ASINT', 'si', 105, 'sis_organigrama/vista/interinato/AsignarInterino.php', 1, '', 'AsignarInterino', 'PXP');
-
+ 
 
 /****************************F-DAT-RAC-PXP-0-05/06/2014******************/
 
@@ -88,16 +88,8 @@ select pxp.f_insert_tgui ('Aplicar Interinato', 'Aplicar interinato, asume lor r
 
 
 INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
-VALUES (E'pxp_array_lista_blanca', E'PM_CONACUSE_MOD', E'separa por comas sin espacion, los nombres de las transacciones que se omiten en la verificacion de permisos');
+VALUES (E'pxp_array_lista_blanca', E'PM_CONACUSE_MOD', E'separa por comas sin espacios, los nombres de las transacciones que se omiten en la verificacion de permisos');
 
 /****************************F-DAT-RAC-PXP-0-04/05/2015******************/
 
-/****************************I-DAT-EGS-PXP-0-30/08/2018******************/
-INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
-VALUES
- (E'v_cobro_comun', E'CBRCMN,CBRCMNRE', E'codigo cobro comun'),
- (E'v_cobro_retencion_garantia', E'CBRCMNRG,CBRCMNRGRE', E'codigo cobro con retencion de garantia'),
- (E'v_cobro_anticipo', E'CBRCMNAT,CBRCMNATRE', E'codigo cobro anticipo');
-
-/****************************F-DAT-EGS-PXP-0-30/09/2018******************/
 

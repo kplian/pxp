@@ -215,9 +215,9 @@ AS
 
 -- Definition for index fk_tdepto__id_subsistema 
 
-ALTER TABLE ONLY param.tdepto
-    ADD CONSTRAINT fk_tdepto__id_subsistema
-    FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) MATCH FULL;
+--ALTER TABLE ONLY param.tdepto
+--    ADD CONSTRAINT fk_tdepto__id_subsistema
+--    FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) MATCH FULL;
     
     
 -- Definition for index fk_param.tdepto_uo__id_depto  
@@ -402,187 +402,7 @@ add constraint fk_tdocumento_fiscal__id_plantilla foreign key (id_plantilla)
 references param.tplantilla(id_plantilla);
 /***********************************F-DEP-RCM-PARAM-85-03/04/2013*****************************************/
 
-/***********************************I-DEP-AAO-PARAM-72-23/04/2013*****************************************/
-select pxp.f_insert_testructura_gui ('DEPTO.1', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1', 'DEPTO.1');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.1', 'DEPTO.1.1');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.2', 'DEPTO.1.1');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.1.1', 'DEPTO.1.1.1');
-select pxp.f_insert_testructura_gui ('LUG.1', 'LUG');
-select pxp.f_insert_testructura_gui ('PROVEE.1', 'PROVEE');
-select pxp.f_insert_testructura_gui ('GESTIO.1', 'GESTIO');
-select pxp.f_insert_testructura_gui ('EMP.1', 'EMP');
-select pxp.f_insert_tprocedimiento_gui ('PM_ALARM_INS', 'ALARM', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ALARM_MOD', 'ALARM', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ALARM_ELI', 'ALARM', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ALARMCOR_SEL', 'ALARM', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ALARM_SEL', 'ALARM', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPPTO_INS', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPPTO_MOD', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPPTO_ELI', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPPTO_SEL', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUARI_SEL', 'DEPTO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUSU_INS', 'DEPTO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUSU_MOD', 'DEPTO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUSU_ELI', 'DEPTO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUSU_SEL', 'DEPTO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_CLASIF_SEL', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_ROL_SEL', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUARI_INS', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUARI_MOD', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUARI_ELI', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUARI_SEL', 'DEPTO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'DEPTO.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'DEPTO.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'DEPTO.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'DEPTO.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'DEPTO.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_ROL_SEL', 'DEPTO.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUROL_INS', 'DEPTO.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUROL_MOD', 'DEPTO.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUROL_ELI', 'DEPTO.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_USUROL_SEL', 'DEPTO.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LUG_INS', 'LUG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LUG_MOD', 'LUG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LUG_ELI', 'LUG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LUG_ARB_SEL', 'LUG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_INS', 'INSTIT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_MOD', 'INSTIT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_ELI', 'INSTIT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'INSTIT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROY_INS', 'PRO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROY_MOD', 'PRO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROY_ELI', 'PRO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROY_SEL', 'PRO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_SEL', 'PROVEE', 'no');
---select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LUG_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LUG_ARB_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_INS', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_MOD', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_ELI', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROVEE_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROVEEV_SEL', 'PROVEE', 'no');
---select pxp.f_insert_tprocedimiento_gui ('SAL_ITEM_SEL', 'PROVEE.1', 'no');
---select pxp.f_insert_tprocedimiento_gui ('SAL_ITEMNOTBASE_SEL', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_SEL', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PRITSE_INS', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PRITSE_MOD', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PRITSE_ELI', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PRITSE_SEL', 'PROVEE.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'DOCUME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCUME_INS', 'DOCUME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCUME_MOD', 'DOCUME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCUME_ELI', 'DOCUME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCUME_SEL', 'DOCUME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'CONALA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ALATABLA_SEL', 'CONALA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONALA_INS', 'CONALA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONALA_MOD', 'CONALA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONALA_ELI', 'CONALA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONALA_SEL', 'CONALA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_UME_INS', 'UME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_UME_MOD', 'UME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_UME_ELI', 'UME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_UME_SEL', 'UME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_EMP_SEL', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_INS', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_MOD', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_ELI', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_SEL', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_INS', 'GESTIO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_MOD', 'GESTIO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_ELI', 'GESTIO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_SEL', 'GESTIO.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_INS', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_MOD', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_ELI', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_SEL', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'CATA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_INS', 'PERIOD', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_MOD', 'PERIOD', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_ELI', 'PERIOD', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PER_SEL', 'PERIOD', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_MONEDA_INS', 'MONPAR', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_MONEDA_MOD', 'MONPAR', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_MONEDA_ELI', 'MONPAR', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_MONEDA_SEL', 'MONPAR', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'PACATI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_INS', 'PACATI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_MOD', 'PACATI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_ELI', 'PACATI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'PACATI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_INS', 'SERVIC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_MOD', 'SERVIC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_ELI', 'SERVIC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SERVIC_SEL', 'SERVIC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_APRO_INS', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_APRO_MOD', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_APRO_ELI', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_APRO_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_OBTARPOBA_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_fin_INS', 'FIN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_fin_MOD', 'FIN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_fin_ELI', 'FIN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_fin_SEL', 'FIN', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_REGIO_INS', 'REGIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_REGIO_MOD', 'REGIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_REGIO_ELI', 'REGIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_REGIO_SEL', 'REGIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROG_INS', 'PROG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROG_MOD', 'PROG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROG_ELI', 'PROG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PROG_SEL', 'PROG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ACT_INS', 'ACT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ACT_MOD', 'ACT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ACT_ELI', 'ACT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ACT_SEL', 'ACT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PPA_INS', 'PPA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PPA_MOD', 'PPA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PPA_ELI', 'PPA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PPA_SEL', 'PPA', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_INS', 'FRPP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_MOD', 'FRPP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_ELI', 'FRPP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'FRPP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_EMP_INS', 'EMP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_EMP_MOD', 'EMP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_EMP_ELI', 'EMP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_EMP_SEL', 'EMP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_LOGMOD_IME', 'EMP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONIG_INS', 'CONIG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONIG_MOD', 'CONIG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONIG_ELI', 'CONIG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONIG_SEL', 'CONIG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_INS', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_MOD', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_ELI', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_MONEDA_SEL', 'TCB', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_TCB_INS', 'TCB', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_TCB_MOD', 'TCB', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_TCB_ELI', 'TCB', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_TCB_SEL', 'TCB', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ASIS_INS', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ASIS_MOD', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ASIS_ELI', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_ASIS_SEL', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PLT_SEL', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCFIS_INS', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCFIS_MOD', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCFIS_ELI', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCFIS_SEL', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_OBTNIT_GET', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PLT_INS', 'PLANT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PLT_MOD', 'PLANT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PLT_ELI', 'PLANT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PLT_SEL', 'PLANT', 'no');
-/***********************************F-DEP-AAO-PARAM-72-23/04/2013*****************************************/
+
 /***********************************I-DEP-JRR-PARAM-0-29/04/2013*****************************************/
 
 ALTER TABLE ONLY param.tdepto_ep
@@ -819,14 +639,6 @@ AS
 /***********************************F-DEP-RAC-PARAM-0-12/12/2013*****************************************/
 
 
-
-
-
-
-
-
-
-
 /***********************************I-DEP-JRR-PARAM-0-24/01/2014****************************************/
 
 ALTER TABLE param.tinstitucion
@@ -834,332 +646,10 @@ ALTER TABLE param.tinstitucion
 /***********************************F-DEP-JRR-PARAM-0-24/01/2014****************************************/
 
 
-  
-/***********************************I-DEP-JRR-PARAM-0-25/04/2014****************************************/
-
-select pxp.f_insert_testructura_gui ('DEPTO.2', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.3', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.4', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.5', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.6', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.3', 'DEPTO.1.1');
-select pxp.f_insert_testructura_gui ('INSTIT.1', 'INSTIT');
-select pxp.f_insert_testructura_gui ('INSTIT.1.1', 'INSTIT.1');
-select pxp.f_insert_testructura_gui ('PROVEE.2', 'PROVEE');
-select pxp.f_insert_testructura_gui ('PROVEE.3', 'PROVEE');
-select pxp.f_insert_testructura_gui ('PROVEE.2.1', 'PROVEE.2');
-select pxp.f_insert_testructura_gui ('PROVEE.3.1', 'PROVEE.3');
-select pxp.f_insert_testructura_gui ('UME.1', 'UME');
-select pxp.f_insert_testructura_gui ('GESTIO.2', 'GESTIO');
-select pxp.f_insert_testructura_gui ('GESTIO.1.1', 'GESTIO.1');
-select pxp.f_insert_testructura_gui ('PERIOD.1', 'PERIOD');
-select pxp.f_insert_testructura_gui ('APROC.1', 'APROC');
-select pxp.f_insert_testructura_gui ('APROC.1.1', 'APROC.1');
-select pxp.f_insert_testructura_gui ('APROC.1.2', 'APROC.1');
-select pxp.f_insert_testructura_gui ('APROC.1.1.1', 'APROC.1.1');
-select pxp.f_insert_testructura_gui ('APROC.1.1.1.1', 'APROC.1.1.1');
-select pxp.f_insert_testructura_gui ('APROC.1.1.1.1.1', 'APROC.1.1.1.1');
-select pxp.f_insert_testructura_gui ('CONIG.1', 'CONIG');
-select pxp.f_insert_testructura_gui ('ASI.1', 'ASI');
-select pxp.f_insert_testructura_gui ('ASI.2', 'ASI');
-select pxp.f_insert_testructura_gui ('ASI.3', 'ASI');
-select pxp.f_insert_testructura_gui ('ASI.1.1', 'ASI.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2', 'ASI.1');
-select pxp.f_insert_testructura_gui ('ASI.1.1.1', 'ASI.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.1.2', 'ASI.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1', 'ASI.1.2');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1', 'ASI.1.2.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.2', 'ASI.1.2.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1', 'ASI.1.2.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1.1', 'ASI.1.2.1.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1.1.1', 'ASI.1.2.1.1.1.1');
-select pxp.f_insert_testructura_gui ('DF.1', 'DF');
-select pxp.f_insert_testructura_gui ('GQP.1', 'GQP');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUSUCOMB_SEL', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPFILUSU_SEL', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPFILEPUO_SEL', 'DEPTO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GRU_SEL', 'DEPTO.1.1.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SG_UEP_INS', 'DEPTO.1.1.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SG_UEP_MOD', 'DEPTO.1.1.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SG_UEP_ELI', 'DEPTO.1.1.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SG_UEP_SEL', 'DEPTO.1.1.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUO_INS', 'DEPTO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUO_MOD', 'DEPTO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUO_ELI', 'DEPTO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEPUO_SEL', 'DEPTO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'DEPTO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'DEPTO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEEP_INS', 'DEPTO.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEEP_MOD', 'DEPTO.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEEP_ELI', 'DEPTO.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DEEP_SEL', 'DEPTO.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'DEPTO.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DUE_INS', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DUE_MOD', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DUE_ELI', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DUE_SEL', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'DEPTO.4', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_DOCUME_SEL', 'DEPTO.5', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FIR_INS', 'DEPTO.5', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FIR_MOD', 'DEPTO.5', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FIR_ELI', 'DEPTO.5', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FIR_SEL', 'DEPTO.5', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'DEPTO.5', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'INSTIT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INSTIT', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'INSTIT.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'INSTIT.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'INSTIT.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'INSTIT.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'INSTIT.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'PROVEE', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'PROVEE.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'PROVEE.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'PROVEE.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'PROVEE.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'PROVEE.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_INS', 'PROVEE.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_MOD', 'PROVEE.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_ELI', 'PROVEE.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'PROVEE.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'PROVEE.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'PROVEE.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'PROVEE.3.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'PROVEE.3.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'PROVEE.3.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'PROVEE.3.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'UME', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_INS', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_MOD', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_ELI', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_SEL', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'UME.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PERSUB_SIN', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_MONEDA_SEL', 'GESTIO', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_INS', 'GESTIO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_MOD', 'GESTIO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_ELI', 'GESTIO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_SEL', 'GESTIO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SWESTPE_MOD', 'GESTIO.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_INS', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_MOD', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_ELI', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_SEL', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'GESTIO.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_INS', 'PERIOD.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_MOD', 'PERIOD.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_ELI', 'PERIOD.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PESU_SEL', 'PERIOD.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_SWESTPE_MOD', 'PERIOD.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('WF_PROMAC_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOM_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'APROC', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_INS', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_MOD', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_ELI', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_SEL', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'APROC.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_INS', 'APROC.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_MOD', 'APROC.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_ELI', 'APROC.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_SEL', 'APROC.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'APROC.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_INS', 'APROC.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_MOD', 'APROC.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_ELI', 'APROC.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'APROC.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'APROC.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'APROC.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'APROC.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'APROC.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'APROC.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'APROC.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'APROC.1.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'APROC.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'APROC.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'APROC.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'APROC.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CONIGPP_SEL', 'CONIG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'CONIG', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_INS', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_MOD', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_ELI', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_SEL', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'CONIG.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOM_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'CCOST', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_SEL', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'ASI', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'ASI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_ESTRUO_SEL', 'ASI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_NIVORG_SEL', 'ASI.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_TIPCON_SEL', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_OFI_SEL', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_TCARGO_SEL', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_ESCSAL_SEL', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARGO_INS', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARGO_MOD', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARGO_ELI', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARGO_SEL', 'ASI.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOM_SEL', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARPRE_INS', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARPRE_MOD', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARPRE_ELI', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARPRE_SEL', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_SEL', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_SEL', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ASI.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOM_SEL', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARCC_INS', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARCC_MOD', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARCC_ELI', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARCC_SEL', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GES_SEL', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CEC_SEL', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ASI.1.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_CARGO_SEL', 'ASI.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_SEL', 'ASI.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'ASI.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_INS', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_MOD', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_ELI', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_SEL', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'ASI.1.2.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_INS', 'ASI.1.2.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_MOD', 'ASI.1.2.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_ELI', 'ASI.1.2.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('OR_FUNCUE_SEL', 'ASI.1.2.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'ASI.1.2.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_INS', 'ASI.1.2.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_MOD', 'ASI.1.2.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_ELI', 'ASI.1.2.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_INSTIT_SEL', 'ASI.1.2.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'ASI.1.2.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'ASI.1.2.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'ASI.1.2.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'ASI.1.2.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'ASI.1.2.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'ASI.1.2.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_UPFOTOPER_MOD', 'ASI.1.2.1.1.1.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_INS', 'ASI.1.2.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_MOD', 'ASI.1.2.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_ELI', 'ASI.1.2.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'ASI.1.2.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_INS', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_MOD', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_ELI', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIO_SEL', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_FUNCIOCAR_SEL', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSON_SEL', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_PERSONMIN_SEL', 'ASI.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_INS', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_MOD', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_ELI', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_SEL', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'ASI.3', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'DF', 'no');
-select pxp.f_insert_tprocedimiento_gui ('SEG_SUBSIS_SEL', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_PACATI_SEL', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_INS', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_MOD', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_ELI', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CAT_SEL', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CATCMB_SEL', 'DF.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GAL_INS', 'GAL', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GAL_MOD', 'GAL', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GAL_ELI', 'GAL', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GAL_SEL', 'GAL', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GRU_INS', 'GQP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GRU_MOD', 'GQP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GRU_ELI', 'GQP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GRU_SEL', 'GQP', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GQP_INS', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GQP_MOD', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GQP_ELI', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_GQP_SEL', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_FRPP_SEL', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_UO_SEL', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('RH_INIUOARB_SEL', 'GQP.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.1', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CECCOMFU_SEL', 'ESTORG.1.2', 'no');
-select pxp.f_insert_tprocedimiento_gui ('PM_CCFILDEP_SEL', 'ESTORG.1.2', 'no');
-
-/***********************************F-DEP-JRR-PARAM-0-25/04/2014****************************************/
 
 
 
 
-
-/***********************************I-DEP-RAC-PARAM-0-29/05/2014****************************************/
-
-
-CREATE OR REPLACE VIEW param.v_tmp_tipo_cc_raiz (
-    codigo_raiz,
-    descripcion_raiz,
-    id_tipo_cc_raiz,
-    control_techo,
-    control_partida,
-    ids,
-    id_tipo_cc,
-    id_tipo_cc_fk,
-    codigo,
-    descripcion,
-    movimiento,
-    tipo_cc_padre1,
-    tipo_cc_padre2)
-AS
- SELECT vtipo_cc_raiz.codigo_raiz,
-    vtipo_cc_raiz.descripcion_raiz,
-    vtipo_cc_raiz.id_tipo_cc_raiz,
-    vtipo_cc_raiz.control_techo,
-    vtipo_cc_raiz.control_partida,
-    vtipo_cc_raiz.ids,
-    vtipo_cc_raiz.id_tipo_cc,
-    vtipo_cc_raiz.id_tipo_cc_fk,
-    vtipo_cc_raiz.codigo,
-    vtipo_cc_raiz.descripcion,
-    vtipo_cc_raiz.movimiento,
-    vtipo_cc_raiz.ids[1] AS tipo_cc_padre1,
-    vtipo_cc_raiz.ids[2] AS tipo_cc_padre2
-   FROM param.vtipo_cc_raiz;
-
-/***********************************F-DEP-RAC-PARAM-0-29/05/2014****************************************/
 
 /***********************************I-DEP-JRR-PARAM-0-23/10/2014****************************************/
 ALTER TABLE param.tproveedor
@@ -1258,132 +748,6 @@ ALTER TABLE param.tproveedor_cta_bancaria
     NOT DEFERRABLE;
 
 /***********************************F-DEP-GSS-PARAM-0-04/11/2015****************************************/
-
-/***********************************I-DEP-RAC-PARAM-0-12/11/2015****************************************/
-
-select pxp.f_insert_testructura_gui ('PARAM', 'SISTEMA');
-select pxp.f_insert_testructura_gui ('CCOM', 'PARAM');
-select pxp.f_insert_testructura_gui ('CEP', 'PARAM');
-select pxp.f_delete_testructura_gui ('CONALA', 'PARAM');
-select pxp.f_delete_testructura_gui ('DOCUME', 'PARAM');
-select pxp.f_delete_testructura_gui ('DEPTO', 'PARAM');
-select pxp.f_delete_testructura_gui ('ALARM', 'PARAM');
-select pxp.f_delete_testructura_gui ('PROVEE', 'PARAM');
-select pxp.f_delete_testructura_gui ('INSTIT', 'PARAM');
-select pxp.f_delete_testructura_gui ('LUG', 'PARAM');
-select pxp.f_delete_testructura_gui ('MONPAR', 'PARAM');
-select pxp.f_delete_testructura_gui ('PERIOD', 'PARAM');
-select pxp.f_delete_testructura_gui ('CATA', 'PARAM');
-select pxp.f_delete_testructura_gui ('GESTIO', 'PARAM');
-select pxp.f_delete_testructura_gui ('UME', 'PARAM');
-select pxp.f_delete_testructura_gui ('PACATI', 'PARAM');
-select pxp.f_delete_testructura_gui ('SERVIC', 'PARAM');
-select pxp.f_insert_testructura_gui ('APROC', 'CCOM');
-select pxp.f_insert_testructura_gui ('PRO', 'CEP');
-select pxp.f_insert_testructura_gui ('FIN', 'CEP');
-select pxp.f_insert_testructura_gui ('REGIO', 'CEP');
-select pxp.f_insert_testructura_gui ('PROG', 'CEP');
-select pxp.f_insert_testructura_gui ('ACT', 'CEP');
-select pxp.f_insert_testructura_gui ('PPA', 'CEP');
-select pxp.f_insert_testructura_gui ('FRPP', 'CEP');
-select pxp.f_delete_testructura_gui ('EMP', 'PARAM');
-select pxp.f_insert_testructura_gui ('CONIG', 'CCOM');
-select pxp.f_delete_testructura_gui ('CCOST', 'PARAM');
-select pxp.f_delete_testructura_gui ('TCB', 'PARAM');
-select pxp.f_delete_testructura_gui ('ASI', 'PARAM');
-select pxp.f_delete_testructura_gui ('DF', 'PARAM');
-select pxp.f_delete_testructura_gui ('PLANT', 'PARAM');
-select pxp.f_delete_testructura_gui ('GAL', 'PARAM');
-select pxp.f_insert_testructura_gui ('GQP', 'CEP');
-select pxp.f_insert_testructura_gui ('DEPTO.1', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1', 'DEPTO.1');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.1', 'DEPTO.1.1');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.2', 'DEPTO.1.1');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.1.1', 'DEPTO.1.1.1');
-select pxp.f_insert_testructura_gui ('LUG.1', 'LUG');
-select pxp.f_insert_testructura_gui ('PROVEE.1', 'PROVEE');
-select pxp.f_insert_testructura_gui ('GESTIO.1', 'GESTIO');
-select pxp.f_insert_testructura_gui ('EMP.1', 'EMP');
-select pxp.f_insert_testructura_gui ('DEPTO.2', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.3', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.4', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.5', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.6', 'DEPTO');
-select pxp.f_insert_testructura_gui ('DEPTO.1.1.3', 'DEPTO.1.1');
-select pxp.f_insert_testructura_gui ('INSTIT.1', 'INSTIT');
-select pxp.f_insert_testructura_gui ('INSTIT.1.1', 'INSTIT.1');
-select pxp.f_insert_testructura_gui ('PROVEE.2', 'PROVEE');
-select pxp.f_insert_testructura_gui ('PROVEE.3', 'PROVEE');
-select pxp.f_insert_testructura_gui ('PROVEE.2.1', 'PROVEE.2');
-select pxp.f_insert_testructura_gui ('PROVEE.3.1', 'PROVEE.3');
-select pxp.f_insert_testructura_gui ('UME.1', 'UME');
-select pxp.f_insert_testructura_gui ('GESTIO.2', 'GESTIO');
-select pxp.f_insert_testructura_gui ('GESTIO.1.1', 'GESTIO.1');
-select pxp.f_insert_testructura_gui ('PERIOD.1', 'PERIOD');
-select pxp.f_insert_testructura_gui ('APROC.1', 'APROC');
-select pxp.f_insert_testructura_gui ('APROC.1.1', 'APROC.1');
-select pxp.f_insert_testructura_gui ('APROC.1.2', 'APROC.1');
-select pxp.f_insert_testructura_gui ('APROC.1.1.1', 'APROC.1.1');
-select pxp.f_insert_testructura_gui ('APROC.1.1.1.1', 'APROC.1.1.1');
-select pxp.f_insert_testructura_gui ('APROC.1.1.1.1.1', 'APROC.1.1.1.1');
-select pxp.f_insert_testructura_gui ('CONIG.1', 'CONIG');
-select pxp.f_insert_testructura_gui ('ASI.1', 'ASI');
-select pxp.f_insert_testructura_gui ('ASI.2', 'ASI');
-select pxp.f_insert_testructura_gui ('ASI.3', 'ASI');
-select pxp.f_insert_testructura_gui ('ASI.1.1', 'ASI.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2', 'ASI.1');
-select pxp.f_insert_testructura_gui ('ASI.1.1.1', 'ASI.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.1.2', 'ASI.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1', 'ASI.1.2');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1', 'ASI.1.2.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.2', 'ASI.1.2.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1', 'ASI.1.2.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1.1', 'ASI.1.2.1.1.1');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.1.1.1.1', 'ASI.1.2.1.1.1.1');
-select pxp.f_insert_testructura_gui ('DF.1', 'DF');
-select pxp.f_insert_testructura_gui ('GQP.1', 'GQP');
-select pxp.f_insert_testructura_gui ('DEPTO.1.2', 'DEPTO.1');
-select pxp.f_insert_testructura_gui ('PROVEE.3.1.1', 'PROVEE.3.1');
-select pxp.f_insert_testructura_gui ('APROC.1.2.1', 'APROC.1.2');
-select pxp.f_insert_testructura_gui ('ASI.1.2.1.2.1', 'ASI.1.2.1.2');
-select pxp.f_insert_testructura_gui ('ASI.2.1', 'ASI.2');
-select pxp.f_insert_testructura_gui ('ASI.2.2', 'ASI.2');
-select pxp.f_insert_testructura_gui ('ASI.2.1.1', 'ASI.2.1');
-select pxp.f_insert_testructura_gui ('ASI.2.1.1.1', 'ASI.2.1.1');
-select pxp.f_insert_testructura_gui ('ASI.2.1.1.1.1', 'ASI.2.1.1.1');
-select pxp.f_insert_testructura_gui ('ASI.2.2.1', 'ASI.2.2');
-select pxp.f_insert_testructura_gui ('DEPTO.7', 'DEPTO');
-select pxp.f_delete_testructura_gui ('ENT', 'PARAM');
-select pxp.f_insert_testructura_gui ('PROVEE', 'CCOM');
-select pxp.f_insert_testructura_gui ('ASI', 'CCOM');
-select pxp.f_insert_testructura_gui ('MNDS', 'PARAM');
-select pxp.f_insert_testructura_gui ('MONPAR', 'MNDS');
-select pxp.f_insert_testructura_gui ('TCB', 'MNDS');
-select pxp.f_insert_testructura_gui ('ALRMS', 'PARAM');
-select pxp.f_insert_testructura_gui ('ALARM', 'ALRMS');
-select pxp.f_insert_testructura_gui ('GAL', 'ALRMS');
-select pxp.f_insert_testructura_gui ('EMPS', 'PARAM');
-select pxp.f_insert_testructura_gui ('ENT', 'EMPS');
-select pxp.f_insert_testructura_gui ('EMP', 'EMPS');
-select pxp.f_insert_testructura_gui ('DEPTO', 'EMPS');
-select pxp.f_insert_testructura_gui ('GESTIO', 'EMPS');
-select pxp.f_insert_testructura_gui ('PERIOD', 'EMPS');
-select pxp.f_insert_testructura_gui ('CCOST', 'CEP');
-select pxp.f_insert_testructura_gui ('CONALA', 'ALRMS');
-select pxp.f_insert_testructura_gui ('CTLGS', 'PARAM');
-select pxp.f_insert_testructura_gui ('CATA', 'CTLGS');
-select pxp.f_insert_testructura_gui ('PACATI', 'CTLGS');
-select pxp.f_insert_testructura_gui ('OTROS', 'PARAM');
-select pxp.f_insert_testructura_gui ('PLANT', 'OTROS');
-select pxp.f_insert_testructura_gui ('DF', 'OTROS');
-select pxp.f_insert_testructura_gui ('UME', 'OTROS');
-select pxp.f_insert_testructura_gui ('INSTIT', 'OTROS');
-select pxp.f_insert_testructura_gui ('LUG', 'OTROS');
-select pxp.f_insert_testructura_gui ('DOCUME', 'OTROS');
-select pxp.f_insert_testructura_gui ('SERVIC', 'OTROS');
-select pxp.f_insert_testructura_gui ('COMAL', 'ALRMS');
-
-/***********************************F-DEP-RAC-PARAM-0-12/11/2015****************************************/
 
 
 
@@ -1876,13 +1240,6 @@ EXECUTE PROCEDURE param.ftrig_talarma();
 
 /***********************************F-DEP-FFP-PARAM-0-11/07/2017****************************************/
 
-/***********************************I-DEP-FFP-PARAM-0-12/07/2017****************************************/
-
-
-select pxp.f_insert_testructura_gui ('WSME', 'ALRMS');
-
-/***********************************F-DEP-FFP-PARAM-0-12/07/2017****************************************/
-
 
 /***********************************I-DEP-FPC-PARAM-0-03/12/2017****************************************/
 ALTER TABLE param.tinstitucion_persona
@@ -1974,6 +1331,101 @@ AS
     
        
 /***********************************F-DEP-FPC-PARAM-0-03/12/2017****************************************/
+
+
+/***********************************I-DEP-RAC-PARAM-0-29/05/2018****************************************/
+
+
+CREATE OR REPLACE VIEW param.v_tmp_tipo_cc_raiz (
+    codigo_raiz,
+    descripcion_raiz,
+    id_tipo_cc_raiz,
+    control_techo,
+    control_partida,
+    ids,
+    id_tipo_cc,
+    id_tipo_cc_fk,
+    codigo,
+    descripcion,
+    movimiento,
+    tipo_cc_padre1,
+    tipo_cc_padre2)
+AS
+ SELECT vtipo_cc_raiz.codigo_raiz,
+    vtipo_cc_raiz.descripcion_raiz,
+    vtipo_cc_raiz.id_tipo_cc_raiz,
+    vtipo_cc_raiz.control_techo,
+    vtipo_cc_raiz.control_partida,
+    vtipo_cc_raiz.ids,
+    vtipo_cc_raiz.id_tipo_cc,
+    vtipo_cc_raiz.id_tipo_cc_fk,
+    vtipo_cc_raiz.codigo,
+    vtipo_cc_raiz.descripcion,
+    vtipo_cc_raiz.movimiento,
+    vtipo_cc_raiz.ids[1] AS tipo_cc_padre1,
+    vtipo_cc_raiz.ids[2] AS tipo_cc_padre2
+   FROM param.vtipo_cc_raiz;
+   
+
+select pxp.f_insert_testructura_gui ('PARAM', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('CCOM', 'PARAM');
+select pxp.f_insert_testructura_gui ('CEP', 'PARAM');
+select pxp.f_insert_testructura_gui ('APROC', 'CCOM');
+select pxp.f_insert_testructura_gui ('FIN', 'CEP');
+select pxp.f_insert_testructura_gui ('REGIO', 'CEP');
+select pxp.f_insert_testructura_gui ('PROG', 'CEP');
+select pxp.f_insert_testructura_gui ('ACT', 'CEP');
+select pxp.f_insert_testructura_gui ('PPA', 'CEP');
+select pxp.f_insert_testructura_gui ('FRPP', 'CEP');
+select pxp.f_insert_testructura_gui ('CONIG', 'CCOM');
+select pxp.f_insert_testructura_gui ('GQP', 'CEP');
+select pxp.f_insert_testructura_gui ('WIDGET', 'OTROS');
+select pxp.f_insert_testructura_gui ('ARXLS', 'OTROS');
+select pxp.f_insert_testructura_gui ('COLXLS', 'ARXLS');
+select pxp.f_insert_testructura_gui ('PROVEE', 'CCOM');
+select pxp.f_insert_testructura_gui ('ASI', 'CCOM');
+select pxp.f_insert_testructura_gui ('MNDS', 'PARAM');
+select pxp.f_insert_testructura_gui ('MONPAR', 'MNDS');
+select pxp.f_insert_testructura_gui ('TCB', 'MNDS');
+select pxp.f_insert_testructura_gui ('ALRMS', 'PARAM');
+select pxp.f_insert_testructura_gui ('ALARM', 'ALRMS');
+select pxp.f_insert_testructura_gui ('GAL', 'ALRMS');
+select pxp.f_insert_testructura_gui ('EMPS', 'PARAM');
+select pxp.f_insert_testructura_gui ('ENT', 'EMPS');
+select pxp.f_insert_testructura_gui ('EMP', 'EMPS');
+select pxp.f_insert_testructura_gui ('DEPTO', 'EMPS');
+select pxp.f_insert_testructura_gui ('GESTIO', 'EMPS');
+select pxp.f_insert_testructura_gui ('PERIOD', 'EMPS');
+select pxp.f_insert_testructura_gui ('CCOST', 'CEP');
+select pxp.f_insert_testructura_gui ('CONALA', 'ALRMS');
+select pxp.f_insert_testructura_gui ('CTLGS', 'PARAM');
+select pxp.f_insert_testructura_gui ('CATA', 'CTLGS');
+select pxp.f_insert_testructura_gui ('PACATI', 'CTLGS');
+select pxp.f_insert_testructura_gui ('OTROS', 'PARAM');
+select pxp.f_insert_testructura_gui ('PLANT', 'OTROS');
+select pxp.f_insert_testructura_gui ('DF', 'OTROS');
+select pxp.f_insert_testructura_gui ('UME', 'OTROS');
+select pxp.f_insert_testructura_gui ('INSTIT', 'OTROS');
+select pxp.f_insert_testructura_gui ('LUG', 'OTROS');
+select pxp.f_insert_testructura_gui ('DOCUME', 'OTROS');
+select pxp.f_insert_testructura_gui ('SERVIC', 'OTROS');
+select pxp.f_insert_testructura_gui ('COMAL', 'ALRMS');
+select pxp.f_insert_testructura_gui ('CONFLECT', 'OTROS');
+select pxp.f_insert_testructura_gui ('TIPOAR', 'OTROS');
+select pxp.f_insert_testructura_gui ('TIPCC', 'CEP');
+select pxp.f_insert_testructura_gui ('TCC', 'CEP');
+select pxp.f_insert_testructura_gui ('WSME', 'ALRMS');
+select pxp.f_insert_testructura_gui ('VARDEP', 'EMPS');
+select pxp.f_insert_testructura_gui ('PRO', 'CEP');
+
+select pxp.f_insert_testructura_gui ('CATCON', 'CCOM');
+select pxp.f_insert_testructura_gui ('PROVB', 'CCOM');
+select pxp.f_insert_testructura_gui ('PROVINI', 'CCOM');
+select pxp.f_insert_testructura_gui ('FERIADO', 'OTROS');
+select pxp.f_insert_testructura_gui ('Adm', 'EMPS');
+select pxp.f_insert_testructura_gui ('PTIPCC', 'CEP');
+   
+/***********************************F-DEP-RAC-PARAM-0-29/05/2018****************************************/
 
 
 

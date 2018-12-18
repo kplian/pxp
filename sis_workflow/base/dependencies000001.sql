@@ -153,41 +153,6 @@ ALTER TABLE wf.tdocumento_wf
            
 /*******************************************F-DEP-RAC-WF-0-18/01/2014*************************************/
 
-/*******************************************I-DEP-JRR-WF-0-25/04/2014*************************************/
-select pxp.f_insert_testructura_gui ('WF.1.2.2', 'WF.1.2');
-select pxp.f_insert_testructura_gui ('WF.1.2.3', 'WF.1.2');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.2', 'WF.1.2.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3', 'WF.1.2.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1', 'WF.1.2.1.3');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1.1', 'WF.1.2.1.3.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1.2', 'WF.1.2.1.3.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1.1.1', 'WF.1.2.1.3.1.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1.1.1.1', 'WF.1.2.1.3.1.1.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1.1.1.1.1', 'WF.1.2.1.3.1.1.1.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.2.1', 'WF.1.2.2');
-select pxp.f_insert_testructura_gui ('INT.1', 'INT');
-select pxp.f_insert_testructura_gui ('INT.2', 'INT');
-select pxp.f_insert_testructura_gui ('INT.1.1', 'INT.1');
-select pxp.f_insert_testructura_gui ('INT.2.1', 'INT.2');
-select pxp.f_insert_testructura_gui ('STR.1', 'STR');
-select pxp.f_insert_testructura_gui ('STR.2', 'STR');
-select pxp.f_insert_testructura_gui ('STR.1.1', 'STR.1');
-select pxp.f_insert_testructura_gui ('STR.2.1', 'STR.2');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.3.1.2.1', 'WF.1.2.1.3.1.2');
-select pxp.f_insert_testructura_gui ('INT.2.1.1', 'INT.2.1');
-select pxp.f_insert_testructura_gui ('STR.2.1.1', 'STR.2.1');
-select pxp.f_insert_testructura_gui ('WF.1.2.1.4', 'WF.1.2.1');
-select pxp.f_insert_testructura_gui ('INT.3', 'INT');
-select pxp.f_insert_testructura_gui ('INT.4', 'INT');
-select pxp.f_insert_testructura_gui ('INT.5', 'INT');
-select pxp.f_insert_testructura_gui ('INT.3.1', 'INT.3');
-select pxp.f_insert_testructura_gui ('INT.3.2', 'INT.3');
-select pxp.f_insert_testructura_gui ('STR.3', 'STR');
-select pxp.f_insert_testructura_gui ('STR.4', 'STR');
-select pxp.f_insert_testructura_gui ('STR.5', 'STR');
-select pxp.f_insert_testructura_gui ('STR.3.1', 'STR.3');
-select pxp.f_insert_testructura_gui ('STR.3.2', 'STR.3');
-/*******************************************F-DEP-JRR-WF-0-25/04/2014*************************************/
 
 /*******************************************I-DEP-JRR-WF-0-07/05/2014*************************************/
 DROP TABLE wf.tcolumna_valor;
@@ -483,11 +448,15 @@ WITH hyomin AS(
          JOIN hyomin h ON h.id_estado_wf = est2.id_estado_wf
     ORDER BY est2.fecha_reg;
 
+
+select pxp.f_insert_testructura_gui ('WF', 'SISTEMA');
+select pxp.f_insert_testructura_gui ('WF.2', 'WF');
+select pxp.f_insert_testructura_gui ('WF.1.2', 'WF');
+select pxp.f_insert_testructura_gui ('INT', 'WF');
+select pxp.f_insert_testructura_gui ('STR', 'WF');
+select pxp.f_insert_testructura_gui ('VOBOWF', 'WF');
+select pxp.f_insert_testructura_gui ('CATDOC', 'WF');
+select pxp.f_insert_testructura_gui ('BP', 'WF');
+
 /*****************************F-DEP-MMV-WF-0-29/05/2017*************/
 
-
-/*****************************I-DEP-EGS-WF-0-30/08/2018*************/
-
-select wf.f_import_ttipo_proceso_origen ('insert','CBRRE','CBRRE','CBTE','validado','manual','');
-
-/*****************************F-DEP-EGS-WF-0-30/08/2018*************/

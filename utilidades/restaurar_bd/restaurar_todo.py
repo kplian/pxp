@@ -1,4 +1,15 @@
 #!/usr/bin/python
+
+# ***************************************************************************************************************
+#    Autor:  Jaime Rivera Rojas  (KPLIAN)
+#    Fecha: 05-09-2013
+#    Descripcion: permimtw inicializar y actualizar automaticamente a partir  de SQL  la estructura de base de datos
+# ***************************************************************************************************   
+#   HISTORIAL DE MODIFICACIONES:
+#   ISSUE            FECHA:              AUTOR                 DESCRIPCION   
+#   0                05-09-2013        JRR KPLIAN       ermimti inicalizar y actulizar automaticamente apartid de SQL  la estructura de base de datos.
+#  ******************************************************************************************************************************************************
+
 import sys
 import os
 import subprocess
