@@ -14,6 +14,8 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
+ISSUE 		Fecha			Author					Descripcion
+#1			04/12/2018			EGS					se modifico una bandera para q solo muestre la estrcutura gui de nodos visibles
 
  DESCRIPCION:	actualizacion a nueva version xph
  AUTOR:		KPLIAN(jrr)		
@@ -88,6 +90,7 @@ BEGIN
 
           --consulta:=';
           BEGIN
+				--#1			04/12/2018			EGS	
 
                v_consulta:='select 	''estructura_gui''::varchar, g.codigo_gui , gfk.codigo_gui ,eg.estado_reg
                             from segu.testructura_gui eg
@@ -98,6 +101,8 @@ BEGIN
 
 				if (v_parametros.todo = 'no') then                   
                		v_consulta = v_consulta || ' and eg.modificado is null ';
+                ELSIF(v_parametros.todo = 'actual')then
+                	v_consulta = v_consulta || 'and g.visible = ''si'' and g.estado_reg = ''activo'' and gfk.estado_reg = ''activo'' ';
                end if;
                v_consulta = v_consulta || ' order by eg.id_estructura_gui ASC';	
                                                                        
