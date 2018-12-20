@@ -33,6 +33,11 @@
  * @package    PHPExcel_Worksheet
  * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
+/**
+HISTORIAL DE MODIFICACIONES:
+ISSUE 		   FECHA   			 AUTOR				 DESCRIPCION:
+#1        20/12/2108		  Miguel Mamani	   permitir caracteres con espacios
+ */
 class PHPExcel_Worksheet implements PHPExcel_IComparable
 {
     /* Break types */
@@ -434,22 +439,23 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     private static function _checkSheetCodeName($pValue)
     {
+
         $CharCount = PHPExcel_Shared_String::CountCharacters($pValue);
         if ($CharCount == 0) {
             throw new PHPExcel_Exception('Sheet code name cannot be empty.');
         }
         // Some of the printable ASCII characters are invalid:  * : / \ ? [ ] and  first and last characters cannot be a "'"
-        if ((str_replace(self::$_invalidCharacters, '', $pValue) !== $pValue) || 
-            (PHPExcel_Shared_String::Substring($pValue,-1,1)=='\'') || 
+        if ((str_replace(self::$_invalidCharacters, '', $pValue) !== $pValue) ||
+            (PHPExcel_Shared_String::Substring($pValue,-1,1)=='\'') ||
             (PHPExcel_Shared_String::Substring($pValue,0,1)=='\'')) {
             throw new PHPExcel_Exception('Invalid character found in sheet code name');
         }
- 
+
         // Maximum 31 characters allowed for sheet title
         if ($CharCount > 31) {
             throw new PHPExcel_Exception('Maximum 31 characters allowed in sheet code name.');
         }
- 
+
         return $pValue;
     }
 
@@ -462,16 +468,22 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     private static function _checkSheetTitle($pValue)
     {
-        // Some of the printable ASCII characters are invalid:  * : / \ ? [ ]
-        if (str_replace(self::$_invalidCharacters, '', $pValue) !== $pValue) {
-            throw new PHPExcel_Exception('Invalid character found in sheet title');
-        }
+        /*// Some of the printable ASCII characters are invalid:  * : / \ ? [ ]
+       if (str_replace(self::$_invalidCharacters, '', $pValue) !== $pValue) {
+           throw new PHPExcel_Exception('Invalid character found in sheet title');
+       }*/
 
+        // Algunos de los caracteres ASCII imprimibles no son válidos
+        // se comento la throw new PHPExcel_Exception('Invalid character found in sheet title');
+        // para reemplazar por espacion #1
+
+        if (str_replace(self::$_invalidCharacters, '', $pValue) !== $pValue) {
+            return str_replace(self::$_invalidCharacters, '', $pValue);
+        }
         // Maximum 31 characters allowed for sheet title
         if (PHPExcel_Shared_String::CountCharacters($pValue) > 31) {
-            //throw new PHPExcel_Exception('Maximum 31 characters allowed in sheet title.');
+            throw new Exception('Maximum 31 characters allowed in sheet title.');
         }
-
         return $pValue;
     }
 
