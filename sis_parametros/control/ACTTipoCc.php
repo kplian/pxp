@@ -5,7 +5,9 @@
 *@author  (admin)
 *@date 26-05-2017 10:10:19
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
-*/
+* ISSUE			FECHA			AUTHOR			DESCRIPCION
+  #2			07/12/2018		EGS				Funcion para listar centros de costo de tipo transsaccionale del arbol Tipo CC por gestion
+ */
 
 class ACTTipoCc extends ACTbase{
 
@@ -166,6 +168,25 @@ class ACTTipoCc extends ACTbase{
 	    $this->res=$this->objFunc->asignarAutorizacion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+			//#1				07/12/2018		EGS	
+	 function listarTipoCcArbHijos(){
+		$this->objParam->defecto('ordenacion','id_tipo_cc');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+ 		
+		//var_dump($this->objParam);
+		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+			$this->objReporte = new Reporte($this->objParam,$this);
+			$this->res = $this->objReporte->generarReporteListado('MODTipoCc','listarTipoCcArbHijos');
+		} else{
+			$this->objFunc=$this->create('MODTipoCc');
+
+			$this->res=$this->objFunc->listarTipoCcArbHijos($this->objParam);
+		}
+
+    	$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	//#1				07/12/2018		EGS	
 	
 
 }
