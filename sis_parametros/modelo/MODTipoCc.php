@@ -8,7 +8,9 @@
 
  *
  * COMENTARIOS:
+ * ISSUE			FECHA			AUTHOR			Descripcion
   #33  ETR       18/07/2018        RAC KPLIAN       agregar opearativo si o no
+  #2			 07/12/2018	       EGS		        Funcion para listar centros de costo de tipo transsaccionale del arbol Tipo CC por gestion
 */
 
 class MODTipoCc extends MODbase{
@@ -281,6 +283,42 @@ class MODTipoCc extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+		 #2			07/12/2018		EGS	
+	////funcion que lista los centros costo de tipo transsaccional  tipo Cc por gestion 
+	 function listarTipoCcArbHijos(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_tipo_cc_sel';
+		$this->transaccion='PM_TCCARBHI_SEL';
+		//$this-> setCount(false);
+		
+		
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		
+		$this->setParametro('id_tipo_cc','id_tipo_cc','int4');
+		$this->setParametro('id_gestion','id_gestion','int4');
+		
+		
+		//Definicion de la lista del resultado del query
+		$this->captura('id_tipo_cc','int4');
+		$this->captura('id_tipo_cc_fk','int4');
+		$this->captura('codigo','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('movimiento','varchar');
+		$this->captura('descripcion','varchar');
+		$this->captura('control_techo','varchar');
+		$this->captura('control_partida','varchar');
+		$this->captura('id_centro_costo','int4');
+		$this->captura('id_gestion','int4');
+		
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+		// #2				07/12/2018		EGS	
 
 }
 ?>

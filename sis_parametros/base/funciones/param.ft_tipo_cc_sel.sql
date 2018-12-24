@@ -23,6 +23,8 @@ $body$
                  COMENTARIOS:
   #33  ETR       18/07/2018        RAC KPLIAN        insertar  tipos de centros operativos o no
   #34  ETR       09/10/2018        MMV 		 		 insertar timpos de autorizacion por catalago
+  #2  ETR		 07/12/2018		   EGS				 Se creo las funciones PM_TCCARBHI_SEL y PM_TCCARBHI_CONT que lista los nodos transsaccionales del tipo cc por gestion
+
 ***************************************************************************/
 
 DECLARE
@@ -31,7 +33,7 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-    v_where			varchar;
+    v_where				varchar;
 
 BEGIN
 
@@ -258,6 +260,108 @@ BEGIN
             return v_consulta;
 
         end;
+                  
+         /*********************************    
+        #TRANSACCION:  'PM_TCCARBHI_SEL'
+        #DESCRIPCION:	Consulta de datos de centro de costos validos transaccionales en gestion del arbol de tipo centro de costos (hijos)
+        #AUTOR:		EGS	
+        #FECHA:		07/12/2018
+        ***********************************/
+
+        elsif(p_transaccion='PM_TCCARBHI_SEL')then
+         				
+            begin
+                --Sentencia de la consulta
+                v_consulta:='  with recursive arbol_tipo_cc AS (
+                                SELECT
+                                    tcc.id_tipo_cc,
+                                    tcc.id_tipo_cc_fk,
+                                    tcc.codigo,
+                                    tcc.tipo,
+                                    tcc.movimiento,
+                                    tcc.descripcion,
+                                    tcc.control_techo,
+                                    tcc.control_partida
+                                FROM param.ttipo_cc tcc
+                                WHERE tcc.id_tipo_cc = '||v_parametros.id_tipo_cc||'
+                                UNION
+                                SELECT
+                                    tcce.id_tipo_cc,
+                                    tcce.id_tipo_cc_fk,
+                                    tcce.codigo,
+                                    tcce.tipo,
+                                    tcce.movimiento,
+                                    tcce.descripcion,
+                                    tcce.control_techo,
+                                    tcce.control_partida
+                                FROM param.ttipo_cc tcce
+                                inner join arbol_tipo_cc ar on ar.id_tipo_cc = tcce.id_tipo_cc_fk
+                            )
+                            select 
+                                arb.id_tipo_cc,
+                                arb.id_tipo_cc_fk,
+                                arb.codigo,
+                                arb.tipo,
+                                arb.movimiento,
+                                arb.descripcion,
+                                arb.control_techo,
+                                arb.control_partida,
+                                cec.id_centro_costo,
+                                cec.id_gestion
+                            from arbol_tipo_cc arb
+                            left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
+                            where  arb.movimiento = ''si'' and cec.id_gestion = '||v_parametros.id_gestion||'
+                            order by arb.id_tipo_cc ASC';
+    			
+                --Definicion de la respuesta
+                raise notice  'Consulta...%',v_consulta;
+                --Devuelve la respuesta
+                return v_consulta;
+    						
+            end;
+
+        /*********************************    
+        #TRANSACCION:  'PM_TCCARBHI_CONT'
+        #DESCRIPCION:	Conteo de datos de centro de costos validos transaccionales en gestion del arbol de tipo centro de costos (hijos)
+        #AUTOR:		EGS
+        #FECHA:		07/12/2018
+        ***********************************/
+
+        elsif(p_transaccion='PM_TCCARBHI_CONT')then
+
+            begin
+                --Sentencia de la consulta de conteo de registros
+                v_consulta:='  with recursive arbol_tipo_cc AS (
+                                SELECT
+                                    tcc.id_tipo_cc,
+                                    tcc.id_tipo_cc_fk,
+                                    tcc.codigo,
+                                    tcc.tipo,
+                                    tcc.movimiento,
+                                    tcc.descripcion
+                                FROM param.ttipo_cc tcc
+                                WHERE tcc.id_tipo_cc = '||v_parametros.id_tipo_cc||'
+                                UNION
+                                SELECT
+                                    tcce.id_tipo_cc,
+                                    tcce.id_tipo_cc_fk,
+                                    tcce.codigo,
+                                    tcce.tipo,
+                                    tcce.movimiento,
+                                    tcce.descripcion
+                                FROM param.ttipo_cc tcce
+                                inner join arbol_tipo_cc ar on ar.id_tipo_cc = tcce.id_tipo_cc_fk
+                            )
+                            select 
+                               count(arb.id_tipo_cc)
+                            from arbol_tipo_cc arb
+                            left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
+                            where arb.movimiento = ''si'' and cec.id_gestion = '||v_parametros.id_gestion||' ';		    
+
+                --Devuelve la respuesta
+                return v_consulta;
+
+            end;  
 	else
 
 		raise exception 'Transaccion inexistente';
