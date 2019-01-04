@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 15-01-2014 13:52:19
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+	ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
+	#4 		EndeEtr  	02/01/2019	EGS			se agrego la logica para aumentar el tipo de extensiones desde una variable global
 */
 
 class MODDocumentoWf extends MODbase{
@@ -282,31 +284,11 @@ class MODDocumentoWf extends MODbase{
 	                      $this->copyFile($respuesta['url_origen'], $respuesta['url_destino'],  $folder = 'historico');
 				   	      $copiado = true;
 				   }
-				   /*
-				   		//Validar que todo este ok
-						$this->procedimiento = 'wf.ft_documento_wf_ime';
-						$this->transaccion = 'WF_DOCEXT_SEL';
-						$this->captura('id_venta','int4');
-						$this->captura('nombre_extension','varchar'); 
-						
-						//Ejecuta la instruccion
-			            $this->armarConsulta();
-			            $stmt = $link->prepare($this->consulta);          
-			            $stmt->execute();
-			            $result = $stmt->fetch(PDO::FETCH_ASSOC);               
-			            
-			            //recupera parametros devuelto depues de insertar ... (id_formula)
-			            $resp_procedimiento = $this->divRespuesta($result['f_intermediario_ime']);
-						$respuesta = $resp_procedimiento['datos'];            
-			            
-						
-			            if ($resp_procedimiento['tipo_respuesta']=='ERROR') {
-			                throw new Exception("Error al ejecutar en la bd", 3);
-			            }*/
-				   
+				   //Recuperamos el array de tipos permitidos para el upload
+				   $array = $this->objParam->getParametro('extension');  //#4 02/01/2019 EGS	
 				   //cipiamos el nuevo archivo 
-				   $array =array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar','RAR','zip','ZIP','txt');
-	               $this->setFile('archivo','id_documento_wf', false,100000 ,$array);
+				   //$array = array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar','RAR','zip','ZIP','txt');
+	               $this->setFile('archivo','id_documento_wf',false,100000 ,$array);
 	            }
 				
 				$link->commit();
@@ -517,6 +499,30 @@ class MODDocumentoWf extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+   		
+		//#4 02/01/2019	EGS	
+      	function extensionDocumento(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='wf.ft_documento_wf_sel';
+		$this->transaccion='WF_DOCEXT_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+		$this->setCount(false);
+		
+		//Definicion de la lista del resultado del query
+		$this->captura('id','int4');
+		$this->captura('extension','TEXT');
+
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		
+		//Devuelve la respuesta
+		//var_dump($this->respuesta);exit;
+		return $this->respuesta;
+	}
+   	 //#4 02/01/2019	EGS	
 			
 }
 ?>
