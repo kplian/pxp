@@ -272,9 +272,6 @@ class MODDocumentoWf extends MODbase{
 					throw new Exception("Error al ejecutar en la bd", 3);
 				}
 	             
-				  
-	            
-	            
 				 if($resp_procedimiento['tipo_respuesta'] == 'EXITO'){
 	              
 				   //revisamos si ya existe el archivo la verison anterior sera mayor a cero
@@ -285,9 +282,31 @@ class MODDocumentoWf extends MODbase{
 	                      $this->copyFile($respuesta['url_origen'], $respuesta['url_destino'],  $folder = 'historico');
 				   	      $copiado = true;
 				   }
+				   /*
+				   		//Validar que todo este ok
+						$this->procedimiento = 'wf.ft_documento_wf_ime';
+						$this->transaccion = 'WF_DOCEXT_SEL';
+						$this->captura('id_venta','int4');
+						$this->captura('nombre_extension','varchar'); 
+						
+						//Ejecuta la instruccion
+			            $this->armarConsulta();
+			            $stmt = $link->prepare($this->consulta);          
+			            $stmt->execute();
+			            $result = $stmt->fetch(PDO::FETCH_ASSOC);               
+			            
+			            //recupera parametros devuelto depues de insertar ... (id_formula)
+			            $resp_procedimiento = $this->divRespuesta($result['f_intermediario_ime']);
+						$respuesta = $resp_procedimiento['datos'];            
+			            
+						
+			            if ($resp_procedimiento['tipo_respuesta']=='ERROR') {
+			                throw new Exception("Error al ejecutar en la bd", 3);
+			            }*/
 				   
 				   //cipiamos el nuevo archivo 
-	               $this->setFile('archivo','id_documento_wf', false,100000 ,array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar','RAR','zip','ZIP','txt'));
+				   $array =array('doc','pdf','docx','jpg','jpeg','bmp','gif','png','PDF','DOC','DOCX','xls','xlsx','XLS','XLSX','rar','RAR','zip','ZIP','txt');
+	               $this->setFile('archivo','id_documento_wf', false,100000 ,$array);
 	            }
 				
 				$link->commit();

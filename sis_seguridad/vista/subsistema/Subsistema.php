@@ -5,8 +5,9 @@
 *@author KPLIAN (RAC)
 *@date 14-02-2011
 *@description  Vista para mostrar listado de subsistemas
-* 	ISSUE			AUTHOR				FECHA					DESCRIPCION
-*	#1				EGS					03/12/2018				Se aumento opcion en menu solo para inserte gui y estructura gui 
+* 	ISSUE  			FECHA  				AUTHOR						DESCRIPCION
+*	#1				EGS					03/12/2018				Se aumento opcion en menu solo para inserte gui y estructura gui activo visibles
+*	#2				EGS					05/12/2018				Se agrego un boton donde solo se exporte los procedimientos, funciones y roles 
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -159,13 +160,26 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
                    					text: 'Exportar Todos los Datos de Seguridad', handler: this.expMenu, scope: this, argument : {todo : 'si'}
                    				},
                    				{
-                   					text: 'Exportar Todos los Datos Actuales', handler: this.expMenu, scope: this, argument : {todo : 'actual'} //#1	EGS	03/12/2018	
+                   					text: 'Exportar Todos los Datos Actuales', handler: this.expMenu, scope: this, argument : {todo : 'actual'}//  ///#1	EGS		03/12/2018
                    				}
                    				]
                    			}
                    		});
+        ///#1	EGS		03/12/2018
+        this.addButton('exp_rolPro',{text:'Exportar Datos de Roles y Procedimientos',iconCls: 'blist',disabled:true,tooltip: '<b>Permite exportar los datos roles y procedimientos sel subsistema/b> ',
+        				menu:{
+                   				items: [
+                   				{
+                   					text: 'Exportar Todos los Datos Actuales', handler: this.rolPro, scope: this, argument : {todo:'si'}
+                   				}
+                   				]
+                   			}
+
+        				});
+        ///#1	EGS		03/12/2018
         
         this.addButton('testb',{text:'test',iconCls: 'blist',disabled:false,handler:this.text_func,tooltip: '<b>test action</b><br/>Sinc '});
+
         
    		
    		
@@ -243,7 +257,20 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 			});
 			
 	},
-	
+		
+	rolPro : function(resp){
+			var data=this.sm.getSelected().data.id_subsistema;
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url:'../../sis_seguridad/control/Subsistema/ExportarDatosRolProcedimiento',
+				params:{'id_subsistema' : data, 'todo' : resp.argument.todo},
+				success:this.successExport,
+				failure: this.conexionFailure,
+				timeout:this.timeout,
+				scope:this
+			});
+			
+	},
 	successSinc:function(resp){
 			
 			Phx.CP.loadingHide();
@@ -269,6 +296,8 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 			this.getBoton('sinc_func').enable();
 			this.getBoton('aInterSis').enable();
 			this.getBoton('exp_menu').enable();
+			this.getBoton('exp_rolPro').enable();
+
 
 			
 			
@@ -281,6 +310,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 			this.getBoton('sinc_func').disable();
 			this.getBoton('aInterSis').disable();
 			this.getBoton('exp_menu').disable();
+			this.getBoton('exp_rolPro').disable();
 
 			
 			
