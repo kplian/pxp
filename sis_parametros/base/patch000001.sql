@@ -2309,8 +2309,6 @@ IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compr
 CREATE INDEX ttipo_cc_plantilla_idx ON param.ttipo_cc_plantilla
   USING btree (id_tipo_cc_fk);
 
-ALTER TABLE param.ttipo_cc_plantilla
-  OWNER TO dbarchumacero;
 /***********************************F-SCP-EGS-PARAM-1-01/12/2018*****************************************/
 
 
