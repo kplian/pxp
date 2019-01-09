@@ -60,11 +60,13 @@ class PxpRestClient2
     	$prefix = uniqid('pxp');
     	$this->_pxp = true;
 		$this->_pass = md5($pass);
-		
-        $this->_user = $this->encrypt($prefix . '$$' . $user, $this->_pass);
+		$this->_user = $this->encrypt($prefix . '$$' . $user, $this->_pass);		
+        $this->_user = base64_encode($this->_user);
 		
 		$this->addHeader("Pxp-user: $user");
-		$this->addHeader("auth-version: 2");
+		$this->addHeader("Pxp-Auth-User:". $this->_user);
+				
+		$this->addHeader("pxp-auth-version: 2");
         $this->_pass = $this->encrypt($prefix . '$$' . $this->_pass, $this->_pass);
 		
         return $this;
@@ -199,10 +201,6 @@ class PxpRestClient2
         $headers = $this->_headers;
 		$s = curl_init();
         
-        if(!is_null($this->_user) && ($this->_first_connection || $this->_error_number == 1)){        	
-           	curl_setopt($s, CURLOPT_USERPWD, $this->_user.':'.$this->_pass);
-			$this->_first_connection = false;
-        }
         switch ($type) {
             case self::DELETE:
                 curl_setopt($s, CURLOPT_URL, $url . '?' . http_build_query($params));
@@ -253,10 +251,10 @@ class PxpRestClient2
                 $out = $_out;
                 break;
             default:
-				if ($this->_error_number == 0 && $this->_pxp && strpos($_out, 'No hay una sesion')) {
+				/*if ($this->_error_number == 0 && $this->_pxp && strpos($_out, 'No hay una sesion')) {
 					$this->_error_number++;
 					$this->_exec($type, $url, $params);
-				}									
+				}*/									
                 $out = $_out;
 				break;               
         }

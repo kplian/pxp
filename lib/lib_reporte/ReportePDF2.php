@@ -1,5 +1,15 @@
 <?php
-session_start();
+if (version_compare(phpversion(), '5.4.0', '<')) {
+     if(session_id() == '') {
+        session_start();
+     }
+ }
+ else
+ {
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+ }
 require_once(dirname(__FILE__).'/../DatosGenerales.php');
 require_once(dirname(__FILE__).'/../tcpdf/config/lang/spa.php');
 require_once(dirname(__FILE__).'/../tcpdf/tcpdf.php');

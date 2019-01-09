@@ -469,65 +469,66 @@ class CTParametro{
 		        
 		    
 			//decodifica filtro JSON usado en grillas
-			
-			for ($i=0;$i<count($filter);$i++){
-				switch($filter[$i]['type']){
-
-					//RAC  26/10/11 Combina el filtro con like y tc_vector  -> si es muy lento deveremos escoger cual usamos
-					//case 'string' : $qs .= " AND ".$filter[$i]['field']." ILIKE ''%".$filter[$i]['value']."%''"; Break;
-					//case 'string' : $qs .= " AND to_tsvector(".$filter[$i]['field'].") @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')"; Break;
-					case 'string' : 
-					         
-					         $paramfiltro = explode('#',$filter[$i]['field']);
-					         
-					         $qs.='';
-                            $filteraux=trim($filter[$i]['field']);
-                            $contador = count($paramfiltro);
-                            $qs .= " AND ( 1=0 ";
-                            
-                            if($filteraux!=''){
-                                for($k=0;$k<$contador;$k++){
-					         
-    					         $qs .= " OR ((".$paramfiltro[$k]."::varchar ILIKE ''%".$filter[$i]['value']."%'')"; 
-    					         $qs .= " OR( to_tsvector(".$paramfiltro[$k]."::varchar) @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')))";
-             		          
-                                }
-                            }
-                             $qs .= " )";
-         		          
-         		          Break;
-					
-					
-					
-					case 'list' :
+			if (!is_null($filter)) {
+				for ($i=0;$i<count($filter);$i++){
+					switch($filter[$i]['type']){
+	
+						//RAC  26/10/11 Combina el filtro con like y tc_vector  -> si es muy lento deveremos escoger cual usamos
+						//case 'string' : $qs .= " AND ".$filter[$i]['field']." ILIKE ''%".$filter[$i]['value']."%''"; Break;
+						//case 'string' : $qs .= " AND to_tsvector(".$filter[$i]['field'].") @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')"; Break;
+						case 'string' : 
+						         
+						         $paramfiltro = explode('#',$filter[$i]['field']);
+						         
+						         $qs.='';
+	                            $filteraux=trim($filter[$i]['field']);
+	                            $contador = count($paramfiltro);
+	                            $qs .= " AND ( 1=0 ";
+	                            
+	                            if($filteraux!=''){
+	                                for($k=0;$k<$contador;$k++){
+						         
+	    					         $qs .= " OR ((".$paramfiltro[$k]."::varchar ILIKE ''%".$filter[$i]['value']."%'')"; 
+	    					         $qs .= " OR( to_tsvector(".$paramfiltro[$k]."::varchar) @@ plainto_tsquery(''spanish'',''".$filter[$i]['value']."'')))";
+	             		          
+	                                }
+	                            }
+	                             $qs .= " )";
+	         		          
+	         		          Break;
 						
-						if (count($filter[$i]['value'])>1){
-							for ($q=0;$q<count($filter[$i]['value']);$q++){
-								$fi[$q] = "''".$filter[$i]['value'][$q]."''";
+						
+						
+						case 'list' :
+							
+							if (count($filter[$i]['value'])>1){
+								for ($q=0;$q<count($filter[$i]['value']);$q++){
+									$fi[$q] = "''".$filter[$i]['value'][$q]."''";
+								}
+								$fi_cadena = implode(',',$fi);
+								$qs .= " AND ".$filter[$i]['field']." IN (".$fi_cadena.")";
+							}else{
+								$qs .= " AND ".$filter[$i]['field']." = ''".$filter[$i]['value'][0]."''";
 							}
-							$fi_cadena = implode(',',$fi);
-							$qs .= " AND ".$filter[$i]['field']." IN (".$fi_cadena.")";
-						}else{
-							$qs .= " AND ".$filter[$i]['field']." = ''".$filter[$i]['value'][0]."''";
-						}
-						Break;
-					case 'boolean' : $qs .= " AND ".$filter[$i]['field']." = ".($filter[$i]['value']); Break;
-					case 'numeric' :
-						switch ($filter[$i]['comparison']) {
-							case 'ne' : $qs .= " AND ".$filter[$i]['field']." != ".$filter[$i]['value']; Break;
-							case 'eq' : $qs .= " AND ".$filter[$i]['field']." = ".$filter[$i]['value']; Break;
-							case 'lt' : $qs .= " AND ".$filter[$i]['field']." < ".$filter[$i]['value']; Break;
-							case 'gt' : $qs .= " AND ".$filter[$i]['field']." > ".$filter[$i]['value']; Break;
-						}
-						Break;
-					case 'date' :
-						switch ($filter[$i]['comparison']) {
-							case 'ne' : $qs .= " AND ".$filter[$i]['field']." != ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
-							case 'eq' : $qs .= " AND ".$filter[$i]['field']." = ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
-							case 'lt' : $qs .= " AND ".$filter[$i]['field']." < ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
-							case 'gt' : $qs .= " AND ".$filter[$i]['field']." > ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
-						}
-						Break;
+							Break;
+						case 'boolean' : $qs .= " AND ".$filter[$i]['field']." = ".($filter[$i]['value']); Break;
+						case 'numeric' :
+							switch ($filter[$i]['comparison']) {
+								case 'ne' : $qs .= " AND ".$filter[$i]['field']." != ".$filter[$i]['value']; Break;
+								case 'eq' : $qs .= " AND ".$filter[$i]['field']." = ".$filter[$i]['value']; Break;
+								case 'lt' : $qs .= " AND ".$filter[$i]['field']." < ".$filter[$i]['value']; Break;
+								case 'gt' : $qs .= " AND ".$filter[$i]['field']." > ".$filter[$i]['value']; Break;
+							}
+							Break;
+						case 'date' :
+							switch ($filter[$i]['comparison']) {
+								case 'ne' : $qs .= " AND ".$filter[$i]['field']." != ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
+								case 'eq' : $qs .= " AND ".$filter[$i]['field']." = ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
+								case 'lt' : $qs .= " AND ".$filter[$i]['field']." < ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
+								case 'gt' : $qs .= " AND ".$filter[$i]['field']." > ''".date('d-m-Y',strtotime($filter[$i]['value']))."''"; Break;
+							}
+							Break;
+					}
 				}
 			}
 			$where .= $qs;

@@ -114,23 +114,23 @@ function authPxp($headersArray) {
 	//creamos array de request
 	$reqArray = array();
 	
-	if (!extension_loaded('mcrypt') && !isset($headersArray['auth-version'])) {
+	if (!extension_loaded('mcrypt') && !isset($headersArray['pxp-auth-version'])) {
 		if ($mensaje == '')
 	    	$mensaje = 'El modulo mcrypt no esta instalado en el servidor. No es posible utilizar REST en este momento';
 	}
 	if ($headersArray['Pxp-User'] == $headersArray['Php-Auth-User']) {
-		if (!isset($headersArray['auth-version'])) {
+		if (!isset($headersArray['pxp-auth-version'])) {
 			$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
 		} else {
-			$auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+			$auxArray = explode('$$', opensslDecrypt($headersArray['Pxp-Auth-User'], $md5Pass));
 		}
 		$headers = false;
 	} else {
 	//desencriptar usuario y contrasena
-		if (!isset($headersArray['auth-version'])) {
+		if (!isset($headersArray['pxp-auth-version'])) {
 			$auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
 		} else {
-			$auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+			$auxArray = explode('$$', opensslDecrypt($headersArray['Pxp-Auth-User'], $md5Pass));
 		}
 		$headers = true;
 	}
@@ -190,9 +190,10 @@ function fnDecrypt($sValue, $sSecretKey)
 
 function opensslDecrypt($ivCiphertext, $password) {
     $method = "AES-256-CBC";
-    $iv = substr($ivCiphertext, 0, 16);	    
-    $ciphertext = substr($ivCiphertext, 16);
-    return openssl_decrypt($ciphertext, $method, $password, OPENSSL_RAW_DATA, $iv);
+	$decoded_ivCiphertext = base64_decode($ivCiphertext);	
+    $iv = substr($decoded_ivCiphertext, 0, 16);	    
+    $ciphertext = substr($decoded_ivCiphertext, 16);
+    return openssl_decrypt($decoded_ivCiphertext, $method, $password, OPENSSL_RAW_DATA, $iv);
 }
 
 
@@ -324,7 +325,7 @@ $app->get(
 		//var_dump($app->request->cookies);
     	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
 			
-		} else if (isset($headers['Php-Auth-User'])) {
+		} else if (isset($headers['Php-Auth-User']) || isset($headers['Pxp-Auth-User'])) {
     		authPxp($headers);
 		}else if (in_array($psudourl, $_SESSION['_REST_NO_CHECK'])) {
     		
@@ -406,7 +407,7 @@ $app->post(
         set_exception_handler('exception_handler');
         set_error_handler('error_handler');
     	$headers = $app->request->headers;
-		if (isset($headers['Php-Auth-User'])) {
+		if (isset($headers['Php-Auth-User']) ) {
 						 
     		authPxp($headers);
 			
@@ -461,11 +462,12 @@ $app->post(
 				
     	if ( isset($cookies['PHPSESSID']) && isset($_SESSION['_SESION']) && $_SESSION["_SESION"]->getEstado()=='activa') {
 			
-		} else if (isset($headers['Php-Auth-User'])) {
+		} else if (isset($headers['Php-Auth-User']) || isset($headers['Pxp-Auth-User'])) {
     		authPxp($headers);
 		}else if (in_array($psudourl, $_SESSION['_REST_NO_CHECK'])) {
     		
 		} else {
+			var_dump($headers);
 			$men=new Mensaje();
 			$men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 432','No hay una sesion activa para realizar esta peticion',
 			'Codigo de error: SESION',

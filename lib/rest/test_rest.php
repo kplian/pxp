@@ -1,11 +1,12 @@
 <?php
 	
 	
-	include 'PxpRestClient.php';
+	include 'PxpRestClient2.php';
 
 //Generamos el documento con REST
 
-$pxpRestClient = PxpRestClient::connect('erpmobile.obairlines.bo', 'rest/',443,'https')->setCredentialsPxp('notificaciones','Mund0libre');
+$pxpRestClient = PxpRestClient2::connect('192.168.11.130', 'kerp/pxp/lib/rest/')->setCredentialsPxp('admin','admin');
+
 //$pxpRestClient = PxpRestClient::connect('192.168.11.82', 'kerp_capacitacion/pxp/lib/rest/')->setCredentialsPxp('admin','123');
 
 /*$res = $pxpRestClient->doPost('seguridad/aesEncryption',
@@ -23,19 +24,25 @@ $res = $pxpRestClient->doPost('tesoreria/PlanPago/reporteActaConformidad',
         "nombre_usuario_firma"=>'jmp'));
 echo $res;
 */
-/*
-	$variable = $pxpRestClient->doPost('almacenes/Movimiento/insertarMovimientoREST', 
-		array(	"id_movimiento_tipo"=>11,
-				"id_almacen"=>1,
-				"id_funcionario"=>2048,
-				"fecha_mov"=>'29/03/2017',
-				"descripcion"=>'Movimiento generado desde el sistema de dotacion',
-                "id_funcionario_aprobador"=>56,
-				"detalle"=>'[{"codigo_item":"3.4.1.1.1.1","cantidad":1},{"codigo_item":"3.4.1.1.1.1","cantidad":"2"}]',
-                "codigo_tran"=>'MOV.SAL.20170502160449'
+
+	/*$variable = $pxpRestClient->doPost('sigep/ServiceRequest/insertarServiceRequest', 
+		array(	"sys_origin"=>'erp',
+				"json"=>'{"usuario":"cortuno","usuario_apro":"cortuno","gestion":2018,"fechaElaboracion":"13/12/2018","claseGastoCip":4,"idCatprv":null,"sigade":null,"otfin":null,"resumenOperacion":"PRUEBA JAIME DICIEMBRE 2018","moneda":69,"fechaTipoCambio":"13/12/2018","compraVenta":"C","totalAutorizadoMo":200,"totalRetencionesMo":0,"totalMultasMo":0,"liquidoPagableMo":200,"partidas":[{"idPtogto":2570584,"montoMo":200}],"respaldos":[{"tipoDocRdo":4,"nroDocRdo":7768,"secDocRdo":1,"totalDocRdo":1,"fechaElaboracionRdo":"13/12/2018","fechaRecepcionRdo":"13/12/2018","fechaVencimientoRdo":null}]}',
+				"service_code"=>"PREVE"
 				));
 	echo $variable;
-*/
+	 */
+	
+	$variable = $pxpRestClient->doPost('sigep/SigepServiceRequest/procesarServices', 
+		array(	"user"=>'jrivera'
+				));
+	echo $variable;
+	
+	/*$variable = $pxpRestClient->doPost('sigep/ServiceRequest/getServiceStatus', 
+		array(	"id_service_request"=>21
+				));
+	echo $variable;*/
+
 
 /*
 	echo $pxpRestClient->doPost('sqlserver/CabeceraViatico/validarViatico', 
@@ -91,8 +98,8 @@ echo $pxpRestClient->doPost('sqlserver/CabeceraViatico/insertarViatico',
         "start"=>0,
         "limit"=>50
 
-    ));
-*/
+    ));*/
+
 
 /*
 echo $pxpRestClient->doPost('obingresos/Deposito/subirArchivoDeposito',
@@ -187,11 +194,11 @@ echo $pxpRestClient->doPost('obingresos/PeriodoVenta/listarDetallePeriodoAgencia
     ));
 */
 
-echo $pxpRestClient->doPost('obingresos/PeriodoVenta/ResumenEstadoCC',
+/*echo $pxpRestClient->doPost('obingresos/PeriodoVenta/ResumenEstadoCC',
     array(
         "id_agencia"=>"4618"
 
-    ));
+    ));*/
 
 /*echo $pxpRestClient->doPost('obingresos/MovimientoEntidad/anularAutorizacion',
     array(

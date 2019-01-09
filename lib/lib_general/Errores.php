@@ -75,11 +75,11 @@
 			}
 			$men=new Mensaje();
 			
-			if($_SESSION["_ESTADO_SISTEMA"]=='desarrollo')
+			//if($_SESSION["_ESTADO_SISTEMA"]=='desarrollo')
 				$mensaje=$errstr;
 						
-			else 
-				$mensaje='Ha ocurrido un error en el servidor Web, consulte con el administrador';
+			//else 
+				//$mensaje='Ha ocurrido un error en el servidor Web, consulte con el administradorxx'.$_SESSION["_ESTADO_SISTEMA"];
 			$mensaje=htmlentities($mensaje);
 			$men->setMensaje('ERROR',$errfile.' Linea: '.$errline,$mensaje,
 			'Codigo de error:'.$errno,

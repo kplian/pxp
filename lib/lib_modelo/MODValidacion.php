@@ -498,10 +498,12 @@ class MODValidacion
 	function validarJson($nombre,$valor,$blank,$tamano) {
         if($blank==false){
            array_push($this->res,'El campo '.$nombre." debe ser registrado");
-        }            
-        json_decode($valor);
-        if(json_last_error() != JSON_ERROR_NONE  ){
-           throw new Exception("Error en archvi JSON: ".json_last_error_msg());
-        }
+        }   
+		if ($valor != '') {         
+	        json_decode($valor);
+	        if(json_last_error() != JSON_ERROR_NONE  ){
+	           throw new Exception("Error en archvi JSON: ".json_last_error_msg());
+	        }
+		}
     }
 }
