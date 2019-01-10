@@ -15,26 +15,30 @@ $body$
  COMENTARIOS: 
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
- DESCRIPCION: 
- AUTOR:     
- FECHA:   
+ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
+#4 		EndeEtr  	02/01/2019	EGS			se agrego la funcion WF_DOCEXT_SEL para aumentar el tipo de extensiones desde una variable global
 ***************************************************************************/
 
 DECLARE
 
-  v_consulta        varchar;
-  v_parametros      record;
-  v_nombre_funcion    text;
-  v_resp        varchar;
-    v_nro_tramite varchar;
-    v_id_proceso_macro integer;
-    v_filtro      varchar;
-    v_id_tipo_estado_actual   integer; 
-    v_id_estado_actual    integer; 
-    v_id_tipo_estado_siguiente  integer[]; 
-    v_cantidad_siguiente    integer;
-    v_id_tipo_estado      integer;
-          
+  v_consulta        			varchar;
+  v_parametros      			record;
+  v_nombre_funcion    			text;
+  v_resp        				varchar;
+  v_nro_tramite 				varchar;
+  v_id_proceso_macro 			integer;
+  v_filtro      				varchar;
+  v_id_tipo_estado_actual  		integer; 
+  v_id_estado_actual    		integer; 
+  v_id_tipo_estado_siguiente  	integer[]; 
+  v_cantidad_siguiente    		integer;
+  v_id_tipo_estado      		integer;
+  v_extensiones					varchar;
+  v_exten						varchar[];
+  v_array_size					integer;
+  v_i							integer;
+  v_num							integer;
+  v_variable					varchar;
 BEGIN
 
   v_nombre_funcion = 'wf.ft_documento_wf_sel';
@@ -292,6 +296,57 @@ BEGIN
       return v_consulta;
             
     end;
+        /*********************************
+        #TRANSACCION:  'WF_DOCEXT_SEL'
+        #DESCRIPCION: Lista Las extensiones del upload Documentos WF desde una variable Global
+        #AUTOR:   EGS
+        #FECHA:   02/01/2019
+        ***********************************/
+
+        elsif(p_transaccion='WF_DOCEXT_SEL')then
+          begin
+
+          --tabla temporal 
+          	CREATE TEMPORARY TABLE temp_extension(
+                                      id serial,
+                                      extension TEXT
+                                     ) ON COMMIT DROP;
+		   ---recuperamos los tipos permitidos en el upload desde una variable global
+          v_extensiones =pxp.f_get_variable_global('extensiones_documento_wf')  ;             
+   
+          v_exten = string_to_array(v_extensiones, ',');
+ 			--insertamos los tipos de extensiones  
+          	v_i = 1;
+			 WHILE (v_i <= array_length(v_exten, 1)) LOOP
+               v_num = 0; 
+                  --insertamos dos veces ya que el upload es sensible a minusculas y mayusculas   
+                  FOR i IN 0..1 LOOP
+                  --primera insercion minusculas
+                   IF v_num = 0 THEN
+                      v_variable=LOWER(v_exten[v_i]);
+                   END IF;
+                  --segunda insercion mayusculas
+                   IF v_num = 1 THEN
+                      v_variable = UPPER(v_exten[v_i]); 
+                   END IF;
+                   --insertamos en la tabla
+                    insert  INTO temp_extension(
+                        extension
+                    )VALUES(
+                        TRIM(v_variable)
+                    );
+                  v_num = v_num +1;
+                 END LOOP;
+            v_i =v_i+1;
+            end loop; 
+      
+			v_consulta = 'select
+            				id,
+                            extension
+                            from temp_extension';
+
+       		return v_consulta;	
+          end;
           
   else
                

@@ -5,7 +5,9 @@
 *@author  (admin)
 *@date 15-01-2014 13:52:19
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
-*/
+ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
+#4 		EndeEtr  	02/01/2019	EGS			se agrego la logica para aumentar el tipo de extensiones desde una variable global
+ * */
 
 class ACTDocumentoWf extends ACTbase{    
 			
@@ -79,6 +81,22 @@ class ACTDocumentoWf extends ACTbase{
 	}
 	
 	function subirArchivoWf(){
+		//#4 02/01/2019	EGS	
+		///Recuperamos los tipos de extensiones permitidos para el upload
+		$this->objFunc=$this->create('MODDocumentoWf');
+        $extension=$this->objFunc->extensionDocumento();
+        
+        $extension=$extension->getDatos();
+		//armamos el array con las exetensiones
+		$array = array();		
+				    for ($i=0; $i < count($extension) ; $i++) {
+					 array_push ( $array , $extension[$i]['extension'] );	
+					
+		 }
+	    //añadimos como parametro para enviarlo al modelo
+	    $this->objParam->addParametro('extension',$array);
+		//#4 02/01/2019	EGS	
+		
         $this->objFunc=$this->create('MODDocumentoWf');
         $this->res=$this->objFunc->subirDocumentoWfArchivo();
         $this->res->imprimirRespuesta($this->res->generarJson());
@@ -96,7 +114,11 @@ class ACTDocumentoWf extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
     
-    
+    	function extensionDocumento(){
+        $this->objFunc=$this->create('MODDocumentoWf'); 
+        $this->res=$this->objFunc->extensionDocumento($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 			
 }
 

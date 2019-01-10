@@ -53,3 +53,9 @@ select pxp.f_add_catalog('WF','ttipo_propiedad__tipo_dato','numeric');
 
 /******************************************F-DAT-RCM-WF-0-21/05/2014**********************************************/
 
+/******************************************I-DAT-EGS-WF-0-02/01/2019**********************************************/
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'extensiones_documento_wf', E'doc,docx,pdf,jpg,jpeg,bmp,gif,png,xls,xlsx,rar,zip,txt,pptx,vsd,mpp', E'Tipos de Extensiones para documentos Wf');
+  
+/******************************************F-DAT-EGS-WF-0-02/01/2019**********************************************/
