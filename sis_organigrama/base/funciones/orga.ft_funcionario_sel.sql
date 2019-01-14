@@ -34,6 +34,7 @@ $body$
     v_filadd           varchar;
     v_id_funcionario	integer;
     v_ids_funcionario	varchar;
+    v_existe_conta		varchar;
 
 
   BEGIN
@@ -51,6 +52,12 @@ $body$
 
       --consulta:=';
       BEGIN
+      
+        if (exists(select 1 FROM information_schema.schemata WHERE schema_name = 'conta' )) then
+        	v_existe_conta = 'si';
+        else
+        	v_existe_conta = 'no';
+        end if;
 	
         v_consulta:='SELECT
                             FUNCIO.id_funcionario,
@@ -82,13 +89,26 @@ $body$
                             PERSON2.nacionalidad,
                             PERSON2.discapacitado,
                             PERSON2.carnet_discapacitado,
-                            aux.id_auxiliar,
-                            aux.nombre_auxiliar as desc_auxiliar
+                            FUNCIO.id_auxiliar,';
+            if (v_existe_conta = 'si') then
+            	v_consulta := v_consulta || ' aux.nombre_auxiliar as desc_auxiliar';
+            else
+            	v_consulta := v_consulta || ' NULL::varchar as desc_auxiliar';
+            end if;
+            
+            
+            v_consulta := v_consulta || ' 
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
-                            inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
-                            LEFT JOIN conta.tauxiliar aux on aux.id_auxiliar = FUNCIO.id_auxiliar
+                            inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg';
+            if (v_existe_conta = 'si') then
+            	v_consulta := v_consulta || ' LEFT JOIN conta.tauxiliar aux on aux.id_auxiliar = FUNCIO.id_auxiliar';
+            else
+            	v_consulta := v_consulta || ' ';
+            end if; 
+            
+            v_consulta := v_consulta || '     
                             LEFT JOIN param.tlugar LUG on LUG.id_lugar = PERSON2.id_lugar
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
                             WHERE ';
@@ -131,8 +151,14 @@ $body$
                             FROM orga.tfuncionario FUNCIO
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
-                            inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg
-                            LEFT JOIN conta.tauxiliar aux on aux.id_auxiliar = FUNCIO.id_auxiliar
+                            inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg';
+            if (v_existe_conta = 'si') then
+            	v_consulta := v_consulta || ' LEFT JOIN conta.tauxiliar aux on aux.id_auxiliar = FUNCIO.id_auxiliar';
+            else
+            	v_consulta := v_consulta || ' ';
+            end if; 
+            
+            v_consulta := v_consulta || '     
                             LEFT JOIN param.tlugar LUG on LUG.id_lugar = PERSON2.id_lugar
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
                             WHERE ';
