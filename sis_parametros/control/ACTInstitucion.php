@@ -55,6 +55,12 @@ class ACTInstitucion extends ACTbase{
 		$this->res=$this->objFunc->eliminarInstitucion();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+	
+	function validarInstitucion(){
+		$this->objFunc=$this->create('MODInstitucion');		
+		$this->res=$this->objFunc->validarInstitucion();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 			
 }
 

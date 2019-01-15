@@ -29,6 +29,7 @@ v_resp                 varchar;
 v_nombre_funcion       text;
 v_mensaje_error        text;
 v_id_persona           integer;
+v_nombres				varchar;
 
 --04/04/2012
 v_respuesta_sinc       varchar;
@@ -219,6 +220,77 @@ BEGIN
             v_resp = pxp.f_agrega_clave(v_resp,'id_persona',v_parametros.id_persona::varchar);
             
          END;
+         
+/*******************************
+ #TRANSACCION:  SEG_PERSONVAL_MOD
+ #DESCRIPCION:	Validar Persona
+ #AUTOR:		KPLIAN(jrr)		
+ #FECHA:		08/01/11	
+***********************************/
+    elsif(par_transaccion='SEG_PERSONVAL_MOD')then
+                     
+          begin   
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Institución validado(a)'); 
+      		if (v_parametros.id_persona is not null) then 
+      			if (exists(	select 1 
+      						from segu.tpersona 
+      						where id_persona != v_parametros.id_persona
+      							and trim(both ' ' from ci) = trim(both ' ' from v_parametros.ci) 
+      							and tipo_documento = v_parametros.tipo_documento)) then
+	      			v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','error'); 
+	            	v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Ya existe una persona con el mismo documento de identidad');
+	            else
+	            	select pxp.list(trim(both ' ' from lower(nombre)) || ' ' ||
+									trim(both ' ' from lower(apellido_paterno)) || ' ' || 
+									trim(both ' ' from lower(apellido_materno))) into v_nombres
+	            	from segu.tpersona 
+      				where id_persona != v_parametros.id_persona
+						and trim(both ' ' from lower(nombre)) || 
+							trim(both ' ' from lower(apellido_paterno)) || 
+							trim(both ' ' from lower(apellido_materno)) like '%' || trim(both ' ' from lower(v_parametros.nombre)) || '%'; 
+					if (v_nombres is not null) then
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','error'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Persona ya registrada');
+					else
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','exito'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','No existe personas con el mismo nombre');
+					end if;
+	            end if;
+	        
+	        
+	        else
+	        
+	        	if (exists(	select 1 
+      						from segu.tpersona 
+      						where trim(both ' ' from ci) = trim(both ' ' from v_parametros.ci) 
+      							and tipo_documento = v_parametros.tipo_documento)) then
+	      			v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','error'); 
+	            	v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Ya existe una persona con el mismo documento de indetidad');
+	            else
+	            	
+	            	select pxp.list(trim(both ' ' from lower(nombre)) || ' ' ||
+									trim(both ' ' from lower(apellido_paterno)) || ' ' || 
+									trim(both ' ' from lower(apellido_materno))) into v_nombres
+	            	from segu.tpersona 
+      				where   trim(both ' ' from lower(nombre)) || 
+							trim(both ' ' from lower(apellido_paterno)) || 
+							trim(both ' ' from lower(apellido_materno)) like '%' || trim(both ' ' from lower(v_parametros.nombre)) || '%'; 
+					if (v_nombres is not null) then
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','error'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Persona ya registrada');
+					else
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','exito'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','No existe personas con el mismo nombre');
+					end if;
+	            end if;
+      			
+      		
+      		end if;
+      		
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
          
      else
      
