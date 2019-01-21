@@ -33,7 +33,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_columna_archivo_excel	integer;
-    v_codigo					varchar;--#1 21/11/2018	EGS	
+    v_codigo					varchar;--#1 21/11/2018	EGS
+    v_codigo_plantilla			varchar;--#1 21/11/2018	EGS	
     v_record_columna			record;--#1	21/11/2018 EGS	
 
 
@@ -71,9 +72,9 @@ BEGIN
             END IF;
            --busca el codigo de plantilla para insertalo en la columna del detalle #1 21/11/2018	EGS 
             SELECT
-            	pae.codigo
+            	pae.codigo_plantilla
             INTO
-            	v_codigo
+            	v_codigo_plantilla
             FROM param.tplantilla_archivo_excel pae
             WHERE pae.id_plantilla_archivo_excel = v_parametros.id_plantilla_archivo_excel;
 
@@ -115,7 +116,7 @@ BEGIN
 			v_parametros._nombre_usuario_ai,
 			null,
 			null,
-            v_codigo,	-- #1 21/11/2018	EGS 
+            v_codigo_plantilla,	-- #1 21/11/2018	EGS 
             UPPER(v_parametros.codigo)-- #1 21/11/2018	EGS 
 
 

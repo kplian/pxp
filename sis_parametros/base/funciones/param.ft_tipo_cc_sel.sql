@@ -24,6 +24,7 @@ $body$
   #33  ETR       18/07/2018        RAC KPLIAN        insertar  tipos de centros operativos o no
   #34  ETR       09/10/2018        MMV 		 		 insertar timpos de autorizacion por catalago
   #2  ETR		 07/12/2018		   EGS				 Se creo las funciones PM_TCCARBHI_SEL y PM_TCCARBHI_CONT que lista los nodos transsaccionales del tipo cc por gestion
+  #7  endeETR    21/01/2019		   EGS				 se modifico PM_TCCARBHI_SEL para que considere el con tipo de presupuesto
 
 ***************************************************************************/
 
@@ -310,8 +311,9 @@ BEGIN
                                 cec.id_gestion
                             from arbol_tipo_cc arb
                             left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
-                            where  arb.movimiento = ''si'' and cec.id_gestion = '||v_parametros.id_gestion||'
-                            order by arb.id_tipo_cc ASC';
+                            left join pre.tpresupuesto pre on pre.id_centro_costo = cec.id_centro_costo --#7
+                            where  arb.movimiento = ''si'' and pre.tipo_pres is not null and cec.id_gestion = '||v_parametros.id_gestion||'
+                            order by arb.id_tipo_cc ASC';   --se condiciono que solo considere si tienen un tipo de presupuesto
     			
                 --Definicion de la respuesta
                 raise notice  'Consulta...%',v_consulta;
@@ -356,7 +358,8 @@ BEGIN
                                count(arb.id_tipo_cc)
                             from arbol_tipo_cc arb
                             left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
-                            where arb.movimiento = ''si'' and cec.id_gestion = '||v_parametros.id_gestion||' ';		    
+                            left join pre.tpresupuesto pre on pre.id_centro_costo = cec.id_centro_costo 
+                            where arb.movimiento = ''si'' and pre.tipo_pres is not null and cec.id_gestion = '||v_parametros.id_gestion||' ';		    
 
                 --Devuelve la respuesta
                 return v_consulta;
