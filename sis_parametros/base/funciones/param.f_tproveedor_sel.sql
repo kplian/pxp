@@ -15,10 +15,8 @@ $body$
  COMENTARIOS: 
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION: 
- AUTOR:     
- FECHA:   
+   ISSUE        FECHA       AUTHOR              DESCRIPCION
+   #7           21/01/2019     RAC                combo proveedor se agrego el desc_proveedor2
 ***************************************************************************/
 
 DECLARE
@@ -255,7 +253,8 @@ BEGIN
                         lugar,
                         pais,
                         rotulo_comercial,
-                        (COALESCE(email,''''))::varchar as email
+                        (COALESCE(email,''''))::varchar as email,
+                        desc_proveedor2 --- #7
             from param.vproveedor provee
             where  ';
             

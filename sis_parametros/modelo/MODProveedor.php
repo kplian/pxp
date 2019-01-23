@@ -5,6 +5,8 @@
  *@author  (mzm)
  *@date 15-11-2011 10:44:58
  *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+    ISSUE        FECHA         AUTHOR              DESCRIPCION
+   	#7           21/01/2019     RAC                combo proveedor se agrego el desc_proveedor2
  */
 
 class MODProveedor extends MODbase{
@@ -79,7 +81,8 @@ class MODProveedor extends MODbase{
         $this->captura('pais','varchar');
         $this->captura('rotulo_comercial','varchar');
         $this->captura('email','varchar');
-
+		$this->captura('desc_proveedor2','VARCHAR'); ///#7 
+		
         //Ejecuta la instruccion
         $this->armarConsulta();
         //echo $this->consulta; exit;
