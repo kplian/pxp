@@ -354,6 +354,14 @@ export const GanttChart = function (pDiv, pFormat) {
       // DRAW the Left-side of the chart (names, resources, comp%)
       let vLeftHeader = document.createDocumentFragment();
 
+
+      /**
+       * LIST HEAD 
+       * 
+       * 
+       * 
+       * HEADINGS
+      */
       let vTmpDiv = this.newNode(vLeftHeader, 'div', this.vDivId + 'glisthead', 'glistlbl gcontainercol');
       let vTmpTab = this.newNode(vTmpDiv, 'table', null, 'gtasktableh');
       let vTmpTBody = this.newNode(vTmpTab, 'tbody');
@@ -397,11 +405,13 @@ export const GanttChart = function (pDiv, pFormat) {
         }
       }
 
-      let vLeftTable = document.createDocumentFragment();
-      let vTmpDiv2 = this.newNode(vLeftTable, 'div', this.vDivId + 'glistbody', 'glistgrid gcontainercol');
-      this.setListBody(vTmpDiv2);
-      vTmpTab = this.newNode(vTmpDiv2, 'table', null, 'gtasktable');
-      vTmpTBody = this.newNode(vTmpTab, 'tbody');
+
+      /**
+       * LIST BODY 
+       * 
+       * 
+      */
+      let vTmpDiv2;
 
       for (let i = 0; i < this.vTaskList.length; i++) {
         let vBGColor;
@@ -424,8 +434,9 @@ export const GanttChart = function (pDiv, pFormat) {
 
           const task = this.vTaskList[i];
           const vEventClickRow = this.vEventClickRow;
-          addListener('click', function () {
-            if (vEventClickRow && typeof vEventClickRow === "function") {
+          addListener('click', function (e) {
+            if (e.target.classList.contains('gfoldercollapse') === false &&
+              vEventClickRow && typeof vEventClickRow === "function") {
               vEventClickRow(task);
             }
           }, vTmpRow);
@@ -560,10 +571,19 @@ export const GanttChart = function (pDiv, pFormat) {
 
       // Add some white space so the vertical scroll distance should always be greater
       // than for the right pane (keep to a minimum as it is seen in unconstrained height designs)
-      this.newNode(vTmpDiv2, 'br');
-      this.newNode(vTmpDiv2, 'br');
+      // this.newNode(vTmpDiv2, 'br');
+      // this.newNode(vTmpDiv2, 'br');
 
-      // Draw the Chart Rows
+
+
+
+
+      /**
+       * CHART HEAD
+       * 
+       * 
+       * HEADINGS
+       */
       let vRightHeader = document.createDocumentFragment();
       vTmpDiv = this.newNode(vRightHeader, 'div', this.vDivId + 'gcharthead', 'gchartlbl gcontainercol');
       this.setChartHead(vTmpDiv);
@@ -634,12 +654,10 @@ export const GanttChart = function (pDiv, pFormat) {
 
       while (vTmpDate.getTime() <= vMaxDate.getTime()) {
         let vHeaderCellClass = 'gminorheading';
-        let vCellClass = 'gtaskcell';
 
         if (this.vFormat == 'day') {
           if (vTmpDate.getDay() % 6 == 0) {
             vHeaderCellClass += 'wkend';
-            vCellClass += 'wkend';
           }
 
           if (vTmpDate <= vMaxDate) {
@@ -698,8 +716,13 @@ export const GanttChart = function (pDiv, pFormat) {
       }
       vDateRow = vTmpRow;
 
-      vTaskLeftPx = (vNumCols * (vColWidth + 1)) + 1;
-      vTaskPlanLeftPx = (vNumCols * (vColWidth + 1)) + 1;
+      // Calculate size of grids  : Plus 3 because 1 border left + 2 of paddings
+      vTaskLeftPx = (vNumCols * (vColWidth + 3)) + 1;
+      // Fix a small space at the end for day
+      if (this.vFormat === 'day') {
+        vTaskLeftPx += 2;
+      }
+      vTaskPlanLeftPx = (vNumCols * (vColWidth + 3)) + 1;
 
       if (this.vUseSingleCell != 0 && this.vUseSingleCell < (vNumCols * vNumRows)) vSingleCell = true;
 
@@ -707,6 +730,14 @@ export const GanttChart = function (pDiv, pFormat) {
 
       vTmpDiv = this.newNode(vRightHeader, 'div', null, 'glabelfooter');
 
+
+
+      /**
+       * CHART GRID
+       * 
+       * 
+       * 
+       */
       let vRightTable = document.createDocumentFragment();
       vTmpDiv = this.newNode(vRightTable, 'div', this.vDivId + 'gchartbody', 'gchartgrid gcontainercol');
       this.setChartBody(vTmpDiv);
@@ -787,7 +818,8 @@ export const GanttChart = function (pDiv, pFormat) {
         else {
           vTaskWidth = vTaskRightPx;
 
-          // Draw Group Bar which has outer div with inner group div and several small divs to left and right to create angled-end indicators
+          // Draw Group Bar which has outer div with inner group div 
+          // and several small divs to left and right to create angled-end indicators
           if (this.vTaskList[i].getGroup()) {
             vTaskWidth = (vTaskWidth > this.vMinGpLen && vTaskWidth < this.vMinGpLen * 2) ? this.vMinGpLen * 2 : vTaskWidth; // Expand to show two end points
             vTaskWidth = (vTaskWidth < this.vMinGpLen) ? this.vMinGpLen : vTaskWidth; // expand to show one end point
@@ -894,14 +926,28 @@ export const GanttChart = function (pDiv, pFormat) {
         const ad = new Date();
         console.log('after tasks loop', ad, (ad.getTime() - bd.getTime()));
       }
-      if (!vSingleCell) vTmpTBody.appendChild(vDateRow.cloneNode(true));
+      if (!vSingleCell) {
+        vTmpTBody.appendChild(vDateRow.cloneNode(true));
+      } else if (this.vFormat == 'day') {
+        vTmpTBody.appendChild(vTmpRow.cloneNode(true));
+      }
 
+
+      // MAIN VIEW: Appending all generated components to main view
       while (this.vDiv.hasChildNodes()) this.vDiv.removeChild(this.vDiv.firstChild);
       vTmpDiv = this.newNode(this.vDiv, 'div', null, 'gchartcontainer');
-      vTmpDiv.appendChild(vLeftHeader);
-      vTmpDiv.appendChild(vRightHeader);
-      vTmpDiv.appendChild(vLeftTable);
-      vTmpDiv.appendChild(vRightTable);
+
+      let leftvTmpDiv = this.newNode(vTmpDiv, 'div', null, 'gmain gmainleft');
+      leftvTmpDiv.appendChild(vLeftHeader);
+      // leftvTmpDiv.appendChild(vLeftTable);
+
+      let rightvTmpDiv = this.newNode(vTmpDiv, 'div', null, 'gmain gmainright');
+      rightvTmpDiv.appendChild(vRightHeader);
+      rightvTmpDiv.appendChild(vRightTable);
+
+      vTmpDiv.appendChild(leftvTmpDiv);
+      vTmpDiv.appendChild(rightvTmpDiv);
+
       this.newNode(vTmpDiv, 'div', null, 'ggridfooter');
       vTmpDiv2 = this.newNode(this.getChartBody(), 'div', this.vDivId + 'Lines', 'glinediv');
       vTmpDiv2.style.visibility = 'hidden';
@@ -912,7 +958,9 @@ export const GanttChart = function (pDiv, pFormat) {
             tmpGenSrc.appendChild(document.createTextNode(vTmpDiv.innerHTML));
             vDiv.appendChild(tmpGenSrc);
       //*/
-      // Now all the content exists, register scroll listeners
+
+
+      // LISTENERS: Now all the content exists, register scroll listeners
       addScrollListeners(this);
 
       // now check if we are actually scrolling the pane
@@ -934,7 +982,7 @@ export const GanttChart = function (pDiv, pFormat) {
 
       if (vMinDate.getTime() <= (new Date()).getTime() && vMaxDate.getTime() >= (new Date()).getTime()) this.vTodayPx = getOffset(vMinDate, new Date(), vColWidth, this.vFormat);
       else this.vTodayPx = -1;
-      
+
       // Dependencies
       let bdd;
       if (this.vDebug) {
