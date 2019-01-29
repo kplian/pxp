@@ -140,14 +140,17 @@ export const addFormatListeners = function (pGanttChart, pFormat, pObj) {
 };
 
 export const addScrollListeners = function (pGanttChart) {
+  addListener('scroll', function () { pGanttChart.getChartBody().scrollTop = pGanttChart.getListBody().scrollTop; }, pGanttChart.getListBody());
+  addListener('scroll', function () { pGanttChart.getListBody().scrollTop = pGanttChart.getChartBody().scrollTop; }, pGanttChart.getChartBody());
+  addListener('scroll', function () { pGanttChart.getChartHead().scrollLeft = pGanttChart.getChartBody().scrollLeft; }, pGanttChart.getChartBody());
+  addListener('scroll', function () { pGanttChart.getChartBody().scrollLeft = pGanttChart.getChartHead().scrollLeft; }, pGanttChart.getChartHead());
   addListener('resize', function () { pGanttChart.getChartHead().scrollLeft = pGanttChart.getChartBody().scrollLeft; }, window);
   addListener('resize', function () { pGanttChart.getListBody().scrollTop = pGanttChart.getChartBody().scrollTop; }, window);
 };
 
 export const addListenerClickCell = function (vTmpCell, vEvents, task, column) {
   addListener('click', function (e) {
-    if (e.target.classList.contains('gfoldercollapse') === false &&
-      vEvents[column] && typeof vEvents[column] === 'function') {
+    if (vEvents[column] && typeof vEvents[column] === 'function') {
       vEvents[column](task, e, vTmpCell);
     }
   }, vTmpCell);
@@ -174,16 +177,14 @@ export const addListenerInputCell = function (vTmpCell, vEventsChange, callback,
 }
 
 export const addListenerDependencies = function () {
-  const elements = document.querySelectorAll('.gtaskbarcontainer');
-  for (let i = 0; i < elements.length; i++) {
-    const taskDiv = elements[i];
+  document.querySelectorAll('.gtaskbarcontainer').forEach(taskDiv => {
     taskDiv.addEventListener('mouseover', e => {
       toggleDependencies(e);
     });
     taskDiv.addEventListener('mouseout', e => {
       toggleDependencies(e);
     });
-  }
+  });
 }
 
 const toggleDependencies = function (e) {
