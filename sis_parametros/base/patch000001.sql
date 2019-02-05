@@ -2443,3 +2443,9 @@ ALTER TABLE param.tproveedor
 
 
 /***********************************F-SCP-CAP-PARAM-0-06/12/2018*****************************************/
+
+
+/***********************************I-SCP-CAP-PARAM-0-05/02/2019*****************************************/
+CREATE UNIQUE INDEX tcentro_costo_tipo_cc ON param.tcentro_costo
+  USING btree (id_tipo_cc, id_gestion);
+/***********************************F-SCP-CAP-PARAM-0-05/02/2019*****************************************/
