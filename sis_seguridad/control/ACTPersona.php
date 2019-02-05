@@ -150,6 +150,12 @@ class ACTPersona extends ACTbase{
 
 	}
 	
+	function validarPersona(){
+		$this->objFunc=$this->create('MODPersona');		
+		$this->res=$this->objFunc->validarPersona();
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+	
 
 }
 

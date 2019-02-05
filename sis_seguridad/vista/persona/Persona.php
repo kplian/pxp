@@ -318,6 +318,60 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		//this.getBoton('x').disable();
 		
 	},
+	
+	// Funcion guardar del formulario
+    onSubmit: function(o, x, force) {    	
+    	var me = this;
+    	if (me.form.getForm().isValid()) {
+
+            Phx.CP.loadingShow();
+            // arma json en cadena para enviar al servidor
+            Ext.apply(me.argumentSave, o.argument); 
+            
+            Ext.Ajax.request({
+                url: '../../sis_seguridad/control/Persona/validarPersona',
+                params: { 	'id_persona': this.Cmp.id_persona.getValue(),
+                			'nombre' :  this.Cmp.nombre.getValue() + this.Cmp.ap_paterno.getValue()+ this.Cmp.ap_materno.getValue(),
+                			'tipo_documento' :  this.Cmp.tipo_documento.getValue(),
+                			'ci' :  this.Cmp.ci.getValue()},                
+                success: me.successValidar,                
+                failure: me.conexionFailure,
+                timeout: me.timeout,
+                argument: {'o':o,'x':x,'force':false},
+                scope: me
+            }); 
+
+        }
+
+    },
+    successValidar : function(resp) {
+    	var me = this;
+    	var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+    	if (reg.ROOT.datos.tipo_mensaje == 'exito') {
+    		Phx.vista.persona.superclass.onSubmit.call(this,resp.argument.o,resp.argument.x,resp.argument.force);
+    	} else if (reg.ROOT.datos.tipo_mensaje == 'error') {
+    		Phx.CP.loadingHide();
+    		alert(reg.ROOT.datos.mensaje_error);    		
+    	} else {
+    		Phx.CP.loadingHide();
+    		// Show a dialog using config options:
+			Ext.Msg.show({
+			   title:'ALERTA!',
+			   msg: reg.ROOT.datos.mensaje_error,
+			   buttons: Ext.Msg.YESNO,
+			   fn: function(btn){
+			   		if (btn == 'no') {
+			   			
+			   		} else {
+			   			Phx.vista.persona.superclass.onSubmit.call(me,resp.argument.o,resp.argument.x,resp.argument.force);			   			
+			   		}
+				    
+			   },
+			   animEl: 'elId',
+			   icon: Ext.MessageBox.QUESTION
+			});
+    	}
+	},
 
 	/*
 	 * Grupos:[{

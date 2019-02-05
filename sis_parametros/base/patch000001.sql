@@ -2309,8 +2309,6 @@ IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compr
 CREATE INDEX ttipo_cc_plantilla_idx ON param.ttipo_cc_plantilla
   USING btree (id_tipo_cc_fk);
 
-ALTER TABLE param.ttipo_cc_plantilla
-  OWNER TO dbarchumacero;
 /***********************************F-SCP-EGS-PARAM-1-01/12/2018*****************************************/
 
 
@@ -2444,8 +2442,8 @@ ALTER TABLE param.tproveedor
 
 /***********************************F-SCP-CAP-PARAM-0-06/12/2018*****************************************/
 
-
 /***********************************I-SCP-CAP-PARAM-0-05/02/2019*****************************************/
 CREATE UNIQUE INDEX tcentro_costo_tipo_cc ON param.tcentro_costo
   USING btree (id_tipo_cc, id_gestion);
 /***********************************F-SCP-CAP-PARAM-0-05/02/2019*****************************************/
+
