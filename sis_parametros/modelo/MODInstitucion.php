@@ -137,6 +137,25 @@ class MODInstitucion extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+
+	function validarInstitucion(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_institucion_ime';
+		$this->transaccion='PM_INSTITVAL_MOD';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_institucion','id_institucion','int4');
+		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('doc_id','doc_id','varchar');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 			
 	function eliminarInstitucion(){
 		//Definicion de variables para ejecucion del procedimiento

@@ -225,5 +225,25 @@ class MODPersona extends MODbase{
 		return $this->respuesta;
 	}
 	
+	function validarPersona(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='segu.ft_persona_ime';
+		$this->transaccion='SEG_PERSONVAL_MOD';
+		$this->tipo_procedimiento='IME';
+				
+		//Define los parametros para la funcion
+		$this->setParametro('id_persona','id_persona','int4');
+		$this->setParametro('nombre','nombre','varchar');
+		$this->setParametro('ci','ci','varchar');
+		$this->setParametro('tipo_documento','tipo_documento','varchar');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	
 }
 ?>

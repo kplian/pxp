@@ -31,6 +31,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_institucion	integer;
+	v_nombres			varchar;
+	
 			    
 BEGIN
 
@@ -152,6 +154,70 @@ BEGIN
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Institución modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_institucion',v_parametros.id_institucion::varchar);
                
+            --Devuelve la respuesta
+            return v_resp;
+            
+		end;
+		
+	/*********************************    
+ 	#TRANSACCION:  'PM_INSTITVAL_MOD'
+ 	#DESCRIPCION:	Validacion de instituciones
+ 	#AUTOR:		gvelasquez	
+ 	#FECHA:		21-09-2011 10:50:03
+	***********************************/
+
+	elsif(p_transaccion='PM_INSTITVAL_MOD')then
+
+		begin   
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Institución validado(a)'); 
+      		if (v_parametros.id_institucion is not null) then 
+      			if (exists(	select 1 
+      						from param.tinstitucion 
+      						where id_institucion != v_parametros.id_institucion
+      							and trim(both ' ' from doc_id) = trim(both ' ' from v_parametros.doc_id))) then
+	      			v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','error'); 
+	            	v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Ya existe una institucion con el mismo nit');
+	            else
+	            	select pxp.list(nombre) into v_nombres
+	            	from param.tinstitucion 
+					where id_institucion != v_parametros.id_institucion
+						and (trim(both ' ' from lower(nombre)) like '%' || trim(both ' ' from lower(v_parametros.nombre)) || '%'  or
+							 trim(both ' ' from lower(v_parametros.nombre)) like '%' || trim(both ' ' from lower(nombre)) || '%'); 
+					if (v_nombres is not null) then
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','alerta'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Existen los siguientes nombres de institucion: '|| v_nombres || '. Esta segur@ de insertar esta institucion?');
+					else
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','exito'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','No existe instituciones con el mismo nombre');
+					end if;
+	            end if;
+	        
+	        
+	        else
+	        
+	        	if (exists(	select 1 
+      						from param.tinstitucion 
+      						where trim(both ' ' from doc_id) = trim(both ' ' from v_parametros.doc_id))) then
+	      			v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','error'); 
+	            	v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Ya existe una institucion con el mismo nit');
+	            else
+	            	
+	            	select pxp.list(nombre) into v_nombres
+	            	from param.tinstitucion 
+					where   (trim(both ' ' from lower(nombre)) like '%' || trim(both ' ' from lower(v_parametros.nombre)) || '%'  or
+							 trim(both ' ' from lower(v_parametros.nombre)) like '%' || trim(both ' ' from lower(nombre)) || '%'); 
+					if (v_nombres is not null) then
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','alerta'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','Existen los siguientes nombres de institucion: '|| v_nombres || '. Esta segur@ de insertar esta institucion?');
+					else
+						v_resp = pxp.f_agrega_clave(v_resp,'tipo_mensaje','exito'); 
+	            		v_resp = pxp.f_agrega_clave(v_resp,'mensaje_error','No existe instituciones con el mismo nombre');
+					end if;
+	            end if;
+      			
+      		
+      		end if;
+      		
             --Devuelve la respuesta
             return v_resp;
             

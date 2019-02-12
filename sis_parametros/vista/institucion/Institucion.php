@@ -508,6 +508,58 @@ Phx.vista.Institucion=Ext.extend(Phx.gridInterfaz,{
 			Phx.vista.Institucion.superclass.loadValoresIniciales.call(this);
 
 		},
+	// Funcion guardar del formulario
+    onSubmit: function(o, x, force) {    	
+    	var me = this;
+    	if (me.form.getForm().isValid()) {
+
+            Phx.CP.loadingShow();
+            // arma json en cadena para enviar al servidor
+            Ext.apply(me.argumentSave, o.argument); 
+            
+            Ext.Ajax.request({
+                url: '../../sis_parametros/control/Institucion/validarInstitucion',
+                params: { 	'id_institucion': this.Cmp.id_institucion.getValue(),
+                			'nombre' :  this.Cmp.nombre.getValue(),
+                			'doc_id' :  this.Cmp.doc_id.getValue()},                
+                success: me.successValidar,                
+                failure: me.conexionFailure,
+                timeout: me.timeout,
+                argument: {'o':o,'x':x,'force':false},
+                scope: me
+            }); 
+
+        }
+
+    },
+    successValidar : function(resp) {
+    	var me = this;
+    	var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+    	if (reg.ROOT.datos.tipo_mensaje == 'exito') {
+    		Phx.vista.Institucion.superclass.onSubmit.call(this,resp.argument.o,resp.argument.x,resp.argument.force);
+    	} else if (reg.ROOT.datos.tipo_mensaje == 'error') {
+    		Phx.CP.loadingHide();
+    		alert(reg.ROOT.datos.mensaje_error);    		
+    	} else {
+    		Phx.CP.loadingHide();
+    		// Show a dialog using config options:
+			Ext.Msg.show({
+			   title:'ALERTA!',
+			   msg: reg.ROOT.datos.mensaje_error,
+			   buttons: Ext.Msg.YESNO,
+			   fn: function(btn){
+			   		if (btn == 'no') {
+			   			
+			   		} else {
+			   			Phx.vista.Institucion.superclass.onSubmit.call(me,resp.argument.o,resp.argument.x,resp.argument.force);
+			   		}
+				    
+			   },
+			   animEl: 'elId',
+			   icon: Ext.MessageBox.QUESTION
+			});
+    	}
+	},
 	bsave:false,
 	bdel:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
     bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
