@@ -191,5 +191,8 @@
 	$_SESSION['_REST_NO_CHECK'] = array('/parametros/Alarma/confirmarAcuseRecibo',
 	                                    '/parametros/Alarma/otro');
 
+    //Variables para relacion con SIAT
+	$_SESSION['_URL_IMPUESTOS']='http://dominio.impuestos.gob.bo/servicio/pagina.xhtml';
+
 	
 ?>
