@@ -5,6 +5,16 @@
  de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabla tuo_funcionario 
  Autor:	Kplian
  Fecha:	01/07/2010
+ * 
+ *  
+  ***************************************************************************************************   
+    
+
+    HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION
+   
+ #6            09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario
  */
 class ACTUoFuncionario extends ACTbase{    
 
@@ -64,6 +74,21 @@ class ACTUoFuncionario extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
+   //#6 
+   function listarAsignacionFuncionario(){
+        // parametros de ordenacion por defecto
+        $this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario1');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        if ($this->objParam->getParametro('id_funcionario') != ''){
+            $this->objParam->addFiltro("UOFUNC.id_funcionario = ".$this->objParam->getParametro('id_funcionario'));
+        }
+        //$this->objParam->addParametro('id_subsistema',$id_subsistema);
+        $this->objFunSeguridad=$this->create('MODUoFuncionario');
+        //ejecuta el metodo de lista funcionarios a travez de la intefaz objetoFunSeguridad
+        $this->res=$this->objFunSeguridad->listarAsignacionFuncionario($this->objParam);
+        //imprime respuesta en formato JSON para enviar lo a la interface (vista)
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 
 }
 
