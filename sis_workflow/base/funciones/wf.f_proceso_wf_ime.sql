@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.f_proceso_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -1189,12 +1187,13 @@ BEGIN
             IF  v_reg_tipo_estado.funcion_inicial is not NULL THEN
                 EXECUTE ( 'select ' || v_reg_tipo_estado.funcion_inicial  ||'('||p_id_usuario::varchar||','||COALESCE(v_parametros._id_usuario_ai::varchar,'NULL')||','||COALESCE(''''|| v_parametros._nombre_usuario_ai::varchar||'''','NULL')||','|| v_id_estado_actual::varchar||','|| v_parametros.id_proceso_wf::varchar||','||COALESCE(''''||v_reg_tipo_estado.codigo||'''','NULL')||')');
             END IF;
-        
+       
           -- si hay mas de un estado disponible  preguntamos al usuario
-         v_resp = pxp.f_agrega_clave(v_resp,'id_estado_wf',v_id_estado_actual::varchar); 
-         v_resp = pxp.f_agrega_clave(v_resp,'estado',v_reg_tipo_estado.codigo); 
-         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
+         v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado');
+         v_resp = pxp.f_agrega_clave(v_resp,'id_estado_wf',v_id_estado_actual::varchar);                 
+         v_resp = pxp.f_agrega_clave(v_resp,'estado',v_reg_tipo_estado.codigo);
          v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
+         v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',va_id_tipo_estado[1]::varchar);   
          --Devuelve la respuesta
           return v_resp;
         
