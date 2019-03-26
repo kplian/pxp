@@ -2447,3 +2447,11 @@ CREATE UNIQUE INDEX tcentro_costo_tipo_cc ON param.tcentro_costo
   USING btree (id_tipo_cc, id_gestion);
 /***********************************F-SCP-CAP-PARAM-0-05/02/2019*****************************************/
 
+/***********************************I-SCP-EGS-PARAM-2-26/03/2019*****************************************/
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN llave_mano VARCHAR(2) DEFAULT 'si'::character varying NOT NULL;
+
+COMMENT ON COLUMN param.tconcepto_ingas.llave_mano
+IS 'Indica si el concepto de gasto es llave en mano';
+/***********************************F-SCP-EGS-PARAM-2-26/03/2019*****************************************/
+
