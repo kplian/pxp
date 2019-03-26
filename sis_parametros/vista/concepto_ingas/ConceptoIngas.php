@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 25-02-2013 19:49:23
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ * 	#ISSUE				FECHA				AUTOR				DESCRIPCION
+ 	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -364,7 +366,32 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			form:true
 		},
 	     /////////////////EGS//// 
-	     
+		 { //#13
+	       		config:{
+	       			name:'llave_mano',
+	       			fieldLabel:'LLave en Mano',
+	       			allowBlank:false,
+	       			emptyText:'...',
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    gwidth: 100,
+	       		    store:new Ext.data.ArrayStore({
+		        	fields: ['ID', 'valor'],
+		        	data :	[['si','si'],	
+		        			['no','no']]
+		        				
+		    		}),
+					valueField:'ID',
+					displayField:'valor',
+	       		},
+	       		type:'ComboBox',
+	       		valorInicial: 'si',
+	       		id_grupo:0,	       		
+	       		grid:true,
+	       		form:true
+	       },
 		{
 			config:{
 				name: 'estado_reg',
@@ -728,6 +755,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'almacenable', type: 'string'},
 		{name:'version', type: 'numeric'},///EGS/////
 		{name:'codigo', type: 'string'},///EGS/////////
+		{name:'llave_mano', type: 'string'},//#13
 		'id_grupo_ots','filtro_ot','requiere_ot',
 		'sw_autorizacion','desc_unidad_medida','id_unidad_medida',
 		'nandina','ruta_foto','id_cat_concepto','desc_cat_concepto'
