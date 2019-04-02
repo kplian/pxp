@@ -92,4 +92,9 @@ VALUES (E'pxp_array_lista_blanca', E'PM_CONACUSE_MOD', E'separa por comas sin es
 
 /****************************F-DAT-RAC-PXP-0-04/05/2015******************/
 
+/****************************I-DAT-JJA-PXP-0-02/04/2019******************/
 
+select pxp.f_insert_tgui ('<i class="fa fa-cubes fa-2x"></i> PENTAHO', '', 'PEHO', 'si', 1, '', 1, '', '', 'PEHO'); --#14 endetr Juan Agregado de menu pentaho 
+select pxp.f_insert_tgui ('Cubos', 'Cubos', 'CUBO', 'si', 1, 'pxp/pentaho.php', 2, '', 'pentaho', 'PEHO');          --#14 endetr Juan Agregado de menu pentaho 
+
+/****************************F-DAT-JJA-PXP-0-02/04/2019******************/
