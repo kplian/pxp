@@ -6,6 +6,8 @@
 *@date 25-02-2013 19:49:23
 *@date 29/06/2018 calvarez - se añadió filtro para conig.sw_autorizacion='formulacion_presupuesto' para listar conceptos en la formulación de la memoria de cálculo
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+ *  ISSUE             FECHA:		      AUTOR       DESCRIPCION
+ *  #13 endeEtr		  26/3/2019				EGS		  Se habilita tipo llave en mano  
 */
 
 class ACTConceptoIngas extends ACTbase{    
@@ -22,6 +24,9 @@ class ACTConceptoIngas extends ACTbase{
                  }
                  if($this->objParam->getParametro('tipo')=='Servicio'){
                    $this->objParam->addFiltro("conig.tipo =''Servicio''");    
+                 }
+				 if($this->objParam->getParametro('tipo')=='LlaveMano'){ //#13
+                   $this->objParam->addFiltro("conig.llave_mano = ''si'' ");    
                  }
         }
 		////////EGS/////
@@ -82,6 +87,9 @@ class ACTConceptoIngas extends ACTbase{
                  }
                  if($this->objParam->getParametro('tipo')=='Servicio'){
                    $this->objParam->addFiltro("conig.tipo =''Servicio''");    
+                 }
+				 if($this->objParam->getParametro('tipo')=='LlaveMano'){
+                   $this->objParam->addFiltro("conig.llave_mano =''si''");    
                  }
          }
         

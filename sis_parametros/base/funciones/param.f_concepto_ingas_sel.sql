@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -17,10 +15,8 @@ $body$
  COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:
- AUTOR:
- FECHA:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano	
 ***************************************************************************/
 
 DECLARE
@@ -78,8 +74,8 @@ BEGIN
                         conig.id_cat_concepto,
                         (cc.codigo ||'' - ''||cc.nombre)::varchar as desc_cat_concepto,
                          conig.version,
-                         conig.codigo
-
+                         conig.codigo,
+                        conig.llave_mano --#13
                         from param.tconcepto_ingas conig
 						inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                         left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida

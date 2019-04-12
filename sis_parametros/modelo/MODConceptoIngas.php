@@ -5,7 +5,9 @@
 *@author  (admin)
 *@date 25-02-2013 19:49:23
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
-*/
+	#ISSUE				FECHA				AUTOR				DESCRIPCION
+ 	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
+ */
 
 class MODConceptoIngas extends MODbase{
 	
@@ -50,7 +52,8 @@ class MODConceptoIngas extends MODbase{
 		
 		$this->captura('version','int4');///EGS
 		$this->captura('codigo','varchar');////EGS
-		
+		$this->captura('llave_mano','varchar');//#13
+				
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -238,7 +241,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('nandina','nandina','varchar');
 		
 		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');
-
+ 		$this->setParametro('llave_mano','llave_mano','varchar');//#13
+ 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -271,6 +275,8 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('id_unidad_medida','id_unidad_medida','int4');
 		$this->setParametro('nandina','nandina','varchar');		
 		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');
+		$this->setParametro('llave_mano','llave_mano','varchar');//#13
+
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

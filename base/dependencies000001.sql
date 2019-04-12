@@ -118,6 +118,9 @@ CREATE AGGREGATE pxp.concat_array (
 
 /****************************F-DEP-RAC-PXP-0-17/08/2017********************************/
 
+/****************************I-DEP-JJA-PXP-0-02/04/2019********************************/
 
+select pxp.f_insert_testructura_gui ('PEHO', 'SISTEMA'); --#14 endetr Juan Agregado de menu pentaho
+select pxp.f_insert_testructura_gui ('CUBO', 'PEHO');    --#14 endetr Juan Agregado de menu pentaho
 
-
+/****************************F-DEP-JJA-PXP-0-02/04/2019********************************/
