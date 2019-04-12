@@ -213,6 +213,33 @@ where ';
 										FROM param.tarchivo arch
 											INNER JOIN t t ON t.id_archivo = arch.id_archivo_fk
 									)
+									--nuevo requerimiento 12 abril 2019
+									SELECT
+									arch.id_archivo,
+									arch.estado_reg,
+									arch.folder,
+									arch.extension,
+									arch.id_tabla,
+									arch.nombre_archivo,
+									arch.id_tipo_archivo,
+									arch.fecha_reg,
+									arch.usuario_ai,
+									arch.id_usuario_reg,
+									arch.id_usuario_ai,
+									arch.id_usuario_mod,
+									arch.fecha_mod,
+									usu1.cuenta as usr_reg,
+									usu2.cuenta as usr_mod,
+									tipar.codigo,
+									tipar.nombre,
+									''-1''::varchar
+								from param.tarchivo arch
+									inner join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
+									left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
+									INNER JOIN param.ttipo_archivo tipar on tipar.id_tipo_archivo = arch.id_tipo_archivo
+									WHERE arch.id_archivo = '||v_parametros.id_archivo||' and arch.estado_reg = ''inactivo''
+									UNION ALL -- fin requerimieno 12 abril 2019
+
 									SELECT
 										arch.id_archivo,
 										arch.estado_reg,
