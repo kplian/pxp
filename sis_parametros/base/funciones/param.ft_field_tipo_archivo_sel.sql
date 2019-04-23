@@ -119,7 +119,7 @@ BEGIN
 									left join param.tarchivo a on a.id_archivo = fva.id_archivo
 
 								where fta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||'
-								and a.estado != ''inactivo'' ';
+								and (a.estado_reg != ''inactivo'' or a.estado_reg is NULL ) ';
 
 			--Definicion de la respuesta
 
