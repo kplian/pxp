@@ -138,9 +138,9 @@ td.gspanning {
 /* needed for IE8 */
 
 .gtaskname {
-  min-width: 170px;
-  max-width: 170px;
-  width: 170px;
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
   font-size: 9px;
   border-left: none;
 }
@@ -719,13 +719,18 @@ td.gspanning div {
 }
 
 .gadditional,
-.gresource,
+.gresource{
+  text-align: center;
+  width: 200px;
+  max-width: 200px;
+  font-size: 10px;
+}
 .gduration,
 .gpccomplete,
 .gcost {
   text-align: center;
-  width: 70px;
-  max-width: 70px;
+  width: 100px;
+  max-width: 100px;
   font-size: 10px;
 }
 
@@ -768,10 +773,12 @@ td.gspanning div {
   overflow-x: scroll;
   overflow-y: hidden;
   top: 0;
+   width: 60%;
 }
 
 .gmainleft {
   overflow-x: scroll;
+  width: 40%;
 }
 
 .gtasktableh tr,
