@@ -89,6 +89,22 @@ td.gspanning {
   border: #efefef 1px solid;
 }
 
+.gtaskheading div,
+.gname div,
+.gtaskname div,
+.gresource div,
+.gduration div,
+.gpccomplete div,
+.gstartdate div,
+.gplanstartdate div,
+.gplanenddate div,
+.gcost div,
+.genddate div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .gtaskbarcontainer.gplan {
   position: absolute !important;
   top: 0px;
@@ -122,9 +138,9 @@ td.gspanning {
 /* needed for IE8 */
 
 .gtaskname {
-  min-width: 400px;
-  max-width: 400px;
-  width: 400px;
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
   font-size: 9px;
   border-left: none;
 }
@@ -281,7 +297,7 @@ span.gfoldercollapse {
 .gtaskpink {
   height: 13px;
   filter: alpha(opacity=90);
-  opacity: 0.7;
+  opacity: 0.9;
   margin-top: 1px;
 }
 
@@ -395,69 +411,6 @@ span.gfoldercollapse {
   opacity: 0.4;
   background-color: #000000;
   margin-top: 4px;
-}
-
-/* Printer friendly styles - we could use these all the time but they are not as pretty! */
-
-/* note that "@media print" is not supported in IE6 or 7.  Fully patched IE8 should be OK */
-
-@media print {
-  .ggroupblack {
-    height: 0px;
-    border-top: 7px solid;
-    border-color: #000000;
-  }
-  .gtaskblue {
-    height: 0px;
-    border-top: 13px solid;
-    border-color: rgb(58, 132, 195);
-  }
-  .gtaskred {
-    height: 0px;
-    border-top: 13px solid;
-    border-color: rgb(196, 58, 58);
-  }
-  .gtaskgreen {
-    height: 0px;
-    border-top: 13px solid;
-    border-color: rgb(80, 193, 58);
-  }
-  .gtaskyellow {
-    height: 0px;
-    border-top: 13px solid;
-    border-color: rgb(247, 228, 56);
-  }
-  .gtaskpurple {
-    height: 0px;
-    border-top: 13px solid;
-    border-color: rgb(193, 58, 193);
-  }
-  .gtaskpink {
-    height: 0px;
-    border-top: 13px solid;
-    border-color: rgb(249, 177, 245);
-  }
-  .gtaskbluecomplete,
-  .gtaskredcomplete,
-  .gtaskgreencomplete,
-  .gtaskyellowcomplete,
-  .gtaskpurplecomplete,
-  .gtaskpinkcomplete {
-    height: 0px;
-    filter: alpha(opacity=40);
-    opacity: 0.4;
-    margin-top: -9px;
-    border-top: 5px solid;
-    border-color: #000000;
-  }
-  .ggroupblackcomplete {
-    height: 0px;
-    filter: alpha(opacity=80);
-    opacity: 0.8;
-    margin-top: -5px;
-    border-top: 3px solid;
-    border-color: #777777;
-  }
 }
 
 /*  END Task bar styles */
@@ -636,7 +589,8 @@ div.gtaskbarcontainer {
   padding-top: 0px;
   background-color: #ffffff;
   position: relative;
-  overflow: auto;
+  /* overflow: auto; */
+  overflow: unset;
   min-height: 0%;
 }
 
@@ -647,7 +601,7 @@ div.gtaskbarcontainer {
   padding-top: 0px;
   background-color: #ffffff;
   position: relative;
-  overflow: hidden;
+  overflow: unset;
 }
 
 /* Old Internet Explorer version hacks */
@@ -760,24 +714,18 @@ td.gspanning div {
   max-height: 16px;
 }
 
-.gadditional{
-  text-align: center;
-  width: 70px;
-  max-width: 70px;
-  font-size: 10px;
+.gadditional {
+  border: #efefef 1px solid;
 }
-.gresource{
-  text-align: center;
-  width: 150px;
-  max-width: 150px;
-  font-size: 10px;
-}
+
+.gadditional,
+.gresource,
 .gduration,
 .gpccomplete,
 .gcost {
   text-align: center;
-  width: 70px;
-  max-width: 70px;
+  width: 170px;
+  max-width: 170px;
   font-size: 10px;
 }
 
@@ -787,7 +735,7 @@ td.gspanning div {
   .gchartgrid {
     overflow: unset !important;
   }
-  .glistgrid{
+  .glistgrid {
     float: none !important;
   }
 }
@@ -809,3 +757,128 @@ td.gspanning div {
 .gmilequarter td,
 .gitemquarter td		{ background-size: 19px 1px; background-image: linear-gradient(to left, #efefef, transparent 1px, transparent 18px); width: 100%; height: 19px; }
 */
+
+.gmain {
+  width: 50%;
+  display: inline-block;
+  height: 100%;
+}
+
+.gmainright {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  top: 0;
+   width: 65%;
+}
+
+.gmainleft {
+  overflow-x: scroll;
+  width: 35%;
+}
+
+.gtasktableh tr,
+.gcharttable tr,
+.gtasktable tr {
+  height: 22px !important;
+}
+
+.gtasktable {
+  margin-bottom: 14px;
+}
+
+/* Printer friendly styles - we could use these all the time but they are not as pretty! */
+
+/* note that "@media print" is not supported in IE6 or 7.  Fully patched IE8 should be OK */
+
+@media print {
+  .ggroupblack {
+    height: 0px;
+    border-top: 7px solid;
+    border-color: #000000;
+  }
+  .gtaskblue {
+    height: 0px;
+    border-top: 13px solid;
+    border-color: rgb(58, 132, 195);
+  }
+  .gtaskred {
+    height: 0px;
+    border-top: 13px solid;
+    border-color: rgb(196, 58, 58);
+  }
+  .gtaskgreen {
+    height: 0px;
+    border-top: 13px solid;
+    border-color: rgb(80, 193, 58);
+  }
+  .gtaskyellow {
+    height: 0px;
+    border-top: 13px solid;
+    border-color: rgb(247, 228, 56);
+  }
+  .gtaskpurple {
+    height: 0px;
+    border-top: 13px solid;
+    border-color: rgb(193, 58, 193);
+  }
+  .gtaskpink {
+    height: 0px;
+    border-top: 13px solid;
+    border-color: rgb(249, 177, 245);
+  }
+  .gtaskbluecomplete,
+  .gtaskredcomplete,
+  .gtaskgreencomplete,
+  .gtaskyellowcomplete,
+  .gtaskpurplecomplete,
+  .gtaskpinkcomplete {
+    height: 0px;
+    filter: alpha(opacity=40);
+    opacity: 0.4;
+    margin-top: -9px;
+    border-top: 5px solid;
+    border-color: #000000;
+  }
+  .ggroupblackcomplete {
+    height: 0px;
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+    margin-top: -5px;
+    border-top: 3px solid;
+    border-color: #777777;
+  }
+  .gmainright,
+  .gmainleft {
+    overflow: hidden;
+    width: auto;
+  }
+  table { page-break-after:auto }
+  tr    { page-break-inside:avoid; page-break-after:auto }
+  td    { page-break-inside:avoid; page-break-after:auto }
+  thead { display:table-header-group }
+  tfoot { display:table-footer-group }
+}
+
+/* Fix for OSx trackpad hiding the scroll bars*/
+.frame::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.frame::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+
+.frame::-webkit-scrollbar:horizontal {
+  height: 11px;
+}
+
+.frame::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.frame::-webkit-scrollbar-track { 
+  background-color: #fff; 
+  border-radius: 8px; 
+}

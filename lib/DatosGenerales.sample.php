@@ -191,8 +191,14 @@
 	$_SESSION['_REST_NO_CHECK'] = array('/parametros/Alarma/confirmarAcuseRecibo',
 	                                    '/parametros/Alarma/otro');
 
+
+	//IP DEL SERVIDOR
+	$_SESSION['_HOST_SERVIDOR']='172.18.79.204';
+	//IP SERVIDOR PENTAHO
+	$_SESSION['_HOST_SERVIDOR_PENTAHO']='172.18.79.98:8080';
+
     //Variables para relacion con SIAT
 	$_SESSION['_URL_IMPUESTOS']='http://dominio.impuestos.gob.bo/servicio/pagina.xhtml';
 
-	
+
 ?>
