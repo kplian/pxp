@@ -8,6 +8,7 @@ include_once(dirname(__FILE__)."/../lib_modelo/conexion.php");
 include_once(dirname(__FILE__)."/../lib_modelo/driver.php");
 include_once(dirname(__FILE__)."/../lib_modelo/MODLogError.php");
 include_once(dirname(__FILE__)."/../lib_modelo/MODValidacion.php");
+include_once(dirname(__FILE__)."/../lib_modelo/MODFunBasicas.php");
 include_once(dirname(__FILE__)."/../lib_general/Mensaje.php");
 include_once(dirname(__FILE__)."/../lib_general/rss_php.php");
 include_once(dirname(__FILE__)."/../cifrado/rsa.class.php");

@@ -262,7 +262,49 @@ BEGIN
             return v_resp;
 
 		end;
-         
+
+
+		/*********************************
+ 	#TRANSACCION:  'PM_ARCH_REMH'
+ 	#DESCRIPCION:	elimina de la vista principal y queda en el historico
+ 	#AUTOR:		fafigueroa
+ 	#FECHA:		12-04-2019 15:04:48
+	***********************************/
+
+	elsif(p_transaccion='PM_ARCH_REMH')then
+
+		begin
+			--Sentencia de la modificacion
+			select *
+			INTO v_record_tipo_archivo
+			FROM param.ttipo_archivo
+			where id_tipo_archivo = v_parametros.id_tipo_archivo;
+
+
+			--si es diferente de si el multiple entonces  se tomara en cuenta los archivos historicos
+			IF v_record_tipo_archivo.multiple != 'si' or v_record_tipo_archivo.multiple is null THEN
+
+
+				UPDATE param.tarchivo
+				SET estado_reg = 'inactivo'
+				where id_tipo_archivo = v_parametros.id_tipo_archivo
+							AND id_tabla = v_parametros.id_tabla
+							and id_archivo_fk is NULL and id_archivo = v_parametros.id_archivo ;
+
+
+			END IF;
+
+
+
+			--Definicion de la respuesta
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Archivo enviado al historico(a)');
+			v_resp = pxp.f_agrega_clave(v_resp,'id_archivo',v_parametros.id_archivo::varchar);
+
+			--Devuelve la respuesta
+			return v_resp;
+
+		end;
+
 	else
      
     	raise exception 'Transaccion inexistente: %',p_transaccion;

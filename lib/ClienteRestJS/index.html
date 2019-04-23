@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config</title>
+
+    <script src="jquery-3.0.0.min.js"></script>
+
+</head>
+<body style="background-color: #fafbfc;">
+
+
+
+<script src="config.js"></script>
+
+<script src="pxpRestWeb/md5.js"></script>
+<script src="pxpRestWeb/mcrypt.js"></script>
+<script src="pxpRestWeb/rijndael.js"></script>
+<script src="pxpRestWeb/base64.js"></script>
+<script src="pxpRestWeb/clientRestPxp.js"></script>
+
+<script src="pxpRestWeb/ajax.js"></script>
+
+
+<script>
+
+
+
+
+    config.init();
+
+    clientRestPxp.setCredentialsPxp("admin", "21232f297a57a5a743894a0e4a801fc3"); // usuario y contra en md5
+    clientRestPxp.genHeaders();
+    console.log(clientRestPxp)
+    console.log('_headers',clientRestPxp._headers)
+
+
+    ajax_dyd.data = {};
+    ajax_dyd.type = 'POST';
+    ajax_dyd.url = 'pxp/lib/rest/seguridad/Persona/listarPersona';
+    ajax_dyd.dataType = 'json';
+    ajax_dyd.async = true;
+    ajax_dyd.peticion_ajax(function (resp) {
+
+        console.log(resp)
+    });
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
