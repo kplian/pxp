@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_columnas_archivo_excel_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -72,7 +70,7 @@ BEGIN
             END IF;
            --busca el codigo de plantilla para insertalo en la columna del detalle #1 21/11/2018	EGS 
             SELECT
-            	pae.codigo_plantilla
+            	pae.codigo
             INTO
             	v_codigo_plantilla
             FROM param.tplantilla_archivo_excel pae
