@@ -1191,6 +1191,8 @@ BEGIN
             END IF;
         
           -- si hay mas de un estado disponible  preguntamos al usuario
+         v_resp = pxp.f_agrega_clave(v_resp,'id_estado_wf',v_id_estado_actual::varchar); 
+         v_resp = pxp.f_agrega_clave(v_resp,'estado',v_reg_tipo_estado.codigo); 
          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se realizo el cambio de estado)'); 
          v_resp = pxp.f_agrega_clave(v_resp,'operacion','cambio_exitoso');
          --Devuelve la respuesta

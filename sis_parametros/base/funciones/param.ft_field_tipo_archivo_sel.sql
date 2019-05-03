@@ -116,8 +116,10 @@ BEGIN
 
 									from param.tfield_tipo_archivo fta
 								left join param.tfield_valor_archivo fva on fva.id_field_tipo_archivo = fta.id_field_tipo_archivo and fva.id_archivo = '||v_parametros.id_archivo||'
+									left join param.tarchivo a on a.id_archivo = fva.id_archivo
 
-								where fta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||' ';
+								where fta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||'
+								and (a.estado_reg != ''inactivo'' or a.estado_reg is NULL ) ';
 
 			--Definicion de la respuesta
 

@@ -141,7 +141,12 @@ class ACTArchivo extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 
-    
+
+    function removeArchivoGrilla(){
+        $this->objFunc=$this->create('MODArchivo');
+        $this->res=$this->objFunc->removeArchivoGrilla($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 
 			
 }
