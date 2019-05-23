@@ -5,7 +5,10 @@
 *@author  (admin)
 *@date 14-01-2014 19:23:02
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
-*/
+
+  ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
+ #18                23/05/2019      EGS              se agrego el campo considerar_planilla 
+ * */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -61,6 +64,32 @@ Phx.vista.TipoContrato=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+		{	//#18
+                config:{
+                       name:'considerar_planilla',
+                       fieldLabel:'Considera Planilla',
+                       allowBlank:false,
+                       emptyText:'...',
+                       typeAhead: true,
+                       triggerAction: 'all',
+                       lazyRender:true,
+                       mode: 'local',                       
+                       gwidth: 100,
+                       store:new Ext.data.ArrayStore({
+                    fields: ['ID', 'valor'],
+                    data :    [['no','no'],    
+                            ['si','si']]
+                                
+                    }),
+                    valueField:'ID',
+                    displayField:'valor',
+                   },
+                   type:'ComboBox',
+                   valorInicial: 'no',
+                   id_grupo:0,                   
+                   grid:true,
+                   form:true
+         },
 		{
 			config:{
 				name: 'estado_reg',
@@ -156,6 +185,7 @@ Phx.vista.TipoContrato=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'considerar_planilla', type: 'string'},//#18
 		
 	],
 	sortInfo:{
