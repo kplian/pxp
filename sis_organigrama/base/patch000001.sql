@@ -246,14 +246,6 @@ CREATE TABLE orga.tescala_salarial (
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
-CREATE TABLE orga.tipo_contrato (
-  id_tipo_contrato SERIAL NOT NULL, 
-  codigo VARCHAR(20) NOT NULL, 
-  nombre VARCHAR(200) NOT NULL, 
-  PRIMARY KEY(id_tipo_contrato)
-) INHERITS (pxp.tbase)
-WITHOUT OIDS;
-
 CREATE TABLE orga.tcargo (
   id_cargo SERIAL NOT NULL, 
   id_uo	INTEGER NOT NULL,
@@ -859,3 +851,9 @@ IS 'ahce referencia al id_auciliar_contable del funcionario, es de uso opcional'
 
 
 /*****************************F-SCP-CAP-ORGA-0-06/12/2018*************/
+
+/*****************************I-SCP-EGS-ORGA-0-23/05/2019*************/
+ALTER TABLE orga.ttipo_contrato
+  ADD COLUMN considerar_planilla VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
+/*****************************F-SCP-EGS-ORGA-0-23/05/2019*************/
+

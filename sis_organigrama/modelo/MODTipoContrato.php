@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 14-01-2014 19:23:02
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+ ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
+ #18                23/05/2019      EGS              se agrego el campo considerar_planilla 
 */
 
 class MODTipoContrato extends MODbase{
@@ -15,7 +17,7 @@ class MODTipoContrato extends MODbase{
 			
 	function listarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='orga.ft_tipo_contrato_sel';
+		$this->procedimiento='orga.ft_ttipo_contrato_sel';
 		$this->transaccion='OR_TIPCON_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
@@ -30,7 +32,7 @@ class MODTipoContrato extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		
+		$this->captura('considerar_planilla','varchar');//#18		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -41,7 +43,7 @@ class MODTipoContrato extends MODbase{
 			
 	function insertarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_tipo_contrato_ime';
+		$this->procedimiento='orga.ft_ttipo_contrato_ime';
 		$this->transaccion='OR_TIPCON_INS';
 		$this->tipo_procedimiento='IME';
 				
@@ -49,7 +51,8 @@ class MODTipoContrato extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-
+		$this->setParametro('considerar_planilla','considerar_planilla','varchar');//#18
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -60,7 +63,7 @@ class MODTipoContrato extends MODbase{
 			
 	function modificarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_tipo_contrato_ime';
+		$this->procedimiento='orga.ft_ttipo_contrato_ime';
 		$this->transaccion='OR_TIPCON_MOD';
 		$this->tipo_procedimiento='IME';
 				
@@ -69,6 +72,7 @@ class MODTipoContrato extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('considerar_planilla','considerar_planilla','varchar');//#18
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,7 +84,7 @@ class MODTipoContrato extends MODbase{
 			
 	function eliminarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='orga.ft_tipo_contrato_ime';
+		$this->procedimiento='orga.ft_ttipo_contrato_ime';
 		$this->transaccion='OR_TIPCON_ELI';
 		$this->tipo_procedimiento='IME';
 				
