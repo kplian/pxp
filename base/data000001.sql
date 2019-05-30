@@ -98,3 +98,12 @@ select pxp.f_insert_tgui ('<i class="fa fa-cubes fa-2x"></i> PENTAHO', '', 'PEHO
 select pxp.f_insert_tgui ('Cubos', 'Cubos', 'CUBO', 'si', 1, 'pxp/pentaho.php', 2, '', 'pentaho', 'PEHO');          --#14 endetr Juan Agregado de menu pentaho 
 
 /****************************F-DAT-JJA-PXP-0-02/04/2019******************/
+
+/****************************I-DAT-EGS-PXP-1-30/05/2019******************/
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'pxp_sincronizacion_etl', E'false', E'Habilita la sincronizacion de tablas mediante ETL'),
+  (E'pxp_host_master_bd_etl', E'hostaddr=172.18.79.XXXX port=5432 dbname=db user=dbamigracion password=dbamigracion', E'Host master de donde se extrae los registros para actualizar la Bd en el esclavo mediante etl');
+/****************************F-DAT-EGS-PXP-1-30/05/2019******************/
+
+
