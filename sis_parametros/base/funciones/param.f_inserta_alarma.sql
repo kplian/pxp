@@ -36,6 +36,9 @@ PARAMETROS: par_id_funcionario : indica el funcionario para el que se genera la 
             par_parametros varchar,   parametros a mandar a la interface de acceso directo
             par_id_usuario_alarma integer,dica el usuario para que se cre la alarma (solo si funcionario es NULL)
             par_titulo_correo varchar,   titulo de correo
+            
+  	ISSUE			FECHA			AUTHOR 					DESCRIPCION
+	#17	EndeEtr		22/05/2019		EGS						Si se envia los id_estado_wf se inserta la id alarma al estado _wf
           
 ************************************/
 DECLARE
@@ -104,9 +107,14 @@ BEGIN
               p_id_plantilla_correo,
               v_estado_envio
 			)RETURNING id_alarma into v_id_alarma;
-    
+                
+    --actualizamos los estados_wf con las alarmas si este existiera
+    IF p_id_estado_wf is not null THEN
+      UPDATE wf.testado_wf SET --#17
+           id_alarma =array_append(id_alarma,v_id_alarma::integer)
+      WHERE id_estado_wf = p_id_estado_wf;
+    END IF;            
     return v_id_alarma;
-    
 
 
 EXCEPTION

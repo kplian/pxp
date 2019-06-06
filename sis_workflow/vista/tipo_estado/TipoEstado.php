@@ -5,6 +5,8 @@
 *@author  (FRH)
 *@date 21-02-2013 15:36:11
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+	ISSUE			FECHA			AUTHOR 					DESCRIPCION
+	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta			
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -548,7 +550,23 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
             grid:true,
             form:true
         },
-        
+         
+         {//#17	
+            config:{
+                name: 'dias_alerta',
+                fieldLabel: 'Dias Alerta',
+                qtip:'Dias de Vida de la alerta antes de inactivarse',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:255
+            },
+            type:'NumberField',
+            filters:{pfiltro:'tipes.dias_alerta',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
         
         {
             config:{
@@ -799,7 +817,8 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'alerta','pedir_obs', 'codigo_estado','obs','depto_asignacion','fin','nombre_depto_func_list',
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
-        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc','icono'
+        'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc','icono',
+        'dias_alerta'//#17	
 		
 	],
 	sortInfo:{

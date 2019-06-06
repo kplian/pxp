@@ -1379,3 +1379,11 @@ ALTER TABLE wf.tplantilla_correo
   ADD COLUMN bcc VARCHAR [];
 
 /*****************************F-SCP-AVQ-WF-0-1/12/2018*************/
+
+/*****************************I-SCP-EGS-WF-0-06/06/2019*************/
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN dias_alerta INTEGER;
+
+COMMENT ON COLUMN wf.ttipo_estado.dias_alerta
+IS 'Dias de vida antes de que se borre automaticamente la alerta';
+/*****************************F-SCP-EGS-WF-0-06/06/2019*************/

@@ -17,34 +17,37 @@ CREATE OR REPLACE FUNCTION wf.f_registra_estado_wf (
 RETURNS integer AS
 $body$
 /**************************************************************************
- FUNCION: 		wf.f_registra_estado_wf
- DESCRIPCION: 	Devuelve:
- 				ID del estado actual o -1 si los parametros introduciodos no son correctos.
-				
+ FUNCION:         wf.f_registra_estado_wf
+ DESCRIPCION:     Devuelve:
+                 ID del estado actual o -1 si los parametros introduciodos no son correctos.
+                
                 Recibe:
- 				estado_proceso -> nombre del estado actual
+                 estado_proceso -> nombre del estado actual
                 id_funcionario
                 id_estado_wf --> id_estado anterior
                 id_proceso_wf --> permite reconocer univocamente un proceso
- AUTOR: 		KPLIAN(FRH)
- FECHA:			26/02/2013
- COMENTARIOS:	
+ AUTOR:         KPLIAN(FRH)
+ FECHA:            26/02/2013
+ COMENTARIOS:    
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:  
 
- DESCRIPCION:   Se solucionaron varios errores de logica	
- AUTOR:			RAC
- FECHA:			11/03/2013
+ DESCRIPCION:   Se solucionaron varios errores de logica    
+ AUTOR:            RAC
+ FECHA:            11/03/2013
+ 
+  	ISSUE			FECHA			AUTHOR 					DESCRIPCION
+	#17	EndeEtr		22/05/2019		EGS						se aumenta la logica que las alarmas se inserten id_estado_wf y id_procceso_wf y de ahi se actualiza el estado_wf las id alarmas
 
 ***************************************************************************/
-DECLARE	
+DECLARE    
 
     v_nombre_funcion varchar;
     v_resp varchar;
 
-    g_registros			record;   
-    v_consulta			varchar;
-    v_id_estado_actual	integer;
+    g_registros            record;   
+    v_consulta            varchar;
+    v_id_estado_actual    integer;
     v_registros record;
     v_id_tipo_estado integer;
     v_desc_alarma varchar;
@@ -64,20 +67,20 @@ DECLARE
     v_resgistros_prod_dis   record;
     v_sw_error  boolean;
     v_mensaje_error    varchar;
-    v_alarma		integer;
-    v_documentos	text;
-    v_res_validacion	text;
+    v_alarma        integer;
+    v_documentos    text;
+    v_res_validacion    text;
     
     va_id_alarmas  INTEGER[];
-    va_verifica_documento 	varchar;
+    va_verifica_documento     varchar;
     
     v_i integer;
-    v_registros_correo	record;
+    v_registros_correo    record;
 
     --correos con copia y copia oculta
-    v_cc	text;
-    v_bcc	text;
-	
+    v_cc    text;
+    v_bcc    text;
+    
     
 BEGIN
 
@@ -119,7 +122,7 @@ BEGIN
         OR p_id_estado_wf_anterior is null 
         OR p_id_proceso_wf is null
         )then
-    	raise exception 'Faltan parametros, existen parametros nulos o en blanco, para registrar el estado en el WF.';
+        raise exception 'Faltan parametros, existen parametros nulos o en blanco, para registrar el estado en el WF.';
       
     end if;
     
@@ -216,7 +219,7 @@ BEGIN
              END IF ;
         
         END IF;
-    
+
     
     
     IF(v_registros.id_subsistema is NULL ) THEN
@@ -225,9 +228,42 @@ BEGIN
     
     END IF;
     
+    --iniciamos el nuevo estado         
+    
+   
+    INSERT INTO wf.testado_wf(
+     id_estado_anterior, 
+     id_tipo_estado, 
+     id_proceso_wf, 
+     id_funcionario, 
+     fecha_reg,
+     estado_reg,
+     id_usuario_reg,
+     id_depto,
+     obs,
+     id_alarma,
+     id_usuario_ai,
+     usuario_ai) 
+    values(
+       p_id_estado_wf_anterior, 
+       p_id_tipo_estado_siguiente, 
+       p_id_proceso_wf, 
+       p_id_funcionario, 
+       now(),
+       'activo',
+       p_id_usuario,
+       p_id_depto,
+       p_obs,
+       NULL,
+       p_id_usuario_ai,
+       p_usuario_ai) 
+    RETURNING id_estado_wf INTO v_id_estado_actual;  
+    
+    
+    
      --verificamos si requiere manejo de alerta
     if(v_registros.alerta = 'si' and  (p_id_funcionario is not NULL or  p_id_depto is not NULL )) THEN
- 			   
+                
            v_desc_alarma =  'Cambio al estado ('||v_registros.nombre_estado||'), con las siguiente observaciones: '||p_obs;
            v_cont_alarma = 1;
            v_plantilla_asunto = p_titulo;
@@ -296,7 +332,11 @@ BEGIN
                                                       p_titulo,--titulo
                                                       p_parametros::varchar,
                                                       NULL::integer,
-                                                      v_plantilla_asunto
+                                                      v_plantilla_asunto,
+                                                      NULL, --correos
+                                                      NULL, --documentos
+                                                      p_id_proceso_wf,
+                                                      v_id_estado_actual
                                                      );
                                                      
                                                       
@@ -334,7 +374,11 @@ BEGIN
                                                         p_titulo,--titulo
                                                         p_parametros::varchar,
                                                         v_registros_depto.id_usuario::integer,
-                                                        v_plantilla_asunto
+                                                        v_plantilla_asunto,
+                                                        NULL, --correos
+                                                        NULL, --documentos
+                                                        p_id_proceso_wf,
+                                                        v_id_estado_actual
                                                        ); 
              
                      
@@ -349,36 +393,7 @@ BEGIN
               
     END IF;
     
-    
-     
-   
-    INSERT INTO wf.testado_wf(
-     id_estado_anterior, 
-     id_tipo_estado, 
-     id_proceso_wf, 
-     id_funcionario, 
-     fecha_reg,
-     estado_reg,
-     id_usuario_reg,
-     id_depto,
-     obs,
-     id_alarma,
-     id_usuario_ai,
-     usuario_ai) 
-    values(
-       p_id_estado_wf_anterior, 
-       p_id_tipo_estado_siguiente, 
-       p_id_proceso_wf, 
-       p_id_funcionario, 
-       now(),
-       'activo',
-       p_id_usuario,
-       p_id_depto,
-       p_obs,
-       v_alarmas_con,
-       p_id_usuario_ai,
-       p_usuario_ai) 
-    RETURNING id_estado_wf INTO v_id_estado_actual;  
+
     
     
     --inserta log de estado en el proceso_wf
@@ -400,7 +415,7 @@ BEGIN
     --eliminar alarmas del estado anterior
     
     IF va_id_alarmas is not null THEN
-     	 
+          
     
       FOR v_i IN 1 .. array_upper(va_id_alarmas, 1)
       LOOP
@@ -411,7 +426,7 @@ BEGIN
       
     
     END IF;
-    
+
             
     UPDATE wf.testado_wf 
     SET estado_reg = 'inactivo'
@@ -427,25 +442,25 @@ BEGIN
     /*Se registra las alarmas que se encuentran en plantilla correo que cumplan con la regla*/
              
      for v_registros_correo in (select pc.*,sub.nombre as nombre_subsistema,sub.codigo as codigo_subsistema 
-             					from wf.tplantilla_correo pc
+                                 from wf.tplantilla_correo pc
                                 inner join wf.ttipo_estado te
-                                	on te.id_tipo_estado = pc.id_tipo_estado
+                                    on te.id_tipo_estado = pc.id_tipo_estado
                                 inner join wf.ttipo_proceso tp
-                                	on tp.id_tipo_proceso = te.id_tipo_proceso
+                                    on tp.id_tipo_proceso = te.id_tipo_proceso
                                 inner join wf.tproceso_macro pm
-                                	on tp.id_proceso_macro = pm.id_proceso_macro
+                                    on tp.id_proceso_macro = pm.id_proceso_macro
                                 inner join segu.tsubsistema sub
-                                	on pm.id_subsistema = sub.id_subsistema                                 
-             					 where pc.id_tipo_estado = p_id_tipo_estado_siguiente and pc.estado_reg = 'activo') loop
-             	
+                                    on pm.id_subsistema = sub.id_subsistema                                 
+                                  where pc.id_tipo_estado = p_id_tipo_estado_siguiente and pc.estado_reg = 'activo') loop
+                 
                 if (wf.f_evaluar_regla_wf(p_id_usuario,p_id_proceso_wf,v_registros_correo.regla,
-                		p_id_tipo_estado_siguiente,v_registros_ant.id_tipo_estado)) then	
+                        p_id_tipo_estado_siguiente,v_registros_ant.id_tipo_estado)) then    
                     
                     if (v_registros_correo.plantilla is not null and v_registros_correo.plantilla != '') then
                         v_desc_alarma = wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.plantilla, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;
                     /*Se obtiene los documentos a colocar como adjuntos en el siguiente formato:
-                    	url|id_proceso_wf,url,url,url|id_proceso_wf
+                        url|id_proceso_wf,url,url,url|id_proceso_wf
                       Donde las comas separan las urls de los documentos y un documento generado ademas de la url contiene el id_proceso_wf separado por |
                     */
                     select pxp.list((case when td.tipo = 'escaneado' then
@@ -461,7 +476,7 @@ BEGIN
                                     td.tipo = 'generado');
                     
                     if (v_registros_correo.asunto is not null) then
-                    	v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
+                        v_plantilla_asunto =  wf.f_procesar_plantilla(p_id_usuario, p_id_proceso_wf, v_registros_correo.asunto, p_id_tipo_estado_siguiente, p_id_estado_wf_anterior, p_obs,p_id_funcionario);
                     end if;
                     -- SEGMENTO QUE ME PERMITE VERIFICAR SI TENGO CORREOS CON COPIA, CON COPIA OCULTA,
                     --O SOLAMENTE PARA UN O VARIOS DESTINATARIO.
@@ -476,9 +491,9 @@ BEGIN
                                                        p_id_estado_wf_anterior,
                                                        p_obs);
                         IF (length(v_cc)>'0')THEN
-                        	v_cc = ',('||v_cc||')';
+                            v_cc = ',('||v_cc||')';
                         ELSE
-                        	v_cc =  '';
+                            v_cc =  '';
                         END IF;
                         --CADENA PARA RECONOCER QUE SON CON COPIA OCULTA
                         v_bcc = wf.f_procesar_plantilla(
@@ -489,9 +504,9 @@ BEGIN
                                                        p_id_estado_wf_anterior,
                                                        p_obs);
                         IF (length(v_bcc)>'0')THEN
-                        	v_bcc = ',['||v_bcc||']';
+                            v_bcc = ',['||v_bcc||']';
                         ELSE
-                        	v_bcc =  '';
+                            v_bcc =  '';
                         END IF;
                         --INSERTAMOS ALARMA CON CC Y BCC Y ADDRESS
                         v_alarma = param.f_inserta_alarma(
@@ -564,8 +579,8 @@ BEGIN
      v_resp_doc =  wf.f_inserta_documento_wf(p_id_usuario, p_id_proceso_wf, v_id_estado_actual);
     
     -- verificar documentos
-    IF(va_verifica_documento='si')THEN    	
-	    v_resp_doc = wf.f_verifica_documento(p_id_usuario, v_id_estado_actual);
+    IF(va_verifica_documento='si')THEN        
+        v_resp_doc = wf.f_verifica_documento(p_id_usuario, v_id_estado_actual);
     END IF;
         
      -- verificar observaciones abiertas
@@ -583,13 +598,13 @@ BEGIN
   
     
  EXCEPTION
-				
-	WHEN OTHERS THEN
-		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;   
+                
+    WHEN OTHERS THEN
+        v_resp='';
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;   
       
 END;
 $body$

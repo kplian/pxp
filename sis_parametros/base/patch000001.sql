@@ -2455,3 +2455,21 @@ COMMENT ON COLUMN param.tconcepto_ingas.llave_mano
 IS 'Indica si el concepto de gasto es llave en mano';
 /***********************************F-SCP-EGS-PARAM-2-26/03/2019*****************************************/
 
+/***********************************I-SCP-EGS-PARAM-3-04/06/2019*****************************************/
+
+CREATE TABLE param.ttipo_concepto_ingas (
+  id_tipo_concepto_ingas SERIAL,
+  nombre VARCHAR,
+  descripcion VARCHAR,
+  id_concepto_ingas INTEGER,
+  CONSTRAINT ttipo_concepto_ingas_pkey PRIMARY KEY(id_tipo_concepto_ingas),
+  CONSTRAINT ttipo_concepto_ingas_id_concepto_ingas FOREIGN KEY (id_concepto_ingas)
+    REFERENCES param.tconcepto_ingas(id_concepto_ingas)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+/***********************************F-SCP-EGS-PARAM-3-04/06/2019*****************************************/
+
