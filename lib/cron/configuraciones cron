@@ -1,0 +1,45 @@
+# Configuracion de cron en servidor linux:
+# Modificar El archivo crontab en la ubicacion /etc/crontab
+# El crontab tiene como estructura la siguiente forma
+
+
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+HOME=/
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+  * * * * * root /var/www/html/etr/pxp/lib/cron/./ActionDisparaAlarma.cron.sh
+  0 6 * * * root /var/www/html/etr/pxp/lib/cron/./ActionDiasOrdenCompra.cron.sh
+*/2 * * * * root /var/www/html/etr/pxp/lib/cron/./ActionDeleteAlarma.cron.sh
+
+
+#como el ejemplo lo muestra es bien especifico en relacion del tiempo ahora si se quiere ejecutar el cron cada 10 minutos 
+#este tendra la siguiente forma:
+ */10 * * * * root /home/fedora/sh/backup.sh 
+#para mas informacion puede ver la pagina
+https://www.desarrollolibre.net/blog/linux/ejecutar-script-automaticamente-con-cron-en-linux#.XO2npYhKiUl
+
+
+#recordar que los scripts que ejecute el cron debera tener permisos 0777 habitualmente 
+
+#comandos
+ #lista las lineas a ejcutar por cron
+crontab -l  
+ #Al crontab se le puede indicar cual es el fichero que quiero que cargue
+crontab /etc/crontab     
+
+ #reiniciar el crontab
+/etc/rc.d/init.d/crond restart      
+
+#NOTA: en pxp el cron mayormente ejecuta archivos php que ejecutan tareas en relacion con alarmas
+
