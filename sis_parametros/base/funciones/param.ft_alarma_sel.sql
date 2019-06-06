@@ -16,9 +16,9 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ ISSUE:     FECHA:          AUTOR:	 	DESCRIPCION:	
+ #17 etr    30/05/2019  	EGS	        Solo muesttr alarmas activas
+	
 ***************************************************************************/
 
 DECLARE
@@ -150,7 +150,7 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = alarm.id_usuario_mod
                         left join orga.tfuncionario funcio on funcio.id_funcionario=alarm.id_funcionario   
                         left join segu.tusuario usua  on  usua.id_usuario = alarm.id_usuario
-				        where ';
+				        where alarm.estado_reg = ''activo'' and ' ;  --#17
             v_consulta = v_consulta || v_cond;
 				       
 			

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -16,11 +14,8 @@ $body$
  FECHA:	        21-02-2013 15:36:11
  COMENTARIOS:	
 ***************************************************************************
- HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+	ISSUE			FECHA			AUTHOR 					DESCRIPCION
+	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
 ***************************************************************************/
 
 DECLARE
@@ -256,7 +251,8 @@ BEGIN
                         tipes.grupo_doc,
                         tipes.id_tipo_estado_anterior,
                         ''(''||tea.codigo||'') ''|| tea.nombre_estado AS desc_tipo_estado_anterior,
-                        tipes.icono
+                        tipes.icono,
+                        tipes.dias_alerta  --#17	
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod

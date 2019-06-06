@@ -5,6 +5,8 @@
 *@author  (fprudencio)
 *@date 18-11-2011 11:59:10
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+ 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
+	#17	EndeEtr		22/05/2019		EGS						inactivacion de alertas deacuerdo a dias asignados
 */
 class MODAlarma extends MODbase{
 	
@@ -440,6 +442,31 @@ class MODAlarma extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+
+	function deleteAlarmaCron(){ //#17
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='param.ft_alarma_ime';
+		$this->transaccion='PM_DELALMCR_IME';
+		$this->tipo_procedimiento='IME';
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+				
+		$this->count=false;
+				
+		//$this->count=false;	
+				
+		$this->setParametro('id_usuario','id_usuario','integer');
+		$this->setParametro('habilitado','habilitado','varchar');
+
+		//Define los parametros para la funcion
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+ 		
+ 
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 
 
 }

@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_alarma_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -17,10 +15,8 @@ $body$
  COMENTARIOS:	         
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
+	#17	EndeEtr		22/05/2019		EGS						inactivacion de alertas deacuerdo a dias asignados
 ***************************************************************************/
 
 DECLARE
@@ -59,6 +55,11 @@ DECLARE
     v_cont3					integer;
     v_param_comunicado		varchar;
     v_id_usuario			integer;
+    
+    v_alarma                record;
+    v_tmp                   record;
+    v_tamano                integer;
+    
 BEGIN           
 
     v_nombre_funcion = 'param.ft_alarma_ime';
@@ -469,9 +470,104 @@ BEGIN
             --Devuelve la respuesta
             return v_resp;
             
-		end;    
+		end; 
         
-    
+        /*********************************    
+        #TRANSACCION:  'PM_DELALMCR_IME'
+        #DESCRIPCION:	inactiva alarmas automaticamente  deacuerdo al tiempo mediante un  cron que ejecuta el archivo 
+                        ActionDeleteAlarmas.php 
+        #AUTOR:		EGS	
+        #FECHA:		22/05/2019
+        #ISSUE:     #17      
+        ***********************************/
+
+      elsif(p_transaccion='PM_DELALMCR_IME')then
+
+          begin
+          IF v_parametros.habilitado = 'si' THEN 
+         --Se usan las id_de alarmas de la tabla estado Wf por que la logica de insertar los id_estado_wf no estaban 
+         --implementados en la tabla de talarmas 
+         --Creando tablas Temporales para separar las id_alarmas que es un array de integer 
+         -- de la tabla wf.testado_wf
+               
+                CREATE TEMPORARY TABLE temp_alarma (
+                   id serial,
+                   id_estado_wf INTEGER,
+                   id_tipo_estado INTEGER,
+                   id_alarma integer
+                  ) ON COMMIT DROP;
+              
+         --insertamos las id_alarma separadas en la tabla temporal
+            
+            FOR v_tmp IN (
+               SELECT
+                    twd.id_estado_wf,
+                    twd.id_tipo_estado,
+                    twd.id_alarma
+               FROM wf.testado_wf twd
+               WHERE twd.id_alarma is not null
+               )LOOP
+                --separamos las array de integer
+                v_tamano = array_length(v_tmp.id_alarma,1);
+                FOR i in 1..v_tamano LOOP
+                ---verificamos si existe la alarma en la tabla
+                    SELECT
+                        al.id_alarma
+                    INTO 
+                        v_id_alarma
+                    FROM param.talarma al
+                    WHERE al.id_alarma =  v_tmp.id_alarma[i]::INTEGER;
+                 -- si existe insertamos                    
+                    IF v_id_alarma is not null THEN  
+                          INSERT INTO temp_alarma
+                          (
+                              id_estado_wf,
+                              id_tipo_estado,
+                              id_alarma
+                              )VALUES(
+                              v_tmp.id_estado_wf,
+                              v_tmp.id_tipo_estado,
+                              v_tmp.id_alarma[i]::INTEGER
+                           );
+                     END IF ;
+                END LOOP;                
+             END LOOP;
+             -- verificamos que las alarmas sean inactivadas cuando pase de  los dias de vida 
+             -- especificadas en cada estado         
+              FOR v_alarma IN (
+                  Select
+                      tmp.id_alarma,
+                      tmp.id_tipo_estado,
+                      a.fecha_reg::date,
+                      now()::date,
+                      (now()::date-a.fecha_reg::date ) as dias,
+                      tewf.dias_alerta                            
+                  From temp_alarma tmp
+                  INNER join param.talarma a on a.id_alarma = tmp.id_alarma and a.estado_reg = 'activo'
+                  INNER join wf.ttipo_estado tewf on tewf.id_tipo_estado = tmp.id_tipo_estado and tewf.dias_alerta is not null
+                  WHERE (now()::date - a.fecha_reg::date ) > tewf.dias_alerta
+              )LOOP
+                --inactivamos la alarma
+                  UPDATE param.talarma SET 
+                  estado_reg = 'inactivo',
+                  fecha_mod = now(),
+                  id_usuario_mod = 1
+                  WHERE id_alarma = v_alarma.id_alarma;
+                  v_resp='exito al inactivar alarmas';
+              END LOOP;
+             --se puede desactivar esta funcion si el  parametro habilitado es diferente de 'si' en el archivo del controlador ActionDeleteAlarmas.php
+            ELSE    
+                v_resp = 'no esta habilitado la opcion de desactivado automatico';
+            END IF;
+              
+			--Definicion de la respuesta
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje',v_resp); 
+               
+            --Devuelve la respuesta
+            return v_resp;
+               
+        
+          end;
         
 	else
      
