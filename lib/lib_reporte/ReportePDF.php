@@ -1,5 +1,9 @@
 <?php
 //incluimos la libreria
+/*	CONTROL CAMBIOS 
+ * #ISSUE				FECHA				AUTOR				DESCRIPCION
+ 	#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion grillaDatos para manejo de reporte multilinea	
+*/
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
         session_start();
