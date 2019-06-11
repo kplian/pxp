@@ -1,5 +1,9 @@
 <?php
 //incluimos la libreria
+/*	CONTROL CAMBIOS 
+ * #ISSUE				FECHA				AUTOR				DESCRIPCION
+ 	#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion grillaDatos para manejo de reporte multilinea	
+*/
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
         session_start();
@@ -454,6 +458,7 @@ class ReportePDF extends MYPDF
 		/*ob_start();
 		$fb=FirePHP::getInstance(true);
 		$fb->log('sssss',"count(pArrayDatos)");*/
+		
 		
 		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1"  style="font-size:6px">';
 		$cont=1;
@@ -1120,6 +1125,119 @@ class ReportePDF extends MYPDF
 
 		return json_decode($string,true);
 	}
+	
+	/*	#ISSUE				FECHA				AUTOR				DESCRIPCION
+ 		#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion para manejo de reporte multilinea	
+ 	*/
+ function grillaDatos($datas, $border=1, $cant_col=10, $alto_col=3, $align='R') {
+		
+		$ancho_uti=0;
+		$id_break=$datas[0];
+		$cont=0;
+		$relleno;
+		
+		$ancho_col= round((($this->ancho_hoja-1)/$cant_col),2);
+		
+		for ($i=0; $i< sizeof($datas); $i++ ){
+			
+			
+			if($i%3==0){
+				$cont=0;
+				if($id_break!=$datas[$i]){
+					$this->ln(6);
+					$this->SetLineWidth(0.1);
+ 	 				$this->SetDrawColor(0,0,0);
+					$this->Cell(0,0,'','B',1);
+					//$this->ln(6);
+					$ancho_uti=0;
+					/*$this->Cell($ancho_col, $alto_col, $datas[$i+2], 1, 0, $align);//, 0, '', 0, false, 'C', 'C');
+					$ancho_uti+=$ancho_col;*/
+					
+					
+					
+					$cont=0;
+					if($datas[$i+1]>0){
+						while ($cont <= $datas[$i+1]){
+							if($cont==$datas[$i+1]){
+								$relleno=$datas[$i+2];
+							}else{
+								$relleno='';
+							}	
+								
+							if($ancho_uti+$ancho_col>$this->ancho_hoja){
+								$this->Cell(0.1, $alto_col, '', $border, 1, $align);//,
+								$ancho_uti=0;
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);
+								$ancho_uti+=$ancho_col;
+							}else{
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+								$ancho_uti+=$ancho_col;
+								
+							}
+							$cont++;
+						}
+						
+						
+				}else{
+					if($ancho_uti+$ancho_col>$this->ancho_hoja){
+							$this->Cell(0, $alto_col, '', 0, 1, $align);//,
+							$ancho_uti=0;
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$ancho_uti+=$ancho_col;
+						}else{
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$ancho_uti+=$ancho_col;
+						}
+										
+					}
+					
+					
+				}else{ 
+					
+					
+				
+				
+					if($datas[$i+1]>0){
+						while ($cont <= $datas[$i+1]){
+							if($cont==$datas[$i+1]){
+								$relleno=$datas[$i+2];
+							}else{
+								$relleno='';
+							}	
+								
+							if($ancho_uti+$ancho_col>$this->ancho_hoja){
+								$this->Cell(0.1, $alto_col, '', $border, 1, $align);//,
+								$ancho_uti=0;
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);
+								$ancho_uti+=$ancho_col;
+							}else{
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+								$ancho_uti+=$ancho_col;
+								
+							}
+							$cont++;
+						}
+						
+						
+				}else{
+					if($ancho_uti+$ancho_col>$this->ancho_hoja){
+							$this->Cell(0, $alto_col, '', 0, 1, $align);//,
+							$ancho_uti=0;
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$ancho_uti+=$ancho_col;
+						}else{
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$ancho_uti+=$ancho_col;
+						}
+										
+					}
+				}
+					$id_break=$datas[$i];
+				}
+			}
+		
+	}
+	
 
 }
 
