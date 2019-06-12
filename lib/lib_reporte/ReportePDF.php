@@ -1129,22 +1129,24 @@ class ReportePDF extends MYPDF
 	/*	#ISSUE				FECHA				AUTOR				DESCRIPCION
  		#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion para manejo de reporte multilinea	
  	*/
- function grillaDatos($datas, $border=1, $cant_col=10, $alto_col=3, $align='R') {
+ function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=3, $align='R') {
 		
 		$ancho_uti=0;
 		$id_break=$datas[0];
 		$cont=0;
 		$relleno;
+		$num_grupo=1;
 		
 		$ancho_col= round((($this->ancho_hoja-1)/$cant_col),2);
-		
+		$dimensions = $this->getPageDimensions();
 		for ($i=0; $i< sizeof($datas); $i++ ){
 			
 			
 			if($i%3==0){
 				$cont=0;
 				if($id_break!=$datas[$i]){
-					$this->ln(6);
+					$num_grupo++;
+					$this->ln(4);
 					$this->SetLineWidth(0.1);
  	 				$this->SetDrawColor(0,0,0);
 					$this->Cell(0,0,'','B',1);
@@ -1152,6 +1154,9 @@ class ReportePDF extends MYPDF
 					$ancho_uti=0;
 					/*$this->Cell($ancho_col, $alto_col, $datas[$i+2], 1, 0, $align);//, 0, '', 0, false, 'C', 'C');
 					$ancho_uti+=$ancho_col;*/
+					if ($this->GetY()+$this->alto_grupo+$dimensions['bm']> $dimensions['hk']){
+						$this->AddPage();//echo '*****'.$this->GetY().'---'.$num_grupo*$this->alto_grupo.' alto:'.$this->alto_grupo.'alto:hoja'.$dimensions['hk'].'***'.$dimensions['bm']; exit;
+					}
 					
 					
 					
