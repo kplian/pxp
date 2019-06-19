@@ -1129,8 +1129,8 @@ class ReportePDF extends MYPDF
 	/*	#ISSUE				FECHA				AUTOR				DESCRIPCION
  		#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion para manejo de reporte multilinea	
  	*/
- function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=3, $align='R') {
-		
+ function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=2.5, $align='R') {
+		//var_dump ($datas); exit;
 		$ancho_uti=0;
 		$id_break=$datas[0];
 		$cont=0;
@@ -1138,33 +1138,41 @@ class ReportePDF extends MYPDF
 		$num_grupo=1;
 		
 		$ancho_col= round((($this->ancho_hoja-1)/$cant_col),2);
+		
 		$dimensions = $this->getPageDimensions();
+		
 		for ($i=0; $i< sizeof($datas); $i++ ){
 			
 			
-			if($i%3==0){
+			if($i%5==0){ 
 				$cont=0;
+				
+				if($datas[$i+3]=='B'){
+					$this->SetFont('','B',7);
+				}else{
+					$this->SetFont('','',7);
+				}
+				
+				
+				
 				if($id_break!=$datas[$i]){
 					$num_grupo++;
-					$this->ln(4);
-					$this->SetLineWidth(0.1);
- 	 				$this->SetDrawColor(0,0,0);
-					$this->Cell(0,0,'','B',1);
-					//$this->ln(6);
+					
 					$ancho_uti=0;
-					/*$this->Cell($ancho_col, $alto_col, $datas[$i+2], 1, 0, $align);//, 0, '', 0, false, 'C', 'C');
-					$ancho_uti+=$ancho_col;*/
-					if ($this->GetY()+$this->alto_grupo+$dimensions['bm']> $dimensions['hk']){
-						$this->AddPage();//echo '*****'.$this->GetY().'---'.$num_grupo*$this->alto_grupo.' alto:'.$this->alto_grupo.'alto:hoja'.$dimensions['hk'].'***'.$dimensions['bm']; exit;
+				//echo '***'.$this->GetY()+$alto_grupo+$dimensions['bm'].'***'.$dimensions['hk']; exit;
+					if ($this->GetY()+$alto_grupo+$dimensions['bm']> $dimensions['hk']){
+						
+						$this->AddPage();
+						
 					}
-					
-					
-					
 					$cont=0;
 					if($datas[$i+1]>0){
 						while ($cont <= $datas[$i+1]){
 							if($cont==$datas[$i+1]){
 								$relleno=$datas[$i+2];
+									
+								
+								
 							}else{
 								$relleno='';
 							}	
@@ -1181,7 +1189,7 @@ class ReportePDF extends MYPDF
 							}
 							$cont++;
 						}
-						
+					
 						
 				}else{
 					if($ancho_uti+$ancho_col>$this->ancho_hoja){
@@ -1193,15 +1201,19 @@ class ReportePDF extends MYPDF
 							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
 							$ancho_uti+=$ancho_col;
 						}
-										
+									
 					}
-					
+					if($datas[$i+4]==1){
+						$this->ln(1);
+						$this->SetLineWidth(0.1);
+	 	 				$this->SetDrawColor(0,0,0);
+						$this->Cell(0,0,'','B',1);
+					    //$this->SetY($this->GetY()-2.5);	
+					}
 					
 				}else{ 
 					
 					
-				
-				
 					if($datas[$i+1]>0){
 						while ($cont <= $datas[$i+1]){
 							if($cont==$datas[$i+1]){
@@ -1222,10 +1234,19 @@ class ReportePDF extends MYPDF
 							}
 							$cont++;
 						}
+					if($datas[$i+4]==1){ 
+						$this->ln(1);
+						$this->SetLineWidth(0.1);
+	 	 				$this->SetDrawColor(0,0,0);
+						$this->Cell(0,0,'','B',1);
+						//$this->SetY($this->GetY()-2.5);
+						
+					}
 						
 						
 				}else{
-					if($ancho_uti+$ancho_col>$this->ancho_hoja){
+					
+					    if($ancho_uti+$ancho_col>$this->ancho_hoja){
 							$this->Cell(0, $alto_col, '', 0, 1, $align);//,
 							$ancho_uti=0;
 							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
@@ -1234,10 +1255,21 @@ class ReportePDF extends MYPDF
 							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
 							$ancho_uti+=$ancho_col;
 						}
+						
+						if($datas[$i+4]==1){ 
+							$this->ln(1);
+							$this->SetLineWidth(0.1);
+		 	 				$this->SetDrawColor(0,0,0);
+							$this->Cell(0,0,'','B',1);
+						//	$this->SetY($this->GetY()-2.5);
+							
+					    }
 										
 					}
 				}
+					
 					$id_break=$datas[$i];
+					
 				}
 			}
 		

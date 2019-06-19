@@ -2473,3 +2473,36 @@ CREATE TABLE param.ttipo_concepto_ingas (
 WITH (oids = false);
 /***********************************F-SCP-EGS-PARAM-3-04/06/2019*****************************************/
 
+
+
+/***********************************I-SCP-RAC-PARAM-24-17/06/2019*****************************************/
+
+
+CREATE TABLE param.tplantilla_grilla (
+  id_plantilla_grilla SERIAL,
+  codigo VARCHAR(200) NOT NULL,
+  configuracion VARCHAR NOT NULL,
+  nombre VARCHAR(500) NOT NULL,
+  url_interface VARCHAR(500),
+  CONSTRAINT tplantilla_grilla_pkey PRIMARY KEY(id_plantilla_grilla)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tplantilla_grilla.codigo
+IS 'codigo interface';
+
+COMMENT ON COLUMN param.tplantilla_grilla.configuracion
+IS 'este campo almacena la configuracion de las cookies de la grilla';
+
+COMMENT ON COLUMN param.tplantilla_grilla.nombre
+IS 'nombre del reporte';
+
+COMMENT ON COLUMN param.tplantilla_grilla.url_interface
+IS 'si el codigo no es unico la url deberia ser unica';
+
+ALTER TABLE param.tplantilla_grilla
+  OWNER TO dbararteaga;
+  
+  /***********************************F-SCP-RAC-PARAM-24-17/06/2019*****************************************/
+  
+

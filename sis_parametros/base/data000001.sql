@@ -492,5 +492,8 @@ select pxp.f_insert_tgui ('Plantilla Tipo Centro de Costo', 'Plantilla Tipo de C
 /***********************************F-DAT-RCM-PARAM-1-27/10/2017*****************************************/
 
 
+/***********************************I-DAT-EGS-PARAM-1-17/06/2019*****************************************/
 
+select pxp.f_insert_tgui ('Plantilla Grilla', 'Plantilla Grilla', 'PLGR', 'si', 15, 'sis_parametros/vista/plantilla_grilla/PlantillaGrilla.php', 3, '', 'PlantillaGrilla', 'PARAM');
+/***********************************F-DAT-EGS-PARAM-1-17/06/2019*****************************************/
 
