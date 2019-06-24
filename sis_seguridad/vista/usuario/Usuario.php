@@ -5,7 +5,10 @@
 *@author KPLIAN (JRR)
 *@date 14-02-2011 
 *@description  Vista para desplegar lista de usuarios
-*/
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #24            17/06/2019        RAC                 Configuracion de palntillas de grilla
+ * 
+ * */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -33,7 +36,8 @@ inittest:function(){
         document.getElementsByTagName("head")[0].appendChild(fileref);
 },
 
-
+savePltGrid: true, //#24configura el manejo de plantilla para la grilla
+    applyPltGrid: true, //#24
 
 tabEnter:true,
 	Atributos:[

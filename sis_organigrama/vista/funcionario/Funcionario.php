@@ -5,7 +5,13 @@
 *@author KPLIAN (admin)
 *@date 14-02-2011
 *@description  Vista para registrar los datos de un funcionario
-*/
+ * 
+    HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #0             14-02-2011        RAC                 creacion
+  #24           17/06/2019        RAC                 Configuracion de palntillas de grilla
+*/ 
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -584,6 +590,9 @@ Phx.vista.funcionario=function(config){
 }
 
 Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
+	savePltGrid: true, //#24configura el manejo de plantilla para la grilla
+    applyPltGrid: true, //#24
+    bottom_filter: true,//#24
 	title:'Funcionarios',
 	ActSave:'../../sis_organigrama/control/Funcionario/guardarFuncionario',
 	ActDel:'../../sis_organigrama/control/Funcionario/eliminarFuncionario',
