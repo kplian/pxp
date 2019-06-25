@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_plantilla_grilla_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -57,7 +59,8 @@ BEGIN
 						plgri.id_usuario_mod,
 						plgri.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+                        plgri.nombre||'' (''||usu1.cuenta||'')'' as desc_plantilla_grilla	
 						from param.tplantilla_grilla plgri
 						inner join segu.tusuario usu1 on usu1.id_usuario = plgri.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = plgri.id_usuario_mod

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_plantilla_grilla_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -45,35 +47,61 @@ BEGIN
     if(p_transaccion='PM_PLGRI_INS')then
                     
         begin
-            --Sentencia de la insercion
-            insert into param.tplantilla_grilla(
-            estado_reg,
-            codigo,
-            configuracion,
-            nombre,
-            url_interface,
-            id_usuario_reg,
-            fecha_reg,
-            id_usuario_ai,
-            usuario_ai,
-            id_usuario_mod,
-            fecha_mod
-              ) values(
-            'activo',
-            v_parametros.codigo,
-            v_parametros.configuracion,
-            v_parametros.nombre,
-            v_parametros.url_interface,
-            p_id_usuario,
-            now(),
-            v_parametros._id_usuario_ai,
-            v_parametros._nombre_usuario_ai,
-            null,
-            null
-                            
+             --verificar que el nombre de la planitlla no se suplique
+             
+             SELECT pg.id_plantilla_grilla 
+             INTO v_id_plantilla_grilla
+             FROM param.tplantilla_grilla pg
+             WHERE pg.id_usuario_reg = p_id_usuario
+             AND pg.nombre = UPPER(TRIM(v_parametros.nombre));
+        
+            IF v_id_plantilla_grilla IS  NOT NULL  THEN
             
+                  update param.tplantilla_grilla set
+                    codigo = v_parametros.codigo,
+                    configuracion = v_parametros.configuracion,
+                    nombre = UPPER(TRIM(v_parametros.nombre)),
+                    url_interface = v_parametros.url_interface,
+                    id_usuario_mod = p_id_usuario,
+                    fecha_mod = now(),
+                    id_usuario_ai = v_parametros._id_usuario_ai,
+                    usuario_ai = v_parametros._nombre_usuario_ai
+                  where id_plantilla_grilla=v_id_plantilla_grilla;
+             
+               
+            ELSE
             
-            )RETURNING id_plantilla_grilla into v_id_plantilla_grilla;
+               --Sentencia de la insercion
+                insert into param.tplantilla_grilla(
+                  estado_reg,
+                  codigo,
+                  configuracion,
+                  nombre,
+                  url_interface,
+                  id_usuario_reg,
+                  fecha_reg,
+                  id_usuario_ai,
+                  usuario_ai,
+                  id_usuario_mod,
+                  fecha_mod
+                    ) values(
+                  'activo',
+                  v_parametros.codigo,
+                  v_parametros.configuracion,
+                  UPPER(TRIM(v_parametros.nombre)),
+                  v_parametros.url_interface,
+                  p_id_usuario,
+                  now(),
+                  v_parametros._id_usuario_ai,
+                  v_parametros._nombre_usuario_ai,
+                  null,
+                  null
+                
+                )RETURNING id_plantilla_grilla into v_id_plantilla_grilla;
+                
+            END IF;
+        
+            
             
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Plantilla de grilla almacenado(a) con exito (id_plantilla_grilla'||v_id_plantilla_grilla||')'); 
@@ -98,7 +126,7 @@ BEGIN
             update param.tplantilla_grilla set
             codigo = v_parametros.codigo,
             configuracion = v_parametros.configuracion,
-            nombre = v_parametros.nombre,
+            nombre = UPPER(TRIM(v_parametros.nombre)),
             url_interface = v_parametros.url_interface,
             id_usuario_mod = p_id_usuario,
             fecha_mod = now(),

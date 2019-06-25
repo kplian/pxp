@@ -593,6 +593,15 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	savePltGrid: true, //#24configura el manejo de plantilla para la grilla
     applyPltGrid: true, //#24
     bottom_filter: true,//#24
+    tipoStore: 'GroupingStore',//GroupingStore o JsonStore #24
+    remoteGroup: true,//#24
+    groupField: 'nacionalidad',//#24
+    viewGrid: new Ext.grid.GroupingView({
+            forceFit:false,
+            //groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+        }), //#24
+    
+    
 	title:'Funcionarios',
 	ActSave:'../../sis_organigrama/control/Funcionario/guardarFuncionario',
 	ActDel:'../../sis_organigrama/control/Funcionario/eliminarFuncionario',
