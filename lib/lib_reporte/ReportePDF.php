@@ -2,7 +2,8 @@
 //incluimos la libreria
 /*	CONTROL CAMBIOS 
  * #ISSUE				FECHA				AUTOR				DESCRIPCION
- 	#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion grillaDatos para manejo de reporte multilinea	
+ 	#22	EndeEtr		 06-06-2019 			MZM KPLIAN		Adicion de funcion grillaDatos para manejo de reporte multilinea
+ *  #24 ETR         25/06/2019              RAC KPLIAN      Se considera agrupadores al exportar a PDF 	
 */
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
@@ -79,6 +80,9 @@ class ReportePDF extends MYPDF
 	protected $maestroX;
 	protected $maestroY;
 	
+	protected $columnaAgrupadora;//#24 considera agrupadores
+	protected $agrupador;//#24 considera agrupadores
+	
 	/**
 	 * Nombre funcion:	ReportePDF
 	 * Proposito:		Constructor de la Función genérica de ReportePDF (Define el nombre del archivo, titulo, cabecera derecha y logo y pie)
@@ -99,6 +103,9 @@ class ReportePDF extends MYPDF
 		$this->fecha_pie=1;
 		$this->setBarcode(date('d-m-Y H:i:s').",usuario:".$_SESSION['_LOGIN']);
 		$this->tipoReporte=$this->objParam->getParametro('tipoReporte');
+		
+		$this -> columnaAgrupadora = $this->objParam->getParametro('groupBy'); //#24 
+		$this -> agrupador = '';//#24 
 
 		//Ejecución del constructor del padre
 		parent::__construct($this->orientacion, 'mm', $this->objParam->getParametro('tamano'), true, 'UTF-8', false);
@@ -460,10 +467,25 @@ class ReportePDF extends MYPDF
 		$fb->log('sssss',"count(pArrayDatos)");*/
 		
 		
+		
+		
 		$html = '<table border="'.$border.'" cellspacing="0" cellpadding="1"  style="font-size:6px">';
 		$cont=1;
 
 		foreach($datas AS $data) {
+			
+			//#24 evaluea si tenemso agrupador, y si es necesario aplicarlo
+			if($this -> columnaAgrupadora !== '' && $titulos == 0){
+				if($this->agrupador !=  $data[$this->columnaAgrupadora]){
+					
+					
+					//añade agrupador
+					$html.='<tr><td BGCOLOR="888080" colspan="'.count($this->tablecolumns).'" > <font color="#FFFFFF"> <b>'.$this->tablecolumns[$this->columnaAgrupadora].':  '.$data[$this->columnaAgrupadora].'</b></font></td></tr>';
+				   
+				    $this->agrupador = $data[ $this->columnaAgrupadora ];
+				}
+			}
+			
 			$html.='
 				<tr>';
 			foreach ($this->tablecolumns as $col=>$single){
