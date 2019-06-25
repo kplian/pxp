@@ -16,7 +16,8 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
  ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
- #18                23/05/2019      EGS              se agrego el campo considerar_planilla 		
+ #18                23/05/2019      EGS              se agrego el campo considerar_planilla 	
+ #15				19/06/2019		MZM				 Adicion de campo indefinido	
 ***************************************************************************/
 
 DECLARE
@@ -54,6 +55,7 @@ BEGIN
 			fecha_mod,
 			id_usuario_mod,
             considerar_planilla --#18
+            ,indefinido --#15
           	) values(
 			v_parametros.codigo,
 			v_parametros.nombre,
@@ -63,6 +65,7 @@ BEGIN
 			null,
 			null,
             v_parametros.considerar_planilla --#18
+            ,v_parametros.indefinido --#15
 							
 			)RETURNING id_tipo_contrato into v_id_tipo_contrato;
 			
@@ -92,6 +95,7 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
             considerar_planilla = v_parametros.considerar_planilla  --#18
+            ,indefinido = v_parametros.indefinido  --#15
 			where id_tipo_contrato=v_parametros.id_tipo_contrato;
                
 			--Definicion de la respuesta

@@ -20,6 +20,12 @@ $body$
    DESCRIPCION:
    AUTOR:
    FECHA:		21-01-2011
+   
+   HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #0            21-01-2011          mzm                 creacion
+  #24           17/06/2019          RAC                  configuracion de agrupadores para grilla de funcionarios
   ***************************************************************************/
 
 
@@ -127,9 +133,17 @@ $body$
 
           end if;
         end if;
+        
+        
+        --#24  pregunta si existe agrupador
+        
+        if pxp.f_existe_parametro(par_tabla, 'groupBy') THEN
+            v_consulta:=v_consulta||' order by ' ||v_parametros.groupBy|| ' ' ||v_parametros.groupDir|| ', ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+         else
+           v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
+        end if;
 
-        v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-
+        
         return v_consulta;
 
 

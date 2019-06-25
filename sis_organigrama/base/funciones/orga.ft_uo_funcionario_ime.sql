@@ -4,9 +4,8 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
   par_tabla varchar,
   par_transaccion varchar
 )
-
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
   /**************************************************************************
    FUNCION: 		orga.ft_uofunc_ime
    DESCRIPCIÓN:   modificaciones de funciones
@@ -15,10 +14,9 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
    COMENTARIOS:
   ***************************************************************************
    HISTORIA DE MODIFICACIONES:
+   ISSUE     FECHA:             AUTOR:      DESCRIPCION:
+   #25        25/06/2019        EGS         Se elimino validacion innecesaria al modidicar al uo_funcionario
 
-   DESCRIPCION:
-   AUTOR:
-   FECHA:		03-06-2011
    ***************************************************************************/
   DECLARE
 
@@ -125,18 +123,7 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
          end if;*/
 
 
-        --verficar que el funcionario no este activo en dos unidades simultaneamente
-        --raise exception '%    %',v_parametros.id_funcionario,v_parametros.id_uo;
-        if ( ((select count(id_funcionario) from
-          orga.tuo_funcionario  a
-        where a.id_funcionario=v_parametros.id_funcionario
-              and a.estado_reg = 'activo' and
-              a.fecha_finalizacion > v_parametros.fecha_asignacion
-              and a.id_uo != v_parametros.id_uo))>0) then
-
-          raise exception 'El Funcionario se encuentra en otro cargo vigente primero inactive su asignacion actual';
-        end if;
-
+        --#25
 
 
         --si el estado es inactivo == la fecha finalizacion debe ser llenada
@@ -218,7 +205,7 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
 
 
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

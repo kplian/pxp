@@ -18,7 +18,7 @@ $body$
 
  ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
  #18                23/05/2019      EGS              se agrego el campo considerar_planilla             			
-	
+ #15				19/06/2019		MZM				 adicion de campo indefinido, para evitar valores quemados en el control de cargos
 ***************************************************************************/
 
 DECLARE
@@ -56,6 +56,7 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         tipcon.considerar_planilla --#18	
+                        ,tipcon.indefinido --#15
 						from orga.ttipo_contrato tipcon
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcon.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipcon.id_usuario_mod

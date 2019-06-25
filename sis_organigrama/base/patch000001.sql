@@ -857,3 +857,12 @@ ALTER TABLE orga.ttipo_contrato
   ADD COLUMN considerar_planilla VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
 /*****************************F-SCP-EGS-ORGA-0-23/05/2019*************/
 
+/*****************************I-SCP-MZM-ORGA-15-19/06/2019*************/
+
+ALTER TABLE orga.ttipo_contrato
+  ADD COLUMN indefinido VARCHAR(2);
+
+ALTER TABLE orga.ttipo_contrato
+  ALTER COLUMN indefinido SET DEFAULT 'no';
+/*****************************F-SCP-MZM-ORGA-15-19/06/2019*************/
+  

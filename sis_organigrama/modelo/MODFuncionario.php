@@ -5,6 +5,12 @@
  a la tabla tfuncionario del esquema RHUM
  Autor:		Kplian
  Fecha:		04/06/2011
+ * 
+ *  HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #0            04/06/2011          Kplian                 creacion
+  #24           17/06/2019          RAC                   configuracion de agrupadores para grilla de funcionarios
  */
 class MODFuncionario extends MODbase{
 	
@@ -22,6 +28,11 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('fecha','fecha','date');
 		$this->setParametro('id_uo','id_uo','integer');	
+		
+		$this->setParametro('groupBy','groupBy','varchar');	 //#24
+		$this->setParametro('groupDir','groupDir','varchar'); //#24
+			
+		
 		//Definicion de la lista del resultado del query
 	
 		//defino varialbes que se captran como retornod e la funcion

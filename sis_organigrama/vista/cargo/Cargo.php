@@ -100,7 +100,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
-					fields: ['id_tipo_contrato', 'nombre', 'codigo'],
+					fields: ['id_tipo_contrato', 'nombre', 'codigo','indefinido'],
 					remoteSort: true,
 					baseParams: {par_filtro: 'tipcon.nombre#tipcon.codigo'}
 				}),
@@ -449,7 +449,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 		//inicio de eventos 
         this.Cmp.id_tipo_contrato.on('select',function(x,rec,z){
         	
-        	if (rec.data.codigo == 'PLA') {
+        	if (rec.data.indefinido == 'si') {
         		this.ocultarComponente(this.Cmp.fecha_fin);
         		this.Cmp.fecha_fin.allowBlank = true;
         	} else {
