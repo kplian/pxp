@@ -4,6 +4,8 @@
  Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas a la tabla tuo del esquema RHUM
  Autor:		Kplian
  Fecha:		04/06/2011
+ 	ISSUE		FECHA			AUTHOR				DESCRIPCION
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
  */
 class MODUo extends MODbase{
 	
@@ -84,6 +86,8 @@ function listarUoFiltro(){
 		$this->captura('id_uo_padre','integer');
 		$this->captura('id_nivel_organizacional','integer');
 		$this->captura('nombre_nivel','varchar');
+		$this->captura('centro','varchar');//#26
+		$this->captura('orden_centro','numeric');//#26
 		//$this->captura('id_estructura_uo','integer');
 		//Ejecuta la funcion
 		$this->armarConsulta();
@@ -91,6 +95,8 @@ function listarUoFiltro(){
 			exit;*/
 		//echo $this->getConsulta();
 		$this->ejecutarConsulta();
+		
+		//var_dump($this->respuesta);exit;
 		return $this->respuesta;
 
 	}

@@ -14,10 +14,8 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:		
- FECHA:		23-05-2011
+	ISSUE		FECHA			AUTHOR				DESCRIPCION
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
  ***************************************************************************/
 DECLARE
 
@@ -77,7 +75,10 @@ BEGIN
                    nodo_base, 
                    correspondencia, 
                    gerencia,
-                   id_nivel_organizacional)
+                   id_nivel_organizacional,
+                   centro,  --#26
+                   orden_centro--#26
+                   )
                values(
                  upper(v_parametros.codigo), 
                  v_parametros.nombre_unidad, 
@@ -91,7 +92,10 @@ BEGIN
                  v_parametros.nodo_base, 
                  v_parametros.correspondencia, 
                  v_parametros.gerencia,
-                 v_parametros.id_nivel_organizacional)
+                 v_parametros.id_nivel_organizacional,
+                 v_parametros.centro,--#26
+                 v_parametros.orden_centro--#26
+                 )
                  
                RETURNING id_uo into v_id_uo;
 
@@ -169,7 +173,9 @@ BEGIN
                    nodo_base=v_parametros.nodo_base,
                    correspondencia=v_parametros.correspondencia,
                    gerencia=v_parametros.gerencia,
-                   id_nivel_organizacional = v_parametros.id_nivel_organizacional
+                   id_nivel_organizacional = v_parametros.id_nivel_organizacional,
+                   centro=v_parametros.centro,--#26
+                   orden_centro = v_parametros.orden_centro--#26
                 where id_uo=v_parametros.id_uo;
                 
                /* --10-04-2012: sincronizacion de UO entre BD
