@@ -599,3 +599,185 @@ select pxp.f_insert_testructura_gui ('ASIGINGEN', 'PROCRH');
 
 /*********************************F-DEP-RAC-ORGA-0-01/12/2018***********************************/
 
+
+/********************************I-DEP-RAC-ORGA-24-26/16/2019***********************************/
+
+CREATE OR REPLACE VIEW orga.vuo_centro(
+    codigo_uo_centro,
+    nombre_uo_centro,
+    id_uo_centro,
+    ids,
+    id_uo,
+    id_uo_padre,
+    codigo,
+    nombre_unidad,
+    gerencia,
+    correspondencia,
+    uo_centro_orden)
+AS
+WITH RECURSIVE uo_centro(
+    ids,
+    id_uo,
+    id_uo_padre,
+    nombre_unidad,
+    codigo,
+    gerencia,
+    correspondencia,
+    uo_centro_orden) AS(
+  SELECT ARRAY [ c_1.id_uo ] AS "array",
+         c_1.id_uo,
+         NULL::integer AS id_uo_padre,
+         c_1.nombre_unidad,
+         c_1.codigo,
+         c_1.gerencia,
+         c_1.correspondencia,
+         c_1.orden_centro AS uo_centro_orden
+  FROM orga.tuo c_1
+  WHERE c_1.centro::text = 'si'::text AND
+        c_1.estado_reg::text = 'activo'::text
+  UNION
+  SELECT pc.ids || c2.id_uo,
+         c2.id_uo,
+         euo.id_uo_padre,
+         c2.nombre_unidad,
+         c2.codigo,
+         c2.gerencia,
+         c2.correspondencia,
+         c2.orden_centro AS uo_centro_orden
+  FROM orga.tuo c2
+       JOIN orga.testructura_uo euo ON euo.id_uo_hijo = c2.id_uo
+       JOIN uo_centro pc ON pc.id_uo = euo.id_uo_padre
+  WHERE c2.centro::text = 'no'::text AND
+        c2.estado_reg::text = 'activo'::text)
+      SELECT cl.codigo AS codigo_uo_centro,
+             cl.nombre_unidad AS nombre_uo_centro,
+             cl.id_uo AS id_uo_centro,
+             c.ids,
+             c.id_uo,
+             c.id_uo_padre,
+             c.codigo,
+             c.nombre_unidad,
+             c.gerencia,
+             c.correspondencia,
+             cl.orden_centro AS uo_centro_orden
+      FROM uo_centro c
+           JOIN orga.tuo cl ON cl.id_uo = c.ids [ 1 ];
+           
+  ----------------------------------------------
+  
+  CREATE OR REPLACE VIEW orga.vuo_gerencia(
+    codigo_gerencia,
+    nombre_unidad_gerencia,
+    id_uo_gerencia,
+    ids,
+    id_uo,
+    id_uo_padre,
+    codigo,
+    nombre_unidad,
+    gerencia,
+    correspondencia)
+AS
+WITH RECURSIVE uo_gerencia(
+    ids,
+    id_uo,
+    id_uo_padre,
+    nombre_unidad,
+    codigo,
+    gerencia,
+    correspondencia) AS(
+  SELECT ARRAY [ c_1.id_uo ] AS "array",
+         c_1.id_uo,
+         NULL::INTEGER AS id_uo_padre,
+         c_1.nombre_unidad,
+         c_1.codigo,
+         c_1.gerencia,
+         c_1.correspondencia
+  FROM orga.tuo c_1
+  WHERE c_1.gerencia::TEXT = 'si'::TEXT AND
+        c_1.estado_reg::TEXT = 'activo'::TEXT
+  UNION
+  SELECT pc.ids || c2.id_uo,
+         c2.id_uo,
+         euo.id_uo_padre,
+         c2.nombre_unidad,
+         c2.codigo,
+         c2.gerencia,
+         c2.correspondencia
+  FROM orga.tuo c2
+       JOIN orga.testructura_uo euo ON euo.id_uo_hijo = c2.id_uo
+       JOIN uo_gerencia pc ON pc.id_uo = euo.id_uo_padre
+  WHERE c2.gerencia::TEXT = 'no'::TEXT AND
+        c2.estado_reg::TEXT = 'activo'::TEXT)
+      SELECT cl.codigo AS codigo_gerencia,
+             cl.nombre_unidad AS nombre_unidad_gerencia,
+             cl.id_uo AS id_uo_gerencia,
+             c.ids,
+             c.id_uo,
+             c.id_uo_padre,
+             c.codigo,
+             c.nombre_unidad,
+             c.gerencia,
+             c.correspondencia
+      FROM uo_gerencia c
+           JOIN orga.tuo cl ON cl.id_uo = c.ids [ 1 ];
+           
+           -------------------------------------------------
+  
+  CREATE OR REPLACE VIEW orga.vuo_presu(
+    codigo_uo_pre,
+    nombre_uo_pre,
+    id_uo_pre,
+    ids,
+    id_uo,
+    id_uo_padre,
+    codigo,
+    nombre_unidad,
+    gerencia,
+    correspondencia)
+AS
+WITH RECURSIVE uo_presu(
+    ids,
+    id_uo,
+    id_uo_padre,
+    nombre_unidad,
+    codigo,
+    gerencia,
+    correspondencia) AS(
+  SELECT ARRAY [ c_1.id_uo ] AS "array",
+         c_1.id_uo,
+         NULL::INTEGER AS id_uo_padre,
+         c_1.nombre_unidad,
+         c_1.codigo,
+         c_1.gerencia,
+         c_1.correspondencia
+  FROM orga.tuo c_1
+  WHERE c_1.presupuesta::TEXT = 'si'::TEXT AND
+        c_1.estado_reg::TEXT = 'activo'::TEXT
+  UNION
+  SELECT pc.ids || c2.id_uo,
+         c2.id_uo,
+         euo.id_uo_padre,
+         c2.nombre_unidad,
+         c2.codigo,
+         c2.gerencia,
+         c2.correspondencia
+  FROM orga.tuo c2
+       JOIN orga.testructura_uo euo ON euo.id_uo_hijo = c2.id_uo
+       JOIN uo_presu pc ON pc.id_uo = euo.id_uo_padre
+  WHERE c2.presupuesta::TEXT = 'no'::TEXT AND
+        c2.estado_reg::TEXT = 'activo'::TEXT)
+      SELECT cl.codigo AS codigo_uo_pre,
+             cl.nombre_unidad AS nombre_uo_pre,
+             cl.id_uo AS id_uo_pre,
+             c.ids,
+             c.id_uo,
+             c.id_uo_padre,
+             c.codigo,
+             c.nombre_unidad,
+             c.gerencia,
+             c.correspondencia
+      FROM uo_presu c
+           JOIN orga.tuo cl ON cl.id_uo = c.ids [ 1 ];         
+                    
+/********************************F-DEP-RAC-ORGA-24-26/16/2019***********************************/
+
