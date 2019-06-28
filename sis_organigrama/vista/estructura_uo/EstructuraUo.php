@@ -5,7 +5,10 @@
 *@author KPLIAN (admin)
 *@date 14-02-2011
 *@description  Vista para registrar las estructura de las Unidades Organizacionales
-*/
+	ISSUE		FECHA			AUTHOR				DESCRIPCION
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+
+ * */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -283,7 +286,48 @@ Phx.vista.EstructuraUo=function(config){
 			type:'ComboBox',
 			id_grupo:0,
 			form:true
-		}
+		},
+		{ //#26
+                config:{
+                       name:'centro',
+                       fieldLabel:'Centro?',
+                       allowBlank:true,
+                       emptyText:'...',
+                       typeAhead: true,
+                       triggerAction: 'all',
+                       lazyRender:true,
+                       mode: 'local',                       
+                       gwidth: 100,
+                       store:new Ext.data.ArrayStore({
+                    fields: ['ID', 'valor'],
+                    data :    [['si','si'],    
+                            ['no','no']]
+                                
+                    }),
+                    valueField:'ID',
+                    displayField:'valor',
+                    //renderer:function (value, p, record){if (value == 1) {return 'si'} else {return 'no'}}
+                   },
+                 type:'ComboBox',
+                 valorInicial: 'no',
+                 id_grupo:0,                   
+                 grid:true,
+                 form:true
+           },
+		{ //#26
+			config:{
+				name: 'orden_centro',
+				fieldLabel: 'Orden Centro',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:1179650
+			},
+				type:'NumberField',
+				id_grupo:0,
+				grid:false,
+				form:true
+		},
 		];
 		
 		Phx.vista.EstructuraUo.superclass.constructor.call(this,config);
@@ -361,7 +405,10 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		'nombre_unidad',
 		'nombre_cargo',
 		'presupuesta',
-		'nodo_base','correspondencia','gerencia'],
+		'nodo_base','correspondencia','gerencia',
+		'centro', //#26
+		'orden_centro'//#26
+		],
 		sortInfo:{
 			field: 'id',
 			direction:'ASC'

@@ -15,9 +15,8 @@ $body$
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCIÓN:
- AUTOR:       
- FECHA:      
+	ISSUE		FECHA			AUTHOR				DESCRIPCION
+    #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
 
 ***************************************************************************/
 --------------------------
@@ -76,7 +75,6 @@ BEGIN
 
   --0) listamos el regisotr con el v_id en la tabla temporal
        
-       raise notice '########  arb recursivo ';
        SELECT  
           id_uo,
           niveles 
@@ -116,7 +114,9 @@ BEGIN
                            UNIORG.nodo_base, 
                            UNIORG.gerencia,
                            UNIORG.id_nivel_organizacional,
-                           nivorg.nombre_nivel
+                           nivorg.nombre_nivel,
+                           UNIORG.centro, --#26
+                           UNIORG.orden_centro --#26
                            FROM orga.testructura_uo ESTORG
                            INNER JOIN orga.tuo UNIORG
                            ON UNIORG.id_uo = ESTORG.id_uo_hijo
@@ -151,7 +151,9 @@ BEGIN
                             resaltar,
                             id_uo_padre,
                             id_nivel_organizacional,
-                            nombre_nivel
+                            nombre_nivel,
+                            centro, --#26
+                            orden_centro --#26
                          )
                          VALUES
                          (  v_id||'a'::varchar,
@@ -172,7 +174,9 @@ BEGIN
                             'no',
                             g_registros.id_uo_padre,
                             g_registros.id_nivel_organizacional,
-                            g_registros.nombre_nivel
+                            g_registros.nombre_nivel,
+                            g_registros.centro, --#26
+                            g_registros.orden_centro --#26
                          );
                          
             
@@ -211,7 +215,9 @@ BEGIN
                             resaltar,
                             id_uo_padre,
                             id_nivel_organizacional,
-                            nombre_nivel
+                            nombre_nivel,
+                            centro, --#26
+                            orden_centro --#26
 
                          )
                          VALUES
@@ -233,7 +239,9 @@ BEGIN
                             'no',
                             g_registros.id_uo_padre,
                             g_registros.id_nivel_organizacional,
-                            g_registros.nombre_nivel
+                            g_registros.nombre_nivel,
+                            g_registros.centro, --#26
+                            g_registros.orden_centro --#26
                          );
                          
                          raise notice '<<<<<<< SALE DEL IF';

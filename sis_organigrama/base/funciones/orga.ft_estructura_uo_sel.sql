@@ -14,10 +14,8 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:		
- FECHA:		21-01-2011
+	ISSUE		FECHA			AUTHOR				DESCRIPCION
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
 ***************************************************************************/
 
 
@@ -87,7 +85,9 @@ BEGIN
                                 UO.gerencia,
                                 ''false''::varchar as checked,
                                 UO.id_nivel_organizacional,
-                                nivorg.nombre_nivel
+                                nivorg.nombre_nivel,
+                                UO.centro, --#26
+                                UO.orden_centro --#26
                             FROM orga.tuo UO '
                             ||v_join|| ' join orga.testructura_uo euo
                                   on UO.id_uo=euo.id_uo_hijo  and euo.estado_reg=''activo''
@@ -102,7 +102,6 @@ BEGIN
              --  v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta||' order by euo.id_uo_hijo,UO.nombre_unidad';
 
-               raise notice '%',v_consulta;
                return v_consulta;
 
 

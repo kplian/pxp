@@ -6,21 +6,18 @@
 *@date 19-02-2013 22:53:59
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
  *  **************************************************************************
- HISTORIAL DE MODIFICACIONES:
- HISTORIAL DE MODIFICACIONES:
-	ISSUE			FECHA 				AUTHOR 						DESCRIPCION
-  #1			     19-02-2013			RAC							creacion 
-  #37   ENDETR       12/02/2019         RAC KPLIAN                  que no filtre centros de costo pr aprobados, adicion de parametro           
- * 
+  HISTORIAL DE MODIFICACIONES:
+  ISSUE 	EMPRESA		FECHA 				AUTOR 						DESCRIPCION
+  #1			     	19-02-2013			RAC							creacion
+  #37   	ENDETR      12/02/2019         	RAC KPLIAN                  que no filtre centros de costo pr aprobados, adicion de parametro
+ *#27		ETR 		27/06/2019			RCM 						Corrección filtro por fecha
  * *************************************************************************/
 
 class ACTCentroCosto extends ACTbase{
 
 	function listarCentroCosto(){
 		$this->objParam->defecto('ordenacion','id_centro_costo');
-
 		$this->objParam->defecto('dir_ordenacion','asc');
-
 
 		if($this->objParam->getParametro('id_gestion')!=''){
             $this->objParam->addFiltro("cec.id_gestion = ".$this->objParam->getParametro('id_gestion'));
@@ -31,7 +28,7 @@ class ACTCentroCosto extends ACTbase{
 		}
 
 		if($this->objParam->getParametro('fecha')!=''){
-	    	$this->objParam->addFiltro("cec.id_gestion in (select id_gestion from param.tgestion where gestion = extract(''year'' from ''" . $this->objParam->getParametro('fecha') . "'')");
+	    	$this->objParam->addFiltro("cec.id_gestion in (select id_gestion from param.tgestion where gestion = extract(''year'' from ''" . $this->objParam->getParametro('fecha') . "''::date))"); //#27 Faltaba un paréntesis de cerrado y el cast a date
 		}
 
 		//#10

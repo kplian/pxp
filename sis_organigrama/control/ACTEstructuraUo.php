@@ -5,6 +5,8 @@
  de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabla testructura_uo
  Autor:	Kplian
  Fecha:	24/05/2011
+ 	ISSUE		FECHA			AUTHOR				DESCRIPCION
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
  */
 class ACTEstructuraUo extends ACTbase {
 
@@ -294,7 +296,7 @@ class ACTEstructuraUo extends ACTbase {
 			$text = $f["nombre_unidad"];
 			$expanded = 'true';
 		}
-
+		//#26
 		$json = 'text:\'' . $text . '\',
 			 id:\'' . $id_uo . '\',
 			 id_p:\'' . $id_uo_padre . '\',
@@ -316,6 +318,10 @@ class ACTEstructuraUo extends ACTbase {
 			 id_estructura_uo:' . $f["id_estructura_uo"] . ',
 			 correspondencia:\'' . $f["correspondencia"] . '\',
 			 presupuesta:\'' . $f["presupuesta"] . '\',
+			 id_nivel_organizacional:\'' . $f["id_nivel_organizacional"] . '\',
+			 nombre_nivel:\'' . $f["nombre_nivel"] . '\',
+			 centro:\'' . $f["centro"] . '\',
+			 orden_centro:\'' . $f["orden_centro"] . '\',
 			 estado_reg:\'' . $f["estado_reg"] . '\',';
 
 		$json = $json . 'icon:\'../../../lib/imagenes/a_form.png\',';

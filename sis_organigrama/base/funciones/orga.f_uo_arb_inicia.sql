@@ -17,9 +17,8 @@ $body$
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCIÓN:
- AUTOR:       
- FECHA:      
+  ISSUE		FECHA			AUTHOR				DESCRIPCION
+  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
 
 ***************************************************************************/
 --------------------------
@@ -147,7 +146,9 @@ raise notice '11111111';
                                   resaltar varchar,
                                   id_uo_padre integer,
                                   id_nivel_organizacional integer,
-                                  nombre_nivel varchar
+                                  nombre_nivel varchar,
+                                  centro varchar,--#26
+                                  orden_centro numeric --#26
                                  
                                   
                                 ) ON COMMIT DROP;
@@ -172,13 +173,15 @@ raise notice '11111111';
                            UNIORG.nodo_base, 
                            UNIORG.gerencia,
                            UNIORG.id_nivel_organizacional,
-                           nivorg.nombre_nivel
+                           nivorg.nombre_nivel,
+                           UNIORG.centro, --#26
+                           UNIORG.orden_centro --#26
                            FROM orga.testructura_uo ESTORG
                            INNER JOIN orga.tuo UNIORG
                            ON UNIORG.id_uo = ESTORG.id_uo_hijo
                            INNER JOIN orga.tnivel_organizacional nivorg
                            	on nivorg.id_nivel_organizacional = UNIORG.id_nivel_organizacional
-                           WHERE UNIORG.estado_reg=''activo''  ORDER BY  UNIORG.id_uo asc) AS ORG WHERE  (codigo  ilike ''%'||pm_criterio_filtro||'%''  or funcionarios ilike ''%'||pm_criterio_filtro||'%'' or nombre_cargo ilike ''%'||pm_criterio_filtro||'%'' or '''||pm_criterio_filtro||''' = any(cargos))  ';
+                           WHERE UNIORG.estado_reg=''activo''  ORDER BY  UNIORG.id_uo asc) AS ORG WHERE  ( codigo  ilike ''%'||pm_criterio_filtro||'%''  or funcionarios ilike ''%'||pm_criterio_filtro||'%'' or nombre_cargo ilike ''%'||pm_criterio_filtro||'%'' or '''||pm_criterio_filtro||''' = any(cargos))  ';
                            
           --raise exception '%',v_consulta;              
    
@@ -245,7 +248,9 @@ raise notice '2222222222';
                         resaltar,
                         id_uo_padre,
                         id_nivel_organizacional,
-                        nombre_nivel
+                        nombre_nivel,
+                        centro, --#26
+                        orden_centro --#26
                      )
                      VALUES
                      (  v_nivel::varchar,
@@ -266,7 +271,9 @@ raise notice '2222222222';
                         'si', --RESALTA LOS REGISTRO QUE COINCIDEN CON EL FILTRO DE LA BUSQUEDA
                         g_registros.id_uo_padre,
                         g_registros.id_nivel_organizacional,
-                        g_registros.nombre_nivel
+                        g_registros.nombre_nivel,
+                        g_registros.centro,--#26
+                        g_registros.orden_centro --#26
                         );        
               END IF;        
        END LOOP;
@@ -293,7 +300,9 @@ raise notice '2222222222';
                         resaltar,
                         id_uo_padre,
                         id_nivel_organizacional,
-                        nombre_nivel
+                        nombre_nivel,
+                        centro,--#26
+                        orden_centro--#26
                       FROM organigrama_filtro
                       ORDER BY niveles asc ) LOOP
      RETURN NEXT g_registros;

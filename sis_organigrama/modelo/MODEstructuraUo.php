@@ -5,6 +5,8 @@
  a la tabla testructura_uo del esquema RHUM
  Autor:		Kplian
  Fecha:		04/06/2011
+ 	ISSUE		FECHA			AUTHOR				DESCRIPCION
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
  */
 class MODEstructuraUo extends MODbase {
 	
@@ -46,6 +48,8 @@ class MODEstructuraUo extends MODbase {
 			$this->captura('checked','varchar');
 			$this->captura('id_nivel_organizacional','integer');
 			$this->captura('nombre_nivel','varchar');
+			$this->captura('centro','varchar');//#26
+			$this->captura('orden_centro','numeric');//#26
 			$this->armarConsulta();
 			/*echo $this->consulta;
 			exit;*/
@@ -77,6 +81,8 @@ class MODEstructuraUo extends MODbase {
 		$this->setParametro('correspondencia','correspondencia','varchar');
 		$this->setParametro('gerencia','gerencia','varchar');
 		$this->setParametro('id_nivel_organizacional','id_nivel_organizacional','integer');
+		$this->setParametro('centro','centro','varchar');//#26
+		$this->setParametro('orden_centro','orden_centro','numeric');//#26
 		
 	    	//Ejecuta la instruccion
 	  //  echo '....'.$this->getConsulta(); exit;
@@ -107,6 +113,8 @@ class MODEstructuraUo extends MODbase {
 		$this->setParametro('correspondencia','correspondencia','varchar');
 		$this->setParametro('gerencia','gerencia','varchar');
 		$this->setParametro('id_nivel_organizacional','id_nivel_organizacional','integer');
+		$this->setParametro('centro','centro','varchar');//#26
+		$this->setParametro('orden_centro','orden_centro','numeric');//#26
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				

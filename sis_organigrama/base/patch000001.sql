@@ -865,4 +865,55 @@ ALTER TABLE orga.ttipo_contrato
 ALTER TABLE orga.ttipo_contrato
   ALTER COLUMN indefinido SET DEFAULT 'no';
 /*****************************F-SCP-MZM-ORGA-15-19/06/2019*************/
+
+
+
+/*****************************I-SCP-RAC-ORGA-24-26/06/2019*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN codigo_rciva VARCHAR(200);
+
+COMMENT ON COLUMN orga.tfuncionario.codigo_rciva
+IS 'codigo RCVIVA que permite acumular el IVA del FUNCIONARIO cuando viene de otra empresas';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN monto_rciva_anterior NUMERIC(10,2) DEFAULT 0 NOT NULL;
+
+COMMENT ON COLUMN orga.tfuncionario.monto_rciva_anterior
+IS 'Si viene de otra empresa y tiene iva acumulado';
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo
+  ADD COLUMN centro VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN orga.tuo.centro
+IS 'si o no,  señala si es en un centro de revision util para agrupar en reprotes';
+
+
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo
+  ADD COLUMN orden_centro NUMERIC DEFAULT 0 NOT NULL;
+
+COMMENT ON COLUMN orga.tuo.orden_centro
+IS 'para ordenar en reportes, admite decimales';
+
+
+--------------- SQL ---------------
+
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN profesion VARCHAR(500);
+
+COMMENT ON COLUMN orga.tfuncionario.profesion
+IS 'nombre de la profesion';
+
+/*****************************F-SCP-RAC-ORGA-24-26/06/2019*************/
   
