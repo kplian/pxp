@@ -945,6 +945,14 @@ IS 'escala salarial maxima apra el tipo de cargo';
 COMMENT ON COLUMN orga.ttipo_cargo.factor_disp
 IS 'entre 0 a 1,  para calculo de bono de diposnibilidad  en planillas';
 
+--------------- SQL ---------------
+
+ALTER TABLE orga.tcargo
+  ADD COLUMN id_tipo_cargo INTEGER;
+
+COMMENT ON COLUMN orga.tcargo.id_tipo_cargo
+IS 'clasifica el cargo, util para aplicar configuracion como el factor de diponibilidad de manera masiva';
+
 
 /*****************************F-SCP-RAC-ORGA-30-15/07/2019*************/
   

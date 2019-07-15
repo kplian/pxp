@@ -26,6 +26,24 @@ class ACTCargo extends ACTbase{
 			
 			$this->res=$this->objFunc->listarCargo($this->objParam);
 		}
+		
+		if($this->objParam->getParametro('_adicionar')!=''){
+
+			$respuesta = $this->res->getDatos();
+
+
+		    array_unshift ( $respuesta, array(  'id_cargo'=>'0',
+		                                'codigo'=>'Todos',
+									    'nombre'=>'Todos',
+										'nombre_tipo_contrato'=>'Todos',
+										'nombre_escala'=>'Todos',
+										'nombre_oficina'=>'Todos',
+										'acefalo'=>'Todos',
+										'codigo_tipo_contrato'=>'Todos') );
+		    //var_dump($respuesta);
+			$this->res->setDatos($respuesta);
+		}
+		
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 

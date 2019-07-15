@@ -5,6 +5,10 @@
 *@author  (rarteaga)
 *@date 15-07-2019 19:39:12
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+*  HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA                AUTOR                DESCRIPCION
+ #30                15-07-2019          RAC                 creacion    
+
 */
 
 header("content-type: text/javascript; charset=UTF-8");
