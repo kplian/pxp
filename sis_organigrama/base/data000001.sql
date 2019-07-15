@@ -85,6 +85,14 @@ VALUES
 
 
 
+/*****************************I-DAT-JRR-ORGA-30-15/07/2019*************/
+
+select pxp.f_insert_tgui ('Tipo de Cargo', 'Tipos de Cargo', 'TIPCAR', 'si', 1, 'sis_organigrama/vista/tipo_cargo/TipoCargo.php', 4, '', 'TipoCargo', 'ORGA');
+select pxp.f_insert_testructura_gui ('TIPCAR', 'CARPCARG');
+
+
+/*****************************F-DAT-JRR-ORGA-30-15/07/2019*************/
+
 
 
 
