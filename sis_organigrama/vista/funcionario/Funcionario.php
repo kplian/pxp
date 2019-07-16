@@ -9,8 +9,9 @@
     HISTORIAL DE MODIFICACIONES:
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
-  #0             14-02-2011        RAC                 creacion
+  #0            14-02-2011        RAC                 Creacion
   #24           17/06/2019        RAC                 Configuracion de palntillas de grilla
+  #31           16/07/2019        RAC                 Adciona codigo rcaiva, profesion y fecha quinquenio
 */ 
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -436,6 +437,59 @@ Phx.vista.funcionario=function(config){
 				grid:true,
 				form:true
 			},
+			{ //#31
+				config:{
+					name: 'profesion',
+					fieldLabel: 'Profesion',
+					qtip:'nombre profesion',
+					allowBlank: true,
+					anchor: '100%',
+					gwidth: 100,
+					maxLength:300
+				},
+				type:'TextField',
+				filters:{pfiltro:'FUNCIO.profesion',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+			},
+			{//#31
+				config:{
+					name: 'codigo_rciva',
+					fieldLabel: 'Codigo RC-IVA',
+					qtip:'Cádigo para la acumulación de RC-IVA',
+					allowBlank: true,
+					anchor: '100%',
+					gwidth: 100,
+					maxLength:50
+				},
+				type:'TextField',
+				filters:{pfiltro:'FUNCIO.codigo_rciva',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+			},
+	       	
+	       	{//#31
+	       		config:{
+	       			fieldLabel: "Fecha Quinquenio",
+	       			qtip:'Fecha del último quinquenio pagado',
+	       			gwidth: 120,
+	       			name: 'fecha_quinquenio', 
+	       			allowBlank:true,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			format:'d/m/Y',
+	       			anchor:'100%',
+	       			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+				},
+	       		type:'DateField',
+	       		filters:{type:'date'},
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+			
 			{
 				config:{
 					name: 'usr_reg',
@@ -645,7 +699,9 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	'horario4',
 	'id_auxiliar',
 	'desc_auxiliar',
-	{name:'id_biometrico', type: 'numeric'}
+	{name:'id_biometrico', type: 'numeric'},
+	'profesion','codigo_rciva',
+	{name:'fecha_quinquenio', type: 'date', dateFormat:'Y-m-d'},
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',

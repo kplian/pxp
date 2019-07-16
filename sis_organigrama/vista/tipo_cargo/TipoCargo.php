@@ -181,6 +181,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				name: 'factor_disp',
 				fieldLabel: 'Factor Disponibilidad',
 				qtip: 'Factor de disponibilidad de 0 a 1, para cálculo de bono de disponibilidad',
+				decimalPrecision:4,
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100			

@@ -25,7 +25,9 @@ $body$
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
   #0            21-01-2011          mzm                 creacion
-  #24           17/06/2019          RAC                  configuracion de agrupadores para grilla de funcionarios
+  #24           17/06/2019          RAC                 configuracion de agrupadores para grilla de funcionarios
+  #31           16/07/2019          RAC                 adciona codigo_rciva, profesion, fecha quinquenio
+  
   ***************************************************************************/
 
 
@@ -104,10 +106,14 @@ $body$
             
             
             v_consulta := v_consulta || ' 
-                            FROM orga.tfuncionario FUNCIO
-                            INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
-                            INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
-                            inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg';
+                            ,FUNCIO.profesion
+                            ,FUNCIO.codigo_rciva
+                            ,FUNCIO.fecha_quinquenio
+                            
+                  FROM orga.tfuncionario FUNCIO
+                  INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
+                  INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
+                  inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg';
             if (v_existe_conta = 'si') then
             	v_consulta := v_consulta || ' LEFT JOIN conta.tauxiliar aux on aux.id_auxiliar = FUNCIO.id_auxiliar';
             else
@@ -143,7 +149,7 @@ $body$
            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
         end if;
 
-        
+        raise notice '%',v_consulta;
         return v_consulta;
 
 

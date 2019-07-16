@@ -17,10 +17,11 @@ $body$
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:
- AUTOR:		KPLIAN (rac)
- FECHA:		21-01-2011
- ***************************************************************************/
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #0            21-01-2011          RAC                 creacion
+  #31           17/06/2019          RAC                 adiciona columna codigo_rciva, fecha quinquenio, profesion 
+  ***************************************************************************/
 DECLARE
 
 
@@ -81,7 +82,12 @@ BEGIN
 		               interno,		              
 		               telefono_ofi,
 		               antiguedad_anterior,
-                       id_auxiliar)
+                       id_auxiliar,
+                       profesion, --#31
+                       codigo_rciva, --#31
+                       fecha_quinquenio  --#31
+                       
+                       )
                values(
                       v_parametros.codigo,
                       v_parametros.id_persona,
@@ -91,7 +97,12 @@ BEGIN
                       v_parametros.interno,                      
                       v_parametros.telefono_ofi,
                       v_parametros.antiguedad_anterior,
-                      v_parametros.id_auxiliar)
+                      v_parametros.id_auxiliar,
+                      v_parametros.profesion, --#31
+                      v_parametros.codigo_rciva, --#31
+                      v_parametros.fecha_quinquenio --#31
+                      
+                      )
                RETURNING id_funcionario into v_id_funcionario;
 
                update segu.tpersona
@@ -143,7 +154,10 @@ BEGIN
                     fecha_mod=now()::date,
                     telefono_ofi= v_parametros.telefono_ofi,
                     antiguedad_anterior =  v_parametros.antiguedad_anterior,
-                    id_auxiliar = v_parametros.id_auxiliar
+                    id_auxiliar = v_parametros.id_auxiliar,
+                    profesion = v_parametros.profesion, --#31
+                    codigo_rciva = v_parametros.codigo_rciva, --#31
+                    fecha_quinquenio=v_parametros.fecha_quinquenio --#31
                 where id_funcionario=v_parametros.id_funcionario;
 
                 update segu.tpersona

@@ -21,8 +21,8 @@ class ACTFuncionario extends ACTbase{
         //si aplicar filtro de usuario, fitlramos el listado segun el funionario del usuario
         if($this->objParam->getParametro('tipo_filtro')=='usuario'){
             $this->objParam->addFiltro("FUNCIO.id_funcionario= ".$_SESSION["_ID_FUNCIOANRIO_OFUS"]);    
-        }	
-		
+        }
+
 		if( $this->objParam->getParametro('es_combo_solicitud') == 'si' ) {
 			$this->objParam->addFiltro("FUNCIO.id_funcionario IN (select * 
 										FROM orga.f_get_funcionarios_x_usuario_asistente(now()::date, " .
