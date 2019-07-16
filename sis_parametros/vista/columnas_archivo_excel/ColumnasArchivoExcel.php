@@ -7,7 +7,8 @@
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 *  ISSUE		FECHA    		AUTOR			DESCRIPCION
 *	#1			21/11/2018		EGS				se agrego campos codigo para que funcione la exportacion de plantilla
-*/
+*   #29	ERT		02/07/2019 		MMV			Obtener el valor de la formula en excel para archivos excel
+ */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -125,21 +126,21 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '40%',
 				gwidth: 100,
-				maxLength:10,
+				maxLength:30,
 				emptyText:'Elija un tipo de valor...',
 				typeAhead: true,
 				triggerAction: 'all',
 				lazyRender:true,
 				mode: 'local',
 				valueField: 'inicio',
-				store:['string','date','entero','numeric']
+				store:['string','date','entero','numeric','formula_entero','formula_numeric','formula_string'] //#29
 			},
 			type:'ComboBox',
 			id_grupo:1,
 			filters:{
 				type: 'list',
 				pfiltro:'colxls.tipo_valor',
-				options: ['string','date','entero','numeric'],
+				options: ['string','date','entero','numeric','formula_entero','formula_numeric','formula_string'] //#29
 			},
 			grid:true,
 			form:true
@@ -377,7 +378,7 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 				this.mostrarComponente(this.cmpFormatoFecha);
 				this.mostrarComponente(this.cmpAnioFecha);
 				this.ocultarComponente(this.cmpPuntoDecimal);
-			} else if (dat.data.field1 == 'numeric') {
+			} else if (dat.data.field1 == 'numeric' || dat.data.field1 == 'formula_numeric') {
 				this.ocultarComponente(this.cmpFormatoFecha);
 				this.ocultarComponente(this.cmpAnioFecha);
 				this.mostrarComponente(this.cmpPuntoDecimal);

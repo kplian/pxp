@@ -1,11 +1,13 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_cargo_ime (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
   p_transaccion varchar
 )
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_cargo_ime
@@ -16,9 +18,12 @@ CREATE OR REPLACE FUNCTION orga.ft_cargo_ime (
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+	
+     HISTORIAL DE MODIFICACIONES:
+  ISSUE                FECHA                AUTOR                DESCRIPCION
+ #0                14-01-2014                                 creacion
+ #30               15-07-2019       RAC                       adiciona tipo de cargo 
+ #
 ***************************************************************************/
 
 DECLARE
@@ -57,35 +62,37 @@ BEGIN
         	
         	--Sentencia de la insercion
         	insert into orga.tcargo(
-			id_tipo_contrato,
-			id_lugar,
-			id_uo,			
-			id_escala_salarial,
-			codigo,
-			nombre,
-			fecha_ini,
-			estado_reg,
-			fecha_fin,
-			fecha_reg,
-			id_usuario_reg,
-			fecha_mod,
-			id_usuario_mod,
-			id_oficina
+              id_tipo_contrato,
+              id_lugar,
+              id_uo,			
+              id_escala_salarial,
+              codigo,
+              nombre,
+              fecha_ini,
+              estado_reg,
+              fecha_fin,
+              fecha_reg,
+              id_usuario_reg,
+              fecha_mod,
+              id_usuario_mod,
+              id_oficina,
+              id_tipo_cargo  --#30
           	) values(
-			v_parametros.id_tipo_contrato,
-			v_id_lugar,
-			v_parametros.id_uo,			
-			v_parametros.id_escala_salarial,
-			v_parametros.codigo,
-			v_parametros.nombre,
-			v_parametros.fecha_ini,
-			'activo',
-			v_parametros.fecha_fin,
-			now(),
-			p_id_usuario,
-			null,
-			null,
-			v_parametros.id_oficina
+              v_parametros.id_tipo_contrato,
+              v_id_lugar,
+              v_parametros.id_uo,			
+              v_parametros.id_escala_salarial,
+              v_parametros.codigo,
+              v_parametros.nombre,
+              v_parametros.fecha_ini,
+              'activo',
+              v_parametros.fecha_fin,
+              now(),
+              p_id_usuario,
+              null,
+              null,
+              v_parametros.id_oficina,
+              v_parametros.id_tipo_cargo  -- #30
 							
 			)RETURNING id_cargo into v_id_cargo;
 			
@@ -116,13 +123,14 @@ BEGIN
 			
 			--Sentencia de la modificacion
 			update orga.tcargo set
-			id_lugar = v_id_lugar,
-			codigo = v_parametros.codigo,			
-			fecha_ini = v_parametros.fecha_ini,
-			fecha_fin = v_parametros.fecha_fin,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,			
-			id_oficina = v_parametros.id_oficina
+              id_lugar = v_id_lugar,
+              codigo = v_parametros.codigo,			
+              fecha_ini = v_parametros.fecha_ini,
+              fecha_fin = v_parametros.fecha_fin,
+              fecha_mod = now(),
+              id_usuario_mod = p_id_usuario,			
+              id_oficina = v_parametros.id_oficina,
+              id_tipo_cargo = v_parametros.id_tipo_cargo  --#30
 			where id_cargo=v_parametros.id_cargo;
                
 			--Definicion de la respuesta

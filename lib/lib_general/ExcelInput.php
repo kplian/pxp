@@ -4,6 +4,9 @@
  *@author  Gonzalo Sarmiento Sejas
  *@date 19-12-2016
  *@description Clase que recupera las columnas excel
+ * HISTORIAL DE MODIFICACIONES:
+ * #ISSUE				FECHA				AUTOR				DESCRIPCION
+ * #29	ERT			02/07/2019 				 MMV			Obtener el valor de la formula en excel para archivos excel
  */
 
 include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
@@ -222,7 +225,6 @@ class ExcelInput{
                 $arrayFila = array();
                 $fila = $worksheet->getCellByColumnAndRow(0,$i)->getValue();
                 $arrayCelda = str_replace('"','',explode($this->getDelimitador().'"',$fila));
-
                 foreach($this->getArrayColumnas() as $columna){
                     if($columna['sw_legible']=='si') {
                         $celda = $arrayCelda[$columna['numero_columna']-1];
@@ -249,20 +251,29 @@ class ExcelInput{
                     if(in_array($i,$this->getFilasExcluidas())){
                         continue;
                     }
-
                     $arrayFila = array();
-
                     foreach($this->getArrayColumnas() as $columna){
                         if($columna['sw_legible']=='si') {
                             $celda = $worksheet->getCellByColumnAndRow($columna['numero_columna']-1, $i);
                             if($columna['tipo_valor'] == 'date') {
-
                                 $valorColumna = $this->formatearFecha($celda->getValue(),$columna['formato_fecha'],$columna['anio_fecha']);
                             }else{
-                                if($columna['tipo_valor']=='numeric'){
-                                    $valorColumna = $this->formatearNumero($celda->getValue(),$columna['punto_decimal']);
-                                }else{
-                                    $valorColumna = $celda->getValue();
+                                //#29 Se  aumento la condicon  formula numeric
+                                switch ($columna['tipo_valor']) {
+                                    case 'numeric': // cuando el valor de la columna se un entero o numeric
+                                        $valorColumna = $this->formatearNumero($celda->getValue(),$columna['punto_decimal']);
+                                        break;
+                                    case 'formula_entero': // cuando el valor de la columna es un formuna pero aqui se obtine el valor de la formula cuando es un entero
+                                        $valorColumna = $celda->getOldCalculatedValue();
+                                        break;
+                                    case 'formula_numeric': // cuando el valor de la columna es un formuna pero aqui se obtine el valor de la formula
+                                        $valorColumna = $this->formatearNumero($celda->getOldCalculatedValue(),$columna['punto_decimal']);
+                                        break;
+                                    case 'formula_string': // cuando el valor de la columna es un formuna pero aqui se obtine el valor de la formula cuando es un string
+                                        $valorColumna = $celda->getOldCalculatedValue();
+                                        break;
+                                    default: //aqui obtenemos el valor por defecto de la columna string o entero
+                                        $valorColumna = $celda->getValue();
                                 }
                             }
                             if ($worksheet->getCellByColumnAndRow($columna[0], $i)->getValue() == null

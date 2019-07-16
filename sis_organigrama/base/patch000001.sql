@@ -916,4 +916,43 @@ COMMENT ON COLUMN orga.tfuncionario.profesion
 IS 'nombre de la profesion';
 
 /*****************************F-SCP-RAC-ORGA-24-26/06/2019*************/
+
+
+
+
+/*****************************I-SCP-RAC-ORGA-30-15/07/2019*************/
+
+--------------- SQL ---------------
+
+CREATE TABLE orga.ttipo_cargo (
+  id_tipo_cargo SERIAL NOT NULL,
+  codigo VARCHAR(30) NOT NULL UNIQUE,
+  nombre VARCHAR(300) NOT NULL,
+  id_escala_salarial_min INTEGER,
+  id_escala_salarial_max INTEGER NOT NULL,
+  factor_disp NUMERIC DEFAULT 0 NOT NULL,
+  obs VARCHAR,
+  PRIMARY KEY(id_tipo_cargo)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN orga.ttipo_cargo.id_escala_salarial_min
+IS 'escala salarial de rango minimo salarial';
+
+COMMENT ON COLUMN orga.ttipo_cargo.id_escala_salarial_max
+IS 'escala salarial maxima apra el tipo de cargo';
+
+COMMENT ON COLUMN orga.ttipo_cargo.factor_disp
+IS 'entre 0 a 1,  para calculo de bono de diposnibilidad  en planillas';
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tcargo
+  ADD COLUMN id_tipo_cargo INTEGER;
+
+COMMENT ON COLUMN orga.tcargo.id_tipo_cargo
+IS 'clasifica el cargo, util para aplicar configuracion como el factor de diponibilidad de manera masiva';
+
+
+/*****************************F-SCP-RAC-ORGA-30-15/07/2019*************/
   

@@ -5,7 +5,12 @@
 *@author  (admin)
 *@date 14-01-2014 19:16:06
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
-*/
+*   HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA                AUTOR                DESCRIPCION
+ #0                14-01-2014                               creacion    
+ #30               15-07-2019                              se adciona tipo de cargo de manera opcional para clasificacion
+ * 
+ * */
 
 class MODCargo extends MODbase{
 	
@@ -49,6 +54,12 @@ class MODCargo extends MODbase{
 		$this->captura('id_oficina','int4');
 		$this->captura('identificador','int4');
 		$this->captura('codigo_tipo_contrato','varchar');
+		
+		$this->captura('id_tipo_cargo','int4'); //#30
+		$this->captura('desc_tipo_cargo','text'); //#30
+		
+		
+		
 		
 		
 		//Ejecuta la instruccion
@@ -103,6 +114,7 @@ class MODCargo extends MODbase{
 		$this->setParametro('fecha_ini','fecha_ini','date');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
+		$this->setParametro('id_tipo_cargo','id_tipo_cargo','int4'); //#30
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -129,6 +141,7 @@ class MODCargo extends MODbase{
 		$this->setParametro('fecha_ini','fecha_ini','date');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_fin','fecha_fin','date');
+		$this->setParametro('id_tipo_cargo','id_tipo_cargo','int4'); //#30
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

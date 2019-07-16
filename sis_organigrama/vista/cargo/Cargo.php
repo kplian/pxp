@@ -5,6 +5,11 @@
 *@author  (admin)
 *@date 14-01-2014 19:16:06
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ * 
+ *   HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA                AUTOR                DESCRIPCION
+ #0                14-01-2014                               creacion    
+ #30               15-07-2019                              se adciona tipo de cargo de manera opcional para clasificacion 
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -85,7 +90,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false			 
 		},
-		{
+		{ 
 			config: {
 				name: 'id_tipo_contrato',
 				fieldLabel: 'Tipo Contrato',
@@ -180,6 +185,55 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:0,
 			grid:true,
 			form:true
+		},
+		{// #30
+			config: {
+				name: 'id_tipo_cargo',
+				fieldLabel: 'Tipo Cargo',
+				qtip: 'Clasificación del cargo',
+				allowBlank: true,
+				tinit:true,
+   			    resizable:true,
+   			    tasignacion:true,
+   			    tname:'id_escala_salarial',
+		        emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_organigrama/control/TipoCargo/listarTipoCargo',
+					id: 'id_tipo_cargo',
+					root: 'datos',
+					sortInfo: {
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_tipo_cargo', 'nombre', 'codigo','desc_escmim','desc_escmax'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'tcar.nombre#tcar.codigo'}
+				}),
+				valueField: 'id_tipo_cargo',
+				displayField: 'nombre',
+				gdisplayField: 'desc_tipo_cargo',
+				hiddenName: 'id_tipo_cargo',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '100%',
+				gwidth: 200,
+				minChars: 2,
+				tpl:'<tpl for="."><div class="x-combo-list-item"><p>{codigo}</p><p>{nombre}</p><p>Mim: {desc_escmim}</p><p>Max: {desc_escmax}</p> </div></tpl>',
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['desc_tipo_cargo']);
+				}
+			},
+			type: 'ComboBox',
+			id_grupo: 0,
+			filters: {pfiltro: 'tcar.nombre',type: 'string'},
+			grid: true,
+			form: true
 		},
 		{
 			config: {
@@ -436,7 +490,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		{name:'acefalo', type: 'string'},
-		{name:'identificador', type: 'numeric'},
+		{name:'identificador', type: 'numeric'},'id_tipo_cargo','desc_tipo_cargo'
 		
 	],
 	sortInfo:{
@@ -457,7 +511,17 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
         		this.Cmp.fecha_fin.allowBlank = false;
         	}
              
+        },this);
+        //#30 nombre de cargo por defecto
+        this.Cmp.id_tipo_cargo.on('select',function(x,rec,z){        	
+        	 if(this.Cmp.nombre.getValue() == ''){
+        	 	this.Cmp.nombre.setValue(rec.data.nombre)
+        	 }
+        	 
         },this);	
+        
+        
+        
 	},
 	loadValoresIniciales:function()
     {	

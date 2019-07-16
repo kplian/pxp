@@ -1,11 +1,13 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_cargo_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
   p_transaccion varchar
 )
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
   /**************************************************************************
    SISTEMA:		Organigrama
    FUNCION: 		orga.ft_cargo_sel
@@ -46,40 +48,43 @@ CREATE OR REPLACE FUNCTION orga.ft_cargo_sel (
       begin
         --Sentencia de la consulta
         v_consulta:='select
-						cargo.id_cargo,
-						cargo.id_uo,
-						cargo.id_tipo_contrato,
-						cargo.id_lugar,
-						cargo.id_temporal_cargo,
-						cargo.id_escala_salarial,
-						cargo.codigo,
-						cargo.nombre,
-						cargo.fecha_ini,
-						cargo.estado_reg,
-						cargo.fecha_fin,
-						cargo.fecha_reg,
-						cargo.id_usuario_reg,
-						cargo.fecha_mod,
-						cargo.id_usuario_mod,
-						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod,
-						tipcon.nombre,
-						escsal.nombre,
-						ofi.nombre,
-						(case when (orga.f_get_empleado_x_item(cargo.id_cargo)  is null and cargo.fecha_fin is null) then
-						  ''ACEFALO''
-						else
-						  ''ASIGNADO''
-						end)::varchar as acefalo,
-						cargo.id_oficina,
-						cargo.id_cargo as identificador,
-						tipcon.codigo as codigo_tipo_contrato
+                          cargo.id_cargo,
+                          cargo.id_uo,
+                          cargo.id_tipo_contrato,
+                          cargo.id_lugar,
+                          cargo.id_temporal_cargo,
+                          cargo.id_escala_salarial,
+                          cargo.codigo,
+                          cargo.nombre,
+                          cargo.fecha_ini,
+                          cargo.estado_reg,
+                          cargo.fecha_fin,
+                          cargo.fecha_reg,
+                          cargo.id_usuario_reg,
+                          cargo.fecha_mod,
+                          cargo.id_usuario_mod,
+                          usu1.cuenta as usr_reg,
+                          usu2.cuenta as usr_mod,
+                          tipcon.nombre,
+                          escsal.nombre,
+                          ofi.nombre,
+                          (case when (orga.f_get_empleado_x_item(cargo.id_cargo)  is null and cargo.fecha_fin is null) then
+                            ''ACEFALO''
+                          else
+                            ''ASIGNADO''
+                          end)::varchar as acefalo,
+                          cargo.id_oficina,
+                          cargo.id_cargo as identificador,
+                          tipcon.codigo as codigo_tipo_contrato,
+                          cargo.id_tipo_cargo,
+                          tcar.codigo||'' ''||tcar.nombre as desc_tipo_cargo 
 						from orga.tcargo cargo
 						inner join segu.tusuario usu1 on usu1.id_usuario = cargo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = cargo.id_usuario_mod
 						inner join orga.ttipo_contrato tipcon on tipcon.id_tipo_contrato = cargo.id_tipo_contrato
 						inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial
 						left join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
+                        left join orga.ttipo_Cargo tcar on tcar.id_tipo_cargo = cargo.id_tipo_cargo
 				        where cargo.estado_reg = ''activo'' and  ';
 
         --Definicion de la respuesta
@@ -153,6 +158,7 @@ CREATE OR REPLACE FUNCTION orga.ft_cargo_sel (
 						inner join orga.ttipo_contrato tipcon on tipcon.id_tipo_contrato = cargo.id_tipo_contrato
 						inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial
 						left join orga.toficina ofi on ofi.id_oficina = cargo.id_oficina
+                        left join orga.ttipo_Cargo tcar on tcar.id_tipo_cargo = cargo.id_tipo_cargo
 					    where cargo.estado_reg = ''activo'' and ';
 
         --Definicion de la respuesta
@@ -188,7 +194,7 @@ CREATE OR REPLACE FUNCTION orga.ft_cargo_sel (
       v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
       raise exception '%',v_resp;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
