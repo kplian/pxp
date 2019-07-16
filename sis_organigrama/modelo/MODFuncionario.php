@@ -9,8 +9,9 @@
  *  HISTORIAL DE MODIFICACIONES:
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
-  #0            04/06/2011          Kplian                 creacion
+  #0            04/06/2011          Kplian                creacion
   #24           17/06/2019          RAC                   configuracion de agrupadores para grilla de funcionarios
+  #31           16/07/2019          RAC                   Adciona codigo rcaiva, profesion y fecha quinquenio
  */
 class MODFuncionario extends MODbase{
 	
@@ -57,8 +58,7 @@ class MODFuncionario extends MODbase{
 		$this->captura('celular1','varchar');
 		$this->captura('correo','varchar');
 		$this->captura('telefono_ofi','varchar');
-		$this->captura('antiguedad_anterior','integer');
-		
+		$this->captura('antiguedad_anterior','integer');		
 		$this->captura('estado_civil','varchar');
 		$this->captura('genero','varchar');
 		$this->captura('fecha_nacimiento','date');
@@ -68,7 +68,10 @@ class MODFuncionario extends MODbase{
 		$this->captura('discapacitado','varchar');
 		$this->captura('carnet_discapacitado','varchar');
 		$this->captura('id_auxiliar','integer');
-		$this->captura('desc_auxiliar','varchar');
+		$this->captura('desc_auxiliar','varchar');		
+		$this->captura('profesion','varchar');  
+		$this->captura('codigo_rciva','varchar');
+		$this->captura('fecha_quinquenio','date');   
 		
 		//Ejecuta la funcion
 		$this->armarConsulta();		
@@ -231,6 +234,10 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('discapacitado','discapacitado','varchar');
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
+		
+		$this->setParametro('profesion','profesion','varchar');	//#31
+		$this->setParametro('codigo_rciva','codigo_rciva','varchar');	//#31
+		$this->setParametro('fecha_quinquenio','fecha_quinquenio','date');	//#31
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -244,7 +251,7 @@ class MODFuncionario extends MODbase{
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_funcionario_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_FUNCIO_MOD';//nombre de la transaccion
-		$this->tipo_procedimiento='IME';//tipo de transaccion
+		$this->tipo_procedimiento='IME';//tipo de transaccion 
 		
 		//Define los parametros para la funcion	
 		$this->setParametro('id_funcionario','id_funcionario','integer');	
@@ -269,6 +276,10 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('discapacitado','discapacitado','varchar');
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
+		
+		$this->setParametro('profesion','profesion','varchar');	//#31
+		$this->setParametro('codigo_rciva','codigo_rciva','varchar');	//#31
+		$this->setParametro('fecha_quinquenio','fecha_quinquenio','date');	//#31
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

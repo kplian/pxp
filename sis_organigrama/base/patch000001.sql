@@ -955,4 +955,34 @@ IS 'clasifica el cargo, util para aplicar configuracion como el factor de diponi
 
 
 /*****************************F-SCP-RAC-ORGA-30-15/07/2019*************/
+
+
+
+
+
+/*****************************I-SCP-RAC-ORGA-31-16/07/2019*************/
+
+
+ALTER TABLE orga.tfuncionario
+  ADD COLUMN fecha_quinquenio DATE;
+
+COMMENT ON COLUMN orga.tfuncionario.fecha_quinquenio
+IS 'fecha del ultimo quinquenio pagado al funcionario, si es nulo no se le pago ninguno';
+
+
+
+/*****************************F-SCP-RAC-ORGA-31-16/07/2019*************/
+
+
+
+
+
+
+
+
+
+
+
+
+
   
