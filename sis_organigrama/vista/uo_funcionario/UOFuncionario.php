@@ -280,12 +280,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        		lazyRender:true,
        		mode: 'local',
 			gwidth: 100,
-			store:['240','160']
+			store:['240','120']
 		},
 			type:'ComboBox',
 			filters:{	
        		         type: 'list',
-       				 options: ['240','160'],
+       				 options: ['240','120'],
        		},
        		valorInicial: '240',
 			id_grupo:1,
