@@ -28,6 +28,7 @@ $body$
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
    
  #6             09-01-2019        RAC         recupera funcion de repositorio de boa
+ #32            18/07/2019        RAC         añade carga horaria
 ***************************************************************************/
 
 
@@ -80,8 +81,8 @@ BEGIN
                                   UOFUNC.observaciones_finalizacion,
                                   UOFUNC.nro_documento_asignacion,
                                   UOFUNC.fecha_documento_asignacion,
-                                  UOFUNC.tipo                                  
-                                  
+                                  UOFUNC.tipo,                                 
+                                  UOFUNC.carga_horaria  
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
@@ -143,7 +144,6 @@ BEGIN
 	 ***********************************/
      elsif(par_transaccion='RH_ASIG_FUNC_SEL')then
           BEGIN
-
                v_consulta:='SELECT
                                   UOFUNC.id_uo_funcionario,
                                   UOFUNC.id_uo,

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -14,9 +16,10 @@ $body$
    COMENTARIOS:
   ***************************************************************************
    HISTORIA DE MODIFICACIONES:
-   ISSUE     FECHA:             AUTOR:      DESCRIPCION:
-   #25        25/06/2019        EGS         Se elimino validacion innecesaria al modidicar al uo_funcionario
-
+   ISSUE     FECHA:             AUTOR:          DESCRIPCION:
+   30         03-06-2011        MZM KPLIAN        creacion
+   #25        25/06/2019        EGS               Se elimino validacion innecesaria al modidicar al uo_funcionario
+   #32 ETR    17/07/2019        RAC KPLIAN        considerar carga horaria configurada para el funcionario en orga.tuo_funcionario
    ***************************************************************************/
   DECLARE
 
@@ -79,14 +82,31 @@ $body$
         end if;
 
         INSERT INTO orga.tuo_funcionario
-        (	id_uo, 						id_funcionario, 						fecha_asignacion,
-           fecha_finalizacion,			id_cargo,								observaciones_finalizacion,
-           nro_documento_asignacion,	fecha_documento_asignacion,				id_usuario_reg,
-           tipo)
-        values(		v_parametros.id_uo, 		v_parametros.id_funcionario,			v_parametros.fecha_asignacion,
-                   v_parametros.fecha_finalizacion,v_parametros.id_cargo,				v_parametros.observaciones_finalizacion,
-                   v_parametros.nro_documento_asignacion,v_parametros.fecha_documento_asignacion,par_id_usuario,
-                   v_parametros.tipo)
+        (  id_uo, 						
+           id_funcionario, 						
+           fecha_asignacion,
+           fecha_finalizacion,			
+           id_cargo,								
+           observaciones_finalizacion,
+           nro_documento_asignacion,	
+           fecha_documento_asignacion,				
+           id_usuario_reg,
+           tipo,                        
+           carga_horaria
+        )
+       values(
+           v_parametros.id_uo, 		
+           v_parametros.id_funcionario,			
+           v_parametros.fecha_asignacion,
+           v_parametros.fecha_finalizacion,
+           v_parametros.id_cargo,				
+           v_parametros.observaciones_finalizacion,
+           v_parametros.nro_documento_asignacion,
+           v_parametros.fecha_documento_asignacion,
+           par_id_usuario,
+           v_parametros.tipo,
+           v_parametros.carga_horaria --#32
+         )
         RETURNING id_uo_funcionario INTO v_id_uo_funcionario;
 
 
@@ -138,7 +158,8 @@ $body$
           observaciones_finalizacion = v_parametros.observaciones_finalizacion,
           nro_documento_asignacion = v_parametros.nro_documento_asignacion,
           fecha_documento_asignacion = v_parametros.fecha_documento_asignacion,
-          fecha_finalizacion = v_parametros.fecha_finalizacion
+          fecha_finalizacion = v_parametros.fecha_finalizacion,
+          carga_horaria = v_parametros.carga_horaria --#32
         where id_uo=v_parametros.id_uo
               and id_uo_funcionario=v_parametros.id_uo_funcionario;
 

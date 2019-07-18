@@ -11,7 +11,8 @@
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
    
- #6           09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario
+ #6           09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario * 
+ #32          18/07/2019      RAC KPLIAN      añade carga horaria
  */
 class MODUoFuncionario extends MODbase{
 	
@@ -50,7 +51,7 @@ class MODUoFuncionario extends MODbase{
 		$this->captura('nro_documento_asignacion','varchar');
 		$this->captura('fecha_documento_asignacion','date');
 		$this->captura('tipo','varchar');
-		
+		$this->captura('carga_horaria','integer'); //#32
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		
@@ -77,6 +78,7 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('nro_documento_asignacion','nro_documento_asignacion','varchar');
 		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
 		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('carga_horaria','carga_horaria','integer'); //#32
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -101,6 +103,7 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('observaciones_finalizacion','observaciones_finalizacion','varchar');
 		$this->setParametro('nro_documento_asignacion','nro_documento_asignacion','varchar');
 		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
+		$this->setParametro('carga_horaria','carga_horaria','integer'); //#32
 		
 		
 	
