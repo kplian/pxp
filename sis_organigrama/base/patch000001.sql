@@ -985,7 +985,7 @@ COMMENT ON COLUMN orga.tuo_funcionario.carga_horaria
 IS 'carga horaria mensual, tiempo completo 240 por defecto';
 
 
-/*****************************I-SCP-RAC-ORGA-32-17/07/2019*************/
+/*****************************F-SCP-RAC-ORGA-32-17/07/2019*************/
 
 
 
