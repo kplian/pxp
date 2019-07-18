@@ -5,6 +5,12 @@
 *@author KPLIAN (admin)
 *@date 14-02-2011
 *@description  Vista para asociar los funcionarios a su correspondiente Unidad Organizacional
+ *    HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION
+   
+ #0               17/10/2014        JRR KPLIAN        creacion
+ #32 ETR          18/07/2019        RAC KPLIAN        adcionar carga horaria
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -242,42 +248,65 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	},
 	
 	{
-			config:{
-				name: 'observaciones_finalizacion',
-				fieldLabel: 'Motivo Finalización',
-				allowBlank: false,
-				emptyText:'Motivo...',
-	       		typeAhead: true,
-	       		triggerAction: 'all',
-	       		lazyRender:true,
-	       		mode: 'local',
-				gwidth: 100,
-				store:['fin contrato','retiro','renuncia','promocion','transferencia']
-			},
-				type:'ComboBox',
-				filters:{	
-	       		         type: 'list',
-	       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia'],
-	       		 	},
-				id_grupo:1,
-				grid:true,
-				form:true
+		config:{
+			name: 'observaciones_finalizacion',
+			fieldLabel: 'Motivo Finalización',
+			allowBlank: false,
+			emptyText:'Motivo...',
+       		typeAhead: true,
+       		triggerAction: 'all',
+       		lazyRender:true,
+       		mode: 'local',
+			gwidth: 100,
+			store:['fin contrato','retiro','renuncia','promocion','transferencia']
 		},
-	
-		
-		{
-			config:{
-				name:'estado_reg',
-				fieldLabel:'Estado',				
-				gwidth:115,			
-				
-			},
 			type:'ComboBox',
-			grid:true,			
-			form:false,
-            grid:true
-		}
-		],
+			filters:{	
+       		         type: 'list',
+       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia'],
+       		 	},
+			id_grupo:1,
+			grid:true,
+			form:true
+	},
+	{
+		config:{
+			name: 'carga_horaria',
+			fieldLabel: 'Carga Horaria Mensual',
+			allowBlank: false,
+			emptyText:'...',
+       		typeAhead: true,
+       		triggerAction: 'all',
+       		lazyRender:true,
+       		mode: 'local',
+			gwidth: 100,
+			store:['240','120']
+		},
+			type:'ComboBox',
+			filters:{	
+       		         type: 'list',
+       				 options: ['240','120'],
+       		},
+       		valorInicial: '240',
+			id_grupo:1,
+			grid:true,
+			form:true
+	},
+
+	
+	{
+		config:{
+			name:'estado_reg',
+			fieldLabel:'Estado',				
+			gwidth:115,			
+			
+		},
+		type:'ComboBox',
+		grid:true,			
+		form:false,
+        grid:true
+	}
+    ],
 
 
 
@@ -308,7 +337,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
              'fecha_reg',
              'fecha_mod',
              'USUREG',
-             'USUMOD','correspondencia'],
+             'USUMOD','correspondencia','carga_horaria'],
 	sortInfo:{
 		field: 'desc_funcionario1',
 		direction: 'ASC',

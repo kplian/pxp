@@ -974,6 +974,20 @@ IS 'fecha del ultimo quinquenio pagado al funcionario, si es nulo no se le pago 
 /*****************************F-SCP-RAC-ORGA-31-16/07/2019*************/
 
 
+/*****************************I-SCP-RAC-ORGA-32-17/07/2019*************/
+
+--------------- SQL ---------------
+
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN carga_horaria INTEGER DEFAULT 240 NOT NULL;
+
+COMMENT ON COLUMN orga.tuo_funcionario.carga_horaria
+IS 'carga horaria mensual, tiempo completo 240 por defecto';
+
+
+/*****************************I-SCP-RAC-ORGA-32-17/07/2019*************/
+
+
 
 
 
