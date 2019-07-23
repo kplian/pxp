@@ -31,8 +31,8 @@ class ACTEscalaSalarial extends ACTbase{
 			
 		}
 		
-		if ($this->objParam->getParametro('codigo') != '') {//#35
-			$this->objParam->addFiltro("escsal.codigo =''". $this->objParam->getParametro('codigo')."''");
+		if ($this->objParam->getParametro('id_escala_padre') != '') {//#35
+			$this->objParam->addFiltro("escsal.id_escala_padre =''". $this->objParam->getParametro('id_escala_padre')."''");
 		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

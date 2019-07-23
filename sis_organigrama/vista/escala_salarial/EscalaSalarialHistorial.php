@@ -207,7 +207,7 @@ Phx.vista.EscalaSalarialHistorial=Ext.extend(Phx.gridInterfaz,{
 	bsave:false,
 	onReloadPage:function(m){
 			this.maestro=m;			
-			this.store.baseParams.codigo = 	this.maestro.codigo;	
+			this.store.baseParams.id_escala_padre = this.maestro.id_escala_salarial;	
 			this.load({params:{start:0, limit:this.tam_pag,nombreVista:this.nombreVista}});			
 	},
 
