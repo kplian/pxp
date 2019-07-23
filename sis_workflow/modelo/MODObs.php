@@ -89,14 +89,6 @@ class MODObs extends MODbase{
 		$this->captura('id_estado_wf','int4');
 		$this->captura('id_proceso_wf','int4');
 
-		$this->captura('usr_actual','int4');
-		$this->captura('desc_fun_obs','text');
-		$this->captura('desc_funcionario','text');
-		$this->captura('numero','varchar');
-		$this->captura('num_tramite','varchar');
-		$this->captura('email_empresa','varchar');
-
-
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		//var_dump($this->consulta);exit;
