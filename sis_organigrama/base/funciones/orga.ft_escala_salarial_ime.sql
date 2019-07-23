@@ -15,10 +15,8 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ ISSUE		FECHA			AUTHOR				DESCRIPCION		
+  #35		23/07/2019		EGS					se agrega el id_usuario_reg al insertar el historial al inactivarlo
 ***************************************************************************/
 
 DECLARE
@@ -107,10 +105,12 @@ BEGIN
 				insert into orga.tescala_salarial (
 						aprobado , 			haber_basico,			nombre,
 						nro_casos,			codigo,					id_categoria_salarial,
-						fecha_ini,			fecha_fin,				estado_reg,id_escala_padre) 
+						fecha_ini,			fecha_fin,				estado_reg,id_escala_padre,
+                        id_usuario_reg) --#35
 				values (v_reg_old.aprobado ,v_reg_old.haber_basico,	v_reg_old.nombre,
 						v_reg_old.nro_casos,v_reg_old.codigo,		v_reg_old.id_categoria_salarial,
-						v_reg_old.fecha_ini,(v_parametros.fecha_ini - interval '1 day'), 'inactivo',v_parametros.id_escala_salarial);
+						v_reg_old.fecha_ini,(v_parametros.fecha_ini - interval '1 day'), 'inactivo',v_parametros.id_escala_salarial,
+                        p_id_usuario);--#35
 			end if;
 			--Sentencia de la modificacion
 			update orga.tescala_salarial set

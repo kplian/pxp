@@ -5,7 +5,9 @@
 *@author  (admin)
 *@date 14-01-2014 00:28:29
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
-*/
+ ISSUE		FECHA			AUTHOR				DESCRIPCION		
+  #35		23/07/2019		EGS					Se agrega filtros para el historial
+ * */
 
 class ACTEscalaSalarial extends ACTbase{    
 			
@@ -16,6 +18,21 @@ class ACTEscalaSalarial extends ACTbase{
 		
 		if ($this->objParam->getParametro('id_categoria_salarial') != '') {
 			$this->objParam->addFiltro("escsal.id_categoria_salarial = ". $this->objParam->getParametro('id_categoria_salarial'));
+		}
+		
+		if ($this->objParam->getParametro('nombreVista') == 'EscalaSalarial') {//#35
+			$this->objParam->addFiltro("escsal.estado_reg = ''activo'' ");
+		}
+		
+		if ($this->objParam->getParametro('nombreVista') == 'EscalaSalarialHistorial') {//#35
+			
+			$this->objParam->parametros_consulta['ordenacion'] = 'fecha_reg desc';	
+			$this->objParam->addFiltro("escsal.estado_reg = ''inactivo'' ");
+			
+		}
+		
+		if ($this->objParam->getParametro('codigo') != '') {//#35
+			$this->objParam->addFiltro("escsal.codigo =''". $this->objParam->getParametro('codigo')."''");
 		}
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

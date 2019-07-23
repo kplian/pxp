@@ -1,19 +1,19 @@
 <?php
 /**
 *@package pXP
-*@file gen-EscalaSalarial.php
+*@file gen-EscalaSalarialHistorial.php
 *@author  (admin)
 *@date 14-01-2014 00:28:29
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
-  ISSUE		FECHA			AUTHOR				DESCRIPCION		
-  #35		23/07/2019		EGS					Se agrega nombre de vista
-*/
+ ISSUE		FECHA			AUTHOR				DESCRIPCION		
+  #35		23/07/2019		EGS					creacion
+ * */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
-	nombreVista:'EscalaSalarial',//#35
+Phx.vista.EscalaSalarialHistorial=Ext.extend(Phx.gridInterfaz,{
+	nombreVista:'EscalaSalarialHistorial',
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
@@ -32,16 +32,7 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		{
-			//configuracion del componente
-			config:{
-					labelSeparator:'',
-					inputType:'hidden',
-					name: 'id_categoria_salarial'
-			},
-			type:'Field',
-			form:true 
-		},
+
 		{
 			config:{
 				name: 'codigo',
@@ -59,38 +50,6 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'nombre',
-				fieldLabel: 'Nombre',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:200
-			},
-				type:'TextField',
-				filters:{pfiltro:'escsal.nombre',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		
-		{
-			config:{
-				name: 'nro_casos',
-				fieldLabel: 'No Casos',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'NumberField',
-				filters:{pfiltro:'escsal.nro_casos',type:'numeric'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		
-		{
-			config:{
 				name: 'haber_basico',
 				fieldLabel: 'Haber Básico',
 				allowBlank: false,
@@ -105,28 +64,7 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		
-		{
-			config:{
-				name: 'aprobado',
-				fieldLabel: 'Aprobado',
-				allowBlank: false,
-				emptyText:'Aprobado...',
-	       		typeAhead: true,
-	       		triggerAction: 'all',
-	       		lazyRender:true,
-	       		mode: 'local',
-				gwidth: 100,
-				store:['si','no']
-			},
-				type:'ComboBox',
-				filters:{	
-	       		         type: 'list',
-	       				 options: ['si','no'],	
-	       		 	},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},		
+	
 		{
 			config:{
 				name: 'fecha_ini',
@@ -239,22 +177,16 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	tam_pag:50,	
-	title:'Escala Salarial',
+	title:'Escala Salarial Historial',
 	ActSave:'../../sis_organigrama/control/EscalaSalarial/insertarEscalaSalarial',
 	ActDel:'../../sis_organigrama/control/EscalaSalarial/eliminarEscalaSalarial',
 	ActList:'../../sis_organigrama/control/EscalaSalarial/listarEscalaSalarial',
 	id_store:'id_escala_salarial',
 	fields: [
 		{name:'id_escala_salarial', type: 'numeric'},
-		{name:'aprobado', type: 'string'},
-		{name:'id_categoria_salarial', type: 'numeric'},
 		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d'},
 		{name:'estado_reg', type: 'string'},
-		{name:'haber_basico', type: 'numeric'},
 		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d'},
-		{name:'nro_nivel', type: 'numeric'},
-		{name:'nombre', type: 'string'},
-		{name:'nro_casos', type: 'numeric'},
 		{name:'codigo', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_reg', type: 'numeric'},
@@ -262,47 +194,34 @@ Phx.vista.EscalaSalarial=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+		{name:'haber_basico', type: 'numeric'},
+
 	],
 	sortInfo:{
 		field: 'id_escala_salarial',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true,
+	bnew:false,
+	bedit:false,
+	bdel:false,
+	bsave:false,
 	onReloadPage:function(m){
 			this.maestro=m;			
-			this.getBoton('act').enable();
-			this.store.baseParams.id_categoria_salarial = 	this.maestro.id_categoria_salarial;	
-			this.load({params:{start:0, limit:this.tam_pag,nombreVista:this.nombreVista}});	//#35		
+			this.store.baseParams.codigo = 	this.maestro.codigo;	
+			this.load({params:{start:0, limit:this.tam_pag,nombreVista:this.nombreVista}});			
 	},
-	loadValoresIniciales:function()
-    {
-        this.Cmp.id_categoria_salarial.setValue(this.maestro.id_categoria_salarial);       
-        Phx.vista.EscalaSalarial.superclass.loadValoresIniciales.call(this);
-    },
+
     onButtonNew:function(){
 		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
 		//this.ocultarComponente(this.Cmp.fecha_ini);
-		Phx.vista.EscalaSalarial.superclass.onButtonNew.call(this);
+		Phx.vista.EscalaSalarialHistorial.superclass.onButtonNew.call(this);
 		//seteamos un valor fijo que vienen de la vista maestro para id_gui 
 		
 		
 	},onButtonEdit:function(){
-		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
-		
-		this.mostrarComponente(this.Cmp.fecha_ini);
-		this.ocultarComponente(this.Cmp.codigo);
-		Phx.vista.EscalaSalarial.superclass.onButtonEdit.call(this);
-	},
-	 tabeast: [//#35
-            {
-                url:'../../../sis_organigrama/vista/escala_salarial/EscalaSalarialHistorial.php',
-                title:'Historial',
-                width:'50%',
-                height:'50%',
-                cls:'EscalaSalarialHistorial'
-            }],
+		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentesSS
+		Phx.vista.EscalaSalarialHistorial.superclass.onButtonEdit.call(this);
+	}
 	}
 )
 </script>

@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_escala_salarial_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION orga.ft_escala_salarial_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_escala_salarial_sel
@@ -11,10 +15,8 @@ $BODY$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ ISSUE		FECHA			AUTHOR				DESCRIPCION		
+  #35		23/07/2019		EGS					Se modifica la condicion estado_reg activo en el controlador
 ***************************************************************************/
 
 DECLARE
@@ -60,13 +62,15 @@ BEGIN
 						from orga.tescala_salarial escsal
 						inner join segu.tusuario usu1 on usu1.id_usuario = escsal.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = escsal.id_usuario_mod
-				        where escsal.estado_reg = ''activo''  and ';
+				        where ';    --#35
 			
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
+            --raise exception 'v_consulta %',v_consulta;
+            raise notice 'v_consulta %',v_consulta;
 			return v_consulta;
 						
 		end;
@@ -86,7 +90,7 @@ BEGIN
 					    from orga.tescala_salarial escsal
 					    inner join segu.tusuario usu1 on usu1.id_usuario = escsal.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = escsal.id_usuario_mod
-					    where escsal.estado_reg = ''activo''  and ';
+					    where '; --#35
 			
 			--Definicion de la respuesta		    
 			v_consulta:=v_consulta||v_parametros.filtro;
@@ -111,7 +115,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_escala_salarial_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
