@@ -8,6 +8,8 @@
 *  ISSUE		FECHA    		AUTOR			DESCRIPCION
 *	#1			21/11/2018		EGS				se agrego campos codigo para que funcione la exportacion de plantilla
 *   #29	ERT		02/07/2019 		MMV			Obtener el valor de la formula en excel para archivos excel
+ *  #36	ERT		24/07/2019 		MMV			Opción otros en casos para identificar si es una formula o dato ingresado manualmente
+
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -133,14 +135,14 @@ Phx.vista.ColumnasArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 				lazyRender:true,
 				mode: 'local',
 				valueField: 'inicio',
-				store:['string','date','entero','numeric','formula_entero','formula_numeric','formula_string'] //#29
+                store:['string','date','entero','numeric','formula_entero','formula_numeric','formula_string','otro'] //#29 #36
 			},
 			type:'ComboBox',
 			id_grupo:1,
 			filters:{
 				type: 'list',
 				pfiltro:'colxls.tipo_valor',
-				options: ['string','date','entero','numeric','formula_entero','formula_numeric','formula_string'] //#29
+                options: ['string','date','entero','numeric','formula_entero','formula_numeric','formula_string','otro'] //#29 #36
 			},
 			grid:true,
 			form:true
