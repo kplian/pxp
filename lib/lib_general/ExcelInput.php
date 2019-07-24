@@ -7,6 +7,8 @@
  * HISTORIAL DE MODIFICACIONES:
  * #ISSUE				FECHA				AUTOR				DESCRIPCION
  * #29	ERT			02/07/2019 				 MMV			Obtener el valor de la formula en excel para archivos excel
+ * #36	ERT		24/07/2019 		MMV			Opción otros en casos para identificar si es una formula o dato ingresado manualmente
+
  */
 
 include_once(dirname(__FILE__).'/../../lib/lib_control/CTincludes.php');
@@ -271,6 +273,13 @@ class ExcelInput{
                                         break;
                                     case 'formula_string': // cuando el valor de la columna es un formuna pero aqui se obtine el valor de la formula cuando es un string
                                         $valorColumna = $celda->getOldCalculatedValue();
+                                        break;
+                                    case 'otro': // #36 Opción otros en casos para identificar si es una formula o dato ingresado manualmente
+                                        if (str_split($celda->getValue())[0] == '='){
+                                            $valorColumna= $celda->getOldCalculatedValue();
+                                        }else{
+                                            $valorColumna = $celda->getValue();
+                                        }
                                         break;
                                     default: //aqui obtenemos el valor por defecto de la columna string o entero
                                         $valorColumna = $celda->getValue();
