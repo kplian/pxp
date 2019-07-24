@@ -1,0 +1,32 @@
+0.- Implementacion del script daily_backup.cron.sh
+1.- Crear carpeta backupBD en la direccion que muestra en el script:
+	SERVER_BACKUPS_PATH y SERVER_BACKUPS_PATH
+2.-configurar el cron
+	nota ejemplo :el cron ejecutara el script a las 4 am 
+		# Example of job definition:
+		# .---------------- minute (0 - 59)
+		# |  .------------- hour (0 - 23)
+		# |  |  .---------- day of month (1 - 31)
+		# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+		# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+		# |  |  |  |  |
+		# *  *  *  *  * user-name command to be executed
+		  0  4  *  *  * root /var/www/html/etr/pxp/lib/cron/./daily_backup.cron.sh
+3.-Asegurarse que el script tenga permisos 0777
+4.-Para realizar la restauracion 
+	1.- ubicarse en la direccion del SERVER_BACKUPS_PATH
+	2.- para descomprimir ejecutar el comando:
+			gzip -d nombre_backup.gz
+		donde el nombre_backup es el nombre del archivo a descomprimir
+	3.- para restaurar el backup utilizar el siguente comando
+			pg_restore -U postgres -d NOMBRE_BD -1 NOMBRE_BACKUP
+		donde NOMBRE_BD es el nombre de la base de datos donde se restaurara el backup
+		donde NOMBRE_BACKUP es el archivo de donde se restaurara la base de datos
+	4.-Crear el esquema log en la nueva BD en donde se Restauro
+	5.-Al restaurar la base de datos las contraseñas no serviran para ingresar al sistema hay dos opciones
+		en la tabla segu.tusuario actualizar todas las contraseñas o actualizar la contraseña del admin con la consideracion
+		de que al actualizar la nueva contraseña tiene que estar encriptada en md5 por ejemplo para las palabra :
+		admin = 21232f297a57a5a743894a0e4a801fc3        encriptado en md5 actualizar con esto en la tabla segu.tusuario en el campo contraseña
+		123   = 202cb962ac59075b964b07152d234b70		encriptado en md5 actualizar con esto en la tabla segu.tusuario en el campo contraseña
+
+	
