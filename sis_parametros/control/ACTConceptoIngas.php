@@ -8,6 +8,7 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
  *  ISSUE             FECHA:		      AUTOR       DESCRIPCION
  *  #13 endeEtr		  26/3/2019				EGS		  Se habilita tipo llave en mano  
+ * #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables 	
 */
 
 class ACTConceptoIngas extends ACTbase{    
