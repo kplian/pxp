@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.f_concepto_ingas_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -17,7 +19,7 @@ $body$
  HISTORIAL DE MODIFICACIONES:
 #ISSUE				FECHA				AUTOR				DESCRIPCION
  #13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano	
-	
+#33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables 	
 ***************************************************************************/
 
 DECLARE
@@ -75,7 +77,8 @@ BEGIN
                 id_unidad_medida,
                 nandina,
                 id_cat_concepto,
-                llave_mano   --#13
+                llave_mano,   --#13
+                id_taza_impuesto
           	) values(
                 v_parametros.desc_ingas,
                 v_parametros.tipo,
@@ -93,8 +96,8 @@ BEGIN
                 v_parametros.id_unidad_medida,
                 v_parametros.nandina,
               	v_parametros.id_cat_concepto,
-                v_parametros.llave_mano	--#13			
-				
+                v_parametros.llave_mano,	--#13			
+				v_parametros.id_taza_impuesto --#33
 			)RETURNING id_concepto_ingas into v_id_concepto_ingas;
 			
 			--Definicion de la respuesta
@@ -139,9 +142,9 @@ BEGIN
                 version =v_parametros.version,
                 codigo =v_parametros.codigo,
                 id_cat_concepto = v_parametros.id_cat_concepto,
-                llave_mano = v_parametros.llave_mano --#13
-
-			where id_concepto_ingas=v_parametros.id_concepto_ingas;
+                llave_mano = v_parametros.llave_mano, --#13
+				id_taza_impuesto = v_parametros.id_taza_impuesto --#33
+			where id_concepto_ingas=v_parametros.id_concepto_ingas; 
             --si se integra con endesis actualizamos la tabla conceptoingas  
             if (pxp.f_get_variable_global('sincronizar') = 'true') then
              

@@ -7,6 +7,7 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 	#ISSUE				FECHA				AUTOR				DESCRIPCION
  	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
+    #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables 	
  */
 
 class MODConceptoIngas extends MODbase{
@@ -53,7 +54,8 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('version','int4');///EGS
 		$this->captura('codigo','varchar');////EGS
 		$this->captura('llave_mano','varchar');//#13
-				
+		$this->captura('id_taza_impuesto','integer');
+		$this->captura('descripcion','varchar');		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -242,7 +244,7 @@ class MODConceptoIngas extends MODbase{
 		
 		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');
  		$this->setParametro('llave_mano','llave_mano','varchar');//#13
- 
+ 		$this->setParametro('id_taza_impuesto','id_taza_impuesto','int4');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -276,7 +278,7 @@ class MODConceptoIngas extends MODbase{
 		$this->setParametro('nandina','nandina','varchar');		
 		$this->setParametro('id_cat_concepto','id_cat_concepto','int4');
 		$this->setParametro('llave_mano','llave_mano','varchar');//#13
-
+		$this->setParametro('id_taza_impuesto','id_taza_impuesto','int4');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

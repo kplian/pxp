@@ -7,6 +7,7 @@
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
  * 	#ISSUE				FECHA				AUTOR				DESCRIPCION
  	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
+ * #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables 	
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -183,6 +184,39 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:true,
 			bottom_filter : true
+		},
+		{
+			config: {
+				name: 'id_taza_impuesto',
+				fieldLabel: 'Taza Impuesto',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_parametros/control/TazaImpuesto/listarTazaImpuesto',
+					id: 'id_taza_impuesto',
+					root: 'datos',	
+					totalProperty: 'total',
+					fields: ['id_taza_impuesto', 'descripcion'],
+					// turn on remote sorting
+					remoteSort: true,					
+				}),
+				valueField: 'id_taza_impuesto',
+				displayField: 'descripcion',
+				gdisplayField: 'descripcion',
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 10,
+				queryDelay: 200,
+				listWidth:'280',
+				resizable:true,
+				width: 250,
+				minChars: 2,
+				renderer:function(value, p, record){return String.format('{0}', record.data['descripcion']);},
+				gwidth:130
+			},
+			type: 'ComboBox',
+			id_grupo: 1,			
+			grid: true,
+			form: true
 		},
 	    {
 	       		config:{
@@ -758,7 +792,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'llave_mano', type: 'string'},//#13
 		'id_grupo_ots','filtro_ot','requiere_ot',
 		'sw_autorizacion','desc_unidad_medida','id_unidad_medida',
-		'nandina','ruta_foto','id_cat_concepto','desc_cat_concepto'
+		'nandina','ruta_foto','id_cat_concepto','desc_cat_concepto','descripcion'
 		
 	],
 	sortInfo:{

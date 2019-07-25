@@ -2504,5 +2504,30 @@ ALTER TABLE param.tplantilla_grilla
   OWNER TO dbararteaga;
   
   /***********************************F-SCP-RAC-PARAM-24-17/06/2019*****************************************/
-  
+/***********************************I-SCP-MMV-PARAM-0-16/07/2019****************************************/
+ALTER TABLE param.tcolumnas_archivo_excel
+  ALTER COLUMN tipo_valor TYPE VARCHAR(30) COLLATE pg_catalog."default";
+/***********************************F-SCP-MMV-PARAM-0-16/07/2019****************************************/
 
+
+/***********************************I-SCP-manu-PARAM-0-25/07/2019****************************************/
+CREATE TABLE param.ttaza_impuesto (
+  id_taza_impuesto SERIAL,
+  descripcion VARCHAR(255),
+  observacion VARCHAR(255),
+  factor_impuesto NUMERIC,
+  tipo VARCHAR(15),
+  factor_impuesto_pre NUMERIC,
+  CONSTRAINT ttazas_impuesto_pkey PRIMARY KEY(id_taza_impuesto)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN param.ttaza_impuesto.tipo
+IS 'es de tipo nominal o efectivo';
+
+
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_tazas_impuesto INTEGER;
+
+/***********************************F-SCP-manu-PARAM-0-25/07/2019****************************************/

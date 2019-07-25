@@ -1434,3 +1434,17 @@ select pxp.f_insert_testructura_gui ('PLGR', 'OTROS');
 /***********************************F-DEP-EGS-PARAM-0-17/06/2019****************************************/
 
 
+/***********************************I-DEP-MANU-PARAM-0-25/07/2019****************************************/
+
+ALTER TABLE param.tconcepto_ingas
+  ADD CONSTRAINT tconcepto_ingas_fk FOREIGN KEY (id_tazas_impuesto)
+    REFERENCES param.ttazas_impuesto(id_taza_impuesto)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;  
+    
+select pxp.f_insert_testructura_gui ('TZIMP', 'OTROS');
+
+/***********************************F-DEP-MANU-PARAM-0-25/07/2019****************************************/
+
+
