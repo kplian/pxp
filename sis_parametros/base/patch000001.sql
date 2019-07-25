@@ -2518,7 +2518,7 @@ CREATE TABLE param.ttaza_impuesto (
   factor_impuesto NUMERIC,
   tipo VARCHAR(15),
   factor_impuesto_pre NUMERIC,
-  CONSTRAINT ttazas_impuesto_pkey PRIMARY KEY(id_taza_impuesto)
+  CONSTRAINT ttaza_impuesto_pkey PRIMARY KEY(id_taza_impuesto)
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
 
@@ -2528,6 +2528,6 @@ IS 'es de tipo nominal o efectivo';
 
 
 ALTER TABLE param.tconcepto_ingas
-  ADD COLUMN id_tazas_impuesto INTEGER;
+  ADD COLUMN id_taza_impuesto INTEGER;
 
 /***********************************F-SCP-manu-PARAM-0-25/07/2019****************************************/
