@@ -497,3 +497,9 @@ select pxp.f_insert_tgui ('Plantilla Tipo Centro de Costo', 'Plantilla Tipo de C
 select pxp.f_insert_tgui ('Plantilla Grilla', 'Plantilla Grilla', 'PLGR', 'si', 15, 'sis_parametros/vista/plantilla_grilla/PlantillaGrilla.php', 3, '', 'PlantillaGrilla', 'PARAM');
 /***********************************F-DAT-EGS-PARAM-1-17/06/2019*****************************************/
 
+
+/***********************************I-DAT-MANU-PARAM-1-25/07/2019*****************************************/
+
+select pxp.f_insert_tgui ('Tazas Impuestos', 'Tazas Impuestos', 'TZIMP', 'si', 20, '/sis_parametros/vista/taza_impuesto/TazaImpuesto.php', 3, '', 'TazaImpuesto', 'PARAM');
+
+/***********************************F-DAT-MANU-PARAM-1-25/07/2019*****************************************/

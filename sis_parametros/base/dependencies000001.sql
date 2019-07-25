@@ -1442,6 +1442,8 @@ ALTER TABLE param.tconcepto_ingas
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE;  
+    
+select pxp.f_insert_testructura_gui ('TZIMP', 'OTROS');
 
 /***********************************F-DEP-MANU-PARAM-0-25/07/2019****************************************/
 
