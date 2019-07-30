@@ -5,6 +5,9 @@
  *@author  )
  *@date 24-11-2011 15:52:20
  *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ *
+ * * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+ *	#38				    MCGH				30/07/2019				En el combo Subsistema se aumentó la propiedad baseParams para enviar el filtro por nombre
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -114,6 +117,9 @@ header("content-type: text/javascript; charset=UTF-8");
 					},
 					totalProperty : 'total',
 					fields : ['id_subsistema', 'nombre'],
+                    baseParams : {
+                        par_filtro : 'nombre'  //#38
+                    },
 					// turn on remote sorting
 					remoteSort : true
 				}),
