@@ -2531,3 +2531,27 @@ ALTER TABLE param.tconcepto_ingas
   ADD COLUMN id_taza_impuesto INTEGER;
 
 /***********************************F-SCP-manu-PARAM-0-25/07/2019****************************************/
+
+/***********************************I-SCP-EGS-PARAM-4-31/07/2019****************************************/
+CREATE TABLE param.tconcepto_ingas_det (
+  id_concepto_ingas_det SERIAL,
+  nombre VARCHAR,
+  descripcion VARCHAR,
+  id_concepto_ingas INTEGER,
+  id_concepto_ingas_det_fk INTEGER,
+  agrupador VARCHAR(2) DEFAULT 'no'::character varying,
+  CONSTRAINT tconcepto_ingas_det_pkey PRIMARY KEY(id_concepto_ingas_det),
+  CONSTRAINT tconcepto_ingas_det_fk_id_concepto_ingas FOREIGN KEY (id_concepto_ingas)
+    REFERENCES param.tconcepto_ingas(id_concepto_ingas)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE,
+  CONSTRAINT tconcepto_ingas_det_fk_id_concepto_ingas_det FOREIGN KEY (id_concepto_ingas_det_fk)
+    REFERENCES param.tconcepto_ingas_det(id_concepto_ingas_det)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+/***********************************F-SCP-EGS-PARAM-4-31/07/2019****************************************/
