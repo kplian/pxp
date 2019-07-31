@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "orga"."ft_categoria_salarial_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION orga.ft_categoria_salarial_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Organigrama
  FUNCION: 		orga.ft_categoria_salarial_ime
@@ -16,6 +21,13 @@ $BODY$
  DESCRIPCION:	
  AUTOR:			
  FECHA:		
+ 
+    HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION
+   
+ #0               13-01-2014        GUY BOA             Creacion 
+ #42              31/07/2019        Rarteaga            Bug- incremento salarial 
 ***************************************************************************/
 
 DECLARE
@@ -83,27 +95,53 @@ BEGIN
 	elsif(p_transaccion='OR_CATSAL_MOD')then
 
 		begin
+        
+           
+        
 			if (pxp.f_existe_parametro(p_tabla, 'fecha_ini') and pxp.f_existe_parametro(p_tabla, 'incremento') 
 				and v_parametros.fecha_ini is not null and v_parametros.incremento is not null) then
+                
+                
 			
 				for v_reg_escala in (select * from orga.tescala_salarial 
 									where id_categoria_salarial = v_parametros.id_categoria_salarial) loop
 					
 					insert into orga.tescala_salarial (
-							aprobado , 			haber_basico,			nombre,
-							nro_casos,			codigo,					id_categoria_salarial,
-							fecha_ini,			fecha_fin,				estado_reg) 
-					values (v_reg_escala.aprobado ,v_reg_escala.haber_basico,	v_reg_escala.nombre,
-							v_reg_escala.nro_casos,v_reg_escala.codigo,		v_reg_escala.id_categoria_salarial,
-							v_reg_escala.fecha_ini,(v_parametros.fecha_ini - interval '1 day'), 'inactivo');
+							aprobado , 			
+                            haber_basico,			
+                            nombre,
+							nro_casos,			
+                            codigo,					
+                            id_categoria_salarial,
+							fecha_ini,			
+                            fecha_fin,				
+                            estado_reg,
+                            id_escala_padre,   --#42
+                            id_usuario_reg  --#42
+                           ) 
+					values (
+                            v_reg_escala.aprobado ,
+                            v_reg_escala.haber_basico,	
+                            v_reg_escala.nombre,
+							v_reg_escala.nro_casos,
+                            v_reg_escala.codigo,		
+                            v_reg_escala.id_categoria_salarial,
+							v_reg_escala.fecha_ini,
+                            (v_parametros.fecha_ini - interval '1 day'), 
+                            'inactivo',
+                            v_reg_escala.id_escala_salarial,  --#42
+                            p_id_usuario    --#42
+                            );
 							
 					update orga.tescala_salarial set
 					fecha_ini = v_parametros.fecha_ini,
 					haber_basico = (v_reg_escala.haber_basico * (1 + (v_parametros.incremento/100))) 
-					where id_escala_salarial=v_reg_escala.id_escala_salarial;
+					where id_escala_salarial= v_reg_escala.id_escala_salarial;
+                    
+                    
 					 
 				end loop;
-			
+              
 				--Definicion de la respuesta
 	            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Incremento Salarial realizado'); 
 	            v_resp = pxp.f_agrega_clave(v_resp,'id_categoria_salarial',v_parametros.id_categoria_salarial::varchar);
@@ -166,7 +204,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "orga"."ft_categoria_salarial_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
