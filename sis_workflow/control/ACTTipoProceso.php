@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 21-02-2013 15:52:52
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+ ISSUE				FECHA				AUTHOR				DESCRIPCION
+  #44				01/08/2019			EGS					Se agrego filtro por codigo
 */
 
 class ACTTipoProceso extends ACTbase{    
@@ -13,13 +15,17 @@ class ACTTipoProceso extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_tipo_proceso');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
-		
+
+		$this->objParam->defecto('cantidad',1000000000);
+		$this->objParam->defecto('puntero', 0);
 		
         
          if($this->objParam->getParametro('id_tipo_proceso')!=''){
             $this->objParam->addFiltro("tipproc.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));    
         }
-        
+         if($this->objParam->getParametro('codigo')!=''){ //#44
+            $this->objParam->addFiltro("tipproc.codigo = ''".$this->objParam->getParametro('codigo')."''");    
+        }
         
          if($this->objParam->getParametro('inicio')!=''){
             $inicio=$this->objParam->getParametro('inicio');    
