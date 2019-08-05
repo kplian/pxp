@@ -986,8 +986,10 @@ IS 'carga horaria mensual, tiempo completo 240 por defecto';
 
 
 /*****************************F-SCP-RAC-ORGA-32-17/07/2019*************/
-
-
+/*****************************I-SCP-EGS-ORGA-01-05/08/2019*************/
+ALTER TABLE orga.ttipo_cargo
+  ADD COLUMN id_tipo_contrato INTEGER;
+/*****************************F-SCP-EGS-ORGA-01-05/08/2019*************/
 
 
 

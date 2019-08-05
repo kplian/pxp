@@ -19,7 +19,8 @@ $body$
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
  #30                15-07-2019 19:39:12                                Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.ttipo_cargo'    
- #
+ #46                05/08/2019              EGS                 Se agrega campo id_contrato
+
  ***************************************************************************/
 
 DECLARE
@@ -28,21 +29,21 @@ DECLARE
     v_parametros          record;
     v_nombre_funcion       text;
     v_resp                varchar;
-                
+
 BEGIN
 
     v_nombre_funcion = 'orga.ft_tipo_cargo_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'OR_TCAR_SEL'
      #DESCRIPCION:  Consulta de datos
-     #AUTOR:        rarteaga    
+     #AUTOR:        rarteaga
      #FECHA:        15-07-2019 19:39:12
     ***********************************/
 
     if(p_transaccion='OR_TCAR_SEL')then
-                     
+
         begin
             --Sentencia de la consulta
             v_consulta:='select
@@ -62,19 +63,22 @@ BEGIN
                         TCAR.fecha_mod,
                         usu1.cuenta as usr_reg,
                         usu2.cuenta as usr_mod,
-                        escmin.codigo||''- ''||escmin.nombre||'' (''||escmin.haber_basico||'')''  as desc_escmim ,
-                        escmax.codigo||''- ''||escmax.nombre||'' (''||escmax.haber_basico||'')''  as desc_escmax    
+                        COALESCE(escmin.codigo||''- ''||escmin.nombre||'' (''||escmin.haber_basico||'')'','''')  as desc_escmim ,
+                        escmax.codigo||''- ''||escmax.nombre||'' (''||escmax.haber_basico||'')''  as desc_escmax ,
+                        TCAR.id_tipo_contrato,--#46
+                        tc.nombre as desc_tipo_contrato  --#46
                         from orga.ttipo_cargo TCAR
                         inner join segu.tusuario usu1 on usu1.id_usuario = TCAR.id_usuario_reg
-                        inner join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min
+                        left join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min
                         inner join orga.tescala_salarial escmax on escmax.id_escala_salarial = tcar.id_escala_salarial_max
                         left join segu.tusuario usu2 on usu2.id_usuario = TCAR.id_usuario_mod
+                        left join orga.ttipo_contrato tc on tc.id_tipo_contrato = TCAR.id_tipo_contrato
                         where  ';
-            
+
             --Definicion de la respuesta
             v_consulta:=v_consulta||v_parametros.filtro;
             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+            raise notice 'v_consulta %',v_consulta;
             --Devuelve la respuesta
             return v_consulta;
                         

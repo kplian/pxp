@@ -19,7 +19,7 @@ $body$
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
  #30                15-07-2019 19:39:12                                Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'orga.ttipo_cargo'    
- #
+ #46                05/08/2019              EGS                 e agrega campo id_contrato
  ***************************************************************************/
 
 DECLARE
@@ -33,44 +33,39 @@ DECLARE
     v_id_tipo_cargo            integer;
     v_haber_basico_min         numeric;
     v_haber_basico_max         numeric;
-                
+
 BEGIN
 
     v_nombre_funcion = 'orga.ft_tipo_cargo_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'OR_TCAR_INS'
      #DESCRIPCION:    Insercion de registros
-     #AUTOR:        rarteaga    
+     #AUTOR:        rarteaga
      #FECHA:        15-07-2019 19:39:12
     ***********************************/
 
     if(p_transaccion='OR_TCAR_INS')then
-                    
+
         begin
-        
+
             --validar que el sueldo de ales cala minima sea menor que el maximo
-            
-            SELECT 
+
+            SELECT
             es.haber_basico
-            into 
+            into
             v_haber_basico_min
-            FROM orga.tescala_salarial es 
+            FROM orga.tescala_salarial es
             WHERE es.id_escala_salarial = v_parametros.id_escala_salarial_min;
-            
-            SELECT 
+
+            SELECT
             es.haber_basico
-            into 
+            into
             v_haber_basico_max
-            FROM orga.tescala_salarial es 
+            FROM orga.tescala_salarial es
             WHERE es.id_escala_salarial = v_parametros.id_escala_salarial_max;
-            
-            IF v_haber_basico_max < v_haber_basico_min  THEN
-              raise exception 'La escala mínima (%) tiene que ser menor al máximo (%)', v_haber_basico_min ,v_haber_basico_max;
-            END IF;
-        
-        
+
             --Sentencia de la insercion
             insert into orga.ttipo_cargo(
               estado_reg,
@@ -85,7 +80,8 @@ BEGIN
               id_usuario_ai,
               usuario_ai,
               id_usuario_mod,
-              fecha_mod
+              fecha_mod,
+              id_tipo_contrato --#46
               ) values(
               'activo',
               v_parametros.codigo,
@@ -99,12 +95,13 @@ BEGIN
               v_parametros._id_usuario_ai,
               v_parametros._nombre_usuario_ai,
               null,
-              null
-              
+              null,
+              v_parametros.id_tipo_contrato --#46
+
             )RETURNING id_tipo_cargo into v_id_tipo_cargo;
-            
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Cargo almacenado(a) con exito (id_tipo_cargo'||v_id_tipo_cargo||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Cargo almacenado(a) con exito (id_tipo_cargo'||v_id_tipo_cargo||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cargo',v_id_tipo_cargo::varchar);
 
             --Devuelve la respuesta
@@ -112,35 +109,32 @@ BEGIN
 
         end;
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'OR_TCAR_MOD'
      #DESCRIPCION:    Modificacion de registros
-     #AUTOR:        rarteaga    
+     #AUTOR:        rarteaga
      #FECHA:        15-07-2019 19:39:12
     ***********************************/
 
     elsif(p_transaccion='OR_TCAR_MOD')then
 
         begin
-        
-            SELECT 
+
+            SELECT
             es.haber_basico
-            into 
+            into
             v_haber_basico_min
-            FROM orga.tescala_salarial es 
+            FROM orga.tescala_salarial es
             WHERE es.id_escala_salarial = v_parametros.id_escala_salarial_min;
-            
-            SELECT 
+
+            SELECT
             es.haber_basico
-            into 
+            into
             v_haber_basico_max
-            FROM orga.tescala_salarial es 
+            FROM orga.tescala_salarial es
             WHERE es.id_escala_salarial = v_parametros.id_escala_salarial_max;
-            
-            IF v_haber_basico_max < v_haber_basico_min  THEN
-              raise exception 'La escala mínima (%) tiene que ser menor al máximo (%)', v_haber_basico_min ,v_haber_basico_max;
-            END IF;
-        
+
+
             --Sentencia de la modificacion
             update orga.ttipo_cargo set
               codigo = v_parametros.codigo,
@@ -152,7 +146,8 @@ BEGIN
               id_usuario_mod = p_id_usuario,
               fecha_mod = now(),
               id_usuario_ai = v_parametros._id_usuario_ai,
-              usuario_ai = v_parametros._nombre_usuario_ai
+              usuario_ai = v_parametros._nombre_usuario_ai,
+              id_tipo_contrato = v_parametros.id_tipo_contrato --#46
             where id_tipo_cargo=v_parametros.id_tipo_cargo;
                
             --Definicion de la respuesta
