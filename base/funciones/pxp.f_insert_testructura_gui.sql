@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION pxp.f_insert_testructura_gui (
   par_codigo_gui varchar,
   par_codigo_gui_fk varchar,
@@ -5,6 +7,14 @@ CREATE OR REPLACE FUNCTION pxp.f_insert_testructura_gui (
 )
 RETURNS varchar AS
 $body$
+/*
+    HISTORIAL DE MODIFICACIONES
+    ISSUE           FECHA           AUTHOR              DESCRIPCION
+    #99             05/08/2019      EGS                 se soluciona que al insertar la gui solo tome la id gui padre en estado activo 
+*/
+
+
+
 DECLARE
 	v_id_gui integer;
     v_id_gui_fk integer;
@@ -15,7 +25,7 @@ BEGIN
     
     select id_gui into v_id_gui_fk
     from segu.tgui g
-    where g.codigo_gui = par_codigo_gui_fk;
+    where g.codigo_gui = par_codigo_gui_fk and g.estado_reg = 'activo';--#99
     
     if (not exists( select 1 
     				from segu.testructura_gui 
