@@ -8,7 +8,7 @@
 *  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
  #30                15-07-2019          RAC                 creacion    
-
+ #46                05/08/2019              EGS                 e agrega campo id_contrato
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -22,7 +22,12 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.TipoCargo.superclass.constructor.call(this,config);
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
+		this.iniciarEventos();//#46
 	},
+		iniciarEventos :function(){
+			this.ocultarComponente(this.Cmp.id_escala_salarial_min);//#46
+			
+		},
 			
 	Atributos:[
 		{
@@ -49,6 +54,49 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:true
+		},
+		{ 
+			config: {//#46
+        name: 'id_tipo_contrato',
+				fieldLabel: 'Tipo Contrato',
+				allowBlank: false,
+				emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_organigrama/control/TipoContrato/listarTipoContrato',
+					id: 'id_tipo_contrato',
+					root: 'datos',
+					sortInfo: {
+						field: 'nombre',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_tipo_contrato', 'nombre', 'codigo','indefinido'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'tipcon.nombre#tipcon.codigo'}
+				}),
+				valueField: 'id_tipo_contrato',
+				displayField: 'nombre',
+				gdisplayField: 'nombre_tipo_contrato',
+				hiddenName: 'id_tipo_contrato',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '100%',
+				gwidth: 200,
+				minChars: 2,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['desc_tipo_contrato']);
+				}
+			},
+			type: 'ComboBox',
+			id_grupo: 0,
+			filters: {pfiltro: 'tipcon.nombre',type: 'string'},
+			grid: true,
+			form: true
 		},
 		{
 			config:{
@@ -117,7 +165,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 			type: 'ComboBox',
 			id_grupo: 0,
 			filters: {pfiltro: 'escmin.nombre',type: 'string'},
-			grid: true,
+			grid: false,
 			form: true
 		},
 		{
@@ -337,9 +385,11 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'desc_escmim','desc_escmax'
-		
-	],
+		{name:'usr_mod', type: 'string'},'desc_escmim','desc_escmax',
+		{name:'id_tipo_contrato', type: 'numeric'},//#46
+        {name:'desc_tipo_contrato', type: 'string'},//#46
+
+    ],
 	sortInfo:{
 		field: 'id_tipo_cargo',
 		direction: 'ASC'

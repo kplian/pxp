@@ -5,6 +5,9 @@
 *@author  (rarteaga)
 *@date 15-07-2019 19:39:12
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+ *  HISTORIAL DE MODIFICACIONES:
+    #ISSUE                FECHA                AUTOR                DESCRIPCION
+    #46                05/08/2019              EGS                 e agrega campo id_contrato
 */
 
 class MODTipoCargo extends MODbase{
@@ -39,7 +42,9 @@ class MODTipoCargo extends MODbase{
 		
 		$this->captura('desc_escmim','text');
 		$this->captura('desc_escmax','text');
-		
+		$this->captura('id_tipo_contrato','int4');//#46
+        $this->captura('desc_tipo_contrato','varchar');//#46
+
 		
 		
 		//Ejecuta la instruccion
@@ -64,6 +69,7 @@ class MODTipoCargo extends MODbase{
 		$this->setParametro('id_escala_salarial_max','id_escala_salarial_max','int4');
 		$this->setParametro('factor_disp','factor_disp','numeric');
 		$this->setParametro('obs','obs','varchar');
+		$this->setParametro('id_tipo_contrato','id_tipo_contrato','int4');//#46
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -88,6 +94,7 @@ class MODTipoCargo extends MODbase{
 		$this->setParametro('id_escala_salarial_max','id_escala_salarial_max','int4');
 		$this->setParametro('factor_disp','factor_disp','numeric');
 		$this->setParametro('obs','obs','varchar');
+		$this->setParametro('id_tipo_contrato','id_tipo_contrato','int4');//#46
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
