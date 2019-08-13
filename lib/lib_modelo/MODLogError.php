@@ -7,26 +7,27 @@ class MODLogError{
 	var $id_usuario;
 	var $cone;
 	var $peticion;
-	
+
 	function __construct($categoria,$descripcion,$procedimientos){
 		$this->cone=new conexion();
 		$this->ip=getenv("REMOTE_ADDR");
 		if(isset($_SESSION["ss_id_usuario"]))
 			$this->id_usuario=$_SESSION["ss_id_usuario"];
-		else 
+		else
 			$this->id_usuario='NULL';
 		$this->categoria=$categoria;
 		$this->descripcion=str_replace("'",'',$descripcion);
 		$this->procedimientos=str_replace("'","",$procedimientos);
-		
-		if($_SESSION["_PETICION"]!=''){
+
+		if(isset($_SESSION["_PETICION"])){
+		//if($_SESSION["_PETICION"]!=''){
 			$_SESSION["_PETICION"]=str_replace("'","",$_SESSION["_PETICION"]);
 			$this->peticion="'".$_SESSION["_PETICION"]."'";
 		}
 		else{
 			$this->peticion='NULL';
 		}
-		
+
 	}
 	function guardarLogError(){
 		$array=Array();
@@ -39,15 +40,15 @@ class MODLogError{
 												$this->peticion.",
 												NULL,NULL,NULL,NULL,
 												'".session_id()."',".getmypid().",NULL,1)";
-		
-		
+
+
 		$link=$this->cone->conectarSegu();
 		if($res = pg_query($link,$consulta)){
 		 	while ($row = pg_fetch_array($res,NULL,PGSQL_ASSOC))
 			{
 				array_push ($array, $row);
 			}
-				
+
 			//Libera la memoria
 			pg_free_result($res);
 		}

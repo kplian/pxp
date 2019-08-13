@@ -1,6 +1,6 @@
 <?php
 //include_once '../../../lib/lib_control/session_secure.inc.php';
-//session_secure();  
+//session_secure();
 include('../../../lib/lib_control/CTSesion.php');
 session_start();
 include(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
@@ -10,26 +10,29 @@ if($_SESSION["_FORSSL"]==="SI"){
 else{
 	session_set_cookie_params (0,$_SESSION["_FOLDER"], '' ,false ,false);
 }
+
 //iniciamos las variables para la DOS
 $_SESSION["_IN_PILA"]=1;
 $_SESSION["_PILA"][1]='';
-if ($_SESSION["_FORSSL"]==="SI" &&  $_SERVER['SERVER_PORT']!='443') { 
-	// Fuerza SSL en esta página 
-	header("Location:https://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']); 
+if ($_SESSION["_FORSSL"]==="SI" &&  $_SERVER['SERVER_PORT']!='443') {
+	// Fuerza SSL en esta página
+	header("Location:https://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 }
+
 if(!isset($_SESSION["_SESION"])){
        $_SESSION["_SESION"]= new CTSesion();
-	   $nueva_sesion=true; 
+	   $nueva_sesion=true;
 	   $estado_sesion='inactiva';
 }else{
 	 $estado_sesion=$_SESSION["_SESION"]->getEstado();
 	 $nueva_sesion=false;
 }
+
 ?>
 <html lang="es">
 <head>
  <title><?php echo $_SESSION['_NOMBRE_SIS']; ?></title>
-    <meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />		
+    <meta http-equiv="Content-Type" content="charset=UTF-8;text/html; " />
 	<meta name="language" content="es"/>
 	<meta name="author" content="Rensi Arteaga Copari" />
 	<meta name="subject" content="rensi@kplian.com" />
@@ -38,7 +41,7 @@ if(!isset($_SESSION["_SESION"])){
 
 	  <!-- overrides to base library  -->
  <link rel="stylesheet" type="text/css" href="../../../lib/ux/statusbar/css/statusbar.css" />
- <!-- componentes extendidos  -->	   
+ <!-- componentes extendidos  -->
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/gridfilters/css/GridFilters.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/gridfilters/css/RangeMenu.css" />
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/statusbar/css/statusbar.css" />
@@ -61,7 +64,7 @@ if(!isset($_SESSION["_SESION"])){
 		        padding:0px;
 		        height:100%;
 		        overflow:hidden;
-		    }   
+		    }
     </style>
     <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/font-awesome-4.2.0/css/font-awesome.css"/>
     <link rel="stylesheet" type="text/css" href="../../../lib/ux/ux.HtmlEditor/resources/css/htmleditorplugins.css"/>
@@ -88,10 +91,10 @@ if(!isset($_SESSION["_SESION"])){
 
     ?>
 
-    <!-- comentado 
+    <!-- comentado
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-     	cd ..<script type="text/javascript" src="resources/TaskBar.js"></script> 
-    <script type="text/javascript" src="resources/TaskBar.js"></script> 
+     	cd ..<script type="text/javascript" src="resources/TaskBar.js"></script>
+    <script type="text/javascript" src="resources/TaskBar.js"></script>
      -->
 
     <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
@@ -105,8 +108,8 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" src="../../../lib/ux/SearchField.js"></script>
     <!-- para filtro en grillas -->
     <script type="text/javascript" src="../../../lib/ux/gridfilters/menu/ListMenu.js"></script>
-	<script type="text/javascript" src="../../../lib/ux/gridfilters/menu/RangeMenu.js"></script>	
-	<script type="text/javascript" src="../../../lib/ux/gridfilters/GridFilters.js"></script>	
+	<script type="text/javascript" src="../../../lib/ux/gridfilters/menu/RangeMenu.js"></script>
+	<script type="text/javascript" src="../../../lib/ux/gridfilters/GridFilters.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/Filter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/StringFilter.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/gridfilters/filter/DateFilter.js"></script>
@@ -116,10 +119,10 @@ if(!isset($_SESSION["_SESION"])){
 	<script type="text/javascript" src="../../../lib/ux/RowEditor.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/RowExpander.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/GridSummary.js"></script>
-	<script type="text/javascript" src="../../../lib/ux/GroupSummary.js"></script>	
+	<script type="text/javascript" src="../../../lib/ux/GroupSummary.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/Portal.js"></script>
     <script type="text/javascript" src="../../../lib/ux/PortalColumn.js"></script>
-    <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>    	
+    <script type="text/javascript" src="../../../lib/ux/Portlet.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridSorter.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumnResizer.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridNodeUI.js"></script>
@@ -127,17 +130,17 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGridColumns.js"></script>
     <script type="text/javascript" src="../../../lib/ux/treegrid/TreeGrid.js"></script>
     <script type="text/javascript" src="../../../lib/ux/GMapPanel.js"></script>
-    <!-- componentes extendidos  -->	  
+    <!-- componentes extendidos  -->
     <script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.PagingMemoryProxy.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/AwesomeCombo/static/js/Ext.ux.AwesomeCombo.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/ClearCombo.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/Ext.util.Format.CurrencyFactory.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/MoneyField.js"></script>
 	<script type="text/javascript" src="../../../lib/ux/fileuploadfield/FileUploadField.js"></script>
-	 <!-- componentes extendidos propios -->	  
-	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>    
-	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboRec.js'></script>   
-    <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboMultiple.js'></script>  
+	 <!-- componentes extendidos propios -->
+	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/TrigguerCombo.js'></script>
+	<script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboRec.js'></script>
+    <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/ComboMultiple.js'></script>
     <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/addcmp/RadioGroupField.js'></script>
     <script type="text/javascript" src="../../../lib/ext3/TabCloseMenu.js"></script>
     <script type="text/javascript" charset="UTF-8" src="resources/Phx.CP.js?v=1"></script>
@@ -165,10 +168,10 @@ if(!isset($_SESSION["_SESION"])){
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ux/grid/LockingGridView.js"></script>
 
     <?php
-     echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";  
+     echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"resources/Phx.CP.main.php?nueva_sesion=false&estado_sesion=".$estado_sesion."\"></script>";
 	?>
-	 
-	 
+
+
 	 <!-- tipo de interfaces -->
 	 <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/baseInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gridInterfaz.js'></script>
@@ -178,24 +181,24 @@ if(!isset($_SESSION["_SESION"])){
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/frmInterfaz.js'></script>
      <script type='text/javascript' charset="UTF-8" src='../../../lib/lib_vista/gmapInterfaz.js'></script>
 
-      
-     
-     
+
+
+
      <script type="text/javascript" src="../../../lib/ux/ColumnHeaderGroup.js"></script>
-      
-      
+
+
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-lang-es.js"></script>
     <script type="text/javascript" charset="UTF-8" src="../../../lib/qrcode/qrcode.min.js"></script>
-    
- 	<?php 		
+
+ 	<?php
  		$dir = scandir(dirname(__FILE__) . "/../../../../");
-		
+
 		foreach($dir as $file) {
-			
+
 		   	if(is_dir(dirname(__FILE__) . "/../../../../" . $file) && ($file!='..' && $file!='.') && strpos($file, 'sis_') === 0) {
-		   								   		
+
 		    	if (file_exists(dirname(__FILE__) . "/../../../../" . $file . '/vista/_comborec/comborec.js')){
-		    		
+
 		    		echo "<script type=\"text/javascript\" charset=\"UTF-8\" src=\"../../../" . $file . "/vista/_comborec/comborec.js\"></script>";
 		    	}
 		   	}
@@ -203,7 +206,7 @@ if(!isset($_SESSION["_SESION"])){
  	?>
 
   <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
-  
+
 
   <div id="classes"></div>
   <div id="main"></div>
@@ -211,8 +214,8 @@ if(!isset($_SESSION["_SESION"])){
   <div id="x-tab-panel"></div>
   <div class="x-clear"></div>
   <audio id="notification_sound" src="../../../lib/media/notification_sound.mp3" preload="auto"></audio>
-	
-	
+
+
 </div>
 <!-- div para cargar interfaces requeridas para herencia-->
 <div id="4rn"></div>
