@@ -35,7 +35,7 @@ DECLARE
     v_valor                     varchar;
     v_id_columna_concepto_ingas_det integer;
     v_record_columna            record;
-
+    v_record                    record;
 BEGIN
 
     v_nombre_funcion = 'param.ft_concepto_ingas_det_ime';
@@ -237,6 +237,16 @@ BEGIN
     elsif(p_transaccion='PM_COIND_ELI')then
 
         begin
+             --eliminamos los valores de las columnas dinamicas
+             FOR v_record IN(
+              SELECT
+                  c.id_columna_concepto_ingas_det
+              FROM param.tcolumna_concepto_ingas_det c
+              WHERE c.id_concepto_ingas_det = v_parametros.id_concepto_ingas_det
+              )LOOP
+                DELETE FROM param.tcolumna_concepto_ingas_det
+                WHERE id_columna_concepto_ingas_det = v_record.id_columna_concepto_ingas_det;
+             END LOOP;
             --Sentencia de la eliminacion
             delete from param.tconcepto_ingas_det
             where id_concepto_ingas_det=v_parametros.id_concepto_ingas_det;
