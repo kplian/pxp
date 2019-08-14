@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.ft_concepto_ingas_det_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -83,7 +81,6 @@ BEGIN
             v_parametros.id_concepto_ingas_det_fk
 
             )RETURNING id_concepto_ingas_det into v_id_concepto_ingas_det;
-
             --#48 Recuperamos las columna dinamicas si existen
            FOR v_columna IN(
                SELECT
@@ -102,28 +99,35 @@ BEGIN
                     v_consulta = 'select '||v_columna.nombre_columna||' from '||p_tabla||' limit 1';
                     execute v_consulta into v_valor;
 
+
                     IF v_columna.tipo_dato = 'varchar' or v_columna.tipo_dato = 'text' or v_columna.tipo_dato = 'date' or v_columna.tipo_dato = 'timestamp'  THEN
-                            v_valor = ''''||v_valor||'''';
+                            v_valor = COALESCE(''''||v_valor::VARCHAR||'''','null');
+                    ELSE
+
+                        if (v_valor ~ '^[0-9]*.?[0-9]*$') then
+                            --RAISE EXCEPTION 'es numero';
+                        else
+                            --RAISE EXCEPTION 'No es numero';
+                        end if;
                     END IF;
 
-
-                        INSERT INTO param.tcolumna_concepto_ingas_det(
+                    v_consulta = 'INSERT INTO param.tcolumna_concepto_ingas_det(
                             id_usuario_reg,
                             id_concepto_ingas_det,
                             id_columna,
                             valor
 
                          ) values(
-                         p_id_usuario,
-                         v_id_concepto_ingas_det,
-                         v_id_columna,
-                         v_valor
-                         );
-
+                         '||p_id_usuario||',
+                         '||v_id_concepto_ingas_det||',
+                         '||v_id_columna||',
+                         '||v_valor||'
+                         )';
+                     EXECUTE(v_consulta);
                 END IF;
            END LOOP;
 
-
+            --RAISE EXCEPTION 'v_id_columna %',v_id_columna;
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Concepto Ingreso/gasto Detalle almacenado(a) con exito (id_concepto_ingas_det'||v_id_concepto_ingas_det||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_concepto_ingas_det',v_id_concepto_ingas_det::varchar);
@@ -183,7 +187,7 @@ BEGIN
                     WHERE cld.id_concepto_ingas_det = v_parametros.id_concepto_ingas_det and cld.id_columna = v_record_columna.id_columna ;
 
                     IF v_record_columna.tipo_dato = 'varchar' or v_record_columna.tipo_dato = 'text' or v_columna.tipo_dato = 'date' or v_columna.tipo_dato = 'timestamp' THEN
-                            v_valor = ''''||v_valor||'''';
+                            v_valor = COALESCE(''''||v_valor::VARCHAR||'''','null');
                     END IF;
                     IF v_id_columna_concepto_ingas_det is not null THEN
 
@@ -192,18 +196,19 @@ BEGIN
                                      WHERE id_columna_concepto_ingas_det = '||v_id_columna_concepto_ingas_det;
                         Execute v_consulta;
                     ELSE
-                         INSERT INTO param.tcolumna_concepto_ingas_det(
+                     v_consulta = 'INSERT INTO param.tcolumna_concepto_ingas_det(
                             id_usuario_reg,
                             id_concepto_ingas_det,
                             id_columna,
                             valor
 
                          ) values(
-                         p_id_usuario,
-                         v_parametros.id_concepto_ingas_det,
-                         v_id_columna,
-                         v_valor
-                         );
+                         '||p_id_usuario||',
+                         '||v_id_concepto_ingas_det||',
+                         '||v_id_columna||',
+                         '||v_valor||'
+                         )';
+                     EXECUTE(v_consulta);
 
                     END IF;
 
