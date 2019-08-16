@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_ttipo_contrato_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,14 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.ttipo_contrato'
  AUTOR: 		 (admin)
  FECHA:	        14-01-2014 19:23:02
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
- #18                23/05/2019      EGS              se agrego el campo considerar_planilla             			
+ ISSUE              FECHA:	        AUTOR:           DESCRIPCION:
+ #18                23/05/2019      EGS              se agrego el campo considerar_planilla
  #15				19/06/2019		MZM				 adicion de campo indefinido, para evitar valores quemados en el control de cargos
+ #49                16/08/2019      EGS              Se cambio los nombres de los procedimientos
 ***************************************************************************/
 
 DECLARE
@@ -27,21 +30,21 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'orga.ft_tipo_contrato_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'OR_TIPCON_SEL'
+	/*********************************
+ 	#TRANSACCION:  'OR_TTIPCON_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		14-01-2014 19:23:02
 	***********************************/
 
-	if(p_transaccion='OR_TIPCON_SEL')then
-     				
+	if(p_transaccion='OR_TTIPCON_SEL')then
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -55,30 +58,30 @@ BEGIN
 						tipcon.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        tipcon.considerar_planilla --#18	
+                        tipcon.considerar_planilla --#18
                         ,tipcon.indefinido --#15
 						from orga.ttipo_contrato tipcon
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipcon.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipcon.id_usuario_mod
 				        where  ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
- 	#TRANSACCION:  'OR_TIPCON_CONT'
+	/*********************************
+ 	#TRANSACCION:  'OR_TTIPCON_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		14-01-2014 19:23:02
 	***********************************/
 
-	elsif(p_transaccion='OR_TIPCON_CONT')then
+	elsif(p_transaccion='OR_TTIPCON_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros

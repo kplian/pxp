@@ -8,7 +8,8 @@
  ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
  #18                23/05/2019      EGS              se agrego el campo considerar_planilla 
  #15				19/06/2019		MZM				 Adicion de campo indefinido
-  */
+ #49                16/08/2019      EGS              Se cambio los nombres de los procedimientos
+ */
 
 class MODTipoContrato extends MODbase{
 	
@@ -19,7 +20,7 @@ class MODTipoContrato extends MODbase{
 	function listarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='orga.ft_ttipo_contrato_sel';
-		$this->transaccion='OR_TIPCON_SEL';
+		$this->transaccion='OR_TTIPCON_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
@@ -46,7 +47,7 @@ class MODTipoContrato extends MODbase{
 	function insertarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_ttipo_contrato_ime';
-		$this->transaccion='OR_TIPCON_INS';
+		$this->transaccion='OR_TTIPCON_INS';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
@@ -66,7 +67,7 @@ class MODTipoContrato extends MODbase{
 	function modificarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_ttipo_contrato_ime';
-		$this->transaccion='OR_TIPCON_MOD';
+		$this->transaccion='OR_TTIPCON_MOD';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
@@ -88,7 +89,7 @@ class MODTipoContrato extends MODbase{
 	function eliminarTipoContrato(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_ttipo_contrato_ime';
-		$this->transaccion='OR_TIPCON_ELI';
+		$this->transaccion='OR_TTIPCON_ELI';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
