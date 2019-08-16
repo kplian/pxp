@@ -2555,3 +2555,30 @@ CREATE TABLE param.tconcepto_ingas_det (
 WITH (oids = false);
 
 /***********************************F-SCP-EGS-PARAM-4-31/07/2019****************************************/
+/***********************************I-SCP-EGS-PARAM-5-12/08/2019****************************************/
+CREATE TABLE param.tcolumna (
+  id_columna SERIAL,
+  nombre_columna VARCHAR,
+  tipo_dato VARCHAR,
+  CONSTRAINT tcolumna_pkey PRIMARY KEY(id_columna)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+CREATE TABLE param.tcolumna_concepto_ingas_det (
+  id_columna_concepto_ingas_det SERIAL,
+  valor VARCHAR,
+  id_concepto_ingas_det INTEGER,
+  id_columna INTEGER,
+  CONSTRAINT tcolumna_concepto_ingas_det_pkey PRIMARY KEY(id_columna_concepto_ingas_det),
+  CONSTRAINT tcolumna_concepto_ingas_det_fk_id_columna FOREIGN KEY (id_columna)
+    REFERENCES param.tcolumna(id_columna)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE,
+  CONSTRAINT tcolumna_concepto_ingas_det_fk_is_concepto_ingas_det FOREIGN KEY (id_concepto_ingas_det)
+    REFERENCES param.tconcepto_ingas_det(id_concepto_ingas_det)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+/***********************************F-SCP-EGS-PARAM-5-12/08/2019****************************************/

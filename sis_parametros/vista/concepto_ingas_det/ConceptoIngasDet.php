@@ -82,7 +82,7 @@ Phx.vista.ConceptoIngasDet=Ext.extend(Phx.gridInterfaz,{
                 allowBlank: true,
                 emptyText: 'Elija una opción...',
                 store: new Ext.data.JsonStore({
-                    url: '../../sis_parametros/control/ConceptoIngasDet/listarConceptoIngasDet',
+                    url: '../../sis_parametros/control/ConceptoIngasDet/listarConceptoIngasDetCombo',
                     id: 'id_concepto_ingas_det',
                     root: 'datos',
                     sortInfo: {
@@ -90,9 +90,9 @@ Phx.vista.ConceptoIngasDet=Ext.extend(Phx.gridInterfaz,{
                         direction: 'ASC'
                     },
                     totalProperty: 'total',
-                    fields: ['id_concepto_ingas_det', 'nombre', 'codigo'],
+                    fields: ['id_concepto_ingas_det','nombre'],
                     remoteSort: true,
-                    baseParams: {par_filtro: 'nombre#codigo',start: 0, limit: 50, agrupador:'si'}
+                    baseParams: {par_filtro: 'coind.id_concepto_ingas_det#coind.nombre',start: 0, limit: 50, agrupador:'si'}
                 }),
                 valueField: 'id_concepto_ingas_det',
                 displayField: 'nombre',

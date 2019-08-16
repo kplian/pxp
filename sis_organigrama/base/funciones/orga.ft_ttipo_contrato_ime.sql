@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_ttipo_contrato_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,12 +14,13 @@ $body$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'orga.ttipo_contrato'
  AUTOR: 		 (admin)
  FECHA:	        14-01-2014 19:23:02
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
- ISSUE              FECHA:	        AUTOR:           DESCRIPCION:	
- #18                23/05/2019      EGS              se agrego el campo considerar_planilla 	
- #15				19/06/2019		MZM				 Adicion de campo indefinido	
+ ISSUE              FECHA:	        AUTOR:           DESCRIPCION:
+ #18                23/05/2019      EGS              se agrego el campo considerar_planilla
+ #15				19/06/2019		MZM				 Adicion de campo indefinido
+ #49                16/08/2019      EGS              Se cambio los nombres de los procedimientos
 ***************************************************************************/
 
 DECLARE
@@ -29,21 +32,21 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_tipo_contrato	integer;
-			    
+
 BEGIN
 
     v_nombre_funcion = 'orga.ft_tipo_contrato_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'OR_TIPCON_INS'
+	/*********************************
+ 	#TRANSACCION:  'OR_TTIPCON_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		14-01-2014 19:23:02
 	***********************************/
 
-	if(p_transaccion='OR_TIPCON_INS')then
-					
+	if(p_transaccion='OR_TTIPCON_INS')then
+
         begin
         	--Sentencia de la insercion
         	insert into orga.ttipo_contrato(
@@ -66,11 +69,11 @@ BEGIN
 			null,
             v_parametros.considerar_planilla --#18
             ,v_parametros.indefinido --#15
-							
+
 			)RETURNING id_tipo_contrato into v_id_tipo_contrato;
-			
+
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Contrato almacenado(a) con exito (id_tipo_contrato'||v_id_tipo_contrato||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Contrato almacenado(a) con exito (id_tipo_contrato'||v_id_tipo_contrato||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_contrato',v_id_tipo_contrato::varchar);
 
             --Devuelve la respuesta
@@ -78,14 +81,14 @@ BEGIN
 
 		end;
 
-	/*********************************    
- 	#TRANSACCION:  'OR_TIPCON_MOD'
+	/*********************************
+ 	#TRANSACCION:  'OR_TTIPCON_MOD'
  	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		14-01-2014 19:23:02
 	***********************************/
 
-	elsif(p_transaccion='OR_TIPCON_MOD')then
+	elsif(p_transaccion='OR_TTIPCON_MOD')then
 
 		begin
 			--Sentencia de la modificacion
@@ -97,24 +100,24 @@ BEGIN
             considerar_planilla = v_parametros.considerar_planilla  --#18
             ,indefinido = v_parametros.indefinido  --#15
 			where id_tipo_contrato=v_parametros.id_tipo_contrato;
-               
+
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Contrato modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Contrato modificado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_contrato',v_parametros.id_tipo_contrato::varchar);
-               
+
             --Devuelve la respuesta
             return v_resp;
-            
+
 		end;
 
-	/*********************************    
- 	#TRANSACCION:  'OR_TIPCON_ELI'
+	/*********************************
+ 	#TRANSACCION:  'OR_TTIPCON_ELI'
  	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		14-01-2014 19:23:02
 	***********************************/
 
-	elsif(p_transaccion='OR_TIPCON_ELI')then
+	elsif(p_transaccion='OR_TTIPCON_ELI')then
 
 		begin
 			--Sentencia de la eliminacion

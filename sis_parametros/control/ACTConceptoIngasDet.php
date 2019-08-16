@@ -12,7 +12,21 @@
 class ACTConceptoIngasDet extends ACTbase{    
 			
 	function listarConceptoIngasDet(){
-		$this->objParam->defecto('ordenacion','id_concepto_ingas_det');
+        $ordenacion=$this->objParam->parametros_consulta['ordenacion'];
+        $dir_ordenacion= $this->objParam->parametros_consulta['dir_ordenacion'];
+        $this->objParam->parametros_consulta['ordenacion'] = 'nombre_columna';
+        $this->objParam->parametros_consulta['dir_ordenacion'] = 'ASC';
+
+        $this->objFunc=$this->create('MODColumna');
+
+        $this->res=$this->objFunc->listarColumna($this->objParam);
+        $datos = $this->res->datos;
+        $this->objParam->addParametro('columnas',$datos);
+
+        //var_dump('$this->objParam',$this->objParam);
+        $this->objParam->defecto('ordenacion','id_concepto_ingas_det');
+        $this->objParam->parametros_consulta['ordenacion'] = $ordenacion;
+        $this->objParam->parametros_consulta['dir_ordenacion']=$dir_ordenacion;
         if($this->objParam->getParametro('id_concepto_ingas')!='' ){
             $this->objParam->addFiltro("coind.id_concepto_ingas = ".$this->objParam->getParametro('id_concepto_ingas'));
         }
@@ -20,7 +34,10 @@ class ACTConceptoIngasDet extends ACTbase{
             $this->objParam->addFiltro("coind.agrupador = ''".$this->objParam->getParametro('agrupador')."''");
         }
 		$this->objParam->defecto('dir_ordenacion','asc');
-		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+
+
+
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODConceptoIngasDet','listarConceptoIngasDet');
 		} else{
@@ -32,7 +49,23 @@ class ACTConceptoIngasDet extends ACTbase{
 	}
 				
 	function insertarConceptoIngasDet(){
-		$this->objFunc=$this->create('MODConceptoIngasDet');	
+
+        $ordenacion=$this->objParam->parametros_consulta['ordenacion'];
+        $dir_ordenacion= $this->objParam->parametros_consulta['dir_ordenacion'];
+        $this->objParam->parametros_consulta['ordenacion'] = 'nombre_columna';
+        $this->objParam->parametros_consulta['dir_ordenacion'] = 'ASC';
+        $this->objParam->parametros_consulta['puntero'] = '0';
+        $this->objParam->parametros_consulta['cantidad'] = '10000';
+
+        $this->objFunc = $this->create('MODColumna');
+        $this->res = $this->objFunc->listarColumna($this->objParam);
+        $datos = $this->res->datos;
+        $this->objParam->addParametro('columnas',$datos);
+
+        $this->objParam->parametros_consulta['ordenacion'] = $ordenacion;
+        $this->objParam->parametros_consulta['dir_ordenacion']=$dir_ordenacion;
+
+        $this->objFunc=$this->create('MODConceptoIngasDet');
 		if($this->objParam->insertar('id_concepto_ingas_det')){
 			$this->res=$this->objFunc->insertarConceptoIngasDet($this->objParam);			
 		} else{			
@@ -41,11 +74,25 @@ class ACTConceptoIngasDet extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
-	function eliminarConceptoIngasDet(){
-			$this->objFunc=$this->create('MODConceptoIngasDet');	
-		$this->res=$this->objFunc->eliminarConceptoIngasDet($this->objParam);
-		$this->res->imprimirRespuesta($this->res->generarJson());
-	}
+	function eliminarConceptoIngasDet()
+    {
+        $this->objFunc = $this->create('MODConceptoIngasDet');
+        $this->res = $this->objFunc->eliminarConceptoIngasDet($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function listarConceptoIngasDetCombo(){
+        $this->objParam->defecto('ordenacion','id_concepto_ingas_det');
+        $this->objParam->defecto('dir_ordenacion','asc');
+        if($this->objParam->getParametro('agrupador') !='' ){
+            $this->objParam->addFiltro("coind.agrupador = ''".$this->objParam->getParametro('agrupador')."''");
+        }
+        if($this->objParam->getParametro('id_concepto_ingas')!='' ){
+            $this->objParam->addFiltro("coind.id_concepto_ingas = ".$this->objParam->getParametro('id_concepto_ingas'));
+        }
+        $this->objFunc=$this->create('MODConceptoIngasDet');
+        $this->res=$this->objFunc->listarConceptoIngasDetCombo($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 	
 			
 }

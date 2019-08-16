@@ -20,7 +20,8 @@ class MODConceptoIngasDet extends MODbase{
 		$this->procedimiento='param.ft_concepto_ingas_det_sel';
 		$this->transaccion='PM_COIND_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
-
+        //$this->setCount(false);
+        //$this->setTipoRetorno('record');
         $this->setParametro('groupBy','groupBy','varchar');	 //#24
         $this->setParametro('groupDir','groupDir','varchar'); //#24
 				
@@ -41,7 +42,13 @@ class MODConceptoIngasDet extends MODbase{
         $this->captura('agrupador','varchar');
         $this->captura('id_concepto_ingas_det_fk','int4');
         $this->captura('desc_agrupador','varchar');
-		//Ejecuta la instruccion
+        $datos = $this->objParam->getParametro('columnas');
+        //añadiendo columnas dinamicas
+        for($i= 0 ; $i< count($datos,0);$i++){
+            $this->captura(''.$datos[$i]['nombre_columna'].'',''.$datos[$i]['tipo_dato'].'');
+
+        }
+        //Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 		
@@ -62,6 +69,12 @@ class MODConceptoIngasDet extends MODbase{
 		$this->setParametro('id_concepto_ingas','id_concepto_ingas','int4');
         $this->setParametro('agrupador','agrupador','varchar');
         $this->setParametro('id_concepto_ingas_det_fk','id_concepto_ingas_det_fk','int4');
+        //añadiendo columnas dinamicas
+        $datos = $this->objParam->getParametro('columnas');
+        for($i= 0 ; $i< count($datos,0);$i++){
+            $this->setParametro(''.$datos[$i]['nombre_columna'].'',''.$datos[$i]['nombre_columna'].'',''.$datos[$i]['tipo_dato'].'');
+
+        }
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -84,6 +97,14 @@ class MODConceptoIngasDet extends MODbase{
 		$this->setParametro('id_concepto_ingas','id_concepto_ingas','int4');
         $this->setParametro('agrupador','agrupador','varchar');
         $this->setParametro('id_concepto_ingas_det_fk','id_concepto_ingas_det_fk','int4');
+        //añadiendo columnas dinamicas
+        $datos = $this->objParam->getParametro('columnas');
+        //var_dump('datos',$datos);exit;
+
+        for($i= 0 ; $i< count($datos,0);$i++){
+            $this->setParametro(''.$datos[$i]['nombre_columna'].'',''.$datos[$i]['nombre_columna'].'',''.$datos[$i]['tipo_dato'].'');
+
+        }
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -108,6 +129,28 @@ class MODConceptoIngasDet extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+    function listarConceptoIngasDetCombo(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.ft_concepto_ingas_det_sel';
+        $this->transaccion='PM_COINDCB_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        //Definicion de la lista del resultado del query
+        $this->captura('id_concepto_ingas_det','int4');
+        $this->captura('estado_reg','varchar');
+        $this->captura('nombre','varchar');
+        $this->captura('descripcion','varchar');
+        $this->captura('id_concepto_ingas','int4');
+        $this->captura('agrupador','varchar');
+        $this->captura('id_concepto_ingas_det_fk','int4');
+        $this->captura('desc_agrupador','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 			
 }
 ?>
