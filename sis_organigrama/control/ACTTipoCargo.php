@@ -5,12 +5,17 @@
 *@author  (rarteaga)
 *@date 15-07-2019 19:39:12
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+ ISSUE                FECHA                 AUTOR                DESCRIPCION
+ #50                16/08/2019              EGS                 filtro de tipo cargo por el tipo de contrato
 */
 
 class ACTTipoCargo extends ACTbase{    
 			
 	function listarTipoCargo(){
 		$this->objParam->defecto('ordenacion','id_tipo_cargo');
+		if($this->objParam->getParametro('id_tipo_contrato') !=''){//#50
+            $this->objParam->addFiltro("TCAR.id_tipo_contrato = ".$this->objParam->getParametro('id_tipo_contrato'));
+        }
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
