@@ -12,6 +12,7 @@
   #0            14-02-2011        RAC                 Creacion
   #24           17/06/2019        RAC                 Configuracion de palntillas de grilla
   #31           16/07/2019        RAC                 Adciona codigo rcaiva, profesion y fecha quinquenio
+  #51           20/08/2019        RAC                 solucion de bug al seleccionar funcionario
 */ 
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -591,7 +592,14 @@ Phx.vista.funcionario=function(config){
 		tooltip: '<b>Archivos Funcionario</b><br><b>Nos permite visualizar los archivos de un funcionario.</b>'
 	});
 
-        
+     this.addButton('btnDependientes',
+        {
+            text: 'Dependientes',
+            iconCls: 'bcargo',
+            disabled: false,
+            handler: this.onBtnDependientes,
+            tooltip: 'Dependientes del Empleado'
+        });   
 	this.init();
 
 	//f.e.a(eventos recientes)
@@ -618,16 +626,20 @@ Phx.vista.funcionario=function(config){
 		}
 	}, this);
 	//end
+	
+	this.getComponente('id_persona').on('select',onPersona, this);
 
-	var txt_ci=this.getComponente('ci');	
-	var txt_correo=this.getComponente('correo');	
-	var txt_telefono=this.getComponente('telefono');	
-	this.getComponente('id_persona').on('select',onPersona);
-
-	function onPersona(c,r,e){
-		txt_ci.setValue(r.data.ci);
-		txt_correo.setValue(r.data.correo);
-		txt_telefono.setValue(r.data.telefono);
+    //#51 soluciona  BUG
+	function onPersona(c,r,e){		
+		if(this.Cmp.ci){
+			this.Cmp.ci.setValue(r.data.ci);
+		}
+		if(this.Cmp.correo){
+			this.Cmp.correo.setValue(r.data.correo);
+		}
+		if(this.Cmp.telefono){
+			this.Cmp.telefono.setValue(r.data.telefono);
+		}
 	}
 	if (config.fecha) {
         this.store.baseParams.fecha = config.fecha;
@@ -748,6 +760,21 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
                     this.idContenedor,
                     'FuncionarioEspecialidad');
 	},
+	
+	onBtnDependientes: function(){
+			var rec = {maestro: this.sm.getSelected().data} 
+						      
+            Phx.CP.loadWindows('../../../sis_seguridad/vista/persona_relacion/PersonaRelacion.php',
+                    'Dependientes del Empleado',
+                    {
+                        width:700,
+                        height:450
+                    },
+                    rec,
+                    this.idContenedor,
+                    'PersonaRelacion');
+	},
+	
 	
 	preparaMenu:function()
     {	
