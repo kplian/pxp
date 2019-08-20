@@ -2,8 +2,12 @@ CREATE OR REPLACE FUNCTION orga.f_get_fechas_ini_historico (
   p_id_funcionario integer,
   p_fecha date = now()::date
 )
-  RETURNS text AS
-  $body$
+RETURNS text AS
+$body$
+/*
+ISSUE	FECHA		EMPRESA		AUTOR	DESCRIPCION
+#45		02.08.2019	etr			mzm		cambio de id_tipo_contrato por codigo PLA y EVE
+*/
   DECLARE
     g_registros record;
     g_fechas text;
@@ -15,7 +19,8 @@ CREATE OR REPLACE FUNCTION orga.f_get_fechas_ini_historico (
             from orga.tuo_funcionario ha
             inner join orga.tcargo car on car.id_cargo = ha.id_cargo
             inner join orga.ttipo_contrato tcon on tcon.id_tipo_contrato=car.id_tipo_contrato
-            where ha.estado_reg = ''activo'' and ha.id_funcionario = '||p_id_funcionario||' and tcon.id_tipo_contrato in (1,4) and ha.tipo = ''oficial'' and
+            where ha.estado_reg = ''activo'' and ha.id_funcionario = '||p_id_funcionario||' and 
+            tcon.tcon.codigo in (''PLA'',''EVE'') and ha.tipo = ''oficial'' and
             ha.fecha_asignacion <= ''' || p_fecha|| '''::date
             order by fecha_asignacion desc')loop
       if (g_fechas = '')then
@@ -41,7 +46,7 @@ CREATE OR REPLACE FUNCTION orga.f_get_fechas_ini_historico (
 
     return g_fechas;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
