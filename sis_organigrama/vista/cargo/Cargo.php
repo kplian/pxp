@@ -7,9 +7,10 @@
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
  * 
  *   HISTORIAL DE MODIFICACIONES:
-#ISSUE                FECHA                AUTOR                DESCRIPCION
- #0                14-01-2014                               creacion    
- #30               15-07-2019                              se adciona tipo de cargo de manera opcional para clasificacion 
+#ISSUE                FECHA                 AUTOR                DESCRIPCION
+ #0                14-01-2014                                   creacion
+ #30               15-07-2019                                   se adciona tipo de cargo de manera opcional para clasificacion
+ #50                16/08/2019              EGS                 filtro de tipo cargo por el tipo de contrato #50
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -191,7 +192,7 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
 				name: 'id_tipo_cargo',
 				fieldLabel: 'Tipo Cargo',
 				qtip: 'Clasificación del cargo',
-				allowBlank: true,
+				allowBlank: false,
 				tinit:true,
    			    resizable:true,
    			    tasignacion:true,
@@ -544,11 +545,26 @@ Phx.vista.Cargo=Ext.extend(Phx.gridInterfaz,{
     	this.ocultarComponente(this.Cmp.id_tipo_contrato);
     	
     	Phx.vista.Cargo.superclass.onButtonEdit.call(this);
+
+        this.Cmp.id_tipo_cargo.store.baseParams.id_tipo_contrato=this.Cmp.id_tipo_contrato.getValue();//#50
+
     },
     onButtonNew : function () {
     	this.mostrarComponente(this.Cmp.id_escala_salarial);
     	this.mostrarComponente(this.Cmp.id_tipo_contrato);
     	Phx.vista.Cargo.superclass.onButtonNew.call(this);
+        this.Cmp.id_tipo_contrato.on('select', function(cmb,rec,i){//#50
+                this.Cmp.id_tipo_cargo.store.baseParams.id_tipo_contrato=this.Cmp.id_tipo_contrato.getValue();
+                this.Cmp.id_tipo_cargo.store.load({params:{start:0,limit:this.tam_pag},
+                    callback : function (r) {
+                        if (r.length > 0 ) {
+
+                            this.Cmp.id_tipo_cargo.setValue(r[0].data.id_tipo_cargo);
+                        }
+
+                    }, scope : this
+                });
+        } ,this);
     },
     south:{
 		  url:'../../../sis_organigrama/vista/cargo_presupuesto/CargoPresupuesto.php',

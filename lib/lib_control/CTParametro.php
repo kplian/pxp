@@ -7,6 +7,7 @@
  *  ISSUE            FECHA:		      AUTOR                 DESCRIPCION
  # 0              29-06-2010        RCM KPLIAN        Creacion
  * 101            12/06/2018        RAC KPLIAN        Adciona ordenacion dinamica   
+ * #51            20/08/2019        RAC KPLIAN        Manda idContenedor de interface para diferencias las ordenaciones en la clase CTSort
 ***************************************************************************/
 class CTParametro{
 	
@@ -72,11 +73,11 @@ class CTParametro{
 			$aux_sort=isset($this->arreglo_parametros['sort'])?$this->arreglo_parametros['sort']:'';
 			$aux_dir=isset($this->arreglo_parametros['dir'])?$this->arreglo_parametros['dir']:'';
 			
-			
-			$crit_sort = new CTSort($aux_sort,  $aux_dir,  $this->clase.$this->metodo);		
-		    $sortcol = $crit_sort->get_criterio_sort();
-			
-			
+			//#51 si el listado de origina en una grilla dentremos id_contenedor,  y memorizamos las columnas por las que se ordena
+			if (isset($this->arreglo_parametros['id_contenedor'])){
+				$crit_sort = new CTSort($aux_sort,  $aux_dir,  $this->arreglo_parametros['id_contenedor'].$this->clase.$this->metodo);	
+		        $sortcol = $crit_sort->get_criterio_sort();
+			}
 			
 			//Envia los parametros		
 			if(!isset($sortcol)||$sortcol==''){
@@ -94,7 +95,6 @@ class CTParametro{
 			$this->parametros_consulta['ordenacion']=isset($this->arreglo_parametros['sort'])?$this->arreglo_parametros['sort']:'';
 		    $this->parametros_consulta['dir_ordenacion']=isset($this->arreglo_parametros['dir'])?$this->arreglo_parametros['dir']:'';
 		}
-		
 		
 		
 		
