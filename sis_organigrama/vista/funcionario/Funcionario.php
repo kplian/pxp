@@ -591,7 +591,7 @@ Phx.vista.funcionario=function(config){
 		handler: this.archivo,
 		tooltip: '<b>Archivos Funcionario</b><br><b>Nos permite visualizar los archivos de un funcionario.</b>'
 	});
-
+//#41 (I)
      this.addButton('btnDependientes',
         {
             text: 'Dependientes',
@@ -599,7 +599,7 @@ Phx.vista.funcionario=function(config){
             disabled: false,
             handler: this.onBtnDependientes,
             tooltip: 'Dependientes del Empleado'
-        });   
+        });   //#41 (F)
 	this.init();
 
 	//f.e.a(eventos recientes)
@@ -760,7 +760,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
                     this.idContenedor,
                     'FuncionarioEspecialidad');
 	},
-	
+	//#41 (I)
 	onBtnDependientes: function(){
 			var rec = {maestro: this.sm.getSelected().data} 
 						      
@@ -773,9 +773,8 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
                     rec,
                     this.idContenedor,
                     'PersonaRelacion');
-	},
-	
-	
+	},//#41 (F)
+		
 	preparaMenu:function()
     {	
         this.getBoton('btnCuenta').enable();
@@ -815,6 +814,9 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 
     },
 
+		  
+		  
+		  
 		  
 		 
 })
