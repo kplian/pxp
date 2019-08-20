@@ -18,6 +18,11 @@ $body$
  DESCRIPCION:	actualizacion a nueva version xph
  AUTOR:		KPLIAN(jrr)		
  FECHA:		08/01/11
+ 
+
+       
+ ISSUE            FECHA:         EMPRESA     AUTOR                 DESCRIPCION  
+  #40            31-07-2019      ETR          mzm                SEG_PERSONMIN_SEL:adicion de campos matricula, historia_clinica, fecha_nacimiento
 ***************************************************************************/
 
 DECLARE
@@ -76,6 +81,7 @@ BEGIN
                               per.direccion,
                               per.tipo_documento,
                               per.expedicion
+                              
                           FROM segu.vpersona p 
                           inner join segu.tpersona per on per.id_persona = p.id_persona 
                           WHERE ';
@@ -145,7 +151,9 @@ BEGIN
                              p.tipo_documento,
                              p.expedicion,
                              p.foto
-                             
+                             --#40; MZM 31.07.2019
+                              , p.matricula, p.historia_clinica, p.fecha_nacimiento, p.genero, p.grupo_sanguineo
+                             --fin #40
                           FROM segu.tpersona p WHERE ';
                           
                          

@@ -5,6 +5,10 @@
  a la tabla tpersona del esquema SEGU
  Autor:		Kplian    
  Fecha:		04/06/2011
+ * 
+ SSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION  
+  #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
+
  */ 
 class MODPersona extends MODbase{
 	
@@ -38,6 +42,7 @@ class MODPersona extends MODbase{
 		$this->captura('direccion','varchar');
 		$this->captura('tipo_documento','varchar');
 		$this->captura('expedicion','varchar');
+		
 
 		//Ejecuta la funcion
 		$this->armarConsulta();
@@ -82,10 +87,17 @@ class MODPersona extends MODbase{
 		//$this->captura('foto','bytea','id_persona','extension','archivo','../../sis_seguridad/control/foto_persona/');
 		//$this->captura('foto','bytea','id_persona','extension','archivo','./');
 		
-		 
+		 //#40(I)-MZM
+		$this->captura('matricula','varchar');
+		$this->captura('historia_clinica','varchar');
+		$this->captura('fecha_nacimiento','date');
+		$this->captura('genero','varchar');
+		$this->captura('grupo_sanguineo','varchar');
+		//#40(F)
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
+
 
 		return $this->respuesta;
 
@@ -141,7 +153,13 @@ class MODPersona extends MODbase{
 		
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('expedicion','expedicion','varchar');
-		
+		//#40 - MZM 
+		$this->setParametro('matricula','matricula','varchar');
+		$this->setParametro('historia_clinica','historia_clinica','varchar');
+		$this->setParametro('fecha_nacimiento','fecha_nacimiento','date');
+		$this->setParametro('genero','genero','varchar');
+		$this->setParametro('grupo_sanguineo','grupo_sanguineo','varchar');
+		//#40 (fin)
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		
@@ -175,7 +193,13 @@ class MODPersona extends MODbase{
 		
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('expedicion','expedicion','varchar');
-
+		//#40 - MZM 
+		$this->setParametro('matricula','matricula','varchar');
+		$this->setParametro('historia_clinica','historia_clinica','varchar');
+		$this->setParametro('fecha_nacimiento','fecha_nacimiento','date');
+		$this->setParametro('genero','genero','varchar');
+		$this->setParametro('grupo_sanguineo','grupo_sanguineo','varchar');
+		//#40 (fin)
 		
 		
 		//Ejecuta la instruccion
