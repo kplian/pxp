@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_tipo_cargo_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -14,13 +12,13 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.ttipo_cargo'
  AUTOR:          (rarteaga)
  FECHA:            15-07-2019 19:39:12
- COMENTARIOS:    
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #30                15-07-2019 19:39:12                                Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.ttipo_cargo'    
+ #30                15-07-2019 19:39:12                                Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.ttipo_cargo'
  #46                05/08/2019              EGS                 Se agrega campo id_contrato
-
+ #52 endeEtr        20/08/2019              EGS                 Se arregla la paginacion en el count
  ***************************************************************************/
 
 DECLARE
@@ -81,13 +79,13 @@ BEGIN
             raise notice 'v_consulta %',v_consulta;
             --Devuelve la respuesta
             return v_consulta;
-                        
+
         end;
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'OR_TCAR_CONT'
      #DESCRIPCION:    Conteo de registros
-     #AUTOR:        rarteaga    
+     #AUTOR:        rarteaga
      #FECHA:        15-07-2019 19:39:12
     ***********************************/
 
@@ -98,27 +96,27 @@ BEGIN
             v_consulta:='select count(id_tipo_cargo)
                         from orga.ttipo_cargo TCAR
                         inner join segu.tusuario usu1 on usu1.id_usuario = TCAR.id_usuario_reg
-                        inner join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min
+                        left join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min --#52
                         inner join orga.tescala_salarial escmax on escmax.id_escala_salarial = tcar.id_escala_salarial_max
                         left join segu.tusuario usu2 on usu2.id_usuario = TCAR.id_usuario_mod
                         where ';
-            
-            --Definicion de la respuesta            
+
+            --Definicion de la respuesta
             v_consulta:=v_consulta||v_parametros.filtro;
 
             --Devuelve la respuesta
             return v_consulta;
 
         end;
-                    
+
     else
-                         
+
         raise exception 'Transaccion inexistente';
-                             
+
     end if;
-                    
+
 EXCEPTION
-                    
+
     WHEN OTHERS THEN
             v_resp='';
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
