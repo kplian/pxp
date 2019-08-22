@@ -493,21 +493,3 @@ ALTER TABLE segu.tpersona
 ALTER TABLE segu.tusuario ENABLE ALWAYS TRIGGER trigger_usuario;
 /***********************************F-DEP-JRR-SEGU-0-16/03/2017*****************************************/
 
-
-/***********************************I-DEP-MZM-SEGU-40-31/07/2019*****************************************/
-ALTER TABLE segu.tpersona
-  ADD COLUMN matricula VARCHAR(20);
-
-COMMENT ON COLUMN segu.tpersona.matriculas
-IS 'matricula de seguro de salud';
-
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN historia_clinica VARCHAR(20);
-
-COMMENT ON COLUMN segu.tpersona.historia_clinica
-IS 'historia clinica del seguro de salud';
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN grupo_sanguineo VARCHAR(5);
-  /***********************************F-DEP-MZM-SEGU-40-31/07/2019*****************************************/

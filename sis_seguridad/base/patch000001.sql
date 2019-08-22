@@ -1143,3 +1143,22 @@ WITHOUT OIDS;
 
 
 /*****************************F-SCP-MZM-SEGU-40-30/07/2019*************/
+
+
+/***********************************I-SCP-MZM-SEGU-40-31/07/2019*****************************************/
+ALTER TABLE segu.tpersona
+  ADD COLUMN matricula VARCHAR(20);
+
+COMMENT ON COLUMN segu.tpersona.matriculas
+IS 'matricula de seguro de salud';
+
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN historia_clinica VARCHAR(20);
+
+COMMENT ON COLUMN segu.tpersona.historia_clinica
+IS 'historia clinica del seguro de salud';
+
+ALTER TABLE segu.tpersona
+  ADD COLUMN grupo_sanguineo VARCHAR(5);
+  /***********************************F-SCP-MZM-SEGU-40-31/07/2019*****************************************/
