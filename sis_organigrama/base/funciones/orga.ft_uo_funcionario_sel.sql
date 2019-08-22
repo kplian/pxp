@@ -9,17 +9,17 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
 RETURNS varchar AS
 $body$
 /**************************************************************************
- FUNCION: 		ORGA.ft_uo_funcionario_sel
+ FUNCION:         ORGA.ft_uo_funcionario_sel
  DESCRIPCIÓN:  listado de uo
- AUTOR: 	    KPLIAN (mzm)	
- FECHA:	        
- COMENTARIOS:	
+ AUTOR:         KPLIAN (mzm)    
+ FECHA:            
+ COMENTARIOS:    
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:		
- FECHA:		30-05-2011
+ DESCRIPCION:    
+ AUTOR:        
+ FECHA:        30-05-2011
  
  
 ***************************************************************************
@@ -29,6 +29,7 @@ $body$
    
  #6             09-01-2019        RAC         recupera funcion de repositorio de boa
  #32            18/07/2019        RAC         añade carga horaria
+ #51            20-08-2019       RAC          adiciona descripcion de cargo  para solucionar ordenacion en la vista historico asignacion
 ***************************************************************************/
 
 
@@ -49,9 +50,9 @@ BEGIN
 
 /*******************************
  #TRANSACCION:  RH_UO_SEL
- #DESCRIPCION:	Listado de uo funcionarios
- #AUTOR:		
- #FECHA:		30/05/11	
+ #DESCRIPCION:    Listado de uo funcionarios
+ #AUTOR:        
+ #FECHA:        30/05/11    
 ***********************************/
      if(par_transaccion='RH_UOFUNC_SEL')then
 
@@ -98,7 +99,7 @@ BEGIN
               
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
-		
+        
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad;
         
                return v_consulta;
@@ -108,9 +109,9 @@ BEGIN
 
 /*******************************
  #TRANSACCION:  RH_UO_CONT
- #DESCRIPCION:	Conteo de uos
- #AUTOR:		
- #FECHA:		23/05/11	
+ #DESCRIPCION:    Conteo de uos
+ #AUTOR:        
+ #FECHA:        23/05/11    
 ***********************************/
      elsif(par_transaccion='RH_UOFUNC_CONT')then
 
@@ -137,11 +138,11 @@ BEGIN
          END;
          
      /*******************************
- 	  #TRANSACCION:  RH_ASIG_FUNC_SEL
- 	  #DESCRIPCION:	Listado de asignaciones funcionarios
- 	  #AUTOR:		F.E.A --#6
- 	  #FECHA:		03/09/2018
-	 ***********************************/
+       #TRANSACCION:  RH_ASIG_FUNC_SEL
+       #DESCRIPCION:    Listado de asignaciones funcionarios
+       #AUTOR:        F.E.A --#6
+       #FECHA:        03/09/2018
+     ***********************************/
      elsif(par_transaccion='RH_ASIG_FUNC_SEL')then
           BEGIN
                v_consulta:='SELECT
@@ -163,7 +164,7 @@ BEGIN
                                   PERREG.nombre_completo2 AS USUREG,
                                   PERMOD.nombre_completo2 AS USUMOD,
                                   cargo.id_cargo,
-                                  (coalesce(''Cod: '' || cargo.codigo || ''---Id: '' || cargo.id_cargo,  ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
+                                  (coalesce(''Cod: '' || cargo.codigo || ''---Id: '' || cargo.id_cargo,  ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text as desc_cargo,
                                   UOFUNC.observaciones_finalizacion,
                                   UOFUNC.nro_documento_asignacion,
                                   UOFUNC.fecha_documento_asignacion,
@@ -199,9 +200,9 @@ BEGIN
 
      /*******************************
       #TRANSACCION:  RH_ASIG_FUNC_CONT
-      #DESCRIPCION:	Conteo de Asignaciones
-      #AUTOR:		F.E.A   --#6
-      #FECHA:		03/09/2018
+      #DESCRIPCION:    Conteo de Asignaciones
+      #AUTOR:        F.E.A   --#6
+      #FECHA:        03/09/2018
      ***********************************/
      elsif(par_transaccion='RH_ASIG_FUNC_CONT')then
 
@@ -238,11 +239,11 @@ BEGIN
 EXCEPTION
 
       WHEN OTHERS THEN
-    	v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
+        v_resp='';
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+          v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
 
 
 END;

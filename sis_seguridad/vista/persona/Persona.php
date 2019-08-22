@@ -5,6 +5,8 @@
 *@author KPLIAN (JRR)
 *@date 14-02-2011
 *@description  Vista para regitro de datos de persona 
+ISSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION  
+  #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -73,7 +75,50 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		id_grupo:0,
 		grid:true,
 		form:true
-	},
+	},{ //#40: adicion en vista de campo fecha_nacimiento (Para ingreso de informacion de los dependientes)
+	       		config:{
+	       			fieldLabel: "Fecha de Nacimiento",
+	       			gwidth: 120,
+	       			name: 'fecha_nacimiento',
+	       			allowBlank:false,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			format:'d/m/Y',
+	       			anchor:'100%',
+	       			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+				},
+	       		type:'DateField',
+	       		filters:{type:'date'},
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+	       	{
+	       		config:{
+	       			name:'genero',
+	       			fieldLabel:'Genero',
+	       			allowBlank:true,
+	       			emptyText:'Genero...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['masculino','femenino']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options: ['masculino','femenino']
+	       		 	},
+	       		grid:true,       		
+	       		form:true
+	       	},
+	       	
+	       	
+	       	// fin #40
 	 {
 		config:{
 			fieldLabel: "Foto",
@@ -261,7 +306,61 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		id_grupo:0,
 		grid:true,
 		form:true
-	}
+	},
+	{
+		config:{
+			fieldLabel: "Matricula",
+			gwidth: 120,
+			name: 'matricula',
+			allowBlank:true,	
+			maxLength:20,
+			minLength:5,
+			anchor:'100%'
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	},{
+		config:{
+			fieldLabel: "Historia Clinica",
+			gwidth: 120,
+			name: 'historia_clinica',
+			allowBlank:true,	
+			maxLength:20,
+			minLength:5,
+			anchor:'100%'
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	},{
+	       		config:{
+	       			name:'grupo_sanguineo',
+	       			fieldLabel:'Grupo Sanguineo',
+	       			allowBlank:true,
+	       			emptyText:'Grupo Sanguineo...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['O Rh+','O Rh-','A Rh+','A Rh-','B Rh+','B Rh-','AB Rh+','AB Rh-']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options: ['O Rh+','O Rh-','A Rh+','A Rh-','B Rh+','B Rh-','AB Rh+','AB Rh-'],	
+	       		 	},
+	       		grid:true,
+	       		form:true
+	       	}
+	       	
 	],
 
 
@@ -285,7 +384,13 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	{name:'telefono2'},
 	{name:'celular2'},
 	{name:'foto'}
-	
+	//#40: adicion de campos
+	,
+	{name:'matricula', type: 'string'},
+	{name:'historia_clinica', type: 'string'},
+	{name:'fecha_nacimiento', type: 'date', dateFormat:'Y-m-d'},
+	{name:'genero', type: 'string'}
+	//fin #40
 		],
 	sortInfo:{
 		field: 'id_persona',
@@ -391,7 +496,9 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
             handler: this.archivo
         });
 
-
+   		
+       
+        
         this.init();
 		// this.addButton('my-boton',{disabled:false,handler:myBoton,tooltip:
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});
@@ -450,7 +557,6 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
                 height: 400
             }, rec, this.idContenedor, 'Archivo');
 
-    },
-
+    }
 })
 </script>

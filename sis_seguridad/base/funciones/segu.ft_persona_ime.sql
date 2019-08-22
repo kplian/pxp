@@ -18,6 +18,9 @@ $body$
  DESCRIPCION:	actualizacion a nueva version xph
  AUTOR:		Jaime Rivera Rojas	
  FECHA:		08/01/11
+ 
+ ISSUE            FECHA:         EMPRESA     AUTOR                 DESCRIPCION  
+  #40            31-07-2019      ETR          mzm                SEG_PERSON_INS, SEG_PERSON_MOD: adicion de campos matricula, historia_clinica, fecha_nacimiento
 ***************************************************************************/
 
 DECLARE
@@ -90,7 +93,15 @@ BEGIN
                                telefono2,
                                celular2,
                                tipo_documento,
-                               expedicion)
+                               expedicion
+                               --#40-(I)-MZM
+                               ,matricula,
+                               historia_clinica,
+                               fecha_nacimiento,
+                               genero
+                               --#40 (F)
+                               
+                               )
                values(
                       upper(v_parametros.nombre),
                       upper(v_parametros.ap_paterno),
@@ -102,7 +113,14 @@ BEGIN
                       v_parametros.telefono2,
                       v_parametros.celular2,
                       v_parametros.tipo_documento,
-                      v_parametros.expedicion)  
+                      v_parametros.expedicion
+                      --#40(I)-MZM
+                      ,v_parametros.matricula,
+                      v_parametros.historia_clinica,
+                      v_parametros.fecha_nacimiento,
+                      v_parametros.genero
+                      --#40(F)
+                      )  
                         
                RETURNING id_persona INTO v_id_persona;
               
@@ -159,6 +177,12 @@ BEGIN
                celular2=v_parametros.celular2,
                tipo_documento	= v_parametros.tipo_documento,
                expedicion = v_parametros.expedicion
+               --#40(I)-MZM
+               ,matricula=v_parametros.matricula,
+               historia_clinica=v_parametros.historia_clinica,
+               fecha_nacimiento=v_parametros.fecha_nacimiento,
+               genero=v_parametros.genero
+               --#40(F)
                where id_persona=v_parametros.id_persona;
               
                --v_respuesta_sinc:= segu.f_sincroniza_persona_entre_bd(v_parametros.id_persona,'10.172.0.13','5432','db_link','db_link','dbendesis','UPDATE');

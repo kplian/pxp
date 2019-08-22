@@ -1118,3 +1118,28 @@ CREATE INDEX idx_tusuario__id_usuario ON segu.tusuario
 alter table segu.tprocedimiento
 alter column id_funcion set not null;
 /*****************************F-SCP-RCM-SEGU-0-07/11/2017*************/
+
+/*****************************I-SCP-MZM-SEGU-40-30/07/2019*************/
+CREATE TABLE segu.tpersona_relacion (
+  id_persona_relacion SERIAL, 
+  id_persona INTEGER, 
+  id_persona_fk INTEGER, 
+  relacion VARCHAR, 
+  CONSTRAINT tpersona_relacion_pkey PRIMARY KEY(id_persona_relacion), 
+  CONSTRAINT fk_tpersona_relacion__id_persona FOREIGN KEY (id_persona)
+    REFERENCES segu.tpersona(id_persona)
+    MATCH PARTIAL
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE, 
+  CONSTRAINT fk_tpersona_relacion__id_persona_fk FOREIGN KEY (id_persona_fk)
+    REFERENCES segu.tpersona(id_persona)
+    MATCH PARTIAL
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+
+/*****************************F-SCP-MZM-SEGU-40-30/07/2019*************/
