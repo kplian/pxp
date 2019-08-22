@@ -1120,6 +1120,7 @@ alter column id_funcion set not null;
 /*****************************F-SCP-RCM-SEGU-0-07/11/2017*************/
 
 /*****************************I-SCP-MZM-SEGU-40-30/07/2019*************/
+--se comenta el MATCH PARTIAL al restaurar sale el error MATCH PARTIAL not yet implemented
 CREATE TABLE segu.tpersona_relacion (
   id_persona_relacion SERIAL, 
   id_persona INTEGER, 
@@ -1128,13 +1129,13 @@ CREATE TABLE segu.tpersona_relacion (
   CONSTRAINT tpersona_relacion_pkey PRIMARY KEY(id_persona_relacion), 
   CONSTRAINT fk_tpersona_relacion__id_persona FOREIGN KEY (id_persona)
     REFERENCES segu.tpersona(id_persona)
-    MATCH PARTIAL
+    --MATCH PARTIAL
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE, 
   CONSTRAINT fk_tpersona_relacion__id_persona_fk FOREIGN KEY (id_persona_fk)
     REFERENCES segu.tpersona(id_persona)
-    MATCH PARTIAL
+    --MATCH PARTIAL
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE
@@ -1149,7 +1150,7 @@ WITHOUT OIDS;
 ALTER TABLE segu.tpersona
   ADD COLUMN matricula VARCHAR(20);
 
-COMMENT ON COLUMN segu.tpersona.matriculas
+COMMENT ON COLUMN segu.tpersona.matricula
 IS 'matricula de seguro de salud';
 
 
