@@ -6,7 +6,7 @@ RETURNS text AS
 $body$
 /*
 ISSUE	FECHA		EMPRESA		AUTOR	DESCRIPCION
-#45		02.08.2019	etr			mzm		cambio de id_tipo_contrato por codigo PLA y EVE
+#45		02.08.2019	etr			mzm		cambio de id_tipo_contrato por codigo PLA y EVE.
 */
   DECLARE
     g_registros record;
