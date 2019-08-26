@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -16,6 +18,7 @@ $body$
  HISTORIA DE MODIFICACIONES:
 	ISSUE		FECHA			AUTHOR				DESCRIPCION
  *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+    #53         26/08/2019      RAC                 Se agrega campo de ordenación por centro en listado de organigrama 
 ***************************************************************************/
 
 
@@ -100,7 +103,7 @@ BEGIN
                
                
              --  v_consulta:=v_consulta||v_parametros.filtro;
-               v_consulta:=v_consulta||' order by euo.id_uo_hijo,UO.nombre_unidad';
+               v_consulta:=v_consulta||' order by UO.orden_centro ASC, euo.id_uo_hijo,UO.nombre_unidad';  --#53 incluye orden_centro prioritariamente
 
                return v_consulta;
 
