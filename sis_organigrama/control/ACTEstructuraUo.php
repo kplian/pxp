@@ -7,6 +7,7 @@
  Fecha:	24/05/2011
  	ISSUE		FECHA			AUTHOR				DESCRIPCION
  *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+ *  #53         26/08/2018      RAC                 Seañade nro de orden en el organigrama
  */
 class ACTEstructuraUo extends ACTbase {
 
@@ -171,7 +172,7 @@ class ACTEstructuraUo extends ACTbase {
 			//array_push($arreglo,array('nombre'=>'id','valor'=>'id_gui'));
 			array_push($arreglo, array('nombre' => 'id', 'valor' => 'id_uo'));
 			array_push($arreglo, array('nombre' => 'codigo', 'valor' => 'codigo'));
-			array_push($arreglo,array('nombre'=>'text','valores'=>'<b>(#codigo#)</b> - #nombre_unidad#'));
+			array_push($arreglo,array('nombre'=>'text','valores'=>'<b>(#codigo#)</b> - #nombre_unidad#   - [Orden: #orden_centro#]'));  //#53 añade 
 			array_push($arreglo, array('nombre' => 'desc', 'valor' => 'descripcion'));
 			array_push($arreglo, array('nombre' => 'cargo', 'valor' => 'nombre_cargo'));
 
