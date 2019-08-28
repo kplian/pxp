@@ -1166,7 +1166,7 @@ class ReportePDF extends MYPDF
 		for ($i=0; $i< sizeof($datas); $i++ ){
 			
 			
-			if($i%5==0){ 
+			if($i%6==0){ 
 				$cont=0;
 				
 				if($datas[$i+3]=='B'){
@@ -1200,12 +1200,12 @@ class ReportePDF extends MYPDF
 							}	
 								
 							if($ancho_uti+$ancho_col>$this->ancho_hoja){
-								$this->Cell(0.1, $alto_col, '', $border, 1, $align);//,
+								$this->Cell(0.1, $alto_col, '', $border, 1, $datas[$i+5]);//,
 								$ancho_uti=0;
-								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $datas[$i+5]);
 								$ancho_uti+=$ancho_col;
 							}else{
-								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $datas[$i+5]);//, 0, '', 0, false, 'C', 'C');
 								$ancho_uti+=$ancho_col;
 								
 							}
@@ -1215,12 +1215,12 @@ class ReportePDF extends MYPDF
 						
 				}else{
 					if($ancho_uti+$ancho_col>$this->ancho_hoja){
-							$this->Cell(0, $alto_col, '', 0, 1, $align);//,
+							$this->Cell(0, $alto_col, '', 0, 1, $datas[$i+5]);//,
 							$ancho_uti=0;
-							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $datas[$i+5]);//, 0, '', 0, false, 'C', 'C');
 							$ancho_uti+=$ancho_col;
 						}else{
-							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $datas[$i+5]);//, 0, '', 0, false, 'C', 'C');
 							$ancho_uti+=$ancho_col;
 						}
 									
@@ -1245,12 +1245,12 @@ class ReportePDF extends MYPDF
 							}	
 								
 							if($ancho_uti+$ancho_col>$this->ancho_hoja){
-								$this->Cell(0.1, $alto_col, '', $border, 1, $align);//,
+								$this->Cell(0.1, $alto_col, '', $border, 1, $datas[$i+5]);//,
 								$ancho_uti=0;
-								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $datas[$i+5]);
 								$ancho_uti+=$ancho_col;
 							}else{
-								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+								$this->Cell($ancho_col, $alto_col, $relleno, $border, 0, $datas[$i+5]);//, 0, '', 0, false, 'C', 'C');
 								$ancho_uti+=$ancho_col;
 								
 							}
@@ -1269,12 +1269,12 @@ class ReportePDF extends MYPDF
 				}else{
 					
 					    if($ancho_uti+$ancho_col>$this->ancho_hoja){
-							$this->Cell(0, $alto_col, '', 0, 1, $align);//,
+							$this->Cell(0, $alto_col, '', 0, 1, $datas[$i+5]);//,
 							$ancho_uti=0;
-							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $datas[$i+5]);//, 0, '', 0, false, 'C', 'C');
 							$ancho_uti+=$ancho_col;
 						}else{
-							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $align);//, 0, '', 0, false, 'C', 'C');
+							$this->Cell($ancho_col, $alto_col, $datas[$i+2], $border, 0, $datas[$i+5]);//, 0, '', 0, false, 'C', 'C');
 							$ancho_uti+=$ancho_col;
 						}
 						
@@ -1289,6 +1289,7 @@ class ReportePDF extends MYPDF
 										
 					}
 				}
+
 					
 					$id_break=$datas[$i];
 					
