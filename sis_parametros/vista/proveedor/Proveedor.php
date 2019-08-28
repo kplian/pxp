@@ -1136,6 +1136,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     this.Cmp.nombre_institucion.setValue(rec.data.nombre_auxiliar);
                     this.Cmp.rotulo_comercial.setValue(rec.data.nombre_auxiliar);
                     this.Cmp.id_institucion.disable(true);
+                    this.Cmp.codigo_institucion.setValue(rec.data.codigo_auxiliar);
                 } ,this);
             }
 
