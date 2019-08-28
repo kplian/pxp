@@ -7,6 +7,7 @@
  *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
     ISSUE        FECHA         AUTHOR              DESCRIPCION
    	#7           21/01/2019     RAC                combo proveedor se agrego el desc_proveedor2
+ *  #47          20/08/2019     EG                 se Agrego Cmp id_auxiliar
  */
 
 class MODProveedor extends MODbase{
@@ -129,6 +130,7 @@ class MODProveedor extends MODbase{
         $this->captura('estado','varchar');
         $this->captura('internacional','varchar');
         $this->captura('autorizacion','varchar');
+        $this->captura('id_auxiliar','int4');//#47
 
 
 
@@ -243,6 +245,7 @@ class MODProveedor extends MODbase{
         $this->setParametro('rotulo_comercial','rotulo_comercial','varchar');
         $this->setParametro('contacto','contacto','text');
         $this->setParametro('internacional','internacional','varchar');
+        $this->setParametro('id_auxiliar','id_auxiliar','int4');//#47
 
 
         //Ejecuta la instruccion

@@ -5,6 +5,8 @@
  *@author  Rensi Arteaga Copari(KPLIAN)
  *@date 01-03-2013 10:44:58
  *@description, registro de susuarios desde el sistema de parametros
+ *  *  	ISUUE			FECHA			AUTHOR 		DESCRIPCION
+ *     #47             13/08/2019      EGS          Se aumenta auxiliar y se filtra los auxiliares que no tengan proveedores y que sean funcionarios al crear proveedor
  */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -144,6 +146,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.codigo_banco.setValue(r.data.codigo_banco);
 
                 this.register='before_registered';
+                this.Cmp.id_auxiliar.disable(true);//#47
             },this);
 
         },
@@ -217,7 +220,30 @@ header("content-type: text/javascript; charset=UTF-8");
                 grid:false,
                 form:true,
                 bottom_filter : true
-            },{
+            },
+            {
+                config:{//#47
+                    sysorigen: 'sis_contabilidad',
+                    name: 'id_auxiliar',
+                    origen: 'AUXILIAR',
+                    allowBlank: true,
+                    gdisplayField: 'desc_auxiliar',
+                    fieldLabel: 'Auxiliar',
+                    width: 150,
+                    displayField: 'codigo_auxiliar',
+                    listeners: {
+                        'afterrender': function(combo){
+                        },
+                        'expand':function (combo) {
+                            this.store.reload();
+                        }
+                    }
+                },
+                type:'ComboRec',
+                id_grupo: 0,
+                form: true
+            },
+            {
                 config:{
                     name:'id_institucion',
                     fieldLabel: 'Institucion',
@@ -1009,7 +1035,8 @@ header("content-type: text/javascript; charset=UTF-8");
             {name:'pais', type: 'string'},
             {name:'rotulo_comercial', type: 'string'},
             {name:'nombre_proveedor', type: 'string'},'ci', 'desc_dir_proveedor','contacto',
-            'id_proceso_wf','id_estado_wf','nro_tramite','estado','internacional','autorizacion'
+            'id_proceso_wf','id_estado_wf','nro_tramite','estado','internacional','autorizacion',
+            {name:'id_auxiliar', type: 'numeric'}//#47
         ],
 
         iniTramite: function(){
@@ -1060,7 +1087,9 @@ header("content-type: text/javascript; charset=UTF-8");
             this.Cmp.id_institucion.store.baseParams.no_es_proveedor = 'si';
             this.Cmp.id_institucion.modificado = true;
             this.Cmp.id_persona.modificado = true;
-
+            this.Cmp.id_auxiliar.store.baseParams.no_es_proveedor = 'si';//#47
+            this.Cmp.id_auxiliar.store.baseParams.es_funcionario = 'si';//#47
+            this.Cmp.id_auxiliar.store.baseParams.id_auxiliar = '';//#47
             this.ocultarGrupo(1);
             this.ocultarGrupo(2);
 
@@ -1082,7 +1111,11 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.getComponente('id_institucion').reset();
                 this.getComponente('id_institucion').disable();
                 this.register='no_registered';
+                this.ocultarComponente(this.getComponente('id_auxiliar'));//#47
+
             }else{
+
+
                 this.getComponente('id_institucion').enable();
 
                 this.ocultarComponente(this.getComponente('id_persona'));
@@ -1098,14 +1131,21 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.getComponente('id_persona').reset();
                 this.getComponente('id_persona').disable();
                 this.register='no_registered';
+                this.mostrarComponente(this.Cmp.id_auxiliar);//#47
+                this.Cmp.id_auxiliar.on('select', function(cmb,rec,i){//#47
+                    this.Cmp.nombre_institucion.setValue(rec.data.nombre_auxiliar);
+                    this.Cmp.rotulo_comercial.setValue(rec.data.nombre_auxiliar);
+                    this.Cmp.id_institucion.disable(true);
+                } ,this);
             }
+
+
 
             //},this);
             //jrr:provisionalmente se ocultan estos campos
             //this.ocultarComponente(this.getComponente('codigo_institucion'));
             this.ocultarComponente(this.getComponente('codigo_banco'));
             //
-
 
         },
 
@@ -1183,7 +1223,18 @@ header("content-type: text/javascript; charset=UTF-8");
             //jrr:provisionalmente se ocultan estos campos
             //this.ocultarComponente(this.getComponente('codigo_institucion'));
             this.ocultarComponente(this.getComponente('codigo_banco'));
-            //
+
+            this.Cmp.id_auxiliar.store.baseParams.id_auxiliar = this.Cmp.id_auxiliar.getValue();//#47
+            this.Cmp.id_auxiliar.store.baseParams.no_es_proveedor = 'no';//#47
+            this.Cmp.id_auxiliar.store.load({params:{start:0,limit:this.tam_pag},//#47
+                callback : function (r) {
+                    if (r.length > 0 ) {
+
+                        this.Cmp.id_auxiliar.setValue(this.Cmp.id_auxiliar.getValue());
+                    }
+
+                }, scope : this
+            });
         },
 
 
