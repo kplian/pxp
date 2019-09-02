@@ -2499,11 +2499,9 @@ IS 'nombre del reporte';
 
 COMMENT ON COLUMN param.tplantilla_grilla.url_interface
 IS 'si el codigo no es unico la url deberia ser unica';
-
-ALTER TABLE param.tplantilla_grilla
-  OWNER TO dbararteaga;
   
-  /***********************************F-SCP-RAC-PARAM-24-17/06/2019*****************************************/
+/***********************************F-SCP-RAC-PARAM-24-17/06/2019*****************************************/
+
 /***********************************I-SCP-MMV-PARAM-0-16/07/2019****************************************/
 ALTER TABLE param.tcolumnas_archivo_excel
   ALTER COLUMN tipo_valor TYPE VARCHAR(30) COLLATE pg_catalog."default";
