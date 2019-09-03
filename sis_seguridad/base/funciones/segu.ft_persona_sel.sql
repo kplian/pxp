@@ -23,6 +23,7 @@ $body$
        
  ISSUE            FECHA:         EMPRESA     AUTOR                 DESCRIPCION  
   #40            31-07-2019      ETR          mzm                SEG_PERSONMIN_SEL:adicion de campos matricula, historia_clinica, fecha_nacimiento
+  #55			 02.09.2019		 ETR		  MZM				 Adicion de campo abreviatura_titulo
 ***************************************************************************/
 
 DECLARE
@@ -154,6 +155,9 @@ BEGIN
                              --#40; MZM 31.07.2019
                               , p.matricula, p.historia_clinica, p.fecha_nacimiento, p.genero, p.grupo_sanguineo
                              --fin #40
+                             --#55 - 02.09.2019
+                             ,p.abreviatura_titulo
+                             --#fin
                           FROM segu.tpersona p WHERE ';
                           
                          

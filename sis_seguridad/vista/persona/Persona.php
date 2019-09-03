@@ -7,7 +7,8 @@
 *@description  Vista para regitro de datos de persona 
 ISSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION  
   #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
-*/
+  #55			02.09.2019		ETR			MZM					Adicion de campo abreviatura_titulo
+ * */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
@@ -360,6 +361,29 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       		grid:true,
 	       		form:true
 	       	}
+	   ,{//#55 (I)
+	       		config:{
+	       			name:'abreviatura_titulo',
+	       			fieldLabel:'Titulo (abrev)',
+	       			allowBlank:true,
+	       			emptyText:'Abreviatura de Titulo...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options: ['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.'],	
+	       		 	},
+	       		grid:true,
+	       		form:true
+	       } //#55(F)
 	       	
 	],
 
@@ -391,6 +415,8 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	{name:'fecha_nacimiento', type: 'date', dateFormat:'Y-m-d'},
 	{name:'genero', type: 'string'}
 	//fin #40
+	//#55 - 02.09.2019
+	,{name:'abreviatura_titulo', type: 'string'}
 		],
 	sortInfo:{
 		field: 'id_persona',
