@@ -21,6 +21,7 @@ $body$
  
  ISSUE            FECHA:         EMPRESA     AUTOR                 DESCRIPCION  
   #40            31-07-2019      ETR          mzm                SEG_PERSON_INS, SEG_PERSON_MOD: adicion de campos matricula, historia_clinica, fecha_nacimiento
+#55 			 02.09.2019		 ETR		  MZM				 adicion de campo abreviatura_titulo
 ***************************************************************************/
 
 DECLARE
@@ -100,6 +101,8 @@ BEGIN
                                fecha_nacimiento,
                                genero
                                --#40 (F)
+                               --#55 - 02.09.2019
+                               ,abreviatura_titulo
                                
                                )
                values(
@@ -120,6 +123,8 @@ BEGIN
                       v_parametros.fecha_nacimiento,
                       v_parametros.genero
                       --#40(F)
+                      --#55 - 02.09.2019
+                      ,v_parametros.abreviatura_titulo
                       )  
                         
                RETURNING id_persona INTO v_id_persona;
@@ -183,6 +188,8 @@ BEGIN
                fecha_nacimiento=v_parametros.fecha_nacimiento,
                genero=v_parametros.genero
                --#40(F)
+               --#55 - 02.09.2019
+               ,abreviatura_titulo=v_parametros.abreviatura_titulo
                where id_persona=v_parametros.id_persona;
               
                --v_respuesta_sinc:= segu.f_sincroniza_persona_entre_bd(v_parametros.id_persona,'10.172.0.13','5432','db_link','db_link','dbendesis','UPDATE');

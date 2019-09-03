@@ -1162,4 +1162,12 @@ IS 'historia clinica del seguro de salud';
 
 ALTER TABLE segu.tpersona
   ADD COLUMN grupo_sanguineo VARCHAR(5);
-  /***********************************F-SCP-MZM-SEGU-40-31/07/2019*****************************************/
+/***********************************F-SCP-MZM-SEGU-40-31/07/2019*****************************************/
+  
+/***********************************I-SCP-MZM-SEGU-55-02/09/2019*****************************************/  
+ALTER TABLE segu.tpersona
+  ADD COLUMN abreviatura_titulo VARCHAR(5);
+
+ALTER TABLE segu.tpersona
+  ALTER COLUMN abreviatura_titulo SET DEFAULT 'Sr.';  
+/***********************************F-SCP-MZM-SEGU-55-02/09/2019*****************************************/
