@@ -1448,3 +1448,20 @@ select pxp.f_insert_testructura_gui ('TZIMP', 'OTROS');
 /***********************************F-DEP-MANU-PARAM-0-25/07/2019****************************************/
 
 
+/***********************************I-DEP-MZM-PARAM-56-02/09/2019****************************************/
+ALTER TABLE param.tpie_firma_det
+  ADD CONSTRAINT fk_tpie_firma_det__id_pie_firma FOREIGN KEY (id_pie_firma)
+    REFERENCES param.tpie_firma(id_pie_firma)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+
+ALTER TABLE param.tpie_firma_det
+  ADD CONSTRAINT fk_tpie_firma_det__id_cargo FOREIGN KEY (id_cargo)
+    REFERENCES orga.tcargo(id_cargo)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+/***********************************F-DEP-MZM-PARAM-56-02/09/2019****************************************/
