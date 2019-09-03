@@ -1,0 +1,122 @@
+CREATE OR REPLACE FUNCTION param.ft_pie_firma_det_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
+/**************************************************************************
+ SISTEMA:		Parametros Generales
+ FUNCION: 		param.ft_pie_firma_det_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tpie_firma'
+ AUTOR: 		 
+ FECHA:	        
+ COMENTARIOS:	
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #56				02-09-2019 15:43:48	mzm						Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tpie_firma'	
+ #
+ ***************************************************************************/
+
+DECLARE
+
+	v_consulta    		varchar;
+	v_parametros  		record;
+	v_nombre_funcion   	text;
+	v_resp				varchar;
+			    
+BEGIN
+
+	v_nombre_funcion = 'param.ft_pie_firma_det_sel';
+    v_parametros = pxp.f_get_record(p_tabla);
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_PIEFIRDET_SEL'
+ 	#DESCRIPCION:	Consulta de datos
+ 	#AUTOR:			
+ 	#FECHA:	02-09-2019 15:43:48
+	***********************************/
+
+	if(p_transaccion='PM_PIEFIRDET_SEL')then
+     				
+    	begin
+    		--Sentencia de la consulta
+			v_consulta:='select
+						piedet.id_pie_firma_det,
+                        piedet.id_pie_firma,
+                        piedet.id_cargo,
+                        car.nombre,
+                        piedet.orden,
+						
+                        piedet.estado_reg,
+						piedet.id_usuario_reg,
+						piedet.fecha_reg,
+						
+						piedet.id_usuario_mod,
+						piedet.fecha_mod,
+						usu1.cuenta as usr_reg,
+						usu2.cuenta as usr_mod	
+						from param.tpie_firma_det piedet
+                        inner join orga.tcargo car on car.id_cargo=piedet.id_cargo
+						inner join segu.tusuario usu1 on usu1.id_usuario = piedet.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = piedet.id_usuario_mod
+				        where  ';
+			
+			--Definicion de la respuesta
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+			--Devuelve la respuesta
+			return v_consulta;
+						
+		end;
+
+	/*********************************    
+ 	#TRANSACCION:  'PM_PIEFIRDET_CONT'
+ 	#DESCRIPCION:	Conteo de registros
+ 	#AUTOR:			
+ 	#FECHA:	02-09-2019 15:43:48
+	***********************************/
+
+	elsif(p_transaccion='PM_PIEFIRDET_CONT')then
+
+		begin
+			--Sentencia de la consulta de conteo de registros
+			v_consulta:='select count(piedet.id_pie_firma_det)
+					    from param.tpie_firma_det piedet
+						inner join orga.tcargo car on car.id_cargo=piedet.id_cargo
+						inner join segu.tusuario usu1 on usu1.id_usuario = piedet.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = piedet.id_usuario_mod
+				        where ';
+			
+			--Definicion de la respuesta		    
+			v_consulta:=v_consulta||v_parametros.filtro;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+					
+	else
+					     
+		raise exception 'Transaccion inexistente';
+					         
+	end if;
+					
+EXCEPTION
+					
+	WHEN OTHERS THEN
+			v_resp='';
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+			raise exception '%',v_resp;
+END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

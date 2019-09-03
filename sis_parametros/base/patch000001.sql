@@ -2580,3 +2580,51 @@ CREATE TABLE param.tcolumna_concepto_ingas_det (
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
 /***********************************F-SCP-EGS-PARAM-5-12/08/2019****************************************/
+
+/***********************************I-SCP-MZM-PARAM-56-02/09/2019****************************************/
+CREATE TABLE param.tpie_firma (
+  id_pie_firma SERIAL, 
+  nombre VARCHAR, 
+  orientacion VARCHAR, 
+  CONSTRAINT tpie_firma_pkey PRIMARY KEY(id_pie_firma)
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+ALTER TABLE param.tpie_firma
+  ALTER COLUMN nombre SET STATISTICS 0;
+
+ALTER TABLE param.tpie_firma
+  ALTER COLUMN orientacion SET STATISTICS 0;
+  
+  
+CREATE TABLE param.tpie_firma_det (
+  id_pie_firma_det SERIAL, 
+  id_pie_firma INTEGER, 
+  id_cargo INTEGER, 
+  orden INTEGER, 
+  CONSTRAINT tpie_firma_det_pkey PRIMARY KEY(id_pie_firma_det), 
+  CONSTRAINT fk_tpie_firma_det__id_cargo FOREIGN KEY (id_cargo)
+    REFERENCES orga.tcargo(id_cargo)
+    MATCH PARTIAL
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE, 
+  CONSTRAINT fk_tpie_firma_det__id_pie_firma FOREIGN KEY (id_pie_firma)
+    REFERENCES param.tpie_firma(id_pie_firma)
+    MATCH PARTIAL
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+WITHOUT OIDS;
+
+ALTER TABLE param.tpie_firma_det
+  ALTER COLUMN id_pie_firma SET STATISTICS 0;
+
+ALTER TABLE param.tpie_firma_det
+  ALTER COLUMN id_cargo SET STATISTICS 0;
+
+ALTER TABLE param.tpie_firma_det
+  ALTER COLUMN orden SET STATISTICS 0;
+  
+/***********************************F-SCP-MZM-PARAM-56-02/09/2019****************************************/  
