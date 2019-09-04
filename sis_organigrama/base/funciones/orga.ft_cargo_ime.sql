@@ -23,7 +23,7 @@ $body$
   ISSUE                FECHA                AUTOR                DESCRIPCION
  #0                14-01-2014                                 creacion
  #30               15-07-2019       RAC                       adiciona tipo de cargo 
- #
+ #57               04-08-2019       JUAN                      Permitir editar escala salarial 
 ***************************************************************************/
 
 DECLARE
@@ -130,7 +130,8 @@ BEGIN
               fecha_mod = now(),
               id_usuario_mod = p_id_usuario,			
               id_oficina = v_parametros.id_oficina,
-              id_tipo_cargo = v_parametros.id_tipo_cargo  --#30
+              id_tipo_cargo = v_parametros.id_tipo_cargo,  --#30
+              id_escala_salarial=v_parametros.id_escala_salarial -- #57 
 			where id_cargo=v_parametros.id_cargo;
                
 			--Definicion de la respuesta
