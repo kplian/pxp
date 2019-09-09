@@ -7,7 +7,8 @@
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
  * 	#ISSUE				FECHA				AUTOR				DESCRIPCION
  	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
- * #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables 	
+ * #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables
+ * #58 EndeEtr         05/09/2019          EGS                 Se agrega  campo id_concepto_ingas_agrupador para agrupador de concepto
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -790,6 +791,7 @@ Phx.vista.ConceptoIngas=Ext.extend(Phx.gridInterfaz,{
 		{name:'version', type: 'numeric'},///EGS/////
 		{name:'codigo', type: 'string'},///EGS/////////
 		{name:'llave_mano', type: 'string'},//#13
+        {name:'id_concepto_ingas_agrupador', type: 'string'},//#58
 		'id_grupo_ots','filtro_ot','requiere_ot',
 		'sw_autorizacion','desc_unidad_medida','id_unidad_medida',
 		'nandina','ruta_foto','id_cat_concepto','desc_cat_concepto','descripcion'

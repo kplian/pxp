@@ -8,6 +8,7 @@
 ISSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION  
   #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
   #55			02.09.2019		ETR			MZM					Adicion de campo abreviatura_titulo
+  #59 			09.09.2019		ETR			MZM					Adicion de campo profesion
  * */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -384,6 +385,22 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       		grid:true,
 	       		form:true
 	       } //#55(F)
+	    ,{//#59
+		config:{
+			fieldLabel: "Profesion",
+			gwidth: 120,
+			name: 'profesion',
+			allowBlank:true,	
+			maxLength:50,
+			minLength:5,
+			anchor:'100%'
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	}//#59 (F)
 	       	
 	],
 
@@ -417,6 +434,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	//fin #40
 	//#55 - 02.09.2019
 	,{name:'abreviatura_titulo', type: 'string'}
+	,{name:'profesion', type: 'string'} //#59 - 09.09.2019
 		],
 	sortInfo:{
 		field: 'id_persona',

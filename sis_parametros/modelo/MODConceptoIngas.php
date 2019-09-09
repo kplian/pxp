@@ -7,7 +7,8 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 	#ISSUE				FECHA				AUTOR				DESCRIPCION
  	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
-    #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables 	
+    #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables
+ *  #58 EndeEtr         05/09/2019          EGS                 Se agrega  campo id_concepto_ingas_agrupador 
  */
 
 class MODConceptoIngas extends MODbase{
@@ -55,7 +56,8 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('codigo','varchar');////EGS
 		$this->captura('llave_mano','varchar');//#13
 		$this->captura('id_taza_impuesto','integer');
-		$this->captura('descripcion','varchar');		
+		$this->captura('descripcion','varchar');
+        $this->captura('id_concepto_ingas_agrupador','int4');//#58
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -130,7 +132,6 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
 		$this->captura('sw_autorizacion','varchar');
-        
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();

@@ -9,6 +9,7 @@
  SSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION  
   #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
  #55            02-09-2019     ETR		     MZM                Adicion de campos abreviatura_titulo
+ #59 			09.09.2019		ETR			MZM					Adicion de campo profesion
  */ 
 class MODPersona extends MODbase{
 	
@@ -97,7 +98,7 @@ class MODPersona extends MODbase{
 		$this->captura('abreviatura_titulo','varchar');
 		//#55 - 02.09.2019
 		
-		//fin 02.09.2019
+		$this->captura('profesion','varchar'); //#59 - 09.09.2019
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -166,6 +167,8 @@ class MODPersona extends MODbase{
 		//#40 (fin)
 		//#55 - 02.09.2019
 		$this->setParametro('abreviatura_titulo','abreviatura_titulo','varchar');
+		
+		$this->setParametro('profesion','profesion','varchar'); //#59 - 09.09.2019
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		
@@ -208,7 +211,7 @@ class MODPersona extends MODbase{
 		//#40 (fin)
 		//#55 - 02.09.2019
 		$this->setParametro('abreviatura_titulo','abreviatura_titulo','varchar');
-		
+		$this->setParametro('profesion','profesion','varchar');//#59 - 09.09.2019 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				

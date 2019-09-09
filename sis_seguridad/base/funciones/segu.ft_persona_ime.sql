@@ -103,6 +103,8 @@ BEGIN
                                --#40 (F)
                                --#55 - 02.09.2019
                                ,abreviatura_titulo
+                               --#59
+                               ,profesion --#59 - 09.09.2019
                                
                                )
                values(
@@ -125,6 +127,8 @@ BEGIN
                       --#40(F)
                       --#55 - 02.09.2019
                       ,v_parametros.abreviatura_titulo
+                      --#59 - 09.09.2019
+                      ,v_parametros.profesion
                       )  
                         
                RETURNING id_persona INTO v_id_persona;
@@ -190,6 +194,8 @@ BEGIN
                --#40(F)
                --#55 - 02.09.2019
                ,abreviatura_titulo=v_parametros.abreviatura_titulo
+               --#59 - 09.09.2019
+               ,profesion=v_parametros.profesion
                where id_persona=v_parametros.id_persona;
               
                --v_respuesta_sinc:= segu.f_sincroniza_persona_entre_bd(v_parametros.id_persona,'10.172.0.13','5432','db_link','db_link','dbendesis','UPDATE');

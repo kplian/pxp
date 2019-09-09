@@ -1171,3 +1171,10 @@ ALTER TABLE segu.tpersona
 ALTER TABLE segu.tpersona
   ALTER COLUMN abreviatura_titulo SET DEFAULT 'Sr.';  
 /***********************************F-SCP-MZM-SEGU-55-02/09/2019*****************************************/
+
+
+/***********************************I-SCP-MZM-SEGU-59-09/09/2019*****************************************/  
+ALTER TABLE segu.tpersona
+  ADD COLUMN profesion VARCHAR(50);
+/***********************************F-SCP-MZM-SEGU-59-09/09/2019*****************************************/  
+

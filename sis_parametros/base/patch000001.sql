@@ -2619,4 +2619,21 @@ ALTER TABLE param.tpie_firma_det
   ALTER COLUMN orden SET STATISTICS 0;
   
   
-/***********************************F-SCP-MZM-PARAM-56-02/09/2019****************************************/  
+/***********************************F-SCP-MZM-PARAM-56-02/09/2019****************************************/
+/***********************************I-SCP-EGS-PARAM-6-05/09/2019****************************************/
+
+CREATE TABLE param.tconcepto_ingas_agrupador (
+  id_concepto_ingas_agrupador SERIAL,
+  nombre VARCHAR,
+  descripcion VARCHAR,
+  tipo_agrupador VARCHAR,
+  CONSTRAINT tconcepto_ingas_agrupador_pkey PRIMARY KEY(id_concepto_ingas_agrupador)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tconcepto_ingas_agrupador.tipo_agrupador
+IS 'Es el tipo al q puede pertenecer el agrupador';
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN id_concepto_ingas_agrupador INTEGER;
+/***********************************F-SCP-EGS-PARAM-6-05/09/2019****************************************/
