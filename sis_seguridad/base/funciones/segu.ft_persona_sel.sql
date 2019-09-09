@@ -158,6 +158,9 @@ BEGIN
                              --#55 - 02.09.2019
                              ,p.abreviatura_titulo
                              --#fin
+                             --#59 09.09.2019
+                             , p.profesion
+                             --#59 09.09.2019
                           FROM segu.tpersona p WHERE ';
                           
                          
