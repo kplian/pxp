@@ -132,7 +132,6 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('filtro_ot','varchar');
 		$this->captura('requiere_ot','varchar');
 		$this->captura('sw_autorizacion','varchar');
-        
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
