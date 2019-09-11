@@ -13,7 +13,9 @@
   #24           17/06/2019        RAC                 Configuracion de palntillas de grilla
   #31           16/07/2019        RAC                 Adciona codigo rcaiva, profesion y fecha quinquenio
   #51           20/08/2019        RAC                 solucion de bug al seleccionar funcionario
-*/ 
+  #60   ETR        10/09/2019        MMV              Histórico código de empleado
+
+ */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -600,6 +602,15 @@ Phx.vista.funcionario=function(config){
             handler: this.onBtnDependientes,
             tooltip: 'Dependientes del Empleado'
         });   //#41 (F)
+    //#60(I)
+    this.addButton('btnCodigoFuncionario',
+        {
+            text: 'Codigos Funcionario',
+            iconCls: 'bfolder',
+            disabled: false,
+            handler: this.onBtnCodigoFuncionario,
+            tooltip: 'Historico codigo funcionario'
+        });   //#60 (F)
 	this.init();
 
 	//f.e.a(eventos recientes)
@@ -774,12 +785,26 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
                     this.idContenedor,
                     'PersonaRelacion');
 	},//#41 (F)
+    // #60 (I)
+	onBtnCodigoFuncionario: function(){
+			var rec = {maestro: this.sm.getSelected().data} ;
+            Phx.CP.loadWindows('../../../sis_organigrama/vista/codigo_funcionario/CodigoFuncionario.php',
+                    'Codigos Funcionario',
+                    {
+                        width:700,
+                        height:450
+                    },
+                    rec,
+                    this.idContenedor,
+                    'CodigoFuncionario');
+	},//#60 (F)
 		
 	preparaMenu:function()
     {	
         this.getBoton('btnCuenta').enable();
         this.getBoton('btnFunEspecialidad').enable();      
         this.getBoton('archivo').enable();
+        this.getBoton('btnCodigoFuncionario').enable();
         Phx.vista.funcionario.superclass.preparaMenu.call(this);
     },
     liberaMenu:function()
@@ -787,6 +812,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
         this.getBoton('btnCuenta').disable();
         this.getBoton('btnFunEspecialidad').disable();       
         this.getBoton('archivo').disable();
+        this.getBoton('btnCodigoFuncionario').disable();
         Phx.vista.funcionario.superclass.liberaMenu.call(this);
     },
 
