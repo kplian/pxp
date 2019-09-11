@@ -990,6 +990,23 @@ IS 'carga horaria mensual, tiempo completo 240 por defecto';
 ALTER TABLE orga.ttipo_cargo
   ADD COLUMN id_tipo_contrato INTEGER;
 /*****************************F-SCP-EGS-ORGA-01-05/08/2019*************/
+/*****************************I-SCP-MMV-ORGA-60-10/09/2019*************/
+CREATE TABLE orga.tcodigo_funcionario (
+  id_codigo_funcionario SERIAL NOT NULL,
+  codigo VARCHAR(20) NOT NULL UNIQUE,
+  id_funcionario INTEGER NOT NULL,
+  fecha_asignacion DATE NOT NULL,
+  fecha_finalizacion DATE,
+  PRIMARY KEY(id_codigo_funcionario)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+ALTER TABLE orga.tcodigo_funcionario
+  ALTER COLUMN id_codigo_funcionario SET STATISTICS 0;
+
+ALTER TABLE orga.tcodigo_funcionario
+  ALTER COLUMN codigo SET STATISTICS 0;
+/*****************************F-SCP-MMV-ORGA-60-10/09/2019*************/
 
 
 
