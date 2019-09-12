@@ -7,26 +7,31 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
   ISSUE			AUTHOR			FECHA				DESCRIPCION
  * #39 ETR		EGS				31/07/2019			Creacion
+ * #61          Egs             12/09/2019          Bug con el puntero e columnas dinamicas
  */
 
 class ACTConceptoIngasDet extends ACTbase{    
 			
 	function listarConceptoIngasDet(){
+        $this->objParam->defecto('ordenacion','id_concepto_ingas_det');
+
+        //guardamos las los parmetros originales de la consulta
         $ordenacion=$this->objParam->parametros_consulta['ordenacion'];
         $dir_ordenacion= $this->objParam->parametros_consulta['dir_ordenacion'];
-        $this->objParam->parametros_consulta['ordenacion'] = 'nombre_columna';
-        $this->objParam->parametros_consulta['dir_ordenacion'] = 'ASC';
-
-        $this->objFunc=$this->create('MODColumna');
-
+        $puntero   = $this->objParam->parametros_consulta['puntero'];//#61
+        //seteamos los parmetros para recuperar las columnas originales
+        $this->objParam->parametros_consulta['ordenacion'] = 'nombre_columna';//#61
+        $this->objParam->parametros_consulta['dir_ordenacion'] = 'ASC';//#61
+        $this->objParam->parametros_consulta['puntero'] = '0';//#61
+        $this->objFunc=$this->create('MODColumna');//#61
         $this->res=$this->objFunc->listarColumna($this->objParam);
         $datos = $this->res->datos;
+        //añadimos las columnas dinamicas como un parametro
         $this->objParam->addParametro('columnas',$datos);
-
-        //var_dump('$this->objParam',$this->objParam);
-        $this->objParam->defecto('ordenacion','id_concepto_ingas_det');
-        $this->objParam->parametros_consulta['ordenacion'] = $ordenacion;
-        $this->objParam->parametros_consulta['dir_ordenacion']=$dir_ordenacion;
+        //recuperamos los parametros originales de la consulta
+        $this->objParam->parametros_consulta['ordenacion'] = $ordenacion;//#61
+        $this->objParam->parametros_consulta['dir_ordenacion']=$dir_ordenacion;//#61
+        $this->objParam->parametros_consulta['puntero'] = $puntero;//#61
         if($this->objParam->getParametro('id_concepto_ingas')!='' ){
             $this->objParam->addFiltro("coind.id_concepto_ingas = ".$this->objParam->getParametro('id_concepto_ingas'));
         }
@@ -47,7 +52,7 @@ class ACTConceptoIngasDet extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-				
+
 	function insertarConceptoIngasDet(){
 
         $ordenacion=$this->objParam->parametros_consulta['ordenacion'];
