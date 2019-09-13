@@ -1151,7 +1151,7 @@ class ReportePDF extends MYPDF
 	/*	#ISSUE				FECHA				AUTOR				DESCRIPCION
  		#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion para manejo de reporte multilinea	
  	*/
- function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=2.5, $align='R') {
+ function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=2.5, $align='R',$tam_letra=7) {
 		//var_dump ($datas); exit;
 		$ancho_uti=0;
 		$id_break=$datas[0];
@@ -1170,9 +1170,9 @@ class ReportePDF extends MYPDF
 				$cont=0;
 				
 				if($datas[$i+3]=='B'){
-					$this->SetFont('','B',7);
+					$this->SetFont('','B',$tam_letra);
 				}else{
-					$this->SetFont('','',7);
+					$this->SetFont('','',$tam_letra);
 				}
 				
 				
