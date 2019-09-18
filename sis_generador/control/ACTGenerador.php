@@ -1,4 +1,10 @@
 <?php
+/**
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #64				18-09-2019 			EGS					se añade historial de modificaciones EN COMENTARIOS en generador de archivos
+
+*/
 class ACTGenerador extends ACTbase{ 
 
 	private $objCol;
@@ -1435,7 +1441,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 			}
 			
 			
-		} elseif($pTipo=='php'){
+		} elseif($pTipo=='php'){ //#64
 			$comentario=
 '/**
 *@package pXP
@@ -1443,10 +1449,14 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 *@author '.$this->aut.' ('.$_SESSION["_LOGIN"].')
 *@date '.date("d-m-Y H:i:s").'
 *@description '.$pDescripcion.'
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #0				'.date("d-m-Y H:i:s").'				'.$this->aut.'				CREACION
+
 */
 ';
 			
-		} elseif($pTipo=='js'){
+		} elseif($pTipo=='js'){ //#64
 			$comentario=
 '/**
 *@package pXP
@@ -1454,6 +1464,10 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
 *@author '.$this->aut.' ('.$_SESSION["_LOGIN"].')
 *@date '.date("d-m-Y H:i:s").'
 *@description '.$pDescripcion.'
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #0				'.date("d-m-Y").'				'.$this->aut.' ('.$_SESSION["_LOGIN"].')				CREACION	
+
 */
 ';
 		}
