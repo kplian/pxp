@@ -8,6 +8,7 @@
 * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
 *	#3				EGS					03/12/2018				se aumento funcion para solo mostrar estrucutura gui y insert gui activos visibles
 																se agrego las funciones que solo exporte procedimientos ,funciones y roles
+    #63             EGS                 16/09/2019              filtro por codigo e id de subsistemas
  */
 class ACTSubsistema extends ACTbase{    
 
@@ -16,7 +17,12 @@ class ACTSubsistema extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','codigo');
 		$this->objParam->defecto('dir_ordenacion','asc');
-				
+        if($this->objParam->getParametro('codigo')!=''){//#63
+            $this->objParam->addFiltro("subsis.codigo = ''".$this->objParam->getParametro('codigo')."''");
+        }
+        if($this->objParam->getParametro('id_subsistema')!=''){//#63
+            $this->objParam->addFiltro("subsis.id_subsistema = ''".$this->objParam->getParametro('id_subsistema')."''");
+        }
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);
 			$this->res=$this->objReporte->generarReporteListado('MODSubsistema','listarSubsistema');
