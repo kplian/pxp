@@ -5,6 +5,8 @@
 *@author    (admin)
 *@date      16-11-2012 17:01:40a
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ * * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+ *     #63             EGS                 16/09/2019              filtro por id_catalogo_tipo
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -65,7 +67,7 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
                     fields: ['id_subsistema','nombre','codigo'],
                     // turn on remote sorting
                     remoteSort: true,
-                    baseParams:{par_filtro:'nombre#codigo'}
+                    baseParams:{par_filtro:'id_subsistema#nombre#codigo'}
                 }),
                 valueField: 'id_subsistema',
                 displayField: 'nombre',
@@ -106,7 +108,7 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 					id: 'id_catalogo_tipo',
 					root: 'datos',
 					sortInfo: {
-						field: 'nombre',
+						field: 'pacati.nombre',//#63
 						direction: 'ASC'
 					},
 					totalProperty: 'total',
@@ -114,7 +116,7 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 					// turn on remote sorting
 					remoteSort: true,
 					baseParams: {
-						par_filtro: 'nombre'
+						par_filtro: 'pacati.id_catalogo_tipo#pacati.nombre'//#63
 					}
 				}),
 				valueField: 'id_catalogo_tipo',
@@ -134,7 +136,7 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 			type: 'ComboBox',
 			id_grupo: 1,
 			filters: {
-				pfiltro: 'nombre',
+				pfiltro: 'pacati.nombre',
 				type: 'string'
 			},
 			grid: true,

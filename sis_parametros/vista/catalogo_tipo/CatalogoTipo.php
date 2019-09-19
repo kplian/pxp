@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 27-11-2012 23:32:44
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ * * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+ *     #63             EGS                 16/09/2019              filtro por id_subsistema
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -75,7 +77,7 @@ Phx.vista.CatalogoTipo=Ext.extend(Phx.gridInterfaz,{
 					fields: ['id_subsistema','nombre','codigo'],
 					// turn on remote sorting
 					remoteSort: true,
-					baseParams:{par_filtro:'nombre'}
+					baseParams:{par_filtro:'subsis.id_subsistema#subsis.nombre'}//#63
 				}),
 				valueField: 'id_subsistema',
 				displayField: 'codigo',

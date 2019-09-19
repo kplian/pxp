@@ -5,7 +5,9 @@
 *@author  (admin)
 *@date 16-11-2012 17:01:40
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
-*/
+ * * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+ *     #63             EGS                 16/09/2019              filtro por id_catalogo_tipo
+ */
 
 class ACTCatalogo extends ACTbase{    
 			
@@ -15,6 +17,9 @@ class ACTCatalogo extends ACTbase{
 
 		if($this->objParam->getParametro('catalogoTipo')!=''){
             $this->objParam->addFiltro("cattip.nombre = ''".$this->objParam->getParametro('catalogoTipo')."''");
+        }
+        if($this->objParam->getParametro('id_catalogo_tipo')!=''){//#63
+            $this->objParam->addFiltro("cattip.id_catalogo_tipo = ''".$this->objParam->getParametro('id_catalogo_tipo')."''");
         }
 		
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
