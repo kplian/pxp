@@ -8,7 +8,9 @@
  *  HISTORIAL DE MODIFICACIONES:
     #ISSUE                FECHA                AUTOR                DESCRIPCION
     #46                05/08/2019              EGS                 e agrega campo id_contrato
-*/
+    #70 etr        25/09/2019              	MMV                 Nueva campo factor nocturno
+
+ */
 
 class MODTipoCargo extends MODbase{
 	
@@ -44,6 +46,7 @@ class MODTipoCargo extends MODbase{
 		$this->captura('desc_escmax','text');
 		$this->captura('id_tipo_contrato','int4');//#46
         $this->captura('desc_tipo_contrato','varchar');//#46
+        $this->captura('factor_nocturno','numeric'); //#70
 
 		
 		
@@ -70,7 +73,7 @@ class MODTipoCargo extends MODbase{
 		$this->setParametro('factor_disp','factor_disp','numeric');
 		$this->setParametro('obs','obs','varchar');
 		$this->setParametro('id_tipo_contrato','id_tipo_contrato','int4');//#46
-
+        $this->setParametro('factor_nocturno','factor_nocturno','numeric'); //#46
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -95,6 +98,7 @@ class MODTipoCargo extends MODbase{
 		$this->setParametro('factor_disp','factor_disp','numeric');
 		$this->setParametro('obs','obs','varchar');
 		$this->setParametro('id_tipo_contrato','id_tipo_contrato','int4');//#46
+        $this->setParametro('factor_nocturno','factor_nocturno','numeric'); //#46
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
