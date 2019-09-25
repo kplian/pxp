@@ -3,7 +3,8 @@
 /*	CONTROL CAMBIOS 
  * #ISSUE				FECHA				AUTOR				DESCRIPCION
  	#22	EndeEtr		 06-06-2019 			MZM KPLIAN		Adicion de funcion grillaDatos para manejo de reporte multilinea
- *  #24 ETR         25/06/2019              RAC KPLIAN      Se considera agrupadores al exportar a PDF 	
+ *  #24 ETR         25/06/2019              RAC KPLIAN      Se considera agrupadores al exportar a PDF
+ * #69	ETR			25.09.2019				MZM				Ajuste de espacio al cambio de hoja 	
 */
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
@@ -1176,7 +1177,6 @@ class ReportePDF extends MYPDF
 				}
 				
 				
-				
 				if($id_break!=$datas[$i]){
 					$num_grupo++;
 					
@@ -1185,7 +1185,7 @@ class ReportePDF extends MYPDF
 					if ($this->GetY()+$alto_grupo+$dimensions['bm']> $dimensions['hk']){
 						
 						$this->AddPage();
-						
+						$this->SetY($this->GetY()-5);//#69
 					}
 					$cont=0;
 					if($datas[$i+1]>0){
