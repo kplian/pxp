@@ -10,6 +10,7 @@
  #30                15-07-2019          RAC                 creacion    
  #46                05/08/2019              EGS                 e agrega campo id_contrato
  #70 etr        25/09/2019              	MMV                 Nueva campo factor nocturno
+#70 etr        25/09/2019              	MMV                 correccion bug formulario
 
  */
 
@@ -78,7 +79,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				}),
 				valueField: 'id_tipo_contrato',
 				displayField: 'nombre',
-				gdisplayField: 'nombre_tipo_contrato',
+				gdisplayField: 'desc_tipo_contrato', //#70
 				hiddenName: 'id_tipo_contrato',
 				forceSelection: true,
 				typeAhead: false,
