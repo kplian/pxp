@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_empresa_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -20,7 +18,9 @@ $body$
 
  DESCRIPCION:	
  AUTOR:			
- FECHA:		
+ FECHA:	
+  ISSUE 	FORK		FECHA			AUTHOR			DESCRIPCION
+   #67		ETR			19.09.2019		MZM				Adicion de campo tipo_abono para reporte abono en cuenta
 ***************************************************************************/
 
 DECLARE
@@ -59,6 +59,7 @@ BEGIN
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
                         emp.codigo	
+                        ,emp.codigo_bnb --#67
 						from param.tempresa emp
 						inner join segu.tusuario usu1 on usu1.id_usuario = emp.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = emp.id_usuario_mod
@@ -115,7 +116,4 @@ EXCEPTION
 END;
 $body$
 LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+;

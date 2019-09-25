@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 04-02-2013 16:03:19
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+ * ISSUE 	FORK		FECHA			AUTHOR			DESCRIPCION
+ *#67		ETR			19.09.2019		MZM				Adicion de campo tipo_abono para reporte abono en cuentas 
 */
 
 class MODEmpresa extends MODbase{
@@ -33,7 +35,7 @@ class MODEmpresa extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('codigo','varchar');
-		
+		$this->captura('codigo_bnb','varchar');//#67
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		
@@ -56,7 +58,7 @@ class MODEmpresa extends MODbase{
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('nit','nit','varchar');
 		$this->setParametro('codigo','codigo','varchar');
-
+		$this->setParametro('codigo_bnb','codigo_bnb','varchar');//#67
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -78,7 +80,7 @@ class MODEmpresa extends MODbase{
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('nit','nit','varchar');
 		$this->setParametro('codigo','codigo','varchar');
-		
+		$this->setParametro('codigo_bnb','codigo_bnb','varchar');//#67
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
