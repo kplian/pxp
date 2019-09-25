@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION param.f_empresa_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -21,6 +19,8 @@ $body$
  DESCRIPCION:	
  AUTOR:			
  FECHA:		
+  ISSUE 	FORK		FECHA			AUTHOR			DESCRIPCION
+   #67		ETR			19.09.2019		MZM				Adicion de campo tipo_abono para reporte abono en cuenta
 ***************************************************************************/
 
 DECLARE
@@ -60,6 +60,7 @@ BEGIN
 			id_usuario_mod,
 			fecha_mod,
             codigo
+            ,codigo_bnb--#67
           	) values(
 			'activo',
 		
@@ -70,6 +71,7 @@ BEGIN
 			null,
 			null,
             v_parametros.codigo
+            ,v_parametros.codigo_bnb--#67
 							
 			)RETURNING id_empresa into v_id_empresa;
 			
@@ -100,6 +102,7 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
             codigo=v_parametros.codigo
+            ,codigo_bnb=v_parametros.codigo_bnb--#67
 			where id_empresa=v_parametros.id_empresa;
                
 			--Definicion de la respuesta
@@ -217,8 +220,4 @@ EXCEPTION
 				        
 END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+LANGUAGE 'plpgsql';

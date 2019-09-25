@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 04-02-2013 16:03:19
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+*#67		ETR			19.09.2019		MZM				Adicion de campo tipo_abono para reporte abono en cuentas
+ *  
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -113,6 +115,20 @@ Phx.vista.Empresa=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:false
+		},{//#67
+			config:{
+				name: 'codigo_bnb',
+				fieldLabel: 'Codigo BNB',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:150
+			}, 
+			type:'TextField',
+			filters:{pfiltro:'emp.codigo_bnb',type:'string'},
+			id_grupo:1,
+			grid:true,
+			form:true
 		},
 		{
 			config:{
@@ -219,7 +235,8 @@ Phx.vista.Empresa=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'codigo'
+		{name:'usr_mod', type: 'string'},'codigo',
+		{name:'codigo_bnb', type: 'string'}//#67
 		
 	],
 	sortInfo:{
