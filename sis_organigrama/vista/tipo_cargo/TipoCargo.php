@@ -9,7 +9,9 @@
 #ISSUE                FECHA                AUTOR                DESCRIPCION
  #30                15-07-2019          RAC                 creacion    
  #46                05/08/2019              EGS                 e agrega campo id_contrato
-*/
+ #70 etr        25/09/2019              	MMV                 Nueva campo factor nocturno
+
+ */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -240,6 +242,22 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+        {
+			config:{
+				name: 'factor_nocturno',
+				fieldLabel: 'Factor Nocturno',
+				qtip: 'Factor de nocturno de 0 a 1',
+				decimalPrecision:4,
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100
+				},
+				type:'NumberField',
+				filters:{pfiltro:'tcar.factor_nocturno',type:'numeric'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
 		{
 			config:{
 				name: 'obs',
@@ -387,7 +405,8 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},'desc_escmim','desc_escmax',
 		{name:'id_tipo_contrato', type: 'numeric'},//#46
-        {name:'desc_tipo_contrato', type: 'string'},//#46
+        {name:'desc_tipo_contrato', type: 'string'},//
+        {name:'factor_nocturno', type: 'numeric'}//#70
 
     ],
 	sortInfo:{

@@ -1007,6 +1007,16 @@ ALTER TABLE orga.tcodigo_funcionario
 ALTER TABLE orga.tcodigo_funcionario
   ALTER COLUMN codigo SET STATISTICS 0;
 /*****************************F-SCP-MMV-ORGA-60-10/09/2019*************/
+/*****************************I-SCP-MMV-ORGA-70-25/09/2019*************/
+ALTER TABLE orga.ttipo_cargo
+  ADD COLUMN factor_nocturno NUMERIC;
+
+ALTER TABLE orga.ttipo_cargo
+  ALTER COLUMN factor_nocturno SET DEFAULT 0;
+
+COMMENT ON COLUMN orga.ttipo_cargo.factor_nocturno
+IS 'entre 0 a 1';
+/*****************************F-SCP-MMV-ORGA-70-25/09/2019*************/
 
 
 

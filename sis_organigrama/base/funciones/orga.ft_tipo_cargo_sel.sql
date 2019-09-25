@@ -19,6 +19,7 @@ $body$
  #30                15-07-2019 19:39:12                                Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'orga.ttipo_cargo'
  #46                05/08/2019              EGS                 Se agrega campo id_contrato
  #52 endeEtr        20/08/2019              EGS                 Se arregla la paginacion en el count
+ #70 etr        25/09/2019              	MMV                 Nueva campo factor nocturno
  ***************************************************************************/
 
 DECLARE
@@ -64,7 +65,8 @@ BEGIN
                         COALESCE(escmin.codigo||''- ''||escmin.nombre||'' (''||escmin.haber_basico||'')'','''')  as desc_escmim ,
                         escmax.codigo||''- ''||escmax.nombre||'' (''||escmax.haber_basico||'')''  as desc_escmax ,
                         TCAR.id_tipo_contrato,--#46
-                        tc.nombre as desc_tipo_contrato  --#46
+                        tc.nombre as desc_tipo_contrato,  --#46
+                        TCAR.factor_nocturno --#70
                         from orga.ttipo_cargo TCAR
                         inner join segu.tusuario usu1 on usu1.id_usuario = TCAR.id_usuario_reg
                         left join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min
@@ -130,3 +132,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION orga.ft_tipo_cargo_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

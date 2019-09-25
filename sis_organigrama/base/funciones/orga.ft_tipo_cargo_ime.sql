@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_tipo_cargo_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -14,12 +12,14 @@ $body$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'orga.ttipo_cargo'
  AUTOR:          (rarteaga)
  FECHA:            15-07-2019 19:39:12
- COMENTARIOS:    
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #30                15-07-2019 19:39:12                                Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'orga.ttipo_cargo'    
+ #30                15-07-2019 19:39:12                                Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'orga.ttipo_cargo'
  #46                05/08/2019              EGS                 e agrega campo id_contrato
+ #70 etr        25/09/2019              	MMV                 Nueva campo factor nocturno
+
  ***************************************************************************/
 
 DECLARE
@@ -81,7 +81,8 @@ BEGIN
               usuario_ai,
               id_usuario_mod,
               fecha_mod,
-              id_tipo_contrato --#46
+              id_tipo_contrato, --#46
+              factor_nocturno --#70
               ) values(
               'activo',
               v_parametros.codigo,
@@ -96,8 +97,8 @@ BEGIN
               v_parametros._nombre_usuario_ai,
               null,
               null,
-              v_parametros.id_tipo_contrato --#46
-
+              v_parametros.id_tipo_contrato, --#46
+              v_parametros.factor_nocturno --#70
             )RETURNING id_tipo_cargo into v_id_tipo_cargo;
 
             --Definicion de la respuesta
@@ -147,22 +148,23 @@ BEGIN
               fecha_mod = now(),
               id_usuario_ai = v_parametros._id_usuario_ai,
               usuario_ai = v_parametros._nombre_usuario_ai,
-              id_tipo_contrato = v_parametros.id_tipo_contrato --#46
+              id_tipo_contrato = v_parametros.id_tipo_contrato, --#46
+              factor_nocturno = v_parametros.factor_nocturno --#70
             where id_tipo_cargo=v_parametros.id_tipo_cargo;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Cargo modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Cargo modificado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cargo',v_parametros.id_tipo_cargo::varchar);
-               
+
             --Devuelve la respuesta
             return v_resp;
-            
+
         end;
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'OR_TCAR_ELI'
      #DESCRIPCION:    Eliminacion de registros
-     #AUTOR:        rarteaga    
+     #AUTOR:        rarteaga
      #FECHA:        15-07-2019 19:39:12
     ***********************************/
 
@@ -172,31 +174,31 @@ BEGIN
             --Sentencia de la eliminacion
             delete from orga.ttipo_cargo
             where id_tipo_cargo=v_parametros.id_tipo_cargo;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Cargo eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Cargo eliminado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cargo',v_parametros.id_tipo_cargo::varchar);
-              
+
             --Devuelve la respuesta
             return v_resp;
 
         end;
-         
+
     else
-     
+
         raise exception 'Transaccion inexistente: %',p_transaccion;
 
     end if;
 
 EXCEPTION
-                
+
     WHEN OTHERS THEN
         v_resp='';
         v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
         v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
         v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
         raise exception '%',v_resp;
-                        
+
 END;
 $body$
 LANGUAGE 'plpgsql'
@@ -204,3 +206,6 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+
+ALTER FUNCTION orga.ft_tipo_cargo_ime (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;
