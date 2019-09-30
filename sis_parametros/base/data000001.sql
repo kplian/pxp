@@ -504,14 +504,14 @@ select pxp.f_insert_tgui ('Tazas Impuestos', 'Tazas Impuestos', 'TZIMP', 'si', 2
 
 /***********************************F-DAT-MANU-PARAM-1-25/07/2019*****************************************/
 /***********************************I-DAT-EGS-PARAM-2-30/09/2019*****************************************/
-INSERT INTO param.tunidad_medida ("id_usuario_reg", "estado_reg", "codigo", "descripcion", "tipo")
+INSERT INTO param.tunidad_medida ("id_usuario_reg","estado_reg", "codigo", "descripcion", "tipo")
 VALUES
   (1, E'activo', E'dia', E'Días', E'Tiempo'),
   (1, E'activo', E'ha', E'Hectárea', E'Longitud'),
   (1, E'activo', E'm3', E'Metro cúbico', E'Longitud'),
   (1, E'activo', E'Gbl', E'Global', E'Longitud'),
   (1, E'activo', E'm2', E'Metro cuadrado', E'Longitud'),
-  (1, E'activo', E'ml', E'Mililitro', E'Longitud');
+  (1, E'activo', E'ml', E'Mililitro', E'Longitud'),
   (1, E'activo', E'Est', E'Estructuras', E'Masa'),
   (1, E'activo', E'puntos', E'Puntos', E'Masa');
 /***********************************F-DAT-EGS-PARAM-2-30/09/2019*****************************************/
