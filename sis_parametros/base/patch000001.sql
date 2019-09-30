@@ -2637,3 +2637,13 @@ IS 'Es el tipo al q puede pertenecer el agrupador';
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN id_concepto_ingas_agrupador INTEGER;
 /***********************************F-SCP-EGS-PARAM-6-05/09/2019****************************************/
+
+/***********************************I-SCP-MZM-PARAM-67-23/09/2019****************************************/
+ALTER TABLE param.tempresa
+  ADD COLUMN codigo_bnb VARCHAR(6);
+/***********************************F-SCP-MZM-PARAM-67-23/09/2019****************************************/
+
+/***********************************I-SCP-MPGM-PARAM-0-30/09/2019*****************************************/
+ALTER TABLE param.tcorrelativo
+  ADD COLUMN simple INTEGER;
+/***********************************F-SCP-MPGM-PARAM-0-30/09/2019*****************************************/
