@@ -1469,3 +1469,8 @@ ALTER TABLE param.tpie_firma_det
 ALTER TABLE param.tempresa
   ADD COLUMN codigo_bnb VARCHAR(6);
 /***********************************F-DEP-MZM-PARAM-67-23/09/2019****************************************/
+
+/***********************************I-DEP-MPGM-PARAM-0-30/09/2019*****************************************/
+ALTER TABLE param.tcorrelativo
+  ADD COLUMN simple INTEGER;
+/***********************************F-DEP-MPGM-PARAM-0-30/09/2019*****************************************/
