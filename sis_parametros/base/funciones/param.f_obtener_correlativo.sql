@@ -1,9 +1,6 @@
 --------------- SQL ---------------
 
- -- object recreation
-DROP FUNCTION param.f_obtener_correlativo(par_codigo_documento varchar, par_id integer, par_id_uo integer, par_id_depto integer, par_id_usuario integer, par_codigo_subsistema varchar, par_formato varchar, par_digitos_periodo integer, par_digitos_correlativo integer, par_tabla varchar, par_id_tabla integer, par_cod_tabla varchar, par_id_empresa integer, par_saltar_inicio varchar, par_forzar_inicio varchar, par_simple integer, par_simple_uo integer);
-
-CREATE FUNCTION param.f_obtener_correlativo (
+CREATE OR REPLACE FUNCTION param.f_obtener_correlativo (
   par_codigo_documento varchar,
   par_id integer,
   par_id_uo integer,
@@ -472,6 +469,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
-ALTER FUNCTION "param"."f_obtener_correlativo"(par_codigo_documento varchar, par_id integer, par_id_uo integer, par_id_depto integer, par_id_usuario integer, par_codigo_subsistema varchar, par_formato varchar, par_digitos_periodo integer, par_digitos_correlativo integer, par_tabla varchar, par_id_tabla integer, par_cod_tabla varchar, par_id_empresa integer, par_saltar_inicio varchar, par_forzar_inicio varchar, par_simple integer)
-  OWNER TO postgres;

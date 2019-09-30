@@ -10,7 +10,7 @@
 #HISTORIAL DE MODIFICACIONES:
 #ISSUE          FECHA        AUTOR        DESCRIPCION
 #4      		31/07/2019   MCGH         Adición del tipo de correspondencia "Todos"
-#72      		30/09/2019   Manuel Guerra        Agregar tipo de correlativo	
+#72      		30/09/2019   Manuel Guerra        Agregar tipo de correlativo 	
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 
