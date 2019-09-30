@@ -7,8 +7,13 @@
 *@description  Vista para mostrar los departamentos
 */
 
+#HISTORIAL DE MODIFICACIONES:
+#ISSUE          FECHA        AUTOR        DESCRIPCION
+#4      		31/07/2019   MCGH         Adición del tipo de correspondencia "Todos"
+#72      		30/09/2019   Manuel Guerra        Agregar tipo de correlativo 	
 header("content-type: text/javascript; charset=UTF-8");
 ?>
+
 <script>
 Phx.vista.Documento=function(config){
 	
@@ -136,6 +141,7 @@ Phx.vista.Documento=function(config){
 	        	data :	[['depto','Departamento'],	
 	        			['uo','Unidad'],
 	        			['depto_uo','Depto-Unidad'],
+	        			['simple','Simple'],
 						['tabla','Tabla']]	        				
 	    		}),
 				valueField:'ID',
@@ -162,7 +168,8 @@ Phx.vista.Documento=function(config){
 	        	fields: ['ID', 'valor'],
 	        	data :	[['interna','Interna'],	
 	        			['entrante','Entrante'],
-	        			['saliente','Saliente']]
+	        			['saliente','Saliente'],
+                        ['todos','Todos']] //#4
 	        				
 	    		}),
 				valueField:'ID',
@@ -402,11 +409,13 @@ Ext.extend(Phx.vista.Documento,Phx.gridInterfaz,{
 			
 			var data = this.getSelectedData();
 			Phx.vista.Documento.superclass.onButtonEdit.call(this);
-			
-			if(data.codigo=='CORRES'){
-                
+            //var id_subsistema = this.sm.getSelected().data.id_subsistema;
+            alert (data.codigo);
+			//if(data.codigo=='CORRES'){
+            if(data.id_subsistema==7){
                 this.getComponente('tipo').enable();
                 this.getComponente('tipo').show();
+                this.mostrarComponente(this.Cmp.tipo);
             }
             else{
                 this.getComponente('tipo').disable();
