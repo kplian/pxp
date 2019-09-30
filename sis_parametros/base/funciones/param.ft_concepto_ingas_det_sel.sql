@@ -20,6 +20,7 @@ $body$
 #ISSUE                FECHA                 AUTOR                DESCRIPCION
 #39 ETR               EGS                   31/07/2019           Creacion #
 #48 ETR               EGS                   14/08/2019           Se Creo la logica para columnas dinamicas   y se creo solo el combo
+#71 ETR               EGS                   30/09/2019           columnas ariables deacuerdo a la columna dinamica
  ***************************************************************************/
 
 DECLARE
@@ -39,6 +40,8 @@ DECLARE
     v_count                 integer;
     v_count_value           integer;
     v_valor                 varchar;
+    v_join                  varchar;--#71
+    v_columna_ext           varchar;--#71
 
 BEGIN
 
@@ -57,7 +60,7 @@ BEGIN
         begin
             v_columnas_extra = '';
             v_columnas_extra_sel ='';
-
+            v_join = '';
             FOR v_record IN(
                 SELECT
                      cl.nombre_columna,
@@ -67,6 +70,12 @@ BEGIN
             )LOOP
                 v_columnas_extra = v_columnas_extra||v_record.nombre_columna||'  '|| v_record.tipo_dato||',';
                 v_columnas_extra_sel = v_columnas_extra_sel||'coind.'||v_record.nombre_columna||',';
+                IF v_record.nombre_columna = 'id_unidad_medida' THEN--#71
+                    v_join = 'left join param.tunidad_medida um on um.id_unidad_medida = coind.id_unidad_medida ';
+                    v_columna_ext = 'um.codigo as desc_unidad,';
+                END IF;
+
+
             END LOOP;
                 v_columnas_extra_sel = SUBSTRING (v_columnas_extra_sel,1,length(v_columnas_extra_sel) - 1);
             v_consulta ='CREATE TEMPORARY TABLE temp_t_concepto_ingas_det(
@@ -227,11 +236,13 @@ BEGIN
                         coind.agrupador,
                         coind.id_concepto_ingas_det_fk,
                         cid.nombre as desc_agrupador,
+                        '||COALESCE(v_columna_ext,'')||'--#71
                         '||COALESCE(v_columnas_extra_sel,'')||'
                         from temp_t_concepto_ingas_det coind
                         inner join segu.tusuario usu1 on usu1.id_usuario = coind.id_usuario_reg
                         left join segu.tusuario usu2 on usu2.id_usuario = coind.id_usuario_mod
                         left join param.tconcepto_ingas_det cid on cid.id_concepto_ingas_det = coind.id_concepto_ingas_det_fk
+                        '||COALESCE(v_join,'')||'
                         where  ';
 
             --Definicion de la respuesta

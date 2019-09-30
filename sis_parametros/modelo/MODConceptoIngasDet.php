@@ -7,6 +7,7 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
   ISSUE			AUTHOR			FECHA				DESCRIPCION
  * #39 ETR		EGS				31/07/2019			Creacion
+ * #71          EGS             30/09/2019          columnas ariables deacuerdo a la columna dinamica
  * */
 
 class MODConceptoIngasDet extends MODbase{
@@ -42,7 +43,13 @@ class MODConceptoIngasDet extends MODbase{
         $this->captura('agrupador','varchar');
         $this->captura('id_concepto_ingas_det_fk','int4');
         $this->captura('desc_agrupador','varchar');
+
         $datos = $this->objParam->getParametro('columnas');
+        for($i= 0 ; $i< count($datos,0);$i++){//#71
+            if ($datos[$i]['nombre_columna'] == 'id_unidad_medida'){
+                $this->captura('desc_unidad','varchar');
+            }
+        }
         //añadiendo columnas dinamicas
         for($i= 0 ; $i< count($datos,0);$i++){
             $this->captura(''.$datos[$i]['nombre_columna'].'',''.$datos[$i]['tipo_dato'].'');
