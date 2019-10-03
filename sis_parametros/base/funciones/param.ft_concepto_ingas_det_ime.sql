@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_concepto_ingas_det_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -15,8 +17,8 @@ $body$
  COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-  ISSUE			AUTHOR			FECHA				DESCRIPCION
-  #39 ETR		EGS				31/07/2019			Creacion #
+  ISSUE            AUTHOR            FECHA                DESCRIPCION
+  #39 ETR        EGS                31/07/2019            Creacion #
   #48           EGS             14/08/2019          Se Agrego columnas dinamicas relacionadas a otros sistemas(proyectos)
  ***************************************************************************/
 
@@ -103,6 +105,7 @@ BEGIN
                     IF v_columna.tipo_dato = 'varchar' or v_columna.tipo_dato = 'text' or v_columna.tipo_dato = 'date' or v_columna.tipo_dato = 'timestamp'  THEN
                             v_valor = COALESCE(''''||v_valor::VARCHAR||'''','null');
                     ELSE
+                            v_valor = COALESCE(v_valor::VARCHAR,'null');
 
                         if (v_valor ~ '^[0-9]*.?[0-9]*$') then
                             --RAISE EXCEPTION 'es numero';
@@ -167,7 +170,9 @@ BEGIN
                FROM param.tcolumna cl
                order by cl.nombre_columna asc
            )LOOP
+                RAISE notice 'v_consulta %',v_columna.nombre_columna;
                 IF pxp.f_existe_parametro(p_tabla,v_columna.nombre_columna) THEN
+
                     SELECT
                         cl.id_columna,
                         LOWER(cl.tipo_dato) as tipo_dato
@@ -175,9 +180,10 @@ BEGIN
                         v_record_columna
                     FROM param.tcolumna cl
                     WHERE lower(cl.nombre_columna) = lower(v_columna.nombre_columna) ;
-                    v_consulta = 'select '||v_columna.nombre_columna||' from '||p_tabla||' limit 1';
-                    EXECUTE v_consulta into v_valor;
 
+                    v_consulta = 'select '||v_columna.nombre_columna||' from '||p_tabla||' limit 1';
+
+                    EXECUTE v_consulta into v_valor;
 
                     SELECT
                         cld.id_columna_concepto_ingas_det
@@ -188,13 +194,17 @@ BEGIN
 
                     IF v_record_columna.tipo_dato = 'varchar' or v_record_columna.tipo_dato = 'text' or v_columna.tipo_dato = 'date' or v_columna.tipo_dato = 'timestamp' THEN
                             v_valor = COALESCE(''''||v_valor::VARCHAR||'''','null');
+                    ELSE
+                            v_valor = COALESCE(v_valor::VARCHAR,'null');
                     END IF;
+
                     IF v_id_columna_concepto_ingas_det is not null THEN
 
                         v_consulta=' UPDATE param.tcolumna_concepto_ingas_det SET
                                      valor = '||v_valor||'
                                      WHERE id_columna_concepto_ingas_det = '||v_id_columna_concepto_ingas_det;
                         Execute v_consulta;
+
                     ELSE
                      v_consulta = 'INSERT INTO param.tcolumna_concepto_ingas_det(
                             id_usuario_reg,
@@ -208,7 +218,7 @@ BEGIN
                          '||v_id_columna||',
                          '||v_valor||'
                          )';
-                     EXECUTE(v_consulta);
+                     --EXECUTE(v_consulta);
 
                     END IF;
 
