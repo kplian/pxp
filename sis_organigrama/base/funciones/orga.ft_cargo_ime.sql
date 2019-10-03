@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_cargo_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -25,6 +23,7 @@ $body$
  #30               15-07-2019       RAC                       adiciona tipo de cargo 
  #57               04-08-2019       JUAN                      Permitir editar escala salarial 
  #68               25-09-2019       JUAN                      Corrección de editado en cargos
+ #73               03-10-2019       JRR                       Agregar validacion al modificar un cargo, no debe dejar modificar la escala si el cargo ya fue incluido en una planilla
 ***************************************************************************/
 
 DECLARE
@@ -38,6 +37,7 @@ DECLARE
 	v_id_cargo	integer;
 	v_nombre_cargo			varchar;
 	v_id_lugar				integer;
+    v_id_escala				integer;
 			    
 BEGIN
 
@@ -117,7 +117,21 @@ BEGIN
 
 		begin
 		
-        	
+        	select c.id_escala_salarial into v_id_escala
+            from orga.tcargo c
+            where id_cargo = v_parametros.id_cargo;
+            
+            --si se modifica la escala salarial garantizar que no fue utilizada en una planilla
+            if (v_id_escala != v_parametros.id_escala_salarial and EXISTS(select 1 FROM information_schema.schemata WHERE schema_name = 'plani')) THEN
+            	if (exists 	(select 1 
+                			from plani.tfuncionario_planilla fp
+                            inner join orga.tuo_funcionario uf on fp.id_uo_funcionario = uf.id_uo_funcionario
+                            where uf.id_cargo = v_parametros.id_cargo)
+            		) then
+                	raise exception 'No es posible modificar la escala salarial de este cargo ya que el cargo fue utilizado en una planilla';
+                end if;
+            end if;
+            
         	select id_lugar into v_id_lugar
         	from orga.toficina
         	where id_oficina = v_parametros.id_oficina;
