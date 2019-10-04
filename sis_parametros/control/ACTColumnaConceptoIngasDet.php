@@ -46,6 +46,9 @@ class ACTColumnaConceptoIngasDet extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_columna_concepto_ingas_det');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+        $this->objParam->parametros_consulta['puntero'] = '0';
+        $this->objParam->parametros_consulta['cantidad'] = '1000';
+
 		
 		if ($this->objParam->getParametro('columna')!='') {
 			
@@ -59,13 +62,15 @@ class ACTColumnaConceptoIngasDet extends ACTbase{
 	        $this->res=$this->objFunc->listarColumna($this->objParam);
 	        $datos = $this->res->datos;
 			
-			//var_dump('$datos',$datos[0]['id_columna']);
+			//var_dump('$datos',$this->objParam);
 			
 			$this->objParam->parametros_consulta['filtro']=$filtro_defecto;
 			$this->objParam->parametros_consulta['ordenacion']='valor';
 			$this->objParam->addFiltro("colcigd.id_columna =''".$datos[0]['id_columna']."''");
 		}
-		
+        if ($this->objParam->getParametro('tension_m')!=''){
+            $this->objParam->addFiltro(" (colcigd.valor =''".$this->objParam->getParametro('tension_m')."'' or colcigd.valor = ''todas'')");
+        }
 
 		$this->objFunc=$this->create('MODColumnaConceptoIngasDet');
 			
