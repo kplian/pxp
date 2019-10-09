@@ -2647,3 +2647,7 @@ ALTER TABLE param.tempresa
 ALTER TABLE param.tcorrelativo
   ADD COLUMN simple INTEGER;
 /***********************************F-SCP-MPGM-PARAM-0-30/09/2019*****************************************/
+/***********************************I-SCP-EGS-PARAM-0-04/10/2019*****************************************/
+ALTER TABLE param.tconcepto_ingas_agrupador
+  ADD COLUMN es_obra_civil VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
+/***********************************F-SCP-EGS-PARAM-0-04/10/2019*****************************************/

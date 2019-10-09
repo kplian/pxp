@@ -270,9 +270,169 @@ BEGIN
     elsif(p_transaccion='PM_COIND_CONT')then
 
         begin
+                   v_columnas_extra = '';
+            v_columnas_extra_sel ='';
+            v_join = '';
+            FOR v_record IN(
+                SELECT
+                     cl.nombre_columna,
+                     cl.tipo_dato
+                FROM  param.tcolumna cl
+                order by cl.nombre_columna  asc --ordenamos lbabeticamente
+            )LOOP
+                v_columnas_extra = v_columnas_extra||v_record.nombre_columna||'  '|| v_record.tipo_dato||',';
+                v_columnas_extra_sel = v_columnas_extra_sel||'coind.'||v_record.nombre_columna||',';
+                IF v_record.nombre_columna = 'id_unidad_medida' THEN--#71
+                    v_join = 'left join param.tunidad_medida um on um.id_unidad_medida = coind.id_unidad_medida ';
+                    v_columna_ext = 'um.codigo as desc_unidad,';
+                END IF;
+
+
+            END LOOP;
+                v_columnas_extra_sel = SUBSTRING (v_columnas_extra_sel,1,length(v_columnas_extra_sel) - 1);
+            v_consulta ='CREATE TEMPORARY TABLE temp_t_concepto_ingas_det(
+                                      id_usuario_reg INTEGER,
+                                      id_usuario_mod INTEGER,
+                                      fecha_reg TIMESTAMP,
+                                      fecha_mod TIMESTAMP,
+                                      estado_reg VARCHAR,
+                                      id_usuario_ai INTEGER,
+                                      usuario_ai VARCHAR,
+                                      id_concepto_ingas_det integer,
+                                      nombre VARCHAR,
+                                      descripcion VARCHAR,
+                                      id_concepto_ingas INTEGER,
+                                      id_concepto_ingas_det_fk INTEGER,
+                                      '||COALESCE(v_columnas_extra,'')||'
+                                      agrupador VARCHAR
+                                     ) ON COMMIT DROP';
+            EXECUTE v_consulta;
+            FOR v_record IN(
+                select
+                            coind.id_concepto_ingas_det,
+                            coind.estado_reg,
+                            coind.nombre,
+                            coind.descripcion,
+                            coind.id_concepto_ingas,
+                            coind.id_usuario_reg,
+                            coind.fecha_reg,
+                            coind.id_usuario_ai,
+                            coind.usuario_ai,
+                            coind.id_usuario_mod,
+                            coind.fecha_mod,
+                            usu1.cuenta as usr_reg,
+                            usu2.cuenta as usr_mod,
+                            coind.agrupador,
+                            coind.id_concepto_ingas_det_fk
+                            from param.tconcepto_ingas_det coind
+                            inner join segu.tusuario usu1 on usu1.id_usuario = coind.id_usuario_reg
+                            left join segu.tusuario usu2 on usu2.id_usuario = coind.id_usuario_mod
+
+            )LOOP
+
+
+                        v_consulta_cmp='';
+                        v_consulta_value='';
+                        --seleccionamos los valores por registro
+                            FOR v_columna IN(
+                            --recuperamos los campos
+                                 SELECT
+                                      cl.nombre_columna,
+                                      cl.tipo_dato
+                                 FROM param.tcolumna cl
+                                 order by cl.nombre_columna asc --ordenamos lbabeticamente
+                              )LOOP
+                                    --nombre de campos
+                                    v_consulta_cmp = v_consulta_cmp||v_columna.nombre_columna||' ,';
+                                    --valor de campos
+                                    IF v_columna.tipo_dato = 'varchar' or v_columna.tipo_dato = 'text'  THEN
+                                    v_consulta_value = v_consulta_value||''''',';
+                                    ELSE
+                                    v_consulta_value = v_consulta_value||'null,';
+                                    END IF;
+                             END LOOP;
+
+                             IF EXISTS (SELECT
+                                  1
+                             FROM param.tcolumna_concepto_ingas_det cld
+                             Left join param.tcolumna cl on cl.id_columna = cld.id_columna
+                             WHERE cld.id_concepto_ingas_det = v_record.id_concepto_ingas_det
+                             order by cl.nombre_columna asc) THEN
+                                       v_consulta_value='';
+                                       FOR v_columna IN(
+                                           --recuperamos las columnas
+                                            SELECT
+                                                cl.id_columna,
+                                                cl.nombre_columna,
+                                                lower(cl.tipo_dato) as tipo_dato
+                                           FROM param.tcolumna cl
+                                           order by cl.nombre_columna asc
+                                           --ordenamos albabeticamente
+                                        )LOOP
+                                               SELECT
+                                                 cld.valor
+                                               INTO
+                                                    v_valor
+                                               FROM param.tcolumna_concepto_ingas_det cld
+                                               Left join param.tcolumna cl on cl.id_columna = cld.id_columna
+                                               WHERE    cld.id_concepto_ingas_det = v_record.id_concepto_ingas_det and
+                                                        cld.id_columna = v_columna.id_columna;
+
+                                              --valor de campos
+                                              IF v_columna.tipo_dato = 'varchar' or v_columna.tipo_dato = 'text' or v_columna.tipo_dato = 'date' or v_columna.tipo_dato ='timestamp'  THEN
+                                              v_consulta_value = v_consulta_value||''''||COALESCE(v_valor::varchar,'')||''' ,';
+                                              ELSE
+                                              v_consulta_value = v_consulta_value||COALESCE(v_valor::varchar,'null')||' ,';
+                                              END IF;
+                                       END LOOP;
+
+
+                             END IF;
+                            v_record.descripcion = REPLACE(v_record.descripcion,E'\n', '');
+                            --v_record.descripcion = REPLACE(v_record.descripcion,'"', '');
+                            v_record.descripcion = REPLACE(v_record.descripcion,'''', '');
+                            v_record.nombre = REPLACE(v_record.nombre,E'\n', '');
+                            --v_record.nombre = REPLACE(v_record.nombre,'"', '');
+                            v_record.nombre = REPLACE(v_record.nombre,'''', '');
+                            v_consulta_into = '
+                             insert into temp_t_concepto_ingas_det(
+                                    id_concepto_ingas_det,
+                                    estado_reg,
+                                    nombre,
+                                    descripcion,
+                                    id_concepto_ingas,
+                                    id_usuario_reg,
+                                    fecha_reg,
+                                    id_usuario_ai,
+                                    usuario_ai,
+                                    id_usuario_mod,
+                                    fecha_mod,
+                                    agrupador,
+                                    '||COALESCE(v_consulta_cmp,'')||'
+                                    id_concepto_ingas_det_fk
+                                      ) values(
+                                    '||COALESCE(v_record.id_concepto_ingas_det::VARCHAR,'null')||',
+                                    '||COALESCE(''''||v_record.estado_reg::VARCHAR||'''','null')||',
+                                    '||COALESCE(''''||v_record.nombre::VARCHAR||'''','null')||',
+                                    '||COALESCE(''''||v_record.descripcion::VARCHAR||'''','null')||',
+                                    '||COALESCE(v_record.id_concepto_ingas::VARCHAR,'null')||',
+                                    '||COALESCE(v_record.id_usuario_reg::VARCHAR,'null')||',
+                                    '||COALESCE(''''||v_record.fecha_reg::VARCHAR||'''','null')||',
+                                    '||COALESCE(v_record.id_usuario_ai::VARCHAR,'null')||',
+                                    '||COALESCE(v_record.usuario_ai::VARCHAR,'null')||',
+                                    '||COALESCE(v_record.id_usuario_mod::VARCHAR,'null')||',
+                                    '||COALESCE(''''||v_record.fecha_mod::VARCHAR||'''','null')||',
+                                    '||COALESCE(''''||v_record.agrupador::VARCHAR||'''','null')||',
+                                    '||COALESCE(v_consulta_value::VARCHAR,'null')||'
+                                    '||COALESCE(v_record.id_concepto_ingas_det_fk::VARCHAR,'null')||'
+                                    )';
+
+                    EXECUTE(v_consulta_into);
+            END LOOP;
+
             --Sentencia de la consulta de conteo de registros
             v_consulta:='select count(coind.id_concepto_ingas_det)
-                        from param.tconcepto_ingas_det coind
+                        from temp_t_concepto_ingas_det coind
                         inner join segu.tusuario usu1 on usu1.id_usuario = coind.id_usuario_reg
                         left join segu.tusuario usu2 on usu2.id_usuario = coind.id_usuario_mod
                         where ';

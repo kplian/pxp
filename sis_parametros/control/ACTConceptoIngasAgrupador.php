@@ -46,6 +46,11 @@ class ACTConceptoIngasAgrupador extends ACTbase{
         $this->res=$this->objFunc->insertarAgrupador($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+    function insertObraCivil(){
+        $this->objFunc=$this->create('MODConceptoIngasAgrupador');
+        $this->res=$this->objFunc->insertObraCivil($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 
 }
 
