@@ -19,10 +19,14 @@ class ACTConceptoIngasDet extends ACTbase{
         $ordenacion=$this->objParam->parametros_consulta['ordenacion'];
         $dir_ordenacion= $this->objParam->parametros_consulta['dir_ordenacion'];
         $puntero   = $this->objParam->parametros_consulta['puntero'];//#61
+        $cantidad = $this->objParam->parametros_consulta['cantidad'];
+        $filtro = $this->objParam->parametros_consulta['filtro'];
         //seteamos los parmetros para recuperar las columnas originales
         $this->objParam->parametros_consulta['ordenacion'] = 'nombre_columna';//#61
         $this->objParam->parametros_consulta['dir_ordenacion'] = 'ASC';//#61
         $this->objParam->parametros_consulta['puntero'] = '0';//#61
+        $this->objParam->parametros_consulta['cantidad'] = '50';
+        $this->objParam->parametros_consulta['filtro']= '0=0';
         $this->objFunc=$this->create('MODColumna');//#61
         $this->res=$this->objFunc->listarColumna($this->objParam);
         $datos = $this->res->datos;
@@ -32,11 +36,16 @@ class ACTConceptoIngasDet extends ACTbase{
         $this->objParam->parametros_consulta['ordenacion'] = $ordenacion;//#61
         $this->objParam->parametros_consulta['dir_ordenacion']=$dir_ordenacion;//#61
         $this->objParam->parametros_consulta['puntero'] = $puntero;//#61
+        $this->objParam->parametros_consulta['cantidad'] = $cantidad;
+        $this->objParam->parametros_consulta['filtro'] = $filtro;
         if($this->objParam->getParametro('id_concepto_ingas')!='' ){
             $this->objParam->addFiltro("coind.id_concepto_ingas = ".$this->objParam->getParametro('id_concepto_ingas'));
         }
         if($this->objParam->getParametro('agrupador') !='' ){
             $this->objParam->addFiltro("coind.agrupador = ''".$this->objParam->getParametro('agrupador')."''");
+        }
+        if($this->objParam->getParametro('tension_macro') !='' ){
+            $this->objParam->addFiltro("coind.tension in (''".$this->objParam->getParametro('tension_macro')."'',''todas'')");
         }
 		$this->objParam->defecto('dir_ordenacion','asc');
 
