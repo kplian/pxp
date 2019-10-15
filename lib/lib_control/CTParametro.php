@@ -8,6 +8,7 @@
  # 0              29-06-2010        RCM KPLIAN        Creacion
  * 101            12/06/2018        RAC KPLIAN        Adciona ordenacion dinamica   
  * #51            20/08/2019        RAC KPLIAN        Manda idContenedor de interface para diferencias las ordenaciones en la clase CTSort
+ * #75            15/10/2019        RAC KPLIAN        soluciona bug con nombre de variable id_contenedor -> contenedor
 ***************************************************************************/
 class CTParametro{
 	
@@ -74,8 +75,8 @@ class CTParametro{
 			$aux_dir=isset($this->arreglo_parametros['dir'])?$this->arreglo_parametros['dir']:'';
 			
 			//#51 si el listado de origina en una grilla dentremos id_contenedor,  y memorizamos las columnas por las que se ordena
-			if (isset($this->arreglo_parametros['id_contenedor'])){
-				$crit_sort = new CTSort($aux_sort,  $aux_dir,  $this->arreglo_parametros['id_contenedor'].$this->clase.$this->metodo);	
+			if (isset($this->arreglo_parametros['contenedor'])){
+				$crit_sort = new CTSort($aux_sort,  $aux_dir,  $this->arreglo_parametros['contenedor'].$this->clase.$this->metodo);	//#75
 		        $sortcol = $crit_sort->get_criterio_sort();
 			}
 			
