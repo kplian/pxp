@@ -5,6 +5,10 @@
  datos de la capa de la vista por cualquier metodo post, get, etc.
  Autor:	Kplian (RCM)
  Fecha:	02/07/2010
+ *  HISTORIAL DE MODIFICACIONES:
+       
+ ISSUE              FECHA:              AUTOR                 DESCRIPCION
+ #75               10/15/2019         RAC KPLIAN        encriptacion dejo de funcionar por el cambio de versión de librerias
  */
 class CTPostData{
 
@@ -53,13 +57,12 @@ class CTPostData{
 						//Verifica que no sea la sesion para no desencriptarla
 						
 						if($this->siEncriptar($this->tmpKeys[$i],$row) && $this->swVerificarSesion==1){
-							
 							//Instancia la clase de encriptacion
 							$this->oEncryp=new CTEncriptacionPrivada($row,$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
-							$this->aVariablesDecryp[$this->tmpKeys[$i]]=utf8_encode($this->oEncryp->getDecodificado());
+							$this->aVariablesDecryp[$this->tmpKeys[$i]] = urldecode(utf8_encode($this->oEncryp->getDecodificado())); //#75  ++urldecode
 						} else{
-							
-							$this->aVariablesDecryp[$this->tmpKeys[$i]]=$row;//$this->aVariablesEncryp[$i];
+							//echo 2;
+							$this->aVariablesDecryp[$this->tmpKeys[$i]] = urldecode($row);  //#75 ++urldecode
 						}
 						$i++;
 					}
