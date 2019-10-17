@@ -8,6 +8,7 @@
   ISSUE			AUTHOR			FECHA				DESCRIPCION
  * #39 ETR		EGS				31/07/2019			Creacion
  * #61          Egs             12/09/2019          Bug con el puntero e columnas dinamicas
+ * #71          EGS             17/10/2019          filtra los que no tienen tension
  */
 
 class ACTConceptoIngasDet extends ACTbase{    
@@ -45,7 +46,7 @@ class ACTConceptoIngasDet extends ACTbase{
             $this->objParam->addFiltro("coind.agrupador = ''".$this->objParam->getParametro('agrupador')."''");
         }
         if($this->objParam->getParametro('tension_macro') !='' ){
-            $this->objParam->addFiltro("coind.tension in (''".$this->objParam->getParametro('tension_macro')."'',''todas'')");
+            $this->objParam->addFiltro("coind.tension in (''".$this->objParam->getParametro('tension_macro')."'',''todas'','''')");//#71
         }
 		$this->objParam->defecto('dir_ordenacion','asc');
 
