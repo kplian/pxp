@@ -1,5 +1,7 @@
 <?php
 // Extend the TCPDF class to create custom MultiRow
+//#64	ETR		10.10.2019		MZM		Modificar el number_format miles con punto, decimales con coma
+//#79	ETR		29.10.2019		MZM		Modificacion para que cuando el valor 0 se omita y vaya el campo en vacio
 class MYPDF extends TCPDF {
     //Page header
     var $tablewidths=array();
@@ -337,7 +339,13 @@ class MYPDF extends TCPDF {
 		}	
 		foreach ($row as $data) {
 		    if ($numbers && $this->tablenumbers[$index] > 0) {
-            	$data = number_format ( $data , $this->tablenumbers[$index] , '.' , ',' );
+		    	if($data == 0){//#79
+            		$data='';
+            	}else{
+            		$data = number_format ( $data , $this->tablenumbers[$index] , ',' , '.' );//#64	
+            	}
+				
+            	
             }
 			
 			//definicion de border
