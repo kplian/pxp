@@ -11,6 +11,7 @@
    
  #0               17/10/2014        JRR KPLIAN        creacion
  #32 ETR          18/07/2019        RAC KPLIAN        adcionar carga horaria
+ #80             06/11/2019            APS       ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -108,12 +109,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    				allowBlank:false,
    				tinit:true,  				
    				valueField: 'id_funcionario',
-   			    gdisplayField: 'desc_funcionario1',
-      			renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario1']);}
+   			    gdisplayField: 'desc_funcionario2',  //#80
+      			renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario2']);} //#80
        	     },
    			type:'ComboRec',//ComboRec
    			id_grupo:0,
-   			filters:{pfiltro:'funcio.desc_funcionario1',
+   			filters:{pfiltro:'funcio.desc_funcionario2',    //#80
 				type:'string'
 			},
    		   
@@ -337,9 +338,10 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
              'fecha_reg',
              'fecha_mod',
              'USUREG',
-             'USUMOD','correspondencia','carga_horaria'],
+             'USUMOD','correspondencia','carga_horaria', 'desc_funcionario2'],  //#80
+
 	sortInfo:{
-		field: 'desc_funcionario1',
+		field: 'desc_funcionario2', //#80
 		direction: 'ASC',
 	},	
 	onButtonNew:function(){
