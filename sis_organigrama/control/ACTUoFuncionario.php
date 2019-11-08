@@ -15,13 +15,14 @@
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
    
  #6            09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario
+#80             06/11/2019            APS       ORDENACION DE FUNCIONARIOS POR APELLIDO.
  */
 class ACTUoFuncionario extends ACTbase{    
 
 	function listarUoFuncionario(){
 
 		// parametros de ordenacion por defecto
-		$this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario1');
+		$this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario2'); //#80
 		$this->objParam->defecto('dir_ordenacion','asc');
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
