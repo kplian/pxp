@@ -1018,6 +1018,10 @@ COMMENT ON COLUMN orga.ttipo_cargo.factor_nocturno
 IS 'entre 0 a 1';
 /*****************************F-SCP-MMV-ORGA-70-25/09/2019*************/
 
+/*****************************I-SCP-MZM-ORGA-81-11/11/2019*************/
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN prioridad NUMERIC;
+/*****************************F-SCP-MZM-ORGA-81-11/11/2019*************/
 
 
 
