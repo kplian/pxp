@@ -12,6 +12,7 @@
  #0               17/10/2014        JRR KPLIAN        creacion
  #32 ETR          18/07/2019        RAC KPLIAN        adcionar carga horaria
  #80             06/11/2019            APS       ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
+ #81				08.11.2019		MZM				Adicion de campo prioridad
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -306,7 +307,21 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		grid:true,			
 		form:false,
         grid:true
-	}
+	},
+	{ //#81
+			config:{
+				name: 'prioridad',
+				fieldLabel: 'Prioridad',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:1179650
+			},
+				type:'NumberField',
+				
+				grid:true,
+				form:true
+		}
     ],
 
 
@@ -336,10 +351,10 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
              'estado_reg',
              {name:'fecha_finalizacion', type: 'date',dateFormat:'Y-m-d'},
              'fecha_reg',
-             'fecha_mod',
+             'fecha_mod','prioridad',//#81
              'USUREG',
              'USUMOD','correspondencia','carga_horaria', 'desc_funcionario2'],  //#80
-
+			
 	sortInfo:{
 		field: 'desc_funcionario2', //#80
 		direction: 'ASC',
@@ -369,10 +384,20 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.uo_funcionario.superclass.onButtonEdit.call(this);
 		
 		if (this.Cmp.fecha_finalizacion.getValue() == '' || this.Cmp.fecha_finalizacion.getValue() == undefined) {
+			
 			this.Cmp.observaciones_finalizacion.reset();
 			this.Cmp.observaciones_finalizacion.allowBlank = true;
 			this.ocultarComponente(this.Cmp.observaciones_finalizacion);
+			
+			
+			this.Cmp.fecha_finalizacion.reset();
+			this.Cmp.fecha_finalizacion.allowBlank = true;
+			//this.ocultarComponente(this.Cmp.fecha_finalizacion);
+			
+			
+			
 		} else {
+			
 			this.Cmp.observaciones_finalizacion.allowBlank = false;
 			this.mostrarComponente(this.Cmp.observaciones_finalizacion);
 		}
