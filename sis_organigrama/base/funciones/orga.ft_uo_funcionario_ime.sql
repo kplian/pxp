@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
   par_administrador integer,
   par_id_usuario integer,
@@ -20,6 +18,7 @@ $body$
    30         03-06-2011        MZM KPLIAN        creacion
    #25        25/06/2019        EGS               Se elimino validacion innecesaria al modidicar al uo_funcionario
    #32 ETR    17/07/2019        RAC KPLIAN        considerar carga horaria configurada para el funcionario en orga.tuo_funcionario
+   #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario	
    ***************************************************************************/
   DECLARE
 
@@ -93,6 +92,7 @@ $body$
            id_usuario_reg,
            tipo,                        
            carga_horaria
+           ,prioridad --#81
         )
        values(
            v_parametros.id_uo, 		
@@ -106,6 +106,7 @@ $body$
            par_id_usuario,
            v_parametros.tipo,
            v_parametros.carga_horaria --#32
+           ,v_parametros.prioridad --#81
          )
         RETURNING id_uo_funcionario INTO v_id_uo_funcionario;
 
@@ -160,6 +161,7 @@ $body$
           fecha_documento_asignacion = v_parametros.fecha_documento_asignacion,
           fecha_finalizacion = v_parametros.fecha_finalizacion,
           carga_horaria = v_parametros.carga_horaria --#32
+          ,prioridad=v_parametros.prioridad --#81
         where id_uo=v_parametros.id_uo
               and id_uo_funcionario=v_parametros.id_uo_funcionario;
 
@@ -227,8 +229,4 @@ $body$
 
   END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+LANGUAGE 'plpgsql';

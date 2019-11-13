@@ -13,6 +13,7 @@
    
  #6           09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario * 
  #32          18/07/2019      RAC KPLIAN      añade carga horaria
+ #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad 
  */
 class MODUoFuncionario extends MODbase{
 	
@@ -52,6 +53,7 @@ class MODUoFuncionario extends MODbase{
 		$this->captura('fecha_documento_asignacion','date');
 		$this->captura('tipo','varchar');
 		$this->captura('carga_horaria','integer'); //#32
+		$this->captura('prioridad','numeric'); //#81
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		
@@ -79,6 +81,7 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('carga_horaria','carga_horaria','integer'); //#32
+		$this->setParametro('prioridad','prioridad','numeric'); //#81
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -104,11 +107,12 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('nro_documento_asignacion','nro_documento_asignacion','varchar');
 		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
 		$this->setParametro('carga_horaria','carga_horaria','integer'); //#32
-		
+		$this->setParametro('prioridad','prioridad','numeric'); //#81
 		
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();
+		
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}

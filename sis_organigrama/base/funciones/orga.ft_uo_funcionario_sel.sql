@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -29,7 +27,8 @@ $body$
    
  #6             09-01-2019        RAC         recupera funcion de repositorio de boa
  #32            18/07/2019        RAC         añade carga horaria
- #51            20-08-2019       RAC          adiciona descripcion de cargo  para solucionar ordenacion en la vista historico asignacion
+ #51            20-08-2019        RAC         adiciona descripcion de cargo  para solucionar ordenacion en la vista historico asignacion
+ #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario	
 ***************************************************************************/
 
 
@@ -84,6 +83,7 @@ BEGIN
                                   UOFUNC.fecha_documento_asignacion,
                                   UOFUNC.tipo,                                 
                                   UOFUNC.carga_horaria  
+                                  ,UOFUNC.prioridad --#81
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
@@ -248,8 +248,4 @@ EXCEPTION
 
 END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+LANGUAGE 'plpgsql';
