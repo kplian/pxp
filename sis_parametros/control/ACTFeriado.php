@@ -13,6 +13,12 @@ class ACTFeriado extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_feriado');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
+		if($this->objParam->getParametro('id_gestion') != ''){ //#83
+			$this->objParam->addFiltro("feria.id_gestion = ".$this->objParam->getParametro('id_gestion'));
+        }
+        else{
+        	$this->objParam->addFiltro("feria.id_gestion = 0");
+        }
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODFeriado','listarFeriado');

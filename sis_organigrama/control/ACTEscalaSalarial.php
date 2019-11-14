@@ -20,15 +20,13 @@ class ACTEscalaSalarial extends ACTbase{
 			$this->objParam->addFiltro("escsal.id_categoria_salarial = ". $this->objParam->getParametro('id_categoria_salarial'));
 		}
 		
-		if ($this->objParam->getParametro('nombreVista') == 'EscalaSalarial') {//#35
-			$this->objParam->addFiltro("escsal.estado_reg = ''activo'' ");
-		}
 		
-		if ($this->objParam->getParametro('nombreVista') == 'EscalaSalarialHistorial') {//#35
-			
+		if ($this->objParam->getParametro('nombreVista') == 'EscalaSalarialHistorial') {//#35			
 			$this->objParam->parametros_consulta['ordenacion'] = 'fecha_reg desc';	
-			$this->objParam->addFiltro("escsal.estado_reg = ''inactivo'' ");
-			
+			$this->objParam->addFiltro("escsal.estado_reg = ''inactivo'' ");			
+		}
+		else {
+			$this->objParam->addFiltro("escsal.estado_reg = ''activo'' ");
 		}
 		
 		if ($this->objParam->getParametro('id_escala_padre') != '') {//#35
