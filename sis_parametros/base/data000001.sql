@@ -515,3 +515,8 @@ VALUES
   (1, E'activo', E'Est', E'Estructuras', E'Masa'),
   (1, E'activo', E'puntos', E'Puntos', E'Masa');
 /***********************************F-DAT-EGS-PARAM-2-30/09/2019*****************************************/
+
+
+/***********************************I-DAT-SAZP-PARAM-82-14/11/2019*****************************************/
+select pxp.f_insert_tgui ('Antiguedad', 'Registro parametros de antiguedad', 'ANTIG', 'si', 21, 'sis_parametros/vista/antiguedad/Antiguedad.php', 4, '', 'Antiguedad', 'PARAM');
+/***********************************F-DAT-SAZP-PARAM-82-14/11/2019*****************************************/
