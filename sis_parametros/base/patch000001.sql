@@ -2651,3 +2651,25 @@ ALTER TABLE param.tcorrelativo
 ALTER TABLE param.tconcepto_ingas_agrupador
   ADD COLUMN es_obra_civil VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
 /***********************************F-SCP-EGS-PARAM-0-04/10/2019*****************************************/
+
+/***********************************I-SCP-SAZP-PARAM-82-14/11/2019*****************************************/
+CREATE TABLE param.tantiguedad (
+  id_antiguedad SERIAL,
+  categoria_antiguedad INTEGER,
+  dias_asignados INTEGER,
+  desde_anhos INTEGER,
+  hasta_anhos INTEGER,
+  obs_antiguedad VARCHAR(250),
+  id_gestion INTEGER,
+  CONSTRAINT tantiguedad_pkey PRIMARY KEY(id_antiguedad)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+ALTER TABLE param.tantiguedad
+  OWNER TO dbaszambrana;
+/***********************************F-SCP-SAZP-PARAM-82-14/11/2019*****************************************/
+
+/***********************************I-SCP-JDJ-ASIS-1-14/11/2019****************************************/
+ALTER TABLE param.tferiado
+  ADD COLUMN id_gestion INTEGER;
+/***********************************F-SCP-JDJ-ASIS-1-14/11/2019****************************************/
