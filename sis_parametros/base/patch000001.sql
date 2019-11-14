@@ -2665,8 +2665,6 @@ CREATE TABLE param.tantiguedad (
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
 
-ALTER TABLE param.tantiguedad
-  OWNER TO dbaszambrana;
 /***********************************F-SCP-SAZP-PARAM-82-14/11/2019*****************************************/
 
 /***********************************I-SCP-JDJ-ASIS-1-14/11/2019****************************************/
