@@ -14,12 +14,54 @@ Phx.vista.Feriado=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
+
+		this.initButtons=[this.cmbGestion]; //#83
     	//llama al constructor de la clase padre
 		Phx.vista.Feriado.superclass.constructor.call(this,config);
+
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
+		this.iniciarEventos();      
 	},
-			
+
+	cmbGestion: new Ext.form.ComboBox({//#83
+        fieldLabel: 'Gestion',
+        allowBlank: false,
+        emptyText:'Gestion...',
+        blankText: 'Año',
+        store:new Ext.data.JsonStore(
+            {
+                url: '../../sis_parametros/control/Gestion/listarGestion',
+                id: 'id_gestion',
+                root: 'datos',
+                sortInfo:{
+                    field: 'gestion',
+                    direction: 'DESC'
+                },
+                totalProperty: 'total',
+                fields: ['id_gestion','gestion'],
+                // turn on remote sorting
+                remoteSort: true,
+                baseParams:{par_filtro:'gestion'}
+            }),
+    valueField: 'id_gestion',
+    triggerAction: 'all',
+    displayField: 'gestion',
+    hiddenName: 'id_gestion',
+    mode:'remote',
+    pageSize:50,
+    queryDelay:500,
+    listWidth:'280',
+    width:80
+    }),
+	iniciarEventos: function () {//#83
+        this.cmbGestion.on('select',
+                       function (cmb, dat) {
+                       	this.sm.clearSelections();
+		                this.store.baseParams = {id_gestion: dat.data.id_gestion};
+		                this.store.reload();
+                }, this);
+	},
 	Atributos:[
 		{
 			//configuracion del componente
@@ -27,6 +69,16 @@ Phx.vista.Feriado=Ext.extend(Phx.gridInterfaz,{
 					labelSeparator:'',
 					inputType:'hidden',
 					name: 'id_feriado'
+			},
+			type:'Field',
+			form:true 
+		},
+		{
+			//configuracion del componente
+			config:{
+					labelSeparator:'',
+					inputType:'hidden',
+					name: 'id_gestion'
 			},
 			type:'Field',
 			form:true 
@@ -257,14 +309,23 @@ Phx.vista.Feriado=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_lugar', type: 'string'}
+		{name:'desc_lugar', type: 'string'},
+		{name:'id_gestion', type: 'numeric'},//#83
 	],
 	sortInfo:{
 		field: 'id_feriado',
 		direction: 'ASC'
 	},
 	bdel:true,
-	bsave:true
+	bsave:true,
+	onButtonNew:function(){ //#83
+        if(!this.cmbGestion.getValue()){
+            alert('Seleccione una gestion')
+        }else{
+            Phx.vista.Feriado.superclass.onButtonNew.call(this);
+            this.Cmp.id_gestion.setValue(this.cmbGestion.getValue());
+        }
+    },
 })
 </script>
 		

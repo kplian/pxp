@@ -1,7 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."ft_feriado_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION param.ft_feriado_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_feriado_sel
@@ -12,9 +18,9 @@ $BODY$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+
+ #83				14-11-2019			JUAN			    AGREGADO DE GESTION EN FERIADOS	
 ***************************************************************************/
 
 DECLARE
@@ -55,7 +61,8 @@ BEGIN
 						feria.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-						lug.nombre as desc_lugar
+						lug.nombre as desc_lugar,
+                        feria.id_gestion --#83
 						from param.tferiado feria
 						inner join segu.tusuario usu1 on usu1.id_usuario = feria.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = feria.id_usuario_mod
@@ -112,7 +119,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."ft_feriado_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

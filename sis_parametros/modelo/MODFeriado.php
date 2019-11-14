@@ -35,6 +35,7 @@ class MODFeriado extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_lugar','varchar');
+		$this->captura('id_gestion','int4'); //#83
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -56,6 +57,7 @@ class MODFeriado extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('fecha','fecha','date');
 		$this->setParametro('id_lugar','id_lugar','int4');
+		$this->setParametro('id_gestion','id_gestion','int4'); //#83
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -78,6 +80,7 @@ class MODFeriado extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('fecha','fecha','date');
 		$this->setParametro('id_lugar','id_lugar','int4');
+		$this->setParametro('id_gestion','id_gestion','int4');//#83
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

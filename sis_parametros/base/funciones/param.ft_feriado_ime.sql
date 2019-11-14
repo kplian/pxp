@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."ft_feriado_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.ft_feriado_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_feriado_ime
@@ -13,9 +18,9 @@ $BODY$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+
+ #83				14-11-2019			JUAN			    AGREGADO DE GESTION EN FERIADOS	
 ***************************************************************************/
 
 DECLARE
@@ -55,7 +60,8 @@ BEGIN
 			id_usuario_reg,
 			id_usuario_ai,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            id_gestion --#83	
           	) values(
 			'activo',
 			v_parametros.descripcion,
@@ -67,8 +73,8 @@ BEGIN
 			p_id_usuario,
 			v_parametros._id_usuario_ai,
 			null,
-			null
-							
+			null,
+			v_parametros.id_gestion	--#83				
 			
 			
 			)RETURNING id_feriado into v_id_feriado;
@@ -101,7 +107,8 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            id_gestion = v_parametros.id_gestion --#83	
 			where id_feriado=v_parametros.id_feriado;
                
 			--Definicion de la respuesta
@@ -152,7 +159,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "param"."ft_feriado_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
