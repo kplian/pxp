@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_labores_tipo_proceso_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,11 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.tlabores_tipo_proceso'
  AUTOR:      (admin)
  FECHA:         15-03-2013 16:08:41
- COMENTARIOS: 
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION: 
- AUTOR:     
- FECHA:   
+   ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -27,21 +27,21 @@ DECLARE
   v_parametros      record;
   v_nombre_funcion    text;
   v_resp        varchar;
-          
+
 BEGIN
 
   v_nombre_funcion = 'wf.ft_labores_tipo_proceso_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-  /*********************************    
+  /*********************************
   #TRANSACCION:  'WF_LABTPROC_SEL'
   #DESCRIPCION: Consulta de datos
-  #AUTOR:   admin 
+  #AUTOR:   admin
   #FECHA:   15-03-2013 16:08:41
   ***********************************/
 
   if(p_transaccion='WF_LABTPROC_SEL')then
-            
+
       begin
         --Sentencia de la consulta
       v_consulta:='select
@@ -57,26 +57,26 @@ BEGIN
             labtproc.id_usuario_mod,
             usu1.cuenta as usr_reg,
             usu2.cuenta as usr_mod,
-                        tp.nombre AS desc_tipo_proceso  
+                        tp.nombre AS desc_tipo_proceso
             from wf.tlabores_tipo_proceso labtproc
             inner join segu.tusuario usu1 on usu1.id_usuario = labtproc.id_usuario_reg
             left join segu.tusuario usu2 on usu2.id_usuario = labtproc.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = labtproc.id_tipo_proceso
                 where  labtproc.estado_reg = ''activo'' and ';
-      
+
       --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
       v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
       --Devuelve la respuesta
       return v_consulta;
-            
+
     end;
 
-  /*********************************    
+  /*********************************
   #TRANSACCION:  'WF_LABTPROC_CONT'
   #DESCRIPCION: Conteo de registros
-  #AUTOR:   admin 
+  #AUTOR:   admin
   #FECHA:   15-03-2013 16:08:41
   ***********************************/
 
@@ -90,19 +90,19 @@ BEGIN
             left join segu.tusuario usu2 on usu2.id_usuario = labtproc.id_usuario_mod
                         INNER JOIN wf.ttipo_proceso tp ON tp.id_tipo_proceso = labtproc.id_tipo_proceso
               where labtproc.estado_reg = ''activo'' and ';
-      
-      --Definicion de la respuesta        
+
+      --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
 
       --Devuelve la respuesta
       return v_consulta;
 
     end;
-    
-  /*********************************    
+
+  /*********************************
   #TRANSACCION:  'WF_EXPLABTPROC_SEL'
   #DESCRIPCION: Exportacion de labores tipo proceso
-  #AUTOR:   admin 
+  #AUTOR:   admin
   #FECHA:   15-03-2013 16:08:41
   ***********************************/
 
@@ -111,7 +111,7 @@ BEGIN
   		BEGIN
 			v_consulta:='select  ''labores''::varchar,lab.codigo,tp.codigo,lab.nombre,lab.descripcion,lab.estado_reg
                             from wf.tlabores_tipo_proceso lab
-                            inner join wf.ttipo_proceso tp 
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = lab.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
@@ -119,8 +119,10 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
 
-				if (v_parametros.todo = 'no') then                   
+			   if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and  lab.modificado is null ';
+               elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and lab.estado_reg = ''activo'' ';
                end if;
                v_consulta = v_consulta || ' order by lab.id_labores_tipo_proceso ASC';	
                                                                        
