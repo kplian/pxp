@@ -69,10 +69,12 @@ class ACTConceptoIngasDet extends ACTbase{
         $ordenacion=$this->objParam->parametros_consulta['ordenacion'];
         $dir_ordenacion= $this->objParam->parametros_consulta['dir_ordenacion'];
         $puntero   = $this->objParam->parametros_consulta['puntero'];//#61
+        $cantidad = $this->objParam->parametros_consulta['cantidad'];
         //seteamos los parmetros para recuperar las columnas originales
         $this->objParam->parametros_consulta['ordenacion'] = 'nombre_columna';//#61
         $this->objParam->parametros_consulta['dir_ordenacion'] = 'ASC';//#61
         $this->objParam->parametros_consulta['puntero'] = '0';//#61
+        $this->objParam->parametros_consulta['cantidad'] = '1000';//#61
         $this->objFunc=$this->create('MODColumna');//#61
         $this->res=$this->objFunc->listarColumna($this->objParam);
         $datos = $this->res->datos;
@@ -82,7 +84,7 @@ class ACTConceptoIngasDet extends ACTbase{
         $this->objParam->parametros_consulta['ordenacion'] = $ordenacion;//#61
         $this->objParam->parametros_consulta['dir_ordenacion']=$dir_ordenacion;//#61
         $this->objParam->parametros_consulta['puntero'] = $puntero;//#61
-        
+        $this->objParam->parametros_consulta['cantidad'] = $cantidad;//#61
         $this->objFunc=$this->create('MODConceptoIngasDet');
 		if($this->objParam->insertar('id_concepto_ingas_det')){
 			$this->res=$this->objFunc->insertarConceptoIngasDet($this->objParam);			
