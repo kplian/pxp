@@ -17,10 +17,8 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+   ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -29,21 +27,21 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'wf.ft_plantilla_correo_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_PCORREO_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		20-08-2014 21:52:38
 	***********************************/
 
 	if(p_transaccion='WF_PCORREO_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -77,20 +75,20 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = pcorreo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pcorreo.id_usuario_mod
 				        where pcorreo.estado_reg = ''activo'' and  ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_PCORREO_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		jrivera	
+ 	#AUTOR:		jrivera
  	#FECHA:		20-08-2014 21:52:38
 	***********************************/
 
@@ -103,19 +101,19 @@ BEGIN
 					    inner join segu.tusuario usu1 on usu1.id_usuario = pcorreo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = pcorreo.id_usuario_mod
 					    where  pcorreo.estado_reg = ''activo'' and  ';
-			
-			--Definicion de la respuesta		    
+
+			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 
 			--Devuelve la respuesta
 			return v_consulta;
 
 		end;
-		
-	/*********************************    
+
+	/*********************************
  	#TRANSACCION:  'WF_EXPCORREO_SEL'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		15-01-2014 03:12:38
 	***********************************/
 
@@ -124,11 +122,11 @@ BEGIN
 		BEGIN
 
                v_consulta:='select  ''plantilla_correo''::varchar,pcorreo.codigo_plantilla,tes.codigo,tp.codigo,pcorreo.regla,
-               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg,pcorreo.asunto               				
+               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg,pcorreo.asunto
                             from wf.tplantilla_correo pcorreo
                             inner join wf.ttipo_estado tes
-                            on tes.id_tipo_estado = pcorreo.id_tipo_estado                                        
-                            inner join wf.ttipo_proceso tp 
+                            on tes.id_tipo_estado = pcorreo.id_tipo_estado
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tes.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
@@ -136,8 +134,10 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
 
-			   if (v_parametros.todo = 'no') then                   
+			   if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and pcorreo.modificado is null ';
+               elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and pcorreo.estado_reg = ''activo'' ';
                end if;
                
                v_consulta = v_consulta || ' order by pcorreo.id_plantilla_correo ASC';	

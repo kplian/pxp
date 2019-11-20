@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tabla_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,12 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttabla'
  AUTOR:          (admin)
  FECHA:         07-05-2014 21:39:40
- COMENTARIOS:   
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:   
- AUTOR:         
- FECHA:     
+ ISSUE      FECHA         AUTHOR         DESCRIPCION
+ #86        20/11/2019    EGS           Filtro para registros activos en exportdor de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -27,21 +28,21 @@ DECLARE
     v_parametros        record;
     v_nombre_funcion    text;
     v_resp              varchar;
-                
+
 BEGIN
 
     v_nombre_funcion = 'wf.ft_tabla_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_tabla_SEL'
     #DESCRIPCION:   Consulta de datos
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:39:40
     ***********************************/
 
     if(p_transaccion='WF_tabla_SEL')then
-                    
+
         begin
             --Sentencia de la consulta
             v_consulta:='select
@@ -70,27 +71,27 @@ BEGIN
                         usu2.cuenta as usr_mod,
                         maestro.bd_nombre_tabla,
                         array_to_string(tabla.vista_estados_new, '',''),
-                        array_to_string(tabla.vista_estados_delete, '','')  
+                        array_to_string(tabla.vista_estados_delete, '','')
                         from wf.ttabla tabla
                         inner join segu.tusuario usu1 on usu1.id_usuario = tabla.id_usuario_reg
                         left join segu.tusuario usu2 on usu2.id_usuario = tabla.id_usuario_mod
                         left join wf.ttabla maestro on tabla.vista_id_tabla_maestro = maestro.id_tabla
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tabla.id_tipo_proceso
                         where tabla.estado_reg = ''activo'' and ';
-            
+
             --Definicion de la respuesta
             v_consulta:=v_consulta||v_parametros.filtro;
             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
             --Devuelve la respuesta
             return v_consulta;
-                        
+
         end;
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_tabla_CONT'
     #DESCRIPCION:   Conteo de registros
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:39:40
     ***********************************/
 
@@ -105,19 +106,19 @@ BEGIN
                         left join wf.ttabla maestro on tabla.vista_id_tabla_maestro = maestro.id_tabla
                         inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = tabla.id_tipo_proceso
                         where  tabla.estado_reg = ''activo'' and ';
-            
-            --Definicion de la respuesta            
+
+            --Definicion de la respuesta
             v_consulta:=v_consulta||v_parametros.filtro;
 
             --Devuelve la respuesta
             return v_consulta;
 
         end;
-        
-    /*********************************    
+
+    /*********************************
     #TRANSACCION:  'WF_EXPTABLA_SEL'
     #DESCRIPCION:   Consulta para exportacion de workflow
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:39:40
     ***********************************/
 
@@ -125,14 +126,14 @@ BEGIN
 
         BEGIN
 
-               v_consulta:='select ''tabla''::varchar, tab.bd_codigo_tabla, tp.codigo,  
+               v_consulta:='select ''tabla''::varchar, tab.bd_codigo_tabla, tp.codigo,
                             tab.bd_nombre_tabla, tab.bd_descripcion, tab.bd_scripts_extras,tab.vista_tipo,
                             tab.vista_posicion, tm.bd_codigo_tabla, tab.vista_campo_ordenacion, tab.vista_dir_ordenacion,
-                            tab.vista_campo_maestro,tab.vista_scripts_extras, tab.menu_nombre,  
+                            tab.vista_campo_maestro,tab.vista_scripts_extras, tab.menu_nombre,
                             tab.menu_icono, tab.menu_codigo,    array_to_string(tab.vista_estados_new,'',''), array_to_string(tab.vista_estados_delete,'',''),
                             tab.estado_reg
                             from wf.ttabla tab
-                            inner join wf.ttipo_proceso tp 
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tab.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
@@ -142,8 +143,10 @@ BEGIN
                             on tm.id_tabla = tab.vista_id_tabla_maestro
                             where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
 
-                if (v_parametros.todo = 'no') then                   
+                if (v_parametros.todo = 'no') then
                     v_consulta = v_consulta || ' and tab.modificado is null ';
+                elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and tab.estado_reg = ''activo'' ';
                end if;
                v_consulta = v_consulta || ' order by tab.id_tabla ASC'; 
                                                                        

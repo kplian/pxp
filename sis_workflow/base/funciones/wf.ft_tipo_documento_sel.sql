@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_documento_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,11 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttipo_documento'
  AUTOR:      (admin)
  FECHA:         14-01-2014 17:43:47
- COMENTARIOS: 
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION: 
- AUTOR:     
- FECHA:   
+   ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -27,21 +27,21 @@ DECLARE
   v_parametros      record;
   v_nombre_funcion    text;
   v_resp        varchar;
-          
+
 BEGIN
 
   v_nombre_funcion = 'wf.ft_tipo_documento_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-  /*********************************    
+  /*********************************
   #TRANSACCION:  'WF_TIPDW_SEL'
   #DESCRIPCION: Consulta de datos
-  #AUTOR:   admin 
+  #AUTOR:   admin
   #FECHA:   14-01-2014 17:43:47
   ***********************************/
 
   if(p_transaccion='WF_TIPDW_SEL')then
-            
+
       begin
         --Sentencia de la consulta
       v_consulta:='select
@@ -52,7 +52,7 @@ BEGIN
             tipdw.descripcion,
             tipdw.estado_reg,
             tipdw.tipo,
-            tipdw.id_tipo_proceso,            
+            tipdw.id_tipo_proceso,
             tipdw.action,
             tipdw.id_usuario_reg,
             tipdw.fecha_reg,
@@ -70,20 +70,20 @@ BEGIN
             inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
             left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod
                 where tipdw.estado_reg = ''activo'' and ';
-      
+
       --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
       v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
       --Devuelve la respuesta
       return v_consulta;
-            
+
     end;
 
-  /*********************************    
+  /*********************************
   #TRANSACCION:  'WF_TIPDW_CONT'
   #DESCRIPCION: Conteo de registros
-  #AUTOR:   admin 
+  #AUTOR:   admin
   #FECHA:   14-01-2014 17:43:47
   ***********************************/
 
@@ -96,19 +96,19 @@ BEGIN
               inner join segu.tusuario usu1 on usu1.id_usuario = tipdw.id_usuario_reg
             left join segu.tusuario usu2 on usu2.id_usuario = tipdw.id_usuario_mod
               where  tipdw.estado_reg = ''activo'' and  ';
-      
-      --Definicion de la respuesta        
+
+      --Definicion de la respuesta
       v_consulta:=v_consulta||v_parametros.filtro;
 
       --Devuelve la respuesta
       return v_consulta;
 
     end;
-        
-    /*********************************    
+
+    /*********************************
   #TRANSACCION:  'WF_EXPTIPDW_SEL'
   #DESCRIPCION: Exportacion de Tipo documento
-  #AUTOR:   admin 
+  #AUTOR:   admin
   #FECHA:   14-01-2014 17:43:47
   ***********************************/
 
@@ -119,7 +119,7 @@ BEGIN
                v_consulta:='select  ''tipo_documento''::varchar,tdoc.codigo,tp.codigo,tdoc.nombre,tdoc.descripcion,
                             tdoc.action,tdoc.tipo,tdoc.estado_reg,tdoc.orden,tdoc.categoria_documento
                             from wf.ttipo_documento tdoc
-                            inner join wf.ttipo_proceso tp 
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tdoc.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
@@ -127,47 +127,49 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro ='|| v_parametros.id_proceso_macro;
 
-        if (v_parametros.todo = 'no') then                   
+        if (v_parametros.todo = 'no') then
                   v_consulta = v_consulta || ' and tdoc.modificado is null ';
-               end if;
-               v_consulta = v_consulta || ' order by tdoc.id_tipo_documento ASC'; 
-                                                                       
+        elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and tdoc.estado_reg = ''activo'' ';
+        end if;
+               v_consulta = v_consulta || ' order by tdoc.id_tipo_documento ASC';
+
                return v_consulta;
 
 
          END;
-         
-   /*********************************    
+
+   /*********************************
     #TRANSACCION:  'WF_TIDOCPLAN_SEL'
     #DESCRIPCION: Consulta de datos
-    #AUTOR:       RCM 
+    #AUTOR:       RCM
     #FECHA:       20/05/2015
     ***********************************/
 
     elsif(p_transaccion='WF_TIDOCPLAN_SEL')then
-              
+
         begin
 
         if v_parametros.nombre_vista is null then
           raise exception 'Parametro nombre_vista es nulo';
         end if;
-        
+
           --Sentencia de la consulta
           v_consulta:='select column_name::varchar,
                        data_type::varchar,
                        character_maximum_length::int4
                        from INFORMATION_SCHEMA.COLUMNS
                     where table_name = '''||v_parametros.nombre_vista || '''';
-          
+
           --Definicion de la respuesta
           --v_consulta:=v_consulta||' order by 1';
 
           --Devuelve la respuesta
           return v_consulta;
-                
+
         end;
-        
-  /*********************************    
+
+  /*********************************
   #TRANSACCION:  'WF_TIDOCPLAN_CONT'
   #DESCRIPCION: Conteo de registros
   #AUTOR:     RCM
@@ -189,41 +191,41 @@ BEGIN
       return v_consulta;
 
     end;
-    
-    
-  /*********************************    
+
+
+  /*********************************
   #TRANSACCION:  'WF_VISTA_SEL'
   #DESCRIPCION: Devuelve los datos dinámicos de la vista enviada
-  #AUTOR:       RCM 
+  #AUTOR:       RCM
   #FECHA:       20/05/2015
   ***********************************/
 
     elsif(p_transaccion='WF_VISTA_SEL')then
-              
+
         begin
 
         if v_parametros.nombre_vista is null then
           raise exception 'Parametro nombre_vista es nulo';
         end if;
-        
+
           --Sentencia de la consulta
           v_consulta:='select *
                        from ' || v_parametros.esquema_vista || '.' ||v_parametros.nombre_vista || '
                        where id_proceso_wf = '||v_parametros.id_proceso_wf;
-          
+
           --Devuelve la respuesta
           return v_consulta;
-                
+
         end;
-         
+
   else
-               
+
     raise exception 'Transaccion inexistente';
-                   
+
   end if;
-          
+
 EXCEPTION
-          
+
   WHEN OTHERS THEN
       v_resp='';
       v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);

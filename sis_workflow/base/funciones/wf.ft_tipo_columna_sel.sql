@@ -1,11 +1,13 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
   p_transaccion varchar
 )
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
   /**************************************************************************
    SISTEMA:       Work Flow
    FUNCION:       wf.ft_tipo_columna_sel
@@ -15,10 +17,8 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
    COMENTARIOS:
   ***************************************************************************
    HISTORIAL DE MODIFICACIONES:
-
-   DESCRIPCION:
-   AUTOR:
-   FECHA:
+    ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
   ***************************************************************************/
 
   DECLARE
@@ -37,10 +37,10 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
     v_nombre_funcion = 'wf.ft_tipo_columna_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_TIPCOL_SEL'
     #DESCRIPCION:   Consulta de datos
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:41:15
     ***********************************/
 
@@ -75,7 +75,7 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
                         usu2.cuenta as usr_mod,
                         tipcol.bd_prioridad,
                         tipcol.form_grupo,
-                        tipcol.bd_campos_subconsulta    
+                        tipcol.bd_campos_subconsulta
                         from wf.ttipo_columna tipcol
                         inner join segu.tusuario usu1 on usu1.id_usuario = tipcol.id_usuario_reg
                         inner join wf.ttabla tabla on tabla.id_tabla = tipcol.id_tabla
@@ -91,10 +91,10 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
 
       end;
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_TIPCOL_CONT'
     #DESCRIPCION:   Conteo de registros
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:41:15
     ***********************************/
 
@@ -117,10 +117,10 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
 
       end;
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_EXPTIPCOL_SEL'
     #DESCRIPCION:   Exportacion de Tipo columna
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:41:15
     ***********************************/
 
@@ -131,14 +131,14 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
         v_consulta:='select  ''tipo_columna''::varchar,tcol.bd_nombre_columna, tab.bd_codigo_tabla, tp.codigo,tcol.bd_tipo_columna,
                             tcol.bd_descripcion_columna,tcol.bd_tamano_columna,tcol.bd_campos_adicionales,tcol.bd_joins_adicionales,
                             tcol.bd_formula_calculo,tcol.grid_sobreescribe_filtro,tcol.grid_campos_adicionales,
-                            tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,  
+                            tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,
                             tcol.form_combo_rec, tcol.form_sobreescribe_config,tcol.estado_reg,
                             tcol.bd_prioridad,tcol.form_grupo,
                             tcol.bd_campos_subconsulta
                             from wf.ttipo_columna tcol
                             inner join wf.ttabla tab
                             on tab.id_tabla = tcol.id_tabla
-                            inner join wf.ttipo_proceso tp 
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tab.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
@@ -148,6 +148,8 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
 
         if (v_parametros.todo = 'no') then
           v_consulta = v_consulta || ' and tcol.modificado is null ';
+        elseif (v_parametros.todo = 'actual') then --#86
+          v_consulta = v_consulta || ' and tcol.estado_reg = ''activo'' ';
         end if;
         v_consulta = v_consulta || ' order by tcol.id_tipo_columna ASC';
 
@@ -156,10 +158,10 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
 
       END;
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_TIPCOLES_SEL'
     #DESCRIPCION:   Consulta de datos por estado
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:41:15
     ***********************************/
 
@@ -200,7 +202,7 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
                         from wf.tcolumna_estado coles
                         inner join wf.ttipo_estado te
                             on te.id_tipo_estado = coles.id_tipo_estado
-                        where te.codigo = '''|| v_parametros.tipo_estado || ''' 
+                        where te.codigo = '''|| v_parametros.tipo_estado || '''
                             and coles.id_tipo_columna = tipcol.id_tipo_columna and coles.estado_reg = ''activo'' and coles.momento != ''preregistro'') as momento,
                         tipcol.bd_tipo_columna as bd_tipo_columna_comp,
                         tipcol.bd_campos_subconsulta
@@ -220,10 +222,10 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
 
       end;
 
-    /*********************************    
+    /*********************************
     #TRANSACCION:  'WF_TIPCOLFOR_SEL'
     #DESCRIPCION:   Detalle de columnas a mostrar en el formulario
-    #AUTOR:     admin   
+    #AUTOR:     admin
     #FECHA:     07-05-2014 21:41:15
     ***********************************/
 
@@ -257,11 +259,11 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
                                              ' || v_id_proceso_wf || ',
                                              ce.regla,
                                              ' || v_id_tipo_estado || ',
-                                             ' || v_parametros.id_estado_wf || ') 
+                                             ' || v_parametros.id_estado_wf || ')
                         from wf.ttipo_columna tc
         				inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna
         				inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
-            			where ce.momento in (''registrar'',''exigir'') and ce.estado_reg = ''activo'' 
+            			where ce.momento in (''registrar'',''exigir'') and ce.estado_reg = ''activo''
                         	and tc.estado_reg = ''activo'' and id_tabla = ' || v_id_tabla || ' and te.id_tipo_estado = ' || v_id_tipo_estado;
 
 
@@ -283,7 +285,7 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
                         from wf.ttipo_columna tc
         				inner join wf.tcolumna_estado ce on ce.id_tipo_columna = tc.id_tipo_columna
         				inner join wf.ttipo_estado te on ce.id_tipo_estado = te.id_tipo_estado
-            			where ce.momento in (''registrar'',''exigir'') and ce.estado_reg = ''activo'' and tc.estado_reg = ''activo'' 
+            			where ce.momento in (''registrar'',''exigir'') and ce.estado_reg = ''activo'' and tc.estado_reg = ''activo''
                         		and id_tabla = ' || v_id_tabla || ' and te.id_tipo_estado = ' || v_id_tipo_estado;
 
         end if;
@@ -308,7 +310,7 @@ CREATE OR REPLACE FUNCTION wf.ft_tipo_columna_sel (
       v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
       raise exception '%',v_resp;
   END;
-  $body$
+$body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT

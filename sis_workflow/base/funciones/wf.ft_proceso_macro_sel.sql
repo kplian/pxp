@@ -17,11 +17,11 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
+ ISSUE      FECHA         AUTHOR         DESCRIPCION
+ #86        20/11/2019    EGS           Filtro para registros activos en exportdor de plantilla
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
 ***************************************************************************/
+
 
 DECLARE
 
@@ -29,21 +29,21 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'wf.ft_proceso_macro_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_PROMAC_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		rac	
+ 	#AUTOR:		rac
  	#FECHA:		19-02-2013 13:51:29
 	***********************************/
 
 	if(p_transaccion='WF_PROMAC_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -66,17 +66,17 @@ BEGIN
 						left join segu.tusuario usu2 on usu2.id_usuario = promac.id_usuario_mod
                         INNER JOIN segu.tsubsistema subs on subs.id_subsistema = promac.id_subsistema
 				        where  promac.estado_reg = ''activo'' and ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
-		end;        
 
-    /*********************************    
+		end;
+
+    /*********************************
  	#TRANSACCION:  'WF_EXPPROMAC_SEL'
  	#DESCRIPCION:	Listado de los datos del proceso macro seleccionado para exportar
  	#AUTOR:		Gonzalo Sarmiento Sejas
@@ -85,16 +85,18 @@ BEGIN
     elsif(p_transaccion='WF_EXPPROMAC_SEL')then
 		 BEGIN
 
-               v_consulta:='select ''proceso_macro''::varchar,pm.codigo, s.codigo as codigo_subsisitema,pm.nombre,	
+               v_consulta:='select ''proceso_macro''::varchar,pm.codigo, s.codigo as codigo_subsisitema,pm.nombre,
                                 inicio,pm.estado_Reg
                             from wf.tproceso_macro pm
                             inner join segu.tsubsistema s
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro =  '|| v_parametros.id_proceso_macro;
 
-				if (v_parametros.todo = 'no') then                   
+				if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and pm.modificado is null ';
-               end if;
+                 elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and pm.estado_Reg = ''activo'' ';
+                 end if;
                v_consulta = v_consulta || ' order by pm.id_proceso_macro ASC';	
                                                                        
                return v_consulta;

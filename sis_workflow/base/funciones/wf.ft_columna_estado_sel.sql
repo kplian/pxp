@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_columna_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,11 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.tcolumna_estado'
  AUTOR: 		 (admin)
  FECHA:	        07-05-2014 21:41:18
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+   ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -27,21 +27,21 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'wf.ft_columna_estado_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_COLEST_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		07-05-2014 21:41:18
 	***********************************/
 
 	if(p_transaccion='WF_COLEST_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -57,26 +57,26 @@ BEGIN
 						colest.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        colest.regla	
+                        colest.regla
 						from wf.tcolumna_estado colest
 						inner join segu.tusuario usu1 on usu1.id_usuario = colest.id_usuario_reg
 						inner join wf.ttipo_estado tes on tes.id_tipo_estado = colest.id_tipo_estado
 						left join segu.tusuario usu2 on usu2.id_usuario = colest.id_usuario_mod
 				        where colest.estado_reg = ''activo'' and ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_COLEST_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		07-05-2014 21:41:18
 	***********************************/
 
@@ -90,19 +90,19 @@ BEGIN
 					    inner join wf.ttipo_estado tes on tes.id_tipo_estado = colest.id_tipo_estado
 						left join segu.tusuario usu2 on usu2.id_usuario = colest.id_usuario_mod
 					    where colest.estado_reg = ''activo'' and ';
-			
-			--Definicion de la respuesta		    
+
+			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 
 			--Devuelve la respuesta
 			return v_consulta;
 
 		end;
-        
-    /*********************************    
+
+    /*********************************
  	#TRANSACCION:  'WF_EXPCOLEST_SEL'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		07-05-2014 21:41:18
 	***********************************/
 
@@ -120,7 +120,7 @@ BEGIN
                             on tes.id_tipo_estado = coles.id_tipo_estado
                             inner join wf.ttabla tab
                             on tab.id_tabla = tcol.id_tabla
-                            inner join wf.ttipo_proceso tp 
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tab.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
@@ -128,24 +128,26 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
 
-				if (v_parametros.todo = 'no') then                   
+				if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and coles.modificado is null ';
+               elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and coles.estado_reg = ''activo'' ';
                end if;
-               v_consulta = v_consulta || ' order by coles.id_columna_estado ASC';	
-                                                                       
+               v_consulta = v_consulta || ' order by coles.id_columna_estado ASC';
+
                return v_consulta;
 
 
          END;
-					
+
 	else
-					     
+
 		raise exception 'Transaccion inexistente';
-					         
+
 	end if;
-					
+
 EXCEPTION
-					
+
 	WHEN OTHERS THEN
 			v_resp='';
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
