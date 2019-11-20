@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_categoria_documento_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,11 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.tcategoria_documento'
  AUTOR: 		 (admin)
  FECHA:	        20-03-2015 15:44:44
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ ISSUE      FECHA         AUTHOR         DESCRIPCION
+ #86        20/11/2019    EGS           Filtro para registros activos en exportdor de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -27,21 +27,21 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'wf.ft_categoria_documento_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_CATDOC_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		20-03-2015 15:44:44
 	***********************************/
 
 	if(p_transaccion='WF_CATDOC_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
@@ -56,22 +56,22 @@ BEGIN
 						catdoc.fecha_mod,
 						catdoc.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod
 						from wf.tcategoria_documento catdoc
 						inner join segu.tusuario usu1 on usu1.id_usuario = catdoc.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = catdoc.id_usuario_mod
 				        where  ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
-    
-    /*********************************    
+
+    /*********************************
  	#TRANSACCION:  'WF_EXPPROMAC_SEL'
  	#DESCRIPCION:	Listado de los datos del la categoria de documento seleccionado para exportar
  	#AUTOR:		Gonzalo Sarmiento Sejas
@@ -80,15 +80,18 @@ BEGIN
     elsif(p_transaccion='WF_EXPCATDOC_SEL')then
 		 BEGIN
 
-               v_consulta:='select ''categoria_documento''::varchar,cd.codigo, cd.nombre,	
+               v_consulta:='select ''categoria_documento''::varchar,cd.codigo, cd.nombre,
                                 cd.estado_reg
                             from wf.tcategoria_documento cd ';
 
-				if (v_parametros.todo = 'no') then                   
-               		v_consulta = v_consulta || ' and cd.modificado is null ';
+				if (v_parametros.todo = 'no') then
+               		v_consulta = v_consulta || ' WHERE cd.modificado is null ';
+               elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' WHERE  cd.estado_reg = ''activo'' ';
+
                end if;
-               v_consulta = v_consulta || ' order by cd.id_categoria_documento ASC';	
-                                                                       
+               v_consulta = v_consulta || ' order by cd.id_categoria_documento ASC';
+               RAISE notice 'v_consulta %',v_consulta;
                return v_consulta;
 
 

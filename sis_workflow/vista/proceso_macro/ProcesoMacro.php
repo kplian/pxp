@@ -5,6 +5,8 @@
 *@author  (FRH)
 *@date 19-02-2013 13:51:29
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+    ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Se añade opcion para mostrar los datoc actuales del proceso
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -25,7 +27,9 @@ Phx.vista.ProcesoMacro=Ext.extend(Phx.gridInterfaz,{
                    					text: 'Exportar Cambios Realizados', handler: this.expProceso, scope: this, argument : {todo:'no'}
                    				},{
                    					text: 'Exportar Todos los datos del Proceso', handler: this.expProceso, scope: this, argument : {todo : 'si'}
-                   				}
+                   				},{
+                                        text: 'Exportar Todos los datos Actuales del Proceso', handler: this.expProceso, scope: this, argument : {todo : 'actual'} //#86
+                                    }
                    				]
                    			}
                    		});

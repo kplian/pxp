@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_rol_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,13 +14,11 @@ $body$
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'wf.ttipo_estado_rol'
  AUTOR: 		 (admin)
  FECHA:	        15-01-2014 03:12:38
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+   ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -27,29 +27,29 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'wf.ft_tipo_estado_rol_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_EXPTESROL_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		15-01-2014 03:12:38
 	***********************************/
 
 	if(p_transaccion='WF_EXPTESROL_SEL')then
-     				
+
     	begin
     		v_consulta:='select  ''tipo_estado_rol''::varchar,tp.codigo,tes.codigo,r.rol,tesrol.estado_reg
 
                             from wf.ttipo_estado_rol tesrol
                             inner join wf.ttipo_estado tes
-                            on tesrol.id_tipo_estado = tes.id_tipo_estado                            
+                            on tesrol.id_tipo_estado = tes.id_tipo_estado
                             inner join wf.ttipo_proceso tp
-                            on tp.id_tipo_proceso = tes.id_tipo_proceso                            
+                            on tp.id_tipo_proceso = tes.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
                             inner join segu.tsubsistema s
@@ -58,8 +58,10 @@ BEGIN
                             on r.id_rol = tesrol.id_rol
                             where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
 
-				if (v_parametros.todo = 'no') then                   
+				if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and tesrol.modificado is null ';
+               elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and tesrol.estado_reg = ''activo'' ';
                end if;
                v_consulta = v_consulta || ' order by tesrol.id_tipo_estado_rol ASC';	
                                                                        

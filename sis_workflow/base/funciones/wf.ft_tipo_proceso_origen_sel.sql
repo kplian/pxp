@@ -17,10 +17,8 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+   ISSUE      FECHA         AUTHOR         DESCRIPCION
+    #86        20/11/2019    EGS           Filtro para registros activos en exportador de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -29,21 +27,21 @@ DECLARE
 	v_parametros  		record;
 	v_nombre_funcion   	text;
 	v_resp				varchar;
-			    
+
 BEGIN
 
 	v_nombre_funcion = 'wf.ft_tipo_proceso_origen_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_TPO_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		09-06-2014 17:03:47
 	***********************************/
 
 	if(p_transaccion='WF_TPO_SEL')then
-     				
+
     	begin
     		--Sentencia de la consulta
 			v_consulta:=' select
@@ -72,20 +70,20 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = tpo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tpo.id_usuario_mod
 				        where  tpo.estado_reg = ''activo'' and ';
-			
+
 			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 			--Devuelve la respuesta
 			return v_consulta;
-						
+
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_TPO_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		09-06-2014 17:03:47
 	***********************************/
 
@@ -101,19 +99,19 @@ BEGIN
 						inner join segu.tusuario usu1 on usu1.id_usuario = tpo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tpo.id_usuario_mod
 				        where   tpo.estado_reg = ''activo'' and  ';
-			
-			--Definicion de la respuesta		    
+
+			--Definicion de la respuesta
 			v_consulta:=v_consulta||v_parametros.filtro;
 
 			--Devuelve la respuesta
 			return v_consulta;
 
 		end;
-        
-    /*********************************    
+
+    /*********************************
  	#TRANSACCION:  'WF_EXPTPO_SEL'
  	#DESCRIPCION:	Exportacion de tipo proceso origen
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		09-06-2014 17:03:47
 	***********************************/
 
@@ -125,13 +123,13 @@ BEGIN
                             tpor.tipo_disparo,tpor.funcion_validacion_wf,tpor.estado_reg
 
                             from wf.ttipo_proceso_origen tpor
-                            inner join wf.ttipo_proceso tp 
+                            inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tpor.id_tipo_proceso
                             inner join wf.tproceso_macro pm
                             on pm.id_proceso_macro = tp.id_proceso_macro
                             inner join wf.ttipo_estado esor
                             on esor.id_tipo_estado = tpor.id_tipo_estado
-                            inner join wf.ttipo_proceso tpes 
+                            inner join wf.ttipo_proceso tpes
                             on tpes.id_tipo_proceso = esor.id_tipo_proceso
                             inner join wf.tproceso_macro pmes
                             on pmes.id_proceso_macro = tpes.id_proceso_macro
@@ -139,8 +137,10 @@ BEGIN
                             on s.id_subsistema = pm.id_subsistema
                             where pm.id_proceso_macro = '|| v_parametros.id_proceso_macro;
 
-				if (v_parametros.todo = 'no') then                   
+				if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and tpor.modificado is null ';
+                elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and tpor.estado_reg = ''activo'' ';
                end if;
                v_consulta = v_consulta || ' order by tpor.id_tipo_proceso_origin ASC';	
                                                                        
