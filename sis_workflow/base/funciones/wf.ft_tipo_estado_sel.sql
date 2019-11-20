@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -16,6 +18,7 @@ $body$
 ***************************************************************************
 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
 	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
+    #86             20/11/2019      EGS                     Filtro para registros activos en exportdor de plantilla
 ***************************************************************************/
 
 DECLARE
@@ -340,6 +343,8 @@ BEGIN
 
 				if (v_parametros.todo = 'no') then
                		v_consulta = v_consulta || ' and tes.modificado is null ';
+                elseif (v_parametros.todo = 'actual') then --#86
+                 v_consulta = v_consulta || ' and tes.estado_reg = ''activo'' ';
                end if;
                v_consulta = v_consulta || ' order by tes.id_tipo_estado ASC';
 
