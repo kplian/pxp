@@ -520,3 +520,8 @@ VALUES
 /***********************************I-DAT-SAZP-PARAM-82-14/11/2019*****************************************/
 select pxp.f_insert_tgui ('Antiguedad', 'Registro parametros de antiguedad', 'ANTIG', 'si', 21, 'sis_parametros/vista/antiguedad/Antiguedad.php', 4, '', 'Antiguedad', 'PARAM');
 /***********************************F-DAT-SAZP-PARAM-82-14/11/2019*****************************************/
+
+/***********************************I-DAT-JRR-PARAM-0-26/11/2019*****************************************/
+select pxp.f_insert_tgui ('Variable Global', 'Variable Global', 'VARGLOB', 'si', 1, 'sis_parametros/vista/variable_global/VariableGlobal.php', 3, '', 'VariableGlobal', 'PARAM');
+select pxp.f_insert_testructura_gui ('VARGLOB', 'OTROS');
+/***********************************I-DAT-JRR-PARAM-0-26/11/2019*****************************************/
