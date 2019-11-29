@@ -151,7 +151,7 @@ Phx.vista.mapaLugar=Ext.extend(Phx.gmapInterfaz,{
             
     	this.gm.addMarkers(this.a)*/
             
-		 this.geocoder = new google.maps.Geocoder();
+		 //this.geocoder = new google.maps.Geocoder();
 			/*  function initialize() {
 			   
 			    var latlng = new google.maps.LatLng(-34.397, 150.644);
@@ -180,7 +180,7 @@ Phx.vista.mapaLugar=Ext.extend(Phx.gmapInterfaz,{
 	},
 		
 	ubicarPos: function(direc,zoom){
-			var myMapa = this.gm.getMap()
+		/*	var myMapa = this.gm.getMap()
 			var address = direc;
 			
 			
@@ -201,7 +201,7 @@ Phx.vista.mapaLugar=Ext.extend(Phx.gmapInterfaz,{
 			      } else {
 			        alert("No se pudo encontrar la direcci�n por este motivo: " + status);
 			      }
-			    });
+			    });*/
 		
 		
 	},
