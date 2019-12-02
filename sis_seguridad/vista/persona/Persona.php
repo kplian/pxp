@@ -9,6 +9,7 @@ ISSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION
   #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
   #55			02.09.2019		ETR			MZM					Adicion de campo abreviatura_titulo
   #59 			09.09.2019		ETR			MZM					Adicion de campo profesion
+  #88           02/12/2019      ETR         APS                 modificación de campo direccion, ocultar profesion, editar grupo sanquineo.
  * */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -309,6 +310,24 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		grid:true,
 		form:true
 	},
+
+    {//#88
+        config:{
+            fieldLabel: "Dirección",
+            gwidth: 130,
+            name: 'direccion',
+            allowBlank:true,
+            maxLength:150,
+
+            anchor:'100%'
+        },
+        type:'TextField',
+        filters:{pfiltro:'p.direccion',type:'string'},
+        bottom_filter : true,
+        id_grupo:0,
+        grid:true,
+        form:true
+    },
 	{
 		config:{
 			fieldLabel: "Matricula",
@@ -399,7 +418,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		filters:{type:'string'},
 		id_grupo:0,
 		grid:true,
-		form:true
+		form:true  //#88
 	}//#59 (F)
 	       	
 	],
@@ -424,6 +443,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	{name:'telefono1'},
 	{name:'telefono2'},
 	{name:'celular2'},
+    {name:'direccion'},
 	{name:'foto'}
 	//#40: adicion de campos
 	,
@@ -434,7 +454,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	//fin #40
 	//#55 - 02.09.2019
 	,{name:'abreviatura_titulo', type: 'string'}
-	,{name:'profesion', type: 'string'} //#59 - 09.09.2019
+	,{name:'profesion', type: 'string'},{name:'grupo_sanguineo', type: 'string'} //#59 - 09.09.2019
 		],
 	sortInfo:{
 		field: 'id_persona',
@@ -575,7 +595,8 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	    		this.Cmp.ci.modificado=true;
 	    		this.Cmp.expedicion.modificado=true;
 	    	}	    	
-	   	},this)
+	   	},this);
+	   	this.ocultarComponente(this.Cmp.profesion);
    },
 
     archivo : function (){

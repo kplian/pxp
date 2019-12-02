@@ -10,6 +10,7 @@
   #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
  #55            02-09-2019     ETR		     MZM                Adicion de campos abreviatura_titulo
  #59 			09.09.2019		ETR			MZM					Adicion de campo profesion
+ #88           02/12/2019       ETR         APS                 modificación de campo direccion, ocultar profesion, editar grupo sanquineo.
  */ 
 class MODPersona extends MODbase{
 	
@@ -38,11 +39,13 @@ class MODPersona extends MODbase{
 		$this->captura('telefono1','varchar');
 		$this->captura('telefono2','varchar');
 		$this->captura('celular2','varchar');
+
 		$this->captura('fecha_nacimiento','date');
 		$this->captura('genero','varchar');
-		$this->captura('direccion','varchar');
+		$this->captura('direccion','varchar');	//#88
 		$this->captura('tipo_documento','varchar');
 		$this->captura('expedicion','varchar');
+
 		
 
 		//Ejecuta la funcion
@@ -79,9 +82,11 @@ class MODPersona extends MODbase{
 		$this->captura('telefono1','varchar');
 		$this->captura('telefono2','varchar');
 		$this->captura('celular2','varchar');
+		$this->captura('direccion','varchar');
 		$this->captura('extension','varchar');
 		$this->captura('tipo_documento','varchar');
 		$this->captura('expedicion','varchar');
+
 		//nombre varialbe de envio, tipo dato, columna que serra el nombre foto retorno, ruta para guardar archivo, crear miniatura, almacenar en sesion, nombre variale sesion			
 		
 		$this->captura('foto','bytea','id_persona','extension','sesion','foto');
@@ -93,12 +98,14 @@ class MODPersona extends MODbase{
 		$this->captura('historia_clinica','varchar');
 		$this->captura('fecha_nacimiento','date');
 		$this->captura('genero','varchar');
-		$this->captura('grupo_sanguineo','varchar');
+		$this->captura('grupo_sanguineo','varchar');    //#88
 		//#40(F)
 		$this->captura('abreviatura_titulo','varchar');
+
 		//#55 - 02.09.2019
 		
 		$this->captura('profesion','varchar'); //#59 - 09.09.2019
+
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -155,7 +162,8 @@ class MODPersona extends MODbase{
 		$this->setParametro('telefono1','telefono1','varchar');
 		$this->setParametro('telefono2','telefono2','varchar');
 		$this->setParametro('celular2','celular2','varchar');
-		
+		$this->setParametro('direccion','direccion','varchar');  //#88
+
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('expedicion','expedicion','varchar');
 		//#40 - MZM 
@@ -163,7 +171,7 @@ class MODPersona extends MODbase{
 		$this->setParametro('historia_clinica','historia_clinica','varchar');
 		$this->setParametro('fecha_nacimiento','fecha_nacimiento','date');
 		$this->setParametro('genero','genero','varchar');
-		$this->setParametro('grupo_sanguineo','grupo_sanguineo','varchar');
+		$this->setParametro('grupo_sanguineo','grupo_sanguineo','varchar');  //#88
 		//#40 (fin)
 		//#55 - 02.09.2019
 		$this->setParametro('abreviatura_titulo','abreviatura_titulo','varchar');
@@ -199,6 +207,7 @@ class MODPersona extends MODbase{
 		$this->setParametro('telefono1','telefono1','varchar');
 		$this->setParametro('telefono2','telefono2','varchar');
 		$this->setParametro('celular2','celular2','varchar');
+		$this->setParametro('direccion','direccion','varchar'); //#88
 		
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('expedicion','expedicion','varchar');
@@ -207,7 +216,7 @@ class MODPersona extends MODbase{
 		$this->setParametro('historia_clinica','historia_clinica','varchar');
 		$this->setParametro('fecha_nacimiento','fecha_nacimiento','date');
 		$this->setParametro('genero','genero','varchar');
-		$this->setParametro('grupo_sanguineo','grupo_sanguineo','varchar');
+		$this->setParametro('grupo_sanguineo','grupo_sanguineo','varchar');//#88
 		//#40 (fin)
 		//#55 - 02.09.2019
 		$this->setParametro('abreviatura_titulo','abreviatura_titulo','varchar');
