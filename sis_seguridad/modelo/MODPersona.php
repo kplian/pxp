@@ -38,11 +38,13 @@ class MODPersona extends MODbase{
 		$this->captura('telefono1','varchar');
 		$this->captura('telefono2','varchar');
 		$this->captura('celular2','varchar');
+		$this->captura('direccion','varchar');
 		$this->captura('fecha_nacimiento','date');
 		$this->captura('genero','varchar');
 		$this->captura('direccion','varchar');
 		$this->captura('tipo_documento','varchar');
 		$this->captura('expedicion','varchar');
+
 		
 
 		//Ejecuta la funcion
@@ -79,6 +81,7 @@ class MODPersona extends MODbase{
 		$this->captura('telefono1','varchar');
 		$this->captura('telefono2','varchar');
 		$this->captura('celular2','varchar');
+		$this->captura('direccion','varchar');
 		$this->captura('extension','varchar');
 		$this->captura('tipo_documento','varchar');
 		$this->captura('expedicion','varchar');
@@ -155,7 +158,8 @@ class MODPersona extends MODbase{
 		$this->setParametro('telefono1','telefono1','varchar');
 		$this->setParametro('telefono2','telefono2','varchar');
 		$this->setParametro('celular2','celular2','varchar');
-		
+		$this->setParametro('direccion','direccion','varchar');
+
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('expedicion','expedicion','varchar');
 		//#40 - MZM 
@@ -199,6 +203,7 @@ class MODPersona extends MODbase{
 		$this->setParametro('telefono1','telefono1','varchar');
 		$this->setParametro('telefono2','telefono2','varchar');
 		$this->setParametro('celular2','celular2','varchar');
+		$this->setParametro('direccion','direccion','varchar');
 		
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('expedicion','expedicion','varchar');

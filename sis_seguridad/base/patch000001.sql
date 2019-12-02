@@ -1178,3 +1178,7 @@ ALTER TABLE segu.tpersona
   ADD COLUMN profesion VARCHAR(50);
 /***********************************F-SCP-MZM-SEGU-59-09/09/2019*****************************************/  
 
+/***********************************I-SCP-APS-SEGU-01-02/12/2019*****************************************/
+ALTER TABLE segu.tpersona
+  ALTER COLUMN grupo_sanguineo TYPE VARCHAR(10);
+/***********************************F-SCP-MZM-SEGU-01-02/12/2019*****************************************/
