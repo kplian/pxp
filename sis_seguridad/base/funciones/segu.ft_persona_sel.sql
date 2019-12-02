@@ -1,3 +1,13 @@
+--------------- SQL ---------------
+
+CREATE OR REPLACE FUNCTION segu.ft_persona_sel (
+  par_administrador integer,
+  par_id_usuario integer,
+  par_tabla varchar,
+  par_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  FUNCION: 		segu.ft_persona_sel
  DESCRIPCION:   consultas de persona
@@ -224,3 +234,9 @@ EXCEPTION
 
 
 END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
