@@ -108,7 +108,8 @@ BEGIN
                                ,abreviatura_titulo
                                --#59
                                ,profesion --#59 - 09.09.2019
-                               ,grupo_sanguineo
+                               ,grupo_sanguineo --#88
+                               ,direccion --#88
                                )
                values(
                       upper(v_parametros.nombre),
@@ -133,6 +134,7 @@ BEGIN
                       --#59 - 09.09.2019
                       ,v_parametros.profesion
                       ,v_parametros.grupo_sanguineo  --#88
+                      ,v_parametros.direccion	--#88
                       )
 
                RETURNING id_persona INTO v_id_persona;
@@ -201,6 +203,7 @@ BEGIN
                --#59 - 09.09.2019
               ,profesion=v_parametros.profesion
                ,grupo_sanguineo=v_parametros.grupo_sanguineo --#88
+               ,direccion = v_parametros.direccion--#88
                where id_persona=v_parametros.id_persona;
 
                --v_respuesta_sinc:= segu.f_sincroniza_persona_entre_bd(v_parametros.id_persona,'10.172.0.13','5432','db_link','db_link','dbendesis','UPDATE');
