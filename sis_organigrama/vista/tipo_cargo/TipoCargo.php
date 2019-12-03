@@ -53,9 +53,10 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				maxLength:30
 			},
 				type:'TextField',
-				filters:{pfiltro:'tcar.codigo',type:'string'},
+				filters:{pfiltro:'TCAR.codigo',type:'string'},
 				id_grupo:1,
 				grid:true,
+                bottom_filter:true,    //###
 				form:true
 		},
 		{ 
@@ -97,8 +98,9 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 			},
 			type: 'ComboBox',
 			id_grupo: 0,
-			filters: {pfiltro: 'tipcon.nombre',type: 'string'},
+			filters: {pfiltro: 'tc.nombre',type: 'string'},
 			grid: true,
+             bottom_filter:true,    //###
 			form: true
 		},
 		{
@@ -114,6 +116,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'tcar.nombre',type:'string'},
 				id_grupo:1,
 				grid:true,
+                bottom_filter:true,    //###
 				form:true
 		},
 		{
@@ -224,6 +227,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 			id_grupo: 0,
 			filters: {pfiltro: 'escmax.nombre',type: 'string'},
 			grid: true,
+           bottom_filter:true,    //###
 			form: true
 		},
 		
@@ -241,6 +245,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'tcar.factor_disp',type:'numeric'},
 				id_grupo:1,
 				grid:true,
+                bottom_filter:true,    //###
 				form:true
 		},
         {
@@ -257,6 +262,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'tcar.factor_nocturno',type:'numeric'},
 				id_grupo:1,
 				grid:true,
+                bottom_filter:true,    //###
 				form:true
 		},
 		{
@@ -272,6 +278,7 @@ Phx.vista.TipoCargo=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'tcar.obs',type:'string'},
 				id_grupo:1,
 				grid:true,
+                bottom_filter:true,    //###
 				form:true
 		},
 		{
