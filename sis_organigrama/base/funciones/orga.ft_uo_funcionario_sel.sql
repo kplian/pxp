@@ -9,26 +9,26 @@ $body$
 /**************************************************************************
  FUNCION:         ORGA.ft_uo_funcionario_sel
  DESCRIPCIÓN:  listado de uo
- AUTOR:         KPLIAN (mzm)    
- FECHA:            
- COMENTARIOS:    
+ AUTOR:         KPLIAN (mzm)
+ FECHA:
+ COMENTARIOS:
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:    
- AUTOR:        
+ DESCRIPCION:
+ AUTOR:
  FECHA:        30-05-2011
- 
- 
+
+
 ***************************************************************************
     HISTORIAL DE MODIFICACIONES:
-       
+
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
-   
+
  #6             09-01-2019        RAC         recupera funcion de repositorio de boa
  #32            18/07/2019        RAC         añade carga horaria
  #51            20-08-2019        RAC         adiciona descripcion de cargo  para solucionar ordenacion en la vista historico asignacion
- #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario	
+ #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario
 ***************************************************************************/
 
 
@@ -50,8 +50,8 @@ BEGIN
 /*******************************
  #TRANSACCION:  RH_UO_SEL
  #DESCRIPCION:    Listado de uo funcionarios
- #AUTOR:        
- #FECHA:        30/05/11    
+ #AUTOR:
+ #FECHA:        30/05/11
 ***********************************/
      if(par_transaccion='RH_UOFUNC_SEL')then
 
@@ -76,7 +76,7 @@ BEGIN
                                   UOFUNC.id_usuario_reg,
                                   PERREG.nombre_completo2 AS USUREG,
                                   PERMOD.nombre_completo2 AS USUMOD,
-                                  cargo.id_cargo,
+                                  cargo.id_cargo,  --### aumentando la esala salarial y el haber basico en cargo a asignar, siguiente linea.
                                   (coalesce(''(''||escsal.nombre ||'' ''||COALESCE(escsal.haber_basico,0)||'')''||'' Cod: '' || cargo.codigo || ''---Id: '' || cargo.id_cargo,  ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
                                   UOFUNC.observaciones_finalizacion,
                                   UOFUNC.nro_documento_asignacion,
@@ -90,6 +90,7 @@ BEGIN
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN orga.tcargo cargo ON cargo.id_cargo = UOFUNC.id_cargo
+                            inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial-- para sacar la escala salarial join  con cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE  UOFUNC.estado_reg !=''inactivo'' and ';
