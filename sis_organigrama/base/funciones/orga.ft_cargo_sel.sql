@@ -64,7 +64,7 @@ $body$
                           usu1.cuenta as usr_reg,
                           usu2.cuenta as usr_mod,
                           tipcon.nombre,
-                          escsal.nombre || '' (''||COALESCE(escsal.haber_basico,0)||'')'',
+        				 (escsal.nombre || '' (''||COALESCE(escsal.haber_basico,0)||'')'')::varchar as nombre,
                           ofi.nombre,
                           (case when (orga.f_get_empleado_x_item(cargo.id_cargo)  is null and cargo.fecha_fin is null) then
                             ''ACEFALO''
