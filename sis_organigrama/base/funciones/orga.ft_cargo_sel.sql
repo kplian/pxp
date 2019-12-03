@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_cargo_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -66,7 +64,7 @@ $body$
                           usu1.cuenta as usr_reg,
                           usu2.cuenta as usr_mod,
                           tipcon.nombre,
-                          escsal.nombre,
+                          escsal.nombre || '' (''||COALESCE(escsal.haber_basico,0)||'')'',
                           ofi.nombre,
                           (case when (orga.f_get_empleado_x_item(cargo.id_cargo)  is null and cargo.fecha_fin is null) then
                             ''ACEFALO''
@@ -77,7 +75,7 @@ $body$
                           cargo.id_cargo as identificador,
                           tipcon.codigo as codigo_tipo_contrato,
                           cargo.id_tipo_cargo,
-                          tcar.codigo||'' ''||tcar.nombre as desc_tipo_cargo 
+                          tcar.codigo||'' ''||tcar.nombre as desc_tipo_cargo
 						from orga.tcargo cargo
 						inner join segu.tusuario usu1 on usu1.id_usuario = cargo.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = cargo.id_usuario_mod
@@ -106,10 +104,10 @@ $body$
 
       end;
 
-    /*********************************    
+    /*********************************
  	#TRANSACCION:  'OR_CARGOACE_SEL'
  	#DESCRIPCION:	Consulta de cargos acefalos
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		14-01-2014 19:16:06
 	***********************************/
 

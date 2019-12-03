@@ -77,12 +77,12 @@ BEGIN
                                   PERREG.nombre_completo2 AS USUREG,
                                   PERMOD.nombre_completo2 AS USUMOD,
                                   cargo.id_cargo,
-                                  (coalesce(''Cod: '' || cargo.codigo || ''---Id: '' || cargo.id_cargo,  ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
+                                  (coalesce(''(''||escsal.nombre ||'' ''||COALESCE(escsal.haber_basico,0)||'')''||'' Cod: '' || cargo.codigo || ''---Id: '' || cargo.id_cargo,  ''Id: '' || cargo.id_cargo)|| '' -- '' || cargo.nombre) ::text,
                                   UOFUNC.observaciones_finalizacion,
                                   UOFUNC.nro_documento_asignacion,
                                   UOFUNC.fecha_documento_asignacion,
-                                  UOFUNC.tipo,                                 
-                                  UOFUNC.carga_horaria  
+                                  UOFUNC.tipo,
+                                  UOFUNC.carga_horaria
                                   ,UOFUNC.prioridad --#81
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
@@ -94,14 +94,14 @@ BEGIN
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE  UOFUNC.estado_reg !=''inactivo'' and ';
 
-              
+
                 v_id_padre:=v_parametros.id_uo;
-              
+
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
-        
+
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad;
-        
+
                return v_consulta;
 
 
@@ -110,8 +110,8 @@ BEGIN
 /*******************************
  #TRANSACCION:  RH_UO_CONT
  #DESCRIPCION:    Conteo de uos
- #AUTOR:        
- #FECHA:        23/05/11    
+ #AUTOR:
+ #FECHA:        23/05/11
 ***********************************/
      elsif(par_transaccion='RH_UOFUNC_CONT')then
 
@@ -130,13 +130,13 @@ BEGIN
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE UOFUNC.estado_reg !=''inactivo'' and ';
                v_id_padre:=v_parametros.id_uo;
-              
-               
+
+
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
                return v_consulta;
          END;
-         
+
      /*******************************
        #TRANSACCION:  RH_ASIG_FUNC_SEL
        #DESCRIPCION:    Listado de asignaciones funcionarios
@@ -229,8 +229,8 @@ BEGIN
                v_consulta:=v_consulta||v_parametros.filtro;
                --v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
                return v_consulta;
-         END;    
-         
+         END;
+
      else
          raise exception 'No existe la opcion';
 
@@ -248,4 +248,8 @@ EXCEPTION
 
 END;
 $body$
-LANGUAGE 'plpgsql';
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
