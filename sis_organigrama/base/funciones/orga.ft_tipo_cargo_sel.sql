@@ -69,10 +69,10 @@ BEGIN
                         TCAR.factor_nocturno --#70
                         from orga.ttipo_cargo TCAR
                         inner join segu.tusuario usu1 on usu1.id_usuario = TCAR.id_usuario_reg
-                        left join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min
+                        left  join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min
                         inner join orga.tescala_salarial escmax on escmax.id_escala_salarial = tcar.id_escala_salarial_max
-                        left join segu.tusuario usu2 on usu2.id_usuario = TCAR.id_usuario_mod
-                        left join orga.ttipo_contrato tc on tc.id_tipo_contrato = TCAR.id_tipo_contrato
+                        left  join segu.tusuario usu2 on usu2.id_usuario = TCAR.id_usuario_mod
+                        left  join orga.ttipo_contrato tc on tc.id_tipo_contrato = TCAR.id_tipo_contrato
                         where  ';
 
             --Definicion de la respuesta
@@ -101,6 +101,7 @@ BEGIN
                         left join orga.tescala_salarial escmin on escmin.id_escala_salarial = tcar.id_escala_salarial_min --#52
                         inner join orga.tescala_salarial escmax on escmax.id_escala_salarial = tcar.id_escala_salarial_max
                         left join segu.tusuario usu2 on usu2.id_usuario = TCAR.id_usuario_mod
+                        left  join orga.ttipo_contrato tc on tc.id_tipo_contrato = TCAR.id_tipo_contrato
                         where ';
 
             --Definicion de la respuesta
@@ -132,6 +133,3 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
-
-ALTER FUNCTION orga.ft_tipo_cargo_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
-  OWNER TO postgres;

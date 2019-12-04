@@ -14,6 +14,7 @@
   #31           16/07/2019        RAC                 Adciona codigo rcaiva, profesion y fecha quinquenio
   #51           20/08/2019        RAC                 solucion de bug al seleccionar funcionario
   #60   ETR        10/09/2019        MMV              Histórico código de empleado
+  #89	ETR		04.12.2019			MZM				  Habilitacion de catalogo profesiones en funcionario
 
  */
 
@@ -268,7 +269,7 @@ Phx.vista.funcionario=function(config){
 	       			gwidth: 120,
 	       			name: 'antiguedad_anterior',
 	       			allowBlank:true,	
-	       			maxLength:3,
+	       			maxLength:4,
 	       			minLength:1,
 	       			anchor:'100%'
 	       		},
@@ -440,27 +441,56 @@ Phx.vista.funcionario=function(config){
 				grid:true,
 				form:true
 			},
-			{ //#31
-				config:{
-					name: 'profesion',
-					fieldLabel: 'Profesion',
-					qtip:'nombre profesion',
-					allowBlank: true,
-					anchor: '100%',
-					gwidth: 100,
-					maxLength:300
-				},
-				type:'TextField',
-				filters:{pfiltro:'FUNCIO.profesion',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-			},
+			{//#89
+                config : {
+                    name:'profesion',
+                    qtip:'Profesion',
+                    fieldLabel : 'Profesion:',
+                    resizable:true,
+                    allowBlank:true,
+                    emptyText:'Seleccione un catálogo...',
+                    store: new Ext.data.JsonStore({
+                        url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                        id: 'id_catalogo',
+                        root: 'datos',
+                        sortInfo:{
+                            field: 'orden',
+                            direction: 'ASC'
+                        },
+                        totalProperty: 'total',
+                        fields: ['id_catalogo','codigo','descripcion'],
+                        // turn on remote sorting
+                        remoteSort: true,
+                        baseParams: {par_filtro:'descripcion',cod_subsistema:'ORGA',catalogo_tipo:'tfuncionario_profesion'}
+                    }),
+                    enableMultiSelect:true,
+                    valueField:'codigo',
+                    displayField: 'descripcion',
+                    gdisplayField: 'profesion',
+                    forceSelection:true,
+                    typeAhead: false,
+                    triggerAction: 'all',
+                    lazyRender:true,
+                    mode:'remote',
+                    pageSize:10,
+                    queryDelay:1000,
+                    width:180,
+                    minChars:2
+                },
+                type:'ComboBox',
+                filters:{pfiltro:'funcio.profesion',type:'string'},
+                id_grupo:0,
+                grid:true,
+                form:true
+            },
+			
+			
+			
 			{//#31
 				config:{
 					name: 'codigo_rciva',
 					fieldLabel: 'Codigo RC-IVA',
-					qtip:'Cádigo para la acumulación de RC-IVA',
+					qtip:'Codigo para la acumulación de RC-IVA',
 					allowBlank: true,
 					anchor: '100%',
 					gwidth: 100,

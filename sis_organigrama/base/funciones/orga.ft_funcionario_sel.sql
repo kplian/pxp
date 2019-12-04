@@ -1,5 +1,3 @@
---------------- SQL ---------------
-
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -27,7 +25,7 @@ $body$
   #0            21-01-2011          mzm                 creacion
   #24           17/06/2019          RAC                 configuracion de agrupadores para grilla de funcionarios
   #31           16/07/2019          RAC                 adciona codigo_rciva, profesion, fecha quinquenio
-  
+  #89			04.12.2019			MZM					Habilitacion de catalogo profesiones en funcionario
   ***************************************************************************/
 
 
@@ -106,7 +104,8 @@ $body$
             
             
             v_consulta := v_consulta || ' 
-                            ,FUNCIO.profesion
+                            --,FUNCIO.profesion
+                            ,cat.descripcion as profesion --#89
                             ,FUNCIO.codigo_rciva
                             ,FUNCIO.fecha_quinquenio
                             
@@ -123,6 +122,7 @@ $body$
             v_consulta := v_consulta || '     
                             LEFT JOIN param.tlugar LUG on LUG.id_lugar = PERSON2.id_lugar
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
+                            left join param.tcatalogo cat on cat.codigo=funcio.profesion
                             WHERE ';
 
 
@@ -181,6 +181,7 @@ $body$
             v_consulta := v_consulta || '     
                             LEFT JOIN param.tlugar LUG on LUG.id_lugar = PERSON2.id_lugar
 						    left join segu.tusuario usu2 on usu2.id_usuario = FUNCIO.id_usuario_mod
+                            left join param.tcatalogo cat on cat.codigo=funcio.profesion --#89
                             WHERE ';
         v_consulta:=v_consulta||v_parametros.filtro;
         if (pxp.f_existe_parametro(par_tabla, 'tipo') and
@@ -417,7 +418,7 @@ $body$
                     WHERE '||v_filadd;		
         v_consulta:=v_consulta||v_parametros.filtro;
         v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-        --RAISE NOTICE 'error %',v_consulta;
+       -- RAISE NOTICE 'error %',v_consulta;
        --RAISE EXCEPTION 'error %',v_consulta;
        return v_consulta;
 
@@ -468,8 +469,4 @@ $body$
 
   END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+LANGUAGE 'plpgsql';
