@@ -7,6 +7,7 @@
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 ISSUE	FECHA		EMPRESA		AUTOR	DETALLE
  #41	31.07.2019	etr			mzm		adicion de relacion persona_dependiente
+ #91	05.12.2019	ETR			MZM		cambio de consulta para evitar relacion con tpersona
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -19,8 +20,8 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.PersonaRelacion.superclass.constructor.call(this,config);
 		this.init();
-		
-		this.load({params:{start:0, limit:this.tam_pag,id_persona_fk:this.maestro.id_persona}})
+		//#91
+		this.load({params:{start:0, limit:this.tam_pag,id_persona:this.maestro.id_persona}})
 	},
 			
 	Atributos:[
@@ -39,38 +40,53 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_persona_fk'
+					name: 'id_persona'
 			},
 			type:'Field',
 			form:true 
 		},
-			{
-	   			config:{
-	       		    name:'id_persona',
-	   				origen:'PERSONA',
-	   				tinit:true,
-	   				fieldLabel:'Nombre Dependiente',
-	   				gdisplayField:'desc_person',//mapea al store del grid
-	   				anchor: '100%',
-	   			    gwidth:200,
-		   			 renderer:function (value, p, record){return String.format('{0}', record.data['desc_person']);}
-	       	     },
-	   			type:'ComboRec',
-	   			id_grupo:0,
-	   			bottom_filter : true,
-	   			filters:{	
-			        pfiltro:'PERSON.nombre_completo2',
-					type:'string'
+		{
+	       		config:{
+	       			fieldLabel: "Nombre",
+	       			gwidth: 120,
+	       			name: 'nombre',
+	       			allowBlank:false,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			anchor:'100%'
+	       		},
+	       		type:'TextField',
+	       		filters:{pfiltro:'pr.nombre',
+	       				type:'string'},
+	       		id_grupo:0,
+	       		bottom_filter : true,
+	       		grid:true,
+	       		form:true
+	       	},
+			{ 
+	       		config:{
+	       			fieldLabel: "Fecha de Nacimiento",
+	       			gwidth: 120,
+	       			name: 'fecha_nacimiento',
+	       			allowBlank:false,	
+	       			maxLength:100,
+	       			minLength:1,
+	       			format:'d/m/Y',
+	       			anchor:'100%',
+	       			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 				},
-	   		   
-	   			grid:true,
-	   			form:true
-			},
+	       		type:'DateField',
+	       		filters:{type:'date'},
+	       		id_grupo:0,
+	       		grid:true,
+	       		form:true
+	       	},
+		
 			{
 	       		config:{
 	       			name:'relacion',
 	       			fieldLabel:'Relacion',
-	       			allowBlank:true,
+	       			allowBlank:false,
 	       			emptyText:'Relacion...',
 	       			
 	       			typeAhead: true,
@@ -89,6 +105,60 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
 	       		grid:true,	       		
 	       		form:true
 	       	},	
+	       	{
+	       		config:{
+	       			name:'genero',
+	       			fieldLabel:'Genero',
+	       			allowBlank:true,
+	       			emptyText:'Genero...',
+	       			
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',	       		    
+	       		    store:['M','F']
+	       		    
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       				 options: ['M','F']
+	       		 	},
+	       		grid:true,	       		
+	       		form:true
+	       	},
+	       	{
+		config:{
+			fieldLabel: "Matricula",
+			gwidth: 120,
+			name: 'matricula',
+			allowBlank:true,	
+			maxLength:20,
+			minLength:5,
+			anchor:'100%'
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	},{
+		config:{
+			fieldLabel: "Historia Clinica",
+			gwidth: 120,
+			name: 'historia_clinica',
+			allowBlank:true,	
+			maxLength:20,
+			minLength:5,
+			anchor:'100%'
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	},
 		
 		{
 			config:{
@@ -160,25 +230,14 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
 	ActList:'../../sis_seguridad/control/PersonaRelacion/listarPersonaRelacion',
 	id_store:'id_persona_relacion',
 	fields: [
-		{name:'id_persona'},
+	{name:'id_persona_relacion'},
 	{name:'nombre', type: 'string'},
-	{name:'tipo_documento', type: 'string'},
-	{name:'expedicion', type: 'string'},
-	{name:'ap_paterno', type: 'string'},
-	{name:'ap_materno', type: 'string'},
-	{name:'ci', type: 'string'},
-	{name:'correo', type: 'string'},
-	{name:'celular1'},
-	{name:'telefono1'},
-	{name:'telefono2'},
-	{name:'celular2'},
-	{name:'foto'}
-	//30.07.2019
-	,{name:'desc_person',type:'string'},
-	{name:'matricula'},
+	{name:'fecha_nacimiento', type: 'date', dateFormat:'Y-m-d'},
+	{name:'genero', type: 'string'},
 	{name:'historia_clinica'},
+	{name:'matricula'},
 	{name:'relacion', type: 'string'},
-	{name:'id_persona_fk'},
+	{name:'id_persona'},
 	{name:'id_persona_relacion'}
 
 		
@@ -201,7 +260,7 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
     },
     loadValoresIniciales:function()
     {	
-        this.Cmp.id_persona_fk.setValue(this.maestro.id_persona);       
+        this.Cmp.id_persona.setValue(this.maestro.id_persona);       
         Phx.vista.PersonaRelacion.superclass.loadValoresIniciales.call(this);
     }
 }

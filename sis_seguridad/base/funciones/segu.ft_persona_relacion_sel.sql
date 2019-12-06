@@ -17,7 +17,7 @@ $body$
 
 ISSUE	EMPRESA		FECHA		AUTOR	DESCRIPCION
 #41		ETR			31.07.2019	MZM		relacion de persona con sus dependientes
-
+#91		ETR			05.12.2019	MZM		adicion de campos y omision de relacion con tpersona
 ***************************************************************************/
 
 DECLARE
@@ -57,35 +57,13 @@ BEGIN
           --  Se arma la consulta de personas
           BEGIN
 
-               v_consulta:='SELECT p.id_persona,
-                             p.apellido_materno AS ap_materno,
-                             p.apellido_paterno AS ap_paterno,
-                             p.nombre,
-                             (((COALESCE(p.nombre, '''' ::character varying) ::text || '' '' ::text) ||
-                              COALESCE(p.apellido_paterno, '''' ::character varying) ::text) || '' ''
-                               ::text) || COALESCE(p.apellido_materno, '''' ::character varying)
-                                ::text AS nombre_completo1,
-                             (((COALESCE(p.apellido_paterno, '''' ::character varying) ::text || '' ''
-                              ::text) || COALESCE(p.apellido_materno, '''' ::character varying) ::text
-                              ) || '' '' ::text) || COALESCE(p.nombre, '''' ::character varying) ::text
-                               AS  desc_person,
-                             p.ci,
-                             p.correo,
-                             p.celular1,
-                             p.num_documento,
-                             p.telefono1,
-                             p.telefono2,
-                             p.celular2,                             
-                             p.extension,
-                             p.tipo_documento,
-                             p.expedicion,
-                             p.foto, 
-                             p.matricula, 
-                             p.historia_clinica,
-                             pr.relacion,
-                             pr.id_persona_fk, pr.id_persona_relacion
-                          FROM segu.tpersona p inner join segu.tpersona_relacion pr on pr.id_persona=p.id_persona
-                          WHERE ';
+               v_consulta:='SELECT pr.id_persona_relacion, pr.nombre, pr.fecha_nacimiento, 
+                            pr.genero, pr.historia_clinica, pr.matricula,
+                            pr.relacion, pr.id_persona, 
+                            pr.estado_reg, pr.id_usuario_reg
+                            FROM segu.tpersona_relacion pr 
+                            inner join segu.tpersona per on per.id_persona=pr.id_persona
+							WHERE ';
                v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta || ' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
                --raise exception '%',v_consulta;
@@ -106,9 +84,9 @@ BEGIN
           --se arma la sonsulta que cuenta personas
           BEGIN
                
-               v_consulta:='select count(p.id_persona)
-               from segu.tpersona p 
-               inner join segu.tpersona_relacion pr on pr.id_persona=p.id_persona
+               v_consulta:='select count(pr.id_persona_relacion)
+               from segu.tpersona_relacion pr 
+               inner join segu.tpersona per on per.id_persona=pr.id_persona
                where ';
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;
@@ -133,8 +111,4 @@ EXCEPTION
 
 END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+LANGUAGE 'plpgsql';

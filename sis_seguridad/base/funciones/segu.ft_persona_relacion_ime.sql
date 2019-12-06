@@ -17,6 +17,7 @@ $body$
 
 ISSUE	EMPRESA		FECHA		AUTOR	DESCRIPCION
 #41		ETR			31.07.2019	MZM		relacion de persona con sus dependientes
+#91		ETR			05.12.2019	MZM		adicion de campos y omision de relacion con tpersona
 ***************************************************************************/
 
 DECLARE
@@ -51,7 +52,7 @@ BEGIN
      v_parametros:=pxp.f_get_record(par_tabla);
 
  /*******************************
- #TRANSACCION:  SEG_PERSON_INS
+ #TRANSACCION:  SEG_PERREL_INS
  #DESCRIPCION:	Inserta Persona
  #AUTOR:		KPLIAN(jrr)		
  #FECHA:		08/01/11	
@@ -61,21 +62,26 @@ BEGIN
           --consulta:=';
           BEGIN
           
-          		
-          		--Nombre completo
-          		if exists(select 1 from segu.tpersona_relacion
-          					where id_persona=v_parametros.id_persona) then
-          			raise exception 'Persona ya registrada como dependiente';
-          		end if;
-
-                       
                insert into segu.tpersona_relacion (
                                id_persona,
-                               id_persona_fk, relacion)
+                               relacion,
+                               nombre,
+                               fecha_nacimiento,
+                               matricula,
+                               historia_clinica,
+                               genero
+                               
+                               )
                values(
                      v_parametros.id_persona,
-                     v_parametros.id_persona_fk,
-                     upper(v_parametros.relacion))  
+                     upper(v_parametros.relacion),
+                     v_parametros.nombre,
+                     v_parametros.fecha_nacimiento,
+                     v_parametros.matricula,
+                     v_parametros.historia_clinica,
+                     v_parametros.genero
+                     
+                     )  
                         
                RETURNING id_persona_relacion INTO v_id_persona;
               
@@ -98,20 +104,15 @@ BEGIN
           --consulta:=';
           BEGIN
           
-
-          		--Nombre completo
-          		if exists(select 1 from segu.tpersona_relacion
-          					where 
-          					id_persona = v_parametros.id_persona
-                            and id_persona_relacion!=v_parametros.id_persona_relacion
-                            
-                            ) then
-          			raise exception 'Persona ya registrada';
-          		end if;
-
                update segu.tpersona_relacion 
                set relacion=upper(v_parametros.relacion),
-               id_persona=v_parametros.id_persona
+               id_persona=v_parametros.id_persona,
+               nombre= v_parametros.nombre,
+               fecha_nacimiento= v_parametros.fecha_nacimiento,
+               matricula= v_parametros.matricula,
+               historia_clinica= v_parametros.historia_clinica,
+               genero= v_parametros.genero
+               
                where id_persona_relacion=v_parametros.id_persona_relacion;
               
    
@@ -164,8 +165,4 @@ EXCEPTION
 		raise exception '%',v_resp;
 END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+LANGUAGE 'plpgsql';
