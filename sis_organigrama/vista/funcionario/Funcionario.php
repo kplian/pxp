@@ -264,7 +264,7 @@ Phx.vista.funcionario=function(config){
 	       	
 	       	{
 	       		config:{
-	       			fieldLabel: "Antiguedad Anterior (dias)",
+	       			fieldLabel: "Antiguedad Anterior (meses)",
 	       			gwidth: 120,
 	       			name: 'antiguedad_anterior',
 	       			allowBlank:true,	
