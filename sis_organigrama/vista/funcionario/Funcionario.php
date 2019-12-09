@@ -13,9 +13,8 @@
   #24           17/06/2019        RAC                 Configuracion de palntillas de grilla
   #31           16/07/2019        RAC                 Adciona codigo rcaiva, profesion y fecha quinquenio
   #51           20/08/2019        RAC                 solucion de bug al seleccionar funcionario
-  #60   ETR        10/09/2019        MMV              Histórico código de empleado
-  #89	ETR		04.12.2019			MZM				  Habilitacion de catalogo profesiones en funcionario
-
+  #60   ETR     10/09/2019        MMV              	  Histórico código de empleado
+  #89	ETR		04.12.2019		  MZM				  Habilitacion de catalogo profesiones en funcionario
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -265,7 +264,7 @@ Phx.vista.funcionario=function(config){
 	       	
 	       	{
 	       		config:{
-	       			fieldLabel: "Antiguedad Anterior (meses)",
+	       			fieldLabel: "Antiguedad Anterior (dias)",
 	       			gwidth: 120,
 	       			name: 'antiguedad_anterior',
 	       			allowBlank:true,	
@@ -472,10 +471,12 @@ Phx.vista.funcionario=function(config){
                     triggerAction: 'all',
                     lazyRender:true,
                     mode:'remote',
-                    pageSize:10,
                     queryDelay:1000,
                     width:180,
-                    minChars:2
+                    minChars:2,
+                    anchor:"100%",
+                    pageSize:150,
+					gwidth:150,
                 },
                 type:'ComboBox',
                 filters:{pfiltro:'funcio.profesion',type:'string'},
