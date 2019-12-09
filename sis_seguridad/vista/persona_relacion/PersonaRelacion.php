@@ -93,73 +93,19 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
 	       		    mode: 'local',	       		    
-	       		    store:['hijo(a)','conyuge','padre/madre','otro']
+	       		    store:['ESPOSO','ESPOSA','HIJO','HIJA','HERMANO','HERMANA','PADRE','MADRE','OTRO']
 	       		    
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
 	       		filters:{	
 	       		         type: 'list',
-	       				 options: ['hijo(a)','conyuge','padre/madre','otro']
+	       				 options: ['ESPOSO','ESPOSA','HIJO','HIJA','HERMANO','HERMANA','PADRE','MADRE','OTRO']
 	       		 	},
 	       		grid:true,	       		
 	       		form:true
 	       	},	
-	       	{
-	       		config:{
-	       			name:'genero',
-	       			fieldLabel:'Genero',
-	       			allowBlank:true,
-	       			emptyText:'Genero...',
-	       			
-	       			typeAhead: true,
-	       		    triggerAction: 'all',
-	       		    lazyRender:true,
-	       		    mode: 'local',	       		    
-	       		    store:['M','F']
-	       		    
-	       		},
-	       		type:'ComboBox',
-	       		id_grupo:0,
-	       		filters:{	
-	       		         type: 'list',
-	       				 options: ['M','F']
-	       		 	},
-	       		grid:true,	       		
-	       		form:true
-	       	},
-	       	{
-		config:{
-			fieldLabel: "Matricula",
-			gwidth: 120,
-			name: 'matricula',
-			allowBlank:true,	
-			maxLength:20,
-			minLength:5,
-			anchor:'100%'
-		},
-		type:'TextField',
-		filters:{type:'string'},
-		id_grupo:0,
-		grid:true,
-		form:true
-	},{
-		config:{
-			fieldLabel: "Historia Clinica",
-			gwidth: 120,
-			name: 'historia_clinica',
-			allowBlank:true,	
-			maxLength:20,
-			minLength:5,
-			anchor:'100%'
-		},
-		type:'TextField',
-		filters:{type:'string'},
-		id_grupo:0,
-		grid:true,
-		form:true
-	},
-		
+	       
 		{
 			config:{
 				name: 'estado_reg',

@@ -66,20 +66,14 @@ BEGIN
                                id_persona,
                                relacion,
                                nombre,
-                               fecha_nacimiento,
-                               matricula,
-                               historia_clinica,
-                               genero
+                               fecha_nacimiento
                                
                                )
                values(
                      v_parametros.id_persona,
                      upper(v_parametros.relacion),
                      v_parametros.nombre,
-                     v_parametros.fecha_nacimiento,
-                     v_parametros.matricula,
-                     v_parametros.historia_clinica,
-                     v_parametros.genero
+                     v_parametros.fecha_nacimiento
                      
                      )  
                         
@@ -108,10 +102,8 @@ BEGIN
                set relacion=upper(v_parametros.relacion),
                id_persona=v_parametros.id_persona,
                nombre= v_parametros.nombre,
-               fecha_nacimiento= v_parametros.fecha_nacimiento,
-               matricula= v_parametros.matricula,
-               historia_clinica= v_parametros.historia_clinica,
-               genero= v_parametros.genero
+               fecha_nacimiento= v_parametros.fecha_nacimiento
+              
                
                where id_persona_relacion=v_parametros.id_persona_relacion;
               
