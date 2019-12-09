@@ -12,9 +12,12 @@
 
 import sys
 import os
+import shutil
 import subprocess
 import datetime
 from os.path import expanduser
+from shutil import copytree
+
 
 #Function to generate scripts array
 #param String file
@@ -284,8 +287,154 @@ def actualizar_codigo():
 			command = ['cd '+line+';git pull origin master']
 			for i in command:
 				os.system(i)
+				
+def modo_desarrollo():
+		usuario = ''
+		print 'Inicio de cambio de modo desarrollo'
+		
+		os.rename(os.path.dirname(__file__) + '/../../lib/DatosGenerales.php', os.path.dirname(__file__) + '/../../lib/DatosGeneralesOld.php')
+		file2 = open(os.path.dirname(__file__) + '/../../lib/DatosGeneralesOld.php', 'r')
+		file3 = open(os.path.dirname(__file__) + '/../../lib/DatosGenerales.php', 'w')
+		for line in file2:
+			
+			if line.find('$_SESSION["_ESTADO_SISTEMA"]') != -1 :
+						line = line.replace('produccion','desarrollo')
+									
+			file3.write(line)	
+		
+		file3.close()
+		file2.close()
+		os.remove(os.path.dirname(__file__) + '/../../lib/DatosGeneralesOld.php')
+		command = 'psql -U postgres -c  "select pxp.f_update_development_mode()" ' + db 
+		os.system(command)
+		
+		sys.exit("Se ha cambiado a modo Desarrollo")
+def modo_produccion():
+		usuario = ''
+		print 'Inicio de cambio a Produccion'
+		
+		os.rename(os.path.dirname(__file__) + '/../../lib/DatosGenerales.php', os.path.dirname(__file__) + '/../../lib/DatosGeneralesOld.php')
+		file2 = open(os.path.dirname(__file__) + '/../../lib/DatosGeneralesOld.php', 'r')
+		file3 = open(os.path.dirname(__file__) + '/../../lib/DatosGenerales.php', 'w')
+		for line in file2:
+			
+			if line.find('$_SESSION["_ESTADO_SISTEMA"]') != -1 :
+						line = line.replace('desarrollo','produccion')
+									
+			file3.write(line)	
+		
+		file3.close()
+		file2.close()
+		os.remove(os.path.dirname(__file__) + '/../../lib/DatosGeneralesOld.php')
+				
+		sys.exit("Se ha cambiado a modo Produccion")
 
+def instancia():
+		
+	usuario = ''
+	print 'Inicio de la creacion del proyecto: ' + proyecto
+	
+	file1 = open(os.path.dirname(__file__) + '/../../lib/DatosGenerales.php', 'r')
+	for line in file1:
+		if line.find('$_SESSION["_FOLDER"]') != -1 :
+				#la cokies solamente son admitidas en esta direccion no es tomada esta direccion para la creacion de instancias
+				#$_SESSION["_FOLDER"] = "/web/lib/lib_control/";
+				if line.find('"/web/lib/lib_control/"') == -1 :
+					vars = line.split('=')
+					base = vars[1]
+					base = base.strip()
+					base = base.replace('/','')
+					base = base.replace('"','')
+					base = base.replace(';','')
+					print 'La instacia se creara de la carpeta :' + base
+		if line.find('$_SESSION["_BASE_DATOS"]') != -1 :
+			vars = line.split('=')
+			db = vars[1]
+			db = db.strip()
+			db = db.replace('"','')
+			db = db.replace(';','')
+			print 'La base de datos se creara a partir de  :' + db	
+	file1.close()
 
+	#evalua las rutas del proyecto a copiar y el destino
+	ruta = os.path.dirname(__file__) + '/../../../../'
+	origen = ruta + base
+	destino = ruta + proyecto
+
+	if (os.path.exists(destino)):
+		sys.exit('El Proyecto ya existe en la ruta del proyecto '+ proyecto+'Se encuentra en la carpeta base de la instancia' )
+	if (os.path.exists(origen)):
+		print 'Copiando las carpetas base para la nueva instancia '+ proyecto
+		shutil.copytree(origen, destino, symlinks= True)
+		dbinstancia(db,proyecto)
+		print 'Actualizando a modo Desarrollo'
+		data_g = os.path.dirname(__file__) + '/../../../../'+proyecto+'/pxp/lib/DatosGenerales.php'
+		data_g_ol = os.path.dirname(__file__) + '/../../../../'+proyecto+'/pxp/lib/DatosGeneralesOld.php'
+		
+		os.rename(data_g,data_g_ol)
+		file2 = open(data_g_ol, 'r')
+		file3 = open(data_g, 'w')
+		
+		
+		for line in file2:
+			if line.find('$_SESSION["_ESTADO_SISTEMA"]') != -1 :
+						line = line.replace('produccion','desarrollo')
+			if line.find('$_SESSION["_FOLDER"]') != -1 :
+				if line.find('"/web/lib/lib_control/"') == -1 :
+						line = line.replace(base,proyecto)
+			
+			if line.find('$_SESSION["_BASE_DATOS"]') != -1 :
+						line = line.replace('db'+base,'db'+proyecto)
+						
+			if line.find('$_SESSION["_CONTRASENA_CONEXION"]') != -1 :
+						line = line.replace('db'+base+'_conexion','db'+proyecto+'_conexion')
+												
+			file3.write(line)	
+		
+		file3.close()
+		file2.close()
+		os.remove(data_g_ol)
+		command = 'psql -U postgres -c  "select pxp.f_update_development_mode()" ' + 'db'+proyecto 
+		os.system(command)
+		
+		
+	else:
+		sys.exit('El script no se ejecuto desde la carpeta donde se encuentra la carpeta '+ base )
+	
+		
+	sys.exit("Ha Finalizado La creacion de instancia")
+	
+def dbinstancia(base,proyecto):
+		date = datetime.datetime.now().strftime("%Y%m%d")
+
+		file_name = 'db_base_instancia'
+		db_proyecto = 'db'+proyecto 
+		ruta_bd_bkb = os.path.dirname(__file__) + '/../../../../db_base_instancia_'+date
+
+		if (os.path.exists(ruta_bd_bkb)):
+			print 'La backup de la base de datos ya existe del dia de hoy ('+date+') se restaurara con esa backup '
+		else:
+			command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f '+ file_name+'_'+date
+			print 'Iniciando el backup de la base de datos '+ base
+			os.system(command)
+		
+		command = 'createdb -U postgres -O postgres '+db_proyecto
+		print 'creando la base de datos : '+ db_proyecto
+		os.system(command)
+		
+		command = 'pg_restore -U postgres -d '+ db_proyecto + ' -1 '+ file_name+'_'+date
+		print 'Restaurando los datos a : '+ db_proyecto
+		os.system(command)
+		
+		command = 'psql '+db_proyecto+' postgres -c "create schema log"'
+		print 'creando el esquema log en '+db_proyecto
+		os.system(command)
+				
+		command = 'psql -U postgres -c  "CREATE ROLE db'+proyecto+'_conexion SUPERUSER NOINHERIT NOREPLICATION LOGIN PASSWORD *db'+proyecto+'_conexion*;"'
+		command =  command.replace("*","'")		
+		print 'creando conexion db'+proyecto
+		os.system(command)
+		
 try:
 	file1 = open(os.path.dirname(__file__) + '/../../lib/DatosGenerales.php', 'r')
 
@@ -333,11 +482,14 @@ print '3. Actualizar los scripts faltantes en la bd solo sobre un sistema'
 print '4. Comparar funciones de un esquema en la bd con archivos en codigo fuente'
 print '5. Actualiza codigo todos los sistemas desde el repositorio de github'
 print '6. Actualizar codigo desde el repositorio de github por sistema y puede realizar la opcion 3'
-print '7. Obtener un backup de la BD (sin el esquema log)'
-print '8. Salir del programa'
-opcion = raw_input('Ingrese una opcion (1,2,3,4,5,6,7,8): ')
+print '7. Crea Instancias del Framework con base del existente en el Servidor (una copia del pxp con los sistemas agregados)NOTA: SOLO MODO BASH LINUX'
+print '8. Modo Desarrollo y Produccion'
+print '9. Obtener un backup de la BD (sin el esquema log)'
+print '10. Salir del programa'
+opcion = raw_input('Ingrese una opcion (1,2,3,4,5,6,7,8,9,10): ')
 sistema = 'indefinido'
-if (opcion != '1' and opcion != '2' and opcion != '3' and opcion != '4' and opcion != '5' and opcion != '6' and opcion != '7') :
+proyecto = 'indefinido'
+if (opcion != '1' and opcion != '2' and opcion != '3' and opcion != '4' and opcion != '5' and opcion != '6' and opcion != '7' and opcion != '8' and opcion != '9') :
 	sys.exit("Ha abandonado la restauracion de la base de datos")
 
 if opcion == '1':
@@ -382,6 +534,25 @@ elif opcion == '6':
 		sys.exit("Ha abandonado la restauracion Ingrese s o n")
 	elif resp == 'n':
 		sys.exit("Termino la Actualizacion del codigo")
+elif opcion == '7':
+	usuario = obtener_usuario()
+	datos = 'n'
+	proyecto = raw_input("Ingrese el nombre de la instancia nueva a crear (Ej: kerp_2): ")
+	proyecto = proyecto.lower()
+	proyecto = proyecto.replace(' ', '')
+	instancia()
+
+elif opcion == '8':
+	
+	usuario = obtener_usuario()
+	datos = 'n'
+	resp = raw_input("Desea activar el Modo Desarrollo ('D') o el Modo Produccion (P) (Ingrese 'D' u 'P') ")
+	if ( resp!= 'D' and resp != 'P') :
+		sys.exit("Ha abandonado la restauracion Ingrese D o P")
+	elif resp == 'D':
+		modo_desarrollo()
+	elif resp == 'P':
+		modo_produccion()
 	
 else:
 	usuario = obtener_usuario()
