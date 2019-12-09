@@ -1201,7 +1201,7 @@ ALTER TABLE segu.tpersona_relacion
   ADD COLUMN historia_clinica VARCHAR(20);
 
 ALTER TABLE segu.tpersona_relacion
-  ADD COLUMN genero1 VARCHAR(1);
+  ADD COLUMN genero VARCHAR(1);
 /***********************************I-SCP-MZM-SEGU-91-05/12/2019*****************************************/
 
 
