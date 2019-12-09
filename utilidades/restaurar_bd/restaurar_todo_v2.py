@@ -409,11 +409,13 @@ def dbinstancia(base,proyecto):
 
 		file_name = 'db_base_instancia'
 		db_proyecto = 'db'+proyecto 
-		ruta_bd_bkb = os.path.dirname(__file__) + '/../../../../db_base_instancia_'+date
-
+		ruta_bd_bkb	= os.getcwd() + os.sep +'db_base_instancia_'+date
+		
+		#ruta_bd_bkb = os.path.dirname(__file__) + '/../../../../db_base_instancia_'+date
 		if (os.path.exists(ruta_bd_bkb)):
 			print 'La backup de la base de datos ya existe del dia de hoy ('+date+') se restaurara con esa backup '
 		else:
+			print 'La ruta el backup de la bd '+base+' es:'+ruta_bd_bkb
 			command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f '+ file_name+'_'+date
 			print 'Iniciando el backup de la base de datos '+ base
 			os.system(command)
