@@ -485,7 +485,7 @@ print '4. Comparar funciones de un esquema en la bd con archivos en codigo fuent
 print '5. Actualiza codigo todos los sistemas desde el repositorio de github'
 print '6. Actualizar codigo desde el repositorio de github por sistema y puede realizar la opcion 3'
 print '7. Crea Instancias del Framework con base del existente en el Servidor (una copia del pxp con los sistemas agregados)NOTA: SOLO MODO BASH LINUX'
-print '8. Modo Desarrollo y Produccion'
+print '8. Modo Desarrollo y Produccion NOTA: SOLO MODO BASH LINUX'
 print '9. Obtener un backup de la BD (sin el esquema log)'
 print '10. Salir del programa'
 opcion = raw_input('Ingrese una opcion (1,2,3,4,5,6,7,8,9,10): ')
@@ -531,11 +531,13 @@ elif opcion == '6':
 	datos = 'n'
 	sistema = raw_input("Ingrese el nombre del sistema a actualzar(Ej: sis_seguridad): ")
 	actualizar_codigo()
-	resp = raw_input("Desea realiza la restauracion de funciones y script en el sistema "+sistema+" (s/n):")
-	if ( resp!= 's' and resp != 'n') :
-		sys.exit("Ha abandonado la restauracion Ingrese s o n")
-	elif resp == 'n':
-		sys.exit("Termino la Actualizacion del codigo")
+	sys.exit("Termino la Actualizacion del codigo")
+	
+	#resp = raw_input("Desea realiza la restauracion de funciones y script en el sistema "+sistema+" (s/n):")
+	#if ( resp!= 's' and resp != 'n') :
+	#	sys.exit("Ha abandonado la restauracion Ingrese")
+	#elif resp == 'n':
+	#	sys.exit("Termino la Actualizacion del codigo")
 elif opcion == '7':
 	usuario = obtener_usuario()
 	datos = 'n'
