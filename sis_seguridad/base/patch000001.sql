@@ -1202,7 +1202,7 @@ ALTER TABLE segu.tpersona_relacion
 
 ALTER TABLE segu.tpersona_relacion
   ADD COLUMN genero VARCHAR(1);
-/***********************************I-SCP-MZM-SEGU-91-05/12/2019*****************************************/
+/***********************************F-SCP-MZM-SEGU-91-05/12/2019*****************************************/
 
 
 
