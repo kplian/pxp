@@ -362,19 +362,17 @@ Phx.vista.EstructuraUo=function(config){
             this.cmbGestion.on('select', function(combo, record, index){                    //#94
             this.tmpGestion = record.data.gestion;                                          //#94
             this.cmbPeriodo.enable();                                                       //#94
-            this.cmbPeriodo.reset();                                                        //#94
+            //this.cmbPeriodo.reset();                                                        //#94
             //this.store.removeAll();
 
             this.cmbPeriodo.store.baseParams = Ext.apply(this.cmbPeriodo.store.baseParams, {id_gestion: this.cmbGestion.getValue(),id_periodo:this.cmbPeriodo.getValue()});     //#94
             this.cmbPeriodo.modificado = true;                                              //#94
-            //alert(this.cmbGestion.getValue());
-
+            this.capturaFiltros();                                                          //#94 <-----------------------------------------------
         },this);                                                                            //#94
 
 
         this.cmbPeriodo.on('select', function( combo, record, index){                       //#94
             this.tmpPeriodo = record.data.periodo;
-            //this.Cmp.periodo.setValue(this.cmbPeriodo.getValue(record.data.id_periodo));
             this.capturaFiltros();                                                          //#94
         },this);                                                                            //#94
 
@@ -485,7 +483,6 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			}
 			else
 			{
-
 				this.loaderTree.baseParams={filtro:'inactivo',criterio_filtro_arb:'',id_gestion:id_gestion, id_periodo:id_periodo,periodo:0};                               //#94 --> id_gestion e id_periodo
 			     this.root.reload();
 			}
@@ -635,8 +632,6 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
                 this.cmbPeriodo.disable(true);                                          //#94
             }
             this.Cmp.periodo.setValue(this.cmbPeriodo.getValue());                      //#94
-
-
         },
 	/*
 	 * south:{ url:'../../sis_legal/vista/representante/representante.php',
@@ -763,6 +758,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
         capturaFiltros:function(combo, record, index){                          //#94
 
             if(this.validarFiltros()){                                          //#94
+                //console.log("GEstionnnnnnnnnnnn:  ", this.cmbGestion.getValue());
                 this.loaderTree.baseParams = {id_gestion: this.cmbGestion.getValue(), id_periodo: this.cmbPeriodo.getValue()};      //#94
                 this.onButtonAct();                                             //#94
             }
