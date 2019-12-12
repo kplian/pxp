@@ -483,7 +483,7 @@ print '2. Actualizar los scripts faltantes en su base de datos (Solo eliminara l
 print '3. Actualizar los scripts faltantes en la bd solo sobre un sistema'
 print '4. Comparar funciones de un esquema en la bd con archivos en codigo fuente'
 print '5. Actualiza codigo todos los sistemas desde el repositorio de github'
-print '6. Actualizar codigo desde el repositorio de github por sistema y puede realizar la opcion 3'
+print '6. Actualizar codigo desde el repositorio de github por sistema'
 print '7. Crea Instancias del Framework con base del existente en el Servidor (una copia del pxp con los sistemas agregados)NOTA: SOLO MODO BASH LINUX'
 print '8. Modo Desarrollo y Produccion NOTA: SOLO MODO BASH LINUX'
 print '9. Obtener un backup de la BD (sin el esquema log)'
