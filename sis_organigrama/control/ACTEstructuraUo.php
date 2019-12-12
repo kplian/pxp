@@ -18,8 +18,14 @@ class ACTEstructuraUo extends ACTbase {
 	function listarEstructuraUo() {
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		//$this->objFunSeguridad=$this->create('MODEstructuraUo');
-
+//var_dump($this -> objParam );
 		//obtiene el parametro nodo enviado por la vista
+		$id_gestion = $this -> objParam -> getParametro('id_gestion');              //#94
+		$this -> objParam -> addParametro('id_gestion', $id_gestion);               //#94
+
+        $id_periodo = $this -> objParam -> getParametro('id_periodo');              //#94
+        $this -> objParam -> addParametro('id_periodo', $id_periodo);               //#94
+
 		$node = $this -> objParam -> getParametro('node');
 		$id_uo = $this -> objParam -> getParametro('id_uo');
 

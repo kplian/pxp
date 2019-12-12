@@ -24,7 +24,14 @@ class ACTUoFuncionario extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','FUNCIO.desc_funcionario2'); //#80
 		$this->objParam->defecto('dir_ordenacion','asc');
-		
+
+        $gestion = $this -> objParam -> getParametro('gestion');                        //#94
+        $this -> objParam -> addParametro('gestion', $gestion);                         //#94
+
+        $periodo = $this -> objParam -> getParametro('periodo');                        //#94
+        $this -> objParam -> addParametro('periodo', $periodo);                         //#94
+
+
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);

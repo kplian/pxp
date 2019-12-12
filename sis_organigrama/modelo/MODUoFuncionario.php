@@ -28,6 +28,9 @@ class MODUoFuncionario extends MODbase{
 		$this->transaccion='RH_UOFUNC_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setParametro('id_uo','id_uo','integer');
+        $this->setParametro('gestion','gestion','integer');                                         //#94
+        $this->setParametro('periodo','periodo','integer');                                         //#94
+
 		//Definicion de la lista del resultado del query
 		$this->captura('id_uo_funcionario','integer');
 		$this->captura('id_uo','integer');

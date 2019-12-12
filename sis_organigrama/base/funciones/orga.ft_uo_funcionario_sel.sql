@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -41,6 +43,8 @@ v_nombre_funcion   text;
 v_mensaje_error    text;
 v_resp             varchar;
 v_id_padre         integer;
+v_filtro		   varchar;  				--#94
+v_recordP           record;  				--#94
 
 BEGIN
 
@@ -55,10 +59,24 @@ BEGIN
 ***********************************/
      if(par_transaccion='RH_UOFUNC_SEL')then
 
-
           BEGIN
 
-               v_consulta:='SELECT
+                v_filtro :='';									--#94
+          		select	pe.periodo,								--#94
+                        pe.fecha_ini,							--#94
+                        pe.fecha_fin							--#94
+                        into 									--#94
+                        v_recordP 								--#94
+                from param.tperiodo pe 							--#94
+                where pe.id_periodo =  v_parametros.periodo		--#94
+                order by periodo;								--#94
+
+
+
+                v_filtro := 'UOFUNC.fecha_asignacion   <= '''||v_recordP.fecha_fin||''' and 	--#94
+                		   (UOFUNC.fecha_finalizacion >= '''||v_recordP.fecha_ini||''' or 		--#94
+                            UOFUNC.fecha_finalizacion is null) and'; 							--#94
+                v_consulta:='SELECT
                                   UOFUNC.id_uo_funcionario,
                                   UOFUNC.id_uo,
                                   UOFUNC.id_funcionario,
@@ -82,8 +100,8 @@ BEGIN
                                   UOFUNC.nro_documento_asignacion,
                                   UOFUNC.fecha_documento_asignacion,
                                   UOFUNC.tipo,
-                                  UOFUNC.carga_horaria
-                                  ,UOFUNC.prioridad --#81
+                                  UOFUNC.carga_horaria,
+                				  UOFUNC.prioridad --#81
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
@@ -93,16 +111,14 @@ BEGIN
                             inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial-- para sacar la escala salarial join  con cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE  UOFUNC.estado_reg !=''inactivo'' and ';
+                            WHERE  UOFUNC.estado_reg !=''inactivo'' and '||v_filtro;			--#94: ||v_filtro
 
 
-                v_id_padre:=v_parametros.id_uo;
 
-               v_consulta:=v_consulta||v_parametros.filtro;
-               v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
-
-               v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad;
-
+                  v_id_padre:=v_parametros.id_uo;
+                  v_consulta:=v_consulta||v_parametros.filtro;
+                  v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
+               	  v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad;
                return v_consulta;
 
 
@@ -119,6 +135,19 @@ BEGIN
           --consulta:=';
           BEGIN
 
+          		select	pe.periodo,								--#94
+                        pe.fecha_ini,							--#94
+                        pe.fecha_fin							--#94
+                        into 									--#94
+                        v_recordP 								--#94
+                from param.tperiodo pe 							--#94
+                where pe.id_periodo = v_parametros.periodo		--#94
+                order by periodo;							    --#94
+
+                v_filtro = 'UOFUNC.fecha_asignacion   <= '''||v_recordP.fecha_fin||''' and 		--#94
+                		   (UOFUNC.fecha_finalizacion >= '''||v_recordP.fecha_ini||''' or 		--#94
+                            UOFUNC.fecha_finalizacion is null) and'; 							--#94
+
                v_consulta:='SELECT
                                   count(UOFUNC.id_uo_funcionario)
                             FROM orga.tuo_funcionario UOFUNC
@@ -129,7 +158,7 @@ BEGIN
                             LEFT JOIN orga.tcargo cargo ON cargo.id_cargo = UOFUNC.id_cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE UOFUNC.estado_reg !=''inactivo'' and ';
+                            WHERE UOFUNC.estado_reg !=''inactivo'' and '||v_filtro;		--#94: ||v_filtro
                v_id_padre:=v_parametros.id_uo;
 
 
