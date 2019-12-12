@@ -14,8 +14,9 @@
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
    
- #6            09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario
-#80             06/11/2019            APS       ORDENACION DE FUNCIONARIOS POR APELLIDO.
+ #6            09/01/2019           RAC KPLIAN      añade listarAsignacionFuncionario
+ #80             06/11/2019            APS       ORDENACION DE FUNCIONARIOS POR APELLIDO.
+ #94            12/12/2019             APS                 Filtro de funcionarios por gestion y periodo
  */
 class ACTUoFuncionario extends ACTbase{    
 

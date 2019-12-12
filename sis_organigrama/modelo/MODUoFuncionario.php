@@ -13,7 +13,8 @@
    
  #6           09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario * 
  #32          18/07/2019      RAC KPLIAN      añade carga horaria
- #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad 
+ #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad
+ #94          12/12/2019      APS             Filtro de funcionarios por gestion y periodo
  */
 class MODUoFuncionario extends MODbase{
 	

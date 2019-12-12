@@ -6,7 +6,8 @@
  Autor:		Kplian
  Fecha:		04/06/2011
  	ISSUE		FECHA			AUTHOR				DESCRIPCION
- *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
+ *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  */
 class MODEstructuraUo extends MODbase {
 	

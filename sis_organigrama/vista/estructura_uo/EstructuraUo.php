@@ -6,8 +6,8 @@
 *@date 14-02-2011
 *@description  Vista para registrar las estructura de las Unidades Organizacionales
 	ISSUE		FECHA			AUTHOR				DESCRIPCION
- *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
-
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
+ *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  * */
 
 header("content-type: text/javascript; charset=UTF-8");

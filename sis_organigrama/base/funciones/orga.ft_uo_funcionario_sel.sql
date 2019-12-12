@@ -31,6 +31,7 @@ $body$
  #32            18/07/2019        RAC         añade carga horaria
  #51            20-08-2019        RAC         adiciona descripcion de cargo  para solucionar ordenacion en la vista historico asignacion
  #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario
+ #94			12/12/2019		  APS		  Adición del filtro de fucnionarios por gestion y periodo
 ***************************************************************************/
 
 

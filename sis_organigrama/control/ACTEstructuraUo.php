@@ -8,6 +8,7 @@
  	ISSUE		FECHA			AUTHOR				DESCRIPCION
  *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
  *  #53         26/08/2018      RAC                 Seañade nro de orden en el organigrama
+ *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  */
 class ACTEstructuraUo extends ACTbase {
 

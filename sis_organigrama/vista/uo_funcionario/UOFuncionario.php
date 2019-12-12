@@ -9,10 +9,11 @@
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
    
- #0               17/10/2014        JRR KPLIAN        creacion
- #32 ETR          18/07/2019        RAC KPLIAN        adcionar carga horaria
- #80             06/11/2019            APS       ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
- #81				08.11.2019		MZM				Adicion de campo prioridad
+ #0               17/10/2014          JRR KPLIAN            creacion
+ #32 ETR          18/07/2019          RAC KPLIAN            adcionar carga horaria
+ #80             06/11/2019           APS                   ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
+ #81			 08.11.2019		      MZM				    Adicion de campo prioridad
+ #94              12/12/2019          APS                   Filtro de funcionarios por gestion y periodo
 */
 
 header("content-type: text/javascript; charset=UTF-8");
