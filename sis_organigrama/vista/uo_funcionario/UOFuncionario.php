@@ -405,7 +405,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	/*funcion corre cuando el padre cambia el nodo maestero*/
 	onReloadPage:function(m){
 		this.maestro=m;
-
+        //console.log('--->',this.maestro.gestion,this.maestro.periodo);
 		this.Atributos[1].valorInicial=this.maestro.id_uo;
 		this.Cmp.id_cargo.tdata.id_uo = this.maestro.id_uo;
 		this.Cmp.id_funcionario.tdata.id_uo = this.maestro.id_uo;
@@ -414,7 +414,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
         var x =this.maestro.gestion;                                                        //#94
         var y = null;                                                                       //#94
         if (this.maestro.periodo !== undefined ){                                           //#94
-            y =this.maestro.periodo;                                                        //#94
+            y = this.maestro.periodo;                                                       //#94
         }else{
             y =this.maestro.loader.baseParams.id_periodo;                                   //#94
         }

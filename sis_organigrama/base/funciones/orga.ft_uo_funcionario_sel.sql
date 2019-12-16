@@ -46,6 +46,8 @@ v_resp             varchar;
 v_id_padre         integer;
 v_filtro		   varchar;  				--#94
 v_recordP           record;  				--#94
+v_inicio			date;					--#94
+v_fin				date;					--#94
 
 BEGIN
 
@@ -61,22 +63,41 @@ BEGIN
      if(par_transaccion='RH_UOFUNC_SEL')then
 
           BEGIN
+                v_filtro :='';                										--#94
+                if v_parametros.gestion = 0 and  v_parametros.periodo  = 0 then		--#94
+                	v_filtro = null;
+                end if;
+         		if v_parametros.gestion = 0 and v_parametros.periodo  != 0 then		--#94
+                	raise exception 'Seleccione una Gestion.';
+                end if;
 
-                v_filtro :='';									--#94
-          		select	pe.periodo,								--#94
-                        pe.fecha_ini,							--#94
-                        pe.fecha_fin							--#94
-                        into 									--#94
-                        v_recordP 								--#94
-                from param.tperiodo pe 							--#94
-                where pe.id_periodo =  v_parametros.periodo		--#94
-                order by periodo;								--#94
-
-
-
-                v_filtro := 'UOFUNC.fecha_asignacion   <= '''||v_recordP.fecha_fin||''' and 	--#94
-                		   (UOFUNC.fecha_finalizacion >= '''||v_recordP.fecha_ini||''' or 		--#94
-                            UOFUNC.fecha_finalizacion is null) and'; 							--#94
+                if ( v_parametros.gestion != 0  and v_parametros.periodo = 0)then   --#94
+                	select  pe.fecha_ini,
+                		(select  pe.fecha_fin
+                                from param.tperiodo pe
+                                where pe.id_gestion = v_parametros.gestion and pe.periodo in (12) ) as fecha_fin
+                        into
+                        v_inicio,
+                        v_fin
+					from param.tperiodo pe
+                	where pe.id_gestion = v_parametros.gestion and pe.periodo in (1);
+                  	v_filtro :='UOFUNC.fecha_asignacion   <= '''||v_fin||''' and
+                			   (UOFUNC.fecha_finalizacion >= '''||v_inicio||''' or
+                            	UOFUNC.fecha_finalizacion is null) and';
+                else
+                		select	pe.periodo,								--#94
+                        		pe.fecha_ini,							--#94
+                        		pe.fecha_fin							--#94
+                        into 											--#94
+                        v_recordP 										--#94
+                		from param.tperiodo pe 							--#94
+                		where pe.id_periodo =  v_parametros.periodo		--#94
+                		order by periodo;								--#94
+                		v_filtro := 'UOFUNC.fecha_asignacion   <= '''||v_recordP.fecha_fin||''' and 	--#94
+                		    		(UOFUNC.fecha_finalizacion >= '''||v_recordP.fecha_ini||''' or 		--#94
+                             		 UOFUNC.fecha_finalizacion is null) and'; 							--#94
+                end if;
+              --  raise exception '---> %',v_filtro;-- COALESCE(v_filtro,'0=0 and');
                 v_consulta:='SELECT
                                   UOFUNC.id_uo_funcionario,
                                   UOFUNC.id_uo,
@@ -112,7 +133,7 @@ BEGIN
                             inner join orga.tescala_salarial escsal on escsal.id_escala_salarial = cargo.id_escala_salarial-- para sacar la escala salarial join  con cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE  UOFUNC.estado_reg !=''inactivo'' and '||v_filtro;			--#94: ||v_filtro
+                            WHERE  UOFUNC.estado_reg !=''inactivo'' and '||COALESCE(v_filtro,'0 = 0 and ');			--#94: ||COALESCE(v_filtro,'0 = 0 and ')
 
 
 
@@ -120,7 +141,9 @@ BEGIN
                   v_consulta:=v_consulta||v_parametros.filtro;
                   v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;
                	  v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad;
-               return v_consulta;
+            	raise notice '%', v_consulta;
+
+              return v_consulta;
 
 
          END;
@@ -136,18 +159,42 @@ BEGIN
           --consulta:=';
           BEGIN
 
-          		select	pe.periodo,								--#94
-                        pe.fecha_ini,							--#94
-                        pe.fecha_fin							--#94
-                        into 									--#94
-                        v_recordP 								--#94
-                from param.tperiodo pe 							--#94
-                where pe.id_periodo = v_parametros.periodo		--#94
-                order by periodo;							    --#94
 
-                v_filtro = 'UOFUNC.fecha_asignacion   <= '''||v_recordP.fecha_fin||''' and 		--#94
-                		   (UOFUNC.fecha_finalizacion >= '''||v_recordP.fecha_ini||''' or 		--#94
-                            UOFUNC.fecha_finalizacion is null) and'; 							--#94
+          v_filtro :='';                											--#94
+                if v_parametros.gestion = 0 and  v_parametros.periodo  = 0 then		--#94
+                	v_filtro = null;
+                end if;
+         		if v_parametros.gestion = 0 and v_parametros.periodo  != 0 then		--#94
+                	raise exception 'Seleccione una Gestion';
+                end if;
+
+                if ( v_parametros.gestion != 0  and v_parametros.periodo = 0)then   --#94
+                	select  pe.fecha_ini,
+                		(select  pe.fecha_fin
+                                from param.tperiodo pe
+                                where pe.id_gestion = v_parametros.gestion and pe.periodo in (12) ) as fecha_fin
+                        into
+                        v_inicio,
+                        v_fin
+					from param.tperiodo pe
+                	where pe.id_gestion = v_parametros.gestion and pe.periodo in (1);
+                  	v_filtro :='UOFUNC.fecha_asignacion   <= '''||v_fin||''' and
+                			   (UOFUNC.fecha_finalizacion >= '''||v_inicio||''' or
+                            	UOFUNC.fecha_finalizacion is null) and';
+                else
+                    select	pe.periodo,								--#94
+                            pe.fecha_ini,							--#94
+                            pe.fecha_fin							--#94
+                    into 											--#94
+                    v_recordP 										--#94
+                    from param.tperiodo pe 							--#94
+                    where pe.id_periodo =  v_parametros.periodo		--#94
+                    order by periodo;								--#94
+                    v_filtro := 'UOFUNC.fecha_asignacion  <= '''||v_recordP.fecha_fin||''' and 		--#94
+                                (UOFUNC.fecha_finalizacion >= '''||v_recordP.fecha_ini||''' or 		--#94
+                                 UOFUNC.fecha_finalizacion is null) and'; 							--#94
+                end if;
+
 
                v_consulta:='SELECT
                                   count(UOFUNC.id_uo_funcionario)
@@ -159,7 +206,7 @@ BEGIN
                             LEFT JOIN orga.tcargo cargo ON cargo.id_cargo = UOFUNC.id_cargo
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
-                            WHERE UOFUNC.estado_reg !=''inactivo'' and '||v_filtro;		--#94: ||v_filtro
+                            WHERE UOFUNC.estado_reg !=''inactivo'' and '||COALESCE(v_filtro,'0 = 0 and ');		--#94: ||COALESCE(v_filtro,'0 = 0 and ')
                v_id_padre:=v_parametros.id_uo;
 
 

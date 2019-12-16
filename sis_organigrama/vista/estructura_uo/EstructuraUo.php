@@ -373,7 +373,7 @@ Phx.vista.EstructuraUo=function(config){
 
         this.cmbPeriodo.on('select', function( combo, record, index){                       //#94
             this.tmpPeriodo = record.data.periodo;
-            this.capturaFiltros();                                                          //#94
+            this.capturaFiltros();                                                          //#94 <-----------------------------------------------
         },this);                                                                            //#94
 
 
@@ -463,11 +463,14 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		onButtonAct:function(){
 			
 			this.sm.clearSelections();
-            var id_gestion= this.cmbGestion.getValue();                 //#94
-            var id_periodo= this.cmbPeriodo.getValue();                 //#94
-            //console.log('gestion',id_gestion,'periodo',id_periodo);     //#94
-            this.Cmp.periodo.setValue(id_periodo);                      //#94
-            this.Cmp.gestion.setValue(id_gestion);                      //#94
+            var id_gestion= this.cmbGestion.getValue();                                 //#94
+            var id_periodo= this.cmbPeriodo.getValue();                                 //#94
+            //console.log('gestion',id_gestion,'periodo',id_periodo);                   //#94
+            if(this.cmbGestion.getValue() == 0 && this.cmbPeriodo.getValue() != 0){     //#94
+                alert("Seleccione una Gestión.");
+            }
+            this.Cmp.periodo.setValue(id_periodo);                                      //#94
+            this.Cmp.gestion.setValue(id_gestion);                                      //#94
 
             var dfil = this.datoFiltro.getValue();
 			var dcheck = this.checkInactivos.getValue();
@@ -691,7 +694,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 
         cmbGestion: new Ext.form.ComboBox({                                    //#94
             fieldLabel: 'Gestion',
-            allowBlank: false,
+            allowBlank: true,       //FALSE: cuando es campo obligatorio, se pinta de rojo, true no es obligatorio.
             emptyText:'Gestion...',
             blankText: 'Año',
             //grupo:[0,1,2,3,4],
@@ -723,7 +726,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 
         cmbPeriodo: new Ext.form.ComboBox({                                     //#94
             fieldLabel: 'Periodo',
-            allowBlank: false,
+            allowBlank: true, //FALSE: cuando es campo obligatorio, se pinta de rojo, true no es obligatorio.
             blankText : 'Mes',
             emptyText:'Periodo...',
             //grupo:[0,1,2,3,4],
@@ -755,7 +758,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
         }),                                                                     //#94
 
 
-        capturaFiltros:function(combo, record, index){                          //#94
+        capturaFiltros:function(combo, record, index){                          //#94  <-----------------------------------------------
 
             if(this.validarFiltros()){                                          //#94
                 //console.log("GEstionnnnnnnnnnnn:  ", this.cmbGestion.getValue());
