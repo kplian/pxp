@@ -327,6 +327,7 @@ BEGIN
                
               --copiar roles
               v_count_rol = 0;
+              v_count_ep = 0;
               IF v_parametros.copy_rol = 'si' THEN
               
                     FOR v_reg_roles in (SELECT ur.id_rol
