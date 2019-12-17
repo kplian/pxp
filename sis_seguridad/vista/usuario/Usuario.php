@@ -7,39 +7,29 @@
 *@description  Vista para desplegar lista de usuarios
  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
   #24            17/06/2019        RAC                 Configuracion de palntillas de grilla
+  #97            16/12/2019        RAC                 funcionalidad para copiar roles y ep de usuario
  * 
  * */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.usuario=Ext.extend(Phx.gridInterfaz,{
-	constructor:function(config){
-	this.maestro=config.maestro;
+	constructor:function(config) { 
+	    this.maestro=config.maestro;
+	    //llama al constructor de la clase padre
+		Phx.vista.usuario.superclass.constructor.call(this,config);
+		this.init();
+		this.load({params:{start:0, limit:50}});
+		this.addButton('aInterSis', { text:'Themes', iconCls: 'blist',disabled:false, handler: this.inittest, tooltip: '<b>Configuracion de Themas</b><br/>Permite disenar un tema personalizado'});
+		this.addButton('copyRol', { text:'Copiar Rol/EP', iconCls: 'blist', disabled: false, handler: this.copyRolEp, tooltip: '<b>Copiar roles y EPs desde otro usuario</b>' });
+	    
+	
+	},
 	
 
-
-//function render_id_rol(value, p, record){return String.format('{0}', record.data['rol']);}
-    //llama al constructor de la clase padre
-	Phx.vista.usuario.superclass.constructor.call(this,config);
-	this.init();
-	this.load({params:{start:0, limit:50}});
-	this.addButton('aInterSis',{text:'Themes',iconCls: 'blist',disabled:false,handler:this.inittest,tooltip: '<b>Configuracion de Themas</b><br/>Permite disenar un tema personalizado'});
-    
-
-},
-inittest:function(){
-    var fileref=document.createElement("script");
-    fileref.setAttribute("type","text/javascript");
-    fileref.setAttribute("src","http://extbuilder.sytes.net/springapp/js/app/builder.js");
-    fileref.setAttribute("id","extthemebuilder_"+Math.random());
-    if (typeof fileref!="undefined")
-        document.getElementsByTagName("head")[0].appendChild(fileref);
-},
-
-savePltGrid: true, //#24configura el manejo de plantilla para la grilla
+    savePltGrid: true, //#24configura el manejo de plantilla para la grilla
     applyPltGrid: true, //#24
-
-tabEnter:true,
+    tabEnter:true,
 	Atributos:[
 	       	{
 	       		// configuracion del componente
@@ -429,6 +419,43 @@ tabEnter:true,
 		  this.Cmp.conf_contrasena.setValue(encodeURIComponent(this.Cmp.conf_contrasena.getValue()));
 		  Phx.vista.usuario.superclass.onSubmit.call(this,o);
 	},
+	
+	copyRolEp: function() {
+		//abrir formulario de copia de roles
+       var me = this;
+       var data_usuario = this.sm.getSelected().data;
+	   me.objSolForm = Phx.CP.loadWindows('../../../sis_seguridad/vista/usuario/FormRolUsuario.php',
+                                'Formulario de Copia de Roles/EPs',
+                                {
+                                    modal:true,
+                                    width:400,
+                                    height:400
+                                }, {data:{objPadre: me, data_usuario: data_usuario} 
+                                }, 
+                                this.idContenedor,
+                                'FormRolUsuario',
+                                {
+                                    config:[{
+                                              event:'successsave',
+                                              delegate: this.onSaveForm,
+                                              
+                                            }],
+                                    
+                                    scope:this
+                                 });    
+	    
+		
+	},
+	 
+	
+	inittest:function(){
+	    var fileref=document.createElement("script");
+	    fileref.setAttribute("type","text/javascript");
+	    fileref.setAttribute("src","http://extbuilder.sytes.net/springapp/js/app/builder.js");
+	    fileref.setAttribute("id","extthemebuilder_"+Math.random());
+	    if (typeof fileref!="undefined")
+	        document.getElementsByTagName("head")[0].appendChild(fileref);
+	},
 
 	
     tabeast:[
@@ -449,13 +476,24 @@ tabEnter:true,
             title:'Usuario Externo',
             width:400,
             cls:'UsuarioExterno'
+        }],
+        
+    preparaMenu:function(tb){
+        Phx.vista.usuario.superclass.preparaMenu.call(this,tb)
+        var data = this.getSelectedData();
+        if(data){
+         	this.getBoton('copyRol').enable();
         }
-
-        ]
-	
-
-		  
-		  
+        else{
+         	this.getBoton('copyRol').disable();
+        }
+	       
+    },
+    
+    liberaMenu:function(tb){
+        Phx.vista.usuario.superclass.liberaMenu.call(this,tb);
+        this.getBoton('copyRol').disable();
+    } 
 		 
 })
 </script>

@@ -5,6 +5,9 @@
  de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabla tusuario 
  Autor:	Kplian
  Fecha:	01/07/2010
+ * 
+ *  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #97            17/06/2019        RAC                 interface para copiar roles de usaurio
  */
 
 class ACTUsuario extends ACTbase{    
@@ -154,6 +157,15 @@ class ACTUsuario extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
         
     }
+
+    //#97 
+    function copiarRoles(){
+		
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODUsuario');	
+		$this->res=$this->objFunSeguridad->copiarRoles($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 
 }
 

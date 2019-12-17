@@ -21,7 +21,11 @@ $body$
  DESCRIPCION:	
  AUTOR:			
  FECHA:			
-
+ 
+ 
+  ISSUE            FECHA:              AUTOR                 DESCRIPCION 
+  #0             19/07/2010        RAC                 creacion
+  #97            17/06/2019        RAC                 adcionar funcionalidad para copia de roles y eps
 ***************************************************************************/
 
 DECLARE
@@ -46,6 +50,10 @@ v_sincronizar_password varchar;
 v_sincronizar_base varchar;
 v_sincronizar_ip varchar;
 v_sincronizar_puerto varchar;
+v_reg_roles    record; --#97
+v_reg_eps      record; --#97
+v_count_rol    integer; --#97
+v_count_ep     integer; --#97
 
 
 
@@ -304,6 +312,104 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_parametros.id_usuario::varchar);
                
          END;
+         
+ /*******************************    
+ #TRANSACCION: SEG_COPYROL_IME
+ #DESCRIPCION:	Issue 97 Copiar usuarios y roles
+ #AUTOR:		KPLIAN(rac)	
+ #FECHA:		19/12/2019
+***********************************/
+ elsif(par_transaccion='SEG_COPYROL_IME')THEN
+    
+
+         
+          BEGIN
+               
+              --copiar roles
+              v_count_rol = 0;
+              IF v_parametros.copy_rol = 'si' THEN
+              
+                    FOR v_reg_roles in (SELECT ur.id_rol
+                                        FROM segu.tusuario_rol ur
+                                        WHERE ur.id_usuario = v_parametros.id_usuario_origen
+                                        AND ur.estado_reg = 'activo') LOOP
+                                        
+                           --revisar si el usario destino no tiene el mismo rol asignado
+                           IF( NOT EXISTS(SELECT 1 
+                                          FROM segu.tusuario_rol ur
+                                          WHERE    ur.id_usuario = v_parametros.id_usuario_destino
+                                               AND ur.id_rol = v_reg_roles.id_rol
+                                               AND ur.estado_reg = 'activo' )) THEN
+                           
+                                     INSERT INTO segu.tusuario_rol
+                                                (
+                                                  id_rol,
+                                                  id_usuario,
+                                                  fecha_reg,
+                                                  estado_reg
+                                                )
+                                                VALUES (                                     
+                                                  v_reg_roles.id_rol,
+                                                  v_parametros.id_usuario_destino,
+                                                  now(),
+                                                  'activo'
+                                               ); 
+                                 v_count_rol = v_count_rol + 1; 
+                            END IF;
+                    END LOOP;
+          
+                
+              
+              END IF;
+              
+              
+              --copiar eps
+               IF v_parametros.copy_ep = 'si' THEN
+                 
+                 FOR v_reg_eps in ( SELECT ur.id_grupo
+                                        FROM segu.tusuario_grupo_ep ur
+                                        WHERE ur.id_usuario = v_parametros.id_usuario_origen
+                                        AND ur.estado_reg = 'activo') LOOP
+                                        
+                           --revisar si el usario destino no tiene el mismo rol asignado
+                           IF( NOT EXISTS(SELECT 1 
+                                          FROM segu.tusuario_grupo_ep ur
+                                          WHERE    ur.id_usuario = v_parametros.id_usuario_destino
+                                               AND ur.id_grupo = v_reg_eps.id_grupo
+                                               AND ur.estado_reg = 'activo' )) THEN
+                                    
+                                    INSERT INTO 
+                                              segu.tusuario_grupo_ep
+                                            (
+                                              id_usuario_reg,                                             
+                                              fecha_reg,
+                                              estado_reg,
+                                              id_usuario,
+                                              id_grupo
+                                            )
+                                            VALUES (
+                                              par_id_usuario,
+                                              now(),
+                                              'activo',
+                                              v_parametros.id_usuario_destino,
+                                              v_reg_eps.id_grupo
+                                            );
+                                            
+                                    
+                                 v_count_ep = v_count_ep + 1; 
+                            END IF;
+                    END LOOP;
+              
+              END IF;
+              
+                
+               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','roles copiados: '||v_count_rol||', eps copiadas: '|| v_count_ep); 
+               v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_parametros.id_usuario_destino::varchar);
+               
+         END;    
+         
+         
+         
 
      else
 
