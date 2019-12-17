@@ -413,15 +413,25 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.Cmp.id_funcionario.store.setBaseParam('id_uo',this.maestro.id_uo);
         var x =this.maestro.gestion;                                                        //#94
         var y = null;                                                                       //#94
-        if (this.maestro.periodo !== undefined ){                                           //#94
+        if (this.maestro.periodo != undefined ){                                           //#94
             y = this.maestro.periodo;                                                       //#94
         }else{
             y =this.maestro.loader.baseParams.id_periodo;                                   //#94
         }
+
        if(m.id !== 'id'){
-            if (Number(this.maestro.id_uo) !== 0){                                          //#94
+            if (Number(this.maestro.id_uo) != 0){                                           //#94
+                console.log(x,y);  			//// REVISAR OJO                                //#94
+                if (x == 0 && y != 0){                                                      //#94
+                    alert('Seleccione la getion');                                          //#94
+                }else{                                                                      //#94
                     this.store.baseParams={id_uo:this.maestro.id_uo,gestion:x,periodo:y};   //#94
-                this.load({params:{start:0, limit:50}})                                     //#94
+                    this.load({params:{start:0, limit:50}})                                 //#94
+                }                                                                           //#94
+
+                //// REVISAR OJO
+
+
             }
        }
        else{

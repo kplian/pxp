@@ -67,11 +67,7 @@ BEGIN
                 if v_parametros.gestion = 0 and  v_parametros.periodo  = 0 then		--#94
                 	v_filtro = null;
                 end if;
-         		if v_parametros.gestion = 0 and v_parametros.periodo  != 0 then		--#94
-                	raise exception 'Seleccione una Gestion.';
-                end if;
-
-                if ( v_parametros.gestion != 0  and v_parametros.periodo = 0)then   --#94
+         		if ( v_parametros.gestion != 0  and v_parametros.periodo = 0)then   --#94
                 	select  pe.fecha_ini,
                 		(select  pe.fecha_fin
                                 from param.tperiodo pe
@@ -164,10 +160,6 @@ BEGIN
                 if v_parametros.gestion = 0 and  v_parametros.periodo  = 0 then		--#94
                 	v_filtro = null;
                 end if;
-         		if v_parametros.gestion = 0 and v_parametros.periodo  != 0 then		--#94
-                	raise exception 'Seleccione una Gestion';
-                end if;
-
                 if ( v_parametros.gestion != 0  and v_parametros.periodo = 0)then   --#94
                 	select  pe.fecha_ini,
                 		(select  pe.fecha_fin
