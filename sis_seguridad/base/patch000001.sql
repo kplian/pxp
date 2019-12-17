@@ -1181,4 +1181,28 @@ ALTER TABLE segu.tpersona
 /***********************************I-SCP-APS-SEGU-01-02/12/2019*****************************************/
 ALTER TABLE segu.tpersona
   ALTER COLUMN grupo_sanguineo TYPE VARCHAR(10);
-/***********************************F-SCP-MZM-SEGU-01-02/12/2019*****************************************/
+/***********************************F-SCP-APS-SEGU-01-02/12/2019*****************************************/
+
+/***********************************I-SCP-MZM-SEGU-91-05/12/2019*****************************************/
+ALTER TABLE segu.tpersona_relacion
+  DROP COLUMN id_persona_fk;
+
+
+ALTER TABLE segu.tpersona_relacion
+  ADD COLUMN nombre VARCHAR(100);
+
+ALTER TABLE segu.tpersona_relacion
+  ADD COLUMN fecha_nacimiento DATE;
+
+ALTER TABLE segu.tpersona_relacion
+  ADD COLUMN matricula VARCHAR(20);
+
+ALTER TABLE segu.tpersona_relacion
+  ADD COLUMN historia_clinica VARCHAR(20);
+
+ALTER TABLE segu.tpersona_relacion
+  ADD COLUMN genero VARCHAR(1);
+/***********************************F-SCP-MZM-SEGU-91-05/12/2019*****************************************/
+
+
+

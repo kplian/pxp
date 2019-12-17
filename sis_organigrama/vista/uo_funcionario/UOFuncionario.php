@@ -9,10 +9,11 @@
        
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
    
- #0               17/10/2014        JRR KPLIAN        creacion
- #32 ETR          18/07/2019        RAC KPLIAN        adcionar carga horaria
- #80             06/11/2019            APS       ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
- #81				08.11.2019		MZM				Adicion de campo prioridad
+ #0               17/10/2014          JRR KPLIAN            creacion
+ #32 ETR          18/07/2019          RAC KPLIAN            adcionar carga horaria
+ #80             06/11/2019           APS                   ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
+ #81			 08.11.2019		      MZM				    Adicion de campo prioridad
+ #94              12/12/2019          APS                   Filtro de funcionarios por gestion y periodo
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -28,21 +29,19 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				name: 'id_uo_funcionario'
 	
 			},
-			
 			type:'Field',
-			form:true 
-			
+			form:true
 		},
+
 		{	config:{
 				labelSeparator:'',
 				inputType:'hidden',
 				name: 'id_uo'
-		
 			},
 			type:'Field',
-			form:true 
-			
-		},		
+			form:true
+		},
+
 		 {
 			config:{
 				fieldLabel: "Codigo",
@@ -59,7 +58,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			grid:true,
 			form:false
 		},
-		
+
 		{
 			config:{
 				name: 'tipo',
@@ -110,7 +109,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    				allowBlank:false,
    				tinit:true,  				
    				valueField: 'id_funcionario',
-   			    gdisplayField: 'desc_funcionario2',  //#80
+   			    gdisplayField: 'desc_funcionario2',         //#80
       			renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario2']);} //#80
        	     },
    			type:'ComboRec',//ComboRec
@@ -404,31 +403,45 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	},
 	
 	/*funcion corre cuando el padre cambia el nodo maestero*/
-	onReloadPage:function(m){       
+	onReloadPage:function(m){
 		this.maestro=m;
+        //console.log('--->',this.maestro.gestion,this.maestro.periodo);
 		this.Atributos[1].valorInicial=this.maestro.id_uo;
 		this.Cmp.id_cargo.tdata.id_uo = this.maestro.id_uo;
 		this.Cmp.id_funcionario.tdata.id_uo = this.maestro.id_uo;
 		this.Cmp.id_cargo.store.setBaseParam('id_uo',this.maestro.id_uo);
 		this.Cmp.id_funcionario.store.setBaseParam('id_uo',this.maestro.id_uo);
- 
-       if(m.id != 'id'){	
+        var x =this.maestro.gestion;                                                        //#94
+        var y = null;                                                                       //#94
+        if (this.maestro.periodo != undefined ){                                           //#94
+            y = this.maestro.periodo;                                                       //#94
+        }else{
+            y =this.maestro.loader.baseParams.id_periodo;                                   //#94
+        }
 
-		this.store.baseParams={id_uo:this.maestro.id_uo};
-		this.load({params:{start:0, limit:50}})
-       
+       if(m.id !== 'id'){
+            if (Number(this.maestro.id_uo) != 0){                                           //#94
+                console.log(x,y);  			//// REVISAR OJO                                //#94
+                if (x == 0 && y != 0){                                                      //#94
+                    alert('Seleccione la getion');                                          //#94
+                }else{                                                                      //#94
+                    this.store.baseParams={id_uo:this.maestro.id_uo,gestion:x,periodo:y};   //#94
+                    this.load({params:{start:0, limit:50}})                                 //#94
+                }                                                                           //#94
+
+                //// REVISAR OJO
+
+
+            }
        }
        else{
     	 this.grid.getTopToolbar().disable();
    		 this.grid.getBottomToolbar().disable(); 
-   		 this.store.removeAll(); 
-    	   
+   		 this.store.removeAll();
        }
-
-
 	},
 	loadValoresIniciales:function()
-    {	
+    {
         this.Cmp.tipo.setValue('oficial');  
         this.Cmp.tipo.fireEvent('select',this.Cmp.tipo);     
         Phx.vista.uo_funcionario.superclass.loadValoresIniciales.call(this);
@@ -441,7 +454,6 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			} else {
 				return true;
 			}
-			
 		},this);
 				
 		this.Cmp.id_funcionario.on('focus',function () {
@@ -451,7 +463,6 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			} else {
 				return true;
 			}
-			
 		},this);
 		
 		this.Cmp.tipo.on('select', function () {
@@ -516,8 +527,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.iniciarEventos();
 		//deshabilita botones
 		this.grid.getTopToolbar().disable();
-		this.grid.getBottomToolbar().disable();	
-
+		this.grid.getBottomToolbar().disable();
+        //console.log('maestra',this.maestro);
 	},
 	
 	bdel:true,// boton para eliminar
@@ -525,7 +536,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	// sobre carga de funcion
 	preparaMenu:function(tb){
 		// llamada funcion clace padre
-		Phx.vista.uo_funcionario.superclass.preparaMenu.call(this,tb)
+		Phx.vista.uo_funcionario.superclass.preparaMenu.call(this,tb);
 	}
 	
 

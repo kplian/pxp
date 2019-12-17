@@ -5,7 +5,7 @@
  de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabla tpersona 
  * ISSUE	FECHA		EMPRESA		AUTOR	DETALLE
  #41	31.07.2019	etr			mzm		adicion de relacion persona_dependiente
- *
+ #91	05.12.2019	ETR			MZM		cambio de consulta para evitar relacion con tpersona
  */
 class ACTPersonaRelacion extends ACTbase{
 	        
@@ -16,8 +16,8 @@ class ACTPersonaRelacion extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','ap_paterno');
 		$this->objParam->defecto('dir_ordenacion','asc');
-		if($this->objParam->getParametro('id_persona_fk')!=''){
-            $this->objParam->addFiltro("pr.id_persona_fk = " . $this->objParam->getParametro('id_persona_fk'));    
+		if($this->objParam->getParametro('id_persona')!=''){
+            $this->objParam->addFiltro("pr.id_persona = " . $this->objParam->getParametro('id_persona'));//#91    
         }
 		
 		

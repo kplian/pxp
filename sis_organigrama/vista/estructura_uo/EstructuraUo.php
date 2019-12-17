@@ -6,15 +6,19 @@
 *@date 14-02-2011
 *@description  Vista para registrar las estructura de las Unidades Organizacionales
 	ISSUE		FECHA			AUTHOR				DESCRIPCION
- *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
-
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
+ *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  * */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
+
+    var v_id_gestion = 0;
+    var v_periodo =0 ;
 Phx.vista.EstructuraUo=function(config){
-	
+
+
 
 	   this.Atributos =[
 	      //Primera posicion va el identificador de nodo
@@ -237,7 +241,7 @@ Phx.vista.EstructuraUo=function(config){
 		{
 			config:{
 				name:'correspondencia',
-				fieldLabel:'Corresponden cia',
+				fieldLabel:'Correspondencia',
 				typeAhead: true,
 				allowBlank:false,
 	    		triggerAction: 'all',
@@ -328,11 +332,51 @@ Phx.vista.EstructuraUo=function(config){
 				grid:false,
 				form:true
 		},
+           {
+               config:{                                             //#94
+                   name:'gestion',
+                   fieldLabel: 'gestion',
+               },
+               type:'Field',
+               id_grupo:0,
+               grid:true,
+               form:true
+           },
+           {
+               config:{                                             //#94
+                   name:'periodo',
+                   fieldLabel: 'periodo',
+               },
+               type:'Field',
+               id_grupo:0,
+               grid:true,
+               form:true
+           }
 		];
-		
-		Phx.vista.EstructuraUo.superclass.constructor.call(this,config);
-		          
-			
+
+        this.initButtons=[this.cmbGestion, this.cmbPeriodo];                                //#94       -----> Inicializando dos combos: Gestion y Periodo.
+
+        Phx.vista.EstructuraUo.superclass.constructor.call(this,config);
+
+        this.iniciarEventos();
+            this.cmbGestion.on('select', function(combo, record, index){                    //#94
+            this.tmpGestion = record.data.gestion;                                          //#94
+            this.cmbPeriodo.enable();                                                       //#94
+            //this.cmbPeriodo.reset();                                                        //#94
+            //this.store.removeAll();
+
+            this.cmbPeriodo.store.baseParams = Ext.apply(this.cmbPeriodo.store.baseParams, {id_gestion: this.cmbGestion.getValue(),id_periodo:this.cmbPeriodo.getValue()});     //#94
+            this.cmbPeriodo.modificado = true;                                              //#94
+            this.capturaFiltros();                                                          //#94 <-----------------------------------------------
+        },this);                                                                            //#94
+
+
+        this.cmbPeriodo.on('select', function( combo, record, index){                       //#94
+            this.tmpPeriodo = record.data.periodo;
+            this.capturaFiltros();                                                          //#94 <-----------------------------------------------
+        },this);                                                                            //#94
+
+
 		/*this.addButton('btnReporteFun',	{
 				text: 'Funcionarios',
 				//iconCls: 'bchecklist',
@@ -349,8 +393,8 @@ Phx.vista.EstructuraUo=function(config){
 				handler: this.onBtnCargos,
 				tooltip: '<b>Cargos</b><br/>Listado de cargos por unidad organizacional'
 			}
-		);	
-		
+		);
+
 		//coloca elementos en la barra de herramientas
 		this.tbar.add('->');
    		this.tbar.add(' Filtrar:');
@@ -360,16 +404,16 @@ Phx.vista.EstructuraUo=function(config){
 		
 		//de inicio bloqueamos el botono nuevo
 		//this.tbar.items.get('b-new-'+this.idContenedor).disable()
-		
-
 		this.init();
 		
-		this.loaderTree.baseParams={id_subsistema:this.id_subsistema};
+		this.loaderTree.baseParams={id_subsistema:this.id_subsistema,id_gestion:0,id_periodo:0};
 		this.rootVisible=false;
-		this.iniciarEventos();
-	
-		
-}
+        v_id_gestion =0;
+
+        this.loadValoresIniciales();
+
+},
+
 
 
 Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
@@ -379,7 +423,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 					       		width: 150}),
 		checkInactivos:new Ext.form.Checkbox({ 
 		                        width: 25}),
-    	title:'Unidad Organizacional',
+    	title:'Unidad Organizacionalsssss',
 		ActSave:'../../sis_organigrama/control/EstructuraUo/guardarEstructuraUo',
 		ActDel:'../../sis_organigrama/control/EstructuraUo/eliminarEstructuraUo',	
 		ActList:'../../sis_organigrama/control/EstructuraUo/listarEstructuraUo',
@@ -407,7 +451,10 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		'presupuesta',
 		'nodo_base','correspondencia','gerencia',
 		'centro', //#26
-		'orden_centro'//#26
+		'orden_centro',//#26
+        'gestion',                              //#94   --------------------------->variables para manejar los datos gesttion y periodo
+        'periodo',                              //#94
+
 		],
 		sortInfo:{
 			field: 'id',
@@ -416,20 +463,30 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		onButtonAct:function(){
 			
 			this.sm.clearSelections();
-			var dfil = this.datoFiltro.getValue();
+            var id_gestion= this.cmbGestion.getValue();                                 //#94
+            var id_periodo= this.cmbPeriodo.getValue();                                 //#94
+            //console.log('gestion',id_gestion,'periodo',id_periodo);                   //#94
+            if(this.cmbGestion.getValue() == 0 && this.cmbPeriodo.getValue() != 0){     //#94
+                alert("Seleccione una Gestión.");
+            }
+            this.Cmp.periodo.setValue(id_periodo);                                      //#94
+            this.Cmp.gestion.setValue(id_gestion);                                      //#94
+
+            var dfil = this.datoFiltro.getValue();
 			var dcheck = this.checkInactivos.getValue();
-			
 			if(dfil && dfil!=''){
 				if (dcheck) {
-					this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil, p_activos : 'no'};
+					this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil, p_activos : 'no',id_gestion:id_gestion, id_periodo:id_periodo,periodo:0};     //#94 --> id_gestion e id_periodo
+                    this.root.reload();
 				} else {
-					this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil};
+					this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil,id_gestion:id_gestion, id_periodo:id_periodo,periodo:0};                       //#94 --> id_gestion e id_periodo
+                    this.root.reload();                                 //#94
 				}
 				this.root.reload();
 			}
 			else
 			{
-				this.loaderTree.baseParams={filtro:'inactivo',criterio_filtro_arb:''};
+				this.loaderTree.baseParams={filtro:'inactivo',criterio_filtro_arb:'',id_gestion:id_gestion, id_periodo:id_periodo,periodo:0};                               //#94 --> id_gestion e id_periodo
 			     this.root.reload();
 			}
 		},
@@ -452,6 +509,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		onBtnCargos: function(){
 			var node = this.sm.getSelectedNode();
 			var data = node.attributes;
+
 			Phx.CP.loadWindows('../../../sis_organigrama/vista/cargo/Cargo.php',
 					'Cargos por Unidad',
 					{
@@ -463,12 +521,12 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 				    'Cargo'
 			);
 		},
-	
-		
+
+
 		//sobrecarga prepara menu
 		preparaMenu:function(n) {
-		this.getBoton('btnCargo').enable();
-		Phx.vista.EstructuraUo.superclass.preparaMenu.call(this,n);
+            this.getBoton('btnCargo').enable();
+            Phx.vista.EstructuraUo.superclass.preparaMenu.call(this,n);
 		},
 		liberaMenu : function () {
 			this.getBoton('btnCargo').disable();
@@ -511,18 +569,41 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 	
 		
 		//estable el manejo de eventos del formulario
-		iniciarEventos:function(){
-			
-			console.log(this.datoFiltro);
+
+		iniciarEventos:function(m){
+            this.maestro=m;
+            //console.log('Combo Perioooooodo: ', cmbPeriodo.getValue());
+
+            var d = new Date();
+            this.cmbGestion.store.baseParams.query = d.getFullYear();           //#94
+            //recorrer el combo de la gestion para seleccionar la gestion acttual
+            this.cmbGestion.store.load({params:{start:0,limit:this.tam_pag},    //#94
+                callback : function (r) {
+                    if (r.length > 0 ) {
+                        this.cmbGestion.setValue(r[0].data.id_gestion);         //#94
+                        v_id_gestion = r[0].data.id_gestion;                    //#94
+                        this.loaderTree.baseParams = {id_gestion: v_id_gestion, id_periodo:  this.cmbPeriodo.getValue()};       //#94
+                        this.root.reload();                                     //#94
+                        this.cargaPeriodo();                                    //#94
+                    }else{
+                        this.cmbGestion.reset();                                //#94
+                    }
+                }, scope : this
+            });                                                                 //#94
+            this.cmbGestion.setValue(this.v_id_gestion);                        //#94
+            this.cmbPeriodo.store.baseParams.query = d.getMonth()+1;            //#94
+            this.loaderTree.baseParams = {id_gestion: 0, id_periodo:0};         //#94
+            this.Cmp.gestion.setValue(this.cmbGestion.getValue());              //#94
 			this.datoFiltro.on('specialkey',function(field, e){
 				if (e.getKey() == e.ENTER) {
-                     this.onButtonAct();   
+
+                     this.onButtonAct();
                 }
 			},this)
-			
+
 			/*this.getComponente('tipo_dato').on('beforeselect',function(combo,record,index){
 				if(record.json[0]=='interface'){
-				
+
 					this.getComponente('ruta_archivo').enable();
 				    this.getComponente('icono').enable();
 				    this.getComponente('clase_vista').enable();
@@ -533,7 +614,28 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 					this.getComponente('clase_vista').disable();
 				}
 			},this)*/
-		},
+
+
+
+        },
+        cargaPeriodo:function (){                                                       //#94
+            this.cmbPeriodo.store.baseParams.id_gestion = v_id_gestion;                 //#94
+            this.cmbPeriodo.store.load({params:{start:0,limit:this.tam_pag},            //#94
+                callback : function (r) {                                               //#94
+                    if (r.length > 0 ) {                                                //#94
+                        this.cmbPeriodo.setValue(r[0].data.id_periodo);                 //#94
+                    }else{
+                        this.cmbPeriodo.reset();                                        //#94
+                    }
+                    this.loaderTree.baseParams = {id_gestion: v_id_gestion, id_periodo: r[0].data.id_periodo};      //#94
+
+                }, scope : this
+            });
+            if(this.cmbPeriodo.getValue()==null){                                       //#94
+                this.cmbPeriodo.disable(true);                                          //#94
+            }
+            this.Cmp.periodo.setValue(this.cmbPeriodo.getValue());                      //#94
+        },
 	/*
 	 * south:{ url:'../../sis_legal/vista/representante/representante.php',
 	 * title:'Representante', height:200 },
@@ -585,10 +687,95 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
                     
                     items:[],
                     id_grupo:1
-                 }*/] }]
-			
+                 }*/] }],
 
 
-}
+
+
+        cmbGestion: new Ext.form.ComboBox({                                    //#94
+            fieldLabel: 'Gestion',
+            allowBlank: true,       //FALSE: cuando es campo obligatorio, se pinta de rojo, true no es obligatorio.
+            emptyText:'Gestion...',
+            blankText: 'Año',
+            //grupo:[0,1,2,3,4],
+            store:new Ext.data.JsonStore(
+                {
+                    url: '../../sis_parametros/control/Gestion/listarGestion',
+                    id: 'id_gestion',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'gestion',
+                        direction: 'DESC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_gestion','gestion'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams:{par_filtro:'ges.id_gestion#ges.gestion', start:0,limit:50}
+                }),
+            valueField: 'id_gestion',
+            triggerAction: 'all',
+            displayField: 'gestion',
+            hiddenName: 'id_gestion',
+            mode:'remote',
+            pageSize:50,
+            queryDelay:500,
+            listWidth:'280',
+            width:80
+        }),                                                                     //#94
+
+        cmbPeriodo: new Ext.form.ComboBox({                                     //#94
+            fieldLabel: 'Periodo',
+            allowBlank: true, //FALSE: cuando es campo obligatorio, se pinta de rojo, true no es obligatorio.
+            blankText : 'Mes',
+            emptyText:'Periodo...',
+            //grupo:[0,1,2,3,4],
+            store:new Ext.data.JsonStore(
+                {
+                    url: '../../sis_parametros/control/Periodo/listarPeriodo',
+                    id: 'id_periodo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'periodo',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_periodo','periodo','id_gestion','literal'],
+                    // turn on remote sorting
+                    remoteSort: true,
+                    baseParams:{par_filtro:'per.periodo',start:0,limit:20}
+                }),
+            valueField: 'id_periodo',
+            triggerAction: 'all',
+            displayField: 'literal',
+            hiddenName: 'id_periodo',
+            mode:'remote',
+            pageSize:50,
+            disabled: false,
+            queryDelay:500,
+            listWidth:'280',
+            width:80
+        }),                                                                     //#94
+
+
+        capturaFiltros:function(combo, record, index){                          //#94  <-----------------------------------------------
+
+            if(this.validarFiltros()){                                          //#94
+                //console.log("GEstionnnnnnnnnnnn:  ", this.cmbGestion.getValue());
+                this.loaderTree.baseParams = {id_gestion: this.cmbGestion.getValue(), id_periodo: this.cmbPeriodo.getValue()};      //#94
+                this.onButtonAct();                                             //#94
+            }
+        },
+
+        validarFiltros:function(){
+            if(this.cmbGestion.validate() && this.cmbPeriodo.validate()){       //#94
+                return true;                                                    //#94
+            }
+            else{
+                return false;                                                   //#94
+            }
+        },
+
+    }
 )
 </script>

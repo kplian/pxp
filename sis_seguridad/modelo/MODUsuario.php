@@ -5,6 +5,9 @@
  a la tabla tusuario del esquema SEGU
  Autor:		Kplian 
  Fecha:		04/06/2011  
+ * 
+  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
+  #97            17/06/2019        RAC                 interface para copiar roles de usaurio
  */ 
 class MODUsuario extends MODbase {
 	
@@ -258,6 +261,25 @@ function insertarUsuario(){
         return $this->respuesta;
 
     }
+    //#97
+    function copiarRoles(){
+	
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_usuario_ime';
+		$this->transaccion='SEG_COPYROL_IME';
+		$this->tipo_procedimiento='IME';
+			
+		//Define los setParametros para la funcion
+		$this->setParametro('id_usuario_origen','id_usuario_origen','integer');
+		$this->setParametro('id_usuario_destino','id_usuario_destino','integer');
+		$this->setParametro('copy_rol','copy_rol','varchar');
+		$this->setParametro('copy_ep','copy_ep','varchar');
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+				
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
 	
 	
 	

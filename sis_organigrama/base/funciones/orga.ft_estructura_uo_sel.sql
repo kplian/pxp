@@ -11,14 +11,15 @@ $body$
 /**************************************************************************
  FUNCION: 		orga.ft_estructura_uo_sel
  DESCRIPCIÓN:  listado de uo
- AUTOR: 	    KPLIAN (mzm)	
- FECHA:	        
- COMENTARIOS:	
+ AUTOR: 	    KPLIAN (mzm)
+ FECHA:
+ COMENTARIOS:
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 	ISSUE		FECHA			AUTHOR				DESCRIPCION
- *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
-    #53         26/08/2019      RAC                 Se agrega campo de ordenación por centro en listado de organigrama 
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
+    #53         26/08/2019      RAC                 Se agrega campo de ordenación por centro en listado de organigrama
+    #94			12/12/2019 	    APS					Se agrega los campos periodo y gestion para el filtro de funcionarios.
 ***************************************************************************/
 
 
@@ -40,32 +41,30 @@ BEGIN
 
      v_parametros:=pxp.f_get_record(par_tabla);
      v_nombre_funcion:='orga.ft_estructura_uo_sel';
-    
+
 
 /*******************************
  #TRANSACCION:  RH_UO_SEL
  #DESCRIPCION:	Listado de uos
- #AUTOR:		
- #FECHA:		23/05/11	
+ #AUTOR:
+ #FECHA:		23/05/11
 ***********************************/
      if(par_transaccion='RH_ESTRUO_SEL')then
 
-          
-          BEGIN
 
+          BEGIN
            if(v_parametros.id_padre = '%') then
              --  v_condicion:='uo.nodo_base=''si'' and uo.tipo='||v_parametros.tipo;
                 v_condicion:='uo.nodo_base=''si'' ';
                 v_join = 'LEFT';
-                
-                
+
            else
                v_condicion:='euo.id_uo_padre='||v_parametros.id_padre||' and uo.nodo_base=''no'' ';
                 v_join = 'INNER';
            end if;
                v_condicion:=v_condicion ||'  and uo.estado_reg=''activo'' ';
-               
-               
+
+               --#94: gestion y periodo se usan para filtrar los funcionarios en la UOFuncionario.
                v_consulta:='SELECT
                                 UO.id_uo,
                                 UO.codigo,
@@ -90,9 +89,12 @@ BEGIN
                                 UO.id_nivel_organizacional,
                                 nivorg.nombre_nivel,
                                 UO.centro, --#26
-                                UO.orden_centro --#26
-                            FROM orga.tuo UO '
-                            ||v_join|| ' join orga.testructura_uo euo
+                                UO.orden_centro, --#26
+               				    '||COALESCE(v_parametros.id_gestion,0)||' as gestion,				--#94
+                          '||COALESCE(v_parametros.id_periodo,0)||' as periodo				--#94
+
+                            FROM orga.tuo UO
+                            '||v_join|| ' join orga.testructura_uo euo
                                   on UO.id_uo=euo.id_uo_hijo  and euo.estado_reg=''activo''
                             INNER JOIN segu.tusuario USUREG ON  UO.id_usuario_reg=USUREG.id_usuario
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
@@ -100,11 +102,11 @@ BEGIN
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE '|| v_condicion;
-               
-               
+
+
              --  v_consulta:=v_consulta||v_parametros.filtro;
                v_consulta:=v_consulta||' order by UO.orden_centro ASC, euo.id_uo_hijo,UO.nombre_unidad';  --#53 incluye orden_centro prioritariamente
-
+          		--raise notice '%',v_consulta;
                return v_consulta;
 
 
@@ -113,8 +115,8 @@ BEGIN
 /*******************************
  #TRANSACCION:  RH_ESTRUO_CONT
  #DESCRIPCION:	Conteo de estructura uos
- #AUTOR:		
- #FECHA:		24/05/11	
+ #AUTOR:
+ #FECHA:		24/05/11
 ***********************************/
      elsif(par_transaccion='RH_ESTRUO_CONT')then
 

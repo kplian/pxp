@@ -6,7 +6,8 @@
  Autor:		Kplian
  Fecha:		04/06/2011
  	ISSUE		FECHA			AUTHOR				DESCRIPCION
- *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
+ *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  */
 class MODEstructuraUo extends MODbase {
 	
@@ -24,6 +25,8 @@ class MODEstructuraUo extends MODbase {
 		$this->setCount(false);
 		
 			$this->setParametro('id_padre','id_padre','varchar');
+			$this->setParametro('id_gestion','id_gestion','integer');       //#94
+            $this->setParametro('id_periodo','id_periodo','integer');       //#94
 					
 			//defino varialbes que se captran como retornod e la funcion
 			$this->captura('id_uo','integer');
@@ -50,6 +53,8 @@ class MODEstructuraUo extends MODbase {
 			$this->captura('nombre_nivel','varchar');
 			$this->captura('centro','varchar');//#26
 			$this->captura('orden_centro','numeric');//#26
+			$this->captura('gestion','integer');                            //#94
+            $this->captura('periodo','integer');                            //#94
 			$this->armarConsulta();
 			/*echo $this->consulta;
 			exit;*/

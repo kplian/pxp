@@ -13,7 +13,8 @@
    
  #6           09/01/2019      RAC KPLIAN      añade listarAsignacionFuncionario * 
  #32          18/07/2019      RAC KPLIAN      añade carga horaria
- #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad 
+ #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad
+ #94          12/12/2019      APS             Filtro de funcionarios por gestion y periodo
  */
 class MODUoFuncionario extends MODbase{
 	
@@ -28,6 +29,9 @@ class MODUoFuncionario extends MODbase{
 		$this->transaccion='RH_UOFUNC_SEL';//nombre de la transaccion
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 		$this->setParametro('id_uo','id_uo','integer');
+        $this->setParametro('gestion','gestion','integer');                                         //#94
+        $this->setParametro('periodo','periodo','integer');                                         //#94
+
 		//Definicion de la lista del resultado del query
 		$this->captura('id_uo_funcionario','integer');
 		$this->captura('id_uo','integer');
