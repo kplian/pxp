@@ -7,6 +7,7 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 	ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
 	#4 		EndeEtr  	02/01/2019	EGS			se agrego la logica para aumentar el tipo de extensiones desde una variable global
+    #98 	EndeEtr  	24/12/2019	JUAN		Reporte de lista de documentos en workflow con letras mas grandes
 */
 
 class MODDocumentoWf extends MODbase{
@@ -523,6 +524,68 @@ class MODDocumentoWf extends MODbase{
 		return $this->respuesta;
 	}
    	 //#4 02/01/2019	EGS	
-			
+	function ReportelistarDocumento(){//#98
+
+		$this->procedimiento='wf.ft_documento_wf_sel';
+		$this->transaccion='WF_LISTDOCWF_SEL';
+		$this->tipo_procedimiento='SEL';
+		$this->setCount(false);
+		
+		$this->setParametro('id_proceso_wf','id_proceso_wf','int4');
+		$this->setParametro('todos_documentos','todos_documentos','varchar');		
+
+		$this->captura('id_documento_wf','int4');
+		$this->captura('url','varchar');
+		$this->captura('num_tramite','varchar');
+		$this->captura('id_tipo_documento','int4');
+		$this->captura('obs','text');
+		$this->captura('id_proceso_wf','int4');
+		$this->captura('extension','varchar');
+		$this->captura('chequeado','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('nombre_tipo_doc','varchar');
+		$this->captura('nombre_doc','varchar');
+		$this->captura('momento','varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('codigo_tipo_proceso','varchar');
+		$this->captura('codigo_tipo_documento','varchar');
+		$this->captura('nombre_tipo_documento','varchar');
+		$this->captura('descripcion_tipo_documento','TEXT');
+		$this->captura('nro_tramite','varchar');
+		$this->captura('codigo_proceso','varchar');
+		$this->captura('descripcion_proceso_wf','varchar');
+		$this->captura('nombre_estado','varchar');
+		$this->captura('chequeado_fisico','varchar');
+		
+		$this->captura('usr_upload','varchar');
+        $this->captura('fecha_upload','timestamp');
+        
+        $this->captura('tipo_documento','varchar');
+        
+        $this->captura('action','varchar');
+		$this->captura('solo_lectura','varchar');
+		
+		$this->captura('id_documento_wf_ori','integer');
+		$this->captura('id_proceso_wf_ori','integer');
+		$this->captura('nro_tramite_ori','varchar');
+		$this->captura('priorizacion','integer');
+		$this->captura('modificar','varchar');
+		$this->captura('insertar','varchar');
+		$this->captura('eliminar','varchar');
+		$this->captura('demanda','varchar');
+		$this->captura('nombre_vista','varchar');
+		$this->captura('esquema_vista','varchar');
+		$this->captura('nombre_archivo_plantilla','text');
+		
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		
+		return $this->respuesta;
+	}	
 }
 ?>

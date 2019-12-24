@@ -17,6 +17,7 @@ $body$
  HISTORIAL DE MODIFICACIONES:
 ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
 #4 		EndeEtr  	02/01/2019	EGS			se agrego la funcion WF_DOCEXT_SEL para aumentar el tipo de extensiones desde una variable global
+#98   EndeEtr   24/12/2019  JUAN    Reporte de lista de documentos en workflow con letras mas grandes
 ***************************************************************************/
 
 DECLARE
@@ -347,6 +348,130 @@ BEGIN
 
        		return v_consulta;	
           end;
+          
+        /*********************************
+        #TRANSACCION:  'WF_LISTDOCWF_SEL'
+        #DESCRIPCION: Lista 
+        #AUTOR:   JUAN
+        #FECHA:   24/12/2019
+        ***********************************/
+
+        elsif(p_transaccion='WF_LISTDOCWF_SEL')then --#98 INICIO
+          begin
+
+          select 
+               pw.nro_tramite,
+               tp.id_proceso_macro,
+                 ew.id_tipo_estado
+             into 
+               v_nro_tramite,
+               v_id_proceso_macro,
+                 v_id_tipo_estado
+             
+             from wf.tproceso_wf pw
+               inner join wf.testado_wf ew on ew.id_proceso_wf = pw.id_proceso_wf and 
+                            ew.estado_reg= 'activo'                                        
+             inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
+             where pw.id_proceso_wf = v_parametros.id_proceso_wf;
+               
+           if (v_parametros.todos_documentos = 'si') then            
+             
+             v_filtro = ' pw.nro_tramite = '''||COALESCE(v_nro_tramite,'--')||''' and  ';
+         else
+            v_filtro = ' pw.id_proceso_wf = ' || v_parametros.id_proceso_wf::varchar || ' and  ';
+         
+         end if;
+           
+
+        --Sentencia de la consulta
+      v_consulta:='
+                  with documento_modificar as (
+                        select td.id_tipo_documento,''si''::varchar as modificar
+                        from wf.ttipo_documento td
+                        inner join wf.ttipo_documento_estado tde on tde.id_tipo_documento = td.id_tipo_documento
+                        where tde.id_tipo_estado = ' || v_id_tipo_estado || ' and tde.estado_reg=''activo''
+                        and tde.momento = ''modificar''
+                        ), documento_insertar as (
+                        select td.id_tipo_documento,''si''::varchar as insertar
+                        from wf.ttipo_documento td
+                        inner join wf.ttipo_documento_estado tde on tde.id_tipo_documento = td.id_tipo_documento
+                        where tde.id_tipo_estado = ' || v_id_tipo_estado || ' and tde.estado_reg=''activo''
+                        and tde.momento = ''insertar''
+                        ), documento_eliminar as (
+                        select td.id_tipo_documento,''si''::varchar as eliminar
+                        from wf.ttipo_documento td
+                        inner join wf.ttipo_documento_estado tde on tde.id_tipo_documento = td.id_tipo_documento
+                        where tde.id_tipo_estado = ' || v_id_tipo_estado || ' and tde.estado_reg=''activo''
+                        and tde.momento = ''eliminar''
+                        )
+                  select
+                        dwf.id_documento_wf,
+                        dwf.url,
+                        dwf.num_tramite,
+                        dwf.id_tipo_documento,
+                        dwf.obs,
+                        dwf.id_proceso_wf,
+                        dwf.extension,
+                        dwf.chequeado,
+                        dwf.estado_reg,
+                        dwf.nombre_tipo_doc,
+                        dwf.nombre_doc,
+                        dwf.momento,
+                        dwf.fecha_reg,
+                        dwf.id_usuario_reg,
+                        dwf.fecha_mod,
+                        dwf.id_usuario_mod,
+                        usu1.cuenta as usr_reg,
+                        usu2.cuenta as usr_mod,
+                        tp.codigo as codigo_tipo_proceso,
+                        td.codigo as codigo_tipo_documento,
+                        td.nombre as nombre_tipo_documento,
+                        td.descripcion as descripcion_tipo_documento,
+                        
+                        pw.nro_tramite,
+                        pw.codigo_proceso,
+                        pw.descripcion as descripcion_proceso_wf,
+                        tewf.nombre_estado,
+                        dwf.chequeado_fisico,
+                        usu3.cuenta as usr_upload,
+                        dwf.fecha_upload,
+                        td.tipo as tipo_documento,
+                        td.action,
+                        td.solo_lectura,
+                        dwf.id_documento_wf_ori,
+                        dwf.id_proceso_wf_ori,
+                        dwf.nro_tramite_ori,
+                        wf.f_priorizar_documento(' || v_parametros.id_proceso_wf ||',' || p_id_usuario ||
+                        ',td.id_tipo_documento,''' || v_parametros.dir_ordenacion ||''' ) as priorizacion,
+                        dm.modificar,
+                        di.insertar,
+                        de.eliminar,
+                        dwf.demanda,
+                        td.nombre_vista,
+                        td.esquema_vista,
+                        td.nombre_archivo_plantilla
+            from wf.tdocumento_wf dwf
+                        inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
+                        inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
+                        inner join wf.ttipo_proceso tp on tp.id_tipo_proceso = pw.id_tipo_proceso
+                        left join segu.tusuario usu2 on usu2.id_usuario = dwf.id_usuario_mod
+                        left join segu.tusuario usu3 on usu3.id_usuario = dwf.id_usuario_upload
+                        inner join segu.tusuario usu1 on usu1.id_usuario = dwf.id_usuario_reg
+                        inner join wf.testado_wf ewf  on ewf.id_proceso_wf = dwf.id_proceso_wf and ewf.estado_reg = ''activo''
+                        inner join wf.ttipo_estado tewf on tewf.id_tipo_estado = ewf.id_tipo_estado
+                        left join documento_modificar dm on dm.id_tipo_documento = td.id_tipo_documento
+                        left join documento_insertar di on di.id_tipo_documento = td.id_tipo_documento
+                        left join documento_eliminar de on de.id_tipo_documento = td.id_tipo_documento
+                        
+                        
+                where  ' || v_filtro;
+
+      v_consulta:=v_consulta||v_parametros.filtro;
+
+            --Devuelve la respuesta
+      return v_consulta;
+      
+          end; --#98 FIN
           
   else
                
