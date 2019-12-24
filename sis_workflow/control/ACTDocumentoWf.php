@@ -7,8 +7,9 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
 #4 		EndeEtr  	02/01/2019	EGS			se agrego la logica para aumentar el tipo de extensiones desde una variable global
+#98 	EndeEtr  	24/12/2019	JUAN		Reporte de lista de documentos en workflow con letras mas grandes
  * */
-
+require_once(dirname(__FILE__).'/../reportes/RListaDocumentos.php');//#98
 class ACTDocumentoWf extends ACTbase{    
 			
 	function listarDocumentoWf(){
@@ -118,6 +119,65 @@ class ACTDocumentoWf extends ACTbase{
         $this->objFunc=$this->create('MODDocumentoWf'); 
         $this->res=$this->objFunc->extensionDocumento($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+	function ReportelistarDocumento(){//#98
+
+		$nombreArchivo = uniqid(md5(session_id()).'Egresos') . '.pdf'; 
+		$dataSource = $this->recuperarDatosDocumentoWF();
+
+		$tamano = 'LETTER';
+		$orientacion = 'L';
+		$titulo = 'Consolidado';
+		
+		
+		$this->objParam->addParametro('orientacion',$orientacion);
+		$this->objParam->addParametro('tamano',$tamano);		
+		$this->objParam->addParametro('titulo_archivo',$titulo);        
+		$this->objParam->addParametro('nombre_archivo',$nombreArchivo);
+
+		$reporte = new RListaDocumentos($this->objParam);  
+		
+		$reporte->datosHeader($dataSource->getDatos(),  $dataSource->extraData);
+		
+		$reporte->generarReporte();
+		$reporte->output($reporte->url_archivo,'F');
+		
+		$this->mensajeExito=new Mensaje();
+		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado','Se generó con éxito el reporte: '.$nombreArchivo,'control');
+		$this->mensajeExito->setArchivoGenerado($nombreArchivo);
+		$this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+
+
+	}
+	function recuperarDatosDocumentoWF(){//#98   
+
+		$this->objParam->defecto('ordenacion','id_documento_wf');
+
+		$this->objParam->defecto('dir_ordenacion','asc');
+
+		
+		if ($this->objParam->getParametro('anulados') == 'no') {
+			$this->objParam->addFiltro("tewf.codigo not in (''anulada'',''anulado'',''cancelado'')");
+		}
+		
+		if ($this->objParam->getParametro('modoConsulta') == 'si') {
+			$this->objParam->addFiltro(" (dwf.chequeado = ''si'' or  td.action != '''') ");
+		}
+		
+		/*if ($this->objParam->getParametro('categoria') != '') {
+			$this->objParam->addFiltro("(''".$this->objParam->getParametro('categoria')."'' =ANY(td.categoria_documento) or td.categoria_documento is NULL or td.categoria_documento = ''{}'')" );
+		}*/
+
+		$this->objFunc = $this->create('MODDocumentoWf');
+		$cbteHeader = $this->objFunc->ReportelistarDocumento($this->objParam);
+		if($cbteHeader->getTipo() == 'EXITO'){				
+			return $cbteHeader;
+		}
+        else{
+		    $cbteHeader->imprimirRespuesta($cbteHeader->generarJson());
+			exit;
+		}              
+		
     }
 			
 }

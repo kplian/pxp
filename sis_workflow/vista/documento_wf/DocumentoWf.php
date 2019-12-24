@@ -5,6 +5,10 @@
 *@author  (admin)
 *@date 15-01-2014 13:52:19
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+
+ HISTORIAL DE MODIFICACIONES:
+ISSUE   FORK        FECHA       AUTHOR        DESCRIPCION
+#98     EndeEtr     24/12/2019  JUAN          Reporte de lista de documentos en workflow con letras mas grandes
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -12,6 +16,7 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
      lblDocProcCf:  'Solo del Proceso',
      lblDocProcSf:  'Todo del Trámite',
+     lblListaDocumento:  'Lista de los documentos', //#98 
      todos_documentos: 'si',
      modoConsulta: 'no',
      pagos_relacionados: 'no', //solo para el caso de abrir ersta interface desde el plan de pagos
@@ -537,6 +542,17 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 				handler : this.onDocProceso,
 				tooltip : '<b>Mostrar +/- Documentos</b> Aplica o quita el filtro de documentos del trámite'
 			});
+
+
+        this.addButton('btnListaDoc', {//#98
+                text : this.lblListaDocumento,
+                grupo:[0,1,2,3],
+                iconCls : 'bend',
+                disabled : false,
+                enableToggle : true,
+                handler : this.onListaDocumento,
+                tooltip : ' Exporta la lista de documentos'
+            });
 			
 		if(this.todos_documentos == 'no'){
 		   this.getBoton('btnDocProceso').toggle(true,true)	;
@@ -653,6 +669,25 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
 	 	  
 	 	
 	 },
+     onListaDocumento: function(b,e){//#98
+        console.log("ver reporte ",this.maestro.id_proceso_wf);
+        var rec=this.sm.getSelected();
+                Ext.Ajax.request({
+                    url:'../../sis_workflow/control/DocumentoWf/ReportelistarDocumento',
+                    params : {
+                      id_proceso_wf: this.maestro.id_proceso_wf,
+                      todos_documentos: "si"
+                    },
+                    success: this.successExport,
+                    failure: function() {
+                        console.log("fail");
+                    },
+                    timeout: function() {
+                        console.log("timeout");
+                    },
+                    scope:this
+                });  
+     },
 	
 	cambiarIconoDocPro: function(){
 		var btnPro = this.getBoton('btnDocProceso');
