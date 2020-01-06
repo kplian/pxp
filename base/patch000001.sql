@@ -109,3 +109,13 @@ CREATE TABLE pxp.tprueba1 (
 ) WITHOUT OIDS;
 
 /****************************F-SCP-JRR-PXP-0-21/11/2014*************/
+/****************************I-SCP-EGS-PXP-0-06/01/2020*************/
+
+ALTER TABLE pxp.tbase
+ADD COLUMN obs_dba VARCHAR;
+
+COMMENT ON COLUMN pxp.tbase.obs_dba
+IS 'observaciones de modificaciones del registro en la base de datos';
+
+/****************************F-SCP-EGS-PXP-0-06/01/2020*************/
+
