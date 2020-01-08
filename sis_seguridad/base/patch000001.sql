@@ -1206,3 +1206,56 @@ ALTER TABLE segu.tpersona_relacion
 
 
 
+
+/***********************************I-SCP-RAC-SEGU-102-08/01/2020*****************************************/
+
+--------------- SQL ---------------
+
+CREATE TABLE segu.tprogramador (
+  id_programador SERIAL NOT NULL,
+  nombre_completo VARCHAR(500) NOT NULL,
+  alias_git VARCHAR(200),
+  alias_codigo_1 VARCHAR(100),
+  alias_codigo_2 VARCHAR(100),
+  correo VARCHAR(500),
+  fecha_inicio DATE,
+  fecha_fin DATE,
+  usuario_ldap VARCHAR(200),
+  PRIMARY KEY(id_programador)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN segu.tprogramador.alias_git
+IS 'nombre de usuario en github';
+
+COMMENT ON COLUMN segu.tprogramador.alias_codigo_1
+IS 'nombre  que poner en la cabecera de codigo fuente v1';
+
+COMMENT ON COLUMN segu.tprogramador.alias_codigo_2
+IS 'algunos programadores varia su nombre en codigo fuente';
+
+COMMENT ON COLUMN segu.tprogramador.fecha_inicio
+IS 'inicio de relacion laboral';
+
+COMMENT ON COLUMN segu.tprogramador.fecha_fin
+IS 'fin de relacion laboral';
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tprogramador
+  ADD COLUMN organizacion VARCHAR(200);
+
+COMMENT ON COLUMN segu.tprogramador.organizacion
+IS 'para programadores externos como KPLIAN';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tprogramador
+  ADD COLUMN correo_personal VARCHAR(200);
+
+COMMENT ON COLUMN segu.tprogramador.correo_personal
+IS 'correo personal';
+
+/***********************************F-SCP-RAC-SEGU-102-08/01/2020*****************************************/
+
