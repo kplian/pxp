@@ -284,6 +284,7 @@ def actualizar_codigo():
 		for line in url:
 			#las carpetas de git deben tener permisos 777 				
 			#si ya tiene permisos la carpeta git
+			print line
 			command = ['cd '+line+';git pull;']
 			for i in command:
 				os.system(i)
