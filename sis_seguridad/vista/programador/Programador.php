@@ -165,7 +165,7 @@ Phx.vista.Programador=Ext.extend(Phx.gridInterfaz,{
 				name: 'fecha_inicio',
 				fieldLabel: 'Fecha Inicio',
 				qtip:'fecha de inico de relacion laboral',
-				allowBlank: true,
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
 							format: 'd/m/Y', 
