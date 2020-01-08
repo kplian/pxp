@@ -1210,6 +1210,7 @@ ALTER TABLE segu.tpersona_relacion
 /***********************************I-SCP-RAC-SEGU-102-08/01/2020*****************************************/
 
 --------------- SQL ---------------
+----------------------------------
 
 CREATE TABLE segu.tprogramador (
   id_programador SERIAL NOT NULL,
