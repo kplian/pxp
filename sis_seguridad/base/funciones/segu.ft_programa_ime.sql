@@ -1,208 +1,151 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION segu.ft_subsistema_ime (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
+CREATE OR REPLACE FUNCTION segu.ft_programa_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla character varying,
+  p_transaccion character varying
 )
-RETURNS varchar AS
+RETURNS varchar
+AS 
 $body$
 /**************************************************************************
- FUNCION: 		segu.ft_subsistema
- DESCRIPCIÓN: 	gestion de subsistemas
- AUTOR: 		KPLIAN(rac)
- FECHA:			16/9/2010
+ SISTEMA:		Sistema de Seguridad
+ FUNCION: 		segu.ft_programa_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones b?sicas (inserciones, modificaciones, eliminaciones de la tabla 'segu.tprograma'
+ AUTOR: 		 (w)
+ FECHA:	        14-08-2011 15:36:44
  COMENTARIOS:	
 ***************************************************************************
- HISTORIA DE MODIFICACIONES:
- 
- 
- #ISSUE		FECHA				AUTOR				DESCRIPCION
- #0         26-07-2010      RAC             Creación
- #103		09-01-2020	  	RAC				adiciona columnas para manejo de importacion de git y reportes
-***************************************************************************/
+ HISTORIAL DE MODIFICACIONES:
 
+ DESCRIPCI?N:	
+ AUTOR:			
+ FECHA:		
+***************************************************************************/
 
 DECLARE
 
-v_consulta  				varchar;
-v_parametros                record;
-v_nombre_funcion            text;
-v_mensaje_error             text;
-v_id                        integer;
-v_esquema                   varchar;
-v_resp 						varchar;
-v_id_gui  					varchar;
-v_valor						varchar;
-
+	v_nro_requerimiento    	integer;
+	v_parametros           	record;
+	v_id_requerimiento     	integer;
+	v_resp		            varchar;
+	v_nombre_funcion        text;
+	v_mensaje_error         text;
+	v_id_programa	integer;
+			
 BEGIN
 
-     v_nombre_funcion:='segu.ft_subsistema_ime';
-     v_parametros:=pxp.f_get_record(par_tabla);
+    v_nombre_funcion = 'segu.ft_programa_ime';
+    v_parametros = pxp.f_get_record(p_tabla);
 
- /*******************************    
- #TRANSACCION:  SEG_SUBSIS_INS
- #DESCRIPCION:	Inserta Subsistemas
- #AUTOR:		KPLIAN(rac)	
- #FECHA:		16/9/2010
-***********************************/
-     if(par_transaccion='SEG_SUBSIS_INS')then
+	/*********************************
+ 	#TRANSACCION:  'SG_PROGRA_INS'
+ 	#DESCRIPCION:	Inserci?n de registros
+ 	#AUTOR:		w	
+ 	#FECHA:		14-08-2011 15:36:44
+	***********************************/
 
-        
-          BEGIN
-            INSERT INTO segu.tsubsistema(
-                      codigo,
-                      nombre,
-                      prefijo,
-                      nombre_carpeta,
-                      organizacion_git,  --#103
-                      codigo_git,
-                      sw_importacion
-                   )
-             values(
-                      v_parametros.codigo,
-                      v_parametros.nombre,
-                      v_parametros.prefijo,
-                      v_parametros.nombre_carpeta,
-                      v_parametros.organizacion_git,  --#103
-                      v_parametros.codigo_git,
-                      v_parametros.sw_importacion
-                   )
-             RETURNING id_subsistema into v_id;
+	if(p_transaccion='SG_PROGRA_INS')then
+					
+        begin
+        	--Sentencia de la insercion
+        	insert into segu.tprograma(
+			codigo,
+			descripcion,
+			nombre,
+			estado_reg,
+			fecha_reg,
+			id_usuario_reg,
+			fecha_mod,
+			id_usuario_mod
+          	) values(
+			v_parametros.codigo,
+			v_parametros.descripcion,
+			v_parametros.nombre,
+			'activo',
+			now(),
+			p_id_usuario,
+			null,
+			null
+			)RETURNING id_programa into v_id_programa;
 
-               -- crear el esquema para el subsistema creado
-               v_esquema:=v_parametros.codigo;
-               if not exists(SELECT 1 from pg_namespace 
-                             WHERE lower(nspname)=lower(v_parametros.codigo)) THEN
-                  
-                  v_consulta:='CREATE SCHEMA '||v_esquema||' ';--AUTHORIZATION postgres;
-                  
-                  execute(v_consulta);
-               end if;
-               
-               --crear el metaproceso para el subsistema
-               if not exists(SELECT 1 from segu.tgui 
-                             WHERE lower(codigo_gui)=v_parametros.codigo 
-                             AND id_subsistema=v_id) THEN
-                             
-                  INSERT INTO segu.tgui(
-                            codigo_gui,
-                            descripcion,
-                            id_subsistema, 
-                            nombre,
-                            nivel,
-                            orden_logico
-                            )
-                  VALUES(
-                           v_parametros.codigo,
-                            '',
-                           v_id,
-                           upper(v_parametros.nombre),
-                           1,
-                           1) returning  id_gui into v_id_gui;
-                           
-                  v_resp = (select pxp.f_insert_testructura_gui(v_parametros.codigo,'SISTEMA', NULL));
-               end if;
+			--Definicion de la respuesta
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Programa almacenado(a) con exito (id_programa'||v_id_programa||')');
+            v_resp = pxp.f_agrega_clave(v_resp,'id_programa',v_id_programa::varchar);
 
-               --return 'Subsistema insertado con exito';
-               
-               
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Subsistema insertado con exito '||v_id_gui); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_subsistema',v_id_gui::varchar);
+            --Devuelve la respuesta
+            return v_resp;
 
-               
-         END;
+		end;
 
- /*******************************    
- #TRANSACCION:  SEG_SUBSIS_MOD
- #DESCRIPCION:	Modifica el subsistema seleccionada 
- #AUTOR:		KPLIAN(rac)	
- #FECHA:			
-***********************************/
-     elsif(par_transaccion='SEG_SUBSIS_MOD')then  
-          
-          BEGIN
-               
-               UPDATE segu.tsubsistema SET
-                      
-                      codigo = v_parametros.codigo,
-                      prefijo = v_parametros.prefijo,
-                      nombre = v_parametros.nombre,
-                      nombre_carpeta = v_parametros.nombre_carpeta,
-                      organizacion_git =v_parametros.organizacion_git,  --#103
-                      codigo_git = v_parametros.codigo_git,
-                      sw_importacion = v_parametros.sw_importacion
-               WHERE id_subsistema=v_parametros.id_subsistema;
+	/*********************************
+ 	#TRANSACCION:  'SG_PROGRA_MOD'
+ 	#DESCRIPCION:	Modificaci?n de registros
+ 	#AUTOR:		w	
+ 	#FECHA:		14-08-2011 15:36:44
+	***********************************/
 
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Subsistema modificado con exito '||v_parametros.id_subsistema); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_subsistema',v_parametros.id_subsistema::varchar);
+	elsif(p_transaccion='SG_PROGRA_MOD')then
 
-               
-          END;
+		begin
+			--Sentencia de la modificacion
+			update segu.tprograma set
+			codigo= v_parametros.codigo,
+			descripcion= v_parametros.descripcion,
+			nombre= v_parametros.nombre,
+			fecha_mod=now(),
+			id_usuario_mod = p_id_usuario
+			where id_programa=v_parametros.id_programa;
 
-/*******************************    
- #TRANSACCION:   SEG_SUBSIS_ELI
- #DESCRIPCION:	Inactiva el subsistema selecionado
- #AUTOR:		KPLIAN(rac)	
- #FECHA:		
-***********************************/
-    elsif(par_transaccion='SEG_SUBSIS_ELI')then
+			--Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Programa modificado(a)');
+            v_resp = pxp.f_agrega_clave(v_resp,'id_programa',v_parametros.id_programa::varchar);
 
-         
-          BEGIN
-               UPDATE segu.tsubsistema 
-               SET estado_reg='inactivo'
-               WHERE id_subsistema=v_parametros.id_subsistema;
-             
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Subsistema eliminado con exito '||v_parametros.id_subsistema); 
-               v_resp = pxp.f_agrega_clave(v_resp,'id_subsistema',v_parametros.id_subsistema::varchar);
+            --Devuelve la respuesta
+            return v_resp;
 
-         END;
-     
-    /*******************************    
-     #TRANSACCION:   SEG_OBTVARGLO_MOD
-     #DESCRIPCION:	obtiene variables globales
-     #AUTOR:		KPLIAN(rac)	
-     #FECHA:		
-    ***********************************/
-    
-    elsif(par_transaccion = 'SEG_OBTVARGLO_MOD')then
+		end;
 
-         
-          BEGIN
-               
-               v_valor = pxp.f_get_variable_global(v_parametros.codigo);
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','variable global');
-               v_resp = pxp.f_agrega_clave(v_resp,'codigo',v_parametros.codigo::varchar); 
-               v_resp = pxp.f_agrega_clave(v_resp,'valor',v_valor::varchar);
+	/*********************************
+ 	#TRANSACCION:  'SG_PROGRA_ELI'
+ 	#DESCRIPCION:	Eliminaci?n de registros
+ 	#AUTOR:		w	
+ 	#FECHA:		14-08-2011 15:36:44
+	***********************************/
 
-         END;
+	elsif(p_transaccion='SG_PROGRA_ELI')then
 
-     else
+		begin
+			--Sentencia de la eliminacion
+			delete from segu.tprograma
+            where id_programa=v_parametros.id_programa;
 
-         raise exception 'No existe la transaccion: %',par_transaccion;
-     end if;  
-     
-     
- 
---retorna respuesta en formato JSON    
- return v_resp;      
+            --Definicion de la respuesta
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Programa eliminado(a)');
+            v_resp = pxp.f_agrega_clave(v_resp,'id_programa',v_parametros.id_programa::varchar);
+
+            --Devuelve la respuesta
+            return v_resp;
+
+		end;
+
+	else
+
+    	raise exception 'Transaccion inexistente: %',p_transaccion;
+
+	end if;
 
 EXCEPTION
-
-      WHEN OTHERS THEN
-    	v_resp='';
+				
+	WHEN OTHERS THEN
+		v_resp='';
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
-
-
+				
 END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+    LANGUAGE plpgsql;
+--
+-- Definition for function ft_programa_sel (OID = 305084) : 
+--
