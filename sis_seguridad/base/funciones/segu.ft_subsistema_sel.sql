@@ -1,11 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_subsistema_sel (
   par_administrador integer,
   par_id_usuario integer,
-  par_tabla character varying,
-  par_transaccion character varying
+  par_tabla varchar,
+  par_transaccion varchar
 )
-RETURNS varchar
-AS 
+RETURNS varchar AS
 $body$
 /**************************************************************************
  FUNCION: 		segu.fvalidar_usuario
@@ -20,7 +21,13 @@ $body$
 
  DESCRIPCION:	
  AUTOR:			
- FECHA:			
+ FECHA:		
+ 
+ #ISSUE		FECHA				AUTOR				DESCRIPCION
+ #0         26-07-2010      RAC             Creación
+ #103		09-01-2020	  	RAC				adiciona columnas para manejo de importacion de git y reportes
+ 	
+  	
 ***************************************************************************/
 DECLARE
 
@@ -65,7 +72,10 @@ BEGIN
                               subsis.nombre,
                               subsis.fecha_reg,
                               subsis.estado_reg,
-                              subsis.nombre_carpeta
+                              subsis.nombre_carpeta,
+                              subsis.organizacion_git,  --#103
+                              subsis.codigo_git,
+                                subsis.sw_importacion   
                         FROM segu.tsubsistema subsis
                         WHERE subsis.estado_reg=''activo'' and ';
                v_consulta:=v_consulta||v_parametros.filtro;
@@ -115,7 +125,8 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE plpgsql;
---
--- Definition for function ft_tipo_documento_sel (OID = 305097) : 
---
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

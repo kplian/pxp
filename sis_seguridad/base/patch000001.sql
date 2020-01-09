@@ -1265,3 +1265,32 @@ IS 'correo personal';
 ALTER TABLE segu.tprogramador
   ALTER COLUMN fecha_inicio SET NOT NULL;
 /***********************************F-SCP-MZM-SEGU-102-08/01/2020*****************************************/
+
+
+
+/***********************************I-SCP-RAC-SEGU-102-09/01/2020*****************************************/
+
+ALTER TABLE segu.tsubsistema
+  ADD COLUMN codigo_git VARCHAR(500);
+
+COMMENT ON COLUMN segu.tsubsistema.codigo_git
+IS 'nombre de sistema en repositorio git';
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsubsistema
+  ADD COLUMN organizacion_git VARCHAR(500);
+
+COMMENT ON COLUMN segu.tsubsistema.organizacion_git
+IS 'nombre de organizacion en git';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsubsistema
+  ADD COLUMN sw_importacion VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN segu.tsubsistema.sw_importacion
+IS 'si o no, permite importa desde git commit, issues etc';
+
+/***********************************F-SCP-RAC-SEGU-102-09/01/2020*****************************************/

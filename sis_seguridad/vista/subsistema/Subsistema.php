@@ -6,8 +6,10 @@
 *@date 14-02-2011
 *@description  Vista para mostrar listado de subsistemas
 * 	ISSUE  			FECHA  				AUTHOR						DESCRIPCION
-*	#1				EGS					03/12/2018				Se aumento opcion en menu solo para inserte gui y estructura gui activo visibles
-*	#2				EGS					05/12/2018				Se agrego un boton donde solo se exporte los procedimientos, funciones y roles 
+*   #0              4/02/2011            RAC    Creación 
+*	#1				03/12/2018			 EGS	Se aumento opcion en menu solo para inserte gui y estructura gui activo visibles
+*	#2				05/12/2018	         EGS	Se agrego un boton donde solo se exporte los procedimientos, funciones y roles 
+    #103		    09-01-2020	         RAC    adiciona columnas para manejo de importacion de git y reportes
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -90,7 +92,64 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 		id_grupo:0,
 		grid:true,
 		form:true
-	}
+	},
+	{
+		config:{
+			fieldLabel: "Organizacion",
+			qtip: 'Nombre de la organizacion que aloja el repositorio  Ejm   KPLIAN', 
+			gwidth: 220,
+			name: 'organizacion_git',
+			allowBlank:true,	
+			maxLength:50,
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	},
+	{
+		config:{
+			fieldLabel: "Nombre GIT",
+			qtip: 'Nombre de sistema en GIT, ejm pxp, esto mas la organizacion permite armaar la url del repositorio,    http://github.com/KPLIAN/pxp', 
+			gwidth: 220,
+			name: 'codigo_git',
+			allowBlank:true,	
+			maxLength:50,
+		},
+		type:'TextField',
+		filters:{type:'string'},
+		id_grupo:0,
+		grid:true,
+		form:true
+	},
+    {
+            config:{
+                name: 'sw_importacion',
+                fieldLabel: 'Importacion GIT',
+                qtip: 'habilita la importació de la tareas realizadas desde git (issues, commits, etc)',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                emptyText:'si/no...',                   
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'no',          
+                store:['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   
+                         type: 'list',
+                         pfiltro:'subsis.sw_importacion',
+                         options: ['si','no'],  
+                    },
+            grid:true,
+            form:true
+      }
 	],
 
 	title:'Subsistema',
@@ -99,11 +158,11 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 	ActList:'../../sis_seguridad/control/Subsistema/listarSubsistema',
 	id_store:'id_subsistema',
 	fields: [
-	{name:'id_subsistema'},
-	{name:'codigo', type: 'string'},
-	{name:'prefijo', type: 'string'},
-	{name:'nombre', type: 'string'},
-	{name:'nombre_carpeta', type: 'string'}
+				{name:'id_subsistema'},
+				{name:'codigo', type: 'string'},
+				{name:'prefijo', type: 'string'},
+				{name:'nombre', type: 'string'},
+				{name:'nombre_carpeta', type: 'string'},'organizacion_git','codigo_git','sw_importacion'
 
 		],
 	sortInfo:{

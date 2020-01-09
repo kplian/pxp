@@ -16,10 +16,11 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:			
+ 
+ 
+ #ISSUE		FECHA				AUTOR				DESCRIPCION
+ #0         26-07-2010      RAC             Creación
+ #103		09-01-2020	  	RAC				adiciona columnas para manejo de importacion de git y reportes
 ***************************************************************************/
 
 
@@ -54,13 +55,20 @@ BEGIN
                       codigo,
                       nombre,
                       prefijo,
-                      nombre_carpeta
+                      nombre_carpeta,
+                      organizacion_git,  --#103
+                      codigo_git,
+                      sw_importacion
                    )
              values(
                       v_parametros.codigo,
                       v_parametros.nombre,
                       v_parametros.prefijo,
-                      v_parametros.nombre_carpeta)
+                      v_parametros.nombre_carpeta,
+                      v_parametros.organizacion_git,  --#103
+                      v_parametros.codigo_git,
+                      v_parametros.sw_importacion
+                   )
              RETURNING id_subsistema into v_id;
 
                -- crear el esquema para el subsistema creado
@@ -118,10 +126,13 @@ BEGIN
                
                UPDATE segu.tsubsistema SET
                       
-                      codigo=v_parametros.codigo,
-                      prefijo=v_parametros.prefijo,
-                      nombre=v_parametros.nombre,
-                      nombre_carpeta=v_parametros.nombre_carpeta
+                      codigo = v_parametros.codigo,
+                      prefijo = v_parametros.prefijo,
+                      nombre = v_parametros.nombre,
+                      nombre_carpeta = v_parametros.nombre_carpeta,
+                      organizacion_git =v_parametros.organizacion_git,  --#103
+                      codigo_git = v_parametros.codigo_git,
+                      sw_importacion = v_parametros.sw_importacion
                WHERE id_subsistema=v_parametros.id_subsistema;
 
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Subsistema modificado con exito '||v_parametros.id_subsistema); 
