@@ -7,6 +7,7 @@
  *@description, registro de susuarios desde el sistema de parametros
  *  *  	ISUUE			FECHA			AUTHOR 		DESCRIPCION
  *     #47             13/08/2019      EGS          Se aumenta auxiliar y se filtra los auxiliares que no tengan proveedores y que sean funcionarios al crear proveedor
+ *     #105            13/01/2020      JUAN         Agregar departamentos en proveedores campo lugar
  */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -500,7 +501,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             fields: ['id_lugar','id_lugar_fk','codigo','nombre','tipo','sw_municipio','sw_impuesto','codigo_largo'],
                             // turn on remote sorting
                             remoteSort: true,
-                            baseParams:{tipos:"''departamento'',''pais'',''localidad''",par_filtro:'nombre'}
+                            baseParams:{tipos:"''departamento'',''pais'',''localidad'',''ciudad''",par_filtro:'nombre'} //#105 filtro ciudad agregado
                         }),
                     valueField: 'id_lugar',
                     displayField: 'nombre',
