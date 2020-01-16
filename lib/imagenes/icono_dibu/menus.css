@@ -300,3 +300,9 @@
 .bcancelar {
     background-image:url(cancelar.png) !important;
 }
+.bchecked {
+	background-image:url(checked.png) !important;
+}
+.bunchecked{
+	background-image:url(unchecked.png) !important;
+}
