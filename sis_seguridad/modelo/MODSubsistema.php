@@ -5,6 +5,10 @@
  a la tabla tsubsistema del esquema SEGU
  Autor:		Kplian
  Fecha:		04/06/2011
+ * 
+ *  #ISSUE		FECHA				AUTOR				DESCRIPCION
+ #0         04/06/2011      RAC             Creación
+ #103		09-01-2020	  	RAC				adiciona columnas para manejo de importacion de git y reportes
  */ 
 class MODSubsistema extends MODbase{
 	
@@ -27,6 +31,9 @@ class MODSubsistema extends MODbase{
 		$this->captura('fecha_reg','date');
 		$this->captura('estado_reg','pxp.estado_reg');
 		$this->captura('nombre_carpeta','varchar');
+		$this->captura('organizacion_git','varchar'); //#103
+		$this->captura('codigo_git','varchar');
+		$this->captura('sw_importacion','varchar');
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -44,6 +51,9 @@ class MODSubsistema extends MODbase{
 		$this->setParametro('prefijo','prefijo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('nombre_carpeta','nombre_carpeta','varchar');
+		$this->setParametro('organizacion_git','organizacion_git','varchar'); //#103
+		$this->setParametro('codigo_git','codigo_git','varchar');
+		$this->setParametro('sw_importacion','sw_importacion','varchar');
 	
     	//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -64,6 +74,9 @@ class MODSubsistema extends MODbase{
 		$this->setParametro('prefijo','prefijo','varchar');
 		$this->setParametro('nombre','nombre','varchar');
 		$this->setParametro('nombre_carpeta','nombre_carpeta','varchar');
+		$this->setParametro('organizacion_git','organizacion_git','varchar'); //#103
+		$this->setParametro('codigo_git','codigo_git','varchar');
+		$this->setParametro('sw_importacion','sw_importacion','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

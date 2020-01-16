@@ -10,7 +10,7 @@ $body$
 /**************************************************************************
  SISTEMA:		Sistema de Seguridad
  FUNCION: 		segu.ft_programa_ime
- DESCRIPCION:   Funci?n que gestiona las operaciones b?sicas (inserciones, modificaciones, eliminaciones de la tabla 'segu.tprograma'
+ DESCRIPCION:   Funcion que gestiona las operaciones b?sicas (inserciones, modificaciones, eliminaciones de la tabla 'segu.tprograma'
  AUTOR: 		 (w)
  FECHA:	        14-08-2011 15:36:44
  COMENTARIOS:	
