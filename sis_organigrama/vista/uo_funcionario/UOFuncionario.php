@@ -623,7 +623,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
         pageSize: 50,
         queryDelay: 500,
         listWidth: '280',
-        width: 80
+        width: 80,
+        editable:false
     }),
     cmbPeriodo: new Ext.form.ComboBox({ //#107
         fieldLabel: 'Periodo',
@@ -654,7 +655,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
         disabled: true,
         queryDelay:500,
         listWidth:'280',
-        width:80
+        width:80,
+        editable:false
     })
 	
 
