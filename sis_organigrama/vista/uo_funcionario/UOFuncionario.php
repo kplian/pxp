@@ -14,11 +14,17 @@
  #80             06/11/2019           APS                   ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
  #81			 08.11.2019		      MZM				    Adicion de campo prioridad
  #94              12/12/2019          APS                   Filtro de funcionarios por gestion y periodo
-*/
+
+ISSUE		FECHA			AUTHOR				DESCRIPCION
+
+ * #107    16/01/2020      JUAN            Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+ */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
+    var v_id_gestion=0; //#107
+    var v_id_periodo=0; //#107
 Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
     Atributos:[
 		{
@@ -406,21 +412,23 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	onReloadPage:function(m){
 		this.maestro=m;
         //console.log('--->',this.maestro.gestion,this.maestro.periodo);
+
+
 		this.Atributos[1].valorInicial=this.maestro.id_uo;
 		this.Cmp.id_cargo.tdata.id_uo = this.maestro.id_uo;
 		this.Cmp.id_funcionario.tdata.id_uo = this.maestro.id_uo;
 		this.Cmp.id_cargo.store.setBaseParam('id_uo',this.maestro.id_uo);
 		this.Cmp.id_funcionario.store.setBaseParam('id_uo',this.maestro.id_uo);
-        var x =this.maestro.gestion;                                                        //#94
+        /*var x =this.maestro.gestion;                                                        //#94
         var y = null;                                                                       //#94
         if (this.maestro.periodo != undefined ){                                           //#94
             y = this.maestro.periodo;                                                       //#94
         }else{
             y =this.maestro.loader.baseParams.id_periodo;                                   //#94
-        }
+        }*/
 
        if(m.id !== 'id'){
-            if (Number(this.maestro.id_uo) != 0){                                           //#94
+           /* if (Number(this.maestro.id_uo) != 0){                                           //#94
                 console.log(x,y);  			//// REVISAR OJO                                //#94
                 if (x == 0 && y != 0){                                                      //#94
                     alert('Seleccione la getion');                                          //#94
@@ -429,17 +437,19 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
                     this.load({params:{start:0, limit:50}})                                 //#94
                 }                                                                           //#94
 
-                //// REVISAR OJO
+            }*/
 
-
-            }
        }
        else{
     	 this.grid.getTopToolbar().disable();
    		 this.grid.getBottomToolbar().disable(); 
    		 this.store.removeAll();
        }
-	},
+
+        this.store.baseParams={id_uo:this.maestro.id_uo,gestion:v_id_gestion,periodo:v_id_periodo};   //#107
+        this.load({params:{start:0, limit:50}})
+
+    },
 	loadValoresIniciales:function()
     {
         this.Cmp.tipo.setValue('oficial');  
@@ -447,6 +457,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
         Phx.vista.uo_funcionario.superclass.loadValoresIniciales.call(this);
     },
 	iniciarEventos : function () {
+
 		this.Cmp.id_cargo.on('focus',function () {
 			if (this.Cmp.fecha_asignacion.getValue() == '' || this.Cmp.fecha_asignacion.getValue() == undefined) {
 				alert('Debe seleccionar la fecha de asignación');
@@ -513,13 +524,54 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			}
 			
 		},this);
-		
-		
-	},
+
+        this.cmbPeriodo.setValue("Todos");//#107
+        this.cmbPeriodo.fireEvent('select', 0);//#107
+
+        this.cmbGestion.setValue("Todos");//#107
+        this.cmbGestion.fireEvent('select', 0);//#107
+
+        this.cmbGestion.on('select', function (cmb, dat) {//#107
+            if(dat){
+                v_id_gestion = dat.data.id_gestion;
+
+            }else{
+                v_id_gestion = 0;
+            }
+            v_id_periodo= 0;
+            this.cmbPeriodo.reset();
+            this.cmbPeriodo.store.baseParams = Ext.apply(this.cmbPeriodo.store.baseParams, {id_gestion: v_id_gestion});
+            this.cmbPeriodo.modificado = true;
+
+            this.cmbPeriodo.setValue('Todos');
+
+            this.store.baseParams={id_uo:this.maestro.id_uo,gestion:v_id_gestion,periodo:v_id_periodo};   //#94
+            this.load({params:{start:0, limit:50}})
+
+        }, this);
+        this.cmbPeriodo.on('select', function (cmb, dat) {//#107
+
+            if(dat){
+                v_id_periodo = dat.data.id_periodo;
+
+            }else{
+                v_id_periodo = 0;
+            }
+
+            this.store.baseParams={id_uo:this.maestro.id_uo,gestion:v_id_gestion,periodo:v_id_periodo};   //#94
+            this.load({params:{start:0, limit:50}})
+
+        }, this);
+
+
+    },
 	
 	constructor: function(config){
 		// configuracion del data store		
-		this.maestro=config.maestro;		
+		this.maestro=config.maestro;
+
+        this.initButtons = [this.cmbGestion,this.cmbPeriodo];//#107
+
 		//this.Atributos[1].valorInicial=this.maestro.id_gui;
 		Phx.vista.uo_funcionario.superclass.constructor.call(this,config);
 		txt_fecha_fin=this.getComponente('fecha_finalizacion');			
@@ -529,6 +581,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.grid.getTopToolbar().disable();
 		this.grid.getBottomToolbar().disable();
         //console.log('maestra',this.maestro);
+
+        this.cmbPeriodo.store.baseParams = Ext.apply(this.cmbPeriodo.store.baseParams, {id_gestion: 0});//#107
+        this.cmbPeriodo.modificado = true;//#107
+
+
+
 	},
 	
 	bdel:true,// boton para eliminar
@@ -537,7 +595,69 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	preparaMenu:function(tb){
 		// llamada funcion clace padre
 		Phx.vista.uo_funcionario.superclass.preparaMenu.call(this,tb);
-	}
+	},
+    cmbGestion: new Ext.form.ComboBox({ //#107
+        fieldLabel: 'Gestion',
+        allowBlank: true,
+        emptyText: 'Gestion...',
+        store: new Ext.data.JsonStore(
+            {
+                url: '../../sis_parametros/control/Gestion/listarGestionTodos',
+                id: 'id_gestion',
+                root: 'datos',
+                sortInfo: {
+                    field: 'gestion',
+                    direction: 'DESC'
+                },
+                totalProperty: 'total',
+                fields: ['id_gestion', 'gestion'],
+                // turn on remote sorting
+                remoteSort: true,
+                baseParams: {par_filtro: 'gestion', _adicionar : 'si'}
+            }),
+        valueField: 'id_gestion',
+        triggerAction: 'all',
+        displayField: 'gestion',
+        hiddenName: 'id_gestion',
+        mode: 'remote',
+        pageSize: 50,
+        queryDelay: 500,
+        listWidth: '280',
+        width: 80,
+        editable:false
+    }),
+    cmbPeriodo: new Ext.form.ComboBox({ //#107
+        fieldLabel: 'Periodo',
+        allowBlank: false,
+        blankText : 'Mes',
+        emptyText:'Periodo...',
+        store:new Ext.data.JsonStore(
+            {
+                url: '../../sis_parametros/control/Periodo/listarPeriodoTodos',
+                id: 'id_periodo',
+                root: 'datos',
+                sortInfo:{
+                    field: 'periodo',
+                    direction: 'ASC'
+                },
+                totalProperty: 'total',
+                fields: ['id_periodo','periodo','id_gestion','literal'],
+                // turn on remote sorting
+                remoteSort: true,
+                baseParams:{par_filtro:'gestion', _adicionar : 'si'}
+            }),
+        valueField: 'periodo',
+        triggerAction: 'all',
+        displayField: 'literal',
+        hiddenName: 'id_periodo',
+        mode:'remote',
+        pageSize:50,
+        disabled: true,
+        queryDelay:500,
+        listWidth:'280',
+        width:80,
+        editable:false
+    })
 	
 
   }

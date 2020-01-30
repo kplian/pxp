@@ -5,6 +5,10 @@
 *@author  (admin)
 *@date 20-02-2013 04:11:23
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+ *
+ ISSUE		FECHA			AUTHOR				DESCRIPCION
+
+ * #107    16/01/2020      JUAN                 Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
 */
 class ACTPeriodo extends ACTbase{   			
 	function listarPeriodo(){
@@ -54,6 +58,41 @@ class ACTPeriodo extends ACTbase{
 		$this->res=$this->objFunc->literalPeriodo($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+    function listarPeriodoTodos(){//#107
+
+        $this->objParam->defecto('ordenacion','periodo');
+        if($this->objParam->getParametro('id_gestion')!=''){
+            $this->objParam->addFiltro("per.id_gestion = ".$this->objParam->getParametro('id_gestion'));
+        }
+
+        if($this->objParam->getParametro('fecha')!=''){
+            $this->objParam->addFiltro("per.id_periodo = (select po_id_periodo from param.f_get_periodo_gestion(''".$this->objParam->getParametro('fecha')."''))");
+        }
+
+        $this->objParam->defecto('dir_ordenacion','asc');
+
+
+        if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
+            $this->objReporte = new Reporte($this->objParam,$this);
+            $this->res = $this->objReporte->generarReporteListado('MODPeriodo','listarPeriodo');
+        } else{
+            $this->objFunc=$this->create('MODPeriodo');
+            $this->res=$this->objFunc->listarPeriodo($this->objParam);
+        }
+        if($this->objParam->getParametro('_adicionar')!=''){
+
+            $respuesta = $this->res->getDatos();
+
+
+            array_unshift ( $respuesta, array(  'id_periodo'=>'0',//#107
+                'periodo'=>'Todos',
+                'literal'=>'Todos'));
+            $this->res->setDatos($respuesta);
+        }
+
+        $this->res->imprimirRespuesta($this->res->generarJson());
+
+    }
 			
 }
 ?>
