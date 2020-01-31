@@ -325,6 +325,39 @@ class MODSubsistema extends MODbase{
        return $this->respuesta;		
 	
 	}
+    function obtenerFechaUltimoRegistro(){
+
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='segu.ft_subsistema_ime';// nombre procedimiento almacenado
+        $this->transaccion='SEG_DATE_INS';//nombre de la transaccion
+        $this->tipo_procedimiento='IME';//tipo de transaccion
+
+        //Define los parametros para la funcion
+        $this->setParametro('id_subsistema','id_subsistema','integer');
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+
+        $this->ejecutarConsulta();
+        return $this->respuesta;
+    }
+    function importarApiGitHub(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='segu.ft_subsistema_ime';
+        $this->transaccion='SEG_GIT_INS';
+        $this->tipo_procedimiento='IME';
+        //Define los parametros para la funcion
+        $this->setParametro('branch_json','branch_json','json_text');
+        $this->setParametro('issues_json','issues_json','json_text');
+        $this->setParametro('commit_data','commit_data','json_text');
+        $this->setParametro('id_subsistema','id_subsistema','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 	
 }
 ?>
