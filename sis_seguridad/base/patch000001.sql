@@ -1294,3 +1294,86 @@ COMMENT ON COLUMN segu.tsubsistema.sw_importacion
 IS 'si o no, permite importa desde git commit, issues etc';
 
 /***********************************F-SCP-RAC-SEGU-102-09/01/2020*****************************************/
+/***********************************I-SCP-MMV-SEGU-104-30/01/2020*****************************************/
+CREATE TABLE segu.tissues (
+  id_issues SERIAL,
+  id_programador INTEGER,
+  html_url TEXT,
+  number_issues INTEGER,
+  title TEXT,
+  author VARCHAR(100),
+  state VARCHAR(10),
+  created_at TIMESTAMP WITHOUT TIME ZONE,
+  updated_at TIMESTAMP WITHOUT TIME ZONE,
+  closed_at TIMESTAMP WITHOUT TIME ZONE,
+  id_subsistema INTEGER,
+  CONSTRAINT tissues_pkey PRIMARY KEY(id_issues)
+)
+WITH (oids = false);
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN id_issues SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN id_programador SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN html_url SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN author SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN state SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  OWNER TO dbaamamani;
+
+  CREATE TABLE segu.tbranches (
+  id_branches SERIAL,
+  name VARCHAR(50),
+  sha TEXT,
+  url TEXT,
+  protected BOOLEAN,
+  id_subsistema INTEGER,
+  CONSTRAINT tbranches_pkey PRIMARY KEY(id_branches)
+)
+WITH (oids = false);
+
+ALTER TABLE segu.tbranches
+  ALTER COLUMN id_branches SET STATISTICS 0;
+
+ALTER TABLE segu.tbranches
+  OWNER TO dbaamamani;
+
+  CREATE TABLE segu.tcommit (
+  id_commit SERIAL,
+  id_issues INTEGER,
+  sha TEXT,
+  html_url VARCHAR(500),
+  author VARCHAR(50),
+  id_programador INTEGER,
+  message TEXT,
+  fecha TIMESTAMP WITHOUT TIME ZONE,
+  id_subsistema INTEGER,
+  id_branches INTEGER,
+  issues INTEGER,
+  CONSTRAINT tcommit_pkey PRIMARY KEY(id_commit)
+)
+WITH (oids = false);
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN id_commit SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN id_issues SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN html_url SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN author SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  OWNER TO dbaamamani;
+/***********************************F-SCP-MMV-SEGU-104-30/01/2020*****************************************/

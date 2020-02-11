@@ -436,7 +436,146 @@ class ACTSubsistema extends ACTbase{
 		}
 		return $fileName;
 	}
-		///#2				EGS					05/12/2018		
-}
+		///#2				EGS					05/12/2018
+    function obtenerFechaUltimoRegistro(){
+        $this->objFunSeguridad=$this->create('MODSubsistema');
+        $this->res=$this->objFunSeguridad->obtenerFechaUltimoRegistro($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function importarApiGitHub(){
+        $subsistema = $this->objParam->getParametro('id_subsistema');
+        $org  = $this->objParam->getParametro('organizacion_git');
+        $repo = $this->objParam->getParametro('codigo_git');
+        // Branch
+        $requestBranch = 'https://api.github.com/repos/'.$org.'/'.$repo.'/branches';
+        $session = curl_init($requestBranch);
+        curl_setopt($session, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($session, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'User-Agent: request')
+        );
+        $resultBranch = curl_exec($session);
+        curl_close($session);
+        $respuestaBranch = json_decode($resultBranch);
+        $array_branch = array();
+        $branch = array();
+        foreach ($respuestaBranch as $value){
+            $data = json_decode(json_encode($value), true);
+            $array_branch []= array(
+                "id_subsistema" => (int)$subsistema,
+                "name" => $data['name'],
+                "sha" => (string)$data['commit']['sha'],
+                "url" => (string)$data['commit']['url'],
+                "protected" => (bool)$data['protected']
+            );
+            $branch []=array( "name" => $data['name']);
+        }
+        // Issues
+        $requestIssues = 'https://api.github.com/repos/'.$org.'/'.$repo.'/issues?state=all';
+        $session = curl_init($requestIssues);
+        curl_setopt($session, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($session, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'User-Agent: request')
+        );
+        $resultIssues = curl_exec($session);
+        curl_close($session);
+        $respuestaIssues = json_decode($resultIssues);
+        $array_issues = array();
+         foreach ($respuestaIssues as $value){
+            $data = json_decode(json_encode($value), true);
+            $array_issues[] = array(
+                "id_subsistema" => (int)$subsistema,
+                "html_url" =>  (string)$data['html_url'],
+                "number_issues" =>$data['number'],
+                "title" => (string)$data['title'],
+                "state" => (string)$data["state"],
+                "author" => (string)$data["user"]["login"],
+                "created_at" => $data["created_at"],
+                "updated_at" => $data["updated_at"],
+                "closed_at" => $data["closed_at"]
+            );
+         }
 
+        $json_branch = json_encode($array_branch);
+        $json_issues = json_encode($array_issues);
+
+        $this->objParam->addParametro('branch_json',$json_branch);
+        $this->objParam->addParametro('issues_json',$json_issues);
+
+        $this->objFunc = $this->create('MODSubsistema');
+        $this->res=$this->objFunc->importarApiGitHub($this->objParam);
+
+        $this->mensajeRes=new Mensaje();
+        $this->mensajeRes->setMensaje('EXITO','ACTSubsistema.php','El archivo fue ejecutado con éxito',
+            'El archivo fue ejecutado con éxito','control');
+        // Recorer las remas
+        foreach ($branch as $key){
+            $this->insertarCommit($this->onCommit($org,$repo,$key["name"]));
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    function onCommit ($org,$repo,$name){
+        $subsistema = $this->objParam->getParametro('id_subsistema');
+
+        $requestCommit = 'https://api.github.com/repos/'.$org.'/'.$repo.'/commits?sha='.$name;
+        $session = curl_init($requestCommit);
+        curl_setopt($session, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($session, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'User-Agent: request')
+        );
+        $resultCommit = curl_exec($session);
+        curl_close($session);
+        $respuestaCommit = json_decode($resultCommit);
+
+        $array_commit= array();
+        foreach ($respuestaCommit as $value) {
+            $data = json_decode(json_encode($value), true);
+            $array = explode(" ", $data["commit"]["message"]);
+            $int = 0;
+            $author = (string)$data ["committer"]['login'];
+            if (count($array)>0){
+                foreach ($array as $value){
+                    if (strpos($value, '#') !== false) {
+                        $int = (int) filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+                        break;
+                    }
+                }
+            } else {
+                throw new Exception("No no.. Error", 3);
+            }
+            if ($data ["committer"]['login'] == null){
+                $author = (string)$data["commit"]['committer']['name'];
+            }
+            $array_commit[] = array(
+                "id_subsistema" => $subsistema,
+                "sha" =>  (string)$data['sha'],
+                "html_url" =>  (string)$data['html_url'],
+                "author" =>  $author,
+                "message" =>  (string)$data["commit"]["message"],
+                "fecha" =>  (string)$data["commit"]["author"]["date"],
+                "rama" => $name,
+                "issues" => $int
+            );
+        }
+        return json_encode($array_commit);
+    }
+    function insertarCommit($json_commit){
+        $this->objParam->addParametro('commit_data',$json_commit);
+        $this->objFunc = $this->create('sis_seguridad/MODCommit');
+        $cbteHeader = $this->objFunc->importarCommitGitHub($this->objParam);
+        if($cbteHeader->getTipo() == 'EXITO'){
+            return $cbteHeader;
+        }
+        else{
+            $cbteHeader->imprimirRespuesta($cbteHeader->generarJson());
+            exit;
+        }
+
+    }
+}
 ?>
