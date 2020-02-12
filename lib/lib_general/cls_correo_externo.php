@@ -1,10 +1,18 @@
 <?php
-/****************************************************************************
- HISTORIAL DE MODIFICACIONES:
- ISSUE-FORK         FECHA       AUTHOR                  DESCRIPCION
- //#11-ENDETR          17/12/2018  CHRIS CHROS             Se cambió la forma de crear la URL para acceder a endesis
 
-****************************************************************************/
+/**
+*@package pXP
+*@file cls_correo_externo.php
+*@author  (admin)
+*@date 2012
+*@description Envio de correos externos
+
+***************************************************************************
+ ISSUE  SIS       EMPRESA       FECHA       AUTOR       DESCRIPCION
+ #11    PXP       ETR           17/12/2018  CHRIS CHROS Se cambió la forma de crear la URL para acceder a endesis
+ #110   PXP       ETR           10/02/2020  RCM         Cambio de función split por explode debido a que en PHP 7 split fue eliminada
+***************************************************************************
+*/
 class CorreoExterno
 {
     protected $mail_usuario;
@@ -282,8 +290,8 @@ class CorreoExterno
     }
 
     function validateEmail($email){
-            //list($userName, $mailDomain) = split("@", $email);
-            list($userName, $mailDomain) = explode("@", $email);//RCM cambio de split por explode, split esta deprecado
+
+              list($userName, $mailDomain) = explode("@", $email); //#110 cambio de funcion split por explode debido a que en php 7 eliminaron eplit
             if (checkdnsrr($mailDomain, "MX")) {
                return true;
             }
@@ -291,9 +299,6 @@ class CorreoExterno
                return false;
             }
     }
-
-
-
 
 
 }
