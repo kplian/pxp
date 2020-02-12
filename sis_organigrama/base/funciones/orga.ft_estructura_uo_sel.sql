@@ -20,6 +20,7 @@ $body$
  *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
     #53         26/08/2019      RAC                 Se agrega campo de ordenación por centro en listado de organigrama
     #94			12/12/2019 	    APS					Se agrega los campos periodo y gestion para el filtro de funcionarios.
+    #107           16/01/2020        JUAN        Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
 ***************************************************************************/
 
 
@@ -64,7 +65,6 @@ BEGIN
            end if;
                v_condicion:=v_condicion ||'  and uo.estado_reg=''activo'' ';
 
-               --#94: gestion y periodo se usan para filtrar los funcionarios en la UOFuncionario.
                v_consulta:='SELECT
                                 UO.id_uo,
                                 UO.codigo,
@@ -89,9 +89,7 @@ BEGIN
                                 UO.id_nivel_organizacional,
                                 nivorg.nombre_nivel,
                                 UO.centro, --#26
-                                UO.orden_centro, --#26
-               				    '||COALESCE(v_parametros.id_gestion,0)||' as gestion,				--#94
-                          '||COALESCE(v_parametros.id_periodo,0)||' as periodo				--#94
+                                UO.orden_centro --#26
 
                             FROM orga.tuo UO
                             '||v_join|| ' join orga.testructura_uo euo

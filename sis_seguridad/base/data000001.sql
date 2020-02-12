@@ -3865,3 +3865,14 @@ select pxp.f_insert_trol ('PXP-Rol inicial', 'PXP-Rol inicial', 'PXP');
 
 
 
+/*******************************************I-DAT-RAC-SEGU-102-08/01/2020***********************************************/
+select pxp.f_insert_tgui ('Programadores', 'Programadores', 'PROGM', 'si', 10, 'sis_seguridad/vista/programador/Programador.php', 3, '', 'Programador', 'SEGU');
+select pxp.f_insert_testructura_gui ('PROGM', 'o');
+/*******************************************F-DAT-RAC-SEGU-102-08/01/2020***********************************************/
+/*******************************************I-DAT-MMV-SEGU-104-30/1/2020***********************************************/
+select pxp.f_insert_tgui ('Issues ETR', 'Issues ETR', 'ITR', 'si', 2, 'sis_seguridad/vista/reportes/FormReporteIssues.php', 3, '', 'FormReporteIssues', 'SEGU');
+select pxp.f_insert_testructura_gui ('ITR', 'RepSeg');
+/*******************************************F-DAT-MMV-SEGU-104-30/1/2020***********************************************/
+
+
+

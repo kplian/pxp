@@ -1206,3 +1206,174 @@ ALTER TABLE segu.tpersona_relacion
 
 
 
+
+/***********************************I-SCP-RAC-SEGU-102-08/01/2020*****************************************/
+
+--------------- SQL ---------------
+----------------------------------
+
+CREATE TABLE segu.tprogramador (
+  id_programador SERIAL NOT NULL,
+  nombre_completo VARCHAR(500) NOT NULL,
+  alias_git VARCHAR(200),
+  alias_codigo_1 VARCHAR(100),
+  alias_codigo_2 VARCHAR(100),
+  correo VARCHAR(500),
+  fecha_inicio DATE,
+  fecha_fin DATE,
+  usuario_ldap VARCHAR(200),
+  PRIMARY KEY(id_programador)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN segu.tprogramador.alias_git
+IS 'nombre de usuario en github';
+
+COMMENT ON COLUMN segu.tprogramador.alias_codigo_1
+IS 'nombre  que poner en la cabecera de codigo fuente v1';
+
+COMMENT ON COLUMN segu.tprogramador.alias_codigo_2
+IS 'algunos programadores varia su nombre en codigo fuente';
+
+COMMENT ON COLUMN segu.tprogramador.fecha_inicio
+IS 'inicio de relacion laboral';
+
+COMMENT ON COLUMN segu.tprogramador.fecha_fin
+IS 'fin de relacion laboral';
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tprogramador
+  ADD COLUMN organizacion VARCHAR(200);
+
+COMMENT ON COLUMN segu.tprogramador.organizacion
+IS 'para programadores externos como KPLIAN';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tprogramador
+  ADD COLUMN correo_personal VARCHAR(200);
+
+COMMENT ON COLUMN segu.tprogramador.correo_personal
+IS 'correo personal';
+
+/***********************************F-SCP-RAC-SEGU-102-08/01/2020*****************************************/
+
+
+/***********************************I-SCP-MZM-SEGU-102-08/01/2020*****************************************/
+ALTER TABLE segu.tprogramador
+  ALTER COLUMN fecha_inicio SET NOT NULL;
+/***********************************F-SCP-MZM-SEGU-102-08/01/2020*****************************************/
+
+
+
+/***********************************I-SCP-RAC-SEGU-102-09/01/2020*****************************************/
+
+ALTER TABLE segu.tsubsistema
+  ADD COLUMN codigo_git VARCHAR(500);
+
+COMMENT ON COLUMN segu.tsubsistema.codigo_git
+IS 'nombre de sistema en repositorio git';
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsubsistema
+  ADD COLUMN organizacion_git VARCHAR(500);
+
+COMMENT ON COLUMN segu.tsubsistema.organizacion_git
+IS 'nombre de organizacion en git';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE segu.tsubsistema
+  ADD COLUMN sw_importacion VARCHAR(2) DEFAULT 'no' NOT NULL;
+
+COMMENT ON COLUMN segu.tsubsistema.sw_importacion
+IS 'si o no, permite importa desde git commit, issues etc';
+
+/***********************************F-SCP-RAC-SEGU-102-09/01/2020*****************************************/
+/***********************************I-SCP-MMV-SEGU-104-30/01/2020*****************************************/
+CREATE TABLE segu.tissues (
+  id_issues SERIAL,
+  id_programador INTEGER,
+  html_url TEXT,
+  number_issues INTEGER,
+  title TEXT,
+  author VARCHAR(100),
+  state VARCHAR(10),
+  created_at TIMESTAMP WITHOUT TIME ZONE,
+  updated_at TIMESTAMP WITHOUT TIME ZONE,
+  closed_at TIMESTAMP WITHOUT TIME ZONE,
+  id_subsistema INTEGER,
+  CONSTRAINT tissues_pkey PRIMARY KEY(id_issues)
+)
+WITH (oids = false);
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN id_issues SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN id_programador SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN html_url SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN author SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  ALTER COLUMN state SET STATISTICS 0;
+
+ALTER TABLE segu.tissues
+  OWNER TO dbaamamani;
+
+  CREATE TABLE segu.tbranches (
+  id_branches SERIAL,
+  name VARCHAR(50),
+  sha TEXT,
+  url TEXT,
+  protected BOOLEAN,
+  id_subsistema INTEGER,
+  CONSTRAINT tbranches_pkey PRIMARY KEY(id_branches)
+)
+WITH (oids = false);
+
+ALTER TABLE segu.tbranches
+  ALTER COLUMN id_branches SET STATISTICS 0;
+
+ALTER TABLE segu.tbranches
+  OWNER TO dbaamamani;
+
+  CREATE TABLE segu.tcommit (
+  id_commit SERIAL,
+  id_issues INTEGER,
+  sha TEXT,
+  html_url VARCHAR(500),
+  author VARCHAR(50),
+  id_programador INTEGER,
+  message TEXT,
+  fecha TIMESTAMP WITHOUT TIME ZONE,
+  id_subsistema INTEGER,
+  id_branches INTEGER,
+  issues INTEGER,
+  CONSTRAINT tcommit_pkey PRIMARY KEY(id_commit)
+)
+WITH (oids = false);
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN id_commit SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN id_issues SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN html_url SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  ALTER COLUMN author SET STATISTICS 0;
+
+ALTER TABLE segu.tcommit
+  OWNER TO dbaamamani;
+/***********************************F-SCP-MMV-SEGU-104-30/01/2020*****************************************/

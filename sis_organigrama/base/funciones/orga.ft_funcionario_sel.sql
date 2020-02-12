@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -26,6 +28,7 @@ $body$
   #24           17/06/2019          RAC                 configuracion de agrupadores para grilla de funcionarios
   #31           16/07/2019          RAC                 adciona codigo_rciva, profesion, fecha quinquenio
   #89			04.12.2019			MZM					Habilitacion de catalogo profesiones en funcionario
+  #99           26/12/2019          RAC                 correcion bug columna desc_funcionario2 faltante
   ***************************************************************************/
 
 
@@ -110,6 +113,7 @@ $body$
                             ,FUNCIO.fecha_quinquenio
                             
                   FROM orga.tfuncionario FUNCIO
+                  INNER  JOIN orga.vfuncionario VFUN ON VFUN.id_funcionario = FUNCIO.id_funcionario  --#99
                   INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                   INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
                   inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg';
@@ -169,6 +173,7 @@ $body$
         v_consulta:='SELECT
                                   count(FUNCIO.id_funcionario)
                             FROM orga.tfuncionario FUNCIO
+                            INNER  JOIN orga.vfuncionario VFUN ON VFUN.id_funcionario = FUNCIO.id_funcionario
                             INNER JOIN SEGU.vpersona PERSON ON PERSON.id_persona=FUNCIO.id_persona
                             INNER JOIN SEGU.tpersona PERSON2 ON PERSON2.id_persona=FUNCIO.id_persona
                             inner join segu.tusuario usu1 on usu1.id_usuario = FUNCIO.id_usuario_reg';
@@ -469,4 +474,8 @@ $body$
 
   END;
 $body$
-LANGUAGE 'plpgsql';
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;

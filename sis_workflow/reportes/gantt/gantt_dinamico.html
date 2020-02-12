@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!--
+		ISSUE       FECHA       AUTHOR          DESCRIPCION  
+		#108        30/01/2020	EGS				Se agrega a los interinos en los estados de los procesos
+	-->
     <title>Gant JS</title>
     <meta charset="utf-8">
    
@@ -209,11 +213,18 @@
 								               	cuenta =(resp[i].cuenta != null)? ' (por:'+ resp[i].cuenta +')' : ':'+subCadena +'\n'+ subCadena2;
 								               	
 								              if (resp[i].tipo != 'estado_final'){
-								               	
-								               	 pName =  (resp[i].etapa != null)? resp[i].etapa + ' ['+ resp[i].nombre + '] '+cuenta : resp[i].nombre +cuenta;
+												  if(resp[i].nombre_usuario_ai != 'NULL' && resp[i].nombre_usuario_ai != '' && resp[i].nombre_usuario_ai != null){//#108
+													  pName =  (resp[i].etapa != null)? resp[i].etapa + ' ['+ resp[i].nombre + '] '+cuenta + ' por Ai:'+resp[i].nombre_usuario_ai : resp[i].nombre + cuenta +' por Ai:'+ resp[i].nombre_usuario_ai;
+												  }else {
+													  pName =  (resp[i].etapa != null)? resp[i].etapa + ' ['+ resp[i].nombre + '] '+cuenta : resp[i].nombre +cuenta;
+												  }
 								               	}
 								               else{
-								                pName =  (resp[i].etapa != null)? resp[i].etapa + ' ['+ resp[i].nombre + '] '+cuenta +'  **********': resp[i].nombre +cuenta+'  **************';
+												  if(resp[i].nombre_usuario_ai != 'NULL' && resp[i].nombre_usuario_ai != '' && resp[i].nombre_usuario_ai != null){ //#108
+													  pName = (resp[i].etapa != null) ? resp[i].etapa + ' [' + resp[i].nombre + '] ' + cuenta + ' por Ai:'+resp[i].nombre_usuario_ai+ '  **********' : resp[i].nombre + cuenta + ' por Ai:'+resp[i].nombre_usuario_ai+ '  **************';
+												  }else {
+													  pName = (resp[i].etapa != null) ? resp[i].etapa + ' [' + resp[i].nombre + '] ' + cuenta + '  **********' : resp[i].nombre + cuenta + '  **************';
+												  }
 								               }
 								               //	pStart ='2018-05-10';
 							                   // pEnd = '2018-05-10';

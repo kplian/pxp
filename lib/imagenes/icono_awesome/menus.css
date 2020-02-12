@@ -332,3 +332,9 @@
 	background-image:url(awe_left_arrow_all.png) !important;
 
 }
+.bchecked {
+	background-image:url(checked.png) !important;
+}
+.bunchecked{
+	background-image:url(unchecked.png) !important;
+}
