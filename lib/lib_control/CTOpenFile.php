@@ -35,7 +35,7 @@ if(isset($_SESSION["_SESION"])){
 }
 
 //Se instancia la clase parametro
-$param = new CTParametro();
+$param = new CTParametro(null, null, null, null);
 
 //Se desofusca el identificador si fuera necesario
 if($_SESSION["_OFUSCAR_ID"] == 'si') {
