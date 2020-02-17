@@ -681,7 +681,7 @@ class GroupBarPlot extends BarPlot {
     private $nbrplots=0;
     //---------------
     // CONSTRUCTOR
-    function GroupBarPlot($plots) {
+    function __construct($plots) {
         $this->width=0.7;
         $this->plots = $plots;
         $this->nbrplots = count($plots);
@@ -716,7 +716,7 @@ class GroupBarPlot extends BarPlot {
         $n = count($this->plots);
         for($i=0; $i < $n; ++$i) {
             list($xm,$ym) = $this->plots[$i]->Min();
-            $xmin = max($xmin,$xm);
+            $xmin = min($xmin,$xm);
             $ymin = min($ymin,$ym);
         }
         return array($xmin,$ymin);
@@ -1111,14 +1111,13 @@ class AccBarPlot extends BarPlot {
 
             // First stroke the accumulated value for the entire bar
             // This value is always placed at the top/bottom of the bars
-            if( $accy_neg < 0 ) {
+            if( $accy + $accy_neg < 0 ) {
                 $y=$yscale->Translate($accy_neg);
-                $this->value->Stroke($img,$accy_neg,$x,$y);
             }
             else {
                 $y=$yscale->Translate($accy);
-                $this->value->Stroke($img,$accy,$x,$y);
             }
+            $this->value->Stroke($img,$accy + $accy_neg,$x,$y);
 
             $accy = 0;
             $accy_neg = 0;
@@ -1178,7 +1177,7 @@ class AccBarPlot extends BarPlot {
                         $this->plots[$j]->value->SetMargin(-1);
                     }
                 }
-                $this->plots[$j]->value->Stroke($img,$this->plots[$j]->coords[0][$i],$x,$y);
+                $this->plots[$j]->value->Stroke($img,$this->plots[$j]->coords[0][$i],round($x),round($y));
             }
 
         }

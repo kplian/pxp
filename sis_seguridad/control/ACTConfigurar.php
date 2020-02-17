@@ -7,6 +7,7 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
+//include("../../sis_seguridad/control/adLDAP_2.0/adLDAP.php");
 include("../../sis_seguridad/control/adLDAP_2.0/adLDAP.php");
 
 class ACTConfigurar extends ACTbase

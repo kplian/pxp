@@ -1,2 +1,2 @@
 #!/bin/sh
-php /var/www/html/etr/sis_parametros/control/ActionDeleteAlarmas.php
+php73 /var/www/html/etr/sis_parametros/control/ActionDeleteAlarmas.php

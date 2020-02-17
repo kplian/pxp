@@ -20,7 +20,7 @@ class TestDriver {
     private $iType;
     private $iDir;
 
-    function TestDriver($aType=1,$aDir='') {
+    function __construct($aType=1,$aDir='') {
 	$this->iType = $aType;
 	if( $aDir == '' ) {
 	    $aDir = getcwd();
