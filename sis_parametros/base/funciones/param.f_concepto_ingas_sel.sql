@@ -18,9 +18,10 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #13 EndeEtr          26/03/2019            EGS                    Se agrego Campo llave_mano    
- #33 EndeEtr          25/07/2019            manuel guerra         Configuración de tazas para plantillas de documento contables 
+ #13 EndeEtr          26/03/2019            EGS                    Se agrego Campo llave_mano
+ #33 EndeEtr          25/07/2019            manuel guerra         Configuración de tazas para plantillas de documento contables
 #58 EndeEtr           05/09/2019            EGS                  Se agrega campo para Agrupador de conceptos de gasto
+#112EndeEtr           18/02/2020            EGS                  Se agrega campo codigo sin
 ***************************************************************************/
 
 DECLARE
@@ -82,7 +83,8 @@ BEGIN
                         conig.llave_mano, --#13
                         ti.id_taza_impuesto, --#33
                         ti.descripcion, --#33
-                        conig.id_concepto_ingas_agrupador--#58
+                        conig.id_concepto_ingas_agrupador,--#58
+                        conig.codigo_sin --#112
                         from param.tconcepto_ingas conig
                         inner join segu.tusuario usu1 on usu1.id_usuario = conig.id_usuario_reg
                         left join param.tunidad_medida um on um.id_unidad_medida = conig.id_unidad_medida
@@ -194,7 +196,7 @@ BEGIN
             v_consulta:=v_consulta||v_parametros.filtro;
             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
             raise notice 'consulta >>>> % <<<<',v_consulta;
-   
+
             --Devuelve la respuesta
             return v_consulta;
 
@@ -270,7 +272,7 @@ BEGIN
             return v_consulta;
 
         end;
-  
+
 
     /*********************************
      #TRANSACCION:  'PM_CONIGPAR_CONT'
@@ -572,16 +574,16 @@ BEGIN
             --Devuelve la respuesta
             return v_consulta;
 
-        end;      
-                        
+        end;
+
     else
-                         
+
         raise exception 'Transaccion inexistente';
-                             
+
     end if;
-                    
+
 EXCEPTION
-                    
+
     WHEN OTHERS THEN
             v_resp='';
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);

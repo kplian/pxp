@@ -2671,3 +2671,12 @@ WITH (oids = false);
 ALTER TABLE param.tferiado
   ADD COLUMN id_gestion INTEGER;
 /***********************************F-SCP-JDJ-ASIS-1-14/11/2019****************************************/
+
+/***********************************I-SCP-EGS-PARAM-7-25/09/2019****************************************/
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN codigo_sin VARCHAR;
+
+COMMENT ON COLUMN param.tconcepto_ingas.codigo_sin
+IS 'codigo del producto de la sin que es equivalente al concepto de gato';
+
+/***********************************F-SCP-EGS-PARAM-7-25/09/2019****************************************/
