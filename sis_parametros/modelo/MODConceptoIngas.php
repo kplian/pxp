@@ -8,8 +8,7 @@
 	#ISSUE				FECHA				AUTOR				DESCRIPCION
  	#13 EndeEtr  		26/03/2019			EGS			        Se agrego Campo llave_mano
     #33 EndeEtr          25/07/2019         manuel guerra         Configuración de tazas para plantillas de documento contables
- *  #58 EndeEtr         05/09/2019          EGS                 Se agrega  campo id_concepto_ingas_agrupador
- *  #112                20/02/2020          EGS                 Se agrega el codigo de sin
+ *  #58 EndeEtr         05/09/2019          EGS                 Se agrega  campo id_concepto_ingas_agrupador 
  */
 
 class MODConceptoIngas extends MODbase{
@@ -59,7 +58,6 @@ class MODConceptoIngas extends MODbase{
 		$this->captura('id_taza_impuesto','integer');
 		$this->captura('descripcion','varchar');
         $this->captura('id_concepto_ingas_agrupador','int4');//#58
-        $this->captura('codigo_sin','varchar');//#112
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
