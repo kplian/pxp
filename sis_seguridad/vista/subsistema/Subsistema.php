@@ -10,7 +10,9 @@
 *	#1				03/12/2018			 EGS	Se aumento opcion en menu solo para inserte gui y estructura gui activo visibles
 *	#2				05/12/2018	         EGS	Se agrego un boton donde solo se exporte los procedimientos, funciones y roles 
     #103		    09-01-2020	         RAC    adiciona columnas para manejo de importacion de git y reportes
-*/
+ *  #104			27-02-2020 				MMV ETR     			Import github commit data, problems, branch and repository
+
+ */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -383,16 +385,10 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
 			Phx.vista.Subsistema.superclass.liberaMenu.call(this,tb);
 			return tb
 		},
-        onApiGitHub:function () {
+        onApiGitHub:function () {// #104
             var rec = this.sm.getSelected().data;
-            Phx.CP.loadWindows('../../../sis_seguridad/vista/subsistema/FormGitHub.php',
-                'Rango Importar GitHub',
-                {
-                    modal: true,
-                    width: 300,
-                    height: 150
-                }, rec, this.idContenedor, 'FormGitHub');
-           /* Phx.CP.loadingShow();
+
+            Phx.CP.loadingShow();
             Ext.Ajax.request({
                 url:'../../sis_seguridad/control/Subsistema/importarApiGitHub',
                 params:{
@@ -404,7 +400,7 @@ Phx.vista.Subsistema=Ext.extend(Phx.gridInterfaz,{
                 failure: this.conexionFailure,
                 timeout:this.timeout,
                 scope:this
-            });*/
+            });
         }
 
 }
