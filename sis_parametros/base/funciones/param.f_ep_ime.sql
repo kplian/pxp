@@ -48,6 +48,16 @@ BEGIN
 	if(p_transaccion='PM_FRPP_INS')then
 					
         begin
+
+            if (exists((select 1
+                       from param.tep ep
+                       where ep.id_financiador = v_parametros.id_financiador
+                         and ep.id_regional = v_parametros.id_regional
+                         and ep.id_prog_pory_acti = v_parametros.id_prog_pory_acti))) then
+                v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
+                                            'La estrutura programática ya existe!');
+                raise exception '%', v_resp;
+            end if;
         	--Sentencia de la insercion
         	insert into param.tep(
 			estado_reg,
@@ -91,7 +101,18 @@ BEGIN
 	elsif(p_transaccion='PM_FRPP_MOD')then
 
 		begin
-			--Sentencia de la modificacion
+            --Sentencia de la modificacion
+            if (exists((select 1
+                        from param.tep ep
+                        where ep.id_financiador = v_parametros.id_financiador
+                          and ep.id_regional = v_parametros.id_regional
+                          and ep.id_prog_pory_acti = v_parametros.id_prog_pory_acti
+                          and ep.id_ep != v_parametros.id_ep))) then
+                v_resp = pxp.f_agrega_clave(v_resp, 'mensaje',
+                                            'La estrutura programática ya existe!');
+                raise exception '%', v_resp;
+            end if;
+
 			update param.tep set
 			id_financiador = v_parametros.id_financiador,
 			id_prog_pory_acti = v_parametros.id_prog_pory_acti,
