@@ -1216,9 +1216,9 @@ di@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/di/-/di-0.0.1.tgz#806649326ceaa7caa3306d75d985ea2748ba913c"
 
-diff@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-3.0.0.tgz#b8ecd922ddffbcd5842c625abe4cae67c6b5b4fa"
+diff@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
 
 docdash@0.4.0:
   version "0.4.0"
