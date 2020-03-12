@@ -16,7 +16,8 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE				FECHA				AUTOR				DESCRIPCION
-104           30/1/2020   MMV ETR     Import github commit data, problems, branch and repository
+  #104			27-02-2020 				MMV ETR     			Import github commit data, problems, branch and repository
+
  ***************************************************************************/
 
 DECLARE
@@ -27,6 +28,7 @@ DECLARE
     v_resp				varchar;
     v_filtro_repo		varchar;
     v_filtro_estado		varchar;
+    v_filtro_programdaor	varchar;
 
 BEGIN
 
@@ -34,7 +36,7 @@ BEGIN
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************
- 	#TRANSACCION:  'SE_REP_SEL'
+ 	#TRANSACCION:  'SE_REP_SEL'#104
  	#DESCRIPCION:	Combo repositorios
  	#AUTOR:		miguel.mamani
  	#FECHA:		20/01/2020
@@ -58,7 +60,7 @@ BEGIN
 			return v_consulta;
 		end;
 	/*********************************
- 	#TRANSACCION:  'SE_REP_CONT'
+ 	#TRANSACCION:  'SE_REP_CONT'#104
  	#DESCRIPCION:	Combo repositorios
  	#AUTOR:		miguel.mamani
  	#FECHA:		20/01/2020
@@ -78,7 +80,7 @@ BEGIN
 
 		end;
     /*********************************
- 	#TRANSACCION:  'SE_BRA_SEL'
+ 	#TRANSACCION:  'SE_BRA_SEL'#104
  	#DESCRIPCION:	Combo Branch
  	#AUTOR:		miguel.mamani
  	#FECHA:		20/01/2020
@@ -100,7 +102,7 @@ BEGIN
 			return v_consulta;
 	end;
     /*********************************
- 	#TRANSACCION:  'SE_BRA_CONT'
+ 	#TRANSACCION:  'SE_BRA_CONT'#104
  	#DESCRIPCION:	Combo repositorios
  	#AUTOR:		miguel.mamani
  	#FECHA:		20/01/2020
@@ -121,7 +123,7 @@ BEGIN
 		end;
 
     /*********************************
- 	#TRANSACCION:  'SE_REPR_SEL'
+ 	#TRANSACCION:  'SE_REPR_SEL' #104
  	#DESCRIPCION:	Reporte Issues e Commit
  	#AUTOR:		miguel.mamani
  	#FECHA:		20/01/2020
@@ -129,7 +131,7 @@ BEGIN
 	elsif(p_transaccion='SE_REPR_SEL')then
     	begin
 
-       -- raise exception '%',v_parametros.id_subsistema;
+
        if (v_parametros.id_subsistema = 0)then
        		v_filtro_repo = '0 = 0';
        else
@@ -141,6 +143,13 @@ BEGIN
        else
        v_filtro_estado = 'iss.state in ('||v_parametros.estado||')';
        end if;
+
+       if (v_parametros.id_programador = '') then
+    	   v_filtro_programdaor = '0 = 0';
+       else
+      	  v_filtro_programdaor =  'iss.id_programador in('||v_parametros.id_programador||')';
+       end if;
+
 
         v_consulta:= 'with  issues as (select 	su.id_subsistema,
                             es.id_issues,
@@ -194,8 +203,8 @@ BEGIN
                                             from issues iss
                                             inner join commit com on com.id_issues = iss.id_issues
                       						where '||v_filtro_repo||'
-                       						and iss.id_programador in ('||v_parametros.id_programador||')
-                                            and com.name = ''master''
+                       						and '||v_filtro_programdaor||'
+                                            and com.name in (''dev'', ''master'' )
                                             and '||v_filtro_estado||'
                                             and iss.fecha between '''||v_parametros.fecha_ini||''' and '''||v_parametros.fecha_fin||''' ';
         return v_consulta;

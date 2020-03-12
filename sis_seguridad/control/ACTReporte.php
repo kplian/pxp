@@ -6,11 +6,13 @@ de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabl
 Autor:	Kplian
 Fecha:	01/07/2010
  * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
+ *  #104			27-02-2020 				MMV ETR     			Import github commit data, problems, branch and repository
+
  */
 require_once(dirname(__FILE__).'/../reportes/RReporteIssuesXLS.php');
 class ACTReporte extends ACTbase{
 
-    function ReporteIssues(){
+    function ReporteIssues(){ //#104
         $this->objFunc = $this->create('MODReporte');
         $this->res = $this->objFunc->reporteGitHub($this->objParam);
         $titulo = 'Reporte';

@@ -79,7 +79,7 @@ class MODReporte extends MODbase{
         //Ejecuta la funcion
         $this->armarConsulta();
         $this->ejecutarConsulta();
-        //var_dump($this->respuesta); exit;
+        // var_dump($this->respuesta); exit;
         return $this->respuesta;
     }
 
