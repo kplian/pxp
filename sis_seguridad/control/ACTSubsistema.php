@@ -9,6 +9,8 @@
 *	#3				EGS					03/12/2018				se aumento funcion para solo mostrar estrucutura gui y insert gui activos visibles
 																se agrego las funciones que solo exporte procedimientos ,funciones y roles
     #63             EGS                 16/09/2019              filtro por codigo e id de subsistemas
+ * #104			27-02-2020 				MMV ETR     			Import github commit data, problems, branch and repository
+
  */
 class ACTSubsistema extends ACTbase{    
 
@@ -442,12 +444,14 @@ class ACTSubsistema extends ACTbase{
         $this->res=$this->objFunSeguridad->obtenerFechaUltimoRegistro($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
-    function importarApiGitHub(){
+    function importarApiGitHub(){ //#104
         $subsistema = $this->objParam->getParametro('id_subsistema');
         $org  = $this->objParam->getParametro('organizacion_git');
         $repo = $this->objParam->getParametro('codigo_git');
-        // Branch
+
         $requestBranch = 'https://api.github.com/repos/'.$org.'/'.$repo.'/branches';
+        // var_dump($requestBranch);exit;
+
         $session = curl_init($requestBranch);
         curl_setopt($session, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
@@ -456,8 +460,11 @@ class ACTSubsistema extends ACTbase{
                 'User-Agent: request')
         );
         $resultBranch = curl_exec($session);
+         //var_dump($resultBranch);exit;
+
         curl_close($session);
         $respuestaBranch = json_decode($resultBranch);
+
         $array_branch = array();
         $branch = array();
         foreach ($respuestaBranch as $value){
@@ -517,7 +524,7 @@ class ACTSubsistema extends ACTbase{
         }
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
-    function onCommit ($org,$repo,$name){
+    function onCommit ($org,$repo,$name){ //#104
         $subsistema = $this->objParam->getParametro('id_subsistema');
 
         $requestCommit = 'https://api.github.com/repos/'.$org.'/'.$repo.'/commits?sha='.$name;
@@ -564,7 +571,7 @@ class ACTSubsistema extends ACTbase{
         }
         return json_encode($array_commit);
     }
-    function insertarCommit($json_commit){
+    function insertarCommit($json_commit){ //#104
         $this->objParam->addParametro('commit_data',$json_commit);
         $this->objFunc = $this->create('sis_seguridad/MODCommit');
         $cbteHeader = $this->objFunc->importarCommitGitHub($this->objParam);

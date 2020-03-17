@@ -500,8 +500,17 @@ class MODValidacion
            array_push($this->res,'El campo '.$nombre." debe ser registrado");
         }            
         json_decode($valor);
-        if(json_last_error() != JSON_ERROR_NONE  ){
-           throw new Exception("Error en archvi JSON: ".json_last_error_msg());
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+            case JSON_ERROR_DEPTH:
+            case JSON_ERROR_STATE_MISMATCH:
+            case JSON_ERROR_CTRL_CHAR:
+            case JSON_ERROR_SYNTAX:
+            case JSON_ERROR_UTF8:
+                if (!empty($valor)) {
+                    throw new Exception("Error en archvi JSON: " . json_last_error_msg());
+                }
+                break;
         }
     }
 }
