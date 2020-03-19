@@ -129,7 +129,7 @@ VALUES (NULL, NULL, NULL, NULL, NULL, 'ADMINISTRADOR', 'DEL SISTEMA', '', '', ''
 -- Data for table segu.tusuario (OID = 305814) (LIMIT 0,1)
 --
 INSERT INTO segu.tusuario ( id_clasificador, cuenta, contrasena, fecha_caducidad, fecha_reg, estilo, contrasena_anterior, id_persona, estado_reg, autentificacion)
-VALUES (1, 'admin', 'admin', '2020-01-31', '2011-05-10', 'xtheme-access.css', 'f1290186a5d0b1ceab27f4e77c0c5d68', 1, 'activo', 'local');
+VALUES (1, 'admin', 'admin', (now()+ interval '1 year')::date, now(), 'xtheme-access.css', 'f1290186a5d0b1ceab27f4e77c0c5d68', 1, 'activo', 'local');
 
 --
 -- Data for table segu.trol (OID = 307211) (LIMIT 0,1)
