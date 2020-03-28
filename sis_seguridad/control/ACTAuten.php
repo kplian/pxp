@@ -310,7 +310,7 @@ class ACTAuten extends ACTbase {
 	    session_unset();
         session_destroy(); // destruyo la sesion 
         header("Location: /"); 
-        echo "{success:true}";
+        echo '{"success":true}';
     }
 	
 }
