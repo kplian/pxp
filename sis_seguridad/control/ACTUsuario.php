@@ -23,9 +23,7 @@ class ACTUsuario extends ACTbase{
 
 
             $data = array(
-
                 "mensaje" => "obtenerUsuariosConectados",
-
             );
 
             $send = array(
@@ -34,9 +32,7 @@ class ACTUsuario extends ACTbase{
             );
 
             $usuarios_socket = $this->dispararEventoWS($send);
-
             $usuarios_socket =json_decode($usuarios_socket, true);
-
             $array_keys = array_keys($usuarios_socket);
             $implode = implode(',', $array_keys);
 
