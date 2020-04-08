@@ -1294,7 +1294,7 @@ COMMENT ON COLUMN segu.tsubsistema.sw_importacion
 IS 'si o no, permite importa desde git commit, issues etc';
 
 /***********************************F-SCP-RAC-SEGU-102-09/01/2020*****************************************/
-/***********************************I-SCP-MMV-SEGU-104-30/01/2020*****************************************/
+/***********************************I-SCP-MMV-SEGU-127-30/01/2020*****************************************/
 CREATE TABLE segu.tissues (
   id_issues SERIAL,
   id_programador INTEGER,
@@ -1327,7 +1327,7 @@ ALTER TABLE segu.tissues
   ALTER COLUMN state SET STATISTICS 0;
 
 ALTER TABLE segu.tissues
-  OWNER TO dbaamamani;
+  OWNER TO postgres;
 
   CREATE TABLE segu.tbranches (
   id_branches SERIAL,
@@ -1344,7 +1344,7 @@ ALTER TABLE segu.tbranches
   ALTER COLUMN id_branches SET STATISTICS 0;
 
 ALTER TABLE segu.tbranches
-  OWNER TO dbaamamani;
+  OWNER TO postgres;
 
   CREATE TABLE segu.tcommit (
   id_commit SERIAL,
@@ -1375,5 +1375,5 @@ ALTER TABLE segu.tcommit
   ALTER COLUMN author SET STATISTICS 0;
 
 ALTER TABLE segu.tcommit
-  OWNER TO dbaamamani;
-/***********************************F-SCP-MMV-SEGU-104-30/01/2020*****************************************/
+  OWNER TO postgres;
+/***********************************F-SCP-MMV-SEGU-127-30/01/2020*****************************************/
