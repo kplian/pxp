@@ -1,11 +1,16 @@
 <?php
-/***
+/****************************************************************************************************
  Nombre: 	MODActividad.php
  Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas 
  a la tabla tgui del esquema SEGU
  Autor:		Kplian(RAC)
  Fecha:		19/07/2010
- */            
+
+ ISSUE            FECHA:            AUTOR               DESCRIPCION  
+ #0            19/07/2010           RAC           Cracion
+ #128          10/04/2020           RAC           Listado completo de menu para nuevas capa de vista REACT       
+ **********************************************************************************************************/ 
+
  class MODGui extends MODbase {
 	
 	function __construct(CTParametro &$pParam){
@@ -324,7 +329,32 @@
 		
 		return $this->respuesta;
 	}
+
 	
+	/*
+	 #128   Get Menu	
+	 system: 'all', //system name(sis_contabilidad), comma separated systems(sis_seguridad,sis_presupuestos), all
+     mobile: true,  //mobile flag [true,false]
+	 includeSystemRoot: false // show systems menu [true,false]
+	 startExpanded: true
+	 */	
+	function getMenuJSON(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.f_menu_json';
+		$this->transaccion='SEG_GETMENU_JSON';
+		$this->tipo_procedimiento='IME';
+			
+		//Define los parametros para la funcion
+		$this->setParametro('system','system','varchar');
+		$this->setParametro('mobile','mobile','varchar'); 
+
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+				
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
 
 }
 ?>
