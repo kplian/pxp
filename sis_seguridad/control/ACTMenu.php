@@ -1,13 +1,14 @@
 <?php
-/***
+/******************************************************************************************************
  Nombre: ACTMenu.php
- Proposito: Clase de Control para recibir los parametros enviados por los archivos
- de la Vista para envio y ejecucion de los metodos del Modelo referidas a la tabla tmenu
+ Proposito: Controlador para manejo del menu
  Autor:	Kplian
  Fecha:	01/07/2010
- */
-
  
+ ISSUE            FECHA:            AUTOR               DESCRIPCION  
+ #0            01/07/2010           Kplian        Creacion
+ #128          10/04/2020           RAC           Listado completo de menu para nuevas capa de vista REACT
+ ************************************************************************************************************/
 class ACTMenu extends ACTbase {
 	/////////////
 	//Constructor
@@ -21,7 +22,7 @@ class ACTMenu extends ACTbase {
 	/////////
 	
 	//Genera las llaves publicas
-	function listarPermisoArb(){
+	function listarPermisoArb() {
 		
 		$node=$this->objParam->getParametro('node');
 		
@@ -49,7 +50,7 @@ class ACTMenu extends ACTbase {
 		array_push($arreglo,array('nombre'=>'icon','valor'=>'icono'));
 	
 	
-		//se a�de el primer nivel al arbol incluyendo el arreglo de equivalencias
+		//se inserta el primer nivel al arbol incluyendo el arreglo de equivalencias
 		$this->res->addNivelArbol('tipo_dato','carpeta',array('id_p'=>$node,
 		                                                'singleClickExpand'=>true,
 														'leaf'=>false,
@@ -65,7 +66,7 @@ class ACTMenu extends ACTbase {
 		//toma el valor de la clese de vista para la interfaces llamadas desde el menu
 		 array_push($arreglo,array('nombre'=>'cls','valor'=>'clase_vista'));
 		 														
-		//se a�ade otro nivel al arbol con el arreglo de equivalencias
+		//se inserta otro nivel al arbol con el arreglo de equivalencias
 		 $this->res->addNivelArbol('tipo_dato','hoja',array('id_p'=>$node,
 														'leaf'=>true,
 														'allowDelete'=>false,
@@ -97,13 +98,16 @@ class ACTMenu extends ACTbase {
 		
 		//Se imprime el json del arbol
 		$this->res->imprimirRespuesta($this->res->generarJson());
-		
-		
-		
 	}
-	
-	
+	 
 
+	//#128 new menu in format json for new interfaces in REACT interfaces
+	function getMenuJSON() {
+		$this->funciones = $this->create('MODGui');
+		$this->res=$this->funciones->getMenuJSON();
+		//Se imprime el json del arbol
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
 
 }
 
