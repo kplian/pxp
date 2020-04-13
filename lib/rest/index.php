@@ -338,7 +338,7 @@ $app->get(
 
         //TODO validar cadenas vaias y retorna error en forma JSON
         $ruta_include = 'sis_'.$sistema.'/control/ACT'.$clase_control.'.php';
-        $ruta_url = 'sis_'+$sistema.'/control/'.$clase_control.'/'.$metodo;
+        $ruta_url = 'sis_'.$sistema.'/control/'.$clase_control.'/'.$metodo;
 
         //TODO verificar sesion
         //throw new Exception('La sesion ha sido duplicada',2);
