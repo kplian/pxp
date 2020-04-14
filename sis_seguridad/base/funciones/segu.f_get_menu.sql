@@ -32,7 +32,8 @@ BEGIN
        IF p_administrador = 1 THEN --if the user is an administrator      
            FOR v_registros IN (
                                SELECT
-                                    g.nombre as "text",                                    
+                                    g.id_gui,
+		   		    g.nombre as "text",                                    
                                     g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
@@ -61,6 +62,7 @@ BEGIN
        ELSE  --if the user is not an administrator
           FOR v_registros IN (
                                SELECT
+		  		    g.id_gui,
                                     g.nombre as "text",                                    
                                     g.clase_vista as component,
                                     CASE
@@ -92,6 +94,7 @@ BEGIN
                                     AND u.id_usuario = p_id_usuario
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
                               GROUP BY 
+				 g.id_gui,
                                  g.nombre,
                                  g.clase_vista,
                                  g.ruta_archivo,
@@ -114,6 +117,7 @@ BEGIN
        IF p_administrador = 1 THEN --if the user is an administrator  
             FOR v_registros IN (            
                                 SELECT 
+		    		    g.id_gui,
                                     g.nombre as "text",                                    
                                     g.clase_vista as component,
                                     CASE
@@ -139,6 +143,7 @@ BEGIN
        ELSE   --if the user is not an administrator
            FOR v_registros IN (            
                                 SELECT 
+		   		    g.id_gui,
                                     g.nombre as "text",                                    
 				    g.clase_vista as component,
 				    CASE
@@ -158,7 +163,8 @@ BEGIN
                                   AND sw_mobile = 'si' 
                                   AND ur.id_usuario = p_id_usuario
                                   AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY (pa_id_sistema))
-                                GROUP BY   
+                                GROUP BY 
+				   g.id_gui,
                                    g.nombre,                                   
                                    g.ruta_archivo,
                                    g.clase_vista,
