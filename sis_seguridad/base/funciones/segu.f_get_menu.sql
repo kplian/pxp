@@ -50,7 +50,7 @@ BEGIN
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
                      
-                IF v_registros.tipo != 'hoja' THEN 
+                IF v_registros.type != 'hoja' THEN 
                    v_registros.childrens = segu.f_get_menu(p_administrador, p_id_usuario, v_registros.id_gui, pa_id_sistema);
                 END IF;  
                 
@@ -99,7 +99,7 @@ BEGIN
                                  childrens
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
                      
-                IF v_registros.tipo != 'hoja' THEN 
+                IF v_registros.type != 'hoja' THEN 
                    v_registros.childrens = segu.f_get_menu(p_administrador, p_id_usuario, v_registros.id_gui, pa_id_sistema);            
                 END IF;  
                 
