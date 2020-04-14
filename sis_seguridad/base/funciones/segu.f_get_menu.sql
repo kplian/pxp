@@ -32,23 +32,15 @@ BEGIN
        IF p_administrador = 1 THEN --if the user is an administrator      
            FOR v_registros IN (
                                SELECT
-                                    g.id_gui,
-                                    g.nombre,
-                                    g.codigo_gui,
-                                    g.codigo_mobile,
-                                    g.descripcion,
-                                    g.nivel,
-                                    g.orden_logico,
-                                    g.ruta_archivo,
-                                    g.clase_vista,
+                                    g.nombre as "text",                                    
+                                    g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
                                     ELSE
                                         'hoja'::varchar
-                                    END AS tipo,
-                                    g.icono,
-                                    g.parametros,
+                                    END AS "type",
+                                    g.icono AS icon,                                    
                                     '[]'::jsonb as childrens
                               FROM segu.tgui g
                               INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'                                 
@@ -69,23 +61,15 @@ BEGIN
        ELSE  --if the user is not an administrator
           FOR v_registros IN (
                                SELECT
-                                    g.id_gui,
-                                    g.nombre,
-                                    g.codigo_gui,
-                                    g.codigo_mobile,
-                                    g.descripcion,
-                                    g.nivel,
-                                    g.orden_logico,
-                                    g.ruta_archivo,
-                                    g.clase_vista,
+                                    g.nombre as "text",                                    
+                                    g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
                                     ELSE
                                         'hoja'::varchar
-                                    END AS tipo,
-                                    g.icono,
-                                    g.parametros,
+                                    END AS "type",
+                                    g.icono AS icon, 
                                     '[]'::jsonb as childrens
                               FROM segu.tgui g
                               INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'
@@ -107,17 +91,11 @@ BEGIN
                                     AND eg.fk_id_gui = p_id_gui
                                     AND u.id_usuario = p_id_usuario
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
-                              GROUP BY                   
-                                 g.id_gui,
+                              GROUP BY 
                                  g.nombre,
-                                 g.descripcion,
-                                 g.nivel,
-                                 g.orden_logico,
-                                 g.ruta_archivo,
                                  g.clase_vista,
                                  g.ruta_archivo,
-                                 g.icono,
-                                 eg.fk_id_gui,
+                                 g.icono,                                 
                                  childrens
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
                      
@@ -136,24 +114,16 @@ BEGIN
        IF p_administrador = 1 THEN --if the user is an administrator  
             FOR v_registros IN (            
                                 SELECT 
-                                      g.id_gui,
-                                      g.nombre,
-                                      g.codigo_gui,
-                                      g.codigo_mobile,
-                                      g.descripcion,
-                                      g.nivel,
-                                      g.orden_logico,
-                                      g.ruta_archivo,
-                                      g.clase_vista,
-                                      CASE
-                                      WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
-                                           'carpeta'::varchar
-                                      ELSE
-                                          'hoja'::varchar
-                                      END AS tipo,
-                                      g.icono,
-                                      g.parametros,
-                                      '[]'::jsonb as childrens
+                                    g.nombre as "text",                                    
+                                    g.clase_vista as component,
+                                    CASE
+                                    WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
+                                         'carpeta'::varchar
+                                    ELSE
+                                        'hoja'::varchar
+                                    END AS "type",
+                                    g.icono AS icon, 
+                                    '[]'::jsonb as childrens
                                 FROM segu.tgui g
                                 INNER JOIN segu.testructura_gui eg ON g.id_gui = eg.id_gui AND  eg.estado_reg = 'activo'          
                                 WHERE     g.estado_reg = 'activo'
@@ -168,24 +138,17 @@ BEGIN
        
        ELSE   --if the user is not an administrator
            FOR v_registros IN (            
-                                SELECT g.id_gui,
-                                       g.nombre,
-                                       g.codigo_gui,
-                                       g.codigo_mobile,
-                                       g.descripcion,
-                                       g.nivel,
-                                       g.orden_logico,
-                                       g.ruta_archivo,
-                                       g.clase_vista,
-                                       CASE
-                                         WHEN (g.ruta_archivo is null or
-                                           g.ruta_archivo = '') THEN 'carpeta'::
-                                           varchar
-                                         ELSE 'hoja'::varchar
-                                       END AS tipo,
-                                       g.icono,
-                                       g.parametros,
-                                       '[]'::jsonb as childrens
+                                SELECT 
+                                    g.nombre as "text",                                    
+				    g.clase_vista as component,
+				    CASE
+				    WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
+					 'carpeta'::varchar
+				    ELSE
+					'hoja'::varchar
+				    END AS "type",
+				    g.icono AS icon, 
+                                    '[]'::jsonb as childrens
                                 FROM segu.tgui g
                                      INNER JOIN segu.testructura_gui eg ON g.id_gui = eg.id_gui AND eg.estado_reg =  'activo'
                                      INNER JOIN segu.tgui_rol gr ON gr.id_gui =  g.id_gui AND gr.estado_reg = 'activo'
@@ -195,17 +158,11 @@ BEGIN
                                   AND sw_mobile = 'si' 
                                   AND ur.id_usuario = p_id_usuario
                                   AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY (pa_id_sistema))
-                                GROUP BY                   
-                                   g.id_gui,
-                                   g.nombre,
-                                   g.descripcion,
-                                   g.nivel,
-                                   g.orden_logico,
+                                GROUP BY   
+                                   g.nombre,                                   
                                    g.ruta_archivo,
                                    g.clase_vista,
-                                   g.ruta_archivo,
-                                   g.icono,
-                                   eg.fk_id_gui,
+                                   g.icono,                                   
                                    childrens
                                 ORDER BY g.orden_logico,
                                          g.nombre) LOOP
