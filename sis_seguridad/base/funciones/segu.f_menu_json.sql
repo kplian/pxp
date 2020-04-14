@@ -47,12 +47,19 @@ BEGIN
           BEGIN
           
             IF pxp.f_existe_parametro(par_tabla,'system') THEN
-              --get array of systems            
+              
+              --get array of systems 
+              -- if va_id_sistemas is null return al systems           
               IF UPPER(COALESCE(v_parametros.system,'ALL')) != 'ALL' THEN
                  SELECT pxp.aggarray(s.id_subsistema)
                  INTO va_id_sistemas
                  FROM segu.tsubsistema s
                  WHERE UPPER(s.codigo) =ANY( string_to_array(v_parametros.system,','));
+                 
+                 IF va_id_sistemas is null  THEN
+                    va_id_sistemas[1] = -1; 
+                 END IF;
+              
               END IF;
             END IF;
             
@@ -63,8 +70,7 @@ BEGIN
             -- id_gui = 0 first menu option 
             v_menu_json := segu.f_get_menu(par_administrador, par_id_usuario, 0, va_id_sistemas, COALESCE(v_mobile,0)); 
             v_resp = pxp.f_agrega_clave(v_resp,'message','Exito en la ejecucion de la funcion'::VARCHAR);
-            v_resp = pxp.f_agrega_clave(v_resp,'sucess','TRUE'::VARCHAR);         
-            v_resp = pxp.f_agrega_clave(v_resp,'v_resp_json',v_menu_json::VARCHAR);
+            v_resp = pxp.f_agrega_clave(v_resp,'resp_json',v_menu_json::VARCHAR);
             RETURN v_resp;
           END;  
      ELSE

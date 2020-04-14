@@ -27,32 +27,32 @@ DECLARE
     v_nombre_funcion    VARCHAR;   
 BEGIN
    
-   v_resp_json := '[]'::JSONB;
-   IF p_mobile = 0 THEN  --if it's no to mobile interface
+       v_resp_json := '[]'::JSONB;
        IF p_administrador = 1 THEN --if the user is an administrator      
            FOR v_registros IN (
                                SELECT
                                     g.id_gui,
-		   		    g.nombre as "text",                                    
-                                    g.clase_vista as "component",
+                                    g.nombre as text,
+                                    g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
                                     ELSE
                                         'hoja'::varchar
-                                    END AS "type",
-                                    g.icono AS icon,                                    
+                                    END AS type,
+                                    g.icono as icon,
                                     '[]'::jsonb as childrens
                               FROM segu.tgui g
                               INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'                                 
                               WHERE     g.visible='si'
-                                    AND g.estado_reg = 'activo'                                
+                                    AND g.estado_reg = 'activo'   
+                                    AND  ((p_mobile = 1 AND (sw_mobile = 'si' OR  eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND sw_mobile = 'no'))                         
                                     AND eg.fk_id_gui = p_id_gui
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
                      
                 IF v_registros.type != 'hoja' THEN 
-                   v_registros.childrens = segu.f_get_menu(p_administrador, p_id_usuario, v_registros.id_gui, pa_id_sistema);
+                   v_registros.childrens = segu.f_get_menu(p_administrador, p_id_usuario, v_registros.id_gui, pa_id_sistema, p_mobile );
                 END IF;  
                 
                 v_resp_json = v_resp_json || row_to_json(v_registros)::jsonb;        
@@ -62,16 +62,16 @@ BEGIN
        ELSE  --if the user is not an administrator
           FOR v_registros IN (
                                SELECT
-		  		    g.id_gui,
-                                    g.nombre as "text",                                    
-                                    g.clase_vista as "component",
+                                    g.id_gui,
+                                    g.nombre as text,
+                                    g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
                                     ELSE
                                         'hoja'::varchar
-                                    END AS "type",
-                                    g.icono AS icon, 
+                                    END AS type,
+                                    g.icono as icon,
                                     '[]'::jsonb as childrens
                               FROM segu.tgui g
                               INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'
@@ -89,21 +89,27 @@ BEGIN
                                                              AND u.estado_reg='activo'                                
                               
                               WHERE     g.visible='si'
-                                    AND g.estado_reg = 'activo'                                
+                                    AND g.estado_reg = 'activo' 
+                                    AND  ((p_mobile = 1 AND (sw_mobile = 'si' or eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND sw_mobile = 'no'))                                  
                                     AND eg.fk_id_gui = p_id_gui
                                     AND u.id_usuario = p_id_usuario
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
-                              GROUP BY 
-				 g.id_gui,
+                              GROUP BY                   
+                                 g.id_gui,
                                  g.nombre,
+                                 g.descripcion,
+                                 g.nivel,
+                                 g.orden_logico,
+                                 g.ruta_archivo,
                                  g.clase_vista,
                                  g.ruta_archivo,
-                                 g.icono,                                 
+                                 g.icono,
+                                 eg.fk_id_gui,
                                  childrens
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
                      
                 IF v_registros.type != 'hoja' THEN 
-                   v_registros.childrens = segu.f_get_menu(p_administrador, p_id_usuario, v_registros.id_gui, pa_id_sistema);            
+                   v_registros.childrens = segu.f_get_menu(p_administrador, p_id_usuario, v_registros.id_gui, pa_id_sistema, p_mobile);            
                 END IF;  
                 
                 v_resp_json = v_resp_json || row_to_json(v_registros)::jsonb;        
@@ -111,77 +117,7 @@ BEGIN
           END LOOP;
        
        END IF; 
-   ELSE  -- it's for mobile interface
-           
-       --for mobile the response  is plane (it is not a tree)
-       IF p_administrador = 1 THEN --if the user is an administrator  
-            FOR v_registros IN (            
-                                SELECT 
-		    		    g.id_gui,
-                                    g.nombre as "text",                                    
-                                    g.clase_vista as "component",
-                                    CASE
-                                    WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
-                                         'carpeta'::varchar
-                                    ELSE
-                                        'hoja'::varchar
-                                    END AS "type",
-                                    g.icono AS icon, 
-                                    '[]'::jsonb as childrens
-                                FROM segu.tgui g
-                                INNER JOIN segu.testructura_gui eg ON g.id_gui = eg.id_gui AND  eg.estado_reg = 'activo'          
-                                WHERE     g.estado_reg = 'activo'
-                                     AND  sw_mobile = 'si'
-                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
-                                ORDER BY g.orden_logico,g.nombre) LOOP
-             
-                v_resp_json = v_resp_json || row_to_json(v_registros)::jsonb;            
-            
-            END LOOP;                     
-              
-       
-       ELSE   --if the user is not an administrator
-           FOR v_registros IN (            
-                                SELECT 
-		   		    g.id_gui,
-                                    g.nombre as "text",                                    
-				    g.clase_vista as "component",
-				    CASE
-				    WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
-					 'carpeta'::varchar
-				    ELSE
-					'hoja'::varchar
-				    END AS "type",
-				    g.icono AS icon, 
-                                    '[]'::jsonb as childrens
-                                FROM segu.tgui g
-                                     INNER JOIN segu.testructura_gui eg ON g.id_gui = eg.id_gui AND eg.estado_reg =  'activo'
-                                     INNER JOIN segu.tgui_rol gr ON gr.id_gui =  g.id_gui AND gr.estado_reg = 'activo'
-                                     INNER JOIN segu.trol r ON r.id_rol = gr.id_rol AND r.estado_reg = 'activo'
-                                     INNER JOIN segu.tusuario_rol ur on ur.id_rol = r.id_rol and ur.estado_reg =  'activo'
-                                WHERE g.estado_reg = 'activo' 
-                                  AND sw_mobile = 'si' 
-                                  AND ur.id_usuario = p_id_usuario
-                                  AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY (pa_id_sistema))
-                                GROUP BY 
-				   g.id_gui,
-                                   g.nombre,                                   
-                                   g.ruta_archivo,
-                                   g.clase_vista,
-                                   g.icono,                                   
-                                   childrens
-                                ORDER BY g.orden_logico,
-                                         g.nombre) LOOP
-             
-                v_resp_json = v_resp_json || row_to_json(v_registros)::JSONB;            
-            
-            END LOOP; 
-       
-       END IF;
-       
-      
    
-   END IF;
   
  RETURN  v_resp_json;
  
