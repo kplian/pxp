@@ -34,7 +34,7 @@ BEGIN
                                SELECT
                                     g.id_gui,
 		   		    g.nombre as "text",                                    
-                                    g.clase_vista as component,
+                                    g.clase_vista as "component",
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
@@ -64,7 +64,7 @@ BEGIN
                                SELECT
 		  		    g.id_gui,
                                     g.nombre as "text",                                    
-                                    g.clase_vista as component,
+                                    g.clase_vista as "component",
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
@@ -119,7 +119,7 @@ BEGIN
                                 SELECT 
 		    		    g.id_gui,
                                     g.nombre as "text",                                    
-                                    g.clase_vista as component,
+                                    g.clase_vista as "component",
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
                                          'carpeta'::varchar
@@ -145,7 +145,7 @@ BEGIN
                                 SELECT 
 		   		    g.id_gui,
                                     g.nombre as "text",                                    
-				    g.clase_vista as component,
+				    g.clase_vista as "component",
 				    CASE
 				    WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
 					 'carpeta'::varchar
