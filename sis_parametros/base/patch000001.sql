@@ -2671,3 +2671,25 @@ WITH (oids = false);
 ALTER TABLE param.tferiado
   ADD COLUMN id_gestion INTEGER;
 /***********************************F-SCP-JDJ-ASIS-1-14/11/2019****************************************/
+
+/***********************************I-SCP-MGM-PARAM-1-17/04/2020****************************************/
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_cuenta_doc VARCHAR(3);
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_cuenta_doc SET DEFAULT 'no';
+
+COMMENT ON COLUMN param.tplantilla.sw_cuenta_doc
+IS 'si o no, si esta habilitado muestra el combo de vi/fa, del funcionario, caso contrario lo oculta';
+
+ALTER TABLE param.tplantilla
+  ADD COLUMN sw_nota_debito_agencia VARCHAR(3);
+
+ALTER TABLE param.tplantilla
+  ALTER COLUMN sw_nota_debito_agencia SET DEFAULT 'no';
+
+COMMENT ON COLUMN param.tplantilla.sw_nota_debito_agencia
+IS 'si o no, si esta habilitado mostrara el campo de nota_debito_agencia, caso contrario lo ocultara';
+
+/***********************************F-SCP-MGM-PARAM-1-17/04/2020****************************************/
+
