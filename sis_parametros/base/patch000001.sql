@@ -2671,3 +2671,81 @@ WITH (oids = false);
 ALTER TABLE param.tferiado
   ADD COLUMN id_gestion INTEGER;
 /***********************************F-SCP-JDJ-ASIS-1-14/11/2019****************************************/
+
+
+
+
+
+/***********************************I-SCP-RAC-PARAM-133-20/04/2020****************************************/
+
+CREATE TABLE param.tlenguaje (
+  id_lenguaje SERIAL,
+  codigo VARCHAR(8) NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
+  defecto VARCHAR(2) DEFAULT 'no'::character varying NOT NULL,
+  CONSTRAINT tlenguaje_codigo_key UNIQUE(codigo),
+  CONSTRAINT tlenguaje_nombre_key UNIQUE(nombre),
+  CONSTRAINT tlenguaje_pkey PRIMARY KEY(id_lenguaje)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+ALTER TABLE param.tlenguaje
+  ALTER COLUMN nombre SET STATISTICS 0;
+
+COMMENT ON COLUMN param.tlenguaje.defecto
+IS 'si o no';
+
+
+
+CREATE TABLE param.tgrupo_idioma (
+  id_grupo_idioma SERIAL,
+  codigo VARCHAR(200) NOT NULL,
+  nombre VARCHAR(200) NOT NULL,
+  tipo VARCHAR(50) DEFAULT 'comun'::character varying NOT NULL,
+  nombre_tabla VARCHAR(1),
+  CONSTRAINT tgrupo_idioma_codigo_key UNIQUE(codigo),
+  CONSTRAINT tgrupo_idioma_nombre_key UNIQUE(nombre),
+  CONSTRAINT tgrupo_idioma_pkey PRIMARY KEY(id_grupo_idioma)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+COMMENT ON COLUMN param.tgrupo_idioma.tipo
+IS 'comun  ->  son llavez que se crear para  etiquetas, mensajes
+almacenado -> para traducir datos almacenados';
+
+COMMENT ON COLUMN param.tgrupo_idioma.nombre_tabla
+IS 'nombre de la tabla para traduccion de datos almacenados';
+
+CREATE TABLE param.tpalabra_clave (
+  id_palabra_clave SERIAL NOT NULL,
+  id_grupo_idioma INTEGER NOT NULL,
+  codigo VARCHAR(500) NOT NULL,
+  default_text VARCHAR(500) NOT NULL,
+  id_tabla BIGSERIAL,
+  PRIMARY KEY(id_palabra_clave)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+ALTER TABLE param.tpalabra_clave
+  ALTER COLUMN id_palabra_clave SET STATISTICS 0;
+
+ALTER TABLE param.tpalabra_clave
+  ALTER COLUMN id_grupo_idioma SET STATISTICS 0;
+
+COMMENT ON COLUMN param.tpalabra_clave.id_tabla
+IS 'id de la tabla para traduciones de datos almcaenados';
+
+ 
+CREATE TABLE param.ttraduccion (
+  id_traduccion BIGSERIAL,
+  id_palabra_clave INTEGER NOT NULL,
+  id_lenguaje INTEGER NOT NULL,
+  texto VARCHAR(500) NOT NULL,
+  CONSTRAINT ttraduccion_pkey PRIMARY KEY(id_traduccion)
+) INHERITS (pxp.tbase)
+WITH (oids = false);
+
+ALTER TABLE param.ttraduccion
+  ALTER COLUMN id_lenguaje SET STATISTICS 0;
+
+/***********************************F-SCP-RAC-PARAM-133-20/04/2020****************************************/

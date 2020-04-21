@@ -443,11 +443,12 @@ class Mensaje
 		//sino devuelvo un mensaje
 		else{
 			//#128  ferify if exist a json repsonse from  data base
-			if(array_key_exists ('v_resp_json', $this->datos ) ) {
-				$tmp = $this->datos["v_resp_json"];
-				unset($this->datos["v_resp_json"]);
-				//if exists we covnert in array
-				$this->datos["v_resp_json"] = json_decode($tmp, true);
+			if(array_key_exists ('resp_json', $this->datos ) ) {
+				if(sizeof($this->datos) == 1){
+					$this->datos = json_decode($this->datos["resp_json"], true);
+				} else {
+					$this->datos["resp_json"] = json_decode($this->datos["resp_json"], true);
+				}
 			}			
 		    if($_SESSION["_OFUSCAR_ID"]=='si'){
                $this->ofuscarIdentificadores();

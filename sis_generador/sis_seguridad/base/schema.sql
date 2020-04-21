@@ -1,2 +1,0 @@
-segu
-log
