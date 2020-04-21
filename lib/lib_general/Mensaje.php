@@ -1,4 +1,14 @@
 <?php
+/******************************************************************************************************
+ Nombre: Mensaje.php
+ Proposito: Controlador para manejo del menu
+ Autor:	Kplian
+ Fecha:	01/07/2010
+ 
+ ISSUE            FECHA:            AUTOR               DESCRIPCION  
+ #0            01/07/2010           Kplian        Creacion
+ #128          10/04/2020           RAC            Modificacion para retorno de datos en formato JSON
+ ************************************************************************************************************/
 class Mensaje
 {
 	private $tipo;//EXITO || ERROR
@@ -179,8 +189,6 @@ class Mensaje
 		$this->tipo_respuesta='arbol';
 	}
 	
-	
-	
 	/**
 	 * Nombre funcion:	setTipoTransaccion
 	 * Proposito:		Indica el tipo de trasaccion sel o ime
@@ -351,19 +359,37 @@ class Mensaje
 		
 
 		if($this->getTipo()=='EXITO' && $this->tipo_transaccion=='SEL'){
-
 			if($this->tipo_respuesta!='arbol'){
 			    //ofuscacion de identificadores
                 if($_SESSION["_OFUSCAR_ID"]=='si'){
                     $this->ofuscarIdentificadores();
-                }
-				//RAC 31/12/2014 array de datos extra para retornar en la consulta sel
-				if(count($this->extraData) > 0 ){
-					return '{"total":"' . $this->total . '","countData":' . json_encode($this->extraData) . ',"datos":' . json_encode($this->datos) . '}';
-			
-				}else {
-					return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
-			    }
+				}
+				
+				if($this->tipo_respuesta!='json'){
+					//RAC 31/12/2014 array de datos extra para retornar en la consulta sel
+					if(count($this->extraData) > 0 ){
+						return '{"total":"' . $this->total . '","countData":' . json_encode($this->extraData) . ',"datos":' . json_encode($this->datos) . '}';
+				
+					}else {
+						return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
+					}
+				} else {
+
+					//echo 'llega';
+					//var_dump($this->datos);
+					//exit;
+					//return '{"data":'. $this->datos. '}';
+
+                    
+					if(count($this->extraData) > 0 ){
+						return '{"extraData":' . json_encode($this->extraData) . ',"data":' . $this->datos . '}';				
+					} else {
+						//echo 'llega';
+						//var_dump($this->datos);
+						//exit;
+						return '{"data":'. $this->datos[0]["menu"]. '}';
+					} 
+				}
 				
 				
 			}
@@ -416,6 +442,14 @@ class Mensaje
 		}
 		//sino devuelvo un mensaje
 		else{
+			//#128  ferify if exist a json repsonse from  data base
+			if(array_key_exists ('resp_json', $this->datos ) ) {
+				if(sizeof($this->datos) == 1){
+					$this->datos = json_decode($this->datos["resp_json"], true);
+				} else {
+					$this->datos["resp_json"] = json_decode($this->datos["resp_json"], true);
+				}
+			}			
 		    if($_SESSION["_OFUSCAR_ID"]=='si'){
                $this->ofuscarIdentificadores();
             }
@@ -467,11 +501,10 @@ class Mensaje
 	 *
 	 *
 	 */
-	function generarMensajeJson(){
+	function generarMensajeJson() {
 		
 		//si es exito y es sel devuelvo los valores de una consulta
-		//ofuscacion de identificadores
-					
+		//ofuscacion de identificadores					
 		if($this->tipo=='EXITO'){
 			$error=false;
 		}
@@ -507,11 +540,9 @@ class Mensaje
 		$cuerpo_array['error']=$error;
 		$cuerpo_array['detalle']=$detalle_array;
 		
-	     //RAC 02/03/2012 EN mensajes tipo ime adicionar el vector de datos	
-	    //$cuerpo_array
-	    //array_unshift($cuerpo_array,$this->datos);
-		$cuerpo_array['datos']=$this->datos;
-		
+	    //RAC 02/03/2012 EN mensajes tipo ime adicionar el vector de datos	
+	    		
+		$cuerpo_array['datos']=$this->datos;		
 	    $root_array['ROOT']=$cuerpo_array;
 		
 
@@ -519,10 +550,8 @@ class Mensaje
 
 		if (get_magic_quotes_gpc()) {
 			$res = stripslashes($res);
-		}
-		
+		}		
 		return $res;
-
 	}
 
 	/**
@@ -678,11 +707,7 @@ class Mensaje
                         if(strpos($aux,'json_')!==false){
                             //ofucasmos todas las variables que comiensen con id_
                             $this->datos[$tmp[$i]]=$this->ofuscar_json($this->datos[$tmp[$i]]);
-                             //echo $tmp[$i].".......</br>";
-                             
-                        }
-						
-						
+                        }	
 					}
 			}
 			
@@ -698,9 +723,7 @@ class Mensaje
      * Modificacion: Rensi Arteaga Copari
      */
 
-	function ofuscar_json($json){
-        //var_dump($json);
-        
+	function ofuscar_json($json){        
         $json = str_replace("'", "\"",$json);    
         
          if(isset($json)&&$json!=''){

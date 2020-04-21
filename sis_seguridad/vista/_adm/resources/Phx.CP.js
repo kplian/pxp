@@ -1,3 +1,12 @@
+/**
+
+HISTORIAL DE MODIFICACIONES:
+   	
+ ISSUE    FORK			FECHA:		      AUTOR                 DESCRIPCION
+#0		KPLIAN		 2010		       Rensi Arteaga	Creacion
+#121    ETR          19/02/2020        Rensi Arteaga    Implementar mensajes de alertas con WebSocket #Issue PHP 121
+
+*/
 Ext.chart.Chart.CHART_URL = '../../../lib/ext3/resources/charts.swf';
 Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
 
@@ -514,6 +523,7 @@ Ext.namespace('Phx','Phx.vista');
 Phx.CP=function(){
     var menu,hd,mainPanel,win_login,form_login,sw_auten=false,sw_auten_veri=false,estilo_vista;
     // para el filtro del menu
+    var host=localStorage.getItem("host");
     var filter,hiddenPkgs=[];
     var contNodo = 0;
     if (typeof window.localStorage != "undefined") {
@@ -588,6 +598,11 @@ Phx.CP=function(){
                 }
             }
         },
+        
+        setHost:function(host_){
+            localStorage.setItem("host", host_);
+        },
+
 
         // funcion que se ejcuta despues de una autentificacion exitosa
         // para dibujar los paneles de menu y mainpanel
@@ -854,7 +869,7 @@ Phx.CP=function(){
             }
 
             Phx.CP.evaluateHash(action,token_inicio);
-            //Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
+            Phx.CP.generarAlarma(Phx.CP.config_ini.id_usuario, Phx.CP.config_ini.id_funcionario);
 
 
             if(Phx.CP.config_ini.cont_interino*1 > 0){
@@ -953,6 +968,22 @@ Phx.CP=function(){
                     iconCls: 'x-status-valid'
                 })
             });
+            
+           /*
+            Ext.Ajax.request({
+                url:'../../sis_seguridad/control/Auten/getSesionHost',
+                params: {tipo:'prueba'},
+                success: function(resp){
+                            var resp_=Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+                            console.log('datos',resp);
+                            //host_=resp_.host;
+                            Phx.CP.setHost(resp_.host);
+
+                        },
+                failure: Phx.CP.conexionFailure
+            });*/
+
+            
 
             // ventana para el login
             win_login = new Ext.Window({
@@ -1281,8 +1312,8 @@ Phx.CP=function(){
             var myTimer = setInterval(function() {
                 Ext.Ajax.request({
                     url:'../../sis_parametros/control/Alarma/listarAlarma',
-                    params : {start:0,limit:100,sort:'alarm.fecha_reg',dir:"ASC",id_usuario:id_usu,id_funcionario:id_fun,minutos:1},
-                    success:function(resp) {
+                    params : {start:0, limit:100, sort:'alarm.fecha_reg', dir:"ASC", id_usuario:id_usu, id_funcionario:id_fun, minutos:1},
+                    success: function(resp) {
                         var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
                         for (var i = 0; i < reg.total;i++) {
                             if (reg.datos[i].titulo_correo != '') {
@@ -1305,15 +1336,19 @@ Phx.CP=function(){
 
         },
         notificar : function(titulo,mensaje) {
+        	console.log('titulo,mensaje', titulo,mensaje, Notification.permission)
             // Let's check if the browser supports notifications
-            if (!("Notification" in window)) {
+            if (!window.Notification) {
                 alert("This browser does not support desktop notification");
             }
 
             // Let's check if the user is okay to get some notification
             else if (Notification.permission === "granted") {
+            	
                 // If it's okay let's create a notification
                 var notification = new Notification(titulo,{icon:Phx.CP.config_ini.icono_notificaciones ,body: mensaje} );
+                console.log('entra aca', notification)
+                
                 document.getElementById('notification_sound').play();
                 notification.onclick = function(event) {
                     // Show user the screen.
@@ -1805,10 +1840,9 @@ Phx.CP=function(){
         },
 
 
-
         /***********************************************
          *  WebSocket por favio figueroa
-         ***************************************************/
+         ***********************************************/
 
         //sessionWebSocket conexionwWebSocket guiPXP evento
         webSocket: {
@@ -1816,15 +1850,26 @@ Phx.CP=function(){
             habilitado:'no',
             iniciarWebSocket : function () {
 
-
                 var hostname = window.location.hostname;
-                Phx.CP.webSocket.conn = new WebSocket('ws://'+hostname+':'+Phx.CP.config_ini.puerto_websocket+'?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
-                console.log(Phx.CP.webSocket.conn);
+                var hostname = window.location.hostname;
+                var protocol = window.location.protocol;
+                var ws;
+                var folder;
+                if(protocol === 'http:'){
+                    ws = 'ws';
+                    folder = '';
+                } else {
+                    ws = 'wss';
+                    folder = '/wss/kerp';
+                }
+                
+                Phx.CP.webSocket.conn = new WebSocket(ws+'://'+hostname+folder+':'+Phx.CP.config_ini.puerto_websocket+'?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
+                console.log(Phx.CP.webSocket.conn);  
+                
                 Phx.CP.webSocket.conn.onopen = function (e) {
                     console.log(e)
-                    console.log("Conecion establecida");
+                    console.log("Conexión establecida");
                     Phx.CP.webSocket.habilitado = 'si';
-
                     //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
 
                     //crear json
@@ -1834,104 +1879,67 @@ Phx.CP=function(){
 
                     });
                     Phx.CP.webSocket.conn.send(json);
-
-
-
-
                 };
 
                 Phx.CP.webSocket.conn.onmessage = function (e) {
-
                     var jsonData = JSON.parse(e.data);
-
                     //es el mensaje que mostrara a todos los que estan escuchando
                     var mensaje = jsonData.mensaje;
-
                     //obtenemos el data de la configuracion al lanzar el evento escucharEvento esos datos los tenemos aca
                     var data = jsonData.data;
-
-                    //console.log(data)
                     //vemos que tipo es si es una respuesta de un mensaje enviado anteriormente
-                    if (data.tipo == 'respuesta de envio'){
-
+                    if (data.tipo == 'respuesta de envio') {
                         console.log(mensaje);
-                    }else{ //o si es un mensaje que tiene que ejecutar en evento
-                        if(data.id_contenedor != undefined){
+                    } else { //o si es un mensaje que tiene que ejecutar en evento
+                        if(data.id_contenedor != undefined) {
                             var f ='Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"].'+data.metodo+'.call(Phx.CP.webSocket.scopeVistas["'+data.id_contenedor+'"],mensaje)';
                             eval(f);
-                        }else{
+                        } else {
                             var f = 'Phx.CP.webSocket.'+data.metodo+'(mensaje)';
                             eval(f);
                         }
                     }
-
                 };
 
                 Phx.CP.webSocket.conn.onerror = function (e,a) {
-
                     if(Phx.CP.webSocket.habilitado = 'no'){
                         console.log('webscket no esta escuchando contáctate con el administrador')
                     }
                 };
-
-
-
             },
 
             //x es el this de la vista es el scope que tendremos
             escucharEvento:function(evento,id_contenedor,metodo,scope){
-
-                console.log(scope)
                 this.scopeVistas[id_contenedor] = scope;
-
                 //crear json
                 var json = JSON.stringify({
                     data: {"id_usuario": Phx.CP.config_ini.id_usuario,"nombre_usuario":Phx.CP.config_ini.nombre_usuario ,"evento": evento,"id_contenedor":id_contenedor,"metodo":metodo},
                     tipo: "escucharEvento"
-
                 });
-
                 Phx.CP.webSocket.conn.send(json);
-
-                console.log(this.scopeVistas)
-
             },
             eleminarEvento:function (id_contenedor) {
-
                 var json = JSON.stringify({
                     data: {"id_contenedor":id_contenedor},
                     tipo: "eleminarEvento"
-
                 });
-
                 Phx.CP.webSocket.conn.send(json);
             },
             enviarMensajeUsuario:function(mensaje){
-                console.log('mensaje',mensaje);
-
+                console.log(mensaje)
                 if(mensaje.tipo_mensaje == "alert"){
                     alert(mensaje.mensaje);
-                }else{
-                    Phx.CP.notificar(mensaje.titulo,mensaje.mensaje);
-                    //si es que tuviera url
-                    if(mensaje.url != undefined || mensaje.url != null){
-                        //Phx.CP.notificar(mensaje.titulo,mensaje.mensaje);
-                        alert(mensaje.mensaje);
-                        window.open('../../../lib/lib_control/Intermediario.php?r='+mensaje.url+'&t='+new Date().toLocaleTimeString());
-                    }
+                }else{                    
+                    Phx.CP.notificar(mensaje.titulo, mensaje.mensaje);                    
                 }
             },
-            actualizarVistaUsuario:function(mensaje){
-
-
-                //alert('se actualizara');
+            actualizarVistaUsuario:function(mensaje) {
+                alert('se actualizara');
                 window.location.reload(true);
             },
             cierreSocket:function(mensaje){
-
                 //alert(mensaje.mensaje);
                 alert('ah ocurrido un error con el socket');
-
             },
 
         },

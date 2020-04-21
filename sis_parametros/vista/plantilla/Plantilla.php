@@ -5,6 +5,8 @@
 *@author  Gonzalo Sarmiento Sejas
 *@date 01-04-2013 21:49:11
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ISSUE		FECHA:		 	AUTOR:					DESCRIPCION:
+#132	   17/04/2020		manuel guerra		agregar los campos(nota debito de agencia/vi-fa) para los documentos	
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -599,7 +601,55 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:false
-		}
+        },//#132
+        {
+            config:{
+                name: 'sw_nota_debito_agencia',
+                fieldLabel: 'Nota de Debito Agencia',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_nota_debito_agencia',
+                type: 'list',
+                options: ['si','no']
+            },
+            grid:true,
+            egrid: true,
+            valorInicial: 'no',
+            form:true
+        },//#132
+        {
+            config:{
+                name: 'sw_cuenta_doc',
+                fieldLabel: 'Combo de Vi/Fa',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 80,
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender: true,
+                mode: 'local',
+                store: ['si','no']
+            },
+            type:'ComboBox',
+            id_grupo:1,
+            filters:{   pfiltro:'plt.sw_cuenta_doc',
+                type: 'list',
+                options: ['si','no']
+            },
+            grid:true,
+            egrid: true,
+            valorInicial: 'no',
+            form:true
+        }
 	],
 	
 	title:'Plantilla Documento',
@@ -623,7 +673,7 @@ Phx.vista.Plantilla=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_mod', type: 'string'},'sw_monto_excento',
 		'sw_descuento' ,'sw_autorizacion','sw_codigo_control','tipo_plantilla',
 		'sw_nro_dui','sw_ic','tipo_excento','valor_excento','tipo_informe',
-		'sw_qr','sw_nit','plantilla_qr', 'sw_estacion', 'sw_punto_venta', 'sw_codigo_no_iata'
+		'sw_qr','sw_nit','plantilla_qr', 'sw_estacion', 'sw_punto_venta', 'sw_codigo_no_iata','sw_nota_debito_agencia','sw_cuenta_doc'
 		
 	],
 	sortInfo:{

@@ -18,6 +18,10 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
+ISSUE		FECHA:		 	AUTOR:					DESCRIPCION:
+#132	   17/04/2020		manuel guerra		agregar los campos(nota debito de agencia/vi-fa) para los documentos		
+
+
  DESCRIPCION:	
  AUTOR:			
  FECHA:		
@@ -75,7 +79,9 @@ BEGIN
                             COALESCE(plt.plantilla_qr,''''),
                             plt.sw_estacion,
                             plt.sw_punto_venta,
-                            plt.sw_cod_no_iata
+                            plt.sw_cod_no_iata,
+                            plt.sw_nota_debito_agencia, --#132
+                            plt.sw_cuenta_doc   --#132
 						from param.tplantilla plt
 						inner join segu.tusuario usu1 on usu1.id_usuario = plt.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = plt.id_usuario_mod
@@ -136,4 +142,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

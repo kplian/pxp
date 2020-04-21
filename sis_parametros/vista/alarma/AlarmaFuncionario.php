@@ -5,6 +5,9 @@
  *@author  (fprudencio)
  *@date 18-11-2011 11:59:10
  *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ISSUE			FECHA			AUTHOR 					DESCRIPCION
+#124 Etr		01/04/2020		MMV						Eliminar todo los registros de alerta
+
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -24,6 +27,14 @@ header("content-type: text/javascript; charset=UTF-8");
 				handler : this.accesoDirect,
 				tooltip : '<b>Acceso Directo</b><br/>Direcciona a la interfaz con mas información'
 			});
+
+            this.addButton('eliminarTodo', { //#124
+                text : 'Eliminar todo',
+                iconCls : 'bdel',
+                disabled : false,
+                handler : this.onEliminarTodo,
+                tooltip : '<b>Eliminar Todo</b><br/>Elimina total alerta.'
+            });
 			
 			this.init();
 			
@@ -375,7 +386,29 @@ header("content-type: text/javascript; charset=UTF-8");
 
 		bdel : true, // boton para eliminar
 		bnew : false,
-		bsave : false// boton para eliminar
+		bsave : false,// boton para eliminar
+
+        onEliminarTodo :function () { //#124
+            if (window.confirm("Esta seguro de eliminar todo los registro?")) {
+                Phx.CP.loadingShow();
+                Ext.Ajax.request({
+                    url:'../../sis_parametros/control/Alarma/eliminarAlarmaTodo',
+                    params:{ id_usuario: Phx.CP.config_ini.id_usuario,
+                        id_funcionario: Phx.CP.config_ini.id_funcionario},
+                    success: this.success,
+                    failure: this.conexionFailure,
+                    timeout: this.timeout,
+                    scope: this
+                });
+            }
+        },
+        success: function(resp){
+            Phx.CP.loadingHide();
+            var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+            console.log(reg);
+            this.reload();
+        } //#124
+
 	})
 </script>
 
