@@ -62,7 +62,6 @@ class MODUoFuncionario extends MODbase{
 		$this->captura('separar_contrato','varchar'); //#136
 		//Ejecuta la funcion
 		$this->armarConsulta();
-		
 		$this->ejecutarConsulta();
 
 		return $this->respuesta;
