@@ -135,7 +135,6 @@ BEGIN
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
                             WHERE  UOFUNC.estado_reg !=''inactivo'' and '||v_filtro; --#107 v_filtro
 
-
                   v_id_padre:=v_parametros.id_uo;
                   v_consulta:=v_consulta||v_parametros.filtro;
                   v_consulta:=v_consulta || ' and UOFUNC.id_uo='|| v_id_padre;

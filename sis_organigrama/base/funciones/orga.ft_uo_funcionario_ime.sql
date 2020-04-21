@@ -220,7 +220,6 @@ AS $BODY$
 
       END;
 
-
     else
 
       raise exception 'No existe la transaccion: %',par_transaccion;
