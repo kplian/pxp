@@ -134,7 +134,6 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('id_uo_funcionario','id_uo_funcionario','integer');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
-				
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}

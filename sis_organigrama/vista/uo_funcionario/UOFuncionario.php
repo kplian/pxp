@@ -403,8 +403,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.mostrarComponente(this.Cmp.separar_contrato);//#136
 		Phx.vista.uo_funcionario.superclass.onButtonNew.call(this);
 		//seteamos un valor fijo que vienen de la vista maestro para id_gui 
-		
-		
+				
 	},onButtonEdit:function(){
 		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
 		this.ocultarComponente(this.Cmp.id_cargo);

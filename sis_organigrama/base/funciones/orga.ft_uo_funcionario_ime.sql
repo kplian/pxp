@@ -237,7 +237,6 @@ AS $BODY$
       v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
       raise exception '%',v_resp;
 
-
   END;
 $BODY$;
 
