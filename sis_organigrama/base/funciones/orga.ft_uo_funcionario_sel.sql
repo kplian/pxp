@@ -1,13 +1,18 @@
---------------- SQL ---------------
+-- FUNCTION: orga.ft_uo_funcionario_sel(integer, integer, character varying, character varying)
 
-CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+-- DROP FUNCTION orga.ft_uo_funcionario_sel(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_sel(
+	par_administrador integer,
+	par_id_usuario integer,
+	par_tabla character varying,
+	par_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
 /**************************************************************************
  FUNCION:         ORGA.ft_uo_funcionario_sel
  DESCRIPCIÓN:  listado de uo
@@ -33,6 +38,7 @@ $body$
  #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario
  #94			12/12/2019		  APS		  Adición del filtro de fucnionarios por gestion y periodo
  #107           16/01/2020        JUAN        Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+ #136			21.04.2020		  MZM		  Adicion de campo separar_contrato 
 ***************************************************************************/
 
 
@@ -117,6 +123,7 @@ BEGIN
                                   UOFUNC.tipo,
                                   UOFUNC.carga_horaria,
                 				  UOFUNC.prioridad --#81
+                                  ,UOFUNC.separar_contrato --#136
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
@@ -309,9 +316,7 @@ EXCEPTION
 
 
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$;
+
+ALTER FUNCTION orga.ft_uo_funcionario_sel(integer, integer, character varying, character varying)
+    OWNER TO postgres;

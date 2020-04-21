@@ -18,6 +18,7 @@
 ISSUE		FECHA			AUTHOR				DESCRIPCION
 
  * #107    16/01/2020      JUAN            Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+ * #136	   21.04.2020		MZM				Adicion de campo separar_contrato
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -326,7 +327,30 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				
 				grid:true,
 				form:true
-		}
+	},
+		{
+		config:{
+			name: 'separar_contrato',
+			fieldLabel: 'Separar Contrato',
+			allowBlank: false,
+			emptyText:'Si existe continuidad con contrato previo, pero es necesario establecer como inicio para determinar primer contrato al cambio de ODT/planta o variacion de carga horaria',
+       		typeAhead: true,
+       		triggerAction: 'all',
+       		lazyRender:true,
+       		mode: 'local',
+			gwidth: 100,
+			store:['no','si']
+		},
+			type:'ComboBox',
+			filters:{	
+       		         type: 'list',
+       				 options: ['no','si'],
+       		},
+       		valorInicial: 'no',
+			id_grupo:1,
+			grid:true,
+			form:true
+	}
     ],
 
 
@@ -358,7 +382,9 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
              'fecha_reg',
              'fecha_mod','prioridad',//#81
              'USUREG',
-             'USUMOD','correspondencia','carga_horaria', 'desc_funcionario2'],  //#80
+             'USUMOD','correspondencia','carga_horaria', 'desc_funcionario2'//#80
+             ,'separar_contrato'//#136
+             ],  
 			
 	sortInfo:{
 		field: 'desc_funcionario2', //#80
@@ -374,6 +400,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.mostrarComponente(this.Cmp.tipo);
 		this.ocultarComponente(this.Cmp.fecha_finalizacion);
 		this.ocultarComponente(this.Cmp.observaciones_finalizacion);
+		this.mostrarComponente(this.Cmp.separar_contrato);//#136
 		Phx.vista.uo_funcionario.superclass.onButtonNew.call(this);
 		//seteamos un valor fijo que vienen de la vista maestro para id_gui 
 		
@@ -385,6 +412,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.ocultarComponente(this.Cmp.fecha_asignacion);
 		this.ocultarComponente(this.Cmp.tipo);
 		this.mostrarComponente(this.Cmp.fecha_finalizacion);
+		this.mostrarComponente(this.Cmp.separar_contrato);//#136
 		this.getComponente('fecha_finalizacion').visible=true;
 		Phx.vista.uo_funcionario.superclass.onButtonEdit.call(this);
 		
@@ -393,14 +421,13 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			this.Cmp.observaciones_finalizacion.reset();
 			this.Cmp.observaciones_finalizacion.allowBlank = true;
 			this.ocultarComponente(this.Cmp.observaciones_finalizacion);
-			
+			this.ocultarComponente(this.Cmp.separar_contrato);//#136
+			this.Cmp.separar_contrato.setValue('');//#136
 			
 			this.Cmp.fecha_finalizacion.reset();
 			this.Cmp.fecha_finalizacion.allowBlank = true;
 			//this.ocultarComponente(this.Cmp.fecha_finalizacion);
-			
-			
-			
+						
 		} else {
 			
 			this.Cmp.observaciones_finalizacion.allowBlank = false;

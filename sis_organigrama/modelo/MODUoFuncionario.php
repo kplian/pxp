@@ -15,6 +15,7 @@
  #32          18/07/2019      RAC KPLIAN      añade carga horaria
  #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad
  #94          12/12/2019      APS             Filtro de funcionarios por gestion y periodo
+ #136		  21.04.2020	  MZM			  Adicion de campo separar_contrato
  */
 class MODUoFuncionario extends MODbase{
 	
@@ -58,6 +59,7 @@ class MODUoFuncionario extends MODbase{
 		$this->captura('tipo','varchar');
 		$this->captura('carga_horaria','integer'); //#32
 		$this->captura('prioridad','numeric'); //#81
+		$this->captura('separar_contrato','varchar'); //#136
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		
@@ -86,7 +88,7 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('carga_horaria','carga_horaria','integer'); //#32
 		$this->setParametro('prioridad','prioridad','numeric'); //#81
-		
+		$this->setParametro('separar_contrato','separar_contrato','varchar'); //#136
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -112,7 +114,7 @@ class MODUoFuncionario extends MODbase{
 		$this->setParametro('fecha_documento_asignacion','fecha_documento_asignacion','date');
 		$this->setParametro('carga_horaria','carga_horaria','integer'); //#32
 		$this->setParametro('prioridad','prioridad','numeric'); //#81
-		
+		$this->setParametro('separar_contrato','separar_contrato','varchar'); //#136
 	
 		//Ejecuta la instruccion
 		$this->armarConsulta();
