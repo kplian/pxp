@@ -543,6 +543,16 @@ INSERT INTO param.tgrupo_idioma ("id_usuario_reg", "codigo", "nombre", "tipo")
 VALUES 
   (1, E'BASICO', E'Grupo de traducciones basicas', E'comun');
 
+
+select pxp.f_insert_tgui ('Traducciones', 'Grupos de traducciones', 'TRAD', 'si', 49, '', 3, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Lenguajes', 'Lenguajes', 'LEN', 'si', 1, 'sis_parametros/vista/lenguaje/Lenguaje.php', 4, '', 'Lenguaje', 'PARAM');
+select pxp.f_insert_tgui ('Agrupadores', 'Agrupadores de traducciones', 'GRI', 'si', 2, 'sis_parametros/vista/grupo_idioma/GrupoIdioma.php', 4, '', 'GrupoIdioma', 'PARAM');
+select pxp.f_insert_tgui ('Traducciones', 'Traducciones', 'PLCLV', 'si', 3, 'sis_parametros/vista/palabra_clave/PalabraClave.php', 4, '', 'PalabraClave', 'PARAM');
+
+select pxp.f_insert_testructura_gui ('TRAD', 'PARAM');
+select pxp.f_insert_testructura_gui ('LEN', 'TRAD');
+select pxp.f_insert_testructura_gui ('GRI', 'TRAD');
+select pxp.f_insert_testructura_gui ('PLCLV', 'TRAD');
   
 /***********************************F-DAT-RAC-PARAM-0-20/04/2020*****************************************/
 
