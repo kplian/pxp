@@ -1473,3 +1473,32 @@ select pxp.f_insert_testructura_gui ('ANTIG', 'OTROS');
 alter table param.tep
     add CONSTRAINT contraint_fin_reg_prog_proy UNIQUE (id_financiador, id_regional, id_prog_pory_acti)
 /***********************************F-DEP-VAN-PARAM-1-20/02/2020****************************************/
+
+
+/***********************************I-DEP-RAC-PARAM-133-20/04/2020****************************************/
+
+ALTER TABLE param.ttraduccion
+  ADD CONSTRAINT ttraduccion__id_lenguaje_fk FOREIGN KEY (id_lenguaje)
+    REFERENCES param.tlenguaje(id_lenguaje)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+--------------- SQL ---------------
+
+ALTER TABLE param.ttraduccion
+  ADD CONSTRAINT ttraduccion__id_palabra_clave_fk FOREIGN KEY (id_palabra_clave)
+    REFERENCES param.tpalabra_clave(id_palabra_clave)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tpalabra_clave
+  ADD CONSTRAINT tpalabra_clave__id_grupo_idioma_fk FOREIGN KEY (id_grupo_idioma)
+    REFERENCES param.tgrupo_idioma(id_grupo_idioma)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    NOT DEFERRABLE;
+/***********************************F-DEP-RAC-PARAM-133-20/04/2020****************************************/
