@@ -420,8 +420,6 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			this.Cmp.observaciones_finalizacion.reset();
 			this.Cmp.observaciones_finalizacion.allowBlank = true;
 			this.ocultarComponente(this.Cmp.observaciones_finalizacion);
-			this.ocultarComponente(this.Cmp.separar_contrato);//#136
-			this.Cmp.separar_contrato.setValue('');//#136
 			
 			this.Cmp.fecha_finalizacion.reset();
 			this.Cmp.fecha_finalizacion.allowBlank = true;
@@ -431,6 +429,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			
 			this.Cmp.observaciones_finalizacion.allowBlank = false;
 			this.mostrarComponente(this.Cmp.observaciones_finalizacion);
+			
+			
 		}
 	},
 	
@@ -530,7 +530,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			this.Cmp.id_cargo.tdata.fecha = this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y');
 			this.Cmp.id_funcionario.tdata.fecha = this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y');
 			this.Cmp.id_funcionario.modificado = true;
-			this.Cmp.id_cargo.modificado = true;			
+			this.Cmp.id_cargo.modificado = true;
+			this.Cmp.separar_contrato.modificado = true;//#136					
 		},this);
 		
 		this.Cmp.id_cargo.on('select', function (c,r,i) {
