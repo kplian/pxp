@@ -5,6 +5,14 @@
 *@author  (favio.figueroa)
 *@date 16-06-2017 21:47:08
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+ * 
+ 
+
+HISTORIAL DE MODIFICACIONES:
+   	
+ ISSUE    FORK			FECHA:		      AUTOR                 DESCRIPCION
+#0		BOA		 6-06-2017		      favio.figueroa	Creacion
+#121    ETR          19/02/2020       Rensi Arteaga    Implementar mensajes de alertas con WebSocket #Issue PHP 121
 */
 
 class ACTWsmensaje extends ACTbase{    
@@ -25,12 +33,13 @@ class ACTWsmensaje extends ACTbase{
 	}
 				
 	function insertarWsmensaje(){
-		/*$this->objFunc=$this->create('MODWsmensaje');
+			
+		$this->objFunc=$this->create('MODWsmensaje');
 		if($this->objParam->insertar('id_wsmensaje')){
 			$this->res=$this->objFunc->insertarWsmensaje($this->objParam);			
 		} else{			
 			$this->res=$this->objFunc->modificarWsmensaje($this->objParam);
-		}*/
+		}
 
 		$evento = "enviarMensajeUsuario";
 		if($this->objParam->getParametro('tipo') == "alert" || $this->objParam->getParametro('tipo') == "notificacion"){
@@ -46,7 +55,7 @@ class ACTWsmensaje extends ACTbase{
             "id_usuario" => $this->objParam->getParametro('id_usuario'),
             "destino" => $this->objParam->getParametro('destino'),
             "evento" => $evento,
-			"url" => 'url_prueba'
+			"url" => ''
         );
 
         $send = array(
@@ -55,14 +64,9 @@ class ACTWsmensaje extends ACTbase{
         );
 
         $usuarios_socket = $this->dispararEventoWS($send);
-
         $usuarios_socket =json_decode($usuarios_socket, true);
 
-        //var_dump($usuarios_socket);
-
-
-
-		//$this->res->imprimirRespuesta($this->res->generarJson());
+        $this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
 	function eliminarWsmensaje(){

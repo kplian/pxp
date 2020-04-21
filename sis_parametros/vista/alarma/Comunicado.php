@@ -3,33 +3,36 @@
 *@package pXP
 *@file gen-Alarma.php
 *@author  (rac)
-*@date 18-11-2011 11:59:10
-*@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
-*/
+*@date 2015
+*@description envio de comunicados por correo
+
+HISTORIAL DE MODIFICACIONES:
+   	
+ ISSUE        FORK			FECHA:		      AUTOR                 DESCRIPCION
+#0			BOA  		2015             RAC			creacion	
+#120        ETR         17/03/2020       RAC            Arreglos pequeños a interface de comunicados #120
+
+ */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{
-    
+Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{    
     fheight:'80%',
-    fwidth: '80%',
-	
+    fwidth: '80%',	
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.Comunicado.superclass.constructor.call(this,config);
 		this.init();
 		this.store.baseParams={vista: 'comunicado'};
-		this.load( { params: { start:0, limit:50 }});
-		
+		this.load( { params: { start:0, limit:50 }});		
 		this.addButton('btnFinalizar', {
 				text : 'Finalizar',
 				iconCls : 'balert',
 				disabled : true,
 				handler : this.finalizar,
 				tooltip : '<b>Finalizar</b><br/>Finalizar el registro del comunicado, (los correos electrónicos entran en cola para ser enviados)'
-		});
-		
+		});		
 		
 	},
 			
@@ -47,7 +50,9 @@ Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{
 		
 		{
    			config:{
-       				name:'id_uos',
+       				name:'id_uos',       				
+       				fieldLabel: 'Destinatarios',
+       				qtip: 'Se puede seleccionar varias gerencias destino',
        			    tinit:false,
        			    resizable:true,
        			    tasignacion:false,
@@ -261,33 +266,27 @@ Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{
 						failure : this.conexionFailure,
 						timeout : this.timeout,
 						scope : this
-					});
-				
+					});				
 			 }
 			    
 	},
-	preparaMenu : function(n) {
-		    
-		    var data = this.getSelectedData();
-			var tb = Phx.vista.Comunicado.superclass.preparaMenu.call(this);
-			
-			if (data['estado_comunicado'] == 'borrador') {
-				this.getBoton('btnFinalizar').enable();
-				this.getBoton('edit').enable();
-			}
-			else{
-				this.getBoton('btnFinalizar').disable();
-				this.getBoton('edit').disable();
-			}
-			
-			
-			return tb;
+	preparaMenu : function(n) {		    
+	    var data = this.getSelectedData();
+		var tb = Phx.vista.Comunicado.superclass.preparaMenu.call(this);
+		
+		if (data['estado_comunicado'] == 'borrador') {
+			this.getBoton('btnFinalizar').enable();
+			this.getBoton('edit').enable();
+		}
+		else{
+			this.getBoton('btnFinalizar').disable();
+			this.getBoton('edit').disable();
+		}
+		return tb;
 	},
 	liberaMenu : function() {
-			var tb = Phx.vista.Comunicado.superclass.liberaMenu.call(this);
-			
-			this.getBoton('btnFinalizar').disable();
-			
+		var tb = Phx.vista.Comunicado.superclass.liberaMenu.call(this);
+		this.getBoton('btnFinalizar').disable();
 	},
 	
 	sortInfo:{
@@ -296,8 +295,5 @@ Phx.vista.Comunicado=Ext.extend(Phx.gridInterfaz,{
 	},
 	bdel:true,
 	bsave:true
-	}
-)
+})
 </script>
-		
-		
