@@ -525,3 +525,24 @@ select pxp.f_insert_tgui ('Antiguedad', 'Registro parametros de antiguedad', 'AN
 select pxp.f_insert_tgui ('Variable Global', 'Variable Global', 'VARGLOB', 'si', 1, 'sis_parametros/vista/variable_global/VariableGlobal.php', 3, '', 'VariableGlobal', 'PARAM');
 select pxp.f_insert_testructura_gui ('VARGLOB', 'OTROS');
 /***********************************F-DAT-JRR-PARAM-0-26/11/2019*****************************************/
+
+
+
+/***********************************I-DAT-RAC-PARAM-0-20/04/2020*****************************************/
+
+
+INSERT INTO param.tlenguaje ("id_usuario_reg", "codigo", "nombre", "defecto")
+VALUES 
+  (1, E'es', E'Español', E'si'),
+  (1, E'en', E'English', E'no'),
+  (1, E'fr', E'Français', E'no'),
+  (1, E'pt', E'Potugues', E'no');
+
+
+INSERT INTO param.tgrupo_idioma ("id_usuario_reg", "codigo", "nombre", "tipo")
+VALUES 
+  (1, E'BASICO', E'Grupo de traducciones basicas', E'comun');
+
+  
+/***********************************F-DAT-RAC-PARAM-0-20/04/2020*****************************************/
+
