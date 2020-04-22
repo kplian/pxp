@@ -23,6 +23,8 @@ Phx.vista.Lenguaje=Ext.extend(Phx.gridInterfaz,{
         //llama al constructor de la clase padre
         Phx.vista.Lenguaje.superclass.constructor.call(this,config);
         this.init();
+        this.addButton('gen_len',{text:'Generar Archivo JSON',iconCls: 'blist', disabled:false, handler: this.generar_codigo, tooltip: '<b>Generar Archivo JSON</b><br/>Genera el archivo de traducciones para el idioma seleccionado'});
+	
         this.load({params:{start:0, limit:this.tam_pag}})
     },
             
@@ -227,10 +229,43 @@ Phx.vista.Lenguaje=Ext.extend(Phx.gridInterfaz,{
         field: 'id_lenguaje',
         direction: 'ASC'
     },
+
+    generar_codigo: function() { 
+        var data=this.sm.getSelected().data;
+        Phx.CP.loadingShow();
+        Ext.Ajax.request({            
+            url :'../../sis_parametros/control/Lenguaje/generarArchivo',
+            params: {'id_lenguaje': data.id_lenguaje, codigo_lenguaje:  data.codigo},
+            success : this.successExport,
+            failure: this.conexionFailure,
+            timeout:this.timeout,
+            scope:this
+        });
+			
+    },
+    successExport:function(resp){
+		Phx.CP.loadingHide();
+        var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+        var nomRep = objRes.ROOT.detalle.archivo_generado;
+        if(Phx.CP.config_ini.x==1){  			
+        	nomRep = Phx.CP.CRIPT.Encriptar(nomRep);
+        }
+        window.open('../../../reportes_generados/'+nomRep+'?t='+new Date().toLocaleTimeString())
+	},    
+    preparaMenu:function(tb){			
+        this.getBoton('gen_len').enable(); 
+        Phx.vista.Lenguaje.superclass.preparaMenu.call(this,tb)
+        return tb
+    },
+    liberaMenu:function(tb){        
+        this.getBoton('gen_len').disable();
+        Phx.vista.Lenguaje.superclass.liberaMenu.call(this,tb);
+        return tb
+    },
+
     bdel:true,
     bsave:true
-    }
-)
+})
 </script>
         
         
