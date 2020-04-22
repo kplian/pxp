@@ -104,6 +104,27 @@ class MODLenguaje extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+
+    	
+	function obtenerTraducciones(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='param.ft_lenguaje_ime';
+		$this->transaccion='PM_GETLEN_JSON';
+		$this->tipo_procedimiento='IME';
+			
+		//Define los parametros para la funcion
+        $this->setParametro('id_lenguaje','id_lenguaje','int4');
+        $this->setParametro('codigo_lenguaje','codigo_lenguaje','varchar');        
+        
+		//Ejecuta la instruccion
+		$this->armarConsulta();				
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
+
+
+
+    
             
 }
 ?>

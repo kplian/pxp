@@ -2749,3 +2749,13 @@ ALTER TABLE param.ttraduccion
   ALTER COLUMN id_lenguaje SET STATISTICS 0;
 
 /***********************************F-SCP-RAC-PARAM-133-20/04/2020****************************************/
+
+
+/***********************************I-SCP-RAC-PARAM-133-21/04/2020****************************************/
+
+ALTER TABLE param.tpalabra_clave
+  ADD CONSTRAINT tpalabra_clave_idx 
+    UNIQUE (codigo, id_grupo_idioma) NOT DEFERRABLE;
+
+    
+/***********************************F-SCP-RAC-PARAM-133-21/04/2020****************************************/

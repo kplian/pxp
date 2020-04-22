@@ -44,7 +44,7 @@ class ACTTraduccion extends ACTbase{
     }
                         
     function eliminarTraduccion(){
-        	$this->objFunc=$this->create('MODTraduccion');    
+        $this->objFunc=$this->create('MODTraduccion');    
         $this->res=$this->objFunc->eliminarTraduccion($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }

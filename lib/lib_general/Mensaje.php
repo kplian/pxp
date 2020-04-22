@@ -663,7 +663,7 @@ class Mensaje
 						     //echo $tmp[$i].".......</br>";
 						     
 						} else if(trim($tmp[$i])=='id'){
-							//ofucasmos todas las variables que comiensen con id_
+							//ofucasmos todas las variables iguales a id 
 							$this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
 							//echo $tmp[$i].".......</br>".$f[$tmp[$i]];
 						}
@@ -696,9 +696,9 @@ class Mensaje
 							$this->datos[$tmp[$i]] = $this->ofuscar_array($this->datos[$tmp[$i]]);
 						} else if(strpos($aux,'id_')!==false){
 							//ofucasmos todas las variables que comiensen con id_							
-						     $this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);
-						} elseif(strpos($aux,'id')!==false){
-							//ofucasmos todas las variables que comiensen con id_
+						     $this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);						
+						} else if(trim($tmp[$i])=='id'){
+							//ofucasmos todas las variables iguales a id 
 							$this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);
 						}
 						//RAC 5/5/2014
@@ -791,10 +791,10 @@ class Mensaje
 			 	$this->ofuscar_array($f);
 			 } else {
 			 	if(strpos($aux,'id_')!==false){
-				//ofucasmos todas las variables que comiensen con id_							
-			     $arreglo[$key] = $this->ofuscar($f);
-				} elseif(strpos($aux,'id')!==false){
-					//ofucasmos todas las variables que comiensen con id_
+				    //ofucasmos todas las variables que comiensen con id_							
+			        $arreglo[$key] = $this->ofuscar($f);				
+				} else if(trim($key)=='id'){
+					//ofucasmos todas las variables iguales a id 
 					$arreglo[$key] = $this->ofuscar($f);
 				}
 				//RAC 5/5/2014
