@@ -2748,6 +2748,16 @@ ALTER TABLE param.ttraduccion
 
 /***********************************F-SCP-RAC-PARAM-133-20/04/2020****************************************/
 
+
+/***********************************I-SCP-RAC-PARAM-133-21/04/2020****************************************/
+
+ALTER TABLE param.tpalabra_clave
+  ADD CONSTRAINT tpalabra_clave_idx 
+    UNIQUE (codigo, id_grupo_idioma) NOT DEFERRABLE;
+
+    
+/***********************************F-SCP-RAC-PARAM-133-21/04/2020****************************************/
+
 /***********************************I-SCP-MGM-PARAM-1-17/04/2020****************************************/
 ALTER TABLE param.tplantilla
   ADD COLUMN sw_cuenta_doc VARCHAR(3);
