@@ -5,6 +5,12 @@
 *@author  Gonzalo Sarmiento Sejas
 *@date 01-04-2013 21:49:11
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+
+ISSUE            FECHA:		      AUTOR                 DESCRIPCION
+   
+#132	   17/04/2020		manuel guerra		agregar los campos(nota debito de agencia/vi-fa) para los documentos	
+
+
 */
 
 class MODPlantilla extends MODbase{
@@ -50,9 +56,8 @@ class MODPlantilla extends MODbase{
 		$this->captura('sw_estacion','varchar');
 		$this->captura('sw_punto_venta','varchar');
 		$this->captura('sw_codigo_no_iata','varchar');
-
-		
-		
+		$this->captura('sw_nota_debito_agencia','varchar');	
+		$this->captura('sw_cuenta_doc','varchar');			
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -90,7 +95,8 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_estacion','sw_estacion','varchar');
 		$this->setParametro('sw_punto_venta','sw_punto_venta','varchar');
 		$this->setParametro('sw_codigo_no_iata','sw_codigo_no_iata','varchar');
-
+		$this->setParametro('sw_nota_debito_agencia','sw_nota_debito_agencia','varchar');
+		$this->setParametro('sw_cuenta_doc','sw_cuenta_doc','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -129,7 +135,8 @@ class MODPlantilla extends MODbase{
 		$this->setParametro('sw_estacion','sw_estacion','varchar');
 		$this->setParametro('sw_punto_venta','sw_punto_venta','varchar');
 		$this->setParametro('sw_codigo_no_iata','sw_codigo_no_iata','varchar');
-
+		$this->setParametro('sw_nota_debito_agencia','sw_nota_debito_agencia','varchar');
+		$this->setParametro('sw_cuenta_doc','sw_cuenta_doc','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

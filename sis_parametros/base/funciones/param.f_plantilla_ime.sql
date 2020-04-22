@@ -18,6 +18,11 @@ $body$
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 
+ISSUE		FECHA:		 	AUTOR:					DESCRIPCION:
+#132	   17/04/2020		manuel guerra		agregar los campos(nota debito de agencia/vi-fa) para los documentos		
+
+
+
  DESCRIPCION:	
  AUTOR:			
  FECHA:		
@@ -88,10 +93,9 @@ BEGIN
                 tipo_informe,
                 sw_qr,
                 sw_nit,
-                plantilla_qr
-                
-                
-                
+                plantilla_qr,
+                sw_nota_debito_agencia,--#132
+                sw_cuenta_doc  --#132                              
           	) values(
 			'activo',
 			v_parametros.desc_plantilla,
@@ -115,7 +119,9 @@ BEGIN
             v_parametros.tipo_informe,
             v_parametros.sw_qr,
             v_parametros.sw_nit,
-            v_parametros.plantilla_qr
+            v_parametros.plantilla_qr,
+            v_parametros.sw_nota_debito_agencia,--#132
+            v_parametros.sw_cuenta_doc  --#132
 		)RETURNING id_plantilla into v_id_plantilla;
 			
 			--Definicion de la respuesta
@@ -178,7 +184,9 @@ BEGIN
               plantilla_qr = v_parametros.plantilla_qr,
               sw_estacion = v_parametros.sw_estacion,
               sw_punto_venta = v_parametros.sw_punto_venta,
-              sw_cod_no_iata = v_parametros.sw_codigo_no_iata
+              sw_cod_no_iata = v_parametros.sw_codigo_no_iata,
+              sw_nota_debito_agencia=v_parametros.sw_nota_debito_agencia,--#132
+              sw_cuenta_doc = v_parametros.sw_cuenta_doc--#132
 			where id_plantilla=v_parametros.id_plantilla;
                
 			--Definicion de la respuesta
@@ -234,4 +242,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
