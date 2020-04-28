@@ -1,11 +1,18 @@
-CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+-- FUNCTION: orga.ft_uo_funcionario_ime(integer, integer, character varying, character varying)
+
+-- DROP FUNCTION orga.ft_uo_funcionario_ime(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.ft_uo_funcionario_ime(
+	par_administrador integer,
+	par_id_usuario integer,
+	par_tabla character varying,
+	par_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
   /**************************************************************************
    FUNCION: 		orga.ft_uofunc_ime
    DESCRIPCIÓN:   modificaciones de funciones
@@ -19,6 +26,7 @@ $body$
    #25        25/06/2019        EGS               Se elimino validacion innecesaria al modidicar al uo_funcionario
    #32 ETR    17/07/2019        RAC KPLIAN        considerar carga horaria configurada para el funcionario en orga.tuo_funcionario
    #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario	
+   #136			21.04.2020		  MZM		  Adicion de campo separar_contrato en uo_funcionario	
    ***************************************************************************/
   DECLARE
 
@@ -93,6 +101,7 @@ $body$
            tipo,                        
            carga_horaria
            ,prioridad --#81
+           ,separar_contrato --#136
         )
        values(
            v_parametros.id_uo, 		
@@ -107,6 +116,7 @@ $body$
            v_parametros.tipo,
            v_parametros.carga_horaria --#32
            ,v_parametros.prioridad --#81
+           ,v_parametros.separar_contrato --#136
          )
         RETURNING id_uo_funcionario INTO v_id_uo_funcionario;
 
@@ -162,6 +172,7 @@ $body$
           fecha_finalizacion = v_parametros.fecha_finalizacion,
           carga_horaria = v_parametros.carga_horaria --#32
           ,prioridad=v_parametros.prioridad --#81
+          ,separar_contrato=v_parametros.separar_contrato --#136          
         where id_uo=v_parametros.id_uo
               and id_uo_funcionario=v_parametros.id_uo_funcionario;
 
@@ -209,7 +220,6 @@ $body$
 
       END;
 
-
     else
 
       raise exception 'No existe la transaccion: %',par_transaccion;
@@ -226,7 +236,8 @@ $body$
       v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
       raise exception '%',v_resp;
 
-
   END;
-$body$
-LANGUAGE 'plpgsql';
+$BODY$;
+
+ALTER FUNCTION orga.ft_uo_funcionario_ime(integer, integer, character varying, character varying)
+    OWNER TO postgres;
