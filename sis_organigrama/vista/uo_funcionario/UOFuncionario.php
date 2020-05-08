@@ -240,7 +240,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		config:{
 			fieldLabel: "Fecha Finalizacion",
 			name: 'fecha_finalizacion',
-   		    allowBlank: false,
+   		    allowBlank: true,
 			anchor: '80%',
 			gwidth: 100,
 			format: 'd/m/Y', 
