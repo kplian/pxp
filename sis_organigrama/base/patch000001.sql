@@ -1023,9 +1023,16 @@ ALTER TABLE orga.tuo_funcionario
   ADD COLUMN prioridad NUMERIC;
 /*****************************F-SCP-MZM-ORGA-81-11/11/2019*************/
 
+/*****************************I-SCP-MZM-ORGA-136-21/04/2020*************/
+ALTER TABLE orga.tuo_funcionario
+  ADD COLUMN separar_contrato VARCHAR(2);
 
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN separar_contrato SET DEFAULT 'no';
 
-
+COMMENT ON COLUMN orga.tuo_funcionario.separar_contrato
+IS 'Valor por defecto ''no'', cambia a si cuando al no haber periodo de descanso entre contratos, existe cambio de tipo_contrato (planta-odt) o modificacion a carga_horaria.';
+/*****************************F-SCP-MZM-ORGA-136-21/04/2020*************/
 
 
 

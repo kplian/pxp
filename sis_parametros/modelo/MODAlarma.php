@@ -7,7 +7,9 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
  	ISSUE			FECHA			AUTHOR 					DESCRIPCION
 	#17	EndeEtr		22/05/2019		EGS						inactivacion de alertas deacuerdo a dias asignados
-*/
+  	#124 Etr		01/04/2020		MMV						Eliminar todo los registros de alerta
+
+ */
 class MODAlarma extends MODbase{
 	
 	function __construct(CTParametro $pParam){
@@ -467,7 +469,23 @@ class MODAlarma extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+    function eliminarAlarmaTodo(){ //#124
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_alarma_ime';
+        $this->transaccion='PM_ALATO_ELI';
+        $this->tipo_procedimiento='IME';
 
+        //Define los parametros para la funcion
+        $this->setParametro('id_usuario','id_usuario','int4');
+        $this->setParametro('id_funcionario','id_funcionario','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 
 }
 ?>

@@ -5,7 +5,10 @@
 *@author  (fprudencio)
 *@date 18-11-2011 11:59:10
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
-*/
+ISSUE			FECHA			AUTHOR 					DESCRIPCION
+#124 Etr		01/04/2020		MMV						Eliminar todo los registros de alerta
+
+ */
 
 class ACTAlarma extends ACTbase{    
 			
@@ -155,6 +158,11 @@ class ACTAlarma extends ACTbase{
 		echo session_id();
 	}
 
+    function eliminarAlarmaTodo(){ //#124
+        $this->objFunc=$this->create('MODAlarma');
+        $this->res=$this->objFunc->eliminarAlarmaTodo();
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 
 
 			

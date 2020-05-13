@@ -5,6 +5,13 @@
 *@author  (favio.figueroa)
 *@date 16-06-2017 21:47:08
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ * 
+
+HISTORIAL DE MODIFICACIONES:
+   	
+ ISSUE    FORK		FECHA:		      AUTOR                 DESCRIPCION
+#0		BOA		 6-06-2017		  favio.figueroa	Creacion
+#121    ETR      19/02/2020       Rensi Arteaga    Implementar mensajes de alertas con WebSocket #Issue PHP 121
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -17,18 +24,12 @@ Phx.vista.Wsmensaje=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.Wsmensaje.superclass.constructor.call(this,config);
 		this.init();
-
         this.Cmp.id_usuario.hide();
-
-        this.Cmp.destino.on('select', function(combo, record, index){
-
-            if(record.json[0] == 'Unico'){
-
+        this.Cmp.destino.on('select', function(combo, record, index) {
+            if(record.json[0] == 'Unico') {
                 this.Cmp.id_usuario.show();
-
-            }else{
+            } else {
                 this.Cmp.id_usuario.hide();
-
             }
         },this);
 
@@ -64,7 +65,7 @@ Phx.vista.Wsmensaje=Ext.extend(Phx.gridInterfaz,{
             filters: {pfiltro: 'suc.estado', type: 'string'},
             id_grupo: 1,
             form: true,
-            grid: true
+            grid: false
         },
 
         {
@@ -126,7 +127,7 @@ Phx.vista.Wsmensaje=Ext.extend(Phx.gridInterfaz,{
 			type: 'ComboBox',
 			id_grupo: 0,
 			filters: {pfiltro: 'usu.nombre',type: 'string'},
-			grid: true,
+			grid: false,
 			form: true
 		},
 
