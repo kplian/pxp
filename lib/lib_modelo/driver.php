@@ -1,10 +1,22 @@
 <?php
+/*************************************************************************************
+ Nombre: ACTAuten.php
+ Proposito: Verificar las credenciales de usario y validar la sesion si son correctas 
+ Autor:	Kplian (RCM)
+ Fecha:	12/04/2009
+
+ 
+HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA       AUTOR           DESCRIPCION
+#133               22-04-2020     RAC            recibe variable de lenguaje  
+*****************************************************************************************/
 class driver
 {
 	//Definicion de datos bosicos para llamadas s parocedimeintos almacenados
 	protected $id_usuario;
 	protected $id_usuario_ai;
 	protected $nom_usuario_ai;
+	protected $lenguaje_usu; //#133
 	protected $ip;
 	protected $mac;
 	protected $procedimiento;
@@ -96,7 +108,11 @@ class driver
 
         if(isset($_SESSION["_NOM_USUARIO_AI"])){
                 $this->nom_usuario_ai=$_SESSION["_NOM_USUARIO_AI"];
-        }
+		}
+		//#133		
+		if(isset($_SESSION["ss_lenguaje_usu"])){
+			$this->lenguaje_usu = $_SESSION["ss_lenguaje_usu"];
+	    }
 
 		if (getenv('HTTP_CLIENT_IP')){
 		    $this->ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -385,9 +401,15 @@ class driver
         }
         else{
             $this->consulta.="'".$this->nom_usuario_ai."',";
+		}
+		
+		//#133
+		if($this->null($this->lenguaje_usu)){
+            $this->consulta.='NULL::varchar,';
         }
-
-
+        else{
+            $this->consulta.="'".$this->lenguaje_usu."',";
+		}
 
 		$this->consulta.="'".session_id()."',";
 		$this->consulta.=getmypid().',';
@@ -545,7 +567,15 @@ class driver
         }
         else{
             $this->consulta.="'".$this->nom_usuario_ai."',";
+		}
+		
+		//#133
+		if($this->null($this->lenguaje_usu)){
+            $this->consulta.='NULL::varchar,';
         }
+        else{
+            $this->consulta.="'".$this->lenguaje_usu."',";
+		}
 
 		$this->consulta.="'".session_id()."',";
 		$this->consulta.=getmypid().',';
@@ -699,7 +729,15 @@ class driver
         }
         else{
              $this->consulta.="'".$this->nom_usuario_ai."',";
+		}
+		
+		//#133
+		if($this->null($this->lenguaje_usu)){
+            $this->consulta.='NULL::varchar,';
         }
+        else{
+            $this->consulta.="'".$this->lenguaje_usu."',";
+		}
 
 		$this->consulta.="'".session_id()."',";
 		$this->consulta.=getmypid().',';

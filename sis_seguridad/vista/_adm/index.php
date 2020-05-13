@@ -75,10 +75,6 @@ if(!isset($_SESSION["_SESION"])){
 
     <!-- include everything after the loading indicator -->
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/adapter/ext/ext-base-debug.js"></script>
-    <!--
-    <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-debug.js"></script>
-    <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/builds/ext-core.js"></script>
-    -->
     <script type="text/javascript" charset="UTF-8" src="../../../lib/ext3/ext-all-debug.js"></script>
     <!-- descomentado -->
     <?php
@@ -88,13 +84,9 @@ if(!isset($_SESSION["_SESION"])){
 
     ?>
 
-    <!-- comentado 
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-     	cd ..<script type="text/javascript" src="resources/TaskBar.js"></script> 
-    <script type="text/javascript" src="resources/TaskBar.js"></script> 
-     -->
+  
 
-    <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
+  <script language="JavaScript" src="../../../lib/cifrado/rsa_test/BigInt.js"></script>
 	<script language="JavaScript" src="../../../lib/cifrado/rsa_test/Barrett.js"></script>
 	<script type="text/javascript" src="../../../lib/AES/js-mcrypt/md5.js"></script>
 	<script type="text/javascript" src="../../../lib/cifrado/EncriptacionPrivada.js"></script>

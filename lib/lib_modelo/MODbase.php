@@ -1,5 +1,15 @@
 <?php
-//include '../lib_modelo/driver.php';
+/*************************************************************************************
+ Nombre: ACTAuten.php
+ Proposito: Verificar las credenciales de usario y validar la sesion si son correctas 
+ Autor:	Kplian (RCM)
+ Fecha:	12/04/2009
+
+ 
+HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA       AUTOR           DESCRIPCION
+#133               22-04-2020     RAC            recibe variable de lenguaje  
+*****************************************************************************************/
 class MODbase extends driver
 {
 	protected $aParam;
@@ -68,9 +78,13 @@ class MODbase extends driver
 					$cont++;
 				}
 			}
-			$this->setUsuarioAi();
-			
-
+			$this->setUsuarioAi();			
+            //#133
+			if (isset($_SESSION["ss_lenguaje_usu"]))  {
+				$this->addParametro('_lenguaje_usu',$_SESSION["ss_lenguaje_usu"],'varchar');
+			} else {				
+				$this->addParametro('_lenguaje_usu','NULL','varchar');
+			}
 		}
 
 	}

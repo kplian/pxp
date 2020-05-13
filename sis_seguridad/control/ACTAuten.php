@@ -1,10 +1,15 @@
 <?php
-/***
+/*************************************************************************************
  Nombre: ACTAuten.php
  Proposito: Verificar las credenciales de usario y validar la sesion si son correctas 
  Autor:	Kplian (RAC)
  Fecha:	14/7/2010
- */
+
+ 
+HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA       AUTOR           DESCRIPCION
+#133               22-04-2020     RAC            recibe variable de lenguaje  
+*****************************************************************************************/
 class ACTAuten extends ACTbase {
 
 	//Variables
@@ -22,12 +27,7 @@ class ACTAuten extends ACTbase {
 	//Constructor
 	////////////
 	function __construct(CTParametro &$pParam){
-		
-		
 		parent::__construct($pParam);	
-		
-			
-		
 	}
 
 	////////////////
@@ -146,7 +146,7 @@ class ACTAuten extends ACTbase {
 		$this->datos=$this->res->getDatos();
         $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
 
-
+		$_SESSION["ss_lenguaje_usu"] = $this->objParam->getParametro('lenguaje'); //#133
 
         if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){
 			//si no existe le mando otra vez a la portada
@@ -257,6 +257,7 @@ class ACTAuten extends ACTbase {
 			$_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
 			$_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
 			$_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
+
 			
 			if(!isset($_SESSION["_SIS_INTEGRACION"])){
 			    $sis_integracion = 'NO';
