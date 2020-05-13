@@ -17,6 +17,12 @@ $body$
  DESCRIPCION:	Valida si el usuario tiene permiso para ejecutar la transaccion
  AUTOR:			 KPLIAN(jrr)
  FECHA:			 29-11-10
+ 
+***************************************************************************
+HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA                AUTOR                DESCRIPCION
+#133               21-04-2020 03:41:52    admin             adciona traducciones    
+ 	
 ***************************************************************************/
 declare
     v_descripcion   varchar;
@@ -27,7 +33,7 @@ begin
 
   -- 1) iniciamos los parametro
     
-     po_administrador =FALSE; -- no es usuario administrador
+     po_administrador = FALSE; -- no es usuario administrador
      --po_tiene_permisos = FALSE;  --los habilitado por defecto
 
   --2) verifica si es un usuario administrador, el administrador
@@ -41,7 +47,7 @@ begin
        --si la lista de IP es nula no se plica esta verificacion 
        IF par_ip_admin is not null THEN
           IF  not ( ARRAY[par_ip] <@ par_ip_admin ) THEN        
-               raise exception 'El usuario no tiene autorizacion para conectarse  desde %',par_ip;
+               raise exception '%: %', pxp_t('no_permiso_ip'),par_ip;
           END IF;
        END IF;
     end if;
@@ -66,15 +72,13 @@ begin
         po_habilitar_log=1;
     end if;
    
-     -- po_habilitar_log  = true;
-  
+    -- po_habilitar_log  = true;  
     --TODO,  crear un array en variable gloabl para que los procedimientos bsaicos sean parametrizables
-       
       
     --  4) si no es administrador verificamos si no es una trasaccion basica
          -- (todos tienen permisos para ejecutar las basicas)
          IF ((not po_tiene_permisos) and  (par_transaccion in  (
-            'SEG_SESION_INS',   --inserta sesion
+             'SEG_SESION_INS',   --inserta sesion
              'SEG_SESION_SEL',
              'SEG_SESION_CONT',
              'SEG_VALUSU_SEG',
@@ -116,8 +120,7 @@ begin
          v_lista_blanca = pxp.f_get_variable_global('pxp_array_lista_blanca');
          IF  v_lista_blanca is NULL THEN
            raise exception 'la lista blanca es nula';
-         END IF;
-         
+         END IF;         
          
          va_lista_blanca= string_to_array(v_lista_blanca, ',');
          
@@ -145,24 +148,18 @@ begin
                     WHERE ur.id_usuario=par_id_usuario 
                        and  ur.estado_reg='activo' and
                        (p.codigo = par_transaccion or p.codigo = replace(par_transaccion,'_CONT', '_SEL'))
-                       limit 1) THEN
-                    
+                       limit 1) THEN                    
               
               po_tiene_permisos = true;
               
            ELSE   
-           --en caso contrario arojamos el error de permiso denegado
-           
-              raise exception 'Permiso denegado para la transaccion :  %',par_transaccion;
-              
+              --en caso contrario arojamos el error de permiso denegado                              
+              raise exception '% :  %', pxp._t('no_permiso'), par_transaccion;              
            END IF;
            
    END IF;
    
    RETURN NEXT;
-   --RETURN;
-
-   
    
 end;
 $body$
@@ -170,4 +167,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY DEFINER
+PARALLEL UNSAFE
 COST 100 ROWS 1000;
