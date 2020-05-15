@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."ft_grupo_idioma_ime" (    
-                p_RACistrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.ft_grupo_idioma_ime (
+  p_racistrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:        Parametros Generales
  FUNCION:         param.ft_grupo_idioma_ime
@@ -54,7 +59,9 @@ BEGIN
             usuario_ai,
             fecha_reg,
             id_usuario_mod,
-            fecha_mod
+            fecha_mod,
+            columna_llave,
+            columna_texto_defecto
               ) VALUES (
             v_parametros.codigo,
             v_parametros.nombre,
@@ -66,7 +73,9 @@ BEGIN
             v_parametros._nombre_usuario_ai,
             now(),
             null,
-            null            
+            null,
+            v_parametros.columna_llave,
+            v_parametros.columna_texto_defecto            
             ) RETURNING id_grupo_idioma into v_id_grupo_idioma;
             
             --Definicion de la respuesta
@@ -97,7 +106,9 @@ BEGIN
             id_usuario_mod = p_id_usuario,
             fecha_mod = now(),
             id_usuario_ai = v_parametros._id_usuario_ai,
-            usuario_ai = v_parametros._nombre_usuario_ai
+            usuario_ai = v_parametros._nombre_usuario_ai,
+            columna_llave = v_parametros.columna_llave,
+            columna_texto_defecto = v_parametros.columna_texto_defecto 
             WHERE id_grupo_idioma=v_parametros.id_grupo_idioma;
                
             --Definicion de la respuesta
@@ -148,7 +159,10 @@ EXCEPTION
         raise exception '%',v_resp;
                         
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
-ALTER FUNCTION "param"."ft_grupo_idioma_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

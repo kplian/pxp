@@ -2780,3 +2780,44 @@ IS 'si o no, si esta habilitado mostrara el campo de nota_debito_agencia, caso c
 /***********************************F-SCP-MGM-PARAM-1-17/04/2020****************************************/
 
 
+
+/***********************************I-SCP-RAC-PARAM-1-14/05/2020****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgrupo_idioma
+  ALTER COLUMN nombre_tabla TYPE VARCHAR(200) COLLATE pg_catalog."default";
+
+--------------- SQL ---------------
+
+COMMENT ON COLUMN param.tgrupo_idioma.nombre_tabla
+IS 'nombre de la tabla o vista para traduccion de datos almacenados';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgrupo_idioma
+  ADD COLUMN columna_llave VARCHAR(200);
+
+COMMENT ON COLUMN param.tgrupo_idioma.columna_llave
+IS 'nombre de la columna que se usara como llave';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgrupo_idioma
+  ADD COLUMN columna_texto_defecto VARCHAR(200);
+
+COMMENT ON COLUMN param.tgrupo_idioma.columna_texto_defecto
+IS 'nombre de la columna con el texto por defecto an tabla o vista referida en la columna nombre_tabla';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tpalabra_clave
+  ALTER COLUMN id_tabla DROP DEFAULT;
+
+ALTER TABLE param.tpalabra_clave
+  ALTER COLUMN id_tabla TYPE INTEGER;
+
+/***********************************F-SCP-RAC-PARAM-1-14/05/2020****************************************/

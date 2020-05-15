@@ -23,6 +23,7 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
         //llama al constructor de la clase padre
         Phx.vista.GrupoIdioma.superclass.constructor.call(this,config);
         this.init();
+        this.addButton('exp_menu',{text:'Exportar SQL',iconCls: 'blist', handler: this.expProceso, disabled:true,tooltip: '<b>Permite exportar los datos de traducción del grupo seleccionado</b>'});
         this.load({params:{start:0, limit:this.tam_pag}})
     },
             
@@ -96,15 +97,47 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'nombre_tabla',
-                fieldLabel: 'Tabla',
+                fieldLabel: 'Tabla/Vista',
                 qtip: 'hace referencia a la tabla que se va traducir',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
-            	maxLength:1
+            	maxLength:200
             },
                 type:'TextField',
                 filters:{pfiltro:'gri.nombre_tabla',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+		},
+        {
+            config:{
+                name: 'columna_llave',
+                fieldLabel: 'Columna Llave',
+                qtip: 'nombre de la columna que se usara como llave',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:200
+            },
+                type:'TextField',
+                filters:{pfiltro:'gri.columna_llave',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+		},
+        {
+            config:{
+                name: 'columna_texto_defecto',
+                fieldLabel: 'Columna Texto Defecto',
+                qtip: 'nombre de la columna con el texto por defecto en tabla o vista referida en la columna nombre_tabla',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:200
+            },
+                type:'TextField',
+                filters:{pfiltro:'gri.columna_texto_defecto',type:'string'},
                 id_grupo:1,
                 grid:true,
                 form:true
@@ -245,9 +278,33 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
         direction: 'ASC'
     },
     bdel:true,
-    bsave:true
-    }
-)
+    bsave:true,
+    preparaMenu:function(tb){
+		this.getBoton('exp_menu').enable();
+		Phx.vista.GrupoIdioma.superclass.preparaMenu.call(this,tb)
+		return tb
+	},
+	 
+	liberaMenu:function(tb){
+		this.getBoton('exp_menu').disable();
+		Phx.vista.GrupoIdioma.superclass.liberaMenu.call(this,tb)
+		return tb
+	},
+
+    expProceso : function(resp){
+			var data=this.sm.getSelected().data.id_grupo_idioma;
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url:'../../sis_parametros/control/GrupoIdioma/exportarDatosGrupo',
+				params:{'id_grupo_idioma' : data},
+				success: this.successExport,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+			
+	},
+});
 </script>
         
         

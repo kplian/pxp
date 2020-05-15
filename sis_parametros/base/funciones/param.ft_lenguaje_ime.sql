@@ -1,8 +1,13 @@
-CREATE OR REPLACE FUNCTION "param"."ft_lenguaje_ime" (    
-                p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+--------------- SQL ---------------
 
+CREATE OR REPLACE FUNCTION param.ft_lenguaje_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:       Parametros Generales
  FUNCION:       param.ft_lenguaje_ime
@@ -25,7 +30,9 @@ DECLARE
     v_resp                     VARCHAR;
     v_nombre_funcion           TEXT;
     v_mensaje_error            TEXT;
-    v_id_lenguaje    INTEGER;
+    v_id_lenguaje              INTEGER;
+    v_lenguaje_json            JSONB;
+    v_registros                RECORD;
                 
 BEGIN
 
@@ -128,6 +135,36 @@ BEGIN
             RETURN v_resp;
 
         END;
+    
+    /*******************************    
+     #TRANSACCION:  PM_GETLEN_JSON
+     #DESCRIPCION:	Modifica la interfaz del arbol seleccionada 
+     #AUTOR:		KPLIAN(rac)		
+     #FECHA:		11-04-2020
+    ***********************************/
+     ELSIF(p_transaccion='PM_GETLEN_JSON')THEN
+          BEGIN
+          
+             v_lenguaje_json := param.f_lenguaje_json('BASICO', v_parametros.codigo_lenguaje);
+              
+             FOR v_registros IN ( 
+                                   SELECT g.codigo
+                                   FROM param.tgrupo_idioma g
+                                   WHERE g.estado_reg = 'activo'
+                                   AND g.codigo  != 'BASICO' ) LOOP                                   
+                                   
+                   v_lenguaje_json := v_lenguaje_json || json_build_object( 'G_'||v_registros.codigo, param.f_lenguaje_json(v_registros.codigo, v_parametros.codigo_lenguaje))::JSONB;           
+                                   
+             END LOOP;
+          
+           
+             
+            v_resp = pxp.f_agrega_clave(v_resp,'message','Exito en la ejecucion de la funcion'::VARCHAR);
+            v_resp = pxp.f_agrega_clave(v_resp,'resp_json',v_lenguaje_json::VARCHAR);
+            RETURN v_resp;
+            
+          END;
+         
          
     ELSE
      
@@ -145,7 +182,10 @@ EXCEPTION
         raise exception '%',v_resp;
                         
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
-ALTER FUNCTION "param"."ft_lenguaje_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
