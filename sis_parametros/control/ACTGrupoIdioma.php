@@ -93,7 +93,7 @@ class ACTGrupoIdioma extends ACTbase{
                              $row['codigo']."', '" . 
                              $row['nombre']."', '" . 
                              $row['tipo']."'," . 
-                             $row['estado_reg']."'," . 
+                             "'".$row['estado_reg']."'," . 
                              (is_null($row['nombre_tabla'])?'NULL,':"'".$row['nombre_tabla']."',").
                              (is_null($row['columna_llave'])?'NULL,':"'".$row['columna_llave']."',").
                              (is_null($row['columna_texto_defecto'])?'NULL':"'".$row['columna_texto_defecto']."'").");\r\n");    
@@ -102,7 +102,7 @@ class ACTGrupoIdioma extends ACTbase{
                  
                 
                     fwrite ($file, 
-                     "select wf.f_import_tpalabra_clave ('insert','".
+                     "select param.f_import_tpalabra_clave ('insert','".
                                 $row['estado_reg']."', '" .  
                                 $row['codigo']."', '" .  
                                 $row['default_text']."', '" .                             
@@ -111,7 +111,7 @@ class ACTGrupoIdioma extends ACTbase{
             } else if ($row['tipo_reg'] == 'traduccion') {                    
                     
                     fwrite ($file, 
-                     "select wf.f_import_ttraduccion ('insert',".
+                     "select param.f_import_ttraduccion ('insert',".
                              (is_null($row['texto'])?'NULL,':"'".$row['texto']."'") ."," .
                              (is_null($row['estado_reg'])?'NULL,':"'".$row['estado_reg']."'") ."," .
                              (is_null($row['codigo_lenguaje'])?'NULL,':"'".$row['codigo_lenguaje']."'") ."," .

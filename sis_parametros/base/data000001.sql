@@ -556,3 +556,41 @@ select pxp.f_insert_testructura_gui ('PLCLV', 'TRAD');
   
 /***********************************F-DAT-RAC-PARAM-0-20/04/2020*****************************************/
 
+  
+/**********************************I-DAT-RAC-PARAM-0-16/05/2020*****************************************/
+
+
+select param.f_import_tgrupo_idioma ('insert','BASICO', 'Grupo de traducciones basicas', 'comun','activo',NULL,NULL,NULL);
+select param.f_import_tpalabra_clave ('insert','activo', 'apellido', 'Apellido', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'ci', 'CI', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'delete', 'Eliminar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'edit', 'Editar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'exportar', 'Exportar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'guardar', 'Guardar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'hello', 'Hola', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'language', 'Idioma', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'materno', 'Materno', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'new', 'Nuevo', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'no_existe_transaccion', 'No existe la transacción', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'nombre', 'Nombre', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'no_permiso', '_No tiene permisos_', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'no_permiso_ip', 'El usuario no tiene autorizacion para conectarse  desde', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'refresh', 'Actualizar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'success_change_user', 'Usuario modificada con éxito', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'success_inactive_user', 'Usuario inactivado con exito', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'test', 'prueba', 'BASICO');
+select param.f_import_ttraduccion ('insert','Hello','activo','en','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Language','activo','en','language','BASICO');
+select param.f_import_ttraduccion ('insert','The user does not have permissions for the procedure','activo','en','no_permiso','BASICO');
+select param.f_import_ttraduccion ('insert','test','activo','en','test','BASICO');
+select param.f_import_ttraduccion ('insert','Hola','activo','es','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Lenguaje','activo','es','language','BASICO');
+select param.f_import_ttraduccion ('insert','El usuario no tiene permisos para el procedimiento','activo','es','no_permiso','BASICO');
+select param.f_import_ttraduccion ('insert','prueba','activo','es','test','BASICO');
+select param.f_import_ttraduccion ('insert','Salut','activo','fr','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Langage','activo','fr','language','BASICO');
+select param.f_import_ttraduccion ('insert','Oi','activo','pt','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Linguagem','activo','pt','language','BASICO');
+
+
+/**********************************F-DAT-RAC-PARAM-0-16/05/2020*****************************************/

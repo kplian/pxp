@@ -2812,12 +2812,16 @@ COMMENT ON COLUMN param.tgrupo_idioma.columna_texto_defecto
 IS 'nombre de la columna con el texto por defecto an tabla o vista referida en la columna nombre_tabla';
 
 
---------------- SQL ---------------
+
+  --------------- SQL ---------------
 
 ALTER TABLE param.tpalabra_clave
-  ALTER COLUMN id_tabla DROP DEFAULT;
+  DROP COLUMN id_tabla;
 
-ALTER TABLE param.tpalabra_clave
-  ALTER COLUMN id_tabla TYPE INTEGER;
+  --------------- SQL ---------------
+
+ALTER TABLE param.ttraduccion
+  ADD CONSTRAINT ttraduccion_idx 
+    UNIQUE (id_palabra_clave, id_lenguaje) NOT DEFERRABLE;
 
 /***********************************F-SCP-RAC-PARAM-1-14/05/2020****************************************/

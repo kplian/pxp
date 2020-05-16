@@ -3,7 +3,7 @@
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
  #64                18-09-2019            EGS               se añade historial de modificaciones EN COMENTARIOS en generador de archivos
- #133               20/04/2020            Rensi             se descara las obs de dba
+ #133               20/04/2020            Rensi             se descarta las obs de dba
 
 */
 class ACTGenerador extends ACTbase{ 
@@ -306,7 +306,7 @@ BEGIN
          
     ELSE
      
-        RAISE EXCEPTION 'Transaccion inexistente: %',p_transaccion;
+        raise exception '%: %', pxp._t('no_existe_transaccion'), p_transaccion;
 
     END IF;
 
@@ -412,10 +412,8 @@ BEGIN
 
         END;
                     
-    ELSE
-                         
-        RAISE EXCEPTION 'Transaccion inexistente';
-                             
+    ELSE                       
+        raise exception '%: %', pxp._t('no_existe_transaccion'), p_transaccion;                             
     END IF;
                     
 EXCEPTION
@@ -1033,11 +1031,11 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
         ob_start();
         $fb=FirePHP::getInstance(true);
         $fb->log($pArchivoOrig.', '.$pArchivoGen,"direccion");
-        //Definici�n de variables
+        //Definicion de variables
         $sw_exist_clase=0;
         $sw_escribir=1;
         $sw_salir=0;
-        //Inicializaci�n de variables
+        //Inicializacion de variables
         $lineaIni='/*Clase: '.$this->gTabla->getNombreFuncion('modelo');
         $lineaFin='/*FinClase: '.$this->gTabla->getNombreFuncion('modelo').'*/';
         
@@ -1051,21 +1049,21 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
         while(!feof($archOrig)&&!$sw_salir){
             //Recupera la linea del puntero
             $linea=fgets($archOrig);
-            //Verifica si es el comienzo de la clase de la generaci�n de c�digo de la tabla actual
+            //Verifica si es el comienzo de la clase de la generacion de codigo de la tabla actual
             if(trim($linea)==$lineaIni){
                 //Enciende la bandera para terminar el bucle por haber encontrado la clase
                 $sw_exist_clase=1;
-                //Copia todas las l�neas del archivo generado al archivo temporal
+                //Copia todas las lineas del archivo generado al archivo temporal
                 fwrite($archTmp,"\t".$this->llamadasCustom());
                 //Apaga la bandera para no copiar la llave en el archivo temporal
                 $sw_escribir=0;
             } elseif(strpos($linea,'//marca_generador')){
-                //Verifica si ya encontr� la clase en lo recorrido hasta ahora
+                //Verifica si ya encontro la clase en lo recorrido hasta ahora
                 if($sw_exist_clase){
                     //Enciende la bandera de escritura
                     $sw_escribir=1;
                 } else{
-                    //Apaga la bandera porque no se encontr� la clase en el archivo original
+                    //Apaga la bandera porque no se encontro la clase en el archivo original
                     $sw_exist_clase=0;
                     //Enciende la bandera de salir para salir del bucle
                     $sw_salir=1;
@@ -1073,19 +1071,19 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
                     $sw_escribir=0;
                 }
             }
-            //Verifica la bandera de escritura para copiar la l�nea al archivo temporal
+            //Verifica la bandera de escritura para copiar la linea al archivo temporal
             if($sw_escribir){
                 fwrite($archTmp,$linea);
             }
-            //Verifica si encuentra la finalizaci�n de la l�nea y habilita la bandera de escritura para la siguiente vuelta
+            //Verifica si encuentra la finalizacion de la linea y habilita la bandera de escritura para la siguiente vuelta
             if(!$sw_escribir&&trim($linea)==$lineaFin){
                 //Enciende la bandera para copiar la linea al archivo temporal
                 $sw_escribir=1;
             } 
         }
-        //Verifica si se encontr� la clase en el archivo original
+        //Verifica si se encontro la clase en el archivo original
         if(!$sw_exist_clase){
-            //Como no lo encontr�, escribe las llamadas del custom en el archivo temporal
+            //Como no lo encontro, escribe las llamadas del custom en el archivo temporal
             fwrite($archTmp,"\t".$this->llamadasCustom());
             //Escribe los caracteres para cerrar el php
             fwrite($archTmp,"\n\n}//marca_generador\n?>");
@@ -1180,7 +1178,7 @@ Phx.vista.".$this->gTabla->getNombreFuncion('vista')."=Ext.extend(Phx.gridInterf
         
     }
     
-    //Verifica si es necesario definir el tama�o m�ximo en funci�n del tipo de dato
+    //Verifica si es necesario definir el tamaño maximo en funcion del tipo de dato
     private function maximaLongitud($p_Col){
         //Verifica el tipo de dato
         $aux=$this->tipoDato($p_Col->getColumna('tipo_dato'),'tipo_comp');

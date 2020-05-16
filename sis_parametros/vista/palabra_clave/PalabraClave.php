@@ -87,6 +87,7 @@ Phx.vista.PalabraClave=Ext.extend(Phx.gridInterfaz,{
             	maxLength:500
             },
                 type:'TextField',
+                bottom_filter:true,
                 filters:{pfiltro:'plc.codigo',type:'string'},
                 id_grupo:1,
                 grid:true,
@@ -95,6 +96,7 @@ Phx.vista.PalabraClave=Ext.extend(Phx.gridInterfaz,{
         {
             config:{
                 name: 'default_text',
+                bottom_filter:true,
                 fieldLabel: 'Texto por Defecto',
                 allowBlank: false,
                 anchor: '80%',

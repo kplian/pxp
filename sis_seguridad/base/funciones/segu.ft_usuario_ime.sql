@@ -122,16 +122,7 @@ BEGIN
                         v_parametros.autentificacion)
                        RETURNING id_usuario into v_id_usuario;
             
-             --05-04-2012:
-           /*  IF  v_sincronizar='true' THEN
-                 v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'INSERT');
-    	         if(v_respuesta_sinc!='si') then   
-                     raise exception 'Sincronizacion de usuario en BD externa no realizada';
-                 end if;  
-             
-             END IF;*/
-             --fin 05-04-2012
-             
+           
              
              
              --insertamos los roles del usuario
@@ -188,20 +179,8 @@ BEGIN
                       autentificacion=v_parametros.autentificacion
              WHERE id_usuario=v_parametros.id_usuario;
             
-              --05-04-2012:
-            /*    IF  v_sincronizar= 'true' THEN
-                
-                
-                 v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'UPDATE');
-    	         if(v_respuesta_sinc!='si') then   
-                      raise exception 'Sincronizacion de actualizacion de usuario en BD externa no realizada';
-                 end if;  
-             
-                END IF;*/
-             
-             --fin 05-04-2012
-             
-             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Contraseña de usuario modificada con exito id_usuario='||v_parametros.id_usuario); 
+    
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje', pxp._t('success_change_user')||' id_usuario='||v_parametros.id_usuario); 
                   
           ELSE
                
@@ -216,22 +195,9 @@ BEGIN
                      
                WHERE id_usuario=v_parametros.id_usuario;
                
-               --05-04-2012:
-               
-               
-             /*  IF  v_sincronizar= 'true' THEN
+            
                 
-                 v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'UPDATE');
-    	         if(v_respuesta_sinc!='si') then   
-                      raise exception 'Sincronizacion de actualizacion de usuario en BD externa no realizada';
-                 end if;  
-             
-                END IF;*/
-               
-                
-               --fin 05-04-2012
-                
-                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Cuenta de usuario modificada con exito id_usuario= '||v_parametros.id_usuario); 
+                v_resp = pxp.f_agrega_clave(v_resp,'mensaje', pxp._t('success_change_user')||' id_usuario= '||v_parametros.id_usuario); 
            
             END IF;
 
@@ -293,22 +259,8 @@ BEGIN
           BEGIN
                update segu.tusuario set estado_reg='inactivo'
                where id_usuario=v_parametros.id_usuario;
-               
-               --05-04-2012:
-             
-               
-               /* IF  v_sincronizar= 'true' THEN
-                 v_respuesta_sinc:= segu.f_sincroniza_usuario_entre_bd(v_id_usuario,v_sincronizar_ip,v_sincronizar_puerto,v_sincronizar_user,v_sincronizar_password,v_sincronizar_base,'DELETE');
-    	         if(v_respuesta_sinc!='si') then   
-                      raise exception 'Sincronizacion de actualizacion de usuario en BD externa no realizada';
-                 end if;  
-             
-                END IF;*/
-               
                 
-               --fin 05-04-2012
-                
-               v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario inactivado con exito '||v_parametros.id_usuario); 
+               v_resp = pxp.f_agrega_clave(v_resp,'mensaje', pxp._t('success_inactive_user')||' id_usuario '||v_parametros.id_usuario); 
                v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_parametros.id_usuario::varchar);
                
          END;
@@ -414,7 +366,7 @@ BEGIN
 
      else
 
-         raise exception 'No existe la transaccion: %',par_transaccion;
+         raise exception '%: %', pxp._t('no_existe_transaccion'), par_transaccion;
      end if;
      
    return v_resp;   
@@ -435,4 +387,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

@@ -46,8 +46,7 @@ BEGIN
         BEGIN
             --Sentencia de la consulta
             v_consulta:='SELECT
-                        plc.id_palabra_clave,
-                        plc.id_tabla,
+                        plc.id_palabra_clave,                        
                         plc.estado_reg,
                         plc.codigo,
                         plc.default_text,
