@@ -5,6 +5,9 @@
  //#11-ENDETR          17/12/2018  CHRIS CHROS             Se cambió la forma de crear la URL para acceder a endesis
 
 ****************************************************************************/
+require_once dirname(__FILE__) . '/../lib_general/templates/template.class.php';
+define('DEFAULT_TEMPLATE', dirname(__FILE__) . '/../lib_general/templates/layout.tpl');
+define('NOTIFICATION', dirname(__FILE__) . '/../lib_general/templates/notification.tpl');
 class CorreoExterno
 {
     protected $mail_usuario;
@@ -240,45 +243,14 @@ class CorreoExterno
 
             }
 
-             $this->mensaje_html=$cuerpo = "
-                    <html>
-                    <head>
-                    <title>".$this->titulo."</title>
-                    <style type=\"text/css\">
-                        body{
-                            font-family:Arial, Helvetica, sans-serif;
-                        }
-                        a:link{
-                            font-weight: bold;
-                            text-decoration: none;
-                            font-style: italic;
-                        }
-                        a:hover{
-                            text-decoration: underline;
-                        }
-                        a:visited{
-                            font-weight: bold;
-                            color: blue;
-                            font-style: italic;
-                        }
-
-                    </style>
-                    </head>
-                    <body>
-                    <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
-                    <br/>
-                    ".$acceso."
-                    <br/>
-                    <br/>
-                    ".$boton_acuse."
-                    <br/>
-                    <p>-------------------------------------------</p>
-                    <br/>
-                    <br/>
-                    <H6>Powered by KPLIAN</H6>
-                    </body>
-                    </html>";
-
+        $notification = new Template(NOTIFICATION);
+        $notification->set('acceso_directo', $acceso);
+        $notification->set('mensaje', $this->mensaje);
+        $notification->set('titulo', $this->titulo);
+        $notification->set('boton_acuse', $this->acuse_recibo);
+        $layout = new Template(DEFAULT_TEMPLATE);
+        $layout->set("content", $notification->output());
+        $this->mensaje_html = $layout->output();
     }
 
     function validateEmail($email){
