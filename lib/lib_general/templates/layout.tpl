@@ -173,11 +173,11 @@
         }
 
         .btn a {
-            background-color: #ffffff;
-            border: solid 1px #3498db;
+            background-color: #021d70;
+            border: solid 1px #021d70;
             border-radius: 5px;
             box-sizing: border-box;
-            color: #3498db;
+            color: #ffffff;
             cursor: pointer;
             display: inline-block;
             font-size: 14px;
@@ -189,12 +189,12 @@
         }
 
         .btn-primary table td {
-            background-color: #3498db;
+            background-color: #021d70;
         }
 
         .btn-primary a {
-            background-color: #3498db;
-            border-color: #3498db;
+            background-color: #021d70;
+            border-color: #021d70;
             color: #ffffff !important;
         }
 
@@ -252,13 +252,13 @@
 
         hr {
             border: 0;
-            border-bottom: 1px solid #f6f6f6;
+            border-bottom: 1px solid #021d70;
             margin: 20px 0;
         }
 
         .table-title td {
-            background: #3498db;
-            color: #FFF;
+            background: #021d70;
+            color: #FFFFFF;
             font-weight: bold;
         }
 
@@ -351,12 +351,12 @@
             }
 
             .btn-primary table td:hover {
-                background-color: #34495e !important;
+                background-color: #021d70 !important;
             }
 
             .btn-primary a:hover {
-                background-color: #34495e !important;
-                border-color: #34495e !important;
+                background-color: #021d70 !important;
+                color: #ffffff !important;
             }
         }
 
