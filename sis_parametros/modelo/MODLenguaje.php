@@ -25,18 +25,18 @@ class MODLenguaje extends MODbase{
         $this->tipo_procedimiento='SEL';//tipo de transaccion
                 
         //Definicion de la lista del resultado del query
-		$this->captura('id_lenguaje','int4');
-		$this->captura('codigo','varchar');
-		$this->captura('nombre','varchar');
-		$this->captura('defecto','varchar');
-		$this->captura('estado_reg','varchar');
-		$this->captura('id_usuario_ai','int4');
-		$this->captura('fecha_reg','timestamp');
-		$this->captura('usuario_ai','varchar');
-		$this->captura('id_usuario_reg','int4');
-		$this->captura('id_usuario_mod','int4');
-		$this->captura('fecha_mod','timestamp');
-		$this->captura('usr_reg','varchar');
+        $this->captura('id_lenguaje','int4');
+        $this->captura('codigo','varchar');
+        $this->captura('nombre','varchar');
+        $this->captura('defecto','varchar');
+        $this->captura('estado_reg','varchar');
+        $this->captura('id_usuario_ai','int4');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('usuario_ai','varchar');
+        $this->captura('id_usuario_reg','int4');
+        $this->captura('id_usuario_mod','int4');
+        $this->captura('fecha_mod','timestamp');
+        $this->captura('usr_reg','varchar');
         $this->captura('usr_mod','varchar');
         
         //Ejecuta la instruccion
@@ -54,10 +54,10 @@ class MODLenguaje extends MODbase{
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
-		$this->setParametro('codigo','codigo','varchar');
-		$this->setParametro('nombre','nombre','varchar');
-		$this->setParametro('defecto','defecto','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+        $this->setParametro('codigo','codigo','varchar');
+        $this->setParametro('nombre','nombre','varchar');
+        $this->setParametro('defecto','defecto','varchar');
+        $this->setParametro('estado_reg','estado_reg','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -74,11 +74,11 @@ class MODLenguaje extends MODbase{
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
-		$this->setParametro('id_lenguaje','id_lenguaje','int4');
-		$this->setParametro('codigo','codigo','varchar');
-		$this->setParametro('nombre','nombre','varchar');
-		$this->setParametro('defecto','defecto','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+        $this->setParametro('id_lenguaje','id_lenguaje','int4');
+        $this->setParametro('codigo','codigo','varchar');
+        $this->setParametro('nombre','nombre','varchar');
+        $this->setParametro('defecto','defecto','varchar');
+        $this->setParametro('estado_reg','estado_reg','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -95,7 +95,7 @@ class MODLenguaje extends MODbase{
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
-		$this->setParametro('id_lenguaje','id_lenguaje','int4');
+        $this->setParametro('id_lenguaje','id_lenguaje','int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -105,22 +105,38 @@ class MODLenguaje extends MODbase{
         return $this->respuesta;
     }
 
-    	
-	function obtenerTraducciones(){
-		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='param.ft_lenguaje_ime';
-		$this->transaccion='PM_GETLEN_JSON';
-		$this->tipo_procedimiento='IME';
-			
-		//Define los parametros para la funcion
+        
+    function obtenerTraducciones(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.ft_lenguaje_ime';
+        $this->transaccion='PM_GETLEN_JSON';
+        $this->tipo_procedimiento='IME';
+            
+        //Define los parametros para la funcion
         $this->setParametro('id_lenguaje','id_lenguaje','int4');
         $this->setParametro('codigo_lenguaje','codigo_lenguaje','varchar');        
         
-		//Ejecuta la instruccion
-		$this->armarConsulta();				
-		$this->ejecutarConsulta();
-		return $this->respuesta;
-	}
+        //Ejecuta la instruccion
+        $this->armarConsulta();                
+        $this->ejecutarConsulta();
+        return $this->respuesta;
+    }
+    
+    function obtenerTraduccionesGrupo(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.ft_lenguaje_ime';
+        $this->transaccion='PM_GETLENGRP_JSON';
+        $this->tipo_procedimiento='IME';
+            
+        //Define los parametros para la funcion
+        $this->setParametro('codigo_lenguaje','codigo_lenguaje','varchar'); 
+        $this->setParametro('codigo_grupo','codigo_grupo','varchar');        
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();                
+        $this->ejecutarConsulta();
+        return $this->respuesta;
+    }
 
 
 

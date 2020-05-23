@@ -1,7 +1,7 @@
 --------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION param.ft_grupo_idioma_ime (
-  p_racistrador integer,
+  p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
   p_transaccion varchar
@@ -47,6 +47,24 @@ BEGIN
     IF (p_transaccion='PM_GRI_INS') THEN
                     
         BEGIN
+        
+            --si es un grupo del tipo almacenado es obligatorio regitrar, tablas , columnas llave y columnas de texto por defeco
+            IF v_parametros.tipo = 'almacenado' THEN
+                IF v_parametros.nombre_tabla IS NULL OR v_parametros.nombre_tabla = ''  THEN
+                    raise exception 'El nombre de la tabla es obligatorio para grupos de datos almacenados';
+                END IF; 
+                
+                IF v_parametros.columna_llave IS NULL OR v_parametros.columna_llave = ''  THEN
+                    raise exception 'El nombre de la  columna llave es obligatorio para grupos de datos almacenados';
+                END IF;
+                
+                IF v_parametros.columna_texto_defecto IS NULL OR v_parametros.columna_texto_defecto = ''  THEN
+                    raise exception 'El nombre de la  columna de texto por defecto es obligatorio para grupos de datos almacenados';
+                END IF;   
+            
+            END IF;
+        
+        
             --Sentencia de la insercion
             INSERT INTO param.tgrupo_idioma(
             codigo,
@@ -97,18 +115,34 @@ BEGIN
     ELSIF (p_transaccion='PM_GRI_MOD') THEN
 
         BEGIN
+            --si es un grupo del tipo almacenado es obligatorio regitrar, tablas , columnas llave y columnas de texto por defeco
+            IF v_parametros.tipo = 'almacenado' THEN
+                IF v_parametros.nombre_tabla IS NULL OR v_parametros.nombre_tabla = ''  THEN
+                    raise exception 'El nombre de la tabla es obligatorio para grupos de datos almacenados';
+                END IF; 
+                
+                IF v_parametros.columna_llave IS NULL OR v_parametros.columna_llave = ''  THEN
+                    raise exception 'El nombre de la  columna llave es obligatorio para grupos de datos almacenados';
+                END IF;
+                
+                IF v_parametros.columna_texto_defecto IS NULL OR v_parametros.columna_texto_defecto = ''  THEN
+                    raise exception 'El nombre de la  columna de texto por defecto es obligatorio para grupos de datos almacenados';
+                END IF;   
+            
+            END IF;
+            
             --Sentencia de la modificacion
             UPDATE param.tgrupo_idioma SET
-            codigo = v_parametros.codigo,
-            nombre = v_parametros.nombre,
-            tipo = v_parametros.tipo,
-            nombre_tabla = v_parametros.nombre_tabla,
-            id_usuario_mod = p_id_usuario,
-            fecha_mod = now(),
-            id_usuario_ai = v_parametros._id_usuario_ai,
-            usuario_ai = v_parametros._nombre_usuario_ai,
-            columna_llave = v_parametros.columna_llave,
-            columna_texto_defecto = v_parametros.columna_texto_defecto 
+              codigo = v_parametros.codigo,
+              nombre = v_parametros.nombre,
+              tipo = v_parametros.tipo,
+              nombre_tabla = v_parametros.nombre_tabla,
+              id_usuario_mod = p_id_usuario,
+              fecha_mod = now(),
+              id_usuario_ai = v_parametros._id_usuario_ai,
+              usuario_ai = v_parametros._nombre_usuario_ai,
+              columna_llave = v_parametros.columna_llave,
+              columna_texto_defecto = v_parametros.columna_texto_defecto 
             WHERE id_grupo_idioma=v_parametros.id_grupo_idioma;
                
             --Definicion de la respuesta

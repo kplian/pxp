@@ -149,16 +149,35 @@ BEGIN
               
              FOR v_registros IN ( 
                                    SELECT g.codigo
-                                   FROM param.tgrupo_idioma g
-                                   WHERE g.estado_reg = 'activo'
-                                   AND g.codigo  != 'BASICO' ) LOOP                                   
+                                     FROM param.tgrupo_idioma g
+                                    WHERE g.estado_reg = 'activo'
+                                      AND g.tipo = 'comun'
+                                      AND g.codigo  != 'BASICO' ) LOOP                                   
                                    
-                   v_lenguaje_json := v_lenguaje_json || json_build_object( 'G_'||v_registros.codigo, param.f_lenguaje_json(v_registros.codigo, v_parametros.codigo_lenguaje))::JSONB;           
+                   v_lenguaje_json := v_lenguaje_json || json_build_object( '_'||upper(v_registros.codigo), param.f_lenguaje_json(v_registros.codigo, v_parametros.codigo_lenguaje))::JSONB;           
                                    
              END LOOP;
           
            
              
+            v_resp = pxp.f_agrega_clave(v_resp,'message','Exito en la ejecucion de la funcion'::VARCHAR);
+            v_resp = pxp.f_agrega_clave(v_resp,'resp_json',v_lenguaje_json::VARCHAR);
+            RETURN v_resp;
+            
+          END;
+          
+    
+    /*******************************    
+     #TRANSACCION:  PM_GETLENGRP_JSON
+     #DESCRIPCION:	Modifica la interfaz del arbol seleccionada 
+     #AUTOR:		rac		
+     #FECHA:		23-05-2020
+    ***********************************/
+     ELSIF(p_transaccion='PM_GETLENGRP_JSON')THEN
+          BEGIN
+          
+            v_lenguaje_json := param.f_lenguaje_json(v_parametros.codigo_grupo, v_parametros.codigo_lenguaje);
+                         
             v_resp = pxp.f_agrega_clave(v_resp,'message','Exito en la ejecucion de la funcion'::VARCHAR);
             v_resp = pxp.f_agrega_clave(v_resp,'resp_json',v_lenguaje_json::VARCHAR);
             RETURN v_resp;

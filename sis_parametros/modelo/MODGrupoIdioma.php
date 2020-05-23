@@ -191,6 +191,27 @@ class MODGrupoIdioma extends MODbase{
        return $this->respuesta;        
     
     }
+
+    function listarGrupoIdiomaComun(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.ft_grupo_idioma_sel';
+        $this->transaccion='PM_GRICMN_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+                
+        //Definicion de la lista del resultado del query
+        $this->captura('id_grupo_idioma','int4');
+        $this->captura('codigo','varchar');
+        $this->captura('nombre','varchar');
+        $this->captura('tipo','varchar');       
+        
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
             
 }
 ?>

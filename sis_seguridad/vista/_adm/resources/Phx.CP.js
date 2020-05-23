@@ -1196,7 +1196,9 @@ Phx.CP=function(){
                             //se quita el md5 de la contraseña, si la encripacion esta activada no se encripta en este paso, si no esta activada se encripta
                             contrasena: Phx.CP.config_ini.x=='1'?form_login.getForm().findField('contrasena').getValue():Phx.CP.CRIPT.Encriptar(form_login.getForm().findField('contrasena').getValue()),
                             usuario: form_login.getForm().findField('usuario').getValue(),
-                            lenguaje: (navigator.language || navigator.userLanguage).substring(2, 0) //#133  
+                            lenguaje:  (navigator.language || navigator.userLanguage).substring(2, 0) //#133 
+                           // lenguaje:  'en' 
+
 
                         },
                         method:'POST',

@@ -594,3 +594,14 @@ select param.f_import_ttraduccion ('insert','Linguagem','activo','pt','language'
 
 
 /**********************************F-DAT-RAC-PARAM-0-16/05/2020*****************************************/
+
+
+
+/**********************************I-DAT-RAC-PARAM-0-23/05/2020*****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'param_traduccion_defecto_on_null', E'false', E'si no existe la traduccion  usar columnas texto por defecto o dejarlo como null');
+  
+
+/**********************************F-DAT-RAC-PARAM-0-23/05/2020*****************************************/

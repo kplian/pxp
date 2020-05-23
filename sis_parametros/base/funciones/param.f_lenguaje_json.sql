@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION param.f_lenguaje_json (
   p_codigo_lenguaje varchar
 )
 RETURNS jsonb AS
-$body$  
+$body$
 /**************************************************************************
  FUNCION:       segu.f_get_menu
  DESCRIPCION:   fucion ara recueprar un grupo de traduccion en formato json
@@ -21,8 +21,12 @@ DECLARE
     v_registros         RECORD;
     v_resp_json         JSONB;
     v_resp              VARCHAR; 
-    v_nombre_funcion    VARCHAR;   
+    v_nombre_funcion    VARCHAR;  
+    v_defecto_on_null   BOOLEAN; 
 BEGIN
+
+     --recuepra configuracion de comportamiento para valores pordefecto    
+     v_defecto_on_null := pxp.f_get_variable_global('param_traduccion_defecto_on_null')::BOOLEAN;
    
 
     SELECT json_object_agg(clave, valor)
@@ -45,7 +49,11 @@ BEGIN
           )
           SELECT
               pc.codigo as clave,
-              COALESCE(bt.texto, pc.default_text ) as valor 
+              (
+                 CASE WHEN v_defecto_on_null THEN  COALESCE(bt.texto, pc.default_text )::Varchar 
+                      ELSE bt.texto
+                 END    
+              ) as valor
             
           FROM param.tgrupo_idioma gi
           JOIN param.tpalabra_clave pc ON pc.id_grupo_idioma = gi.id_grupo_idioma
