@@ -212,6 +212,23 @@ class MODGrupoIdioma extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+
+    function generarLlaves(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_grupo_idioma_ime';
+        $this->transaccion='PM_GENKEYS_IME';
+        $this->tipo_procedimiento='IME';
+                
+        //Define los parametros para la funcion
+        $this->setParametro('id_grupo_idioma','id_grupo_idioma','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
             
 }
 ?>

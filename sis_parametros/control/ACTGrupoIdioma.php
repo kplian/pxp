@@ -124,6 +124,12 @@ class ACTGrupoIdioma extends ACTbase{
         
         return $fileName;
     }
+
+    function generarLlaves(){
+        $this->objFunc=$this->create('MODGrupoIdioma');    
+        $this->res=$this->objFunc->generarLlaves($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
             
 }
 

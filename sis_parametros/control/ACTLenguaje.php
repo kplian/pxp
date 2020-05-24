@@ -117,16 +117,16 @@ class ACTLenguaje extends ACTbase{
     function createFile($codigo_lenguaje, $grupo, $contenido) {
         
         //Creamos la carpeta bascia si no existe
-        $ruta=dirname(__FILE__).'/../../../traducciones/';
+        $ruta=dirname(__FILE__).'/../../../locale/';
         if(!file_exists($ruta)){
             mkdir($ruta);
         }
 
-        $ruta=dirname(__FILE__).'/../../../traducciones/'.strtolower($codigo_lenguaje);
+        $ruta=dirname(__FILE__).'/../../../locale/'.strtolower($codigo_lenguaje);
         if(!file_exists($ruta)){
             mkdir($ruta);
         }
-        $file = fopen("../../../traducciones/".strtolower($codigo_lenguaje)."/".strtolower($grupo).".json", 'w');
+        $file = fopen("../../../locale/".strtolower($codigo_lenguaje)."/".strtolower($grupo).".json", 'w');
 		fwrite ($file,  $contenido);
 		fclose($file);
 		return $fileName;

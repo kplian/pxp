@@ -24,6 +24,8 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
         Phx.vista.GrupoIdioma.superclass.constructor.call(this,config);
         this.init();
         this.addButton('exp_menu',{text:'Exportar SQL',iconCls: 'blist', handler: this.expProceso, disabled:true,tooltip: '<b>Permite exportar los datos de traducción del grupo seleccionado</b>'});
+        this.addButton('get_keys',{text:'Generar llaves',iconCls: 'blist', handler: this.genKeys, disabled:true,tooltip: '<b>Generar llaves para los grupos de datos almacenados, (si las llaves ya existen las actualiza)</b>'});
+        
         this.load({params:{start:0, limit:this.tam_pag}})
     },
             
@@ -98,7 +100,7 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'nombre_tabla',
                 fieldLabel: 'Tabla/Vista',
-                qtip: 'hace referencia a la tabla que se va traducir',
+                qtip: 'hace referencia a la tabla o vista de base de datos que se va traducir',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -114,7 +116,7 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'columna_llave',
                 fieldLabel: 'Columna Llave',
-                qtip: 'nombre de la columna que se usara como llave',
+                qtip: 'nombre de la columna que se usara como llave,  este codigo tiene que ser único en la tabla de referencia',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -130,7 +132,7 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name: 'columna_texto_defecto',
                 fieldLabel: 'Columna Texto Defecto',
-                qtip: 'nombre de la columna con el texto por defecto en tabla o vista referida en la columna nombre_tabla',
+                qtip: 'nombre de la columna con el texto por defecto en la tabla o vista referida',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
@@ -270,7 +272,7 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},
+		{name:'usr_mod', type: 'string'},'columna_texto_defecto','columna_llave'
         
     ],
     sortInfo:{
@@ -281,12 +283,14 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
     bsave:true,
     preparaMenu:function(tb){
 		this.getBoton('exp_menu').enable();
+		this.getBoton('get_keys').enable();
 		Phx.vista.GrupoIdioma.superclass.preparaMenu.call(this,tb)
 		return tb
 	},
 	 
 	liberaMenu:function(tb){
 		this.getBoton('exp_menu').disable();
+		this.getBoton('get_keys').disable();
 		Phx.vista.GrupoIdioma.superclass.liberaMenu.call(this,tb)
 		return tb
 	},
@@ -304,6 +308,26 @@ Phx.vista.GrupoIdioma=Ext.extend(Phx.gridInterfaz,{
 			});
 			
 	},
+    
+    genKeys: function(resp){
+			var data=this.sm.getSelected().data.id_grupo_idioma;
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url:'../../sis_parametros/control/GrupoIdioma/generarLlaves',
+				params:{'id_grupo_idioma' : data},
+				success: this.successGenerate,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+			
+	},
+    successGenerate:function(resp){
+		Phx.CP.loadingHide();
+        var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+        console.log('resp.responseText',resp.responseText)
+        alert('exito');
+	}, 
 });
 </script>
         
