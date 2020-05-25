@@ -56,10 +56,7 @@
         .container {
             display: block;
             margin: 0 auto !important;
-            /* makes it centered */
-            max-width: 580px;
             padding: 10px;
-            width: 580px;
         }
 
         /* This should also be a block element, so that it will fill 100% of the .container */
@@ -67,7 +64,6 @@
             box-sizing: border-box;
             display: block;
             margin: 0 auto;
-            max-width: 580px;
             padding: 10px;
         }
 
@@ -197,7 +193,21 @@
             border-color: #021d70;
             color: #ffffff !important;
         }
+        .button {
+            border-radius: 2px;
+        }
 
+        .button a {
+            padding: 8px 12px;
+            border: 1px solid #ED2939;
+            border-radius: 2px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
         /* -------------------------------------
             OTHER STYLES THAT MIGHT BE USEFUL
         ------------------------------------- */
