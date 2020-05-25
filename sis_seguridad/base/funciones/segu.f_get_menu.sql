@@ -32,7 +32,7 @@ BEGIN
            FOR v_registros IN (
                                SELECT
                                     g.id_gui,
-                                    g.nombre as text,
+                                    COALESCE( tra.texto ,g.nombre) as text,
                                     g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
@@ -43,7 +43,8 @@ BEGIN
                                     g.icono as icon,
                                     '[]'::jsonb as childrens
                               FROM segu.tgui g
-                              INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'                                 
+                              INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'
+                              LEFT JOIN pxp.get_translations('MENU') tra ON tra.codigo = g.codigo_gui                                   
                               WHERE     g.visible='si'
                                     AND g.estado_reg = 'activo'   
                                     AND  ((p_mobile = 1 AND (sw_mobile = 'si' OR  eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND sw_mobile = 'no'))                         
@@ -63,7 +64,7 @@ BEGIN
           FOR v_registros IN (
                                SELECT
                                     g.id_gui,
-                                    g.nombre as text,
+                                    COALESCE( tra.texto ,g.nombre) as text,
                                     g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
@@ -86,7 +87,8 @@ BEGIN
                               INNER JOIN segu.tusuario_rol ur  ON     ur.id_rol=r.id_rol
                                                                   AND ur.estado_reg='activo'
                               INNER JOIN segu.tusuario u  ON     u.id_usuario=ur.id_usuario
-                                                             AND u.estado_reg='activo'                                
+                                                             AND u.estado_reg='activo'  
+                              LEFT JOIN pxp.get_translations('MENU') tra ON tra.codigo = g.codigo_gui                               
                               
                               WHERE     g.visible='si'
                                     AND g.estado_reg = 'activo' 

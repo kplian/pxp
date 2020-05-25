@@ -1502,3 +1502,25 @@ ALTER TABLE param.tpalabra_clave
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 /***********************************F-DEP-RAC-PARAM-133-20/04/2020****************************************/
+
+
+
+
+/***********************************I-DEP-RAC-PARAM-133-25/05/2020****************************************/
+
+--------------- SQL ---------------
+
+CREATE VIEW param.vtraducciones 
+AS 
+SELECT     
+      pc.codigo,
+      tr.texto,
+      gr.codigo as grupo, 
+      len.codigo as lenguaje                  
+   FROM param.tpalabra_clave pc
+   JOIN param.tgrupo_idioma gr ON gr.id_grupo_idioma = pc.id_grupo_idioma
+   JOIN param.ttraduccion tr ON pc.id_palabra_clave = tr.id_palabra_clave
+   JOIN param.tlenguaje len ON len.id_lenguaje = tr.id_lenguaje ;
+
+
+   /***********************************F-DEP-RAC-PARAM-133-25/05/2020****************************************/

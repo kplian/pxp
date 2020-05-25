@@ -1197,7 +1197,7 @@ Phx.CP=function(){
                             contrasena: Phx.CP.config_ini.x=='1'?form_login.getForm().findField('contrasena').getValue():Phx.CP.CRIPT.Encriptar(form_login.getForm().findField('contrasena').getValue()),
                             usuario: form_login.getForm().findField('usuario').getValue(),
                             lenguaje:  (navigator.language || navigator.userLanguage).substring(2, 0) //#133 
-                           // lenguaje:  'en' 
+                            //lenguaje:  'en' 
 
 
                         },
