@@ -146,7 +146,14 @@ class ACTAuten extends ACTbase {
 		$this->datos=$this->res->getDatos();
         $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
 
-		$_SESSION["ss_lenguaje_usu"] = $this->objParam->getParametro('language'); //#133
+		//#133 
+		if( $this->objParam->getParametro('language') != '') {
+            $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
+        } else {
+            $_SESSION["ss_lenguaje_usu"] = 'EN';
+		}
+		
+		$_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
 
         if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){
 			//si no existe le mando otra vez a la portada

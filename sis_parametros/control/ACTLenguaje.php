@@ -14,8 +14,15 @@
 
 class ACTLenguaje extends ACTbase{    
     
+    //#133
     function setLanguage(){
-        $_SESSION["ss_lenguaje_usu"] = $this->objParam->getParametro('language'); //#133
+        if( $this->objParam->getParametro('language') != '') {
+            $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
+        } else {
+            $_SESSION["ss_lenguaje_usu"] = 'EN';
+        }
+        header("HTTP/1.1 200 ok");
+        header('Content-type: application/json; charset=utf-8'); 
         echo "{success:true}";
     }
 
