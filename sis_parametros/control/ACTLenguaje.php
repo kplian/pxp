@@ -9,11 +9,16 @@
  HISTORIAL DE MODIFICACIONES:
  #ISSUE                FECHA                AUTOR                DESCRIPCION
   #0                21-04-2020 01:50:14    admin             Creacion    
-  #
+  #133              27/05/2020             rac               setLanguage
 *****************************************************************************************/
 
 class ACTLenguaje extends ACTbase{    
-            
+    
+    function setLanguage(){
+        $_SESSION["ss_lenguaje_usu"] = $this->objParam->getParametro('language'); //#133
+        echo "{success:true}";
+    }
+
     function listarLenguaje(){
 		$this->objParam->defecto('ordenacion','id_lenguaje');
         $this->objParam->defecto('dir_ordenacion','asc');
@@ -131,6 +136,8 @@ class ACTLenguaje extends ACTbase{
 		fclose($file);
 		return $fileName;
     }
+
+    
             
 }
 
