@@ -23,7 +23,7 @@ class ACTLenguaje extends ACTbase{
         }
         header("HTTP/1.1 200 ok");
         header('Content-type: application/json; charset=utf-8'); 
-        echo "{success:true}";
+        echo '{"success":true}';
     }
 
     function listarLenguaje(){
