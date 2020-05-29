@@ -7,6 +7,7 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
  	ISSUE			FECHA			AUTHOR 					DESCRIPCION
   	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
+    #143            29/05/2020      EGS                     Se agrega campos para configuracion de sla
 */
 
 class MODTipoEstado extends MODbase{
@@ -65,7 +66,11 @@ class MODTipoEstado extends MODbase{
 		$this->captura('id_tipo_estado_anterior','integer');
 		$this->captura('desc_tipo_estado_anterior','text');
 		$this->captura('icono','varchar');
-		$this->captura('dias_alerta','integer');//#17	
+		$this->captura('dias_alerta','integer');//#17
+        $this->captura('sla','varchar');//#143
+        $this->captura('dias_limite','integer');//#143
+        $this->captura('dias_envio','varchar');//#143
+        $this->captura('hrs_envio','varchar');//#143
 		
 		
 		
@@ -173,9 +178,11 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 		$this->setParametro('id_tipo_estado_anterior','id_tipo_estado_anterior','integer');
 		$this->setParametro('icono','icono','varchar');
-		$this->setParametro('dias_alerta','dias_alerta','integer');//#17	
-		
-		
+		$this->setParametro('dias_alerta','dias_alerta','integer');//#17
+        $this->setParametro('sla','sla','varchar');//#143
+        $this->setParametro('dias_limite','dias_limite','integer');//#143
+        $this->setParametro('dias_envio','dias_envio','varchar');//#143
+        $this->setParametro('hrs_envio','hrs_envio','varchar');//#143
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -221,8 +228,11 @@ class MODTipoEstado extends MODbase{
 		$this->setParametro('grupo_doc','grupo_doc','codigo_html');
 		$this->setParametro('id_tipo_estado_anterior','id_tipo_estado_anterior','integer');
 		$this->setParametro('icono','icono','varchar');
-		$this->setParametro('dias_alerta','dias_alerta','integer');//#17	
-
+		$this->setParametro('dias_alerta','dias_alerta','integer');//#17
+        $this->setParametro('sla','sla','varchar');//#143
+        $this->setParametro('dias_limite','dias_limite','integer');//#143
+        $this->setParametro('dias_envio','dias_envio','varchar');//#143
+        $this->setParametro('hrs_envio','hrs_envio','varchar');//#143
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
