@@ -15,24 +15,20 @@ class MODUsuario extends MODbase {
 		parent::__construct($pParam);
 	}
 	
-	function ValidaUsuario(){
+	function ValidaUsuario() {
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='segu.ft_validar_usuario_ime';
 		$this->transaccion='SEG_VALUSU_SEG';
 		
 		//definicion de variables
-		$this->tipo_conexion='seguridad';
-		
+		$this->tipo_conexion='seguridad';		
 		$this->tipo_procedimiento='IME';
 		$this->count=false;
         $this->oEncryp=new CTEncriptacionPrivada($this->arreglo['contrasena'],$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
 
-        if ($this->arreglo['_tipo'] == 'restAuten') {
-            
+        if ($this->arreglo['_tipo'] == 'restAuten') {            
             $contrasena = $this->arreglo['contrasena'];
-
         } else {
-
             $contrasena = $_SESSION["encriptar_data"]=='si'?md5( $this->arreglo['contrasena']):md5($this->oEncryp->getDecodificado());
         }
 		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
@@ -49,10 +45,8 @@ class MODUsuario extends MODbase {
 		$_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->arreglo['contrasena']);
 		$_SESSION["_CONTRASENA_MD5"] = $this->arreglo['contrasena'];
 				
-		$this->armarConsulta();
-		
-		$this->ejecutarConsulta();
-		
+		$this->armarConsulta();		
+		$this->ejecutarConsulta();		
 		 
 		return $this->respuesta;
 	}

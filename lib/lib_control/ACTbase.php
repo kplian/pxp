@@ -5,9 +5,6 @@
  Autor:	Kplian (RCM)
  Fecha:	01/07/2010
  */
-
-use WebSocket\Client;
-
 abstract class ACTbase
 {
 	protected $objParam;
@@ -16,16 +13,8 @@ abstract class ACTbase
 	protected $res;
 
 	function __construct(CTParametro $pParam){
-		
-		$this->objParam=  $pParam;		
-	}
-	
-	/**
-	*
-	*   Ejemplo:   
-	*
-	*
-	*/
+		$this->objParam=  $pParam;
+	}	
 	
 	function create($className) {
 		$myArray = explode("/", $className);
@@ -37,8 +26,7 @@ abstract class ACTbase
 			$includeDir = dirname($reflector->getFileName()) . "/../modelo/";
 			$fileName = $myArray [0] . '.php';			
 			include_once $includeDir . $fileName;
-			
-		 eval('$modelObj = new $myArray[0]($this->objParam);');	
+		    eval('$modelObj = new $myArray[0]($this->objParam);');	
 		 
 		} else if (sizeof($myArray) == 2) {			
 			$includeDir = dirname($reflector->getFileName()) . "/../../" . $myArray[0] . "/modelo/";
@@ -52,21 +40,14 @@ abstract class ACTbase
 		 eval('$modelObj = new $myArray[2]($this->objParam);');			
 		} else {
 			throw new Exception(__METHOD__.': No se pudo incluir el modelo '.$className);
-		}
-		//var_dump($this->objParam->getParametro("codigo_tipo_documento")); exit;
-		return $modelObj;
-		
+		}		
+		return $modelObj;		
 	}
 
 	function dispararEventoWS($send){
-
         $client = new Client("ws://localhost:".$_SESSION['_PUERTO_WEBSOCKET']."?sessionIDPXP=".session_id());
-
         $client->send(json_encode($send));
-
         return $client->receive();
-
 	}
-	
 }
 ?>

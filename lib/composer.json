@@ -1,0 +1,6 @@
+{
+    "require": {
+        "pkly/i18next-php": "^1.0",
+        "textalk/websocket": "^1.2"
+    }
+}

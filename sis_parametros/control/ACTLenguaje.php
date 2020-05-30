@@ -11,7 +11,7 @@
   #0                21-04-2020 01:50:14    admin             Creacion    
   #133              27/05/2020             rac               setLanguage
 *****************************************************************************************/
-
+use Pkly\I18Next\I18n;
 class ACTLenguaje extends ACTbase{    
     
     //#133
@@ -20,7 +20,8 @@ class ACTLenguaje extends ACTbase{
             $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
         } else {
             $_SESSION["ss_lenguaje_usu"] = 'EN';
-        }
+        }        
+		I18n::get()->changeLanguage(strtolower($_SESSION["ss_lenguaje_usu"]));
         header("HTTP/1.1 200 ok");
         header('Content-type: application/json; charset=utf-8'); 
         echo "{success:true}";

@@ -1198,8 +1198,6 @@ Phx.CP=function(){
                             usuario: form_login.getForm().findField('usuario').getValue(),
                             language:  (navigator.language || navigator.userLanguage).substring(2, 0) //#133 
                             //language:  'en' 
-
-
                         },
                         method:'POST',
                         success:ajax.success,

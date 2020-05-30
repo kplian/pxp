@@ -32,16 +32,10 @@ if(isset($_SESSION["permisos_temporales"])) {
 		}
 	}
 }
-
 register_shutdown_function('fatalErrorShutdownHandler');
 set_exception_handler('exception_handler');
 set_error_handler('error_handler');
-//include_once('../DatosGenerales.php');
 include_once('CTincludes.php');
-
-		
 $a=new CTIntermediario();
 $a->direccionarAccion();
-
-
 ?>

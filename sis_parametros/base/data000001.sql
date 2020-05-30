@@ -557,8 +557,17 @@ select pxp.f_insert_testructura_gui ('PLCLV', 'TRAD');
 /***********************************F-DAT-RAC-PARAM-0-20/04/2020*****************************************/
 
   
-/**********************************I-DAT-RAC-PARAM-0-16/05/2020*****************************************/
+/**********************************I-DAT-RAC-PARAM-0-23/05/2020*****************************************/
 
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'param_traduccion_defecto_on_null', E'false', E'si no existe la traduccion  usar columnas texto por defecto o dejarlo como null');
+  
+
+/**********************************F-DAT-RAC-PARAM-0-23/05/2020*****************************************/
+
+
+/**********************************I-DAT-RAC-PARAM-133-30/05/2020*****************************************/
 
 select param.f_import_tgrupo_idioma ('insert','BASICO', 'Grupo de traducciones basicas', 'comun','activo',NULL,NULL,NULL);
 select param.f_import_tpalabra_clave ('insert','activo', 'apellido', 'Apellido', 'BASICO');
@@ -568,6 +577,7 @@ select param.f_import_tpalabra_clave ('insert','activo', 'edit', 'Editar', 'BASI
 select param.f_import_tpalabra_clave ('insert','activo', 'exportar', 'Exportar', 'BASICO');
 select param.f_import_tpalabra_clave ('insert','activo', 'guardar', 'Guardar', 'BASICO');
 select param.f_import_tpalabra_clave ('insert','activo', 'hello', 'Hola', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'invalid_usu', 'Credenciales de Usuario Invalidas', 'BASICO');
 select param.f_import_tpalabra_clave ('insert','activo', 'language', 'Idioma', 'BASICO');
 select param.f_import_tpalabra_clave ('insert','activo', 'materno', 'Materno', 'BASICO');
 select param.f_import_tpalabra_clave ('insert','activo', 'new', 'Nuevo', 'BASICO');
@@ -580,10 +590,13 @@ select param.f_import_tpalabra_clave ('insert','activo', 'success_change_user', 
 select param.f_import_tpalabra_clave ('insert','activo', 'success_inactive_user', 'Usuario inactivado con exito', 'BASICO');
 select param.f_import_tpalabra_clave ('insert','activo', 'test', 'prueba', 'BASICO');
 select param.f_import_ttraduccion ('insert','Hello','activo','en','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Invalid User Credentials','activo','en','invalid_usu','BASICO');
 select param.f_import_ttraduccion ('insert','Language','activo','en','language','BASICO');
 select param.f_import_ttraduccion ('insert','The user does not have permissions for the procedure','activo','en','no_permiso','BASICO');
 select param.f_import_ttraduccion ('insert','test','activo','en','test','BASICO');
+select param.f_import_ttraduccion ('insert','Carnet de Identidad','activo','es','ci','BASICO');
 select param.f_import_ttraduccion ('insert','Hola','activo','es','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Credenciales de Usuario Inválidas','activo','es','invalid_usu','BASICO');
 select param.f_import_ttraduccion ('insert','Lenguaje','activo','es','language','BASICO');
 select param.f_import_ttraduccion ('insert','El usuario no tiene permisos para el procedimiento','activo','es','no_permiso','BASICO');
 select param.f_import_ttraduccion ('insert','prueba','activo','es','test','BASICO');
@@ -593,15 +606,4 @@ select param.f_import_ttraduccion ('insert','Oi','activo','pt','hello','BASICO')
 select param.f_import_ttraduccion ('insert','Linguagem','activo','pt','language','BASICO');
 
 
-/**********************************F-DAT-RAC-PARAM-0-16/05/2020*****************************************/
-
-
-
-/**********************************I-DAT-RAC-PARAM-0-23/05/2020*****************************************/
-
-INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
-VALUES 
-  (E'param_traduccion_defecto_on_null', E'false', E'si no existe la traduccion  usar columnas texto por defecto o dejarlo como null');
-  
-
-/**********************************F-DAT-RAC-PARAM-0-23/05/2020*****************************************/
+/**********************************F-DAT-RAC-PARAM-133-30/05/2020*****************************************/

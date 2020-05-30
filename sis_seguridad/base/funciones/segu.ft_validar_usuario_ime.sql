@@ -17,11 +17,10 @@ $body$
  FECHA:			26/07/2010
  COMENTARIOS:	
 ***************************************************************************
- HISTORIA DE MODIFICACIONES:
-
- DESCRIPCION:	
- AUTOR:			
- FECHA:			
+ 
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA       AUTOR           DESCRIPCION
+#133               29-05-2020     RAC           mensaje traducido  
 ***************************************************************************/
 DECLARE
 
@@ -138,8 +137,8 @@ BEGIN
               
                         
             IF(v_id_usuario is null) THEN
-                RAISE EXCEPTION 'Credenciales de Usuario Invalidas';
-           END IF;
+                RAISE EXCEPTION '%',pxp._t('invalid_usu');
+            END IF;
   
               --verificamos si el usuario tiene alertas
               v_cont_alertas = 0;
@@ -319,4 +318,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY DEFINER
+PARALLEL UNSAFE
 COST 100;

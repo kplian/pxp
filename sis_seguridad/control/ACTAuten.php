@@ -10,6 +10,7 @@ HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA       AUTOR           DESCRIPCION
 #133               22-04-2020     RAC            recibe variable de lenguaje  
 *****************************************************************************************/
+use Pkly\I18Next\I18n;
 class ACTAuten extends ACTbase {
 
 	//Variables
@@ -137,15 +138,11 @@ class ACTAuten extends ACTbase {
 
 	//Verifica las credenciales de usuario
 	
-	function verificarCredenciales(){
-
-
-		
+	function verificarCredenciales(){		
 		$this->funciones= $this->create('MODUsuario');
 		$this->res=$this->funciones->ValidaUsuario();
 		$this->datos=$this->res->getDatos();
         $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
-
 		//#133 
 		if( $this->objParam->getParametro('language') != '') {
             $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
@@ -153,7 +150,7 @@ class ACTAuten extends ACTbase {
             $_SESSION["ss_lenguaje_usu"] = 'EN';
 		}
 		
-		$_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
+		I18n::get()->changeLanguage(strtolower($_SESSION["ss_lenguaje_usu"]));
 
         if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){
 			//si no existe le mando otra vez a la portada
@@ -171,9 +168,9 @@ class ACTAuten extends ACTbase {
 			$_SESSION["ss_id_persona"] = "";
 			$_SESSION["ss_ip"] = "";
 			$_SESSION["ss_mac"] = "";
-
-           echo "{success:false,mensaje:'".addslashes($this->res->getMensaje())."'}";
-			exit;
+		   	  
+		   echo "{success:false,mensaje:'".I18n::get()->t('invalid_usu')."'}";
+		   exit;
 		}
 		else{
 			$LDAP=TRUE;
