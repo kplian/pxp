@@ -8,12 +8,11 @@
 
  HISTORIAL DE MODIFICACIONES:
  #ISSUE                FECHA                AUTOR                DESCRIPCION
-  #0                21-04-2020 01:50:14    admin             Creacion    
+  #0                21-04-2020 01:50:14    rac              Creacion    
   #133              27/05/2020             rac               setLanguage
 *****************************************************************************************/
 use Pkly\I18Next\I18n;
-class ACTLenguaje extends ACTbase{    
-    
+class ACTLenguaje extends ACTbase{  
     //#133
     function setLanguage(){
         if( $this->objParam->getParametro('language') != '') {
@@ -143,10 +142,6 @@ class ACTLenguaje extends ACTbase{
 		fwrite ($file,  $contenido);
 		fclose($file);
 		return $fileName;
-    }
-
-    
-            
+    }        
 }
-
 ?>
