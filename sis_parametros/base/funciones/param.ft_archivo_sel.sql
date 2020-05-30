@@ -1,10 +1,8 @@
-CREATE OR REPLACE FUNCTION param.ft_archivo_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
-)
-RETURNS varchar AS
+CREATE OR REPLACE FUNCTION param.ft_archivo_sel(p_administrador integer,
+                                                p_id_usuario integer,
+                                                p_tabla varchar,
+                                                p_transaccion varchar)
+    RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -23,35 +21,33 @@ $body$
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-	v_resp				varchar;
+    v_consulta            varchar;
+    v_parametros          record;
+    v_nombre_funcion      text;
+    v_resp                varchar;
+    v_record_tipo_archivo record;
+    v_record_campos       record;
+    v_record_join         record;
+    v_registros_json_join RECORD;
+    v_join                VARCHAR;
 
-	v_record_tipo_archivo record;
-	v_record_campos record;
-	v_record_join record;
-
-	v_registros_json_join RECORD;
-	v_join VARCHAR;
-			    
 BEGIN
 
-	v_nombre_funcion = 'param.ft_archivo_sel';
+    v_nombre_funcion = 'param.ft_archivo_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
- 	#TRANSACCION:  'PM_ARCH_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		favio.figueroa
- 	#FECHA:		05-12-2016 15:04:48
-	***********************************/
+    /*********************************
+     #TRANSACCION:  'PM_ARCH_SEL'
+     #DESCRIPCION:	Consulta de datos
+     #AUTOR:		favio.figueroa
+     #FECHA:		05-12-2016 15:04:48
+    ***********************************/
 
-	if(p_transaccion='PM_ARCH_SEL')then
-     				
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='select
+    IF (p_transaccion = 'PM_ARCH_SEL') THEN
+
+        BEGIN
+            --Sentencia de la consulta
+            v_consulta := 'select
 						arch.id_archivo,
 						arch.estado_reg,
 						arch.folder,
@@ -66,57 +62,58 @@ BEGIN
 						arch.id_usuario_mod,
 						arch.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod
 						from param.tarchivo arch
 						inner join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 				        where  ';
-			
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-			--Devuelve la respuesta
-			return v_consulta;
-						
-		end;
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
+            v_consulta := v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion ||
+                          ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
-	/*********************************    
- 	#TRANSACCION:  'PM_ARCH_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		favio.figueroa
- 	#FECHA:		05-12-2016 15:04:48
-	***********************************/
+            --Devuelve la respuesta
+            RETURN v_consulta;
 
-	elsif(p_transaccion='PM_ARCH_CONT')then
+        END;
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_archivo)
+        /*********************************
+         #TRANSACCION:  'PM_ARCH_CONT'
+         #DESCRIPCION:	Conteo de registros
+         #AUTOR:		favio.figueroa
+         #FECHA:		05-12-2016 15:04:48
+        ***********************************/
+
+    ELSIF (p_transaccion = 'PM_ARCH_CONT') THEN
+
+        BEGIN
+            --Sentencia de la consulta de conteo de registros
+            v_consulta := 'select count(id_archivo)
 					    from param.tarchivo arch
 					    inner join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 					    where ';
-			
-			--Definicion de la respuesta		    
-			v_consulta:=v_consulta||v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
 
-		end;
+            --Devuelve la respuesta
+            RETURN v_consulta;
 
-	/*********************************
- 	#TRANSACCION:  'PM_ARCOD_SEL'
- 	#DESCRIPCION:	lista de registros
- 	#AUTOR:		favio.figueroa
- 	#FECHA:		05-12-2016 15:04:48
-	***********************************/
+        END;
 
-	elsif(p_transaccion='PM_ARCOD_SEL')then
+        /*********************************
+         #TRANSACCION:  'PM_ARCOD_SEL'
+         #DESCRIPCION:	lista de registros
+         #AUTOR:		favio.figueroa
+         #FECHA:		05-12-2016 15:04:48
+        ***********************************/
 
-		begin
-			v_consulta:='select
+    ELSIF (p_transaccion = 'PM_ARCOD_SEL') THEN
+
+        BEGIN
+            v_consulta := 'select
 						arch.id_archivo,
 						arch.estado_reg,
 						arch.folder,
@@ -139,45 +136,48 @@ BEGIN
             arch.nombre_descriptivo,
             tipar.obligatorio
 						from param.ttipo_archivo tipar
-  left join param.tarchivo arch on arch.id_tipo_archivo = tipar.id_tipo_archivo and arch.id_tabla = '||v_parametros.id_tabla||'
+  left join param.tarchivo arch on arch.id_tipo_archivo = tipar.id_tipo_archivo and arch.id_tabla = ' ||
+                          v_parametros.id_tabla || '
 
   left join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
   left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 where
 			 CASE WHEN tipar.multiple = ''si''  THEN (arch.extension is not null ) ELSE 0=0  END   AND       ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-			--Devuelve la respuesta
-			return v_consulta;
-		end;
-	/*********************************
- 	#TRANSACCION:  'PM_ARCOD_CONT'
- 	#DESCRIPCION:	conteo de registros
- 	#AUTOR:		favio.figueroa
- 	#FECHA:		05-12-2016 15:04:48
-	***********************************/
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
+            v_consulta := v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion ||
+                          ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            --Devuelve la respuesta
+            RETURN v_consulta;
+        END;
+        /*********************************
+         #TRANSACCION:  'PM_ARCOD_CONT'
+         #DESCRIPCION:	conteo de registros
+         #AUTOR:		favio.figueroa
+         #FECHA:		05-12-2016 15:04:48
+        ***********************************/
 
-	elsif(p_transaccion='PM_ARCOD_CONT')then
+    ELSIF (p_transaccion = 'PM_ARCOD_CONT') THEN
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(tipar.id_tipo_archivo)
+        BEGIN
+            --Sentencia de la consulta de conteo de registros
+            v_consulta := 'select count(tipar.id_tipo_archivo)
 					    from param.ttipo_archivo tipar
-  left join param.tarchivo arch on arch.id_tipo_archivo = tipar.id_tipo_archivo and arch.id_tabla = '||v_parametros.id_tabla||'
+  left join param.tarchivo arch on arch.id_tipo_archivo = tipar.id_tipo_archivo and arch.id_tabla = ' ||
+                          v_parametros.id_tabla || '
 
   left join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
   left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 where ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            RETURN v_consulta;
 
-		end;
+        END;
 /*********************************
  	#TRANSACCION:  'PM_ARVER_SEL'
  	#DESCRIPCION:	conteo de registros
@@ -185,13 +185,13 @@ where ';
  	#FECHA:		05-12-2016 15:04:48
 	***********************************/
 
-	elsif(p_transaccion='PM_ARVER_SEL')then
+    ELSIF (p_transaccion = 'PM_ARVER_SEL') THEN
 
-		begin
+        BEGIN
 
 
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='WITH RECURSIVE t(version,id_archivo_fk, id_archivo) AS (
+            --Sentencia de la consulta de conteo de registros
+            v_consulta := 'WITH RECURSIVE t(version,id_archivo_fk, id_archivo) AS (
 										SELECT
 											2 AS version,
 											arch.id_archivo_fk,
@@ -200,7 +200,7 @@ where ';
 											arch.nombre_archivo,
 											arch.id_tipo_archivo
 										FROM param.tarchivo arch
-										WHERE arch.id_archivo_fk = '||v_parametros.id_archivo||'
+										WHERE arch.id_archivo_fk = ' || v_parametros.id_archivo || '
 
 										UNION ALL
 										SELECT
@@ -237,7 +237,7 @@ where ';
 									inner join segu.tusuario usu1 on usu1.id_usuario = arch.id_usuario_reg
 									left join segu.tusuario usu2 on usu2.id_usuario = arch.id_usuario_mod
 									INNER JOIN param.ttipo_archivo tipar on tipar.id_tipo_archivo = arch.id_tipo_archivo
-									WHERE arch.id_archivo = '||v_parametros.id_archivo||' and arch.estado_reg = ''inactivo''
+									WHERE arch.id_archivo = ' || v_parametros.id_archivo || ' and arch.estado_reg = ''inactivo''
 									UNION ALL -- fin requerimieno 12 abril 2019
 
 									SELECT
@@ -266,156 +266,259 @@ where ';
 									INNER JOIN param.ttipo_archivo tipar on tipar.id_tipo_archivo = arch.id_tipo_archivo
 									WHERE ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            RETURN v_consulta;
 
-		end;
+        END;
 
-/*********************************
- 	#TRANSACCION:  'PM_ARTABLA_SEL'
- 	#DESCRIPCION:	consulta con la tabla incluida
- 	#AUTOR:		favio.figueroa
- 	#FECHA:		05-12-2016 15:04:48
-	***********************************/
+        /*********************************
+         #TRANSACCION:  'PM_ARTABLA_SEL'
+         #DESCRIPCION:	consulta con la tabla incluida
+         #AUTOR:		favio.figueroa
+         #FECHA:		05-12-2016 15:04:48
+        ***********************************/
 
-	elsif(p_transaccion='PM_ARTABLA_SEL')then
+    ELSIF (p_transaccion = 'PM_ARTABLA_SEL') THEN
 
-		begin
-
-
+        BEGIN
 
 
-
-			--obtenemos el tipo de archivo
-			SELECT
-				tipar.tabla,
-				tipar.nombre_id,
-				tipar.id_tipo_archivo
-			INTO v_record_tipo_archivo
-			FROM param.ttipo_archivo tipar
-			WHERE codigo = v_parametros.tipo_archivo;
+            --obtenemos el tipo de archivo
+            SELECT tipar.tabla,
+                   tipar.nombre_id,
+                   tipar.id_tipo_archivo
+            INTO v_record_tipo_archivo
+            FROM param.ttipo_archivo tipar
+            WHERE codigo = v_parametros.tipo_archivo;
 
 
-
-			--obtenemos join
-
-
-			v_join = ' ';
+            --obtenemos join
 
 
-			FOR v_registros_json_join IN (SELECT *
-																		FROM param.ttipo_archivo_join tjoin
-																		WHERE id_tipo_archivo = v_record_tipo_archivo.id_tipo_archivo) LOOP
-
-				v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.alias || ' on ' ||v_registros_json_join.condicion || ' ';
-
-			END LOOP;
+            v_join = ' ';
 
 
+            FOR v_registros_json_join IN (SELECT *
+                                          FROM param.ttipo_archivo_join tjoin
+                                          WHERE id_tipo_archivo = v_record_tipo_archivo.id_tipo_archivo)
+                LOOP
+
+                    v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla ||
+                             ' ' || v_registros_json_join.alias || ' on ' || v_registros_json_join.condicion || ' ';
+
+                END LOOP;
 
 
-
-			v_consulta = 'select
-			              '''||v_parametros.tipo_archivo||'''::varchar as tipo_archivo,
+            v_consulta = 'select
+			              ''' || v_parametros.tipo_archivo || '''::varchar as tipo_archivo,
                     archivo.extension,
                     archivo.nombre_archivo,
                     archivo.folder,
                     archivo.nombre_descriptivo,
-                    '||v_parametros.campos|| '
+                    ' || v_parametros.campos || '
        from ' || v_record_tipo_archivo.tabla || ' tabla
       inner join param.tarchivo archivo on archivo.id_tabla = tabla.' || v_record_tipo_archivo.nombre_id || ' and archivo.id_archivo_fk is NULL
-      '|| v_join ||'
+      ' || v_join || '
       where archivo.id_tipo_archivo = ' || v_record_tipo_archivo.id_tipo_archivo || ' and ';
 
 
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
+
+            v_consulta := v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion ||
+                          ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 
 
+            --Devuelve la respuesta
+            RETURN v_consulta;
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+        END;
 
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+        /*********************************
+     #TRANSACCION:  'PM_ARTABLA_CONT'
+     #DESCRIPCION:	conteo de registros
+     #AUTOR:		favio.figueroa
+     #FECHA:		05-12-2016 15:04:48
+    ***********************************/
 
+    ELSIF (p_transaccion = 'PM_ARTABLA_CONT') THEN
 
-
-			--Devuelve la respuesta
-			return v_consulta;
-
-		end;
-
-		/*********************************
- 	#TRANSACCION:  'PM_ARTABLA_CONT'
- 	#DESCRIPCION:	conteo de registros
- 	#AUTOR:		favio.figueroa
- 	#FECHA:		05-12-2016 15:04:48
-	***********************************/
-
-	elsif(p_transaccion='PM_ARTABLA_CONT')then
-
-		begin
-			--Sentencia de la consulta de conteo de registros
+        BEGIN
+            --Sentencia de la consulta de conteo de registros
 
 
+            SELECT tipar.tabla,
+                   tipar.nombre_id,
+                   tipar.id_tipo_archivo
+            INTO v_record_tipo_archivo
+            FROM param.ttipo_archivo tipar
+            WHERE codigo = v_parametros.tipo_archivo;
 
 
-
-			SELECT
-				tipar.tabla,
-				tipar.nombre_id,
-				tipar.id_tipo_archivo
-			INTO v_record_tipo_archivo
-			FROM param.ttipo_archivo tipar
-			WHERE codigo = v_parametros.tipo_archivo;
+            v_join = ' ';
 
 
-			v_join = ' ';
+            FOR v_registros_json_join IN (SELECT *
+                                          FROM param.ttipo_archivo_join tjoin
+                                          WHERE id_tipo_archivo = v_record_tipo_archivo.id_tipo_archivo)
+                LOOP
+
+                    v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla ||
+                             ' ' || v_registros_json_join.alias || ' on ' || v_registros_json_join.condicion || ' ';
+
+                END LOOP;
 
 
-			FOR v_registros_json_join IN (SELECT *
-																		FROM param.ttipo_archivo_join tjoin
-																		WHERE id_tipo_archivo = v_record_tipo_archivo.id_tipo_archivo) LOOP
-
-				v_join = v_join || ' ' || v_registros_json_join.tipo || ' join ' || v_registros_json_join.tabla || ' ' ||v_registros_json_join.alias || ' on ' ||v_registros_json_join.condicion || ' ';
-
-			END LOOP;
-
-
-			v_consulta = 'select count(archivo.id_archivo)
+            v_consulta = 'select count(archivo.id_archivo)
        from ' || v_record_tipo_archivo.tabla || ' tabla
       inner join param.tarchivo archivo on archivo.id_tabla = tabla.' || v_record_tipo_archivo.nombre_id || ' and archivo.id_archivo_fk is NULL
-       '|| v_join ||'
+       ' || v_join || '
       where archivo.id_tipo_archivo = ' || v_record_tipo_archivo.id_tipo_archivo || ' and ';
 
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            RETURN v_consulta;
 
-		end;
+        END;
 
-	else
-					     
-		raise exception 'Transaccion inexistente';
-					         
-	end if;
-					
+        /*********************************
+        #TRANSACCION:  'PM_TYPEFILE_SEL'
+        #DESCRIPCION: query for get type file and files
+        #AUTOR:		favio.figueroa
+        #FECHA:		25-05-2020 15:04:48
+        ***********************************/
+
+    ELSIF (p_transaccion = 'PM_TYPEFILE_SEL') THEN
+
+        BEGIN
+
+            v_consulta := 'SELECT * FROM (SELECT
+                            tipar.id_tipo_archivo,
+                            tipar.tabla,
+                            tipar.nombre,
+                            tipar.codigo,
+                            tipar.extensiones_permitidas,
+                            tipar.multiple,
+                            tipar.obligatorio,
+                            tipar.tipo_archivo,
+                            tipar.orden,
+                            arch.nombre_descriptivo,
+                            arch.id_archivo,
+                            arch.estado_reg,
+                            arch.folder,
+                            arch.extension,
+                            arch.id_tabla,
+                            arch.nombre_archivo
+                        FROM param.ttipo_archivo tipar
+                                 LEFT JOIN param.tarchivo arch ON arch.id_tipo_archivo = tipar.id_tipo_archivo
+                                                                      AND arch.id_tabla = ' || v_parametros.id_tabla || '
+                        WHERE tipar.tabla = ''' || v_parametros.tabla || '''
+                        AND arch.id_archivo_fk IS NULL
+                        AND (arch.id_tabla =  ' || v_parametros.id_tabla || ' OR arch.id_tabla IS NULL)
+                        AND tipar.multiple = ''no''
+                        UNION ALL
+                        SELECT
+                            tipar.id_tipo_archivo,
+                            tipar.tabla,
+                            tipar.nombre,
+                            tipar.codigo,
+                            tipar.extensiones_permitidas,
+                            tipar.multiple,
+                            tipar.obligatorio,
+                            tipar.tipo_archivo,
+                            tipar.orden,
+                            NULL as id_archivo,
+                            NULL as estado_reg,
+                            NULL as folder,
+                            NULL as extension,
+                            NULL as id_tabla,
+                            NULL as nombre_archivo,
+                            NULL
+                        FROM param.ttipo_archivo tipar
+                        WHERE tipar.tabla = ''' || v_parametros.tabla || '''
+                          AND tipar.multiple = ''si'') t
+                          ORDER BY t.orden ASC
+                        ';
+
+            --Devuelve la respuesta
+            RETURN v_consulta;
+
+        END;
+
+
+    /*********************************
+    #TRANSACCION:  'PM_FILES_SEL'
+    #DESCRIPCION:	get file
+    #AUTOR:		favio.figueroa
+    #FECHA:		25-05-2020 15:04:48
+    ***********************************/
+
+    ELSIF (p_transaccion = 'PM_FILES_SEL') THEN
+
+        BEGIN
+            v_consulta := 'SELECT a.id_archivo,
+                                   a.folder,
+                                   a.extension,
+                                   a.nombre_archivo
+                            FROM param.tarchivo a
+                            INNER JOIN param.ttipo_archivo ta on ta.id_tipo_archivo = a.id_tipo_archivo
+                            WHERE ta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||' AND a.id_tabla = '||v_parametros.id_tabla||' AND ';
+
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
+            v_consulta := v_consulta || ' order by ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion ||
+                          ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            --Devuelve la respuesta
+            RETURN v_consulta;
+        END;
+    /*********************************
+     #TRANSACCION:  'PM_FILES_CONT'
+     #DESCRIPCION:	conteo de registros
+     #AUTOR:		favio.figueroa
+     #FECHA:		05-12-2016 15:04:48
+    ***********************************/
+
+    ELSIF (p_transaccion = 'PM_FILES_CONT') THEN
+
+        BEGIN
+            --Sentencia de la consulta de conteo de registros
+            v_consulta := 'SELECT COUNT(*)
+                            FROM param.tarchivo a
+                            INNER JOIN param.ttipo_archivo ta on ta.id_tipo_archivo = a.id_tipo_archivo
+                            WHERE ta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||' AND a.id_tabla = '||v_parametros.id_tabla||' AND ';
+
+            --Definicion de la respuesta
+            v_consulta := v_consulta || v_parametros.filtro;
+
+            --Devuelve la respuesta
+            RETURN v_consulta;
+
+        END;
+
+    ELSE
+
+        RAISE EXCEPTION 'Transaccion inexistente';
+
+    END IF;
+
 EXCEPTION
-					
-	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-			raise exception '%',v_resp;
-END;
+
+    WHEN OTHERS THEN
+        v_resp = '';
+        v_resp = pxp.f_agrega_clave(v_resp, 'mensaje', SQLERRM);
+        v_resp = pxp.f_agrega_clave(v_resp, 'codigo_error', SQLSTATE);
+        v_resp = pxp.f_agrega_clave(v_resp, 'procedimientos', v_nombre_funcion);
+        RAISE EXCEPTION '%',v_resp;
+END ;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+    LANGUAGE 'plpgsql'
+    VOLATILE
+    CALLED ON NULL INPUT
+    SECURITY INVOKER
+    COST 100;
