@@ -8,6 +8,7 @@
  * 
   ISSUE            FECHA:              AUTOR                 DESCRIPCION  
   #97            17/06/2019        RAC                 interface para copiar roles de usaurio
+  #179 KPL       03/06/2020        RAC                 creacion de usuario para autentificacion google facebook
  */ 
 class MODUsuario extends MODbase {
 	
@@ -271,6 +272,34 @@ function insertarUsuario(){
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				
+		$this->ejecutarConsulta();
+		return $this->respuesta;
+	}
+
+	//#179
+	function createTokenUser() {			
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='segu.ft_usuario_ime';// nombre procedimiento almacenado
+		$this->transaccion='SEG_CRTUSR_TK';//nombre de la transaccion
+		$this->tipo_conexion='seguridad';
+		$this->tipo_procedimiento='IME';
+		$this->count=false;
+
+		$this->arreglo['contrasena'] = md5($this->arreglo['contrasena']);
+				
+		//Define los setParametros para la funcion	
+		//setParametro (nombre, valor , tipo , black, )
+		$this->setParametro('name','name','varchar');
+		$this->setParametro('surname','surname','varchar');
+		$this->setParametro('email','email','varchar');
+		$this->setParametro('token','token','varchar');
+		$this->setParametro('login_type','login_type','varchar'); //tipo autentificacion facebook, google, ldap, local
+		$this->setParametro('url_photo','url_photo','varchar');
+		
+			
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 	}

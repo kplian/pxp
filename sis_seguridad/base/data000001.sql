@@ -3875,4 +3875,14 @@ select pxp.f_insert_testructura_gui ('ITR', 'RepSeg');
 /*******************************************F-DAT-MMV-SEGU-104-30/1/2020***********************************************/
 
 
+/*******************************************I-DAT-RAC-SEGU-179-30/2020****************************************/
+
+SERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'segu_def_rol_google_face', E'PXP-Rol inicial', E'rol por defecto para usuarios creados con registro desde facebook o google');
+  
+  
+/*******************************************F-DAT-RAC-SEGU-179-30/2020****************************************/
+
+
 

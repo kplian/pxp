@@ -26,6 +26,7 @@ $body$
   ISSUE            FECHA:              AUTOR                 DESCRIPCION 
   #0             19/07/2010        RAC                 creacion
   #97            17/06/2019        RAC                 adcionar funcionalidad para copia de roles y eps
+  #179 KPL       03/06/2020        RAC                 creacion de usuario para autentificacion google facebook
 ***************************************************************************/
 
 DECLARE
@@ -54,6 +55,12 @@ v_reg_roles    record; --#97
 v_reg_eps      record; --#97
 v_count_rol    integer; --#97
 v_count_ep     integer; --#97
+v_id_clasificador       integer; --#179
+v_id_persona            integer; --#179
+v_tmp_ci                varchar; --#179
+v_rol_def               varchar; --#179
+v_id_rol                integer; --#179
+
 
 
 
@@ -359,9 +366,106 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'mensaje','roles copiados: '||v_count_rol||', eps copiadas: '|| v_count_ep); 
                v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_parametros.id_usuario_destino::varchar);
                
-         END;    
+         END;  
          
-         
+     
+     /*******************************    
+     #TRANSACCION:  SEG_CRTUSR_TK
+     #DESCRIPCION:	Crea usuario para logueo con facebook o google
+     #AUTOR:		KPLIAN(rac)	
+     #FECHA:		03/06/2020
+    ***********************************/
+     ELSEIF(par_transaccion='SEG_CRTUSR_TK')then
+
+        BEGIN
+        
+              --------------------------
+              -- recibimos nombre  
+              --  (1) Nombre, (2) apellido, (3) Correo, (4) Url de la imagen de perfil Y el (5) token
+              -------------------------
+              
+              --generamos un numero de indetificacion unico a partir de la fecha
+              v_tmp_ci = RIGHT(  extract(epoch from now())::varchar, 20);
+            
+               --crear persona
+              insert into segu.tpersona (
+                               nombre,
+                               apellido_paterno,                              
+                               ci,
+                               correo
+                      )
+               values(
+                      upper(v_parametros.name),
+                      upper(v_parametros.surname),                     
+                      v_tmp_ci, 
+                      v_parametros.email
+                    )
+
+              RETURNING id_persona INTO v_id_persona;
+             
+             --obtener el clasificador
+             SELECT c.id_clasificador 
+             INTO v_id_clasificador
+             FROM segu.tclasificador c
+             WHERE c.codigo = 'PUB';     
+        
+             --crear usuario
+             
+             INSERT  
+             INTO segu.tusuario(
+                  id_clasificador,
+                  cuenta,
+                  contrasena,
+                  fecha_caducidad,
+                  estilo,
+                  contrasena_anterior,
+                  id_persona,
+                  autentificacion,
+                  token,
+                  url_foto,
+                  alias)
+                              
+             VALUES(                        
+                v_id_clasificador,
+                v_parametros.email,
+                v_tmp_ci,
+                '3000-01-01'::Date,
+                'xtheme-gray.css',
+                NULL,
+                v_id_persona,
+                v_parametros.login_type, --tpo de autentificacion facebook , google,  local, ldap
+                v_parametros.token,
+                v_parametros.url_photo,
+                v_parametros.email
+             ) RETURNING id_usuario into v_id_usuario;
+            
+           
+             
+             -- buscamos el rol inicial para el usaurio
+             v_rol_def = pxp.f_get_variable_global('segu_def_rol_google_face');
+             
+             SELECT r.id_rol 
+             INTO v_id_rol
+             FROM segu.trol r
+             WHERE upper(r.descripcion) = upper(v_rol_def);
+             
+                        
+             -- insertamos  registro si no esta presente como activo
+              insert into segu.tusuario_rol 
+                 (id_usuario, 
+                  id_rol, 
+                  estado_reg) 
+              values(
+              v_id_usuario,
+              v_id_rol,
+              'activo'); 
+                      
+             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Facebook/Google creado con exito '||v_id_usuario); 
+             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+
+                            
+
+         END;  
          
 
      else
