@@ -19,6 +19,7 @@ $body$
 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
 	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
     #86             20/11/2019      EGS                     Filtro para registros activos en exportdor de plantilla
+    #143            29/05/2020      EGS                     Se agrega campos para configuracion de sla
 ***************************************************************************/
 
 DECLARE
@@ -255,7 +256,12 @@ BEGIN
                         tipes.id_tipo_estado_anterior,
                         ''(''||tea.codigo||'') ''|| tea.nombre_estado AS desc_tipo_estado_anterior,
                         tipes.icono,
-                        tipes.dias_alerta  --#17
+                        tipes.dias_alerta, --#17
+                        tipes.sla,-- #143
+                        tipes.dias_limite,-- #143
+                        tipes.dias_envio,-- #143
+                        tipes.hrs_envio -- #143
+
 						from wf.ttipo_estado tipes
 						inner join segu.tusuario usu1 on usu1.id_usuario = tipes.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = tipes.id_usuario_mod

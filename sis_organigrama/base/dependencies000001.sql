@@ -780,4 +780,10 @@ WITH RECURSIVE uo_presu(
            JOIN orga.tuo cl ON cl.id_uo = c.ids [ 1 ];         
                     
 /********************************F-DEP-RAC-ORGA-24-26/16/2019***********************************/
-
+/********************************I-DEP-VAN-ORGA-0-11/05/2020***********************************/
+CREATE TRIGGER trig_huo_funcionario
+    AFTER INSERT OR UPDATE OR DELETE
+    ON orga.tuo_funcionario
+    FOR EACH ROW
+EXECUTE PROCEDURE orga.f_trig_huo_funcionario();
+/********************************F-DEP-VAN-ORGA-0-11/05/2020***********************************/

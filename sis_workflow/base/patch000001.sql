@@ -1387,3 +1387,23 @@ ALTER TABLE wf.ttipo_estado
 COMMENT ON COLUMN wf.ttipo_estado.dias_alerta
 IS 'Dias de vida antes de que se borre automaticamente la alerta';
 /*****************************F-SCP-EGS-WF-0-06/06/2019*************/
+/*****************************I-SCP-EGS-WF-1-29/05/2020*************/
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN sla VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
+
+ALTER TABLE wf.ttipo_estado
+  ADD COLUMN dias_limite INTEGER;
+COMMENT ON COLUMN wf.ttipo_estado.dias_limite
+IS 'Dias en que un estado debe pasar al siguiente a menos que sea un estado fin. Se envian correos y alertas si este esta habilitado(SLA)';
+
+ALTER TABLE wf.ttipo_estado
+ADD COLUMN dias_envio VARCHAR;
+COMMENT ON COLUMN wf.ttipo_estado.dias_envio
+IS 'Dias en  se enviara una (alerta/correo) deacuerdo a los dias limite. Se envian correos y alertas si este esta habilitado(SLA)';
+
+ALTER TABLE wf.ttipo_estado
+ADD COLUMN hrs_envio VARCHAR;
+COMMENT ON COLUMN wf.ttipo_estado.hrs_envio
+IS 'Hrs que se enviara Cada (alerta/correo) el ultimo dia y los dias retrasados
+del estado';
+/*****************************F-SCP-EGS-WF-1-29/05/2020*************/
