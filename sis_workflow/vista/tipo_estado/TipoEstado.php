@@ -8,6 +8,8 @@
 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
 	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
     #143            29/05/2020      EGS                     Se agrega configuracion de sla
+    #144            05/06/2020      EGS                     Se modifica que los campos que estan relacionados a las alertas sean obligatorios
+                                                            cuando se habilitann estas
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -857,12 +859,12 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         {//#143
             config:{
                 name: 'hrs_envio',
-                fieldLabel: 'Hrs intervalo de Envio',
+                fieldLabel: 'Hrs de Envio',
                 allowBlank: true,
                 anchor: '80%',
                 gwidth: 100,
                 maxLength:100,
-                qtip:  'Hora(s) que se enviara el (correo/alarma) recordatorio que el proceso sigue en el estado.Este es ultimo dia de los dias limite',
+                qtip:  'Hora(s) que se enviara el (correo/alarma) recordatorio que el proceso sigue en el estado.Este es ultimo dia de los dias limite.El formato debe Sr HH:MM si es mas de uno separado por comas ejemplo (01:30,00:30)',
                 allowNegative:false
             },
             type:'TextField',
@@ -996,7 +998,7 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
     bdel:true,
 	bsave:false,
     iniciarEventos:function(){//#143
-
+        this.deshabilitarAlerta();
         this.Cmp.sla.on('select',function(combo,record,index){
             if(record.data.field1 == 'si'){
                 this.habilitarSla();
@@ -1021,6 +1023,20 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
                 this.Cmp.sla.enable(true);
             }
         },this)
+
+        if (this.Cmp.alerta.getValue() == 'si' ){//#144
+            this.habilitarAlerta();
+        }else{
+            this.deshabilitarAlerta();
+        }
+        this.Cmp.alerta.on('select',function(combo,record,index){//#144
+            if(record.data.field1 == 'si'){
+                this.habilitarAlerta();
+            }else{
+
+                this.deshabilitarAlerta();
+            }
+        },this)
     },
     habilitarSla:function(){//#143
         this.Cmp.dias_limite.enable(true);
@@ -1043,6 +1059,18 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
         this.Cmp.dias_limite.allowBlank=true;
         this.Cmp.acceso_directo_alerta.allowBlank=true;
         this.Cmp.nombre_clase_alerta.allowBlank=true;
+        this.Cmp.parametros_ad.allowBlank=true;
+    },
+    habilitarAlerta:function(){//#144
+        this.Cmp.acceso_directo_alerta.allowBlank=false;
+        this.Cmp.nombre_clase_alerta.allowBlank=false;
+        this.Cmp.tipo_noti.allowBlank=false;
+        this.Cmp.parametros_ad.allowBlank=false;
+    },
+    deshabilitarAlerta:function(){//#144
+        this.Cmp.acceso_directo_alerta.allowBlank=true;
+        this.Cmp.nombre_clase_alerta.allowBlank=true;
+        this.Cmp.tipo_noti.allowBlank=true;
         this.Cmp.parametros_ad.allowBlank=true;
     },
     construirGrupos: function () {//#143

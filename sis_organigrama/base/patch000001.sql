@@ -1057,7 +1057,10 @@ create table orga.huo_funcionario
 alter table orga.huo_funcionario
     owner to postgres;
 /*****************************F-SCP-VAN-ORGA-0-11/05/2020*************/
-
+/*****************************I-SCP-VAN-ORGA-0-09/06/2020*************/
+alter table orga.huo_funcionario
+	add fecha_registro_historico timestamp;
+/*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
 
 
   
