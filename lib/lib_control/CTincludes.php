@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////
 //Icluir librerias con composer
 // adicioanr en el archivo composer.json
-// en un proyecto separado y ciar el contenido a la carpeta /lib/vendor
+// en un proyecto separado y copiar  el contenido a la carpeta /lib/vendor
 include_once(dirname(__FILE__).'/../vendor/autoload.php');
 /////////////////////////////////////////////////////////////////////////
 include_once(dirname(__FILE__)."/CTEncriptacionPrivada.php");

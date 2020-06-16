@@ -1,7 +1,7 @@
 --------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION param.ft_grupo_idioma_sel (
-  p_racistrador integer,
+  p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
   p_transaccion varchar
@@ -129,6 +129,32 @@ BEGIN
 
 
          END;
+    
+    /*********************************    
+     #TRANSACCION:  'PM_GRICMN_SEL'
+     #DESCRIPCION:   Consulta los grupos de tupo comun (no allmacenados apra genrar archivos de traduccion),se usa sin paginacion
+     #AUTOR:         RAC    
+     #FECHA:         21-04-2020 02:29:46
+    ***********************************/
+
+    ELSEIF (p_transaccion='PM_GRICMN_SEL') THEN
+                     
+        BEGIN
+            --Sentencia de la consulta
+            v_consulta:='SELECT
+                          gri.id_grupo_idioma,
+                          gri.codigo,
+                          gri.nombre,
+                          gri.tipo
+                        FROM param.tgrupo_idioma gri
+                        WHERE  gri.estado_reg = ''activo'' 
+                          AND  gri.tipo = ''comun'' ';
+            
+
+            --Devuelve la respuesta
+            RETURN v_consulta;
+                        
+        END;
                     
     ELSE
                          

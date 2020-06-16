@@ -200,5 +200,11 @@
     //Variables para relacion con SIAT
 	$_SESSION['_URL_IMPUESTOS']='http://dominio.impuestos.gob.bo/servicio/pagina.xhtml';
 
+	
+	//configuracion para autentificacion para google
+	$_SESSION['_GOOGLE_CLIENT_ID']='';	
+	$_SESSION['_GOOGLE_CLIENT_SECRET']='';
+	$_SESSION['_GOOGLE_REDIRECT_URI']='';
+
 
 ?>

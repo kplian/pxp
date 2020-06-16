@@ -5,7 +5,14 @@ update:
 	./composer.phar update
 
 test: vendor/bin/phpunit build
-	./vendor/bin/phpunit --strict
+	./vendor/bin/phpunit
+
+cs-check: vendor/bin/phpunit
+	./vendor/bin/phpcs --standard=codestandard.xml lib tests
+
+coverage: vendor/bin/phpunit build
+	./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+	./vendor/bin/coveralls -v
 
 composer.phar:
 	curl -s http://getcomposer.org/installer | php
