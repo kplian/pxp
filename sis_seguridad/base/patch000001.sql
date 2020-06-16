@@ -1385,3 +1385,14 @@ ALTER TABLE segu.tusuario
 
 /***********************************F-SCP-JRR-SEGU-0-02/06/2020*****************************************/
 
+
+/***********************************I-SCP-RAC-SEGU-0-03/06/2020*****************************************/
+
+ALTER TABLE segu.tusuario
+  ADD COLUMN token VARCHAR;
+
+ALTER TABLE segu.tusuario
+  ADD COLUMN url_foto VARCHAR(200);
+
+/***********************************F-SCP-RAC-SEGU-0-03/06/2020*****************************************/
+
