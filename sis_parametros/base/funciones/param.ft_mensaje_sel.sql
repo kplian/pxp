@@ -53,10 +53,13 @@ BEGIN
                         men.fecha_mod,
                         men.id_usuario_mod,
                         usu1.cuenta as usr_reg,
-                        usu2.cuenta as usr_mod    
+                        usu2.cuenta as usr_mod,
+                        vp.nombre_completo2
                         FROM param.tmensaje men
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = men.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = men.id_usuario_mod
+                        INNER JOIN segu.tusuario tu on tu.id_usuario = men.id_usuario_from
+                        INNER JOIN segu.vpersona2 vp on vp.id_persona = tu.id_persona
                         WHERE  ';
             
             --Definicion de la respuesta
@@ -83,6 +86,8 @@ BEGIN
                          FROM param.tmensaje men
                          JOIN segu.tusuario usu1 ON usu1.id_usuario = men.id_usuario_reg
                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = men.id_usuario_mod
+                         INNER JOIN segu.tusuario tu on tu.id_usuario = men.id_usuario_from
+                         INNER JOIN segu.vpersona2 vp on vp.id_persona = tu.id_persona
                          WHERE ';
             
             --Definicion de la respuesta            

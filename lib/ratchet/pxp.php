@@ -30,7 +30,7 @@ class Pxp implements MessageComponentInterface {
     }
 
     function saveMessageChat($id_usuario_from,$mensaje, $id_chat) {
-        echo "saveMessageChat id_usuario_from {$id_usuario_from}, mensaje : {$mensaje} , idChat: {$mensaje} \n";
+        echo "saveMessageChat id_usuario_from {$id_usuario_from}, mensaje : {$mensaje} , idChat: {$id_chat} \n";
         $mensajeSave = $this->link->prepare("INSERT INTO param.tmensaje(
                                                                             id_usuario_from,
                                                                             id_usuario_to,
@@ -59,6 +59,8 @@ class Pxp implements MessageComponentInterface {
         $mensajeSave->execute();
         $results = $mensajeSave->fetchAll(PDO::FETCH_ASSOC);
         var_dump($results);
+        echo "end saveMessageChat \n";
+
     }
 
     public function onOpen(ConnectionInterface $conn) {
