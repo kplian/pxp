@@ -5,6 +5,8 @@
 *@author  (admin)
 *@date 07-05-2014 21:39:40
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+    ISSUE			FECHA			AUTHOR 					DESCRIPCION
+ * #145             08/06/2020      EGS                     Se agrego comillas simples al nombre del array por que php 7 da conflictos si no especificas con comillas
 */
 
 class ACTTabla extends ACTbase{
@@ -152,7 +154,7 @@ class ACTTabla extends ACTbase{
 		$res = 0 ;
 
 		foreach ($prof as $value) {
-			$cadena .=  "[detalles][$value]";
+			$cadena .=  "['detalles'][$value]"; //#145
 		}
 		eval('$variable = '. $cadena . ';');		
 						

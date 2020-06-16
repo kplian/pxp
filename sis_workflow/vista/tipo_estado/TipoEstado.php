@@ -6,7 +6,10 @@
 *@date 21-02-2013 15:36:11
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
-	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta			
+	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
+    #143            29/05/2020      EGS                     Se agrega configuracion de sla
+    #144            05/06/2020      EGS                     Se modifica que los campos que estan relacionados a las alertas sean obligatorios
+                                                            cuando se habilitann estas
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -15,11 +18,14 @@ header("content-type: text/javascript; charset=UTF-8");
 Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
+        this.construirGrupos();//#143
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.TipoEstado.superclass.constructor.call(this,config);
 		this.init();
 		this.bloquearMenus();
+		this.iniciarEventos();
+
 		
 		this.addButton('btnPlaMen',
             {
@@ -786,7 +792,86 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:false
-		}
+		},
+        {//#143
+            config:{
+                name: 'sla',
+                fieldLabel: 'SLA?',
+                allowBlank: false,
+                anchor: '40%',
+                gwidth: 50,
+                maxLength:2,
+                //emptyText:'si/no...',
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                valueField: 'no',
+                // displayField: 'descestilo',
+                store:['si','no'],
+                qtip:'Habilita Sla:envio de (Correo/Alerta) segun la configuracion en ciertos periodos de tiempo ',
+            },
+            type:'ComboBox',
+            //filters:{pfiltro:'promac.inicio',type:'string'},
+            id_grupo:1,
+            filters:{
+                type: 'list',
+                pfiltro:'tipes.inicio',
+                options: ['si','no'],
+            },
+            grid:true,
+            form:true,
+            valorInicial: 'no',
+        },
+        {
+            config:{
+                name: 'dias_limite',
+                fieldLabel: 'Dias Limite',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:4,
+                qtip:  'Dias limite en que el estado debe pasar al siguien estado a menos que sea estado Fin',
+                allowNegative:false
+            },
+            type:'NumberField',
+            filters:{pfiltro:'usu1.cuenta',type:'string'},
+            id_grupo:2,
+            grid:true,
+            form:true
+        },
+        {//#143
+            config:{
+                name: 'dias_envio',
+                fieldLabel: 'Dias  de Envio',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:100,
+                qtip:  'Dias que se enviara el (correo/alarma) recordatorio que el proceso sigue en el estado hasta los dias limite. Los dias se separa con comas ejm(15,5,2)',
+
+            },
+            type:'TextField',
+            id_grupo:2,
+            grid:true,
+            form:true
+        },
+        {//#143
+            config:{
+                name: 'hrs_envio',
+                fieldLabel: 'Hrs de Envio',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:100,
+                qtip:  'Hora(s) que se enviara el (correo/alarma) recordatorio que el proceso sigue en el estado.Este es ultimo dia de los dias limite.El formato debe Sr HH:MM si es mas de uno separado por comas ejemplo (01:30,00:30)',
+                allowNegative:false
+            },
+            type:'TextField',
+            id_grupo:2,
+            grid:true,
+            form:true
+        },
 		
 		
 	],
@@ -818,7 +903,11 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		'plantilla_mensaje_asunto','plantilla_mensaje','cargo_depto','funcion_inicial','funcion_regreso',
 		'mobile','acceso_directo_alerta', 'nombre_clase_alerta', 'tipo_noti', 
         'titulo_alerta', 'parametros_ad','id_roles','admite_obs','etapa','grupo_doc','icono',
-        'dias_alerta'//#17	
+        'dias_alerta',//#17
+        {name:'sla', type: 'string'},//#143
+        {name:'dias_limite', type: 'numeric'},//#143
+        {name:'dias_envio', type: 'string'},//#143
+        {name:'hrs_envio', type: 'string'},//#143
 		
 	],
 	sortInfo:{
@@ -830,11 +919,12 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
 		this.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
 		this.Cmp.id_tipo_estado_anterior.store.baseParams={id_tipo_proceso:this.maestro.id_tipo_proceso};
 		this.load({params:{start:0, limit:50}})
-		
+
 	},
 	loadValoresIniciales:function(){
 		Phx.vista.TipoEstado.superclass.loadValoresIniciales.call(this);
-		this.getComponente('id_tipo_proceso').setValue(this.maestro.id_tipo_proceso);		
+		//this.getComponente('id_tipo_proceso').setValue(this.maestro.id_tipo_proceso);
+        this.Cmp.id_tipo_proceso.setValue(this.maestro.id_tipo_proceso);//#143
 	},
 	tabsouth:[
 	     {
@@ -906,8 +996,125 @@ Phx.vista.TipoEstado=Ext.extend(Phx.gridInterfaz,{
     },
     
     bdel:true,
-	bsave:false
-	}
+	bsave:false,
+    iniciarEventos:function(){//#143
+        this.deshabilitarAlerta();
+        this.Cmp.sla.on('select',function(combo,record,index){
+            if(record.data.field1 == 'si'){
+                this.habilitarSla();
+
+            }else{
+                this.deshabilitarSla()
+
+            }
+        },this)
+        if (this.Cmp.sla.getValue() == 'si' ){
+            this.habilitarSla();
+
+        }else{
+            this.deshabilitarSla();
+        }
+        this.Cmp.tipo_asignacion.on('select',function(combo,record,index){
+            if(record.data.field1 == 'ninguno'){
+                this.Cmp.sla.disable(true);
+                this.Cmp.sla.setValue('no');
+                this.deshabilitarSla();
+            }else{
+                this.Cmp.sla.enable(true);
+            }
+        },this)
+
+        if (this.Cmp.alerta.getValue() == 'si' ){//#144
+            this.habilitarAlerta();
+        }else{
+            this.deshabilitarAlerta();
+        }
+        this.Cmp.alerta.on('select',function(combo,record,index){//#144
+            if(record.data.field1 == 'si'){
+                this.habilitarAlerta();
+            }else{
+
+                this.deshabilitarAlerta();
+            }
+        },this)
+    },
+    habilitarSla:function(){//#143
+        this.Cmp.dias_limite.enable(true);
+        this.Cmp.dias_envio.enable(true);
+        this.Cmp.hrs_envio.enable(true);
+
+        this.Cmp.dias_limite.allowBlank=false;
+        this.Cmp.acceso_directo_alerta.allowBlank=false;
+        this.Cmp.nombre_clase_alerta.allowBlank=false;
+        this.Cmp.parametros_ad.allowBlank=false;
+    },
+    deshabilitarSla:function(){//#143
+        this.Cmp.dias_limite.disable(true);
+        this.Cmp.dias_envio.disable(true);
+        this.Cmp.hrs_envio.disable(true);
+        this.Cmp.dias_limite.reset();
+        this.Cmp.dias_envio.reset();
+        this.Cmp.hrs_envio.reset();
+
+        this.Cmp.dias_limite.allowBlank=true;
+        this.Cmp.acceso_directo_alerta.allowBlank=true;
+        this.Cmp.nombre_clase_alerta.allowBlank=true;
+        this.Cmp.parametros_ad.allowBlank=true;
+    },
+    habilitarAlerta:function(){//#144
+        this.Cmp.acceso_directo_alerta.allowBlank=false;
+        this.Cmp.nombre_clase_alerta.allowBlank=false;
+        this.Cmp.tipo_noti.allowBlank=false;
+        this.Cmp.parametros_ad.allowBlank=false;
+    },
+    deshabilitarAlerta:function(){//#144
+        this.Cmp.acceso_directo_alerta.allowBlank=true;
+        this.Cmp.nombre_clase_alerta.allowBlank=true;
+        this.Cmp.tipo_noti.allowBlank=true;
+        this.Cmp.parametros_ad.allowBlank=true;
+    },
+    construirGrupos: function () {//#143
+            var me = this;
+            this.panelResumen = new Ext.Panel({
+                padding: '0 0 0 20',
+                html: '',
+                split: true,
+                layout: 'fit'
+            });
+
+            me.Grupos = [
+                {
+                    layout: 'form',
+                    border: false,
+                    defaults: {
+                        border: false
+                    },
+                    items: [{
+                        bodyStyle: 'padding-right:5px;',
+                        items: [{
+                            xtype: 'fieldset',
+                            title: 'Configuracion Estado',
+                            autoHeight: true,
+                            items: [],
+                            id_grupo: 1
+                        }]
+                    }, {
+                        bodyStyle: 'padding-left:5px;',
+                        items: [{
+                            xtype: 'fieldset',
+                            title: 'Configuracion SLA del Estado',
+                            autoHeight: true,
+                            items: [],
+                            id_grupo: 2
+                        }]
+                    }
+                    ]
+                }
+            ];
+
+        },
+
+    }
 )
 </script>
 		

@@ -1033,10 +1033,34 @@ ALTER TABLE orga.tuo_funcionario
 COMMENT ON COLUMN orga.tuo_funcionario.separar_contrato
 IS 'Valor por defecto ''no'', cambia a si cuando al no haber periodo de descanso entre contratos, existe cambio de tipo_contrato (planta-odt) o modificacion a carga_horaria.';
 /*****************************F-SCP-MZM-ORGA-136-21/04/2020*************/
-
-
-
-
+/*****************************I-SCP-VAN-ORGA-0-11/05/2020*************/
+create table orga.huo_funcionario
+(
+    id                           serial not null
+        constraint huo_funcionario_pkey primary key,
+    estado_reg                   varchar(10),
+    id_uo_funcionario            integer,
+    id_uo                        integer,
+    id_funcionario               integer,
+    fecha_asignacion             date,
+    fecha_finalizacion           date,
+    tipo                         varchar(10),
+    fecha_documento_asignacion   date,
+    nro_documento_asignacion     varchar(50),
+    observaciones_finalizacion   varchar(50),
+    id_cargo                     integer,
+    certificacion_presupuestaria varchar,
+    carga_horaria                integer,
+    prioridad                    numeric,
+    separar_contrato             varchar(2)
+) inherits (pxp.tbase);
+alter table orga.huo_funcionario
+    owner to postgres;
+/*****************************F-SCP-VAN-ORGA-0-11/05/2020*************/
+/*****************************I-SCP-VAN-ORGA-0-09/06/2020*************/
+alter table orga.huo_funcionario
+	add fecha_registro_historico timestamp;
+/*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
 
 
   

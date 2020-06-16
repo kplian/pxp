@@ -5,6 +5,9 @@
  //#11-ENDETR          17/12/2018  CHRIS CHROS             Se cambió la forma de crear la URL para acceder a endesis
 
 ****************************************************************************/
+require_once dirname(__FILE__) . '/../lib_general/templates/template.class.php';
+define('DEFAULT_TEMPLATE', dirname(__FILE__) . '/../lib_general/templates/layout.tpl');
+define('NOTIFICATION', dirname(__FILE__) . '/../lib_general/templates/notification.tpl');
 class CorreoExterno
 {
     protected $mail_usuario;
@@ -204,8 +207,16 @@ class CorreoExterno
 
                 //$actual_link = "http://$_SERVER[HTTP_HOST]".$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;
                 $actual_link = "http://".$this->servidor.$_SESSION['_FOLDER']."/sis_seguridad/vista/_adm/index.php#alerta:".$this->acceso_directo;//#11
+                $acceso = ' <!--[if mso]>
+                            <v:roundrect xmlns_v="urn:schemas-microsoft-com:vml" xmlns_w="urn:schemas-microsoft-com:office:word" href="' . $actual_link . '" style="height:36px;v-text-anchor:middle;width:150px;" arcsize="5%" strokecolor="#021d70" fillcolor="#021d70">
+                                 <w:anchorlock/>
+                                 <center style="color:#ffffff;font-family:Helvetica, Arial,sans-serif;font-size:16px;">Acceso Directo</center>
+                            </v:roundrect>
+                            <![endif]-->';
 
-                $acceso = '<a href="'.$actual_link.'">Acceso directo</a>';
+                $acceso .= ' <a href="' . $actual_link . '" target="_blank" style="mso-hide:all;padding-top: 8px;padding-bottom:8px; border: 1px solid #021d70;border-radius: 2px;font-family: Helvetica, Arial, sans-serif;font-size: 12px; color: #f9bd00;text-decoration: none;font-weight:bold;display: block;">
+                            Acceso Directo
+                            </a>';
             }
             $acuse='';
             if($this->acuse_recibo){
@@ -240,45 +251,16 @@ class CorreoExterno
 
             }
 
-             $this->mensaje_html=$cuerpo = "
-                    <html>
-                    <head>
-                    <title>".$this->titulo."</title>
-                    <style type=\"text/css\">
-                        body{
-                            font-family:Arial, Helvetica, sans-serif;
-                        }
-                        a:link{
-                            font-weight: bold;
-                            text-decoration: none;
-                            font-style: italic;
-                        }
-                        a:hover{
-                            text-decoration: underline;
-                        }
-                        a:visited{
-                            font-weight: bold;
-                            color: blue;
-                            font-style: italic;
-                        }
-
-                    </style>
-                    </head>
-                    <body>
-                    <h1>".$this->titulo."</h1>".stripslashes($this->mensaje)."
-                    <br/>
-                    ".$acceso."
-                    <br/>
-                    <br/>
-                    ".$boton_acuse."
-                    <br/>
-                    <p>-------------------------------------------</p>
-                    <br/>
-                    <br/>
-                    <H6>Powered by KPLIAN</H6>
-                    </body>
-                    </html>";
-
+        $notification = new Template(NOTIFICATION);
+        $notification->set('template_path', __DIR__);
+        $notification->set('acceso_directo', $acceso);
+        $notification->set('mensaje', $this->mensaje);
+        $notification->set('titulo', $this->titulo);
+        $notification->set('boton_acuse', $this->acuse_recibo);
+        $layout = new Template(DEFAULT_TEMPLATE);
+        $layout->set('template_path', __DIR__);
+        $layout->set("content", $notification->output());
+        $this->mensaje_html = $layout->output();
     }
 
     function validateEmail($email){
