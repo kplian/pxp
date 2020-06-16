@@ -423,7 +423,7 @@ $app->post(
 
             $auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));
             authPxp($auxHeaders);
-        }        
+        }
         echo '{"success":true,
                 "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
                 "nombre_usuario":"'.$_SESSION["_NOM_USUARIO"].'",
@@ -433,6 +433,7 @@ $app->post(
                 "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
                 "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
                 "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
+                "phpsession":"'.session_id().'",
                 "timeout":'.$_SESSION["_TIMEOUT"].'}';
                 exit;
     }

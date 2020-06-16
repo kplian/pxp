@@ -2,13 +2,13 @@
 /****************************************************************************************
 *@package pXP
 *@file gen-Mensaje.php
-*@author  (admin)
-*@date 05-06-2020 16:50:32
+*@author  (favio)
+*@date 15-06-2020 21:17:46
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 
 HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #0                05-06-2020 16:50:32    admin            Creacion    
+ #0                15-06-2020 21:17:46    favio            Creacion    
  #   
 
 *******************************************************************************************/
@@ -32,7 +32,7 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
             config:{
                     labelSeparator:'',
                     inputType:'hidden',
-                    name: 'id_chat'
+                    name: 'id_mensaje'
             },
             type:'Field',
             form:true 
@@ -124,39 +124,9 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
             form: true
         },
         {
-            config:{
-                name: 'mensaje',
-                fieldLabel: 'mensaje',
-                allowBlank: false,
-                anchor: '80%',
-                gwidth: 100,
-            	maxLength:255
-            },
-                type:'TextField',
-                filters:{pfiltro:'men.mensaje',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:true
-		},
-        {
-            config:{
-                name: 'estado_reg',
-                fieldLabel: 'Estado Reg.',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-            	maxLength:10
-            },
-                type:'TextField',
-                filters:{pfiltro:'men.estado_reg',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:false
-		},
-        {
             config: {
-                name: 'id_mensaje',
-                fieldLabel: 'id_mensaje',
+                name: 'id_chat',
+                fieldLabel: 'id_chat',
                 allowBlank: false,
                 emptyText: 'Elija una opción...',
                 store: new Ext.data.JsonStore({
@@ -175,7 +145,7 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
                 valueField: 'id_',
                 displayField: 'nombre',
                 gdisplayField: 'desc_',
-                hiddenName: 'id_mensaje',
+                hiddenName: 'id_chat',
                 forceSelection: true,
                 typeAhead: false,
                 triggerAction: 'all',
@@ -196,6 +166,36 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
             grid: true,
             form: true
         },
+        {
+            config:{
+                name: 'estado_reg',
+                fieldLabel: 'Estado Reg.',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:10
+            },
+                type:'TextField',
+                filters:{pfiltro:'men.estado_reg',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
+		},
+        {
+            config:{
+                name: 'mensaje',
+                fieldLabel: 'mensaje',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:255
+            },
+                type:'TextField',
+                filters:{pfiltro:'men.mensaje',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:true
+		},
         {
             config:{
                 name: 'id_usuario_ai',
@@ -259,21 +259,6 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
 		},
         {
             config:{
-                name: 'usr_mod',
-                fieldLabel: 'Modificado por',
-                allowBlank: true,
-                anchor: '80%',
-                gwidth: 100,
-            	maxLength:4
-            },
-                type:'Field',
-                filters:{pfiltro:'usu2.cuenta',type:'string'},
-                id_grupo:1,
-                grid:true,
-                form:false
-		},
-        {
-            config:{
                 name: 'fecha_mod',
                 fieldLabel: 'Fecha Modif.',
                 allowBlank: true,
@@ -287,6 +272,21 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
                 id_grupo:1,
                 grid:true,
                 form:false
+		},
+        {
+            config:{
+                name: 'usr_mod',
+                fieldLabel: 'Modificado por',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 100,
+            	maxLength:4
+            },
+                type:'Field',
+                filters:{pfiltro:'usu2.cuenta',type:'string'},
+                id_grupo:1,
+                grid:true,
+                form:false
 		}
     ],
     tam_pag:50,    
@@ -294,26 +294,26 @@ Phx.vista.Mensaje=Ext.extend(Phx.gridInterfaz,{
     ActSave:'../../sis_parametros/control/Mensaje/insertarMensaje',
     ActDel:'../../sis_parametros/control/Mensaje/eliminarMensaje',
     ActList:'../../sis_parametros/control/Mensaje/listarMensaje',
-    id_store:'id_chat',
+    id_store:'id_mensaje',
     fields: [
-		{name:'id_chat', type: 'numeric'},
+		{name:'id_mensaje', type: 'numeric'},
 		{name:'id_usuario_from', type: 'numeric'},
 		{name:'id_usuario_to', type: 'string'},
-		{name:'mensaje', type: 'string'},
+		{name:'id_chat', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
-		{name:'id_mensaje', type: 'numeric'},
+		{name:'mensaje', type: 'string'},
 		{name:'id_usuario_ai', type: 'numeric'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usuario_ai', type: 'string'},
-		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
         
     ],
     sortInfo:{
-        field: 'id_chat',
+        field: 'id_mensaje',
         direction: 'ASC'
     },
     bdel:true,

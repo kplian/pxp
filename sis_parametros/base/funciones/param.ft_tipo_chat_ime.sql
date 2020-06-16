@@ -26,7 +26,8 @@ DECLARE
     v_nombre_funcion           TEXT;
     v_mensaje_error            TEXT;
     v_id_tipo_chat    INTEGER;
-                
+    v_id_chat    INTEGER;
+
 BEGIN
 
     v_nombre_funcion = 'param.ft_tipo_chat_ime';
@@ -72,6 +73,34 @@ BEGIN
             null,
             null            
             ) RETURNING id_tipo_chat into v_id_tipo_chat;
+
+
+            -- example for added chat for this table "ttipo_chat" , only for example
+            INSERT INTO param.tchat(
+                descripcion,
+                id_tipo_chat,
+                id_tabla,
+                estado_reg,
+                id_usuario_ai,
+                usuario_ai,
+                fecha_reg,
+                id_usuario_reg,
+                id_usuario_mod,
+                fecha_mod
+            ) VALUES (
+                 'chat for example for table tipo_chat',
+                 v_id_tipo_chat,
+                 v_id_tipo_chat, --in another case this will be another id of another table
+                 'activo',
+                 v_parametros._id_usuario_ai,
+                 v_parametros._nombre_usuario_ai,
+                 now(),
+                 p_id_usuario,
+                 null,
+                 null
+             ) RETURNING id_chat into v_id_chat;
+
+
             
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Chat almacenado(a) con exito (id_tipo_chat'||v_id_tipo_chat||')'); 

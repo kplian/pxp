@@ -2,13 +2,13 @@
 /****************************************************************************************
 *@package pXP
 *@file gen-MODMensaje.php
-*@author  (admin)
-*@date 05-06-2020 16:50:32
+*@author  (favio)
+*@date 15-06-2020 21:17:46
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 
  HISTORIAL DE MODIFICACIONES:
  #ISSUE                FECHA                AUTOR                DESCRIPCION
-  #0                05-06-2020 16:50:32    admin             Creacion    
+  #0                15-06-2020 21:17:46    favio             Creacion    
   #
 *****************************************************************************************/
 
@@ -25,18 +25,18 @@ class MODMensaje extends MODbase{
         $this->tipo_procedimiento='SEL';//tipo de transaccion
                 
         //Definicion de la lista del resultado del query
-		$this->captura('id_chat','int4');
+		$this->captura('id_mensaje','int4');
 		$this->captura('id_usuario_from','int4');
 		$this->captura('id_usuario_to','_int4');
-		$this->captura('mensaje','varchar');
+		$this->captura('id_chat','int4');
 		$this->captura('estado_reg','varchar');
-		$this->captura('id_mensaje','int4');
+		$this->captura('mensaje','varchar');
 		$this->captura('id_usuario_ai','int4');
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('usuario_ai','varchar');
-		$this->captura('id_usuario_mod','int4');
 		$this->captura('fecha_mod','timestamp');
+		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
         $this->captura('usr_mod','varchar');
         
@@ -57,9 +57,9 @@ class MODMensaje extends MODbase{
         //Define los parametros para la funcion
 		$this->setParametro('id_usuario_from','id_usuario_from','int4');
 		$this->setParametro('id_usuario_to','id_usuario_to','_int4');
-		$this->setParametro('mensaje','mensaje','varchar');
+		$this->setParametro('id_chat','id_chat','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('id_mensaje','id_mensaje','int4');
+		$this->setParametro('mensaje','mensaje','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -76,12 +76,12 @@ class MODMensaje extends MODbase{
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
-		$this->setParametro('id_chat','id_chat','int4');
+		$this->setParametro('id_mensaje','id_mensaje','int4');
 		$this->setParametro('id_usuario_from','id_usuario_from','int4');
 		$this->setParametro('id_usuario_to','id_usuario_to','_int4');
-		$this->setParametro('mensaje','mensaje','varchar');
+		$this->setParametro('id_chat','id_chat','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('id_mensaje','id_mensaje','int4');
+		$this->setParametro('mensaje','mensaje','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -98,7 +98,7 @@ class MODMensaje extends MODbase{
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
-		$this->setParametro('id_chat','id_chat','int4');
+		$this->setParametro('id_mensaje','id_mensaje','int4');
 
         //Ejecuta la instruccion
         $this->armarConsulta();

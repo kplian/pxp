@@ -26,7 +26,8 @@ DECLARE
     v_nombre_funcion           TEXT;
     v_mensaje_error            TEXT;
     v_id_chat    INTEGER;
-                
+    v_id_tipo_chat    INTEGER;
+
 BEGIN
 
     v_nombre_funcion = 'param.ft_chat_ime';
@@ -42,6 +43,14 @@ BEGIN
     IF (p_transaccion='PM_CHAT_INS') THEN
                     
         BEGIN
+
+
+            --get id_tipo_chat with codigo_tipo_chat
+            SELECT ttc.id_tipo_chat
+            INTO v_id_tipo_chat
+            FROM param.ttipo_chat ttc
+            WHERE ttc.codigo = v_parametros.codigo_tipo_chat;
+
             --Sentencia de la insercion
             INSERT INTO param.tchat(
             descripcion,
@@ -56,7 +65,7 @@ BEGIN
             fecha_mod
               ) VALUES (
             v_parametros.descripcion,
-            v_parametros.id_tipo_chat,
+            v_id_tipo_chat,
             v_parametros.id_tabla,
             'activo',
             v_parametros._id_usuario_ai,

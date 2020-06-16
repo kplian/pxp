@@ -1,19 +1,19 @@
-CREATE OR REPLACE FUNCTION "param"."ft_mensaje_ime" (    
+CREATE OR REPLACE FUNCTION "exa"."ft_data_example_ime" (    
                 p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
 
 /**************************************************************************
- SISTEMA:        Parametros Generales
- FUNCION:         param.ft_mensaje_ime
- DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tmensaje'
- AUTOR:          (favio)
- FECHA:            15-06-2020 21:17:46
- COMENTARIOS:    
+ SISTEMA:        Example
+ FUNCION:         exa.ft_data_example_ime
+ DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'exa.tdata_example'
+ AUTOR:          (Favio Figueroa)
+ FECHA:            12-06-2020 16:37:18
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #0                15-06-2020 21:17:46    favio             Creacion    
+ #0                12-06-2020 16:37:18    Favio Figueroa             Creacion
  #
  ***************************************************************************/
 
@@ -25,53 +25,49 @@ DECLARE
     v_resp                     VARCHAR;
     v_nombre_funcion           TEXT;
     v_mensaje_error            TEXT;
-    v_id_mensaje    INTEGER;
-                
+    v_id_data_example          INTEGER;
+
 BEGIN
 
-    v_nombre_funcion = 'param.ft_mensaje_ime';
+    v_nombre_funcion = 'exa.ft_data_example_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
     /*********************************    
-     #TRANSACCION:  'PM_MEN_INS'
+     #TRANSACCION:  'EXA_TDE_INS'
      #DESCRIPCION:    Insercion de registros
-     #AUTOR:        favio    
-     #FECHA:        15-06-2020 21:17:46
+     #AUTOR:        Favio Figueroa
+     #FECHA:        12-06-2020 16:37:18
     ***********************************/
 
-    IF (p_transaccion='PM_MEN_INS') THEN
+    IF (p_transaccion='EXA_TDE_INS') THEN
                     
         BEGIN
+
+
             --Sentencia de la insercion
-            INSERT INTO param.tmensaje(
-            id_usuario_from,
-            id_usuario_to,
-            id_chat,
+            INSERT INTO exa.tdata_example(
             estado_reg,
-            mensaje,
-            id_usuario_ai,
-            id_usuario_reg,
-            fecha_reg,
+            desc_example,
             usuario_ai,
+            fecha_reg,
+            id_usuario_reg,
+            id_usuario_ai,
             fecha_mod,
             id_usuario_mod
               ) VALUES (
-            v_parametros.id_usuario_from,
-            v_parametros.id_usuario_to,
-            v_parametros.id_chat,
             'activo',
-            v_parametros.mensaje,
-            v_parametros._id_usuario_ai,
-            p_id_usuario,
-            now(),
+            v_parametros.desc_example,
             v_parametros._nombre_usuario_ai,
+            now(),
+            p_id_usuario,
+            v_parametros._id_usuario_ai,
             null,
             null            
-            ) RETURNING id_mensaje into v_id_mensaje;
+            ) RETURNING id_data_example into v_id_data_example;
             
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje almacenado(a) con exito (id_mensaje'||v_id_mensaje||')'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_id_mensaje::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Data Example almacenado(a) con exito (id_data_example'||v_id_data_example||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_data_example',v_id_data_example::varchar);
 
             --Devuelve la respuesta
             RETURN v_resp;
@@ -79,30 +75,27 @@ BEGIN
         END;
 
     /*********************************    
-     #TRANSACCION:  'PM_MEN_MOD'
+     #TRANSACCION:  'EXA_TDE_MOD'
      #DESCRIPCION:    Modificacion de registros
-     #AUTOR:        favio    
-     #FECHA:        15-06-2020 21:17:46
+     #AUTOR:        Favio Figueroa
+     #FECHA:        12-06-2020 16:37:18
     ***********************************/
 
-    ELSIF (p_transaccion='PM_MEN_MOD') THEN
+    ELSIF (p_transaccion='EXA_TDE_MOD') THEN
 
         BEGIN
             --Sentencia de la modificacion
-            UPDATE param.tmensaje SET
-            id_usuario_from = v_parametros.id_usuario_from,
-            id_usuario_to = v_parametros.id_usuario_to,
-            id_chat = v_parametros.id_chat,
-            mensaje = v_parametros.mensaje,
+            UPDATE exa.tdata_example SET
+            desc_example = v_parametros.desc_example,
             fecha_mod = now(),
             id_usuario_mod = p_id_usuario,
             id_usuario_ai = v_parametros._id_usuario_ai,
             usuario_ai = v_parametros._nombre_usuario_ai
-            WHERE id_mensaje=v_parametros.id_mensaje;
+            WHERE id_data_example=v_parametros.id_data_example;
                
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje modificado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_parametros.id_mensaje::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Data Example modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_data_example',v_parametros.id_data_example::varchar);
                
             --Devuelve la respuesta
             RETURN v_resp;
@@ -110,22 +103,22 @@ BEGIN
         END;
 
     /*********************************    
-     #TRANSACCION:  'PM_MEN_ELI'
+     #TRANSACCION:  'EXA_TDE_ELI'
      #DESCRIPCION:    Eliminacion de registros
-     #AUTOR:        favio    
-     #FECHA:        15-06-2020 21:17:46
+     #AUTOR:        Favio Figueroa
+     #FECHA:        12-06-2020 16:37:18
     ***********************************/
 
-    ELSIF (p_transaccion='PM_MEN_ELI') THEN
+    ELSIF (p_transaccion='EXA_TDE_ELI') THEN
 
         BEGIN
             --Sentencia de la eliminacion
-            DELETE FROM param.tmensaje
-            WHERE id_mensaje=v_parametros.id_mensaje;
+            DELETE FROM exa.tdata_example
+            WHERE id_data_example=v_parametros.id_data_example;
                
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje eliminado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_parametros.id_mensaje::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Data Example eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_data_example',v_parametros.id_data_example::varchar);
               
             --Devuelve la respuesta
             RETURN v_resp;
@@ -151,4 +144,4 @@ END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE
 COST 100;
-ALTER FUNCTION "param"."ft_mensaje_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION "exa"."ft_data_example_ime"(integer, integer, character varying, character varying) OWNER TO postgres;

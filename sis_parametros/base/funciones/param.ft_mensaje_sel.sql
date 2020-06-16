@@ -6,13 +6,13 @@ $BODY$
  SISTEMA:        Parametros Generales
  FUNCION:         param.ft_mensaje_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tmensaje'
- AUTOR:          (admin)
- FECHA:            05-06-2020 16:50:32
+ AUTOR:          (favio)
+ FECHA:            15-06-2020 21:17:46
  COMENTARIOS:    
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #0                05-06-2020 16:50:32    admin             Creacion    
+ #0                15-06-2020 21:17:46    favio             Creacion    
  #
  ***************************************************************************/
 
@@ -31,8 +31,8 @@ BEGIN
     /*********************************    
      #TRANSACCION:  'PM_MEN_SEL'
      #DESCRIPCION:    Consulta de datos
-     #AUTOR:        admin    
-     #FECHA:        05-06-2020 16:50:32
+     #AUTOR:        favio    
+     #FECHA:        15-06-2020 21:17:46
     ***********************************/
 
     IF (p_transaccion='PM_MEN_SEL') THEN
@@ -40,18 +40,18 @@ BEGIN
         BEGIN
             --Sentencia de la consulta
             v_consulta:='SELECT
-                        men.id_chat,
+                        men.id_mensaje,
                         men.id_usuario_from,
                         men.id_usuario_to,
-                        men.mensaje,
+                        men.id_chat,
                         men.estado_reg,
-                        men.id_mensaje,
+                        men.mensaje,
                         men.id_usuario_ai,
                         men.id_usuario_reg,
                         men.fecha_reg,
                         men.usuario_ai,
-                        men.id_usuario_mod,
                         men.fecha_mod,
+                        men.id_usuario_mod,
                         usu1.cuenta as usr_reg,
                         usu2.cuenta as usr_mod    
                         FROM param.tmensaje men
@@ -71,15 +71,15 @@ BEGIN
     /*********************************    
      #TRANSACCION:  'PM_MEN_CONT'
      #DESCRIPCION:    Conteo de registros
-     #AUTOR:        admin    
-     #FECHA:        05-06-2020 16:50:32
+     #AUTOR:        favio    
+     #FECHA:        15-06-2020 21:17:46
     ***********************************/
 
     ELSIF (p_transaccion='PM_MEN_CONT') THEN
 
         BEGIN
             --Sentencia de la consulta de conteo de registros
-            v_consulta:='SELECT COUNT(id_chat)
+            v_consulta:='SELECT COUNT(id_mensaje)
                          FROM param.tmensaje men
                          JOIN segu.tusuario usu1 ON usu1.id_usuario = men.id_usuario_reg
                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = men.id_usuario_mod

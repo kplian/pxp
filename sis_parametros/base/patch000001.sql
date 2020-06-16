@@ -2812,7 +2812,7 @@ CREATE TABLE param.tmensaje (
   id_usuario_from INTEGER NOT NULL ,
   id_usuario_to INTEGER[] ,
   mensaje VARCHAR(255) NOT NULL ,
-  PRIMARY KEY(id_chat)
+  PRIMARY KEY(id_mensaje)
 ) INHERITS (pxp.tbase)
 
 WITH (oids = false);
