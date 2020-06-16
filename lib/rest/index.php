@@ -503,9 +503,7 @@ $app->get(
 
     }
 );
-$app->post(
-
-    '/:sistema/:clase_control/:metodo',
+$app->post('/:sistema/:clase_control/:metodo',
     function ($sistema,$clase_control,$metodo) use ($app) {
         $headers = $app->request->headers;
         $cookies = $app->request->cookies;
