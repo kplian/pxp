@@ -54,7 +54,7 @@ BEGIN
                         men.id_usuario_mod,
                         usu1.cuenta as usr_reg,
                         usu2.cuenta as usr_mod,
-                        vp.nombre_completo2
+                        vp.nombre_completo2 as user_name_from
                         FROM param.tmensaje men
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = men.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = men.id_usuario_mod
