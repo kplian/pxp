@@ -2779,6 +2779,46 @@ IS 'si o no, si esta habilitado mostrara el campo de nota_debito_agencia, caso c
 
 /***********************************F-SCP-MGM-PARAM-1-17/04/2020****************************************/
 
+/***********************************I-SCP-FFP-PARAM-0-05/06/2020*****************************************/
+
+
+CREATE TABLE param.ttipo_chat (
+  id_tipo_chat SERIAL,
+  nombre_id VARCHAR(255) NOT NULL ,
+  tipo_chat VARCHAR(255) NOT NULL ,
+  tabla VARCHAR(255) NOT NULL ,
+  codigo VARCHAR(255) NOT NULL ,
+  nombre VARCHAR(255) NOT NULL ,
+  grupo VARCHAR(2) ,
+  PRIMARY KEY(id_tipo_chat)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+CREATE TABLE param.tchat (
+  id_chat SERIAL,
+  id_tipo_chat INTEGER NOT NULL ,
+  id_tabla INTEGER NOT NULL ,
+  descripcion VARCHAR(255) NOT NULL ,
+  PRIMARY KEY(id_chat)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+CREATE TABLE param.tmensaje (
+  id_mensaje SERIAL,
+  id_chat INTEGER NOT NULL ,
+  id_usuario_from INTEGER NOT NULL ,
+  id_usuario_to INTEGER[] ,
+  mensaje VARCHAR(255) NOT NULL ,
+  PRIMARY KEY(id_mensaje)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+/***********************************F-SCP-FFP-PARAM-0-05/06/2020*****************************************/
+
 
 
 /***********************************I-SCP-RAC-PARAM-1-14/05/2020****************************************/

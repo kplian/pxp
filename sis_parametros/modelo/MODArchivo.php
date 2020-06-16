@@ -197,6 +197,7 @@ class MODArchivo extends MODbase{
 	function subirArchivo()
 	{
 
+
 		$cone = new conexion();
 		$link = $cone->conectarpdo();
 		$copiado = false;
