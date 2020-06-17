@@ -112,6 +112,7 @@ begin
              'SEG_RECLLAVES_SEL',  --restauracion de llaves de sesion
              'SEG_CRTUSR_TK',     --creacion deusario para facebook o google
              'SEG_UPDPASS_SEG',  --solicitar reset password
+             'SEG_GETMENU_JSON',  -- menu PXP-UI
              'SEG_RESPASS_SEG'  --update password
 
              ))) THEN
