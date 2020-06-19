@@ -25,3 +25,8 @@ select pxp.f_insert_testructura_gui ('WZD__H', 'WZD');
 select pxp.f_insert_testructura_gui ('FORMKB', 'EXAFORMS');
 /**********************************F-DEP-MZM-EXA-0-01/06/2020****************************************/
 
+/***********************************I-DEP-JRR-EXA-0-19/06/2020****************************************/
+select pxp.f_insert_testructura_gui ('EXACHAT', 'EXA');
+/***********************************F-DEP-JRR-EXA-0-19/06/2020****************************************/
+
+
