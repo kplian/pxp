@@ -22,6 +22,7 @@ $body$
 #ISSUE                FECHA       AUTOR           DESCRIPCION
 #133               29-05-2020     RAC           mensaje traducido
 #179 KPLIAN        13.06.2020     RAC           autentificacion con google o facebook
+#179 KPLIAN        13.06.2020     JRR           User signup with default role
 ***************************************************************************/
 DECLARE
 
@@ -105,7 +106,7 @@ BEGIN
                   u.estilo,
                   u.autentificacion,
                   p.id_persona,
-                  u.contrasena,                 
+                  u.contrasena,
                   u.token
             INTO
                   v_id_usuario,
@@ -227,7 +228,7 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'autentificacion',v_autentificacion::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'contrasena',v_contrasena::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'token',v_token::varchar); -- #179 verificar de usuarios de googe o facebook
-             
+
                return v_resp;
 
           END;
@@ -326,6 +327,29 @@ BEGIN
             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
             return v_resp;
          END;
+      /*******************************
+      #TRANSACCION:  SEG_SIGNUP_SEG
+      #DESCRIPCION:	user signup with default role
+      #AUTOR:		KPLIAN(jrr)
+      #FECHA:		11-06-2020
+      ***********************************/
+
+     elsif(par_transaccion='SEG_SIGNUP_SEG')then
+
+        BEGIN
+          --call to signup function
+          v_id_usuario := segu.f_signup(
+              v_parametros.email,
+              v_parametros.name,
+              v_parametros.surname,
+              v_parametros.login,
+              v_parametros.password
+          );
+
+          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario creado correctamente '||v_id_usuario);
+          v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+          return v_resp;
+        END;
 
        /*******************************
       #TRANSACCION:  SEG_UPDPASS_SEG
@@ -355,6 +379,42 @@ BEGIN
 
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Reset token generado correctamente para el usuario '||v_id_usuario);
             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'nombre',v_nombre::varchar);
+            return v_resp;
+         END;
+
+     /*******************************
+      #TRANSACCION:  SEG_SGNUPCON_SEG
+      #DESCRIPCION:	Activa el usuario despues de validar el token
+      #AUTOR:		KPLIAN(jrr)
+      #FECHA:		11-06-2020
+      ***********************************/
+
+     elsif(par_transaccion='SEG_SGNUPCON_SEG')then
+
+        BEGIN
+         --verificar si el usuario existe y esta activo
+            select id_usuario into v_id_usuario
+            from segu.tusuario u
+            where u.reset_token=v_parametros.token and u.token_expiration > now();
+            if(v_id_usuario is null) then
+               raise exception 'El token es invalido o ha expirado';
+            end if;
+
+            update segu.tusuario
+            set reset_token = NULL,
+            token_expiration = NULL,
+            estado_reg = 'activo'
+            where id_usuario = v_id_usuario;
+
+            select p.nombre into v_nombre
+            from segu.tusuario u
+            inner join segu.tpersona p on p.id_persona = u.id_persona
+            where u.id_usuario = v_id_usuario;
+
+
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario activado correctamente '||v_id_usuario);
+            v_resp = pxp.f_agrega_clave(v_resp,'name',v_nombre::varchar);
             return v_resp;
          END;
 

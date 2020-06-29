@@ -76,7 +76,7 @@ BEGIN
 
 
             -- example for added chat for this table "ttipo_chat" , only for example
-            INSERT INTO param.tchat(
+           /* INSERT INTO param.tchat(
                 descripcion,
                 id_tipo_chat,
                 id_tabla,
@@ -99,7 +99,7 @@ BEGIN
                  null,
                  null
              ) RETURNING id_chat into v_id_chat;
-
+*/
 
             
             --Definicion de la respuesta

@@ -27,6 +27,7 @@ $body$
   #0             19/07/2010        RAC                 creacion
   #97            17/06/2019        RAC                 adcionar funcionalidad para copia de roles y eps
   #179 KPL       03/06/2020        RAC                 creacion de usuario para autentificacion google facebook
+  #179 KPL       03/06/2020        RAC                 configuracion para adicionar funcionalidad el crear usuarios de facebok o google
 ***************************************************************************/
 
 DECLARE
@@ -60,6 +61,8 @@ v_id_persona            integer; --#179
 v_tmp_ci                varchar; --#179
 v_rol_def               varchar; --#179
 v_id_rol                integer; --#179
+v_segu_extra_function   varchar; --#179
+v_extra                 boolean; --#179
 
 
 
@@ -459,9 +462,23 @@ BEGIN
               v_id_usuario,
               v_id_rol,
               'activo'); 
+              
+            -- recuperar funcion para ejecutar funcionalidad extra
+            v_segu_extra_function = pxp.f_get_variable_global('segu_extra_function');
+            
+            IF v_segu_extra_function != '' THEN
+             EXECUTE 'SELECT '||v_segu_extra_function||'($1)' 
+             INTO  v_extra
+             USING v_id_usuario;
+
+
+               IF not v_extra THEN
+                  raise exception 'error al procesar funcionalidad adicional';
+               END IF;
+            END IF;
                       
-             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Facebook/Google creado con exito '||v_id_usuario); 
-             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario Facebook/Google creado con exito '||v_id_usuario); 
+            v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
 
                             
 

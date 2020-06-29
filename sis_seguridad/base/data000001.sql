@@ -3894,6 +3894,32 @@ VALUES
 
 /*******************************************F-DAT-JRR-SEGU-0-11/06/2020****************************************/
 
+/*******************************************I-DAT-JRR-SEGU-0-23/06/2020****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_signup', E'false', E'Permitir signup de usuarios');
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_recover_password', E'false', E'Permitir resetear contrasena desde el formulario de login');
+
+
+/*******************************************F-DAT-JRR-SEGU-0-23/06/2020****************************************/
+
+
+
+/*******************************************I-DAT-RAC-SEGU-0-16/06/2020****************************************/
+
+/* Data for the 'pxp.variable_global' table  (Records 1 - 1) */
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES 
+  (E'segu_extra_function', E'', E'funcionalidad extra al crear usuarios para google o facebook');
+
+
+/*******************************************F-DAT-RAC-SEGU-0-16/06/2020****************************************/
+
 
 
 

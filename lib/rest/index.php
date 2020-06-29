@@ -350,6 +350,7 @@ $app->post(
                 "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
                 "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
                 "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
+                "phpsession":"'.session_id().'",
                 "timeout":'.$_SESSION["_TIMEOUT"].'}';
                 exit;
     }

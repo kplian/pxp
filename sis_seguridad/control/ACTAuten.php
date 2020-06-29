@@ -351,13 +351,40 @@ class ACTAuten extends ACTbase {
         }
     }
 
+    function signUp(){
+        //g-recaptcha-response
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        if (!isset($_SESSION['_RECAPTCHA_PRIVATEKEY'])) {
+            throw new Exception('Captch private key not configured');
+        }
+
+        $res_captcha = $this->objParam->getParametro('captcha');
+        $response = file_get_contents($url . "?secret=" . $_SESSION['_RECAPTCHA_PRIVATEKEY'] . "&response=" . $res_captcha);
+        $data = json_decode($response);
+        if (isset($data->success) && $data->success == true) {
+            $this->objFunc=$this->create('MODUsuario');
+            $this->res=$this->objFunc->signUp($this->objParam);
+            $this->res->imprimirRespuesta($this->res->generarJson());
+        } else {
+            $this->res=new Mensaje();
+            $this->res->setMensaje('ERROR','ACTAuten','You are a robot','You are a robot','control','','','','');
+            $this->res->imprimirRespuesta($this->res->generarJson());
+        }
+    }
+
+    function signupConfirm() {
+        $this->objFunc=$this->create('MODUsuario');
+        $this->res=$this->objFunc->signupConfirm($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
     function updatePassword() {
         $this->objFunc=$this->create('MODUsuario');
         $this->res=$this->objFunc->updatePassword($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 
-    function oauthLogin() {        
+    function oauthLogin() {
         //Recupera datos de usuario
         $this->funciones= $this->create('MODUsuario');
         $this->res=$this->funciones->ValidaUsuario();
@@ -395,23 +422,32 @@ class ACTAuten extends ACTbase {
         }
         else {
             $PASS = 0;
-            switch ($this->objParam->getParametro('type')) {               
+            switch ($this->objParam->getParametro('type')) {
                 case 'google':
-                    $_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->datos['contrasena']);                  
-                    $client = new Google_Client();
-                    $client->setClientId($_SESSION['_GOOGLE_CLIENT_ID']);
-                    $client->setClientSecret($_SESSION['_GOOGLE_CLIENT_SECRET']);
-                    $client->setRedirectUri('postmessage');
-                    $client->addScope("email");
-                    $client->addScope("profile");                    
-                    $payload = $client->verifyIdToken($this->objParam->getParametro('code'));
+                    $_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->datos['contrasena']);
+                    $token_google = filter_var($this->objParam->getParametro('code'), FILTER_SANITIZE_STRING);
+                    
+                    switch ($this->objParam->getParametro('device')) {
+                        case 'web':
+                            $client = new Google_Client();
+                            $client->setClientId($_SESSION['_GOOGLE_CLIENT_ID']);
+                            $client->setClientSecret($_SESSION['_GOOGLE_CLIENT_SECRET']);
+                            $client->setRedirectUri('postmessage');
+                        break;
+                        default:
+                            $client = new Google_Client();
+                            $client->setClientId($_SESSION['_GOOGLE_CLIENT_ID']);
+                            //$client->setClientId($_SESSION['_GOOGLE_ADROID_ID']);
+                            $payload = $client->verifyIdToken($token_google);                           
+                        break;
+                    }
 
+                    $payload = $client->verifyIdToken($token_google);                         
                     if($payload) {
                         if( $this->datos['token'] == $payload["sub"]  &&  $_SESSION['_GOOGLE_CLIENT_ID'] == $payload["aud"]) {
                             $PASS = 1;
                         }
                     }
-                    
 
                 break;
                 case 'facebook':
@@ -533,6 +569,7 @@ class ACTAuten extends ACTbase {
 
                 echo '{
                     "success":'.$success.',
+                    "id_usuario":'.$id_usuario_ofus.',
                     "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
                     "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
                     "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",

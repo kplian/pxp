@@ -20,7 +20,7 @@ class MODUsuario extends MODbase {
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='segu.ft_validar_usuario_ime';
 		$this->transaccion='SEG_VALUSU_SEG';
-		
+
 
 		//definicion de variables
 		$this->tipo_conexion='seguridad';
@@ -71,6 +71,28 @@ class MODUsuario extends MODbase {
 		return $this->respuesta;
 	}
 
+	function signUp() {
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_validar_usuario_ime';
+		$this->transaccion='SEG_SIGNUP_SEG';
+
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para ejecucion de la funcion
+		$this->setParametro('email','email','varchar');
+		$this->setParametro('name','name','varchar');
+		$this->setParametro('surname','surname','varchar');
+		$this->setParametro('login','username','varchar');
+		$this->setParametro('password','password','varchar');
+
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		return $this->respuesta;
+	}
+
 	function updatePassword() {
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='segu.ft_validar_usuario_ime';
@@ -82,6 +104,24 @@ class MODUsuario extends MODbase {
 
 		//Define los parametros para ejecucion de la funcion
 		$this->setParametro('password','password','varchar');
+		$this->setParametro('token','token','varchar');
+
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		return $this->respuesta;
+	}
+
+	function signupConfirm() {
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_validar_usuario_ime';
+		$this->transaccion='SEG_SGNUPCON_SEG';
+
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para ejecucion de la funcion
 		$this->setParametro('token','token','varchar');
 
 		$this->armarConsulta();

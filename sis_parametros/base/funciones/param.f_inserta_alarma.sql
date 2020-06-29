@@ -11,12 +11,13 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma (
   par_parametros varchar,
   par_id_usuario_alarma integer,
   par_titulo_correo varchar,
-  par_correos text = NULL::text,
-  par_documentos text = NULL::text,
-  p_id_proceso_wf integer = NULL::integer,
-  p_id_estado_wf integer = NULL::integer,
-  p_id_plantilla_correo integer = NULL::integer,
-  p_automatizado varchar = 'si'::character varying
+  par_correos text = NULL,
+  par_documentos text = NULL,
+  p_id_proceso_wf integer = NULL,
+  p_id_estado_wf integer = NULL,
+  p_id_plantilla_correo integer = NULL,
+  p_automatizado varchar = 'si',
+  p_fecha_caducidad date = NULL
 )
 RETURNS integer AS
 $body$
@@ -39,7 +40,7 @@ PARAMETROS: par_id_funcionario : indica el funcionario para el que se genera la 
             
   	ISSUE			FECHA			AUTHOR 					DESCRIPCION
 	#17	EndeEtr		22/05/2019		EGS						Si se envia los id_estado_wf se inserta la id alarma al estado _wf
-          
+    #0	pxp-ui		17.06.2020		MZM						Adicion de campo fecha_caducidad      
 ************************************/
 DECLARE
     
@@ -83,6 +84,7 @@ BEGIN
               id_estado_wf,
               id_plantilla_correo,
               estado_envio
+              ,fecha_caducidad --#0
               ) values(
               par_acceso_directo,
               par_id_funcionario,
@@ -106,6 +108,7 @@ BEGIN
               p_id_estado_wf,
               p_id_plantilla_correo,
               v_estado_envio
+              ,p_fecha_caducidad --#0
 			)RETURNING id_alarma into v_id_alarma;
                 
     --actualizamos los estados_wf con las alarmas si este existiera

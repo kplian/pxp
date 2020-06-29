@@ -1,4 +1,13 @@
 <?php
+/****************************************************************************************
+*@package pXP
+*@file gen-MODTraduccion.php
+*@author  (admin)
+
+ HISTORIAL DE MODIFICACIONES:
+ #ISSUE                FECHA                AUTOR                DESCRIPCION
+#133               22-04-2020     RAC            recibe variable de lenguaje
+*****************************************************************************************/
 class MODValidacion
 {
 	var $res=array();
@@ -21,7 +30,9 @@ class MODValidacion
 								'int8'=>'int8',
 								'consulta_select'=>'text',
 								'codigo_html'=>'text',
-								'json_text'=>'text' );
+								'json_text'=>'text',
+								'texto_ampliado'=>'text'       //#133 para que permita traduciones en ingles con comilla simple '
+							);  
 	
 	function getTipo($tipo){
 		//RAC 1/09/2011
@@ -82,8 +93,8 @@ class MODValidacion
 				$this->validarJson($nombre,$valor,$blank,$tamano);
 		}
 		
-		elseif ($tipo=='codigo_html'){                                
-                $this->validarCodigoHtml($nombre,$valor,$blank,$tamano);
+		elseif ($tipo=='codigo_html' || $tipo=='texto_ampliado') {    //#133 texto ampliado para permitir registro  decomillas simple sin doble escapado en MODbase                           
+                $this->validarCodigoHtml($nombre, $valor, $blank, $tamano);
         }
 		
 		
@@ -310,7 +321,7 @@ class MODValidacion
 		}
 		if(($tamano!='' && isset($tamano) && $tamano!=null)&&(strlen($valor)>$tamano))
 		{
-			array_push($this->res,'El tama�o en el campo '.$nombre." es mayor al máximo permitido");
+			array_push($this->res,'El tamaño en el campo '.$nombre." es mayor al máximo permitido");
 		}
 		
 		$this->validarEspeciales($nombre,$valor);

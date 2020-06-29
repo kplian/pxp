@@ -8,7 +8,8 @@
 
  HISTORIAL DE MODIFICACIONES:
  #ISSUE                FECHA                AUTOR                DESCRIPCION
-  #0                21-04-2020 03:41:52    admin             Creacion    
+  #0                21-04-2020 03:41:52    admin             Creacion   
+  #133              23-06-2020             RAC               recibe comillas en texto traducido
   #
 *****************************************************************************************/
 
@@ -58,7 +59,7 @@ class MODTraduccion extends MODbase{
         //Define los parametros para la funcion
 		$this->setParametro('id_lenguaje','id_lenguaje','int4');
 		$this->setParametro('id_palabra_clave','id_palabra_clave','int4');
-		$this->setParametro('texto','texto','varchar');
+		$this->setParametro('texto','texto','texto_ampliado');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
         //Ejecuta la instruccion
@@ -79,7 +80,7 @@ class MODTraduccion extends MODbase{
 		$this->setParametro('id_traduccion','id_traduccion','int4');
 		$this->setParametro('id_lenguaje','id_lenguaje','int4');
 		$this->setParametro('id_palabra_clave','id_palabra_clave','int4');
-		$this->setParametro('texto','texto','varchar');
+		$this->setParametro('texto','texto','texto_ampliado');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 
         //Ejecuta la instruccion

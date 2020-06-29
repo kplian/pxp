@@ -2865,3 +2865,8 @@ ALTER TABLE param.ttraduccion
     UNIQUE (id_palabra_clave, id_lenguaje) NOT DEFERRABLE;
 
 /***********************************F-SCP-RAC-PARAM-1-14/05/2020****************************************/
+
+/***********************************I-SCP-MZM-PARAM-1-17/06/2020****************************************/
+ALTER TABLE param.talarma
+  ADD COLUMN fecha_caducidad DATE;
+/***********************************F-SCP-MZM-PARAM-1-17/06/2020****************************************/

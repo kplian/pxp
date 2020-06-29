@@ -46,20 +46,27 @@ BEGIN
              WHERE gi.tipo = 'comun'
                AND len.codigo = p_codigo_lenguaje
                AND  gi.codigo = p_codigo_grupo
-          )
-          SELECT
-              pc.codigo as clave,
-              (
-                 CASE WHEN v_defecto_on_null THEN  COALESCE(bt.texto, pc.default_text )::Varchar 
-                      ELSE bt.texto
-                 END    
-              ) as valor
-            
-          FROM param.tgrupo_idioma gi
-          JOIN param.tpalabra_clave pc ON pc.id_grupo_idioma = gi.id_grupo_idioma
-          LEFT JOIN base_trad bt ON bt.id_palabra_clave = pc.id_palabra_clave
-          WHERE  gi.tipo = 'comun'
-            AND  gi.codigo = p_codigo_grupo
+          ),
+          WITH main_data AS (
+            SELECT
+                pc.codigo as clave,
+                (
+                  CASE WHEN v_defecto_on_null THEN  COALESCE(bt.texto, pc.default_text )::Varchar 
+                        ELSE bt.texto
+                  END    
+                ) as valor
+              
+            FROM param.tgrupo_idioma gi
+            JOIN param.tpalabra_clave pc ON pc.id_grupo_idioma = gi.id_grupo_idioma
+            LEFT JOIN base_trad bt ON bt.id_palabra_clave = pc.id_palabra_clave
+            WHERE  gi.tipo = 'comun'
+              AND  gi.codigo = p_codigo_grupo
+         )
+         SELECT
+           clave
+           valor
+         FROM amin_data
+         WHERE varlor IS NOT NULL
     ) s;
        
    

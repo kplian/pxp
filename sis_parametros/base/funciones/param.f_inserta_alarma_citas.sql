@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION param.f_inserta_alarma_dblink (
+CREATE OR REPLACE FUNCTION param.f_inserta_alarma_citas (
   p_id_usuario integer,
   p_asunto varchar,
   p_body text,
@@ -29,34 +29,54 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_dblink (
     v_mensaje_error    text;
     v_usr_bd 		varchar;
     v_query			varchar;
+    v_id			integer;
+    
   BEGIN
-    v_nombre_funcion='param.f_inserta_alarma_dblink';
+    v_nombre_funcion='param.f_inserta_alarma_citas';
     v_database=current_database();
     v_usr_bd=v_database||'_conexion';
 
     v_res_cone=(select dblink_connect('user=' || v_usr_bd ||' dbname='||v_database));
+	
+	--verificar: si ya existe un registro en alarma para la url, entonces solo actualizar
 
-    v_query = 'select * from param.f_inserta_alarma(
-                                                      NULL,
+	if not exists (select 1 from param.talarma where id_usuario=p_id_usuario and acceso_directo=p_url) then
+
+    		v_query = 'select * from param.f_inserta_alarma(
+                                                      NULL,--id_funcionario
                                                       ''' || p_body || ''',    --descripcion alarmce
                                                       ''' || p_url || ''',--acceso directo
-                                                      now()::date,
-                                                      ''notificacion'',
-                                                      '''',   -->
-                                                      ' || p_id_usuario || ',
-                                                      NULL,
+                                                      now()::date, --fecha
+                                                      ''notificacion'', --tipo
+                                                      '''',   --> obs
+                                                      ' || p_id_usuario || ', --id_usuario
+                                                      NULL,  --clase
                                                       ''' || p_asunto || ''',--titulo
-                                                      ''{}''::varchar,
-                                                      NULL::integer,
-                                                      ''' || p_asunto || ''',
-                                                      ''' || p_mails || '''
-                                                      ,NULL,
-                                                      NULL,
-                                                      NULL,
-                                                      NULL,
-                                                      NULL,
+                                                      ''{}''::varchar, --parametros
+                                                      ' || p_id_usuario || ', --id_usuario_alarma
+                                                      ''' || p_asunto || ''', --titulo_correo
+                                                      ''' || p_mails || ''' --correos
+                                                      ,NULL, --documentos
+                                                      NULL,  --id_proceso_wf
+                                                      NULL,  --id_Estado_wf
+                                                      NULL,  --id_plantilla
+                                                      NULL,  --automatizado
                                                       '''||p_fecha_caducidad||'''
                                                      )';
+  else
+      --obtener el id_alarma para actualizar
+  		select id_alarma into v_id from param.talarma where id_usuario=p_id_usuario and acceso_directo=p_url;
+        update param.talarma
+        set descripcion = p_body,
+        acceso_directo= p_url,
+        id_usuario= p_id_usuario,
+        titulo=p_asunto,
+        titulo_correo=p_asunto,
+        correos=p_mails,
+        fecha_caducidad=p_fecha_caducidad
+        where id_alarma=v_id;
+        
+  end if;                                                     
 
 
     SELECT * FROM
