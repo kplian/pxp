@@ -37,6 +37,7 @@ v_mensaje_error    text;
 v_id_usuario integer;
 v_cuenta varchar;
 v_nombre varchar;
+v_correo varchar;
 v_apellido_paterno varchar;
 v_apellido_materno varchar;
 v_estilo varchar;
@@ -308,7 +309,7 @@ BEGIN
 
         BEGIN
          --verificar si el usuario existe y esta activo
-            select id_usuario into v_id_usuario
+            select id_usuario, p.correo, p.nombre into v_id_usuario, v_correo, v_nombre
             from segu.tusuario u
             inner join segu.tpersona p on p.id_persona = u.id_persona
             where u.cuenta=v_parametros.login or p.correo =  v_parametros.login
@@ -316,15 +317,19 @@ BEGIN
             if(v_id_usuario is null) then
                raise exception 'No existe el usuario o correo ingresado';
             end if;
-
+            v_token = pxp.f_generate_token(15);
             update segu.tusuario
-            set reset_token = pxp.f_generate_token(15),
+            set reset_token = v_token,
             token_expiration = now() + (pxp.f_get_variable_global('segu_token_expiration') || ' hour')::interval
             where id_usuario = v_id_usuario;
 
 
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Reset token generado correctamente para el usuario '||v_id_usuario);
             v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'mail_template',pxp.f_get_variable_global('pxp_mail_templates')::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'token', v_token);
+            v_resp = pxp.f_agrega_clave(v_resp,'name', v_nombre);
+            v_resp = pxp.f_agrega_clave(v_resp,'email', v_correo);
             return v_resp;
          END;
       /*******************************
@@ -346,8 +351,14 @@ BEGIN
               v_parametros.password
           );
 
+          select reset_token into v_token
+          from segu.tusuario
+          where id_usuario = v_id_usuario;
+
           v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario creado correctamente '||v_id_usuario);
           v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
+          v_resp = pxp.f_agrega_clave(v_resp,'mail_template',pxp.f_get_variable_global('pxp_mail_templates')::varchar);
+          v_resp = pxp.f_agrega_clave(v_resp,'token', v_token);
           return v_resp;
         END;
 

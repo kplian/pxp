@@ -343,6 +343,32 @@ class ACTAuten extends ACTbase {
         if (isset($data->success) && $data->success == true) {
             $this->objFunc=$this->create('MODUsuario');
             $this->res=$this->objFunc->resetPassword($this->objParam);
+            $datos = $this->res->getDatos();
+
+            /*send reset mail*/
+            if (isset($datos['mail_template'])) {
+                include_once(dirname(__FILE__).'/../../../' . $datos['mail_template']);
+                $template = resetPasswordTemplate($datos['name'], $this->objParam->getParametro('url') . 'forgot/update/' . $datos['token']);
+
+                $email = new \SendGrid\Mail\Mail();
+                $email->setFrom($_SESSION['_MAIL_REMITENTE'], $_SESSION['_NOMBER_REMITENTE']);
+                $email->setSubject("Hemos recibido una solicitud para cambiar tu password");
+                $email->addTo($datos['email'], $datos['name']);
+
+                $email->addContent(
+                    "text/html", $template);
+                $sendgrid = new \SendGrid($_SESSION['_SENDGRID_API_KEY']);
+                try {
+                    $response = $sendgrid->send($email);
+
+                } catch (Exception $e) {
+                    $this->res=new Mensaje();
+                    $this->res->setMensaje('ERROR','ACTAuten','An error happened while sending the email','An error happened while sending the email','control','','','','');
+                    $this->res->imprimirRespuesta($this->res->generarJson());
+                    exit;
+                }
+            }
+            /*end send reset mail*/
             $this->res->imprimirRespuesta($this->res->generarJson());
         } else {
             $this->res=new Mensaje();
@@ -364,6 +390,33 @@ class ACTAuten extends ACTbase {
         if (isset($data->success) && $data->success == true) {
             $this->objFunc=$this->create('MODUsuario');
             $this->res=$this->objFunc->signUp($this->objParam);
+            $datos = $this->res->getDatos();
+
+            /*send signup mail*/
+            if (isset($datos['mail_template'])) {
+                include_once(dirname(__FILE__).'/../../../' . $datos['mail_template']);
+                $template = signupTemplate($this->objParam->getParametro('name'), $this->objParam->getParametro('url') . 'signup/confirm/' . $datos['token']);
+
+                $email = new \SendGrid\Mail\Mail();
+                $email->setFrom($_SESSION['_MAIL_REMITENTE'], $_SESSION['_NOMBER_REMITENTE']);
+                $email->setSubject("Has creado un usuario en Vouz");
+                $email->addTo($this->objParam->getParametro('email'), $this->objParam->getParametro('name'));
+
+                $email->addContent(
+                    "text/html", $template);
+                $sendgrid = new \SendGrid($_SESSION['_SENDGRID_API_KEY']);
+                try {
+                    $response = $sendgrid->send($email);
+
+                } catch (Exception $e) {
+                    $this->res=new Mensaje();
+                    $this->res->setMensaje('ERROR','ACTAuten','An error happened while sending the email','An error happened while sending the email','control','','','','');
+                    $this->res->imprimirRespuesta($this->res->generarJson());
+                    exit;
+                }
+            }
+            /*end send signup mail*/
+
             $this->res->imprimirRespuesta($this->res->generarJson());
         } else {
             $this->res=new Mensaje();
@@ -426,7 +479,7 @@ class ACTAuten extends ACTbase {
                 case 'google':
                     $_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->datos['contrasena']);
                     $token_google = filter_var($this->objParam->getParametro('code'), FILTER_SANITIZE_STRING);
-                    
+
                     switch ($this->objParam->getParametro('device')) {
                         case 'web':
                             $client = new Google_Client();
@@ -438,11 +491,11 @@ class ACTAuten extends ACTbase {
                             $client = new Google_Client();
                             $client->setClientId($_SESSION['_GOOGLE_CLIENT_ID']);
                             //$client->setClientId($_SESSION['_GOOGLE_ADROID_ID']);
-                            $payload = $client->verifyIdToken($token_google);                           
+                            $payload = $client->verifyIdToken($token_google);
                         break;
                     }
 
-                    $payload = $client->verifyIdToken($token_google);                         
+                    $payload = $client->verifyIdToken($token_google);
                     if($payload) {
                         if( $this->datos['token'] == $payload["sub"]  &&  $_SESSION['_GOOGLE_CLIENT_ID'] == $payload["aud"]) {
                             $PASS = 1;

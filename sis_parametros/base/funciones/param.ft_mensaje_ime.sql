@@ -26,6 +26,10 @@ DECLARE
     v_nombre_funcion           TEXT;
     v_mensaje_error            TEXT;
     v_id_mensaje    INTEGER;
+    v_id_tabla    INTEGER;
+    v_rec_usuarios_chat         RECORD;
+    v_usuarios varchar;
+    v_url varchar;
                 
 BEGIN
 
@@ -42,6 +46,9 @@ BEGIN
     IF (p_transaccion='PM_MEN_INS') THEN
                     
         BEGIN
+
+
+
             --Sentencia de la insercion
             INSERT INTO param.tmensaje(
             id_usuario_from,
@@ -56,8 +63,8 @@ BEGIN
             fecha_mod,
             id_usuario_mod
               ) VALUES (
-            v_parametros.id_usuario_from,
-            v_parametros.id_usuario_to,
+            p_id_usuario,
+            null,
             v_parametros.id_chat,
             'activo',
             v_parametros.mensaje,
@@ -68,10 +75,33 @@ BEGIN
             null,
             null            
             ) RETURNING id_mensaje into v_id_mensaje;
-            
+
+            SELECT id_tabla
+            INTO v_id_tabla
+            FROM param.tchat
+            WHERE id_chat = v_parametros.id_chat;
+
+            SELECT string_agg(chat_usuario.id_usuario::text, ',')::varchar,
+                   replace(tc.url_notificacion, ':id', chat.id_tabla::varchar) ::varchar as url
+            INTO v_usuarios, v_url
+            FROM param.tchat_usuario chat_usuario
+                     INNER JOIN param.tchat chat on chat.id_chat = chat_usuario.id_chat
+                     INNER JOIN param.ttipo_chat tc on tc.id_tipo_chat = chat.id_tipo_chat
+            WHERE chat_usuario.id_chat = v_parametros.id_chat and id_usuario != p_id_usuario
+            GROUP BY chat.id_tabla, url;
+
+
+
+
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje almacenado(a) con exito (id_mensaje'||v_id_mensaje||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_id_mensaje::varchar);
+
+            --websockets notifications
+            v_resp = pxp.f_agrega_clave(v_resp,'__ws_notifications',v_usuarios::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'__ws_notifications_message','Tienes un nuevo mensaje: '||v_parametros.mensaje::varchar);
+            v_resp = pxp.f_agrega_clave(v_resp,'__ws_notifications_url',v_url::varchar);
+
 
             --Devuelve la respuesta
             RETURN v_resp;

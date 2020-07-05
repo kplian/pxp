@@ -15,6 +15,7 @@ class ComposerStaticInit916f5c6a195a0cf26550aff2b6dc063d
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        '79f66bc0a1900f77abe4a9a299057a0a' => __DIR__ . '/..' . '/starkbank/ecdsa/src/ellipticcurve.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -31,6 +32,11 @@ class ComposerStaticInit916f5c6a195a0cf26550aff2b6dc063d
             'Symfony\\Polyfill\\Php72\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
+            'SendGrid\\Stats\\' => 15,
+            'SendGrid\\Mail\\' => 14,
+            'SendGrid\\EventWebhook\\' => 22,
+            'SendGrid\\Contacts\\' => 18,
+            'SendGrid\\' => 9,
         ),
         'P' => 
         array (
@@ -76,6 +82,26 @@ class ComposerStaticInit916f5c6a195a0cf26550aff2b6dc063d
         'Symfony\\Polyfill\\Intl\\Idn\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
+        ),
+        'SendGrid\\Stats\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/stats',
+        ),
+        'SendGrid\\Mail\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/mail',
+        ),
+        'SendGrid\\EventWebhook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/eventwebhook',
+        ),
+        'SendGrid\\Contacts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/contacts',
+        ),
+        'SendGrid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendgrid/php-http-client/lib',
         ),
         'Psr\\Log\\' => 
         array (
@@ -134,8 +160,11 @@ class ComposerStaticInit916f5c6a195a0cf26550aff2b6dc063d
     );
 
     public static $classMap = array (
+        'BaseSendGridClientInterface' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/BaseSendGridClientInterface.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
+        'SendGrid' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/SendGrid.php',
+        'TwilioEmail' => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/TwilioEmail.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

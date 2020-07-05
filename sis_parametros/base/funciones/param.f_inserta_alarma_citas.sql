@@ -1,13 +1,21 @@
-CREATE OR REPLACE FUNCTION param.f_inserta_alarma_citas (
-  p_id_usuario integer,
-  p_asunto varchar,
-  p_body text,
-  p_mails varchar,
-  p_url	varchar,
-  p_fecha_caducidad date
-)
-  RETURNS integer AS
-  $body$
+-- FUNCTION: param.f_inserta_alarma_citas(integer, character varying, text, character varying, character varying, date)
+
+-- DROP FUNCTION param.f_inserta_alarma_citas(integer, character varying, text, character varying, character varying, date);
+
+CREATE OR REPLACE FUNCTION param.f_inserta_alarma_citas(
+	p_id_usuario integer,
+	p_asunto character varying,
+	p_body text,
+	p_mails character varying,
+	p_url character varying,
+	p_fecha_caducidad date,
+    p_id_usuario_reg	integer)
+    RETURNS integer
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE STRICT SECURITY DEFINER 
+AS $BODY$
   /**************************************************************************
    FUNCION: param.f_inserta_alarma_dblink
    DESCRIPCIÓN: Inserta alarma con dblink
@@ -49,7 +57,7 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_citas (
                                                       now()::date, --fecha
                                                       ''notificacion'', --tipo
                                                       '''',   --> obs
-                                                      ' || p_id_usuario || ', --id_usuario
+                                                      ' || p_id_usuario_reg || ', --id_usuario
                                                       NULL,  --clase
                                                       ''' || p_asunto || ''',--titulo
                                                       ''{}''::varchar, --parametros
@@ -106,9 +114,7 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_citas (
       raise exception '%',pxp.f_resp_to_json(v_respuesta);
 
   END;
-  $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-RETURNS NULL ON NULL INPUT
-SECURITY DEFINER
-COST 100;
+  $BODY$;
+
+ALTER FUNCTION param.f_inserta_alarma_citas(integer, character varying, text, character varying, character varying, date, integer)
+    OWNER TO postgres;

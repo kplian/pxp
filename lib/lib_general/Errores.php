@@ -3,8 +3,6 @@
 	include_once("Mensaje.php");
 
 	function exception_handler($exception){
-		echo "exception handler";
-		exit;
 		$_SESSION["_CANTIDAD_ERRORES"]++;
 		$mensaje=$exception->getMessage();
 		if($_SESSION['_CANTIDAD_ERRORES']<4){

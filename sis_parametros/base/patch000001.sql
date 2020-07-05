@@ -2870,3 +2870,31 @@ ALTER TABLE param.ttraduccion
 ALTER TABLE param.talarma
   ADD COLUMN fecha_caducidad DATE;
 /***********************************F-SCP-MZM-PARAM-1-17/06/2020****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-30/06/2020*****************************************/
+
+
+ALTER TABLE param.ttipo_chat
+    ADD usuarios varchar(255);
+
+ALTER TABLE param.ttipo_chat
+    ADD url_notificacion varchar(255);
+
+
+CREATE TABLE param.tchat_usuario
+(
+    id_chat_usuario SERIAL,
+    id_chat         INTEGER      NOT NULL,
+    usuario_desc    VARCHAR(255) NOT NULL,
+    id_usuario      INTEGER      NOT NULL,
+    PRIMARY KEY (id_chat_usuario)
+) INHERITS (pxp.tbase)
+  WITH (OIDS = FALSE);
+
+
+ALTER TABLE ONLY param.tchat_usuario
+    ADD CONSTRAINT tchat_usuario_unique_id_chat_id_usuario
+        UNIQUE (id_chat, id_usuario);
+
+/***********************************F-SCP-FFP-PARAM-0-30/06/2020*****************************************/

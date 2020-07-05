@@ -12,6 +12,7 @@
     "require": {
         "pkly/i18next-php": "^1.0",
         "textalk/websocket": "^1.2",
-        "google/apiclient": "^2.0"
+        "google/apiclient": "^2.0",
+        "sendgrid/sendgrid": "~7"
     }
 }

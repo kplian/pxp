@@ -209,17 +209,17 @@
     },
     {
         "name": "guzzlehttp/guzzle",
-        "version": "6.5.4",
-        "version_normalized": "6.5.4.0",
+        "version": "6.5.5",
+        "version_normalized": "6.5.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/guzzle/guzzle.git",
-            "reference": "a4a1b6930528a8f7ee03518e6442ec7a44155d9d"
+            "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/a4a1b6930528a8f7ee03518e6442ec7a44155d9d",
-            "reference": "a4a1b6930528a8f7ee03518e6442ec7a44155d9d",
+            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
+            "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
             "shasum": ""
         },
         "require": {
@@ -227,7 +227,7 @@
             "guzzlehttp/promises": "^1.0",
             "guzzlehttp/psr7": "^1.6.1",
             "php": ">=5.5",
-            "symfony/polyfill-intl-idn": "1.17.0"
+            "symfony/polyfill-intl-idn": "^1.17.0"
         },
         "require-dev": {
             "ext-curl": "*",
@@ -237,7 +237,7 @@
         "suggest": {
             "psr/log": "Required for using the Log middleware"
         },
-        "time": "2020-05-25T19:35:05+00:00",
+        "time": "2020-06-16T21:01:06+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -847,18 +847,177 @@
         "description": "A polyfill for getallheaders."
     },
     {
-        "name": "symfony/polyfill-intl-idn",
-        "version": "v1.17.0",
-        "version_normalized": "1.17.0.0",
+        "name": "sendgrid/php-http-client",
+        "version": "3.10.8",
+        "version_normalized": "3.10.8.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/polyfill-intl-idn.git",
-            "reference": "3bff59ea7047e925be6b7f2059d60af31bb46d6a"
+            "url": "https://github.com/sendgrid/php-http-client.git",
+            "reference": "51e69a9acdb7a1a5ebb4420d3f54917d7341076f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/3bff59ea7047e925be6b7f2059d60af31bb46d6a",
-            "reference": "3bff59ea7047e925be6b7f2059d60af31bb46d6a",
+            "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/51e69a9acdb7a1a5ebb4420d3f54917d7341076f",
+            "reference": "51e69a9acdb7a1a5ebb4420d3f54917d7341076f",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "php": ">=5.6"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "time": "2020-06-24T19:34:13+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "SendGrid\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Matt Bernier",
+                "email": "mbernier@twilio.com"
+            },
+            {
+                "name": "Elmer Thomas",
+                "email": "ethomas@twilio.com"
+            }
+        ],
+        "description": "HTTP REST client, simplified for PHP",
+        "homepage": "http://github.com/sendgrid/php-http-client",
+        "keywords": [
+            "api",
+            "fluent",
+            "http",
+            "rest",
+            "sendgrid"
+        ]
+    },
+    {
+        "name": "sendgrid/sendgrid",
+        "version": "7.6.0",
+        "version_normalized": "7.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sendgrid/sendgrid-php.git",
+            "reference": "cbfb2f063b75bfac9197894de882d30aff6ca769"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sendgrid/sendgrid-php/zipball/cbfb2f063b75bfac9197894de882d30aff6ca769",
+            "reference": "cbfb2f063b75bfac9197894de882d30aff6ca769",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "ext-mbstring": "*",
+            "ext-openssl": "*",
+            "php": ">=5.6",
+            "sendgrid/php-http-client": "~3.10",
+            "starkbank/ecdsa": "0.*"
+        },
+        "replace": {
+            "sendgrid/sendgrid-php": "*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^5.7.9 || ^6.4.3",
+            "squizlabs/php_codesniffer": "3.*",
+            "swaggest/json-diff": "^3.4"
+        },
+        "time": "2020-06-10T19:53:58+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "SendGrid\\Contacts\\": "lib/contacts/",
+                "SendGrid\\EventWebhook\\": "lib/eventwebhook/",
+                "SendGrid\\Mail\\": "lib/mail/",
+                "SendGrid\\Stats\\": "lib/stats/"
+            },
+            "classmap": [
+                "lib/BaseSendGridClientInterface.php",
+                "lib/SendGrid.php",
+                "lib/TwilioEmail.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "This library allows you to quickly and easily send emails through Twilio SendGrid using PHP.",
+        "homepage": "http://github.com/sendgrid/sendgrid-php",
+        "keywords": [
+            "email",
+            "grid",
+            "send",
+            "sendgrid",
+            "twilio sendgrid"
+        ]
+    },
+    {
+        "name": "starkbank/ecdsa",
+        "version": "0.0.4",
+        "version_normalized": "0.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/starkbank/ecdsa-php.git",
+            "reference": "9369d35ed9019321adb4eb9fd3be21357d527c74"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/starkbank/ecdsa-php/zipball/9369d35ed9019321adb4eb9fd3be21357d527c74",
+            "reference": "9369d35ed9019321adb4eb9fd3be21357d527c74",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5"
+        },
+        "time": "2020-05-15T15:46:20+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "src/ellipticcurve.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "StarkBank",
+                "email": "developers@starkbank.com",
+                "homepage": "https://starkbank.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "fast openSSL-compatible implementation of the Elliptic Curve Digital Signature Algorithm (ECDSA)",
+        "homepage": "https://github.com/starkbank/ecdsa-php"
+    },
+    {
+        "name": "symfony/polyfill-intl-idn",
+        "version": "v1.17.1",
+        "version_normalized": "1.17.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-intl-idn.git",
+            "reference": "a57f8161502549a742a63c09f0a604997bf47027"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/a57f8161502549a742a63c09f0a604997bf47027",
+            "reference": "a57f8161502549a742a63c09f0a604997bf47027",
             "shasum": ""
         },
         "require": {
@@ -869,11 +1028,15 @@
         "suggest": {
             "ext-intl": "For best performance"
         },
-        "time": "2020-05-12T16:47:27+00:00",
+        "time": "2020-06-06T08:46:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "1.17-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
             }
         },
         "installation-source": "dist",
@@ -926,17 +1089,17 @@
     },
     {
         "name": "symfony/polyfill-mbstring",
-        "version": "v1.17.0",
-        "version_normalized": "1.17.0.0",
+        "version": "v1.17.1",
+        "version_normalized": "1.17.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "fa79b11539418b02fc5e1897267673ba2c19419c"
+            "reference": "7110338d81ce1cbc3e273136e4574663627037a7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fa79b11539418b02fc5e1897267673ba2c19419c",
-            "reference": "fa79b11539418b02fc5e1897267673ba2c19419c",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7110338d81ce1cbc3e273136e4574663627037a7",
+            "reference": "7110338d81ce1cbc3e273136e4574663627037a7",
             "shasum": ""
         },
         "require": {
@@ -945,11 +1108,15 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2020-05-12T16:47:27+00:00",
+        "time": "2020-06-06T08:46:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "1.17-dev"
+            },
+            "thanks": {
+                "name": "symfony/polyfill",
+                "url": "https://github.com/symfony/polyfill"
             }
         },
         "installation-source": "dist",

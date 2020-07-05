@@ -3904,6 +3904,10 @@ INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
 VALUES
   (E'segu_recover_password', E'false', E'Permitir resetear contrasena desde el formulario de login');
 
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'pxp_mail_templates', E'', E'Url for templates methods');
+
 
 /*******************************************F-DAT-JRR-SEGU-0-23/06/2020****************************************/
 
@@ -3914,7 +3918,7 @@ VALUES
 /* Data for the 'pxp.variable_global' table  (Records 1 - 1) */
 
 INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
-VALUES 
+VALUES
   (E'segu_extra_function', E'', E'funcionalidad extra al crear usuarios para google o facebook');
 
 

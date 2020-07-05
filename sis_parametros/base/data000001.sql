@@ -611,8 +611,29 @@ select param.f_import_ttraduccion ('insert','Linguagem','activo','pt','language'
 /**********************************I-DAT-JRR-PARAM-0-26/06/2020*****************************************/
 select pxp.f_insert_tfuncion ('param.ft_alarma_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tfuncion ('param.ft_archivo_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_mensaje_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_mensaje_sel', 'Funcion para tabla     ', 'PARAM');
 select pxp.f_insert_tprocedimiento ('PM_NOTIFCITA_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_alarma_sel');
 select pxp.f_insert_tprocedimiento ('PM_NOTIFCITA_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_alarma_sel');
 select pxp.f_insert_tprocedimiento ('PM_FILES_SEL', 'get file', 'si', '', '', 'param.ft_archivo_sel');
 select pxp.f_insert_tprocedimiento ('PM_FILES_CONT', 'conteo de registros', 'si', '', '', 'param.ft_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_MEN_INS', 'Insercion de registros', 'si', '', '', 'param.ft_mensaje_ime');
+select pxp.f_insert_tprocedimiento ('PM_MEN_MOD', 'Modificacion de registros', 'si', '', '', 'param.ft_mensaje_ime');
+select pxp.f_insert_tprocedimiento ('PM_MEN_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_mensaje_ime');
+select pxp.f_insert_tprocedimiento ('PM_MEN_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_mensaje_sel');
+select pxp.f_insert_tprocedimiento ('PM_MEN_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_mensaje_sel');
 /**********************************F-DAT-JRR-PARAM-0-26/06/2020*****************************************/
+
+/**********************************I-DAT-JRR-PARAM-0-02/07/2020*****************************************/
+select pxp.f_insert_tfuncion ('param.ft_tipo_archivo_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_archivo_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_tipo_archivo_ime', 'Funcion para tabla     ', 'PARAM');
+
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_tipo_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_tipo_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_ARCH_INS', 'Insercion de registros', 'si', '', '', 'param.ft_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARCH_REMH', 'elimina de la vista principal y queda en el historico', 'si', '', '', 'param.ft_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_INS', 'Insercion de registros', 'si', '', '', 'param.ft_tipo_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_tipo_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARCHJSON_INS', 'insercion mediante json de registros', 'si', '', '', 'param.ft_archivo_ime');
+/**********************************F-DAT-JRR-PARAM-0-02/07/2020*****************************************/

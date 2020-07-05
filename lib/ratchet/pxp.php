@@ -58,9 +58,57 @@ class Pxp implements MessageComponentInterface {
                                                                             ) RETURNING id_mensaje");
         $mensajeSave->execute();
         $results = $mensajeSave->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($results);
         echo "end saveMessageChat \n";
 
+    }
+
+    function saveAlert($id_usuario_to, $url) {
+
+        var_dump($id_usuario_to);
+        var_dump($url);
+
+        /*$alert = $this->link->prepare("SELECT param.f_inserta_alarma_citas (".$id_usuario_to.", 'Nuevo Mensaje Chat, ".$url."', '".$mensaje."')");
+        $alert->execute();
+        $results = $alert->fetchAll(PDO::FETCH_ASSOC);*/
+        echo "saveAlert \n";
+
+    }
+
+    function notifyMessageChat($id_usuario_from,$mensaje, $id_chat) {
+        echo "notifyMessageChat id_usuario_from {$id_usuario_from}, mensaje : {$mensaje} , idChat: {$id_chat} \n";
+        $notify = $this->link->prepare("SELECT chat_usuario.id_usuario, replace(tc.url_notificacion, ':id', chat.id_tabla::varchar)  as url, now() as fecha
+                                        FROM param.tchat_usuario chat_usuario
+                                        INNER JOIN param.tchat chat on chat.id_chat = chat_usuario.id_chat
+                                        INNER JOIN param.ttipo_chat tc on tc.id_tipo_chat = chat.id_tipo_chat
+                                        WHERE chat_usuario.id_chat = ".$id_chat." and id_usuario != ".$id_usuario_from." ");
+        $notify->execute();
+        $resultsToNotify = $notify->fetchAll(PDO::FETCH_ASSOC);
+        $i = 0;
+        // __ws_notifications
+        foreach ($resultsToNotify as $userId) {
+            echo "usuario que tambien necesita id {$userId["id_usuario"]} \n";
+            $evento = "user_notifications__" .$userId["id_usuario"];
+
+            $sqlStringSave = "SELECT param.f_inserta_alarma_citas(".$userId["id_usuario"].", 'Chat', '".$mensaje."', 'mail', '".$userId["url"]."','".$userId["fecha"]."'::date , ".$id_usuario_from.")";
+            $alert = $this->link->prepare($sqlStringSave);
+            $alert->execute();
+            //$results = $alert->fetchAll(PDO::FETCH_ASSOC);
+
+            var_dump($sqlStringSave);
+            foreach ($this->eventos[$evento] as $even){
+                echo " evento en notify \n";
+                $send = array(
+                    "mensaje" => $mensaje,
+                    "data" => $even,
+                    "from" => $id_usuario_from,
+                    "tipo" => "enviarMensaje",
+                );
+
+                $send = json_encode($send, true);
+                $this->users[$even["id_conexion"]]->send($send);
+            }
+
+        }
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -69,7 +117,6 @@ class Pxp implements MessageComponentInterface {
 
         //obtenemos la session del pxp
         $sessionIDPXP = $conn->WebSocket->request->getQuery()->toArray()['sessionIDPXP'];
-        var_dump($sessionIDPXP);
 
         //verificaremos si la session enviada esta registrada en nuestra bd
 
@@ -77,7 +124,6 @@ class Pxp implements MessageComponentInterface {
         $seguSessionPXP->execute();
         $seguSessionPXP_RES = $seguSessionPXP->fetchAll(PDO::FETCH_ASSOC);
 
-        var_dump($seguSessionPXP_RES);
 
         $this->clients->attach($conn);
         //anadimos a una id_conexion la conexion entera para poder acceder luego a send
@@ -176,8 +222,6 @@ class Pxp implements MessageComponentInterface {
 
                 }
 
-
-                //var_dump($this->eventos);
                 echo "tipo ! ({$tipo})\n";
 
             }elseif($tipo == "enviarMensaje"){
@@ -188,12 +232,11 @@ class Pxp implements MessageComponentInterface {
                 //idChat only working when is sending and the message is from chat,
                 //if we send the idChat, we must save the message in the table param.tmensaje
                 if($idChat != null) {
-                    $this->saveMessageChat($from["idUser"], $data["data"]["mensaje"], $idChat );
+                   /* $this->saveMessageChat($from["idUser"], $data["data"]["mensaje"], $idChat );
+                    $this->notifyMessageChat($from["idUser"], $data["data"]["mensaje"], $idChat );*/
                 }
-                var_dump($idChat);
-                echo $evento."\n";
 
-                var_dump($this->eventos);
+
                 foreach ($this->eventos[$evento] as $even){
                     echo $even."\n";
 
@@ -219,7 +262,6 @@ class Pxp implements MessageComponentInterface {
                 );
                 $send = json_encode($send, true);
 
-                echo "envia al mismo";
                 $this->users[$id_conexion]->send($send);
 
 
@@ -271,10 +313,6 @@ class Pxp implements MessageComponentInterface {
 
                 }
 
-                var_dump($this->usuariosPXPSocket);
-
-
-
 
             }elseif($tipo == "obtenerUsuariosConectados"){ //obtenemos usuario conectados
 
@@ -283,10 +321,6 @@ class Pxp implements MessageComponentInterface {
                 $send = json_encode($this->usuariosPXPSocket, true);
 
                 $this->users[$id_conexion]->send($send);
-
-
-                //var_dump($this->usuariosPXPSocket);
-
 
 
 
@@ -374,13 +408,14 @@ class Pxp implements MessageComponentInterface {
 
 
 
+        var_dump($this->eventos);
 
         //eliminamos todas los eventos que esta escuchando la conexion
         foreach ($this->eventos as $key1 =>$eventos){
 
             foreach ($eventos as $key => $e) {
 
-                //var_dump($e);
+                var_dump($e);
 
 
                 //eleminamos si encuentra
@@ -388,7 +423,15 @@ class Pxp implements MessageComponentInterface {
 
                     unset($this->eventos[$key1][$key]);
 
+                    //verificamos si ya no existe ninguna conexion para un usuario especifico y eliminamos su arreglo principal
+                    if(count($this->eventos[$key1]) == 0){
+                        unset($this->eventos[$key1]);
+                        $this->eventos[$key1] = array();
+                    }
+
                 }
+
+                var_dump($this->eventos);
 
             }
         }
@@ -397,10 +440,10 @@ class Pxp implements MessageComponentInterface {
         foreach ($this->usuariosPXPSocket as $key1 =>$usuarios){
 
             foreach ($usuarios as $key => $u) {
-
-
+                var_dump($u['id_conexion']);
                 //eleminamos si encuentra
                 if($u['id_conexion'] == $conn->resourceId){
+
 
                     unset($this->usuariosPXPSocket[$key1][$key]);
 
@@ -409,12 +452,10 @@ class Pxp implements MessageComponentInterface {
                         unset($this->usuariosPXPSocket[$key1]);
                     }
 
-                }
 
+                }
             }
         }
-
-        var_dump($this->usuariosPXPSocket);
 
 
         // The connection is closed, remove it, as we can no longer send it messages
