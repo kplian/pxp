@@ -1381,7 +1381,7 @@ ALTER TABLE segu.tcommit
 alter table segu.tpersona
 	add nombre_archivo_foto text default '';
 alter table segu.tpersona
-	add sobre_nombre varchar(50) default '';
+	add sobrenombre varchar(50) default '';
 alter table segu.tpersona
 	add cualidad_1 varchar(50) default '';
 alter table segu.tpersona
