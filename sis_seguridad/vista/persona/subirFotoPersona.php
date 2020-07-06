@@ -27,8 +27,9 @@ Phx.vista.subirFotoPersona=Ext.extend(Phx.frmInterfaz,{
 	{
 		
 		Phx.vista.subirFotoPersona.superclass.loadValoresIniciales.call(this);
-		this.getComponente('id_persona').setValue(this.id_persona);		
-	},
+		this.getComponente('id_persona').setValue(this.id_persona);
+        this.getComponente('ci').setValue(this.ci);
+    },
 	
 	successSave:function(resp){
         Phx.CP.loadingHide();
@@ -49,6 +50,17 @@ Phx.vista.subirFotoPersona=Ext.extend(Phx.frmInterfaz,{
 		  form:true 
 		
 	    },
+        {
+            config:{
+                labelSeparator:'',
+                inputType:'hidden',
+                name: 'ci'
+
+            },
+            type:'Field',
+            form:true
+
+        },
 		{
 			//configuracion del componente
 			config:{

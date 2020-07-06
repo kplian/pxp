@@ -162,8 +162,12 @@ BEGIN
                              ,p.abreviatura_titulo
                              --#fin
                              --#59 09.09.2019
-                             , p.profesion
-                             --#59 09.09.2019
+                             , p.profesion,
+                             --#59 09.09.2019,
+                            p.nombre_archivo_foto,
+                            p.sobrenombre,
+                            p.cualidad_1,
+                            p.cualidad_2
                           FROM segu.tpersona p WHERE ';
 
 
