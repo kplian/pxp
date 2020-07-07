@@ -1385,3 +1385,28 @@ ALTER TABLE segu.tusuario
 
 /***********************************F-SCP-JRR-SEGU-0-02/06/2020*****************************************/
 
+
+/***********************************I-SCP-RAC-SEGU-0-03/06/2020*****************************************/
+
+ALTER TABLE segu.tusuario
+  ADD COLUMN token VARCHAR;
+
+ALTER TABLE segu.tusuario
+  ADD COLUMN url_foto VARCHAR(200);
+
+/***********************************F-SCP-RAC-SEGU-0-03/06/2020*****************************************/
+
+/***********************************I-SCP-JRR-SEGU-0-11/06/2020*****************************************/
+ALTER TABLE segu.tusuario
+  ADD COLUMN reset_token VARCHAR(20);
+
+ALTER TABLE segu.tusuario
+  ADD COLUMN token_expiration TIMESTAMP;
+
+COMMENT ON COLUMN segu.tusuario.reset_token
+IS 'Token para reseteo de contrasena';
+
+COMMENT ON COLUMN segu.tusuario.token_expiration
+IS 'Fecha de expiracion para token de reseteo ';
+
+/***********************************F-SCP-JRR-SEGU-0-11/06/2020*****************************************/

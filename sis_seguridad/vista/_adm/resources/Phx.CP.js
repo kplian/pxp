@@ -1,12 +1,18 @@
-/**
+
+/*************************************************************************************
+ Nombre: ACTAuten.php
+ Proposito: Verificar las credenciales de usario y validar la sesion si son correctas 
+ Autor:	Kplian (RAC)
+ Fecha:	14/7/2010
+
 
 HISTORIAL DE MODIFICACIONES:
    	
  ISSUE    FORK			FECHA:		      AUTOR                 DESCRIPCION
-#0		KPLIAN		 2010		       Rensi Arteaga	Creacion
-#121    ETR          19/02/2020        Rensi Arteaga    Implementar mensajes de alertas con WebSocket #Issue PHP 121
-
-*/
+#0		KPLIAN		 2010		  Rensi Arteaga	     Creacion
+#133               22-04-2020     RAC                mandar variable de lenguaje  
+#121    ETR        19/02/2020     Rensi Arteaga      Implementar mensajes de alertas con WebSocket #Issue PHP 121
+*************************************************************************************/
 Ext.chart.Chart.CHART_URL = '../../../lib/ext3/resources/charts.swf';
 Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
 
@@ -626,7 +632,6 @@ Phx.CP=function(){
                     //comentado por que se cerraban las ventas iniciaales de alertaas , parametros y otros
 					/*Ext.WindowMgr.each(function(w){
 					 //if(w.is_page){}
-					 console.log('CLOSE', w)
 					 if(w.auxNoClose===false){
 					 w.close();
 					 alert('close 1')
@@ -1184,15 +1189,15 @@ Phx.CP=function(){
                         'Powered-By': 'Pxp'
                     };
                     // Envia crendenciales al servidor
-                    console.log(Phx.Encriptacion);
                     Ext.Ajax.request({
                         url:form_login.url,
                         params:{
                             _tipo:'auten',
                             //se quita el md5 de la contraseña, si la encripacion esta activada no se encripta en este paso, si no esta activada se encripta
                             contrasena: Phx.CP.config_ini.x=='1'?form_login.getForm().findField('contrasena').getValue():Phx.CP.CRIPT.Encriptar(form_login.getForm().findField('contrasena').getValue()),
-                            usuario:form_login.getForm().findField('usuario').getValue()
-
+                            usuario: form_login.getForm().findField('usuario').getValue(),
+                            language:  (navigator.language || navigator.userLanguage).substring(2, 0) //#133 
+                            //language:  'en' 
                         },
                         method:'POST',
                         success:ajax.success,
@@ -1785,7 +1790,6 @@ Phx.CP=function(){
                 vaMyCls = [];
 
                 vaMyCls.push(mycls);
-                console.log('listeners.......',listeners)
                 var Win = new Ext.Window(Ext.apply(Ventana,{
                     id: wid,// manager: this.windows,
                     autoDestroy: true,
@@ -1851,7 +1855,6 @@ Phx.CP=function(){
             iniciarWebSocket : function () {
 
                 var hostname = window.location.hostname;
-                var hostname = window.location.hostname;
                 var protocol = window.location.protocol;
                 var ws;
                 var folder;
@@ -1864,14 +1867,12 @@ Phx.CP=function(){
                 }
                 
                 Phx.CP.webSocket.conn = new WebSocket(ws+'://'+hostname+folder+':'+Phx.CP.config_ini.puerto_websocket+'?sessionIDPXP='+Ext.util.Cookies.get('PHPSESSID'));
-                console.log(Phx.CP.webSocket.conn);  
+                 
                 
                 Phx.CP.webSocket.conn.onopen = function (e) {
-                    console.log(e)
-                    console.log("Conexión establecida");
+                    
                     Phx.CP.webSocket.habilitado = 'si';
                     //una vez establecida la conexion debemos mandar el nombre del usuario, y el id_usuario
-
                     //crear json
                     var json = JSON.stringify({
                         data: {"id_usuario": Phx.CP.config_ini.id_usuario },
@@ -1888,7 +1889,7 @@ Phx.CP=function(){
                     //obtenemos el data de la configuracion al lanzar el evento escucharEvento esos datos los tenemos aca
                     var data = jsonData.data;
                     //vemos que tipo es si es una respuesta de un mensaje enviado anteriormente
-                    if (data.tipo == 'respuesta de envio') {
+                    if (data.tipo == 'respuesta de envio'){
                         console.log(mensaje);
                     } else { //o si es un mensaje que tiene que ejecutar en evento
                         if(data.id_contenedor != undefined) {
@@ -1925,8 +1926,7 @@ Phx.CP=function(){
                 });
                 Phx.CP.webSocket.conn.send(json);
             },
-            enviarMensajeUsuario:function(mensaje){
-                console.log(mensaje)
+            enviarMensajeUsuario:function(mensaje){               
                 if(mensaje.tipo_mensaje == "alert"){
                     alert(mensaje.mensaje);
                 }else{                    

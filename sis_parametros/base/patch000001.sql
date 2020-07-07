@@ -2779,4 +2779,122 @@ IS 'si o no, si esta habilitado mostrara el campo de nota_debito_agencia, caso c
 
 /***********************************F-SCP-MGM-PARAM-1-17/04/2020****************************************/
 
+/***********************************I-SCP-FFP-PARAM-0-05/06/2020*****************************************/
 
+
+CREATE TABLE param.ttipo_chat (
+  id_tipo_chat SERIAL,
+  nombre_id VARCHAR(255) NOT NULL ,
+  tipo_chat VARCHAR(255) NOT NULL ,
+  tabla VARCHAR(255) NOT NULL ,
+  codigo VARCHAR(255) NOT NULL ,
+  nombre VARCHAR(255) NOT NULL ,
+  grupo VARCHAR(2) ,
+  PRIMARY KEY(id_tipo_chat)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+
+CREATE TABLE param.tchat (
+  id_chat SERIAL,
+  id_tipo_chat INTEGER NOT NULL ,
+  id_tabla INTEGER NOT NULL ,
+  descripcion VARCHAR(255) NOT NULL ,
+  PRIMARY KEY(id_chat)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+CREATE TABLE param.tmensaje (
+  id_mensaje SERIAL,
+  id_chat INTEGER NOT NULL ,
+  id_usuario_from INTEGER NOT NULL ,
+  id_usuario_to INTEGER[] ,
+  mensaje VARCHAR(255) NOT NULL ,
+  PRIMARY KEY(id_mensaje)
+) INHERITS (pxp.tbase)
+
+WITH (oids = false);
+
+/***********************************F-SCP-FFP-PARAM-0-05/06/2020*****************************************/
+
+
+
+/***********************************I-SCP-RAC-PARAM-1-14/05/2020****************************************/
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgrupo_idioma
+  ALTER COLUMN nombre_tabla TYPE VARCHAR(200) COLLATE pg_catalog."default";
+
+--------------- SQL ---------------
+
+COMMENT ON COLUMN param.tgrupo_idioma.nombre_tabla
+IS 'nombre de la tabla o vista para traduccion de datos almacenados';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgrupo_idioma
+  ADD COLUMN columna_llave VARCHAR(200);
+
+COMMENT ON COLUMN param.tgrupo_idioma.columna_llave
+IS 'nombre de la columna que se usara como llave';
+
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tgrupo_idioma
+  ADD COLUMN columna_texto_defecto VARCHAR(200);
+
+COMMENT ON COLUMN param.tgrupo_idioma.columna_texto_defecto
+IS 'nombre de la columna con el texto por defecto an tabla o vista referida en la columna nombre_tabla';
+
+
+
+  --------------- SQL ---------------
+
+ALTER TABLE param.tpalabra_clave
+  DROP COLUMN id_tabla;
+
+  --------------- SQL ---------------
+
+ALTER TABLE param.ttraduccion
+  ADD CONSTRAINT ttraduccion_idx 
+    UNIQUE (id_palabra_clave, id_lenguaje) NOT DEFERRABLE;
+
+/***********************************F-SCP-RAC-PARAM-1-14/05/2020****************************************/
+
+/***********************************I-SCP-MZM-PARAM-1-17/06/2020****************************************/
+ALTER TABLE param.talarma
+  ADD COLUMN fecha_caducidad DATE;
+/***********************************F-SCP-MZM-PARAM-1-17/06/2020****************************************/
+
+
+/***********************************I-SCP-FFP-PARAM-0-30/06/2020*****************************************/
+
+
+ALTER TABLE param.ttipo_chat
+    ADD usuarios varchar(255);
+
+ALTER TABLE param.ttipo_chat
+    ADD url_notificacion varchar(255);
+
+
+CREATE TABLE param.tchat_usuario
+(
+    id_chat_usuario SERIAL,
+    id_chat         INTEGER      NOT NULL,
+    usuario_desc    VARCHAR(255) NOT NULL,
+    id_usuario      INTEGER      NOT NULL,
+    PRIMARY KEY (id_chat_usuario)
+) INHERITS (pxp.tbase)
+  WITH (OIDS = FALSE);
+
+
+ALTER TABLE ONLY param.tchat_usuario
+    ADD CONSTRAINT tchat_usuario_unique_id_chat_id_usuario
+        UNIQUE (id_chat, id_usuario);
+
+/***********************************F-SCP-FFP-PARAM-0-30/06/2020*****************************************/

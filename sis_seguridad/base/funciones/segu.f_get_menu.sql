@@ -3,8 +3,8 @@
 CREATE OR REPLACE FUNCTION segu.f_get_menu (
   p_administrador integer,
   p_id_usuario integer,
-  p_id_gui integer = NULL::integer,
-  pa_id_sistema integer [] = NULL::integer[],
+  p_id_gui integer = NULL,
+  pa_id_sistema integer [] = NULL,
   p_mobile integer = 0
 )
 RETURNS jsonb AS
@@ -19,6 +19,7 @@ $body$
 
  ISSUE            FECHA:            AUTOR               DESCRIPCION  
  #128          10/04/2020           RAC            CREACION
+ #128          16/06/2020           MZM               Arreglo a ambiguedad de campo sw_mobile
 ***************************************************************************/
 DECLARE
     v_registros         RECORD;
@@ -32,7 +33,7 @@ BEGIN
            FOR v_registros IN (
                                SELECT
                                     g.id_gui,
-                                    g.nombre as text,
+                                    COALESCE( tra.texto ,g.nombre) as text,
                                     g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
@@ -43,10 +44,11 @@ BEGIN
                                     g.icono as icon,
                                     '[]'::jsonb as childrens
                               FROM segu.tgui g
-                              INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'                                 
+                              INNER JOIN segu.testructura_gui eg  ON g.id_gui=eg.id_gui  AND eg.estado_reg = 'activo'
+                              LEFT JOIN pxp.get_translations('MENU') tra ON tra.codigo = g.codigo_gui                                   
                               WHERE     g.visible='si'
                                     AND g.estado_reg = 'activo'   
-                                    AND  ((p_mobile = 1 AND (sw_mobile = 'si' OR  eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND sw_mobile = 'no'))                         
+                                    AND  ((p_mobile = 1 AND (g.sw_mobile = 'si' OR  eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND g.sw_mobile = 'no')) --#128                        
                                     AND eg.fk_id_gui = p_id_gui
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
@@ -63,7 +65,7 @@ BEGIN
           FOR v_registros IN (
                                SELECT
                                     g.id_gui,
-                                    g.nombre as text,
+                                    COALESCE( tra.texto ,g.nombre) as text,
                                     g.clase_vista as component,
                                     CASE
                                     WHEN (g.ruta_archivo is null or g.ruta_archivo='')THEN
@@ -86,11 +88,12 @@ BEGIN
                               INNER JOIN segu.tusuario_rol ur  ON     ur.id_rol=r.id_rol
                                                                   AND ur.estado_reg='activo'
                               INNER JOIN segu.tusuario u  ON     u.id_usuario=ur.id_usuario
-                                                             AND u.estado_reg='activo'                                
+                                                             AND u.estado_reg='activo'  
+                              LEFT JOIN pxp.get_translations('MENU') tra ON tra.codigo = g.codigo_gui                               
                               
                               WHERE     g.visible='si'
                                     AND g.estado_reg = 'activo' 
-                                    AND  ((p_mobile = 1 AND (sw_mobile = 'si' or eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND sw_mobile = 'no'))                                  
+                                    AND  ((p_mobile = 1 AND (g.sw_mobile = 'si' or eg.fk_id_gui = 0)) OR  (p_mobile = 0 AND g.sw_mobile = 'no')) --#128                 
                                     AND eg.fk_id_gui = p_id_gui
                                     AND u.id_usuario = p_id_usuario
                                     AND (pa_id_sistema IS NULL OR g.id_subsistema = ANY(pa_id_sistema))
@@ -105,7 +108,7 @@ BEGIN
                                  g.ruta_archivo,
                                  g.icono,
                                  eg.fk_id_gui,
-                                 childrens
+                                 childrens,  tra.texto --#128
                               ORDER BY g.orden_logico,eg.fk_id_gui) LOOP
                      
                 IF v_registros.type != 'hoja' THEN 
@@ -137,4 +140,4 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 PARALLEL UNSAFE
-COST 100;
+COST 100; 

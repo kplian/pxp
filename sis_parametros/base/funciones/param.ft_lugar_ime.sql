@@ -1,221 +1,87 @@
 --------------- SQL ---------------
 
-CREATE OR REPLACE FUNCTION param.ft_lugar_ime (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
+CREATE OR REPLACE FUNCTION param.f_lenguaje_json (
+  p_codigo_grupo varchar,
+  p_codigo_lenguaje varchar
 )
-RETURNS varchar AS
+RETURNS jsonb AS
 $body$
 /**************************************************************************
- SISTEMA:		Parametros Generales
- FUNCION: 		param.f_tlugar_ime
- DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tlugar'
- AUTOR: 		 (rac)
- FECHA:	        29-08-2011 09:19:28
- COMENTARIOS:	
+ FUNCION:       segu.f_get_menu
+ DESCRIPCION:   fucion ara recueprar un grupo de traduccion en formato json
+ AUTOR:         RAC - KPLIAN        
+ FECHA:         21/04/2020
+ COMENTARIOS:    
 ***************************************************************************
- HISTORIAL DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
+ ISSUE            FECHA:            AUTOR               DESCRIPCION  
+ #133          10/04/2020           RAC            CREACION
+ #133          16/06/2020           RAC            ajuste  para  no listar nulos
 ***************************************************************************/
-
 DECLARE
-
-	v_nro_requerimiento    	integer;
-	v_parametros           	record;
-	v_id_requerimiento     	integer;
-	v_resp		            varchar;
-	v_nombre_funcion        text;
-	v_mensaje_error         text;
-	v_id_lugar	integer;
-    v_codigo_largo varchar;
-			    
+    v_registros         RECORD;
+    v_resp_json         JSONB;
+    v_resp              VARCHAR; 
+    v_nombre_funcion    VARCHAR;  
+    v_defecto_on_null   BOOLEAN; 
 BEGIN
 
-    v_nombre_funcion = 'param.f_tlugar_ime';
-    v_parametros = pxp.f_get_record(p_tabla);
+     --recuepra configuracion de comportamiento para valores pordefecto    
+     v_defecto_on_null := pxp.f_get_variable_global('param_traduccion_defecto_on_null')::BOOLEAN;
+   
 
-	/*********************************    
- 	#TRANSACCION:  'PM_lug_INS'
- 	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		rac	
- 	#FECHA:		29-08-2011 09:19:28
-	***********************************/
-
-	if(p_transaccion='PM_LUG_INS')then
-					
-        begin
-        
-           --obtiene codigo recursivamente
-            IF v_parametros.id_lugar_fk is null THEN
-               v_codigo_largo = v_parametros.codigo;
-            ELSE
+    SELECT json_object_agg(clave, valor)
+    INTO v_resp_json
+    FROM (
+          WITH base_trad AS (
+             SELECT
+               pc.id_palabra_clave,
+               pc.codigo,
+               len.codigo as lenguaje,
+               tra.id_traduccion,
+               tra.texto
+             FROM param.tlenguaje len
+             JOIN param.ttraduccion tra ON tra.id_lenguaje = len.id_lenguaje
+             JOIN param.tpalabra_clave pc ON pc.id_palabra_clave = tra.id_palabra_clave
+             JOIN param.tgrupo_idioma gi ON gi.id_grupo_idioma = pc.id_grupo_idioma
+             WHERE gi.tipo = 'comun'
+               AND len.codigo = p_codigo_lenguaje
+               AND  gi.codigo = p_codigo_grupo
+          )
+          SELECT
+              pc.codigo as clave,
+              COALESCE(bt.texto, pc.default_text )::Varchar as valor
             
-             WITH RECURSIVE t(id,id_fk,cod,n) AS (
-               SELECT l.id_lugar,l.id_lugar_fk, l.codigo,1 
-               FROM param.tlugar l 
-               WHERE l.id_lugar = v_parametros.id_lugar_fk
-              UNION ALL
-               SELECT l.id_lugar,l.id_lugar_fk, l.codigo , n+1
-               FROM param.tlugar l, t
-               WHERE l.id_lugar = t.id_fk
-            )
-            SELECT pxp.textcat_all(a.cod||'.')
-             into  
-             v_codigo_largo
-            FROM (SELECT  cod
-                  FROM t 
-                 order by n desc)  a;
-                 
-                 
-               v_codigo_largo = v_codigo_largo||v_parametros.codigo;
-            END IF;
-            
-            
-        	--Sentencia de la insercion
-        	insert into param.tlugar(
-			codigo,
-			estado_reg,
-			id_lugar_fk,
-			nombre,
-			sw_impuesto,
-			sw_municipio,
-			tipo,
-			fecha_reg,
-			id_usuario_reg,
-			fecha_mod,
-			id_usuario_mod,
-            codigo_largo,
-            es_regional
-          	) values(
-			v_parametros.codigo,
-			'activo',
-			v_parametros.id_lugar_fk,
-			v_parametros.nombre,
-			v_parametros.sw_impuesto,
-			v_parametros.sw_municipio,
-			v_parametros.tipo,
-			now(),
-			p_id_usuario,
-			null,
-			null,
-            v_codigo_largo,
-            v_parametros.es_regional
-			)RETURNING id_lugar into v_id_lugar;
-               
-			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Lugar almacenado(a) con exito (id_lugar'||v_id_lugar||')'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_lugar',v_id_lugar::varchar);
+          FROM param.tgrupo_idioma gi
+          JOIN param.tpalabra_clave pc ON pc.id_grupo_idioma = gi.id_grupo_idioma
+          LEFT JOIN base_trad bt ON bt.id_palabra_clave = pc.id_palabra_clave
+          WHERE  gi.tipo = 'comun'
+            AND  gi.codigo = p_codigo_grupo
+            AND  bt.texto IS NOT NULL
+            /*AND CASE WHEN v_defecto_on_null THEN
+                   COALESCE(bt.texto, pc.default_text )::Varchar 
+                      ELSE bt.texto
+                 END */
+    ) s;
+       
+   
+  
+ RETURN  v_resp_json;
+ 
+ EXCEPTION
 
-            --Devuelve la respuesta
-            return v_resp;
+       WHEN OTHERS THEN
+        v_resp := '';
+        v_resp := pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp := pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp := pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
 
-		end;
-
-	/*********************************    
- 	#TRANSACCION:  'PM_lug_MOD'
- 	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		rac	
- 	#FECHA:		29-08-2011 09:19:28
-	***********************************/
-
-	elsif(p_transaccion='PM_LUG_MOD')then
-
-		begin
-            --obtiene codigo recursivamente
-            IF v_parametros.id_lugar_fk is null THEN
-               v_codigo_largo = v_parametros.codigo;
-            ELSE
-            
-             WITH RECURSIVE t(id,id_fk,cod,n) AS (
-               SELECT l.id_lugar,l.id_lugar_fk, l.codigo,1 
-               FROM param.tlugar l 
-               WHERE l.id_lugar = v_parametros.id_lugar_fk
-              UNION ALL
-               SELECT l.id_lugar,l.id_lugar_fk, l.codigo , n+1
-               FROM param.tlugar l, t
-               WHERE l.id_lugar = t.id_fk
-            )
-            SELECT pxp.textcat_all(a.cod||'.')
-             into  
-             v_codigo_largo
-            FROM (SELECT  cod
-                  FROM t 
-                 order by n desc)  a;
-                 
-                 
-               v_codigo_largo = v_codigo_largo||v_parametros.codigo;
-            END IF;
-        
-			--Sentencia de la modificacion
-			update param.tlugar set
-			codigo = v_parametros.codigo,
-			id_lugar_fk = v_parametros.id_lugar_fk,
-			nombre = v_parametros.nombre,
-			sw_impuesto = v_parametros.sw_impuesto,
-			sw_municipio = v_parametros.sw_municipio,
-			tipo = v_parametros.tipo,
-			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-            codigo_largo=v_codigo_largo,
-            es_regional = v_parametros.es_regional
-			where id_lugar=v_parametros.id_lugar;
-               
-			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Lugar modificado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_lugar',v_parametros.id_lugar::varchar);
-               
-            --Devuelve la respuesta
-            return v_resp;
-            
-		end;
-
-	/*********************************    
- 	#TRANSACCION:  'PM_lug_ELI'
- 	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		rac	
- 	#FECHA:		29-08-2011 09:19:28
-	***********************************/
-
-	elsif(p_transaccion='PM_LUG_ELI')then
-
-		begin
-			--Sentencia de la eliminacion
-			delete from param.tlugar
-            where id_lugar=v_parametros.id_lugar;
-               
-            --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Lugar eliminado(a)'); 
-            v_resp = pxp.f_agrega_clave(v_resp,'id_lugar',v_parametros.id_lugar::varchar);
-              
-            --Devuelve la respuesta
-            return v_resp;
-
-		end;
-         
-	else
-     
-    	raise exception 'Transaccion inexistente: %',p_transaccion;
-
-	end if;
-
-EXCEPTION
-				
-	WHEN OTHERS THEN
-		v_resp='';
-		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-		raise exception '%',v_resp;
-				        
 END;
 $body$
 LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

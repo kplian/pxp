@@ -94,8 +94,9 @@ Phx.vista.Traduccion=Ext.extend(Phx.gridInterfaz,{
                 gwidth: 100,
             	maxLength:500
             },
-                type:'TextField',
+                type:'TextArea',
                 filters:{pfiltro:'tra.texto',type:'string'},
+                bottom_filter:true,
                 id_grupo:1,
                 grid:true,
                 form:true

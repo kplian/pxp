@@ -81,7 +81,7 @@ function authPxp($headersArray) {
     $_SESSION["_SESION"]= new CTSesion();
     $_SESSION["_tipo_aute"] = 'REST';
     $mensaje = '';
-    
+
 
     //listar usuario con Pxp-User del header
     $objParam = new CTParametro('',null,null,'../../sis_seguridad/control/Usuario/listarUsuario');
@@ -115,11 +115,11 @@ function authPxp($headersArray) {
         $headers = false;
     } else {
     //desencriptar usuario y contrasena
-    
+
         if (!isset($headersArray['auth-version'])) {
             $auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
         } else {
-            $auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass)); 
+            $auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
         }
         $headers = true;
     }
@@ -195,7 +195,7 @@ function opensslDecrypt($encrypted, $password) {
     unset($iterations, $json, $salt);
 
     $decrypted= openssl_decrypt($cipherText , 'AES-256-CBC', hex2bin($hashKey), OPENSSL_RAW_DATA, $iv);
-    unset($cipherText, $hashKey, $iv);    
+    unset($cipherText, $hashKey, $iv);
     return $decrypted;
 }
 
@@ -305,6 +305,121 @@ $app->get(
 
     }
 );
+
+$app->post(
+
+    '/seguridad/Auten/verificarCredenciales',
+    function () use ($app) {
+        register_shutdown_function('fatalErrorShutdownHandler');
+        set_exception_handler('exception_handler');
+        set_error_handler('error_handler');
+        $headers = $app->request->headers;
+        if (isset($headers['Php-Auth-User'])) {
+
+            authPxp($headers);
+
+        } else {
+            $mensaje = '';
+            if ($app->request->post('usuario') == '') {
+                $mensaje = "No se recibio el parametro usuario";
+            }
+            if ($app->request->post('contrasena') == '') {
+                $mensaje = "No se recibio el parametro contrasena";
+            }
+
+            if ($mensaje != '') {
+                $men=new Mensaje();
+                $men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
+                'Codigo de error: AUTEN',
+                'control','','','OTRO','');
+
+                $men->imprimirRespuesta($men->generarJson(),'406');
+                exit;
+            }
+
+
+            $auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));
+            authPxp($auxHeaders);
+        }
+        echo '{"success":true,
+                "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
+                "nombre_usuario":"'.$_SESSION["_NOM_USUARIO"].'",
+                "nombre_basedatos":"'.$_SESSION["_BASE_DATOS"].'",
+                "id_usuario":"'.$_SESSION["_ID_USUARIO_OFUS"].'",
+                "id_funcionario":"'.$_SESSION["_ID_FUNCIOANRIO_OFUS"].'",
+                "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
+                "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
+                "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
+                "phpsession":"'.session_id().'",
+                "timeout":'.$_SESSION["_TIMEOUT"].'}';
+                exit;
+    }
+);
+//JRR: Auten doesn't require session validation
+$app->post(
+    '/seguridad/Auten/:metodo',
+    function ($metodo) use ($app) {
+        $headers = $app->request->headers;
+        $cookies = $app->request->cookies;
+        $psudourl = '/seguridad/Auten/'.$metodo;
+        $headers = $app->request->headers;
+
+        $ruta_include = 'sis_seguridad/control/ACTAuten.php';
+        $ruta_url = 'sis_seguridad/control/Auten/'.$metodo;
+
+        $objPostData=new CTPostData();
+
+        $aPostData = $objPostData->getData();
+        foreach($app->request->post() as $key => $val) {
+            $aPostData[$key] = $val;
+        }
+        $m = null;
+
+        $_SESSION["_PETICION"]=serialize($aPostData);
+        //arma $JSON
+        $JSON = json_encode($aPostData);
+
+        $objParam = new CTParametro($JSON,$m,null,'../../'.$ruta_url);
+        include_once dirname(__FILE__).'/../../../'.$ruta_include;
+        //Instancia la clase dinamica para ejecutar la accion requerida
+
+        eval('$cad = new ACTAuten($objParam);');
+        eval('$cad->'.$metodo.'();');
+    }
+);
+
+$app->get(
+    '/seguridad/Auten/:metodo',
+    function ($metodo) use ($app) {
+        $headers = $app->request->headers;
+        $cookies = $app->request->cookies;
+        $psudourl = '/seguridad/Auten/'.$metodo;
+        $headers = $app->request->headers;
+
+        $ruta_include = 'sis_seguridad/control/ACTAuten.php';
+        $ruta_url = 'sis_seguridad/control/Auten/'.$metodo;
+
+        $objPostData=new CTPostData();
+
+        $aPostData = $objPostData->getData();
+        foreach($app->request->post() as $key => $val) {
+            $aPostData[$key] = $val;
+        }
+        $m = null;
+
+        $_SESSION["_PETICION"]=serialize($aPostData);
+        //arma $JSON
+        $JSON = json_encode($aPostData);
+
+        $objParam = new CTParametro($JSON,$m,null,'../../'.$ruta_url);
+        include_once dirname(__FILE__).'/../../../'.$ruta_include;
+        //Instancia la clase dinamica para ejecutar la accion requerida
+
+        eval('$cad = new ACTAuten($objParam);');
+        eval('$cad->'.$metodo.'();');
+    }
+);
+
 $app->get(
 
     '/:sistema/:clase_control/:metodo',
@@ -389,58 +504,8 @@ $app->get(
 
     }
 );
-$app->post(
-
-    '/seguridad/Auten/verificarCredenciales',
-    function () use ($app) {    
-        register_shutdown_function('fatalErrorShutdownHandler');
-        set_exception_handler('exception_handler');
-        set_error_handler('error_handler');
-        $headers = $app->request->headers;
-        if (isset($headers['Php-Auth-User'])) {
-
-            authPxp($headers);
-
-        } else {
-            $mensaje = '';
-            if ($app->request->post('usuario') == '') {
-                $mensaje = "No se recibio el parametro usuario";
-            }
-            if ($app->request->post('contrasena') == '') {
-                $mensaje = "No se recibio el parametro contrasena";
-            }
-
-            if ($mensaje != '') {
-                $men=new Mensaje();
-                $men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
-                'Codigo de error: AUTEN',
-                'control','','','OTRO','');
-
-                $men->imprimirRespuesta($men->generarJson(),'406');
-                exit;
-            }
-
-
-            $auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));
-            authPxp($auxHeaders);
-        }        
-        echo '{"success":true,
-                "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
-                "nombre_usuario":"'.$_SESSION["_NOM_USUARIO"].'",
-                "nombre_basedatos":"'.$_SESSION["_BASE_DATOS"].'",
-                "id_usuario":"'.$_SESSION["_ID_USUARIO_OFUS"].'",
-                "id_funcionario":"'.$_SESSION["_ID_FUNCIOANRIO_OFUS"].'",
-                "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
-                "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
-                "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
-                "timeout":'.$_SESSION["_TIMEOUT"].'}';
-                exit;
-    }
-);
-$app->post(
-
-    '/:sistema/:clase_control/:metodo',
-    function ($sistema,$clase_control,$metodo) use ($app) {        
+$app->post('/:sistema/:clase_control/:metodo',
+    function ($sistema,$clase_control,$metodo) use ($app) {
         $headers = $app->request->headers;
         $cookies = $app->request->cookies;
         $psudourl = '/'.$sistema.'/'.$clase_control.'/'.$metodo;

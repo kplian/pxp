@@ -13,11 +13,11 @@ Para  definir la la metadata, menus, roles, etc
 
 1) sincronize ls funciones y procedimientos del sistema
 2)  verifique que la primera linea de los datos sea la insercion del sistema correspondiente
-3)  exporte los datos a archivo SQL (desde la interface de sistema en sis_seguridad), 
+3)  exporte los datos a archivo SQL (desde la interface de sistema en sis_seguridad),
     verifique que la codificacion  se mantenga en UTF8 para no distorcionar los caracteres especiales
-4)  remplaze los sectores correspondientes en este archivo en su totalidad:  (el orden es importante)  
-                             menu, 
-                             funciones, 
+4)  remplaze los sectores correspondientes en este archivo en su totalidad:  (el orden es importante)
+                             menu,
+                             funciones,
                              procedimietnos
 
 */
@@ -26,7 +26,7 @@ INSERT INTO segu.tsubsistema ( codigo, nombre, fecha_reg, prefijo, estado_reg, n
 VALUES ('PARAM', 'Parametros Generales', '2009-11-02', 'PM', 'activo', 'parametros', NULL);
 
 ----------------------------------
---COPY LINES TO data.sql FILE  
+--COPY LINES TO data.sql FILE
 ---------------------------------
 
 /***********************************F-DAT-RAC-PARAM-0-31/12/2012*****************************************/
@@ -121,7 +121,7 @@ select pxp.f_add_catalog('PARAM','tmoneda__tipo_actualizacion','por_transaccion'
 /* Data for the 'pxp.variable_global' table  (Records 1 - 1) */
 
 INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
-VALUES 
+VALUES
   (E'param_comunicado', E'usuario', E'(usuario , funcionario) envio de copmunicados a usuarios de sistema o todos los funcionarios');
 
 
@@ -137,7 +137,7 @@ VALUES
 /* Data for the 'param.twidget' table  (Records 1 - 3) */
 
 INSERT INTO param.twidget ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_widget", "nombre", "obs", "foto", "clase", "tipo", "ruta")
-VALUES 
+VALUES
   (1, 1, E'2016-09-10 04:34:20.673', E'2016-09-11 05:59:54.043', E'activo', NULL, E'NULL', 1, E'Prueba', E'este es un widget  de prueba sin datos relevantes', E'./../../../uploaded_files/sis_parametros/Widget/85ab53cb4ec4e66acb25d58419cfc392_v.jpg', E'Prueba', E'objeto', E'sis_seguridad/widgets/Prueba.php'),
   (1, 1, E'2016-09-10 06:24:19.559', E'2016-09-11 10:36:09.940', E'activo', NULL, E'NULL', 2, E'test', E'test', NULL, E'Prueba3', E'objeto', E'sis_seguridad/widgets/Prueba3.php'),
   (1, NULL, E'2016-09-11 10:59:02.279', NULL, E'activo', NULL, E'NULL', 3, E'iframe', E'iframe', NULL, E'Prueba2', E'iframe', E'sis_seguridad/widgets/Prueba2.php');
@@ -146,7 +146,7 @@ VALUES
 /* Data for the 'param.tdashboard' table  (Records 1 - 4) */
 
 INSERT INTO param.tdashboard ("id_usuario_reg", "id_usuario_mod", "fecha_reg", "fecha_mod", "estado_reg", "id_usuario_ai", "usuario_ai", "id_dashboard", "nombre", "id_usuario")
-VALUES 
+VALUES
   (1, 1, E'2016-09-10 07:41:23', E'2016-09-11 18:25:46.596', E'activo', NULL, E'NULL', 1, E'mi test', 1),
   (1, NULL, E'2016-09-11 06:24:06.452', NULL, E'activo', NULL, E'NULL', 27, E'Mi dashboard', 1),
   (1, 1, E'2016-09-11 23:07:16.106', E'2016-09-11 23:07:26.357', E'activo', NULL, E'NULL', 28, E'prueba', 1),
@@ -160,7 +160,7 @@ VALUES
 /***********************************I-DAT-RAC-PARAM-0-05/09/2017*****************************************/
 
 ----------------------------------
---COPY LINES TO SUBSYSTEM data.sql FILE  
+--COPY LINES TO SUBSYSTEM data.sql FILE
 ---------------------------------
 
 select param.f_import_tcatalogo_tipo ('insert','tproveedor_tipo','PARAM','tproveedor');
@@ -248,7 +248,7 @@ select pxp.f_insert_tgui ('Depto - EP', 'Depto - EP', 'DEPTO.3', 'no', 0, 'sis_p
 select pxp.f_insert_tgui ('Depto UO - EP', 'Depto UO - EP', 'DEPTO.4', 'no', 0, 'sis_parametros/vista/depto_uo_ep/DeptoUoEp.php', 3, '', '50%', 'PARAM');
 select pxp.f_insert_tgui ('Firmas Documentos', 'Firmas Documentos', 'DEPTO.5', 'no', 0, 'sis_parametros/vista/firma/Firma.php', 3, '', '50%', 'PARAM');
 select pxp.f_insert_tgui ('Subsistema', 'Subsistema', 'DEPTO.6', 'no', 0, 'id_subsistema', 3, '', 'Subsistema...', 'PARAM');
-select pxp.f_insert_tgui ('EP\', 'EP\', 'DEPTO.1.1.3', 'no', 0, 'sis_seguridad/vista/usuario_grupo_ep/UsuarioGrupoEp.php', 5, '', ', 
+select pxp.f_insert_tgui ('EP\', 'EP\', 'DEPTO.1.1.3', 'no', 0, 'sis_seguridad/vista/usuario_grupo_ep/UsuarioGrupoEp.php', 5, '', ',
           width:400,
           cls:', 'PARAM');
 select pxp.f_insert_tgui ('Personas', 'Personas', 'INSTIT.1', 'no', 0, 'sis_seguridad/vista/persona/Persona.php', 3, '', 'persona', 'PARAM');
@@ -532,7 +532,7 @@ select pxp.f_insert_testructura_gui ('VARGLOB', 'OTROS');
 
 
 INSERT INTO param.tlenguaje ("id_usuario_reg", "codigo", "nombre", "defecto")
-VALUES 
+VALUES
   (1, E'es', E'Español', E'si'),
   (1, E'en', E'English', E'no'),
   (1, E'fr', E'Français', E'no'),
@@ -540,7 +540,7 @@ VALUES
 
 
 INSERT INTO param.tgrupo_idioma ("id_usuario_reg", "codigo", "nombre", "tipo")
-VALUES 
+VALUES
   (1, E'BASICO', E'Grupo de traducciones basicas', E'comun');
 
 
@@ -553,6 +553,87 @@ select pxp.f_insert_testructura_gui ('TRAD', 'PARAM');
 select pxp.f_insert_testructura_gui ('LEN', 'TRAD');
 select pxp.f_insert_testructura_gui ('GRI', 'TRAD');
 select pxp.f_insert_testructura_gui ('PLCLV', 'TRAD');
-  
+
 /***********************************F-DAT-RAC-PARAM-0-20/04/2020*****************************************/
 
+
+/**********************************I-DAT-RAC-PARAM-0-23/05/2020*****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'param_traduccion_defecto_on_null', E'false', E'si no existe la traduccion  usar columnas texto por defecto o dejarlo como null');
+
+
+/**********************************F-DAT-RAC-PARAM-0-23/05/2020*****************************************/
+
+
+/**********************************I-DAT-RAC-PARAM-133-30/05/2020*****************************************/
+
+select param.f_import_tgrupo_idioma ('insert','BASICO', 'Grupo de traducciones basicas', 'comun','activo',NULL,NULL,NULL);
+select param.f_import_tpalabra_clave ('insert','activo', 'apellido', 'Apellido', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'ci', 'CI', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'delete', 'Eliminar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'edit', 'Editar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'exportar', 'Exportar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'guardar', 'Guardar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'hello', 'Hola', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'invalid_usu', 'Credenciales de Usuario Invalidas', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'language', 'Idioma', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'materno', 'Materno', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'new', 'Nuevo', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'no_existe_transaccion', 'No existe la transacción', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'nombre', 'Nombre', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'no_permiso', '_No tiene permisos_', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'no_permiso_ip', 'El usuario no tiene autorizacion para conectarse  desde', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'refresh', 'Actualizar', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'success_change_user', 'Usuario modificada con éxito', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'success_inactive_user', 'Usuario inactivado con exito', 'BASICO');
+select param.f_import_tpalabra_clave ('insert','activo', 'test', 'prueba', 'BASICO');
+select param.f_import_ttraduccion ('insert','Hello','activo','en','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Invalid User Credentials','activo','en','invalid_usu','BASICO');
+select param.f_import_ttraduccion ('insert','Language','activo','en','language','BASICO');
+select param.f_import_ttraduccion ('insert','The user does not have permissions for the procedure','activo','en','no_permiso','BASICO');
+select param.f_import_ttraduccion ('insert','test','activo','en','test','BASICO');
+select param.f_import_ttraduccion ('insert','Carnet de Identidad','activo','es','ci','BASICO');
+select param.f_import_ttraduccion ('insert','Hola','activo','es','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Credenciales de Usuario Inválidas','activo','es','invalid_usu','BASICO');
+select param.f_import_ttraduccion ('insert','Lenguaje','activo','es','language','BASICO');
+select param.f_import_ttraduccion ('insert','El usuario no tiene permisos para el procedimiento','activo','es','no_permiso','BASICO');
+select param.f_import_ttraduccion ('insert','prueba','activo','es','test','BASICO');
+select param.f_import_ttraduccion ('insert','Salut','activo','fr','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Langage','activo','fr','language','BASICO');
+select param.f_import_ttraduccion ('insert','Oi','activo','pt','hello','BASICO');
+select param.f_import_ttraduccion ('insert','Linguagem','activo','pt','language','BASICO');
+
+
+/**********************************F-DAT-RAC-PARAM-133-30/05/2020*****************************************/
+
+/**********************************I-DAT-JRR-PARAM-0-26/06/2020*****************************************/
+select pxp.f_insert_tfuncion ('param.ft_alarma_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_archivo_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_mensaje_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_mensaje_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tprocedimiento ('PM_NOTIFCITA_SEL', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_alarma_sel');
+select pxp.f_insert_tprocedimiento ('PM_NOTIFCITA_CONT', 'CODIGO NO DOCUMENTADO', 'si', '', '', 'param.ft_alarma_sel');
+select pxp.f_insert_tprocedimiento ('PM_FILES_SEL', 'get file', 'si', '', '', 'param.ft_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_FILES_CONT', 'conteo de registros', 'si', '', '', 'param.ft_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_MEN_INS', 'Insercion de registros', 'si', '', '', 'param.ft_mensaje_ime');
+select pxp.f_insert_tprocedimiento ('PM_MEN_MOD', 'Modificacion de registros', 'si', '', '', 'param.ft_mensaje_ime');
+select pxp.f_insert_tprocedimiento ('PM_MEN_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_mensaje_ime');
+select pxp.f_insert_tprocedimiento ('PM_MEN_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_mensaje_sel');
+select pxp.f_insert_tprocedimiento ('PM_MEN_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_mensaje_sel');
+/**********************************F-DAT-JRR-PARAM-0-26/06/2020*****************************************/
+
+/**********************************I-DAT-JRR-PARAM-0-02/07/2020*****************************************/
+select pxp.f_insert_tfuncion ('param.ft_tipo_archivo_sel', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_archivo_ime', 'Funcion para tabla     ', 'PARAM');
+select pxp.f_insert_tfuncion ('param.ft_tipo_archivo_ime', 'Funcion para tabla     ', 'PARAM');
+
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_SEL', 'Consulta de datos', 'si', '', '', 'param.ft_tipo_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_CONT', 'Conteo de registros', 'si', '', '', 'param.ft_tipo_archivo_sel');
+select pxp.f_insert_tprocedimiento ('PM_ARCH_INS', 'Insercion de registros', 'si', '', '', 'param.ft_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARCH_REMH', 'elimina de la vista principal y queda en el historico', 'si', '', '', 'param.ft_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_INS', 'Insercion de registros', 'si', '', '', 'param.ft_tipo_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_TIPAR_ELI', 'Eliminacion de registros', 'si', '', '', 'param.ft_tipo_archivo_ime');
+select pxp.f_insert_tprocedimiento ('PM_ARCHJSON_INS', 'insercion mediante json de registros', 'si', '', '', 'param.ft_archivo_ime');
+/**********************************F-DAT-JRR-PARAM-0-02/07/2020*****************************************/

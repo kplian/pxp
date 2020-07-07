@@ -1,12 +1,27 @@
 <?php
 /***
- Nombre: ACTbase.php
+ Nombre: CTIntermediario.php
  Proposito: Recibir todos los parametros enviados
  de la capa de la vista, desencriptar lo recibido y direccionar a
  la accion correspondiente solicitada por el usuario
- Autor:	Kplian (RCM)
- Fecha:	30/06/2010
- */
+
+HISTORIAL DE MODIFICACIONES:
+#ISSUE                FECHA       AUTOR           DESCRIPCION
+#0                 30/06/2010     RCM            Creacion
+#133               22-04-2020     RAC            recibe variable de lenguaje  
+*****************************************************************************************/
+use Pkly\I18Next\I18n;
+use Pkly\I18Next\Plugin\JsonLoader;
+
+I18n::get([
+	'lng'                   =>  'en',
+	'ns'                  =>  'basico',
+	'defaultNS'           =>   'basico'
+])->useModule(new JsonLoader([
+    'json_resource_path'    =>  __DIR__ .'/../../../locale/{{lng}}/{{ns}}.json'
+]))->init();
+
+
 class CTIntermediario{
 
 	/////////////////////////////////
@@ -43,19 +58,10 @@ class CTIntermediario{
 		$this->paramMetodo = array();
 		$this->aPostData=$this->objPostData->getData();
 		
-		//var_dump($this->aPostData);exit;
 		//rac 22/09/2011 
-		$this->aPostFiles=$this->objPostData->getFiles();
-		
-		//var_dump($this->aPostFiles);
-		//exit;
-		
+		$this->aPostFiles=$this->objPostData->getFiles();		
 		$_SESSION["_PETICION"]=serialize($this->aPostData);
-		//echo 'POST: '.$this->aPostData['r'];exit;
 		
-				/*ob_start();
-        $fb=FirePHP::getInstance(true);
-        $fb->log($this->nombreClase,"clase");*/
 		if(isset($this->aPostData['r'])){
 			$objReporte=new MostrarReporte($this->aPostData['r']);
 		}
@@ -202,10 +208,6 @@ class CTIntermediario{
 		 $_SESSION["_IN_PILA"] = $this-> ind($i,'+',1);	
 		 
 		  //comparamos valoes en la pila con las penultima transaccion
-			 /*
-			  var_dump($_SESSION["_PILA"]);
-			  var_dump($_SESSION["_PILA_TIME"]);
-			  exit;*/
 		   $k = $this-> ind($i,'-',1);
 		   
 		   $tiempo=0;
@@ -275,17 +277,8 @@ class CTIntermediario{
 		   
           //preguntamos por las marca de tiempo de penultima trasaccion
 		  $aux = $_SESSION["_PILA_TIME"][$i][1] - $_SESSION['_SEG_DOS'];
-		  
 		   
-		  
-		   
-		   //preguntamos por las marcas de tiempo de la antepenultima trasaccion
-		   
-	        
-		   
-		   
-		 
-		 
+		 //preguntamos por las marcas de tiempo de la antepenultima trasaccion		 
 		 if( $sospechoso >=$_SESSION["_PESOMAX_DOS"]){
 		 	
 		 	throw new Exception("Bloqueado por multiples intentos repetidos, posible ataque DoS ($sospechoso,$repetidos,$tiempo)",2);
@@ -347,9 +340,7 @@ class CTIntermediario{
 					if($_SESSION["_SESION"]->getEstado()=='inactiva' or $_SESSION["_SESION"]->getEstado()=='preparada'){
 
 						if($this->metodoEjecutar!='verificarCredenciales' AND $this->metodoEjecutar!='prepararLlavesSession' AND $this->metodoEjecutar!='getPublicKey' AND $this->nombreClase!='Auten'){
-		
-								
-							throw new Exception('La sesion no esta activa',2);
+		                    throw new Exception('La sesion no esta activa',2);
 						}
 							
 					}

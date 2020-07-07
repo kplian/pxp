@@ -2,7 +2,9 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_dblink (
   p_id_usuario integer,
   p_asunto varchar,
   p_body text,
-  p_mails varchar
+  p_mails varchar,
+  p_url	varchar,
+  p_fecha_caducidad date
 )
   RETURNS integer AS
   $body$
@@ -13,8 +15,11 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_dblink (
    FECHA:
    COMENTARIOS:
 
-  ***********************************************************************/
-
+  ************************************************************************
+  HISTORIAL DE MODIFICACIONES:
+	#ISSUE           FECHA                	AUTOR           DESCRIPCION
+ 	#0               17-06-2020 16:17:47    MZM             adicion de parametros de entrada: url y fecha_caducidad
+   ***********************************************************************/
   DECLARE
     v_resp      record;
     v_res_cone  varchar;
@@ -34,7 +39,7 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_dblink (
     v_query = 'select * from param.f_inserta_alarma(
                                                       NULL,
                                                       ''' || p_body || ''',    --descripcion alarmce
-                                                      NULL,--acceso directo
+                                                      ''' || p_url || ''',--acceso directo
                                                       now()::date,
                                                       ''notificacion'',
                                                       '''',   -->
@@ -45,6 +50,12 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_dblink (
                                                       NULL::integer,
                                                       ''' || p_asunto || ''',
                                                       ''' || p_mails || '''
+                                                      ,NULL,
+                                                      NULL,
+                                                      NULL,
+                                                      NULL,
+                                                      NULL,
+                                                      '''||p_fecha_caducidad||'''
                                                      )';
 
 

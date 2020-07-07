@@ -18,7 +18,7 @@ $body$
 
  ISSUE:     FECHA:          AUTOR:	 	DESCRIPCION:	
  #17 etr    30/05/2019  	EGS	        Solo muesttr alarmas activas
-	
+ #0	 pxp-ui	19.06.2020		MZM			Listado de notificaciones para citas
 ***************************************************************************/
 
 DECLARE
@@ -458,7 +458,44 @@ BEGIN
 
 		end;
     
-    
+    elseif(p_transaccion='PM_NOTIFCITA_SEL')then --#0
+
+		begin
+
+			-- Sentencia de la consulta
+			v_consulta:='SELECT
+                     	alarm.id_alarma,
+						alarm.acceso_directo,
+                        alarm.id_usuario,
+						alarm.fecha,
+						alarm.estado_reg,
+						alarm.descripcion,
+					    alarm.titulo,
+                        alarm.fecha_caducidad,
+                        (alarm.fecha_caducidad-alarm.fecha) as dias,
+                        alarm.estado_envio
+						from param.talarma alarm where alarm.estado_reg = ''activo'' and ';
+
+
+			v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			raise notice '%',v_consulta;
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+     elseif(p_transaccion='PM_NOTIFCITA_CONT')then --#0
+
+		begin
+
+			-- Sentencia de la consulta
+			v_consulta:='SELECT count(*)
+                     	 from param.talarma alarm where alarm.estado_reg = ''activo'' and ';
+
+			v_consulta:=v_consulta||v_parametros.filtro;
+			return v_consulta;
+
+		end;
     else
 					     
 		raise exception 'Transaccion inexistente';

@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
   par_id_usuario integer,
   par_id_usuario_ai integer,
   par_nom_usuario varchar,
+  par_lenguaje_usu varchar,
   par_sid_web varchar,
   par_pid_web integer,
   par_ip varchar,
@@ -48,6 +49,11 @@ $body$
                 los record se utilizan cuando tenemos tablas temporales
  AUTOR:			 KPLIAN (rac)
  FECHA:			 19-03-12
+***************************************************************************
+ HISTORIAL DE MODIFICACIONES:
+ #ISSUE                FECHA                AUTOR                DESCRIPCION
+ #133             13-05-2020            RAC               Aumenta parametro par_lenguaje_usu   
+ #
 ***************************************************************************/
 
 DECLARE
@@ -88,6 +94,11 @@ BEGIN
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
     raise notice 'ini:%',v_hora_ini;
+    
+    --#133 define variables  globales de languaje    
+    EXECUTE ('set glb.lenguaje_usu to '''||upper(COALESCE(par_lenguaje_usu,'EN'))||'''');
+    set glb.lenguaje_grupo to 'BASICO';
+    
     v_retorno='';    
         	
     v_resp_error=pxp.f_ejecutar_dblink('('||pg_backend_pid()::varchar||',
@@ -303,4 +314,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100 ROWS 1000;

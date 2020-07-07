@@ -8,12 +8,24 @@
 
  HISTORIAL DE MODIFICACIONES:
  #ISSUE                FECHA                AUTOR                DESCRIPCION
-  #0                21-04-2020 01:50:14    admin             Creacion    
-  #
+  #0                21-04-2020 01:50:14    rac              Creacion    
+  #133              27/05/2020             rac               setLanguage
 *****************************************************************************************/
+use Pkly\I18Next\I18n;
+class ACTLenguaje extends ACTbase{  
+    //#133
+    function setLanguage(){
+        if( $this->objParam->getParametro('language') != '') {
+            $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language')); 
+        } else {
+            $_SESSION["ss_lenguaje_usu"] = 'EN';
+        }        
+		I18n::get()->changeLanguage(strtolower($_SESSION["ss_lenguaje_usu"]));
+        header("HTTP/1.1 200 ok");
+        header('Content-type: application/json; charset=utf-8'); 
+        echo '{"success":true}';
+    }
 
-class ACTLenguaje extends ACTbase{    
-            
     function listarLenguaje(){
 		$this->objParam->defecto('ordenacion','id_lenguaje');
         $this->objParam->defecto('dir_ordenacion','asc');
@@ -55,7 +67,7 @@ class ACTLenguaje extends ACTbase{
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 
-    function generarArchivo(){
+    function generarArchivo() {
 		$this->objFun=$this->create('MODLenguaje');	
 		$this->res = $this->objFun->obtenerTraducciones();
 		
@@ -67,8 +79,8 @@ class ACTLenguaje extends ACTbase{
 		$nombreArchivo = $this->crearArchivoExportacion($this->res);
 		
 		$this->mensajeExito=new Mensaje();
-		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Se genero con exito el archivo LCV'.$nombreArchivo,
-										'Se genero con exito el archivo LCV'.$nombreArchivo,'control');
+		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Se genero con exito el archivo JSON '.$nombreArchivo,
+										'Se genero con exito el archivo JSON '.$nombreArchivo,'control');
 		$this->mensajeExito->setArchivoGenerado($nombreArchivo);
 		
 		$this->res->imprimirRespuesta($this->mensajeExito->generarJson());
@@ -83,8 +95,53 @@ class ACTLenguaje extends ACTbase{
 		fwrite ($file,  $data["resp_json"]);
 		fclose($file);
 		return $fileName;
-	}
-            
-}
+    }
+    
+    function generarVariosArchivo() {
+		$this->objFun=$this->create('MODGrupoIdioma');	
+		$this->res = $this->objFun->listarGrupoIdiomaComun();
+		
+		if($this->res->getTipo()=='ERROR'){
+			$this->res->imprimirRespuesta($this->res->generarJson());
+			exit;
+        }
+        
+        $dataGrupo = $this->res->getDatos();
 
+        foreach ($dataGrupo as $row) {
+            $this->objParam->addParametro('codigo_grupo',$row['codigo']);    
+            //Obtiene los datos de la columna
+            $this->objFunc=$this->create('MODLenguaje');
+            $resGrupo = $this->objFunc->obtenerTraduccionesGrupo($this->objParam);
+            $data = $resGrupo -> getDatos();
+            //create file
+            $this->createFile( $this->objParam->getParametro('codigo_lenguaje'), $row['codigo'], $data["resp_json"]);
+        }
+		
+		$this->mensajeExito=new Mensaje();
+        $this->mensajeExito->setMensaje('EXITO','Reporte.php','Se genero con exito el archivo LCV',
+                                                'Se genero con exito los archivos en la carpeta de traducciones','control');
+		$this->mensajeExito->setArchivoGenerado($nombreArchivo);		
+		$this->res->imprimirRespuesta($this->mensajeExito->generarJson());
+
+    }
+
+    function createFile($codigo_lenguaje, $grupo, $contenido) {
+        
+        //Creamos la carpeta bascia si no existe
+        $ruta=dirname(__FILE__).'/../../../locale/';
+        if(!file_exists($ruta)){
+            mkdir($ruta);
+        }
+
+        $ruta=dirname(__FILE__).'/../../../locale/'.strtolower($codigo_lenguaje);
+        if(!file_exists($ruta)){
+            mkdir($ruta);
+        }
+        $file = fopen("../../../locale/".strtolower($codigo_lenguaje)."/".strtolower($grupo).".json", 'w');
+		fwrite ($file,  $contenido);
+		fclose($file);
+		return $fileName;
+    }        
+}
 ?>

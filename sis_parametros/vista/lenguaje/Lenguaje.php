@@ -23,7 +23,8 @@ Phx.vista.Lenguaje=Ext.extend(Phx.gridInterfaz,{
         //llama al constructor de la clase padre
         Phx.vista.Lenguaje.superclass.constructor.call(this,config);
         this.init();
-        this.addButton('gen_len',{text:'Generar Archivo JSON',iconCls: 'blist', disabled:false, handler: this.generar_codigo, tooltip: '<b>Generar Archivo JSON</b><br/>Genera el archivo de traducciones para el idioma seleccionado'});
+        this.addButton('gen_len',{text:'Generar Archivo JSON único',iconCls: 'blist', disabled:false, handler: this.generar_codigo, tooltip: '<b>Generar un solor archivo JSON</b><br/>Genera el archivo de traducciones para el idioma seleccionado'});
+        this.addButton('gen_split_len',{text:'Generar Archivo JSON divididos',iconCls: 'blist', disabled:false, handler: this.generar_split_codigo, tooltip: '<b>Generar varios archivos JSON</b><br/>Genera varios archivos de traducciones, uno por grupo, para el idioma seleccionado'});
 	
         this.load({params:{start:0, limit:this.tam_pag}})
     },
@@ -243,6 +244,9 @@ Phx.vista.Lenguaje=Ext.extend(Phx.gridInterfaz,{
         });
 			
     },
+
+    
+
     successExport:function(resp){
 		Phx.CP.loadingHide();
         var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
@@ -251,14 +255,36 @@ Phx.vista.Lenguaje=Ext.extend(Phx.gridInterfaz,{
         	nomRep = Phx.CP.CRIPT.Encriptar(nomRep);
         }
         window.open('../../../reportes_generados/'+nomRep+'?t='+new Date().toLocaleTimeString())
-	},    
+	},
+    successGenerate:function(resp){
+		Phx.CP.loadingHide();
+        var objRes = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+        console.log('resp.responseText',resp.responseText)
+        alert('exito');
+	}, 
+
+    generar_split_codigo: function() { 
+        var data=this.sm.getSelected().data;
+        Phx.CP.loadingShow();
+        Ext.Ajax.request({            
+            url :'../../sis_parametros/control/Lenguaje/generarVariosArchivo',
+            params: {'id_lenguaje': data.id_lenguaje, codigo_lenguaje:  data.codigo},
+            success : this.successGenerate,
+            failure: this.conexionFailure,
+            timeout:this.timeout,
+            scope:this
+        });			
+    },
+        
     preparaMenu:function(tb){			
         this.getBoton('gen_len').enable(); 
+        this.getBoton('gen_split_len').enable();
         Phx.vista.Lenguaje.superclass.preparaMenu.call(this,tb)
         return tb
     },
     liberaMenu:function(tb){        
         this.getBoton('gen_len').disable();
+        this.getBoton('gen_split_len').disable();
         Phx.vista.Lenguaje.superclass.liberaMenu.call(this,tb);
         return tb
     },

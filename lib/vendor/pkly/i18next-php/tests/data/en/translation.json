@@ -1,0 +1,7 @@
+{
+    "key": "value from json!",
+    "second_key": "another json value",
+    "third_key": {
+        "deep": "value from deep!"
+    }
+}

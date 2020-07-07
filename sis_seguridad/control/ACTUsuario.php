@@ -8,6 +8,7 @@
  * 
  *  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
   #97            17/06/2019        RAC                 interface para copiar roles de usaurio
+  #179 KPL       03/06/2020        RAC                 creacion de usuario para autentificacion google facebook
  */
 
 class ACTUsuario extends ACTbase{    
@@ -161,6 +162,15 @@ class ACTUsuario extends ACTbase{
 		$this->objFunSeguridad=$this->create('MODUsuario');	
 		$this->res=$this->objFunSeguridad->copiarRoles($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+    //#179
+	function createTokenUser(){	
+		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
+		$this->objFunSeguridad=$this->create('MODUsuario');		
+		$this->res=$this->objFunSeguridad->createTokenUser($this->objParam);		
+		//imprime respuesta en formato JSON
+		$this->res->imprimirRespuesta($this->res->generarJson());
+
 	}
 
 }

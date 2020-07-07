@@ -12,11 +12,11 @@ Para  definir la la metadata, menus, roles, etc
 
 1) sincronize ls funciones y procedimientos del sistema
 2)  verifique que la primera linea de los datos sea la insercion del sistema correspondiente
-3)  exporte los datos a archivo SQL (desde la interface de sistema en sis_seguridad), 
+3)  exporte los datos a archivo SQL (desde la interface de sistema en sis_seguridad),
     verifique que la codificacion  se mantenga en UTF8 para no distorcionar los caracteres especiales
-4)  remplaze los sectores correspondientes en este archivo en su totalidad:  (el orden es importante)  
-                             menu, 
-                             funciones, 
+4)  remplaze los sectores correspondientes en este archivo en su totalidad:  (el orden es importante)
+                             menu,
+                             funciones,
                              procedimietnos
 
 */
@@ -67,7 +67,7 @@ select pxp.f_insert_tgui ('Bitácoras de BD', 'Bitácoras de BD', 'BITBD', 'si',
 select pxp.f_insert_tgui ('Trabajo Fuera de Horario', 'Trabajo Fuera de Horario', 'TRAHOR', 'si', 3, 'sis_seguridad/vista/fuera_horario/FueraHorario.php', 5, '', 'fuera_horario', 'SEGU');
 select pxp.f_insert_tgui ('Tablas migradas ENDESIS', 'Listado de las tablas que se migran de ENDESIS', 'TBLMIG', 'si', 3, 'sis_seguridad/vista/tabla_migrar/TablaMigrar.php', 3, '', 'TablaMigrar', 'SEGU');
 ----------------------------------
---COPY LINES TO dependencies.sql FILE  
+--COPY LINES TO dependencies.sql FILE
 ---------------------------------
 
 select pxp.f_insert_testructura_gui ('SEGU', 'SISTEMA');
@@ -3873,6 +3873,59 @@ select pxp.f_insert_testructura_gui ('PROGM', 'o');
 select pxp.f_insert_tgui ('Issues ETR', 'Issues ETR', 'ITR', 'si', 2, 'sis_seguridad/vista/reportes/FormReporteIssues.php', 3, '', 'FormReporteIssues', 'SEGU');
 select pxp.f_insert_testructura_gui ('ITR', 'RepSeg');
 /*******************************************F-DAT-MMV-SEGU-104-30/1/2020***********************************************/
+
+
+/*******************************************I-DAT-RAC-SEGU-179-30/2020****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_def_rol_google_face', E'PXP-Rol inicial', E'rol por defecto para usuarios creados con registro desde facebook o google');
+
+
+/*******************************************F-DAT-RAC-SEGU-179-30/2020****************************************/
+
+
+/*******************************************I-DAT-JRR-SEGU-0-11/06/2020****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_token_expiration', E'24', E'Cantidad de horas por defecto para expiracion de reseteo de password');
+
+
+/*******************************************F-DAT-JRR-SEGU-0-11/06/2020****************************************/
+
+/*******************************************I-DAT-JRR-SEGU-0-23/06/2020****************************************/
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_signup', E'false', E'Permitir signup de usuarios');
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_recover_password', E'false', E'Permitir resetear contrasena desde el formulario de login');
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'pxp_mail_templates', E'', E'Url for templates methods');
+
+
+/*******************************************F-DAT-JRR-SEGU-0-23/06/2020****************************************/
+
+
+
+/*******************************************I-DAT-RAC-SEGU-0-16/06/2020****************************************/
+
+/* Data for the 'pxp.variable_global' table  (Records 1 - 1) */
+
+INSERT INTO pxp.variable_global ("variable", "valor", "descripcion")
+VALUES
+  (E'segu_extra_function', E'', E'funcionalidad extra al crear usuarios para google o facebook');
+
+
+/*******************************************F-DAT-RAC-SEGU-0-16/06/2020****************************************/
+
+
+
 
 
 

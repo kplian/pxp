@@ -4,8 +4,8 @@
  Proposito: Controlador para manejo del menu
  Autor:	Kplian
  Fecha:	01/07/2010
- 
- ISSUE            FECHA:            AUTOR               DESCRIPCION  
+
+ ISSUE            FECHA:            AUTOR               DESCRIPCION
  #0            01/07/2010           Kplian        Creacion
  #128          10/04/2020           RAC            Modificacion para retorno de datos en formato JSON
  ************************************************************************************************************/
@@ -36,10 +36,26 @@ class Mensaje
 	 *
 	 */
 	function setDatos($arreglo){
-		
 		$this->datos=$arreglo;
+		if (isset($arreglo['__ws_notifications'])) {
+			$users_array = explode(',', $arreglo['__ws_notifications']);
+			foreach ($users_array as $user) {
+				$data = array(
+					"evento" => "user_notifications__" . trim($user),
+					"mensaje" => isset($arreglo['__ws_notifications_message']) ? $arreglo['__ws_notifications_message'] : 'You have new notifications',
+					"url" => isset($arreglo['__ws_notifications_url']) ? $arreglo['__ws_notifications_url'] : ''
+				);
+				$send = array(
+					"tipo" => "enviarMensaje",
+					"data" => $data
+				);
+
+			   $res = ACTbase::dispararWS($send);
+
+			}
+		}
 	}
-	
+
 	/**
 	 * Nombre funcion:	addRecDatos
 	 * Proposito:		Adiciona un registro al principio de la respuesta
@@ -48,11 +64,11 @@ class Mensaje
 	 * @param array $arreglo
 	 *
 	 */
-	
+
 	function addRecDatos($arr){
 		array_unshift($this->datos,$arr);
 	}
-	
+
 	/**
 	 * Nombre funcion:	addLastRecDatos
 	 * Proposito:		Adiciona un registro al final de la respuesta
@@ -61,7 +77,7 @@ class Mensaje
 	 * @param array $arreglo
 	 *
 	 */
-	
+
 	function addLastRecDatos($arr){
 		array_push($this->datos,$arr);
 	}
@@ -127,7 +143,7 @@ class Mensaje
 		$this->archivo_generado=$nombre;
 
 	}
-	
+
 	/**
 	 * Nombre funcion:	setMensaje
 	 * Proposito:		Registra los valores del mensaje a enviar
@@ -152,7 +168,7 @@ class Mensaje
 		$this->tipo_transaccion=$tipo_trans;
 		$this->consulta=$consulta;
 	}
-	
+
 	/**
 	 * Nombre funcion:	setMensajeFromJson
 	 * Proposito:		Registra los valores del mensaje a enviar desde un json
@@ -170,7 +186,7 @@ class Mensaje
 		} else {
 			$this->tipo='EXITO';
 		}
-		
+
 		$this->capa=$aux_array->ROOT->detalle->capa;
 		$this->procedimiento=$aux_array->ROOT->detalle->procedimiento;
 		$this->transaccion=$aux_array->ROOT->detalle->transaccion;
@@ -183,17 +199,17 @@ class Mensaje
 	 * Nombre funcion:	setTipoRespuestaArbol
 	 * Proposito:		Indica que se debe generar una respuesta de tipo arbol para la consulta
 	 * Fecha creacion:	12/04/2009
-	  
+
 	 */
 	function setTipoRespuestaArbol(){
 		$this->tipo_respuesta='arbol';
 	}
-	
+
 	/**
 	 * Nombre funcion:	setTipoTransaccion
 	 * Proposito:		Indica el tipo de trasaccion sel o ime
 	 * Fecha creacion:	12/04/2009
-	  
+
 	 */
 	function setTipoTransaccion($tipo){
 		$this->tipo_transaccion=$tipo;
@@ -213,7 +229,7 @@ class Mensaje
 	 * allowEdit: Permite modificar el nodo
 	 * icon:el icono q tendra el nodo
 	 * cls: la clase q tiene el nodo
-	  
+
 	 */
 	function addNivelArbol($campo_condicion,$valor_condicion,$arreglo_nivel,$arreglo_equivalencias){
 		//RAC 25/10/2011: validacion de varialbes
@@ -353,10 +369,10 @@ class Mensaje
 	 */
 	function generarJson(){
 		if(count($_FILES)==0){
-      		header('Content-type: application/json; charset=utf-8'); 
-   		} 
+      		header('Content-type: application/json; charset=utf-8');
+   		}
 		//si es exito y es sel devuelvo los valores de una consulta
-		
+
 
 		if($this->getTipo()=='EXITO' && $this->tipo_transaccion=='SEL'){
 			if($this->tipo_respuesta!='arbol'){
@@ -364,12 +380,12 @@ class Mensaje
                 if($_SESSION["_OFUSCAR_ID"]=='si'){
                     $this->ofuscarIdentificadores();
 				}
-				
+
 				if($this->tipo_respuesta!='json'){
 					//RAC 31/12/2014 array de datos extra para retornar en la consulta sel
 					if(count($this->extraData) > 0 ){
 						return '{"total":"' . $this->total . '","countData":' . json_encode($this->extraData) . ',"datos":' . json_encode($this->datos) . '}';
-				
+
 					}else {
 						return '{"total":"' . $this->total . '","datos":' . json_encode($this->datos) . '}';
 					}
@@ -380,18 +396,18 @@ class Mensaje
 					//exit;
 					//return '{"data":'. $this->datos. '}';
 
-                    
+
 					if(count($this->extraData) > 0 ){
-						return '{"extraData":' . json_encode($this->extraData) . ',"data":' . $this->datos . '}';				
+						return '{"extraData":' . json_encode($this->extraData) . ',"data":' . $this->datos . '}';
 					} else {
 						//echo 'llega';
 						//var_dump($this->datos);
 						//exit;
 						return '{"data":'. $this->datos[0]["menu"]. '}';
-					} 
+					}
 				}
-				
-				
+
+
 			}
 			else{
 				if(count($this->nivel_arbol)==0){
@@ -410,19 +426,19 @@ class Mensaje
 					if($_SESSION["_OFUSCAR_ID"]=='si'){
                        $this->ofuscarIdentificadores();
                     }
-					
+
 					return json_encode($this->datos);
 				}
 				else{
 					$cont=0;
 					foreach ($this->datos as $d){
 						foreach ($this->nivel_arbol as $n){
-							
+
 							//RAC 25/10/2011: validacion de varialbes
-								if(isset($n['valor']) && isset($n['campo'])){	
+								if(isset($n['valor']) && isset($n['campo'])){
 		                          if(isset($d[$n['campo']])){
 									if($d[$n['campo']]==$n['valor']){
-		
+
 										$this->datos[$cont]=array_merge($this->datos[$cont],$n['arreglo']);
 										$this->datos[$cont]=$this->crearCampos($this->datos[$cont],$n['arreglo_equivalencias']);
 									}
@@ -434,7 +450,7 @@ class Mensaje
 					if($_SESSION["_OFUSCAR_ID"]=='si'){
                        $this->ofuscarIdentificadores();
                     }
-					
+
 					return json_encode($this->datos);
 				}
 
@@ -449,12 +465,12 @@ class Mensaje
 				} else {
 					$this->datos["resp_json"] = json_decode($this->datos["resp_json"], true);
 				}
-			}			
+			}
 		    if($_SESSION["_OFUSCAR_ID"]=='si'){
                $this->ofuscarIdentificadores();
             }
 			return $this->generarMensajeJson();
-		}		
+		}
 	}
    	/**
 	 * Nombre funcion:	crearCampos
@@ -469,9 +485,9 @@ class Mensaje
 	function crearCampos($arreglo_poner,$equivalencias){
 		$temp_var='';
 		$res=$arreglo_poner;
-		
+
 		foreach ($equivalencias as $data){
-	   	  //RAC 25/10/2011: validacion de varialbes		
+	   	  //RAC 25/10/2011: validacion de varialbes
           if(isset($data['valor']) ){
           	if(isset($arreglo_poner[$data['valor']])){
 			   $res=array_merge($res,array($data['nombre']=>$arreglo_poner[$data['valor']]));
@@ -485,7 +501,7 @@ class Mensaje
           	  $temp_var= str_replace('#'.$col.'#',$single,$temp_var );
              }
             $res=array_merge($res,array($data['nombre']=>$temp_var));
-          	
+
           }
 		}
 
@@ -502,16 +518,16 @@ class Mensaje
 	 *
 	 */
 	function generarMensajeJson() {
-		
+
 		//si es exito y es sel devuelvo los valores de una consulta
-		//ofuscacion de identificadores					
+		//ofuscacion de identificadores
 		if($this->tipo=='EXITO'){
 			$error=false;
 		}
 		else {
 			$error=true;
 		}
-		
+
 		if(get_magic_quotes_gpc()) {
 			$this->mensaje_tec = addslashes($this->mensaje_tec);
 		}
@@ -524,7 +540,7 @@ class Mensaje
 		$cuerpo_array=array();
 		$detalle_array=array();
 		$detalle_array['mensaje']=$this->mensaje;
-        
+
 		if(isset($this->archivo_generado)){
 			$detalle_array['archivo_generado']=$this->archivo_generado;
 		}
@@ -539,18 +555,18 @@ class Mensaje
 
 		$cuerpo_array['error']=$error;
 		$cuerpo_array['detalle']=$detalle_array;
-		
-	    //RAC 02/03/2012 EN mensajes tipo ime adicionar el vector de datos	
-	    		
-		$cuerpo_array['datos']=$this->datos;		
+
+	    //RAC 02/03/2012 EN mensajes tipo ime adicionar el vector de datos
+
+		$cuerpo_array['datos']=$this->datos;
 	    $root_array['ROOT']=$cuerpo_array;
-		
+
 
 		$res=json_encode($root_array);
 
 		if (get_magic_quotes_gpc()) {
 			$res = stripslashes($res);
-		}		
+		}
 		return $res;
 	}
 
@@ -565,7 +581,7 @@ class Mensaje
 	 *@param $header es el codigo del header en caso de ser necesario
 	 */
 
-	
+
 	function imprimirRespuesta($respuesta,$header=''){
 
 		if($header!=''){
@@ -596,13 +612,13 @@ class Mensaje
 
 		}
 		elseif($this->tipo=='ERROR'){
-			header("HTTP/1.1 406 Not Acceptable");			
+			header("HTTP/1.1 406 Not Acceptable");
 		}
 		else{
-			header("HTTP/1.1 200 ok");			
+			header("HTTP/1.1 200 ok");
 			//rac comentado por que generaba que el archivo se descargue al utilizar uploadfile
 			//header('Content-Type:'.$_SESSION['type_header'].';'.' charset="'.$_SESSION['codificacion_header'].'"');
-		}	
+		}
 		echo $respuesta;
 	}
 
@@ -620,24 +636,24 @@ class Mensaje
 	function ofuscarIdentificadores(){
 		//existen datos para mandar a la vista
 		if(isset($this->datos[0])){
-                
-                
+
+
                 //se obtienen los nombre de las variables
 				//para el caso de grilla los nombres de las variables no varian para todaas las filas
 				if ($this->tipo_respuesta!='arbol')
 				{	$tmp=array();
 		            $tmp=array_keys($this->datos[0]);
-		            
+
 					$tam = sizeof($tmp);
 		        }
-				
+
 
 			$j=0;
 
 			foreach($this->datos as $f){
 				//recorremos las variables en busca de identificadores
 				//sizeof($tmp);
-				
+
 				if ($this->tipo_respuesta=='arbol')
 				{
 					//var_dump($f);
@@ -645,8 +661,8 @@ class Mensaje
 		            $tmp=array_keys($f);
 		            $tam = sizeof($tmp);
 		        }
-				
-				
+
+
 
 				for( $i=0; $i<= $tam; $i++){
 					//RCM 23/09/2011: se aumenta variable temporal con los 3 primeros caracteres para la comparación con la cadena 'id_'
@@ -661,9 +677,9 @@ class Mensaje
 							//ofucasmos todas las variables que comiensen con id_
 						     $this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
 						     //echo $tmp[$i].".......</br>";
-						     
+
 						} else if(trim($tmp[$i])=='id'){
-							//ofucasmos todas las variables iguales a id 
+							//ofucasmos todas las variables iguales a id
 							$this->datos[$j][$tmp[$i]]=$this->ofuscar($f[$tmp[$i]]);
 							//echo $tmp[$i].".......</br>".$f[$tmp[$i]];
 						}
@@ -673,7 +689,7 @@ class Mensaje
                         if(strpos($aux,'json_')!==false){
                             //ofucasmos todas las variables que comiensen con id_
                              $this->datos[$j][$tmp[$i]]=$this->ofuscar_json($f[$tmp[$i]]);
-                             
+
                         }
 					}
 				}
@@ -681,24 +697,24 @@ class Mensaje
 			}
 		}
 		//RAC 02/03/2012 para ofuscar el vector de datos en mesaje IME
-		
+
 		elseif (isset($this->datos)) {
-			
+
 			$tmp=array_keys($this->datos);
 			$tam = sizeof($this->datos);
 			//Se obtiene lo enviado en estado nativo que puede estar encriptado o no
 			for($i=0;$i<$tam;$i++){
-					
+
 					//RAC 25/10/2011: validacion de varialbes
 					if(isset($tmp[$i]) && isset($this->datos[$tmp[$i]])){
 						$aux=substr($tmp[$i],0,3);
 						if ($this->is_assoc($this->datos[$tmp[$i]])) {
 							$this->datos[$tmp[$i]] = $this->ofuscar_array($this->datos[$tmp[$i]]);
 						} else if(strpos($aux,'id_')!==false){
-							//ofucasmos todas las variables que comiensen con id_							
-						     $this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);						
+							//ofucasmos todas las variables que comiensen con id_
+						     $this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);
 						} else if(trim($tmp[$i])=='id'){
-							//ofucasmos todas las variables iguales a id 
+							//ofucasmos todas las variables iguales a id
 							$this->datos[$tmp[$i]]=$this->ofuscar($this->datos[$tmp[$i]]);
 						}
 						//RAC 5/5/2014
@@ -707,14 +723,14 @@ class Mensaje
                         if(strpos($aux,'json_')!==false){
                             //ofucasmos todas las variables que comiensen con id_
                             $this->datos[$tmp[$i]]=$this->ofuscar_json($this->datos[$tmp[$i]]);
-                        }	
+                        }
 					}
 			}
-			
-			
+
+
 		}
 	}
-	
+
 	/*
 	 * Nombre funcion:  ofuscar_json
      * Proposito:   decodifica una cadena json, busca los identificadores , los ofusca  y retorna la nueva cade json codificada
@@ -723,34 +739,34 @@ class Mensaje
      * Modificacion: Rensi Arteaga Copari
      */
 
-	function ofuscar_json($json){        
-        $json = str_replace("'", "\"",$json);    
-        
+	function ofuscar_json($json){
+        $json = str_replace("'", "\"",$json);
+
          if(isset($json)&&$json!=''){
-        
+
                 $temp = json_decode($json,true);
                 if(json_last_error()){
                   throw new Exception('la cadena JSON no es valida');
-                }  
-                
+                }
+
                 $k=0;
-                
+
                 if(!$this->is_assoc($temp)){
                     foreach($temp as $f){
-                            
+
                         $tmp=array();
                         $tmp  =  array_keys($f);
                         $tam  =  sizeof($tmp);
-                                
+
                         for( $ii=0; $ii<= $tam; $ii++){
-                                 
+
                              $aux=substr($tmp[$ii],0,3);
                              if(strpos($aux,'id_')!==false){
                                $temp[$k][$tmp[$ii]]=$this->ofuscar($f[$tmp[$ii]]);
-                             }       
-                            
+                             }
+
                         }
-                        
+
                         $k++;
                     }
                 }
@@ -758,21 +774,21 @@ class Mensaje
                     $tmp=array();
                     $tmp  =  array_keys($temp);
                     $tam  =  sizeof($temp);
-                            
+
                     for( $ii=0; $ii<= $tam; $ii++){
-                             
+
                          $aux=substr($tmp[$ii],0,3);
                          if(strpos($aux,'id_')!==false){
                            $temp[$k][$tmp[$ii]]=$this->desofuscar($f[$tmp[$ii]]);
-                         }       
-                        
+                         }
+
                     }
-                 
+
              }
              return  json_encode($temp);
          }
          return  '';
-        
+
     }
 
 	/*
@@ -783,18 +799,18 @@ class Mensaje
      * Modificacion: Rensi Arteaga Copari
      */
 
-	function ofuscar_array($arreglo) {                    
-        
+	function ofuscar_array($arreglo) {
+
         foreach($arreglo as $key => $f){
         	$aux=substr($key,0,3);
              if($this->is_assoc($f)) {
 			 	$this->ofuscar_array($f);
 			 } else {
 			 	if(strpos($aux,'id_')!==false){
-				    //ofucasmos todas las variables que comiensen con id_							
-			        $arreglo[$key] = $this->ofuscar($f);				
+				    //ofucasmos todas las variables que comiensen con id_
+			        $arreglo[$key] = $this->ofuscar($f);
 				} else if(trim($key)=='id'){
-					//ofucasmos todas las variables iguales a id 
+					//ofucasmos todas las variables iguales a id
 					$arreglo[$key] = $this->ofuscar($f);
 				}
 				//RAC 5/5/2014
@@ -802,15 +818,15 @@ class Mensaje
                 $aux=substr($key,0,5);
                 if(strpos($aux,'json_')!==false){
                     //ofucasmos todas las variables que comiensen con id_
-                    $arreglo[$key]=$this->ofuscar_json($f);                  
+                    $arreglo[$key]=$this->ofuscar_json($f);
                 }
-			 }       
-        }           
-     	return  $arreglo;        
-    }	
-	
+			 }
+        }
+     	return  $arreglo;
+    }
+
 /**
- 
+
 	 * Nombre funcion:	ofuscar
 	 * Proposito:	modifica el parametro de entrata con el algoritmo feiste
 	 * Fecha creacion:	12/04/2009
@@ -821,15 +837,15 @@ class Mensaje
 	 * eje  id_roels=  1,23,4,5,6  , generalmente usado en arrays  cada identificador se ofusca por separado
 	 * @param cadena $id
 	 */
- 
+
 	function ofuscar($id){
 
 		$iFeis=new feistel();
 		$respue='';
 		$sw=0;
 		$ids=explode(',',$id);
-			
-		foreach($ids as $idk){		
+
+		foreach($ids as $idk){
 			if($idk!=''){
 				if($sw==0){
 					$respue=$iFeis->encriptar($idk.'...'.$_SESSION["_SEMILLA_OFUS"],$_SESSION['key_p'],$_SESSION['key_k'],1);
@@ -852,8 +868,9 @@ class Mensaje
 			return false;
 		}
     }
-	
+
 
 
 }
+
 ?>

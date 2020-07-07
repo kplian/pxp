@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION segu.ft_usuario_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -120,8 +122,7 @@ BEGIN
 
                v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
 
-				raise notice 'que esta pasando: %',v_consulta;
-               return v_consulta;
+			   return v_consulta;
 
 
          END;
@@ -214,11 +215,8 @@ BEGIN
                return v_consulta;
          END;
 
-
-
      else
-         raise exception 'No existe la opcion';
-
+         raise exception '%: %', pxp._t('no_existe_transaccion'), par_transaccion;
      end if;
 
 
@@ -239,4 +237,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

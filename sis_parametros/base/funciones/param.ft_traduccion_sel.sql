@@ -69,7 +69,8 @@ BEGIN
             --Definicion de la respuesta
             v_consulta:=v_consulta||v_parametros.filtro;
             v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-
+            
+            raise notice '---->  %  <-------',v_consulta;
             --Devuelve la respuesta
             RETURN v_consulta;
                         
@@ -99,6 +100,36 @@ BEGIN
             --Devuelve la respuesta
             RETURN v_consulta;
 
+        END;
+        
+    /*********************************    
+     #TRANSACCION:  'PM_EXPTRA_SEL'
+     #DESCRIPCION:   Listao de datos para exporatacion de traducciones 
+     #AUTOR:        RAC    
+     #FECHA:        14-05-2020 02:54:58
+    ***********************************/
+
+    ELSIF (p_transaccion='PM_EXPTRA_SEL') THEN
+                     
+        BEGIN
+            --Sentencia de la consulta
+            v_consulta:='SELECT 
+                          ''traduccion''::varchar as tipo_reg,                            
+                          tra.texto,
+                          tra.estado_reg,
+                          len.codigo as codigo_lenguaje,
+                          plc.codigo as codigo_palabra_clave,
+                          gri.codigo as codigo_grupo
+                          FROM param.ttraduccion tra
+                          JOIN param.tpalabra_clave plc ON plc.id_palabra_clave = tra.id_palabra_clave
+                          JOIN param.tgrupo_idioma gri ON gri.id_grupo_idioma = plc.id_grupo_idioma 
+                          JOIN param.tlenguaje len ON len.id_lenguaje = tra.id_lenguaje                     
+                          WHERE gri.id_grupo_idioma =  '|| v_parametros.id_grupo_idioma ||'
+                          ORDER BY len.codigo, plc.codigo';
+                       
+            --Devuelve la respuesta
+            RETURN v_consulta;
+                        
         END;
                     
     ELSE

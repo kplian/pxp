@@ -1,8 +1,7 @@
 <?php
 include_once(dirname(__FILE__).'/../../lib/rest/PxpRestClient.php');
 include(dirname(__FILE__).'/../../lib/DatosGenerales.php');
-
-include_once(dirname(__FILE__).'/../../lib/textalk/vendor/autoload.php');
+include_once(dirname(__FILE__).'/../../lib/vendor/autoload.php');
 
 use WebSocket\Client;
 

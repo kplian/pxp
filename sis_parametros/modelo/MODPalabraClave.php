@@ -26,7 +26,6 @@ class MODPalabraClave extends MODbase{
                 
         //Definicion de la lista del resultado del query
 		$this->captura('id_palabra_clave','int4');
-		$this->captura('id_tabla','int8');
 		$this->captura('estado_reg','varchar');
 		$this->captura('codigo','varchar');
 		$this->captura('default_text','varchar');
@@ -56,7 +55,6 @@ class MODPalabraClave extends MODbase{
         $this->tipo_procedimiento='IME';
                 
         //Define los parametros para la funcion
-		$this->setParametro('id_tabla','id_tabla','int8');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('default_text','default_text','varchar');
@@ -78,7 +76,6 @@ class MODPalabraClave extends MODbase{
                 
         //Define los parametros para la funcion
 		$this->setParametro('id_palabra_clave','id_palabra_clave','int4');
-		$this->setParametro('id_tabla','id_tabla','int8');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('default_text','default_text','varchar');

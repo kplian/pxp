@@ -48,8 +48,7 @@ BEGIN
                     
         BEGIN
             --Sentencia de la insercion
-            INSERT INTO param.tpalabra_clave(
-           -- id_tabla,  TODO  este campo se utilizara cuando se trabaja la traducciones de tablas almacenadas
+            INSERT INTO param.tpalabra_clave(          
             estado_reg,
             codigo,
             default_text,
@@ -60,8 +59,7 @@ BEGIN
             id_usuario_ai,
             fecha_mod,
             id_usuario_mod
-              ) VALUES (
-           -- v_parametros.id_tabla,
+              ) VALUES (         
             'activo',
             v_parametros.codigo,
             v_parametros.default_text,
@@ -94,8 +92,7 @@ BEGIN
 
         BEGIN
             --Sentencia de la modificacion
-            UPDATE param.tpalabra_clave SET
-            --id_tabla = v_parametros.id_tabla,
+            UPDATE param.tpalabra_clave SET           
             codigo = v_parametros.codigo,
             default_text = v_parametros.default_text,
             id_grupo_idioma = v_parametros.id_grupo_idioma,

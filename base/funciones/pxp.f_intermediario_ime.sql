@@ -4,6 +4,7 @@ CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
   par_id_usuario integer,
   par_id_usuario_ai integer,
   par_nom_usuario_ai varchar,
+  par_lenguaje_usu varchar,
   par_sid_web varchar,
   par_pid_web integer,
   par_ip varchar,
@@ -53,7 +54,12 @@ DESCRIPCION:	Se introduce funcion  f_get_id_usuario  para aginarle persmisos de 
  AUTOR:			 KPLIAN(rac)
  FECHA:			 29/02/2012
 ***************************************************************************
- */
+ HISTORIAL DE MODIFICACIONES:
+ #ISSUE                FECHA                AUTOR                DESCRIPCION
+ #133             13-05-2020            RAC               Aumenta parametro par_lenguaje_usu   
+ #
+***************************************************************************/
+ 
 
 
 DECLARE
@@ -101,6 +107,10 @@ BEGIN
     v_nombre_funcion:='pxp.f_intermediario_ime';
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
+    
+    --#133 define variables globales para languaje    
+    EXECUTE ('set glb.lenguaje_usu to '''||upper(COALESCE(par_lenguaje_usu,'EN'))||'''');
+    set glb.lenguaje_grupo to 'BASICO';
     
     SET datestyle = "ISO, DMY";
     v_linea=null;
@@ -467,4 +477,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

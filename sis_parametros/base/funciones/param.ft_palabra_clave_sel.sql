@@ -46,8 +46,7 @@ BEGIN
         BEGIN
             --Sentencia de la consulta
             v_consulta:='SELECT
-                        plc.id_palabra_clave,
-                        plc.id_tabla,
+                        plc.id_palabra_clave,                        
                         plc.estado_reg,
                         plc.codigo,
                         plc.default_text,
@@ -100,6 +99,34 @@ BEGIN
             --Devuelve la respuesta
             RETURN v_consulta;
 
+        END;
+    
+    /*********************************    
+     #TRANSACCION:  'PM_EXPPLC_SEL'
+     #DESCRIPCION:   istao de datos para exporatacion de configuracion 
+     #AUTOR:        RAC    
+     #FECHA:        14-05-2020 02:54:58
+    ***********************************/
+
+    ELSIF (p_transaccion='PM_EXPPLC_SEL') THEN
+                     
+        BEGIN
+            --Sentencia de la consulta
+            v_consulta:='SELECT
+                         ''palabra_clave''::varchar as tipo_reg,   
+                          plc.estado_reg,
+                          plc.codigo,
+                          plc.default_text,
+                          gri.codigo as codigo_grupo_idioma 
+                        FROM param.tpalabra_clave plc
+                        JOIN param.tgrupo_idioma gri ON gri.id_grupo_idioma = plc.id_grupo_idioma 
+                        WHERE gri.id_grupo_idioma =  '|| v_parametros.id_grupo_idioma||'
+                        ORDER BY plc.codigo';
+            
+           
+            --Devuelve la respuesta
+            RETURN v_consulta;
+                        
         END;
                     
     ELSE

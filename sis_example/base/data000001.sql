@@ -30,3 +30,7 @@ select pxp.f_insert_tgui ('Horizontal Wizard', '', 'WZD__H', 'si', 2, '1', 3, 't
 select pxp.f_insert_tgui ('ButtonPxp', 'EXA_ButtonPxp', 'FORMKB', 'si', 5, 'c', 3, '', 'EXA_ButtonPxp', 'EXA');
 /***********************************F-DAT-MZM-EXA-0-01/06/2020****************************************/
 
+/***********************************I-DAT-JRR-EXA-0-19/06/2020****************************************/
+select pxp.f_insert_tgui ('Chat', 'Chat', 'EXACHAT', 'si', 6, 'c', 3, 'assistant', 'EXA__Chat', 'EXA');
+/***********************************F-DAT-JRR-EXA-0-19/06/2020****************************************/
+
