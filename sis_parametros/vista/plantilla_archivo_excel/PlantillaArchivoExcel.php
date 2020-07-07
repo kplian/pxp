@@ -1,20 +1,22 @@
 <?php
-/**
+/****************************************************************************************
 *@package pXP
 *@file gen-PlantillaArchivoExcel.php
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:39
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
-*		ISSUE		FECHA    		AUTOR			DESCRIPCION
-*		#1			21/11/2018		EGS				botones y funciones para exportar la configuracion de plantilla   
+*****************************************************************************************
+ ISSUE  SIS     FECHA      	AUTOR       DESCRIPCION
+ #1		PAR		21/11/2018	EGS			botones y funciones para exportar la configuracion de plantilla   
+ #185 	PAR 	07/07/2020	RCM			Crear opción para generar plantilla excel en blanco
+*****************************************************************************************
 */
-
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.PlantillaArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 
-	constructor:function(config){
+	constructor: function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.PlantillaArchivoExcel.superclass.constructor.call(this,config);
@@ -32,11 +34,23 @@ Phx.vista.PlantillaArchivoExcel=Ext.extend(Phx.gridInterfaz,{
             }
         );
         //#1			21/11/2018		EGS	
+
+		//Inicio #185
+		this.addButton('btnGenerarPlantilla',
+            {
+                text: 'Generar Plantilla XLS',
+                iconCls: 'bchecklist',
+                disabled: true,
+                handler: this.generarPlantilla,
+                tooltip: '<b>Generar XLS</b><br/>Genera la plantilla XLS en blanco'
+            }
+        );
+		//Fin #185
 	},
 	//#1			21/11/2018		EGS	
 	expProceso : function(resp){
 			var data=this.sm.getSelected().data;
-			console.log('data',data);
+			consoe.log('data',data);
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
 				url: '../../sis_parametros/control/PlantillaArchivoExcel/exportarDatos',
@@ -353,12 +367,12 @@ Phx.vista.PlantillaArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 		
 	//#1			21/11/2018		EGS	
 	preparaMenu: function(n) {
-
 		var data = this.getSelectedData();
 		var tb = this.tbar;
+
 		Phx.vista.PlantillaArchivoExcel.superclass.preparaMenu.call(this, n);
-        
 		this.getBoton('btnWizard').enable();
+		this.getBoton('btnGenerarPlantilla').enable(); //#185
 
 		return tb
 	},
@@ -368,12 +382,29 @@ Phx.vista.PlantillaArchivoExcel=Ext.extend(Phx.gridInterfaz,{
 		var tb = Phx.vista.PlantillaArchivoExcel.superclass.liberaMenu.call(this);
 		if (tb) {
 			this.getBoton('btnWizard').disable();
-			           
-           
+			this.getBoton('btnGenerarPlantilla').disable();//#185
 		}
 		return tb
 	},
 	//#1			21/11/2018		EGS	
+
+	//Inicio #185
+	generarPlantilla: function(resp){
+		var data = this.sm.getSelected().data;
+		Phx.CP.loadingShow();
+		Ext.Ajax.request({
+			url: '../../sis_parametros/control/PlantillaArchivoExcel/generarPlantilla',
+			params: { 
+				id_plantilla_archivo_excel: data.id_plantilla_archivo_excel,
+				nombre: data.nombre
+			},
+			success: this.successExport,
+			failure: this.conexionFailure,
+			timeout: this.timeout,
+			scope: this
+		});
+	},
+	//Fin #185
 })
 </script>
 		

@@ -1,19 +1,22 @@
 <?php
-/**
+/****************************************************************************************
 *@package pXP
-*@file gen-ACTPlantillaArchivoExcel.php
+*@file ACTPlantillaArchivoExcel.php
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:39
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
-*  ISSUE		FECHA    		AUTOR			DESCRIPCION
-*	#1			21/11/2018		EGS				se agrego funciones para exportar la configuracion de plantilla  
- */
+*****************************************************************************************
+ ISSUE  SIS     FECHA      	AUTOR       DESCRIPCION
+ #1		PAR		21/11/2018	EGS			se agrego funciones para exportar la configuracion de plantilla  
+ #185 	PAR 	07/07/2020	RCM			Crear opción para generar plantilla excel en blanco
+*****************************************************************************************
+*/
+include_once(dirname(__FILE__).'/../reportes/RPlantillaXls.php');//#185
 
 class ACTPlantillaArchivoExcel extends ACTbase{    
 			
 	function listarPlantillaArchivoExcel(){
 		$this->objParam->defecto('ordenacion','id_plantilla_archivo_excel');
-
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
@@ -139,7 +142,51 @@ class ACTPlantillaArchivoExcel extends ACTbase{
 		return $fileName;
 	}
 	//#1 21/11/2018		EGS
-			
+
+	//Inicio #185
+	function generarPlantilla(){
+		//Configuración archivo excel
+		$nombreArchivo = 'tpl-'.$this->objParam->getParametro('nombre').'.xls';
+		$this->objParam->addParametro('orientacion', 'L');
+		$this->objParam->addParametro('tamano', 'LETTER');
+		$this->objParam->addParametro('titulo_archivo', 'Plantilla '.$this->objParam->getParametro('nombre'));
+		$this->objParam->addParametro('nombre_archivo', $nombreArchivo);
+
+		//Obtención de datos
+		$dataSource = $this->getPlantilla();
+
+		//Generación del reporte
+		$reporte = new RPlantillaXls($this->objParam);
+		$reporte->setData($dataSource->getDatos());
+		$reporte->generarReporte();
+
+		$this->mensajeExito = new Mensaje();
+		$this->mensajeExito->setMensaje('EXITO','Reporte.php','Reporte generado','Se generó con éxito el reporte: '.$nombreArchivo,'control');
+		$this->mensajeExito->setArchivoGenerado($nombreArchivo);
+		$this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+	}
+
+	function getPlantilla() {
+		$this->objParam->defecto('ordenacion','numero_columna');
+		$this->objParam->defecto('dir_ordenacion','asc');
+		$this->objParam->defecto('puntero','0');
+		$this->objParam->defecto('cantidad','2000');
+
+		if($this->objParam->getParametro('id_plantilla_archivo_excel')!=''){
+            $this->objParam->addFiltro("ae.id_plantilla_archivo_excel = ".$this->objParam->getParametro('id_plantilla_archivo_excel'));
+        }
+
+		$this->objFunc = $this->create('MODPlantillaArchivoExcel');
+		$data = $this->objFunc->generarPlantilla($this->objParam);
+
+		if($data->getTipo() == 'EXITO'){
+			return $data;
+		} else {
+		    $data->imprimirRespuesta($data->generarJson());
+			exit;
+		}
+	}
+	//Fin #185
 			
 }
 
