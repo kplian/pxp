@@ -174,6 +174,9 @@ class ACTPlantillaArchivoExcel extends ACTbase{
 
 		if($this->objParam->getParametro('id_plantilla_archivo_excel')!=''){
             $this->objParam->addFiltro("ae.id_plantilla_archivo_excel = ".$this->objParam->getParametro('id_plantilla_archivo_excel'));
+		}
+		if($this->objParam->getParametro('codigo')!=''){
+            $this->objParam->addFiltro("ae.codigo = ".$this->objParam->getParametro('codigo'));
         }
 
 		$this->objFunc = $this->create('MODPlantillaArchivoExcel');
