@@ -468,7 +468,7 @@ where ';
                                    a.nombre_archivo
                             FROM param.tarchivo a
                             INNER JOIN param.ttipo_archivo ta on ta.id_tipo_archivo = a.id_tipo_archivo
-                            WHERE ta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||' AND a.id_tabla = '||v_parametros.id_tabla||' AND ';
+                            WHERE a.estado_reg != ''inactivo'' and ta.id_tipo_archivo = '||v_parametros.id_tipo_archivo||' AND a.id_tabla = '||v_parametros.id_tabla||' AND ';
 
             --Definicion de la respuesta
             v_consulta := v_consulta || v_parametros.filtro;
