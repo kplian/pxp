@@ -92,7 +92,7 @@ function authPxp($headersArray) {
     $res = $objFunSeguridad->listarUsuarioSeguridad($objParam);
 
     if ($res->datos['contrasena'] == '') {
-        $mensaje = "El Usuario no esta registrado en el sistema";
+        $mensaje = "El Usuario no esta registrado en el sistema o no esta activo";
     }
 
     //obtener la contrasena del usuario en md5
