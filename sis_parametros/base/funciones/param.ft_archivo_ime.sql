@@ -274,25 +274,46 @@ BEGIN
 	elsif(p_transaccion='PM_ARCH_REMH')then
 
 		begin
-			--Sentencia de la modificacion
-			select *
-			INTO v_record_tipo_archivo
-			FROM param.ttipo_archivo
-			where id_tipo_archivo = v_parametros.id_tipo_archivo;
 
 
-			--si es diferente de si el multiple entonces  se tomara en cuenta los archivos historicos
-			IF v_record_tipo_archivo.multiple != 'si' or v_record_tipo_archivo.multiple is null THEN
+		    IF (pxp.f_existe_parametro(p_tabla, 'id_tipo_archivo')
+		            AND pxp.f_existe_parametro(p_tabla,'id_tabla')) THEN
+
+                --Sentencia de la modificacion
+                select *
+                INTO v_record_tipo_archivo
+                FROM param.ttipo_archivo
+                where id_tipo_archivo = v_parametros.id_tipo_archivo;
 
 
-				UPDATE param.tarchivo
-				SET estado_reg = 'inactivo'
-				where id_tipo_archivo = v_parametros.id_tipo_archivo
-							AND id_tabla = v_parametros.id_tabla
-							and id_archivo_fk is NULL and id_archivo = v_parametros.id_archivo ;
+                --si es diferente de si el multiple entonces  se tomara en cuenta los archivos historicos
+                IF v_record_tipo_archivo.multiple != 'si' or v_record_tipo_archivo.multiple is null THEN
 
 
-			END IF;
+                    UPDATE param.tarchivo
+                    SET estado_reg = 'inactivo'
+                    where id_tipo_archivo = v_parametros.id_tipo_archivo
+                      AND id_tabla = v_parametros.id_tabla
+                      and id_archivo_fk is NULL and id_archivo = v_parametros.id_archivo ;
+
+
+                END IF;
+
+            ELSE
+                SELECT tipoar.*
+                INTO v_record_tipo_archivo
+                FROM param.ttipo_archivo tipoar
+                INNER JOIN param.tarchivo ta ON ta.id_tipo_archivo = tipoar.id_tipo_archivo
+                where id_archivo = v_parametros.id_archivo
+                LIMIT 1;
+                IF v_record_tipo_archivo.multiple = 'si' THEN
+                    UPDATE param.tarchivo
+                    SET estado_reg = 'inactivo'
+                    where id_archivo = v_parametros.id_archivo;
+                END IF;
+            END IF;
+
+
 
 
 
