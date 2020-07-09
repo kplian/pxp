@@ -6,19 +6,18 @@
 *@date 14-02-2011
 *@description  Vista para asociar los funcionarios a su correspondiente Unidad Organizacional
  *    HISTORIAL DE MODIFICACIONES:
-       
+
  ISSUE            FECHA:              AUTOR                 DESCRIPCION
-   
- #0               17/10/2014          JRR KPLIAN            creacion
- #32 ETR          18/07/2019          RAC KPLIAN            adcionar carga horaria
- #80             06/11/2019           APS                   ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
- #81			 08.11.2019		      MZM				    Adicion de campo prioridad
- #94              12/12/2019          APS                   Filtro de funcionarios por gestion y periodo
 
-ISSUE		FECHA			AUTHOR				DESCRIPCION
+#0             17/10/2014          JRR KPLIAN            creacion
+#32 ETR        18/07/2019          RAC KPLIAN            adcionar carga horaria
+#80            06/11/2019          APS                   ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
+#81			   08.11.2019          MZM				     Adicion de campo prioridad
+#94            12/12/2019          APS                   Filtro de funcionarios por gestion y periodo
+#107           16/01/2020          JUAN                  Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+#136 ETR	   21.04.2020		   MZM				     Adicion de campo separar_contrato
+#147 ETR       12.06.2020          RAC                   Agregar motivo de rescisión en las finalización de contrato
 
- * #107    16/01/2020      JUAN            Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
- * #136	   21.04.2020		MZM				Adicion de campo separar_contrato
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -34,7 +33,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				labelSeparator:'',
 				inputType:'hidden',
 				name: 'id_uo_funcionario'
-	
+
 			},
 			type:'Field',
 			form:true
@@ -54,7 +53,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: "Codigo",
 				gwidth: 130,
 				name: 'codigo',
-				allowBlank:false,	
+				allowBlank:false,
 				maxLength:150,
 				minLength:5,
 				anchor:'100%'
@@ -80,15 +79,15 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				store:['oficial','funcional']
 			},
 				type:'ComboBox',
-				filters:{	
+				filters:{
 	       		         type: 'list',
-	       				 options: ['oficial','funcional'],	
+	       				 options: ['oficial','funcional'],
 	       		 	},
 				id_grupo:1,
 				grid:true,
 				form:true
 		},
-		
+
 		{
 			config:{
 				fieldLabel: "Fecha Asignacion",
@@ -96,7 +95,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 	   			allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				format: 'd/m/Y', 
+				format: 'd/m/Y',
 				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			   },
 			type:'DateField',
@@ -114,7 +113,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    				gwidth: 300,
    				fieldLabel:'Funcionario',
    				allowBlank:false,
-   				tinit:true,  				
+   				tinit:true,
    				valueField: 'id_funcionario',
    			    gdisplayField: 'desc_funcionario2',         //#80
       			renderer:function(value, p, record){return String.format('{0}', record.data['desc_funcionario2']);} //#80
@@ -124,11 +123,11 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    			filters:{pfiltro:'funcio.desc_funcionario2',    //#80
 				type:'string'
 			},
-   		   
+
    			grid:true,
    			form:true
    	      },
-   	      
+
    	      {
 			config: {
 				name: 'id_cargo',
@@ -138,7 +137,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    			    resizable:true,
    			    tasignacion:true,
    			    tname:'id_cargo',
-		        tdisplayField:'nombre',   				
+		        tdisplayField:'nombre',
    				turl:'../../../sis_organigrama/vista/cargo/Cargo.php',
 	   			ttitle:'Cargos',
 	   			tconfig:{width:'80%',height:'90%'},
@@ -184,7 +183,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			grid: true,
 			form: true
 		},
-		
+
 		{
 			config:{
 				name: 'nro_documento_asignacion',
@@ -200,7 +199,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-		
+
 		{
 		config:{
 			fieldLabel: "Fecha Doc. Asignación",
@@ -208,14 +207,14 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    		    allowBlank: false,
 			anchor: '80%',
 			gwidth: 100,
-			format: 'd/m/Y', 
+			format: 'd/m/Y',
 			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 		},
 		type:'DateField',
 		filters:{pfiltro:'UOFUNC.fecha_documento_asignacion',
 				type:'date'
 				},
-		grid:true,		
+		grid:true,
 		form:true
 	},
 
@@ -224,7 +223,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: "CI",
 				gwidth: 130,
 				name: 'ci',
-				allowBlank:false,	
+				allowBlank:false,
 				maxLength:150,
 				minLength:5,
 				anchor:'100%'
@@ -234,8 +233,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:0,
 			grid:true,
 			form:false
-		},	
-		
+		},
+
 		{
 		config:{
 			fieldLabel: "Fecha Finalizacion",
@@ -243,7 +242,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
    		    allowBlank: true,
 			anchor: '80%',
 			gwidth: 100,
-			format: 'd/m/Y', 
+			format: 'd/m/Y',
 			renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 		},
 		type:'DateField',
@@ -251,10 +250,10 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				type:'date'
 				},
 		grid:true,
-		
+
 		form:true
 	},
-	
+
 	{
 		config:{
 			name: 'observaciones_finalizacion',
@@ -266,12 +265,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        		lazyRender:true,
        		mode: 'local',
 			gwidth: 100,
-			store:['fin contrato','retiro','renuncia','promocion','transferencia']
+			store:['fin contrato','retiro','renuncia','promocion','transferencia','rescision']
 		},
 			type:'ComboBox',
-			filters:{	
+			filters:{
        		         type: 'list',
-       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia'],
+       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia','rescision'],
        		 	},
 			id_grupo:1,
 			grid:true,
@@ -291,7 +290,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			store:['240','120']
 		},
 			type:'ComboBox',
-			filters:{	
+			filters:{
        		         type: 'list',
        				 options: ['240','120'],
        		},
@@ -301,16 +300,16 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			form:true
 	},
 
-	
+
 	{
 		config:{
 			name:'estado_reg',
-			fieldLabel:'Estado',				
-			gwidth:115,			
-			
+			fieldLabel:'Estado',
+			gwidth:115,
+
 		},
 		type:'ComboBox',
-		grid:true,			
+		grid:true,
 		form:false,
         grid:true
 	},
@@ -324,7 +323,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				maxLength:1179650
 			},
 				type:'NumberField',
-				
+
 				grid:true,
 				form:true
 	},
@@ -342,7 +341,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			store:['no','si']
 		},
 			type:'ComboBox',
-			filters:{	
+			filters:{
        		         type: 'list',
        				 options: ['no','si'],
        		},
@@ -384,12 +383,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
              'USUREG',
              'USUMOD','correspondencia','carga_horaria', 'desc_funcionario2'//#80
              ,'separar_contrato'//#136
-             ],  
-			
+             ],
+
 	sortInfo:{
 		field: 'desc_funcionario2', //#80
 		direction: 'ASC',
-	},	
+	},
 	onButtonNew:function(){
 		this.Cmp.id_funcionario.store.setBaseParam('tipo','oficial');
 			this.Cmp.id_cargo.store.setBaseParam('tipo','oficial');
@@ -402,8 +401,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.ocultarComponente(this.Cmp.observaciones_finalizacion);
 		this.mostrarComponente(this.Cmp.separar_contrato);//#136
 		Phx.vista.uo_funcionario.superclass.onButtonNew.call(this);
-		//seteamos un valor fijo que vienen de la vista maestro para id_gui 
-				
+		//seteamos un valor fijo que vienen de la vista maestro para id_gui
+
 	},onButtonEdit:function(){
 		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
 		this.ocultarComponente(this.Cmp.id_cargo);
@@ -414,26 +413,26 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		this.mostrarComponente(this.Cmp.separar_contrato);//#136
 		this.getComponente('fecha_finalizacion').visible=true;
 		Phx.vista.uo_funcionario.superclass.onButtonEdit.call(this);
-		
+
 		if (this.Cmp.fecha_finalizacion.getValue() == '' || this.Cmp.fecha_finalizacion.getValue() == undefined) {
-			
+
 			this.Cmp.observaciones_finalizacion.reset();
 			this.Cmp.observaciones_finalizacion.allowBlank = true;
 			this.ocultarComponente(this.Cmp.observaciones_finalizacion);
-			
+
 			this.Cmp.fecha_finalizacion.reset();
 			this.Cmp.fecha_finalizacion.allowBlank = true;
 			//this.ocultarComponente(this.Cmp.fecha_finalizacion);
-						
+
 		} else {
-			
+
 			this.Cmp.observaciones_finalizacion.allowBlank = false;
 			this.mostrarComponente(this.Cmp.observaciones_finalizacion);
-			
-			
+
+
 		}
 	},
-	
+
 	/*funcion corre cuando el padre cambia el nodo maestero*/
 	onReloadPage:function(m){
 		this.maestro=m;
@@ -468,7 +467,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        }
        else{
     	 this.grid.getTopToolbar().disable();
-   		 this.grid.getBottomToolbar().disable(); 
+   		 this.grid.getBottomToolbar().disable();
    		 this.store.removeAll();
        }
 
@@ -478,8 +477,8 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
     },
 	loadValoresIniciales:function()
     {
-        this.Cmp.tipo.setValue('oficial');  
-        this.Cmp.tipo.fireEvent('select',this.Cmp.tipo);     
+        this.Cmp.tipo.setValue('oficial');
+        this.Cmp.tipo.fireEvent('select',this.Cmp.tipo);
         Phx.vista.uo_funcionario.superclass.loadValoresIniciales.call(this);
     },
 	iniciarEventos : function () {
@@ -492,7 +491,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				return true;
 			}
 		},this);
-				
+
 		this.Cmp.id_funcionario.on('focus',function () {
 			if (this.Cmp.fecha_asignacion.getValue() == '' || this.Cmp.fecha_asignacion.getValue() == undefined) {
 				alert('Debe seleccionar la fecha de asignación');
@@ -501,16 +500,16 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				return true;
 			}
 		},this);
-		
+
 		this.Cmp.tipo.on('select', function () {
 			//Agregar al base params de funcionario y cargo
 			this.Cmp.id_funcionario.store.setBaseParam('tipo',this.Cmp.tipo.getValue());
 			this.Cmp.id_cargo.store.setBaseParam('tipo',this.Cmp.tipo.getValue());
 			this.Cmp.id_cargo.tdata.tipo = this.Cmp.tipo.getValue();
 			this.Cmp.id_funcionario.tdata.tipo = this.Cmp.tipo.getValue();
-			
+
 		},this);
-		
+
 		this.Cmp.fecha_finalizacion.on('blur', function () {
 			//Habilitar y obligar a llenar observaciones de finalizacion si la fecha no es null
 			if (this.Cmp.fecha_finalizacion.getValue() == '' || this.Cmp.fecha_finalizacion.getValue() == undefined) {
@@ -521,9 +520,9 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				this.Cmp.observaciones_finalizacion.allowBlank = false;
 				this.mostrarComponente(this.Cmp.observaciones_finalizacion);
 			}
-			
+
 		},this);
-		
+
 		this.Cmp.fecha_asignacion.on('blur', function () {
 			this.Cmp.id_cargo.store.setBaseParam('fecha',this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y'));
 			this.Cmp.id_funcionario.store.setBaseParam('fecha',this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y'));
@@ -531,15 +530,15 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 			this.Cmp.id_funcionario.tdata.fecha = this.Cmp.fecha_asignacion.getValue().dateFormat('d/m/Y');
 			this.Cmp.id_funcionario.modificado = true;
 			this.Cmp.id_cargo.modificado = true;
-			this.Cmp.separar_contrato.modificado = true;//#136					
+			this.Cmp.separar_contrato.modificado = true;//#136
 		},this);
-		
+
 		this.Cmp.id_cargo.on('select', function (c,r,i) {
 			if (r.data) {
 				var data = r.data;
 			} else {
 				var data = r;
-			}			
+			}
 			//Mostrar fecha de finalizacion y obligar a llenar si no es de planta si es limpiar fecha_finalizacion, ocultar y habilitar null
 			if(data.codigo_tipo_contrato == 'PLA') {
 				this.Cmp.fecha_finalizacion.reset();
@@ -549,7 +548,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 				this.Cmp.fecha_finalizacion.allowBlank = false;
 				this.mostrarComponente(this.Cmp.fecha_finalizacion);
 			}
-			
+
 		},this);
 
         this.cmbPeriodo.setValue("Todos");//#107
@@ -592,16 +591,16 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 
 
     },
-	
+
 	constructor: function(config){
-		// configuracion del data store		
+		// configuracion del data store
 		this.maestro=config.maestro;
 
         this.initButtons = [this.cmbGestion,this.cmbPeriodo];//#107
 
 		//this.Atributos[1].valorInicial=this.maestro.id_gui;
 		Phx.vista.uo_funcionario.superclass.constructor.call(this,config);
-		txt_fecha_fin=this.getComponente('fecha_finalizacion');			
+		txt_fecha_fin=this.getComponente('fecha_finalizacion');
 		this.init();
 		this.iniciarEventos();
 		//deshabilita botones
@@ -615,7 +614,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 
 
 	},
-	
+
 	bdel:true,// boton para eliminar
 	bsave:false,// boton para eliminar
 	// sobre carga de funcion
@@ -685,7 +684,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
         width:80,
         editable:false
     })
-	
+
 
   }
 )

@@ -1062,5 +1062,11 @@ alter table orga.huo_funcionario
 	add fecha_registro_historico timestamp;
 /*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
 
-
-  
+/*****************************I-SCP-VAN-ORGA-0-09/06/2020*************/
+drop trigger if exists trig_huo_funcionario on orga.tuo_funcionario;
+create trigger trig_huo_funcionario
+    before insert or update or delete
+    on orga.tuo_funcionario
+    for each row
+execute procedure orga.f_trig_huo_funcionario();
+/*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
