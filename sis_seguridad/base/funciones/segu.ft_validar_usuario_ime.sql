@@ -140,7 +140,7 @@ BEGIN
 
 
             IF(v_id_usuario is null) THEN
-                RAISE EXCEPTION '%',pxp._t('invalid_usu');
+                raise exception 'No existe el usuario o esta inactivo';
             END IF;
 
               --verificamos si el usuario tiene alertas
@@ -245,7 +245,7 @@ BEGIN
             FROM segu.tusuario u
             INNER JOIN segu.tpersona p
                 	ON  p.id_persona = u.id_persona
-            WHERE u.cuenta=v_parametros.login;
+            WHERE u.cuenta=v_parametros.login and u.estado_reg = 'activo';
 
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario encontrado');
                v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
