@@ -12,17 +12,15 @@ $body$
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_plantilla_archivo_excel_sel
  DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'param.tplantilla_archivo_excel'
- AUTOR: 		 (gsarmiento)
+ AUTOR: 		(gsarmiento)
  FECHA:	        15-12-2016 20:46:39
  COMENTARIOS:
-***************************************************************************
- HISTORIAL DE MODIFICACIONES:
-  ISSUE		FECHA    		AUTOR			DESCRIPCION
-	#1			21/11/2018		EGS		    se agrego las transacciones PARAM_EXPPAE_SEL y PARAM_EXPPAEC_SEL para exportar la configuracion de plantilla
- DESCRIPCION:
- AUTOR:
- FECHA:
-***************************************************************************/
+*****************************************************************************************
+ ISSUE  SIS     FECHA      	AUTOR       DESCRIPCION
+ #1		PAR		21/11/2018	EGS			se agrego funciones para exportar la configuracion de plantilla  
+ #185 	PAR 	07/07/2020	RCM			Crear opción para generar plantilla excel en blanco
+*****************************************************************************************
+*/
 
 DECLARE
 
@@ -187,6 +185,45 @@ BEGIN
 			return v_consulta;
 						
 		end;
+	--Inicio #185
+	/*********************************
+ 	#TRANSACCION:  'PM_GETPLA_SEL'
+ 	#DESCRIPCION:	Datos de la plantilla para generar XLS vacío
+ 	#AUTOR:			RCM
+ 	#FECHA:			07/07/2020
+	***********************************/
+	elsif(p_transaccion='PM_GETPLA_SEL')then
+
+    	begin
+    		--Sentencia de la consulta
+			v_consulta := 'SELECT
+						ae.nombre, ae.codigo,
+						ce.nombre_columna, ce.tipo_valor,
+						CASE ce.tipo_valor
+							WHEN ''string'' THEN ''''::VARCHAR
+							WHEN ''numeric'' THEN (''Separador decimal: '' || ce.punto_decimal)::VARCHAR
+							WHEN ''formula_numeric'' THEN (''Separador decimal: '' || ce.punto_decimal)::VARCHAR
+							WHEN ''string'' THEN ''''::VARCHAR
+							WHEN ''otro'' THEN ''''::VARCHAR
+							WHEN ''date'' THEN (''Formato: '' || ce.formato_fecha)::VARCHAR
+							WHEN ''entero'' THEN ''''::VARCHAR
+							ELSE ''''
+						END AS formato
+						FROM param.tplantilla_archivo_excel ae
+						INNER JOIN param.tcolumnas_archivo_excel ce
+						ON ce.id_plantilla_archivo_excel = ae.id_plantilla_archivo_excel
+				        WHERE ';
+
+			--Definicion de la respuesta
+			v_consulta := v_consulta || v_parametros.filtro;
+			v_consulta := v_consulta || ' ORDER BY ' || v_parametros.ordenacion || ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+
+			--Devuelve la respuesta
+			return v_consulta;
+
+		end;
+	--Fin #185
+	
 	else
 
 		raise exception 'Transaccion inexistente';

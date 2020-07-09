@@ -1,14 +1,16 @@
 <?php
-/**
+/****************************************************************************************
 *@package pXP
 *@file gen-MODPlantillaArchivoExcel.php
 *@author  (gsarmiento)
 *@date 15-12-2016 20:46:39
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
-* 	ISSUE		FECHA    		AUTOR			DESCRIPCION
-*	#1			21/11/2018		EGS				se agrego funciones para exportar la configuracion de plantilla 
+*****************************************************************************************
+ ISSUE  SIS     FECHA      	AUTOR       DESCRIPCION
+ #1		PAR		21/11/2018	EGS			se agrego funciones para exportar la configuracion de plantilla  
+ #185 	PAR 	07/07/2020	RCM			Crear opción para generar plantilla excel en blanco
+*****************************************************************************************
 */
-
 class MODPlantillaArchivoExcel extends MODbase{
 	
 	function __construct(CTParametro $pParam){
@@ -201,6 +203,29 @@ class MODPlantillaArchivoExcel extends MODbase{
 	
 	}
 	//	#1			21/11/2018		EGS			
+
+	//Inicio #185
+	function generarPlantilla(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento = 'param.ft_plantilla_archivo_excel_sel';
+		$this->transaccion = 'PM_GETPLA_SEL';
+		$this->tipo_procedimiento = 'SEL';//tipo de transaccion
+		$this->setCount(false);
+				
+		//Definicion de la lista del resultado del query
+		$this->captura('nombre','varchar');
+		$this->captura('codigo','varchar');
+		$this->captura('nombre_columna','varchar');
+		$this->captura('tipo_valor','varchar');
+		$this->captura('formato','varchar');
+		
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	//Fin #185
 			
 }
 ?>
