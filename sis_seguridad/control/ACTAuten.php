@@ -10,6 +10,7 @@ HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA       AUTOR           DESCRIPCION
 #133 ETR           22-04-2020     RAC            recibe variable de lenguaje
 #179 KPLIAN        13.06.2020     RAC            autentificacion con google o facebook
+#179 KPLIAN        10.07.2020     RAC            si queire loguearce con google o facebook y el usuario no existe lo crea
 *****************************************************************************************/
 use Pkly\I18Next\I18n;
 /*ini_set('display_errors', '1');
@@ -438,10 +439,31 @@ class ACTAuten extends ACTbase {
     }
 
     function oauthLogin() {
+
+        /*
+        inputs vars
+         -- for autentificate
+                - language
+                - type
+                - token
+                - device
+        --for create user
+                - name
+                - surname
+                - email
+                - type
+                - user_id
+                - url_photo
+                - device
+        
+        */
+
         //Recupera datos de usuario
+        
         $this->funciones= $this->create('MODUsuario');
         $this->res=$this->funciones->ValidaUsuario();
         $this->datos=$this->res->getDatos();
+        $_SESSION["_LOGIN"]=$this->objParam->getParametro('email'); //recueprando cuenta de usuario
 
         //#133
         if( $this->objParam->getParametro('language') != '') {
@@ -478,7 +500,8 @@ class ACTAuten extends ACTbase {
             switch ($this->objParam->getParametro('type')) {
                 case 'google':
                     $_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->datos['contrasena']);
-                    $token_google = filter_var($this->objParam->getParametro('code'), FILTER_SANITIZE_STRING);
+                    $token_google = filter_var($this->objParam->getParametro('token'), FILTER_SANITIZE_STRING);
+                    //$token_google = $this->objParam->getParametro('token');
 
                     switch ($this->objParam->getParametro('device')) {
                         case 'web':
@@ -491,21 +514,22 @@ class ACTAuten extends ACTbase {
                             $client = new Google_Client();
                             $client->setClientId($_SESSION['_GOOGLE_CLIENT_ID']);
                             //$client->setClientId($_SESSION['_GOOGLE_ADROID_ID']);
-                            $payload = $client->verifyIdToken($token_google);
+                            //$payload = $client->verifyIdToken($token_google);
                         break;
                     }
-
                     $payload = $client->verifyIdToken($token_google);
                     if($payload) {
+                        //token en realide tiene el user_id almacenado en base de datos al momento de crear el usuario
                         if( $this->datos['token'] == $payload["sub"]  &&  $_SESSION['_GOOGLE_CLIENT_ID'] == $payload["aud"]) {
                             $PASS = 1;
                         }
                     }
 
+
                 break;
                 case 'facebook':
                     $_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->datos['contrasena']);
-                    $face_user_token = filter_var($this->objParam->getParametro('code'), FILTER_SANITIZE_STRING);
+                    $face_user_token = filter_var($this->objParam->getParametro('token'), FILTER_SANITIZE_STRING);
                     $facebook_user_access_token = $face_user_token;
                     $my_facebook_app_id = $_SESSION['_FACE_CLIENT_ID'];//  as set up in Facebook
                     $my_facebook_app_secret = $_SESSION['_FACE_CLIENT_SECRET'];//  as set up in Facebook
@@ -572,7 +596,6 @@ class ACTAuten extends ACTbase {
                 $_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
                 $_SESSION["ss_id_cargo"] = $this->datos['id_cargo'];
                 $_SESSION["ss_id_persona"] = $this->datos['id_persona'];
-
                 //cambia el estado del Objeto de sesion activa
                 $_SESSION["_SESION"] = new CTSesion();
                 $_SESSION["_SESION"]->setIdUsuario($this->datos['id_usuario']);
@@ -596,7 +619,6 @@ class ACTAuten extends ACTbase {
                 }
 
 
-                ////
                 $_SESSION["_CONT_ALERTAS"] = $this->datos['cont_alertas'];
                 $_SESSION["_CONT_INTERINO"] = $this->datos['cont_interino'];
                 $_SESSION["_NOM_USUARIO"] = $this->datos['nombre']." ".$this->datos['apellido_paterno']." ".$this->datos['apellido_materno'];
@@ -604,6 +626,7 @@ class ACTAuten extends ACTbase {
                 $_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
                 $_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
                 $_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
+
 
                 if(!isset($_SESSION["_SIS_INTEGRACION"])){
                     $sis_integracion = 'NO';
@@ -619,17 +642,18 @@ class ACTAuten extends ACTbase {
                     $id_cargo = 0;
                 }
 
-
-                echo '{
-                    "success":'.$success.',
-                    "id_usuario":'.$id_usuario_ofus.',
+                echo '{"success":true,
                     "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
+                    "nombre_usuario":"'.$_SESSION["_NOM_USUARIO"].'",
+                    "nombre_basedatos":"'.$_SESSION["_BASE_DATOS"].'",
+                    "id_usuario":"'.$_SESSION["_ID_USUARIO_OFUS"].'",
+                    "id_funcionario":"'.$_SESSION["_ID_FUNCIOANRIO_OFUS"].'",
                     "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
                     "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
                     "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
-                    "puerto_websocket":'.$_SESSION["_PUERTO_WEBSOCKET"].',
-                    "timeout":'.$_SESSION["_TIMEOUT"].'
-                    }';
+                    "phpsession":"'.session_id().'",
+                    "timeout":'.$_SESSION["_TIMEOUT"].'}';
+                
                 exit;
 
             }

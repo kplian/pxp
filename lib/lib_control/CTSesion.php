@@ -96,11 +96,12 @@ class CTSesion {
 		$this->funSeguridad = new MODSesion();
 		if ($est == 'activa') {
 			$this->rotarSid ();
+
 			$this->funSeguridad->insertarSesion ( $this->sid, $this->ip, $this->id_usuario,'');
 			$this->estado = 'activa';
 
 		} elseif ($est == 'inactiva') {
-
+		    
 			$this->rotarSid ();
 			$this->estado = 'inactiva';
 

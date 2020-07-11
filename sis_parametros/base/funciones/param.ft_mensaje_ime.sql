@@ -30,7 +30,10 @@ DECLARE
     v_rec_usuarios_chat         RECORD;
     v_usuarios varchar;
     v_url varchar;
-                
+    v_id_alarma				   integer;
+    v_id_chat				   integer;
+    v_users				       record;
+
 BEGIN
 
     v_nombre_funcion = 'param.ft_mensaje_ime';
@@ -82,13 +85,25 @@ BEGIN
             WHERE id_chat = v_parametros.id_chat;
 
             SELECT string_agg(chat_usuario.id_usuario::text, ',')::varchar,
-                   replace(tc.url_notificacion, ':id', chat.id_tabla::varchar) ::varchar as url
-            INTO v_usuarios, v_url
+                   replace(tc.url_notificacion, ':id', chat.id_tabla::varchar) ::varchar as url,
+                   chat.id_chat
+            INTO v_usuarios, v_url , v_id_chat
             FROM param.tchat_usuario chat_usuario
                      INNER JOIN param.tchat chat on chat.id_chat = chat_usuario.id_chat
                      INNER JOIN param.ttipo_chat tc on tc.id_tipo_chat = chat.id_tipo_chat
             WHERE chat_usuario.id_chat = v_parametros.id_chat and id_usuario != p_id_usuario
-            GROUP BY chat.id_tabla, url;
+            GROUP BY chat.id_tabla, url, chat.id_chat;
+
+
+            -- added alarm for users to sending the message
+            FOR v_users IN (SELECT id_usuario as id_usuario_to
+                        FROM param.tchat_usuario
+                        WHERE id_chat = v_id_chat
+                        AND id_usuario != p_id_usuario)
+                    LOOP
+                    v_id_alarma :=  param.f_inserta_alarma_citas(v_users.id_usuario_to, 'Chat', v_parametros.mensaje, 'mail', v_url, now()::date , p_id_usuario);
+
+            end loop;
 
 
 
