@@ -158,7 +158,8 @@ class Pxp implements MessageComponentInterface {
                         $send = array(
                             "mensaje" => $data["data"]["mensaje"],
                             "data" => $even,
-                            "from" => $from
+                            "from" => $from,
+                            "id_conexion_from" => $id_conexion
                         );
                         $send = json_encode($send, true);
 
