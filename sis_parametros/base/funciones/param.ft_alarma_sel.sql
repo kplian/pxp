@@ -19,6 +19,7 @@ $body$
  ISSUE:     FECHA:          AUTOR:	 	DESCRIPCION:	
  #17 etr    30/05/2019  	EGS	        Solo muesttr alarmas activas
  #0	 pxp-ui	19.06.2020		MZM			Listado de notificaciones para citas
+ #0  pxp-ui	13.07.2020		MZM			adicion de usuario y fecha de caducidad para listado de alarmas		
 ***************************************************************************/
 
 DECLARE
@@ -474,11 +475,10 @@ BEGIN
                         alarm.fecha_caducidad,
                         (alarm.fecha_caducidad-alarm.fecha) as dias,
                         alarm.estado_envio
-						from param.talarma alarm where alarm.estado_reg = ''activo'' and ';
-
-
+						from param.talarma alarm where alarm.estado_reg = ''activo'' and alarm.id_usuario='||p_id_usuario|| '
+                        and alarm.fecha_caducidad>=now()::date and ';
 			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+			v_consulta:=v_consulta||' order by alarm.fecha_reg desc, ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
 			raise notice '%',v_consulta;
 			--Devuelve la respuesta
 			return v_consulta;
@@ -490,7 +490,8 @@ BEGIN
 
 			-- Sentencia de la consulta
 			v_consulta:='SELECT count(*)
-                     	 from param.talarma alarm where alarm.estado_reg = ''activo'' and ';
+                     	 from param.talarma alarm where alarm.estado_reg = ''activo'' and alarm.id_usuario='||p_id_usuario|| '
+                        and alarm.fecha_caducidad>=now() and ';
 
 			v_consulta:=v_consulta||v_parametros.filtro;
 			return v_consulta;

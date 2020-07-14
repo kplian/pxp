@@ -48,7 +48,7 @@ AS $BODY$
 	
 	--verificar: si ya existe un registro en alarma para la url, entonces solo actualizar
 
-	if not exists (select 1 from param.talarma where id_usuario=p_id_usuario and acceso_directo=p_url) then
+	if (not exists (select 1 from param.talarma where id_usuario=p_id_usuario and acceso_directo=p_url ) or p_asunto='credito/debito')then
 
     		v_query = 'select * from param.f_inserta_alarma(
                                                       NULL,--id_funcionario
