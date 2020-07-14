@@ -2897,4 +2897,9 @@ ALTER TABLE ONLY param.tchat_usuario
     ADD CONSTRAINT tchat_usuario_unique_id_chat_id_usuario
         UNIQUE (id_chat, id_usuario);
 
+alter table param.ttipo_chat
+    add phone_obfuscation varchar default 'N';
+
+
+
 /***********************************F-SCP-FFP-PARAM-0-30/06/2020*****************************************/

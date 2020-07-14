@@ -23,6 +23,7 @@ $body$
 #133               29-05-2020     RAC           mensaje traducido
 #179 KPLIAN        13.06.2020     RAC           autentificacion con google o facebook
 #179 KPLIAN        13.06.2020     JRR           User signup with default role
+#179 KPL           10.07.2020     RAC           Al validar usuario si no existe y viene por facebook o google creamos el usuario
 ***************************************************************************/
 DECLARE
 
@@ -50,6 +51,7 @@ v_contrasena varchar;
 v_id_cargo integer;
 v_cont_interino  integer;
 v_token          varchar; --#179
+v_login          varchar; --#179
 
 /*
 
@@ -96,6 +98,12 @@ BEGIN
           --consulta:=';
           BEGIN
 
+            IF pxp.f_existe_parametro(par_tabla, 'login') THEN
+                v_login = v_parametros.login;
+            ELSE
+                v_login = v_parametros.email;
+            END IF;
+            
             -- verifica si el usuario y contrasena introducidos estan habilitados
             v_id_usuario=null;
             SELECT
@@ -123,7 +131,7 @@ BEGIN
             FROM segu.tusuario u
             INNER JOIN segu.tpersona p
                 	ON  p.id_persona = u.id_persona
-            WHERE u.cuenta=v_parametros.login
+            WHERE u.cuenta = v_login
             AND u.fecha_caducidad >= now()::date
             AND u.estado_reg='activo';
 
@@ -137,10 +145,46 @@ BEGIN
 
             END IF;
 
-
-
+           
+          
             IF(v_id_usuario is null) THEN
-                raise exception 'No existe el usuario o esta inactivo';
+            
+                IF pxp.f_existe_parametro(par_tabla, 'type') THEN
+                  IF v_parametros.type in ('facebook','google') THEN
+                    
+                    v_id_usuario = segu.f_create_user_oauth(par_administrador, par_id_usuario, v_parametros);
+                    
+                    SELECT
+                          u.id_usuario,
+                          u.cuenta,
+                          p.nombre,
+                          p.apellido_paterno,
+                          p.apellido_materno,
+                          u.estilo,
+                          u.autentificacion,
+                          p.id_persona,
+                          u.contrasena,
+                          u.token
+                    INTO
+                          v_id_usuario,
+                          v_cuenta,
+                          v_nombre,
+                          v_apellido_paterno,
+                          v_apellido_materno,
+                          v_estilo,
+                          v_autentificacion,
+                          v_id_persona,
+                          v_contrasena,
+                          v_token
+                    FROM segu.tusuario u
+                    INNER JOIN segu.tpersona p  ON  p.id_persona = u.id_persona
+                    WHERE u.id_usuario = v_id_usuario;
+                    
+                  END IF;
+                ELSE
+                  raise exception 'No existe el usuario o esta inactivo';
+                END IF;
+                
             END IF;
 
               --verificamos si el usuario tiene alertas

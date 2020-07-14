@@ -53,7 +53,27 @@ class Mensaje
 			   $res = ACTbase::dispararWS($send);
 
 			}
-		}
+        }
+
+		if (isset($arreglo['__ws_chat_event'])) {
+            $data = array(
+                "evento" => $arreglo['__ws_chat_event'],
+                "mensaje" => $arreglo['__ws_chat_message'],
+
+            );
+            $from = array(
+                "user" => $arreglo['__ws_chat_from'],
+                "idUser" => $arreglo['__ws_chat_id_from'],
+
+            );
+            $send = array(
+                "tipo" => "enviarMensaje",
+                "data" => $data,
+                "from" => $from
+            );
+
+            $res = ACTbase::dispararWS($send);
+        }
 	}
 
 	/**

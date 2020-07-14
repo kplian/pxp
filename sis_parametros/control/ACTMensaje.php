@@ -34,7 +34,12 @@ class ACTMensaje extends ACTbase{
     function insertarMensaje(){
         $this->objFunc=$this->create('MODMensaje');    
         if($this->objParam->insertar('id_mensaje')){
-            $this->res=$this->objFunc->insertarMensaje($this->objParam);            
+            $this->res=$this->objFunc->insertarMensaje($this->objParam);
+            if ($this->res->getTipo() == 'ERROR') {
+                $this->res->imprimirRespuesta($this->res->generarJson());
+                exit;
+            }
+
         } else{            
             $this->res=$this->objFunc->modificarMensaje($this->objParam);
         }

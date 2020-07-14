@@ -1,7 +1,7 @@
 <?php
 /***
  Nombre: 	MODSesion.php
- Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas 
+ Proposito: Clase de Modelo, que contiene la definicion y llamada a funciones especificas relacionadas
  a la tabla tsesion del esquema SEGU
  Autor:		Kplian
  Fecha:		04/06/2011
@@ -31,9 +31,10 @@ class MODSesion extends MODbase {
 			
 			$this->armarConsulta();
 			$consulta = $this->getConsulta();
-			
+
 			$this->ejecutarConsulta();
-			return $this->respuesta;;
+
+			return $this->respuesta;
 
 	}
 	 

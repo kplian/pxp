@@ -9,6 +9,7 @@
   ISSUE            FECHA:              AUTOR                 DESCRIPCION
   #97            17/06/2019        RAC                 interface para copiar roles de usaurio
   #179 KPL       03/06/2020        RAC                 creacion de usuario para autentificacion google facebook
+  #179 KPL       10.07.2020        RAC                 Al validar usuario si no existe y vienes por facebook o google creamos el usuario
  */
 class MODUsuario extends MODbase {
 
@@ -35,12 +36,28 @@ class MODUsuario extends MODbase {
         }
 		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
 							 "contrasena"=>$contrasena,
-							 "dir_ip"=>getenv("REMOTE_ADDR"));
+							 "dir_ip"=>getenv("REMOTE_ADDR"),
+							 "name" =>$this->arreglo['name'],
+							 "surname" =>$this->arreglo['surname'],
+							 "email" =>$this->arreglo['email'],
+							 "user_id" =>$this->arreglo['user_id'],
+							 "type" =>$this->arreglo['type'],
+							 "url_photo" =>$this->arreglo['url_photo']);
 
 		//Define los parametros para ejecucion de la funcion
 		$this->setParametro('login','usuario','varchar');
 		$this->setParametro('password','contrasena','varchar');
 		$this->setParametro('dir_ip','dir_ip','varchar');
+
+
+		//#179 extra data for create user if we need
+        $this->setParametro('name','name','varchar');
+		$this->setParametro('surname','surname','varchar');
+		$this->setParametro('email','email','varchar');
+		$this->setParametro('user_id','user_id','varchar');
+		$this->setParametro('type','type','varchar'); //tipo autentificacion facebook, google, ldap, local
+		$this->setParametro('url_photo','url_photo','varchar');
+		//#179 end
 
 		//Se definen los datos para las variables de sesion
 		$_SESSION["_LOGIN"]=$this->arreglo['usuario'];
