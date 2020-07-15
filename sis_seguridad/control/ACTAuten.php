@@ -264,6 +264,7 @@ class ACTAuten extends ACTbase {
                 $_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
                 $_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
                 $_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
+                $_SESSION["_ALIAS"] = $this->datos['alias'];
 
 
                 if(!isset($_SESSION["_SIS_INTEGRACION"])) {
@@ -455,11 +456,11 @@ class ACTAuten extends ACTbase {
                 - user_id
                 - url_photo
                 - device
-        
+
         */
 
         //Recupera datos de usuario
-        
+
         $this->funciones= $this->create('MODUsuario');
         $this->res=$this->funciones->ValidaUsuario();
         $this->datos=$this->res->getDatos();
@@ -626,6 +627,7 @@ class ACTAuten extends ACTbase {
                 $_SESSION["_ID_FUNCIOANRIO_OFUS"] = $id_funcionario_ofus;
                 $_SESSION["_AUTENTIFICACION"] = $this->datos['autentificacion'];
                 $_SESSION["_ESTILO_VISTA"] = $this->datos['estilo'];
+                $_SESSION["_ALIAS"] = $this->datos['alias'];
 
 
                 if(!isset($_SESSION["_SIS_INTEGRACION"])){
@@ -652,8 +654,9 @@ class ACTAuten extends ACTbase {
                     "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
                     "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
                     "phpsession":"'.session_id().'",
+                    "alias":"'.$_SESSION["_ALIAS"].'",
                     "timeout":'.$_SESSION["_TIMEOUT"].'}';
-                
+
                 exit;
 
             }

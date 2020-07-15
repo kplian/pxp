@@ -25,7 +25,7 @@ class Pxp implements MessageComponentInterface {
         $this->usuariosPXPSocket = [];
 
         $this->cone = new conexion();
-        $this->link = $this->cone->conectarpdo();
+        $this->link = $this->cone->conectarpdo('', 'segu');
 
     }
 

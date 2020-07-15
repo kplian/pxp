@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION "param"."ft_mensaje_ime" (    
+CREATE OR REPLACE FUNCTION "param"."ft_mensaje_ime" (
                 p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
@@ -9,11 +9,11 @@ $BODY$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'param.tmensaje'
  AUTOR:          (favio)
  FECHA:            15-06-2020 21:17:46
- COMENTARIOS:    
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE                FECHA                AUTOR                DESCRIPCION
- #0                15-06-2020 21:17:46    favio             Creacion    
+ #0                15-06-2020 21:17:46    favio             Creacion
  #
  ***************************************************************************/
 
@@ -43,15 +43,15 @@ BEGIN
     v_nombre_funcion = 'param.ft_mensaje_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'PM_MEN_INS'
      #DESCRIPCION:    Insercion de registros
-     #AUTOR:        favio    
+     #AUTOR:        favio
      #FECHA:        15-06-2020 21:17:46
     ***********************************/
 
     IF (p_transaccion='PM_MEN_INS') THEN
-                    
+
         BEGIN
 
             SELECT string_agg(chat_usuario.id_usuario::text, ',')::varchar,
@@ -94,7 +94,7 @@ BEGIN
             now(),
             v_parametros._nombre_usuario_ai,
             null,
-            null            
+            null
             ) RETURNING id_mensaje into v_id_mensaje;
 
             SELECT id_tabla
@@ -113,19 +113,20 @@ BEGIN
                         WHERE id_chat = v_id_chat
                         AND id_usuario != p_id_usuario)
                     LOOP
-                    v_id_alarma :=  param.f_inserta_alarma_citas(v_users.id_usuario_to, 'Chat', v_parametros.mensaje, 'mail', v_url, now()::date , p_id_usuario);
+                    v_id_alarma :=  param.f_inserta_alarma_citas(v_users.id_usuario_to, 'Chat', v_message, 'mail', v_url, now()::date , p_id_usuario);
 
             end loop;
 
 
-            SELECT desc_persona::varchar
+            SELECT coalesce(tu.alias, vu.desc_persona::varchar)::varchar
             into v_desc_persona
-            FROM segu.vusuario
-            WHERE id_usuario = p_id_usuario;
+            FROM segu.vusuario vu
+            INNER JOIN segu.tusuario tu ON tu.id_usuario = vu.id_usuario
+            WHERE vu.id_usuario = p_id_usuario;
 
 
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje almacenado(a) con exito (id_mensaje'||v_id_mensaje||')'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje almacenado(a) con exito (id_mensaje'||v_id_mensaje||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_id_mensaje::varchar);
 
             --websockets chat
@@ -145,10 +146,10 @@ BEGIN
 
         END;
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'PM_MEN_MOD'
      #DESCRIPCION:    Modificacion de registros
-     #AUTOR:        favio    
+     #AUTOR:        favio
      #FECHA:        15-06-2020 21:17:46
     ***********************************/
 
@@ -166,20 +167,20 @@ BEGIN
             id_usuario_ai = v_parametros._id_usuario_ai,
             usuario_ai = v_parametros._nombre_usuario_ai
             WHERE id_mensaje=v_parametros.id_mensaje;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje modificado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_parametros.id_mensaje::varchar);
-               
+
             --Devuelve la respuesta
             RETURN v_resp;
-            
+
         END;
 
-    /*********************************    
+    /*********************************
      #TRANSACCION:  'PM_MEN_ELI'
      #DESCRIPCION:    Eliminacion de registros
-     #AUTOR:        favio    
+     #AUTOR:        favio
      #FECHA:        15-06-2020 21:17:46
     ***********************************/
 
@@ -189,31 +190,31 @@ BEGIN
             --Sentencia de la eliminacion
             DELETE FROM param.tmensaje
             WHERE id_mensaje=v_parametros.id_mensaje;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Mensaje eliminado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_mensaje',v_parametros.id_mensaje::varchar);
-              
+
             --Devuelve la respuesta
             RETURN v_resp;
 
         END;
-         
+
     ELSE
-     
+
         RAISE EXCEPTION 'Transaccion inexistente: %',p_transaccion;
 
     END IF;
 
 EXCEPTION
-                
+
     WHEN OTHERS THEN
         v_resp='';
         v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
         v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
         v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
         raise exception '%',v_resp;
-                        
+
 END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE

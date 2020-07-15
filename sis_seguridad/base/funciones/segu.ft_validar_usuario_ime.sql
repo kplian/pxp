@@ -52,6 +52,7 @@ v_id_cargo integer;
 v_cont_interino  integer;
 v_token          varchar; --#179
 v_login          varchar; --#179
+v_alias          varchar; --#179
 
 /*
 
@@ -103,7 +104,7 @@ BEGIN
             ELSE
                 v_login = v_parametros.email;
             END IF;
-            
+
             -- verifica si el usuario y contrasena introducidos estan habilitados
             v_id_usuario=null;
             SELECT
@@ -116,7 +117,8 @@ BEGIN
                   u.autentificacion,
                   p.id_persona,
                   u.contrasena,
-                  u.token
+                  u.token,
+                  u.alias
             INTO
                   v_id_usuario,
                   v_cuenta,
@@ -127,7 +129,8 @@ BEGIN
                   v_autentificacion,
                   v_id_persona,
                   v_contrasena,
-                  v_token
+                  v_token,
+                  v_alias
             FROM segu.tusuario u
             INNER JOIN segu.tpersona p
                 	ON  p.id_persona = u.id_persona
@@ -145,15 +148,15 @@ BEGIN
 
             END IF;
 
-           
-          
+
+
             IF(v_id_usuario is null) THEN
-            
+
                 IF pxp.f_existe_parametro(par_tabla, 'type') THEN
                   IF v_parametros.type in ('facebook','google') THEN
-                    
+
                     v_id_usuario = segu.f_create_user_oauth(par_administrador, par_id_usuario, v_parametros);
-                    
+
                     SELECT
                           u.id_usuario,
                           u.cuenta,
@@ -164,7 +167,8 @@ BEGIN
                           u.autentificacion,
                           p.id_persona,
                           u.contrasena,
-                          u.token
+                          u.token,
+                          u.alias
                     INTO
                           v_id_usuario,
                           v_cuenta,
@@ -175,16 +179,17 @@ BEGIN
                           v_autentificacion,
                           v_id_persona,
                           v_contrasena,
-                          v_token
+                          v_token,
+                          v_alias
                     FROM segu.tusuario u
                     INNER JOIN segu.tpersona p  ON  p.id_persona = u.id_persona
                     WHERE u.id_usuario = v_id_usuario;
-                    
+
                   END IF;
                 ELSE
                   raise exception 'No existe el usuario o esta inactivo';
                 END IF;
-                
+
             END IF;
 
               --verificamos si el usuario tiene alertas
@@ -273,7 +278,7 @@ BEGIN
                v_resp = pxp.f_agrega_clave(v_resp,'autentificacion',v_autentificacion::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'contrasena',v_contrasena::varchar);
                v_resp = pxp.f_agrega_clave(v_resp,'token',v_token::varchar); -- #179 verificar de usuarios de googe o facebook
-
+               v_resp = pxp.f_agrega_clave(v_resp,'alias',v_alias::varchar);
                return v_resp;
 
           END;
