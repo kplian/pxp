@@ -9,6 +9,7 @@
  * 
  * COMENTARIOS:	 
   #33  ETR       18/07/2018        RAC KPLIAN       agregar opearativo si o no
+  #150 ENDETR    08/07/2020        JJA              Filtrar los tipo_cc vigentes
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -18,8 +19,11 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 	constructor:function(config){
 		this.maestro=config.maestro;		
     	//llama al constructor de la clase padre
+    	this.initButtons = [this.cmbCecoVigente]; //#150
 		Phx.vista.TipoCcArb.superclass.constructor.call(this,config);		
+		this.loaderTree.baseParams = {ceco_vigente: 'Todos'};
 		this.init();
+
 		this.iniciarEventos();
 		this.crearFormAuto();
 		this.crearFormAutorizacion();
@@ -39,7 +43,8 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
             this.mostarFormAuto,
             tooltip: '<b>Configurar autorizaciones</b>'});
      
-		
+		  this.cmbCecoVigente.setValue('Todos');  //#150
+          this.cmbCecoVigente.fireEvent('select', 0); //#150
 	},
 	
 	Atributos:[
@@ -402,7 +407,16 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			}
 		},	
    
-   iniciarEventos: function(){   	    
+   iniciarEventos: function(){  
+
+            this.cmbCecoVigente.on('select',
+                       function (cmb, dat) {
+
+                       	this.loaderTree.baseParams = {ceco_vigente: dat.data.ceco_vigente};
+                       	this.root.reload();
+                  
+            }, this); //#150
+
    	        this.Cmp.control_techo.on('select',function(combo,record,index){				
 				if(combo.getValue() == 'no'){
 					this.ocultarComponente(this.Cmp.momento_pres);
@@ -425,6 +439,32 @@ Phx.vista.TipoCcArb=Ext.extend(Phx.arbGridInterfaz,{
 			},this);
    	
    },
+    cmbCecoVigente: new Ext.form.ComboBox({ //#150
+        fieldLabel: 'Ceco Vigenete',
+        allowBlank: true,
+        emptyText: 'Filtro...',
+        store: new Ext.data.ArrayStore(	
+            {
+             
+                filtro: 0,
+                fields: [
+                    'ceco_vigente'
+                ],
+                data: [['Todos'],['Operativo'], ['Vigencia']]
+
+
+            }),
+        valueField: 'ceco_vigente',
+        triggerAction: 'all',
+        displayField: 'ceco_vigente',
+        hiddenName: 'ceco_vigente',
+        mode: 'local',
+        pageSize: 50,
+        queryDelay: 500,
+        listWidth: '280',
+        width: 80
+    }),
+
    onButtonEdit:function(n){		
 		Phx.vista.TipoCcArb.superclass.onButtonEdit.call(this);		
 	    if(this.Cmp.control_techo.getValue() == 'si'){

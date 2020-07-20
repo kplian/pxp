@@ -25,7 +25,7 @@ $body$
   #34  ETR       09/10/2018        MMV 		 		 insertar timpos de autorizacion por catalago
   #2  ETR		 07/12/2018		   EGS				 Se creo las funciones PM_TCCARBHI_SEL y PM_TCCARBHI_CONT que lista los nodos transsaccionales del tipo cc por gestion
   #7  endeETR    21/01/2019		   EGS				 se modifico PM_TCCARBHI_SEL para que considere el con tipo de presupuesto
-
+  #150 ENDETR    08/07/2020        JJA               Filtrar los tipo_cc vigentes
 ***************************************************************************/
 
 DECLARE
@@ -35,6 +35,7 @@ DECLARE
 	v_nombre_funcion   	text;
 	v_resp				varchar;
     v_where				varchar;
+  v_where_2           varchar; --#150
 
 BEGIN
 
@@ -208,7 +209,14 @@ BEGIN
                 v_where := ' tcc.id_tipo_cc_fk = '||v_parametros.node;
               end if;
 
-
+              v_where_2 = ''; --#150
+              if(v_parametros.ceco_vigente='Operativo')then --#150
+              
+                 v_where_2 := ' and  tcc.operativo = ''si'' ';
+              end if;
+              if(v_parametros.ceco_vigente='Vigencia')then --#150
+                 v_where_2 := ' and (tcc.fecha_final >= now()::date  and tcc.fecha_inicio::date <= now()::Date)  ';
+              end if;
 
               v_consulta:='select
                             tcc.id_tipo_cc,
@@ -248,6 +256,7 @@ BEGIN
                         left join param.vep ep on ep.id_ep = tcc.id_ep
 				        where  '||v_where|| '
                               and tcc.estado_reg = ''activo''
+                              '||v_where_2|| ' --#150
                               ORDER BY tcc.id_tipo_cc';
 
 
