@@ -11,6 +11,7 @@
  * ISSUE			FECHA			AUTHOR			Descripcion
   #33  ETR       18/07/2018        RAC KPLIAN       agregar opearativo si o no
   #2			 07/12/2018	       EGS		        Funcion para listar centros de costo de tipo transsaccionale del arbol Tipo CC por gestion
+  #150 ENDETR    08/07/2020        JJA              Filtrar los tipo_cc vigentes
 */
 
 class MODTipoCc extends MODbase{
@@ -115,6 +116,7 @@ class MODTipoCc extends MODbase{
 	    $id_padre = $this->objParam->getParametro('id_padre');
 
 	    $this->setParametro('node','node','varchar');
+	    $this->setParametro('ceco_vigente','ceco_vigente','varchar'); //#150
 
 
 	    //Definicion de la lista del resultado del query
