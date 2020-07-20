@@ -346,13 +346,14 @@ class ACTAuten extends ACTbase {
             $this->objFunc=$this->create('MODUsuario');
             $this->res=$this->objFunc->resetPassword($this->objParam);
             $datos = $this->res->getDatos();
-
+            //var_dump($datos);
             /*send reset mail*/
             if (isset($datos['mail_template'])) {
                 include_once(dirname(__FILE__).'/../../../' . $datos['mail_template']);
                 $template = resetPasswordTemplate($datos['name'], $this->objParam->getParametro('url') . 'forgot/update/' . $datos['token']);
 
                 $email = new \SendGrid\Mail\Mail();
+                //$email->setFrom(strpos($datos['email'], 'hotmail') === false ? $_SESSION['_MAIL_REMITENTE'] : 'vouz.adm@outlook.com', $_SESSION['_NOMBER_REMITENTE']);
                 $email->setFrom($_SESSION['_MAIL_REMITENTE'], $_SESSION['_NOMBER_REMITENTE']);
                 $email->setSubject("Hemos recibido una solicitud para cambiar tu password");
                 $email->addTo($datos['email'], $datos['name']);
@@ -362,6 +363,7 @@ class ACTAuten extends ACTbase {
                 $sendgrid = new \SendGrid($_SESSION['_SENDGRID_API_KEY']);
                 try {
                     $response = $sendgrid->send($email);
+                    file_put_contents('/tmp/log_email.txt', $response, FILE_APPEND | LOCK_EX);
 
                 } catch (Exception $e) {
                     $this->res=new Mensaje();

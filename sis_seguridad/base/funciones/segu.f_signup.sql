@@ -99,9 +99,11 @@ BEGIN
       (SELECT CAST(now() AS DATE) + CAST('10 year' AS INTERVAL)),
       'xtheme-access.css',
       v_id_persona,
-      'inactivo'::pxp.estado_reg,
-      pxp.f_generate_token(15),
-      now() + (pxp.f_get_variable_global('segu_token_expiration') || ' hour')::interval)
+      'activo'::pxp.estado_reg,
+      null,
+      null)
+      --pxp.f_generate_token(15),
+      --now() + (pxp.f_get_variable_global('segu_token_expiration') || ' hour')::interval)
 	RETURNING id_usuario into v_id_usuario;
 
   insert into segu.tusuario_rol (id_usuario, id_rol, estado_reg)
