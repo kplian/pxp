@@ -294,7 +294,7 @@ BEGIN
             FROM segu.tusuario u
             INNER JOIN segu.tpersona p
                 	ON  p.id_persona = u.id_persona
-            WHERE (u.cuenta ILIKE v_parametros.login or p.correo ILIKE v_parametros.login) and u.estado_reg = 'activo'
+            WHERE (u.cuenta ILIKE TRIM(BOTH FROM v_parametros.login) or p.correo ILIKE TRIM(BOTH FROM v_parametros.login)) and u.estado_reg = 'activo'
             limit 1;
 
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario encontrado');
@@ -362,7 +362,7 @@ BEGIN
             select id_usuario, p.correo, p.nombre into v_id_usuario, v_correo, v_nombre
             from segu.tusuario u
             inner join segu.tpersona p on p.id_persona = u.id_persona
-            where u.cuenta=v_parametros.login or p.correo =  v_parametros.login
+            where u.cuenta ilike TRIM(BOTH FROM v_parametros.login) or p.correo ilike  TRIM(BOTH FROM v_parametros.login)
               and u.estado_reg='activo';
             if(v_id_usuario is null) then
                raise exception 'No existe el usuario o correo ingresado';
@@ -394,10 +394,10 @@ BEGIN
         BEGIN
           --call to signup function
           v_id_usuario := segu.f_signup(
-              v_parametros.email,
+              TRIM(BOTH FROM v_parametros.email),
               v_parametros.name,
               v_parametros.surname,
-              v_parametros.login,
+              TRIM(BOTH FROM v_parametros.login),
               v_parametros.password
           );
 
