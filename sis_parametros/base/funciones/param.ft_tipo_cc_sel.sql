@@ -26,6 +26,7 @@ $body$
   #2  ETR		 07/12/2018		   EGS				 Se creo las funciones PM_TCCARBHI_SEL y PM_TCCARBHI_CONT que lista los nodos transsaccionales del tipo cc por gestion
   #7  endeETR    21/01/2019		   EGS				 se modifico PM_TCCARBHI_SEL para que considere el con tipo de presupuesto
   #150 ENDETR    08/07/2020        JJA               Filtrar los tipo_cc vigentes
+  #44  ENDETR    23/07/2020        JJA          Mejoras en reporte tipo centro de costo de presupuesto
 ***************************************************************************/
 
 DECLARE
@@ -209,7 +210,7 @@ BEGIN
                 v_where := ' tcc.id_tipo_cc_fk = '||v_parametros.node;
               end if;
 
-              v_where_2 = ''; --#150
+              v_where_2 = ' and tcc.codigo not like ''X_%'' '; --#44
               if(v_parametros.ceco_vigente='Operativo')then --#150
               
                  v_where_2 := ' and  tcc.operativo = ''si'' ';
