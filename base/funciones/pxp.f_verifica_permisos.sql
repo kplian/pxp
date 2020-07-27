@@ -115,7 +115,8 @@ begin
              'SEG_GETMENU_JSON',  -- menu PXP-UI
              'SEG_RESPASS_SEG',  --update password
              'SEG_SIGNUP_SEG', --signup user
-             'SEG_SGNUPCON_SEG' --valida token signup
+             'SEG_SGNUPCON_SEG', --valida token signup
+             'SEG_CERRSES_SEG' --cierra sesion
              ))) THEN
             po_tiene_permisos = true;
 

@@ -1410,3 +1410,15 @@ COMMENT ON COLUMN segu.tusuario.token_expiration
 IS 'Fecha de expiracion para token de reseteo ';
 
 /***********************************F-SCP-JRR-SEGU-0-11/06/2020*****************************************/
+
+/***********************************I-SCP-JRR-SEGU-0-26/06/2020*****************************************/
+CREATE TABLE segu.tpnotification_device (
+  id_pnotification_device SERIAL,
+  id_usuario INTEGER,
+  device VARCHAR (300),
+  UNIQUE (id_usuario, device),
+  CONSTRAINT pk_tpnotification_device PRIMARY KEY(id_pnotification_device)
+)INHERITS (pxp.tbase)
+WITH (oids = false);
+
+/***********************************F-SCP-JRR-SEGU-0-26/06/2020*****************************************/

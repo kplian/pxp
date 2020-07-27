@@ -1,6 +1,4 @@
 lib/DatosGenerales.php
 sis_seguridad/control/foto_persona/*.*
 lib/imagenes/logos/*.*
-
-
-
+lib/ratchet/nohup.out

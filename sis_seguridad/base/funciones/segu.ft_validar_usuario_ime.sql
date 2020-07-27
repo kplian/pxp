@@ -260,6 +260,22 @@ BEGIN
 
                END IF;
 
+               -- insert push notifications device if parameter exists and its not registered yet
+              if (pxp.f_existe_parametro(par_tabla, 'device_id')) then
+                if (v_parametros.device_id != '') then
+                  if (not exists (
+                    select 1
+                    from segu.tpnotification_device
+                    where id_usuario = v_id_usuario and device = v_parametros.device_id )
+                  ) then
+                    insert into segu.tpnotification_device (id_usuario, device, id_usuario_reg)
+                    values (v_id_usuario, v_parametros.device_id, v_id_usuario);
+                  end if;
+                end if;
+              end if;
+
+
+
                v_cont_alertas=COALESCE(v_cont_alertas,0);
                v_cont_interino=COALESCE(v_cont_interino,0);
 
@@ -479,7 +495,26 @@ BEGIN
             return v_resp;
          END;
 
-     else
+      /*******************************
+      #TRANSACCION:  SEG_CERRSES_SEG
+      #DESCRIPCION:	Cierra la sesion
+      #AUTOR:		KPLIAN(jrr)
+      #FECHA:		11-06-2020
+      ***********************************/
+
+     elsif(par_transaccion='SEG_CERRSES_SEG')then
+
+        BEGIN
+          if (pxp.f_existe_parametro(par_tabla, 'device_id')) then
+            delete from segu.tpnotification_device
+            where id_usuario = par_id_usuario and device = v_parametros.device_id;
+          end if;
+
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se cerro la sesion del usuario '||par_id_usuario);
+            v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',par_id_usuario::varchar);
+            return v_resp;
+         END;
+      else
          raise exception 'No existe la opcion';
 
       end if;

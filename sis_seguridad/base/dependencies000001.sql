@@ -1,85 +1,85 @@
 /***********************************I-DEP-RAC-SEGU-0-31/12/2012*****************************************/
 
 --
--- Definition for index fk_estructura_dato__id_subsistema (OID = 309308) : 
+-- Definition for index fk_estructura_dato__id_subsistema (OID = 309308) :
 --
 ALTER TABLE ONLY segu.testructura_dato
     ADD CONSTRAINT fk_estructura_dato__id_subsistema
     FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema);
 --
--- Definition for index fk_gui_rol__id_gui (OID = 309333) : 
+-- Definition for index fk_gui_rol__id_gui (OID = 309333) :
 --
 ALTER TABLE ONLY segu.tgui_rol
     ADD CONSTRAINT fk_gui_rol__id_gui
     FOREIGN KEY (id_gui) REFERENCES segu.tgui(id_gui);
 --
--- Definition for index fk_gui_rol__id_rol (OID = 309338) : 
+-- Definition for index fk_gui_rol__id_rol (OID = 309338) :
 --
 ALTER TABLE ONLY segu.tgui_rol
     ADD CONSTRAINT fk_gui_rol__id_rol
     FOREIGN KEY (id_rol) REFERENCES segu.trol(id_rol);
 --
--- Definition for index fk_id_patron_evento (OID = 309343) : 
+-- Definition for index fk_id_patron_evento (OID = 309343) :
 --
 ALTER TABLE ONLY segu.tbloqueo_notificacion
     ADD CONSTRAINT fk_id_patron_evento
     FOREIGN KEY (id_patron_evento) REFERENCES segu.tpatron_evento(id_patron_evento) ON UPDATE CASCADE;
 --
--- Definition for index fk_log_esta_subsiste (OID = 309353) : 
+-- Definition for index fk_log_esta_subsiste (OID = 309353) :
 --
 ALTER TABLE ONLY segu.tlog
     ADD CONSTRAINT fk_log_esta_subsiste
     FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) ON UPDATE RESTRICT ON DELETE RESTRICT;
 --
--- Definition for index fk_log_usuario_e_usuario (OID = 309368) : 
+-- Definition for index fk_log_usuario_e_usuario (OID = 309368) :
 --
 ALTER TABLE ONLY segu.tlog
     ADD CONSTRAINT fk_log_usuario_e_usuario
     FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario) ON UPDATE RESTRICT ON DELETE RESTRICT;
 --
--- Definition for index fk_perfil__id_recurso (OID = 309373) : 
+-- Definition for index fk_perfil__id_recurso (OID = 309373) :
 --
 ALTER TABLE ONLY segu.tperfil
     ADD CONSTRAINT fk_perfil__id_recurso
     FOREIGN KEY (id_recurso) REFERENCES segu.trecurso(id_recurso);
 --
--- Definition for index fk_permiso__id_estructura (OID = 309378) : 
+-- Definition for index fk_permiso__id_estructura (OID = 309378) :
 --
 ALTER TABLE ONLY segu.tpermiso
     ADD CONSTRAINT fk_permiso__id_estructura
     FOREIGN KEY (id_estructura) REFERENCES segu.testructura_dato(id_estructura_dato);
 --
--- Definition for index fk_permiso__id_proc (OID = 309383) : 
+-- Definition for index fk_permiso__id_proc (OID = 309383) :
 --
 ALTER TABLE ONLY segu.tpermiso
     ADD CONSTRAINT fk_permiso__id_proc
     FOREIGN KEY (id_procedimiento) REFERENCES segu.tprocedimiento(id_procedimiento);
 --
--- Definition for index fk_rol_procedimiento__id_procedimiento_gui (OID = 309408) : 
+-- Definition for index fk_rol_procedimiento__id_procedimiento_gui (OID = 309408) :
 --
 ALTER TABLE ONLY segu.trol_procedimiento_gui
     ADD CONSTRAINT fk_rol_procedimiento__id_procedimiento_gui
     FOREIGN KEY (id_procedimiento_gui) REFERENCES segu.tprocedimiento_gui(id_procedimiento_gui);
 --
--- Definition for index fk_rol_procedimiento__id_rol (OID = 309413) : 
+-- Definition for index fk_rol_procedimiento__id_rol (OID = 309413) :
 --
 ALTER TABLE ONLY segu.trol_procedimiento_gui
     ADD CONSTRAINT fk_rol_procedimiento__id_rol
     FOREIGN KEY (id_rol) REFERENCES segu.trol(id_rol);
 --
--- Definition for index fk_usuario__id_persona (OID = 309423) : 
+-- Definition for index fk_usuario__id_persona (OID = 309423) :
 --
 ALTER TABLE ONLY segu.tusuario
     ADD CONSTRAINT fk_usuario__id_persona
     FOREIGN KEY (id_persona) REFERENCES segu.tpersona(id_persona);
 
--- Definition for index fk_usuario__se_asigna_perfil (OID = 309433) : 
+-- Definition for index fk_usuario__se_asigna_perfil (OID = 309433) :
 --
 ALTER TABLE ONLY segu.tusuario_perfil
     ADD CONSTRAINT fk_usuario__se_asigna_perfil
     FOREIGN KEY (id_perfil) REFERENCES segu.tperfil(id_perfil) ON UPDATE RESTRICT ON DELETE RESTRICT;
 --
--- Definition for index fk_usuario__tiene_per_usuario (OID = 309438) : 
+-- Definition for index fk_usuario__tiene_per_usuario (OID = 309438) :
 --
 ALTER TABLE ONLY segu.tusuario_perfil
     ADD CONSTRAINT fk_usuario__tiene_per_usuario
@@ -87,7 +87,7 @@ ALTER TABLE ONLY segu.tusuario_perfil
 
 
 --
--- Definition for index fk_usuario_se_asigna_clasific (OID = 309473) : 
+-- Definition for index fk_usuario_se_asigna_clasific (OID = 309473) :
 --
 ALTER TABLE ONLY segu.tusuario
     ADD CONSTRAINT fk_usuario_se_asigna_clasific
@@ -95,78 +95,78 @@ ALTER TABLE ONLY segu.tusuario
 
 
 --
--- Definition for index fk_estructura_gui__id_hijo (OID = 414093) : 
+-- Definition for index fk_estructura_gui__id_hijo (OID = 414093) :
 --
 ALTER TABLE ONLY segu.testructura_gui
     ADD CONSTRAINT fk_estructura_gui__id_hijo
     FOREIGN KEY (id_gui) REFERENCES segu.tgui(id_gui) ON UPDATE CASCADE;
 --
--- Definition for index fk_estructura_gui__id_padre (OID = 414098) : 
+-- Definition for index fk_estructura_gui__id_padre (OID = 414098) :
 --
 ALTER TABLE ONLY segu.testructura_gui
     ADD CONSTRAINT fk_estructura_gui__id_padre
     FOREIGN KEY (fk_id_gui) REFERENCES segu.tgui(id_gui) ON UPDATE CASCADE;
 --
--- Definition for index fk_funcion__id_subsistema (OID = 414103) : 
+-- Definition for index fk_funcion__id_subsistema (OID = 414103) :
 --
 ALTER TABLE ONLY segu.tfuncion
     ADD CONSTRAINT fk_funcion__id_subsistema
     FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) ON UPDATE CASCADE;
 --
--- Definition for index fk_gui__id_subsistema (OID = 414108) : 
+-- Definition for index fk_gui__id_subsistema (OID = 414108) :
 --
 ALTER TABLE ONLY segu.tgui
     ADD CONSTRAINT fk_gui__id_subsistema
     FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) ON UPDATE CASCADE;
 --
--- Definition for index fk_procedim_tiene_pro_funcion (OID = 414113) : 
+-- Definition for index fk_procedim_tiene_pro_funcion (OID = 414113) :
 --
 ALTER TABLE ONLY segu.tprocedimiento
     ADD CONSTRAINT fk_procedim_tiene_pro_funcion
     FOREIGN KEY (id_funcion) REFERENCES segu.tfuncion(id_funcion) ON UPDATE CASCADE ON DELETE RESTRICT;
 --
--- Definition for index fk_procedimiento_gui__id_gui (OID = 414118) : 
+-- Definition for index fk_procedimiento_gui__id_gui (OID = 414118) :
 --
 ALTER TABLE ONLY segu.tprocedimiento_gui
     ADD CONSTRAINT fk_procedimiento_gui__id_gui
     FOREIGN KEY (id_gui) REFERENCES segu.tgui(id_gui) ON UPDATE CASCADE;
 --
--- Definition for index fk_procedimiento_gui__id_proc (OID = 414123) : 
+-- Definition for index fk_procedimiento_gui__id_proc (OID = 414123) :
 --
 ALTER TABLE ONLY segu.tprocedimiento_gui
     ADD CONSTRAINT fk_procedimiento_gui__id_proc
     FOREIGN KEY (id_procedimiento) REFERENCES segu.tprocedimiento(id_procedimiento) ON UPDATE CASCADE;
 --
--- Definition for index fk_rol__id_subsistema (OID = 414128) : 
+-- Definition for index fk_rol__id_subsistema (OID = 414128) :
 --
 ALTER TABLE ONLY segu.trol
     ADD CONSTRAINT fk_rol__id_subsistema
     FOREIGN KEY (id_subsistema) REFERENCES segu.tsubsistema(id_subsistema) ON UPDATE CASCADE;
 --
--- Definition for index fk_usuario__es_asigna_rol (OID = 414133) : 
+-- Definition for index fk_usuario__es_asigna_rol (OID = 414133) :
 --
 ALTER TABLE ONLY segu.tusuario_rol
     ADD CONSTRAINT fk_usuario__es_asigna_rol
     FOREIGN KEY (id_rol) REFERENCES segu.trol(id_rol) ON UPDATE CASCADE ON DELETE RESTRICT;
 --
--- Definition for index fk_usuario__tiene_pri_usuario (OID = 414138) : 
+-- Definition for index fk_usuario__tiene_pri_usuario (OID = 414138) :
 --
 ALTER TABLE ONLY segu.tusuario_rol
     ADD CONSTRAINT fk_usuario__tiene_pri_usuario
     FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario) ON UPDATE CASCADE ON DELETE RESTRICT;
-    
+
 ALTER TABLE ONLY pxp.tbase
     ADD CONSTRAINT fk_tbase__id_usuario_mod
     FOREIGN KEY (id_usuario_mod) REFERENCES segu.tusuario(id_usuario);
 --
--- Definition for index fk_tbase__id_usuario_reg (OID = 308943) : 
+-- Definition for index fk_tbase__id_usuario_reg (OID = 308943) :
 --
 ALTER TABLE ONLY pxp.tbase
     ADD CONSTRAINT fk_tbase__id_usuario_reg
-    FOREIGN KEY (id_usuario_reg) REFERENCES segu.tusuario(id_usuario);    
+    FOREIGN KEY (id_usuario_reg) REFERENCES segu.tusuario(id_usuario);
 
 --
--- Definition for view vpersona (OID = 306450) : 
+-- Definition for view vpersona (OID = 306450) :
 --
 CREATE VIEW segu.vpersona AS
 SELECT p.id_persona, p.apellido_materno AS ap_materno, p.apellido_paterno
@@ -182,7 +182,7 @@ SELECT p.id_persona, p.apellido_materno AS ap_materno, p.apellido_paterno
 FROM segu.tpersona p;
 
 --
--- Definition for view vlog (OID = 307283) : 
+-- Definition for view vlog (OID = 307283) :
 --
 CREATE VIEW segu.vlog AS
 SELECT tlog.id_log, tlog.id_usuario, tlog.id_subsistema, tlog.mac_maquina,
@@ -196,7 +196,7 @@ WHERE ((tlog.fecha_reg >= (now() - '24:00:00'::interval)) AND
     (tlog.fecha_reg <= now()));
 
 --
--- Definition for view vmonitor_bd_esquema (OID = 307288) : 
+-- Definition for view vmonitor_bd_esquema (OID = 307288) :
 --
 CREATE VIEW segu.vmonitor_bd_esquema AS
 SELECT (n.oid)::integer AS nspoid, (ut.schemaname)::character varying AS
@@ -230,7 +230,7 @@ WHERE (ut.schemaname !~~ 'pg_temp%'::text)
 GROUP BY n.oid, ut.schemaname, u.usename;
 
 --
--- Definition for view vmonitor_bd_funcion (OID = 307293) : 
+-- Definition for view vmonitor_bd_funcion (OID = 307293) :
 --
 CREATE VIEW segu.vmonitor_bd_funcion AS
 SELECT (pro.oid)::integer AS oid, (pro.pronamespace)::integer AS
@@ -240,7 +240,7 @@ SELECT (pro.oid)::integer AS oid, (pro.pronamespace)::integer AS
 FROM (pg_proc pro JOIN pg_user u ON ((pro.proowner = u.usesysid)));
 
 --
--- Definition for view vmonitor_bd_indice (OID = 307298) : 
+-- Definition for view vmonitor_bd_indice (OID = 307298) :
 --
 CREATE VIEW segu.vmonitor_bd_indice AS
 SELECT (ui.relid)::integer AS relid, (ui.indexrelid)::integer AS
@@ -253,7 +253,7 @@ FROM (pg_stat_user_indexes ui JOIN pg_statio_user_indexes ioi ON
     ((ui.indexrelid = ioi.indexrelid)));
 
 --
--- Definition for view vmonitor_bd_tabla (OID = 307302) : 
+-- Definition for view vmonitor_bd_tabla (OID = 307302) :
 --
 CREATE VIEW segu.vmonitor_bd_tabla AS
 SELECT (c.oid)::integer AS oid, (c.relnamespace)::integer AS relnamespace,
@@ -305,52 +305,52 @@ GROUP BY c.oid, c.relnamespace, c.relname, u.usename, c.relhastriggers,
 /***********************************I-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 
 
-CREATE TRIGGER trig_tprocedimiento BEFORE UPDATE 
-ON segu.tprocedimiento FOR EACH ROW 
+CREATE TRIGGER trig_tprocedimiento BEFORE UPDATE
+ON segu.tprocedimiento FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_tprocedimiento();
 
-CREATE TRIGGER trig_tgui BEFORE UPDATE 
+CREATE TRIGGER trig_tgui BEFORE UPDATE
 ON segu.tgui FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_tgui();
 
-CREATE TRIGGER trig_testructura_gui BEFORE UPDATE 
-ON segu.testructura_gui FOR EACH ROW 
+CREATE TRIGGER trig_testructura_gui BEFORE UPDATE
+ON segu.testructura_gui FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_testructura_gui();
 
-CREATE TRIGGER trig_tfuncion BEFORE UPDATE 
+CREATE TRIGGER trig_tfuncion BEFORE UPDATE
 ON segu.tfuncion FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_tfuncion();
 
-CREATE TRIGGER trig_tprocedimiento_gui BEFORE UPDATE 
+CREATE TRIGGER trig_tprocedimiento_gui BEFORE UPDATE
 ON segu.tprocedimiento_gui FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_tprocedimiento_gui();
 
-CREATE TRIGGER trig_trol BEFORE UPDATE 
+CREATE TRIGGER trig_trol BEFORE UPDATE
 ON segu.trol FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_trol();
 
-CREATE TRIGGER trig_tgui_rol BEFORE UPDATE 
-ON segu.tgui_rol FOR EACH ROW 
+CREATE TRIGGER trig_tgui_rol BEFORE UPDATE
+ON segu.tgui_rol FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_tgui_rol();
 
-CREATE TRIGGER trig_trol_procedimiento_gui BEFORE UPDATE 
-ON segu.trol_procedimiento_gui FOR EACH ROW 
+CREATE TRIGGER trig_trol_procedimiento_gui BEFORE UPDATE
+ON segu.trol_procedimiento_gui FOR EACH ROW
 EXECUTE PROCEDURE segu.ftrig_trol_procedimiento_gui();
 
--- Definition for trigger trig_log (OID = 308351) : 
+-- Definition for trigger trig_log (OID = 308351) :
 --
 CREATE TRIGGER trig_log
     BEFORE INSERT ON segu.tlog
     FOR EACH ROW
     EXECUTE PROCEDURE segu.ftrig_log ();
 --
--- Definition for trigger trigger_usuario (OID = 308352) : 
+-- Definition for trigger trigger_usuario (OID = 308352) :
 --
 CREATE TRIGGER trigger_usuario
     AFTER INSERT OR DELETE OR UPDATE ON segu.tusuario
     FOR EACH ROW
     EXECUTE PROCEDURE pxp.trigger_usuario ();
-    
+
 update segu.tusuario set contrasena = '21232f297a57a5a743894a0e4a801fc3'
 where id_usuario = 1;
 
@@ -435,8 +435,8 @@ AS
          p.extension,
          p.fecha_nacimiento,
          p.genero
-         
-         
+
+
   FROM segu.tpersona p;
 
 /*******************************************F-DEP-RAC-SEGU-0-15/01/2015**********************************************/
@@ -478,7 +478,7 @@ AS
          per.correo2::character varying (50) AS correo
   FROM segu.tusuario usu
        JOIN segu.tpersona per ON per.id_persona = usu.id_persona;
-       
+
 /*******************************************F-DEP-RAC-SEGU-0-11/02/2015**********************************************/
 
 /***********************************I-DEP-JRR-SEGU-0-04/05/2016*****************************************/
@@ -492,4 +492,12 @@ ALTER TABLE segu.tpersona
 /***********************************I-DEP-JRR-SEGU-0-16/03/2017*****************************************/
 ALTER TABLE segu.tusuario ENABLE ALWAYS TRIGGER trigger_usuario;
 /***********************************F-DEP-JRR-SEGU-0-16/03/2017*****************************************/
+
+/***********************************I-DEP-JRR-SEGU-0-26/07/2020*****************************************/
+
+ALTER TABLE segu.tpnotification_device
+    ADD CONSTRAINT fk_tpnotification_device__id_usuario
+    FOREIGN KEY (id_usuario) REFERENCES segu.tusuario(id_usuario);
+
+/***********************************F-DEP-JRR-SEGU-0-26/07/2020*****************************************/
 

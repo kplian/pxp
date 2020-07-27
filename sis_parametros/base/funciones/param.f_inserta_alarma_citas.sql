@@ -14,7 +14,7 @@ CREATE OR REPLACE FUNCTION param.f_inserta_alarma_citas(
     LANGUAGE 'plpgsql'
 
     COST 100
-    VOLATILE STRICT SECURITY DEFINER 
+    VOLATILE STRICT SECURITY DEFINER
 AS $BODY$
   /**************************************************************************
    FUNCION: param.f_inserta_alarma_dblink
@@ -38,14 +38,14 @@ AS $BODY$
     v_usr_bd 		varchar;
     v_query			varchar;
     v_id			integer;
-    
+
   BEGIN
     v_nombre_funcion='param.f_inserta_alarma_citas';
     v_database=current_database();
     v_usr_bd=v_database||'_conexion';
 
     v_res_cone=(select dblink_connect('user=' || v_usr_bd ||' dbname='||v_database));
-	
+
 	--verificar: si ya existe un registro en alarma para la url, entonces solo actualizar
 
 	if (not exists (select 1 from param.talarma where id_usuario=p_id_usuario and acceso_directo=p_url ) or p_asunto='credito/debito')then
@@ -76,15 +76,17 @@ AS $BODY$
   		select id_alarma into v_id from param.talarma where id_usuario=p_id_usuario and acceso_directo=p_url;
         update param.talarma
         set descripcion = p_body,
+        fecha_reg = now(),
         acceso_directo= p_url,
         id_usuario= p_id_usuario,
         titulo=p_asunto,
         titulo_correo=p_asunto,
         correos=p_mails,
-        fecha_caducidad=p_fecha_caducidad
+        fecha_caducidad=p_fecha_caducidad,
+        estado_notificacion = 'pendiente'
         where id_alarma=v_id;
-        
-  end if;                                                     
+
+  end if;
 
 
     SELECT * FROM

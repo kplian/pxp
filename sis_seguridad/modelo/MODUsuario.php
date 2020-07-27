@@ -42,6 +42,7 @@ class MODUsuario extends MODbase {
 							 "email" =>$this->arreglo['email'],
 							 "user_id" =>$this->arreglo['user_id'],
 							 "type" =>$this->arreglo['type'],
+							 "device_id" =>$this->arreglo['deviceID'],
 							 "url_photo" =>$this->arreglo['url_photo']);
 
 		//Define los parametros para ejecucion de la funcion
@@ -57,6 +58,7 @@ class MODUsuario extends MODbase {
 		$this->setParametro('user_id','user_id','varchar');
 		$this->setParametro('type','type','varchar'); //tipo autentificacion facebook, google, ldap, local
 		$this->setParametro('url_photo','url_photo','varchar');
+		$this->setParametro('device_id','device_id','varchar');
 		//#179 end
 
 		//Se definen los datos para las variables de sesion
@@ -103,6 +105,24 @@ class MODUsuario extends MODbase {
 		$this->setParametro('surname','surname','varchar');
 		$this->setParametro('login','username','varchar');
 		$this->setParametro('password','password','varchar');
+
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		return $this->respuesta;
+	}
+
+	function cerrarSesion() {
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='segu.ft_validar_usuario_ime';
+		$this->transaccion='SEG_CERRSES_SEG';
+
+		//definicion de variables
+		$this->tipo_conexion='seguridad';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para ejecucion de la funcion
+		$this->setParametro('device_id','deviceID','varchar');
 
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

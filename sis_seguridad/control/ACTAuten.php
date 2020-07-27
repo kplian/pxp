@@ -316,6 +316,8 @@ class ACTAuten extends ACTbase {
     }
 
     function cerrarSesion(){
+        $this->funciones= $this->create('MODUsuario');
+        $this->res=$this->funciones->cerrarSesion();
         session_unset();
         session_destroy(); // destruyo la sesion
         header("Location: /");
