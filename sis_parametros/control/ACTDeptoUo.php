@@ -24,8 +24,7 @@ class ACTDeptoUo extends ACTbase{
 		#187
 		if($id_depto!= null && $id_depto!='undefined' && $id_depto!='' && strlen($id_depto)>0){
 		   $this->objParam->addParametro('id_depto',$id_depto);
-		}
-		
+		}		
 		$this->res=$this->objFunc->listarDeptoUo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
