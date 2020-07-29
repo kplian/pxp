@@ -310,8 +310,9 @@ BEGIN
             FROM segu.tusuario u
             INNER JOIN segu.tpersona p
                 	ON  p.id_persona = u.id_persona
-            WHERE (u.cuenta ILIKE TRIM(BOTH FROM v_parametros.login) or p.correo ILIKE TRIM(BOTH FROM v_parametros.login)) and u.estado_reg = 'activo'
+            WHERE (unaccent(u.cuenta) ILIKE unaccent(REPLACE(v_parametros.login, ' ', '')) or unaccent(p.correo) ILIKE unaccent(REPLACE(v_parametros.login, ' ', ''))) and u.estado_reg = 'activo'
             limit 1;
+
 
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Usuario encontrado');
                v_resp = pxp.f_agrega_clave(v_resp,'id_usuario',v_id_usuario::varchar);
@@ -410,10 +411,10 @@ BEGIN
         BEGIN
           --call to signup function
           v_id_usuario := segu.f_signup(
-              TRIM(BOTH FROM v_parametros.email),
+              unaccent(REPLACE(v_parametros.email, ' ', '')),
               v_parametros.name,
               v_parametros.surname,
-              TRIM(BOTH FROM v_parametros.login),
+              unaccent(REPLACE(v_parametros.login, ' ', '')),
               v_parametros.password
           );
 

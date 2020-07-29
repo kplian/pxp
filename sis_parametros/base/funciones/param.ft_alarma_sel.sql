@@ -513,9 +513,11 @@ BEGIN
 						WHERE pnd.id_usuario = param.talarma.id_usuario AND
 							param.talarma.estado_notificacion = ''pendiente'' AND
 							param.talarma.fecha_reg > (now() - interval ''5 minutes'')
-						RETURNING id_alarma, pnd.device)
-						SELECT ala.id_alarma, id_usuario, titulo, descripcion, up.device
+						RETURNING id_alarma)
+						SELECT ala.id_alarma, ala.id_usuario, titulo, descripcion, pnd.device
 						FROM param.talarma ala
+            			INNER JOIN segu.tpnotification_device pnd
+              				ON pnd.id_usuario = ala.id_usuario
 						INNER JOIN updated up ON up.id_alarma = ala.id_alarma';
 			return v_consulta;
 

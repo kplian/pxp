@@ -57,15 +57,15 @@ BEGIN
     select 1
     from segu.tusuario u
     inner join segu.tpersona p on p.id_persona = u.id_persona
-    where p.correo = p_email )) then
-    raise exception 'Ya existe un usuario con este correo, intente recuperar su password.';
+    where p.correo ilike p_email or u.cuenta ilike p_email)) then
+    raise exception 'Ya existe un usuario con el mismo correo, intente recuperar su password.';
   end if;
   --validate login doesn't exists
   if (exists(
     select 1
     from segu.tusuario u
-    where u.cuenta = p_login )) then
-    raise exception 'Ya existe un usuario con nombre de usuario.';
+    where u.cuenta ilike p_login )) then
+    raise exception 'Ya existe un usuario con el mismo nombre de usuario.';
   end if;
 
 

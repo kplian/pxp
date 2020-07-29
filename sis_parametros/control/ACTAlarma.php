@@ -175,6 +175,7 @@ class ACTAlarma extends ACTbase{
 			$arrNotification["body"] = $dato['titulo'] . ": " .  $dato['descripcion'];
 			$arrNotification["title"] = 'Vouz';
 			$arrNotification["sound"] = "default";
+			$arrNotification["icon"] = "https://vouz.me/images/logo_vouz_fondo.png";
 			$arrNotification["type"] = 1;
 
 			$result = $this->send_notification($dato['device'], $arrNotification,"Web");
