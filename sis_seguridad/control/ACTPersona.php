@@ -139,16 +139,42 @@ class ACTPersona extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 
 	}
-	
-	function subirFotoPersona(){
-	
-		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
-		$this->objFunSeguridad = $this->create('MODPersona');
-		$this->res=$this->objFunSeguridad->subirFotoPersona();
-		//imprime respuesta en formato JSON
-		$this->res->imprimirRespuesta($this->res->generarJson());
 
-	}
+    function subirFotoPersona()
+    {
+        $estado_res = 'ERROR';
+        $mensaje_completo = "Fallo inesperado, comuniquese con el departamento de soporte del sistema";
+        $arregloFiles = $this->objParam->getArregloFiles();
+        $ext = pathinfo($arregloFiles['foto']['name']);
+        $ci = $this->objParam->getParametro('ci');
+        $nombre_archivo_foto = $this->objParam->getParametro('ci') . '.' . $ext['extension'];
+        $this->objParam->addParametro('extension', $ext['extension']);
+        $this->objParam->addParametro('nombre_archivo_foto', $nombre_archivo_foto);
+
+        $this->objFunSeguridad = $this->create('MODPersona');
+        $destino = dirname(__DIR__) . '/../../' . $_SESSION["_FOLDER_FOTOS_PERSONA"] . '/' . $ci . '.' . $ext['extension'];
+        $allowedExts = array("jpeg", "jpg", "png");
+        $allowedMineTypes = array("image/jpeg", "image/jpg", "image/png");;
+        if (in_array($arregloFiles['foto']["type"], $allowedMineTypes)
+            && ($arregloFiles['foto']["size"] < 2048000)
+            && in_array($ext['extension'], $allowedExts)) {
+            if (move_uploaded_file($arregloFiles['foto']['tmp_name'], $destino)) {
+                $this->res = $this->objFunSeguridad->subirFotoPersona();
+                $mensaje_completo = $this->res->getMensaje();
+                $estado_res = $this->res->getTipo();
+            } else {
+                $mensaje_completo = "Error al guardar el archivo en disco";
+                $estado_res = 'ERROR';
+            }
+        } else {
+            $mensaje_completo = "Solo es posible subir archivos (" . implode(', ', $allowedExts) . '), peso m&aacute;ximo (2mb)';
+            $estado_res = 'ERROR';
+        }
+        $this->res = new Mensaje();
+        $this->res->setMensaje($estado_res, 'ACTPersona.php', $mensaje_completo,
+            $mensaje_completo, 'control');
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 	
 	function validarPersona(){
 		$this->objFunc=$this->create('MODPersona');		

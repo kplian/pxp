@@ -4,8 +4,8 @@
 *@file Persona.php
 *@author KPLIAN (JRR)
 *@date 14-02-2011
-*@description  Vista para regitro de datos de persona 
-ISSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION  
+*@description  Vista para regitro de datos de persona
+ISSUE            FECHA:         EMPRESA     AUTOR               DESCRIPCION
   #40            31-07-2019     ETR		     MZM                Adicion de campos matricula, historia_clinica en tabla con sus correspondientes cambios en funciones. Adicion de campo fecha_nacimiento a vista
   #55			02.09.2019		ETR			MZM					Adicion de campo abreviatura_titulo
   #59 			09.09.2019		ETR			MZM					Adicion de campo profesion
@@ -25,15 +25,15 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 
 		},
 		type:'Field',
-		form:true 
-		
+		form:true
+
 	},
 	 {
 		config:{
 			fieldLabel: "Nombre",
 			gwidth: 130,
 			name: 'nombre',
-			allowBlank:false,	
+			allowBlank:false,
 			maxLength:150,
 			minLength:2,
 			anchor:'100%'
@@ -51,9 +51,9 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Apellido Paterno",
 			gwidth: 130,
 			name: 'ap_paterno',
-			allowBlank:false,	
+			allowBlank:false,
 			maxLength:150,
-			
+
 			anchor:'100%'
 		},
 		type:'TextField',
@@ -68,7 +68,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Apellido Materno",
 			gwidth: 130,
 			name: 'ap_materno',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:150,
 			anchor:'100%'
 		},
@@ -83,7 +83,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       			fieldLabel: "Fecha de Nacimiento",
 	       			gwidth: 120,
 	       			name: 'fecha_nacimiento',
-	       			allowBlank:false,	
+	       			allowBlank:false,
 	       			maxLength:100,
 	       			minLength:1,
 	       			format:'d/m/Y',
@@ -102,25 +102,75 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       			fieldLabel:'Genero',
 	       			allowBlank:true,
 	       			emptyText:'Genero...',
-	       			
+
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    mode: 'local',	       		    
+	       		    mode: 'local',
 	       		    store:['masculino','femenino']
-	       		    
+
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
-	       		filters:{	
+	       		filters:{
 	       		         type: 'list',
 	       				 options: ['masculino','femenino']
 	       		 	},
-	       		grid:true,       		
+	       		grid:true,
 	       		form:true
 	       	},
-	       	
-	       	
+        {
+            config:{
+                fieldLabel: "Sobre Nombre",
+                gwidth: 130,
+                name: 'sobrenombre',
+                allowBlank:false,
+                maxLength:50,
+
+                anchor:'100%'
+            },
+            type:'TextField',
+            filters:{pfiltro:'p.sobrenombre',type:'string'},
+            bottom_filter : true,
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                fieldLabel: "Cualidad 1",
+                gwidth: 130,
+                name: 'cualidad_1',
+                allowBlank:false,
+                maxLength:50,
+
+                anchor:'100%'
+            },
+            type:'TextField',
+            filters:{pfiltro:'p.cualidad_1',type:'string'},
+            bottom_filter : true,
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                fieldLabel: "Cualidad 2",
+                gwidth: 130,
+                name: 'cualidad_2',
+                allowBlank:false,
+                maxLength:50,
+
+                anchor:'100%'
+            },
+            type:'TextField',
+            filters:{pfiltro:'p.cualidad_2',type:'string'},
+            bottom_filter : true,
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+
 	       	// fin #40
 	 {
 		config:{
@@ -129,29 +179,24 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			inputType:'file',
 			name: 'foto',
 			//allowBlank:true,
-			  buttonText: '',	
+			  buttonText: '',
 			maxLength:150,
 			anchor:'100%',
-			renderer:function (value, p, record){	
+			renderer:function (value, p, record){
 						var momentoActual = new Date();
-					
+
 						var hora = momentoActual.getHours();
 						var minuto = momentoActual.getMinutes();
 						var segundo = momentoActual.getSeconds();
-						
+
 						hora_actual = hora+":"+minuto+":"+segundo;
-						
-					
-						
+
+
+
 						//return  String.format('{0}',"<div style='text-align:center'><img src = ../../control/foto_persona/"+ record.data['foto']+"?"+record.data['nombre_foto']+hora_actual+" align='center' width='70' height='70'/></div>");
-						var splittedArray = record.data['foto'].split('.');
-						if (splittedArray[splittedArray.length - 1] != "") {
-							return  String.format('{0}',"<div style='text-align:center'><img src = '../../control/foto_persona/ActionArmafoto.php?nombre="+ record.data['foto']+"&asd="+hora_actual+"' align='center' width='70' height='70'/></div>");
-						} else {
-							return  String.format('{0}',"<div style='text-align:center'><img src = '../../../lib/imagenes/NoPerfilImage.jpg' align='center' width='70' height='70'/></div>");
-						}
-						
-					},	
+                        var foto = record.data['nombre_archivo_foto'];
+                        return String.format('{0}', "<div style='text-align:center'><img src = '../../control/foto_persona/ActionObtenerFoto.php?file=" + foto + "' align='center'  height='70'/></div>");
+					},
 			buttonCfg: {
                 iconCls: 'upload-icon'
             }
@@ -170,19 +215,19 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       			fieldLabel:'Tipo Documento',
 	       			allowBlank:true,
 	       			emptyText:'Tipo Doc...',
-	       			
+
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    mode: 'local',	       		    
+	       		    mode: 'local',
 	       		    store:['documento_identidad','pasaporte','Ninguno']
-	       		    
+
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
-	       		filters:{	
+	       		filters:{
 	       		         type: 'list',
-	       				 options: ['documento_identidad','pasaporte'],	
+	       				 options: ['documento_identidad','pasaporte'],
 	       		 	},
 	       		grid:true,
 	       		valorInicial:'documento_identidad',
@@ -193,7 +238,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "CI",
 			gwidth: 80,
 			name: 'ci',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:15,
 			minLength:5,
 			anchor:'100%'
@@ -210,31 +255,31 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       			fieldLabel:'Expedido En',
 	       			allowBlank:true,
 	       			emptyText:'Expedido En...',
-	       			
+
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    mode: 'local',	       		    
+	       		    mode: 'local',
 	       		    store:['CB','LP','BN','CJ','PT','CH','TJ','SC','OR','OTRO']
-	       		    
+
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
-	       		filters:{	
+	       		filters:{
 	       		         type: 'list',
-	       				 options: ['CB','LP','BN','CJ','PT','CH','TJ','SC','OR','OTRO'],	
+	       				 options: ['CB','LP','BN','CJ','PT','CH','TJ','SC','OR','OTRO'],
 	       		 	},
 	       		grid:true,
 	       		valorInicial:'expedicion',
 	       		form:true
 	       	},
-	
+
 	 {
 		config:{
 			fieldLabel: "Telefono",
 			gwidth: 120,
 			name: 'telefono1',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:15,
 			minLength:5,
 			anchor:'100%'
@@ -250,7 +295,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Celular",
 			gwidth: 120,
 			name: 'celular1',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:15,
 			minLength:5,
 			anchor:'100%'
@@ -267,7 +312,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			gwidth: 150,
 			name: 'correo',
 			allowBlank:true,
-			vtype:'email',	
+			vtype:'email',
 			maxLength:100,
 			minLength:5,
 			anchor:'100%'
@@ -283,7 +328,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Telefono 2",
 			gwidth: 120,
 			name: 'telefono2',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:15,
 			minLength:5,
 			anchor:'100%'
@@ -299,7 +344,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Celular 2",
 			gwidth: 120,
 			name: 'celular2',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:15,
 			minLength:5,
 			anchor:'100%'
@@ -333,7 +378,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Matricula",
 			gwidth: 120,
 			name: 'matricula',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:20,
 			minLength:5,
 			anchor:'100%'
@@ -348,7 +393,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Historia Clinica",
 			gwidth: 120,
 			name: 'historia_clinica',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:20,
 			minLength:5,
 			anchor:'100%'
@@ -364,19 +409,19 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       			fieldLabel:'Grupo Sanguineo',
 	       			allowBlank:true,
 	       			emptyText:'Grupo Sanguineo...',
-	       			
+
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    mode: 'local',	       		    
+	       		    mode: 'local',
 	       		    store:['O Rh+','O Rh-','A Rh+','A Rh-','B Rh+','B Rh-','AB Rh+','AB Rh-']
-	       		    
+
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
-	       		filters:{	
+	       		filters:{
 	       		         type: 'list',
-	       				 options: ['O Rh+','O Rh-','A Rh+','A Rh-','B Rh+','B Rh-','AB Rh+','AB Rh-'],	
+	       				 options: ['O Rh+','O Rh-','A Rh+','A Rh-','B Rh+','B Rh-','AB Rh+','AB Rh-'],
 	       		 	},
 	       		grid:true,
 	       		form:true
@@ -387,19 +432,19 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       			fieldLabel:'Titulo (abrev)',
 	       			allowBlank:true,
 	       			emptyText:'Abreviatura de Titulo...',
-	       			
+
 	       			typeAhead: true,
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
-	       		    mode: 'local',	       		    
+	       		    mode: 'local',
 	       		    store:['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.']
-	       		    
+
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
-	       		filters:{	
+	       		filters:{
 	       		         type: 'list',
-	       				 options: ['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.'],	
+	       				 options: ['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.'],
 	       		 	},
 	       		grid:true,
 	       		form:true
@@ -409,7 +454,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			fieldLabel: "Profesion",
 			gwidth: 120,
 			name: 'profesion',
-			allowBlank:true,	
+			allowBlank:true,
 			maxLength:50,
 			minLength:5,
 			anchor:'100%'
@@ -420,7 +465,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		grid:true,
 		form:true  //#88
 	}//#59 (F)
-	       	
+
 	],
 
 
@@ -454,7 +499,11 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	//fin #40
 	//#55 - 02.09.2019
 	,{name:'abreviatura_titulo', type: 'string'}
-	,{name:'profesion', type: 'string'},{name:'grupo_sanguineo', type: 'string'} //#59 - 09.09.2019
+	,{name:'profesion', type: 'string'},{name:'grupo_sanguineo', type: 'string'},//#59 - 09.09.2019,
+        {name:'nombre_archivo_foto', type: 'string'},
+        {name:'sobrenombre', type: 'string'},
+        {name:'cualidad_1', type: 'string'},
+        {name:'cualidad_2', type: 'string'}
 		],
 	sortInfo:{
 		field: 'id_persona',
@@ -464,13 +513,13 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
     bsave:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
     bnew:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
     bedit:(Phx.CP.config_ini.sis_integracion=='ENDESIS')?false:true,
-	
-	
+
+
 	fheight: 350,
 	fwidth: 400,
-	
-	
-    
+
+
+
 
 	// sobre carga de funcion
 	preparaMenu:function(tb){
@@ -479,36 +528,36 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		this.getBoton('aSubirFoto').enable();
 		//this.getBoton('x').enable();
 	},
-	
+
 	liberaMenu:function(tb){
 		// llamada funcion clace padre
 		Phx.vista.persona.superclass.liberaMenu.call(this,tb)
 		this.getBoton('aSubirFoto').disable();
 		//this.getBoton('x').disable();
-		
+
 	},
-	
+
 	// Funcion guardar del formulario
-    onSubmit: function(o, x, force) {    	
+    onSubmit: function(o, x, force) {
     	var me = this;
     	if (me.form.getForm().isValid()) {
 
             Phx.CP.loadingShow();
             // arma json en cadena para enviar al servidor
-            Ext.apply(me.argumentSave, o.argument); 
-            
+            Ext.apply(me.argumentSave, o.argument);
+
             Ext.Ajax.request({
                 url: '../../sis_seguridad/control/Persona/validarPersona',
                 params: { 	'id_persona': this.Cmp.id_persona.getValue(),
                 			'nombre' :  this.Cmp.nombre.getValue() + this.Cmp.ap_paterno.getValue()+ this.Cmp.ap_materno.getValue(),
                 			'tipo_documento' :  this.Cmp.tipo_documento.getValue(),
-                			'ci' :  this.Cmp.ci.getValue()},                
-                success: me.successValidar,                
+                			'ci' :  this.Cmp.ci.getValue()},
+                success: me.successValidar,
                 failure: me.conexionFailure,
                 timeout: me.timeout,
                 argument: {'o':o,'x':x,'force':false},
                 scope: me
-            }); 
+            });
 
         }
 
@@ -520,7 +569,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
     		Phx.vista.persona.superclass.onSubmit.call(this,resp.argument.o,resp.argument.x,resp.argument.force);
     	} else if (reg.ROOT.datos.tipo_mensaje == 'error') {
     		Phx.CP.loadingHide();
-    		alert(reg.ROOT.datos.mensaje_error);    		
+    		alert(reg.ROOT.datos.mensaje_error);
     	} else {
     		Phx.CP.loadingHide();
     		// Show a dialog using config options:
@@ -530,11 +579,11 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 			   buttons: Ext.Msg.YESNO,
 			   fn: function(btn){
 			   		if (btn == 'no') {
-			   			
+
 			   		} else {
-			   			Phx.vista.persona.superclass.onSubmit.call(me,resp.argument.o,resp.argument.x,resp.argument.force);			   			
+			   			Phx.vista.persona.superclass.onSubmit.call(me,resp.argument.o,resp.argument.x,resp.argument.force);
 			   		}
-				    
+
 			   },
 			   animEl: 'elId',
 			   icon: Ext.MessageBox.QUESTION
@@ -544,7 +593,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 
 	/*
 	 * Grupos:[{
-	 * 
+	 *
 	 * xtype:'fieldset', border: false, //title: 'Checkbox Groups', autoHeight:
 	 * true, layout: 'form', items:[], id_grupo:0 }],
 	 */
@@ -560,9 +609,9 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
             handler: this.archivo
         });
 
-   		
-       
-        
+
+
+
         this.init();
 		// this.addButton('my-boton',{disabled:false,handler:myBoton,tooltip:
 		// '<b>My Boton</b><br/>Icon only button with tooltip'});
@@ -571,7 +620,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 		this.addButton('aSubirFoto',{name:'subirFoto',text:'Subir Foto',iconCls: 'baddphoto',disabled:true,handler:this.SubirFoto,tooltip: '<b>Subir Foto</b><br/>Permite actualizar la foto de la persona'});
 		this.iniciarEventos();
 	},
-	SubirFoto(){					
+	SubirFoto(){
 			var rec=this.sm.getSelected();
 			Phx.CP.loadWindows('../../../sis_seguridad/vista/persona/subirFotoPersona.php',
 			'Subir foto',
@@ -588,13 +637,13 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	    		this.Cmp.expedicion.reset();
 	    		this.Cmp.expedicion.disable();
 	    		this.Cmp.ci.modificado=true;
-	    		this.Cmp.expedicion.modificado=true;	
+	    		this.Cmp.expedicion.modificado=true;
 	    	}else{
 	    		this.Cmp.ci.enable();
 	    		this.Cmp.expedicion.enable();
 	    		this.Cmp.ci.modificado=true;
 	    		this.Cmp.expedicion.modificado=true;
-	    	}	    	
+	    	}
 	   	},this);
 	   	this.ocultarComponente(this.Cmp.profesion);
    },

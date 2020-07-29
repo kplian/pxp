@@ -56,10 +56,7 @@
         .container {
             display: block;
             margin: 0 auto !important;
-            /* makes it centered */
-            max-width: 580px;
             padding: 10px;
-            width: 580px;
         }
 
         /* This should also be a block element, so that it will fill 100% of the .container */
@@ -67,7 +64,6 @@
             box-sizing: border-box;
             display: block;
             margin: 0 auto;
-            max-width: 580px;
             padding: 10px;
         }
 
@@ -173,11 +169,11 @@
         }
 
         .btn a {
-            background-color: #ffffff;
-            border: solid 1px #3498db;
+            background-color: #021d70;
+            border: solid 1px #021d70;
             border-radius: 5px;
             box-sizing: border-box;
-            color: #3498db;
+            color: #ffffff;
             cursor: pointer;
             display: inline-block;
             font-size: 14px;
@@ -189,15 +185,29 @@
         }
 
         .btn-primary table td {
-            background-color: #3498db;
+            background-color: #021d70;
         }
 
         .btn-primary a {
-            background-color: #3498db;
-            border-color: #3498db;
+            background-color: #021d70;
+            border-color: #021d70;
             color: #ffffff !important;
         }
+        .button {
+            border-radius: 2px;
+        }
 
+        .button a {
+            padding: 8px 12px;
+            border: 1px solid #ED2939;
+            border-radius: 2px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
         /* -------------------------------------
             OTHER STYLES THAT MIGHT BE USEFUL
         ------------------------------------- */
@@ -252,13 +262,13 @@
 
         hr {
             border: 0;
-            border-bottom: 1px solid #f6f6f6;
+            border-bottom: 1px solid #021d70;
             margin: 20px 0;
         }
 
         .table-title td {
-            background: #3498db;
-            color: #FFF;
+            background: #021d70;
+            color: #FFFFFF;
             font-weight: bold;
         }
 
@@ -351,12 +361,12 @@
             }
 
             .btn-primary table td:hover {
-                background-color: #34495e !important;
+                background-color: #021d70 !important;
             }
 
             .btn-primary a:hover {
-                background-color: #34495e !important;
-                border-color: #34495e !important;
+                background-color: #021d70 !important;
+                color: #ffffff !important;
             }
         }
 

@@ -110,6 +110,9 @@ BEGIN
                                ,profesion --#59 - 09.09.2019
                                ,grupo_sanguineo --#88
                                ,direccion --#88
+                               ,sobrenombre
+                               ,cualidad_1
+                               ,cualidad_2
                                )
                values(
                       upper(v_parametros.nombre),
@@ -135,6 +138,9 @@ BEGIN
                       ,v_parametros.profesion
                       ,v_parametros.grupo_sanguineo  --#88
                       ,v_parametros.direccion	--#88
+                      ,v_parametros.sobrenombre
+                      ,v_parametros.cualidad_1
+                      ,v_parametros.cualidad_2
                       )
 
                RETURNING id_persona INTO v_id_persona;
@@ -204,6 +210,9 @@ BEGIN
               ,profesion=v_parametros.profesion
                ,grupo_sanguineo=v_parametros.grupo_sanguineo --#88
                ,direccion = v_parametros.direccion--#88
+               ,sobrenombre = v_parametros.sobrenombre
+               ,cualidad_1 = v_parametros.cualidad_1
+               ,cualidad_2 = v_parametros.cualidad_2
                where id_persona=v_parametros.id_persona;
 
                --v_respuesta_sinc:= segu.f_sincroniza_persona_entre_bd(v_parametros.id_persona,'10.172.0.13','5432','db_link','db_link','dbendesis','UPDATE');
@@ -235,8 +244,8 @@ BEGIN
 
                update segu.tpersona
                set
-               foto=v_parametros.foto,
-               extension=v_parametros.extension
+               extension=v_parametros.extension,
+               nombre_archivo_foto = v_parametros.nombre_archivo_foto
                where id_persona=v_parametros.id_persona;
 
              v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Foto de la persona modificada con exito '||v_parametros.id_persona);

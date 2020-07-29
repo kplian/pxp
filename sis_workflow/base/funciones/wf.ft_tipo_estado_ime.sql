@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_tipo_estado_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -12,11 +14,13 @@ $body$
  DESCRIPCION:   Funcion que gestiona las operaciones basicas (inserciones, modificaciones, eliminaciones de la tabla 'wf.ttipo_estado'
  AUTOR: 		 (FRH)
  FECHA:	        21-02-2013 15:36:11
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 	ISSUE			FECHA			AUTHOR 					DESCRIPCION
-	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta	
+	#17	EndeEtr		22/05/2019		EGS						Aumento de cmp dias_alerta
+    #143            29/05/2020      EGS                     Se agrega campos para configuracion de sla
+
 ***************************************************************************/
 
 DECLARE
@@ -32,32 +36,86 @@ DECLARE
     v_id_roles			varchar[];
     v_tamano			integer;
     v_i					integer;
-			    
+    dias_envio			varchar;--#143
+    v_array 		   INTEGER[];--#143
+    v_hrs_envio_integer varchar;--#143
+    v_hrs_envio         varchar;--#143
+    v_hrs               time;--#143
+    v_array_hrs         varchar[];--#143
+
 BEGIN
 
     v_nombre_funcion = 'wf.ft_tipo_estado_ime';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_TIPES_INS'
  	#DESCRIPCION:	Insercion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
 	if(p_transaccion='WF_TIPES_INS')then
-					
+
         begin
         	--Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '
         	SELECT count(id_tipo_estado)
             INTO v_cont_estados_ini
             FROM wf.ttipo_estado te
-            WHERE (te.inicio ilike 'si' and te.id_tipo_proceso = v_parametros.id_tipo_proceso and v_parametros.inicio ilike 'si') and estado_reg ilike 'activo';   
-                             
+            WHERE (te.inicio ilike 'si' and te.id_tipo_proceso = v_parametros.id_tipo_proceso and v_parametros.inicio ilike 'si') and estado_reg ilike 'activo';
+
             IF v_cont_estados_ini >= 1 THEN
-                RAISE EXCEPTION 'Ya esta resgistrado un Tipo Estado ''inicio''.Solo puede haber un estado (nodo) inicio.';
+                RAISE EXCEPTION 'Ya esta resgistrado un Tipo Estado (inicio).Solo puede haber un estado (nodo) inicio.';
             END IF;
-            
+
+            IF v_parametros.sla = 'si' THEN --#143
+
+                  IF v_parametros.fin = 'si' THEN
+
+                      IF (v_parametros.dias_limite <> 0)or(v_parametros.dias_envio <> '') or (v_parametros.hrs_envio <> '')  THEN
+                          RAISE EXCEPTION 'No puede Configurar los Sla en un  estado Fin';
+                      END IF;
+                  END IF;
+                  --Verificacion que en dias_envio sean enteros
+                  IF v_parametros.dias_envio <> '' THEN
+
+                    dias_envio = replace(v_parametros.dias_envio,',','');
+                    IF pxp.f_is_positive_integer(dias_envio) = false THEN
+                            RAISE EXCEPTION 'Los dias de Envio no tienen el Formato. ejemplo (15,10,3) %',v_parametros.dias_envio;
+                    END IF;
+
+                    v_array = string_to_array(v_parametros.dias_envio,',');
+                    v_tamano:=array_length(v_array,1);
+
+
+                    For i in 1..(v_tamano) loop
+                        IF (v_array[i] > v_parametros.dias_limite) THEN
+                            RAISE EXCEPTION 'El valor de (%) es Mayor a los Dias Limite %',v_array[i],v_parametros.dias_limite;
+                        END IF;
+
+                    End loop;
+                  END IF;
+                  --Verificacion que en hrs_envio sean time
+                  IF v_parametros.hrs_envio <> '' THEN
+
+                    v_array_hrs = string_to_array(v_parametros.hrs_envio,',');
+                    v_tamano:=array_length(v_array_hrs,1);
+
+                    For i in 1..(v_tamano) loop
+
+                       IF v_array_hrs[i] ~ '^[0-2][0-3]:[0-5][0-9]$' THEN
+
+
+                       ELSE
+                          RAISE EXCEPTION 'Hrs envio Debe tener el formato de HH:MM separado por comas si es mas de uno';
+                       END IF;
+
+
+
+                    End loop;
+                  END IF;
+            END IF;
+
         	--Sentencia de la insercion
         	insert into wf.ttipo_estado(
 			nombre_estado,
@@ -82,18 +140,22 @@ BEGIN
             funcion_inicial,
             funcion_regreso,
             mobile,
-            acceso_directo_alerta, 
-            nombre_clase_alerta, 
-            tipo_noti, 
-            titulo_alerta, 
+            acceso_directo_alerta,
+            nombre_clase_alerta,
+            tipo_noti,
+            titulo_alerta,
             parametros_ad,
             admite_obs,
             etapa,
             grupo_doc,
             id_tipo_estado_anterior,
             icono,
-            dias_alerta --#17
-            
+            dias_alerta, --#17
+            dias_limite,
+            dias_envio,
+            hrs_envio,
+            sla
+
           	) values(
 			v_parametros.nombre_estado,
 			v_parametros.id_tipo_proceso,
@@ -117,40 +179,44 @@ BEGIN
             v_parametros.funcion_inicial,
             v_parametros.funcion_regreso,
             v_parametros.mobile,
-            v_parametros.acceso_directo_alerta, 
-            v_parametros.nombre_clase_alerta, 
-            v_parametros.tipo_noti, 
-            v_parametros.titulo_alerta, 
+            v_parametros.acceso_directo_alerta,
+            v_parametros.nombre_clase_alerta,
+            v_parametros.tipo_noti,
+            v_parametros.titulo_alerta,
             v_parametros.parametros_ad,
             v_parametros.admite_obs,
             v_parametros.etapa,
             v_parametros.grupo_doc,
             v_parametros.id_tipo_estado_anterior,
 			v_parametros.icono,
-            v_parametros.dias_alerta --#17	
+            v_parametros.dias_alerta, --#17
+            v_parametros.dias_limite,
+            v_parametros.dias_envio,
+            v_parametros.hrs_envio,
+            v_parametros.sla
 			)RETURNING id_tipo_estado into v_id_tipo_estado;
-			
+
             v_id_roles= string_to_array(v_parametros.id_roles,',');
              v_tamano = coalesce(array_length(v_id_roles, 1),0);
-             
 
-            
+
+
              FOR v_i IN 1..v_tamano LOOP
-         
+
               --insertamos  registro si no esta presente como activo
-                  insert into wf.ttipo_estado_rol 
-                     (id_tipo_estado, 
-                     id_rol, 
-                     estado_reg) 
+                  insert into wf.ttipo_estado_rol
+                     (id_tipo_estado,
+                     id_rol,
+                     estado_reg)
                   values(
                   v_id_tipo_estado,
                   v_id_roles[v_i]::integer,
-                  'activo'); 
-             
+                  'activo');
+
              END LOOP;
-            
+
 			--Definicion de la respuesta
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado almacenado(a) con exito (id_tipo_estado'||v_id_tipo_estado||')'); 
+			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado almacenado(a) con exito (id_tipo_estado'||v_id_tipo_estado||')');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_id_tipo_estado::varchar);
 
             --Devuelve la respuesta
@@ -158,17 +224,64 @@ BEGIN
 
 		end;
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_TIPES_MOD'
  	#DESCRIPCION:	Modificacion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
 	elsif(p_transaccion='WF_TIPES_MOD')then
 
 		begin
-        	            
+            IF v_parametros.sla = 'si' THEN --#143
+                  IF v_parametros.fin = 'si' THEN
+
+                      IF (v_parametros.dias_limite <> 0)or(v_parametros.dias_envio <> '') or (v_parametros.hrs_envio <> '')  THEN
+                          RAISE EXCEPTION 'No puede Configurar los Sla en un  estado Fin';
+                      END IF;
+                  END IF;
+
+                  --Verificacion que en dias_envio sean enteros
+                  IF v_parametros.dias_envio <> '' THEN
+
+                    dias_envio = replace(v_parametros.dias_envio,',','');
+                    IF pxp.f_is_positive_integer(dias_envio) = false THEN
+                            RAISE EXCEPTION 'Los dias de Envio no tienen el Formato. ejemplo (15,10,3) %',v_parametros.dias_envio;
+                    END IF;
+
+                    v_array = string_to_array(v_parametros.dias_envio,',');
+                    v_tamano:=array_length(v_array,1);
+
+
+                    For i in 1..(v_tamano) loop
+                        IF (v_array[i] > v_parametros.dias_limite) THEN
+                            RAISE EXCEPTION 'El valor de (%) es Mayor a los Dias Limite %',v_array[i],v_parametros.dias_limite;
+                        END IF;
+
+                    End loop;
+                  END IF;
+                  --Verificacion que en hrs_envio sean time
+                  IF v_parametros.hrs_envio <> '' THEN
+
+                    v_array_hrs = string_to_array(v_parametros.hrs_envio,',');
+                    v_tamano:=array_length(v_array_hrs,1);
+
+                    For i in 1..(v_tamano) loop
+
+                       IF v_array_hrs[i] ~ '^[0-2][0-3]:[0-5][0-9]$' THEN
+
+
+                       ELSE
+                          RAISE EXCEPTION 'Hrs envio Debe tener el formato de HH:MM separado por comas si es mas de uno';
+                       END IF;
+
+
+
+                    End loop;
+                  END IF;
+            END IF;
+
 			--Sentencia de la modificacion
 			update wf.ttipo_estado set
 			nombre_estado = v_parametros.nombre_estado,
@@ -190,196 +303,200 @@ BEGIN
 			funcion_inicial = v_parametros.funcion_inicial,
             funcion_regreso = v_parametros.funcion_regreso,
             mobile = v_parametros.mobile,
-            acceso_directo_alerta=v_parametros.acceso_directo_alerta, 
-            nombre_clase_alerta=v_parametros.nombre_clase_alerta, 
-            tipo_noti=v_parametros.tipo_noti, 
-            titulo_alerta=v_parametros.titulo_alerta, 
+            acceso_directo_alerta=v_parametros.acceso_directo_alerta,
+            nombre_clase_alerta=v_parametros.nombre_clase_alerta,
+            tipo_noti=v_parametros.tipo_noti,
+            titulo_alerta=v_parametros.titulo_alerta,
             parametros_ad=v_parametros.parametros_ad,
             admite_obs = v_parametros.admite_obs,
             etapa = v_parametros.etapa,
             grupo_doc = v_parametros.grupo_doc,
             id_tipo_estado_anterior = v_parametros.id_tipo_estado_anterior,
 			icono = v_parametros.icono,
-            dias_alerta = v_parametros.dias_alerta --#17	
+            dias_alerta = v_parametros.dias_alerta, --#17
+            dias_limite = v_parametros.dias_limite,
+            dias_envio = v_parametros.dias_envio,
+            hrs_envio = v_parametros.hrs_envio,
+            sla = v_parametros.sla
             where id_tipo_estado=v_parametros.id_tipo_estado;
-            
+
             --Validacion de la no existencia de mas de un estado 'inicio' por tipo_proceso '
         	SELECT count(id_tipo_estado)
             INTO v_cont_estados_ini
             FROM wf.ttipo_estado te
-            WHERE (te.inicio ilike 'si' and te.id_tipo_proceso = v_parametros.id_tipo_proceso and v_parametros.inicio ilike 'si') and estado_reg ilike 'activo';   
-                             
+            WHERE (te.inicio ilike 'si' and te.id_tipo_proceso = v_parametros.id_tipo_proceso and v_parametros.inicio ilike 'si') and estado_reg ilike 'activo';
+
             IF v_cont_estados_ini > 1 THEN
                 RAISE EXCEPTION 'Ya esta resgistrado un Tipo Estado ''inicio''.Solo puede haber un estado (nodo) inicio.';
             END IF;
-            
+
             v_id_roles= string_to_array(v_parametros.id_roles,',');
              v_tamano = coalesce(array_length(v_id_roles, 1),0);
-             
-             
-             
+
+
+
              -- inactivamos todos los roles que no estan hay
-             
-             update wf.ttipo_estado_rol 
+
+             update wf.ttipo_estado_rol
              set estado_reg='inactivo'
-             where 
+             where
              id_tipo_estado = v_parametros.id_tipo_estado
-             and 
+             and
              (id_rol::varchar != ANY(v_id_roles) or v_tamano=0);
             --insertamos los que faltan
-  
-            
+
+
             FOR v_i IN 1..v_tamano LOOP
-                         
+
               --preguntamos si el id_rol ya se encuentra asignado si no insertamos
-            IF  (NOT EXISTS (select 1 from wf.ttipo_estado_rol 
+            IF  (NOT EXISTS (select 1 from wf.ttipo_estado_rol
                         where id_tipo_estado = v_parametros.id_tipo_estado
-                        and id_rol = v_id_roles[v_i]::integer 
+                        and id_rol = v_id_roles[v_i]::integer
                         and estado_reg='activo')) THEN
               --insertamos  registro si no esta presente como activo
-                  insert into wf.ttipo_estado_rol 
-                     (id_tipo_estado, 
-                     id_rol, 
-                     estado_reg) 
+                  insert into wf.ttipo_estado_rol
+                     (id_tipo_estado,
+                     id_rol,
+                     estado_reg)
                   values(
                   v_parametros.id_tipo_estado,
                   v_id_roles[v_i]::integer,
-                  'activo'); 
+                  'activo');
               END IF;
             END LOOP;
-               
+
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado modificado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado modificado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_parametros.id_tipo_estado::varchar);
-               
+
             --Devuelve la respuesta
             return v_resp;
-            
+
 		end;
 
-   /*********************************    
+   /*********************************
  	#TRANSACCION:  'WF_UPDPLAMEN_MOD'
  	#DESCRIPCION:	Actualizar la plantilla de mensajes de correo
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
 	elsif(p_transaccion='WF_UPDPLAMEN_MOD')then
 
 		begin
-        	            
+
 			--Sentencia de la modificacion
 			update wf.ttipo_estado set
             plantilla_mensaje_asunto = v_parametros.plantilla_mensaje_asunto,
             plantilla_mensaje = v_parametros.plantilla_mensaje,
             id_usuario_mod = p_id_usuario,
             fecha_mod = now()
-			
+
 			where id_tipo_estado=v_parametros.id_tipo_estado;
-            
-            
-            
+
+
+
 			--Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modifico la plantilla de correodel tipo estado'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Se modifico la plantilla de correodel tipo estado');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_parametros.id_tipo_estado::varchar);
-               
+
             --Devuelve la respuesta
             return v_resp;
-            
+
 		end;
 
 
-	/*********************************    
+	/*********************************
  	#TRANSACCION:  'WF_TIPES_ELI'
  	#DESCRIPCION:	Eliminacion de registros
- 	#AUTOR:		admin	
+ 	#AUTOR:		admin
  	#FECHA:		21-02-2013 15:36:11
 	***********************************/
 
 	elsif(p_transaccion='WF_TIPES_ELI')then
 
 		begin
-        
-        	if (exists (select 1 
+
+        	if (exists (select 1
             			from wf.testructura_estado t
-                        where (t.id_tipo_estado_hijo = v_parametros.id_tipo_estado or 
+                        where (t.id_tipo_estado_hijo = v_parametros.id_tipo_estado or
                         		t.id_tipo_estado_padre = v_parametros.id_tipo_estado) and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Otros Estados que depende(n) de este tipo estado';
             end if;
-            
-            if (exists (select 1 
+
+            if (exists (select 1
             			from wf.tfuncionario_tipo_estado t
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Asignacion a funcionarios que depende(n) de este tipo estado';
             end if;
-            
-            if (exists (select 1 
+
+            if (exists (select 1
             			from wf.ttipo_documento_estado t
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Momentos de Documentos que depende(n) de este tipo estado';
             end if;
-            
-            if (exists (select 1 
+
+            if (exists (select 1
             			from wf.tcolumna_estado t
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Estados de Columnas que depende(n) de este tipo estado';
             end if;
-            
-            if (exists (select 1 
+
+            if (exists (select 1
             			from wf.ttipo_proceso_origen t
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Procesos Origen que depende(n) de este tipo estado';
-            end if;   
-            
-            if (exists (select 1 
+            end if;
+
+            if (exists (select 1
             			from wf.tplantilla_correo t
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Plantillas de Correo que depende(n) de este tipo estado';
-            end if;   
-            
-            if (exists (select 1 
+            end if;
+
+            if (exists (select 1
             			from wf.ttipo_estado_rol t
                         where t.id_tipo_estado = v_parametros.id_tipo_estado and
                         t.estado_reg = 'activo'))then
             	raise exception 'Existe(n) Roles asociados a este tipo estado';
-            end if;           
-            
-            
+            end if;
+
+
 			--Sentencia de la eliminacion
 			update wf.ttipo_estado
             set estado_reg ='inactivo'
             where id_tipo_estado=v_parametros.id_tipo_estado;
-               
+
             --Definicion de la respuesta
-            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado eliminado(a)'); 
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Estado eliminado(a)');
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_estado',v_parametros.id_tipo_estado::varchar);
-              
+
             --Devuelve la respuesta
             return v_resp;
 
 		end;
-         
+
 	else
-     
+
     	raise exception 'Transaccion inexistente: %',p_transaccion;
 
 	end if;
 
 EXCEPTION
-				
+
 	WHEN OTHERS THEN
 		v_resp='';
 		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
 		v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
 		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
-				        
+
 END;
 $body$
 LANGUAGE 'plpgsql'
