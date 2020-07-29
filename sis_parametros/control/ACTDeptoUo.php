@@ -9,7 +9,6 @@
 #HISTORIAL DE MODIFICACIONES:
 #ISSUE          FECHA        AUTOR        DESCRIPCION
 #187      		29/07/2020  manu       actualizacion de version php
-
 */
 
 class ACTDeptoUo extends ACTbase{    
