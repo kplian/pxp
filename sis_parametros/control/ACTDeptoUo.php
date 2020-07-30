@@ -5,6 +5,10 @@
 *@author  (m)
 *@date 19-10-2011 12:59:45
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+
+#HISTORIAL DE MODIFICACIONES:
+#ISSUE          FECHA        AUTOR        DESCRIPCION
+#187      		29/07/2020  manu       actualizacion de version php
 */
 
 class ACTDeptoUo extends ACTbase{    
@@ -16,11 +20,10 @@ class ACTDeptoUo extends ACTbase{
 					
 		$this->objFunc=$this->create('MODDeptoUo');	
 		$id_depto=$this->objParam->getParametro('id_depto');
-		
-		if($id_depto!= null && $id_depto!=undefined && $id_depto!='' && strlen($id_depto)>0){
+		#187
+		if($id_depto!= null && $id_depto!='undefined' && $id_depto!='' && strlen($id_depto)>0){
 		   $this->objParam->addParametro('id_depto',$id_depto);
-		}
-		
+		}		
 		$this->res=$this->objFunc->listarDeptoUo();
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
