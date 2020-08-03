@@ -117,7 +117,8 @@ BEGIN
     BEGIN
 
                v_consulta:='select  ''tipo_documento''::varchar,tdoc.codigo,tp.codigo,tdoc.nombre,tdoc.descripcion,
-                            tdoc.action,tdoc.tipo,tdoc.estado_reg,tdoc.orden,tdoc.categoria_documento
+                            tdoc.action,tdoc.tipo,tdoc.estado_reg,tdoc.orden,tdoc.categoria_documento,
+                            tdoc.solo_lectura , tdoc.nombre_vista , tdoc.nombre_archivo_plantilla , tdoc.esquema_vista
                             from wf.ttipo_documento tdoc
                             inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tdoc.id_tipo_proceso

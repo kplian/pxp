@@ -134,7 +134,7 @@ $body$
                             tcol.form_tipo_columna,tcol.form_label,tcol.form_es_combo,
                             tcol.form_combo_rec, tcol.form_sobreescribe_config,tcol.estado_reg,
                             tcol.bd_prioridad,tcol.form_grupo,
-                            tcol.bd_campos_subconsulta
+                            tcol.bd_campos_subconsulta, tcol.transacciones_permiso, tcol.orden
                             from wf.ttipo_columna tcol
                             inner join wf.ttabla tab
                             on tab.id_tabla = tcol.id_tabla
