@@ -87,7 +87,7 @@ class MODPersona extends MODbase{
 		$this->captura('tipo_documento','varchar');
 		$this->captura('expedicion','varchar');
 
-		//nombre varialbe de envio, tipo dato, columna que serra el nombre foto retorno, ruta para guardar archivo, crear miniatura, almacenar en sesion, nombre variale sesion			
+		//nombre varialbe de envio, tipo dato, columna que serra el nombre foto retorno, ruta para guardar archivo, crear miniatura, almacenar en sesion, nombre variale sesion
 		
 		$this->captura('foto','bytea','id_persona','extension','sesion','foto');
 		//$this->captura('foto','bytea','id_persona','extension','archivo','../../sis_seguridad/control/foto_persona/');
@@ -105,7 +105,10 @@ class MODPersona extends MODbase{
 		//#55 - 02.09.2019
 		
 		$this->captura('profesion','varchar'); //#59 - 09.09.2019
-
+		$this->captura('nombre_archivo_foto','text');
+		$this->captura('sobrenombre','varchar');
+		$this->captura('cualidad_1','varchar');
+		$this->captura('cualidad_2','varchar');
 		//Ejecuta la funcion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -177,6 +180,9 @@ class MODPersona extends MODbase{
 		$this->setParametro('abreviatura_titulo','abreviatura_titulo','varchar');
 		
 		$this->setParametro('profesion','profesion','varchar'); //#59 - 09.09.2019
+		$this->setParametro('sobrenombre','sobrenombre','varchar');
+		$this->setParametro('cualidad_1','cualidad_1','varchar');
+		$this->setParametro('cualidad_2','cualidad_2','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		
@@ -220,7 +226,10 @@ class MODPersona extends MODbase{
 		//#40 (fin)
 		//#55 - 02.09.2019
 		$this->setParametro('abreviatura_titulo','abreviatura_titulo','varchar');
-		$this->setParametro('profesion','profesion','varchar');//#59 - 09.09.2019 
+		$this->setParametro('profesion','profesion','varchar');//#59 - 09.09.2019
+		$this->setParametro('sobrenombre','sobrenombre','varchar');
+		$this->setParametro('cualidad_1','cualidad_1','varchar');
+		$this->setParametro('cualidad_2','cualidad_2','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				
@@ -249,15 +258,11 @@ class MODPersona extends MODbase{
 		$this->procedimiento='segu.ft_persona_ime';// nombre procedimiento almacenado
 		$this->transaccion='SEG_UPFOTOPER_MOD';//nombre de la transaccion
 		$this->tipo_procedimiento='IME';//tipo de transaccion
-		
-		//apartir del tipo  del archivo obtiene la extencion
-		$ext = pathinfo($this->arregloFiles['foto']['name']);
- 		$this->arreglo['extension']= $ext['extension'];
-		
+
 		//Define los parametros para la funcion	
 		$this->setParametro('id_persona','id_persona','integer');	
 		$this->setParametro('extension','extension','varchar');
-		$this->setParametro('foto','foto','bytea',false,1024,true);
+		$this->setParametro('nombre_archivo_foto', 'nombre_archivo_foto','text');
 		//$this->setParametro('foto','foto','bytea',false,1024,false,array("csv"));
 		
 		
