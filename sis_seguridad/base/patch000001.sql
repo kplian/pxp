@@ -1377,6 +1377,7 @@ ALTER TABLE segu.tcommit
 ALTER TABLE segu.tcommit
   OWNER TO postgres;
 /***********************************F-SCP-MMV-SEGU-127-30/01/2020*****************************************/
+ 
 
 
 /***********************************I-SCP-JRR-SEGU-0-02/06/2020*****************************************/
@@ -1384,4 +1385,16 @@ ALTER TABLE segu.tusuario
   ADD COLUMN alias VARCHAR(100);
 
 /***********************************F-SCP-JRR-SEGU-0-02/06/2020*****************************************/
+
+ 
+/***********************************I-SCP-VAN-SEGU-0-01/07/2020*****************************************/
+alter table segu.tpersona
+	add nombre_archivo_foto text default '';
+alter table segu.tpersona
+	add sobrenombre varchar(50) default '';
+alter table segu.tpersona
+	add cualidad_1 varchar(50) default '';
+alter table segu.tpersona
+	add cualidad_2 varchar(50) default '';
+/***********************************F-SCP-VAN-SEGU-0-01/07/2020*****************************************/
 
