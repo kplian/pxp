@@ -334,8 +334,8 @@ BEGIN
                             tes.tipo_asignacion, tes.nombre_func_list , tes.depto_asignacion, tes.nombre_depto_func_list,
                             tes.obs, tes.alerta, tes.pedir_obs,tes.descripcion,tes.plantilla_mensaje,tes.plantilla_mensaje_asunto,
                             array_to_string(tes.cargo_depto,'',''),tes.mobile,tes.funcion_inicial,tes.funcion_regreso,tes.acceso_directo_alerta,
-                            tes.nombre_clase_alerta,tes.tipo_noti,tes.titulo_alerta,tes.parametros_ad,tes.estado_reg,tea.codigo
-
+                            tes.nombre_clase_alerta,tes.tipo_noti,tes.titulo_alerta,tes.parametros_ad,tes.estado_reg,tea.codigo,
+                            tes.admite_obs, tes.etapa ,tes.grupo_doc ,tes.icono ,tes.dias_alerta ,tes.sla , tes.dias_limite ,tes.dias_envio ,tes.hrs_envio
                             from wf.ttipo_estado tes
                             inner join wf.ttipo_proceso tp
                             on tp.id_tipo_proceso = tes.id_tipo_proceso

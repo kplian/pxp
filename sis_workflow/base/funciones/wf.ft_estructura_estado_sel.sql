@@ -85,7 +85,7 @@ BEGIN
     	BEGIN
 
                v_consulta:='select  ''estructura_estado''::varchar,padre.codigo, hijo.codigo, tp.codigo, estru.prioridad,estru.regla,
-               				estru.estado_reg
+               				estru.estado_reg, estru.bucle
 
                             from wf.testructura_estado estru
                             inner join wf.ttipo_estado padre

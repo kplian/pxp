@@ -6,7 +6,17 @@ CREATE OR REPLACE FUNCTION wf.f_import_tplantilla_correo (
   p_regla text,
   p_plantilla text,
   p_correos text,
-  p_asunto varchar
+  p_asunto varchar,
+  p_documentos text,
+  p_requiere_acuse varchar,
+  p_url_acuse varchar,
+  p_mensaje_acuse varchar,
+  p_mensaje_link_acuse varchar,
+  p_mandar_automaticamente varchar,
+  p_funcion_acuse_recibo varchar,
+  p_funcion_creacion_correo varchar,
+  p_cc text,
+  p_bcc text
 )
 RETURNS varchar AS
 $body$
@@ -46,7 +56,17 @@ BEGIN
               plantilla,
               correos,
               modificado,
-              asunto
+              asunto,
+              documentos,
+              requiere_acuse,
+              url_acuse,
+              mensaje_acuse,
+              mensaje_link_acuse,
+              mandar_automaticamente,
+              funcion_acuse_recibo,
+              funcion_creacion_correo,
+              cc,
+              bcc
             ) 
             VALUES (
               1, 
@@ -56,7 +76,17 @@ BEGIN
               p_plantilla,
               string_to_array(p_correos,','),
               1,
-              p_asunto
+              p_asunto,
+              string_to_array(p_documentos,','),
+              p_requiere_acuse,
+              p_url_acuse,
+              p_mensaje_acuse,
+              p_mensaje_link_acuse,
+              p_mandar_automaticamente,
+              p_funcion_acuse_recibo,
+              p_funcion_creacion_correo,
+              string_to_array(p_cc,','),
+              string_to_array(p_bcc,',')
             );
         else            
            UPDATE wf.tplantilla_correo  
@@ -66,8 +96,18 @@ BEGIN
               plantilla = p_plantilla,
               correos = string_to_array(p_correos,','),
               modificado = 1 ,
-              asunto = p_asunto            
-            WHERE id_plantilla_correo = v_id_plantilla_correo;
+              asunto = p_asunto,
+              documentos = string_to_array(p_documentos,','),
+              requiere_acuse = p_requiere_acuse,
+              url_acuse = p_url_acuse,
+              mensaje_acuse = p_mensaje_acuse,
+              mensaje_link_acuse = p_mensaje_link_acuse,
+              mandar_automaticamente = p_mandar_automaticamente,
+              funcion_acuse_recibo = p_funcion_acuse_recibo,
+              funcion_creacion_correo = p_funcion_creacion_correo,
+              cc = string_to_array(p_cc,','),
+              bcc =	string_to_array(p_bcc,',')
+           WHERE id_plantilla_correo = v_id_plantilla_correo;
         end if;
     
 	end if; 

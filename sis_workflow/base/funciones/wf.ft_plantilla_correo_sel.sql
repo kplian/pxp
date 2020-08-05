@@ -122,7 +122,10 @@ BEGIN
 		BEGIN
 
                v_consulta:='select  ''plantilla_correo''::varchar,pcorreo.codigo_plantilla,tes.codigo,tp.codigo,pcorreo.regla,
-               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg,pcorreo.asunto
+               				pcorreo.plantilla,array_to_string(pcorreo.correos,'',''),pcorreo.estado_reg,pcorreo.asunto, array_to_string(pcorreo.documentos,'',''),
+                            pcorreo.requiere_acuse , pcorreo.url_acuse , pcorreo.mensaje_acuse , pcorreo.mensaje_link_acuse ,
+                            pcorreo.mandar_automaticamente , pcorreo.funcion_acuse_recibo , pcorreo.funcion_creacion_correo ,
+                            array_to_string(pcorreo.cc,'',''), array_to_string(pcorreo.bcc,'','')
                             from wf.tplantilla_correo pcorreo
                             inner join wf.ttipo_estado tes
                             on tes.id_tipo_estado = pcorreo.id_tipo_estado

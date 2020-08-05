@@ -119,7 +119,7 @@ BEGIN
 		BEGIN
 
                v_consulta:='select  ''funcionario_tipo_estado''::varchar,tes.codigo as codigo_estado,tp.codigo as codigo_proceso,fun.ci,dep.codigo,
-							funte.regla,funte.estado_reg
+							funte.regla,funte.estado_reg, funte.id_labores_tipo_proceso
 
                             from wf.tfuncionario_tipo_estado funte
                             inner join wf.ttipo_estado tes
@@ -137,7 +137,7 @@ BEGIN
                             where pm.id_proceso_macro ='|| v_parametros.id_proceso_macro;
 
 				if (v_parametros.todo = 'no') then
-               		v_consulta = v_consulta || ' and tdoces.modificado is null ';
+               		v_consulta = v_consulta || ' and funte.modificado is null ';
                 elseif (v_parametros.todo = 'actual') then --#86
                  v_consulta = v_consulta || ' and funte.estado_reg = ''activo'' ';
                end if;

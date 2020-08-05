@@ -60,7 +60,7 @@ class ACTProcesoMacro extends ACTbase{
 			$this->res->imprimirRespuesta($this->res->generarJson());
 			exit;
 		}
-		
+
 		$nombreArchivo = $this->crearArchivoExportacion($this->res);
 		
 		$this->mensajeExito=new Mensaje();
@@ -184,7 +184,8 @@ class ACTProcesoMacro extends ACTbase{
 					"select wf.f_import_ttipo_estado ('delete','".							 
 							$row['codigo']."','".
 							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-							NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");							
+							NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
+							NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -215,7 +216,17 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['tipo_noti'])?'NULL':"'".$row['tipo_noti']."'") ."," .
 							 (is_null($row['titulo_alerta'])?'NULL':"'".$row['titulo_alerta']."'") ."," .
 							 (is_null($row['parametros_ad'])?'NULL':"'".$row['parametros_ad']."'") ."," .
-							 (is_null($row['codigo_estado_anterior'])?'NULL':"'".$row['codigo_estado_anterior']."'") .");\r\n");
+                             (is_null($row['codigo_estado_anterior'])?'NULL':"'".$row['codigo_estado_anterior']."'") ."," .
+                             (is_null($row['admite_obs'])?'NULL':"'".$row['admite_obs']."'") ."," .
+                             (is_null($row['etapa'])?'NULL':"'".$row['etapa']."'") ."," .
+                             (is_null($row['grupo_doc'])?'NULL':"'".$row['grupo_doc']."'") ."," .
+                             (is_null($row['icono'])?'NULL':"'".$row['icono']."'") ."," .
+                             (is_null($row['dias_alerta'])?'NULL':$row['dias_alerta']) ."," .
+                             (is_null($row['sla'])?'NULL':"'".$row['sla']."'") ."," .
+                             (is_null($row['dias_limite'])?'NULL':$row['dias_limite']) ."," .
+                             (is_null($row['dias_envio'])?'NULL':"'".$row['dias_envio']."'") ."," .
+							 (is_null($row['hrs_envio'])?'NULL':"'".$row['hrs_envio']."'") .");\r\n");
+
 							 						
 				}				
 			
@@ -228,7 +239,7 @@ class ACTProcesoMacro extends ACTbase{
 							$row['nombre_columna']."','".
 							$row['codigo_tabla']."','".
 							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,
-							NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");							
+							NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -251,7 +262,11 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['form_combo_rec'])?'NULL':"'".$row['form_combo_rec']."'") ."," .
 							 (is_null($row['form_sobreescribe_config'])?'NULL':"'".$row['form_sobreescribe_config']."'") . "," .
 							 (is_null($row['bd_prioridad'])?'NULL':$row['bd_prioridad']) . "," .
-							 (is_null($row['form_grupo'])?'NULL':$row['form_grupo']) . ");\r\n");							 						
+                             (is_null($row['form_grupo'])?'NULL':$row['form_grupo']) ."," .
+                             (is_null($row['bd_campos_subconsulta'])?'NULL':"'".$row['bd_campos_subconsulta']."'") ."," .
+                             (is_null($row['transacciones_permiso'])?'NULL':"'".$row['transacciones_permiso']."'") ."," .
+							 (is_null($row['orden'])?'NULL':$row['orden']) . ");\r\n");
+
 				}				
 			
 			} 
@@ -261,7 +276,7 @@ class ACTProcesoMacro extends ACTbase{
 					fwrite ($file, 
 					"select wf.f_import_ttipo_documento ('delete','".							 
 							$row['codigo']."','".
-							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL);\r\n");	
+							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -273,8 +288,12 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['descripcion'])?'NULL':"'".$row['descripcion']."'") ."," .
 							 (is_null($row['action'])?'NULL':"'".$row['action']."'") ."," .	
 							 (is_null($row['tipo_documento'])?'NULL':"'".$row['tipo_documento']."'") ."," .	
-							 (is_null($row['orden'])?'NULL':$row['orden']) ."," .							 						 
-							 (is_null($row['categoria_documento'])?'NULL':"'".$row['categoria_documento']."'") .");\r\n");
+							 (is_null($row['orden'])?'NULL':$row['orden']) ."," .
+                             (is_null($row['categoria_documento'])?'NULL':"'".$row['categoria_documento']."'") ."," .
+                             (is_null($row['solo_lectura'])?'NULL':"'".$row['solo_lectura']."'") ."," .
+                             (is_null($row['nombre_vista'])?'NULL':"'".$row['nombre_vista']."'") ."," .
+                             (is_null($row['nombre_archivo_plantilla'])?'NULL':"'".$row['nombre_archivo_plantilla']."'") ."," .
+							 (is_null($row['esquema_vista'])?'NULL':"'".$row['esquema_vista']."'") .");\r\n");
 							 					
 				}				
 			
@@ -330,7 +349,7 @@ class ACTProcesoMacro extends ACTbase{
 					"select wf.f_import_testructura_estado ('delete','".							 
 							$row['codigo_estado_padre']."','".
 							$row['codigo_estado_hijo']."','".							
-							$row['codigo_tipo_proceso']."',NULL,NULL);\r\n");	
+							$row['codigo_tipo_proceso']."',NULL,NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -339,9 +358,9 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_estado_padre'])?'NULL':"'".$row['codigo_estado_padre']."'") ."," .
 							 (is_null($row['codigo_estado_hijo'])?'NULL':"'".$row['codigo_estado_hijo']."'") ."," .
 							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .							 
-							 (is_null($row['prioridad'])?'NULL':$row['prioridad']) ."," .						 						 
-							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") .");\r\n");
-							 				
+							 (is_null($row['prioridad'])?'NULL':$row['prioridad']) ."," .
+                             (is_null($row['regla'])?'NULL':"'".$row['regla']."'") ."," .
+							 (is_null($row['bucle'])?'NULL':"'".$row['bucle']."'") .");\r\n");
 				}				
 			
 			}
@@ -353,7 +372,7 @@ class ACTProcesoMacro extends ACTbase{
 							$row['codigo_tipo_estado']."','".
 							$row['codigo_tipo_proceso']."',".
 							(is_null($row['ci'])?'NULL':"'".$row['ci']."'") ."," .	
-							(is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") .",NULL);\r\n");						
+							(is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") .",NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -362,9 +381,10 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_tipo_estado'])?'NULL':"'".$row['codigo_tipo_estado']."'") ."," .
 							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
 							 (is_null($row['ci'])?'NULL':"'".$row['ci']."'") ."," .							 
-							 (is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") ."," .						 						 
-							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") .");\r\n");
-							 				
+							 (is_null($row['codigo_depto'])?'NULL':"'".$row['codigo_depto']."'") ."," .
+                             (is_null($row['regla'])?'NULL':"'".$row['regla']."'") ."," .
+							 (is_null($row['id_labores_tipo_proceso'])?'NULL':$row['id_labores_tipo_proceso']) .");\r\n");
+
 				}				
 			
 			}
@@ -375,7 +395,7 @@ class ACTProcesoMacro extends ACTbase{
 					"select wf.f_import_tplantilla_correo ('delete','".
 							$row['codigo']."','".							 
 							$row['codigo_tipo_estado']."','".
-							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL);\r\n");													
+							$row['codigo_tipo_proceso']."',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);\r\n");
 					
 				} else {
 					
@@ -386,8 +406,18 @@ class ACTProcesoMacro extends ACTbase{
 							 (is_null($row['codigo_tipo_proceso'])?'NULL':"'".$row['codigo_tipo_proceso']."'") ."," .
 							 (is_null($row['regla'])?'NULL':"'".$row['regla']."'") ."," .							 
 							 (is_null($row['plantilla'])?'NULL':"'".$row['plantilla']."'") ."," .
-							 (is_null($row['correos'])?'NULL':"'".$row['correos']."'") ."," .						 						 
-							 (is_null($row['asunto'])?'NULL':"'".$row['asunto']."'") .");\r\n");
+							 (is_null($row['correos'])?'NULL':"'".$row['correos']."'") ."," .
+                             (is_null($row['asunto'])?'NULL':"'".$row['asunto']."'") ."," .
+                             (is_null($row['documentos'])?'NULL':"'".$row['documentos']."'") ."," .
+                             (is_null($row['requiere_acuse'])?'NULL':"'".$row['requiere_acuse']."'") ."," .
+                             (is_null($row['url_acuse'])?'NULL':"'".$row['url_acuse']."'") ."," .
+                             (is_null($row['mensaje_acuse'])?'NULL':"'".$row['mensaje_acuse']."'") ."," .
+                             (is_null($row['mensaje_link_acuse'])?'NULL':"'".$row['mensaje_link_acuse']."'") ."," .
+                             (is_null($row['mandar_automaticamente'])?'NULL':"'".$row['mandar_automaticamente']."'") ."," .
+                             (is_null($row['funcion_acuse_recibo'])?'NULL':"'".$row['funcion_acuse_recibo']."'") ."," .
+                             (is_null($row['funcion_creacion_correo'])?'NULL':"'".$row['funcion_creacion_correo']."'") ."," .
+                             (is_null($row['cc'])?'NULL':"'".$row['cc']."'") ."," .
+							 (is_null($row['bcc'])?'NULL':"'".$row['bcc']."'") .");\r\n");
 							 				
 				}		
 			}		 		

@@ -7,35 +7,39 @@ CREATE OR REPLACE FUNCTION wf.f_import_ttipo_documento (
   p_action varchar,
   p_tipo_documento varchar,
   p_orden numeric,
-  p_categoria_documento varchar []
+  p_categoria_documento varchar [],
+  p_solo_lectura varchar,
+  p_nombre_vista varchar,
+  p_nombre_archivo_plantilla text,
+  p_esquema_vista varchar
 )
 RETURNS varchar AS
 $body$
-DECLARE	   
-    v_id_tipo_documento			integer;    
+DECLARE
+    v_id_tipo_documento			integer;
     v_id_tipo_proceso			integer;
     v_id_proceso_macro			integer;
-BEGIN	 
-	
+BEGIN
+
     select id_tipo_proceso,id_proceso_macro into v_id_tipo_proceso,v_id_proceso_macro
-    from wf.ttipo_proceso tp    
+    from wf.ttipo_proceso tp
     where tp.codigo = p_codigo_tipo_proceso ;
-    
+
     select id_tipo_documento into v_id_tipo_documento
-    from wf.ttipo_documento td    
+    from wf.ttipo_documento td
     where td.codigo = p_codigo and
-    	td.id_tipo_proceso = v_id_tipo_proceso;    
-        
+    	td.id_tipo_proceso = v_id_tipo_proceso;
+
     ALTER TABLE wf.ttipo_documento DISABLE TRIGGER USER;
     if (p_accion = 'delete') then
-    	update wf.ttipo_documento set estado_reg = 'inactivo',modificado = 1 
+    	update wf.ttipo_documento set estado_reg = 'inactivo',modificado = 1
     	where id_tipo_documento = v_id_tipo_documento;
     else
         if (v_id_tipo_documento is null)then
-           INSERT INTO 
+           INSERT INTO
               wf.ttipo_documento
             (
-              id_usuario_reg,              
+              id_usuario_reg,
               id_tipo_proceso,
               id_proceso_macro,
               codigo,
@@ -45,10 +49,14 @@ BEGIN
               tipo,
               modificado,
               orden,
-              categoria_documento
-            ) 
+              categoria_documento,
+              solo_lectura,
+              nombre_vista,
+              nombre_archivo_plantilla,
+              esquema_vista
+            )
             VALUES (
-              1,              
+              1,
               v_id_tipo_proceso,
               v_id_proceso_macro,
               p_codigo,
@@ -58,11 +66,15 @@ BEGIN
               p_tipo_documento,
               1,
               p_orden,
-              p_categoria_documento
+              p_categoria_documento,
+              p_solo_lectura,
+              p_nombre_vista,
+              p_nombre_archivo_plantilla,
+              p_esquema_vista
             );
-        else            
-            UPDATE wf.ttipo_documento  
-            SET  
+        else
+            UPDATE wf.ttipo_documento
+            SET
               id_tipo_proceso = v_id_tipo_proceso,
               id_proceso_macro = v_id_proceso_macro,
               codigo = p_codigo,
@@ -72,14 +84,18 @@ BEGIN
               tipo = p_tipo_documento,
               modificado = 1,
               orden = p_orden,
-              categoria_documento = p_categoria_documento             
-            WHERE 
+              categoria_documento = p_categoria_documento,
+              solo_lectura = p_solo_lectura,
+              nombre_vista = p_nombre_vista,
+              nombre_archivo_plantilla = p_nombre_archivo_plantilla,
+              esquema_vista = p_esquema_vista
+            WHERE
               id_tipo_documento = v_id_tipo_documento;
         end if;
-    
-	end if; 
-    
-    ALTER TABLE wf.ttipo_documento ENABLE TRIGGER USER;   
+
+	end if;
+
+    ALTER TABLE wf.ttipo_documento ENABLE TRIGGER USER;
     return 'exito';
 END;
 $body$

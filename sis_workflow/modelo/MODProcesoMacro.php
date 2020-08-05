@@ -270,14 +270,24 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('titulo_alerta','varchar');
 			$this->captura('parametros_ad','varchar');
 			$this->captura('estado_reg','varchar');	
-			$this->captura('codigo_estado_anterior','varchar');		
+			$this->captura('codigo_estado_anterior','varchar');
+
+            $this->captura('admite_obs','varchar');
+            $this->captura('etapa','varchar');
+            $this->captura('grupo_doc','varchar');
+            $this->captura('icono','varchar');
+            $this->captura('dias_alerta','integer');
+            $this->captura('sla','varchar');
+            $this->captura('dias_limite','integer');
+            $this->captura('dias_envio','varchar');
+            $this->captura('hrs_envio','varchar');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
 	  
 			$this->ejecutarConsulta($this->respuesta);
 		}
-		
+
 		if($this->respuesta->getTipo()=='ERROR'){
 			return $this->respuesta;
 		}
@@ -310,6 +320,9 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('bd_prioridad','integer');
 			$this->captura('form_grupo','integer');
             $this->captura('bd_campos_subconsulta','text');
+
+            $this->captura('transacciones_permiso','varchar');
+            $this->captura('orden','integer');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
@@ -338,6 +351,11 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('estado_reg','varchar');
 			$this->captura('orden','numeric');
 			$this->captura('categoria_documento','varchar[]');
+
+            $this->captura('solo_lectura','varchar');
+            $this->captura('nombre_vista','varchar');
+            $this->captura('nombre_archivo_plantilla','text');
+            $this->captura('esquema_vista','varchar');
 			
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();
@@ -443,6 +461,7 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('prioridad','integer');
 			$this->captura('regla','varchar');
 			$this->captura('estado_reg','varchar');
+            $this->captura('bucle','varchar');
 						
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
@@ -494,6 +513,7 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('codigo_depto','varchar');
 			$this->captura('regla','varchar');			
 			$this->captura('estado_reg','varchar');
+            $this->captura('id_labores_tipo_proceso','integer');
 						
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
@@ -521,6 +541,16 @@ class MODProcesoMacro extends MODbase{
 			$this->captura('correos','text');			
 			$this->captura('estado_reg','varchar');
 			$this->captura('asunto','varchar');
+            $this->captura('documentos','text');
+            $this->captura('requiere_acuse','varchar');
+            $this->captura('url_acuse','varchar');
+            $this->captura('mensaje_acuse','varchar');
+            $this->captura('mensaje_link_acuse','varchar');
+            $this->captura('mandar_automaticamente','varchar');
+            $this->captura('funcion_acuse_recibo','varchar');
+            $this->captura('funcion_creacion_correo','varchar');
+            $this->captura('cc','text');
+            $this->captura('bcc','text');
 						
 			$this->armarConsulta();
 			$consulta=$this->getConsulta();			
