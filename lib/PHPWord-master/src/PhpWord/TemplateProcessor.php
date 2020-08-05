@@ -13,6 +13,13 @@
  * @link        https://github.com/PHPOffice/PHPWord
  * @copyright   2010-2014 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ *
+ *  
+ * 
+ * 
+ #HISTORIAL DE MODIFICACIONES:
+#ISSUE          FECHA        AUTOR        		DESCRIPCION
+#188      		05/08/2020   MANUEL GUERRA      actualizacion en phpword
  */
 
 namespace PhpOffice\PhpWord;
@@ -20,7 +27,7 @@ namespace PhpOffice\PhpWord;
 use PhpOffice\PhpWord\Exception\CopyFileException;
 use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
 use PhpOffice\PhpWord\Exception\Exception;
-use PhpOffice\PhpWord\Shared\String;
+use PhpOffice\PhpWord\Shared\POString as POString; //#188
 use PhpOffice\PhpWord\Shared\ZipArchive;
 
 class TemplateProcessor {
@@ -401,8 +408,8 @@ class TemplateProcessor {
 		if (substr($search, 0, 2) !== '${' && substr($search, -1) !== '}') {
 			$search = '${' . $search . '}';
 		}
-
-		if (!String::isUTF8($replace)) {
+		//#188
+		if (!POString::isUTF8($replace)) {
 			
 			$replace = utf8_encode($replace);
 		}
@@ -929,10 +936,9 @@ public function setImgFooter($strKey, $img) {
 		}
 	}
 	
-	protected function setValueForPartDestinatario($documentPartXML, $search, $replace, $limit) {
-		
-
-		if (!String::isUTF8($replace)) {
+	protected function setValueForPartDestinatario($documentPartXML, $search, $replace, $limit) {		
+		//#188
+		if (!POString::isUTF8($replace)) {
 			
 			$replace = utf8_encode($replace);
 		}
