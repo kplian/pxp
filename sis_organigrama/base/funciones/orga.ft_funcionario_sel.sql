@@ -29,6 +29,8 @@ $body$
   #31           16/07/2019          RAC                 adciona codigo_rciva, profesion, fecha quinquenio
   #89			04.12.2019			MZM					Habilitacion de catalogo profesiones en funcionario
   #99           26/12/2019          RAC                 correcion bug columna desc_funcionario2 faltante
+  #189			11/08/2020			manuel guerra		mostrar todos los usuarios en combo para el rol de analista contable
+
   ***************************************************************************/
 
 
@@ -391,12 +393,20 @@ $body$
     elseif(par_transaccion='RH_FUNCIOCAR_SEL')then
 
       --consulta:=';
-      BEGIN
+      BEGIN      		
+
         v_filadd = '';
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
         END IF;
-
+		--#189
+		IF EXISTS(select 1
+                  from segu.tusuario_rol ur
+                  join segu.trol r on r.id_rol=ur.id_rol
+                  where ur.id_usuario=par_id_usuario and r.rol='CONTA - Analista Contable') THEN
+			v_parametros.filtro='0=0';
+        END IF;
+        
         v_consulta:='SELECT
                     FUNCAR.id_uo_funcionario,
                     FUNCAR.id_funcionario,
@@ -423,7 +433,7 @@ $body$
                     WHERE '||v_filadd;		
         v_consulta:=v_consulta||v_parametros.filtro;
         v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-       -- RAISE NOTICE 'error %',v_consulta;
+        --RAISE NOTICE 'error %',v_consulta;
        --RAISE EXCEPTION 'error %',v_consulta;
        return v_consulta;
 
@@ -478,4 +488,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;
