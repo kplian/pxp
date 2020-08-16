@@ -23,7 +23,7 @@ $body$
  
                  COMENTARIOS:   
   #33  ETR       18/07/2018        RAC KPLIAN        Modificar tipos de centros operativos o no
-    
+  #155 ETR       14/08/2020        YMR               Bitacora sobre tipo centro de costo
 ***************************************************************************/
 
 DECLARE
