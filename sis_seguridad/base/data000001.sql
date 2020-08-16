@@ -3933,7 +3933,7 @@ VALUES
 update segu.tusuario u set
  cuenta = cuenta||'.'|| autentificacion
 
-where u.autentificacion in ('google','facebook')
+where u.autentificacion in ('google','facebook');
 /*******************************************F-DAT-RAC-SEGU-0-16/08/2020****************************************/
 
 
