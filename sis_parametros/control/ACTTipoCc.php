@@ -7,7 +7,11 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 * ISSUE			FECHA			AUTHOR			DESCRIPCION
   #2			07/12/2018		EGS				Funcion para listar centros de costo de tipo transsaccionale del arbol Tipo CC por gestion
+ #155           14/08/2020      YMR             Bitacora exportable en PDF Y CSV
  */
+
+require_once(dirname(__FILE__) . '/../reportes/RTipoCcXls.php');
+require_once(dirname(__FILE__).'/../reportes/RTipoCcPdf.php');
 
 class ACTTipoCc extends ACTbase{
 
@@ -187,8 +191,60 @@ class ACTTipoCc extends ACTbase{
     	$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 	//#1				07/12/2018		EGS	
-	
 
+    function recuperarEntrega()
+    {
+        $this->objFunc = $this->create('MODTipoCc');
+        $cbteHeader = $this->objFunc->recuperarTipoCc($this->objParam);
+        if ($cbteHeader->getTipo() == 'EXITO') {
+            return $cbteHeader;
+        } else {
+            $cbteHeader->imprimirRespuesta($cbteHeader->generarJson());
+            exit;
+        }
+    }
+
+    function reporteTipoCc()
+    {
+        if($this->objParam->getParametro('formato_reporte')=='pdf'){
+            $nombreArchivo = uniqid(md5(session_id()).'Bitacora') . '.pdf';
+        }
+        else{
+            $nombreArchivo = uniqid(md5(session_id()) . 'Bitacora') . '.xls';
+        }
+
+        $dataSource = $this->recuperarEntrega();
+
+        //parametros basicos
+        $tamano = 'LETTER';
+        $orientacion = 'L';
+        $titulo = 'Bitacora';
+
+        $this->objParam->addParametro('orientacion', $orientacion);
+        $this->objParam->addParametro('tamano', $tamano);
+        $this->objParam->addParametro('titulo_archivo', $titulo);
+        $this->objParam->addParametro('nombre_archivo', $nombreArchivo);
+
+
+        //Instancia la clase de pdf
+        if($this->objParam->getParametro('formato_reporte')=='pdf'){
+            $reporte = new RTipoCcPdf($this->objParam);
+            $reporte->datosHeader($dataSource->getDatos());
+            $reporte->generarReporte();
+            $reporte->output($reporte->url_archivo,'F');
+        }
+        else{
+            $reporte = new REntregaXls($this->objParam);
+            $reporte->datosHeader($dataSource->getDatos(), $this->objParam->getParametro('id_tipo_cc'));
+            $reporte->generarReporte();
+        }
+
+        $this->mensajeExito = new Mensaje();
+        $this->mensajeExito->setMensaje('EXITO', 'Reporte.php', 'Reporte generado', 'Se generó con éxito el reporte: ' . $nombreArchivo, 'control');
+        $this->mensajeExito->setArchivoGenerado($nombreArchivo);
+        $this->mensajeExito->imprimirRespuesta($this->mensajeExito->generarJson());
+
+    }
 }
 
 ?>
