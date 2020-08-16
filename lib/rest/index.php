@@ -8,6 +8,9 @@
  * If you are using Composer, you can skip this step.
  */
 include_once(dirname(__FILE__)."/../../../lib/lib_control/CTSesion.php");
+ini_set('session.cookie_samesite', 'None');
+session_set_cookie_params(['samesite' => 'None', 'secure' => true]);
+
 session_start();
 include_once(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_general/Errores.php');
@@ -76,7 +79,7 @@ function get_func_argNames($funcName) {
     return $result;
 }
 
-function authPxp($headersArray) {
+function authPxp($headersArray, $deviceID = '') {
 
     $_SESSION["_SESION"]= new CTSesion();
     $_SESSION["_tipo_aute"] = 'REST';
@@ -92,7 +95,7 @@ function authPxp($headersArray) {
     $res = $objFunSeguridad->listarUsuarioSeguridad($objParam);
 
     if ($res->datos['contrasena'] == '') {
-        $mensaje = "El Usuario no esta registrado en el sistema";
+        $mensaje = "El Usuario no esta registrado en el sistema o no esta activo";
     }
 
     //obtener la contrasena del usuario en md5
@@ -101,48 +104,50 @@ function authPxp($headersArray) {
 
     //creamos array de request
     $reqArray = array();
-
-    if (!extension_loaded('mcrypt') && !isset($headersArray['auth-version'])) {
-        if ($mensaje == '')
-            $mensaje = 'El modulo mcrypt no esta instalado en el servidor. No es posible utilizar REST en este momento';
-    }
-    if ($headersArray['Pxp-User'] == $headersArray['Php-Auth-User']) {
-        if (!isset($headersArray['auth-version'])) {
-            $auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
-        } else {
-            $auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+    if ($mensaje == '') {
+        if (!extension_loaded('mcrypt') && !isset($headersArray['auth-version'])) {
+            if ($mensaje == '')
+                $mensaje = 'El modulo mcrypt no esta instalado en el servidor. No es posible utilizar REST en este momento';
         }
-        $headers = false;
-    } else {
-    //desencriptar usuario y contrasena
-    
-        if (!isset($headersArray['auth-version'])) {
-            $auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+        if ($headersArray['Pxp-User'] == $headersArray['Php-Auth-User']) {
+            if (!isset($headersArray['auth-version'])) {
+                $auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-Pw'], $md5Pass));
+            } else {
+                $auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+            }
+            $headers = false;
         } else {
-            $auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass)); 
+        //desencriptar usuario y contrasena
+
+            if (!isset($headersArray['auth-version'])) {
+                $auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
+            } else {
+                $auxArray = explode('$$', opensslDecrypt($headersArray['Php-Auth-User'], $md5Pass)); 
+            }
+            $headers = true;
         }
-        $headers = true;
-    }
 
-    if (count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
+        if (count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
 
-        $reqArray['usuario'] = $headersArray['Pxp-User'];
-        $reqArray['contrasena'] =  $md5Pass;
-        $reqArray['_tipo'] = 'restAuten';
+                $reqArray['usuario'] = $res->datos['cuenta'];
+            $reqArray['contrasena'] =  $md5Pass;
+                $reqArray['deviceID'] = $deviceID;
+            $reqArray['_tipo'] = 'restAuten';
 
 
-        //autentificar usuario en sistema
-        //arma $JSON
-        $JSON = json_encode($reqArray);
-        $objParam = new CTParametro($JSON,null,null,'../../sis_seguridad/control/Auten/verificarCredenciales');
-        include_once dirname(__FILE__).'/../../../sis_seguridad/control/ACTAuten.php';
-        //Instancia la clase dinamica para ejecutar la accion requerida
+            //autentificar usuario en sistema
+            //arma $JSON
+            $JSON = json_encode($reqArray);
+            $objParam = new CTParametro($JSON,null,null,'../../sis_seguridad/control/Auten/verificarCredenciales');
+            include_once dirname(__FILE__).'/../../../sis_seguridad/control/ACTAuten.php';
+            //Instancia la clase dinamica para ejecutar la accion requerida
 
-        eval('$cad = new ACTAuten($objParam);');
-        eval('$cad->verificarCredenciales();');
-    } else {
-        if ($mensaje == '')
-            $mensaje = "Contrasena invalida para el usuario : " . $headersArray['Pxp-User'];
+            eval('$cad = new ACTAuten($objParam);');
+            eval('$cad->verificarCredenciales();');
+        } else {
+            if ($mensaje == '')
+                $mensaje = "Contrasena invalida para el usuario : " . $headersArray['Pxp-User'];
+        }
     }
 
     if ($mensaje != '') {
@@ -305,6 +310,170 @@ $app->get(
 
     }
 );
+
+$app->post(
+
+    '/seguridad/Auten/verificarCredenciales',
+    function () use ($app) {
+        
+        register_shutdown_function('fatalErrorShutdownHandler');
+        set_exception_handler('exception_handler');
+        set_error_handler('error_handler');
+        $headers = $app->request->headers;
+        if ($app->request->post('deviceID') == '') {
+            $deviceID = '';
+        } else {
+            $deviceID = $app->request->post('deviceID');
+        }
+        
+        if (isset($headers['Php-Auth-User'])) {
+
+            authPxp($headers, $deviceID);
+
+        } else {
+            $mensaje = '';
+            if ($app->request->post('usuario') == '') {
+                $mensaje = "No se recibio el parametro usuario";
+            }
+            if ($app->request->post('contrasena') == '') {
+                $mensaje = "No se recibio el parametro contrasena";
+            }
+
+            if ($mensaje != '') {
+                $men=new Mensaje();
+                $men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
+                'Codigo de error: AUTEN',
+                'control','','','OTRO','');
+
+                $men->imprimirRespuesta($men->generarJson(),'406');
+                exit;
+            }
+            $auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));
+            
+        
+            authPxp($auxHeaders, $deviceID);
+        }
+        echo '{"success":true,
+                "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
+                "nombre_usuario":"'.$_SESSION["_NOM_USUARIO"].'",
+                "nombre_basedatos":"'.$_SESSION["_BASE_DATOS"].'",
+                "id_usuario":"'.$_SESSION["_ID_USUARIO_OFUS"].'",
+                "id_funcionario":"'.$_SESSION["_ID_FUNCIOANRIO_OFUS"].'",
+                "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
+                "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
+                "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
+                "alias":"'.$_SESSION["_ALIAS"].'",
+                "phpsession":"'.session_id().'",
+                "timeout":'.$_SESSION["_TIMEOUT"].'}';
+                exit;
+    }
+);
+
+$app->post(
+
+    '/seguridad/App/AndroidVersion',
+    function () use ($app) {
+        register_shutdown_function('fatalErrorShutdownHandler');
+        set_exception_handler('exception_handler');
+        set_error_handler('error_handler');
+        $version = '0.0';
+        $url = 'https://localhost';
+        if (isset($_SESSION["_APP_ANDROID_VERSION"])) {
+            $version = $_SESSION["_APP_ANDROID_VERSION"];
+        }
+
+        if (isset($_SESSION["_APP_ANDROID_URL"])) {
+            $url = $_SESSION["_APP_ANDROID_URL"];
+        }
+
+        echo '{ "version":"' . $version . '",
+                "url":"' . $url . '"}';
+        exit;
+    }
+);
+
+$app->post(
+
+    '/seguridad/App/AndroidVersionTest',
+    function () use ($app) {
+        register_shutdown_function('fatalErrorShutdownHandler');
+        set_exception_handler('exception_handler');
+        set_error_handler('error_handler');
+        $version = '2';
+        $url = 'https://test.vouz.me/vouz.apk';
+
+
+        echo '{ "version":"' . $version . '",
+                "url":"' . $url . '"}';
+        exit;
+    }
+);
+
+//JRR: Auten doesn't require session validation
+$app->post(
+    '/seguridad/Auten/:metodo',
+    function ($metodo) use ($app) {
+        $headers = $app->request->headers;
+        $cookies = $app->request->cookies;
+        $psudourl = '/seguridad/Auten/'.$metodo;
+        $headers = $app->request->headers;
+
+        $ruta_include = 'sis_seguridad/control/ACTAuten.php';
+        $ruta_url = 'sis_seguridad/control/Auten/'.$metodo;
+
+        $objPostData=new CTPostData();
+
+        $aPostData = $objPostData->getData();
+        foreach($app->request->post() as $key => $val) {
+            $aPostData[$key] = $val;
+        }
+        $m = null;
+
+        $_SESSION["_PETICION"]=serialize($aPostData);
+        //arma $JSON
+        $JSON = json_encode($aPostData);
+
+        $objParam = new CTParametro($JSON,$m,null,'../../'.$ruta_url);
+        include_once dirname(__FILE__).'/../../../'.$ruta_include;
+        //Instancia la clase dinamica para ejecutar la accion requerida
+
+        eval('$cad = new ACTAuten($objParam);');
+        eval('$cad->'.$metodo.'();');
+    }
+);
+
+$app->get(
+    '/seguridad/Auten/:metodo',
+    function ($metodo) use ($app) {
+        $headers = $app->request->headers;
+        $cookies = $app->request->cookies;
+        $psudourl = '/seguridad/Auten/'.$metodo;
+        $headers = $app->request->headers;
+
+        $ruta_include = 'sis_seguridad/control/ACTAuten.php';
+        $ruta_url = 'sis_seguridad/control/Auten/'.$metodo;
+
+        $objPostData=new CTPostData();
+
+        $aPostData = $objPostData->getData();
+        foreach($app->request->post() as $key => $val) {
+            $aPostData[$key] = $val;
+        }
+        $m = null;
+
+        $_SESSION["_PETICION"]=serialize($aPostData);
+        //arma $JSON
+        $JSON = json_encode($aPostData);
+
+        $objParam = new CTParametro($JSON,$m,null,'../../'.$ruta_url);
+        include_once dirname(__FILE__).'/../../../'.$ruta_include;
+        //Instancia la clase dinamica para ejecutar la accion requerida
+
+        eval('$cad = new ACTAuten($objParam);');
+        eval('$cad->'.$metodo.'();');
+    }
+);
+
 $app->get(
 
     '/:sistema/:clase_control/:metodo',
@@ -389,57 +558,7 @@ $app->get(
 
     }
 );
-$app->post(
-
-    '/seguridad/Auten/verificarCredenciales',
-    function () use ($app) {    
-        register_shutdown_function('fatalErrorShutdownHandler');
-        set_exception_handler('exception_handler');
-        set_error_handler('error_handler');
-        $headers = $app->request->headers;
-        if (isset($headers['Php-Auth-User'])) {
-
-            authPxp($headers);
-
-        } else {
-            $mensaje = '';
-            if ($app->request->post('usuario') == '') {
-                $mensaje = "No se recibio el parametro usuario";
-            }
-            if ($app->request->post('contrasena') == '') {
-                $mensaje = "No se recibio el parametro contrasena";
-            }
-
-            if ($mensaje != '') {
-                $men=new Mensaje();
-                $men->setMensaje('ERROR','pxp/lib/rest/index.php Linea: 377',$mensaje,
-                'Codigo de error: AUTEN',
-                'control','','','OTRO','');
-
-                $men->imprimirRespuesta($men->generarJson(),'406');
-                exit;
-            }
-
-
-            $auxHeaders = array('Pxp-User'=>$app->request->post('usuario'),'Php-Auth-User'=>$app->request->post('usuario'),'Php-Auth-Pw'=>$app->request->post('contrasena'));
-            authPxp($auxHeaders);
-        }        
-        echo '{"success":true,
-                "cont_alertas":'.$_SESSION["_CONT_ALERTAS"].',
-                "nombre_usuario":"'.$_SESSION["_NOM_USUARIO"].'",
-                "nombre_basedatos":"'.$_SESSION["_BASE_DATOS"].'",
-                "id_usuario":"'.$_SESSION["_ID_USUARIO_OFUS"].'",
-                "id_funcionario":"'.$_SESSION["_ID_FUNCIOANRIO_OFUS"].'",
-                "autentificacion":"'.$_SESSION["_AUTENTIFICACION"].'",
-                "estilo_vista":"'.$_SESSION["_ESTILO_VISTA"].'",
-                "mensaje_tec":"'.$_SESSION["mensaje_tec"].'",
-                "timeout":'.$_SESSION["_TIMEOUT"].'}';
-                exit;
-    }
-);
-$app->post(
-
-    '/:sistema/:clase_control/:metodo',
+$app->post('/:sistema/:clase_control/:metodo',
     function ($sistema,$clase_control,$metodo) use ($app) {        
         $headers = $app->request->headers;
         $cookies = $app->request->cookies;
