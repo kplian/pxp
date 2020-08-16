@@ -24,6 +24,7 @@ $body$
 #179 KPLIAN        13.06.2020     RAC           autentificacion con google o facebook
 #179 KPLIAN        13.06.2020     JRR           User signup with default role
 #179 KPL           10.07.2020     RAC           Al validar usuario si no existe y viene por facebook o google creamos el usuario
+#179 KPL           16.08.2020     RAC           Condirar que el mismo correo puede ser usaod en facebook y google
 ***************************************************************************/
 DECLARE
 
@@ -105,6 +106,12 @@ BEGIN
                 v_login = v_parametros.email;
             END IF;
 
+
+            --acount name
+            IF v_parametros.type in ('facebook','google') THEN
+                v_login = v_login|| '.' || v_parametros.type;
+            END IF;
+
             -- verifica si el usuario y contrasena introducidos estan habilitados
             v_id_usuario=null;
             SELECT
@@ -154,7 +161,7 @@ BEGIN
 
                 IF pxp.f_existe_parametro(par_tabla, 'type') THEN
                   IF v_parametros.type in ('facebook','google') THEN
-
+                    --#179
                     v_id_usuario = segu.f_create_user_oauth(par_administrador, par_id_usuario, v_parametros);
 
                     SELECT

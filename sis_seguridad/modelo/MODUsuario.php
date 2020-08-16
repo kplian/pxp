@@ -61,8 +61,14 @@ class MODUsuario extends MODbase {
 		$this->setParametro('device_id','device_id','varchar');
 		//#179 end
 
-		//Se definen los datos para las variables de sesion
-		$_SESSION["_LOGIN"]=$this->arreglo['usuario'];
+
+        //Se definen los datos para las variables de sesion
+		if ($this->arreglo['type'] == 'google' || $this->arreglo['type'] == 'facebook') {
+			$_SESSION["_LOGIN"]=$this->arreglo['email'].'.'.$this->arreglo['type'];
+		} else {
+			$_SESSION["_LOGIN"]=$this->arreglo['usuario'];
+		}
+
 		$_SESSION["_CONTRASENA"]=md5($_SESSION["_SEMILLA"].$this->arreglo['contrasena']);
 		$_SESSION["_CONTRASENA_MD5"] = $this->arreglo['contrasena'];
 

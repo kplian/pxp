@@ -147,6 +147,7 @@ class ACTAuten extends ACTbase {
         $this->res=$this->funciones->ValidaUsuario();
         $this->datos=$this->res->getDatos();
         $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
+        
         //#133
         if( $this->objParam->getParametro('language') != '') {
             $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language'));
@@ -155,7 +156,7 @@ class ACTAuten extends ACTbase {
         }
 
         I18n::get()->changeLanguage(strtolower($_SESSION["ss_lenguaje_usu"]));
-
+        
         if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){
             //si no existe le mando otra vez a la portada
             $_SESSION["autentificado"] = "NO";
@@ -173,7 +174,7 @@ class ACTAuten extends ACTbase {
             $_SESSION["ss_ip"] = "";
             $_SESSION["ss_mac"] = "";
 
-           echo "{success:false,mensaje:'".I18n::get()->t('invalid_usu')."'}";
+           echo "{success:false,mensaje:'xx".I18n::get()->t('invalid_usu')."'}";
            exit;
         }
         else {
@@ -468,8 +469,7 @@ class ACTAuten extends ACTbase {
         $this->funciones= $this->create('MODUsuario');
         $this->res=$this->funciones->ValidaUsuario();
         $this->datos=$this->res->getDatos();
-        $_SESSION["_LOGIN"]=$this->objParam->getParametro('email'); //recueprando cuenta de usuario
-
+        
         //#133
         if( $this->objParam->getParametro('language') != '') {
             $_SESSION["ss_lenguaje_usu"] = strtoupper($this->objParam->getParametro('language'));
@@ -478,7 +478,7 @@ class ACTAuten extends ACTbase {
         }
 
         I18n::get()->changeLanguage(strtolower($_SESSION["ss_lenguaje_usu"]));
-
+        //var_dump($this->res);exit;
         header('Content-type: application/json; charset=utf-8');
         if($this->res->getTipo()=='Error' || $this->datos['cuenta']=='') {
             //si no existe le mando otra vez a la portada

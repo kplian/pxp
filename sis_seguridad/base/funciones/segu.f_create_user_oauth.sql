@@ -16,7 +16,8 @@ $body$
 ***************************************************************************
 
  ISSUE            FECHA:            AUTOR               DESCRIPCION  
- #128          10/07/2020           RAC            CREACION
+ #179          10/07/2020           RAC            CREACION
+ #179 KPL      16.08.2020           RAC            Condirar que el mismo correo puede ser usaod en facebook y google
 ***************************************************************************/
 DECLARE
     v_registros         RECORD;
@@ -32,6 +33,7 @@ DECLARE
     v_segu_extra_function   varchar; 
     v_extra                 boolean; 
     v_id_usuario            integer;
+    v_cuenta_usuario        varchar;
 
 BEGIN
    
@@ -74,7 +76,10 @@ BEGIN
          SELECT c.id_clasificador 
          INTO v_id_clasificador
          FROM segu.tclasificador c
-         WHERE c.codigo = 'PUB';     
+         WHERE c.codigo = 'PUB'; 
+
+         --acount name
+         v_cuenta_usuario = v_parametros.email || '.' || v_parametros.type;    
         
          --crear usuario
              
@@ -94,7 +99,7 @@ BEGIN
                               
          VALUES(                        
             v_id_clasificador,
-            v_parametros.email,
+            v_cuenta_usuario,
             v_tmp_ci,
             '3000-01-01'::Date,
             'xtheme-gray.css',
