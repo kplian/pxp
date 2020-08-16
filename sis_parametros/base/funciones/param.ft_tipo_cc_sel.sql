@@ -26,7 +26,6 @@ $body$
   #2  ETR		 07/12/2018		   EGS				 Se creo las funciones PM_TCCARBHI_SEL y PM_TCCARBHI_CONT que lista los nodos transsaccionales del tipo cc por gestion
   #7  endeETR    21/01/2019		   EGS				 se modifico PM_TCCARBHI_SEL para que considere el con tipo de presupuesto
   #150 ENDETR    08/07/2020        JJA               Filtrar los tipo_cc vigentes
-  #44  ENDETR    23/07/2020        JJA          Mejoras en reporte tipo centro de costo de presupuesto
 ***************************************************************************/
 
 DECLARE
@@ -37,6 +36,7 @@ DECLARE
 	v_resp				varchar;
     v_where				varchar;
   v_where_2           varchar; --#150
+    v_id_tipo_cc		integer;
 
 BEGIN
 
@@ -210,7 +210,7 @@ BEGIN
                 v_where := ' tcc.id_tipo_cc_fk = '||v_parametros.node;
               end if;
 
-              v_where_2 = ' and tcc.codigo not like ''X_%'' '; --#44
+              v_where_2 = ''; --#150
               if(v_parametros.ceco_vigente='Operativo')then --#150
               
                  v_where_2 := ' and  tcc.operativo = ''si'' ';
@@ -374,8 +374,70 @@ BEGIN
                 --Devuelve la respuesta
                 return v_consulta;
 
-            end;  
-	else
+            end;
+
+        /*********************************
+         #TRANSACCION:  'PM_TCCREP_SEL'
+         #DESCRIPCION:	Consulta de datos
+         #AUTOR:		Yamil Medina
+         #FECHA:		07-08-2020 10:10:19
+        ***********************************/
+
+        elsif(p_transaccion='PM_TCCREP_SEL')then
+
+            begin
+                if (pxp.f_existe_parametro(p_tabla,'id_tipo_cc')) then
+                    v_id_tipo_cc = v_parametros.id_tipo_cc;
+                end if;
+
+                --Sentencia de la consulta
+                v_consulta:='  select  total.id_tipo_cc,
+                                       total.codigo,
+                                       total.descripcion,
+                                       htc.id_historico,
+                                       htc.fecha_reg,
+                                       (htc.datos_antiguo)::text,
+                                       (htc.datos_nuevo)::text,
+                                       htc.operacion,
+                                       (vu.desc_persona)::text,
+                                       (total.codigo_padre)::text
+                                from (
+                         with recursive arbol_tipo_cc AS (
+                                    SELECT tcc.id_tipo_cc,
+                                           tcc.codigo,
+                                           tcc.descripcion,
+                                           ''/ ''||tcc.codigo as codigo_padre
+                                    FROM param.ttipo_cc tcc ';
+                if(v_id_tipo_cc is not null)then
+                    v_consulta:=v_consulta||'  WHERE tcc.id_tipo_cc = '||v_id_tipo_cc||' ';
+                end if;
+
+                v_consulta:=v_consulta||'
+                                    UNION
+                                    SELECT tcce.id_tipo_cc,
+                                           tcce.codigo,
+                                           tcce.descripcion,
+                                           ar.codigo_padre || '' / '' || tcce.codigo
+                                    FROM param.ttipo_cc tcce
+                                         inner join arbol_tipo_cc ar on ar.id_tipo_cc = tcce.id_tipo_cc_fk)
+                                select arb.id_tipo_cc,
+                                       arb.codigo,
+                                       arb.descripcion,
+                                       max(arb.codigo_padre) as codigo_padre
+                                from arbol_tipo_cc arb
+                                group by arb.id_tipo_cc, arb.codigo,arb.descripcion) as total
+                                left join param.thistorico_tipo_cc htc on total.id_tipo_cc = htc.id_tipo_cc
+                                left join segu.vusuario vu on htc.id_usuario_reg = vu.id_usuario ';
+                if (v_parametros.fecha_ini is not null) then
+                    v_consulta:=v_consulta||' where htc.fecha_reg BETWEEN '' '||v_parametros.fecha_ini||' ''::date AND '' '||v_parametros.fecha_fin||' ''::date ';
+                end if;
+                v_consulta:=v_consulta||'order by total.id_tipo_cc ASC, htc.id_historico ASC';
+
+                --Devuelve la respuesta
+                return v_consulta;
+
+            end;
+    else
 
 		raise exception 'Transaccion inexistente';
 

@@ -12,6 +12,7 @@
   #33  ETR       18/07/2018        RAC KPLIAN       agregar opearativo si o no
   #2			 07/12/2018	       EGS		        Funcion para listar centros de costo de tipo transsaccionale del arbol Tipo CC por gestion
   #150 ENDETR    08/07/2020        JJA              Filtrar los tipo_cc vigentes
+  #155           14/08/2020      YMR             Bitacora exportable en PDF Y CSV
 */
 
 class MODTipoCc extends MODbase{
@@ -322,5 +323,35 @@ class MODTipoCc extends MODbase{
 	}
 		// #2				07/12/2018		EGS	
 
+    function recuperarTipoCc(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='param.ft_tipo_cc_sel';
+        $this->transaccion='PM_TCCREP_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+        $this->setCount(false);
+
+        //captura parametros adicionales para el count
+        $this->setParametro('id_tipo_cc','id_tipo_cc','int4');
+        $this->setParametro('fecha_ini','fecha_ini','date');
+        $this->setParametro('fecha_fin','fecha_fin','date');
+
+        //Definicion de la lista del resultado del query
+        $this->captura('id_tipo_cc','int4');
+        $this->captura('codigo','varchar');
+        $this->captura('descripcion','varchar');
+        $this->captura('id_historico','int4');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('datos_antiguo','text');
+        $this->captura('datos_nuevo','text');
+        $this->captura('operacion','varchar');
+        $this->captura('desc_persona','text');
+        $this->captura('codigo_padre','text');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 }
 ?>
