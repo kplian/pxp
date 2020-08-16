@@ -212,7 +212,7 @@ BEGIN
                 v_where := ' tcc.id_tipo_cc_fk = '||v_parametros.node;
               end if;
 
-              v_where_2 = ' and tcc.codigo not like ''X_%'' '; --#44
+              v_where_2 = ''; --#150
               if(v_parametros.ceco_vigente='Operativo')then --#150
               
                  v_where_2 := ' and  tcc.operativo = ''si'' ';
