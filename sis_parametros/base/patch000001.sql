@@ -2780,3 +2780,19 @@ IS 'si o no, si esta habilitado mostrara el campo de nota_debito_agencia, caso c
 /***********************************F-SCP-MGM-PARAM-1-17/04/2020****************************************/
 
 
+/***********************************I-SCP-YMR-PARAM-136-17/08/2020****************************************/
+CREATE TABLE param.thistorico_tipo_cc (
+                                          id_historico SERIAL,
+                                          id_tipo_cc INTEGER,
+                                          datos_antiguo JSONB,
+                                          datos_nuevo JSONB,
+                                          operacion VARCHAR(4),
+                                          CONSTRAINT thistorico_tipo_cc_pkey PRIMARY KEY(id_historico),
+                                          CONSTRAINT fk_ttipo_cc__id_tipo FOREIGN KEY (id_tipo_cc)
+                                              REFERENCES param.ttipo_cc(id_tipo_cc)
+                                              ON DELETE NO ACTION
+                                              ON UPDATE NO ACTION
+                                              NOT DEFERRABLE
+) INHERITS (pxp.tbase)
+  WITH (oids = false);
+/***********************************F-SCP-YMR-PARAM-136-17/08/2020****************************************/
