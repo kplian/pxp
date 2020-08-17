@@ -23,7 +23,7 @@ $body$
  
                  COMENTARIOS:   
   #33  ETR       18/07/2018        RAC KPLIAN        Modificar tipos de centros operativos o no
-    
+  #155 ETR       14/08/2020        YMR               Bitacora sobre tipo centro de costo
 ***************************************************************************/
 
 DECLARE
@@ -49,6 +49,9 @@ DECLARE
     v_comparacion           integer;
     v_agrupador        varchar;
     v_tipo_array      varchar[];
+    v_datos_antiguos  jsonb;
+    v_datos_nuevos    jsonb;
+    v_text_arr		  varchar;
           
 BEGIN
 
@@ -209,6 +212,47 @@ BEGIN
                   v_parametros.fecha_final,
                   v_parametros.operativo  -- #33 ++
       )RETURNING id_tipo_cc into v_id_tipo_cc;
+
+      v_text_arr = '{{codigo, "'||upper(v_parametros.codigo)||
+                   '"},{control_techo,"'||v_parametros.control_techo||
+                   '"},{mov_pres, "'||va_mov_pres_str::text||
+                   '"},{movimiento, "'||v_parametros.movimiento||
+                   '"},{id_ep, '||v_parametros.id_ep||
+                   '},{id_tipo_cc_fk, '||v_id_tipo_cc_fk::text||
+                   '},{descripcion, "'||v_parametros.descripcion||
+                   '"},{tipo, "'||v_parametros.tipo||
+                   '"},{control_partida, "'||v_parametros.control_partida||
+                   '"},{momento_pres, "'||va_momento_pres::text||
+                   '"},{fecha_inicio, "'||v_parametros.fecha_inicio||
+                   '"},{fecha_final, "'||v_parametros.fecha_final||
+                   '"},{operativo, "'||v_parametros.operativo||
+                   '"}}';
+
+      v_datos_nuevos = jsonb_object(v_text_arr::TEXT[]);
+      --historico
+      INSERT INTO param.thistorico_tipo_cc
+      (
+          id_usuario_reg,
+          id_usuario_mod,
+          fecha_reg,
+          fecha_mod,
+          estado_reg,
+          id_tipo_cc,
+          datos_antiguo,
+          datos_nuevo,
+          operacion
+      )
+      VALUES (
+                 p_id_usuario,
+                 null,
+                 now(),
+                 null,
+                 'activo',
+                 v_id_tipo_cc,
+                 v_datos_antiguos,
+                 v_datos_nuevos,
+                 'add'
+             );
       
       --Definicion de la respuesta
       v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Centro de Costo almacenado(a) con exito (id_tipo_cc'||v_id_tipo_cc||')'); 
@@ -229,6 +273,26 @@ BEGIN
   elsif(p_transaccion='PM_TCC_MOD')then
 
     begin
+
+        SELECT
+            json_build_object(
+                    'codigo', tc.codigo,
+                    'control_techo', tc.control_techo,
+                    'mov_pres', tc.mov_pres::text,
+                    'movimiento', tc.movimiento,
+                    'id_ep', tc.id_ep::text,
+                    'id_tipo_cc_fk', tc.id_tipo_cc_fk::text,
+                    'descripcion', tc.descripcion,
+                    'tipo', tc.tipo,
+                    'control_partida', tc.control_partida,
+                    'momento_pres', tc.momento_pres::text,
+                    'fecha_inicio', tc.fecha_inicio,
+                    'fecha_final', tc.fecha_final,
+                    'operativo', tc.operativo
+                )
+        INTO v_datos_antiguos
+        FROM param.ttipo_cc tc
+        WHERE tc.id_tipo_cc = v_parametros.id_tipo_cc;
         
              IF v_parametros.id_tipo_cc_fk != 'id' and v_parametros.id_tipo_cc_fk != '' THEN
                    v_id_tipo_cc_fk  = v_parametros.id_tipo_cc_fk::integer;
@@ -387,8 +451,49 @@ BEGIN
                   fecha_final = v_parametros.fecha_final,
                   operativo = v_parametros.operativo
             where id_tipo_cc=v_parametros.id_tipo_cc;
-               
-      --Definicion de la respuesta
+
+        v_text_arr = '{{codigo, "'||upper(v_parametros.codigo)||
+                     '"},{control_techo,"'||v_parametros.control_techo||
+                     '"},{mov_pres, "'||va_mov_pres_str::text||
+                     '"},{movimiento, "'||v_parametros.movimiento||
+                     '"},{id_ep, '||v_parametros.id_ep||
+                     '},{id_tipo_cc_fk, '||v_id_tipo_cc_fk::text||
+                     '},{descripcion, "'||v_parametros.descripcion||
+                     '"},{tipo, "'||v_parametros.tipo||
+                     '"},{control_partida, "'||v_parametros.control_partida||
+                     '"},{momento_pres, "'||va_momento_pres::text||
+                     '"},{fecha_inicio, "'||v_parametros.fecha_inicio||
+                     '"},{fecha_final, "'||v_parametros.fecha_final||
+                     '"},{operativo, "'||v_parametros.operativo||
+                     '"}}';
+
+        v_datos_nuevos = jsonb_object(v_text_arr::TEXT[]);
+        --historico
+        INSERT INTO param.thistorico_tipo_cc
+        (
+            id_usuario_reg,
+            id_usuario_mod,
+            fecha_reg,
+            fecha_mod,
+            estado_reg,
+            id_tipo_cc,
+            datos_antiguo,
+            datos_nuevo,
+            operacion
+        )
+        VALUES (
+                   p_id_usuario,
+                   null,
+                   now(),
+                   null,
+                   'activo',
+                   v_parametros.id_tipo_cc,
+                   v_datos_antiguos,
+                   v_datos_nuevos,
+                   'mod'
+               );
+
+        --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Centro de Costo modificado(a)'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_cc',v_parametros.id_tipo_cc::varchar);
                
@@ -407,8 +512,27 @@ BEGIN
   elsif(p_transaccion='PM_TCC_ELI')then
 
     begin
-      
-            
+
+        SELECT
+            json_build_object(
+                    'codigo', tc.codigo,
+                    'control_techo', tc.control_techo,
+                    'mov_pres', tc.mov_pres::text,
+                    'movimiento', tc.movimiento,
+                    'id_ep', tc.id_ep::text,
+                    'id_tipo_cc_fk', tc.id_tipo_cc_fk::text,
+                    'descripcion', tc.descripcion,
+                    'tipo', tc.tipo,
+                    'control_partida', tc.control_partida,
+                    'momento_pres', tc.momento_pres::text,
+                    'fecha_inicio', tc.fecha_inicio,
+                    'fecha_final', tc.fecha_final,
+                    'operativo', tc.operativo
+                )
+        INTO v_datos_nuevos
+        FROM param.ttipo_cc tc
+        WHERE tc.id_tipo_cc = v_parametros.id_tipo_cc;
+
             --verificar que no tenga nodos hijos
             IF exists (select 
                      1
@@ -423,9 +547,33 @@ BEGIN
                         from param.tcentro_costo cc
                         where cc.id_tipo_cc = v_parametros.id_tipo_cc) THEN
                       raise exception 'El nodo que quiere eliminar tiene centros de costos relacionados, elimine la relación antes de continuar';
-            END IF;  
-                    
-            
+            END IF;
+
+        --historico
+        INSERT INTO param.thistorico_tipo_cc
+        (
+            id_usuario_reg,
+            id_usuario_mod,
+            fecha_reg,
+            fecha_mod,
+            estado_reg,
+            id_tipo_cc,
+            datos_antiguo,
+            datos_nuevo,
+            operacion
+        )
+        VALUES (
+                   p_id_usuario,
+                   null,
+                   now(),
+                   null,
+                   'activo',
+                   v_parametros.id_tipo_cc,
+                   v_datos_antiguos,
+                   v_datos_nuevos,
+                   'del'
+               );
+
             --Sentencia de la eliminacion
       delete from param.ttipo_cc
             where id_tipo_cc=v_parametros.id_tipo_cc;

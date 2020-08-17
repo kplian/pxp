@@ -1502,3 +1502,12 @@ ALTER TABLE param.tpalabra_clave
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
 /***********************************F-DEP-RAC-PARAM-133-20/04/2020****************************************/
+
+/***********************************I-DEP-YMR-PARAM-136-14/08/2020****************************************/
+
+select pxp.f_insert_tgui ('Reportes', 'Reportes', 'REPCC', 'si', 51, '', 2, '', '', 'PARAM');
+select pxp.f_insert_tgui ('Reporte Tipo Centro de Costo', 'Reporte Tipo Centro de Costo', 'REPTCC', 'si', 1, 'sis_parametros/vista/reporte_cc/ReporteTipoCC.php', 3, '', 'Reporte_tipo_cc', 'PARAM');
+select pxp.f_insert_testructura_gui ('REPCC', 'PARAM');
+select pxp.f_insert_testructura_gui ('REPTCC', 'REPCC');
+
+/***********************************F-DEP-YMR-PARAM-136-14/08/2020****************************************/
