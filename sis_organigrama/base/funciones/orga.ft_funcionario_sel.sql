@@ -394,6 +394,7 @@ $body$
 
       --consulta:=';
       BEGIN      		
+
         v_filadd = '';
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
@@ -403,8 +404,7 @@ $body$
                   from segu.tusuario_rol ur
                   join segu.trol r on r.id_rol=ur.id_rol
                   where ur.id_usuario=par_id_usuario and r.rol='CONTA - Analista Contable') THEN
-                  
-			v_parametros.filtro='0=0 ';
+			v_parametros.filtro='0=0';
         END IF;
         
         v_consulta:='SELECT
@@ -433,8 +433,8 @@ $body$
                     WHERE '||v_filadd;		
         v_consulta:=v_consulta||v_parametros.filtro;
         v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' OFFSET ' || v_parametros.puntero;
-        RAISE NOTICE 'error %',v_parametros.filtro;
-      -- RAISE EXCEPTION 'error %',v_parametros.filtro;
+        --RAISE NOTICE 'error %',v_consulta;
+       --RAISE EXCEPTION 'error %',v_consulta;
        return v_consulta;
 
 
@@ -455,12 +455,12 @@ $body$
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
         END IF;
+		--#189
 		IF EXISTS(select 1
                   from segu.tusuario_rol ur
                   join segu.trol r on r.id_rol=ur.id_rol
                   where ur.id_usuario=par_id_usuario and r.rol='CONTA - Analista Contable') THEN
-                  
-			v_parametros.filtro='0=0 ';
+			v_parametros.filtro='0=0';
         END IF;
         v_consulta:='SELECT
                                   count(id_uo_funcionario)
