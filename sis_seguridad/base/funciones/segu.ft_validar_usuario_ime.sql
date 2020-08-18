@@ -100,16 +100,20 @@ BEGIN
           --consulta:=';
           BEGIN
 
-            IF pxp.f_existe_parametro(par_tabla, 'login') THEN
-                v_login = v_parametros.login;
-            ELSE
-                v_login = v_parametros.email;
-            END IF;
+            
+              IF pxp.f_existe_parametro(par_tabla, 'login') THEN
+                  v_login = v_parametros.login;
+              ELSE
+                  v_login = v_parametros.email;
+              END IF;
 
 
             --acount name
-            IF v_parametros.type in ('facebook','google') THEN
-                v_login = v_login|| '.' || v_parametros.type;
+                        
+            IF pxp.f_existe_parametro(par_tabla, 'type') THEN
+              IF v_parametros.type in ('facebook','google') THEN
+                  v_login = v_login|| '.' || v_parametros.type;
+              END IF;            
             END IF;
 
             -- verifica si el usuario y contrasena introducidos estan habilitados

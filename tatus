@@ -1,0 +1,30 @@
+diff --git a/lib/rest/index.php b/lib/rest/index.php
+index 8442304..e6737f5 100755
+--- a/lib/rest/index.php
++++ b/lib/rest/index.php
+@@ -101,7 +101,7 @@ function authPxp($headersArray, $deviceID = '') {
+     //obtener la contrasena del usuario en md5
+     $md5Pass = $res->datos['contrasena'];
+ 
+-
++    
+     //creamos array de request
+     $reqArray = array();
+     if ($mensaje == '') {
+@@ -133,7 +133,7 @@ function authPxp($headersArray, $deviceID = '') {
+             $reqArray['contrasena'] =  $md5Pass;
+                 $reqArray['deviceID'] = $deviceID;
+             $reqArray['_tipo'] = 'restAuten';
+-
++            
+ 
+             //autentificar usuario en sistema
+             //arma $JSON
+@@ -144,6 +144,7 @@ function authPxp($headersArray, $deviceID = '') {
+ 
+             eval('$cad = new ACTAuten($objParam);');
+             eval('$cad->verificarCredenciales();');
++           
+         } else {
+             if ($mensaje == '')
+                 $mensaje = "Contrasena invalida para el usuario : " . $headersArray['Pxp-User'];
