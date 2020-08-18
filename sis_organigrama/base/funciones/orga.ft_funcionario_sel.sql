@@ -455,7 +455,13 @@ $body$
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
         END IF;
-
+		--#189
+		IF EXISTS(select 1
+                  from segu.tusuario_rol ur
+                  join segu.trol r on r.id_rol=ur.id_rol
+                  where ur.id_usuario=par_id_usuario and r.rol='CONTA - Analista Contable') THEN
+			v_parametros.filtro='0=0';
+        END IF;
         v_consulta:='SELECT
                                   count(id_uo_funcionario)
                             FROM orga.vfuncionario_cargo_lugar FUNCAR 
