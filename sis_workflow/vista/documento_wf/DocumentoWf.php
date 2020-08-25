@@ -9,6 +9,7 @@
  HISTORIAL DE MODIFICACIONES:
 ISSUE   FORK        FECHA       AUTHOR        DESCRIPCION
 #98     EndeEtr     24/12/2019  JUAN          Reporte de lista de documentos en workflow con letras mas grandes
+#MSA-29		    24/08/2020	EGS	      Se agrega el campo de observaciones
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -415,6 +416,23 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
                 grid:true,
                 form:false
         },
+       {//#MSA-29
+           config:{
+               name: 'observacion',
+               fieldLabel: 'Observaciones',
+               allowBlank: true,
+               anchor: '80%',
+               gwidth: 300,
+               maxLength:10,
+
+           },
+           type:'TextField',
+           filters:{pfiltro:'dwf.observacion',type:'string'},
+           id_grupo:1,
+           grid:true,
+           form:false,
+           egrid:true,//#
+       },
 		
 		{
 			config:{
@@ -880,7 +898,8 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
         'tipo_documento',
         'action','solo_lectura','id_documento_wf_ori','id_proceso_wf_ori','nro_tramite_ori',
         {name:'fecha_upload', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'modificar','insertar','eliminar','demanda',
-        'nombre_vista','esquema_vista','nombre_archivo_plantilla'
+        'nombre_vista','esquema_vista','nombre_archivo_plantilla',
+        {name:'observacion', type: 'string'},//#MSA-29
 	],
 	
     onButtonDel: function(){
@@ -1035,7 +1054,7 @@ Phx.vista.DocumentoWf=Ext.extend(Phx.gridInterfaz,{
     
       
 	bdel:true,
-	bsave:false
+	bsave:true
 	}
 )
 </script>
