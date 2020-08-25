@@ -1,11 +1,13 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_ime (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
   p_transaccion varchar
 )
-  RETURNS varchar AS
-  $body$
+RETURNS varchar AS
+$body$
   /**************************************************************************
    SISTEMA:		Work Flow
    FUNCION: 		wf.ft_documento_wf_ime
@@ -14,11 +16,9 @@ CREATE OR REPLACE FUNCTION wf.ft_documento_wf_ime (
    FECHA:	        15-01-2014 13:52:19
    COMENTARIOS:
   ***************************************************************************
-   HISTORIAL DE MODIFICACIONES:
-
-   DESCRIPCION:
-   AUTOR:
-   FECHA:
+HISTORIAL DE MODIFICACIONES:
+ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
+#MSA-29             24/-8/2020  EGS            Se agrega el campo de observaciones en los documentos
   ***************************************************************************/
 
   DECLARE
@@ -124,7 +124,8 @@ CREATE OR REPLACE FUNCTION wf.ft_documento_wf_ime (
           --obs = v_parametros.obs,
           chequeado_fisico = v_parametros.chequeado_fisico,
           fecha_mod = now(),
-          id_usuario_mod = p_id_usuario
+          id_usuario_mod = p_id_usuario,
+          observacion = v_parametros.observacion--#--#MSA-29
 
         where id_documento_wf=v_parametros.id_documento_wf;
 

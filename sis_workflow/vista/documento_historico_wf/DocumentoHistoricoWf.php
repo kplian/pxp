@@ -5,6 +5,9 @@
 *@author  (admin)
 *@date 04-12-2014 20:11:08
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ HISTORIAL DE MODIFICACIONES:
+ISSUE   FORK        FECHA       AUTHOR        DESCRIPCION
+#MSA-29		    	24/08/2020	EGS	      	  Se agrega el campo de observaciones
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -70,6 +73,23 @@ Phx.vista.DocumentoHistoricoWf=Ext.extend(Phx.gridInterfaz,{
             id_grupo:0,
             grid:true,
             form:false
+        },
+        {//#MSA-29
+            config:{
+                name: 'observacion',
+                fieldLabel: 'Observaciones',
+                allowBlank: true,
+                anchor: '80%',
+                gwidth: 300,
+                maxLength:10,
+
+            },
+            type:'TextField',
+            filters:{pfiltro:'dwf.observacion',type:'string'},
+            id_grupo:1,
+            grid:true,
+            form:false,
+            egrid:true,//#
         },
 		{
 			config:{
@@ -139,7 +159,8 @@ Phx.vista.DocumentoHistoricoWf=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
-		{name:'usr_mod', type: 'string'},'extension'
+		{name:'usr_mod', type: 'string'},'extension',
+        {name:'observacion', type: 'string'},//#MSA-29
 		
 	],
 	sortInfo:{
@@ -171,7 +192,7 @@ Phx.vista.DocumentoHistoricoWf=Ext.extend(Phx.gridInterfaz,{
        
      },
 	bdel:false,
-	bsave:false,
+	bsave:true,//#MSA-29
 	bnew:false,
 	bedit:false
 	}

@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION wf.ft_documento_wf_sel (
   p_administrador integer,
   p_id_usuario integer,
@@ -18,6 +20,7 @@ $body$
 ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
 #4 		EndeEtr  	02/01/2019	EGS			se agrego la funcion WF_DOCEXT_SEL para aumentar el tipo de extensiones desde una variable global
 #98   EndeEtr   24/12/2019  JUAN    Reporte de lista de documentos en workflow con letras mas grandes
+#MSA-29             24/-8/2020  EGS            Se agrega el campo de observaciones en los documentos
 ***************************************************************************/
 
 DECLARE
@@ -150,7 +153,8 @@ BEGIN
                         dwf.demanda,
                         td.nombre_vista,
                         td.esquema_vista,
-                        td.nombre_archivo_plantilla
+                        td.nombre_archivo_plantilla,
+                        dwf.observacion  --#MSA-29
             from wf.tdocumento_wf dwf
                         inner join wf.tproceso_wf pw on pw.id_proceso_wf = dwf.id_proceso_wf
                         inner join wf.ttipo_documento td on td.id_tipo_documento = dwf.id_tipo_documento
