@@ -431,7 +431,7 @@ BEGIN
                                 left join param.thistorico_tipo_cc htc on total.id_tipo_cc = htc.id_tipo_cc
                                 left join segu.vusuario vu on htc.id_usuario_reg = vu.id_usuario ';
                 if (v_parametros.fecha_ini is not null) then
-                    v_consulta:=v_consulta||' where htc.fecha_reg BETWEEN '' '||v_parametros.fecha_ini||' ''::date AND '' '||v_parametros.fecha_fin||' ''::date ';
+                    v_consulta:=v_consulta||' where htc.fecha_reg::date BETWEEN '' '||v_parametros.fecha_ini||' ''::date AND '' '||v_parametros.fecha_fin||' ''::date ';
                 end if;
                 v_consulta:=v_consulta||'order by total.id_tipo_cc ASC, htc.id_historico ASC';
 
