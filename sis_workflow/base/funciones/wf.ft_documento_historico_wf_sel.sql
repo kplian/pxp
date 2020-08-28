@@ -17,10 +17,9 @@ $body$
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
+ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
+#MSA-29             24/-8/2020  EGS            Se agrega el campo de observaciones en los documentos
 
- DESCRIPCION:	
- AUTOR:			
- FECHA:		
 ***************************************************************************/
 
 DECLARE
@@ -62,7 +61,8 @@ BEGIN
 						dhw.id_usuario_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        dhw.extension	
+                        dhw.extension,
+                        dhw.observacion	--#MSA-29
 						from wf.tdocumento_historico_wf dhw
 						inner join segu.tusuario usu1 on usu1.id_usuario = dhw.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = dhw.id_usuario_mod

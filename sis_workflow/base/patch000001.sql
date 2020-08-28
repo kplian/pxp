@@ -1407,3 +1407,9 @@ COMMENT ON COLUMN wf.ttipo_estado.hrs_envio
 IS 'Hrs que se enviara Cada (alerta/correo) el ultimo dia y los dias retrasados
 del estado';
 /*****************************F-SCP-EGS-WF-1-29/05/2020*************/
+/*****************************I-SCP-EGS-WF-2-24/08/2020*************/
+ALTER TABLE wf.tdocumento_wf
+  ADD COLUMN observacion VARCHAR;
+ALTER TABLE wf.tdocumento_historico_wf
+ADD COLUMN observacion VARCHAR;
+/*****************************F-SCP-EGS-WF-2-24/08/2020*************/

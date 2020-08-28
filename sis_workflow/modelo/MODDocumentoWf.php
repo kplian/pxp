@@ -7,7 +7,8 @@
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 	ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
 	#4 		EndeEtr  	02/01/2019	EGS			se agrego la logica para aumentar el tipo de extensiones desde una variable global
-    #98 	EndeEtr  	24/12/2019	JUAN		Reporte de lista de documentos en workflow con letras mas grandes
+    	#98 	EndeEtr  	24/12/2019	JUAN		Reporte de lista de documentos en workflow con letras mas grandes
+	#MSA-29		    	24/08/2020	EGS	      Se agrega el campo de observaciones
 */
 
 class MODDocumentoWf extends MODbase{
@@ -72,6 +73,7 @@ class MODDocumentoWf extends MODbase{
 		$this->captura('nombre_vista','varchar');
 		$this->captura('esquema_vista','varchar');
 		$this->captura('nombre_archivo_plantilla','text');
+		$this->captura('observacion','varchar');//#MSA-29 
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -189,6 +191,7 @@ class MODDocumentoWf extends MODbase{
 		$this->setParametro('nombre_doc','nombre_doc','varchar');
 		$this->setParametro('momento','momento','varchar');
 		$this->setParametro('chequeado_fisico','chequeado_fisico','varchar');
+		$this->setParametro('observacion','observacion','varchar');//#MSA-29 
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

@@ -5,6 +5,10 @@
 *@author  (admin)
 *@date 04-12-2014 20:11:08
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
+HISTORIAL DE MODIFICACIONES:
+ISSUE	FORK		FECHA		AUTHOR        DESCRIPCION
+#MSA-29             	24/-8/2020  	EGS            Se agrega el campo de observaciones en los documentos
+
 */
 
 class ACTDocumentoHistoricoWf extends ACTbase{    
@@ -29,6 +33,15 @@ class ACTDocumentoHistoricoWf extends ACTbase{
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+    function insertarDocumentoHistoricoWf(){//#MSA-29 
+        $this->objFunc=$this->create('MODDocumentoHistoricoWf');
+        if($this->objParam->insertar('id_documento_historico_wf')){
+            $this->res=$this->objFunc->insertarDocumentoHistoricoWf($this->objParam);
+        } else{
+            $this->res=$this->objFunc->modificarDocumentoHistoricoWf($this->objParam);
+        }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
 		
 }
 ?>
