@@ -4,32 +4,35 @@ CREATE OR REPLACE FUNCTION orga.f_trig_huo_funcionario(
 $body$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        if (exists(select 1
+        if (NEW.tipo = 'oficial' and exists(select 1
                    from orga.tuo_funcionario uof
-                   where uof.id_funcionario = NEW.id_funcionario
-                     and uof.estado_reg = 'activo'
-                     and ((uof.fecha_asignacion between NEW.fecha_asignacion and NEW.fecha_finalizacion)
-                       or (uof.fecha_finalizacion between NEW.fecha_asignacion and NEW.fecha_finalizacion)))) then
+					where uof.id_funcionario = NEW.id_funcionario and
+						  uof.estado_reg = 'activo' and
+						  uof.tipo = 'oficial' and
+						  (uof.fecha_asignacion <= coalesce( NEW.fecha_finalizacion, '08/06/3333'::date)
+						  and uof.fecha_finalizacion >= NEW.fecha_asignacion))) then
             RAISE
                 EXCEPTION 'El intervalo de fechas ingresadas, No debe solapar a una asignacion de cargo activa';
 
         end if;
     ELSEIF TG_OP = 'UPDATE' THEN
         if (NEW.fecha_finalizacion is not null) then
-            if (exists(select 1
+            if (NEW.tipo = 'oficial' and exists(select 1
                        from orga.tuo_funcionario uof
                        where uof.id_funcionario = NEW.id_funcionario
                          and uof.estado_reg = 'activo'
+                         and uof.tipo = 'oficial'
                          and uof.id_uo_funcionario != NEW.id_uo_funcionario
-                         and ((uof.fecha_asignacion between NEW.fecha_asignacion and NEW.fecha_finalizacion)
-                           or (uof.fecha_finalizacion between NEW.fecha_asignacion and NEW.fecha_finalizacion)))) then
+                         and (uof.fecha_asignacion <= coalesce( NEW.fecha_finalizacion, '08/06/3333'::date)
+						  and uof.fecha_finalizacion >= NEW.fecha_asignacion))) then
 
                 RAISE EXCEPTION 'El intervalo de fechas ingresadas, No debe solapar a una asignacion de cargo activa';
             end if;
-        elseif (exists(select 1
+        elseif (NEW.tipo = 'oficial' and exists(select 1
                        from orga.tuo_funcionario uof
                        where uof.id_funcionario = NEW.id_funcionario
                          and uof.estado_reg = 'activo'
+                         and uof.tipo = 'oficial'
                          and uof.id_uo_funcionario != NEW.id_uo_funcionario
                          and uof.fecha_finalizacion is null
             )) then
