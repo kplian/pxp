@@ -465,10 +465,11 @@ class ACTAuten extends ACTbase {
         */
 
         //Recupera datos de usuario
-
+        
         $this->funciones= $this->create('MODUsuario');
         $this->res=$this->funciones->ValidaUsuario();
         $this->datos=$this->res->getDatos();
+        
         
         //#133
         if( $this->objParam->getParametro('language') != '') {
@@ -509,7 +510,7 @@ class ACTAuten extends ACTbase {
                     //$token_google = $this->objParam->getParametro('token');
 
                     switch ($this->objParam->getParametro('device')) {
-                        case 'web':
+                        case 'web':                            
                             $client = new Google_Client();
                             $client->setClientId($_SESSION['_GOOGLE_CLIENT_ID']);
                             $client->setClientSecret($_SESSION['_GOOGLE_CLIENT_SECRET']);
@@ -522,10 +523,10 @@ class ACTAuten extends ACTbase {
                             //$payload = $client->verifyIdToken($token_google);
                         break;
                     }
-                    $payload = $client->verifyIdToken($token_google);
+                    $payload = $client->verifyIdToken($token_google);                    
                     if($payload) {
                         //token en realide tiene el user_id almacenado en base de datos al momento de crear el usuario
-                        if( $this->datos['token'] == $payload["sub"]  &&  $_SESSION['_GOOGLE_CLIENT_ID'] == $payload["aud"]) {
+                        if( $this->datos['token'] == $payload["sub"] ) {                            
                             $PASS = 1;
                         }
                     }
@@ -571,8 +572,7 @@ class ACTAuten extends ACTbase {
                     $PASS = 0;
                 break;
             }
-
-
+            
             //si falla la autentificacion LDAP cerramos sesion
             if($PASS == 0) {
                     $success = "false";
@@ -597,15 +597,18 @@ class ACTAuten extends ACTbase {
             else {
                 $success = "true";
                 $_SESSION["autentificado"] = "SI";
+                
                 $_SESSION["ss_id_usuario"] = $this->datos['id_usuario'];
                 $_SESSION["ss_id_funcionario"] = $this->datos['id_funcionario'];
                 $_SESSION["ss_id_cargo"] = $this->datos['id_cargo'];
                 $_SESSION["ss_id_persona"] = $this->datos['id_persona'];
+                
                 //cambia el estado del Objeto de sesion activa
                 $_SESSION["_SESION"] = new CTSesion();
-                $_SESSION["_SESION"]->setIdUsuario($this->datos['id_usuario']);
+                
+                $_SESSION["_SESION"]->setIdUsuario($this->datos['id_usuario']);                
                 $_SESSION["_SESION"]->setEstado("activa");
-
+                
 
                 if($_SESSION["_ESTADO_SISTEMA"]=='desarrollo'){
                     $_SESSION["mensaje_tec"]=true;

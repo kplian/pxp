@@ -416,7 +416,7 @@ $app->post(
         $cookies = $app->request->cookies;
         $psudourl = '/seguridad/Auten/'.$metodo;
         $headers = $app->request->headers;
-
+        
         $ruta_include = 'sis_seguridad/control/ACTAuten.php';
         $ruta_url = 'sis_seguridad/control/Auten/'.$metodo;
 

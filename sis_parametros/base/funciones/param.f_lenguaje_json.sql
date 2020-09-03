@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION param.f_lenguaje_json (
 RETURNS jsonb AS
 $body$
 /**************************************************************************
- FUNCION:       segu.f_get_menu
+ FUNCION:       param.f_lenguaje_json
  DESCRIPCION:   fucion ara recueprar un grupo de traduccion en formato json
  AUTOR:         RAC - KPLIAN        
  FECHA:         21/04/2020
@@ -16,6 +16,7 @@ $body$
 
  ISSUE            FECHA:            AUTOR               DESCRIPCION  
  #133          10/04/2020           RAC            CREACION
+ #133          23/06/2020           RAC            no reorna valroes nulos en json generado
 ***************************************************************************/
 DECLARE
     v_registros         RECORD;
@@ -47,7 +48,7 @@ BEGIN
                AND len.codigo = p_codigo_lenguaje
                AND  gi.codigo = p_codigo_grupo
           ),
-          WITH main_data AS (
+           main_data AS (
             SELECT
                 pc.codigo as clave,
                 (
@@ -63,12 +64,13 @@ BEGIN
               AND  gi.codigo = p_codigo_grupo
          )
          SELECT
-           clave
+           clave,
            valor
-         FROM amin_data
-         WHERE varlor IS NOT NULL
-    ) s;
-       
+         FROM main_data
+         WHERE valor IS NOT NULL
+    ) s;  
+    
+  
    
   
  RETURN  v_resp_json;

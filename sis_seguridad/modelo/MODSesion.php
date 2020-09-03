@@ -30,9 +30,10 @@ class MODSesion extends MODbase {
 			$this->setParametro ( 'pid', 'pid', 'integer' );
 			
 			$this->armarConsulta();
-			$consulta = $this->getConsulta();
-
+			
 			$this->ejecutarConsulta();
+			
+			
 
 			return $this->respuesta;
 
