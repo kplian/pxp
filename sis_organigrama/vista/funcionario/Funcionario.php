@@ -440,9 +440,9 @@ Phx.vista.funcionario=function(config){
 				grid:true,
 				form:true
 			},
-			{//#89
+			{//#89 //#156
                 config : {
-                    name:'profesion',
+                    name:'codigo_profesion',
                     qtip:'Profesion',
                     fieldLabel : 'Profesion:',
                     resizable:true,
@@ -465,7 +465,8 @@ Phx.vista.funcionario=function(config){
                     enableMultiSelect:true,
                     valueField:'codigo',
                     displayField: 'descripcion',
-                    gdisplayField: 'profesion',
+                    gdisplayField:'profesion',
+                    hiddenName: 'codigo_profesion',
                     forceSelection:true,
                     typeAhead: false,
                     triggerAction: 'all',
@@ -477,6 +478,7 @@ Phx.vista.funcionario=function(config){
                     anchor:"100%",
                     pageSize:150,
 					gwidth:150,
+					renderer:function(value, p, record){return String.format('{0}', record.data['profesion']);}
                 },
                 type:'ComboBox',
                 filters:{pfiltro:'funcio.profesion',type:'string'},
@@ -756,6 +758,7 @@ Ext.extend(Phx.vista.funcionario,Phx.gridInterfaz,{
 	{name:'id_biometrico', type: 'numeric'},
 	'profesion','codigo_rciva',
 	{name:'fecha_quinquenio', type: 'date', dateFormat:'Y-m-d'},
+	'codigo_profesion'
 	],
 	sortInfo:{
 		field: 'PERSON.nombre_completo1',
