@@ -11,7 +11,8 @@
  ISSUE            FECHA:              AUTOR                 DESCRIPCION  
   #0            04/06/2011          Kplian                creacion
   #24           17/06/2019          RAC                   configuracion de agrupadores para grilla de funcionarios
-  #31           16/07/2019          RAC                   Adciona codigo rcaiva, profesion y fecha quinquenio
+  #31           16/07/2019          RAC                   Adiciona codigo rcaiva, profesion y fecha quinquenio
+  #156			16.09.2020			MZM					  Modificacion de parametro de envio de codigo_profesion en lugar de profesion 
  */
 class MODFuncionario extends MODbase{
 	
@@ -73,9 +74,10 @@ class MODFuncionario extends MODbase{
 		$this->captura('codigo_rciva','varchar');
 		$this->captura('fecha_quinquenio','date');   
 		
+		$this->captura('codigo_profesion','varchar');//#156
 		//Ejecuta la funcion
 		$this->armarConsulta();		
-		//echo $this->getConsulta(); exit;
+		
 		$this->ejecutarConsulta();
 		return $this->respuesta;
 
@@ -203,7 +205,7 @@ class MODFuncionario extends MODbase{
 	}
 	
 	
-	function insertarFuncionario(){
+	function insertarFuncionario(){ 
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_funcionario_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_FUNCIO_INS';//nombre de la transaccion
@@ -235,7 +237,7 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
 		
-		$this->setParametro('profesion','profesion','varchar');	//#31
+		$this->setParametro('profesion','codigo_profesion','varchar');	//#31 //#156
 		$this->setParametro('codigo_rciva','codigo_rciva','varchar');	//#31
 		$this->setParametro('fecha_quinquenio','fecha_quinquenio','date');	//#31
 
@@ -277,14 +279,15 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
 		
-		$this->setParametro('profesion','profesion','varchar');	//#31
+		$this->setParametro('profesion','codigo_profesion','varchar');	//#31 //#156
 		$this->setParametro('codigo_rciva','codigo_rciva','varchar');	//#31
 		$this->setParametro('fecha_quinquenio','fecha_quinquenio','date');	//#31
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
-				
+		//echo '*****'.$this->getConsulta(); exit;		
 		$this->ejecutarConsulta();
+	
 		return $this->respuesta;
 	}
 	

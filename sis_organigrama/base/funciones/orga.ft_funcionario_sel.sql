@@ -1,13 +1,18 @@
---------------- SQL ---------------
+-- FUNCTION: orga.ft_funcionario_sel(integer, integer, character varying, character varying)
 
-CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+-- DROP FUNCTION orga.ft_funcionario_sel(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.ft_funcionario_sel(
+	par_administrador integer,
+	par_id_usuario integer,
+	par_tabla character varying,
+	par_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
   /**************************************************************************
    FUNCION: 		orga.ft_funcionario_sel
    DESCRIPCIÓN:  listado de funcionario
@@ -27,8 +32,10 @@ $body$
   #0            21-01-2011          mzm                 creacion
   #24           17/06/2019          RAC                 configuracion de agrupadores para grilla de funcionarios
   #31           16/07/2019          RAC                 adciona codigo_rciva, profesion, fecha quinquenio
-  #89			04.12.2019			MZM					Habilitacion de catalogo profesiones en funcionario
+  #89			04.12.2019	    	MZM					Habilitacion de catalogo profesiones en funcionario
   #99           26/12/2019          RAC                 correcion bug columna desc_funcionario2 faltante
+  #189			11/08/2020	    	manuel guerra		mostrar todos los usuarios en combo para el rol de analista contable
+  #156			16.09.2020	    	MZM					adicion en SEL de campo codigo_profesion
   ***************************************************************************/
 
 
@@ -110,7 +117,8 @@ $body$
                             --,FUNCIO.profesion
                             ,cat.descripcion as profesion --#89
                             ,FUNCIO.codigo_rciva
-                            ,FUNCIO.fecha_quinquenio
+                            ,FUNCIO.fecha_quinquenio,
+                            cat.codigo as codigo_profesion  --#156
                             
                   FROM orga.tfuncionario FUNCIO
                   INNER  JOIN orga.vfuncionario VFUN ON VFUN.id_funcionario = FUNCIO.id_funcionario  --#99
@@ -396,6 +404,13 @@ $body$
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
         END IF;
+		--#189
+		IF EXISTS(select 1
+                  from segu.tusuario_rol ur
+                  join segu.trol r on r.id_rol=ur.id_rol
+                  where ur.id_usuario=par_id_usuario and r.rol='CONTA - Analista Contable') THEN
+			v_parametros.filtro='0=0';
+        END IF;
 
         v_consulta:='SELECT
                     FUNCAR.id_uo_funcionario,
@@ -445,6 +460,13 @@ $body$
         IF (pxp.f_existe_parametro(par_tabla,'estado_reg_asi')) THEN
           v_filadd = ' (FUNCAR.estado_reg_asi = '''||v_parametros.estado_reg_asi||''') and ';
         END IF;
+		--#189
+		IF EXISTS(select 1
+                  from segu.tusuario_rol ur
+                  join segu.trol r on r.id_rol=ur.id_rol
+                  where ur.id_usuario=par_id_usuario and r.rol='CONTA - Analista Contable') THEN
+			v_parametros.filtro='0=0';
+        END IF;
 
         v_consulta:='SELECT
                                   count(id_uo_funcionario)
@@ -473,9 +495,7 @@ $body$
 
 
   END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$;
+
+ALTER FUNCTION orga.ft_funcionario_sel(integer, integer, character varying, character varying)
+    OWNER TO postgres;
