@@ -624,7 +624,7 @@ elif opcion == '10':
 		else: 
 			if sub_opcion_one == '1':
 				command = 'psql -U postgres -l'
-				print'Lista de BD:'
+				print'Lista de BD: '
 				os.system(command)
 				db_base = raw_input("Ingrese el nombre de la BD base para la actualizacion: ") 
 				replicar_db(db_base,db_destino)					
