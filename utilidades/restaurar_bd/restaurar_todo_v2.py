@@ -4,6 +4,7 @@
 #    Autor:  Jaime Rivera Rojas  (KPLIAN)
 #    Fecha: 05-09-2013
 #    Descripcion: permimtw inicializar y actualizar automaticamente a partir  de SQL  la estructura de base de datos
+#     formato de archivo para ejecutar ff unix
 # ***************************************************************************************************   
 #   HISTORIAL DE MODIFICACIONES:
 #   ISSUE            FECHA:              AUTOR                 DESCRIPCION   

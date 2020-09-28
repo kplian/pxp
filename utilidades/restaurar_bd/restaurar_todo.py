@@ -4,7 +4,7 @@
 #    Autor:  Jaime Rivera Rojas  (KPLIAN)
 #    Fecha: 05-09-2013
 #    Descripcion: permimtw inicializar y actualizar automaticamente a partir  de SQL  la estructura de base de datos
-#    El formato del archivo debe ser ff unix para poder ejecutar
+#    El formato del archivo debe ser ff unix para poder ejecutar (EGS)
 # ***************************************************************************************************   
 #   HISTORIAL DE MODIFICACIONES:
 #   ISSUE            FECHA:              AUTOR                 DESCRIPCION   
