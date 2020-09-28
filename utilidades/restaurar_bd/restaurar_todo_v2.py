@@ -8,7 +8,7 @@
 #   HISTORIAL DE MODIFICACIONES:
 #   ISSUE            FECHA:              AUTOR                 DESCRIPCION   
 #   0                05-09-2013        JRR KPLIAN       ermimti inicalizar y actulizar automaticamente apartid de SQL  la estructura de base de datos.
-#					 20/02/2020			 EGS				   Se amplia el menu con las opciones del 5 al 8 y se crea un log deacuerdo al folder de la carpeta 
+#   MSA-35	     20/02/2020	       EGS		Se amplia el menu con las opciones del 5 al 11 y se crea un log deacuerdo al folder de la carpeta 
 #  ******************************************************************************************************************************************************
 
 import sys
