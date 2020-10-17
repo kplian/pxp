@@ -5,9 +5,10 @@
 *@author  (admin)
 *@date 20-01-2014 14:16:37
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
-ISSUE	FECHA		EMPRESA		AUTOR	DETALLE
- #41	31.07.2019	etr			mzm		adicion de relacion persona_dependiente
- #91	05.12.2019	ETR			MZM		cambio de consulta para evitar relacion con tpersona
+ISSUE		FECHA		EMPRESA		AUTOR	DETALLE
+ #41		31.07.2019	etr			mzm		adicion de relacion persona_dependiente
+ #91		05.12.2019	ETR			MZM		cambio de consulta para evitar relacion con tpersona
+ #ETR-1378  16.10.2020	ETR			MZM-KPLIAN Adicion de campo genero en formulario
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -81,7 +82,29 @@ Phx.vista.PersonaRelacion=Ext.extend(Phx.gridInterfaz,{
 	       		grid:true,
 	       		form:true
 	       	},
-		
+			{// ETR-1378
+	       		config:{
+	       			name:'genero',
+	       			fieldLabel:'Genero',
+	       			allowBlank:true,
+	       			emptyText:'Genero...',
+
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',
+	       		    store:['M','F']
+
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{
+	       		         type: 'list',
+	       				 options: ['M','F']
+	       		 	},
+	       		grid:true,
+	       		form:true
+	       	},
 			{
 	       		config:{
 	       			name:'relacion',
