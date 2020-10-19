@@ -1,11 +1,19 @@
-CREATE OR REPLACE FUNCTION segu.ft_persona_relacion_ime (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+
+-- FUNCTION: segu.ft_persona_relacion_ime(integer, integer, character varying, character varying)
+
+-- DROP FUNCTION segu.ft_persona_relacion_ime(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION segu.ft_persona_relacion_ime(
+	par_administrador integer,
+	par_id_usuario integer,
+	par_tabla character varying,
+	par_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
 /**************************************************************************
  FUNCION: 		segu.ft_persona_relacion_ime
  DESCRIPCION:   modificaciones de persona
@@ -15,9 +23,10 @@ $body$
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
-ISSUE	EMPRESA		FECHA		AUTOR	DESCRIPCION
-#41		ETR			31.07.2019	MZM		relacion de persona con sus dependientes
-#91		ETR			05.12.2019	MZM		adicion de campos y omision de relacion con tpersona
+ISSUE	EMPRESA		FECHA		AUTOR			DESCRIPCION
+#41		ETR			31.07.2019	MZM-KPLIAN		relacion de persona con sus dependientes
+#91		ETR			05.12.2019	MZM-KPLIAN		adicion de campos y omision de relacion con tpersona
+#ETR-1378			16.10.2020	MZM-KPLIAN		Adicion de campo genero para insercion/modificacion
 ***************************************************************************/
 
 DECLARE
@@ -67,14 +76,14 @@ BEGIN
                                relacion,
                                nombre,
                                fecha_nacimiento
-                               
+                               ,genero --#ETR-1378  
                                )
                values(
                      v_parametros.id_persona,
                      upper(v_parametros.relacion),
                      v_parametros.nombre,
                      v_parametros.fecha_nacimiento
-                     
+                     ,v_parametros.genero --#ETR-1378  
                      )  
                         
                RETURNING id_persona_relacion INTO v_id_persona;
@@ -103,7 +112,7 @@ BEGIN
                id_persona=v_parametros.id_persona,
                nombre= v_parametros.nombre,
                fecha_nacimiento= v_parametros.fecha_nacimiento
-              
+			   ,genero=v_parametros.genero --#ETR-1378              
                
                where id_persona_relacion=v_parametros.id_persona_relacion;
               
@@ -156,5 +165,7 @@ EXCEPTION
   		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
 END;
-$body$
-LANGUAGE 'plpgsql';
+$BODY$;
+
+ALTER FUNCTION segu.ft_persona_relacion_ime(integer, integer, character varying, character varying)
+    OWNER TO postgres;
