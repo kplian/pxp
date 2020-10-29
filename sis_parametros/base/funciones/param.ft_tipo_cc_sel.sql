@@ -1,10 +1,12 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION param.ft_tipo_cc_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
+    p_administrador integer,
+    p_id_usuario integer,
+    p_tabla varchar,
+    p_transaccion varchar
 )
-RETURNS varchar AS
+    RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Parametros Generales
@@ -27,36 +29,38 @@ $body$
   #7  endeETR    21/01/2019		   EGS				 se modifico PM_TCCARBHI_SEL para que considere el con tipo de presupuesto
   #150 ENDETR    08/07/2020        JJA               Filtrar los tipo_cc vigentes
   #44  ENDETR    23/07/2020        JJA          Mejoras en reporte tipo centro de costo de presupuesto
-  #155 ETR       14/08/2020        YMR               Bitacora de tipo dentro de costo
+  #MDID-11       29/10/2020        EGS                se modifica para que no sea obligatorio la gestion
 ***************************************************************************/
 
 DECLARE
 
-	v_consulta    		varchar;
-	v_parametros  		record;
-	v_nombre_funcion   	text;
-	v_resp				varchar;
+    v_consulta    		varchar;
+    v_parametros  		record;
+    v_nombre_funcion   	text;
+    v_resp				varchar;
     v_where				varchar;
-  v_where_2           varchar; --#150
-    v_id_tipo_cc		integer;
+    v_where_2           varchar; --#150
+    v_filtro              varchar;
+    v_join                varchar;
+    v_select              varchar;
 
 BEGIN
 
-	v_nombre_funcion = 'param.ft_tipo_cc_sel';
+    v_nombre_funcion = 'param.ft_tipo_cc_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
-	/*********************************
- 	#TRANSACCION:  'PM_TCC_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+    /*********************************
+     #TRANSACCION:  'PM_TCC_SEL'
+     #DESCRIPCION:	Consulta de datos
+     #AUTOR:		admin
+     #FECHA:		26-05-2017 10:10:19
+    ***********************************/
 
-	if(p_transaccion='PM_TCC_SEL')then
+    if(p_transaccion='PM_TCC_SEL')then
 
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='SELECT
+        begin
+            --Sentencia de la consulta
+            v_consulta:='SELECT
                           tcc.id_tipo_cc,
                           tcc.codigo,
                           tcc.control_techo,
@@ -88,51 +92,51 @@ BEGIN
                          left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
 				        where   ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
             raise notice  'Consulta...%',v_consulta;
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
 
-		end;
+        end;
 
-	/*********************************
- 	#TRANSACCION:  'PM_TCC_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+        /*********************************
+         #TRANSACCION:  'PM_TCC_CONT'
+         #DESCRIPCION:	Conteo de registros
+         #AUTOR:		admin
+         #FECHA:		26-05-2017 10:10:19
+        ***********************************/
 
-	elsif(p_transaccion='PM_TCC_CONT')then
+    elsif(p_transaccion='PM_TCC_CONT')then
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='SELECT count(tcc.id_tipo_cc)
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='SELECT count(tcc.id_tipo_cc)
 					     FROM   param.vtipo_cc_mov  tcc
                          left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
 				        where   ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
 
-		end;
+        end;
 
-     /*********************************
- 	#TRANSACCION:  'PM_TCCALL_SEL'
- 	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+        /*********************************
+        #TRANSACCION:  'PM_TCCALL_SEL'
+        #DESCRIPCION:	Consulta de datos
+        #AUTOR:		admin
+        #FECHA:		26-05-2017 10:10:19
+       ***********************************/
 
-	elsif(p_transaccion='PM_TCCALL_SEL')then
+    elsif(p_transaccion='PM_TCCALL_SEL')then
 
-    	begin
-    		--Sentencia de la consulta
-			v_consulta:='SELECT
+        begin
+            --Sentencia de la consulta
+            v_consulta:='SELECT
                           tcc.id_tipo_cc,
                           tcc.codigo,
                           tcc.control_techo,
@@ -162,66 +166,66 @@ BEGIN
                         left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
                         WHERE   ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
-			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
+            v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
             raise notice  'Consulta...%',v_consulta;
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
 
-		end;
+        end;
 
-	/*********************************
- 	#TRANSACCION:  'PM_TCCALL_CONT'
- 	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin
- 	#FECHA:		26-05-2017 10:10:19
-	***********************************/
+        /*********************************
+         #TRANSACCION:  'PM_TCCALL_CONT'
+         #DESCRIPCION:	Conteo de registros
+         #AUTOR:		admin
+         #FECHA:		26-05-2017 10:10:19
+        ***********************************/
 
-	elsif(p_transaccion='PM_TCCALL_CONT')then
+    elsif(p_transaccion='PM_TCCALL_CONT')then
 
-		begin
-			--Sentencia de la consulta de conteo de registros
-			v_consulta:='SELECT count(tcc.id_tipo_cc)
+        begin
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='SELECT count(tcc.id_tipo_cc)
 					     FROM   param.vtipo_cc  tcc
                          left join param.ttipo_cc tccp on tccp.id_tipo_cc = tcc.id_tipo_cc_fk
                          WHERE  ';
 
-			--Definicion de la respuesta
-			v_consulta:=v_consulta||v_parametros.filtro;
+            --Definicion de la respuesta
+            v_consulta:=v_consulta||v_parametros.filtro;
 
-			--Devuelve la respuesta
-			return v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
 
-		end;
+        end;
 
-	/*********************************
-     #TRANSACCION:  'PM_TCCARB_SEL'
-     #DESCRIPCION:    Consulta tipos de centro de costo en formato arbol
-     #AUTOR:          Rensi Arteaga
-     #FECHA:          26-05-2017
-    ***********************************/
+        /*********************************
+         #TRANSACCION:  'PM_TCCARB_SEL'
+         #DESCRIPCION:    Consulta tipos de centro de costo en formato arbol
+         #AUTOR:          Rensi Arteaga
+         #FECHA:          26-05-2017
+        ***********************************/
 
     elseif(p_transaccion='PM_TCCARB_SEL')then
 
         begin
-              if(v_parametros.node = 'id') then
+            if(v_parametros.node = 'id') then
                 v_where := ' tcc.id_tipo_cc_fk is NULL  ';
 
-              else
+            else
                 v_where := ' tcc.id_tipo_cc_fk = '||v_parametros.node;
-              end if;
+            end if;
 
-              v_where_2 = ' and tcc.codigo not like ''X_%'' '; --#44
-              if(v_parametros.ceco_vigente='Operativo')then --#150
-              
-                 v_where_2 := ' and  tcc.operativo = ''si'' ';
-              end if;
-              if(v_parametros.ceco_vigente='Vigencia')then --#150
-                 v_where_2 := ' and (tcc.fecha_final >= now()::date  and tcc.fecha_inicio::date <= now()::Date)  ';
-              end if;
+            v_where_2 = ' and tcc.codigo not like ''X_%'' '; --#44
+            if(v_parametros.ceco_vigente='Operativo')then --#150
 
-              v_consulta:='select
+                v_where_2 := ' and  tcc.operativo = ''si'' ';
+            end if;
+            if(v_parametros.ceco_vigente='Vigencia')then --#150
+                v_where_2 := ' and (tcc.fecha_final >= now()::date  and tcc.fecha_inicio::date <= now()::Date)  ';
+            end if;
+
+            v_consulta:='select
                             tcc.id_tipo_cc,
                             tcc.codigo,
                             tcc.control_techo,
@@ -268,24 +272,38 @@ BEGIN
 
 
             --raise notice '%',v_consulta;
-          -- RAISE EXCEPTION 'jonathan %',v_consulta;
+            -- RAISE EXCEPTION 'jonathan %',v_consulta;
             --Devuelve la respuesta
             return v_consulta;
 
         end;
-                  
-         /*********************************    
-        #TRANSACCION:  'PM_TCCARBHI_SEL'
-        #DESCRIPCION:	Consulta de datos de centro de costos validos transaccionales en gestion del arbol de tipo centro de costos (hijos)
-        #AUTOR:		EGS	
-        #FECHA:		07/12/2018
-        ***********************************/
 
-        elsif(p_transaccion='PM_TCCARBHI_SEL')then
-         				
-            begin
-                --Sentencia de la consulta
-                v_consulta:='  with recursive arbol_tipo_cc AS (
+        /*********************************
+       #TRANSACCION:  'PM_TCCARBHI_SEL'
+       #DESCRIPCION:	Consulta de datos de centro de costos validos transaccionales en gestion del arbol de tipo centro de costos (hijos)
+       #AUTOR:		EGS
+       #FECHA:		07/12/2018
+       ***********************************/
+
+    elsif(p_transaccion='PM_TCCARBHI_SEL')then
+
+        begin
+            v_filtro = ' 0=0 ';
+            v_select = ' 0 as id_centro_costo,
+                             0 as id_gestion ';
+            v_join = '';
+
+            IF pxp.f_existe_parametro(p_tabla,'id_gestion') THEN --MDID-11
+                v_select = 'cec.id_centro_costo,
+                                cec.id_gestion ';
+                v_join =' left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
+                              left join pre.tpresupuesto pre on pre.id_centro_costo = cec.id_centro_costo --#7';
+                v_filtro = ' pre.tipo_pres is not null
+                                 and cec.id_gestion = '||v_parametros.id_gestion||' ';
+            END IF ;
+
+            --Sentencia de la consulta
+            v_consulta:='  with recursive arbol_tipo_cc AS (
                                 SELECT
                                     tcc.id_tipo_cc,
                                     tcc.id_tipo_cc_fk,
@@ -310,7 +328,7 @@ BEGIN
                                 FROM param.ttipo_cc tcce
                                 inner join arbol_tipo_cc ar on ar.id_tipo_cc = tcce.id_tipo_cc_fk
                             )
-                            select 
+                            select
                                 arb.id_tipo_cc,
                                 arb.id_tipo_cc_fk,
                                 arb.codigo,
@@ -319,33 +337,39 @@ BEGIN
                                 arb.descripcion,
                                 arb.control_techo,
                                 arb.control_partida,
-                                cec.id_centro_costo,
-                                cec.id_gestion
+                                '||v_select||'
                             from arbol_tipo_cc arb
-                            left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
-                            left join pre.tpresupuesto pre on pre.id_centro_costo = cec.id_centro_costo --#7
-                            where  arb.movimiento = ''si'' and pre.tipo_pres is not null and cec.id_gestion = '||v_parametros.id_gestion||'
+                           '||v_join||'
+                            where  arb.movimiento = ''si'' and '||v_filtro||'
                             order by arb.id_tipo_cc ASC';   --se condiciono que solo considere si tienen un tipo de presupuesto
-    			
-                --Definicion de la respuesta
-                raise notice  'Consulta...%',v_consulta;
-                --Devuelve la respuesta
-                return v_consulta;
-    						
-            end;
 
-        /*********************************    
+            --Definicion de la respuesta
+            raise notice  'Consulta...%',v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
+
+        end;
+
+        /*********************************
         #TRANSACCION:  'PM_TCCARBHI_CONT'
         #DESCRIPCION:	Conteo de datos de centro de costos validos transaccionales en gestion del arbol de tipo centro de costos (hijos)
         #AUTOR:		EGS
         #FECHA:		07/12/2018
         ***********************************/
 
-        elsif(p_transaccion='PM_TCCARBHI_CONT')then
+    elsif(p_transaccion='PM_TCCARBHI_CONT')then
 
-            begin
-                --Sentencia de la consulta de conteo de registros
-                v_consulta:='  with recursive arbol_tipo_cc AS (
+        begin
+            v_filtro = ' 0=0 ';
+            v_join = '';
+            IF pxp.f_existe_parametro(p_tabla,'id_gestion') THEN --MDID-11
+                v_join =' left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
+                              left join pre.tpresupuesto pre on pre.id_centro_costo = cec.id_centro_costo --#7';
+                v_filtro = ' pre.tipo_pres is not null
+                                 and cec.id_gestion = '||v_parametros.id_gestion||' ';
+            END IF ;
+            --Sentencia de la consulta de conteo de registros
+            v_consulta:='  with recursive arbol_tipo_cc AS (
                                 SELECT
                                     tcc.id_tipo_cc,
                                     tcc.id_tipo_cc_fk,
@@ -366,97 +390,34 @@ BEGIN
                                 FROM param.ttipo_cc tcce
                                 inner join arbol_tipo_cc ar on ar.id_tipo_cc = tcce.id_tipo_cc_fk
                             )
-                            select 
+                            select
                                count(arb.id_tipo_cc)
                             from arbol_tipo_cc arb
-                            left join param.tcentro_costo cec on cec.id_tipo_cc = arb.id_tipo_cc
-                            left join pre.tpresupuesto pre on pre.id_centro_costo = cec.id_centro_costo 
-                            where arb.movimiento = ''si'' and pre.tipo_pres is not null and cec.id_gestion = '||v_parametros.id_gestion||' ';		    
+                            '||v_join||'
+                            where arb.movimiento = ''si'' and '||v_filtro||' ';
 
-                --Devuelve la respuesta
-                return v_consulta;
+            --Devuelve la respuesta
+            return v_consulta;
 
-            end;
-
-        /*********************************
-         #TRANSACCION:  'PM_TCCREP_SEL'
-         #DESCRIPCION:	Consulta de datos
-         #AUTOR:		Yamil Medina
-         #FECHA:		07-08-2020 10:10:19
-        ***********************************/
-
-        elsif(p_transaccion='PM_TCCREP_SEL')then
-
-            begin
-                if (pxp.f_existe_parametro(p_tabla,'id_tipo_cc')) then
-                    v_id_tipo_cc = v_parametros.id_tipo_cc;
-                end if;
-
-                --Sentencia de la consulta
-                v_consulta:='  select  total.id_tipo_cc,
-                                       total.codigo,
-                                       total.descripcion,
-                                       htc.id_historico,
-                                       htc.fecha_reg,
-                                       (htc.datos_antiguo)::text,
-                                       (htc.datos_nuevo)::text,
-                                       htc.operacion,
-                                       (vu.desc_persona)::text,
-                                       (total.codigo_padre)::text
-                                from (
-                         with recursive arbol_tipo_cc AS (
-                                    SELECT tcc.id_tipo_cc,
-                                           tcc.codigo,
-                                           tcc.descripcion,
-                                           ''/ ''||tcc.codigo as codigo_padre
-                                    FROM param.ttipo_cc tcc ';
-                if(v_id_tipo_cc is not null)then
-                    v_consulta:=v_consulta||'  WHERE tcc.id_tipo_cc = '||v_id_tipo_cc||' ';
-                end if;
-
-                v_consulta:=v_consulta||'
-                                    UNION
-                                    SELECT tcce.id_tipo_cc,
-                                           tcce.codigo,
-                                           tcce.descripcion,
-                                           ar.codigo_padre || '' / '' || tcce.codigo
-                                    FROM param.ttipo_cc tcce
-                                         inner join arbol_tipo_cc ar on ar.id_tipo_cc = tcce.id_tipo_cc_fk)
-                                select arb.id_tipo_cc,
-                                       arb.codigo,
-                                       arb.descripcion,
-                                       max(arb.codigo_padre) as codigo_padre
-                                from arbol_tipo_cc arb
-                                group by arb.id_tipo_cc, arb.codigo,arb.descripcion) as total
-                                left join param.thistorico_tipo_cc htc on total.id_tipo_cc = htc.id_tipo_cc
-                                left join segu.vusuario vu on htc.id_usuario_reg = vu.id_usuario ';
-                if (v_parametros.fecha_ini is not null) then
-                    v_consulta:=v_consulta||' where htc.fecha_reg::date BETWEEN '' '||v_parametros.fecha_ini||' ''::date AND '' '||v_parametros.fecha_fin||' ''::date ';
-                end if;
-                v_consulta:=v_consulta||'order by total.id_tipo_cc ASC, htc.id_historico ASC';
-
-                --Devuelve la respuesta
-                return v_consulta;
-
-            end;
+        end;
     else
 
-		raise exception 'Transaccion inexistente';
+        raise exception 'Transaccion inexistente';
 
-	end if;
+    end if;
 
 EXCEPTION
 
-	WHEN OTHERS THEN
-			v_resp='';
-			v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-			v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-      raise exception '%',v_resp;
+    WHEN OTHERS THEN
+        v_resp='';
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+        v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+        v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+        raise exception '%',v_resp;
 END;
 $body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+    LANGUAGE 'plpgsql'
+    VOLATILE
+    CALLED ON NULL INPUT
+    SECURITY INVOKER
+    COST 100;
