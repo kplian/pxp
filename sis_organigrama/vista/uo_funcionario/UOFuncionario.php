@@ -12,12 +12,12 @@
 #0             17/10/2014          JRR KPLIAN            creacion
 #32 ETR        18/07/2019          RAC KPLIAN            adcionar carga horaria
 #80            06/11/2019          APS                   ORDENACION/LISTADO DE FUNCIONARIOS POR APELLIDO.
-#81			   08.11.2019          MZM				     Adicion de campo prioridad
+#81			   08.11.2019          MZM-KPLIAN		     Adicion de campo prioridad
 #94            12/12/2019          APS                   Filtro de funcionarios por gestion y periodo
 #107           16/01/2020          JUAN                  Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
-#136 ETR	   21.04.2020		   MZM				     Adicion de campo separar_contrato
-#147 ETR       12.06.2020          RAC                   Agregar motivo de rescisión en las finalización de contrato
-
+#136 ETR	   21.04.2020		   MZM-KPLIAN		     Adicion de campo separar_contrato
+#147 ETR       12.06.2020          RAC-KPLIAN            Agregar motivo de rescisión en las finalización de contrato
+#ETR-1889	   20.11.2020		   MZM-KPLIAN
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -265,12 +265,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        		lazyRender:true,
        		mode: 'local',
 			gwidth: 100,
-			store:['fin contrato','retiro','renuncia','promocion','transferencia','rescision']
+			store:['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia'] //ETR-1889
 		},
 			type:'ComboBox',
 			filters:{
        		         type: 'list',
-       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia','rescision'],
+       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia'], //ETR-1889
        		 	},
 			id_grupo:1,
 			grid:true,
