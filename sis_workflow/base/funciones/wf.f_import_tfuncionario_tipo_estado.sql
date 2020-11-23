@@ -4,7 +4,8 @@ CREATE OR REPLACE FUNCTION wf.f_import_tfuncionario_tipo_estado (
   p_codigo_tipo_proceso varchar,
   p_ci varchar,
   p_codigo_depto varchar,
-  p_regla varchar
+  p_regla varchar,
+  p_id_labores_tipo_proceso integer
 )
 RETURNS varchar AS
 $body$
@@ -52,7 +53,8 @@ BEGIN
               id_funcionario,
               id_depto,
               regla,
-              modificado
+              modificado,
+              id_labores_tipo_proceso
             ) 
             VALUES (
               1,              
@@ -60,7 +62,8 @@ BEGIN
               v_id_funcionario,
               v_id_depto,
               p_regla,
-              1
+              1,
+              p_id_labores_tipo_proceso
             );
         else            
            UPDATE wf.tfuncionario_tipo_estado  
@@ -68,7 +71,8 @@ BEGIN
               id_funcionario = v_id_funcionario,
               id_depto = v_id_depto,
               regla = p_regla,
-              modificado = 1             
+              modificado = 1,
+              id_labores_tipo_proceso = p_id_labores_tipo_proceso
             WHERE id_funcionario_tipo_estado = v_id_funcionario_tipo_estado;
         end if;
     

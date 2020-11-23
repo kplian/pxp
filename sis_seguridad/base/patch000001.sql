@@ -1396,5 +1396,9 @@ alter table segu.tpersona
 	add cualidad_1 varchar(50) default '';
 alter table segu.tpersona
 	add cualidad_2 varchar(50) default '';
+<<<<<<< HEAD
+/***********************************F-SCP-VAN-SEGU-0-01/07/2020*****************************************/
+=======
 /***********************************F-SCP-VAN-SEGU-0-01/07/2020*****************************************/
 
+>>>>>>> remotes/origin/master

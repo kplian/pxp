@@ -184,7 +184,12 @@ class MODbase extends driver
 					   $this->arreglo[$valor]=pg_escape_string(pg_escape_string($this->arreglo[$valor]));
                             
                        $this->validacion->validar($nombre,$this->arreglo[$valor],$tipo,$blank,$tamano,$opciones,$tipo_archivo);
-                       
+
+                        //YMR 30/07/2020: Quitar espacios al princio y final de los campos tipo varchar y text
+                        if ($tipo=='varchar'||$tipo=='text'){
+                            $this->arreglo[$valor]=trim($this->arreglo[$valor]);
+                        }
+
                        if($tipo=='integer[]'||$tipo=='varchar[]'){
                            array_push($this->valores,'{'.$this->arreglo[$valor].'}');
                        } else {

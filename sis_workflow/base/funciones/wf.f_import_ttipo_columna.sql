@@ -17,7 +17,10 @@ CREATE OR REPLACE FUNCTION wf.f_import_ttipo_columna (
   p_form_combo_rec varchar,
   p_form_sobreescribe_config text,
   p_bd_prioridad	integer,
-  p_form_grupo		integer
+  p_form_grupo		integer,
+  p_bd_campos_subconsulta text,
+  p_transacciones_permiso varchar,
+  p_orden integer
 )
 RETURNS varchar AS
 $body$
@@ -67,7 +70,10 @@ BEGIN
               ejecutado,
               modificado,
               bd_prioridad,
-              form_grupo
+              form_grupo,
+              bd_campos_subconsulta,
+              transacciones_permiso,
+              orden
             ) 
             VALUES (
               1,              
@@ -89,7 +95,10 @@ BEGIN
               'no',
               1,
               p_bd_prioridad,
-              p_form_grupo
+              p_form_grupo,
+              p_bd_campos_subconsulta,
+              p_transacciones_permiso,
+              p_orden
             );
         else            
             UPDATE wf.ttipo_columna  
@@ -110,7 +119,10 @@ BEGIN
               form_sobreescribe_config = p_form_sobreescribe_config,              
               modificado = 1,
               bd_prioridad = p_bd_prioridad,
-              form_grupo = p_form_grupo             
+              form_grupo = p_form_grupo,
+              bd_campos_subconsulta = p_bd_campos_subconsulta,
+              transacciones_permiso = p_transacciones_permiso,
+              orden = p_orden
             WHERE id_tipo_columna = v_id_tipo_columna;
         end if;
     

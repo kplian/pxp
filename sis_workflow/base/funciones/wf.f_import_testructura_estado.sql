@@ -4,7 +4,8 @@ CREATE OR REPLACE FUNCTION wf.f_import_testructura_estado (
   p_codigo_estado_hijo varchar,
   p_codigo_tipo_proceso varchar,
   p_prioridad integer,
-  p_regla varchar
+  p_regla varchar,
+  p_bucle varchar
 )
 RETURNS varchar AS
 $body$
@@ -47,7 +48,8 @@ BEGIN
               id_tipo_estado_hijo,
               prioridad,
               regla,
-              modificado
+              modificado,
+              bucle
             ) 
             VALUES (
               1,              
@@ -55,7 +57,8 @@ BEGIN
               v_id_estado_hijo,
               p_prioridad,
               p_regla,
-              1
+              1,
+              p_bucle
             );
         else            
            UPDATE wf.testructura_estado  
@@ -63,7 +66,8 @@ BEGIN
               id_tipo_estado_hijo = v_id_estado_hijo,
               prioridad = p_prioridad,
               regla = p_regla,
-              modificado = 1             
+              modificado = 1,
+              bucle = p_bucle
             WHERE id_estructura_estado = v_id_estructura_estado;
         end if;
     
