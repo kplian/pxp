@@ -2796,3 +2796,25 @@ CREATE TABLE param.thistorico_tipo_cc (
 ) INHERITS (pxp.tbase)
   WITH (oids = false);
 /***********************************F-SCP-YMR-PARAM-136-17/08/2020****************************************/
+/***********************************I-SCP-EGS-PARAM-12-25/11/2020****************************************/
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_haber_mb_pasivo NUMERIC;
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_debe_mb_pasivo NUMERIC;
+
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_haber_mb_activo NUMERIC;
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_debe_mb_activo NUMERIC;
+
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_haber_mb_ingreso NUMERIC;
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_debe_mb_ingreso NUMERIC;
+
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_haber_mb_egreso NUMERIC;
+ALTER TABLE param.ttipo_cc
+    ADD COLUMN importe_debe_mb_egreso NUMERIC;
+
+/***********************************I-SCP-EGS-PARAM-12-25/11/2020****************************************/
