@@ -2817,4 +2817,4 @@ ALTER TABLE param.ttipo_cc
 ALTER TABLE param.ttipo_cc
     ADD COLUMN importe_debe_mb_egreso NUMERIC;
 
-/***********************************I-SCP-EGS-PARAM-12-25/11/2020****************************************/
+/***********************************F-SCP-EGS-PARAM-12-25/11/2020****************************************/
