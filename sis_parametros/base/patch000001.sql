@@ -2823,7 +2823,7 @@ CREATE TABLE param.tagrupacion_correo (
               id_agrupacion_correo SERIAL,
               id_funcionario INTEGER,
               correo VARCHAR,
-              id_tipo_agrupacion_correo INTEGER,
+              id_tipo_envio_correo INTEGER,
               CONSTRAINT tagrupacion_correo_pkey PRIMARY KEY(id_agrupacion_correo)
 ) INHERITS (pxp.tbase)
   WITH (oids = false);
