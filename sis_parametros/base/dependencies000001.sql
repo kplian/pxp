@@ -1511,3 +1511,7 @@ select pxp.f_insert_testructura_gui ('REPCC', 'PARAM');
 select pxp.f_insert_testructura_gui ('REPTCC', 'REPCC');
 
 /***********************************F-DEP-YMR-PARAM-136-14/08/2020****************************************/
+/***********************************I-DEP-EGS-PARAM-ETR-1914-01/12/2020****************************************/
+select pxp.f_insert_testructura_gui ('CRGR', 'OTROS');
+/***********************************F-DEP-EGS-PARAM-ETR-1914-01/12/2020****************************************/
+
