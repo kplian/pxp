@@ -2813,8 +2813,34 @@ ALTER TABLE param.ttipo_cc
     ADD COLUMN importe_debe_mb_ingreso NUMERIC;
 
 ALTER TABLE param.ttipo_cc
-    ADD COLUMN importe_haber_mb_egreso NUMERIC;
+    ADD COLUMN importe_haber_mb_gasto NUMERIC;
 ALTER TABLE param.ttipo_cc
-    ADD COLUMN importe_debe_mb_egreso NUMERIC;
+    ADD COLUMN importe_debe_mb_gasto NUMERIC;
 
 /***********************************F-SCP-EGS-PARAM-12-25/11/2020****************************************/
+/***********************************I-SCP-EGS-PARAM-ETR-1914-26/11/2020****************************************/
+CREATE TABLE param.tagrupacion_correo (
+              id_agrupacion_correo SERIAL,
+              id_funcionario INTEGER,
+              correo VARCHAR,
+              id_tipo_agrupacion_correo INTEGER,
+              CONSTRAINT tagrupacion_correo_pkey PRIMARY KEY(id_agrupacion_correo)
+) INHERITS (pxp.tbase)
+  WITH (oids = false);
+
+CREATE TABLE param.ttipo_envio_correo (
+           id_tipo_envio_correo SERIAL,
+           codigo VARCHAR(20) NOT NULL,
+           descripcion VARCHAR,
+           dias_envio VARCHAR,
+           dias_consecutivo VARCHAR(2),
+           habilitado VARCHAR(2) DEFAULT 'no'::character varying NOT NULL,
+           CONSTRAINT ttipo_envio_correo_pkey PRIMARY KEY(id_tipo_envio_correo)
+) INHERITS (pxp.tbase)
+  WITH (oids = false);
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN dias_vencimiento INTEGER;
+/***********************************F-SCP-EGS-PARAM-ETR-1914-26/11/2020****************************************/
+
+
