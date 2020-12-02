@@ -25,8 +25,6 @@ AS $BODY$
  DESCRIPCION:
  AUTOR:
  FECHA:        30-05-2011
-
-
 ***************************************************************************
     HISTORIAL DE MODIFICACIONES:
 
@@ -39,7 +37,7 @@ AS $BODY$
  #94			12/12/2019		  APS		  Adición del filtro de fucnionarios por gestion y periodo
  #107           16/01/2020        JUAN        Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
  #136			21.04.2020		  MZM-KPLIAN  Adicion de campo separar_contrato 
- #ETR-1999		01.12.2020		  MZM-KPLIAN  Adicion de campo oficina y uo
+ #ETR-1999		01.12.2020		  MZM-KPLIAN  Adicion de campo oficina y uo (dependencia)
 ***************************************************************************/
 
 

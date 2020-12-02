@@ -16,7 +16,7 @@
  #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad
  #94          12/12/2019      APS             Filtro de funcionarios por gestion y periodo
  #136		  21.04.2020	  MZM			  Adicion de campo separar_contrato
- #ETR-1999	  01.12.2020	  MZM-KPLIAN  	  Adicion de campo oficina y uo
+ #ETR-1999	  01.12.2020	  MZM-KPLIAN  	  Adicion de campo oficina y uo(dependencia)
  */
 class MODUoFuncionario extends MODbase{
 	
