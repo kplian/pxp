@@ -12,7 +12,8 @@
   #0            04/06/2011          Kplian                creacion
   #24           17/06/2019          RAC                   configuracion de agrupadores para grilla de funcionarios
   #31           16/07/2019          RAC                   Adiciona codigo rcaiva, profesion y fecha quinquenio
-  #156			16.09.2020			MZM					  Modificacion de parametro de envio de codigo_profesion en lugar de profesion 
+  #156			16.09.2020			MZM					  Modificacion de parametro de envio de codigo_profesion en lugar de profesion
+  #ETR-1672		11.11.2020			MZM					  Modificacion de parametro de envio profesion en lugar de codigo_profesion   
  */
 class MODFuncionario extends MODbase{
 	
@@ -279,7 +280,7 @@ class MODFuncionario extends MODbase{
 		$this->setParametro('carnet_discapacitado','carnet_discapacitado','varchar');
 		$this->setParametro('id_auxiliar','id_auxiliar','integer');	
 		
-		$this->setParametro('profesion','codigo_profesion','varchar');	//#31 //#156
+		$this->setParametro('profesion','codigo_profesion','varchar');	//#31 //#156 correccion de parametro recibido de codigo_profesion a profesion
 		$this->setParametro('codigo_rciva','codigo_rciva','varchar');	//#31
 		$this->setParametro('fecha_quinquenio','fecha_quinquenio','date');	//#31
 

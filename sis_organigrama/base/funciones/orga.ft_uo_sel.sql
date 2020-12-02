@@ -21,8 +21,6 @@ CREATE OR REPLACE FUNCTION orga.ft_uo_sel (
  AUTOR:		
  FECHA:		21-01-2011
 ***************************************************************************/
-
-
 DECLARE
 
 

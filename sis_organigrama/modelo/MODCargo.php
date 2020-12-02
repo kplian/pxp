@@ -9,8 +9,7 @@
 #ISSUE                FECHA                AUTOR                DESCRIPCION
  #0                14-01-2014                               creacion    
  #30               15-07-2019                              se adciona tipo de cargo de manera opcional para clasificacion
- * 
- * */
+  * */
 
 class MODCargo extends MODbase{
 	
