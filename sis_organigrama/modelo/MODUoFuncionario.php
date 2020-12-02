@@ -171,8 +171,8 @@ class MODUoFuncionario extends MODbase{
         $this->captura('tipo','varchar');
         $this->captura('haber_basico','numeric');
         $this->captura('tipo_contrato','varchar');
-		$this->captura('oficina','varchar');//ETR-1999
-		$this->captura('uo','varchar');//ETR-1999
+		$this->captura('oficina','varchar');//#ETR-1999
+		$this->captura('uo','varchar');//#ETR-1999
         //Ejecuta la funcion
         $this->armarConsulta();
         $this->ejecutarConsulta();

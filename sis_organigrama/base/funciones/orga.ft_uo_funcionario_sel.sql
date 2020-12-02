@@ -297,7 +297,7 @@ BEGIN
                             inner join orga.tcargo tcar on tcar.id_cargo = UOFUNC.id_cargo
                             inner join orga.tescala_salarial tes on tes.id_escala_salarial = tcar.id_escala_salarial
                             inner join orga.ttipo_contrato tco on tco.id_tipo_contrato = tcar.id_tipo_contrato
-                            inner join orga.toficina ofi on ofi.id_oficina=tcar.id_oficina and tcar.id_lugar=ofi.id_lugar                            
+                            inner join orga.toficina ofi on ofi.id_oficina=tcar.id_oficina and tcar.id_lugar=ofi.id_lugar --#ETR-1999                           
                             WHERE UOFUNC.estado_reg !=''inactivo'' and ';
                --v_id_padre:=v_parametros.id_uo;
 
