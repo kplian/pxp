@@ -16,6 +16,7 @@
  #81		  08.11.2019	  MZM ETR		  Adicion de campo prioridad
  #94          12/12/2019      APS             Filtro de funcionarios por gestion y periodo
  #136		  21.04.2020	  MZM			  Adicion de campo separar_contrato
+ #ETR-1999	  01.12.2020	  MZM-KPLIAN  	  Adicion de campo oficina y uo
  */
 class MODUoFuncionario extends MODbase{
 	
@@ -170,6 +171,8 @@ class MODUoFuncionario extends MODbase{
         $this->captura('tipo','varchar');
         $this->captura('haber_basico','numeric');
         $this->captura('tipo_contrato','varchar');
+		$this->captura('oficina','varchar');//ETR-1999
+		$this->captura('uo','varchar');//ETR-1999
         //Ejecuta la funcion
         $this->armarConsulta();
         $this->ejecutarConsulta();

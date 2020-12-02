@@ -35,10 +35,11 @@ AS $BODY$
  #6             09-01-2019        RAC         recupera funcion de repositorio de boa
  #32            18/07/2019        RAC         añade carga horaria
  #51            20-08-2019        RAC         adiciona descripcion de cargo  para solucionar ordenacion en la vista historico asignacion
- #81			08.11.2019		  MZM		  Adicion de campo prioridad en uo_funcionario
+ #81			08.11.2019		  MZM-KPLIAN  Adicion de campo prioridad en uo_funcionario
  #94			12/12/2019		  APS		  Adición del filtro de fucnionarios por gestion y periodo
  #107           16/01/2020        JUAN        Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
- #136			21.04.2020		  MZM		  Adicion de campo separar_contrato 
+ #136			21.04.2020		  MZM-KPLIAN  Adicion de campo separar_contrato 
+ #ETR-1999		01.12.2020		  MZM-KPLIAN  Adicion de campo oficina y uo
 ***************************************************************************/
 
 
@@ -237,7 +238,13 @@ BEGIN
                                   UOFUNC.fecha_documento_asignacion,
                                   UOFUNC.tipo,
                                   tes.haber_basico,
-                                  tco.nombre as tipo_contrato
+                                  tco.nombre as tipo_contrato,
+                                  ofi.nombre as oficina,--ETR-1999
+                                  (select uocn.nombre_uo_centro
+                                  from  orga.tuo_funcionario uofunn
+                                  inner join orga.vuo_centro uocn on uocn.id_uo=uofunn.id_uo
+                                  where uofunn.id_funcionario=FUNCIO.id_funcionario 
+                                  and uofunn.estado_reg=''activo'' and uofunn.tipo=''oficial'' and uofunn.id_uo_funcionario=UOFUNC.id_uo_funcionario) as uo --ETR-1999
                             FROM orga.tuo_funcionario UOFUNC
                             INNER JOIN orga.tuo UO ON UO.id_uo=UOFUNC.id_uo
                             INNER JOIN orga.vfuncionario FUNCIO ON FUNCIO.id_funcionario=UOFUNC.id_funcionario
@@ -249,6 +256,7 @@ BEGIN
                             inner join orga.tcargo tcar on tcar.id_cargo = UOFUNC.id_cargo
                             inner join orga.tescala_salarial tes on tes.id_escala_salarial = tcar.id_escala_salarial
                             inner join orga.ttipo_contrato tco on tco.id_tipo_contrato = tcar.id_tipo_contrato
+                            inner join orga.toficina ofi on ofi.id_oficina=tcar.id_oficina and tcar.id_lugar=ofi.id_lugar --#ETR-1999
                             WHERE  UOFUNC.estado_reg !=''inactivo'' and ';
 
 
@@ -289,6 +297,7 @@ BEGIN
                             inner join orga.tcargo tcar on tcar.id_cargo = UOFUNC.id_cargo
                             inner join orga.tescala_salarial tes on tes.id_escala_salarial = tcar.id_escala_salarial
                             inner join orga.ttipo_contrato tco on tco.id_tipo_contrato = tcar.id_tipo_contrato
+                            inner join orga.toficina ofi on ofi.id_oficina=tcar.id_oficina and tcar.id_lugar=ofi.id_lugar                            
                             WHERE UOFUNC.estado_reg !=''inactivo'' and ';
                --v_id_padre:=v_parametros.id_uo;
 
