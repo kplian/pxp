@@ -555,4 +555,6 @@ select pxp.f_insert_testructura_gui ('GRI', 'TRAD');
 select pxp.f_insert_testructura_gui ('PLCLV', 'TRAD');
   
 /***********************************F-DAT-RAC-PARAM-0-20/04/2020*****************************************/
-
+/***********************************I-DAT-EGS-PARAM-ETR-1914-01/12/2020*****************************************/
+select pxp.f_insert_tgui ('Correos para envio Diario', 'Correos para envio Diario', 'CRGR', 'si', 20, 'sis_parametros/vista/tipo_envio_correo/TipoEnvioCorreo.php', 3, '', 'TipoEnvioCorreo', 'PARAM');
+/***********************************F-DAT-EGS-PARAM-ETR-1914-01/12/2020*****************************************/

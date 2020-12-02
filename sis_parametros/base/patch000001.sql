@@ -1,7 +1,7 @@
 /***********************************I-SCP-JRR-PARAM-1-19/11/2012****************************************/
 
---  
--- Structure for table talarma (OID = 306277) : 
+--
+-- Structure for table talarma (OID = 306277) :
 --
 CREATE TABLE param.talarma (
     id_alarma serial NOT NULL,
@@ -15,10 +15,10 @@ CREATE TABLE param.talarma (
     parametros varchar DEFAULT '{}'::character varying NOT NULL,
     titulo varchar(200),
     sw_correo integer DEFAULT 0 NOT NULL
-) 
+)
 INHERITS (pxp.tbase) WITH OIDS;
 --
--- Structure for table tconfig_alarma (OID = 306287) : 
+-- Structure for table tconfig_alarma (OID = 306287) :
 --
 CREATE TABLE param.tconfig_alarma (
     id_config_alarma serial NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE param.tconfig_alarma (
 )
 INHERITS (pxp.tbase) WITH OIDS;
 --
--- Structure for table tcorrelativo (OID = 306295) : 
+-- Structure for table tcorrelativo (OID = 306295) :
 --
 CREATE TABLE param.tcorrelativo (
     id_correlativo serial NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE param.tcorrelativo (
 )
 INHERITS (pxp.tbase) WITH OIDS;
 --
--- Structure for table tdocumento (OID = 306319) : 
+-- Structure for table tdocumento (OID = 306319) :
 --
 CREATE TABLE param.tdocumento (
     id_documento serial NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE param.tdocumento (
 )
 INHERITS (pxp.tbase) WITH OIDS;
 --
--- Structure for table tgestion (OID = 306331) : 
+-- Structure for table tgestion (OID = 306331) :
 --
 CREATE TABLE param.tgestion (
     id_gestion serial NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE param.tgestion (
 )
 INHERITS (pxp.tbase) WITH OIDS;
 --
--- Structure for table tinstitucion (OID = 306339) : 
+-- Structure for table tinstitucion (OID = 306339) :
 --
 CREATE TABLE param.tinstitucion (
     id_institucion serial NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE param.tinstitucion (
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tlugar (OID = 306352) : 
+-- Structure for table tlugar (OID = 306352) :
 --
 CREATE TABLE param.tlugar (
     id_lugar serial NOT NULL,
@@ -105,17 +105,17 @@ CREATE TABLE param.tlugar (
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tmoneda (OID = 306364) : 
+-- Structure for table tmoneda (OID = 306364) :
 --
 CREATE TABLE param.tmoneda (
     id_moneda serial NOT NULL,
     moneda varchar(300),
-    codigo varchar(5),    
+    codigo varchar(5),
     tipo_moneda varchar(25)
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tperiodo (OID = 306372) : 
+-- Structure for table tperiodo (OID = 306372) :
 --
 CREATE TABLE param.tperiodo (
     id_periodo serial NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE param.tperiodo (
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tpm_financiador (OID = 306380) : 
+-- Structure for table tpm_financiador (OID = 306380) :
 --
 CREATE TABLE param.tpm_financiador (
     id_financiador serial NOT NULL,
@@ -134,10 +134,10 @@ CREATE TABLE param.tpm_financiador (
     nombre_financiador varchar(100),
     descripcion_financiador text,
     id_financiador_actif integer
-) 
+)
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tpm_programa (OID = 306392) : 
+-- Structure for table tpm_programa (OID = 306392) :
 --
 CREATE TABLE param.tpm_programa (
     id_programa serial NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE param.tpm_programa (
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tpm_proyecto (OID = 306402) : 
+-- Structure for table tpm_proyecto (OID = 306402) :
 --
 CREATE TABLE param.tpm_proyecto (
     id_proyecto serial NOT NULL,
@@ -159,10 +159,10 @@ CREATE TABLE param.tpm_proyecto (
     nombre_corto varchar(100),
     codigo_sisin bigint,
     hidro varchar(2) DEFAULT 'no'::character varying NOT NULL
-) 
+)
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tpm_regional (OID = 306413) : 
+-- Structure for table tpm_regional (OID = 306413) :
 --
 CREATE TABLE param.tpm_regional (
     id_regional serial NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE param.tpm_regional (
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 --
--- Structure for table tproveedor (OID = 306423) : 
+-- Structure for table tproveedor (OID = 306423) :
 --
 CREATE TABLE param.tproveedor (
     id_proveedor serial NOT NULL,
@@ -187,7 +187,7 @@ CREATE TABLE param.tproveedor (
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
 --
--- Structure for table tunidad_medida (OID = 309525) : 
+-- Structure for table tunidad_medida (OID = 309525) :
 --
 CREATE TABLE param.tunidad_medida (
     id_unidad_medida serial NOT NULL,
@@ -269,9 +269,9 @@ add column id_lugar integer;
 
 CREATE TABLE param.tcatalogo_tipo(
 	id_catalogo_tipo SERIAL NOT NULL,
-	id_subsistema integer, 
+	id_subsistema integer,
 	nombre varchar(100),
-	tabla varchar(100), 
+	tabla varchar(100),
 	PRIMARY KEY (id_catalogo_tipo),
     CONSTRAINT uq_tcatalogo_tipo__id_subsistema__nombre UNIQUE (id_subsistema, nombre)
 )INHERITS (pxp.tbase)
@@ -297,15 +297,15 @@ add column tipo varchar(50);
 
 ALTER TABLE param.talarma
   ADD COLUMN id_usuario INTEGER;
-  
+
 /***********************************F-SCP-RAC-PARAM-0-06/12/2012****************************************/
-  
+
 /***********************************I-SCP-RAC-PARAM-21.1-10/12/2012*****************************************/
-    
+
   ALTER TABLE param.talarma
   ADD COLUMN titulo_correo VARCHAR(500);
-  
-  
+
+
 /***********************************F-SCP-RAC-PARAM-21.1-10/12/2012*****************************************/
 
 /***********************************I-SCP-RAC-PARAM-0-04/01/2013*****************************************/
@@ -315,7 +315,7 @@ ALTER TABLE param.tmoneda
   ADD COLUMN prioridad INTEGER;
 
 ALTER TABLE param.tmoneda
-  ADD COLUMN tipo_actualizacion VARCHAR(30);  
+  ADD COLUMN tipo_actualizacion VARCHAR(30);
 
 ALTER TABLE param.tmoneda
   ADD COLUMN origen VARCHAR(30);
@@ -336,10 +336,10 @@ CREATE TABLE param.taprobador(
     fecha_ini date,
     fecha_fin date,
     id_uo int4,
-    
+
     obs varchar(255),
     PRIMARY KEY (id_aprobador)) INHERITS (pxp.tbase);
-    
+
 -- empresa
 
 CREATE TABLE param.tempresa(
@@ -347,97 +347,97 @@ CREATE TABLE param.tempresa(
     nombre varchar(150),
     logo varchar(255),
     nit VARCHAR(150),
-    PRIMARY KEY (id_empresa)) INHERITS (pxp.tbase); 
+    PRIMARY KEY (id_empresa)) INHERITS (pxp.tbase);
 
 --
 --------------- SQL ---------------
 --  filas acionales a la tabla de gestion
 ALTER TABLE param.tgestion
   ADD COLUMN id_moneda_base INTEGER;
-  
+
 ALTER TABLE param.tgestion
   ADD COLUMN id_empresa INTEGER;
-  
-  
-  
+
+
+
 ------------------------- modificaciones tablas EP
 
 ALTER TABLE param.tpm_financiador
   RENAME TO tfinanciador;
-  
-  
+
+
 ALTER TABLE param.tpm_programa
   RENAME TO tprograma;
-  
+
 ALTER TABLE param.tpm_proyecto
   RENAME TO tproyecto;
-  
+
 ALTER TABLE param.tpm_regional
   RENAME TO tregional;
-  
+
   ALTER TABLE param.tproyecto
   ADD COLUMN id_proyecto_cat_prog INTEGER;
-  
- 
+
+
 CREATE TABLE param.tactividad(
-id_actividad SERIAL NOT NULL, 
+id_actividad SERIAL NOT NULL,
 codigo_actividad varchar(
     20), nombre_actividad varchar(
     100), descripcion_actividad varchar(
     255), PRIMARY KEY(
-    id_actividad)) INHERITS (pxp.tbase); 
-    
-    
+    id_actividad)) INHERITS (pxp.tbase);
+
+
 CREATE TABLE param.tprograma_proyecto_acttividad(
-id_prog_pory_acti SERIAL NOT NULL, 
-id_programa int4 NOT NULL, 
+id_prog_pory_acti SERIAL NOT NULL,
+id_programa int4 NOT NULL,
 id_proyecto int4
- NOT NULL, 
- id_actividad int4 NOT NULL, 
+ NOT NULL,
+ id_actividad int4 NOT NULL,
  PRIMARY KEY(
-    id_prog_pory_acti)) INHERITS (pxp.tbase);    
+    id_prog_pory_acti)) INHERITS (pxp.tbase);
 
 
 CREATE TABLE param.tep(
-id_ep SERIAL NOT NULL, 
-id_prog_pory_acti int4 NOT NULL, 
-id_regional int4 NOT NULL, 
-id_financiador int4 NOT NULL, 
-sw_presto int4, 
+id_ep SERIAL NOT NULL,
+id_prog_pory_acti int4 NOT NULL,
+id_regional int4 NOT NULL,
+id_financiador int4 NOT NULL,
+sw_presto int4,
 PRIMARY KEY(id_ep)) INHERITS (pxp.tbase);
 
 
 ALTER TABLE param.tcatalogo
   ADD COLUMN orden NUMERIC(3,2);
- 
+
  ALTER TABLE param.tcatalogo_tipo
-  ADD COLUMN tabla_estado VARCHAR(100); 
- 
- 
+  ADD COLUMN tabla_estado VARCHAR(100);
+
+
  ALTER TABLE param.tcatalogo_tipo
-  ADD COLUMN columna_estado VARCHAR(100); 
-  
+  ADD COLUMN columna_estado VARCHAR(100);
+
   CREATE TABLE param.tcentro_costo(
 	id_centro_costo SERIAL NOT NULL,
-	codigo varchar(20), 
+	codigo varchar(20),
 	descripcion varchar(200),
-	id_ep int4 NOT NULL, 
+	id_ep int4 NOT NULL,
 	id_uo int4,
-	id_fuente_financiammiento int4, 
-	id_parametro int4, 
+	id_fuente_financiammiento int4,
+	id_parametro int4,
 	id_gestion int4,
-	id_concepto_colectivo int4, 
-	id_categoria_prog int4, 
-	nombre_agrupador varchar(150), 
-	tipo_pres varchar(30), 
+	id_concepto_colectivo int4,
+	id_categoria_prog int4,
+	nombre_agrupador varchar(150),
+	tipo_pres varchar(30),
 	estado varchar(30),   -- estado_pre en endesis
-	cod_fin varchar(10), 
-	cod_prg varchar(10), 
-	cod_pry varchar(10), 
-	cod_act varchar(10), 
+	cod_fin varchar(10),
+	cod_prg varchar(10),
+	cod_pry varchar(10),
+	cod_act varchar(10),
 	PRIMARY KEY(id_centro_costo))INHERITS (pxp.tbase);
-	
-	
+
+
 CREATE TABLE param.testado_funcionario(
     id_estado_funcionario SERIAL NOT NULL,
     id_funcionario int4 NOT NULL,
@@ -448,132 +448,132 @@ CREATE TABLE param.testado_funcionario(
     tiempo_estimado int4,
     id_unidad_medida int4,
     PRIMARY KEY (id_estado_funcionario)) INHERITS (pxp.tbase);
-		 
+
 
 --
--- Definition for index tinstitucion_idx (OID = 308254) : 
+-- Definition for index tinstitucion_idx (OID = 308254) :
 --
 CREATE UNIQUE INDEX tinstitucion_idx ON param.tinstitucion USING btree (doc_id, estado_reg);
 --
--- Definition for index tperiodo__gestion_per_estado__idx (OID = 308255) : 
+-- Definition for index tperiodo__gestion_per_estado__idx (OID = 308255) :
 --
 CREATE UNIQUE INDEX tperiodo__gestion_per_estado__idx ON param.tperiodo USING btree (estado_reg, periodo, id_gestion);
 --
--- Definition for index pk_pm_id_financiador (OID = 307978) : 
+-- Definition for index pk_pm_id_financiador (OID = 307978) :
 --
 ALTER TABLE ONLY param.tfinanciador
     ADD CONSTRAINT pk_pm_id_financiador
     PRIMARY KEY (id_financiador);
 --
--- Definition for index pk_pm_id_programa (OID = 307980) : 
+-- Definition for index pk_pm_id_programa (OID = 307980) :
 --
 ALTER TABLE ONLY param.tprograma
     ADD CONSTRAINT pk_pm_id_programa
     PRIMARY KEY (id_programa);
 --
--- Definition for index pk_pm_id_proyecto (OID = 307982) : 
+-- Definition for index pk_pm_id_proyecto (OID = 307982) :
 --
 ALTER TABLE ONLY param.tproyecto
     ADD CONSTRAINT pk_pm_id_proyecto
     PRIMARY KEY (id_proyecto);
 --
--- Definition for index pk_pm_id_regional (OID = 307984) : 
+-- Definition for index pk_pm_id_regional (OID = 307984) :
 --
 ALTER TABLE ONLY param.tregional
     ADD CONSTRAINT pk_pm_id_regional
     PRIMARY KEY (id_regional);
 --
--- Definition for index talarma_pkey (OID = 307988) : 
+-- Definition for index talarma_pkey (OID = 307988) :
 --
 ALTER TABLE ONLY param.talarma
     ADD CONSTRAINT talarma_pkey
     PRIMARY KEY (id_alarma);
 --
--- Definition for index tcorrelativo_pkey (OID = 307990) : 
+-- Definition for index tcorrelativo_pkey (OID = 307990) :
 --
 ALTER TABLE ONLY param.tcorrelativo
     ADD CONSTRAINT tcorrelativo_pkey
     PRIMARY KEY (id_correlativo);
 --
--- Definition for index tdocumento_pkey (OID = 307996) : 
+-- Definition for index tdocumento_pkey (OID = 307996) :
 --
 ALTER TABLE ONLY param.tdocumento
     ADD CONSTRAINT tdocumento_pkey
     PRIMARY KEY (id_documento);
 --
--- Definition for index tgestion_pkey (OID = 307998) : 
+-- Definition for index tgestion_pkey (OID = 307998) :
 --
 ALTER TABLE ONLY param.tgestion
     ADD CONSTRAINT tgestion_pkey
     PRIMARY KEY (id_gestion);
 --
--- Definition for index tinstitucion_codigo_key (OID = 308000) : 
+-- Definition for index tinstitucion_codigo_key (OID = 308000) :
 --
 ALTER TABLE ONLY param.tinstitucion
     ADD CONSTRAINT tinstitucion_codigo_key
     UNIQUE (codigo);
 --
--- Definition for index tinstitucion_pkey (OID = 308002) : 
+-- Definition for index tinstitucion_pkey (OID = 308002) :
 --
 ALTER TABLE ONLY param.tinstitucion
     ADD CONSTRAINT tinstitucion_pkey
     PRIMARY KEY (id_institucion);
 --
--- Definition for index tlugas_pkey (OID = 308004) : 
+-- Definition for index tlugas_pkey (OID = 308004) :
 --
 ALTER TABLE ONLY param.tlugar
     ADD CONSTRAINT tlugas_pkey
     PRIMARY KEY (id_lugar);
 --
--- Definition for index tmoneda_pkey (OID = 308006) : 
+-- Definition for index tmoneda_pkey (OID = 308006) :
 --
 ALTER TABLE ONLY param.tmoneda
     ADD CONSTRAINT tmoneda_pkey
     PRIMARY KEY (id_moneda);
 --
--- Definition for index tperiodo_pkey (OID = 308008) : 
+-- Definition for index tperiodo_pkey (OID = 308008) :
 --
 ALTER TABLE ONLY param.tperiodo
     ADD CONSTRAINT tperiodo_pkey
     PRIMARY KEY (id_periodo);
 --
--- Definition for index tpm_financiador_codigo_financiador_key (OID = 308010) : 
+-- Definition for index tpm_financiador_codigo_financiador_key (OID = 308010) :
 --
 ALTER TABLE ONLY param.tfinanciador
     ADD CONSTRAINT tpm_financiador_codigo_financiador_key
     UNIQUE (codigo_financiador);
 --
--- Definition for index tpm_programa_codigo_programa_key (OID = 308012) : 
+-- Definition for index tpm_programa_codigo_programa_key (OID = 308012) :
 --
 ALTER TABLE ONLY param.tprograma
     ADD CONSTRAINT tpm_programa_codigo_programa_key
     UNIQUE (codigo_programa);
 --
--- Definition for index tpm_proyecto_codigo_proyecto_key (OID = 308014) : 
+-- Definition for index tpm_proyecto_codigo_proyecto_key (OID = 308014) :
 --
 ALTER TABLE ONLY param.tproyecto
     ADD CONSTRAINT tpm_proyecto_codigo_proyecto_key
     UNIQUE (codigo_proyecto);
 --
--- Definition for index tpm_regional_codigo_regional_key (OID = 308016) : 
+-- Definition for index tpm_regional_codigo_regional_key (OID = 308016) :
 --
 ALTER TABLE ONLY param.tregional
     ADD CONSTRAINT tpm_regional_codigo_regional_key
     UNIQUE (codigo_regional);
 --
--- Definition for index tproveedor_idx (OID = 308018) : 
+-- Definition for index tproveedor_idx (OID = 308018) :
 --
 ALTER TABLE ONLY param.tproveedor
     ADD CONSTRAINT tproveedor_idx
     UNIQUE (id_institucion, tipo, estado_reg);
 --
--- Definition for index tproveedor_idx1 (OID = 308020) : 
+-- Definition for index tproveedor_idx1 (OID = 308020) :
 --
 ALTER TABLE ONLY param.tproveedor
     ADD CONSTRAINT tproveedor_idx1
     UNIQUE (id_persona, tipo, estado_reg);
 --
--- Definition for index tproveedor_pkey (OID = 308022) : 
+-- Definition for index tproveedor_pkey (OID = 308022) :
 --
 ALTER TABLE ONLY param.tproveedor
     ADD CONSTRAINT tproveedor_pkey
@@ -583,7 +583,7 @@ ALTER TABLE ONLY param.tproveedor
 
 
 /***********************************I-SCP-FRH-PARAM-0-04/02/2013****************************************/
--- Tabla tdepto_uo 
+-- Tabla tdepto_uo
 
 CREATE TABLE param.tdepto_uo (
     id_depto_uo serial NOT NULL,
@@ -594,7 +594,7 @@ CREATE TABLE param.tdepto_uo (
 INHERITS (pxp.tbase) WITH OIDS;
 
 
--- Tabla tdepto_usuario 
+-- Tabla tdepto_usuario
 
 CREATE TABLE param.tdepto_usuario (
     id_depto_usuario serial NOT NULL,
@@ -607,7 +607,7 @@ CREATE TABLE param.tdepto_usuario (
 INHERITS (pxp.tbase) WITH OIDS;
 
 
--- Tabla tdepto 
+-- Tabla tdepto
 
 CREATE TABLE param.tdepto (
     id_depto serial NOT NULL,
@@ -625,46 +625,46 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 /***********************************I-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
-ALTER TABLE param.tmoneda 
+ALTER TABLE param.tmoneda
   ALTER COLUMN moneda  type VARCHAR(300) COLLATE pg_catalog."default";
-  
+
 
   ALTER TABLE param.tempresa
   ADD COLUMN codigo  VARCHAR(100) COLLATE pg_catalog."default";
 
-  
+
 /***********************************F-SCP-RAC-PARAM-0-04/02/2013*****************************************/
 
 
 /***********************************I-SCP-RAC-PARAM-0-21/02/2013*****************************************/
 
 
- 
+
 --------------- SQL ---------------
 
 ALTER TABLE param.taprobador
   ADD COLUMN id_ep INTEGER;
-  
-  
+
+
 --------------- SQL ---------------
 
-DROP TABLE param.tcentro_costo;  
- 
+DROP TABLE param.tcentro_costo;
+
 CREATE TABLE param.tcentro_costo(
     id_centro_costo SERIAL NOT NULL,
     id_ep int4 NOT NULL,
     id_uo int4,
     id_gestion int4,
     PRIMARY KEY (id_centro_costo))
-    INHERITS (pxp.tbase); 
-    
-    
+    INHERITS (pxp.tbase);
+
+
 --------------- SQL ---------------
 
 --------------- SQL ---------------
 
 ALTER TABLE param.tdocumento
-  ADD CONSTRAINT tdocumento_idx 
+  ADD CONSTRAINT tdocumento_idx
     UNIQUE (codigo);
 
 
@@ -677,29 +677,29 @@ CREATE TABLE param.tconcepto_ingas(
     id_oec int4,
     PRIMARY KEY (id_concepto_ingas))
     INHERITS (pxp.tbase);
-  
-  
+
+
 CREATE TABLE param.ttipo_cambio (
-  id_tipo_cambio SERIAL, 
-  id_moneda INTEGER NOT NULL, 
-  fecha DATE DEFAULT now() NOT NULL, 
- 
-  oficial NUMERIC(18,6) NOT NULL, 
-  compra NUMERIC(18,6) NOT NULL, 
-  venta NUMERIC(18,6) NOT NULL, 
+  id_tipo_cambio SERIAL,
+  id_moneda INTEGER NOT NULL,
+  fecha DATE DEFAULT now() NOT NULL,
+
+  oficial NUMERIC(18,6) NOT NULL,
+  compra NUMERIC(18,6) NOT NULL,
+  venta NUMERIC(18,6) NOT NULL,
   observaciones VARCHAR(200),
  PRIMARY KEY(id_tipo_cambio)
-)  INHERITS (pxp.tbase); 
-  
-       
+)  INHERITS (pxp.tbase);
+
+
 /***********************************F-SCP-RAC-PARAM-0-21/02/2013*****************************************/
 
 /***********************************I-SCP-AAO-PARAM-62-19/03/2013*****************************************/
 CREATE TABLE param.tperiodo_subsistema (
-  id_periodo_subsistema SERIAL NOT NULL, 
-  id_periodo INTEGER, 
-  id_subsistema INTEGER, 
-  estado VARCHAR(20), 
+  id_periodo_subsistema SERIAL NOT NULL,
+  id_periodo INTEGER,
+  id_subsistema INTEGER,
+  estado VARCHAR(20),
   PRIMARY KEY(id_periodo_subsistema)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -712,9 +712,9 @@ ALTER TABLE param.tperiodo_subsistema
 /***********************************I-SCP-JRR-PARAM-104-04/04/2013****************************************/
 
 CREATE TABLE param.tasistente (
-  id_asistente SERIAL NOT NULL, 
-  id_uo INTEGER NOT NULL, 
-  id_funcionario INTEGER NOT NULL, 
+  id_asistente SERIAL NOT NULL,
+  id_uo INTEGER NOT NULL,
+  id_funcionario INTEGER NOT NULL,
   PRIMARY KEY(id_asistente)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -723,12 +723,12 @@ WITHOUT OIDS;
 
 /***********************************I-SCP-GSS-PARAM-84-01/04/2013****************************************/
 CREATE TABLE param.tplantilla (
-  id_plantilla SERIAL,  
-  nro_linea NUMERIC(2,0), 
-  desc_plantilla VARCHAR(255), 
-  tipo NUMERIC(1,0), 
-  sw_tesoro VARCHAR(2), 
-  sw_compro VARCHAR(2), 
+  id_plantilla SERIAL,
+  nro_linea NUMERIC(2,0),
+  desc_plantilla VARCHAR(255),
+  tipo NUMERIC(1,0),
+  sw_tesoro VARCHAR(2),
+  sw_compro VARCHAR(2),
   CONSTRAINT pk_tplantilla__id_plantilla PRIMARY KEY(id_plantilla)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -737,7 +737,7 @@ ALTER TABLE param.tplantilla OWNER TO postgres;
 /***********************************F-SCP-GSS-PARAM-84-01/04/2013****************************************/
 
 /***********************************I-SCP-RCM-PARAM-85-03/04/2013****************************************/
-CREATE TABLE param.tdocumento_fiscal (  
+CREATE TABLE param.tdocumento_fiscal (
   id_documento_fiscal serial NOT NULL,
   id_plantilla integer NOT NULL,
   nro_documento integer NOT NULL,
@@ -765,14 +765,14 @@ alter column codigo set not null;
 /***********************************I-SCP-RAC-PARAM-0-22/04/2013****************************************/
 
 CREATE TABLE param.tgrupo(
-id_grupo SERIAL NOT NULL, 
-nombre varchar(400), 
+id_grupo SERIAL NOT NULL,
+nombre varchar(400),
 obs varchar(1000) ,
 PRIMARY KEY(id_grupo)) INHERITS (pxp.tbase);
 
 
 CREATE TABLE param.tgrupo_ep(
-id_grupo_ep SERIAL NOT NULL, 
+id_grupo_ep SERIAL NOT NULL,
 id_grupo integer,
 id_ep integer,
 PRIMARY KEY(id_grupo_ep)) INHERITS (pxp.tbase);
@@ -783,18 +783,18 @@ PRIMARY KEY(id_grupo_ep)) INHERITS (pxp.tbase);
 /***********************************I-SCP-RAC-PARAM-0-26/04/2013****************************************/
 
 CREATE TABLE param.tgenerador_alarma(
-id_generador_alarma SERIAL NOT NULL, 
-funcion varchar NOT NULL, 
+id_generador_alarma SERIAL NOT NULL,
+funcion varchar NOT NULL,
 PRIMARY KEY(id_generador_alarma)) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-RAC-PARAM-0-26/04/2013*****************************************/
-/***********************************I-SCP-JRR-PARAM-0-29/04/2013*****************************************/ 
+/***********************************I-SCP-JRR-PARAM-0-29/04/2013*****************************************/
 
 CREATE TABLE param.tdepto_ep (
-  id_depto_ep SERIAL NOT NULL, 
-  id_depto INTEGER NOT NULL, 
-  id_ep INTEGER NOT NULL, 
-  CONSTRAINT tpm_depto_ep_pkey PRIMARY KEY(id_depto_ep)  
+  id_depto_ep SERIAL NOT NULL,
+  id_depto INTEGER NOT NULL,
+  id_ep INTEGER NOT NULL,
+  CONSTRAINT tpm_depto_ep_pkey PRIMARY KEY(id_depto_ep)
     NOT DEFERRABLE
 ) INHERITS (pxp.tbase)
 WITH OIDS;
@@ -817,7 +817,7 @@ ALTER TABLE param.tdepto_usuario
 
 ALTER TABLE param.tgrupo_ep
  ADD COLUMN id_uo integer;
-  
+
 /***********************************F-SCP-RAC-PARAM-0-31/05/2013****************************************/
 
 
@@ -829,10 +829,10 @@ ALTER TABLE param.tgrupo_ep
     id_ep int4,
     id_uo int4,
     PRIMARY KEY (id_depto_uo_ep))
-    INHERITS (pxp.tbase); 
-    
+    INHERITS (pxp.tbase);
+
 /***********************************F-SCP-RAC-PARAM-0-03/06/2013****************************************/
-  
+
 /***********************************I-SCP-RCM-PARAM-0-28/06/2013****************************************/
 ALTER TABLE param.tcorrelativo
   ADD COLUMN tabla varchar(70);
@@ -873,7 +873,7 @@ alter table param.tconcepto_ingas
 add column activo_fijo VARCHAR(5) DEFAULT 'no';
 
 alter table param.tconcepto_ingas
-add column almacenable VARCHAR(5) DEFAULT 'no'; 
+add column almacenable VARCHAR(5) DEFAULT 'no';
 /***********************************F-SCP-RCM-PARAM-0-01/10/2013****************************************/
 
 
@@ -909,25 +909,25 @@ ALTER TABLE param.taprobador
 
 --1
 CREATE TABLE param.tgrupo_archivo(
-  id_grupo_archivo SERIAL NOT NULL, 
-  nombre varchar(100), 
-  descripcion varchar(1000), 
+  id_grupo_archivo SERIAL NOT NULL,
+  nombre varchar(100),
+  descripcion varchar(1000),
   CONSTRAINT pk_tgrupo_archivo__id_grupo_archivo PRIMARY KEY (id_grupo_archivo)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
 --2
 CREATE TABLE param.textension(
-  id_extension SERIAL NOT NULL, 
-  extension varchar(10) NOT NULL, 
-  peso_max_upload_mb numeric(18,2) DEFAULT 0, 
+  id_extension SERIAL NOT NULL,
+  extension varchar(10) NOT NULL,
+  peso_max_upload_mb numeric(18,2) DEFAULT 0,
   CONSTRAINT pk_textension__id_extension PRIMARY KEY (id_extension)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
 --3
 CREATE TABLE param.textension_grupo_archivo(
-  id_extension_grupo_archivo SERIAL NOT NULL, 
+  id_extension_grupo_archivo SERIAL NOT NULL,
   id_extension INTEGER NOT NULL,
   id_grupo_archivo INTEGER NOT NULL,
   CONSTRAINT pk_textension_grupo_archivo__id_extension_grupo_archivo PRIMARY KEY (id_extension_grupo_archivo)
@@ -962,10 +962,10 @@ IS 'El documento requiere solictar porc_monto_excento_var,  se utiliza para fact
 
 ALTER TABLE param.talarma
   ADD COLUMN correos TEXT;
-  
+
 ALTER TABLE param.talarma
   ADD COLUMN documentos TEXT;
-  
+
 /***********************************F-SCP-JRR-PARAM-0-25/08/2014****************************************/
 
 
@@ -989,7 +989,7 @@ IS 'cuando un concepto de gasto tiene habilitado el pago automatico, es consider
 
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN sw_autorizacion VARCHAR(50)[];
-  
+
 /***********************************F-SCP-RAC-PARAM-18/11/2014****************************************/
 
 
@@ -1156,7 +1156,7 @@ ALTER TABLE param.tplantilla
 COMMENT ON COLUMN param.tplantilla.tipo_plantilla
 IS 'compra o venta';
 
- 
+
 /***********************************F-SCP-RAC-PARAM-1-21/08/2015****************************************/
 
 /***********************************I-SCP-RAC-PARAM-1-08/09/2015****************************************/
@@ -1181,11 +1181,11 @@ IS 'es el depto que puede trabajar con depto origen, (considerar que no es comun
 CREATE TABLE param.tentidad (
     id_entidad serial NOT NULL,
     nombre varchar(150) NOT NULL,
-    nit varchar(20) NOT NULL,   
-    tipo_venta_producto varchar(20), 
+    nit varchar(20) NOT NULL,
+    tipo_venta_producto varchar(20),
     CONSTRAINT tentidad_pkey PRIMARY KEY(id_entidad)
-    
-) 
+
+)
 INHERITS (pxp.tbase) WITH OIDS;
 
 /***********************************F-SCP-JRR-PARAM-0-20/09/2015****************************************/
@@ -1195,16 +1195,16 @@ INHERITS (pxp.tbase) WITH OIDS;
 
 ALTER TABLE param.tentidad
   ADD COLUMN estados_comprobante_venta VARCHAR(100);
-  
+
 ALTER TABLE param.tentidad
   ADD COLUMN estados_anulacion_venta VARCHAR(100);
-  
+
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN descripcion_larga TEXT;
 
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN id_entidad INTEGER;
-  
+
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN id_actividad_economica INTEGER;
 
@@ -1272,7 +1272,7 @@ IS 'es moneda de triangulacion';
 
 ALTER TABLE param.tmoneda
   ADD COLUMN codigo_internacional VARCHAR(4);
-  
+
 /***********************************F-SCP-RAC-PARAM-0-18/12/2015****************************************/
 
 
@@ -1284,7 +1284,7 @@ ALTER TABLE param.tmoneda
 
 ALTER TABLE param.tgestion
   ADD COLUMN fecha_ini DATE;
-  
+
   --------------- SQL ---------------
 
 ALTER TABLE param.tgestion
@@ -1304,7 +1304,7 @@ ALTER TABLE param.tgestion
 /***********************************F-SCP-FFP-PARAM-0-21/12/2015****************************************/
 
 /***********************************I-SCP-RCM-PARAM-0-05/11/2013****************************************/
-CREATE TABLE param.tproveedor_item_servicio (  
+CREATE TABLE param.tproveedor_item_servicio (
   id_proveedor_item serial NOT NULL,
   id_proveedor integer NOT NULL,
   id_item integer,
@@ -1470,7 +1470,7 @@ IS 'hace referencia a las UO a las que se debe entregar el comunicado, solo en e
 /***********************************F-SCP-RAC-PARAM-0-11/04/2016****************************************/
 
 
- 
+
 /***********************************I-SCP-RAC-PARAM-0-16/04/2016****************************************/
 --------------- SQL ---------------
 
@@ -1557,7 +1557,7 @@ IS 'si se muestra o no en combos, por ejemplo si la moneda aprace en el combo de
 /*
  en algunas base de datos el codigo noes unico por eso lo comento
  RAC 25/05/2017
- 
+
 alter table param.tinstitucion
 add constraint tinstitucion_uq_codigo unique(codigo);
 */
@@ -1999,7 +1999,7 @@ ALTER TABLE param.tcatalogo
 
 /***********************************I-SCP-RCM-PARAM-0-09/07/2017*****************************************/
 ALTER TABLE param.ttipo_archivo
-  ADD UNIQUE (codigo); 
+  ADD UNIQUE (codigo);
 /***********************************F-SCP-RCM-PARAM-0-09/07/2017*****************************************/
 
 
@@ -2011,7 +2011,7 @@ ALTER TABLE param.tmoneda
   ADD COLUMN actualizacion VARCHAR(4) DEFAULT 'no' NOT NULL;
 
 COMMENT ON COLUMN param.tmoneda.actualizacion
-IS 'moneda de actualizacion'; 
+IS 'moneda de actualizacion';
 
 
 /***********************************F-SCP-RAC-PARAM-0-11/07/2017*****************************************/
@@ -2096,25 +2096,25 @@ IS 'codigo id del periodo en sistema SIGA';
 
 ALTER TABLE param.tproveedor
   ADD COLUMN estado VARCHAR;
-  
+
 --------------- SQL ---------------
 
 ALTER TABLE param.tproveedor
   ADD COLUMN id_proceso_wf INTEGER;
-  
+
 --------------- SQL ---------------
 
 ALTER TABLE param.tproveedor
   ADD COLUMN id_estado_wf INTEGER;
-  
+
 --------------- SQL ---------------
 
 ALTER TABLE param.tproveedor
   ADD COLUMN nro_tramite VARCHAR;
-  
-    
+
+
 /***********************************F-SCP-RAC-PARAM-0-05/09/2017*****************************************/
-     
+
 
 
 /***********************************I-SCP-RAC-PARAM-3-06/09/2017*****************************************/
@@ -2123,18 +2123,18 @@ ALTER TABLE param.tproveedor
 
 ALTER TABLE param.tproveedor
 ALTER COLUMN estado SET NOT NULL;
-  
+
 ALTER TABLE param.tproveedor
   ADD COLUMN id_auxiliar INTEGER;
 
 COMMENT ON COLUMN param.tproveedor.id_auxiliar
 IS 'idenfica el auxilar contable que le correponde al proveedor, automaticamente al crear proveedores creamos auxiliares contables';
-  
-  
-  
+
+
+
 /***********************************F-SCP-RAC-PARAM-3-06/09/2017*****************************************/
-     
-  
+
+
 
 /***********************************I-SCP-RAC-PARAM-0-04/09/2017*****************************************/
 
@@ -2150,7 +2150,7 @@ WITH (oids = false);
 
 ALTER TABLE param.tcat_concepto
   ALTER COLUMN codigo SET STATISTICS 0;
-  
+
 --------------- SQL ---------------
 
 ALTER TABLE param.tconcepto_ingas
@@ -2167,7 +2167,7 @@ CREATE TABLE param.tferiado (
     fecha date,
     tipo varchar(15),
     CONSTRAINT pk_tferiado__id_feriado PRIMARY KEY(id_feriado)
-) 
+)
 INHERITS (pxp.tbase) WITH OIDS;
 /***********************************F-SCP-RCM-PARAM-0-27/10/2017*****************************************/
 /***********************************I-SCP-FPC-PARAM-0-03/12/2017*****************************************/
@@ -2178,7 +2178,7 @@ CREATE TABLE param.tinstitucion_persona (
   id_persona INTEGER NOT NULL,
   cargo_institucion VARCHAR(100),
   PRIMARY KEY(id_institucion_persona)
-) 
+)
 INHERITS (pxp.tbase) WITH OIDS;
 /***********************************F-SCP-FPC-PARAM-0-03/12/2017*****************************************/
 
@@ -2189,13 +2189,13 @@ INHERITS (pxp.tbase) WITH OIDS;
 
 ALTER TABLE param.tproveedor
   ADD COLUMN codigo_sap VARCHAR;
-  
-  
+
+
 ALTER TABLE param.tconcepto_ingas
   ADD COLUMN version INTEGER DEFAULT 1 NOT NULL;
 
 COMMENT ON COLUMN param.tconcepto_ingas.version
-IS 'versiond e la configuracion, por ejemplo version 1 para 2018 , version 2 para 2019 en adelante';  
+IS 'versiond e la configuracion, por ejemplo version 1 para 2018 , version 2 para 2019 en adelante';
 
 
 --------------- SQL ---------------
@@ -2204,7 +2204,7 @@ CREATE TABLE param.tconcepto_ingas_ids (
   id_concepto_ingas_uno INTEGER NOT NULL,
   id_concepto_ingas_dos INTEGER NOT NULL,
   obs VARCHAR
-) 
+)
 WITH (oids = false);
 
 /***********************************F-SCP-FPC-PARAM-0-14/01/2017*****************************************/
@@ -2398,7 +2398,7 @@ ALTER TABLE param.tcolumnas_archivo_excel
 
 
 ALTER TABLE param.tinstitucion
-  ADD CONSTRAINT tinstitucion_uq_codigo 
+  ADD CONSTRAINT tinstitucion_uq_codigo
     UNIQUE (codigo) NOT DEFERRABLE;
 
 CREATE INDEX tdepto_uo_ep_idx1 ON param.tdepto_uo_ep
@@ -2499,7 +2499,7 @@ IS 'nombre del reporte';
 
 COMMENT ON COLUMN param.tplantilla_grilla.url_interface
 IS 'si el codigo no es unico la url deberia ser unica';
-  
+
 /***********************************F-SCP-RAC-PARAM-24-17/06/2019*****************************************/
 
 /***********************************I-SCP-MMV-PARAM-0-16/07/2019****************************************/
@@ -2583,9 +2583,9 @@ WITH (oids = false);
 
 /***********************************I-SCP-MZM-PARAM-56-02/09/2019****************************************/
 CREATE TABLE param.tpie_firma (
-  id_pie_firma SERIAL, 
-  nombre VARCHAR, 
-  orientacion VARCHAR, 
+  id_pie_firma SERIAL,
+  nombre VARCHAR,
+  orientacion VARCHAR,
   CONSTRAINT tpie_firma_pkey PRIMARY KEY(id_pie_firma)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -2595,13 +2595,13 @@ ALTER TABLE param.tpie_firma
 
 ALTER TABLE param.tpie_firma
   ALTER COLUMN orientacion SET STATISTICS 0;
-  
-  
+
+
 CREATE TABLE param.tpie_firma_det (
-  id_pie_firma_det SERIAL, 
-  id_pie_firma INTEGER, 
-  id_cargo INTEGER, 
-  orden INTEGER, 
+  id_pie_firma_det SERIAL,
+  id_pie_firma INTEGER,
+  id_cargo INTEGER,
+  orden INTEGER,
   CONSTRAINT tpie_firma_det_pkey PRIMARY KEY(id_pie_firma_det)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -2617,8 +2617,8 @@ ALTER TABLE param.tpie_firma_det
 
 ALTER TABLE param.tpie_firma_det
   ALTER COLUMN orden SET STATISTICS 0;
-  
-  
+
+
 /***********************************F-SCP-MZM-PARAM-56-02/09/2019****************************************/
 /***********************************I-SCP-EGS-PARAM-6-05/09/2019****************************************/
 
@@ -2733,7 +2733,7 @@ ALTER TABLE param.tpalabra_clave
 COMMENT ON COLUMN param.tpalabra_clave.id_tabla
 IS 'id de la tabla para traduciones de datos almcaenados';
 
- 
+
 CREATE TABLE param.ttraduccion (
   id_traduccion BIGSERIAL,
   id_palabra_clave INTEGER NOT NULL,
@@ -2752,10 +2752,10 @@ ALTER TABLE param.ttraduccion
 /***********************************I-SCP-RAC-PARAM-133-21/04/2020****************************************/
 
 ALTER TABLE param.tpalabra_clave
-  ADD CONSTRAINT tpalabra_clave_idx 
+  ADD CONSTRAINT tpalabra_clave_idx
     UNIQUE (codigo, id_grupo_idioma) NOT DEFERRABLE;
 
-    
+
 /***********************************F-SCP-RAC-PARAM-133-21/04/2020****************************************/
 
 /***********************************I-SCP-MGM-PARAM-1-17/04/2020****************************************/
@@ -2813,8 +2813,38 @@ ALTER TABLE param.ttipo_cc
     ADD COLUMN importe_debe_mb_ingreso NUMERIC;
 
 ALTER TABLE param.ttipo_cc
-    ADD COLUMN importe_haber_mb_egreso NUMERIC;
+    ADD COLUMN importe_haber_mb_gasto NUMERIC;
 ALTER TABLE param.ttipo_cc
-    ADD COLUMN importe_debe_mb_egreso NUMERIC;
+    ADD COLUMN importe_debe_mb_gasto NUMERIC;
 
 /***********************************F-SCP-EGS-PARAM-12-25/11/2020****************************************/
+/***********************************I-SCP-EGS-PARAM-ETR-1914-26/11/2020****************************************/
+CREATE TABLE param.tagrupacion_correo (
+              id_agrupacion_correo SERIAL,
+              id_funcionario INTEGER,
+              correo VARCHAR,
+              id_tipo_envio_correo INTEGER,
+              CONSTRAINT tagrupacion_correo_pkey PRIMARY KEY(id_agrupacion_correo)
+) INHERITS (pxp.tbase)
+  WITH (oids = false);
+
+CREATE TABLE param.ttipo_envio_correo (
+           id_tipo_envio_correo SERIAL,
+           codigo VARCHAR(20) NOT NULL,
+           descripcion VARCHAR,
+           dias_envio VARCHAR,
+           dias_consecutivo VARCHAR(2),
+           habilitado VARCHAR(2) DEFAULT 'no'::character varying NOT NULL,
+           CONSTRAINT ttipo_envio_correo_pkey PRIMARY KEY(id_tipo_envio_correo)
+) INHERITS (pxp.tbase)
+  WITH (oids = false);
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN dias_vencimiento INTEGER;
+/***********************************F-SCP-EGS-PARAM-ETR-1914-26/11/2020****************************************/
+
+/***********************************I-SCP-RCM-PARAM-ETR-1761-01/12/2020****************************************/
+ALTER TABLE param.ttipo_cambio
+  ADD CONSTRAINT uq_ttipo_cambio__fecha__id_moneda
+    UNIQUE (fecha, id_moneda) NOT DEFERRABLE;
+/***********************************F-SCP-RCM-PARAM-ETR-1761-01/12/2020****************************************/
