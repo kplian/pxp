@@ -32,6 +32,9 @@ BEGIN
     where id_proceso_wf = p_id_proceso_wf;
 
 	return true;
+	
+	
+	
 
 EXCEPTION
 	WHEN OTHERS THEN
@@ -46,4 +49,4 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
-COST 100;
+COST 100;test
