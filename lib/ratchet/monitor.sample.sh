@@ -8,7 +8,7 @@ command1="cd $dir"
 command2="nohup php73 pxp-Server.php > nohup.out 2>&1 &"
 now="$(date)"
 touch /tmp/websocketlog
-if lsof -Pi :8010 -sTCP:LISTEN -t >/dev/null ; then
+if pgrep -f "pxp-Server.php" >/dev/null 2>&1 ; then
     echo "websocket is running"
     echo $command
     eval $command1
