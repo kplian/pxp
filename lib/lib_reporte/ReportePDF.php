@@ -5,6 +5,7 @@
  	#22	EndeEtr		 06-06-2019 			MZM KPLIAN		Adicion de funcion grillaDatos para manejo de reporte multilinea
  *  #24 ETR         25/06/2019              RAC KPLIAN      Se considera agrupadores al exportar a PDF
  * #69	ETR			25.09.2019				MZM				Ajuste de espacio al cambio de hoja 	
+ //#ETR-2046		MZM-KPLIAN	04.12.2020				Adicion de campo separador de lineas para planilla de aguinaldos
 */
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
@@ -1152,7 +1153,7 @@ class ReportePDF extends MYPDF
 	/*	#ISSUE				FECHA				AUTOR				DESCRIPCION
  		#22	EndeEtr		 06-06-2019 			MZM				Adicion de funcion para manejo de reporte multilinea	
  	*/
- function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=2.5, $align='R',$tam_letra=7) {
+ function grillaDatos($datas,$alto_grupo, $border=1, $cant_col=10, $alto_col=2.5, $align='R',$tam_letra=7, $separador='si') {//ETR-2046
 		
 		$ancho_uti=0;
 		$id_break=$datas[0];
@@ -1226,12 +1227,19 @@ class ReportePDF extends MYPDF
 									
 					}
 					if($datas[$i+4]==1){
-						$this->ln(1);
-						$this->SetLineWidth(0.1);
-	 	 				$this->SetDrawColor(0,0,0);
-						$this->Cell(0,0,'','B',1);
-					    //$this->SetY($this->GetY()-2.5);	
+						if($separador=='si'){//ETR-2046
+							$this->ln(1);
+							$this->SetLineWidth(0.1);
+		 	 				$this->SetDrawColor(0,0,0);
+							$this->Cell(0,0,'','B',1);
+						}else{
+							$this->ln(5);
+						}
+						
+						
+					
 					}
+					
 					
 				}else{ 
 					
@@ -1257,11 +1265,14 @@ class ReportePDF extends MYPDF
 							$cont++;
 						}
 					if($datas[$i+4]==1){ 
-						$this->ln(1);
-						$this->SetLineWidth(0.1);
-	 	 				$this->SetDrawColor(0,0,0);
-						$this->Cell(0,0,'','B',1);
-						//$this->SetY($this->GetY()-2.5);
+						if($separador=='si'){//ETR-2046
+							$this->ln(1);
+							$this->SetLineWidth(0.1);
+		 	 				$this->SetDrawColor(0,0,0);
+							$this->Cell(0,0,'','B',1);
+						}else{
+							$this->ln(5);
+						}
 						
 					}
 						
@@ -1279,11 +1290,14 @@ class ReportePDF extends MYPDF
 						}
 						
 						if($datas[$i+4]==1){ 
-							$this->ln(1);
-							$this->SetLineWidth(0.1);
-		 	 				$this->SetDrawColor(0,0,0);
-							$this->Cell(0,0,'','B',1);
-						//	$this->SetY($this->GetY()-2.5);
+							if($separador=='si'){//ETR-2046
+								$this->ln(1);
+								$this->SetLineWidth(0.1);
+			 	 				$this->SetDrawColor(0,0,0);
+								$this->Cell(0,0,'','B',1);
+							}else{
+								$this->ln(5);
+							}
 							
 					    }
 										
