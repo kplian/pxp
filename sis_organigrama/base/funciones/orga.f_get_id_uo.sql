@@ -1,13 +1,21 @@
-CREATE OR REPLACE FUNCTION orga.f_get_id_uo (
-  p_id_estructura_uo varchar,
-  p_padres_hijos varchar = 'hijos'::character varying
-)
-RETURNS varchar AS
-$body$
+-- FUNCTION: orga.f_get_id_uo(character varying, character varying)
+
+-- DROP FUNCTION orga.f_get_id_uo(character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.f_get_id_uo(
+	p_id_estructura_uo character varying,
+	p_padres_hijos character varying DEFAULT 'hijos'::character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
 /*
 Autor: RCM
 Fecha: 19/08/2013
 Proósito: Devolver recursivamente todos los ids padres o hijos a partir de un id_estructura_uo siguiendo la matriz de orga.testructura_uo
+ #ETR-2026	09.12.2020		MZM					eliminacion de tabla temporal para evitar errores
 */
 DECLARE
 
@@ -18,6 +26,10 @@ BEGIN
 
   if p_id_estructura_uo is null then
       return '(null)';
+  end if;
+  --#ETR-2026
+  if exists (select 1 from pg_tables where tablename='tuos') then
+    drop  table tuos;
   end if;
   
   create temp table tuos(
@@ -64,9 +76,7 @@ BEGIN
     return v_ids;
 
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$;
+
+ALTER FUNCTION orga.f_get_id_uo(character varying, character varying)
+    OWNER TO postgres;
