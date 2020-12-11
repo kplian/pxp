@@ -1,13 +1,18 @@
---------------- SQL ---------------
+-- FUNCTION: orga.ft_estructura_uo_sel(integer, integer, character varying, character varying)
 
-CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_sel (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+-- DROP FUNCTION orga.ft_estructura_uo_sel(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_sel(
+	par_administrador integer,
+	par_id_usuario integer,
+	par_tabla character varying,
+	par_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
 /**************************************************************************
  FUNCION: 		orga.ft_estructura_uo_sel
  DESCRIPCIÓN:  listado de uo
@@ -21,6 +26,7 @@ $body$
     #53         26/08/2019      RAC                 Se agrega campo de ordenación por centro en listado de organigrama
     #94			12/12/2019 	    APS					Se agrega los campos periodo y gestion para el filtro de funcionarios.
     #107           16/01/2020        JUAN        Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+    #ETR-2026	09.12.2020		MZM					Adicion de campo "vigente"
 ***************************************************************************/
 
 
@@ -65,6 +71,10 @@ BEGIN
            end if;
                v_condicion:=v_condicion ||'  and uo.estado_reg=''activo'' ';
 
+			if (v_parametros.estado='vigentes') then --#ETR-2026
+            	v_condicion:= v_condicion || ' and UO.vigente=''si'' ';
+            end if;
+
                v_consulta:='SELECT
                                 UO.id_uo,
                                 UO.codigo,
@@ -90,7 +100,7 @@ BEGIN
                                 nivorg.nombre_nivel,
                                 UO.centro, --#26
                                 UO.orden_centro --#26
-
+								, UO.vigente --#ETR-2026
                             FROM orga.tuo UO
                             '||v_join|| ' join orga.testructura_uo euo
                                   on UO.id_uo=euo.id_uo_hijo  and euo.estado_reg=''activo''
@@ -151,9 +161,7 @@ EXCEPTION
 
 
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$;
+
+ALTER FUNCTION orga.ft_estructura_uo_sel(integer, integer, character varying, character varying)
+    OWNER TO postgres;

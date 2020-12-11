@@ -10,6 +10,7 @@
  *  #53         26/08/2018      RAC                 Seañade nro de orden en el organigrama
  *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  *  #107        16/01/2020      JUAN                Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+ *  #ETR-2026	09.12.2020		MZM-KPLIAN			Adicion de filtro vigente/no vigente/todos
  */
 class ACTEstructuraUo extends ACTbase {
 
@@ -24,12 +25,18 @@ class ACTEstructuraUo extends ACTbase {
 
 		$node = $this -> objParam -> getParametro('node');
 		$id_uo = $this -> objParam -> getParametro('id_uo');
-
+		//ETR-2026
+		$estado= $this -> objParam -> getParametro('estado');
+		if($estado==''){$estado='vigentes';}
+		$this -> objParam -> addParametro('estado', $estado);
+		
+		
 		if ($node == 'id' || !is_numeric($node)) {
 			$this -> objParam -> addParametro('id_padre', '%');
 		} else {
 			$this -> objParam -> addParametro('id_padre', $id_uo);
 		}
+
 
 		if ($this -> objParam -> getParametro('filtro') == 'activo' && $node == 'id') {
 			$count = 0;
@@ -165,6 +172,19 @@ class ACTEstructuraUo extends ACTbase {
 
 			/////////////////////////
 		} else {
+			
+			
+			//09.12.2020
+			if($this->objParam->getParametro('estado')!='' && $this->objParam->getParametro('estado')!='todos'){
+				if($this->objParam->getParametro('estado') == 'vigente'){
+					$this->objParam->addFiltro("coalesce((orga.f_get_funcionarios_x_uo(UO.id_uo, now()::date))::varchar,''0'') !=''0''");
+				}
+				else if ($this->objParam->getParametro('estado') == 'no vigente'){
+					$this->objParam->addFiltro("coalesce((orga.f_get_funcionarios_x_uo(UO.id_uo, now()::date))::varchar,''0'') =''0''");
+				}
+	    	}
+			
+			 
 			$this->objFunSeguridad=$this->create('MODEstructuraUo');
 			$this -> res = $this -> objFunSeguridad -> listarEstructuraUo($this -> objParam);
 
