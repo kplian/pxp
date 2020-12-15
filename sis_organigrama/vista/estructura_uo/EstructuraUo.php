@@ -466,7 +466,7 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			direction:'ASC'
 		},
 		onButtonAct:function(){
-			alert(this.cmbTipo.getValue());
+			
 			this.sm.clearSelections();
 
             var dfil = this.datoFiltro.getValue();
