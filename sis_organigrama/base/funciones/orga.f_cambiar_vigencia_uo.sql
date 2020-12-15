@@ -41,21 +41,27 @@ BEGIN
   
   select * into v_array from  orga.f_get_id_uo(p_id_estructura_uo);
   SELECT COUNT(*) into v_cant FROM regexp_matches(v_array, ',','g');
-  
+  i=1;
   v_pos=1;        
   v_respuesta='si';
-  
+--raise exception 'a%, b%',v_array, v_cant;
   if(v_cant!=0) then
-    for i in 1 .. v_cant+1 loop
-    	SELECT substr(v_array,v_pos,strpos(v_array,',') -1),
+    while ( i < v_cant+1) loop 
+    	SELECT substr(v_array,1,strpos(v_array,',') -1),
              substr(v_array,strpos(v_array,',')+1) into v_ids;
-             
+              raise notice 'id %, i%',v_ids, i;
               if ( select coalesce(orga.f_get_funcionarios_x_uo(v_ids::integer, now()::Date)::varchar,'0') !='0' ) then --tiene personal asignado
     				i=v_cant+1;
                     v_respuesta='no';
+              else
+	              i=i+1;
               end if;
-              raise notice 'xx%',v_ids;
-              v_pos=v_pos+ length (v_ids)+1;
+              
+              
+              
+              v_array=(substr(v_array,strpos(v_array,',')+1 ));
+              --raise exception 'aaaa%', (substr(v_array,strpos(v_array,',')+1 ));
+              --v_pos=v_pos+ length (v_ids)+1;
               
     end loop;
  end if;

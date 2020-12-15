@@ -178,7 +178,7 @@ BEGIN
                end if;
                --#ETR-2026
                if (v_parametros.vigente='no') then --validar que los nodos dependientes no tengan asignaciones activas
-                
+                	
 					if (orga.f_cambiar_vigencia_uo((select t.id_estructura_uo from orga.testructura_uo t where t.id_uo_hijo=v_parametros.id_uo)::varchar,'verificar')='no') then
 	                    raise exception 'No es posible inactivar la Unidad, dado que existen nodos dependientes con asignaciones activas';
                     else
@@ -186,7 +186,7 @@ BEGIN
                     	  v_pos=1; 
                           select * into v_array from  orga.f_get_id_uo((select t.id_estructura_uo from orga.testructura_uo t where t.id_uo_hijo=v_parametros.id_uo)::varchar);
   						  SELECT COUNT(*) into v_cant FROM regexp_matches(v_array, ',','g');
-                          if(v_cant!=0) then
+                          if(v_cant!=0) then  
                             for i in 1 .. v_cant+1 loop
                               SELECT substr(v_array,v_pos,strpos(v_array,',') -1),
                                    substr(v_array,strpos(v_array,',')+1) into v_ids;
