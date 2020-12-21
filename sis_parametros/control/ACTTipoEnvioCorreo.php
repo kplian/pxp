@@ -44,6 +44,11 @@ class ACTTipoEnvioCorreo extends ACTbase{
         $this->res=$this->objFunc->eliminarTipoEnvioCorreo($this->objParam);
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+    function modificarPlantillaCorreo(){
+        $this->objFunc=$this->create('MODTipoEnvioCorreo');
+        $this->res=$this->objFunc->modificarPlantillaCorreo($this->objParam);
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
             
 }
 

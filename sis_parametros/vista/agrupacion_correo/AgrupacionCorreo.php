@@ -37,6 +37,7 @@ Phx.vista.AgrupacionCorreo=Ext.extend(Phx.gridInterfaz,{
         this.Cmp.id_funcionario.store.baseParams.fecha =fecha = Ext.util.Format.date(fecha,'d/m/Y');
         this.ocultarComponente(this.Cmp.correo);
     },
+
     Atributos:[
         {
             //configuracion del componente
@@ -75,11 +76,28 @@ Phx.vista.AgrupacionCorreo=Ext.extend(Phx.gridInterfaz,{
 		},
         {
             config:{
+                name : 'funcionario',
+                fieldLabel : 'Funcionario o Depto ??',
+                allowBlank: false,
+                items: [
+                    {boxLabel: 'Si', name: 'funcionario', inputValue: 'si', checked: true},
+                    {boxLabel: 'No', name: 'funcionario', inputValue: 'no'}
+
+                ],
+            },
+            type : 'RadioGroupField',
+            id_grupo : 1,
+            form : true,
+            grid:false
+        },
+
+        {
+            config:{
                 name:'id_funcionario',
                 hiddenName: 'id_funcionario',
                 origen:'FUNCIONARIOCAR',
                 fieldLabel:'Funcionario',
-                allowBlank:true,
+                allowBlank:false,
                 gwidth:200,
                 valueField: 'id_funcionario',
                 gdisplayField: 'desc_funcionario',
@@ -94,6 +112,75 @@ Phx.vista.AgrupacionCorreo=Ext.extend(Phx.gridInterfaz,{
             form:true,
             bottom_filter:true //#20
         },
+        {
+            config:{
+                name:'id_depto',
+                hiddenName: 'id_depto',
+                url: '../../sis_parametros/control/Depto/listarDeptoFiltradoXUsuario',
+                origen: 'DEPTO',
+                allowBlank: false,
+                fieldLabel: 'Depto',
+                disabled: true,
+                width: '80%',
+                baseParams:{par_filtro:'id_depto#deppto.nombre#deppto.codigo', estado:'activo'},
+                renderer:function(value, p, record){return String.format('{0}', record.data['desc_depto']);}
+            },
+            type:'ComboRec',
+            id_grupo: 1,
+            form:true,
+            grid:true
+        },
+        {
+            config:{
+                name: 'cargo',
+                fieldLabel: 'Cargo',
+                allowBlank: false,
+                emptyText: 'Elegir ...',
+                tinit:false,
+                resizable:true,
+                tasignacion:false,
+                store: new Ext.data.JsonStore({
+                    url: '../../sis_parametros/control/Catalogo/listarCatalogoCombo',
+                    id : 'id_catalogo',
+                    root: 'datos',
+                    sortInfo:{
+                        field: 'orden',
+                        direction: 'ASC'
+                    },
+                    totalProperty: 'total',
+                    fields: ['id_catalogo','codigo','descripcion'],
+                    remoteSort: true,
+                    baseParams:{par_filtro:'descripcion',cod_subsistema : 'PARAM',catalogo_tipo : 'tdepto_usuario_cargo'}
+                }),
+                tpl:'<tpl for="."><div class="x-combo-list-item" ><div class="awesomecombo-item {checked}"><p><b>{codigo}</b></p></div></div></tpl>',
+                valueField: 'codigo',
+                displayField: 'codigo',
+                gdisplayField: 'codigo',
+                hiddenName: 'codigo',
+                forceSelection:true,
+                typeAhead: false,
+                triggerAction: 'all',
+                listWidth:500,
+                //resizable:true,
+                lazyRender:true,
+                mode:'remote',
+                pageSize:10,
+                queryDelay:1000,
+                width: 250,
+                enableMultiSelect:true,
+                gwidth:250,
+                minChars:2,
+                anchor:'80%',
+                qtip:'Procesos de solicitutes de compra',
+                renderer:function(value, p, record){return String.format('{0}', record.data['cargo']);}
+            },
+            type:'AwesomeCombo',
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+
+
         {
             config:{
                 name: 'correo',
@@ -225,7 +312,11 @@ Phx.vista.AgrupacionCorreo=Ext.extend(Phx.gridInterfaz,{
         {name:'id_tipo_envio_correo', type: 'numeric'},
         {name:'desc_funcionario1', type: 'string'},
         {name:'email_empresa', type: 'string'},
-        
+        {name:'funcionario', type: 'string'},
+        {name:'id_depto', type: 'numeric'},
+        {name:'desc_depto', type: 'string'},
+        {name:'cargo', type: 'string'},
+
     ],
     sortInfo:{
         field: 'id_agrupacion_correo',
@@ -248,6 +339,100 @@ Phx.vista.AgrupacionCorreo=Ext.extend(Phx.gridInterfaz,{
                 }
             });
     },
+
+    onButtonNew: function() {
+        this.ocultarComponente(this.Cmp.id_depto);
+        this.ocultarComponente(this.Cmp.cargo);
+        Phx.vista.AgrupacionCorreo.superclass.onButtonNew.call(this);
+
+        this.Cmp.id_depto.enable();
+        this.Cmp.funcionario.on('change', function(cmp, check){
+
+            if( check.getRawValue() =='no' ){
+                this.ocultarComponente(this.Cmp.id_funcionario);
+                this.mostrarComponente(this.Cmp.id_depto);
+                this.Cmp.id_funcionario.reset();
+                this.Cmp.id_funcionario.allowBlank = true;
+                this.Cmp.id_depto.allowBlank = false;
+                this.Cmp.id_depto.enable();
+                this.mostrarComponente(this.Cmp.cargo);
+            }
+            else{
+                ///depto
+                this.mostrarComponente(this.Cmp.id_funcionario);
+                this.ocultarComponente(this.Cmp.id_depto);
+                this.Cmp.id_depto.reset();
+                this.Cmp.id_depto.allowBlank = true;
+                this.Cmp.id_funcionario.allowBlank = false;
+                this.Cmp.id_depto.enable();
+                this.ocultarComponente(this.Cmp.cargo);
+                this.Cmp.cargo.reset();
+            }
+
+        }, this);
+    },
+    onButtonEdit: function() {
+        var data = this.getSelectedData();
+        Phx.vista.AgrupacionCorreo.superclass.onButtonEdit.call(this);
+
+        this.Cmp.funcionario.on('change', function(cmp, check){
+            if(check.getRawValue() =='no'){
+                this.ocultarComponente(this.Cmp.id_funcionario);
+                this.mostrarComponente(this.Cmp.id_depto);
+                this.Cmp.id_funcionario.reset();
+                this.Cmp.id_funcionario.allowBlank = true;
+                this.Cmp.id_depto.allowBlank = false;
+                this.mostrarComponente(this.Cmp.cargo);
+
+            }
+            else{
+                this.mostrarComponente(this.Cmp.id_funcionario);
+                this.ocultarComponente(this.Cmp.id_depto);
+                this.Cmp.id_depto.reset();
+                this.Cmp.id_depto.allowBlank = true;
+                this.Cmp.id_funcionario.allowBlank = false;
+                this.ocultarComponente(this.Cmp.cargo);
+                this.Cmp.cargo.reset();
+                this.Cmp.cargo.allowBlank = true;
+            }
+
+        }, this);
+
+        if( data.id_funcionario != null ){
+            console.log('r',this.Cmp.funcionario);
+            this.Cmp.funcionario.setValue('si');
+            this.Cmp.id_funcionario.store.baseParams.query =  data.id_funcionario;
+            this.Cmp.id_funcionario.store.load({params:{start:0,limit:this.tam_pag},
+                callback : function (r) {
+                    if (r.length > 0 ) {
+
+                        this.Cmp.id_funcionario.setValue(r[0].data.id_funcionario);
+                    }
+
+                }, scope : this
+            });
+
+            this.Cmp.id_funcionario.enable();
+
+        }else{
+            this.Cmp.funcionario.setValue('no');
+            this.Cmp.id_depto.store.baseParams.query =  data.id_depto;
+            this.Cmp.id_depto.store.load({params:{start:0,limit:this.tam_pag},
+                callback : function (r) {
+                    if (r.length > 0 ) {
+
+                        this.Cmp.id_depto.setValue(data.id_depto);
+                    }
+
+                }, scope : this
+            });
+
+            this.Cmp.id_depto.enable();
+
+        }
+    },
+
+
     },
 )
 </script>
