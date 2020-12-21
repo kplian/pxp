@@ -1070,3 +1070,11 @@ create trigger trig_huo_funcionario
     for each row
 execute procedure orga.f_trig_huo_funcionario();
 /*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
+
+/*****************************I-SCP-MZM-ORGA-ETR-2026-09/12/2020*************/
+ALTER TABLE orga.tuo
+  ADD COLUMN vigente VARCHAR(2);
+
+ALTER TABLE orga.tuo
+  ALTER COLUMN vigente SET DEFAULT 'si';
+/*****************************F-SCP-MZM-ORGA-ETR-2026-09/12/2020*************/  

@@ -9,6 +9,7 @@
  *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
  *  #94         12/12/2019      APS                 Filtro de funcionarios por gestion y periodo
  *  #107        16/01/2020      JUAN                Quitar filtro gestión y periodo del organigrama, los filtro ponerlos en el detalles
+ *  #ETR-2026	09.12.2020		MZM-KPLIAN			Adicion de filtro vigente/no vigente/todos para listar solo las UOs que tengan personal asignado (vigente), sin asignar (no vigente) o todos
  */
 class MODEstructuraUo extends MODbase {
 	
@@ -26,7 +27,7 @@ class MODEstructuraUo extends MODbase {
 		$this->setCount(false);
 		
 			$this->setParametro('id_padre','id_padre','varchar');
-					
+			$this->setParametro('estado','estado','varchar');//ETR-2026
 			//defino varialbes que se captran como retornod e la funcion
 			$this->captura('id_uo','integer');
 			$this->captura('codigo','varchar');
@@ -52,8 +53,9 @@ class MODEstructuraUo extends MODbase {
 			$this->captura('nombre_nivel','varchar');
 			$this->captura('centro','varchar');//#26
 			$this->captura('orden_centro','numeric');//#26
+			$this->captura('vigente','varchar');//#ETR-2026
 			$this->armarConsulta();
-			/*echo $this->consulta;
+			/*echo '****'.$this->consulta;
 			exit;*/
 			$this->ejecutarConsulta();
 			return $this->respuesta;	
@@ -95,7 +97,7 @@ class MODEstructuraUo extends MODbase {
 	
 	
 	function modificarEstructuraUo(){
-	
+
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='orga.ft_estructura_uo_ime';// nombre procedimiento almacenado
 		$this->transaccion='RH_ESTRUO_MOD';//nombre de la transaccion
@@ -117,6 +119,8 @@ class MODEstructuraUo extends MODbase {
 		$this->setParametro('id_nivel_organizacional','id_nivel_organizacional','integer');
 		$this->setParametro('centro','centro','varchar');//#26
 		$this->setParametro('orden_centro','orden_centro','numeric');//#26
+		$this->setParametro('vigente','vigente','varchar');//#ETR-2026
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 				

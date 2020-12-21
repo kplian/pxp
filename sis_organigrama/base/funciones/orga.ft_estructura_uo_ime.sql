@@ -1,11 +1,18 @@
-CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_ime (
-  par_administrador integer,
-  par_id_usuario integer,
-  par_tabla varchar,
-  par_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+-- FUNCTION: orga.ft_estructura_uo_ime(integer, integer, character varying, character varying)
+
+-- DROP FUNCTION orga.ft_estructura_uo_ime(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_ime(
+	par_administrador integer,
+	par_id_usuario integer,
+	par_tabla character varying,
+	par_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
 /**************************************************************************
  FUNCION: 		rhum.ft_estructura_uo_ime
  DESCRIPCIÓN:   modificaciones de funciones
@@ -16,6 +23,7 @@ $body$
  HISTORIA DE MODIFICACIONES:
 	ISSUE		FECHA			AUTHOR				DESCRIPCION
  *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+ 	#ETR-2026	09.12.2020		MZM					Se adiciona campo vigente para filtros
  ***************************************************************************/
 DECLARE
 
@@ -31,7 +39,11 @@ v_id_uo  				    integer;
 
 --10-04-2012: sincronizacion de UO entre BD
 v_respuesta_sinc            varchar;
-
+v_array		varchar;
+  i integer;
+  v_cant	integer;
+  v_pos	integer;
+  v_ids						varchar;
 BEGIN
 
   
@@ -78,6 +90,7 @@ BEGIN
                    id_nivel_organizacional,
                    centro,  --#26
                    orden_centro--#26
+                   ,vigente --#ETR-2026
                    )
                values(
                  upper(v_parametros.codigo), 
@@ -95,6 +108,7 @@ BEGIN
                  v_parametros.id_nivel_organizacional,
                  v_parametros.centro,--#26
                  v_parametros.orden_centro--#26
+                 ,'si'--ETR-20206
                  )
                  
                RETURNING id_uo into v_id_uo;
@@ -162,6 +176,33 @@ BEGIN
                if exists (select distinct 1 from orga.tuo where nodo_base='si' and estado_reg='activo' and id_uo!=v_parametros.id_uo and v_parametros.nodo_base='si') then
                   raise exception 'Insercion no realizada. Ya se definio alguna unidad como nodo base';
                end if;
+               --#ETR-2026
+               if (v_parametros.vigente='no') then --validar que los nodos dependientes no tengan asignaciones activas
+                	
+					if (orga.f_cambiar_vigencia_uo((select t.id_estructura_uo from orga.testructura_uo t where t.id_uo_hijo=v_parametros.id_uo)::varchar,'verificar')='no') then
+	                    raise exception 'No es posible inactivar la Unidad, dado que existen nodos dependientes con asignaciones activas';
+                    else
+                    
+                    	  v_pos=1; 
+                          select * into v_array from  orga.f_get_id_uo((select t.id_estructura_uo from orga.testructura_uo t where t.id_uo_hijo=v_parametros.id_uo)::varchar);
+  						  SELECT COUNT(*) into v_cant FROM regexp_matches(v_array, ',','g');
+                          if(v_cant!=0) then  
+                            for i in 1 .. v_cant+1 loop
+                              SELECT substr(v_array,v_pos,strpos(v_array,',') -1),
+                                   substr(v_array,strpos(v_array,',')+1) into v_ids;
+                                   update orga.tuo
+                                   set vigente='no'
+                                   where id_uo=v_ids::integer;
+                                   v_pos=v_pos+ length (v_ids)+1;
+                                  
+                            end loop;
+                          end if;
+    				end if;
+                    
+	 			--	end if;
+               
+               end if;
+               
                
                update orga.tuo
                set codigo=upper(v_parametros.codigo),
@@ -176,6 +217,7 @@ BEGIN
                    id_nivel_organizacional = v_parametros.id_nivel_organizacional,
                    centro=v_parametros.centro,--#26
                    orden_centro = v_parametros.orden_centro--#26
+                   ,vigente=v_parametros.vigente --#ETR-2026
                 where id_uo=v_parametros.id_uo;
                 
                /* --10-04-2012: sincronizacion de UO entre BD
@@ -272,9 +314,7 @@ EXCEPTION
 
 
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$;
+
+ALTER FUNCTION orga.ft_estructura_uo_ime(integer, integer, character varying, character varying)
+    OWNER TO postgres;

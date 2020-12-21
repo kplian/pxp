@@ -332,11 +332,34 @@ Phx.vista.EstructuraUo=function(config){
 				id_grupo:0,
 				grid:false,
 				form:true
-		}
+		},
+		{
+	       		config:{
+	       			name:'vigente',
+	       			fieldLabel:'Vigente',
+	       			allowBlank:false,
+	       			emptyText:'Vigente...',
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    mode: 'local',
+	       		    gwidth: 100,
+	       		    store:['si','no']
+	       		},
+	       		type:'ComboBox',
+	       		id_grupo:0,
+	       		filters:{	
+	       		         type: 'list',
+	       		         //pfiltro:'par.sw_movimiento',
+	       				 options: ['si','no'],	
+	       		 	},
+	       		grid:true,
+	       		form:true
+	       	},
 		];
-
+this.initButtons=[this.cmbTipo];
         Phx.vista.EstructuraUo.superclass.constructor.call(this,config);
-
+		
         this.iniciarEventos();
 
 
@@ -358,7 +381,10 @@ Phx.vista.EstructuraUo=function(config){
 				tooltip: '<b>Cargos</b><br/>Listado de cargos por unidad organizacional'
 			}
 		);
-
+		/******/
+		
+		this.cmbTipo.on('select',this.capturaFiltros,this);
+		
 		//coloca elementos en la barra de herramientas
 		this.tbar.add('->');
    		this.tbar.add(' Filtrar:');
@@ -370,7 +396,9 @@ Phx.vista.EstructuraUo=function(config){
 		//this.tbar.items.get('b-new-'+this.idContenedor).disable()
 		this.init();
 		
-		this.loaderTree.baseParams={id_subsistema:this.id_subsistema};
+		this.loaderTree.baseParams={id_subsistema:this.id_subsistema,estado:this.cmbTipo.getValue()};
+		
+		
 		this.rootVisible=false;
         v_id_gestion =0;
 
@@ -381,6 +409,20 @@ Phx.vista.EstructuraUo=function(config){
 
 
 Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
+	
+	cmbTipo:new Ext.form.ComboBox({
+	       			name:'estado',
+	       			fieldLabel:'Estado Asignaciones',
+	       			allowBlank:false,
+	       			emptyText:'Estado Asignaciones...',
+	       			typeAhead: true,
+	       		    triggerAction: 'all',
+	       		    lazyRender:true,
+	       		    value:'vigentes',
+	       		    mode: 'local',
+	       		    width: 70,
+	       		    store:['vigentes','todos']
+	       		}),
 		datoFiltro:new Ext.form.Field({ 
 		                        allowBlank:true,
 		                        enableKeyEvents : true,
@@ -416,8 +458,9 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		'nodo_base','correspondencia','gerencia',
 		'centro', //#26
 		'orden_centro'//#26
-
+		,'vigente'//#ETR-2026
 		],
+		
 		sortInfo:{
 			field: 'id',
 			direction:'ASC'
@@ -430,18 +473,22 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 			var dcheck = this.checkInactivos.getValue();
 			if(dfil && dfil!=''){
 				if (dcheck) {
-                    this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil, p_activos : 'no'};
+                    this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil, p_activos : 'no',estado:this.cmbTipo.getValue()};
 				}
 				else{
-                    this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil};
+                    this.loaderTree.baseParams={filtro:'activo',criterio_filtro_arb:dfil,estado:this.cmbTipo.getValue()};
                 }
                 this.root.reload();
 			}
 			else
 			{
-                 this.loaderTree.baseParams={filtro:'inactivo',criterio_filtro_arb:''};
+                 this.loaderTree.baseParams={filtro:'inactivo',criterio_filtro_arb:'',estado:this.cmbTipo.getValue()};
 			     this.root.reload();
 			}
+			
+			
+			
+			
 		},
 				
 		/*onBtnReporteFun: function(){
@@ -489,15 +536,15 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
 		onButtonNew:function(){
 			var nodo = this.sm.getSelectedNode();			
 			Phx.vista.EstructuraUo.superclass.onButtonNew.call(this);			
-			//this.getComponente('id_uo_padre').setValue('');
-			//this.getComponente('nivel').setValue((nodo.attributes.nivel*1)+1);
+			this.getComponente('vigente').setValue('si');
+			this.getComponente('vigente').disable();
 			},
 		
 		/*Sobre carga boton EDIT */
 		onButtonEdit:function(){
 	
 			var nodo = this.sm.getSelectedNode();			
-						
+				this.getComponente('vigente').enable();		
 			//this.getComponente('nivel').setValue((nodo.attributes.nivel*1)+1);
 			
 			/*if(nodo.attributes.tipo_dato=='interface'){		
@@ -603,6 +650,13 @@ Ext.extend(Phx.vista.EstructuraUo,Phx.arbInterfaz,{
                     items:[],
                     id_grupo:1
                  }*/] }],
+                 
+                 
+                 
+    capturaFiltros:function(combo, record, index){
+		this.loaderTree.baseParams={estado:this.cmbTipo.getValue()};
+		this.root.reload();
+	}       
 
 
     }
