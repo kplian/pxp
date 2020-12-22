@@ -1,12 +1,12 @@
 --------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION param.ft_tipo_envio_correo_sel (
-    p_administrador integer,
-    p_id_usuario integer,
-    p_tabla varchar,
-    p_transaccion varchar
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
 )
-    RETURNS varchar AS
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:        Parametros Generales
@@ -61,7 +61,13 @@ BEGIN
                         grc.fecha_mod,
                         usu1.cuenta as usr_reg,
                         usu2.cuenta as usr_mod,
-                        grc.dias_vencimiento
+                        grc.dias_vencimiento,
+                        grc.script,
+                        grc.plantilla_mensaje_asunto,
+                        grc.plantilla_mensaje,
+                        grc.script_habilitado,
+                        grc.columna_llave,
+                        grc.tabla
                         FROM param.ttipo_envio_correo grc
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = grc.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = grc.id_usuario_mod
@@ -76,12 +82,12 @@ BEGIN
 
         END;
 
-        /*********************************
-         #TRANSACCION:  'PM_GRC_CONT'
-         #DESCRIPCION:    Conteo de registros
-         #AUTOR:        egutierrez
-         #FECHA:        26-11-2020 15:26:10
-        ***********************************/
+    /*********************************
+     #TRANSACCION:  'PM_GRC_CONT'
+     #DESCRIPCION:    Conteo de registros
+     #AUTOR:        egutierrez
+     #FECHA:        26-11-2020 15:26:10
+    ***********************************/
 
     ELSIF (p_transaccion='PM_GRC_CONT') THEN
 
@@ -110,16 +116,16 @@ BEGIN
 EXCEPTION
 
     WHEN OTHERS THEN
-        v_resp='';
-        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-        v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-        v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-        RAISE EXCEPTION '%',v_resp;
+            v_resp='';
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            RAISE EXCEPTION '%',v_resp;
 END;
 $body$
-    LANGUAGE 'plpgsql'
-    VOLATILE
-    CALLED ON NULL INPUT
-    SECURITY INVOKER
-    PARALLEL UNSAFE
-    COST 100;
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
+COST 100;

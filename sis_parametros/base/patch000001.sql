@@ -2833,7 +2833,7 @@ CREATE TABLE param.ttipo_envio_correo (
            codigo VARCHAR(20) NOT NULL,
            descripcion VARCHAR,
            dias_envio VARCHAR,
-           dias_consecutivo VARCHAR(2),
+           dias_consecutivo INTEGER,
            habilitado VARCHAR(2) DEFAULT 'no'::character varying NOT NULL,
            CONSTRAINT ttipo_envio_correo_pkey PRIMARY KEY(id_tipo_envio_correo)
 ) INHERITS (pxp.tbase)
@@ -2848,3 +2848,29 @@ ALTER TABLE param.ttipo_cambio
   ADD CONSTRAINT uq_ttipo_cambio__fecha__id_moneda
     UNIQUE (fecha, id_moneda) NOT DEFERRABLE;
 /***********************************F-SCP-RCM-PARAM-ETR-1761-01/12/2020****************************************/
+
+/***********************************I-SCP-EGS-PARAM-ETR-1761-14/12/2020****************************************/
+ALTER TABLE param.tagrupacion_correo
+    ADD COLUMN id_depto INTEGER;
+ALTER TABLE param.tagrupacion_correo
+    ADD COLUMN cargo VARCHAR;
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN script VARCHAR;
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN plantilla_mensaje VARCHAR;
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN plantilla_mensaje_asunto VARCHAR(500);
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN script_habilitado VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN columna_llave VARCHAR;
+
+ALTER TABLE param.ttipo_envio_correo
+    ADD COLUMN tabla VARCHAR;
+/***********************************F-SCP-EGS-PARAM-ETR-1761-14/12/2020****************************************/
+

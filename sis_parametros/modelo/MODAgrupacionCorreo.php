@@ -40,7 +40,9 @@ class MODAgrupacionCorreo extends MODbase{
         $this->captura('id_tipo_envio_correo','int4');
         $this->captura('desc_funcionario1','varchar');
         $this->captura('email_empresa','varchar');
-        
+        $this->captura('desc_depto','varchar');
+        $this->captura('id_depto','integer');
+        $this->captura('cargo','varchar');
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
@@ -60,6 +62,8 @@ class MODAgrupacionCorreo extends MODbase{
 		$this->setParametro('id_funcionario','id_funcionario','int4');
 		$this->setParametro('correo','correo','varchar');
         $this->setParametro('id_tipo_envio_correo','id_tipo_envio_correo','int4');
+        $this->setParametro('id_depto','id_depto','int4');
+        $this->setParametro('cargo','cargo','varchar');
 
 
         //Ejecuta la instruccion
@@ -82,6 +86,8 @@ class MODAgrupacionCorreo extends MODbase{
 		$this->setParametro('id_funcionario','id_funcionario','int4');
 		$this->setParametro('correo','correo','varchar');
         $this->setParametro('id_tipo_envio_correo','id_tipo_envio_correo','int4');
+        $this->setParametro('id_depto','id_depto','int4');
+        $this->setParametro('cargo','cargo','varchar');
 
 
         //Ejecuta la instruccion

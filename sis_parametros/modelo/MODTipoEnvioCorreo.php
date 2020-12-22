@@ -30,7 +30,7 @@ class MODTipoEnvioCorreo extends MODbase{
 		$this->captura('codigo','varchar');
 		$this->captura('descripcion','varchar');
 		$this->captura('dias_envio','varchar');
-		$this->captura('dias_consecutivo','varchar');
+		$this->captura('dias_consecutivo','integer');
 		$this->captura('habilitado','varchar');
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('fecha_reg','timestamp');
@@ -41,7 +41,12 @@ class MODTipoEnvioCorreo extends MODbase{
 		$this->captura('usr_reg','varchar');
         $this->captura('usr_mod','varchar');
         $this->captura('dias_vencimiento','integer');
-        
+        $this->captura('script','varchar');
+        $this->captura('plantilla_mensaje_asunto','varchar');
+        $this->captura('plantilla_mensaje','varchar');
+        $this->captura('script_habilitado','varchar');
+        $this->captura('columna_llave','varchar');
+        $this->captura('tabla','varchar');
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
@@ -61,10 +66,13 @@ class MODTipoEnvioCorreo extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('descripcion','descripcion','varchar');
 		$this->setParametro('dias_envio','dias_envio','varchar');
-		$this->setParametro('dias_consecutivo','dias_consecutivo','varchar');
+		$this->setParametro('dias_consecutivo','dias_consecutivo','integer');
 		$this->setParametro('habilitado','habilitado','varchar');
         $this->setParametro('dias_vencimiento','dias_vencimiento','integer');
-
+        $this->setParametro('script','script','varchar');
+        $this->setParametro('script_habilitado','script_habilitado','varchar');
+        $this->setParametro('columna_llave','columna_llave','varchar');
+        $this->setParametro('tabla','tabla','varchar');
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
@@ -85,10 +93,13 @@ class MODTipoEnvioCorreo extends MODbase{
 		$this->setParametro('codigo','codigo','varchar');
 		$this->setParametro('descripcion','descripcion','varchar');
 		$this->setParametro('dias_envio','dias_envio','varchar');
-		$this->setParametro('dias_consecutivo','dias_consecutivo','varchar');
+		$this->setParametro('dias_consecutivo','dias_consecutivo','integer');
 		$this->setParametro('habilitado','habilitado','varchar');
         $this->setParametro('dias_vencimiento','dias_vencimiento','integer');
-
+        $this->setParametro('script','script','varchar');
+        $this->setParametro('script_habilitado','script_habilitado','varchar');
+        $this->setParametro('columna_llave','columna_llave','varchar');
+        $this->setParametro('tabla','tabla','varchar');
 
         //Ejecuta la instruccion
         $this->armarConsulta();
@@ -106,6 +117,28 @@ class MODTipoEnvioCorreo extends MODbase{
                 
         //Define los parametros para la funcion
 		$this->setParametro('id_tipo_envio_correo','id_tipo_envio_correo','int4');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
+
+    function modificarPlantillaCorreo(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.ft_tipo_envio_correo_ime';
+        $this->transaccion='PM_MSJ_MOD';
+        $this->tipo_procedimiento='IME';
+
+        //Define los parametros para la funcion
+        $this->setParametro('id_tipo_envio_correo','id_tipo_envio_correo','int4');
+        $this->setParametro('plantilla_mensaje','plantilla_mensaje','codigo_html');
+        $this->setParametro('plantilla_mensaje_asunto','plantilla_mensaje_asunto','varchar');
+
+
+
 
         //Ejecuta la instruccion
         $this->armarConsulta();
