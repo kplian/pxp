@@ -1,12 +1,12 @@
 --------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION param.ft_agrupacion_correo_ime (
-    p_administrador integer,
-    p_id_usuario integer,
-    p_tabla varchar,
-    p_transaccion varchar
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
 )
-    RETURNS varchar AS
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:        Parametros Generales
@@ -49,28 +49,32 @@ BEGIN
         BEGIN
             --Sentencia de la insercion
             INSERT INTO param.tagrupacion_correo(
-                estado_reg,
-                id_funcionario,
-                correo,
-                id_usuario_reg,
-                fecha_reg,
-                id_usuario_ai,
-                usuario_ai,
-                id_usuario_mod,
-                fecha_mod,
-                id_tipo_envio_correo
-            ) VALUES (
-                         'activo',
-                         v_parametros.id_funcionario,
-                         v_parametros.correo,
-                         p_id_usuario,
-                         now(),
-                         v_parametros._id_usuario_ai,
-                         v_parametros._nombre_usuario_ai,
-                         null,
-                         null,
-                         v_parametros.id_tipo_envio_correo
-                     ) RETURNING id_agrupacion_correo into v_id_agrupacion_correo;
+            estado_reg,
+            id_funcionario,
+            correo,
+            id_usuario_reg,
+            fecha_reg,
+            id_usuario_ai,
+            usuario_ai,
+            id_usuario_mod,
+            fecha_mod,
+            id_tipo_envio_correo,
+            id_depto,
+            cargo
+              ) VALUES (
+            'activo',
+            v_parametros.id_funcionario,
+            v_parametros.correo,
+            p_id_usuario,
+            now(),
+            v_parametros._id_usuario_ai,
+            v_parametros._nombre_usuario_ai,
+            null,
+            null,
+             v_parametros.id_tipo_envio_correo,
+             v_parametros.id_depto,
+              v_parametros.cargo
+            ) RETURNING id_agrupacion_correo into v_id_agrupacion_correo;
 
             --Definicion de la respuesta
             v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Correos almacenado(a) con exito (id_agrupacion_correo'||v_id_agrupacion_correo||')');
@@ -81,25 +85,27 @@ BEGIN
 
         END;
 
-        /*********************************
-         #TRANSACCION:  'PM_COR_MOD'
-         #DESCRIPCION:    Modificacion de registros
-         #AUTOR:        egutierrez
-         #FECHA:        26-11-2020 15:27:53
-        ***********************************/
+    /*********************************
+     #TRANSACCION:  'PM_COR_MOD'
+     #DESCRIPCION:    Modificacion de registros
+     #AUTOR:        egutierrez
+     #FECHA:        26-11-2020 15:27:53
+    ***********************************/
 
     ELSIF (p_transaccion='PM_COR_MOD') THEN
 
         BEGIN
             --Sentencia de la modificacion
             UPDATE param.tagrupacion_correo SET
-                                                id_funcionario = v_parametros.id_funcionario,
-                                                correo = v_parametros.correo,
-                                                id_usuario_mod = p_id_usuario,
-                                                fecha_mod = now(),
-                                                id_usuario_ai = v_parametros._id_usuario_ai,
-                                                usuario_ai = v_parametros._nombre_usuario_ai,
-                                                id_tipo_envio_correo = v_parametros.id_tipo_envio_correo
+            id_funcionario = v_parametros.id_funcionario,
+            correo = v_parametros.correo,
+            id_usuario_mod = p_id_usuario,
+            fecha_mod = now(),
+            id_usuario_ai = v_parametros._id_usuario_ai,
+            usuario_ai = v_parametros._nombre_usuario_ai,
+            id_tipo_envio_correo = v_parametros.id_tipo_envio_correo,
+            id_depto = v_parametros.id_depto,
+            cargo = v_parametros.cargo
             WHERE id_agrupacion_correo=v_parametros.id_agrupacion_correo;
 
             --Definicion de la respuesta
@@ -111,12 +117,12 @@ BEGIN
 
         END;
 
-        /*********************************
-         #TRANSACCION:  'PM_COR_ELI'
-         #DESCRIPCION:    Eliminacion de registros
-         #AUTOR:        egutierrez
-         #FECHA:        26-11-2020 15:27:53
-        ***********************************/
+    /*********************************
+     #TRANSACCION:  'PM_COR_ELI'
+     #DESCRIPCION:    Eliminacion de registros
+     #AUTOR:        egutierrez
+     #FECHA:        26-11-2020 15:27:53
+    ***********************************/
 
     ELSIF (p_transaccion='PM_COR_ELI') THEN
 
@@ -151,9 +157,9 @@ EXCEPTION
 
 END;
 $body$
-    LANGUAGE 'plpgsql'
-    VOLATILE
-    CALLED ON NULL INPUT
-    SECURITY INVOKER
-    PARALLEL UNSAFE
-    COST 100;
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
+COST 100;

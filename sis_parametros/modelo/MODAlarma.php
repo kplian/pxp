@@ -486,6 +486,30 @@ class MODAlarma extends MODbase{
         //Devuelve la respuesta
         return $this->respuesta;
     }
+    function disparaAlarmasDiario(){
+        //Definicion de variables para ejecucion del procedimiento
+        $this->procedimiento='param.f_alerta_diaria_ime';
+        $this->transaccion='PARAM_ALERDIA_IME';
+        $this->tipo_procedimiento='IME';
+        //definicion de variables
+        $this->tipo_conexion='seguridad';
+
+        $this->count=false;
+
+        //$this->count=false;
+
+        $this->setParametro('id_usuario','id_usuario','integer');
+        $this->setParametro('habilitado','habilitado','varchar');
+
+        //Define los parametros para la funcion
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 
 }
 ?>

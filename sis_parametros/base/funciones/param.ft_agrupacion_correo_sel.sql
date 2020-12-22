@@ -1,12 +1,12 @@
 --------------- SQL ---------------
 
 CREATE OR REPLACE FUNCTION param.ft_agrupacion_correo_sel (
-    p_administrador integer,
-    p_id_usuario integer,
-    p_tabla varchar,
-    p_transaccion varchar
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
 )
-    RETURNS varchar AS
+RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:        Parametros Generales
@@ -60,12 +60,16 @@ BEGIN
                         usu2.cuenta as usr_mod,
                         cor.id_tipo_envio_correo,
                         fun.desc_funcionario1::varchar,
-                        f.email_empresa
+                        f.email_empresa,
+                        (COALESCE(dep.codigo,'''')||'' '' ||dep.nombre)::varchar as desc_depto,
+                        cor.id_depto,
+                        cor.cargo::varchar
                         FROM param.tagrupacion_correo cor
                         JOIN segu.tusuario usu1 ON usu1.id_usuario = cor.id_usuario_reg
                         LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cor.id_usuario_mod
                         left join orga.vfuncionario fun on fun.id_funcionario = cor.id_funcionario
                         left join orga.tfuncionario f on f.id_funcionario = cor.id_funcionario
+                        left join param.tdepto dep on dep.id_depto = cor.id_depto
                         WHERE  ';
 
             --Definicion de la respuesta
@@ -77,12 +81,12 @@ BEGIN
 
         END;
 
-        /*********************************
-         #TRANSACCION:  'PM_COR_CONT'
-         #DESCRIPCION:    Conteo de registros
-         #AUTOR:        egutierrez
-         #FECHA:        26-11-2020 15:27:53
-        ***********************************/
+    /*********************************
+     #TRANSACCION:  'PM_COR_CONT'
+     #DESCRIPCION:    Conteo de registros
+     #AUTOR:        egutierrez
+     #FECHA:        26-11-2020 15:27:53
+    ***********************************/
 
     ELSIF (p_transaccion='PM_COR_CONT') THEN
 
@@ -92,6 +96,9 @@ BEGIN
                          FROM param.tagrupacion_correo cor
                          JOIN segu.tusuario usu1 ON usu1.id_usuario = cor.id_usuario_reg
                          LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cor.id_usuario_mod
+                         left join orga.vfuncionario fun on fun.id_funcionario = cor.id_funcionario
+                         left join orga.tfuncionario f on f.id_funcionario = cor.id_funcionario
+                         left join param.tdepto dep on dep.id_depto = cor.id_depto
                          WHERE ';
 
             --Definicion de la respuesta
@@ -111,16 +118,16 @@ BEGIN
 EXCEPTION
 
     WHEN OTHERS THEN
-        v_resp='';
-        v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
-        v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-        v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
-        RAISE EXCEPTION '%',v_resp;
+            v_resp='';
+            v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+            v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+            v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+            RAISE EXCEPTION '%',v_resp;
 END;
 $body$
-    LANGUAGE 'plpgsql'
-    VOLATILE
-    CALLED ON NULL INPUT
-    SECURITY INVOKER
-    PARALLEL UNSAFE
-    COST 100;
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+PARALLEL UNSAFE
+COST 100;

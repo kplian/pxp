@@ -23,9 +23,46 @@ Phx.vista.TipoEnvioCorreo=Ext.extend(Phx.gridInterfaz,{
         //llama al constructor de la clase padre
         Phx.vista.TipoEnvioCorreo.superclass.constructor.call(this,config);
         this.init();
+        this.inciarEventos();
         this.load({params:{start:0, limit:this.tam_pag}})
+        this.addButton('btnPlaMen',
+            {
+                text: 'Plantilla de Correo',
+                iconCls: 'bchecklist',
+                disabled: true,
+                handler: this.formPlantilleMensaje,
+                tooltip: '<b>Plantilla de Correo</b><br/>Personaliza los correos enviados en alertas en tipo de estado seleccionado.'
+            }
+        );
     },
-            
+    inciarEventos: function(){
+        this.ocultarComponente(this.Cmp.script);
+        this.Cmp.script.allowBlank=true;
+
+        this.Cmp.script_habilitado.on('select',function(combo,record,index){
+
+            if(record.data.valor =='si'){
+                this.mostrarComponente(this.Cmp.script);
+                this.Cmp.script.allowBlank=false;
+                this.ocultarComponente(this.Cmp.columna_llave);
+                this.ocultarComponente(this.Cmp.tabla);
+                this.Cmp.columna_llave.reset();
+                this.Cmp.tabla.reset();
+
+            }else{
+                this.ocultarComponente(this.Cmp.script);
+                this.Cmp.script.reset();
+                this.mostrarComponente(this.Cmp.columna_llave);
+                this.mostrarComponente(this.Cmp.tabla);
+                this.Cmp.columna_llave.allowBlank=false;
+                this.Cmp.tabla.allowBlank=false;
+
+
+
+
+            }
+        },this)
+    },
     Atributos:[
         {
             //configuracion del componente
@@ -106,7 +143,7 @@ Phx.vista.TipoEnvioCorreo=Ext.extend(Phx.gridInterfaz,{
                 gwidth: 100,
             	maxLength:2
             },
-                type:'TextField',
+                type:'NumberField',
                 filters:{pfiltro:'grc.dias_consecutivo',type:'string'},
                 id_grupo:1,
                 grid:true,
@@ -121,7 +158,7 @@ Phx.vista.TipoEnvioCorreo=Ext.extend(Phx.gridInterfaz,{
                 gwidth: 100,
                 maxLength:500
             },
-            type:'TextField',
+            type:'NumberField',
             filters:{pfiltro:'grc.dias_envio',type:'string'},
             id_grupo:1,
             grid:true,
@@ -149,7 +186,77 @@ Phx.vista.TipoEnvioCorreo=Ext.extend(Phx.gridInterfaz,{
                 //renderer:function (value, p, record){if (value == 1) {return 'si'} else {return 'no'}}
             },
             type:'ComboBox',
+            valorInicial:'no',
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name:'script_habilitado',
+                fieldLabel:'script?',
+                allowBlank:false,
+                emptyText:'...',
+                typeAhead: true,
+                triggerAction: 'all',
+                lazyRender:true,
+                mode: 'local',
+                gwidth: 100,
+                store:new Ext.data.ArrayStore({
+                    fields: ['ID', 'valor'],
+                    data :    [['si','si'],
+                        ['no','no']]
 
+                }),
+                valueField:'ID',
+                displayField:'valor',
+                //renderer:function (value, p, record){if (value == 1) {return 'si'} else {return 'no'}}
+            },
+            type:'ComboBox',
+            valorInicial: 'no',
+            id_grupo:0,
+            grid:false,
+            form:true
+        },
+
+        {
+            config:{
+                name: 'script',
+                fieldLabel: 'script',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:200
+            },
+            type:'TextField',
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'columna_llave',
+                fieldLabel: 'Columna Llave',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:20
+            },
+            type:'TextField',
+            id_grupo:0,
+            grid:true,
+            form:true
+        },
+        {
+            config:{
+                name: 'tabla',
+                fieldLabel: 'Tabla',
+                allowBlank: false,
+                anchor: '80%',
+                gwidth: 100,
+                maxLength:20
+            },
+            type:'TextField',
             id_grupo:0,
             grid:true,
             form:true
@@ -270,7 +377,12 @@ Phx.vista.TipoEnvioCorreo=Ext.extend(Phx.gridInterfaz,{
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
         {name:'dias_vencimiento', type: 'numeric'},
-        
+        {name:'script', type: 'string'},'plantilla_mensaje_asunto','plantilla_mensaje',
+        {name:'script_habilitado', type: 'string'},
+        {name:'columna_llave', type: 'string'},
+        {name:'tabla', type: 'string'}
+
+
     ],
     sortInfo:{
         field: 'id_tipo_envio_correo',
@@ -285,7 +397,66 @@ Phx.vista.TipoEnvioCorreo=Ext.extend(Phx.gridInterfaz,{
             height:'50%',
             cls:'AgrupacionCorreo'
         }],
-    
+
+    formPlantilleMensaje:function(wizard,resp){
+        var rec=this.sm.getSelected();
+        Phx.CP.loadWindows('../../../sis_parametros/vista/tipo_envio_correo/PlantillaMensaje.php',
+            'Estado de Wf',
+            {
+                modal:true,
+                width:'80%',
+                height:400
+            }, {data:rec.data},
+            this.idContenedor,
+            'PlantillaMensaje'
+        )
+
+    },
+    preparaMenu:function(n){
+        var rec=this.sm.getSelected();
+        Phx.vista.TipoEnvioCorreo.superclass.preparaMenu.call(this,n);
+        console.log('rec',rec.data.script_habilitado);
+        if(rec.data.script_habilitado == 'si'){
+            this.getBoton('btnPlaMen').disable();
+        }
+        else{
+            this.getBoton('btnPlaMen').enable();
+        }
+
+
+        return this.tbar;
+    },
+
+    liberaMenu:function(){
+        var tb = Phx.vista.TipoEnvioCorreo.superclass.liberaMenu.call(this);
+        if(tb){
+            this.getBoton('btnPlaMen').disable();
+        }
+        return tb
+    },
+    onButtonEdit:function(){
+        //llamamos primero a la funcion new de la clase padre por que reseta el valor los componentesSS
+        Phx.vista.TipoEnvioCorreo.superclass.onButtonEdit.call(this);
+        var data = this.getSelectedData();
+
+        if (data.script_habilitado =='si' ){
+            this.mostrarComponente(this.Cmp.script);
+            this.ocultarComponente(this.Cmp.columna_llave);
+            this.ocultarComponente(this.Cmp.tabla);
+            this.Cmp.columna_llave.reset();
+            this.Cmp.tabla.reset();
+
+        }else{
+            this.ocultarComponente(this.Cmp.script);
+            this.Cmp.script.reset();
+            this.mostrarComponente(this.Cmp.columna_llave);
+            this.mostrarComponente(this.Cmp.tabla);
+
+        }
+
+    }
+
+
     },
 
 )
