@@ -2874,3 +2874,6 @@ ALTER TABLE param.ttipo_envio_correo
     ADD COLUMN tabla VARCHAR;
 /***********************************F-SCP-EGS-PARAM-ETR-1761-14/12/2020****************************************/
 
+/***********************************I-SCP-YMR-PARAM-ETR-1770-31/12/2020****************************************/
+ALTER TABLE param.thistorico_tipo_cc DROP CONSTRAINT fk_ttipo_cc__id_tipo;
+/***********************************F-SCP-YMR-PARAM-ETR-1770-31/12/2020****************************************/
