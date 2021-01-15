@@ -8,6 +8,7 @@
     ISSUE        FECHA         AUTHOR              DESCRIPCION
    	#7           21/01/2019     RAC                combo proveedor se agrego el desc_proveedor2
  *  #47          20/08/2019     EG                 se Agrego Cmp id_auxiliar
+ *  #MSA-43     15/0/2021       EGS                 Se incrementa el valor del integer
  */
 
 class MODProveedor extends MODbase{
@@ -270,7 +271,7 @@ class MODProveedor extends MODbase{
         $this->setParametro('numero_sigma','numero_sigma','varchar');
         $this->setParametro('tipo','tipo','varchar');
         $this->setParametro('id_institucion','id_institucion','int4');
-        $this->setParametro('doc_id','doc_id','int4');
+        $this->setParametro('doc_id','doc_id','int8');//#MSA-43
         $this->setParametro('nombre_institucion','nombre_institucion','varchar');
         $this->setParametro('direccion_institucion','direccion_institucion','varchar');
         $this->setParametro('casilla','casilla','bigint');
