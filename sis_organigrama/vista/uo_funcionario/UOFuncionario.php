@@ -18,6 +18,7 @@
 #136 ETR	   21.04.2020		   MZM-KPLIAN		     Adicion de campo separar_contrato
 #147 ETR       12.06.2020          RAC-KPLIAN            Agregar motivo de rescisión en las finalización de contrato
 #ETR-1889	   20.11.2020		   MZM-KPLIAN
+#ETR-2476      04.01.2021		   MZM-KPLIAN			 Adicion de motivo de finalizacion "incremento salarial", este no debe considerarse como movimiento de personal, pero si el cambio de cargo aunq no haya cambio de dependencia
  */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -265,12 +266,12 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        		lazyRender:true,
        		mode: 'local',
 			gwidth: 100,
-			store:['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia'] //ETR-1889
+			store:['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia','incremento_salarial'] //ETR-1889   ETR-2476
 		},
 			type:'ComboBox',
 			filters:{
        		         type: 'list',
-       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia'], //ETR-1889
+       				 options: ['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia','incremento_salarial'], //ETR-1889  ETR-2476
        		 	},
 			id_grupo:1,
 			grid:true,
@@ -403,7 +404,9 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.uo_funcionario.superclass.onButtonNew.call(this);
 		//seteamos un valor fijo que vienen de la vista maestro para id_gui
 
-	},onButtonEdit:function(){
+	},onButtonEdit:function(){ 
+		
+		
 		//llamamos primero a la funcion new de la clase padre por que reseta el valor los componentes
 		this.ocultarComponente(this.Cmp.id_cargo);
 		this.ocultarComponente(this.Cmp.id_funcionario);
