@@ -16,7 +16,10 @@ class MostrarReporte
                 header("Content-type: image/png");
             }  else if ($fileExtension == 'sql') {
                 header("Content-type: text/plain");
-            } else {
+            } else if ($fileExtension == 'txt' || $fileExtension == 'csv') {
+                header('Content-Type: application/octet-stream');
+            }
+            else {
                 header("Content-type: text/html");
             }
 			header('Content-Description: File Transfer');
