@@ -55,6 +55,7 @@ if(!isset($_SESSION["_SESION"])){
    <link rel="stylesheet" type="text/css" href="../../../lib/imagenes/<?php echo $_SESSION['_ESTILO_MENU'];?>/menus.css"/>
    <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/LockingGridView.css" />
    <link rel="stylesheet" href="../../../lib/opl/ol.css" type="text/css">
+   <link rel="stylesheet" type="text/css" href="../../../lib/ux/css/MultiSelect.css" />
    <style type="text/css" media="screen">
 		    html, body{
 		        margin:0px;
