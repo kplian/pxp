@@ -208,11 +208,11 @@ if(!isset($_SESSION["_SESION"])){
   <!-- Calendar-specific includes -->
     <link rel="stylesheet" type="text/css" href="../../../lib/ext3/examples/calendar/resources/css/calendar.css"/>
     <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/Ext.calendar.js"></script>
-    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayHeaderTemplate.js"></scri
-    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayBodyTemplate.js"></script
-    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayViewTemplate.js"></script
-    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/BoxLayoutTemplate.js"></scri
-    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/MonthViewTemplate.js"></scri
+    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayHeaderTemplate.js"></script>
+    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayBodyTemplate.js"></script>
+    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayViewTemplate.js"></script>
+    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/BoxLayoutTemplate.js"></script>
+    <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/MonthViewTemplate.js"></script>
     <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/CalendarScrollManager.js"></script>
     <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/StatusProxy.js"></script>
     <script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/CalendarDD.js"></script>
