@@ -233,24 +233,22 @@ class MODDocumentoWf extends MODbase{
 				if ($this->arregloFiles['archivo']['name'] == "") {
 					throw new Exception("El archivo no puede estar vacio");
 				}
-
+				// var_dump($this->arregloFiles['archivo']['name']);exit;
 	            $this->procedimiento='wf.ft_documento_wf_ime';
 	            $this->transaccion='WF_DOCWFAR_MOD';
 	            $this->tipo_procedimiento='IME';
 	            
 	            $ext = pathinfo($this->arregloFiles['archivo']['name']);
 	            $this->arreglo['extension'] = $ext['extension'];
-	            
+
 				//validar que no sea un arhvio en blanco
 				$file_name = $this->getFileName2('archivo', 'id_documento_wf', '', false);
 				
 	            //Define los parametros para la funcion 
 	            $this->setParametro('id_documento_wf','id_documento_wf','integer');   
 	            $this->setParametro('extension','extension','varchar');
-	            
-	            
-	            
-	            //manda como parametro la url completa del archivo 
+
+				//manda como parametro la url completa del archivo
 	            $this->aParam->addParametro('file_name', $file_name[2]);
 	            $this->arreglo['file_name'] = $file_name[2];
 	            $this->setParametro('file_name','file_name','varchar'); 
