@@ -40,7 +40,7 @@ DECLARE
     v_nombre_funcion   	text;
     v_resp				varchar;
     v_where				varchar;
-  v_where_2           varchar; --#150
+    v_where_2           varchar; --#150
     v_id_tipo_cc		integer;
     v_filtro              varchar;
     v_join                varchar;
@@ -401,7 +401,7 @@ BEGIN
             --Devuelve la respuesta
             return v_consulta;
 
-            end;
+        end;
 
         /*********************************
          #TRANSACCION:  'PM_TCCREP_SEL'
@@ -409,15 +409,11 @@ BEGIN
          #AUTOR:		Yamil Medina
          #FECHA:		07-08-2020 10:10:19
         ***********************************/
-
         elsif(p_transaccion='PM_TCCREP_SEL')then
-
             begin
                 if (pxp.f_existe_parametro(p_tabla,'id_tipo_cc')) then
                     v_id_tipo_cc = v_parametros.id_tipo_cc;
                 end if;
-
-                --Sentencia de la consulta
                 v_consulta:='  select  total.id_tipo_cc,
                                        total.codigo,
                                        total.descripcion,
@@ -438,7 +434,6 @@ BEGIN
                 if(v_id_tipo_cc is not null)then
                     v_consulta:=v_consulta||'  WHERE tcc.id_tipo_cc = '||v_id_tipo_cc||' ';
                 end if;
-
                 v_consulta:=v_consulta||'
                                     UNION
                                     SELECT tcce.id_tipo_cc,
@@ -459,10 +454,7 @@ BEGIN
                     v_consulta:=v_consulta||' where htc.fecha_reg::date BETWEEN '' '||v_parametros.fecha_ini||' ''::date AND '' '||v_parametros.fecha_fin||' ''::date ';
                 end if;
                 v_consulta:=v_consulta||'order by total.id_tipo_cc ASC, htc.id_historico ASC';
-
-                --Devuelve la respuesta
                 return v_consulta;
-
             end;
     else
 
