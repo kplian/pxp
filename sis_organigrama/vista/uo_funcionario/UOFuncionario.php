@@ -266,7 +266,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        		lazyRender:true,
        		mode: 'local',
 			gwidth: 100,
-			store:['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia','incremento_salarial'] //ETR-1889   ETR-2476
+			store:[['fin contrato','Conclusión contrato'],['retiro','Despido'],['renuncia','Renuncia'],['promocion','Promoción'],['transferencia','Transferencia'],['rescision','Rescisión contrato'],['licencia','Licencia'],['incremento_salarial','Incremento Salarial']] //ETR-1889   ETR-2476
 		},
 			type:'ComboBox',
 			filters:{
@@ -274,6 +274,7 @@ Phx.vista.uo_funcionario=Ext.extend(Phx.gridInterfaz,{
        				 options: ['fin contrato','retiro','renuncia','promocion','transferencia','rescision','licencia','incremento_salarial'], //ETR-1889  ETR-2476
        		 	},
 			id_grupo:1,
+			
 			grid:true,
 			form:true
 	},
