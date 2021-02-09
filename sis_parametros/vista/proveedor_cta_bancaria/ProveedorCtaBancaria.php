@@ -5,6 +5,7 @@
 *@author  (gsarmiento)
 *@date 30-10-2015 20:07:41
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ #ETR-2687	   08.02.2021		 MZM-KPLIAN					Adicion de cuenta bancaria del beneficiario
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -12,11 +13,17 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
 Phx.vista.ProveedorCtaBancaria=Ext.extend(Phx.gridInterfaz,{
 
-	constructor:function(config){
+	constructor:function(config){ 
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.ProveedorCtaBancaria.superclass.constructor.call(this,config);
 		this.init();
+		if(this.sw==true){//#ETR-2687
+			this.Atributos[7].valorInicial=this.id_proveedor;
+	     	this.store.baseParams={id_proveedor:this.id_proveedor};
+	     	this.load({params:{start:0, limit:50}});
+		}
+		
 	},
 			
 	Atributos:[
@@ -257,11 +264,12 @@ Phx.vista.ProveedorCtaBancaria=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	
-	onReloadPage:function(m){
+	onReloadPage:function(m){  
         this.maestro=m;
-		this.Atributos[7].valorInicial=this.maestro.id_proveedor;
-        this.store.baseParams={id_proveedor:this.maestro.id_proveedor};      
-        this.load({params:{start:0, limit:this.tam_pag}})
+       	this.Atributos[7].valorInicial=this.maestro.id_proveedor;
+	    this.store.baseParams={id_proveedor:this.maestro.id_proveedor};      
+	    this.load({params:{start:0, limit:this.tam_pag}})
+		
     },
 	
 	bdel:true,
