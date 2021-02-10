@@ -1,11 +1,18 @@
-CREATE OR REPLACE FUNCTION param.ft_proveedor_cta_bancaria_sel (
-  p_administrador integer,
-  p_id_usuario integer,
-  p_tabla varchar,
-  p_transaccion varchar
-)
-RETURNS varchar AS
-$body$
+-- FUNCTION: param.ft_proveedor_cta_bancaria_sel(integer, integer, character varying, character varying)
+
+-- DROP FUNCTION param.ft_proveedor_cta_bancaria_sel(integer, integer, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION param.ft_proveedor_cta_bancaria_sel(
+	p_administrador integer,
+	p_id_usuario integer,
+	p_tabla character varying,
+	p_transaccion character varying)
+    RETURNS character varying
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
 /**************************************************************************
  SISTEMA:		Parametros Generales
  FUNCION: 		param.ft_proveedor_cta_bancaria_sel
@@ -19,6 +26,10 @@ $body$
  DESCRIPCION:	
  AUTOR:			
  FECHA:		
+ ISSUE            FECHA:              AUTOR                 DESCRIPCION
+    
+ #ETR-2687       10-02-2021        Mzambrana KPLIAN       adicion de desc_cuenta para combo en LB de tesoreria
+
 ***************************************************************************/
 
 DECLARE
@@ -61,7 +72,8 @@ BEGIN
 						pctaban.id_usuario_mod,
 						pctaban.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod
+                        ,(pctaban.nro_cuenta||''-''||instben.nombre) as desc_cuenta -- #ETR-2687
 						from param.tproveedor_cta_bancaria pctaban
                         left join param.tinstitucion instben on instben.id_institucion=pctaban.id_banco_beneficiario
 						inner join segu.tusuario usu1 on usu1.id_usuario = pctaban.id_usuario_reg
@@ -117,9 +129,7 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$BODY$;
+
+ALTER FUNCTION param.ft_proveedor_cta_bancaria_sel(integer, integer, character varying, character varying)
+    OWNER TO postgres;
