@@ -5,7 +5,9 @@
 *@author  (admin)
 *@date 16-11-2012 17:01:40
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
-*/
+    ISSUE			FECHA			AUTHOR 					DESCRIPCION
+    #MSA-56         06/04/2021      EGS                     se agrega el campo orden
+ */
 
 class MODCatalogo extends MODbase{
 	
@@ -34,6 +36,7 @@ class MODCatalogo extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('desc_catalogo_tipo','varchar');
+        $this->captura('orden','integer');//#MSA-56
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -54,8 +57,10 @@ class MODCatalogo extends MODbase{
 		$this->setParametro('id_catalogo_tipo','id_catalogo_tipo','integer');
 		$this->setParametro('descripcion','descripcion','varchar');
 		$this->setParametro('codigo','codigo','varchar');
+        $this->setParametro('orden','orden','integer');//#MSA-56
 
-		//Ejecuta la instruccion
+
+        //Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
@@ -75,6 +80,7 @@ class MODCatalogo extends MODbase{
 		$this->setParametro('id_catalogo_tipo','id_catalogo_tipo','integer');
 		$this->setParametro('descripcion','descripcion','varchar');
 		$this->setParametro('codigo','codigo','varchar');
+        $this->setParametro('orden','orden','integer');//#MSA-56
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

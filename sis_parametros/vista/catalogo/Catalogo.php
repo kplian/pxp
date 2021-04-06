@@ -6,7 +6,8 @@
 *@date      16-11-2012 17:01:40a
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
  * * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
- *     #63             EGS                 16/09/2019              filtro por id_catalogo_tipo
+ *      #63             EGS                 16/09/2019              filtro por id_catalogo_tipo
+        #MSA-56         EGS                 06/04/2021              se agrega el campo orden
 */
 
 header("content-type: text/javascript; charset=UTF-8");
@@ -20,7 +21,8 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.Catalogo.superclass.constructor.call(this,config);
 		this.init();
 		this.iniciarEventos();
-		this.load({params:{start:0, limit:50}})
+        this.bloquearMenus(); //#MSA-56
+		//this.load({params:{start:0, limit:50}})
 	},
 			
 	Atributos:[
@@ -53,7 +55,7 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
             config:{
                 name:'id_subsistema',
                 fieldLabel:'Subsistema',
-                allowBlank:false,
+                allowBlank:true,
                 emptyText:'Subsistema...',
                 store: new Ext.data.JsonStore({
                     url: '../../sis_seguridad/control/Subsistema/listarSubsistema',
@@ -101,7 +103,7 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 				forceSelection: false,
 				name: 'id_catalogo_tipo',
 				fieldLabel: 'Tipo Catálogo',
-				allowBlank: false,
+				allowBlank: true,
 				emptyText: 'Tipo Catálogo',
 				store: new Ext.data.JsonStore({
 					url: '../../sis_parametros/control/CatalogoTipo/listarCatalogoTipo',
@@ -172,8 +174,22 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 			id_grupo:1,
 			grid:true,
 			form:true
-		},		
-		{
+		},
+        {//#MSA-56
+            config:{
+                name: 'orden',
+                fieldLabel: 'Orden',
+                allowBlank: true,
+                anchor: '100%',
+                gwidth: 220,
+                maxLength:200
+            },
+            type:'TextField',
+            id_grupo:1,
+            grid:true,
+            form:true
+        },
+        {
 			config:{
 				name: 'usr_reg',
 				fieldLabel: 'Creado por',
@@ -253,8 +269,10 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date', dateFormat:'Y-m-d H:i:s'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'desc_catalogo_tipo', type: 'string'}
-	],
+		{name:'desc_catalogo_tipo', type: 'string'},
+        {name:'orden', type: 'numeric'} //#MSA-56
+
+    ],
 	sortInfo:{
 		field: 'id_catalogo',
 		direction: 'ASC'
@@ -270,7 +288,20 @@ Phx.vista.Catalogo=Ext.extend(Phx.gridInterfaz,{
 	        cmbCatTipo.reset();
 	        cmbCatTipo.modificado = true;
 		},this);
-	}
+	},
+    onReloadPage: function(m) { //#MSA-56
+        this.maestro = m;
+        this.Atributos[this.getIndAtributo('id_subsistema')].valorInicial = this.maestro.id_subsistema;
+        this.Atributos[this.getIndAtributo('id_catalogo_tipo')].valorInicial = this.maestro.id_catalogo_tipo;
+        this.ocultarComponente(this.Cmp.id_subsistema);
+        this.ocultarComponente(this.Cmp.id_catalogo_tipo);
+
+        this.store.baseParams = {
+            id_catalogo_tipo:this.maestro.id_catalogo_tipo
+        };
+        this.load({ params: {start: 0,limit: 50 }});
+    },
+
 })
 </script>
 		
