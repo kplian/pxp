@@ -7,6 +7,7 @@
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
  * * 	ISSUE			AUTHOR				FECHA					DESCRIPCION
  *     #63             EGS                 16/09/2019              filtro por id_subsistema
+ *     #MSA-56          EGS                 06/04/2021              Se convierte a maeestro detalle
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -284,6 +285,12 @@ Phx.vista.CatalogoTipo=Ext.extend(Phx.gridInterfaz,{
 		this.getComponente('tabla').on('select',function(combo,record,index){
 			txtNombre.setValue(cmbTabla.getValue());
 		},this);
-	}
+	},
+    tabsouth: [{ //#MSA-56
+        url: '../../../sis_parametros/vista/catalogo/Catalogo.php',
+        title: 'Catalogo',
+        height: '40%',
+        cls: 'Catalogo'
+    }],
 })
 </script>
