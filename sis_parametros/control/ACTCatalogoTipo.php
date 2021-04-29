@@ -101,8 +101,9 @@ class ACTCatalogoTipo extends ACTbase{
 					 "select param.f_import_tcatalogo ('insert',".
 							 (is_null($row['codigo_subsistema'])?'NULL':"'".$row['codigo_subsistema']."'") ."," .
 							 (is_null($row['descripcion'])?'NULL':"'".$row['descripcion']."'") ."," .
-							 (is_null($row['codigo'])?'NULL':"'".$row['codigo']."'")."," .							 
-							 (is_null($row['desc_catalogo_tipo'])?'NULL':"'".$row['desc_catalogo_tipo']."'") .");\r\n");
+							 (is_null($row['codigo'])?'NULL':"'".$row['codigo']."'")."," .
+                             (is_null($row['desc_catalogo_tipo'])?'NULL':"'".$row['desc_catalogo_tipo']."'")."," .
+							 (is_null($row['orden'])?'NULL':"'".$row['orden']."'") .");\r\n");   //#MSA-56
 				
 			} 
          } //end for

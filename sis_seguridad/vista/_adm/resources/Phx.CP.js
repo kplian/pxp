@@ -5,7 +5,7 @@ HISTORIAL DE MODIFICACIONES:
  ISSUE    FORK			FECHA:		      AUTOR                 DESCRIPCION
 #0		KPLIAN		 2010		       Rensi Arteaga	Creacion
 #121    ETR          19/02/2020        Rensi Arteaga    Implementar mensajes de alertas con WebSocket #Issue PHP 121
-
+ #RAS-5       04/03/2021        JJA            Agregar tiempo de parqueo en los mapas
 */
 Ext.chart.Chart.CHART_URL = '../../../lib/ext3/resources/charts.swf';
 Ext.state.LocalProvider = Ext.extend(Ext.state.Provider, {
@@ -923,10 +923,10 @@ Phx.CP=function(){
                 });
 
             //RAC se incluyen imagenes /SVG 
-            //23/07/2017      
+            //23/07/2017
+            //#RAS-5 se agregaron imagenes rojo y amarillo
             window.Images = ['arrow', 'default', 'animal', 'bicycle', 'boat', 'bus', 'car', 'crane', 'helicopter',
-                          'motorcycle', 'offroad', 'person', 'pickup', 'plane', 'ship', 'tractor', 'truck', 'van'];
-
+                          'motorcycle', 'offroad', 'person', 'pickup', 'plane', 'ship', 'tractor', 'truck', 'van','car_red','car_yellow'];
             for (i = 0; i < window.Images.length; i++) {
                this.addSvgFile('../../../lib/images/svg/' + window.Images[i] + '.svg', window.Images[i] + 'Svg');
             }
