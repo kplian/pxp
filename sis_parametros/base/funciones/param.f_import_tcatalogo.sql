@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION param.f_import_tcatalogo (
     p_descripcion varchar,
     p_codigo varchar,
     p_desc_catalogo_tipo varchar,
-    p_orden integer
+    p_orden integer = NULL::integer
 )
     RETURNS varchar AS
 $body$
