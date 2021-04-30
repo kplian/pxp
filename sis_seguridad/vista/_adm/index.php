@@ -232,11 +232,6 @@ foreach($dir as $file) {
     <div class="x-clear"></div>
     <audio id="notification_sound" src="../../../lib/media/notification_sound.mp3" preload="auto"></audio>
 
-<<<<<<< HEAD
-  <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
-  
-=======
->>>>>>> cb5c224... #MAP-21: Botón de solicitud de apoyo
 
 </div>
 <!-- div para cargar interfaces requeridas para herencia-->
