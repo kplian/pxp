@@ -11,8 +11,11 @@
   #1			     	19-02-2013			RAC							creacion
   #37   	ENDETR      12/02/2019         	RAC KPLIAN                  que no filtre centros de costo pr aprobados, adicion de parametro
  *#27		ETR 		27/06/2019			RCM 						Corrección filtro por fecha
- *#116		ETR			26/02/2020			MZM							Adicion de filtro fecha para CC filtrado por usuario, de modo que liste solo los CC cuya fecha enviada pertenezca a la gestion  
- * *************************************************************************/
+ *#116		ETR			26/02/2020			MZM							Adicion de filtro fecha para CC filtrado por usuario, de modo que liste solo los CC cuya fecha enviada pertenezca a la gestion
+ #SVF-3                 26/04/2021          EGS                         se agrega filtro para limitar centros de costo segun tipo
+
+ * ************************************************************************
+ */
 
 class ACTCentroCosto extends ACTbase{
 
@@ -187,6 +190,9 @@ class ACTCentroCosto extends ACTbase{
 		if($this->objParam->getParametro('fecha')!=''){
 	    	$this->objParam->addFiltro("cec.id_gestion in (select id_gestion from param.tgestion where gestion = extract(''year'' from ''" . $this->objParam->getParametro('fecha') . "''::date))"); //#27 Faltaba un paréntesis de cerrado y el cast a date
 		}
+        if($this->objParam->getParametro('tipos_cc_habilitados')!=''){//#SVF-3
+            $this->objParam->addFiltro("cec.id_tipo_cc in (". $this->objParam->getParametro('tipos_cc_habilitados') .")");
+        }
 		
         $this->objParam->addFiltro("cec.estado_reg = ''activo''");
         $this->objParam->defecto('dir_ordenacion','asc');
