@@ -86,7 +86,7 @@ class ACTDocumentoWf extends ACTbase{
 		///Recuperamos los tipos de extensiones permitidos para el upload
 		$this->objFunc=$this->create('MODDocumentoWf');
         $extension=$this->objFunc->extensionDocumento();
-        
+       
         $extension=$extension->getDatos();
 		//armamos el array con las exetensiones
 		$array = array();		
@@ -96,7 +96,8 @@ class ACTDocumentoWf extends ACTbase{
 		 }
 	    //añadimos como parametro para enviarlo al modelo
 	    $this->objParam->addParametro('extension',$array);
-		//#4 02/01/2019	EGS	
+
+        //#4 02/01/2019	EGS
 		
         $this->objFunc=$this->create('MODDocumentoWf');
         $this->res=$this->objFunc->subirDocumentoWfArchivo();

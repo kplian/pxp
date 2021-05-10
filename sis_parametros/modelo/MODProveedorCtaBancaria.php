@@ -5,6 +5,8 @@
 *@author  (gsarmiento)
 *@date 30-10-2015 20:07:41
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+ #ETR-2687	   26.01.2021		 MZM-KPLIAN					Adicion de cuenta bancaria del beneficiario para LB en tesoreria
+ * * 
 */
 
 class MODProveedorCtaBancaria extends MODbase{
@@ -37,6 +39,7 @@ class MODProveedorCtaBancaria extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('desc_cuenta','text');//#ETR-2687
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
