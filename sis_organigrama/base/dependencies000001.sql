@@ -787,3 +787,8 @@ CREATE TRIGGER trig_huo_funcionario
     FOR EACH ROW
 EXECUTE PROCEDURE orga.f_trig_huo_funcionario();
 /********************************F-DEP-VAN-ORGA-0-11/05/2020***********************************/
+
+/********************************I-DEP-VAN-ORGA-MSA-60-11/05/2021***********************************/
+ALTER TABLE orga.tuo
+    ADD COLUMN tipo_unidad VARCHAR(20) DEFAULT 'no';
+/********************************F-DEP-VAN-ORGA-MSA-60-11/05/2021***********************************/
