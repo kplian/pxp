@@ -3,7 +3,7 @@ CREATE SCHEMA pxp AUTHORIZATION postgres;
 
 CREATE TABLE pxp.tscript_version (
   codigo VARCHAR(50) NOT NULL
-) WITHOUT OIDS;
+) ;
 
 CREATE OR REPLACE FUNCTION pxp.f_manage_schema (
   par_esquema varchar,

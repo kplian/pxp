@@ -9,7 +9,7 @@ CREATE TABLE orga.tdepto (
     id_subsistema integer,
     codigo varchar(15)
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table tusuario_uo (OID = 306433) : 
@@ -19,7 +19,7 @@ CREATE TABLE orga.tusuario_uo (
     id_usuario integer,
     id_uo integer
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table testructura_uo (OID = 306562) : 
@@ -29,7 +29,7 @@ CREATE TABLE orga.testructura_uo (
     id_uo_padre integer,
     id_uo_hijo integer
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table tfuncionario (OID = 306570) : 
@@ -42,7 +42,7 @@ CREATE TABLE orga.tfuncionario (
     interno varchar(9),
     fecha_ingreso date DEFAULT now() NOT NULL
 ) 
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table tnivel_organizacional (OID = 306592) : 
@@ -52,7 +52,7 @@ CREATE TABLE orga.tnivel_organizacional (
     nombre_nivel varchar(50) NOT NULL,
     numero_nivel integer NOT NULL
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table tuo (OID = 306669) : 
@@ -69,7 +69,7 @@ CREATE TABLE orga.tuo (
     gerencia varchar(2),
     correspondencia varchar(2)
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tuo_funcionario (OID = 306676) : 
 --
@@ -81,7 +81,7 @@ CREATE TABLE orga.tuo_funcionario (
     fecha_asignacion date,
     fecha_finalizacion date
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 ALTER TABLE ONLY orga.tuo_funcionario ALTER COLUMN id_uo SET STATISTICS 0;
 
 
@@ -95,7 +95,7 @@ CREATE TABLE orga.tdepto_usuario (
     id_usuario integer,
     cargo varchar(300)
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Definition for index tdepto_pkey (OID = 307992) : 
 --
@@ -176,7 +176,7 @@ CREATE TABLE orga.ttipo_horario (
   fecha_mod TIMESTAMP DEFAULT now(), 
   CONSTRAINT ttipo_horario_pkey PRIMARY KEY(id_tipo_horario)
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
  
 CREATE TABLE orga.tespecialidad_nivel (
   id_especialidad_nivel SERIAL, 
@@ -184,7 +184,7 @@ CREATE TABLE orga.tespecialidad_nivel (
   nombre VARCHAR(100) NOT NULL, 
   CONSTRAINT tespecialidad_nivel_pkey PRIMARY KEY(id_especialidad_nivel)
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
 
 CREATE TABLE orga.tespecialidad (
   id_especialidad serial NOT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE orga.tespecialidad (
   id_especialidad_nivel integer,
   CONSTRAINT tespecialidad_pkey PRIMARY KEY (id_especialidad)
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
 ALTER TABLE orga.tespecialidad OWNER TO postgres;
  
 CREATE TABLE orga.tfuncionario_especialidad(
@@ -203,7 +203,7 @@ CREATE TABLE orga.tfuncionario_especialidad(
   CONSTRAINT tfuncionario_especialidad_pkey PRIMARY KEY (id_funcionario_especialidad),
   CONSTRAINT uq__id_funcionario_especialidad UNIQUE (id_funcionario, id_especialidad)
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
 ALTER TABLE orga.tfuncionario_especialidad OWNER TO postgres;
 
 /********************************************F-SCP-JRR-ORGA-1-19/11/2012********************************************/
@@ -231,7 +231,7 @@ CREATE TABLE orga.tcategoria_salarial (
   nombre VARCHAR(200) NOT NULL, 
   PRIMARY KEY(id_categoria_salarial)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 
 CREATE TABLE orga.tescala_salarial (
@@ -244,7 +244,7 @@ CREATE TABLE orga.tescala_salarial (
   fecha_fin DATE, 
   PRIMARY KEY(id_escala_salarial)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE orga.tcargo (
   id_cargo SERIAL NOT NULL, 
@@ -254,7 +254,7 @@ CREATE TABLE orga.tcargo (
   codigo VARCHAR(20) NOT NULL, 
   PRIMARY KEY(id_cargo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE orga.tcargo_presupuesto (
   id_cargo_presupuesto SERIAL NOT NULL, 
@@ -265,7 +265,7 @@ CREATE TABLE orga.tcargo_presupuesto (
   id_gestion INTEGER NOT NULL,
   PRIMARY KEY(id_cargo_presupuesto)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE orga.tcargo_centro_costo (
   id_cargo_centro_costo SERIAL NOT NULL, 
@@ -276,7 +276,7 @@ CREATE TABLE orga.tcargo_centro_costo (
   id_gestion INTEGER NOT NULL,
   PRIMARY KEY(id_cargo_centro_costo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE orga.ttemporal_cargo (
   id_temporal_cargo SERIAL NOT NULL, 
@@ -285,7 +285,7 @@ CREATE TABLE orga.ttemporal_cargo (
   id_temporal_jerarquia_aprobacion INTEGER NOT NULL, 
   PRIMARY KEY(id_temporal_cargo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE orga.ttemporal_jerarquia_aprobacion (
   id_temporal_jerarquia_aprobacion SERIAL NOT NULL, 
@@ -294,7 +294,7 @@ CREATE TABLE orga.ttemporal_jerarquia_aprobacion (
   estado VARCHAR(20) NOT NULL, 
   PRIMARY KEY(id_temporal_jerarquia_aprobacion)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE orga.toficina (
   id_oficina SERIAL NOT NULL, 
@@ -304,7 +304,7 @@ CREATE TABLE orga.toficina (
   aeropuerto VARCHAR(2) NOT NULL, 
   PRIMARY KEY(id_oficina)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 ALTER TABLE orga.tuo_funcionario
   ADD COLUMN tipo VARCHAR(10);
@@ -369,7 +369,7 @@ CREATE TABLE orga.tfuncionario_cuenta_bancaria (
   fecha_ini DATE NOT NULL, 
   fecha_fin DATE, 
   CONSTRAINT tfuncionario_cuenta_bancaria_pkey PRIMARY KEY(id_funcionario_cuenta_bancaria) 
-)INHERITS (pxp.tbase) WITH OIDS;
+)INHERITS (pxp.tbase) ;
 
 /*****************************F-SCP-JRR-ORGA-0-9/01/2014*************/
 
@@ -379,7 +379,7 @@ CREATE TABLE orga.ttipo_contrato (
   codigo VARCHAR NOT NULL, 
   nombre VARCHAR NOT NULL, 
   CONSTRAINT ttipo_contrato_pkey PRIMARY KEY(id_tipo_contrato) 
-)INHERITS (pxp.tbase) WITH OIDS;
+)INHERITS (pxp.tbase) ;
 /*****************************F-SCP-JRR-ORGA-0-21/01/2014*************/
 
 /*****************************I-SCP-JRR-ORGA-0-29/01/2014*************/
@@ -415,7 +415,7 @@ CREATE TABLE orga.tinterinato (
   descripcion TEXT, 
   CONSTRAINT tinterinato_pkey PRIMARY KEY(id_interinato)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /*****************************F-SCP-RAC-ORGA-0-20/05/2014*************/
 
@@ -459,7 +459,7 @@ CREATE TABLE orga.toficina_cuenta (
   descripcion TEXT, 
   CONSTRAINT toficina_cuenta_pkey PRIMARY KEY(id_oficina_cuenta)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /*****************************F-SCP-JRR-ORGA-0-31/07/2014*************/
 
@@ -519,9 +519,7 @@ CREATE TABLE orga.tuo_funcionario_ope (
     ON DELETE NO ACTION
     ON UPDATE CASCADE
     NOT DEFERRABLE
-) INHERITS (pxp.tbase)
-
-WITH (oids = true);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE orga.tuo_funcionario
   ALTER COLUMN id_uo SET STATISTICS 0;
@@ -586,8 +584,7 @@ CREATE TABLE orga.tuo_tmp (
   codigo VARCHAR,
   unidad VARCHAR,
   estado VARCHAR DEFAULT 'activo' NOT NULL
-) 
-WITH (oids = false);
+) ;
 
 --------------- SQL ---------------
 
@@ -613,8 +610,7 @@ CREATE TABLE orga.tcargo_tmp (
   cargo VARCHAR,
   migrado VARCHAR(1) DEFAULT 'no' NOT NULL,
   id_cargo INTEGER
-) 
-WITH (oids = false);
+) ;
 
 --------------- SQL ---------------
 
@@ -651,8 +647,7 @@ CREATE TABLE orga.tescala_salarial_tmp (
   id_escala_salarial INTEGER,
   migrado VARCHAR DEFAULT 'no'::character varying NOT NULL,
   monto NUMERIC
-) 
-WITH (oids = false);
+) ;
 
 
 
@@ -694,8 +689,7 @@ CREATE TABLE orga.tfuncionario_tmp (
   banco VARCHAR,
   distrito_trabajo VARCHAR,
   matricula_seguro VARCHAR
-) 
-WITH (oids = false);
+) ;
 
 /*****************************F-SCP-RAC-ORGA-0-14/02/2017*************/
 
@@ -717,8 +711,7 @@ CREATE TABLE orga.tlog_generacion_firma_correo (
   telefono_corporativo            VARCHAR(255),
   telefono_personal                    VARCHAR(255),
   PRIMARY KEY(id_log_generacion_firma_correo)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 /*****************************F-SCP-FFP-ORGA-1-06/03/2016*************/
 
@@ -790,9 +783,7 @@ CREATE TABLE orga.tfuncionario_cat_prof (
   id_funcionario_cat_prof SERIAL,
   codigo VARCHAR(20),
   cat_profesional VARCHAR(50)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE orga.tfuncionario_cat_prof
   ALTER COLUMN id_funcionario_cat_prof SET STATISTICS 0;
@@ -933,8 +924,7 @@ CREATE TABLE orga.ttipo_cargo (
   factor_disp NUMERIC DEFAULT 0 NOT NULL,
   obs VARCHAR,
   PRIMARY KEY(id_tipo_cargo)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN orga.ttipo_cargo.id_escala_salarial_min
 IS 'escala salarial de rango minimo salarial';
@@ -998,8 +988,7 @@ CREATE TABLE orga.tcodigo_funcionario (
   fecha_asignacion DATE NOT NULL,
   fecha_finalizacion DATE,
   PRIMARY KEY(id_codigo_funcionario)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE orga.tcodigo_funcionario
   ALTER COLUMN id_codigo_funcionario SET STATISTICS 0;

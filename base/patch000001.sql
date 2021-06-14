@@ -22,7 +22,7 @@ CREATE TABLE pxp.tbase (
     fecha_reg timestamp without time zone DEFAULT now(),
     fecha_mod timestamp without time zone DEFAULT now(),
     estado_reg varchar(10) DEFAULT 'activo'::character varying
-) WITHOUT OIDS;
+) ;
 --
 -- Definition for sequence parametro (OID = 306490) : 
 --
@@ -40,7 +40,7 @@ CREATE TABLE pxp.variable_global (
     variable varchar NOT NULL,
     valor varchar(200) NOT NULL,
     descripcion varchar
-) WITH OIDS;
+) ;
 ALTER TABLE ONLY pxp.variable_global ALTER COLUMN id_variable_global SET STATISTICS 0;
 ALTER TABLE ONLY pxp.variable_global ALTER COLUMN valor SET STATISTICS 0;
 
@@ -74,7 +74,7 @@ CREATE TABLE pxp.tforenkey (
   obs TEXT, 
   CONSTRAINT t_forenkeys_pkey PRIMARY KEY(id_forenkey), 
   CONSTRAINT tforenkey_idx UNIQUE(tabla, llave)
-) WITHOUT OIDS;
+) ;
 
 /****************************F-SCP-RAC-PXP-0-23/01/2013*************/
 
@@ -106,7 +106,7 @@ ALTER TABLE pxp.tbase
 
 CREATE TABLE pxp.tprueba1 (
     campo1 varchar
-) WITHOUT OIDS;
+) ;
 
 /****************************F-SCP-JRR-PXP-0-21/11/2014*************/
 /****************************I-SCP-EGS-PXP-0-06/01/2020*************/

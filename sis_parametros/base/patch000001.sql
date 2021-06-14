@@ -16,7 +16,7 @@ CREATE TABLE param.talarma (
     titulo varchar(200),
     sw_correo integer DEFAULT 0 NOT NULL
 ) 
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tconfig_alarma (OID = 306287) : 
 --
@@ -27,7 +27,7 @@ CREATE TABLE param.tconfig_alarma (
     dias integer NOT NULL,
     id_subsistema integer NOT NULL
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tcorrelativo (OID = 306295) : 
 --
@@ -41,7 +41,7 @@ CREATE TABLE param.tcorrelativo (
     id_uo integer,
     id_depto integer
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tdocumento (OID = 306319) : 
 --
@@ -55,7 +55,7 @@ CREATE TABLE param.tdocumento (
     tipo_numeracion varchar(10) NOT NULL,
     formato varchar(300)
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tgestion (OID = 306331) : 
 --
@@ -64,7 +64,7 @@ CREATE TABLE param.tgestion (
     gestion integer,
     estado varchar(15)
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tinstitucion (OID = 306339) : 
 --
@@ -89,7 +89,7 @@ CREATE TABLE param.tinstitucion (
     codigo varchar(25),
     cargo_representante varchar DEFAULT 'Representante Legal'::character varying
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tlugar (OID = 306352) : 
 --
@@ -103,7 +103,7 @@ CREATE TABLE param.tlugar (
     sw_impuesto varchar(2) DEFAULT 'si'::character varying NOT NULL,
     codigo_largo varchar(100)
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tmoneda (OID = 306364) : 
 --
@@ -113,7 +113,7 @@ CREATE TABLE param.tmoneda (
     codigo varchar(5),    
     tipo_moneda varchar(25)
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tperiodo (OID = 306372) : 
 --
@@ -124,7 +124,7 @@ CREATE TABLE param.tperiodo (
     fecha_ini date,
     fecha_fin date
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tpm_financiador (OID = 306380) : 
 --
@@ -135,7 +135,7 @@ CREATE TABLE param.tpm_financiador (
     descripcion_financiador text,
     id_financiador_actif integer
 ) 
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tpm_programa (OID = 306392) : 
 --
@@ -146,7 +146,7 @@ CREATE TABLE param.tpm_programa (
     descripcion_programa text,
     id_programa_actif integer
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tpm_proyecto (OID = 306402) : 
 --
@@ -160,7 +160,7 @@ CREATE TABLE param.tpm_proyecto (
     codigo_sisin bigint,
     hidro varchar(2) DEFAULT 'no'::character varying NOT NULL
 ) 
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tpm_regional (OID = 306413) : 
 --
@@ -171,7 +171,7 @@ CREATE TABLE param.tpm_regional (
     descripcion_regional text,
     id_regional_actif integer
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table tproveedor (OID = 306423) : 
 --
@@ -184,7 +184,7 @@ CREATE TABLE param.tproveedor (
     codigo varchar,
     nit varchar(100)
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table tunidad_medida (OID = 309525) : 
@@ -194,7 +194,7 @@ CREATE TABLE param.tunidad_medida (
     codigo varchar(20),
     descripcion varchar
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 -- Table: param.tservicio
 
@@ -207,10 +207,7 @@ CREATE TABLE param.tservicio(
   descripcion character varying(1000),
   CONSTRAINT tservicio_pkey PRIMARY KEY (id_servicio)
 )
-INHERITS (pxp.tbase)
-WITH (
-  OIDS=TRUE
-);
+INHERITS (pxp.tbase);
 ALTER TABLE param.tservicio OWNER TO postgres;
 
 
@@ -253,7 +250,7 @@ CREATE TABLE param.tcatalogo (
     tipo varchar(15),
     CONSTRAINT pk_tcatalogo__id_catalogo PRIMARY KEY (id_catalogo)
 ) INHERITS (pxp.tbase)
-WITH ( OIDS=TRUE );
+;
 
 ALTER TABLE param.tcatalogo OWNER TO postgres;
 
@@ -274,10 +271,7 @@ CREATE TABLE param.tcatalogo_tipo(
 	tabla varchar(100), 
 	PRIMARY KEY (id_catalogo_tipo),
     CONSTRAINT uq_tcatalogo_tipo__id_subsistema__nombre UNIQUE (id_subsistema, nombre)
-)INHERITS (pxp.tbase)
-WITH (
-  OIDS=TRUE
-);
+)INHERITS (pxp.tbase);
 
 alter table param.tcatalogo add column id_catalogo_tipo integer;
 
@@ -591,7 +585,7 @@ CREATE TABLE param.tdepto_uo (
     id_uo integer,
     CONSTRAINT pk_tdepto_uo__id_depto_uo PRIMARY KEY (id_depto_uo)
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 
 
 -- Tabla tdepto_usuario 
@@ -604,7 +598,7 @@ CREATE TABLE param.tdepto_usuario (
     cargo varchar(80),
     CONSTRAINT pk_tdepto_usuario__id_depto_usuario PRIMARY KEY (id_depto_usuario)
 )
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 
 
 -- Tabla tdepto 
@@ -617,7 +611,7 @@ CREATE TABLE param.tdepto (
     nombre_corto varchar(100),
     CONSTRAINT pk_tdepto__id_depto PRIMARY KEY (id_depto)
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 /***********************************F-SCP-FRH-PARAM-0-04/02/2013*****************************************/
 
@@ -702,7 +696,7 @@ CREATE TABLE param.tperiodo_subsistema (
   estado VARCHAR(20), 
   PRIMARY KEY(id_periodo_subsistema)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 ALTER TABLE param.tperiodo_subsistema
   OWNER TO postgres;
@@ -717,7 +711,7 @@ CREATE TABLE param.tasistente (
   id_funcionario INTEGER NOT NULL, 
   PRIMARY KEY(id_asistente)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /***********************************F-SCP-JRR-PARAM-104-04/04/2013****************************************/
 
@@ -731,7 +725,7 @@ CREATE TABLE param.tplantilla (
   sw_compro VARCHAR(2), 
   CONSTRAINT pk_tplantilla__id_plantilla PRIMARY KEY(id_plantilla)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 ALTER TABLE param.tplantilla OWNER TO postgres;
 /***********************************F-SCP-GSS-PARAM-84-01/04/2013****************************************/
@@ -752,7 +746,7 @@ CREATE TABLE param.tdocumento_fiscal (
   estado varchar(30) NOT NULL,
   CONSTRAINT pk_tdocumento_fiscal___id_documento_fiscal PRIMARY KEY (id_documento_fiscal)
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
 ALTER TABLE param.tdocumento_fiscal OWNER TO postgres;
 /***********************************F-SCP-RCM-PARAM-85-03/04/2013*****************************************/
 
@@ -797,7 +791,7 @@ CREATE TABLE param.tdepto_ep (
   CONSTRAINT tpm_depto_ep_pkey PRIMARY KEY(id_depto_ep)  
     NOT DEFERRABLE
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
 
 CREATE UNIQUE INDEX tdepto_ep_id__id_depto_id_ep ON param.tdepto_ep
   USING btree (id_ep, id_depto)
@@ -914,7 +908,7 @@ CREATE TABLE param.tgrupo_archivo(
   descripcion varchar(1000), 
   CONSTRAINT pk_tgrupo_archivo__id_grupo_archivo PRIMARY KEY (id_grupo_archivo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 --2
 CREATE TABLE param.textension(
@@ -923,7 +917,7 @@ CREATE TABLE param.textension(
   peso_max_upload_mb numeric(18,2) DEFAULT 0, 
   CONSTRAINT pk_textension__id_extension PRIMARY KEY (id_extension)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 --3
 CREATE TABLE param.textension_grupo_archivo(
@@ -932,7 +926,7 @@ CREATE TABLE param.textension_grupo_archivo(
   id_grupo_archivo INTEGER NOT NULL,
   CONSTRAINT pk_textension_grupo_archivo__id_extension_grupo_archivo PRIMARY KEY (id_extension_grupo_archivo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 
 /***********************************F-SCP-ECR-PARAM-0-23/12/2013****************************************/
@@ -1167,9 +1161,7 @@ CREATE TABLE param.tdepto_depto (
   id_depto_destino INTEGER NOT NULL,
   obs TEXT,
   CONSTRAINT tdepto_depto_pkey PRIMARY KEY(id_depto_depto)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tdepto_depto.id_depto_destino
 IS 'es el depto que puede trabajar con depto origen, (considerar que no es comuntativo)';
@@ -1186,7 +1178,7 @@ CREATE TABLE param.tentidad (
     CONSTRAINT tentidad_pkey PRIMARY KEY(id_entidad)
     
 ) 
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 
 /***********************************F-SCP-JRR-PARAM-0-20/09/2015****************************************/
 
@@ -1312,7 +1304,7 @@ CREATE TABLE param.tproveedor_item_servicio (
   CONSTRAINT pk_tproveedor_item_servicio___id_proveedor_item PRIMARY KEY (id_proveedor_item),
   CONSTRAINT chk_tproveedor_item_servivio__id_item__id_servicio CHECK (id_item IS NULL AND id_servicio IS NOT NULL OR id_servicio IS NULL AND id_item IS NOT NULL)
 ) INHERITS (pxp.tbase)
-WITH OIDS;
+;
 ALTER TABLE param.tproveedor_item_servicio OWNER TO postgres;
 /***********************************F-SCP-RCM-PARAM-0-05/11/2013****************************************/
 
@@ -1578,9 +1570,7 @@ CREATE TABLE param.twidget (
   tipo VARCHAR(30) DEFAULT 'iframe' NOT NULL,
   ruta VARCHAR,
   PRIMARY KEY(id_widget)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.twidget.tipo
 IS 'iframe o objeto';
@@ -1592,9 +1582,7 @@ CREATE TABLE param.tdashboard (
   nombre VARCHAR,
   id_usuario INTEGER,
   PRIMARY KEY(id_dashboard)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 
 --------------- SQL ---------------
@@ -1606,9 +1594,7 @@ CREATE TABLE param.tdashdet (
   columna INTEGER DEFAULT 0 NOT NULL,
   fila INTEGER,
   PRIMARY KEY(id_dashdet)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 
 
@@ -1645,9 +1631,7 @@ CREATE TABLE param.tsubsistema_var (
   valor_def VARCHAR DEFAULT '' NOT NULL,
   id_subsistema INTEGER NOT NULL,
   PRIMARY KEY(id_subsistema_var)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tsubsistema_var.valor_def
 IS 'Valor por defecto';
@@ -1661,9 +1645,7 @@ CREATE TABLE param.tdepto_var (
   id_depto INTEGER NOT NULL,
   valor VARCHAR DEFAULT '' NOT NULL,
   PRIMARY KEY(id_depto_var)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tdepto_var.id_subsistema_var
 IS 'identifica la variable';
@@ -1705,9 +1687,7 @@ CREATE TABLE param.ttipo_archivo (
   nombre VARCHAR(255) NOT NULL ,
   multiple VARCHAR(255) ,
   PRIMARY KEY(id_tipo_archivo)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 
 CREATE TABLE param.tarchivo (
@@ -1718,9 +1698,7 @@ CREATE TABLE param.tarchivo (
   nombre_archivo VARCHAR(255) NOT NULL ,
   folder VARCHAR(255),
   PRIMARY KEY(id_archivo)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 
 CREATE TABLE param.tarchivo_historico (
@@ -1729,8 +1707,7 @@ CREATE TABLE param.tarchivo_historico (
   id_archivo VARCHAR(255) NOT NULL ,
   version INTEGER NOT NULL ,
   PRIMARY KEY(id_archivo_historico)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 
 ALTER TABLE param.tarchivo ADD id_archivo_fk INTEGER NULL;
@@ -1744,9 +1721,7 @@ CREATE TABLE param.tplantilla_archivo_excel (
   nombre VARCHAR(20) NOT NULL,
   codigo VARCHAR(10) NOT NULL,
   PRIMARY KEY(id_plantilla_archivo_excel)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tplantilla_archivo_excel.nombre
 IS 'campo que guarda el nombre de la plantilla del archivo excel';
@@ -1762,9 +1737,7 @@ CREATE TABLE param.tcolumnas_archivo_excel (
   tipo_valor VARCHAR(10),
   sw_legible VARCHAR(2),
   PRIMARY KEY(id_columna_archivo_excel)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tcolumnas_archivo_excel.nombre_columna
 IS 'campo que indica el nombre de la columna';
@@ -1850,7 +1823,7 @@ CREATE TABLE param.tconf_lector_mobile(
 
   CONSTRAINT pk_tconf_lector_mobile__id_conf_lector_mobile PRIMARY KEY(id_conf_lector_mobile)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 CREATE TABLE param.tconf_lector_mobile_detalle(
   id_conf_lector_mobile_detalle SERIAL,
@@ -1862,7 +1835,7 @@ CREATE TABLE param.tconf_lector_mobile_detalle(
 
   CONSTRAINT pk_tconf_lector_mobile_detalle__id_conf_lector_mobile_detalle PRIMARY KEY(id_conf_lector_mobile_detalle)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /***********************************F-SCP-FFP-PARAM-0-26/02/2017*****************************************/
 
@@ -1902,9 +1875,7 @@ CREATE TABLE param.ttipo_cc (
   id_ep INTEGER,
   id_tipo_cc_fk INTEGER,
   PRIMARY KEY(id_tipo_cc)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.ttipo_cc.movimiento
 IS 'su o no, los tipo de presupeusto son los nodos hojas, estos nodos se transforman en centro de costo';
@@ -1987,7 +1958,7 @@ CREATE TABLE param.twsmensaje (
   mensaje text,
   CONSTRAINT twsmensaje_pkey PRIMARY KEY(id_wsmensaje)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /***********************************F-SCP-FFP-PARAM-0-16/06/2017*****************************************/
 
@@ -2144,9 +2115,7 @@ CREATE TABLE param.tcat_concepto (
   nombre VARCHAR,
   habilitado VARCHAR,
   CONSTRAINT tcat_concepto_pkey PRIMARY KEY(id_cat_concepto)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE param.tcat_concepto
   ALTER COLUMN codigo SET STATISTICS 0;
@@ -2168,7 +2137,7 @@ CREATE TABLE param.tferiado (
     tipo varchar(15),
     CONSTRAINT pk_tferiado__id_feriado PRIMARY KEY(id_feriado)
 ) 
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 /***********************************F-SCP-RCM-PARAM-0-27/10/2017*****************************************/
 /***********************************I-SCP-FPC-PARAM-0-03/12/2017*****************************************/
 
@@ -2179,7 +2148,7 @@ CREATE TABLE param.tinstitucion_persona (
   cargo_institucion VARCHAR(100),
   PRIMARY KEY(id_institucion_persona)
 ) 
-INHERITS (pxp.tbase) WITH OIDS;
+INHERITS (pxp.tbase) ;
 /***********************************F-SCP-FPC-PARAM-0-03/12/2017*****************************************/
 
 
@@ -2204,8 +2173,7 @@ CREATE TABLE param.tconcepto_ingas_ids (
   id_concepto_ingas_uno INTEGER NOT NULL,
   id_concepto_ingas_dos INTEGER NOT NULL,
   obs VARCHAR
-) 
-WITH (oids = false);
+) ;
 
 /***********************************F-SCP-FPC-PARAM-0-14/01/2017*****************************************/
 /***********************************I-SCP-EGS-PARAM-0-21/11/2018*****************************************/
@@ -2282,8 +2250,7 @@ CREATE TABLE param.ttipo_cc_plantilla (
   operativo VARCHAR(4) DEFAULT 'si'::character varying NOT NULL,
   CONSTRAINT ttipo_cc_plantilla_codigo_key UNIQUE(codigo),
   CONSTRAINT ttipo_cc_plantilla_pkey PRIMARY KEY(id_tipo_cc_plantilla)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.ttipo_cc_plantilla.movimiento
 IS 'su o no, los tipo de presupeusto son los nodos hojas, estos nodos se transforman en centro de costo';
@@ -2327,9 +2294,7 @@ CREATE TABLE param.tbuzon (
   sugerencia VARCHAR(1000),
   fecha TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL,
   CONSTRAINT tbuzon_pkey PRIMARY KEY(id_buzon)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE param.tplantilla
   ALTER COLUMN sw_estacion DROP DEFAULT;
@@ -2388,9 +2353,7 @@ CREATE TABLE param.tadministrador (
   id_funcionario INTEGER NOT NULL,
   id_lugar INTEGER NOT NULL,
   CONSTRAINT tadministrador_pkey PRIMARY KEY(id_administrador)
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 
 ALTER TABLE param.tcolumnas_archivo_excel
@@ -2468,9 +2431,7 @@ CREATE TABLE param.ttipo_concepto_ingas (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE
-) INHERITS (pxp.tbase)
-
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 /***********************************F-SCP-EGS-PARAM-3-04/06/2019*****************************************/
 
 
@@ -2485,8 +2446,7 @@ CREATE TABLE param.tplantilla_grilla (
   nombre VARCHAR(500) NOT NULL,
   url_interface VARCHAR(500),
   CONSTRAINT tplantilla_grilla_pkey PRIMARY KEY(id_plantilla_grilla)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tplantilla_grilla.codigo
 IS 'codigo interface';
@@ -2517,8 +2477,7 @@ CREATE TABLE param.ttaza_impuesto (
   tipo VARCHAR(15),
   factor_impuesto_pre NUMERIC,
   CONSTRAINT ttaza_impuesto_pkey PRIMARY KEY(id_taza_impuesto)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.ttaza_impuesto.tipo
 IS 'es de tipo nominal o efectivo';
@@ -2549,8 +2508,7 @@ CREATE TABLE param.tconcepto_ingas_det (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-EGS-PARAM-4-31/07/2019****************************************/
 /***********************************I-SCP-EGS-PARAM-5-12/08/2019****************************************/
@@ -2559,8 +2517,7 @@ CREATE TABLE param.tcolumna (
   nombre_columna VARCHAR,
   tipo_dato VARCHAR,
   CONSTRAINT tcolumna_pkey PRIMARY KEY(id_columna)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 CREATE TABLE param.tcolumna_concepto_ingas_det (
   id_columna_concepto_ingas_det SERIAL,
   valor VARCHAR,
@@ -2577,8 +2534,7 @@ CREATE TABLE param.tcolumna_concepto_ingas_det (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
     NOT DEFERRABLE
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 /***********************************F-SCP-EGS-PARAM-5-12/08/2019****************************************/
 
 /***********************************I-SCP-MZM-PARAM-56-02/09/2019****************************************/
@@ -2588,7 +2544,7 @@ CREATE TABLE param.tpie_firma (
   orientacion VARCHAR, 
   CONSTRAINT tpie_firma_pkey PRIMARY KEY(id_pie_firma)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 ALTER TABLE param.tpie_firma
   ALTER COLUMN nombre SET STATISTICS 0;
@@ -2604,7 +2560,7 @@ CREATE TABLE param.tpie_firma_det (
   orden INTEGER, 
   CONSTRAINT tpie_firma_det_pkey PRIMARY KEY(id_pie_firma_det)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 ALTER TABLE param.tpie_firma_det
   OWNER TO postgres;
@@ -2628,8 +2584,7 @@ CREATE TABLE param.tconcepto_ingas_agrupador (
   descripcion VARCHAR,
   tipo_agrupador VARCHAR,
   CONSTRAINT tconcepto_ingas_agrupador_pkey PRIMARY KEY(id_concepto_ingas_agrupador)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tconcepto_ingas_agrupador.tipo_agrupador
 IS 'Es el tipo al q puede pertenecer el agrupador';
@@ -2662,8 +2617,7 @@ CREATE TABLE param.tantiguedad (
   obs_antiguedad VARCHAR(250),
   id_gestion INTEGER,
   CONSTRAINT tantiguedad_pkey PRIMARY KEY(id_antiguedad)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 /***********************************F-SCP-SAZP-PARAM-82-14/11/2019*****************************************/
 
@@ -2684,8 +2638,7 @@ CREATE TABLE param.tlenguaje (
   CONSTRAINT tlenguaje_codigo_key UNIQUE(codigo),
   CONSTRAINT tlenguaje_nombre_key UNIQUE(nombre),
   CONSTRAINT tlenguaje_pkey PRIMARY KEY(id_lenguaje)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE param.tlenguaje
   ALTER COLUMN nombre SET STATISTICS 0;
@@ -2704,8 +2657,7 @@ CREATE TABLE param.tgrupo_idioma (
   CONSTRAINT tgrupo_idioma_codigo_key UNIQUE(codigo),
   CONSTRAINT tgrupo_idioma_nombre_key UNIQUE(nombre),
   CONSTRAINT tgrupo_idioma_pkey PRIMARY KEY(id_grupo_idioma)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN param.tgrupo_idioma.tipo
 IS 'comun  ->  son llavez que se crear para  etiquetas, mensajes
@@ -2721,8 +2673,7 @@ CREATE TABLE param.tpalabra_clave (
   default_text VARCHAR(500) NOT NULL,
   id_tabla BIGSERIAL,
   PRIMARY KEY(id_palabra_clave)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE param.tpalabra_clave
   ALTER COLUMN id_palabra_clave SET STATISTICS 0;
@@ -2740,8 +2691,7 @@ CREATE TABLE param.ttraduccion (
   id_lenguaje INTEGER NOT NULL,
   texto VARCHAR(500) NOT NULL,
   CONSTRAINT ttraduccion_pkey PRIMARY KEY(id_traduccion)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 ALTER TABLE param.ttraduccion
   ALTER COLUMN id_lenguaje SET STATISTICS 0;

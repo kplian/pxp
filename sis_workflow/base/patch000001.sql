@@ -405,7 +405,7 @@ CREATE TABLE wf.ttabla (
   script_ejecutado VARCHAR(2) DEFAULT 'no' NOT NULL,
   PRIMARY KEY(id_tabla)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 COMMENT ON COLUMN wf.ttabla.vista_id_tabla_maestro
 IS 'la tabla qu es maestro en caso de que sea detalle';
@@ -440,7 +440,7 @@ CREATE TABLE wf.ttipo_columna (
   ejecutado VARCHAR(2) DEFAULT 'no' NOT NULL,
   PRIMARY KEY(id_tipo_columna)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 COMMENT ON COLUMN wf.ttipo_columna.bd_campos_adicionales
 IS 'el formato es : "nombre_columna nombre_modelo tipo" separados por comas por cada campo adicional';
@@ -462,7 +462,7 @@ CREATE TABLE wf.tcolumna_estado (
   momento VARCHAR(100) NOT NULL,   
   PRIMARY KEY(id_columna_estado)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /*******************************************F-SCP-JRR-WF-0-07/05/2014*************************************/
 
@@ -636,7 +636,7 @@ CREATE TABLE wf.ttipo_proceso_origen (
   id_proceso_macro INTEGER, 
   CONSTRAINT ttipo_proceso_origen_pkey PRIMARY KEY(id_tipo_proceso_origin)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 ALTER TABLE wf.ttipo_proceso_origen
   ALTER COLUMN id_tipo_proceso_origin SET STATISTICS 0;
@@ -854,7 +854,7 @@ documentos	varchar[],
 regla	text,
 CONSTRAINT tplantilla_correo_pkey PRIMARY KEY(id_plantilla_correo)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /***********************************F-SCP-RAC-WF-0-20/08/2014****************************************/
 
@@ -880,7 +880,7 @@ CREATE TABLE wf.ttipo_estado_rol (
   id_rol INTEGER NOT NULL,      
   PRIMARY KEY(id_tipo_estado_rol)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 /***********************************F-SCP-JRR-WF-1-03/09/2014****************************************/
 
@@ -914,7 +914,7 @@ CREATE TABLE wf.tobs (
   desc_fin VARCHAR,
   CONSTRAINT tobs_pkey PRIMARY KEY(id_obs)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 --------------- SQL ---------------
 

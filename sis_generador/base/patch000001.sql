@@ -23,7 +23,7 @@ CREATE TABLE gen.tcolumna (
     CONSTRAINT chk_tcolumna__guardar CHECK ((((guardar)::text = 'si'::text) OR ((guardar)::text = 'no'::text))),
     CONSTRAINT chk_tcolumna__grid_mostrar CHECK (((grid_mostrar)::text = ANY (ARRAY[('si'::character varying)::text, ('no'::character varying)::text])))
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 --
 -- Structure for table ttabla (OID = 305590) : 
 --
@@ -40,7 +40,7 @@ CREATE TABLE gen.ttabla (
     cant_grupos integer,
     CONSTRAINT pk_ttabla__id_tabla PRIMARY KEY (id_tabla)
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 CREATE UNIQUE INDEX uk_ttabla_esquema_nombre ON gen.ttabla USING btree (esquema, nombre);
 /***********************************F-SCP-JRR-GEN-1-19/11/2012****************************************/
@@ -50,6 +50,6 @@ CREATE UNIQUE INDEX uk_ttabla_esquema_nombre ON gen.ttabla USING btree (esquema,
 
 CREATE TABLE gen.tprueba2 (
     campo1 varchar
-) WITHOUT OIDS;
+) ;
 
 /****************************F-SCP-JRR-GEN-0-21/11/2014*************/

@@ -31,7 +31,7 @@ CREATE TABLE segu.tusuario (
     id_persona integer NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg,
     autentificacion varchar(20) DEFAULT 'local'::character varying
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tlog (OID = 306090) :
 --
@@ -59,7 +59,7 @@ CREATE TABLE segu.tlog (
     descripcion_transaccion text,
     codigo_subsistema varchar(30),
     si_log integer
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tpersona (OID = 306441) :
 --
@@ -81,7 +81,7 @@ CREATE TABLE segu.tpersona (
     fecha_nacimiento date,
     direccion varchar
 )
-INHERITS (pxp.tbase) WITHOUT OIDS;
+INHERITS (pxp.tbase) ;
 
 --
 -- Structure for table tactividad (OID = 306979) :
@@ -96,7 +96,7 @@ CREATE TABLE segu.testructura_dato (
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL,
     tipo varchar(30) NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table testructura_gui (OID = 307001) :
 --
@@ -106,7 +106,7 @@ CREATE TABLE segu.testructura_gui (
     fk_id_gui integer NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tgui_rol (OID = 307013) :
 --
@@ -116,7 +116,7 @@ CREATE TABLE segu.tgui_rol (
     id_gui integer NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tpermiso (OID = 307043) :
 --
@@ -129,7 +129,7 @@ CREATE TABLE segu.tpermiso (
     descripcion text,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tprocedimiento_gui (OID = 307055) :
 --
@@ -140,7 +140,7 @@ CREATE TABLE segu.tprocedimiento_gui (
     boton segu.si_no NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
-) WITHOUT OIDS;
+) ;
 
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE segu.trecurso (
     observaciones text,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table trol_procedimiento_gui (OID = 307095) :
 --
@@ -163,7 +163,7 @@ CREATE TABLE segu.trol_procedimiento_gui (
     id_rol integer,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tbloqueo_notificacion (OID = 307106) :
 --
@@ -180,7 +180,7 @@ CREATE TABLE segu.tbloqueo_notificacion (
     tipo varchar(15) NOT NULL,
     aplicacion varchar(15) NOT NULL,
     tipo_evento varchar(35)
-) WITH OIDS;
+) ;
 ALTER TABLE ONLY segu.tbloqueo_notificacion ALTER COLUMN id_bloqueo_notificacion SET STATISTICS 0;
 --
 -- Structure for table tclasificador (OID = 307111) :
@@ -192,7 +192,7 @@ CREATE TABLE segu.tclasificador (
     prioridad integer,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tfuncion (OID = 307126) :
 --
@@ -204,7 +204,7 @@ CREATE TABLE segu.tfuncion (
     id_subsistema integer NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::pxp.estado_reg NOT NULL,
     CONSTRAINT chk_id_subsistema CHECK ((id_subsistema > 0))
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tgui (OID = 307136) :
 --
@@ -222,7 +222,7 @@ CREATE TABLE segu.tgui (
     id_subsistema integer,
     clase_vista varchar(100),
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table thorario_trabajo (OID = 307147) :
 --
@@ -231,7 +231,7 @@ CREATE TABLE segu.thorario_trabajo (
     dia_semana integer,
     hora_ini time(0) without time zone,
     hora_fin time(0) without time zone
-) WITH OIDS;
+) ;
 ALTER TABLE ONLY segu.thorario_trabajo ALTER COLUMN dia_semana SET STATISTICS 0;
 --
 -- Structure for table ttipo_documento (OID = 307152) :
@@ -241,7 +241,7 @@ CREATE TABLE segu.ttipo_documento (
     nombre varchar(15) NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tpatron_evento (OID = 307168) :
 --
@@ -258,7 +258,7 @@ CREATE TABLE segu.tpatron_evento (
     estado_reg varchar(20),
     CONSTRAINT tpatron_evento__aplicacion__chk CHECK ((((aplicacion)::text = 'usuario'::text) OR ((aplicacion)::text = 'ip'::text))),
     CONSTRAINT tpatron_evento__operacion__chk CHECK ((((operacion)::text = 'bloqueo'::text) OR ((operacion)::text = 'notificacion'::text)))
-) WITH OIDS;
+) ;
 --
 -- Structure for table tperfil (OID = 307178) :
 --
@@ -269,7 +269,7 @@ CREATE TABLE segu.tperfil (
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL,
     defecto segu.si_no DEFAULT 'si'::character varying NOT NULL,
     id_recurso integer
-) WITHOUT OIDS;
+) ;
 
 --
 -- Structure for table segu.tprimo (OID = 307189) :
@@ -277,7 +277,7 @@ CREATE TABLE segu.tperfil (
 CREATE TABLE segu.tprimo (
     id_primo serial NOT NULL,
     numero integer
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tprocedimiento (OID = 307193) :
 --
@@ -291,7 +291,7 @@ CREATE TABLE segu.tprocedimiento (
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL,
     autor varchar(100),
     fecha_creacion varchar(40)
-) WITHOUT OIDS;
+) ;
 
 --
 -- Structure for table trol (OID = 307211) :
@@ -303,7 +303,7 @@ CREATE TABLE segu.trol (
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL,
     rol varchar(150) NOT NULL,
     id_subsistema integer
-) WITHOUT OIDS;
+) ;
 --
 -- Structure for table tsesion (OID = 307220) :
 --
@@ -322,7 +322,7 @@ CREATE TABLE segu.tsesion (
     transaccion_actual varchar,
     funcion_actual varchar,
     inicio_proceso timestamp(0) without time zone
-) WITH OIDS;
+) ;
 ALTER TABLE ONLY segu.tsesion ALTER COLUMN fecha_reg SET STATISTICS 0;
 
 --
@@ -337,7 +337,7 @@ CREATE TABLE segu.tsubsistema (
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL,
     nombre_carpeta varchar(50),
     id_subsis_orig integer
-) WITHOUT OIDS;
+) ;
 
 
 --
@@ -349,7 +349,7 @@ CREATE TABLE segu.tusuario_perfil (
     id_perfil integer,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL
-) WITHOUT OIDS;
+) ;
 
 
 -- Structure for table tusuario_rol (OID = 307268) :
@@ -360,7 +360,7 @@ CREATE TABLE segu.tusuario_rol (
     id_usuario integer NOT NULL,
     fecha_reg date,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
-) WITHOUT OIDS;
+) ;
 
 
 
@@ -884,7 +884,7 @@ CREATE TABLE segu.ttutotial (
   extension VARCHAR(20),
   PRIMARY KEY(id_tutotial)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 
 ALTER TABLE segu.tprocedimiento
@@ -916,7 +916,7 @@ CREATE TABLE segu.ttabla_migrar (
   nombre_funcion VARCHAR(200),
   CONSTRAINT ttabla_migrar_pkey PRIMARY KEY(id_tabla_migrar)
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 /*****************************F-SCP-RCM-SEGU-0-17/01/2014*************/
 
 /*****************************I-SCP-RCM-SEGU-0-29/01/2014*************/
@@ -1140,7 +1140,7 @@ CREATE TABLE segu.tpersona_relacion (
     ON UPDATE NO ACTION
     NOT DEFERRABLE
 ) INHERITS (pxp.tbase)
-WITHOUT OIDS;
+;
 
 
 /*****************************F-SCP-MZM-SEGU-40-30/07/2019*************/
@@ -1223,8 +1223,7 @@ CREATE TABLE segu.tprogramador (
   fecha_fin DATE,
   usuario_ldap VARCHAR(200),
   PRIMARY KEY(id_programador)
-) INHERITS (pxp.tbase)
-WITH (oids = false);
+) INHERITS (pxp.tbase);
 
 COMMENT ON COLUMN segu.tprogramador.alias_git
 IS 'nombre de usuario en github';
@@ -1308,8 +1307,7 @@ CREATE TABLE segu.tissues (
   closed_at TIMESTAMP WITHOUT TIME ZONE,
   id_subsistema INTEGER,
   CONSTRAINT tissues_pkey PRIMARY KEY(id_issues)
-)
-WITH (oids = false);
+);
 
 ALTER TABLE segu.tissues
   ALTER COLUMN id_issues SET STATISTICS 0;
@@ -1337,8 +1335,7 @@ ALTER TABLE segu.tissues
   protected BOOLEAN,
   id_subsistema INTEGER,
   CONSTRAINT tbranches_pkey PRIMARY KEY(id_branches)
-)
-WITH (oids = false);
+);
 
 ALTER TABLE segu.tbranches
   ALTER COLUMN id_branches SET STATISTICS 0;
@@ -1359,8 +1356,7 @@ ALTER TABLE segu.tbranches
   id_branches INTEGER,
   issues INTEGER,
   CONSTRAINT tcommit_pkey PRIMARY KEY(id_commit)
-)
-WITH (oids = false);
+);
 
 ALTER TABLE segu.tcommit
   ALTER COLUMN id_commit SET STATISTICS 0;
