@@ -72,7 +72,7 @@ BEGIN
                     ELSE '''' END AS cheks,
                     CASE WHEN a.attnotnull=false THEN ''si'' ELSE ''no'' END AS  nulo,
                     CASE WHEN a.attlen=''-1'' THEN (a.atttypmod - 4) ELSE a.attlen END as  longitud,
-                    d.adsrc as valor_defecto,
+                    '''' as valor_defecto,
                     100, ''si'', 80, nextval(''gen.ts_generador'')::smallint, 1::smallint
                     FROM pg_catalog.pg_attribute a
                     LEFT JOIN pg_catalog.pg_type t ON t.oid = a.atttypid
@@ -139,9 +139,9 @@ EXCEPTION
 
 	WHEN OTHERS THEN
     	v_resp='';
-		v_resp = f_agrega_clave(v_resp,'mensaje',SQLERRM);
-    	v_resp = f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
-  		v_resp = f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
+		v_resp = pxp.f_agrega_clave(v_resp,'mensaje',SQLERRM);
+    	v_resp = pxp.f_agrega_clave(v_resp,'codigo_error',SQLSTATE);
+  		v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 		raise exception '%',v_resp;
 END;
 $BODY$
