@@ -1515,3 +1515,9 @@ select pxp.f_insert_testructura_gui ('REPTCC', 'REPCC');
 select pxp.f_insert_testructura_gui ('CRGR', 'OTROS');
 /***********************************F-DEP-EGS-PARAM-ETR-1914-01/12/2020****************************************/
 
+/***********************************I-DEP-VAN-PARAM-ETR-0-30/04/2021****************************************/
+select pxp.f_insert_testructura_gui('CNOTIMOV', 'PARAM');
+select pxp.f_insert_testructura_gui('NOTIMOV', 'CNOTIMOV');
+select pxp.f_insert_testructura_gui('FUNMOV', 'CNOTIMOV');
+/***********************************F-DEP-VAN-PARAM-ETR-0-30/04/2021****************************************/
+

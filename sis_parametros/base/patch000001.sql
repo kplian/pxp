@@ -2877,3 +2877,48 @@ ALTER TABLE param.ttipo_envio_correo
 /***********************************I-SCP-YMR-PARAM-ETR-1770-31/12/2020****************************************/
 ALTER TABLE param.thistorico_tipo_cc DROP CONSTRAINT fk_ttipo_cc__id_tipo;
 /***********************************F-SCP-YMR-PARAM-ETR-1770-31/12/2020****************************************/
+/***********************************I-SCP-VAN-PARAM-0-28/04/2021****************************************/
+create table param.tfuncionario_dispositivo
+(
+    id             serial not null,
+    id_funcionario integer,
+    token          varchar
+) inherits (pxp.tbase);
+
+create
+unique index tfuncionario_dispositivo_id_uindex
+    on param.tfuncionario_dispositivo (id);
+
+alter table param.tfuncionario_dispositivo
+    add constraint tfuncionario_dispositivo_pk
+        primary key (id);
+
+create table param.tnotificaciones
+(
+    id                      serial,
+    id_funcionario_emisor   int,
+    id_funcionario_receptor int,
+    id_proceso_wf           int,
+    id_estado_wf            int,
+    modulo                  varchar,
+    esquema                 varchar,
+    enviado                 varchar(10),
+    body                    varchar,
+    title                   varchar,
+    id_registro             integer
+) inherits (pxp.tbase);
+
+create
+unique index tnotificaciones_id_uindex
+    on param.tnotificaciones (id);
+
+alter table param.tnotificaciones
+    add constraint tnotificaciones_pk
+        primary key (id);
+
+
+/***********************************F-SCP-VAN-PARAM-0-15/12/2020****************************************/
+/***********************************I-SCP-VAN-PARAM-0-28/04/2020****************************************/
+alter table param.tnotificaciones
+    add nombre_vista varchar;
+/***********************************F-SCP-VAN-PARAM-0-28/04/2020****************************************/

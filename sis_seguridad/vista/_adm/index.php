@@ -223,6 +223,33 @@ foreach($dir as $file) {
 ?>
 
 <!--  <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key=ABQIAAAAl-hZOf33Gms5pu2iwFTemxTHJbrJ9LYRs0WMg05wOxvXuMe0hhQLWPMv9ORdFvvZKSR3tbliwK4dMA" type="text/javascript"></script>-->
+<!-- Calendar-specific includes -->
+<link rel="stylesheet" type="text/css" href="../../../lib/ext3/examples/calendar/resources/css/calendar.css"/>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/Ext.calendar.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayHeaderTemplate.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayBodyTemplate.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/DayViewTemplate.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/BoxLayoutTemplate.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/templates/MonthViewTemplate.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/CalendarScrollManager.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/StatusProxy.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/CalendarDD.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/dd/DayViewDD.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/EventRecord.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/MonthDayDetailView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/widgets/CalendarPicker.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/WeekEventRenderer.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/CalendarView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/MonthView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/DayHeaderView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/DayBodyView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/DayView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/views/WeekView.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/widgets/DateRangeField.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/widgets/ReminderField.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/EventEditForm.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/EventEditWindow.js"></script>
+<script type="text/javascript" src="../../../lib/ext3/examples/calendar/src/CalendarPanel.js"></script>
 
 
 <div id="classes"></div>

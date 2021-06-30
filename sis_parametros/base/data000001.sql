@@ -558,3 +558,12 @@ select pxp.f_insert_testructura_gui ('PLCLV', 'TRAD');
 /***********************************I-DAT-EGS-PARAM-ETR-1914-01/12/2020*****************************************/
 select pxp.f_insert_tgui ('Correos para envio Diario', 'Correos para envio Diario', 'CRGR', 'si', 20, 'sis_parametros/vista/tipo_envio_correo/TipoEnvioCorreo.php', 3, '', 'TipoEnvioCorreo', 'PARAM');
 /***********************************F-DAT-EGS-PARAM-ETR-1914-01/12/2020*****************************************/
+/***********************************I-DAT-VAN-PARAM-ETR-0-30/04/2021*****************************************/
+select pxp.f_insert_tgui('Notificaciones Móviles', 'Envio de notificaciones Móviles', 'CNOTIMOV', 'si', 52, '', 2, '',
+                         '', 'PARAM');
+select pxp.f_insert_tgui('Notificaciones', 'Notificaciones', 'NOTIMOV', 'si', 1,
+                         'sis_parametros/vista/notificaciones/Notificaciones.php', 3, '', 'Notificaciones', 'PARAM');
+select pxp.f_insert_tgui('Dispositivos', 'Dispositivos relacionados a funcionarios', 'FUNMOV', 'si', 2,
+                         'sis_parametros/vista/funcionario_dispositivo/FuncionarioDispositivo.php', 3, '',
+                         'FuncionarioDispositivo', 'PARAM');
+/***********************************F-DAT-VAN-PARAM-ETR-0-30/04/2021*****************************************/
