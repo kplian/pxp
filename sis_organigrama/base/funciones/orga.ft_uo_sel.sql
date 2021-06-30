@@ -1,5 +1,9 @@
---------------- SQL ---------------
+/**************************************************************************
+ HISTORIAL DE MODIFICACIONES:
 
+ ISSUES   AUTOR    FECHA        DESCRIPCION
+ #RAS-8   JJA      30/06/2021   Se mejoro el filtro de uos por niveles segun el organigrama para el  Reporte de conductores asignados en sistema de rastreo
+***************************************************************************/
 CREATE OR REPLACE FUNCTION orga.ft_uo_sel (
   par_administrador integer,
   par_id_usuario integer,
@@ -62,7 +66,9 @@ BEGIN
             IF (pxp.f_existe_parametro(par_tabla,'presupuesta')) THEN
                v_filadd = ' (UO.presupuesta = '''||v_parametros.presupuesta||''') and ';
             END IF;
-            
+            IF (pxp.f_existe_parametro(par_tabla,'uo_nivel')) THEN
+               v_filadd = ' (NI.numero_nivel in ( '||v_parametros.uo_nivel||')) and ';
+            END IF;
             
                v_consulta:='SELECT UO.id_uo,
                                   UO.cargo_individual,
@@ -84,6 +90,9 @@ BEGIN
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
+
+                            LEFT JOIN orga.tnivel_organizacional NI on NI.id_nivel_organizacional=UO.id_nivel_organizacional --#RAS-8
+
                             WHERE UO.estado_reg=''activo'' and '||v_filadd;
                
                
@@ -115,7 +124,9 @@ BEGIN
             IF (pxp.f_existe_parametro(par_tabla,'gerencia')) THEN
                v_filadd = ' (UO.gerencia = '''||v_parametros.gerencia||''') and ';
             END IF;
-            
+            IF (pxp.f_existe_parametro(par_tabla,'uo_nivel')) THEN
+               v_filadd = ' (NI.numero_nivel in ( '||v_parametros.uo_nivel||')) and ';
+            END IF;
                v_consulta:='SELECT
                                   count(UO.id_uo)
                             FROM orga.tuo UO
@@ -123,6 +134,9 @@ BEGIN
                             INNER JOIN SEGU.vpersona PERREG ON PERREG.id_persona=USUREG.id_persona
                             LEFT JOIN SEGU.tusuario USUMOD ON USUMOD.id_usuario=UO.id_usuario_mod
                             LEFT JOIN SEGU.vpersona PERMOD ON PERMOD.id_persona=USUMOD.id_persona
+
+                            LEFT JOIN orga.tnivel_organizacional NI on NI.id_nivel_organizacional=UO.id_nivel_organizacional --#RAS-8
+
                             WHERE UO.estado_reg=''activo'' and '||v_filadd;
                v_consulta:=v_consulta||v_parametros.filtro;
                return v_consulta;

@@ -5,7 +5,8 @@
  Autor:		Kplian
  Fecha:		04/06/2011
  	ISSUE		FECHA			AUTHOR				DESCRIPCION
- *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro 
+ *  #26			26/6/2019		EGS					Se agrega los Cmp centro y orden centro
+ *  #RAS-8      21/05/2021      JJA                 Reporte de conductores asignados
  */
 class MODUo extends MODbase{
 	
@@ -24,6 +25,8 @@ class MODUo extends MODbase{
 		$this->setParametro('correspondencia','correspondencia','varchar');
 		$this->setParametro('gerencia','gerencia','varchar');
 		$this->setParametro('presupuesta','presupuesta','varchar');
+
+        $this->setParametro('uo_nivel','uo_nivel','varchar'); //#RAS-8
 		
 		//Definicion de la lista del resultado del query
 		$this->captura('id_uo','integer');
