@@ -35,6 +35,15 @@ class ACTUo extends ACTbase{
 		if ($this->objParam->getParametro('estado_reg') == 'activo') {
             $this->objParam->addFiltro("UO.estado_reg = ''activo''");  
         }
+
+        if($this->objParam->getParametro('fill_gerente') == 'si'){
+            $this->objParam->addFiltro("(case
+                                            when orga.f_obtener_uo_gerente(".$_SESSION["ss_id_usuario"].") is null then
+                                               0 = 0 
+                                            else
+                                                UO.id_uo = orga.f_obtener_uo_gerente(".$_SESSION["ss_id_usuario"].") 
+                                            end)");
+        }
 		
 		//crea el objetoFunSeguridad que contiene todos los metodos del sistema de seguridad
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
