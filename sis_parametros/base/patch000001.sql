@@ -2779,4 +2779,21 @@ IS 'si o no, si esta habilitado mostrara el campo de nota_debito_agencia, caso c
 
 /***********************************F-SCP-MGM-PARAM-1-17/04/2020****************************************/
 
+/***********************************I-SCP-JRR-PARAM-0-15/07/2021****************************************/
 
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN IF NOT EXISTS requiere_ot VARCHAR(20) DEFAULT 'opcional' NOT NULL;
+
+COMMENT ON COLUMN param.tconcepto_ingas.requiere_ot
+IS 'obligatorio, opcional';
+
+--------------- SQL ---------------
+
+ALTER TABLE param.tconcepto_ingas
+  ADD COLUMN IF NOT EXISTS filtro_ot VARCHAR(25) DEFAULT 'todos' NOT NULL;
+
+COMMENT ON COLUMN param.tconcepto_ingas.filtro_ot
+IS 'todos, listado  , si es listado filtra atravez de la relacion ot_concepto_gasto';
+
+
+/***********************************F-SCP-JRR-PARAM-0-15/07/2021****************************************/
