@@ -1143,9 +1143,9 @@ class ReportePDF extends MYPDF
 	 }
 
 	function _json_decode($string) {
-		if (get_magic_quotes_gpc()) {
+		/*if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
-		}
+		}*/
 
 		return json_decode($string,true);
 	}

@@ -2263,7 +2263,7 @@ ALTER TABLE param.ttipo_cc
   ADD COLUMN operativo VARCHAR(4) NOT NULL DEFAULT 'si';
 
 COMMENT ON COLUMN param.ttipo_cc.operativo
-IS 'los nodos de moviemitno  que estan operacionales pueden imputarce para compras';
+IS 'los nodos de movimiento  que estan operacionales pueden imputarce para compras';
 /***********************************F-SCP-JRR-PARAM-1-30/11/2018*****************************************/
 
 /***********************************I-SCP-EGS-PARAM-1-01/12/2018*****************************************/
@@ -2331,6 +2331,9 @@ CREATE TABLE param.tbuzon (
 
 WITH (oids = false);
 
+ALTER TABLE param.tproveedor_cta_bancaria
+    ADD COLUMN banco_intermediario VARCHAR(300);
+
 ALTER TABLE param.tplantilla
   ALTER COLUMN sw_estacion DROP DEFAULT;
 
@@ -2368,8 +2371,7 @@ ALTER TABLE param.tplantilla
 ALTER TABLE param.ttipo_cc
   ADD COLUMN autorizacion VARCHAR(50) [];
 
-ALTER TABLE param.tproveedor_cta_bancaria
-  ALTER COLUMN banco_intermediario TYPE VARCHAR(300) COLLATE pg_catalog."default";
+
 
 
 ALTER TABLE param.tproveedor

@@ -71,12 +71,11 @@ class ACTAuten extends ACTbase {
 	}
 	//Genera las llaves publicas
 	function getPublicKey(){
+
 		//Se obtiene el primer primo
 		$this->funciones= $this->create('MODPrimo');
 		$this->res=$this->funciones->ObtenerPrimo();
 		
-		
-		//echo 'resp:'.$this->res;exit;
 		if($this->res->getTipo()=='ERROR'){
 			
 			$this->res->imprimirRespuesta($this->res->generarJson());
