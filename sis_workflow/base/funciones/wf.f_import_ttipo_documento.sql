@@ -8,10 +8,10 @@ CREATE OR REPLACE FUNCTION wf.f_import_ttipo_documento (
   p_tipo_documento varchar,
   p_orden numeric,
   p_categoria_documento varchar [],
-  p_solo_lectura varchar,
-  p_nombre_vista varchar,
-  p_nombre_archivo_plantilla text,
-  p_esquema_vista varchar
+  p_solo_lectura varchar default 'no',
+  p_nombre_vista varchar default null,
+  p_nombre_archivo_plantilla text  default null,
+  p_esquema_vista varchar default null
 )
 RETURNS varchar AS
 $body$

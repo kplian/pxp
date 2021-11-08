@@ -28,15 +28,15 @@ CREATE OR REPLACE FUNCTION wf.f_import_ttipo_estado (
     p_titulo_alerta varchar,
     p_parametros_ad varchar,
     p_codigo_estado_anterior varchar,
-    p_admite_obs varchar,
-    p_etapa varchar,
-    p_grupo_doc varchar,
-    p_icono varchar,
-    p_dias_alerta integer,
-    p_sla varchar,
-    p_dias_limite integer,
-    p_dias_envio varchar,
-    p_hrs_envio varchar
+    p_admite_obs varchar default 'no',
+    p_etapa varchar default null,
+    p_grupo_doc varchar default null,
+    p_icono varchar default null,
+    p_dias_alerta integer default null,
+    p_sla varchar default 'no',
+    p_dias_limite integer default null,
+    p_dias_envio varchar default null,
+    p_hrs_envio varchar default null
 )
     RETURNS varchar AS
 $body$

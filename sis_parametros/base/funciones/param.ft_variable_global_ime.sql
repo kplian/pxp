@@ -135,4 +135,3 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION param.f_servicio_ime(integer, integer, character varying, character varying) OWNER TO postgres;

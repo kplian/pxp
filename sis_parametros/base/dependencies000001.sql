@@ -1471,7 +1471,7 @@ select pxp.f_insert_testructura_gui ('ANTIG', 'OTROS');
 /***********************************F-DEP-SAZP-PARAM-82-14/11/2019****************************************/
 /***********************************I-DEP-VAN-PARAM-1-20/02/2020****************************************/
 alter table param.tep
-    add CONSTRAINT contraint_fin_reg_prog_proy UNIQUE (id_financiador, id_regional, id_prog_pory_acti)
+    add CONSTRAINT contraint_fin_reg_prog_proy UNIQUE (id_financiador, id_regional, id_prog_pory_acti);
 /***********************************F-DEP-VAN-PARAM-1-20/02/2020****************************************/
 
 

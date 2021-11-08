@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION wf.f_import_testructura_estado (
   p_codigo_tipo_proceso varchar,
   p_prioridad integer,
   p_regla varchar,
-  p_bucle varchar
+  p_bucle varchar default 'no'
 )
 RETURNS varchar AS
 $body$

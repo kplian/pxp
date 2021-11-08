@@ -289,7 +289,7 @@ def restaurar_esquema(url):
                 command = psql + ' -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -q -d ' + db + ' < ' + item + 'base/schema.sql'
 
             for line in run_command(command):
-                f_log.write(line)
+                f_log.write(str(line, encoding))
         #otros esquemas:se crea el esquema usando la funcion manage schema
         elif item !=os.path.dirname(__file__) +  '/../../':
             esquemas = get_schema(item + 'base/schema.sql')
@@ -668,7 +668,7 @@ if (datos  == 's'):
                 command = psql + ' -h ' + host + ' -p ' + port + ' -U ' + usuario + ' '+ db + ' < ' + item + 'base/test_data.sql'
 
             for line in run_command(command):
-                f_log.write(line)
+                f_log.write(str(line, encoding))
 
 if os.access(os.path.dirname(__file__) + '/../../base/aggregates.sql', os.R_OK):
     f_log.write("**************AGGREGATES : ")
@@ -679,7 +679,7 @@ if os.access(os.path.dirname(__file__) + '/../../base/aggregates.sql', os.R_OK):
         command = psql + ' -h ' + host + ' -p ' + port + ' -U ' + usuario + ' '+ db + ' < ' + os.path.dirname(__file__) + '/../../base/aggregates.sql'
 
     for line in run_command(command):
-        f_log.write(line)
+        f_log.write(str(line, encoding))
 
 #crear dependencias de cada esquema
 execute_script(url, 'dependencies',f_log)

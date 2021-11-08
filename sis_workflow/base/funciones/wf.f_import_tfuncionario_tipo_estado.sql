@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION wf.f_import_tfuncionario_tipo_estado (
   p_ci varchar,
   p_codigo_depto varchar,
   p_regla varchar,
-  p_id_labores_tipo_proceso integer
+  p_id_labores_tipo_proceso integer default null
 )
 RETURNS varchar AS
 $body$

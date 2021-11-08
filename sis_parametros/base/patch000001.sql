@@ -2331,9 +2331,6 @@ CREATE TABLE param.tbuzon (
 
 WITH (oids = false);
 
-ALTER TABLE param.tproveedor_cta_bancaria
-    ADD COLUMN banco_intermediario VARCHAR(300);
-
 ALTER TABLE param.tplantilla
   ALTER COLUMN sw_estacion DROP DEFAULT;
 
