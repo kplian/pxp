@@ -1,18 +1,7 @@
--- FUNCTION: orga.ft_estructura_uo_sel(integer, integer, character varying, character varying)
-
--- DROP FUNCTION orga.ft_estructura_uo_sel(integer, integer, character varying, character varying);
-
-CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_sel(
-	par_administrador integer,
-	par_id_usuario integer,
-	par_tabla character varying,
-	par_transaccion character varying)
-    RETURNS character varying
-    LANGUAGE 'plpgsql'
-
-    COST 100
-    VOLATILE 
-AS $BODY$
+CREATE OR REPLACE FUNCTION orga.ft_estructura_uo_sel(par_administrador integer, par_id_usuario integer, par_tabla character varying, par_transaccion character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
 /**************************************************************************
  FUNCION: 		orga.ft_estructura_uo_sel
  DESCRIPCIÓN:  listado de uo
@@ -72,7 +61,7 @@ BEGIN
                v_condicion:=v_condicion ||'  and uo.estado_reg=''activo'' ';
 
 			if (v_parametros.estado='vigentes') then --#ETR-2026
-            	v_condicion:= v_condicion || ' and UO.vigente=''si'' ';
+            	v_condicion:= v_condicion || ' and coalesce(UO.vigente,''si'')=''si'' ';
             end if;
 
                v_consulta:='SELECT
@@ -161,7 +150,10 @@ EXCEPTION
 
 
 END;
-$BODY$;
+$function$
+;
 
-ALTER FUNCTION orga.ft_estructura_uo_sel(integer, integer, character varying, character varying)
-    OWNER TO postgres;
+-- Permissions
+
+ALTER FUNCTION orga.ft_estructura_uo_sel(int4,int4,varchar,varchar) OWNER TO postgres;
+GRANT ALL ON FUNCTION orga.ft_estructura_uo_sel(int4,int4,varchar,varchar) TO postgres;

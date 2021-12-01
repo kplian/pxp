@@ -1078,3 +1078,9 @@ ALTER TABLE orga.tuo
 ALTER TABLE orga.tuo
   ALTER COLUMN vigente SET DEFAULT 'si';
 /*****************************F-SCP-MZM-ORGA-ETR-2026-09/12/2020*************/  
+
+/*****************************I-SCP-MZM-ORGA-0-25/10/2021*************/
+ALTER TABLE orga.tuo
+  ALTER COLUMN vigente SET DEFAULT 'si';
+/*****************************F-SCP-MZM-ORGA-0-25/10/2021*************/
+
