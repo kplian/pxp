@@ -7,7 +7,8 @@ CREATE TABLE orga.tdepto (
     nombre varchar(200),
     nombre_corto varchar(100),
     id_subsistema integer,
-    codigo varchar(15)
+    codigo varchar(15),
+    CONSTRAINT tdepto_pkey PRIMARY KEY (id_depto)
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
@@ -17,7 +18,8 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 CREATE TABLE orga.tusuario_uo (
     id_usuario_uo serial NOT NULL,
     id_usuario integer,
-    id_uo integer
+    id_uo integer,
+    CONSTRAINT tusuario_uo_pkey PRIMARY KEY (id_usuario_uo)
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
@@ -27,7 +29,8 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 CREATE TABLE orga.testructura_uo (
     id_estructura_uo serial NOT NULL,
     id_uo_padre integer,
-    id_uo_hijo integer
+    id_uo_hijo integer,
+    CONSTRAINT testructura_uo_pkey PRIMARY KEY (id_estructura_uo)
 )
 INHERITS (pxp.tbase) WITH OIDS;
 
@@ -40,17 +43,46 @@ CREATE TABLE orga.tfuncionario (
     codigo varchar(20),
     email_empresa varchar(150),
     interno varchar(9),
-    fecha_ingreso date DEFAULT now() NOT NULL
+    fecha_ingreso date DEFAULT now() NOT NULL,
+    telefono_ofi varchar(50),
+    antiguedad_anterior INTEGER,
+    id_biometrico INTEGER,
+    id_auxiliar INTEGER,
+    codigo_rciva VARCHAR(200),
+    monto_rciva_anterior NUMERIC(10,2) DEFAULT 0 NOT NULL,
+    profesion VARCHAR(500),
+    fecha_quinquenio DATE,
+    CONSTRAINT tfuncionario_id_persona_key UNIQUE (id_persona),
+    CONSTRAINT tfuncionario_pkey PRIMARY KEY (id_funcionario)
 ) 
 INHERITS (pxp.tbase) WITH OIDS;
 
+COMMENT ON COLUMN orga.tfuncionario.email_empresa IS 'correo corporativo  asignado por la empresa';
+COMMENT ON COLUMN orga.tfuncionario.interno IS 'numero telefonico interno de la empresa';
+
+COMMENT ON COLUMN orga.tfuncionario.id_auxiliar
+IS 'ahce referencia al id_auciliar_contable del funcionario, es de uso opcional';
+
+COMMENT ON COLUMN orga.tfuncionario.codigo_rciva
+IS 'codigo RCVIVA que permite acumular el IVA del FUNCIONARIO cuando viene de otra empresas';
+
+COMMENT ON COLUMN orga.tfuncionario.monto_rciva_anterior
+IS 'Si viene de otra empresa y tiene iva acumulado';
+
+COMMENT ON COLUMN orga.tfuncionario.profesion
+IS 'nombre de la profesion';
+
+COMMENT ON COLUMN orga.tfuncionario.fecha_quinquenio
+IS 'fecha del ultimo quinquenio pagado al funcionario, si es nulo no se le pago ninguno';
 --
 -- Structure for table tnivel_organizacional (OID = 306592) : 
 --
 CREATE TABLE orga.tnivel_organizacional (
     id_nivel_organizacional serial NOT NULL,
     nombre_nivel varchar(50) NOT NULL,
-    numero_nivel integer NOT NULL
+    numero_nivel integer NOT NULL,
+    CONSTRAINT tnivel_organizacional_numero_nivel_key UNIQUE (numero_nivel),
+    CONSTRAINT tnivel_organizacional_pk_kp_id_nivel_organizacional PRIMARY KEY (id_nivel_organizacional)
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
@@ -61,15 +93,38 @@ CREATE TABLE orga.tuo (
     id_uo serial NOT NULL,
     nombre_unidad varchar(100),
     nombre_cargo varchar(150),
-    cargo_individual varchar(2),
+    cargo_individual varchar,
     descripcion varchar(100),
     presupuesta varchar(2),
     codigo varchar(15),
     nodo_base varchar(2) DEFAULT 'no'::character varying NOT NULL,
     gerencia varchar(2),
-    correspondencia varchar(2)
+    correspondencia varchar(2),
+    id_nivel_organizacional INTEGER,
+    planilla VARCHAR(2) DEFAULT 'no',
+    prioridad VARCHAR(30),
+    codigo_alterno VARCHAR,
+    centro VARCHAR(2) DEFAULT 'no' NOT NULL,
+    orden_centro NUMERIC DEFAULT 0 NOT NULL,
+    vigente VARCHAR(2) DEFAULT 'si',
+    tipo_unidad varchar(20) default 'no',
+    CONSTRAINT tuo_pkey PRIMARY KEY (id_uo)
 )
 INHERITS (pxp.tbase) WITH OIDS;
+COMMENT ON COLUMN orga.tuo.orden_centro
+IS 'para ordenar en reportes, admite decimales';
+
+
+COMMENT ON COLUMN orga.tuo.centro
+IS 'si o no,  señala si es en un centro de revision util para agrupar en reprotes';
+
+
+COMMENT ON COLUMN orga.tuo.codigo_alterno
+IS 'este codigo se puede usar como llave de manera alterna al codigo de la UO';
+
+
+COMMENT ON COLUMN orga.tuo.nodo_base IS 'Identifica la raiz del organigrama';
+
 --
 -- Structure for table tuo_funcionario (OID = 306676) : 
 --
@@ -79,11 +134,34 @@ CREATE TABLE orga.tuo_funcionario (
     id_uo integer,
     id_funcionario integer,
     fecha_asignacion date,
-    fecha_finalizacion date
+    fecha_finalizacion date,
+    tipo VARCHAR(10) default 'oficial' NOT NULL,
+    fecha_documento_asignacion DATE,
+    nro_documento_asignacion VARCHAR(50),
+    observaciones_finalizacion VARCHAR(50) DEFAULT 'fin contrato', 
+    id_cargo INTEGER,
+    certificacion_presupuestaria  VARCHAR,
+    carga_horaria INTEGER DEFAULT 240 NOT NULL,
+    prioridad NUMERIC,
+    separar_contrato VARCHAR(2) DEFAULT 'no',
+    CONSTRAINT tuo_funcionario_pkey PRIMARY KEY (id_uo_funcionario),
+    CONSTRAINT tuo_funcionario__tipo_chk CHECK (tipo='funcional' or tipo = 'oficial')
+
 )
 INHERITS (pxp.tbase) WITH OIDS;
-ALTER TABLE ONLY orga.tuo_funcionario ALTER COLUMN id_uo SET STATISTICS 0;
+ALTER TABLE orga.tuo_funcionario
+  ALTER COLUMN id_uo SET STATISTICS 0;
 
+COMMENT ON COLUMN orga.tuo_funcionario.carga_horaria
+IS 'carga horaria mensual, tiempo completo 240 por defecto';
+
+COMMENT ON COLUMN orga.tuo_funcionario.estado_reg IS 'activo :  relacion vigente
+eliminado: relacion eliminada no se tiene que considerar 
+finalizada: el funcionario se le cambiio el cargo, se tiene que considerar como historico 
+finalizado:';
+
+COMMENT ON COLUMN orga.tuo_funcionario.separar_contrato
+IS 'Valor por defecto ''no'', cambia a si cuando al no haber periodo de descanso entre contratos, existe cambio de tipo_contrato (planta-odt) o modificacion a carga_horaria.';
 
 
 --
@@ -93,77 +171,12 @@ CREATE TABLE orga.tdepto_usuario (
     id_depto_usuario serial NOT NULL,
     id_depto integer,
     id_usuario integer,
-    cargo varchar(300)
+    cargo varchar(300),
+    CONSTRAINT tdepto_usuario_tdepto_usuairo_pkey PRIMARY KEY (id_depto_usuario)
+    
 )
 INHERITS (pxp.tbase) WITH OIDS;
---
--- Definition for index tdepto_pkey (OID = 307992) : 
---
-ALTER TABLE ONLY orga.tdepto
-    ADD CONSTRAINT tdepto_pkey
-    PRIMARY KEY (id_depto);
---
--- Definition for index tusuario_uo_pkey (OID = 308024) : 
---
-ALTER TABLE ONLY orga.tusuario_uo
-    ADD CONSTRAINT tusuario_uo_pkey
-    PRIMARY KEY (id_usuario_uo);
---
--- Definition for index testructura_uo_pkey (OID = 308036) : 
---
-ALTER TABLE ONLY orga.testructura_uo
-    ADD CONSTRAINT testructura_uo_pkey
-    PRIMARY KEY (id_estructura_uo);
---
--- Definition for index tfuncionario_id_persona_key (OID = 308040) : 
---
-ALTER TABLE ONLY orga.tfuncionario
-    ADD CONSTRAINT tfuncionario_id_persona_key
-    UNIQUE (id_persona);
---
--- Definition for index tfuncionario_pkey (OID = 308042) : 
---
-ALTER TABLE ONLY orga.tfuncionario
-    ADD CONSTRAINT tfuncionario_pkey
-    PRIMARY KEY (id_funcionario);
---
--- Definition for index tnivel_organizacional_numero_nivel_key (OID = 308046) : 
---
-ALTER TABLE ONLY orga.tnivel_organizacional
-    ADD CONSTRAINT tnivel_organizacional_numero_nivel_key
-    UNIQUE (numero_nivel);
---
--- Definition for index tnivel_organizacional_pk_kp_id_nivel_organizacional (OID = 308048) : 
---
-ALTER TABLE ONLY orga.tnivel_organizacional
-    ADD CONSTRAINT tnivel_organizacional_pk_kp_id_nivel_organizacional
-    PRIMARY KEY (id_nivel_organizacional);
---
--- Definition for index tuo_funcionario_pkey (OID = 308064) : 
---
-ALTER TABLE ONLY orga.tuo_funcionario
-    ADD CONSTRAINT tuo_funcionario_pkey
-    PRIMARY KEY (id_uo_funcionario);
---
--- Definition for index tuo_pkey (OID = 308066) : 
---
-ALTER TABLE ONLY orga.tuo
-    ADD CONSTRAINT tuo_pkey
-    PRIMARY KEY (id_uo);
 
-ALTER TABLE ONLY orga.tdepto_usuario
-    ADD CONSTRAINT tdepto_usuario_tdepto_usuairo_pkey
-    PRIMARY KEY (id_depto_usuario);
---
--- Comments
---
-COMMENT ON COLUMN orga.tfuncionario.email_empresa IS 'correo corporativo  asignado por la empresa';
-COMMENT ON COLUMN orga.tfuncionario.interno IS 'numero telefonico interno de la empresa';
-COMMENT ON COLUMN orga.tuo.nodo_base IS 'Identifica la raiz del organigrama';
-COMMENT ON COLUMN orga.tuo_funcionario.estado_reg IS 'activo :  relacion vigente
-eliminado: relacion eliminada no se tiene que considerar 
-finalizada: el funcionario se le cambiio el cargo, se tiene que considerar como historico 
-finalizado:';
 
 CREATE TABLE orga.ttipo_horario (
   id_tipo_horario SERIAL, 
@@ -200,6 +213,9 @@ CREATE TABLE orga.tfuncionario_especialidad(
   id_funcionario_especialidad serial NOT NULL,
   id_funcionario integer NOT NULL,
   id_especialidad integer NOT NULL,
+  fecha DATE,
+  numero_especialidad VARCHAR(10),
+  descripcion VARCHAR(200), 
   CONSTRAINT tfuncionario_especialidad_pkey PRIMARY KEY (id_funcionario_especialidad),
   CONSTRAINT uq__id_funcionario_especialidad UNIQUE (id_funcionario, id_especialidad)
 ) INHERITS (pxp.tbase)
@@ -208,21 +224,7 @@ ALTER TABLE orga.tfuncionario_especialidad OWNER TO postgres;
 
 /********************************************F-SCP-JRR-ORGA-1-19/11/2012********************************************/
 
-/********************************************I-SCP-RCM-ORGA-92-27/12/2012********************************************/
-alter table orga.tfuncionario
-drop constraint tfuncionario_id_persona_key;
-/********************************************F-SCP-RCM-ORGA-92-27/12/2012********************************************/
 
-/********************************************I-SCP-RCM-ORGA-112-06/02/2013********************************************/
-alter table orga.tfuncionario
-add column telefono_ofi varchar(50);
-/********************************************F-SCP-RCM-ORGA-112-06/02/2013********************************************/
-
-/*****************************I-SCP-RAC-ORGA-0-11/03/2013*************/
---cada persona puede tener un solo funcionario
-ALTER TABLE orga.tfuncionario 
-  ADD UNIQUE (id_persona);
-/*****************************F-SCP-RAC-ORGA-0-11/03/2013*************/
 
 /*****************************I-SCP-JRR-ORGA-0-9/01/2014*************/
 CREATE TABLE orga.tcategoria_salarial (
@@ -240,9 +242,13 @@ CREATE TABLE orga.tescala_salarial (
   codigo VARCHAR(20) NOT NULL, 
   nombre VARCHAR(200) NOT NULL, 
   haber_basico NUMERIC(9,2) NOT NULL, 
-  fecha_ini DATE NOT NULL, 
+  fecha_ini DATE, 
   fecha_fin DATE, 
-  PRIMARY KEY(id_escala_salarial)
+  aprobado VARCHAR(2) DEFAULT 'si' NOT NULL,
+  nro_casos INTEGER NOT NULL,
+  id_escala_padre INTEGER,
+  PRIMARY KEY(id_escala_salarial),
+  CONSTRAINT chk__tescala_salarial__aprobado CHECK (aprobado = 'si' or aprobado = 'no')
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
@@ -252,9 +258,20 @@ CREATE TABLE orga.tcargo (
   id_tipo_contrato INTEGER NOT NULL, 
   id_escala_salarial INTEGER NOT NULL, 
   codigo VARCHAR(20) NOT NULL, 
+  nombre VARCHAR(200) NOT NULL,
+  fecha_ini DATE NOT NULL,
+  fecha_fin DATE,
+  id_lugar INTEGER NOT NULL,
+  id_temporal_cargo INTEGER,
+  id_oficina INTEGER ,
+  id_cargo_padre  INTEGER,
+  id_tipo_cargo INTEGER,
   PRIMARY KEY(id_cargo)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
+
+COMMENT ON COLUMN orga.tcargo.id_tipo_cargo
+IS 'clasifica el cargo, util para aplicar configuracion como el factor de diponibilidad de manera masiva';
 
 CREATE TABLE orga.tcargo_presupuesto (
   id_cargo_presupuesto SERIAL NOT NULL, 
@@ -263,6 +280,7 @@ CREATE TABLE orga.tcargo_presupuesto (
   porcentaje NUMERIC(5,2) NOT NULL, 
   fecha_ini DATE NOT NULL, 
   id_gestion INTEGER NOT NULL,
+  id_ot INTEGER,
   PRIMARY KEY(id_cargo_presupuesto)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -274,6 +292,7 @@ CREATE TABLE orga.tcargo_centro_costo (
   porcentaje NUMERIC(5,2) NOT NULL, 
   fecha_ini DATE NOT NULL, 
   id_gestion INTEGER NOT NULL,
+  id_ot INTEGER,
   PRIMARY KEY(id_cargo_centro_costo)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -283,6 +302,9 @@ CREATE TABLE orga.ttemporal_cargo (
   nombre VARCHAR(200) NOT NULL, 
   estado VARCHAR(20) NOT NULL, 
   id_temporal_jerarquia_aprobacion INTEGER NOT NULL, 
+  fecha_ini DATE,
+  fecha_fin DATE,
+  id_cargo_padre INTEGER,
   PRIMARY KEY(id_temporal_cargo)
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
@@ -302,65 +324,25 @@ CREATE TABLE orga.toficina (
   nombre VARCHAR(200) NOT NULL, 
   id_lugar INTEGER NOT NULL, 
   aeropuerto VARCHAR(2) NOT NULL, 
-  PRIMARY KEY(id_oficina)
+  zona_franca VARCHAR(2),
+  frontera VARCHAR(2),
+  direccion VARCHAR(255) NULL,
+  correo_oficina VARCHAR,
+  telefono VARCHAR(50),
+  orden NUMERIC(100,2),
+  PRIMARY KEY(id_oficina),
+  CONSTRAINT chk__toficina__aeropuerto CHECK (aeropuerto = 'si' or aeropuerto = 'no')
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN tipo VARCHAR(10);
+
   
 
-ALTER TABLE orga.tuo_funcionario
-  ADD CONSTRAINT tuo_funcionario__tipo_chk CHECK (tipo='funcional' or tipo = 'oficial');
   
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN fecha_documento_asignacion DATE;
+  
+  
 
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN nro_documento_asignacion VARCHAR(50);
-
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN observaciones_finalizacion VARCHAR(50);
-  
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN id_cargo INTEGER;
-  
-ALTER TABLE orga.tescala_salarial
-  ADD COLUMN aprobado VARCHAR(2) DEFAULT 'si' NOT NULL;
-
-ALTER TABLE orga.tescala_salarial
-  ADD COLUMN nro_casos INTEGER NOT NULL;
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN nombre VARCHAR(200) NOT NULL;
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN fecha_ini DATE NOT NULL;
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN fecha_fin DATE;
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN id_lugar INTEGER NOT NULL;
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN id_temporal_cargo INTEGER NOT NULL;
-  
-ALTER TABLE orga.tescala_salarial
-  ADD CONSTRAINT chk__tescala_salarial__aprobado CHECK (aprobado = 'si' or aprobado = 'no');
-  
-ALTER TABLE orga.tuo
-  ADD COLUMN id_nivel_organizacional INTEGER;
-  
-ALTER TABLE orga.toficina
-  ADD CONSTRAINT chk__toficina__aeropuerto CHECK (aeropuerto = 'si' or aeropuerto = 'no');
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN id_oficina INTEGER NOT NULL;
-  
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN antiguedad_anterior INTEGER;
-  
+ 
 CREATE TABLE orga.tfuncionario_cuenta_bancaria (
   id_funcionario_cuenta_bancaria SERIAL, 
   id_funcionario INTEGER NOT NULL, 
@@ -378,30 +360,11 @@ CREATE TABLE orga.ttipo_contrato (
   id_tipo_contrato SERIAL, 
   codigo VARCHAR NOT NULL, 
   nombre VARCHAR NOT NULL, 
+  considerar_planilla VARCHAR(2) DEFAULT 'no'::character varying NOT NULL,
+  indefinido VARCHAR(2) DEFAULT 'no',
   CONSTRAINT ttipo_contrato_pkey PRIMARY KEY(id_tipo_contrato) 
 )INHERITS (pxp.tbase) WITH OIDS;
 /*****************************F-SCP-JRR-ORGA-0-21/01/2014*************/
-
-/*****************************I-SCP-JRR-ORGA-0-29/01/2014*************/
-ALTER TABLE orga.toficina
-  ADD COLUMN zona_franca VARCHAR(2);
-
-ALTER TABLE orga.toficina
-  ADD COLUMN frontera VARCHAR(2);
-/*****************************F-SCP-JRR-ORGA-0-29/01/2014*************/
-
-/*****************************I-SCP-JRR-ORGA-0-13/02/2014*************/
-ALTER TABLE orga.tuo
-  ADD COLUMN planilla VARCHAR(2);
-
-ALTER TABLE orga.tuo
-  ALTER COLUMN planilla SET DEFAULT 'no';
-  
-ALTER TABLE orga.tuo
-  ADD COLUMN prioridad VARCHAR(30);
-
-/*****************************F-SCP-JRR-ORGA-0-13/02/2014*************/
-
 
 /*****************************I-SCP-RAC-ORGA-0-20/05/2014*************/
 
@@ -418,30 +381,6 @@ CREATE TABLE orga.tinterinato (
 WITHOUT OIDS;
 
 /*****************************F-SCP-RAC-ORGA-0-20/05/2014*************/
-
-
-/*****************************I-SCP-RAC-ORGA-0-21/05/2014*************/
-
---------------- SQL ---------------
-update orga.tuo_funcionario set
-tipo = 'oficial';
-
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN tipo SET DEFAULT 'oficial';
-
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN tipo SET NOT NULL;
-
-
-/*****************************F-SCP-RAC-ORGA-0-21/05/2014*************/
-
-
-
-/*****************************I-SCP-JRR-ORGA-0-04/06/2014*************/
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN observaciones_finalizacion SET DEFAULT 'fin contrato';
-/*****************************F-SCP-JRR-ORGA-0-04/06/2014*************/
-
 
 
 
@@ -463,41 +402,6 @@ WITHOUT OIDS;
 
 /*****************************F-SCP-JRR-ORGA-0-31/07/2014*************/
 
-/*****************************I-SCP-JRR-ORGA-0-01/08/2014*************/
-CREATE TYPE wf.cuenta_form AS (  
-  id_oficina_cuenta INTEGER,
-  monto NUMERIC(18,2)
-);
-
-/*****************************F-SCP-JRR-ORGA-0-01/08/2014*************/
-
-/*****************************I-SCP-JRR-ORGA-0-21/10/2014*************/
-ALTER TABLE orga.tescala_salarial
-  ADD COLUMN id_escala_padre INTEGER;
-
-/*****************************F-SCP-JRR-ORGA-0-21/10/2014*************/
-
-/*****************************I-SCP-JRR-ORGA-0-04/11/2014*************/
-ALTER TABLE orga.tescala_salarial
-  ALTER COLUMN fecha_ini DROP NOT NULL;
-  
-/*****************************F-SCP-JRR-ORGA-0-04/11/2014*************/
-
-
-/*****************************I-SCP-JRR-ORGA-0-05/03/2015*************/
-ALTER TABLE orga.ttemporal_cargo
-  ADD COLUMN fecha_ini DATE;
-  
-ALTER TABLE orga.ttemporal_cargo
-  ADD COLUMN fecha_fin DATE;
-  
-ALTER TABLE orga.ttemporal_cargo
-  ADD COLUMN id_cargo_padre  INTEGER;
-  
-ALTER TABLE orga.tcargo
-  ADD COLUMN id_cargo_padre  INTEGER;
-  
-/*****************************F-SCP-JRR-ORGA-0-05/03/2015*************/
 
 /*****************************I-SCP-RAC-ORGA-0-05/03/2015*************/
 
@@ -507,65 +411,16 @@ CREATE TABLE orga.tuo_funcionario_ope (
   id_funcionario INTEGER,
   fecha_asignacion DATE,
   fecha_finalizacion DATE,
-  CONSTRAINT tuo_funcionario_ope_pkey PRIMARY KEY(id_uo_funcionario_ope),
+  CONSTRAINT tuo_funcionario_ope_pkey PRIMARY KEY(id_uo_funcionario_ope)
  
-  CONSTRAINT fk_tuo_functionario__id_funcionario FOREIGN KEY (id_funcionario)
-    REFERENCES orga.tfuncionario(id_funcionario)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE
-    NOT DEFERRABLE,
-  CONSTRAINT fk_tuo_functionario__id_uo FOREIGN KEY (id_uo)
-    REFERENCES orga.tuo(id_uo)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE
-    NOT DEFERRABLE
+  
 ) INHERITS (pxp.tbase)
 
 WITH (oids = true);
 
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN id_uo SET STATISTICS 0;
   
 /*****************************F-SCP-RAC-ORGA-0-05/03/2015*************/
 
-/*****************************I-SCP-JRR-ORGA-0-14/08/2015*************/
-ALTER TABLE orga.tcargo
-  ALTER COLUMN id_oficina DROP NOT NULL;
-
-/*****************************F-SCP-JRR-ORGA-0-14/08/2015*************/
-
-/*****************************I-SCP-JRR-ORGA-0-01/10/2015*************/
-
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN certificacion_presupuestaria  VARCHAR;
-  
-/*****************************F-SCP-JRR-ORGA-0-01/10/2015*************/
-
-/*****************************I-SCP-JRR-ORGA-0-01/02/2016*************/
-
-ALTER TABLE orga.tcargo
-  ALTER COLUMN id_temporal_cargo DROP NOT NULL;
-
-/*****************************F-SCP-JRR-ORGA-0-01/02/2016*************/
-
-/*****************************I-SCP-JRR-ORGA-0-13/05/2016*************/
-
-ALTER TABLE orga.tfuncionario_especialidad
-  ADD COLUMN fecha DATE;
-  
-ALTER TABLE orga.tfuncionario_especialidad
-  ADD COLUMN numero_especialidad INTEGER;  
-
-ALTER TABLE orga.tfuncionario_especialidad
-  ADD COLUMN descripcion VARCHAR(200);  
-/*****************************F-SCP-JRR-ORGA-0-13/05/2016*************/
-
-
-/*****************************I-SCP-JRR-ORGA-0-19/05/2016*************/
-ALTER TABLE orga.tfuncionario_especialidad
-  ALTER COLUMN numero_especialidad TYPE VARCHAR(10);
-  
-/*****************************F-SCP-JRR-ORGA-0-19/05/2016*************/
 
 /*****************************I-SCP-JRR-ORGA-0-13/09/2016*************/
 CREATE SEQUENCE orga.rep_planilla_actualizada
@@ -585,59 +440,33 @@ CREATE TABLE orga.tuo_tmp (
   padre VARCHAR,
   codigo VARCHAR,
   unidad VARCHAR,
-  estado VARCHAR DEFAULT 'activo' NOT NULL
+  estado VARCHAR DEFAULT 'activo' NOT NULL,
+  migrado VARCHAR(4) DEFAULT 'no' NOT NULL,
+  nivel	varchar(100)
 ) 
 WITH (oids = false);
 
---------------- SQL ---------------
-
-ALTER TABLE orga.tuo_tmp
-  ADD COLUMN migrado VARCHAR(4) DEFAULT 'no' NOT NULL;
-  
-  
-  --------------- SQL ---------------
-
-ALTER TABLE orga.tuo
-  ADD COLUMN codigo_alterno VARCHAR;
-
-COMMENT ON COLUMN orga.tuo.codigo_alterno
-IS 'este codigo se puede usar como llave de manera alterna al codigo de la UO';
-
-
---------------- SQL ---------------
 
 CREATE TABLE orga.tcargo_tmp (
   codigo_uo VARCHAR,
   uo VARCHAR,
   item VARCHAR,
   cargo VARCHAR,
-  migrado VARCHAR(1) DEFAULT 'no' NOT NULL,
-  id_cargo INTEGER
+  migrado VARCHAR(10) COLLATE pg_catalog."default" DEFAULT 'no'::character varying,
+  id_cargo INTEGER,
+  individual VARCHAR,
+  contrato VARCHAR DEFAULT 'planta' NOT NULL,
+  lugar VARCHAR DEFAULT 'BOLIVIA' NOT NULL,
+  escala VARCHAR(10),
+  fecha_ingreso DATE,
+  oficina VARCHAR(200)
 ) 
 WITH (oids = false);
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tcargo_tmp
-  ADD COLUMN individual VARCHAR;
-  
-  --------------- SQL ---------------
-
 COMMENT ON COLUMN orga.tcargo_tmp.individual
 IS 'si cargo individual se lo asgina a la gerencia, si no crea una uo que depende de la gerencia antes de asociar el cargo';
 
---------------- SQL ---------------
-
-ALTER TABLE orga.tcargo_tmp
-  ADD COLUMN contrato VARCHAR DEFAULT 'planta' NOT NULL;
-
 COMMENT ON COLUMN orga.tcargo_tmp.contrato
 IS 'planta, eventual';
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tcargo_tmp
-  ADD COLUMN lugar VARCHAR DEFAULT 'BOLIVIA' NOT NULL;
 
 COMMENT ON COLUMN orga.tcargo_tmp.lugar
 IS 'lugar donde desarrolla funciones';
@@ -693,17 +522,12 @@ CREATE TABLE orga.tfuncionario_tmp (
   migrado VARCHAR DEFAULT 'no'::character varying NOT NULL,
   banco VARCHAR,
   distrito_trabajo VARCHAR,
-  matricula_seguro VARCHAR
+  matricula_seguro VARCHAR,
+  usuario VARCHAR(100)
 ) 
 WITH (oids = false);
 
 /*****************************F-SCP-RAC-ORGA-0-14/02/2017*************/
-
-/*****************************I-SCP-FFP-ORGA-0-06/03/2016*************/
-ALTER TABLE orga.toficina ADD direccion VARCHAR(255) NULL;
-
-
-/*****************************F-SCP-FFP-ORGA-0-06/03/2016*************/
 
 /*****************************I-SCP-FFP-ORGA-1-06/03/2016*************/
 CREATE TABLE orga.tlog_generacion_firma_correo (
@@ -722,40 +546,6 @@ WITH (oids = false);
 
 /*****************************F-SCP-FFP-ORGA-1-06/03/2016*************/
 
-/***********************************I-SCP-JRR-ORGA-0-02/05/2017****************************************/
-ALTER TABLE orga.tcargo_centro_costo
-  ADD COLUMN id_ot INTEGER;
-
-ALTER TABLE orga.tcargo_presupuesto
-  ADD COLUMN id_ot INTEGER;
-
-/***********************************F-SCP-JRR-ORGA-0-02/05/2017****************************************/
-
-
-/*****************************I-SCP-RAC-ORGA-1-23/03/2017*************/
-
---------------- SQL ---------------
-
---algun chapulin se  puso   esta columna en la 
---consulta y se ovlido poner el scrip para la columna en la tabla
-
-ALTER TABLE orga.toficina
-  ADD COLUMN correo_oficina VARCHAR;
-  
-  
-  --------------- SQL ---------------
-
-ALTER TABLE orga.toficina
-  ADD COLUMN telefono VARCHAR(50);
-  
-  
-  --------------- SQL ---------------
-
-ALTER TABLE orga.toficina
-  ADD COLUMN orden NUMERIC(100,2);
-
-/*****************************F-SCP-RAC-ORGA-1-23/03/2017*************/
-
 
 /*****************************I-SCP-FEA-ORGA-0-20/09/2017*************/
 
@@ -765,16 +555,7 @@ INCREMENT 1 MINVALUE 1
 MAXVALUE 9223372036854775807 START 1
 CACHE 1;
 
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN id_oficina INTEGER,
-  ADD COLUMN id_biometrico INTEGER;
 /*****************************F-SCP-FEA-ORGA-0-20/09/2017*************/
-
-/*****************************I-SCP-FEA-ORGA-0-18/10/2017*************/
-ALTER TABLE orga.tfuncionario
-  DROP COLUMN id_oficina;
-/*****************************F-SCP-FEA-ORGA-0-18/10/2017*************/
-
 
 
 /*****************************I-SCP-RAC-ORGA-0-01/12/2018*************/
@@ -788,136 +569,22 @@ CREATE TABLE orga.tfuncionario_cat_prof (
   id_usuario_ai INTEGER,
   usuario_ai VARCHAR(300),
   id_funcionario_cat_prof SERIAL,
-  codigo VARCHAR(20),
-  cat_profesional VARCHAR(50)
+  codigo VARCHAR(20) ,
+  cat_profesional VARCHAR(50),
+  CONSTRAINT tfuncionario_cat_prof_pkey PRIMARY KEY (id_funcionario_cat_prof) NOT DEFERRABLE
 ) INHERITS (pxp.tbase)
 
 WITH (oids = false);
-
 ALTER TABLE orga.tfuncionario_cat_prof
   ALTER COLUMN id_funcionario_cat_prof SET STATISTICS 0;
 
-ALTER TABLE orga.tfuncionario_cat_prof
+ ALTER TABLE orga.tfuncionario_cat_prof
   ALTER COLUMN codigo SET STATISTICS 0;
 
 ALTER TABLE orga.tfuncionario_cat_prof
-  ALTER COLUMN cat_profesional SET STATISTICS 0;
-  
-  
-  ALTER TABLE orga.tuo
-  ALTER COLUMN cargo_individual TYPE VARCHAR;
-
-  
-  
+  ALTER COLUMN cat_profesional SET STATISTICS 0 ;
   
 /*****************************F-SCP-RAC-ORGA-0-01/12/2018*************/
-
-/*****************************I-SCP-CAP-ORGA-0-06/12/2018*************/
-ALTER TABLE orga.tcargo_tmp
-  ALTER COLUMN migrado DROP DEFAULT;
-
-ALTER TABLE orga.tcargo_tmp
-  ALTER COLUMN migrado TYPE VARCHAR(10) COLLATE pg_catalog."default";
-
-ALTER TABLE orga.tcargo_tmp
-  ALTER COLUMN migrado SET DEFAULT 'no'::character varying;
-
-ALTER TABLE orga.tcargo_tmp
-  ADD COLUMN escala VARCHAR(10);
-
-ALTER TABLE orga.tcargo_tmp
-  ADD COLUMN fecha_ingreso DATE;
-
-ALTER TABLE orga.tcargo_tmp
-  ADD COLUMN oficina VARCHAR(200);
-
-ALTER TABLE orga.tfuncionario_cat_prof
-  ADD CONSTRAINT tfuncionario_cat_prof_pkey 
-    PRIMARY KEY (id_funcionario_cat_prof) NOT DEFERRABLE;
-
-ALTER TABLE orga.tfuncionario_tmp
-  ADD COLUMN usuario VARCHAR(100);
-
-ALTER TABLE orga.tuo_tmp
-  ADD COLUMN nivel VARCHAR(100);
-
-------------- SQL ---------------
-
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN id_auxiliar INTEGER;
-
-COMMENT ON COLUMN orga.tfuncionario.id_auxiliar
-IS 'ahce referencia al id_auciliar_contable del funcionario, es de uso opcional';
-
-
-/*****************************F-SCP-CAP-ORGA-0-06/12/2018*************/
-
-/*****************************I-SCP-EGS-ORGA-0-23/05/2019*************/
-ALTER TABLE orga.ttipo_contrato
-  ADD COLUMN considerar_planilla VARCHAR(2) DEFAULT 'no'::character varying NOT NULL;
-/*****************************F-SCP-EGS-ORGA-0-23/05/2019*************/
-
-/*****************************I-SCP-MZM-ORGA-15-19/06/2019*************/
-
-ALTER TABLE orga.ttipo_contrato
-  ADD COLUMN indefinido VARCHAR(2);
-
-ALTER TABLE orga.ttipo_contrato
-  ALTER COLUMN indefinido SET DEFAULT 'no';
-/*****************************F-SCP-MZM-ORGA-15-19/06/2019*************/
-
-
-
-/*****************************I-SCP-RAC-ORGA-24-26/06/2019*************/
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN codigo_rciva VARCHAR(200);
-
-COMMENT ON COLUMN orga.tfuncionario.codigo_rciva
-IS 'codigo RCVIVA que permite acumular el IVA del FUNCIONARIO cuando viene de otra empresas';
-
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN monto_rciva_anterior NUMERIC(10,2) DEFAULT 0 NOT NULL;
-
-COMMENT ON COLUMN orga.tfuncionario.monto_rciva_anterior
-IS 'Si viene de otra empresa y tiene iva acumulado';
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tuo
-  ADD COLUMN centro VARCHAR(2) DEFAULT 'no' NOT NULL;
-
-COMMENT ON COLUMN orga.tuo.centro
-IS 'si o no,  señala si es en un centro de revision util para agrupar en reprotes';
-
-
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tuo
-  ADD COLUMN orden_centro NUMERIC DEFAULT 0 NOT NULL;
-
-COMMENT ON COLUMN orga.tuo.orden_centro
-IS 'para ordenar en reportes, admite decimales';
-
-
---------------- SQL ---------------
-
-
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN profesion VARCHAR(500);
-
-COMMENT ON COLUMN orga.tfuncionario.profesion
-IS 'nombre de la profesion';
-
-/*****************************F-SCP-RAC-ORGA-24-26/06/2019*************/
-
-
 
 
 /*****************************I-SCP-RAC-ORGA-30-15/07/2019*************/
@@ -932,6 +599,8 @@ CREATE TABLE orga.ttipo_cargo (
   id_escala_salarial_max INTEGER NOT NULL,
   factor_disp NUMERIC DEFAULT 0 NOT NULL,
   obs VARCHAR,
+  id_tipo_contrato INTEGER,
+  factor_nocturno NUMERIC DEFAULT 0,
   PRIMARY KEY(id_tipo_cargo)
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
@@ -945,94 +614,28 @@ IS 'escala salarial maxima apra el tipo de cargo';
 COMMENT ON COLUMN orga.ttipo_cargo.factor_disp
 IS 'entre 0 a 1,  para calculo de bono de diposnibilidad  en planillas';
 
---------------- SQL ---------------
-
-ALTER TABLE orga.tcargo
-  ADD COLUMN id_tipo_cargo INTEGER;
-
-COMMENT ON COLUMN orga.tcargo.id_tipo_cargo
-IS 'clasifica el cargo, util para aplicar configuracion como el factor de diponibilidad de manera masiva';
-
-
+COMMENT ON COLUMN orga.ttipo_cargo.factor_nocturno
+IS 'entre 0 a 1';
 /*****************************F-SCP-RAC-ORGA-30-15/07/2019*************/
 
-
-
-
-
-/*****************************I-SCP-RAC-ORGA-31-16/07/2019*************/
-
-
-ALTER TABLE orga.tfuncionario
-  ADD COLUMN fecha_quinquenio DATE;
-
-COMMENT ON COLUMN orga.tfuncionario.fecha_quinquenio
-IS 'fecha del ultimo quinquenio pagado al funcionario, si es nulo no se le pago ninguno';
-
-
-
-/*****************************F-SCP-RAC-ORGA-31-16/07/2019*************/
-
-
-/*****************************I-SCP-RAC-ORGA-32-17/07/2019*************/
-
---------------- SQL ---------------
-
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN carga_horaria INTEGER DEFAULT 240 NOT NULL;
-
-COMMENT ON COLUMN orga.tuo_funcionario.carga_horaria
-IS 'carga horaria mensual, tiempo completo 240 por defecto';
-
-
-/*****************************F-SCP-RAC-ORGA-32-17/07/2019*************/
-/*****************************I-SCP-EGS-ORGA-01-05/08/2019*************/
-ALTER TABLE orga.ttipo_cargo
-  ADD COLUMN id_tipo_contrato INTEGER;
-/*****************************F-SCP-EGS-ORGA-01-05/08/2019*************/
 /*****************************I-SCP-MMV-ORGA-60-10/09/2019*************/
 CREATE TABLE orga.tcodigo_funcionario (
-  id_codigo_funcionario SERIAL NOT NULL,
-  codigo VARCHAR(20) NOT NULL UNIQUE,
+  id_codigo_funcionario SERIAL NOT NULL ,
+  codigo VARCHAR(20) NOT NULL UNIQUE ,
   id_funcionario INTEGER NOT NULL,
   fecha_asignacion DATE NOT NULL,
   fecha_finalizacion DATE,
   PRIMARY KEY(id_codigo_funcionario)
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
-
 ALTER TABLE orga.tcodigo_funcionario
   ALTER COLUMN id_codigo_funcionario SET STATISTICS 0;
 
-ALTER TABLE orga.tcodigo_funcionario
-  ALTER COLUMN codigo SET STATISTICS 0;
+  ALTER TABLE orga.tfuncionario_cat_prof
+  ALTER COLUMN codigo SET STATISTICS 0 ;
+
 /*****************************F-SCP-MMV-ORGA-60-10/09/2019*************/
-/*****************************I-SCP-MMV-ORGA-70-25/09/2019*************/
-ALTER TABLE orga.ttipo_cargo
-  ADD COLUMN factor_nocturno NUMERIC;
 
-ALTER TABLE orga.ttipo_cargo
-  ALTER COLUMN factor_nocturno SET DEFAULT 0;
-
-COMMENT ON COLUMN orga.ttipo_cargo.factor_nocturno
-IS 'entre 0 a 1';
-/*****************************F-SCP-MMV-ORGA-70-25/09/2019*************/
-
-/*****************************I-SCP-MZM-ORGA-81-11/11/2019*************/
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN prioridad NUMERIC;
-/*****************************F-SCP-MZM-ORGA-81-11/11/2019*************/
-
-/*****************************I-SCP-MZM-ORGA-136-21/04/2020*************/
-ALTER TABLE orga.tuo_funcionario
-  ADD COLUMN separar_contrato VARCHAR(2);
-
-ALTER TABLE orga.tuo_funcionario
-  ALTER COLUMN separar_contrato SET DEFAULT 'no';
-
-COMMENT ON COLUMN orga.tuo_funcionario.separar_contrato
-IS 'Valor por defecto ''no'', cambia a si cuando al no haber periodo de descanso entre contratos, existe cambio de tipo_contrato (planta-odt) o modificacion a carga_horaria.';
-/*****************************F-SCP-MZM-ORGA-136-21/04/2020*************/
 /*****************************I-SCP-VAN-ORGA-0-11/05/2020*************/
 create table orga.huo_funcionario
 (
@@ -1052,35 +655,13 @@ create table orga.huo_funcionario
     certificacion_presupuestaria varchar,
     carga_horaria                integer,
     prioridad                    numeric,
-    separar_contrato             varchar(2)
+    separar_contrato             varchar(2),
+    fecha_registro_historico     timestamp
 ) inherits (pxp.tbase);
 alter table orga.huo_funcionario
     owner to postgres;
 /*****************************F-SCP-VAN-ORGA-0-11/05/2020*************/
-/*****************************I-SCP-VAN-ORGA-0-09/06/2020*************/
-alter table orga.huo_funcionario
-	add fecha_registro_historico timestamp;
-/*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
 
-/*****************************I-SCP-VAN-ORGA-0-09/06/2020*************/
-drop trigger if exists trig_huo_funcionario on orga.tuo_funcionario;
-create trigger trig_huo_funcionario
-    before insert or update or delete
-    on orga.tuo_funcionario
-    for each row
-execute procedure orga.f_trig_huo_funcionario();
-/*****************************F-SCP-VAN-ORGA-0-09/06/2020*************/
 
-/*****************************I-SCP-MZM-ORGA-ETR-2026-09/12/2020*************/
-ALTER TABLE orga.tuo
-  ADD COLUMN vigente VARCHAR(2);
 
-ALTER TABLE orga.tuo
-  ALTER COLUMN vigente SET DEFAULT 'si';
-/*****************************F-SCP-MZM-ORGA-ETR-2026-09/12/2020*************/  
-
-/*****************************I-SCP-MZM-ORGA-0-25/10/2021*************/
-ALTER TABLE orga.tuo
-  ALTER COLUMN vigente SET DEFAULT 'si';
-/*****************************F-SCP-MZM-ORGA-0-25/10/2021*************/
 

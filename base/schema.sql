@@ -15,11 +15,13 @@ DECLARE
   v_response	varchar;
 BEGIN
   v_response = '';	
+ 
   if (par_opcion = 1)then
   	EXECUTE 'DROP SCHEMA IF EXISTS ' || par_esquema || ' CASCADE';
   	v_response = 'Esquema ' || par_esquema || 'eliminado correctamente';
   end if;
-  if (par_opcion in (1, 2,3)) then
+  if (par_opcion in (1,2,3)) then
+  
   	IF NOT EXISTS(
         SELECT schema_name
           FROM information_schema.schemata
@@ -27,7 +29,7 @@ BEGIN
       )
     THEN
       EXECUTE 'CREATE SCHEMA ' || par_esquema || ' AUTHORIZATION postgres';
-      v_response = v_response || '\nEsquema ' || par_esquema || 'eliminado correctamente';
+      v_response = v_response || '\nEsquema ' || par_esquema || 'creado correctamente';
     END IF;
   end if;
   return v_response;

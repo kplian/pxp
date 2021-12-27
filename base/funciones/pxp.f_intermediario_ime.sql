@@ -1,27 +1,8 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime (
-  par_id_usuario integer,
-  par_id_usuario_ai integer,
-  par_nom_usuario_ai varchar,
-  par_sid_web varchar,
-  par_pid_web integer,
-  par_ip varchar,
-  par_mac macaddr,
-  par_procedimiento varchar,
-  par_transaccion varchar,
-  par_id_categoria integer,
-  es_matriz varchar,
-  ip_admin varchar [],
-  variables varchar [],
-  valores varchar [],
-  tipos varchar [],
-  par_consulta varchar,
-  par_files bytea,
-  variable_files varchar
-)
-RETURNS varchar AS
-$body$
+CREATE OR REPLACE FUNCTION pxp.f_intermediario_ime(par_id_usuario integer, par_id_usuario_ai integer, par_nom_usuario_ai character varying, par_sid_web character varying, par_pid_web integer, par_ip character varying, par_mac macaddr, par_procedimiento character varying, par_transaccion character varying, par_id_categoria integer, es_matriz character varying, ip_admin character varying[], variables character varying[], valores character varying[], tipos character varying[], par_consulta character varying, par_files bytea, variable_files character varying,
+par_puerto character varying DEFAULT '5432'::character varying)
+ RETURNS character varying
+ LANGUAGE plpgsql
+AS $function$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_ime
  DESCRIPCIÃ“N: 	Recibe las peticiones del servidor web y las encamina 
@@ -109,8 +90,8 @@ BEGIN
     
     v_resp_error=pxp.f_ejecutar_dblink('('||pg_backend_pid()::varchar||',
             '''||par_sid_web||''','||par_pid_web||','''||par_transaccion||''','''||par_procedimiento||''')'
-            ,'sesion');
-       
+            ,'sesion', par_puerto);
+      
     if(par_transaccion='SEG_VALUSU_SEG' or par_transaccion='SEG_LISTUSU_SEG')then
        v_id_usuario:= segu.f_get_id_usuario(valores[6]::varchar);
     else
@@ -455,16 +436,17 @@ EXCEPTION
 
 		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa función da el resultado,
         --por lo que se modifica para que devuelva un json direcamente
-         v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log');
+         v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log',par_puerto);
                 
          v_resp = pxp.f_agrega_clave(v_resp,'id_log',v_resp_error.id_log::varchar);
            
               
   		return pxp.f_resp_to_json(v_resp);
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100;
+$function$
+;
+
+-- Permissions
+
+ALTER FUNCTION pxp.f_intermediario_ime(int4,int4,varchar,varchar,int4,varchar,macaddr,varchar,varchar,int4,varchar,_varchar,_varchar,_varchar,_varchar,varchar,bytea,varchar, varchar) OWNER TO postgres;
+GRANT ALL ON FUNCTION pxp.f_intermediario_ime(int4,int4,varchar,varchar,int4,varchar,macaddr,varchar,varchar,int4,varchar,_varchar,_varchar,_varchar,_varchar,varchar,bytea,varchar, varchar) TO postgres;

@@ -29,7 +29,7 @@ class feistel{
 	function aumenta1($pi){
 		$res='';
 		for($i=0;$i<strlen($pi);$i++){
-			$res=$res.(String)((int)$pi{$i}+1);
+			$res=$res.(String)((int)$pi[$i]+1);
 		}
 		return $res;
 	}
@@ -45,7 +45,7 @@ class feistel{
 		$inversa=$pi;
 		for($i=0;$i<strlen($pi);$i++){
 			
-			$inversa{(int)$pi{$i}}=$i;
+			$inversa[(int)$pi[$i]]=$i;
 			//echo $inversa."<BR>";
 			
 			
@@ -65,14 +65,14 @@ class feistel{
 			for($i=0;$i<strlen($data);$i++){
 				if($tipo==1){
 					//$auxi=$auxi.$this->caracterPosicion(($this->buscaPosicion($data{$i})+$k)%12);
-					$auxi=$auxi.$this->caracterPosicion(($this->buscaPosicion($data{$i})+$k)%$this->tam_alfabeto);
+					$auxi=$auxi.$this->caracterPosicion(($this->buscaPosicion($data[$i])+$k)%$this->tam_alfabeto);
                     
 					
 														
 				}
 				else{
 					
-					$auxi{(int)$pi{$i}}=$data{$i};
+					$auxi[(int)$pi[$i]]=$data[$i];
 			
 				}
 			}
@@ -85,10 +85,10 @@ class feistel{
 			for($i=0;$i<strlen($data);$i++){
 				
 				if($tipo==1){
-				$aux2{(int)$pi{$i}}=$auxi{$i};
+				$aux2[(int)$pi[$i]]=$auxi[$i];
 				}
 				else{
-				$var=$this->buscaPosicion($auxi{$i})-$k;
+				$var=$this->buscaPosicion($auxi[$i])-$k;
 					if($var<0){
 						//$var=$var+12;	
 						

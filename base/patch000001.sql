@@ -21,8 +21,15 @@ CREATE TABLE pxp.tbase (
     id_usuario_mod integer,
     fecha_reg timestamp without time zone DEFAULT now(),
     fecha_mod timestamp without time zone DEFAULT now(),
-    estado_reg varchar(10) DEFAULT 'activo'::character varying
+    estado_reg varchar(10) DEFAULT 'activo'::character varying,
+    id_usuario_ai INTEGER,
+    usuario_ai VARCHAR(300),
+    obs_dba VARCHAR
 ) WITHOUT OIDS;
+
+
+COMMENT ON COLUMN pxp.tbase.obs_dba
+IS 'observaciones de modificaciones del registro en la base de datos';
 --
 -- Definition for sequence parametro (OID = 306490) : 
 --
@@ -40,7 +47,7 @@ CREATE TABLE pxp.variable_global (
     variable varchar NOT NULL,
     valor varchar(200) NOT NULL,
     descripcion varchar
-) WITH OIDS;
+) WITHOUT OIDS;
 ALTER TABLE ONLY pxp.variable_global ALTER COLUMN id_variable_global SET STATISTICS 0;
 ALTER TABLE ONLY pxp.variable_global ALTER COLUMN valor SET STATISTICS 0;
 
@@ -86,21 +93,7 @@ CREATE EXTENSION IF NOT EXISTS hstore;
 
 
 
-/****************************I-SCP-RAC-PXP-0-19/05/2014*************/
 
-ALTER TABLE pxp.tbase
-  ADD COLUMN id_usuario_ai INTEGER;
-
-/****************************F-SCP-RAC-PXP-0-19/05/2014*************/
-
-/****************************I-SCP-RAC-PXP-0-21/05/2014*************/
-
---------------- SQL ---------------
-
-ALTER TABLE pxp.tbase
-  ADD COLUMN usuario_ai VARCHAR(300);
-  
-/****************************F-SCP-RAC-PXP-0-21/05/2014*************/
 
 /****************************I-SCP-JRR-PXP-0-21/11/2014*************/
 
@@ -109,13 +102,5 @@ CREATE TABLE pxp.tprueba1 (
 ) WITHOUT OIDS;
 
 /****************************F-SCP-JRR-PXP-0-21/11/2014*************/
-/****************************I-SCP-EGS-PXP-0-06/01/2020*************/
 
-ALTER TABLE pxp.tbase
-ADD COLUMN obs_dba VARCHAR;
-
-COMMENT ON COLUMN pxp.tbase.obs_dba
-IS 'observaciones de modificaciones del registro en la base de datos';
-
-/****************************F-SCP-EGS-PXP-0-06/01/2020*************/
 

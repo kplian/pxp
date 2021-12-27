@@ -26,6 +26,7 @@ def restaurar_db(base):
     print( 'Iniciando backup de la BD :' + db)
     print( 'El host es :' + host)
     print( 'El puerto es:' + port)
+    print(base)
     file_name = '/tmp/bk_' + base + '_' +datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if (host == '127.0.0.1' or host == 'localhost'):
         command = 'pg_dump ' + base + ' -U postgres -F c -b -N log -f ' + file_name + ' -p ' + port
@@ -218,8 +219,8 @@ def execute_script (systems , kind, file_log):
 
 def run_command(command):
     p = subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,shell=True)
-
     line = p.stdout.readline()
+    print(line)
     while line:
         yield line
         line = p.stdout.readline()
@@ -280,6 +281,7 @@ def restaurar_esquema(url):
         for line in run_command('echo "/********************ESQUEMAS: ' + item + '*******************/"'):
             f_log.write(str(line, encoding))
         #restaurar subsistema
+        
         #esquema pxp:se crea el esquema sin usar la funcion manage schema ya q td no existe
         if item ==os.path.dirname(__file__) +  '/../../' and opcion == '1':
             if (host == '127.0.0.1' or host == 'localhost'):
@@ -287,20 +289,23 @@ def restaurar_esquema(url):
             else:
                 validar_pgpass()
                 command = psql + ' -h ' + host + ' -p ' + port + ' -U ' + usuario + ' -q -d ' + db + ' < ' + item + 'base/schema.sql'
-
+            print(command)
             for line in run_command(command):
                 f_log.write(str(line, encoding))
         #otros esquemas:se crea el esquema usando la funcion manage schema
         elif item !=os.path.dirname(__file__) +  '/../../':
             esquemas = get_schema(item + 'base/schema.sql')
+            
             for esquema in esquemas:
+                
                 if (host == '127.0.0.1' or host == 'localhost'):
                     command = psql + ' ' + db + ' -p ' + port + ' -c  "select pxp.f_manage_schema(\'' + esquema  + '\',' + opcion + ')"'
                 else:
                     validar_pgpass()
                     command = psql + ' ' + db + ' -h ' + host + ' -p ' + port  + ' -U ' + usuario + ' -c  "select pxp.f_manage_schema(\$\$' + esquema  + '\$\$,' + opcion + ')"'
-
+                
                 for line in run_command(command):
+                    
                     f_log.write(str(line, encoding))
 
     print('end restaurar_esquema')

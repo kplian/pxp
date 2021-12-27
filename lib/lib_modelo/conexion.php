@@ -169,7 +169,7 @@ class conexion
 	}
 	
 	
-	function conectarp(){
+	function conectarp(){ 
 		//pregunta si tenemos una conexion valida
 		//$_SESSION["_SESION"]->getConexion();
 		$cadena="host=".$_SESSION['_HOST']." port=".$_SESSION["_PUERTO"]." dbname=".$_SESSION['_BASE_DATOS']." user=".$_SESSION['_BASE_DATOS']."_". $_SESSION['_LOGIN']." password=".$_SESSION['_CONTRASENA'];
@@ -211,7 +211,7 @@ class conexion
  */
 	
 	
-	function conectarSegu(){
+	function conectarSegu(){ 
 		    
 		$cadena="host=".$_SESSION['_HOST']." port=".$_SESSION["_PUERTO"]." dbname=".$_SESSION['_BASE_DATOS']." user=".$_SESSION['_BASE_DATOS']."_".$_SESSION['_USUARIO_CONEXION']." password=".$_SESSION['_CONTRASENA_CONEXION'];
 		

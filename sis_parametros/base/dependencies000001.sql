@@ -315,7 +315,7 @@ AS
        JOIN param.tregional reg ON reg.id_regional = frpp.id_regional
        JOIN param.tfinanciador fin ON fin.id_financiador = frpp.id_financiador;
 
---------------- SQL ---------------
+
 
 CREATE OR REPLACE VIEW param.vcentro_costo(
     id_centro_costo,
@@ -333,7 +333,21 @@ CREATE OR REPLACE VIEW param.vcentro_costo(
     nombre_uo,
     ep,
     gestion,
-    codigo_cc)
+    codigo_cc,
+    nombre_programa,
+    nombre_proyecto,
+    nombre_actividad,
+    nombre_financiador,
+    nombre_regional,
+    id_tipo_cc,
+    codigo_tcc,
+    descripcion_tcc,
+    id_tipo_cc_fk,
+    fecha_inicio,
+    fecha_final,
+    mov_pres,
+    momento_pres,
+    operativo)
 AS
   SELECT cec.id_centro_costo,
          cec.estado_reg,
@@ -350,14 +364,30 @@ AS
          uo.nombre_unidad AS nombre_uo,
          ep.ep,
          ges.gestion,
-         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
-          ::text) || ges.gestion) || ')' ::text AS codigo_cc
+         ((((tcc.codigo::text || ' - '::text) || ' '::text) || tcc.descripcion::
+           text) || ' '::text) || ges.gestion AS codigo_cc,
+         ep.nombre_programa,
+         ep.nombre_proyecto,
+         ep.nombre_actividad,
+         ep.nombre_financiador,
+         ep.nombre_regional,
+         cec.id_tipo_cc,
+         tcc.codigo AS codigo_tcc,
+         tcc.descripcion AS descripcion_tcc,
+         tcc.id_tipo_cc_fk,
+         tcc.fecha_inicio,
+         tcc.fecha_final,
+         tcc.mov_pres,
+         tcc.momento_pres,
+         COALESCE(tcc.operativo,'no')::varchar(4) as operativo
   FROM param.tcentro_costo cec
        JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
        JOIN param.vep ep ON ep.id_ep = cec.id_ep
        JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;  
+       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
+       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
+       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;    
+
        
  /***********************************F-DEP-RAC-PARAM-0-22/02/2013*****************************************/
 
@@ -414,62 +444,7 @@ ALTER TABLE ONLY param.tdepto_ep
     REFERENCES param.tep(id_ep);
 /***********************************F-DEP-JRR-PARAM-0-29/04/2013*****************************************/
     
-    
-
-/***********************************I-DEP-JRR-PARAM-0-24/05/2013*****************************************/
-CREATE OR REPLACE VIEW param.vcentro_costo(
-    id_centro_costo,
-    estado_reg,
-    id_ep,
-    id_gestion,
-    id_uo,
-    id_usuario_reg,
-    fecha_reg,
-    id_usuario_mod,
-    fecha_mod,
-    usr_reg,
-    usr_mod,
-    codigo_uo,
-    nombre_uo,
-    ep,
-    gestion,
-    codigo_cc,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    nombre_financiador,
-    nombre_regional)
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
-          ::text) || ges.gestion) || ')' ::text AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
-/***********************************F-DEP-JRR-PARAM-0-24/05/2013*****************************************/
-    
+      
     
 
 /***********************************I-DEP-RAC-PARAM-0-04/06/2013*****************************************/
@@ -515,137 +490,6 @@ CREATE INDEX tpersona_idx ON segu.tpersona
 
 /***********************************F-DEP-RAC-PARAM-0-04/06/2013*****************************************/
 
-/***********************************I-DEP-JRR-PARAM-0-24/05/2013*****************************************/
-CREATE OR REPLACE VIEW param.vcentro_costo(
-    id_centro_costo,
-    estado_reg,
-    id_ep,
-    id_gestion,
-    id_uo,
-    id_usuario_reg,
-    fecha_reg,
-    id_usuario_mod,
-    fecha_mod,
-    usr_reg,
-    usr_mod,
-    codigo_uo,
-    nombre_uo,
-    ep,
-    gestion,
-    codigo_cc,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    nombre_financiador,
-    nombre_regional)
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
-          ::text) || ges.gestion) || ')' ::text AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
-/***********************************F-DEP-JRR-PARAM-0-24/05/2013*****************************************/
-
-
-
-
-
-
-
-
-
-
-/***********************************I-DEP-RAC-PARAM-0-12/12/2013*****************************************/
-
-
---------------- SQL ---------------
-
-CREATE OR REPLACE VIEW param.vcentro_costo(
-    id_centro_costo,
-    estado_reg,
-    id_ep,
-    id_gestion,
-    id_uo,
-    id_usuario_reg,
-    fecha_reg,
-    id_usuario_mod,
-    fecha_mod,
-    usr_reg,
-    usr_mod,
-    codigo_uo,
-    nombre_uo,
-    ep,
-    gestion,
-    codigo_cc,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    nombre_financiador,
-    nombre_regional)
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         ((((('(' ::text || uo.codigo::text) || ')-(' ::text) || ep.ep) || ')-('
-          ::text) || ges.gestion) || ') id:'||cec.id_centro_costo::text AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo;
-
-
-/***********************************F-DEP-RAC-PARAM-0-12/12/2013*****************************************/
-
-
-/***********************************I-DEP-JRR-PARAM-0-24/01/2014****************************************/
-
-ALTER TABLE param.tinstitucion
-  DROP CONSTRAINT tinstitucion_codigo_key RESTRICT;
-/***********************************F-DEP-JRR-PARAM-0-24/01/2014****************************************/
-
-
 
 
 
@@ -679,47 +523,6 @@ CREATE INDEX tlugar_id_lugar_fk ON param.tlugar USING btree (id_lugar_fk);
 
     
 /***********************************F-DEP-JRR-PARAM-0-23/10/2014****************************************/
-
-
-/***********************************I-DEP-RAC-PARAM-0-10/02/2015****************************************/
-
---------------- SQL ---------------
-
-CREATE VIEW orga.vfuncionario_cargo_lugar 
-AS 
-SELECT uof.id_uo_funcionario,
-         funcio.id_funcionario,
-         person.nombre_completo1 AS desc_funcionario1,
-         person.nombre_completo2 AS desc_funcionario2,
-         uo.id_uo,
-         uo.nombre_cargo,
-         uof.fecha_asignacion,
-         uof.fecha_finalizacion,
-         person.num_documento AS num_doc,
-         person.ci,
-         funcio.codigo,
-         funcio.email_empresa,
-         funcio.estado_reg AS estado_reg_fun,
-         uof.estado_reg AS estado_reg_asi,
-         car.id_cargo,
-         car.nombre AS descripcion_cargo,
-         car.codigo AS cargo_codigo,
-         uo.nombre_unidad,
-         lu.nombre as lugar_nombre,
-         lu.id_lugar,
-         of.id_oficina,
-         of.nombre as oficina_nombre
-  FROM orga.tfuncionario funcio
-       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
-       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
-         funcio.id_funcionario
-       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
-       JOIN orga.tcargo car ON car.id_cargo = uof.id_cargo
-       JOIN orga.toficina of ON of.id_oficina = car.id_oficina
-       JOIN param.tlugar lu ON lu.id_lugar = of.id_lugar
-  WHERE uof.estado_reg = 'activo'; 
-  
-/***********************************F-DEP-RAC-PARAM-0-10/02/2015****************************************/
 
 /***********************************I-DEP-JRR-PARAM-0-04/10/2015****************************************/
 
@@ -794,44 +597,6 @@ FROM param.tgrupo gru;
 
 /***********************************I-DEP-RAC-PARAM-0-30/05/2017****************************************/
 
-CREATE OR REPLACE VIEW param.vcentro_costo
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         (((((('('::text || uo.codigo::text) || ')-('::text) || ep.ep) || ')-('
-           ::text) || ges.gestion) || ') id:'::text) || cec.id_centro_costo::
-           text AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional,
-         cec.id_tipo_cc,
-         tcc.codigo as codigo_tcc,
-         tcc.descripcion as descripcion_tcc,
-         tcc.id_tipo_cc_fk,
-         tcc.fecha_inicio,
-         tcc.fecha_final
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg      
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       LEFT JOIN param.ttipo_cc tcc on tcc.id_tipo_cc = cec.id_tipo_cc ;
        
        
        
@@ -910,54 +675,6 @@ AS
 /***********************************F-DEP-RAC-PARAM-0-30/05/2017****************************************/
 
 
-
-/***********************************I-DEP-RAC-PARAM-0-05/06/2017****************************************/
-
-CREATE OR REPLACE VIEW param.vcentro_costo
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         (((((('('::text || uo.codigo::text) || ')-('::text) || ep.ep) || ')-('
-           ::text) || ges.gestion) || ') id:'::text) || cec.id_centro_costo::
-           text AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional,
-         cec.id_tipo_cc,
-         tcc.codigo AS codigo_tcc,
-         tcc.descripcion AS descripcion_tcc,
-         tcc.id_tipo_cc_fk,
-         tcc.fecha_inicio,
-         tcc.fecha_final,
-         tcc.mov_pres,
-         tcc.momento_pres
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;
-       
-   
-/***********************************F-DEP-RAC-PARAM-0-05/06/2017****************************************/
-       
-
 /***********************************I-DEP-RAC-PARAM-0-12/06/2017****************************************/
 CREATE OR REPLACE VIEW param.vtipo_cc(
     id_tipo_cc,
@@ -1021,78 +738,6 @@ AS
        LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = tcc.id_usuario_mod;
 /***********************************F-DEP-RAC-PARAM-0-12/06/2017****************************************/
 
-/***********************************I-DEP-RAC-PARAM-0-29/06/2017****************************************/
-
-CREATE OR REPLACE VIEW param.vcentro_costo(
-    id_centro_costo,
-    estado_reg,
-    id_ep,
-    id_gestion,
-    id_uo,
-    id_usuario_reg,
-    fecha_reg,
-    id_usuario_mod,
-    fecha_mod,
-    usr_reg,
-    usr_mod,
-    codigo_uo,
-    nombre_uo,
-    ep,
-    gestion,
-    codigo_cc,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    nombre_financiador,
-    nombre_regional,
-    id_tipo_cc,
-    codigo_tcc,
-    descripcion_tcc,
-    id_tipo_cc_fk,
-    fecha_inicio,
-    fecha_final,
-    mov_pres,
-    momento_pres)
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         ((((tcc.codigo::text || ' - '::text) || ' '::text) || tcc.descripcion::
-           text) || ' '::text) || ges.gestion AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional,
-         cec.id_tipo_cc,
-         tcc.codigo AS codigo_tcc,
-         tcc.descripcion AS descripcion_tcc,
-         tcc.id_tipo_cc_fk,
-         tcc.fecha_inicio,
-         tcc.fecha_final,
-         tcc.mov_pres,
-         tcc.momento_pres
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;
-       
- /***********************************F-DEP-RAC-PARAM-0-29/06/2017****************************************/
       
               
 
@@ -1258,76 +903,6 @@ ALTER TABLE param.tinstitucion_persona
     
     
 
-CREATE OR REPLACE VIEW param.vcentro_costo(
-    id_centro_costo,
-    estado_reg,
-    id_ep,
-    id_gestion,
-    id_uo,
-    id_usuario_reg,
-    fecha_reg,
-    id_usuario_mod,
-    fecha_mod,
-    usr_reg,
-    usr_mod,
-    codigo_uo,
-    nombre_uo,
-    ep,
-    gestion,
-    codigo_cc,
-    nombre_programa,
-    nombre_proyecto,
-    nombre_actividad,
-    nombre_financiador,
-    nombre_regional,
-    id_tipo_cc,
-    codigo_tcc,
-    descripcion_tcc,
-    id_tipo_cc_fk,
-    fecha_inicio,
-    fecha_final,
-    mov_pres,
-    momento_pres,
-    operativo)
-AS
-  SELECT cec.id_centro_costo,
-         cec.estado_reg,
-         cec.id_ep,
-         cec.id_gestion,
-         cec.id_uo,
-         cec.id_usuario_reg,
-         cec.fecha_reg,
-         cec.id_usuario_mod,
-         cec.fecha_mod,
-         usu1.cuenta AS usr_reg,
-         usu2.cuenta AS usr_mod,
-         uo.codigo AS codigo_uo,
-         uo.nombre_unidad AS nombre_uo,
-         ep.ep,
-         ges.gestion,
-         ((((tcc.codigo::text || ' - '::text) || ' '::text) || tcc.descripcion::
-           text) || ' '::text) || ges.gestion AS codigo_cc,
-         ep.nombre_programa,
-         ep.nombre_proyecto,
-         ep.nombre_actividad,
-         ep.nombre_financiador,
-         ep.nombre_regional,
-         cec.id_tipo_cc,
-         tcc.codigo AS codigo_tcc,
-         tcc.descripcion AS descripcion_tcc,
-         tcc.id_tipo_cc_fk,
-         tcc.fecha_inicio,
-         tcc.fecha_final,
-         tcc.mov_pres,
-         tcc.momento_pres,
-         COALESCE(tcc.operativo,'no')::varchar(4) as operativo
-  FROM param.tcentro_costo cec
-       JOIN segu.tusuario usu1 ON usu1.id_usuario = cec.id_usuario_reg
-       JOIN param.vep ep ON ep.id_ep = cec.id_ep
-       JOIN param.tgestion ges ON ges.id_gestion = cec.id_gestion
-       JOIN orga.tuo uo ON uo.id_uo = cec.id_uo
-       LEFT JOIN segu.tusuario usu2 ON usu2.id_usuario = cec.id_usuario_mod
-       LEFT JOIN param.ttipo_cc tcc ON tcc.id_tipo_cc = cec.id_tipo_cc;    
     
        
 /***********************************F-DEP-FPC-PARAM-0-03/12/2017****************************************/
@@ -1424,15 +999,9 @@ select pxp.f_insert_testructura_gui ('PROVINI', 'CCOM');
 select pxp.f_insert_testructura_gui ('FERIADO', 'OTROS');
 select pxp.f_insert_testructura_gui ('Adm', 'EMPS');
 select pxp.f_insert_testructura_gui ('PTIPCC', 'CEP');
+select pxp.f_insert_testructura_gui ('PLGR', 'OTROS');
    
 /***********************************F-DEP-RAC-PARAM-0-29/05/2018****************************************/
-
-/***********************************I-DEP-EGS-PARAM-0-17/06/2019****************************************/
-
-select pxp.f_insert_testructura_gui ('PLGR', 'OTROS');
-
-/***********************************F-DEP-EGS-PARAM-0-17/06/2019****************************************/
-
 
 /***********************************I-DEP-MANU-PARAM-0-25/07/2019****************************************/
 
@@ -1470,8 +1039,8 @@ ALTER TABLE param.tpie_firma_det
 select pxp.f_insert_testructura_gui ('ANTIG', 'OTROS');
 /***********************************F-DEP-SAZP-PARAM-82-14/11/2019****************************************/
 /***********************************I-DEP-VAN-PARAM-1-20/02/2020****************************************/
-alter table param.tep
-    add CONSTRAINT contraint_fin_reg_prog_proy UNIQUE (id_financiador, id_regional, id_prog_pory_acti);
+/*alter table param.tep
+    add ;*/
 /***********************************F-DEP-VAN-PARAM-1-20/02/2020****************************************/
 
 

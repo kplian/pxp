@@ -36,7 +36,8 @@ ALTER TABLE ONLY orga.tfuncionario
 ALTER TABLE ONLY orga.tfuncionario
     ADD CONSTRAINT fk_tfuncionario__id_usuario_reg
     FOREIGN KEY (id_usuario_reg) REFERENCES segu.tusuario(id_usuario);
---
+
+
 -- Definition for index fk_tuo__id_uo_padre (OID = 414043) : 
 --
 ALTER TABLE ONLY orga.testructura_uo
@@ -51,12 +52,15 @@ ALTER TABLE ONLY orga.testructura_uo
 --
 -- Definition for index fk_tuo_functionario__id_uo (OID = 414083) : 
 --
-ALTER TABLE ONLY orga.tuo_funcionario
-    ADD CONSTRAINT fk_tuo_functionario__id_uo
-    FOREIGN KEY (id_uo) REFERENCES orga.tuo(id_uo) ON UPDATE CASCADE;
+
 --
 -- Definition for index fk_tuo_functionario__id_funcionario (OID = 414088) : 
 --
+
+ALTER TABLE ONLY orga.tuo_funcionario
+    ADD CONSTRAINT fk_tuo_functionario__id_uo
+    FOREIGN KEY (id_uo) REFERENCES orga.tuo(id_uo) ON UPDATE CASCADE;
+
 ALTER TABLE ONLY orga.tuo_funcionario
     ADD CONSTRAINT fk_tuo_functionario__id_funcionario
     FOREIGN KEY (id_funcionario) REFERENCES orga.tfuncionario(id_funcionario) ON UPDATE CASCADE;
@@ -101,22 +105,50 @@ AS
 --
 -- Definition for view vfuncionario_cargo (OID = 306690) : 
 --
-CREATE VIEW orga.vfuncionario_cargo AS
-SELECT uof.id_uo_funcionario, funcio.id_funcionario,
-    person.nombre_completo1 AS desc_funcionario1, person.nombre_completo2
-    AS desc_funcionario2, uo.id_uo, uo.nombre_cargo, uof.fecha_asignacion,
-    uof.fecha_finalizacion, person.num_documento AS num_doc, person.ci,
-    funcio.codigo, funcio.email_empresa, funcio.estado_reg AS
-    estado_reg_fun, uof.estado_reg AS estado_reg_asi
-FROM (((orga.tfuncionario funcio JOIN segu.vpersona person ON
-    ((funcio.id_persona = person.id_persona))) JOIN orga.tuo_funcionario uof ON
-    ((uof.id_funcionario = funcio.id_funcionario))) JOIN orga.tuo uo ON
-    ((uo.id_uo = uof.id_uo)));
-
-
-
-
-
+CREATE OR REPLACE VIEW orga.vfuncionario_cargo(
+    id_uo_funcionario,
+    id_funcionario,
+    desc_funcionario1,
+    desc_funcionario2,
+    id_uo,
+    nombre_cargo,
+    fecha_asignacion,
+    fecha_finalizacion,
+    num_doc,
+    ci,
+    codigo,
+    email_empresa,
+    estado_reg_fun,
+    estado_reg_asi,
+    id_cargo,
+    descripcion_cargo,
+    cargo_codigo, nombre_unidad)
+AS
+  SELECT uof.id_uo_funcionario,
+         funcio.id_funcionario,
+         person.nombre_completo1 AS desc_funcionario1,
+         person.nombre_completo2 AS desc_funcionario2,
+         uo.id_uo,
+         uo.nombre_cargo,
+         uof.fecha_asignacion,
+         uof.fecha_finalizacion,
+         person.num_documento AS num_doc,
+         person.ci,
+         funcio.codigo,
+         funcio.email_empresa,
+         funcio.estado_reg AS estado_reg_fun,
+         uof.estado_reg AS estado_reg_asi,
+         car.id_cargo,
+         car.nombre AS descripcion_cargo,
+         car.codigo AS cargo_codigo,
+         uo.nombre_unidad
+  FROM orga.tfuncionario funcio
+       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
+       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
+        funcio.id_funcionario
+       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
+       JOIN orga.tcargo car ON car.id_cargo = uof.id_cargo
+  WHERE uof.estado_reg::text = 'activo' ::text;
 
 
 /********************************************F-DEP-RAC-ORGA-0-31/12/2012********************************************/
@@ -236,42 +268,7 @@ ALTER TABLE orga.tcargo
     ON UPDATE NO ACTION
     NOT DEFERRABLE;
     
-CREATE OR REPLACE VIEW orga.vfuncionario_cargo(
-    id_uo_funcionario,
-    id_funcionario,
-    desc_funcionario1,
-    desc_funcionario2,
-    id_uo,
-    nombre_cargo,
-    fecha_asignacion,
-    fecha_finalizacion,
-    num_doc,
-    ci,
-    codigo,
-    email_empresa,
-    estado_reg_fun,
-    estado_reg_asi)
-AS
-  SELECT uof.id_uo_funcionario,
-         funcio.id_funcionario,
-         person.nombre_completo1 AS desc_funcionario1,
-         person.nombre_completo2 AS desc_funcionario2,
-         uo.id_uo,
-         uo.nombre_cargo,
-         uof.fecha_asignacion,
-         uof.fecha_finalizacion,
-         person.num_documento AS num_doc,
-         person.ci,
-         funcio.codigo,
-         funcio.email_empresa,
-         funcio.estado_reg AS estado_reg_fun,
-         uof.estado_reg AS estado_reg_asi
-  FROM orga.tfuncionario funcio
-       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
-       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
-        funcio.id_funcionario
-       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
-  where uof.estado_reg = 'activo';
+
   
 ALTER TABLE orga.tfuncionario_cuenta_bancaria
   ADD CONSTRAINT fk__tfuncionario_cuenta_bancaria__id_funcionario FOREIGN KEY (id_funcionario)
@@ -344,57 +341,6 @@ ALTER TABLE orga.tinterinato
 
 /*********************************F-DEP-RAC-ORGA-0-25/05/2014***********************************/
 
-
-/*****************************I-DEP-RAC-ORGA-0-31/07/2014*************/
---------------- SQL ---------------
-
-CREATE OR REPLACE VIEW orga.vfuncionario_cargo(
-    id_uo_funcionario,
-    id_funcionario,
-    desc_funcionario1,
-    desc_funcionario2,
-    id_uo,
-    nombre_cargo,
-    fecha_asignacion,
-    fecha_finalizacion,
-    num_doc,
-    ci,
-    codigo,
-    email_empresa,
-    estado_reg_fun,
-    estado_reg_asi,
-    id_cargo,
-    descripcion_cargo,
-    cargo_codigo)
-AS
-  SELECT uof.id_uo_funcionario,
-         funcio.id_funcionario,
-         person.nombre_completo1 AS desc_funcionario1,
-         person.nombre_completo2 AS desc_funcionario2,
-         uo.id_uo,
-         uo.nombre_cargo,
-         uof.fecha_asignacion,
-         uof.fecha_finalizacion,
-         person.num_documento AS num_doc,
-         person.ci,
-         funcio.codigo,
-         funcio.email_empresa,
-         funcio.estado_reg AS estado_reg_fun,
-         uof.estado_reg AS estado_reg_asi,
-         car.id_cargo,
-         car.nombre AS descripcion_cargo,
-         car.codigo AS cargo_codigo
-  FROM orga.tfuncionario funcio
-       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
-       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
-        funcio.id_funcionario
-       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
-       JOIN orga.tcargo car ON car.id_cargo = uof.id_cargo
-  WHERE uof.estado_reg::text = 'activo' ::text;
-
-
-/*****************************F-DEP-RAC-ORGA-0-31/07/2014*************/
-
 /*********************************I-DEP-JRR-ORGA-0-31/07/2014***********************************/
 
 ALTER TABLE orga.toficina_cuenta
@@ -406,59 +352,6 @@ ALTER TABLE orga.toficina_cuenta
     
     
 /*********************************F-DEP-JRR-ORGA-0-31/07/2014***********************************/
-
-
-
-
-
-/*********************************I-DEP-RAC-ORGA-0-19/08/2014***********************************/
---------------- SQL ---------------
-CREATE OR REPLACE VIEW orga.vfuncionario_cargo(
-    id_uo_funcionario,
-    id_funcionario,
-    desc_funcionario1,
-    desc_funcionario2,
-    id_uo,
-    nombre_cargo,
-    fecha_asignacion,
-    fecha_finalizacion,
-    num_doc,
-    ci,
-    codigo,
-    email_empresa,
-    estado_reg_fun,
-    estado_reg_asi,
-    id_cargo,
-    descripcion_cargo,
-    cargo_codigo)
-AS
-  SELECT uof.id_uo_funcionario,
-         funcio.id_funcionario,
-         person.nombre_completo1 AS desc_funcionario1,
-         person.nombre_completo2 AS desc_funcionario2,
-         uo.id_uo,
-         uo.nombre_cargo,
-         uof.fecha_asignacion,
-         uof.fecha_finalizacion,
-         person.num_documento AS num_doc,
-         person.ci,
-         funcio.codigo,
-         funcio.email_empresa,
-         funcio.estado_reg AS estado_reg_fun,
-         uof.estado_reg AS estado_reg_asi,
-         car.id_cargo,
-         car.nombre AS descripcion_cargo,
-         car.codigo AS cargo_codigo,
-         uo.nombre_unidad
-  FROM orga.tfuncionario funcio
-       JOIN segu.vpersona person ON funcio.id_persona = person.id_persona
-       JOIN orga.tuo_funcionario uof ON uof.id_funcionario =
-        funcio.id_funcionario
-       JOIN orga.tuo uo ON uo.id_uo = uof.id_uo
-       JOIN orga.tcargo car ON car.id_cargo = uof.id_cargo
-  WHERE uof.estado_reg::text = 'activo' ::text;
-
-/*********************************F-DEP-RAC-ORGA-0-19/08/2014***********************************/
 
 
 
@@ -495,18 +388,9 @@ CREATE TRIGGER ttemporal_cargo_tr AFTER UPDATE
 ON orga.ttemporal_cargo FOR EACH ROW 
 EXECUTE PROCEDURE orga.f_tr_temporal_cargo();
 
-
-CREATE TRIGGER tcargo_tr AFTER UPDATE 
-ON orga.tcargo FOR EACH ROW 
-EXECUTE PROCEDURE orga.f_tr_cargo();
-
-
-
 /*********************************F-DEP-JRR-ORGA-0-05/03/2015***********************************/
 
 /*********************************I-DEP-JRR-ORGA-0-16/03/2017***********************************/
-DROP TRIGGER tcargo_tr ON orga.tcargo;
-
 CREATE TRIGGER tcargo_tr
   AFTER INSERT
   ON orga.tcargo FOR EACH ROW
@@ -517,10 +401,6 @@ CREATE TRIGGER tcargo_tr
 
 
 /*********************************I-DEP-RAC-ORGA-0-01/12/2018***********************************/
-
-DROP VIEW orga.vfuncionario_cargo_lugar;
-
-
 CREATE OR REPLACE VIEW orga.vfuncionario_cargo_lugar (
     id_uo_funcionario,
     id_funcionario,
@@ -780,6 +660,7 @@ WITH RECURSIVE uo_presu(
            JOIN orga.tuo cl ON cl.id_uo = c.ids [ 1 ];         
                     
 /********************************F-DEP-RAC-ORGA-24-26/16/2019***********************************/
+
 /********************************I-DEP-VAN-ORGA-0-11/05/2020***********************************/
 CREATE TRIGGER trig_huo_funcionario
     AFTER INSERT OR UPDATE OR DELETE
@@ -787,8 +668,3 @@ CREATE TRIGGER trig_huo_funcionario
     FOR EACH ROW
 EXECUTE PROCEDURE orga.f_trig_huo_funcionario();
 /********************************F-DEP-VAN-ORGA-0-11/05/2020***********************************/
-
-/********************************I-DEP-MMV-ORGA-MSA-60-11/05/2021***********************************/
-ALTER TABLE orga.tuo
-    ADD COLUMN tipo_unidad VARCHAR(20) DEFAULT 'no';
-/********************************F-DEP-MMV-ORGA-MSA-60-11/05/2021***********************************/

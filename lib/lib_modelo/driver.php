@@ -499,7 +499,7 @@ class driver
 			$this->consulta.=",false";
 		else
 			$this->consulta.=",true";
-        $this->consulta.=',\'varchar\',NULL)';
+        $this->consulta.=',\'varchar\',NULL, \''.$_SESSION["_PUERTO"].'\')';
 		$this->consulta.=$tipo_retorno;
 	   }
 	   else{
@@ -507,7 +507,7 @@ class driver
 			$this->consulta.=",false";
 		 else
 			$this->consulta.=",true";
-		 $this->consulta.=",'record','$tipo_retorno')";
+		 $this->consulta.=",'record','$tipo_retorno', '".$_SESSION["_PUERTO"]."')";
 		 $this->consulta.=$tipo_retorno;
 
 	   }
@@ -639,10 +639,10 @@ class driver
 		 //rac 19032012 aumenta tipo de retorno
        if($this->tipo_retorno=='varchar')
 	   {
-        $this->consulta.=',NULL,\'varchar\',NULL)';
+        $this->consulta.=',NULL,\'varchar\',NULL, \''.$_SESSION["_PUERTO"].'\')';
 	   }
 	   else{
-	   	$this->consulta.=",NULL,'record','as (total bigint)')";
+	   	$this->consulta.=",NULL,'record','as (total bigint)', '".$_SESSION["_PUERTO"]."')";
 		}
         //
 		$this->consulta.= $this->armaRetornoCount();
@@ -805,12 +805,12 @@ class driver
 			//armar array de valores
 
 			//rac 27/09/2011  consulta para no repetir
-			$this->parConsulta=$this->consulta.",'".str_replace("'","''",$this->consulta).",NULL,NULL)'";
+			$this->parConsulta=$this->consulta.",'".str_replace("'","''",$this->consulta).",NULL,NULL, '".$_SESSION["_PUERTO"]."')'";
 			$this->consulta.=",'".str_replace("'","''",$this->consulta).",NULL,'$this->valoresFiles')',$this->valoresFiles,$this->variablesFiles)";
 
 		}
 		else{
-		  $this->consulta.=",'".str_replace("'","''",$this->consulta).",NULL,NULL,NULL)',NULL,NULL)";
+		  $this->consulta.=",'".str_replace("'","''",$this->consulta).",NULL,NULL,NULL)',NULL,NULL, '".$_SESSION["_PUERTO"]."')";
 		}
 
 
@@ -1228,10 +1228,11 @@ class driver
 		//jrr:removiendo saltos de linea y tabas para una buena decodificacion del json
 		$cadena = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $cadena);
 
-		$res=json_decode($cadena,true);
+	//	$res=json_decode($cadena,true);
 
 
-		$res['datos']=$res;
+		$res['datos']=json_decode($cadena,true);
+		//$res;
 
 
 		if(count($res['datos'])>0)

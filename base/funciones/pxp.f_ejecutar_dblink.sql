@@ -1,10 +1,9 @@
-CREATE OR REPLACE FUNCTION pxp.f_ejecutar_dblink (
-  p_cadena character varying,
-  p_opcion character varying
-)
-RETURNS record
-AS 
-$body$
+CREATE OR REPLACE FUNCTION pxp.f_ejecutar_dblink(p_cadena character varying, p_opcion character varying
+, par_puerto character varying DEFAULT '5432'::character varying)
+ RETURNS record
+ LANGUAGE plpgsql
+ STRICT SECURITY DEFINER
+AS $function$
 /**************************************************************************
  FUNCION: pxp.f_ejecutar_dblink
  DESCRIPCIÓN: Guarda la sesion o el log mediante un dblink, la cadena
@@ -37,7 +36,7 @@ BEGIN
     
     --RCM 24-03-2011: modificación a usuario de bd dinámico
     --v_res_cone=(select dblink_connect('user=bdweb_conexion dbname='||v_database));
-    v_res_cone=(select dblink_connect('user=' || v_usr_bd ||' dbname='||v_database));
+    v_res_cone=(select dblink_connect('user=' || v_usr_bd ||' dbname='||v_database || '   port='||par_puerto));
     --FIN RCM
 	
     if(p_opcion='log')then
@@ -79,8 +78,10 @@ EXCEPTION
 		raise exception '%',pxp.f_resp_to_json(v_respuesta);
       
 END;
-$body$
-    LANGUAGE plpgsql STRICT SECURITY DEFINER;
---
--- Definition for function f_excel (OID = 304225) : 
---
+$function$
+;
+
+-- Permissions
+
+ALTER FUNCTION pxp.f_ejecutar_dblink(varchar,varchar,varchar) OWNER TO postgres;
+GRANT ALL ON FUNCTION pxp.f_ejecutar_dblink(varchar,varchar,varchar) TO postgres;

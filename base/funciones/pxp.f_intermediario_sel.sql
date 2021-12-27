@@ -1,26 +1,9 @@
---------------- SQL ---------------
-
-CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel (
-  par_id_usuario integer,
-  par_id_usuario_ai integer,
-  par_nom_usuario varchar,
-  par_sid_web varchar,
-  par_pid_web integer,
-  par_ip varchar,
-  par_mac macaddr,
-  par_procedimiento varchar,
-  par_transaccion varchar,
-  par_id_categoria integer,
-  ip_admin varchar [],
-  variables varchar [],
-  valores varchar [],
-  tipos varchar [],
-  par_permiso boolean,
-  tipo_retorno varchar = 'varchar'::character varying,
-  datos_retorno varchar = NULL::character varying
+CREATE OR REPLACE FUNCTION pxp.f_intermediario_sel(par_id_usuario integer, par_id_usuario_ai integer, par_nom_usuario character varying, par_sid_web character varying, par_pid_web integer, par_ip character varying, par_mac macaddr, par_procedimiento character varying, par_transaccion character varying, par_id_categoria integer, ip_admin character varying[], variables character varying[], valores character varying[], tipos character varying[], par_permiso boolean, tipo_retorno character varying DEFAULT 'varchar'::character varying, datos_retorno character varying DEFAULT NULL::character varying,
+par_puerto character varying DEFAULT '5432'::character varying
 )
-RETURNS SETOF record AS
-$body$
+ RETURNS SETOF record
+ LANGUAGE plpgsql
+AS $function$
 /**************************************************************************
  FUNCION: 		pxp.f_intermediario_sel
  DESCRIPCIÓN: 	Recibe las peticiones del servidor web y las encamina 
@@ -82,19 +65,19 @@ v_exception_context			varchar;
 
 
 BEGIN
-	
+
     v_nombre_funcion:='pxp.f_intermediario_sel';
     v_resp=pxp.f_runtime_config('LOG_STATEMENT','LOCAL','none');
     v_nivel_error=2;
     v_hora_ini = clock_timestamp();
     raise notice 'ini:%',v_hora_ini;
     v_retorno='';    
-        	
+        	  
     v_resp_error=pxp.f_ejecutar_dblink('('||pg_backend_pid()::varchar||',
             '''||par_sid_web||''','||par_pid_web||','''||par_transaccion||''','''||par_procedimiento||''')'
-            ,'sesion');
-    
-    
+            ,'sesion', par_puerto);
+   
+
     --1) verifica si es administrador, si tiene permisos y si habilita el log
        
        
@@ -288,7 +271,7 @@ BEGIN
 
 		--RCM 31/01/2012: Cuando la llamada a esta funcion devuelve error, el manejador de excepciones de esa función da el resultado,
         --por lo que se modifica para que devuelva un json direcamente
-         v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log');
+         v_resp_error=pxp.f_ejecutar_dblink(v_cadena_log,'log',par_puerto);
                 
          v_resp = pxp.f_agrega_clave(v_resp,'id_log',v_resp_error.id_log::varchar);
          
@@ -298,9 +281,11 @@ BEGIN
 
 
 END;
-$body$
-LANGUAGE 'plpgsql'
-VOLATILE
-CALLED ON NULL INPUT
-SECURITY INVOKER
-COST 100 ROWS 1000;
+$function$
+;
+
+-- Permissions
+
+ALTER FUNCTION pxp.f_intermediario_sel(int4,int4,varchar,varchar,int4,varchar,macaddr,varchar,varchar,int4,_varchar,_varchar,_varchar,_varchar,bool,varchar,varchar, varchar) OWNER TO postgres;
+GRANT ALL ON FUNCTION pxp.f_intermediario_sel(int4,int4,varchar,varchar,int4,varchar,macaddr,varchar,varchar,int4,_varchar,_varchar,_varchar,_varchar,bool,varchar,varchar,varchar) TO public;
+GRANT ALL ON FUNCTION pxp.f_intermediario_sel(int4,int4,varchar,varchar,int4,varchar,macaddr,varchar,varchar,int4,_varchar,_varchar,_varchar,_varchar,bool,varchar,varchar,varchar) TO postgres;
