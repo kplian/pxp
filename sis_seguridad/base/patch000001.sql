@@ -30,7 +30,8 @@ CREATE TABLE segu.tusuario (
     contrasena_anterior varchar(100),
     id_persona integer NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg,
-    autentificacion varchar(20) DEFAULT 'local'::character varying
+    autentificacion varchar(20) DEFAULT 'local'::character varying,
+    alias VARCHAR(100)
 ) WITHOUT OIDS;
 --
 -- Structure for table tlog (OID = 306090) :
@@ -58,8 +59,16 @@ CREATE TABLE segu.tlog (
     cuenta_usuario varchar,
     descripcion_transaccion text,
     codigo_subsistema varchar(30),
-    si_log integer
+    si_log integer,
+    id_usuario_ai INTEGER,
+    usuario_ai VARCHAR(350)
+
 ) WITHOUT OIDS;
+COMMENT ON COLUMN segu.tlog.id_usuario_ai
+IS 'hace referencia la usuario interino que pudo haber asmido el rol temporalmente,  si es nulo significa que el id_usuario_reg.  es el responsable de la trasaccion';
+
+COMMENT ON COLUMN segu.tlog.usuario_ai
+IS 'nombre del usuario ai que pudo reponsable de la trasaccion';
 --
 -- Structure for table tpersona (OID = 306441) :
 --
@@ -76,12 +85,37 @@ CREATE TABLE segu.tpersona (
     telefono2 varchar(20),
     celular2 varchar(15),
     foto bytea,
-    extension varchar(15),
-    genero varchar(1),
+    extension varchar(100),
+    genero varchar(15),
     fecha_nacimiento date,
-    direccion varchar
+    direccion varchar,
+    correo2 VARCHAR(40),
+    id_tipo_doc_identificacion INTEGER,
+    nacionalidad VARCHAR(100),
+    expedicion VARCHAR(100),
+    discapacitado VARCHAR(2),
+    tipo_documento VARCHAR(100),
+    estado_civil VARCHAR(100),
+    carnet_discapacitado VARCHAR(100),
+    id_lugar INTEGER,
+    matricula VARCHAR(20),
+    historia_clinica VARCHAR(20),
+    grupo_sanguineo VARCHAR(10),
+    abreviatura_titulo VARCHAR(5) DEFAULT 'Sr.',
+    profesion VARCHAR(50),
+    nombre_archivo_foto text default '',
+    sobrenombre varchar(50) default '',
+    cualidad_1 varchar(50) default '',
+    cualidad_2 varchar(50) default ''
 )
 INHERITS (pxp.tbase) WITHOUT OIDS;
+
+COMMENT ON COLUMN segu.tpersona.matricula
+IS 'matricula de seguro de salud';
+
+COMMENT ON COLUMN segu.tpersona.historia_clinica
+IS 'historia clinica del seguro de salud';
+
 
 --
 -- Structure for table tactividad (OID = 306979) :
@@ -105,7 +139,8 @@ CREATE TABLE segu.testructura_gui (
     id_gui integer NOT NULL,
     fk_id_gui integer NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL
+    estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL,
+     modificado INTEGER
 ) WITHOUT OIDS;
 --
 -- Structure for table tgui_rol (OID = 307013) :
@@ -115,7 +150,9 @@ CREATE TABLE segu.tgui_rol (
     id_rol integer NOT NULL,
     id_gui integer NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg segu.activo_inactivo NOT NULL
+    estado_reg segu.activo_inactivo NOT NULL,
+    modificado INTEGER,
+    temporal INTEGER
 ) WITHOUT OIDS;
 --
 -- Structure for table tpermiso (OID = 307043) :
@@ -139,10 +176,17 @@ CREATE TABLE segu.tprocedimiento_gui (
     id_gui integer NOT NULL,
     boton segu.si_no NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
+    estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL,
+    modificado INTEGER,
+    nombre_boton VARCHAR(100),
+    imagen VARCHAR(100)
 ) WITHOUT OIDS;
 
+COMMENT ON COLUMN segu.tprocedimiento_gui.nombre_boton
+IS 'Nombre del boton';
 
+COMMENT ON COLUMN segu.tprocedimiento_gui.imagen
+IS 'ruta de la imagen que se muestra en os manuales';
 --
 -- Structure for table trecurso (OID = 307082) :
 --
@@ -162,7 +206,8 @@ CREATE TABLE segu.trol_procedimiento_gui (
     id_procedimiento_gui integer NOT NULL,
     id_rol integer,
     fecha_reg date DEFAULT now() NOT NULL,
-    estado_reg segu.activo_inactivo NOT NULL
+    estado_reg segu.activo_inactivo NOT NULL,
+    modificado INTEGER
 ) WITHOUT OIDS;
 --
 -- Structure for table tbloqueo_notificacion (OID = 307106) :
@@ -180,7 +225,7 @@ CREATE TABLE segu.tbloqueo_notificacion (
     tipo varchar(15) NOT NULL,
     aplicacion varchar(15) NOT NULL,
     tipo_evento varchar(35)
-) WITH OIDS;
+) WITHOUT OIDS;
 ALTER TABLE ONLY segu.tbloqueo_notificacion ALTER COLUMN id_bloqueo_notificacion SET STATISTICS 0;
 --
 -- Structure for table tclasificador (OID = 307111) :
@@ -198,11 +243,12 @@ CREATE TABLE segu.tclasificador (
 --
 CREATE TABLE segu.tfuncion (
     id_funcion serial NOT NULL,
-    nombre varchar(50) NOT NULL,
+    nombre varchar(100) NOT NULL,
     descripcion text,
     fecha_reg date DEFAULT now() NOT NULL,
     id_subsistema integer NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::pxp.estado_reg NOT NULL,
+    modificado INTEGER,
     CONSTRAINT chk_id_subsistema CHECK ((id_subsistema > 0))
 ) WITHOUT OIDS;
 --
@@ -210,7 +256,7 @@ CREATE TABLE segu.tfuncion (
 --
 CREATE TABLE segu.tgui (
     id_gui serial NOT NULL,
-    nombre varchar(50),
+    nombre varchar(200),
     descripcion text,
     fecha_reg date DEFAULT now() NOT NULL,
     codigo_gui varchar(30) NOT NULL,
@@ -221,8 +267,19 @@ CREATE TABLE segu.tgui (
     icono varchar(50),
     id_subsistema integer,
     clase_vista varchar(100),
-    estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
+    estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL,
+    modificado INTEGER,
+    combo_trigger VARCHAR(2),
+    imagen VARCHAR(100),
+    parametros TEXT,
+    sw_mobile VARCHAR(5) DEFAULT 'no' NOT NULL,
+    orden_mobile NUMERIC DEFAULT 0 NOT NULL,
+    codigo_mobile VARCHAR(250),
+    temporal INTEGER
 ) WITHOUT OIDS;
+
+COMMENT ON COLUMN segu.tgui.imagen
+IS 'Imagen para los manuales';
 --
 -- Structure for table thorario_trabajo (OID = 307147) :
 --
@@ -231,7 +288,7 @@ CREATE TABLE segu.thorario_trabajo (
     dia_semana integer,
     hora_ini time(0) without time zone,
     hora_fin time(0) without time zone
-) WITH OIDS;
+) WITHOUT OIDS;
 ALTER TABLE ONLY segu.thorario_trabajo ALTER COLUMN dia_semana SET STATISTICS 0;
 --
 -- Structure for table ttipo_documento (OID = 307152) :
@@ -258,7 +315,7 @@ CREATE TABLE segu.tpatron_evento (
     estado_reg varchar(20),
     CONSTRAINT tpatron_evento__aplicacion__chk CHECK ((((aplicacion)::text = 'usuario'::text) OR ((aplicacion)::text = 'ip'::text))),
     CONSTRAINT tpatron_evento__operacion__chk CHECK ((((operacion)::text = 'bloqueo'::text) OR ((operacion)::text = 'notificacion'::text)))
-) WITH OIDS;
+) WITHOUT OIDS;
 --
 -- Structure for table tperfil (OID = 307178) :
 --
@@ -283,15 +340,28 @@ CREATE TABLE segu.tprimo (
 --
 CREATE TABLE segu.tprocedimiento (
     id_procedimiento serial NOT NULL,
-    id_funcion integer,
-    codigo varchar(20) NOT NULL,
+    id_funcion integer NOT NULL,
+    codigo varchar(50) NOT NULL,
     descripcion text NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
     habilita_log segu.si_no DEFAULT 'si'::character varying NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL,
     autor varchar(100),
-    fecha_creacion varchar(40)
+    fecha_creacion varchar(40),
+    modificado INTEGER,
+    parametros_in TEXT,
+    parametros_out TEXT,
+    descripcion_tec TEXT
 ) WITHOUT OIDS;
+
+COMMENT ON COLUMN segu.tprocedimiento.parametros_in
+IS 'descripcion de los parametros de entrada';
+
+COMMENT ON COLUMN segu.tprocedimiento.parametros_out
+IS 'descripcion de los parametros de salida';
+
+COMMENT ON COLUMN segu.tprocedimiento.descripcion_tec
+IS 'xescripcion tecnica';
 
 --
 -- Structure for table trol (OID = 307211) :
@@ -302,7 +372,8 @@ CREATE TABLE segu.trol (
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL,
     rol varchar(150) NOT NULL,
-    id_subsistema integer
+    id_subsistema integer,
+    modificado INTEGER
 ) WITHOUT OIDS;
 --
 -- Structure for table tsesion (OID = 307220) :
@@ -321,8 +392,14 @@ CREATE TABLE segu.tsesion (
     pid_bd integer,
     transaccion_actual varchar,
     funcion_actual varchar,
-    inicio_proceso timestamp(0) without time zone
-) WITH OIDS;
+    inicio_proceso timestamp(0) without time zone,
+    m VARCHAR,
+    e VARCHAR,
+    k VARCHAR,
+    p VARCHAR,
+    x VARCHAR,
+    z VARCHAR
+) WITHOUT OIDS;
 ALTER TABLE ONLY segu.tsesion ALTER COLUMN fecha_reg SET STATISTICS 0;
 
 --
@@ -336,9 +413,20 @@ CREATE TABLE segu.tsubsistema (
     prefijo varchar(10) NOT NULL,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL,
     nombre_carpeta varchar(50),
-    id_subsis_orig integer
+    id_subsis_orig integer,
+    codigo_git VARCHAR(500),
+    organizacion_git VARCHAR(500),
+    sw_importacion VARCHAR(2) DEFAULT 'no' NOT NULL
 ) WITHOUT OIDS;
 
+COMMENT ON COLUMN segu.tsubsistema.codigo_git
+IS 'nombre de sistema en repositorio git';
+
+COMMENT ON COLUMN segu.tsubsistema.organizacion_git
+IS 'nombre de organizacion en git';
+
+COMMENT ON COLUMN segu.tsubsistema.sw_importacion
+IS 'si o no, permite importa desde git commit, issues etc';
 
 --
 -- Structure for table tusuario_perfil (OID = 307244) :
@@ -361,8 +449,6 @@ CREATE TABLE segu.tusuario_rol (
     fecha_reg date,
     estado_reg pxp.estado_reg DEFAULT 'activo'::pxp.estado_reg NOT NULL
 ) WITHOUT OIDS;
-
-
 
 
 --
@@ -495,7 +581,7 @@ CREATE INDEX tiene_procedimientos_fk ON segu.tprocedimiento USING btree (id_func
 --
 -- Definition for index tprocedimiento_gui_idx (OID = 308344) :
 --
-CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui USING btree (id_gui, id_procedimiento);
+
 --
 -- Definition for index usuario_perfil_pk (OID = 308346) :
 --
@@ -508,18 +594,8 @@ CREATE UNIQUE INDEX usuario_pk ON segu.tusuario USING btree (id_usuario);
 CREATE UNIQUE INDEX usuario_rol_pk ON segu.tusuario_rol USING btree (id_usuario_rol);
 
 
---
--- Definition for index trol_rol_key (OID = 429319) :
---
-ALTER TABLE ONLY segu.trol
-    ADD CONSTRAINT trol_rol_key
-    UNIQUE (rol);
---
--- Definition for index gui_codigo_gui_key (OID = 308132) :
---
-ALTER TABLE ONLY segu.tgui
-    ADD CONSTRAINT gui_codigo_gui_key
-    UNIQUE (codigo_gui);
+
+
 --
 -- Definition for index persona_pk_persona (OID = 308138) :
 --
@@ -646,12 +722,7 @@ ALTER TABLE ONLY segu.tusuario_perfil
 ALTER TABLE ONLY segu.tusuario_rol
     ADD CONSTRAINT pk_usuario_rol
     PRIMARY KEY (id_usuario_rol);
---
--- Definition for index subsistema_codigo_key (OID = 308192) :
---
-ALTER TABLE ONLY segu.tsubsistema
-    ADD CONSTRAINT subsistema_codigo_key
-    UNIQUE (codigo);
+
 --
 -- Definition for index subsistema_prefijo_key (OID = 308194) :
 --
@@ -667,9 +738,7 @@ ALTER TABLE ONLY segu.tbloqueo_notificacion
 --
 -- Definition for index tfuncion_nombre_key (OID = 308198) :
 --
-ALTER TABLE ONLY segu.tfuncion
-    ADD CONSTRAINT tfuncion_nombre_key
-    UNIQUE (nombre);
+
 --
 -- Definition for index thorario_trabajo_pkey (OID = 308200) :
 --
@@ -686,9 +755,7 @@ ALTER TABLE ONLY segu.tpatron_evento
 --
 -- Definition for index tprocedimiento_codigo_key (OID = 308206) :
 --
-ALTER TABLE ONLY segu.tprocedimiento
-    ADD CONSTRAINT tprocedimiento_codigo_key
-    UNIQUE (codigo);
+
 --
 -- Definition for index tsesion_pkey (OID = 308208) :
 --
@@ -707,18 +774,6 @@ ALTER TABLE ONLY segu.tusuario
 /***********************************F-SCP-JRR-SEGU-1-19/11/2012****************************************/
 
 
-/***********************************I-SCP-RCM-SEGU-0-29/11/2012****************************************/
---Creación de vista de usuario
-CREATE OR REPLACE VIEW segu.vusuario AS
- SELECT usu.id_usuario, usu.id_clasificador, usu.cuenta, usu.contrasena, usu.fecha_caducidad, usu.fecha_reg,
- usu.estilo, usu.contrasena_anterior, usu.id_persona, usu.estado_reg, usu.autentificacion,
- (((per.nombre::text || ' '::text) || per.apellido_paterno::text) || ' '::text) || per.apellido_materno::text AS desc_persona, per.ci, per.correo
-   FROM segu.tusuario usu
-   JOIN segu.tpersona per ON per.id_persona = usu.id_persona;
-
-ALTER TABLE segu.vusuario OWNER TO postgres;
-/***********************************F-SCP-JRR-SEGU-0-29/11/2012****************************************/
-
 
 /***********************************I-SCP-RCM-SEGU-0-07/12/2012****************************************/
 --Correción de campo nulo de vista de usuario
@@ -732,86 +787,41 @@ CREATE OR REPLACE VIEW segu.vusuario AS
 ALTER TABLE segu.vusuario OWNER TO postgres;
 /***********************************F-SCP-JRR-SEGU-0-07/12/2012****************************************/
 
-/***********************************I-SCP-RAC-SEGU-0-14/12/2012****************************************/
 
-ALTER TABLE segu.tfuncion
-  DROP CONSTRAINT tfuncion_nombre_key RESTRICT;
-
-  CREATE UNIQUE INDEX tfuncion_idx ON segu.tfuncion
-  USING btree (nombre, id_subsistema, estado_reg);
-
-
-/***********************************F-SCP-RAC-SEGU-0-14/12/2012****************************************/
-
-/****************************I-SCP-JRR-SEGU-0-09/01/2012*************/
-ALTER TABLE segu.testructura_gui
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.tfuncion
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.tgui_rol
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.tgui
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.tprocedimiento_gui
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.tprocedimiento
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.trol_procedimiento_gui
-  ADD COLUMN modificado INTEGER;
-
-ALTER TABLE segu.trol
-  ADD COLUMN modificado INTEGER;
-
-/****************************F-SCP-JRR-SEGU-0-09/01/2012*************/
 
 /*****************************I-SCP-JRR-SEGU-0-21/01/2013*************/
  -- object recreation
-DROP INDEX segu.tfuncion_idx;
+
 
 CREATE UNIQUE INDEX tfuncion_idx ON segu.tfuncion
   USING btree (nombre, id_subsistema)
   WHERE estado_reg = 'activo';
 
- -- object recreation
-ALTER TABLE segu.tsubsistema
-  DROP CONSTRAINT subsistema_codigo_key RESTRICT;
 
 CREATE UNIQUE INDEX subsistema_codigo_key ON segu.tsubsistema
   USING btree (codigo)
   WHERE estado_reg = 'activo';
 
  -- object recreation
-ALTER TABLE segu.trol
-  DROP CONSTRAINT trol_rol_key RESTRICT;
+
+
 
 CREATE UNIQUE INDEX trol_rol_key ON segu.trol
   USING btree (rol)
   WHERE estado_reg = 'activo';
 
  -- object recreation
-ALTER TABLE segu.tgui
-  DROP CONSTRAINT gui_codigo_gui_key RESTRICT;
-
 CREATE UNIQUE INDEX gui_codigo_gui_key ON segu.tgui
   USING btree (codigo_gui)
   WHERE estado_reg = 'activo';
 
  -- object recreation
-ALTER TABLE segu.tprocedimiento
-  DROP CONSTRAINT tprocedimiento_codigo_key RESTRICT;
 
 CREATE UNIQUE INDEX tprocedimiento_codigo_key ON segu.tprocedimiento
   USING btree (codigo)
   WHERE estado_reg = 'activo';
 
  -- object recreation
-DROP INDEX segu.tprocedimiento_gui_idx;
 
 CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui
   USING btree (id_gui, id_procedimiento)
@@ -820,13 +830,6 @@ CREATE UNIQUE INDEX tprocedimiento_gui_idx ON segu.tprocedimiento_gui
 
 /*****************************F-SCP-JRR-SEGU-0-21/01/2013*************/
 
-/*****************************I-SCP-JRR-SEGU-0-08/03/2013*************/
-
-ALTER TABLE segu.tgui
-  ADD COLUMN combo_trigger VARCHAR(2);
-
-
-/*****************************F-SCP-JRR-SEGU-0-08/03/2013*************/
 
 /*****************************I-SCP-RAC-SEGU-0-22/04/2013*************/
 
@@ -841,39 +844,9 @@ PRIMARY KEY(id_usuario_grupo_ep)) INHERITS (pxp.tbase);
 
 
 
-/*****************************I-SCP-RAC-SEGU-0-16/12/2013*************/
-
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN correo2 VARCHAR(40);
-
-/*****************************F-SCP-RAC-SEGU-0-16/12/2013*************/
-
-
 
 
 /*****************************I-SCP-RAC-SEGU-0-18/12/2013*************/
-
- ALTER TABLE segu.tprocedimiento_gui
-  ADD COLUMN nombre_boton VARCHAR(100);
-
-COMMENT ON COLUMN segu.tprocedimiento_gui.nombre_boton
-IS 'Nombre del boton';
-
- ALTER TABLE segu.tprocedimiento_gui
-  ADD COLUMN imagen VARCHAR(100);
-
-COMMENT ON COLUMN segu.tprocedimiento_gui.imagen
-IS 'ruta de la imagen que se muestra en os manuales';
-
-
-ALTER TABLE segu.tgui
-  ADD COLUMN imagen VARCHAR(100);
-
-COMMENT ON COLUMN segu.tgui.imagen
-IS 'Imagen para los manuales';
 
 CREATE TABLE segu.ttutotial (
   id_tutotial SERIAL,
@@ -887,24 +860,7 @@ CREATE TABLE segu.ttutotial (
 WITHOUT OIDS;
 
 
-ALTER TABLE segu.tprocedimiento
-  ADD COLUMN parametros_in TEXT;
 
-COMMENT ON COLUMN segu.tprocedimiento.parametros_in
-IS 'descripcion de los parametros de entrada';
-
-ALTER TABLE segu.tprocedimiento
-  ADD COLUMN parametros_out TEXT;
-
-COMMENT ON COLUMN segu.tprocedimiento.parametros_out
-IS 'descripcion de los parametros de salida';
-
-
-ALTER TABLE segu.tprocedimiento
-  ADD COLUMN descripcion_tec TEXT;
-
-COMMENT ON COLUMN segu.tprocedimiento.descripcion_tec
-IS 'xescripcion tecnica';
 
 /*****************************F-SCP-RAC-SEGU-0-18/12/2013*************/
 
@@ -919,22 +875,6 @@ CREATE TABLE segu.ttabla_migrar (
 WITHOUT OIDS;
 /*****************************F-SCP-RCM-SEGU-0-17/01/2014*************/
 
-/*****************************I-SCP-RCM-SEGU-0-29/01/2014*************/
-ALTER TABLE segu.tpersona
-  ALTER COLUMN genero TYPE VARCHAR(15);
-/*****************************F-SCP-RCM-SEGU-0-29/01/2014*************/
-
-/*****************************I-SCP-JRR-SEGU-0-01/02/2014*************/
-ALTER TABLE segu.tpersona
-  ALTER COLUMN extension TYPE VARCHAR(100);
-/*****************************F-SCP-RCM-SEGU-0-01/02/2014*************/
-
-/*****************************I-SCP-RCM-SEGU-0-08/02/2014*************/
-
-ALTER TABLE segu.tfuncion
-  ALTER COLUMN nombre type varchar(100);
-
-/*****************************F-SCP-RCM-SEGU-0-08/02/2014*************/
 
 
 /*****************************I-SCP-FFP-SEGU-0-25/04/2014*************/
@@ -950,143 +890,6 @@ CREATE TABLE segu.tvideo (
 /*****************************F-SCP-FFP-SEGU-0-25/04/2014*************/
 
 
-
-/*****************************I-SCP-JRR-SEGU-0-21/05/2014*************/
-
-ALTER TABLE segu.tgui
-  ADD COLUMN parametros TEXT;
-
-/*****************************F-SCP-JRR-SEGU-0-21/05/2014*************/
-
-
-
-/*****************************I-SCP-RAC-SEGU-0-22/05/2014*************/
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tlog
-  ADD COLUMN id_usuario_ai INTEGER;
-
-COMMENT ON COLUMN segu.tlog.id_usuario_ai
-IS 'hace referencia la usuario interino que pudo haber asmido el rol temporalmente,  si es nulo significa que el id_usuario_reg.  es el responsable de la trasaccion';
-
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tlog
-  ADD COLUMN usuario_ai VARCHAR(350);
-
-COMMENT ON COLUMN segu.tlog.usuario_ai
-IS 'nombre del usuario ai que pudo reponsable de la trasaccion';
-
-/*****************************F-SCP-RAC-SEGU-0-22/05/2014*************/
-
-
-
-
-/*****************************I-SCP-RAC-SEGU-0-16/06/2014*************/
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tgui
-  ADD COLUMN sw_mobile VARCHAR(5) DEFAULT 'no' NOT NULL;
---------------- SQL ---------------
-ALTER TABLE segu.tgui
-  ADD COLUMN orden_mobile NUMERIC DEFAULT 0 NOT NULL;
---------------- SQL ---------------
-ALTER TABLE segu.tgui
-  ADD COLUMN codigo_mobile VARCHAR(250);
-
-/*****************************F-SCP-RAC-SEGU-0-16/06/2014*************/
-
-/*****************************I-SCP-JRR-SEGU-0-03/09/2014*************/
-ALTER TABLE segu.tgui
-  ADD COLUMN temporal INTEGER;
-
-ALTER TABLE segu.testructura_gui
-  ADD COLUMN temporal INTEGER;
-
-ALTER TABLE segu.tgui_rol
-  ADD COLUMN temporal INTEGER;
-
-/*****************************F-SCP-JRR-SEGU-0-03/09/2014*************/
-
-/*****************************I-SCP-JRR-SEGU-0-25/03/2015*************/
-ALTER TABLE segu.tpersona
-  ADD COLUMN id_tipo_doc_identificacion INTEGER;
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN nacionalidad VARCHAR(100);
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN expedicion VARCHAR(100);
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN discapacitado VARCHAR(2);
-
-/*****************************F-SCP-JRR-SEGU-0-25/03/2015*************/
-
-
-/*****************************I-SCP-RAC-SEGU-0-30/03/2015*************/
---------------- SQL ---------------
-
-ALTER TABLE segu.tgui
-  ALTER COLUMN nombre TYPE VARCHAR(200) COLLATE pg_catalog."default";
-
-/*****************************F-SCP-RAC-SEGU-0-30/03/2015*************/
-
-/****************************I-SCP-RAC-PXP-0-12/03/2013*************/
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsesion
-  ADD COLUMN m VARCHAR;
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsesion
-  ADD COLUMN e VARCHAR;
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsesion
-  ADD COLUMN k VARCHAR;
-
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsesion
-  ADD COLUMN p VARCHAR;
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsesion
-  ADD COLUMN x VARCHAR;
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsesion
-  ADD COLUMN z VARCHAR;
-
-/****************************F-SCP-RAC-PXP-0-12/03/2013*************/
-
-/*****************************I-SCP-JRR-SEGU-0-04/05/2016*************/
---------------- SQL ---------------
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN tipo_documento VARCHAR(100);
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN estado_civil VARCHAR(100);
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN carnet_discapacitado VARCHAR(100);
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN id_lugar INTEGER;
-
-/*****************************F-SCP-JRR-SEGU-0-17/10/2016*************/
-
 /*****************************I-SCP-JRR-SEGU-0-17/10/2016*************/
 CREATE INDEX tsesion_idx ON segu.tsesion
 USING btree (pid_web);
@@ -1101,12 +904,6 @@ CREATE INDEX tsesion_idx2 ON segu.tsesion
 USING btree (id_usuario, estado_reg);
 /*****************************F-SCP-JRR-SEGU-0-13/12/2016*************/
 
-/*****************************I-SCP-RAC-SEGU-0-06/01/2017*************/
-
-ALTER TABLE segu.tprocedimiento
-  ALTER COLUMN codigo TYPE VARCHAR(50) COLLATE pg_catalog."default";
-
-/*****************************F-SCP-RAC-SEGU-0-06/01/2017*************/
 
 
 /*****************************I-SCP-RCM-SEGU-0-09/08/2017*************/
@@ -1114,96 +911,31 @@ CREATE INDEX idx_tusuario__id_usuario ON segu.tusuario
   USING btree (id_usuario);
 /*****************************F-SCP-RCM-SEGU-0-09/08/2017*************/
 
-/*****************************I-SCP-RCM-SEGU-0-07/11/2017*************/
-alter table segu.tprocedimiento
-alter column id_funcion set not null;
-/*****************************F-SCP-RCM-SEGU-0-07/11/2017*************/
 
 /*****************************I-SCP-MZM-SEGU-40-30/07/2019*************/
 --se comenta el MATCH PARTIAL al restaurar sale el error MATCH PARTIAL not yet implemented
 CREATE TABLE segu.tpersona_relacion (
   id_persona_relacion SERIAL,
   id_persona INTEGER,
-  id_persona_fk INTEGER,
   relacion VARCHAR,
+  nombre VARCHAR(100),
+  fecha_nacimiento DATE,
+  matricula VARCHAR(20),
+  historia_clinica VARCHAR(20),
+  genero VARCHAR(1),
   CONSTRAINT tpersona_relacion_pkey PRIMARY KEY(id_persona_relacion),
   CONSTRAINT fk_tpersona_relacion__id_persona FOREIGN KEY (id_persona)
     REFERENCES segu.tpersona(id_persona)
     --MATCH PARTIAL
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-    NOT DEFERRABLE,
-  CONSTRAINT fk_tpersona_relacion__id_persona_fk FOREIGN KEY (id_persona_fk)
-    REFERENCES segu.tpersona(id_persona)
-    --MATCH PARTIAL
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
     NOT DEFERRABLE
+ 
 ) INHERITS (pxp.tbase)
 WITHOUT OIDS;
 
 
 /*****************************F-SCP-MZM-SEGU-40-30/07/2019*************/
-
-
-/***********************************I-SCP-MZM-SEGU-40-31/07/2019*****************************************/
-ALTER TABLE segu.tpersona
-  ADD COLUMN matricula VARCHAR(20);
-
-COMMENT ON COLUMN segu.tpersona.matricula
-IS 'matricula de seguro de salud';
-
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN historia_clinica VARCHAR(20);
-
-COMMENT ON COLUMN segu.tpersona.historia_clinica
-IS 'historia clinica del seguro de salud';
-
-ALTER TABLE segu.tpersona
-  ADD COLUMN grupo_sanguineo VARCHAR(5);
-/***********************************F-SCP-MZM-SEGU-40-31/07/2019*****************************************/
-
-/***********************************I-SCP-MZM-SEGU-55-02/09/2019*****************************************/
-ALTER TABLE segu.tpersona
-  ADD COLUMN abreviatura_titulo VARCHAR(5);
-
-ALTER TABLE segu.tpersona
-  ALTER COLUMN abreviatura_titulo SET DEFAULT 'Sr.';
-/***********************************F-SCP-MZM-SEGU-55-02/09/2019*****************************************/
-
-
-/***********************************I-SCP-MZM-SEGU-59-09/09/2019*****************************************/
-ALTER TABLE segu.tpersona
-  ADD COLUMN profesion VARCHAR(50);
-/***********************************F-SCP-MZM-SEGU-59-09/09/2019*****************************************/
-
-/***********************************I-SCP-APS-SEGU-01-02/12/2019*****************************************/
-ALTER TABLE segu.tpersona
-  ALTER COLUMN grupo_sanguineo TYPE VARCHAR(10);
-/***********************************F-SCP-APS-SEGU-01-02/12/2019*****************************************/
-
-/***********************************I-SCP-MZM-SEGU-91-05/12/2019*****************************************/
-ALTER TABLE segu.tpersona_relacion
-  DROP COLUMN id_persona_fk;
-
-
-ALTER TABLE segu.tpersona_relacion
-  ADD COLUMN nombre VARCHAR(100);
-
-ALTER TABLE segu.tpersona_relacion
-  ADD COLUMN fecha_nacimiento DATE;
-
-ALTER TABLE segu.tpersona_relacion
-  ADD COLUMN matricula VARCHAR(20);
-
-ALTER TABLE segu.tpersona_relacion
-  ADD COLUMN historia_clinica VARCHAR(20);
-
-ALTER TABLE segu.tpersona_relacion
-  ADD COLUMN genero VARCHAR(1);
-/***********************************F-SCP-MZM-SEGU-91-05/12/2019*****************************************/
-
 
 
 
@@ -1219,9 +951,11 @@ CREATE TABLE segu.tprogramador (
   alias_codigo_1 VARCHAR(100),
   alias_codigo_2 VARCHAR(100),
   correo VARCHAR(500),
-  fecha_inicio DATE,
+  fecha_inicio DATE NOT NULL,
   fecha_fin DATE,
   usuario_ldap VARCHAR(200),
+  organizacion VARCHAR(200),
+  correo_personal VARCHAR(200),
   PRIMARY KEY(id_programador)
 ) INHERITS (pxp.tbase)
 WITH (oids = false);
@@ -1241,19 +975,10 @@ IS 'inicio de relacion laboral';
 COMMENT ON COLUMN segu.tprogramador.fecha_fin
 IS 'fin de relacion laboral';
 
---------------- SQL ---------------
-
-ALTER TABLE segu.tprogramador
-  ADD COLUMN organizacion VARCHAR(200);
 
 COMMENT ON COLUMN segu.tprogramador.organizacion
 IS 'para programadores externos como KPLIAN';
 
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tprogramador
-  ADD COLUMN correo_personal VARCHAR(200);
 
 COMMENT ON COLUMN segu.tprogramador.correo_personal
 IS 'correo personal';
@@ -1261,39 +986,7 @@ IS 'correo personal';
 /***********************************F-SCP-RAC-SEGU-102-08/01/2020*****************************************/
 
 
-/***********************************I-SCP-MZM-SEGU-102-08/01/2020*****************************************/
-ALTER TABLE segu.tprogramador
-  ALTER COLUMN fecha_inicio SET NOT NULL;
-/***********************************F-SCP-MZM-SEGU-102-08/01/2020*****************************************/
 
-
-
-/***********************************I-SCP-RAC-SEGU-102-09/01/2020*****************************************/
-
-ALTER TABLE segu.tsubsistema
-  ADD COLUMN codigo_git VARCHAR(500);
-
-COMMENT ON COLUMN segu.tsubsistema.codigo_git
-IS 'nombre de sistema en repositorio git';
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsubsistema
-  ADD COLUMN organizacion_git VARCHAR(500);
-
-COMMENT ON COLUMN segu.tsubsistema.organizacion_git
-IS 'nombre de organizacion en git';
-
-
---------------- SQL ---------------
-
-ALTER TABLE segu.tsubsistema
-  ADD COLUMN sw_importacion VARCHAR(2) DEFAULT 'no' NOT NULL;
-
-COMMENT ON COLUMN segu.tsubsistema.sw_importacion
-IS 'si o no, permite importa desde git commit, issues etc';
-
-/***********************************F-SCP-RAC-SEGU-102-09/01/2020*****************************************/
 /***********************************I-SCP-MMV-SEGU-127-30/01/2020*****************************************/
 CREATE TABLE segu.tissues (
   id_issues SERIAL,
@@ -1378,22 +1071,4 @@ ALTER TABLE segu.tcommit
   OWNER TO postgres;
 /***********************************F-SCP-MMV-SEGU-127-30/01/2020*****************************************/
  
-
-
-/***********************************I-SCP-JRR-SEGU-0-02/06/2020*****************************************/
-ALTER TABLE segu.tusuario
-  ADD COLUMN alias VARCHAR(100);
-
-/***********************************F-SCP-JRR-SEGU-0-02/06/2020*****************************************/
-
  
-/***********************************I-SCP-VAN-SEGU-0-01/07/2020*****************************************/
-alter table segu.tpersona
-	add nombre_archivo_foto text default '';
-alter table segu.tpersona
-	add sobrenombre varchar(50) default '';
-alter table segu.tpersona
-	add cualidad_1 varchar(50) default '';
-alter table segu.tpersona
-	add cualidad_2 varchar(50) default '';
-/***********************************F-SCP-VAN-SEGU-0-01/07/2020*****************************************/

@@ -136,18 +136,14 @@ class ACTAuten extends ACTbase {
 
 	//Verifica las credenciales de usuario
 	
-	function verificarCredenciales(){
-
-
-		
-		$this->funciones= $this->create('MODUsuario');
-		$this->res=$this->funciones->ValidaUsuario();
+	function verificarCredenciales(){  
+		$this->funciones= $this->create('MODUsuario'); 
+		$this->res=$this->funciones->ValidaUsuario();  
 		$this->datos=$this->res->getDatos();
         $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
 
 
-
-        if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){
+        if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){echo "llega aqui"; exit;
 			//si no existe le mando otra vez a la portada
 			$_SESSION["autentificado"] = "NO";
 			$_SESSION["ss_id_usuario"] = "";
@@ -167,7 +163,7 @@ class ACTAuten extends ACTbase {
            echo "{success:false,mensaje:'".addslashes($this->res->getMensaje())."'}";
 			exit;
 		}
-		else{
+		else{ 
 			$LDAP=TRUE;
 			
 			//preguntamos el tipo de autentificacion
@@ -198,7 +194,7 @@ class ACTAuten extends ACTbase {
 	
 			}
 			
-			
+		
 		 //si falla la autentificacion LDAP cerramos sesion
 		 if(!$LDAP){
 		 	$_SESSION["autentificado"] = "NO";

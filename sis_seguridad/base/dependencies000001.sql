@@ -184,16 +184,37 @@ FROM segu.tpersona p;
 --
 -- Definition for view vlog (OID = 307283) : 
 --
-CREATE VIEW segu.vlog AS
-SELECT tlog.id_log, tlog.id_usuario, tlog.id_subsistema, tlog.mac_maquina,
-    tlog.ip_maquina, tlog.tipo_log, tlog.descripcion, tlog.fecha_reg,
-    tlog.estado_reg, tlog.procedimientos, tlog.transaccion, tlog.consulta,
-    tlog.tiempo_ejecucion, tlog.usuario_base, tlog.codigo_error,
-    tlog.dia_semana, tlog.pid_db, tlog.pid_web, tlog.sid_web,
-    tlog.cuenta_usuario, tlog.descripcion_transaccion, tlog.codigo_subsistema
-FROM segu.tlog
-WHERE ((tlog.fecha_reg >= (now() - '24:00:00'::interval)) AND
-    (tlog.fecha_reg <= now()));
+CREATE VIEW segu.vlog
+AS
+  SELECT tlog.id_log,
+         tlog.id_usuario,
+         tlog.id_subsistema,
+         tlog.mac_maquina,
+         tlog.ip_maquina,
+         tlog.tipo_log,
+         tlog.descripcion,
+         tlog.fecha_reg,
+         tlog.estado_reg,
+         tlog.procedimientos,
+         tlog.transaccion,
+         tlog.consulta,
+         tlog.tiempo_ejecucion,
+         tlog.usuario_base,
+         tlog.codigo_error,
+         tlog.dia_semana,
+         tlog.pid_db,
+         tlog.pid_web,
+         tlog.sid_web,
+         tlog.cuenta_usuario,
+         tlog.descripcion_transaccion,
+         tlog.codigo_subsistema,
+         tlog.usuario_ai
+  FROM segu.tlog
+  WHERE tlog.fecha_reg >=(now() - '24:00:00' ::interval) AND
+        tlog.fecha_reg <= now();
+
+ALTER TABLE segu.vlog
+  OWNER TO postgres;
 
 --
 -- Definition for view vmonitor_bd_esquema (OID = 307288) : 
@@ -357,50 +378,6 @@ where id_usuario = 1;
 /***********************************F-DEP-JRR-SEGU-0-19/01/2012*****************************************/
 
 
-
-/*******************************************I-DEP-RAC-SEGU-0-23/05/2014**********************************************/
-
-
---------------- SQL ---------------
-
- -- object recreation
-DROP VIEW segu.vlog;
-
-CREATE VIEW segu.vlog
-AS
-  SELECT tlog.id_log,
-         tlog.id_usuario,
-         tlog.id_subsistema,
-         tlog.mac_maquina,
-         tlog.ip_maquina,
-         tlog.tipo_log,
-         tlog.descripcion,
-         tlog.fecha_reg,
-         tlog.estado_reg,
-         tlog.procedimientos,
-         tlog.transaccion,
-         tlog.consulta,
-         tlog.tiempo_ejecucion,
-         tlog.usuario_base,
-         tlog.codigo_error,
-         tlog.dia_semana,
-         tlog.pid_db,
-         tlog.pid_web,
-         tlog.sid_web,
-         tlog.cuenta_usuario,
-         tlog.descripcion_transaccion,
-         tlog.codigo_subsistema,
-         tlog.usuario_ai
-  FROM segu.tlog
-  WHERE tlog.fecha_reg >=(now() - '24:00:00' ::interval) AND
-        tlog.fecha_reg <= now();
-
-ALTER TABLE segu.vlog
-  OWNER TO postgres;
-
-
-
-/*******************************************F-DEP-RAC-SEGU-0-23/05/2014**********************************************/
 
 
 

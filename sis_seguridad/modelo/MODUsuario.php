@@ -32,7 +32,7 @@ class MODUsuario extends MODbase {
             $contrasena = $this->arreglo['contrasena'];
 
         } else {
-
+			
             $contrasena = $_SESSION["encriptar_data"]=='si'?md5( $this->arreglo['contrasena']):md5($this->oEncryp->getDecodificado());
         }
 		$this->arreglo=array("usuario" =>$this->arreglo['usuario'],
@@ -50,10 +50,9 @@ class MODUsuario extends MODbase {
 		$_SESSION["_CONTRASENA_MD5"] = $this->arreglo['contrasena'];
 				
 		$this->armarConsulta();
-		
+		//echo $this->getConsulta(); exit;
 		$this->ejecutarConsulta();
 		
-		 
 		return $this->respuesta;
 	}
 

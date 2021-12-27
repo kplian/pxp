@@ -2,7 +2,7 @@
 //include_once '../../../lib/lib_control/session_secure.inc.php';
 //session_secure();  
 include('../../../lib/lib_control/CTSesion.php');
-session_start();
+session_start(); 
 include(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 if($_SESSION["_FORSSL"]==="SI"){
     session_set_cookie_params (0,$_SESSION["_FOLDER"], '' ,true ,false);
