@@ -802,15 +802,16 @@ class driver
 		//cunado son archivo upload file esto duplicaria la cantida archivos
 		//rac 23/09/2011
 		if ($this->uploadFile){
-			//armar array de valores
-
+			//armar array de valores			
 			//rac 27/09/2011  consulta para no repetir
 			$this->parConsulta=$this->consulta.",'".str_replace("'","''",$this->consulta).",NULL,NULL, '".$_SESSION["_PUERTO"]."')'";
 			$this->consulta.=",'".str_replace("'","''",$this->consulta).",NULL,'$this->valoresFiles')',$this->valoresFiles,$this->variablesFiles)";
 
 		}
 		else{
+			
 		  $this->consulta.=",'".str_replace("'","''",$this->consulta).",NULL,NULL,NULL)',NULL,NULL, '".$_SESSION["_PUERTO"]."')";
+		  
 		}
 
 
@@ -1151,6 +1152,7 @@ class driver
 
 				//Verifica si se produjo algon error logico en la funcion
 				$resp_procedimiento = $this->divRespuesta($array[0]['f_intermediario_ime']);
+				
 				  if($this->uploadFile){
 					$this->respuesta->setMensaje($resp_procedimiento['tipo_respuesta'],$this->nombre_archivo,$resp_procedimiento['mensaje'],$resp_procedimiento['mensaje_tec'],'base',$this->procedimiento,$this->transaccion,$this->tipo_procedimiento,$this->parConsulta);
 				  }
@@ -1218,23 +1220,24 @@ class driver
 
 
 	function divRespuesta($cadena){
+		
 		$res=array();
 		//echo $cadena;exit;
 		//Limpia el json si corresponde
 		$aux=strripos ($cadena,'}');
 		$cadena=substr($cadena,0,$aux+1);
-		//echo $cadena;exit;
+		
 
 		//jrr:removiendo saltos de linea y tabas para una buena decodificacion del json
 		$cadena = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $cadena);
-
-	//	$res=json_decode($cadena,true);
-
-
-		$res['datos']=json_decode($cadena,true);
+		
+		$res=json_decode($cadena,true);
+		
+					
+		$res['datos']=$res;
 		//$res;
-
-
+		
+		
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
 
@@ -1247,8 +1250,7 @@ class driver
 		if(count($res['datos'])>0)
 			$aux=array_shift($res['datos']);
 
-		//var_dump($aux);exit;
-
+		
 		if($res['tipo_respuesta']=='EXITO'){
 			$res['mensaje']="La transacción se ha ejecutado con éxito";
 			$res['mensaje_tec']="La transacción se ha ejecutado con éxito";
