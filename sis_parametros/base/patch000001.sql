@@ -622,6 +622,8 @@ CREATE TABLE param.tconcepto_ingas(
     llave_mano VARCHAR(2) DEFAULT 'si'::character varying NOT NULL,
     id_taza_impuesto INTEGER,
     id_concepto_ingas_agrupador INTEGER,
+    requiere_ot VARCHAR(20) DEFAULT 'opcional' NOT NULL,
+    filtro_ot VARCHAR(25) DEFAULT 'todos' NOT NULL,
     PRIMARY KEY (id_concepto_ingas))
     INHERITS (pxp.tbase);
 
@@ -649,6 +651,11 @@ IS 'versiond e la configuracion, por ejemplo version 1 para 2018 , version 2 par
 COMMENT ON COLUMN param.tconcepto_ingas.llave_mano
 IS 'Indica si el concepto de gasto es llave en mano';
 
+COMMENT ON COLUMN param.tconcepto_ingas.requiere_ot
+IS 'obligatorio, opcional';
+
+COMMENT ON COLUMN param.tconcepto_ingas.filtro_ot
+IS 'todos, listado  , si es listado filtra atravez de la relacion ot_concepto_gasto';
 
 
 

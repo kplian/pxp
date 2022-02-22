@@ -143,7 +143,7 @@ class ACTAuten extends ACTbase {
         $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
 
 
-        if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){echo "llega aqui"; exit;
+        if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){//echo "llega aqui"; exit;
 			//si no existe le mando otra vez a la portada
 			$_SESSION["autentificado"] = "NO";
 			$_SESSION["ss_id_usuario"] = "";

@@ -32,11 +32,11 @@ class ACTMenu extends ACTbase {
 			$this->objParam->addParametro('id_padre',$node);
 		
 		//var_dump($this->objParam);
-		/*
-		echo $node;
-		exit;	*/
+		
+		
 		$this->funciones = $this->create('MODGui');
 		$this->res=$this->funciones->ListarMenu();
+		
 		$this->res->setTipoRespuestaArbol();
 		
 		$arreglo=array();

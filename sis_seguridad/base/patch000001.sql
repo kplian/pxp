@@ -140,7 +140,8 @@ CREATE TABLE segu.testructura_gui (
     fk_id_gui integer NOT NULL,
     fecha_reg date DEFAULT now() NOT NULL,
     estado_reg segu.activo_inactivo DEFAULT 'activo'::character varying NOT NULL,
-     modificado INTEGER
+     modificado INTEGER,
+     temporal INTEGER
 ) WITHOUT OIDS;
 --
 -- Structure for table tgui_rol (OID = 307013) :
