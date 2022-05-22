@@ -1236,18 +1236,18 @@ class driver
 					
 		$res['datos']=$res;
 		//$res;
-		
-		
-		if(count($res['datos'])>0)
+		/*var_dump ($res);
+		exit;*/
+		if(count((array)$res['datos'])>0)
 			$aux=array_shift($res['datos']);
 
-		if(count($res['datos'])>0)
+		if(count((array)$res['datos'])>0)
 			$aux=array_shift($res['datos']);
 
-		if(count($res['datos'])>0)
+		if(count((array)$res['datos'])>0)
 			$aux=array_shift($res['datos']);
 
-		if(count($res['datos'])>0)
+		if(count((array)$res['datos'])>0)
 			$aux=array_shift($res['datos']);
 
 		

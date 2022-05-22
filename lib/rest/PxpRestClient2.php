@@ -37,7 +37,7 @@ class PxpRestClient2
     {    	
         return new self($host, $base_url, $port, $protocol);
     }    
-    protected function __construct($host, $base_url='', $port, $protocol)
+    public function __construct($host, $base_url='', $port, $protocol)
     {    	
     	if ( !function_exists('sys_get_temp_dir'))
 			$this->_cookie_file = "/tmp/cookie_" . uniqid('pxp') . ".txt";

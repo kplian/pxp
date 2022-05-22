@@ -140,7 +140,7 @@ class ACTAuten extends ACTbase {
 		$this->funciones= $this->create('MODUsuario'); 
 		$this->res=$this->funciones->ValidaUsuario();  
 		$this->datos=$this->res->getDatos();
-        $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
+       // $this->oEncryp=new CTEncriptacionPrivada($this->objParam->getParametro('contrasena'),$_SESSION['key_p'],$_SESSION['key_k'],$_SESSION['key_d'],$_SESSION['key_m']);
 
 
         if($this->res->getTipo()=='Error' || $this->datos['cuenta']==''){//echo "llega aqui"; exit;

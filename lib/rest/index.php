@@ -12,6 +12,10 @@ session_start();
 include_once(dirname(__FILE__).'/../../../lib/DatosGenerales.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_general/Errores.php');
 include_once(dirname(__FILE__).'/../../../lib/lib_control/CTincludes.php');
+
+
+include_once(dirname(__FILE__).'/PxpRestClient2.php'); //rac 2022
+
 $_SESSION["_OFUSCAR_ID"]='no';
 //estable aprametros ce la cookie de sesion
 $_SESSION["_CANTIDAD_ERRORES"]=0;//inicia control cantidad de error anidados
@@ -64,6 +68,17 @@ $app->get(
     function () {
          echo 'Hola';
        }
+);
+
+$app->get(
+    '/encriptar/:user/:password',
+    function ($user, $password) {
+        $cliente = new PxpRestClient2('locahost','',   80,  'HTTP');
+        $prefix = uniqid('pxp');
+        $_pass = md5($password);
+        $_user = $cliente->encrypt($prefix . '$$' . $user, $_pass);
+        echo $_user ;
+    }
 );
 
 
@@ -124,11 +139,13 @@ function authPxp($headersArray) {
         $headers = true;
     }
 
+
     if (count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
 
         $reqArray['usuario'] = $headersArray['Pxp-User'];
         $reqArray['contrasena'] =  $md5Pass;
         $reqArray['_tipo'] = 'restAuten';
+
 
 
         //autentificar usuario en sistema
@@ -235,42 +252,17 @@ function persona2($r,$t){
 $app->get(
     '/seguridad/Persona/:start/:limit',
     function () use ($app) {
-           //$start = $app->request->get('start');
-           // $limit = $app->request->get('limit');
+
 
             $par = list($start, $limit) = func_get_args();
 
-          // $ref = new ReflectionFunction();
-
-           //print_r($ref->getParameters());
-
-           //get_func_argNames('test')
-
-
-   //          foreach(func_get_args() as $k => $v){
-  //                echo $k . " => " . $v . "<BR/>";
-  //           }
-
-
-             //print_r($f);
-
-  //         $paramValue = $app->request->params('paramName');
-   //        print_r($paramValue);
-
-           //$req = $app->request();
-           //print_r($req);
 
             $request= $app->request();
 
             $s1 = $app->request()->params('start');
-            //list($start, $limit) = func_get_args();
+
 
             $data = json_decode($request->getBody()) ?: $request->params();
-
-
-          // print_r($data);
-           //$req = $app->request();
-           //print_r($req->params());
 
 
         //Instancia la clase dinamica para ejecutar la accion requerida
