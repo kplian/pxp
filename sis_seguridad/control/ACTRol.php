@@ -15,6 +15,13 @@ class ACTRol extends ACTbase{
 		// parametros de ordenacion por defecto
 		$this->objParam->defecto('ordenacion','rol');
 		$this->objParam->defecto('dir_ordenacion','asc');
+
+
+        if($this->objParam->getParametro('bandera')!=''){
+            $this->objParam->addFiltro("bandera  in (''".trim($this->objParam->getParametro('bandera'))."'')");
+        }
+
+
 			
 		if ($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte=new Reporte($this->objParam, $this);

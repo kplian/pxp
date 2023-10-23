@@ -494,23 +494,41 @@ class MODValidacion
                 array_push($this->res,'El campo '.$nombre." debe ser registrado");
         }							
 	}
-	
-	function validarJson($nombre,$valor,$blank,$tamano) {
-        if($blank==false){
-           array_push($this->res,'El campo '.$nombre." debe ser registrado");
-        }            
-        json_decode($valor);
-        switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-            case JSON_ERROR_DEPTH:
-            case JSON_ERROR_STATE_MISMATCH:
-            case JSON_ERROR_CTRL_CHAR:
-            case JSON_ERROR_SYNTAX:
-            case JSON_ERROR_UTF8:
-                if (!empty($valor)) {
-                    throw new Exception("Error en archvi JSON: " . json_last_error_msg());
-                }
-                break;
+
+//RAC 13/10/2023 dejo de funcionar por actualizacion de PHP
+
+//	function validarJson($nombre,$valor,$blank,$tamano) {
+//        if($blank==false){
+//           array_push($this->res,'El campo '.$nombre." debe ser registrado");
+//        }
+//        json_decode($valor);
+//        switch (json_last_error()) {
+//            case JSON_ERROR_NONE:
+//            case JSON_ERROR_DEPTH:
+//            case JSON_ERROR_STATE_MISMATCH:
+//            case JSON_ERROR_CTRL_CHAR:
+//            case JSON_ERROR_SYNTAX:
+//            case JSON_ERROR_UTF8:
+//                if (!empty($valor)) {
+//                    throw new Exception("Error en archvi JSON: " . json_last_error_msg());
+//                }
+//                break;
+//        }
+//    }
+
+
+    //RAC  13/10/2023 nueva version corregida con chatgpt
+    function validarJson($nombre, $valor, $blank, $tamano) {
+        if ($blank == false && empty($valor)) {
+            array_push($this->res, 'El campo ' . $nombre . ' debe ser registrado');
+        } else {
+            $decoded = json_decode($valor);
+
+            if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
+                array_push($this->res, 'Error en archivo JSON: ' . json_last_error_msg());
+            }
         }
     }
+
+
 }

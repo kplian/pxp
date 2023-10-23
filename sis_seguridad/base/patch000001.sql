@@ -1071,5 +1071,12 @@ ALTER TABLE segu.tcommit
 ALTER TABLE segu.tcommit
   OWNER TO postgres;
 /***********************************F-SCP-MMV-SEGU-127-30/01/2020*****************************************/
+
+
+/***********************************I-SCP-MMV-SEGU-1-11/10/2023*****************************************/
+
+alter table segu.trol add bandera varchar(100) default 'N' not null;
+
+/***********************************F-SCP-MMV-SEGU-1-11/10/2023*****************************************/
  
  

@@ -55,8 +55,8 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 	    						'bigint' : 'NumberField',
 	    						'date' : 'DateField',
 	    						'timestamp' : 'DateField',
-	    						'time' : 'time',
-	    						'boolean' : 'CheckBox' };	    						
+	    						'time' : 'TimeField',
+	    						'boolean' : 'Checkbox' };
 	    						
 		var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
         if(dataPadre){
@@ -270,13 +270,13 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-				store: ['TextField','TextArea','NumberField','DateField','time','CheckBox']
+				store: ['TextField','TextArea','NumberField','DateField','TimeField','Checkbox']
 			},
 				type:'ComboBox',
 				filters:{   
                          type: 'list',
                          pfiltro:'tipcol.form_tipo_columna',
-                         options:  ['TextField','TextArea','NumberField','DateField','time','CheckBox']
+                         options:  ['TextField','TextArea','NumberField','DateField','TimeField','Checkbox']
                     },
 				id_grupo:2,
 				grid:true,
