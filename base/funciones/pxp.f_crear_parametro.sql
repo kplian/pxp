@@ -9,18 +9,18 @@ $body$
  FUNCION: 		pxp.f_crear_parametro
  DESCRIPCION:   crea  una tabla para devolver un row como parametro. Devuelve el nombre de la tabla
                 Web
- AUTOR: 	    KPLIAN (jrr)	
+ AUTOR: 	    KPLIAN (jrr)
  FECHA:	        01/05/2016
- COMENTARIOS:	
+ COMENTARIOS:
 ***************************************************************************
  HISTORIA DE MODIFICACIONES:
 
- DESCRIPCION:	
- AUTOR:		
- FECHA:		
+ DESCRIPCION:
+ AUTOR:
+ FECHA:
  ***************************************************************************/
- 
- 
+
+
  DECLARE
     v_nombre_funcion   	text;
     v_resp              varchar;
@@ -33,13 +33,13 @@ $body$
     v_secuencia:=(nextval('pxp.parametro'));
     v_consulta:='create temporary table tt_parametros_'||v_secuencia||'(';
     v_tamano:=array_upper(tipos,1);
-             --   raise exception 'aa%',variable_files;          
+             --   raise exception 'aa%',variable_files;
 
     for i in 1..(v_tamano-1) loop
         v_consulta:=v_consulta || variables[i] || ' ' || tipos[i] || ',';
     end loop;
     v_consulta:=v_consulta || variables[v_tamano] || ' ' || tipos[v_tamano] || ') on commit drop';
-    
+
     execute(v_consulta);
 
     v_consulta:='insert into tt_parametros_'||v_secuencia||' values(';
@@ -53,20 +53,20 @@ $body$
 		    v_consulta:=v_consulta || valores[i] || ',';
 		end if;
 	    ELSE
-		--RAC 12/09/2011 validacion para campo date vacio 
+		--RAC 12/09/2011 validacion para campo date vacio
 		if((tipos[i]='date' or tipos[i]='timestamp' or tipos[i]='time' or tipos[i]='bool' or tipos[i]='boolean') and  valores[i]='')THEN
 		    v_consulta:=v_consulta || 'null' || ',';
 		else
 		   v_consulta:=v_consulta ||''''|| replace(valores[i],'''','''''') || ''',';
 		end if;
-	    
+
 
 	    END IF;
 
         end loop;
 
         if(tipos[v_tamano]='numeric' or tipos[v_tamano]='integer' or tipos[v_tamano]='int4' or tipos[v_tamano]='int8' or tipos[v_tamano]='bigint')then
-                 
+
                 if(valores[v_tamano]='')THEN
                     v_consulta:=v_consulta || 'null' || ')';
                 else
@@ -83,9 +83,9 @@ $body$
     	--raise exception '%',v_consulta;
         execute v_consulta;
 
-    
+
     return 'tt_parametros_'||v_secuencia;
-    
+
  EXCEPTION
 
 	WHEN OTHERS THEN

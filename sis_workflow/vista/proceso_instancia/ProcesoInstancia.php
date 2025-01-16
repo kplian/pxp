@@ -83,7 +83,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
         armaDetalles : function() {
             var detalles = this.configProceso[this.config.indice].detalles
             for (var i = 0 ; i<detalles.length; i++ ) {
-                
+
                 if (detalles[i].atributos.vista_tipo == 'detalle' || detalles[i].atributos.vista_tipo == 'detalle-modal') {
                     
                     //cambiar por la tabla el proceso y el estado
@@ -334,6 +334,20 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                     form: true
                 });
 
+                this.Atributos.push({
+                    //configuracion del componente
+                    config:{
+                        name: 'estado',
+                        fieldLabel: 'Estado',
+                        gwidth: 100
+                    },
+                    type:'TextField',
+                    filters:{pfiltro:'usu1.cuenta',type:'string'},
+                    id_grupo:0,
+                    grid:true,
+                    form:false
+                });
+
             }
                         
             for (var i = 0 ;i < this.configProceso[this.config.indice].columnas.length; i++) {
@@ -457,19 +471,7 @@ Phx.vista.ProcesoInstancia = Ext.extend(Phx.gridInterfaz,{
                 
             } //termina for de columnas
             
-            this.Atributos.push({
-                //configuracion del componente
-                config:{
-                    name: 'estado',
-                    fieldLabel: 'Estado',                    
-                    gwidth: 100
-                },
-                type:'TextField',
-                filters:{pfiltro:'usu1.cuenta',type:'string'},
-                id_grupo:0,
-                grid:true,
-                form:false 
-                });
+
                 
             this.Atributos.push({
                 //configuracion del componente

@@ -200,5 +200,9 @@
     //Variables para relacion con SIAT
 	$_SESSION['_URL_IMPUESTOS']='http://dominio.impuestos.gob.bo/servicio/pagina.xhtml';
 
+   //PXP ND parameters
+   $_SESSION['pxpndUrl'] = '164.68.96.88:3200/api/';
+   $_SESSION['pxpndSecret'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInR5cGUiOiJweHAtbmQiLCJpYXQiOjE2OTg5NDE5OTYsImV4cCI6MTc4NTM0MTk5Nn0.iIRg7wjIw911xTITbWwlWIT6l5EzvQscpZljQgdG1kI';
+
 
 ?>

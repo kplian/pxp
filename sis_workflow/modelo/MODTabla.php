@@ -6,7 +6,7 @@
 *@date 07-05-2014 21:39:40
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
    ISSUE                        FECHA                        AUTHOR                                         DESCRIPCION
- #ISE-1          22/10/2023          RAC          se agega utilitarios getNombreSesion para manejar detalle-modal
+ #ISE-1          22/10/2023          RAC          se agrega utilitarios getNombreSesion para manejar detalle-modal
  */
 
 include_once __DIR__ . '/utilidades.php';
@@ -536,14 +536,12 @@ class MODTabla extends MODbase{
                 $this->transaccion='WF_TABLAINS_ELI';
                 $this->tipo_procedimiento='IME';
 
-                $nombreSess =  getNombreSesion('_wf_ins_',$this->objParam);
-
                 //Define los parametros para la funcion
                 $this->setParametro('id_tabla','id_tabla','integer');
                 $this->setParametro('tipo_estado','tipo_estado','varchar');
                 $this->setParametro('tipo_proceso','tipo_proceso','varchar');
                 $aux = $this->objParam->getParametro('0');
-                
+                $nombreSess =  getNombreSesion('_wf_ins_',$this->objParam, $aux);
                 $bd_nombre_tabla = $_SESSION[$nombreSess]['atributos']['bd_nombre_tabla'];
                 $this->setParametro('id_'.$bd_nombre_tabla,'id_'.$bd_nombre_tabla,'integer');
 

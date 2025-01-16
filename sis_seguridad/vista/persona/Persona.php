@@ -437,14 +437,14 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
 	       		    triggerAction: 'all',
 	       		    lazyRender:true,
 	       		    mode: 'local',
-	       		    store:['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.']
+	       		    store:['Lic.','Ing.','Dr','Msc.','Ph.D.','Tec.','Sr.']
 
 	       		},
 	       		type:'ComboBox',
 	       		id_grupo:0,
 	       		filters:{
 	       		         type: 'list',
-	       				 options: ['Lic.','Ing.','Msc.','Ph.D.','Tec.','Sr.'],
+	       				 options: ['Lic.','Ing.','Dr.','Msc.','Ph.D.','Tec.','Sr.'],
 	       		 	},
 	       		grid:true,
 	       		form:true

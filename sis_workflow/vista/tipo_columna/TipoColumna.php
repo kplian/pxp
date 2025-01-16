@@ -36,7 +36,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 					{name:'estado_reg', type: 'string'}
 				],
 	    		remoteSort: true,
-	    		baseParams:{start:0,limit:10}
+	    		baseParams:  { par_filtro:'tabla.bd_nombre_tabla'}
 	    	}),
 	        displayField: 'bd_nombre_tabla',
 	        valueField: 'id_tabla',
@@ -45,7 +45,12 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 	        triggerAction: 'all',
 	        emptyText:'Tabla...',
 	        selectOnFocus:true,
-	        width:100
+	        width:300,
+            pageSize: 20,
+            queryDelay: 200,
+            anchor: '80%',
+            listWidth:'280',
+            resizable:true,
 	    });	
 	    
 	    this.equivalencias =  { 'varchar' : 'TextField',

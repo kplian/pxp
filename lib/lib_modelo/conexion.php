@@ -99,7 +99,59 @@ class conexion
 		
 	}
 	//mandar valor "segu" en el segund parametro para que tome la conexion de seguridad con pdo
-	function conectarpdo($externo='', $segu= ''){
+
+	function conectarpdo($externo = '', $segu = '') {
+		$ext = $externo ? "_" . $externo : "";
+
+		try {
+			$_host = $_port = $_dbname = $_user = $_password = '';
+
+			if (isset($_SESSION['_HOST' . $ext])) {
+				$_host = $_SESSION['_HOST' . $ext];
+			}
+
+			if (isset($_SESSION['_PUERTO' . $ext])) {
+				$_port = $_SESSION['_PUERTO' . $ext];
+			}
+
+			if (isset($_SESSION['_BASE_DATOS' . $ext])) {
+				$_dbname = $_SESSION['_BASE_DATOS' . $ext];
+			}
+
+			if (isset($_SESSION['_BASE_DATOS' . $ext]) && isset($_SESSION['_LOGIN'])) {
+				$_user = $_SESSION['_BASE_DATOS' . $ext] . "_" . $_SESSION['_LOGIN'];
+			}
+
+			if (isset($_SESSION['_CONTRASENA_MD5']) && isset($_SESSION['_SEMILLA' . $ext])) {
+				$_password = md5($_SESSION['_SEMILLA' . $ext] . $_SESSION['_CONTRASENA_MD5']);
+			} elseif (isset($_SESSION['_CONTRASENA'])) {
+				$_password = $_SESSION['_CONTRASENA'];
+			}
+
+			if ($segu === 'segu') {
+				$_user = $_SESSION['_BASE_DATOS'] . "_" . $_SESSION['_USUARIO_CONEXION'];
+				$_password = $_SESSION['_CONTRASENA_CONEXION'];
+			}
+
+			// Imprime los valores utilizados para construir el DSN
+			//echo "DSN: pgsql:host=$_host;port=$_port;dbname=$_dbname\n";
+			//echo "Usuario: $_user\n";
+			//echo "Contraseña: $_password\n";
+
+			// Construye el DSN y conecta
+			$dsn = "pgsql:host=$_host;port=$_port;dbname=$_dbname";
+			$conexion = new PDO($dsn, $_user, $_password);
+			$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			return $conexion;
+		} catch (Exception $e) {
+			throw new Exception("Error al conectar a la base de datos: " . $e->getMessage());
+		}
+	}
+
+
+
+	function conectarpdo_bk($externo='', $segu= ''){
 
 		if ($externo != '') {
 			$ext = "_" . $externo;

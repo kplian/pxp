@@ -136,7 +136,9 @@ class ACTAuten extends ACTbase {
 
 	//Verifica las credenciales de usuario
 	
-	function verificarCredenciales(){  
+	function verificarCredenciales(){
+
+        //echo "llega"; exit;
 		$this->funciones= $this->create('MODUsuario'); 
 		$this->res=$this->funciones->ValidaUsuario();  
 		$this->datos=$this->res->getDatos();
@@ -275,7 +277,7 @@ class ACTAuten extends ACTbase {
 				$_SESSION["_SESION"]->actualizarLlaves($_SESSION['key_k'], $_SESSION['key_p'], $_SESSION['key_p_inv'], $_SESSION['key_m'], $_SESSION['key_d'], $_SESSION['key_e']);
 			}
 			$logo = str_replace('../../../', '', $_SESSION['_MINI_LOGO']);
-			$logo = ($_SESSION["_FORSSL"]=="SI") ? 'https://' : 'http://' . $_SERVER['HTTP_HOST'] . $_SESSION["_FOLDER"] . $logo;
+			$logo = ($_SESSION["_FORSSL"] == "SI") ? 'https://' : 'http://' . $_SERVER['HTTP_HOST'] . $_SESSION["_FOLDER"] . $logo;
 		    //cualquier variable que se agregue aqui tb debe ir en sis_seguridad/vista/_adm/resources/Phx.CP.mmain.php
 		    if ($this->objParam->getParametro('_tipo') != 'restAuten') {	
 				echo "{success:true,
