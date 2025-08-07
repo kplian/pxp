@@ -124,7 +124,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: "Sobre Nombre",
                 gwidth: 130,
                 name: 'sobrenombre',
-                allowBlank:false,
+                allowBlank:true,
                 maxLength:50,
 
                 anchor:'100%'
@@ -141,7 +141,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: "Cualidad 1",
                 gwidth: 130,
                 name: 'cualidad_1',
-                allowBlank:false,
+                allowBlank:true,
                 maxLength:50,
 
                 anchor:'100%'
@@ -158,7 +158,7 @@ Phx.vista.persona=Ext.extend(Phx.gridInterfaz,{
                 fieldLabel: "Cualidad 2",
                 gwidth: 130,
                 name: 'cualidad_2',
-                allowBlank:false,
+                allowBlank:true,
                 maxLength:50,
 
                 anchor:'100%'
