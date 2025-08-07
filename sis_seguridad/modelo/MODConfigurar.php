@@ -20,6 +20,11 @@ class MODConfigurar extends MODbase
 		$this->procedimiento='segu.ft_configurar_ime';
 		$this->transaccion='SG_CONF_MOD';
 		$this->tipo_procedimiento='IME';
+
+        //$this->arreglo['clave_nueva'] = md5(urldecode($this->arreglo['clave_nueva']));
+        //$this->arreglo['clave_confirmacion'] = md5(urldecode($this->arreglo['clave_confirmacion']));
+       // $this->arreglo['clave_windows'] = md5(urldecode($this->arreglo['clave_windows']));
+       // $this->arreglo['clave_anterior'] = md5(urldecode($this->arreglo['clave_anterior']));
 		
 				
 		//Define los parametros para la funcion

@@ -7,8 +7,8 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
-//include("../../sis_seguridad/control/adLDAP_2.0/adLDAP.php");
-include("../../sis_seguridad/control/adLDAP/src/Adldap.php");
+include("../../sis_seguridad/control/adLDAP_2.0/adLDAP.php");
+//include("../../sis_seguridad/control/adLDAP/src/Adldap.php");
 
 class ACTConfigurar extends ACTbase
 {
@@ -24,10 +24,10 @@ class ACTConfigurar extends ACTbase
 		}
 
 		$modificar_clave = $this->objParam->getParametro('modificar_clave');
-		$clave_anterior = $this->objParam->getParametro('clave_anterior');
-		$clave_nueva = $this->objParam->getParametro('clave_nueva');
-		$clave_confirmacion = $this->objParam->getParametro('clave_confirmacion');
-		$clave_windows = $this->objParam->getParametro('clave_windows');
+		$clave_anterior = urldecode($this->objParam->getParametro('clave_anterior'));
+		$clave_nueva = urldecode($this->objParam->getParametro('clave_nueva'));
+		$clave_confirmacion = urldecode($this->objParam->getParametro('clave_confirmacion'));
+		$clave_windows = urldecode($this->objParam->getParametro('clave_windows'));
 		$estilo = $this->objParam->getParametro('estilo');
 
 		//$filter = "(&(objectCategory=person)(sAMAccountName=$usuario_LDAP))";
@@ -120,6 +120,7 @@ class ACTConfigurar extends ACTbase
 
 		if($this->datos['autentificacion'] == 'local' && $this->datos['modificar_clave'] == 'SI')
 		{
+			//$_SESSION["_CONTRASENA"] = md5($_SESSION["_SEMILLA"].urldecode($this->objParam->getParametro('clave_nueva')));
 			$_SESSION["_CONTRASENA"] = md5($_SESSION["_SEMILLA"].$this->objParam->getParametro('clave_nueva'));
 			$_SESSION["_CONTRASENA_MD5"] = $this->datos['clave'];
 		}

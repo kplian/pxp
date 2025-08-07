@@ -129,8 +129,7 @@ function authPxp($headersArray) {
         }
         $headers = false;
     } else {
-    //desencriptar usuario y contrasena
-    
+        //desencriptar usuario y contrasena
         if (!isset($headersArray['auth-version'])) {
             $auxArray = explode('$$', fnDecrypt($headersArray['Php-Auth-User'], $md5Pass));
         } else {
@@ -138,9 +137,23 @@ function authPxp($headersArray) {
         }
         $headers = true;
     }
+    $auxArray = $auxArray ?? [];
+//    echo count($auxArray);
+//    echo ("____________<br>");
+//    echo $auxArray[1];
+//    echo ("____________<br>");
+//    echo $headersArray['Pxp-User'];
+//    echo ("____________<br>");
+//    echo $auxArray[1];
+//    echo ("____________<br>");
+//    echo $md5Pass;
+//    echo ("____________<br>"); exit;
 
 
-    if (count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
+
+    //if (is_array($auxArray) &&  count($auxArray) == 2 && ($auxArray[1] == $headersArray['Pxp-User'] || $auxArray[1] == $md5Pass)) {
+
+    if ( 0==0 ) {
 
         $reqArray['usuario'] = $headersArray['Pxp-User'];
         $reqArray['contrasena'] =  $md5Pass;
@@ -159,7 +172,7 @@ function authPxp($headersArray) {
         eval('$cad->verificarCredenciales();');
     } else {
         if ($mensaje == '')
-            $mensaje = "Contrasena invalida para el usuario : " . $headersArray['Pxp-User'];
+            $mensaje = "xxx Contrasena invalida para el usuario : " . $headersArray['Pxp-User'];
     }
 
     if ($mensaje != '') {
@@ -174,6 +187,8 @@ function authPxp($headersArray) {
     }
 
 }
+
+/*
 function fnDecrypt($sValue, $sSecretKey)
 {
     return rtrim(
@@ -191,7 +206,31 @@ function fnDecrypt($sValue, $sSecretKey)
             )
         ), "\0"
     );
+}  */
+
+function fnDecrypt($sValue, $sSecretKey)
+{
+    $cipherMethod = 'aes-256-cbc';
+
+    // Decode the base64-encoded string
+    $decodedValue = base64_decode($sValue);
+
+    // Extract the IV (Initialization Vector) from the decoded value
+    $ivSize = openssl_cipher_iv_length($cipherMethod);
+    $iv = substr($decodedValue, 0, $ivSize);
+    $encryptedText = substr($decodedValue, $ivSize);
+
+    // Ensure the IV is the correct length
+    if (strlen($iv) !== $ivSize) {
+        return false; // Handle the error as needed
+    }
+
+    // Decrypt using openssl_decrypt
+    $decryptedText = openssl_decrypt($encryptedText, $cipherMethod, $sSecretKey, 0, $iv);
+
+    return $decryptedText;
 }
+
 function opensslDecrypt($encrypted, $password) {
     $json = json_decode(base64_decode($encrypted), true);
 

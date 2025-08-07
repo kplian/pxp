@@ -156,8 +156,8 @@ function insertarUsuario(){
 		$this->tipo_procedimiento='IME';//tipo de transaccion
 		
 		
-		
-		$this->arreglo['contrasena'] = md5($this->arreglo['contrasena']);
+
+	    $this->arreglo['contrasena'] = md5(urldecode($this->arreglo['contrasena']));
 				
 		//Define los setParametros para la funcion	
 		//setParametro (nombre, valor , tipo , black, )
@@ -187,8 +187,8 @@ function insertarUsuario(){
 		
 		//si la contrasena es distinta de la contrase;a anterior
 		//fue modificada y necesario encriptarla
-		if($this->arreglo['contrasena'] != $this->arreglo['contrasena_old']){
-			$this->arreglo['contrasena'] = md5($this->arreglo['contrasena']);
+		if($this->arreglo['contrasena'] != $this->arreglo['contrasena_old']) {
+			$this->arreglo['contrasena'] = md5(urldecode($this->arreglo['contrasena']));
 		}
 		
 		//Define los setParametros para la funcion	

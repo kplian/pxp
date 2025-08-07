@@ -212,6 +212,7 @@ Phx.vista.gui=function(config) {
 				
 			},
 			type:'TextArea',
+            valorInicial:'{}',
 			id_grupo:1,
 			form:true
 		},

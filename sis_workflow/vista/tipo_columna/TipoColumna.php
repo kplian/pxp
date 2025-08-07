@@ -36,7 +36,7 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 					{name:'estado_reg', type: 'string'}
 				],
 	    		remoteSort: true,
-	    		baseParams:{start:0,limit:10}
+	    		baseParams:  { par_filtro:'tabla.bd_nombre_tabla'}
 	    	}),
 	        displayField: 'bd_nombre_tabla',
 	        valueField: 'id_tabla',
@@ -45,7 +45,12 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 	        triggerAction: 'all',
 	        emptyText:'Tabla...',
 	        selectOnFocus:true,
-	        width:100
+	        width:300,
+            pageSize: 20,
+            queryDelay: 200,
+            anchor: '80%',
+            listWidth:'280',
+            resizable:true,
 	    });	
 	    
 	    this.equivalencias =  { 'varchar' : 'TextField',
@@ -55,8 +60,8 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
 	    						'bigint' : 'NumberField',
 	    						'date' : 'DateField',
 	    						'timestamp' : 'DateField',
-	    						'time' : 'time',
-	    						'boolean' : 'CheckBox' };	    						
+	    						'time' : 'TimeField',
+	    						'boolean' : 'Checkbox' };
 	    						
 		var dataPadre = Phx.CP.getPagina(this.idContenedorPadre).getSelectedData()
         if(dataPadre){
@@ -270,13 +275,13 @@ Phx.vista.TipoColumna=Ext.extend(Phx.gridInterfaz,{
                 triggerAction: 'all',
                 lazyRender:true,
                 mode: 'local',
-				store: ['TextField','TextArea','NumberField','DateField','time','CheckBox']
+				store: ['TextField','TextArea','NumberField','DateField','TimeField','Checkbox']
 			},
 				type:'ComboBox',
 				filters:{   
                          type: 'list',
                          pfiltro:'tipcol.form_tipo_columna',
-                         options:  ['TextField','TextArea','NumberField','DateField','time','CheckBox']
+                         options:  ['TextField','TextArea','NumberField','DateField','TimeField','Checkbox']
                     },
 				id_grupo:2,
 				grid:true,

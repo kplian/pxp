@@ -7,6 +7,7 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
  ISSUE				FECHA				AUTHOR				DESCRIPCION
   #44				01/08/2019			EGS					Se agrego filtro por codigo
+  #1                14/10/2023          RAC                 filtro por codigo de proceso macro
 */
 
 class ACTTipoProceso extends ACTbase{    
@@ -23,10 +24,16 @@ class ACTTipoProceso extends ACTbase{
          if($this->objParam->getParametro('id_tipo_proceso')!=''){
             $this->objParam->addFiltro("tipproc.id_tipo_proceso = ".$this->objParam->getParametro('id_tipo_proceso'));    
         }
+
+
          if($this->objParam->getParametro('codigo')!=''){ //#44
             $this->objParam->addFiltro("tipproc.codigo = ''".$this->objParam->getParametro('codigo')."''");    
         }
-        
+
+        if($this->objParam->getParametro('codigo_proceso_macro')!=''){ //rac add filtro proceso macro
+            $this->objParam->addFiltro("pm.codigo = ''".$this->objParam->getParametro('codigo_proceso_macro')."''");
+        }
+
          if($this->objParam->getParametro('inicio')!=''){
             $inicio=$this->objParam->getParametro('inicio');    
             $this->objParam->addFiltro("tipproc.inicio = ''$inicio''");    
